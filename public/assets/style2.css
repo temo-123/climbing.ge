@@ -1,0 +1,451 @@
+@background: #fff;
+@default: #000;
+@gray: #999999;
+@active-link: #fff;
+@border-radius-2: 2px;
+@open-sans: 'Average Sans', sans-serif;
+
+
+@box-shadow-2: inset 0 0 1px #fff;
+
+body {
+	background: @background;
+	}
+	
+li {
+	list-style: none;
+	}
+a {
+	text-decoration: none;
+	transition: all 0.4s ease 0s;
+}
+	
+.container {
+	max-width: 1200px;
+	}
+	
+.container-1 {
+	width: 100%;
+	height: auto;
+	margin: 50px auto;
+	margin-bottom: 20px;
+	float: left;
+	
+	h1 {
+	font-size: 24px;
+	color: @default;
+	text-align: center;
+	font-family: @open-sans;
+	}
+	
+	h6 {
+	font-size: 18px;
+	color: @gray;
+	text-align: center;
+	font-family: @open-sans;
+	margin-bottom: 30px;
+	}
+	
+	
+		
+.portfolio {
+	width: 100%;
+	height: auto;
+	
+	h1 {
+	font-size: 36px;
+	color: #000;
+	font-family: @open-sans;
+		
+		.title span {
+			background: #fff;
+			padding-left: 20px;
+			padding-right: 20px;
+			display: inline-block;
+		}
+		
+	}/*h1*/
+	
+	
+}/*portfolio*/
+	
+	
+}/* container-1 */
+
+
+
+	
+	/*****Portfolio Page*****/
+		
+
+
+
+/*****Portfolio Page*****/
+	
+/*.portfolioContainer .col-xs-12, .portfolioContainer .col-sm-12, .portfolioContainer .col-md-6, .portfolioContainer .col-lg-6 {
+	padding: 0px;
+	margin: 0px;
+	}*/
+		
+.portfolio-img {
+	max-width: 100%;
+	height: auto;
+	overflow: hidden;
+	text-align: center;
+}
+
+.portfolio-img img {
+	vertical-align: middle;
+     border: 0;
+     page-break-inside: avoid;
+     min-width: 100% !important;
+}
+
+	
+	
+/***** Issotop ****/
+	
+ul.portfolioFilter {
+	margin-bottom: 20px;
+	margin-top: 30px;
+	text-align: center;
+	padding-bottom: 30px;
+	width: 100%;
+	text-align: center;
+	padding-left: 0px;
+	padding-right: 0px;
+	
+		
+	li {
+		list-style: none;
+		display: inline-block;
+		margin-left: -5px;
+	}
+	
+	a { 
+    margin-right: 0px; 
+	color:#666;
+	text-decoration:none;
+	outline: 0px;
+	/*border: 1px solid #cf0404;*/
+	border: none;
+	padding: 10px 20px;
+	font-family: @open-sans;
+	
+	}
+	
+	a.current {
+	border: none;
+	}
+	
+	a:hover, a.current { 
+		background: #279FBB;
+		color: #fff;
+		font-family: @open-sans;
+		border: none !important;
+	}
+	
+}
+	
+ 
+
+.isotope-item {
+    z-index: 2;
+}
+.isotope-hidden.isotope-item {
+    pointer-events: none;
+    z-index: 1;
+}
+.isotope,
+.isotope .isotope-item {
+  /* change duration value to whatever you like */
+
+    -webkit-transition-duration: 0.8s;
+    -moz-transition-duration: 0.8s;
+    transition-duration: 0.8s;
+}
+.isotope {
+    -webkit-transition-property: height, width;
+    -moz-transition-property: height, width;
+    transition-property: height, width;
+}
+.isotope .isotope-item {
+    -webkit-transition-property: -webkit-transform, opacity;
+    -moz-transition-property: -moz-transform, opacity;
+    transition-property: transform, opacity;
+}
+
+
+/*ul.portfolioContainer {
+	margin: 0px;
+	padding: 0px;
+	}
+
+	
+.portfolioContainer li {
+	margin-bottom: 0px;
+	}
+	
+.row.portfolioContainer {
+	margin-right: 0px;
+	}*/
+
+	
+	/**** End Issotop ****/
+	
+	
+/*.portfolioContainer .isotope-item {
+	width: 32.4%;
+	
+	margin-right: 10px;
+	margin-bottom: 20px;
+}*/
+
+
+.isotope-item-dtls {
+	width: 100%;
+	height: auto;
+	padding: 10px;
+	text-align: center;
+	border: 1px solid #eee;
+	border-top: none;
+}
+
+.isotope-item-dtls  {
+	
+	h3, p {
+	color: #333;
+	font-family: @open-sans;
+	}
+	
+/*	h3 {
+	font-size: 22px;
+	}
+	
+	p {
+	font-size: 14px;
+	}*/
+}
+/*@media (max-width: 720px){
+	h3 {
+	font-size: 32px;
+	}
+	
+	p {
+	font-size: 24px;
+	}
+}*/
+
+
+		
+	/*			View			*/
+	
+.view {
+   /*width: 300px;
+   height: 200px;
+   margin: 10px;
+   float: left;
+   border: 10px solid #fff;*/
+   overflow: hidden;
+   position: relative;
+   text-align: center;
+   /*-webkit-box-shadow: 1px 1px 2px #e6e6e6;
+   -moz-box-shadow: 1px 1px 2px #e6e6e6;
+   box-shadow: 1px 1px 2px #e6e6e6;*/
+   cursor: default;
+   /*background: #fff url(../images/bgimg.jpg) no-repeat center center;*/
+    margin-bottom: 20%;
+
+
+    box-shadow: 0px 16px 38px -27px #000000;
+    border-radius: 10px; 
+
+   
+   img {
+	   display: block;
+	   position: relative;
+	}
+	
+	h2 {
+	   text-transform: uppercase;
+	   color: #fff;
+	   text-align: center;
+	   position: relative;
+	   font-size: 17px;
+	   padding: 10px;
+	   background: rgba(0, 0, 0, 0.8);
+	   margin: 20px 0 0 0;
+	}
+	
+	
+	
+	a.info {
+	   display: inline-block;
+	   text-decoration: none;
+	   outline: 0px;
+	   padding: 14px;
+	   color: #fff;
+	   text-transform: uppercase;
+	   border: 2px solid #ffffff;
+	   margin-top: 60%;
+	   
+	   -webkit-border-radius: 50%;
+	-moz-border-radius: 50%;
+	border-radius: 20%;
+	}
+}
+
+.view .mask,.view .content {
+   /*width: 300px;*/
+   height: 100%;
+   position: absolute;
+   overflow: hidden;
+   top: 0;
+   left: 0;
+}
+
+.mask {
+	width: 100%;
+}
+
+.view-first {
+	img {
+	   -webkit-transition: all 0.2s linear;
+	   -moz-transition: all 0.2s linear;
+	   -o-transition: all 0.2s linear;
+	   -ms-transition: all 0.2s linear;
+	   transition: all 0.2s linear;
+	}
+	
+	.mask {
+	   -ms-filter: "progid: DXImageTransform.Microsoft.Alpha(Opacity=0)";
+	   filter: alpha(opacity=0);
+	   opacity: 0;
+	   background-color: rgba(0,0,0, 0.7);
+	   -webkit-transition: all 0.4s ease-in-out;
+	   -moz-transition: all 0.4s ease-in-out;
+	   -o-transition: all 0.4s ease-in-out;
+	   -ms-transition: all 0.4s ease-in-out;
+	   transition: all 0.4s ease-in-out;
+	}
+	
+	h2 {
+	   -webkit-transform: translateY(-100px);
+	   -moz-transform: translateY(-100px);
+	   -o-transform: translateY(-100px);
+	   -ms-transform: translateY(-100px);
+	   transform: translateY(-100px);
+	   -ms-filter: "progid: DXImageTransform.Microsoft.Alpha(Opacity=0)";
+	   filter: alpha(opacity=0);
+	   opacity: 0;
+	   -webkit-transition: all 0.2s ease-in-out;
+	   -moz-transition: all 0.2s ease-in-out;
+	   -o-transition: all 0.2s ease-in-out;
+	   -ms-transition: all 0.2s ease-in-out;
+	   transition: all 0.2s ease-in-out;
+	}
+	
+	
+	a.info {
+	   -ms-filter: "progid: DXImageTransform.Microsoft.Alpha(Opacity=0)";
+	   filter: alpha(opacity=0);
+	   opacity: 0;
+	   -webkit-transition: all 0.2s ease-in-out;
+	   -moz-transition: all 0.2s ease-in-out;
+	   -o-transition: all 0.2s ease-in-out;
+	   -ms-transition: all 0.2s ease-in-out;
+	   transition: all 0.2s ease-in-out;
+	}
+	
+}
+
+
+.view-first:hover img {
+   -webkit-transform: scale(1.1,1.1);
+   -moz-transform: scale(1.1,1.1);
+   -o-transform: scale(1.1,1.1);
+   -ms-transform: scale(1.1,1.1);
+   transform: scale(1.1,1.1);
+}
+
+.view-first:hover .mask {
+   -ms-filter: "progid: DXImageTransform.Microsoft.Alpha(Opacity=100)";
+   filter: alpha(opacity=100);
+   opacity: 1;
+}
+.view-first:hover h2,
+.view-first:hover p,
+.view-first:hover a.info {
+   -ms-filter: "progid: DXImageTransform.Microsoft.Alpha(Opacity=100)";
+   filter: alpha(opacity=100);
+   opacity: 1;
+   -webkit-transform: translateY(0px);
+   -moz-transform: translateY(0px);
+   -o-transform: translateY(0px);
+   -ms-transform: translateY(0px);
+   transform: translateY(0px);
+}
+.view-first:hover p {
+   -webkit-transition-delay: 0.1s;
+   -moz-transition-delay: 0.1s;
+   -o-transition-delay: 0.1s;
+   -ms-transition-delay: 0.1s;
+   transition-delay: 0.1s;
+}
+.view-first:hover a.info {
+   -webkit-transition-delay: 0.2s;
+   -moz-transition-delay: 0.2s;
+   -o-transition-delay: 0.2s;
+   -ms-transition-delay: 0.2s;
+   transition-delay: 0.2s;
+}
+
+
+	/*		End view		*/
+
+
+.portfolio-img .hover {
+    bottom: 0;
+    /*cursor: url("img/cursure.png") 40 40, crosshair;*/
+    height: 100%;
+    left: 0;
+    opacity: 0;
+    overflow: hidden;
+    position: absolute;
+    right: 0;
+    text-align: center;
+    top: 0;
+    transition: all 0.5s ease-in-out 0s;
+    width: 100%;
+    z-index: 99;
+}
+
+.portfolio-img:hover .hover {
+	opacity: 1;
+	}
+	
+/* Landscape phones and down */
+@media (min-width: 380px) and (max-width: 768px) { 
+
+.portfolioFilter a {
+	line-height: 45px;
+	}
+/*.portfolioContainer {
+	margin-top: 20px;
+	float: left;
+	}*/
+
+}
+
+
+.portfolio {
+	margin-top: 0px;
+	}
+	/** End Gallary **/
+
+
+
+
+
+
+	

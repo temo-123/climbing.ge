@@ -1,0 +1,35 @@
+ 
+<IfModule mod_rewrite.c>
+
+    ## Redirect on public/index.php
+    RewriteEngine on
+    RewriteRule ^$ public/ [L]
+    RewriteRule ((?s).*) public/$1 [L]
+    ## End redirect
+
+    ## Redirect register page on login page
+    ##RedirectPermanent /register http://climbing.ge/login
+    ## End register dedirect
+
+    ##	RewriteCond %{HTTP_HOST} ^climbing.ge$ [NC,OR]
+    ##	RewriteCond %{HTTP_HOST} ^www.climbing.ge$
+    ##	RewriteCond %{REQUEST_URI} !public/
+    ##	RewriteRule (.*) /public/$1 [L]
+
+</IfModule>
+
+## RewriteEngine on
+## RewriteCond %{HTTP_HOST} ^geo\-climbing\.ge$ [OR]
+## RewriteCond %{HTTP_HOST} ^www\.geo\-climbing\.ge$
+## RewriteRule ^/?$ "http\:\/\/climbing\.ge\/" [R=301,L]
+
+# php -- BEGIN cPanel-generated handler, do not edit
+# Сделайте пакет «ea-php71» языком программирования «PHP» по умолчанию.
+
+<IfModule mime_module>
+
+    AddHandler application/x-httpd-ea-php71 .php .php7 .phtml
+    
+</IfModule>
+
+# php -- END cPanel-generated handler, do not edit

@@ -1,0 +1,4 @@
+[22-Mar-2019 16:58:55 Asia/Tbilisi] PHP Warning:  move_uploaded_file(../img/uploads/3-1553259535.jpg): failed to open stream: No such file or directory in /home/geoclimb/public_html/public/assets/php/upload.php on line 16
+[22-Mar-2019 16:58:55 Asia/Tbilisi] PHP Warning:  move_uploaded_file(): Unable to move '/tmp/phpcSPXRh' to '../img/uploads/3-1553259535.jpg' in /home/geoclimb/public_html/public/assets/php/upload.php on line 16
+[22-Mar-2019 16:59:07 Asia/Tbilisi] PHP Warning:  move_uploaded_file(../img/uploads/3-1553259547.jpg): failed to open stream: No such file or directory in /home/geoclimb/public_html/public/assets/php/upload.php on line 16
+[22-Mar-2019 16:59:07 Asia/Tbilisi] PHP Warning:  move_uploaded_file(): Unable to move '/tmp/php1A1WGe' to '../img/uploads/3-1553259547.jpg' in /home/geoclimb/public_html/public/assets/php/upload.php on line 16
