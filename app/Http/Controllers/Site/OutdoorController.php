@@ -7,6 +7,13 @@ use Illuminate\Http\Request;
 
 use Carbon\Carbon;
 use App\Models\Article;
+use App\Models\Sector;
+use App\Models\Route;
+use App\Models\Mtp;
+use App\Models\Comment;
+use App\Models\Gallery;
+use App\Models\Sector_image;
+use App\Models\Mtp_pitch;
 
 class OutdoorController extends Controller
 {
@@ -20,17 +27,17 @@ class OutdoorController extends Controller
             $mtp_num = 0;
             $route_quantity = array();
             foreach($outdoors as $outdoor){
-                $sector_n = \App\Sector::where('article_id', '=', $outdoor->id)->get();
+                $sector_n = Sector::where('article_id', '=', $outdoor->id)->get();
                 $routes_a = array ($outdoor->title);
                 $mtps_a = array ();
-                $sector_count = \App\Sector::where('article_id', '=', $outdoor->id)->count();
+                $sector_count = Sector::where('article_id', '=', $outdoor->id)->count();
                 foreach($sector_n as $sector){
-                    $routes = \App\Route::where('sector_id', '=', $sector->id)->count();
+                    $routes = Route::where('sector_id', '=', $sector->id)->count();
                     foreach((array) $routes as $route){
                         $route_num++;
                         array_push($routes_a, $route);
                     }
-                    $mtps = \App\MTP::where('sector_id', '=', $sector->id)->count();
+                    $mtps = MTP::where('sector_id', '=', $sector->id)->count();
                     if ($mtps > 0) {
                         foreach((array) $mtps as $mtp){
                             $mtp_num++;
@@ -52,24 +59,24 @@ class OutdoorController extends Controller
             //     print_r($route_num[0]);
             // }
             // dd($route_quantity); // echo array 'route quantity'
-            $time_array = array();
-            foreach ($outdoors as $outdoor) {
-                if ($outdoor->created_at->lt(Carbon::now()->subDays(30))){
-                    $time = 0;
-                    array_push($time_array, ['id'=>$outdoor->id, 'name'=>$outdoor->title, 'time'=>$time]);
-                }
-                else {
-                    $time = 1;
-                    array_push($time_array, ['id'=>$outdoor->id, 'name'=>$outdoor->title, 'time'=>$time]);
-                }
-            }
+            // $time_array = array();
+            // foreach ($outdoors as $outdoor) {
+            //     if ($outdoor->created_at->lt(Carbon::now()->subDays(30))){
+            //         $time = 0;
+            //         array_push($time_array, ['id'=>$outdoor->id, 'name'=>$outdoor->title, 'time'=>$time]);
+            //     }
+            //     else {
+            //         $time = 1;
+            //         array_push($time_array, ['id'=>$outdoor->id, 'name'=>$outdoor->title, 'time'=>$time]);
+            //     }
+            // }
 
             $data = [
                 'title'=>'Outdoor Climbing',
                 'article_list'=>$outdoors,
                 'article_count'=>$article_count,
                 'outdoor_climbing'=>1,
-                'time_array' => $time_array,
+                // 'time_array' => $time_array,
                 
                 'num_1'=>1,
                 'num_2'=>1,
@@ -100,23 +107,23 @@ class OutdoorController extends Controller
             $outdoors = Article::latest('id')->where('category', '=', 'outdoor')->where('url_title',strip_tags($name))->first();
             $id = $outdoors->id;
 
-            $comments = \App\Comments::where('article_id',strip_tags($id))->get();
-            $article_gallery = \App\galleries::where('article_id',strip_tags($id))->where('published','=','1')->where('category','=','article_image')->limit(8)->get();
-            $article_gallery_count = \App\galleries::where('article_id',strip_tags($id))->where('published','=','1')->where('category','=','article_image')->count();
+            $comments = Comment::where('article_id',strip_tags($id))->get();
+            $article_gallery = gallery::where('article_id',strip_tags($id))->where('published','=','1')->where('category','=','article_image')->limit(8)->get();
+            $article_gallery_count = gallery::where('article_id',strip_tags($id))->where('published','=','1')->where('category','=','article_image')->count();
             $other_list = Article::latest('id')->where('category', '=', 'outdoor')->inRandomOrder()->where('published','=','1')->limit(6)->get();
 
 
             $pitch_num_in_array = 0;
             $mtp_num_in_array = 0;
-            $sector_count = \App\Sector::where('article_id', '=', $id)->count();
+            $sector_count = Sector::where('article_id', '=', $id)->count();
             if ($sector_count > 0) {
-                $sector_n = \App\Sector::where('article_id', '=', $id)->orderBy('num')->get();
+                $sector_n = Sector::where('article_id', '=', $id)->orderBy('num')->get();
                 $area_info = array();
                 foreach($sector_n as $sector){
 
-                    $sectors_img_count = \App\Sector_image::where('sector_id', '=', $sector->id)->count();
+                    $sectors_img_count = Sector_image::where('sector_id', '=', $sector->id)->count();
                     if ($sectors_img_count > 0) {
-                        $sectors_img = \App\Sector_image::where('sector_id', '=', $sector->id)->orderBy('num')->get();
+                        $sectors_img = Sector_image::where('sector_id', '=', $sector->id)->orderBy('num')->get();
                         $sector_imgs = array();
                         foreach($sectors_img as $sector_img){
                             array_push($sector_imgs, 
@@ -125,9 +132,9 @@ class OutdoorController extends Controller
                     }
                     else $sector_imgs = NULL;
 
-                    $routes_count = \App\Route::where('sector_id', '=', $sector->id)->count();
+                    $routes_count = Route::where('sector_id', '=', $sector->id)->count();
                     if ($routes_count > 0){
-                        $routes = \App\Route::where('sector_id', '=', $sector->id)->orderBy('num')->get();
+                        $routes = Route::where('sector_id', '=', $sector->id)->orderBy('num')->get();
                         $route_info = array();
                         foreach($routes as $x=>$route){
                             $grade_yds = 0;
@@ -184,9 +191,9 @@ class OutdoorController extends Controller
                     }
                     else $route_info = NULL;
 
-                    $mtps_count = \App\MTP::where('sector_id', '=', $sector->id)->count();
+                    $mtps_count = MTP::where('sector_id', '=', $sector->id)->count();
                     if ($mtps_count > 0){
-                        $mtps = \App\MTP::where('sector_id', '=', $sector->id)->orderBy('num')->get();
+                        $mtps = MTP::where('sector_id', '=', $sector->id)->orderBy('num')->get();
                         $mtp_info = array();
                         foreach($mtps as $mtp){
                             array_push($mtp_info, 
@@ -197,7 +204,7 @@ class OutdoorController extends Controller
                                     "mtp pitchs"=> [],
                                 )
                             );
-                            $mtp_pitchs = \App\Mtp_pitchs::where('mtp_id', '=', $mtp->id)->orderBy('num')->get();
+                            $mtp_pitchs = Mtp_pitch::where('mtp_id', '=', $mtp->id)->orderBy('num')->get();
                             $pitch_num = 0;
                             foreach($mtp_pitchs as $mtp_pitch){                            
                                 $pitch_grade_yds = 0;
@@ -305,5 +312,11 @@ class OutdoorController extends Controller
             return view('site.outdoor_page',$data);
         }
         else abort(404);
+    }
+
+
+    public function get_yds_grade(Type $var = null)
+    {
+        # code...
     }
 }

@@ -22,7 +22,7 @@
                     
                     <ul class="dropdown-menu shadows" role="menu" style="width: 100%;">
                         <li>
-                            <form action="{{ route('/search') }}" method="POST" role="search" class="navbar-form">
+                            <form action="#" method="POST" role="search" class="navbar-form">
                                 {{csrf_field ()}} 
                                 <div class="form-group" style="display:inline;">
                                 <div class="input-group" style="display:table;">
@@ -58,7 +58,7 @@
                             </a>
                             <ul class="dropdown-menu shadows menu_margin_left_850" role="menu" style="width: 1000%;">
                                 <li>
-                                    <form action="{{ route('/search') }}" method="POST" role="search" class="navbar-form">
+                                    <form action="#" method="POST" role="search" class="navbar-form">
                                         {{csrf_field ()}} 
                                         <div class="form-group" style="display:inline;">
                                             <div class="input-group" style="display:table;">

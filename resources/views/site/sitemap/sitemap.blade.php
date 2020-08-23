@@ -1,5 +1,5 @@
 @section('title', 'Sitemap')
-@extends('layouts.app')
+@extends('site.layouts.app')
 
 @section('content')
 
@@ -22,7 +22,7 @@
 					<ul>
 						<li>
 							<span>
-								<i class="far fa-file"></i><a href="{{route('about_page')}}">About Us</a>
+								<i class="far fa-file"></i><a href="{{route('about_us_page')}}">About Us</a>
 							</span>
 						</li>
 
@@ -138,7 +138,7 @@
 							</ul>
 						</li>
 						<li>
-							<span><a href="{{route('about_page')}}#partner">Partners</a></span>
+							<span><a href="{{route('about_us_page')}}#partner">Partners</a></span>
 							<span>
 								<a style="color:#000; text-decoration:none;" data-toggle="collapse" href="#partners" aria-expanded="false" aria-controls="partners">
 									<i class="fa fa-caret-square-o-down"></i>
@@ -148,21 +148,6 @@
 								<div id="partners" class="collapse">
 	    							@foreach($partners as $partner)
 									<li><span><i class="far fa-file"></i><a href="{{route('partners_page', array('title'=>$partner->url_title))}}"> {{$partner -> title}} </a></span></li>
-	    							@endforeach
-								</div>
-							</ul>
-						</li>
-						<li>
-							<span><a href="{{route('shop_list')}}">Shop</a></span>
-							<span>
-								<a style="color:#000; text-decoration:none;" data-toggle="collapse" href="#products" aria-expanded="false" aria-controls="products">
-									<i class="fa fa-caret-square-o-down"></i>
-								</a>
-							</span>
-							<ul>
-								<div id="products" class="collapse">
-	    							@foreach($products as $product)
-									<li><span><i class="far fa-file"></i><a href="{{route('shop_page', array('title'=>$product->url_title))}}"> {{$product -> title}} </a></span></li>
 	    							@endforeach
 								</div>
 							</ul>

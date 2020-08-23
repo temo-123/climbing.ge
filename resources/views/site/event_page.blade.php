@@ -30,7 +30,7 @@
         </h1>
             
         <div class="col-md-6">
-            @component('components.breadcrumb')
+            @component('site.components.breadcrumb')
                 @slot('parent') Home @endslot
                 @slot('link') {{route('index')}} @endslot
                 @slot('active') Events @endslot
@@ -121,5 +121,18 @@
         </div><!--/. map(col-md-6)-->
 
     </div><!--/. row-->
+
+    @if(isset($comments))
+        @if (Auth::guest())
+            <comment-form-component :article_id="{{$events->id}}"></comment-form-component>
+        @else
+            <comment-form-component 
+                    :article_id="{{$events->id}}" 
+                    :user_name="name" 
+                    :user_surname="surname" 
+                    :is_login="true"
+            ></comment-form-component>
+        @endif
+        @endif
 </div><!--/. container -->
 @endsection

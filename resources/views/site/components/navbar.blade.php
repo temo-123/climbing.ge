@@ -47,8 +47,8 @@
                             </a>
 
                             <ul class="dropdown-menu shadows" role="menu">
-                                <li><a href="{{route('indoor_list')}}">Indoor Climbing</a></li>
-                                <li><a href="{{route('outdoor_list')}}">Outdoor Climbing</a></li>
+                                <li><a style="font-size: 2em;" href="{{route('indoor_list')}}">Indoor Climbing</a></li>
+                                <li><a style="font-size: 2em;" href="{{route('outdoor_list')}}">Outdoor Climbing</a></li>
                             </ul>
                         </li>
 
@@ -59,7 +59,7 @@
 
                         @if (Auth::guest())
                         <li>
-                            <a href="{{route('login')}}">Login</a>
+                            <a href="{{route('user_index')}}">Login</a>
                         </li>
                         @endif
 

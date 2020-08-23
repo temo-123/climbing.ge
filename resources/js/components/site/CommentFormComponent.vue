@@ -11,12 +11,18 @@
                                     <div class="row">
                                         <div class="col-md-12">
                                             <h2 id='comments'>Comments</h2>
-                                            <p>Incorrect comments or comments containing obscene language will be deleted.</p>
+                                            <!-- <p>Incorrect comments or comments containing obscene language will be deleted.</p> -->
                                         </div>
                                     </div>
                                     
-                                    <!-- <div v-if="login == 0"> -->
-                                    <div>
+                                    <div style='display: none;' v-if="this.is_login == true">
+                                        <input type="name" :value="name" name="name" autocomplete="off" id="name" placeholder="Name">
+                                        <input type="surname" :value="surname" name="surname" autocomplete="off" id="surname" placeholder="Surname">
+                                        <input type="email" :value="email" name="email" autocomplete="off" id="email" placeholder="E-mail">
+                                    </div>
+
+                                    <div v-else>
+                                    <!-- <div> -->
                                         <div class="row" >
                                             <div class="col-md-4">
                                                 <div class="form-group">
@@ -38,12 +44,6 @@
                                             </div>
                                         </div>
                                     </div>
-                                    
-                                    <!-- <div style='display: none;' v-else>
-                                        <input type="name" :value="name" name="name" autocomplete="off" id="name" placeholder="Name">
-                                        <input type="surname" :value="surname" name="surname" autocomplete="off" id="surname" placeholder="Surname">
-                                        <input type="email" :value="email" name="email" autocomplete="off" id="email" placeholder="E-mail">
-                                    </div> -->
 
                                     <div class="row">
                                         <div class="col-md-12">
@@ -82,7 +82,7 @@
         </div>
         <div class="row">
             <div class="col-md-8">
-                <comment-component></comment-component>
+                <comment-component :article_id_for_filtr=this.article_id></comment-component>
             </div>
         </div>
     </div>
@@ -90,6 +90,14 @@
 
 <script>
     export default {
+        props: [
+            "article_id",
+            "user_name",
+            "user_surname",
+            "user_email",
+            "is_login",
+            "article_id"
+        ],
         data() {
             return {
                 name: "",
@@ -98,15 +106,8 @@
                 text: "",
             }
         },
-        props: [
-            // "login",
-            // "name",
-            // "surname",
-            // "email",
-            "article_id"
-        ],
         mounted() {
-
+            console.log(this.is_login)
         },
         methods: {
             add_comment() {

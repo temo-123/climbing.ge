@@ -7,7 +7,7 @@
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>404</title>
+    <title>404 - climbing.ge</title>
 
     <link href="{{ asset('assets/img/site_logo/x.png') }}" rel="shortcut icon">
 
@@ -24,7 +24,7 @@
 </head>
 <body>
     <div id="app">
-        @include('components.header')
+        @include('site.components.navbar')
 
         <div class="container">
             <div class="row">
@@ -49,7 +49,6 @@
                                 <span class="glyphicon glyphicon-home"></span>
                                 Back to index page
                             </a>
-                            @include('components.support_form')
                         </div>
                         <h2>Climbing.ge</h2>
                     </div>
@@ -57,7 +56,7 @@
             </div>
         </div>
 
-        @include('components.footer')
+        @include('site.components.footer')
     </div>
 </body>
 </html>

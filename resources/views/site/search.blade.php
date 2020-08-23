@@ -16,7 +16,7 @@
         <div class="row">
             <div class="col-md-12">
 
-                <search-component></search_component>
+                <!-- <search-component></search_component> -->
                 
                 <p> The Search results for your query <b> {{$query}} </b> are :</p>
                 

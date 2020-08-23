@@ -18,24 +18,24 @@ class IceController extends Controller
     		$ices = Article::where('category', '=', 'ice')->where('published', '=', 1)->get();
     		$article_count = Article::where('category', '=', 'ice')->where('published', '=', 1)->count();
 
-            $time_array = array();
-            foreach ($ices as $ice) {
-                if ($ice->created_at->lt(Carbon::now()->subDays(30))){
-                    $time = 0;
-                    array_push($time_array, ['id'=>$ice->id, 'name'=>$ice->title, 'time'=>$time]);
-                }
-                else {
-                    $time = 1;
-                    array_push($time_array, ['id'=>$ice->id, 'name'=>$ice->title, 'time'=>$time]);
-                }
-            }
+            // $time_array = array();
+            // foreach ($ices as $ice) {
+            //     if ($ice->created_at->lt(Carbon::now()->subDays(30))){
+            //         $time = 0;
+            //         array_push($time_array, ['id'=>$ice->id, 'name'=>$ice->title, 'time'=>$time]);
+            //     }
+            //     else {
+            //         $time = 1;
+            //         array_push($time_array, ['id'=>$ice->id, 'name'=>$ice->title, 'time'=>$time]);
+            //     }
+            // }
 
     		$data = [
     			'title'=>'Ice And Mixed',
     			'article_list'=>$ices,
     			'article_count'=>$article_count,
     			'ice'=>'',
-                'time_array' => $time_array,
+                // 'time_array' => $time_array,
     			
     			'num'=>1,
                 'articles_link' => 'ice_page',
@@ -55,13 +55,13 @@ class IceController extends Controller
         if (!$name) {
             abort(404);
         }
-        if (view()->exists('site.mount_page')) {
+        if (view()->exists('site.ice_page')) {
         
             $ice = Article::where('category', '=', 'ice')->where('url_title',strip_tags($name))->first();
             $ice_id = $ice->id;
             
             $article_gallery = Gallery::where('article_id',strip_tags($ice_id))->limit(8)->get();
-            $comment = Comments::where('article_id',strip_tags($ice_id))->get();
+            $comments = Comment::where('article_id',strip_tags($ice_id))->get();
             $other_list = Article::where('category', '=', 'ice')->inRandomOrder()->where('published','=','1')->limit(6)->get();
 
             $data  = [
@@ -87,7 +87,7 @@ class IceController extends Controller
                 // 'article'=>$article
             ];
 
-            return view('site.mount_page', $data);
+            return view('site.ice_page', $data);
         }
         else {
             abort(404);

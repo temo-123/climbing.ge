@@ -59,8 +59,8 @@ class OtherActivityController extends Controller
             $other = Article::latest('id')->where('category', '=', 'other')->where('url_title',strip_tags($name))->first();
             $other_id = $other->id;
             
-            $article_gallery = Galleries::where('article_id',strip_tags($other_id))->limit(8)->get();
-            $comments = Comments::where('article_id',strip_tags($other_id))->get();
+            $article_gallery = Gallery::where('article_id',strip_tags($other_id))->limit(8)->get();
+            $comments = Comment::where('article_id',strip_tags($other_id))->get();
             $other_others_list = Article::latest('id')->where('category', '=', 'other')->latest('id')->limit(6)->inRandomOrder();
 
             // $other_outdoors_list = Article::latest('id')->where('category', '=', 'other')->inRandomOrder()->where('published','=','1')->limit(6)->get();

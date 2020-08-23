@@ -29,9 +29,10 @@
                 </a>
             </div>
             <div class='col-md-6 indoor_text indoot_text_for_mobile'>
+            <div class="container">
                 <div class='row'>
                     <a href="{{ route('indoor_page', array('title'=>$indoor->url_title)) }}">
-                        <h2 class="featurette-heading">{{ $indoor -> title }}</h2>
+                        <h2 style="margin: 2em; text-aline: center;">{{ $indoor -> title }}</h2>
                     </a>
                     <p class="lead">{!! $indoor -> short_description !!}</p>
                 </div>
@@ -39,7 +40,7 @@
                     <div class='col-xs-6 col-md-4 col-lg-4 col-xl-4'>
                         @if($indoor -> prices_from != NULL)
                         <b style="font-size: 120%;">Prices from</b>
-                        <p style="font-size: 100%;">{!! $indoor -> prices_from !!}</p>
+                        <p style="font-size: 100%;"><strong>{!! $indoor -> prices_from !!} GEL </strong>( USD)</p>
                         @endif
                     </div>
                     <div class='col-xs-6 col-md-4 col-lg-4 col-xl-4'>
@@ -58,6 +59,7 @@
                         @endforeach
                     </div>
                 </div>
+            </div>
             </div>
         </div>
     </div>

@@ -22,8 +22,13 @@ class IndexController extends Controller
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
-    public function index()
+    public function index(Request $request)
     {
-        return view('user.home');
+        $request->user()->authorizeRoles(['admin', 'menager', 'user']);
+        $data = [
+            "page_name" => "home"
+        ];
+        return view('user.home', $data);
     }
+  
 }

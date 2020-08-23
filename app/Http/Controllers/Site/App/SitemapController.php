@@ -5,6 +5,9 @@ namespace App\Http\Controllers\Site\App;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
+use App\Models\Article;
+use App\Models\Mount_route;
+
 class SitemapController extends Controller
 {
     public function sitemap_xml()
@@ -17,9 +20,9 @@ class SitemapController extends Controller
     	$events = Article::where('category', '=', 'event')->where('published', '=', 1)->get();
     	$partners = Article::where('category', '=', 'partner')->where('published', '=', 1)->get();
     	$securitys = Article::where('category', '=', 'security')->where('published', '=', 1)->get();
-    	$mountains = Mount_routes::get();
-    	$products = Product::get();
-    	return response()->view('sitemap/sitemap_xml', compact(
+    	$mountains = Mount_route::get();
+    	// $products = Product::get();
+    	return response()->view('site/sitemap/sitemap_xml', compact(
     		'indoors',
 			'outdoors',
 			'ice_and_mix',
@@ -29,12 +32,12 @@ class SitemapController extends Controller
 			'partners',
 			'securitys',
 			'mountains',
-			'products',
+			// 'products',
     			))->header('Content-Type', 'text/xml');
     }
     public function sitemap()
     {   
-        dd(Auth::user()->name);
+        // dd(Auth::user()->name);
     	// $posts = Post::orderBy('updated_at', 'DESC')->get();
     	$indoors =     Article::where('category', '=', 'indoor')->     where('published', '=', 1)->get();
     	$outdoors =    Article::where('category', '=', 'outdoor')->    where('published', '=', 1)->get();
@@ -44,9 +47,8 @@ class SitemapController extends Controller
     	$events =      Article::where('category', '=', 'event')->      where('published', '=', 1)->get();
     	$partners =    Article::where('category', '=', 'partner')->    where('published', '=', 1)->get();
     	$securitis =   Article::where('category', '=', 'security')->   where('published', '=', 1)->get();
-    	$mountains =   Mount_routes::where('published', '=', 1)->get();
-    	$products =    Product::where('approved', '=', 1)->get();
-    	return response()->view('sitemap/sitemap', compact(
+    	$mountains =   Mount_route::where('published', '=', 1)->get();
+    	return response()->view('site/sitemap/sitemap', compact(
     		'indoors',
 			'outdoors',
 			'ices',
@@ -56,7 +58,6 @@ class SitemapController extends Controller
 			'partners',
 			'securitis',
 			'mountains',
-			'products',
     			));
     }
 }

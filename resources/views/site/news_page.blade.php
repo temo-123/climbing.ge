@@ -72,7 +72,12 @@
         @if (Auth::guest())
             <comment-form-component :article_id="{{$article->id}}"></comment-form-component>
         @else
-            <comment-form-component :article_id="{{$article->id}}"></comment-form-component>
+            <comment-form-component 
+                    :article_id="{{$article->id}}" 
+                    :user_name="name" 
+                    :user_surname="surname" 
+                    :is_login="true"
+            ></comment-form-component>
         @endif
         @endif
 

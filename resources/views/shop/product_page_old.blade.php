@@ -1,4 +1,6 @@
+@extends('shop.layouts.app')
 
+@section('content')
 
 
 <section aria-label="Main content" role="main" class="product-detail top_menu_margin">
@@ -82,7 +84,7 @@
                   @endif
                 @endif
               </div>
-            </div>
+            <!-- </div> -->
 
             <div itemprop="offers">
             <!-- <div itemprop="offers" itemscope itemtype="http://schema.org/Offer"> -->
@@ -284,64 +286,14 @@
                 Category - {{$product -> category}}
               </div>
               @endif
-                <!-- 
-                <div class="guide">
-                  <a>Size guide</a>
-                </div> -->
               </div>
-              <!-- </div> -->
-              <!-- <form method="post" enctype="multipart/form-data" id="AddToCartForm"> -->
-              <!-- <form id="AddToCartForm"> -->
-  <!--               <select name="id" id="productSelect" quickbeam="product" class="product-single__variants">
-                  <option  selected="selected"  data-sku="" value="7924994501">
-                    M / Blue - $800.00 USD
-                  </option>
-                  <option  data-sku="" value="7924995077">
-                    M / Red - $850.00 USD
-                  </option>
-                  <option  data-sku="" value="7924994437">
-                    L / Blue - $850.00 USD
-                  </option>
-                  <option  data-sku="" value="7924994693">
-                    L / Yellow - $850.00 USD
-                  </option>
-                  <option  data-sku="" value="7924995013">
-                    L / Red - $850.00 USD
-                  </option>
-                  <option  data-sku="" value="7924994373">
-                    XL / Blue - $900.00 USD
-                  </option>
-                  <option  data-sku="" value="7924994629">
-                    XL / Yellow - $850.00 USD
-                  </option>
-                  <option  data-sku="" value="7924830021">
-                    XXL / Blue - $950.00 USD
-                  </option>
-                  <option  data-sku="" value="7924994885">
-                    XXL / Red - $850.00 USD
-                  </option>
-                </select> -->
-<!--                 <div class="btn-and-quantity-wrap">
-                  <div class="btn-and-quantity">
-                    <div id="AddToCart" quickbeam="add-to-cart">
-                      @if(Auth::guest())
-                      <a href="#"> 
-                        <span id="AddToCartText">Add To Favorite</span>
-                      </a>
-                      @else
-                      ddddddd
-                      @endif
-                    </div>
-                  </div>
-                </div> -->
 
-              <!-- </form> -->
             </div>
             </div>
-            </div>
+            </div></div>
 
             <!-- <div class="clearfix"></div> -->
-      <div class="container">
+      <!-- <div class="container"> -->
         <div class="row">
           <div class="col-md-10 col-md-offset-1">
 
@@ -371,7 +323,7 @@
             </div><!--/tab-content-->
           </div><!--/tab-content-->
         </div><!--/tab-content-->
-      </div><!--/tab-content-->
+      <!-- </div>/tab-content -->
 
 
 
@@ -384,31 +336,18 @@
 
 
 
-
-<!--                 <div class="container">
-                  <div class="row">
-                  <div class="col-md-10 col-md-offset-1">
-              <div class="tabs">
-                <div class="tab-labels">
-                  <span data-id="1" class="active">Description</span>
-                </div>
-                <div class="tab-slides">
-                  <div id="tab-slide-1" itemprop="description"  class="slide active">
-                    {!!$product -> text!!}
-                  </div>
-                </div>
-                </div>
-              </div></div></div> -->
-              <!-- 
-              <div class="social-sharing-btn-wrapper">
-                <span id="social_sharing_btn">Share</span>
-              </div> -->
             </div>
           </div>
         </div>
       </div>
     </div>
+
+
+
+
+
     @if(isset($othe_products))
+    <div class="rov">
     <aside class="related">
       <div class="_cont">
         <h2>You might also like</h2>
@@ -490,12 +429,16 @@
             </span>
           </a>
           @endforeach
+
+
+
         </div>
         <div class="more-products" id="more-products-wrap">
-          <a href="{{route('shop_list')}}"><span id="more-products" data-rows_per_page="1">More products</span></a>
+          <a href="{{route('shop_index')}}"><span id="more-products" data-rows_per_page="1">More products</span></a>
         </div>
       </div>
     </aside>
+    </div>
     @endif
   </div>
   
@@ -503,15 +446,9 @@
   
 
 <script src='https://unpkg.com/xzoom/dist/xzoom.min.js'></script>
-
-  
-
-  
-  
-  
   
   <script>
-      (function ($) {
+  (function ($) {
     $(document).ready(function() {
         $('.xzoom, .xzoom-gallery').xzoom({zoomWidth: 400, title: true, tint: '#333', Xoffset: 15});
         $('.xzoom2, .xzoom-gallery2').xzoom({position: '#xzoom2-id', tint: '#ffa200'});
@@ -660,7 +597,7 @@
             });
         }
     });
-})(jQuery);
+  })(jQuery);
   </script>
 
 
@@ -684,3 +621,4 @@
 
   }
 </style>
+@endsection

@@ -5,8 +5,9 @@ namespace App\Http\Controllers\Site;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
-use App\Article;
-use App\Interested_Events;
+use App\Models\Article;
+use App\Models\Comment;
+use App\Models\Interested_Event;
 
 class EventController extends Controller
 {
@@ -14,17 +15,20 @@ class EventController extends Controller
         if (!$name) {
             abort(404);
         }
-        if (view()->exists('blog.events_page')) {
+        if (view()->exists('site.event_page')) {
             $events = Article::where('category', '=', 'event')->where('url_title',strip_tags($name))->first();
             $event_id = $events->id;
-            $interested = Interested_Events::where('article_id', '=', $event_id)->get();
-            // dd($interested);
+            $interested = Interested_Event::where('article_id', '=', $event_id)->get();
+            $comments = Comment::where('article_id','=',$event_id)->get();
+            
             $data  = [
                 'title'=>$events->title,
                 'events'=>$events,
-                'interested'=>$interested
+                'interested'=>$interested,
+
+                'comments'=>$comments,
             ];
-            return view('blog.events_page',$data);
+            return view('site.event_page',$data);
         }
         else{
             abort(404);

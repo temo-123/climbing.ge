@@ -114,10 +114,10 @@ class IndoorController extends Controller
 
             $other_list = Article::latest('id')->where('category', '=', 'indoor')->inRandomOrder()->where('published','=','1')->limit(6)->get();
             
-            $article_gallery = Galleries::where('article_id',strip_tags($indoor_id))->get();
+            $article_gallery = Gallery::where('article_id',strip_tags($indoor_id))->get();
 
-            $article_gallery = Galleries::where('article_id',strip_tags($indoor_id))->limit(8)->get();
-            $comments = Comments::where('article_id',strip_tags($indoor_id))->get();
+            $article_gallery = Gallery::where('article_id',strip_tags($indoor_id))->limit(8)->get();
+            $comments = Comment::where('article_id',strip_tags($indoor_id))->get();
 
             $data  = [
                 'title'=>$indoor->name,

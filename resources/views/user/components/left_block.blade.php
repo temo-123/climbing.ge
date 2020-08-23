@@ -68,16 +68,16 @@
 
                 @if((Auth::user()->hasRole('user'))||(Auth::user()->hasRole('admin')) || (Auth::user()->hasRole('manager')))
                 <li class="list-group-item text-muted" @if($page_name == 'Home') id="active" @endif>
-                    <a href="{{route('home')}}">My page </a>
+                    <a href="{{route('user_index')}}">My page </a>
                 </li>
                 <li class="list-group-item text-muted" @if($page_name == 'Products') id="active" @endif>
-                    <a href="{{route('products')}}">My products</a>
+                    <a href="#">My products</a>
                 </li>
                 <li class="list-group-item text-muted" @if($page_name == 'Favorite products') id="active" @endif>
-                    <a href="{{route('favorite')}}">My favorite products</a>
+                    <a href="#">My favorite products</a>
                 </li>
                 <li class="list-group-item text-muted" @if($page_name == 'Review & Comments') id="active" @endif>
-                    <a href="{{route('myReviewsAndComments')}}">My Review & Comments</a>
+                    <a href="#">My Review & Comments</a>
                 </li>
                 @endif
 
@@ -86,52 +86,52 @@
                 <li class="list-group-item text-muted"></li>
 
                 <li class="list-group-item text-muted" @if($page_name == 'Outdoor') id="active" @endif>
-                    <a href="{{route('article_table', array('article_category'=>'outdoor'))}}">Outdoor climbing</a>
+                    <a href="#">Outdoor climbing</a>
                 </li>
                 <li class="list-group-item text-muted" @if($page_name == 'Climbing Secrots And Routes') id="active" @endif>
-                    <a href="{{route('routes_and_sectors')}}">Route(Beta)</a>
+                    <a href="#"></a>
                 </li>
                 <li class="list-group-item text-muted" @if($page_name == 'Indoor') id="active" @endif>
-                    <a href="{{route('article_table', array('article_category'=>'indoor'))}}">Indoor climbing</a>
+                    <a href="#">Indoor climbing</a>
                 </li>
                 <li class="list-group-item text-muted" @if($page_name == 'Mount And Mount Route') id="active" @endif>
-                    <a href="{{route('Mountaineering')}}">Mountaineering</a>
+                    <a href="#"></a>
                 </li>
                 <li class="list-group-item text-muted" @if($page_name == 'Ice') id="active" @endif>
-                    <a href="{{route('article_table', array('article_category'=>'ice'))}}">Ice and mixed</a>
+                    <a href="#">Ice and mixed</a>
                 </li>
                 <li class="list-group-item text-muted" @if($page_name == 'News') id="active" @endif>
-                    <a href="{{route('article_table', array('article_category'=>'news'))}}">News</a>
+                    <a href="#">News</a>
                 </li>
                 <li class="list-group-item text-muted" @if($page_name == 'Other') id="active" @endif>
-                    <a href="{{route('article_table', array('article_category'=>'other'))}}">Other</a>
+                    <a href="#">Other</a>
                 </li>
                 <li class="list-group-item text-muted" @if($page_name == 'Securities') id="active" @endif>
-                    <a href="{{route('article_table', array('article_category'=>'security'))}}">Security</a>
+                    <a href="#">Security</a>
                 </li>
                 <li class="list-group-item text-muted" @if($page_name == 'Partners') id="active" @endif>
-                    <a href="{{route('article_table', array('article_category'=>'partners'))}}">Partners</a>
+                    <a href="#">Partners</a>
                 </li>
                 <li class="list-group-item text-muted" @if($page_name == 'Events') id="active" @endif>
-                    <a href="{{route('article_table', array('article_category'=>'events'))}}">Events</a>
+                    <a href="#">Events</a>
                 </li>
 
                 <li class="list-group-item text-muted"></li>
 
                 <li class="list-group-item text-muted" @if($page_name == 'Gallery') id="active" @endif>
-                    <a href="{{route('gallery_table', array('gallery_category'=>'index_gallery'))}}">Index Gallery</a>
+                    <a href="#">Index Gallery</a>
                 </li>
                 <li class="list-group-item text-muted" @if($page_name == 'Article Gallery') id="active" @endif>
-                    <a href="{{route('gallery_table', array('gallery_category'=>'article_gallery'))}}">Article Gallery</a>
+                    <a href="#">Article Gallery</a>
                 </li>
                 <li class="list-group-item text-muted" @if($page_name == 'Head Slider') id="active" @endif>
-                    <a href="{{route('gallery_table', array('gallery_category'=>'index_header'))}}">Head slider</a>
+                    <a href="#">Head slider</a>
                 </li>
 
                 <li class="list-group-item text-muted"></li>
 
                 <li class="list-group-item text-muted" @if($page_name == 'About') id="active" @endif>
-                    <a href="{{route('about')}}">About us</a>
+                    <a href="#">About us</a>
                 </li>
                 @endif
 
@@ -143,7 +143,7 @@
                     <a href="#">Coment</a>
                 </li>
                 <li class="list-group-item text-muted" @if($page_name == 'Users') id="active" @endif>
-                    <a href="{{route('users')}}">Users</a>
+                    <a href="#">Users</a>
                 </li>
                 <li class="list-group-item text-muted" @if($page_name == 'Comments') id="active" @endif>
                     <a href="#">Other</a>
@@ -153,7 +153,7 @@
                 <li class="list-group-item text-muted"></li>
 
                 <li class="list-group-item text-muted" @if($page_name == 'Options') id="active" @endif>
-                    <a href="{{route('options')}}">Options</a>
+                    <a href="#">Options</a>
                 </li>
 
                 <li class="list-group-item text-muted">
