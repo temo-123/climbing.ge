@@ -23,8 +23,53 @@
     <link rel="stylesheet" href="{{ asset('assets/css/my_css/diogram.css') }}"><!--fot news block-->
 </head>
 <body>
+    <style>
+        .top_menu {
+            background-color: #bb2727;
+        }
+        .preloader {
+            background: #bb2727;
+        }
+    </style>
     <div id="app">
-        @include('site.components.navbar')
+        <div class="header navbar-expand-lg navbar-right bg-light">
+            <div class="row navbar-fixed-top top_menu">
+                <div class="col-xs-12 col-sm-2 col-md-3 col-lg-3 ">
+                    <div class="site_title">
+                        <a href="{{ route('user_index') }}" class="site_title">
+                            404
+                        </a>
+                    </div>
+                </div>
+                <div class="col-xs-12 col-sm-10 col-md-9 col-lg-9">
+                    <nav class="navbar navbar-default  float-right float-top" role="navigation">
+                        <div class="container-fluid">
+                            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                                <i class="fa fa-angle-down"></i>
+                            </button>                  
+                            
+                            <button type="button" class="navbar-toggle margin_right" data-toggle="dropdown">
+                                <i class="fa fa-search" aria-hidden="true"></i>
+                            </button>   
+                            
+                            <button type="button" class="navbar-toggle">
+                                <li><a href="#"><i class="fa fa-user" style='color: #000;'></i></a></li>
+                            </button>                      
+                            
+                        </div>
+                        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                            <ul class="nav navbar-nav pull-right top_menu_buttons">
+                                
+                                <li class="nav navbar-nav pull-right top_menu_buttons">
+                                    <a href="{{ URL::previous() }}" >Go Back</a>
+                                </li>
+
+                            </ul>
+                        </div>
+                    </nav>
+                </div>
+            </div>
+        </div>
 
         <div class="container">
             <div class="row">
@@ -45,9 +90,9 @@
                             @endif
                         </div>
                         <div class="error-actions">
-                            <a href="{{ route('index') }}" class="btn btn-primary btn-lg">
+                            <a href="{{ URL::previous() }}" class="btn btn-primary btn-lg">
                                 <span class="glyphicon glyphicon-home"></span>
-                                Back to index page
+                                Go Beck
                             </a>
                         </div>
                         <h2>Climbing.ge</h2>
@@ -56,7 +101,48 @@
             </div>
         </div>
 
-        @include('site.components.footer')
+        <div class="footer__graphic"></div>
+
+        <div class="footer"> 
+            <div class="container"> 
+                <div class="row">
+
+                    <div class="col-md-4">
+                        <div class="f-about" style='color: #fff;'>
+                            
+                            <h4>About as</h4>
+                            
+                            {!!$site -> short_description!!}
+                            <a href="{{route('about_us_page')}}">More</a>
+                            
+                        </div>
+                    </div>
+
+                    <div class="col-md-4">
+                        <div class="f-links">
+                            <h4>Links</h4>
+                            <ul>
+                            <li> <a href="{{route('indoor_list')}}">Indoor climbing</a> </li>
+                            <li> <a href="{{route('outdoor_list')}}">Outdoor climbing</a> </li>
+                            <li> <a href="{{route('mount_list')}}">Mountainering</a> </li>
+                            <li> <a href="{{route('ice_list')}}">Ice and mix</a> </li>
+                            <li> <a href="{{route('other_list')}}">Other</a> </li>
+                            <li> <a href="{{route('about_us_page')}}">About as</a> </li>
+                            <li> <a href="{{route('login')}}">Login</a> </li>
+                            <li> <a href="{{url('sitemap')}}">Sitemap</a> </li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="col-md-4">
+                        <div class="flick">
+                            <h4>Share</h4>
+                        </div>
+                    </div>
+                    
+                </div>
+            </div>
+        </div>
     </div>
 </body>
 </html>

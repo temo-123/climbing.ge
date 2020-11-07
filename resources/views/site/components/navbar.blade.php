@@ -2,7 +2,7 @@
     <div class="row navbar-fixed-top top_menu">
         <div class="col-xs-12 col-sm-2 col-md-3 col-lg-3 ">
             <div class="site_title">
-                <a href="{{ route('index') }}" class="site_title">{{ config('app.name') }}</a>
+                <a href="{{ route('index') }}" class="site_title">@lang('site.site name')</a>
             </div>
         </div>
         <div class="col-xs-12 col-sm-10 col-md-9 col-lg-9">
@@ -17,15 +17,15 @@
                     </button>   
                     
                     <button type="button" class="navbar-toggle">
-                        <li><a href="#"><i class="fa fa-user" style='color: #000;'></i></a></li>
+                        <li><a href="#"><i class="fa fa-user" ></i></a></li>
                     </button>                      
                     
-                    <ul class="dropdown-menu shadows" role="menu" style="width: 100%;">
+                    <ul class="dropdown-menu shadows" role="menu" >
                         <li>
                             <form action="eeeee" method="POST" role="search" class="navbar-form">
                                 {{csrf_field ()}} 
-                                <div class="form-group" style="display:inline;">
-                                <div class="input-group" style="display:table;">
+                                <div class="form-group" >
+                                <div class="input-group" >
                                     <input class="form-control" name="q" placeholder="Search Here" autocomplete="off" autofocus="autofocus" type="text">
                                     
                                     <span class="input-group-btn"> 
@@ -43,23 +43,23 @@
                     <ul class="nav navbar-nav pull-right top_menu_buttons">
                         <li class="dropdown">
                             <a href="#" @if(isset($indoor_climbing) || isset($outdoor_climbing)) id='actyve' @endif data-toggle="dropdown">
-                                Climbing
+                            @lang('site.climbing')
                             </a>
 
                             <ul class="dropdown-menu shadows" role="menu">
-                                <li><a style="font-size: 2em;" href="{{route('indoor_list')}}">Indoor Climbing</a></li>
-                                <li><a style="font-size: 2em;" href="{{route('outdoor_list')}}">Outdoor Climbing</a></li>
+                                <li><a style="font-size: 2em;" href="{{route('indoor_list')}}">@lang('site.indoor climbing')</a></li>
+                                <li><a style="font-size: 2em;" href="{{route('outdoor_list')}}">@lang('site.outdoor climbing')</a></li>
                             </ul>
                         </li>
 
-                        <li><a @if(isset($mount)) id='actyve' @endif href="{{route('mount_list')}}">Mountaineering</a></li>
-                        <li><a @if(isset($ice)) id='actyve' @endif href="{{route('ice_list')}}">Ice & Mixed</a></li>
-                        <li><a @if(isset($other)) id='actyve' @endif href="{{route('other_list')}}">Other</a></li>
-                        <li><a @if(isset($pages)) id='actyve' @endif href="{{route('about_us_page')}}">About Us</a></li>
+                        <li><a @if(isset($mount)) id='actyve' @endif href="{{route('mount_list')}}">@lang('site.mountaineering')</a></li>
+                        <li><a @if(isset($ice)) id='actyve' @endif href="{{route('ice_list')}}">@lang('site.ice climbing')</a></li>
+                        <li><a @if(isset($other)) id='actyve' @endif href="{{route('other_list')}}">@lang('site.other')</a></li>
+                        <li><a @if(isset($pages)) id='actyve' @endif href="{{route('about_us_page')}}">@lang('site.about us')</a></li>
 
                         @if (Auth::guest())
                         <li>
-                            <a href="{{route('user_index')}}">Login</a>
+                            <a href="{{route('user_index')}}">@lang('site.login')</a>
                         </li>
                         @endif
 
@@ -87,6 +87,18 @@
                             </ul>
                         </li>
 
+                        <li class="dropdown">
+                            <a href="#" data-toggle="dropdown">
+                            <i class="fa fa-language" aria-hidden="true"></i>
+                            </a>
+
+                            <ul class="dropdown-menu shadows" role="menu">
+                                <li><a style="font-size: 2em;" href="#"><img src="{{ asset('images/site_img/leng/en.png')}}" alt=""></a></li>
+                                <li><a style="font-size: 2em;" href="#"><img src="{{ asset('images/site_img/leng/ka.webp')}}" alt=""></a></li>
+                                <li><a style="font-size: 2em;" href="#"><img src="{{ asset('images/site_img/leng/ru.png')}}" alt=""></a></li>
+                            </ul>
+                        </li>
+                        
                         @if (Route::has('login'))
                         @auth
                         <li>

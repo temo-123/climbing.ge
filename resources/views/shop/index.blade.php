@@ -58,7 +58,7 @@
     <div class="col-sm-9">
         <section class="inner">
             <section class="portfolio" id="portfolio">
-                <div class="container-fluid">
+                <!-- <div class="container-fluid"> -->
 
                     <div class="layout">
                         <section class="inner">
@@ -108,7 +108,7 @@
                                                     <span class="pnl-ic">
                                                         @if(Auth::guest())
                                                         <a href="{{route('favorite_product', array('product_id'=>$product->id, 'actions'=>'add'))}}">
-                                                            <i class="fa fa-heart-o" aria-hidden="true" style="font-size: 250%; margin-right: 0.5em; margin-top: 0.8em;"></i>
+                                                            <i class="fa fa-heart-o" aria-hidden="true" style="font-size: 120%; margin-right: 0.5em; margin-top: 0.8em;"></i>
                                                         </a>
                                                         @else
                                                             @foreach($favorite_array as $favorite)
@@ -145,7 +145,7 @@
                         </section>
                     </div>
 
-                </div>
+                <!-- </div> -->
             </section>
         </section>
     </div>

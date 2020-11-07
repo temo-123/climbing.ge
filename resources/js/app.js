@@ -4,6 +4,8 @@
  * building robust, powerful web applications using Vue and Laravel.
  */
 
+import Vue from 'vue';
+
 require('./bootstrap');
 
 window.Vue = require('vue');
@@ -20,9 +22,16 @@ window.Vue = require('vue');
 // files.keys().map(key => Vue.component(key.split('/').pop().split('.')[0], files(key).default))
 
 Vue.component('comment-form-component',         require('./components/site/CommentFormComponent.vue').default);
-Vue.component('comment-component',         require('./components/site/CommentsComponent.vue').default);
-Vue.component('message-component',         require('./components/site/MessageComponent.vue').default);
-Vue.component('search-component',         require('./components/site/SearchComponent.vue').default);
+Vue.component('comment-component',              require('./components/site/CommentsComponent.vue').default);
+Vue.component('message-component',              require('./components/site/MessageComponent.vue').default);
+Vue.component('search-component',               require('./components/site/SearchComponent.vue').default);
+// Vue.component('trchtips_component',             require('./components/site/TrchtipsComponent.vue').default);
+
+Vue.component('tabs_component',             require('./components/user/TabsComponent.vue').default);
+Vue.component('comments_list_component',             require('./components/user/CommentsListComponent.vue').default);
+Vue.component('article_form_component',             require('./components/user/ArticleFormComponent.vue').default);
+Vue.component('locale-article-form-component',             require('./components/user/LocaleArticleFormComponent.vue').default);
+
 /**
  * Next, we will create a fresh Vue application instance and attach it to
  * the page. Then, you may begin adding components to this application

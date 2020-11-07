@@ -180,6 +180,7 @@
         @if(isset($other_article))
         @include('site.components.other_article')
         @endif
+        @endif
     </div>
 
 @endsection

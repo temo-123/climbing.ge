@@ -11965,88 +11965,6 @@ a.socialIcon:hover,
 
 /*
 *
-*   about style
-*
-*/
-
-.paddingTB60 {
-  padding: 60px 0px 60px 0px;
-}
-
-.about-title h1 {
-  color: #535353;
-  font-size: 45px;
-  font-weight: 600;
-}
-
-.about-title span {
-  color: #AF0808;
-  font-size: 45px;
-  font-weight: 700;
-}
-
-.about-title h3 {
-  color: #535353;
-  font-size: 23px;
-  margin-bottom: 24px;
-}
-
-.about-title p {
-  color: #7a7a7a;
-  line-height: 1.8;
-  margin: 0 0 15px;
-}
-
-.about-paddingB {
-  padding-bottom: 12px;
-}
-
-.about-img {
-  padding-left: 57px;
-}
-
-/* Social Icons */
-
-.about-icons {
-  margin: 48px 0px 48px 0px;
-}
-
-.about-icons i {
-  margin-right: 10px;
-  padding: 0px;
-  font-size: 35px;
-  color: #323232;
-  box-shadow: 0 0 3px rgba(0, 0, 0, 0.2);
-}
-
-.about-icons li {
-  margin: 0px;
-  padding: 0;
-  display: inline-block;
-}
-
-#social-fb:hover {
-  color: #3B5998;
-  transition: all 0.001s;
-}
-
-#social-tw:hover {
-  color: #4099FF;
-  transition: all 0.001s;
-}
-
-#social-gp:hover {
-  color: #d34836;
-  transition: all 0.001s;
-}
-
-#social-em:hover {
-  color: #f39c12;
-  transition: all 0.001s;
-}
-
-/*
-*
 *   Shop index page
 *
 */
@@ -12092,6 +12010,7 @@ a.socialIcon:hover,
   /*margin: 0 0 0 -0.5em; */
   list-style-type: none;
   transition: all 0.3s;
+  padding: 0;
 }
 
 .grid:before,
@@ -12388,6 +12307,12 @@ a.socialIcon:hover,
 *
 */
 
+.sun_svg {
+  height: 1%;
+  float: right;
+  margin: 0.5%;
+}
+
 .page_title,
 .block_title {
   text-align: center;
@@ -12395,11 +12320,99 @@ a.socialIcon:hover,
   font-size: 175%;
 }
 
+.card {
+  margin-bottom: 1rem;
+}
+
+.menu_active {
+  background-color: #ccc;
+}
+
+.add_buttom a {
+  margin-bottom: 2%;
+}
+
 /* 
 *
 *   about us style
 *
 */
+
+.paddingTB60 {
+  padding: 60px 0px 60px 0px;
+}
+
+.about-title h1 {
+  color: #535353;
+  font-size: 45px;
+  font-weight: 600;
+}
+
+.about-title span {
+  color: #AF0808;
+  font-size: 45px;
+  font-weight: 700;
+}
+
+.about-title h3 {
+  color: #535353;
+  font-size: 23px;
+  margin-bottom: 24px;
+}
+
+.about-title p {
+  color: #7a7a7a;
+  line-height: 1.8;
+  margin: 0 0 15px;
+}
+
+.about-paddingB {
+  padding-bottom: 12px;
+}
+
+.about-img {
+  padding-left: 57px;
+}
+
+/* Social Icons */
+
+.about-icons {
+  margin: 48px 0px 48px 0px;
+}
+
+.about-icons i {
+  margin-right: 10px;
+  padding: 0px;
+  font-size: 35px;
+  color: #323232;
+  box-shadow: 0 0 3px rgba(0, 0, 0, 0.2);
+}
+
+.about-icons li {
+  margin: 0px;
+  padding: 0;
+  display: inline-block;
+}
+
+#social-fb:hover {
+  color: #3B5998;
+  transition: all 0.001s;
+}
+
+#social-tw:hover {
+  color: #4099FF;
+  transition: all 0.001s;
+}
+
+#social-gp:hover {
+  color: #d34836;
+  transition: all 0.001s;
+}
+
+#social-em:hover {
+  color: #f39c12;
+  transition: all 0.001s;
+}
 
 .header-title {
   text-align: center;
@@ -13755,6 +13768,66 @@ a.socialIcon:hover,
   overflow: hidden;
 }
 
+/*
+*
+*   Admin tabs Style
+*
+*/
+
+.tabs {
+  display: flex;
+  flex-wrap: wrap;
+  /* make sure it wraps */
+}
+
+.tabs label {
+  /* .tabs  { */
+  order: 1;
+  /* Put the labels first */
+  display: block;
+  padding: 1rem 2rem;
+  margin-right: 0.2rem;
+  cursor: pointer;
+  background: #ccced0;
+  font-weight: bold;
+  transition: background ease 0.2s;
+}
+
+.tabs .tab {
+  order: 99;
+  /* Put the tabs last */
+  flex-grow: 1;
+  width: 100%;
+  display: none;
+  padding: 1rem;
+  background: #fff;
+}
+
+.tabs input[type=radio] {
+  display: none;
+}
+
+.tabs input[type=radio]:checked + label {
+  background: #fff;
+}
+
+.tabs input[type=radio]:checked + label + .tab {
+  display: block;
+}
+
+@media (max-width: 45em) {
+  .tabs .tab,
+  .tabs label {
+    order: initial;
+  }
+
+  .tabs label {
+    width: 100%;
+    margin-right: 0;
+    margin-top: 0.2rem;
+  }
+}
+
 .container {
   max-width: 1200px;
 }
@@ -13997,7 +14070,6 @@ input[type=submit],
 input[type=button],
 button.btn,
 .btn-primary {
-  background-color: #279fbb;
   border: medium none;
   border-radius: 3px;
   box-shadow: 0 -2px 0 0 rgba(0, 0, 0, 0.3) inset;
@@ -18696,12 +18768,12 @@ my other style style
   padding: 10px;
 }
 
-.index_gallery_button {
+.filter_button_block {
   text-align: center;
 }
 
 @media (max-width: 720px) {
-  .index_gallery_button {
+  .filter_button_block {
     margin-top: 5%;
   }
 }

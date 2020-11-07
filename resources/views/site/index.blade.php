@@ -25,7 +25,7 @@
 
     <!-- Wrapper for slides -->
     <div class="carousel-inner" role="listbox">
-        @forelse($head_slider as $k=>$head)
+        @forelse($head_slider as $head)
         <div class="item">
 
             <!-- <style>.r{becground-img:g;}</style> -->
@@ -68,37 +68,37 @@
         @foreach($big_news as $big_new)
         <section class="m-component-stack mm-component-stack--is-stacked">
             <div class="m-image-hero mm-image-hero--ssr">
-                <phoenix-super-link href="/skills/the-top-5-rules-for-effective-goal-setting/">
+                <div href="/skills/the-top-5-rules-for-effective-goal-setting/">
                     <div class="m-image-hero--media">
-                        <phoenix-picture>
-                            <picture class="is-loaded">
-                                <source type="image/webp" srcset="{{ asset('images/news_img/'.$big_new->image) }}">
-                                <source srcset="{{ asset('images/news_img/'.$big_new->image) }}">
-                                <img class="m-image-hero--image" alt="{{$big_new -> title}}" decoding="async" src="{{ asset('images/news_img/'.$big_new->image) }}" sizes="(min-width: 1023px) 940px, 100vw">
-                            </picture>
+                        <div>
+                            <div class="is-loaded">
+                                <source type="image/webp" srcset="{{ asset('images/news_img/'.$big_new[0][0]->image) }}">
+                                <source srcset="{{ asset('images/news_img/'.$big_new[0][0]->image) }}">
+                                <img class="m-image-hero--image" alt="{{$big_new[0][0] -> title}}" decoding="async" src="{{ asset('images/news_img/'.$big_new[0][0]->image) }}" sizes="(min-width: 1023px) 940px, 100vw">
+                            </div>
                             <div class="m-image-hero--aspect-ratio-wrapper">
                                 <div class="m-image-hero--aspect-ratio-pusher"></div>
                             </div>
-                        </phoenix-picture>
+                        </div>
                         <div class="m-image-hero--overlay"></div>
                         <div class="m-image-hero--container">
                             <div class="m-image-hero--label mm-image-hero--no-background">
                                 <div class="m-image-hero--metadata-label">
-                                    <a href="{{ route('news_page', array('title'=>$big_new->url_title)) }}" onclick="return phoenixTrackClickEvent(this, event);" phx-track-id="Label">News</a>
+                                    <a href="{{ route('news_page', array('title'=>$big_new['url_title'])) }}" onclick="return phoenixTrackClickEvent(this, event);" phx-track-id="Label">News</a>
                                 </div>
                             </div>
                             <div class="m-image-hero--text-panel">
-                                <a href="{{ route('news_page', array('title'=>$big_new->url_title)) }}" onclick="return phoenixTrackClickEvent(this, event);" phx-track-id="Title">
-                                    <phoenix-ellipsis>
+                                <a href="{{ route('news_page', array('title'=>$big_new['url_title'])) }}" onclick="return phoenixTrackClickEvent(this, event);" phx-track-id="Title">
+                                    <div>
                                         <h2 class="m-ellipsis m-image-hero--header-text mm-image-hero--no-background">
-                                            <span class="m-ellipsis--text">{{$big_new -> title}}</span>
+                                            <span class="m-ellipsis--text">{{$big_new[0][0] -> title}}</span>
                                         </h2>
-                                    </phoenix-ellipsis>
+                                    </div>
                                 </a>
                             </div>
                         </div>
                     </div>
-                </phoenix-super-link>
+                </div>
             </div>
         </section>
         @endforeach
@@ -106,48 +106,48 @@
 
 
         <section class="m-collection-strip mm-collection-strip--is-stretched m-component-stack mm-component-stack--is-stacked mm-component-stack--has-header">
-            <phoenix-carousel class="m-collection-strip--carousel">
-                <phoenix-carousel-strip class="m-collection-strip--carousel-wrapper">
+            <div class="m-collection-strip--carousel">
+                <div class="m-collection-strip--carousel-wrapper">
                     <div class="m-collection-strip--carousel-container">
                         <div class="m-collection-strip--carousel-content">
 
 
-                            @foreach($news as $k=>$new)
-                            <phoenix-carousel-slide class="m-collection-strip--tile" slide-id="ci0258d58230002521" data-pos="183">
-                                <phoenix-super-link href="/competition/russia-banned-from-2020-tokyo-olympics/">
+                            @foreach($news as $new)
+                            <div class="m-collection-strip--tile" slide-id="ci0258d58230002521" data-pos="183">
+                                <div href="/competition/russia-banned-from-2020-tokyo-olympics/">
                                     <article class="m-card mm-card--landscape-image mm-card--type-standard mm-card--density-strip" role="article">
                                         <div class="m-card--media">
-                                            <a class="m-card--image-link" onclick="return phoenixTrackClickEvent(this, event);" phx-track-id="Image" href="{{ route('news_page', array('title'=>$new->url_title)) }}">
-                                                <phoenix-picture>
+                                            <a class="m-card--image-link" onclick="return phoenixTrackClickEvent(this, event);" phx-track-id="Image" href="{{ route('news_page', array('title'=>$new['url_title'])) }}">
+                                                <div>
                                                     <picture class="is-loaded">
-                                                        <source type="image/webp" sizes="320px" srcset="{{ asset('images/news_img/'.$new -> image) }}">
-                                                        <source sizes="320px" srcset="{{ asset('images/news_img/'.$new -> image) }}">
-                                                        <img class="m-card--image-element" decoding="async" nopin="true" sizes="320px" src="{{ asset('images/news_img/'.$new -> image) }}" srcset="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" 
-                                                        alt="{{ route('news_page', array('title'=>$new->url_title)) }}">
+                                                        <source type="image/webp" sizes="320px" srcset="{{ asset('images/news_img/'.$new[0][0] -> image) }}">
+                                                        <source sizes="320px" srcset="{{ asset('images/news_img/'.$new[0][0] -> image) }}">
+                                                        <img class="m-card--image-element" decoding="async" nopin="true" sizes="320px" src="{{ asset('images/news_img/'.$new[0][0] -> image) }}" srcset="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" 
+                                                        alt="{{ route('news_page', array('title'=>$new['url_title'])) }}">
                                                     </picture>
                                                     <div class="m-card--image-aspect-ratio-pusher"></div>
-                                                </phoenix-picture>
+                                                </div>
                                             </a>
                                         </div>
                                         <div class="m-card--content">
-                                            <phoenix-ellipsis class="m-ellipsis m-card--header">
-                                                <a onclick="return phoenixTrackClickEvent(this, event);" phx-track-id="Title" href="{{ route('news_page', array('title'=>$new->url_title)) }}">
-                                                    <h3 class="m-ellipsis--text m-card--header-text" role="heading" aria-level="2">{{$new -> title}}</h3>
+                                            <div class="m-ellipsis m-card--header">
+                                                <a onclick="return phoenixTrackClickEvent(this, event);" phx-track-id="Title" href="{{ route('news_page', array('title'=>$new['url_title'])) }}">
+                                                    <h3 class="m-ellipsis--text m-card--header-text" role="heading" aria-level="2">{{$new[0][0] -> title}}</h3>
                                                 </a>
-                                            </phoenix-ellipsis>
-                                            <phoenix-ellipsis class="m-ellipsis">
-                                                <p class="m-card--body m-ellipsis--text">{{$new -> short_description}}</p>
-                                            </phoenix-ellipsis>
+                                            </div>
+                                            <div class="m-ellipsis">
+                                                <p class="m-card--body m-ellipsis--text">{{$new[0][0] -> short_description}}</p>
+                                            </div>
                                         </div>
                                     </article>
-                                </phoenix-super-link>
-                            </phoenix-carousel-slide>    
+                                </div>
+                            </div>    
                             @endforeach                 
                         </div>
                     </div>
 
-                </phoenix-carousel-strip>
-            </phoenix-carousel>
+                </div>
+            </div>
         </section>
 
     </div>
@@ -281,10 +281,11 @@
 
                                 <div class="row">
                                     <div class="container">
-                                        <div class="index_gallery_button" >
+                                        <div class="filter_button_block" >
                                             <button class="filter-button" data-filter="all">All</button>
                                         </div>
-                                        <div class="index_gallery_button" >@if(isset($tags))
+                                        <div class="filter_button_block" >
+                                        @if(isset($tags))
                                         @foreach($tags as $k=>$tag)
 
                                         <button class="filter-button" data-filter="{!! $tag->filter !!}">{!! $tag->filter !!}</button>
@@ -423,19 +424,8 @@
                     <h6>{{$site -> security_description}}</h6>
                     @endif
 
-                    <div id="carousel3d">
-                        <carousel-3d :perspective="0" :space="200" :display="5" :controls-visible="true" :controls-prev-html="'❬'" :controls-next-html="'❭'" :controls-width="30" :controls-height="60" :clickable="true" :autoplay="true" :autoplay-timeout="5000">
-                            @foreach($securities as $security)
-                            <slide :index="{{$security->id}}">
-                                <a href="{{ route('security_page', array('title'=>$security->url_title)) }}">
-                                    <img src="{{ asset('images/security_img/'.$security->image) }}" alt="{!! $security -> title !!}">
-                                </a>
-                                <a href="{{ route('security_page', array('title'=>$security->url_title)) }}">{{$security->title}}</a>
-                            </slide>
-                            @endforeach
-                        </carousel-3d>
-                    </div>
-
+                    <!-- <trchtips_component :securities="{{--$securities--}}"></trchtips_component> -->
+                    
                 </div>
             </div>
             @endif
@@ -452,20 +442,20 @@
                     <h6>{{$site -> other_activity_description}}</h6>
                     @endif
 
-                    @forelse($index_others as $k=>$others)
+                    @forelse($index_others as $others)
                     <div class="food col-md-4">
                         <div class="portfolio-img view view-first">
 
-                            <img src="{{ asset('images/other_img/'.$others -> image )}}"class="img-responsive" alt='{{ $others -> title }}' />
+                            <img src="{{ asset('images/other_img/'.$others[0][0] -> image )}}"class="img-responsive" alt='{{ $others[0][0] -> title }}' />
 
                             <div class="mask">
-                                <a href="{{ route('other_page', array('title'=>$others->url_title)) }}" class="info"><i class="fa fa-arrow-right"></i></a>
+                                <a href="{{ route('other_page', array('title'=>$others['url_title'])) }}" class="info"><i class="fa fa-arrow-right"></i></a>
                             </div>
                             
                             <div class="isotope-item-dtls">
-                                <h3>{{ $others -> title }}</h3>
+                                <h3>{{ $others[0][0] -> title }}</h3>
                                 <div class="article_size">
-                                    <p>{!! $others -> short_description !!}</p>
+                                    <p>{!! $others[0][0] -> short_description !!}</p>
                                 </div>
                             </div><!--/isotope-item-dtls-->
                         </div>
@@ -493,33 +483,33 @@
                         <div class="container">
                             <div class="row event-list">
                                 <!-- @--if (isset($events) && is_object($events) ) -->
-                                @foreach($events as $k=>$event)
+                                @foreach($events as $event)
                                 <div class="col-sm-4 eav">
                                     <!-- <div class="panel panel-primary event-primary"> -->
                                         <div class="panel-primary event-primary">
                                             <div class="panel-heading">
                                                 <h2>
-                                                    <a href="{{ route('events_page', array('title'=>$event->url_title)) }}">
-                                                        {{ $event -> title }}
+                                                    <a href="{{ route('events_page', array('title'=>$event['url_title'])) }}">
+                                                        {{ $event[0][0] -> title }}
                                                     </a>
                                                 </h2>
                                             </div>
                                             <div class="panel-body nopadding">
-                                                <img src="{{ asset('images/events_img/'.$event -> image )}}"class="img-responsive" alt='{{ $event -> title }}' />
+                                                <img src="{{ asset('images/events_img/'.$event[0][0] -> image )}}"class="img-responsive" alt='{{ $event[0][0] -> title }}' />
                                                 <div class="row nopadding">
                                                     <div class="col-sm-6 col-xs-6 nopadding">
                                                         <time class="end blue_green_2">
                                                             Start 
-                                                            <span class="day">{{ $event -> start_data_day }}</span>
-                                                            <span class="month">{{ $event -> start_data_month }}</span>
+                                                            <span class="day">{{ $event[0][0] -> start_data_day }}</span>
+                                                            <span class="month">{{ $event[0][0] -> start_data_month }}</span>
                                                             <!-- <span class="year">2016</span> -->
                                                         </time>
                                                     </div>
                                                     <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 nopadding">
                                                         <time class="end blue_green_2">
                                                             End 
-                                                            <span class="day">{{ $event -> and_data_day }}</span>
-                                                            <span class ="month">{{ $event -> and_data_month }}</span>
+                                                            <span class="day">{{ $event[0][0] -> and_data_day }}</span>
+                                                            <span class ="month">{{ $event[0][0] -> and_data_month }}</span>
                                                             <!-- <span class="year">2016</span> -->
                                                         </time>
                                                     </div>
@@ -528,10 +518,10 @@
                                             <div class="panel-footer panel-primary">
 
                                                 <div class="event_size">
-                                                    {!! $event -> short_description !!}
+                                                    {!! $event[0][0] -> short_description !!}
                                                 </div>
                                                 
-                                                <a href="{{ route('events_page', array('title'=>$event->url_title)) }}" class="btn btn-success">
+                                                <a href="{{ route('events_page', array('title'=>$event['url_title'])) }}" class="btn btn-success">
                                                     Read more...
                                                 </a>
 

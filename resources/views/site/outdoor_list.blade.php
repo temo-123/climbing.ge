@@ -55,11 +55,11 @@
                 <hr>
                 @endif
 
-                @if (isset($article_list) && is_object($article_list) )
-                @forelse($article_list as $k=>$article)
+                @if (isset($article_list) )
+                @forelse($article_list as $article)
 
                 @if(isset($tags))
-                <div class="gallery_product filter {{ $article -> mount_id }}">
+                <div class="gallery_product filter {{ $article[0][0] -> mount_id }}">
                     @endif
 
                     <!--<div class="food col-md-4" style='horizontal-align: bottom;'>-->
@@ -68,7 +68,7 @@
 
                                 @if(isset($time_array))
                                 @foreach($time_array as $time)
-                                @if($time['id'] == $article -> id)
+                                @if($time['id'] == $article[0][0] -> id)
                                 @if($time['time'] == 1)
                                 <div class="discount-percent-badge discount-badge-fourty">NEW</div>
                                 @endif
@@ -76,15 +76,15 @@
                                 @endforeach
                                 @endif
 
-                                @if(isset($image_dir) && $article->image != null)
-                                <img src="{{asset('images/'.$image_dir.'/'.$article->image)}}" class="img-responsive">
+                                @if(isset($image_dir) && $article['image'] != null)
+                                <img src="{{asset('images/'.$image_dir.'/'.$article['image'])}}" class="img-responsive">
                                 @else
                                 <img src="https://via.placeholder.com/150x100" class="img-responsive">
                                 @endif
 
                                 @if(isset($articles_link))
                                 <div class="mask">
-                                    <a href="{{ route($articles_link, array('title'=>$article->url_title)) }}" class="info">
+                                    <a href="{{ route($articles_link, array('title'=>$article['url_title'])) }}" class="info">
                                         <i class="fa fa-arrow-right"></i>
                                     </a>
                                 </div>
@@ -97,13 +97,13 @@
                                 @endif
 
                                 <div class="isotope-item-dtls">
-                                    <h3>{{ $article -> title }}</h3>
+                                    <h3>{{ $article[0][0] -> title }}</h3>
                                     <div class="article_size">
-                                        {!! $article -> short_description !!}
+                                        {!! $article[0][0] -> short_description !!}
 
                                         @if(isset($route_quantity))
                                         @foreach($route_quantity as $route_num)
-                                        @if ($article -> title == $route_num[0])
+                                        @if ($article[0][0] -> title == $route_num[0])
                                         {{$route_num[1]}}
                                         {{$route_num[2]}}.
                                         {{$route_num[3]}}

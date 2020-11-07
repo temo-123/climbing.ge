@@ -7,28 +7,20 @@ use Illuminate\Http\Request;
 
 use App\Models\Article;
 use App\Models\Mount;
-use Carbon\Carbon;
+use App\Models\Comment;
+
+use App\Services\GetArticlesService;
 
 class MountController extends Controller
 {
     public function mount_list()
     {
     	if (view()->exists('site.mount_list')) {
-    		$mounts = Article::latest('id')->where('category', '=', 'mount_routes')->where('published', '=', 1)->get();
-    		$article_count = Article::latest('id')->where('category', '=', 'mount_routes')->where('published', '=', 1)->count();
+    		$global_mounts = Article::latest('id')->where('category', '=', 'mount_routes')->where('published', '=', 1)->get();
+            $article_count = Article::latest('id')->where('category', '=', 'mount_routes')->where('published', '=', 1)->count();
             
-            $time_array = array();
-            foreach ($mounts as $mount) {
-                if ($mount->created_at->lt(Carbon::now()->subDays(30))){
-                    $time = 0;
-                    array_push($time_array, ['id'=>$mount->id, 'name'=>$mount->title, 'time'=>$time]);
-                }
-                else {
-                    $time = 1;
-                    array_push($time_array, ['id'=>$mount->id, 'name'=>$mount->title, 'time'=>$time]);
-                }
-            }
-            // dd($time_array);
+            $mounts = GetArticlesService::get_locale_article($global_mounts);
+            $time_array = GetArticlesService::get_new_article_pin($mounts);
 
             $tags = Mount::distinct()->get();
             $tags_count = Mount::distinct()->count();
@@ -67,18 +59,23 @@ class MountController extends Controller
             abort(404);
         }
         if (view()->exists('site.mount_page')) {
-            $mount_routes = Article::where('category', '=', 'mount_routes')->where('url_title',strip_tags($name))->first();
+            $global_mount_routes = Article::where('category', '=', 'mount_routes')->where('url_title',strip_tags($name))->first();
 
-            $mount_route_id = $mount_routes->mount_id;
+            $mount_route_id = $global_mount_routes->mount_id;
+
+            $mount_routes = GetArticlesService::get_locale_article_in_page($global_mount_routes);
+
             $mounts_system = Mount::all();
         
             $mounts_system = Mount::where('id','=',$mount_route_id)->get();
-            $comments = \App\Comments::where('article_id',strip_tags($mount_route_id))->get();
-            $other_list = Article::inRandomOrder()->where('category', '=', 'mount_routes')->where('published','=','1')->limit(6)->get();
+            $comments = Comment::where('article_id',strip_tags($mount_route_id))->get();
+
+            $global_other_list = Article::inRandomOrder()->where('category', '=', 'mount_routes')->where('published','=','1')->limit(6)->get();
+            $other_list = GetArticlesService::get_locale_article($global_other_list);
 
             $data = [
-                'title'=>$mount_routes,
-                'article'=>$mount_routes,
+                'title'=>$mount_routes[0],
+                'article'=>$mount_routes[0],
                 'mounts_system'=>$mounts_system,
     			'mount'=>1,
 

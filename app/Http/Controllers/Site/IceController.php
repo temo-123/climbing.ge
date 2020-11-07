@@ -8,34 +8,27 @@ use Illuminate\Http\Request;
 use App\Models\Article;
 use App\Models\Comment;
 use App\Models\Gallery;
-use Carbon\Carbon;
+
+use App\Services\GetArticlesService;
 
 class IceController extends Controller
 {
     public function ice_list()
     {
-    	if (view()->exists('site.mount_list')) {
-    		$ices = Article::where('category', '=', 'ice')->where('published', '=', 1)->get();
-    		$article_count = Article::where('category', '=', 'ice')->where('published', '=', 1)->count();
+    	if (view()->exists('site.ice_list')) {
+            $global_ices = Article::where('category', '=', 'ice')->where('published', '=', 1)->get();
+            $article_count = Article::where('category', '=', 'ice')->where('published', '=', 1)->count(); 
 
-            // $time_array = array();
-            // foreach ($ices as $ice) {
-            //     if ($ice->created_at->lt(Carbon::now()->subDays(30))){
-            //         $time = 0;
-            //         array_push($time_array, ['id'=>$ice->id, 'name'=>$ice->title, 'time'=>$time]);
-            //     }
-            //     else {
-            //         $time = 1;
-            //         array_push($time_array, ['id'=>$ice->id, 'name'=>$ice->title, 'time'=>$time]);
-            //     }
-            // }
+            $ices = GetArticlesService::get_locale_article($global_ices);
 
+            $time_array = GetArticlesService::get_new_article_pin($ices);
+            
     		$data = [
     			'title'=>'Ice And Mixed',
     			'article_list'=>$ices,
     			'article_count'=>$article_count,
     			'ice'=>'',
-                // 'time_array' => $time_array,
+                'time_array' => $time_array,
     			
     			'num'=>1,
                 'articles_link' => 'ice_page',
@@ -46,7 +39,7 @@ class IceController extends Controller
                 'meta_description' => 'In Georgia are many outdoor climbing zone. You can see the full information about these regions and visit one of them.',
                 'meta_img' => 'ice.jpg'
     		];
-    		return view('site.mount_list',$data);
+    		return view('site.ice_list',$data);
     	}
     	abort(404);
     }
@@ -56,14 +49,22 @@ class IceController extends Controller
             abort(404);
         }
         if (view()->exists('site.ice_page')) {
-        
-            $ice = Article::where('category', '=', 'ice')->where('url_title',strip_tags($name))->first();
-            $ice_id = $ice->id;
+
+            // $locale = request()->segment(1, '');
+
+            $global_ice = Article::where('category', '=', 'ice')->where('url_title',strip_tags($name))->first();
+            $ice_id = $global_ice->id;
             
+            $locale_ice = GetArticlesService::get_locale_article_in_page($global_ice);
+
+            $ice = $locale_ice[0];
+
             $article_gallery = Gallery::where('article_id',strip_tags($ice_id))->limit(8)->get();
             $comments = Comment::where('article_id',strip_tags($ice_id))->get();
-            $other_list = Article::where('category', '=', 'ice')->inRandomOrder()->where('published','=','1')->limit(6)->get();
 
+            $global_other_list = Article::where('category', '=', 'ice')->inRandomOrder()->where('published','=','1')->limit(6)->get();
+            $other_list = GetArticlesService::get_locale_article($global_other_list);
+            
             $data  = [
                 'title'=>$ice,
                 'article'=>$ice,
@@ -80,7 +81,7 @@ class IceController extends Controller
                 
                 'other_article'=>$other_list,
                 'other_article_link'=>'ice_page',
-                'other_article_img'=>'assets/img/ice_img/',
+                'other_article_img'=>'images/ice_img/',
                 
                 'comments'=>$comments,
                 

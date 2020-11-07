@@ -8,27 +8,19 @@ use Illuminate\Http\Request;
 use App\Models\Article;
 use App\Models\Gallery;
 use App\Models\Comment;
-use Carbon\Carbon;
+
+use App\Services\GetArticlesService;
 
 class OtherActivityController extends Controller
 {
     public function other_list()
     {
-    	if (view()->exists('site.other_list')) {
-    		$others = Article::latest('id')->where('category', '=', 'other')->where('published','=','1')->get();
+    	if (view()->exists('site.ice_list')) {
+    		$global_others = Article::latest('id')->where('category', '=', 'other')->where('published','=','1')->get();
             $article_count = Article::latest('id')->where('category', '=', 'other')->where('published','=','1')->count();
 
-            $time_array = array();
-            // foreach ($others as $other) {
-            //     if ($other->created_at->lt(Carbon::now()->subDays(30))){
-            //         $time = 0;
-            //         array_push($time_array, ['id'=>$other->id, 'name'=>$other->title, 'time'=>$time]);
-            //     }
-            //     else {
-            //         $time = 1;
-            //         array_push($time_array, ['id'=>$other->id, 'name'=>$other->title, 'time'=>$time]);
-            //     }
-            // }
+            $others = GetArticlesService::get_locale_article($global_others);
+            $time_array = GetArticlesService::get_new_article_pin($others);
 
     		$data = [
     			'title'=>'Other Activity',
@@ -46,7 +38,7 @@ class OtherActivityController extends Controller
                 'meta_description' => 'In Georgia are many interesting activity. You can see the full information about these regions and visit one of them.',
                 'meta_img' => 'outdoor.jpg'
     		];
-    		return view('site.other_list',$data);
+    		return view('site.ice_list',$data);
     	}
     	abort(404);
     }
@@ -55,19 +47,21 @@ class OtherActivityController extends Controller
         if (!$name) {
             abort(404);
         }
-        if (view()->exists('site.other_page')) {
-            $other = Article::latest('id')->where('category', '=', 'other')->where('url_title',strip_tags($name))->first();
-            $other_id = $other->id;
+        if (view()->exists('site.ice_page')) {
+            $global_others = Article::latest('id')->where('category', '=', 'other')->where('url_title',strip_tags($name))->first();
+            $other_id = $global_others->id;
+
+            $other = GetArticlesService::get_locale_article_in_page($global_others);
             
             $article_gallery = Gallery::where('article_id',strip_tags($other_id))->limit(8)->get();
             $comments = Comment::where('article_id',strip_tags($other_id))->get();
-            $other_others_list = Article::latest('id')->where('category', '=', 'other')->latest('id')->limit(6)->inRandomOrder();
 
-            // $other_outdoors_list = Article::latest('id')->where('category', '=', 'other')->inRandomOrder()->where('published','=','1')->limit(6)->get();
-            
+            $global_other_list = Article::where('category', '=', 'other')->inRandomOrder()->where('published','=','1')->limit(6)->get();
+            $other_list = GetArticlesService::get_locale_article($global_other_list);
+
             $data  = [
-                'title'=>$other->title,
-                'article'=>$other,
+                'title'=>$other[0]->title,
+                'article'=>$other[0],
     			'other'=>1,
     			
                 'image_dir' => 'other_img',
@@ -81,12 +75,12 @@ class OtherActivityController extends Controller
                 
                 'article_edit_link'=>'otherEdit',
                 
-                'other_article'=>$other_others_list,
+                'other_article'=>$other_list,
                 'other_article_link'=>'other_page',
-                'other_article_img'=>'assets/img/other_img/',
+                'other_article_img'=>'images/other_img/',
             ];
 
-            return view('site.other_page',$data);
+            return view('site.ice_page',$data);
         }
         else{
             abort(404);

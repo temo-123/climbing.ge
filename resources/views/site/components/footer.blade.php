@@ -40,22 +40,22 @@
     </div>
 </div>
 
-<script type="text/javascript">
+<!-- <script type="text/javascript">
     // beck to top
-    $('body').append('<div id="backToTop" class="btn btn-lg"><span class="glyphicon glyphicon-chevron-up"></span></div>');
-        $(window).scroll(function () {
-            if ($(this).scrollTop() <= 200) {
-                $('#backToTop').fadeOut();
-            } else {
-                $('#backToTop').fadeIn();
-            }
-        }); 
-    $('#backToTop').click(function(){
-        $("html, body").animate({ scrollTop: 0 }, 600);
-        return false;
-    });
+    // $('body').append('<div id="backToTop" class="btn btn-lg"><span class="glyphicon glyphicon-chevron-up"></span></div>');
+    //     $(window).scroll(function () {
+    //         if ($(this).scrollTop() <= 200) {
+    //             $('#backToTop').fadeOut();
+    //         } else {
+    //             $('#backToTop').fadeIn();
+    //         }
+    //     }); 
+    // $('#backToTop').click(function(){
+    //     $("html, body").animate({ scrollTop: 0 }, 600);
+    //     return false;
+    // });
     // and back to top
-</script>    
+</script>     -->
     
 <!--analytics.google.com-->
 

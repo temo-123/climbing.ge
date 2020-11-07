@@ -14,19 +14,9 @@
     <!--About text-->
     <div class="aboutus-section">
         <div class="container">
-            
-<!--             @if (count($errors) > 0)
-              <div class="alert alert-danger">
-                <ul>
-                  @foreach ($errors->all() as $error)
-                    <li>{{ $error }}</li>
-                  @endforeach
-                </ul>
-              </div>
-            @endif -->
+        
                 
             @if (isset($site) && is_object($site) )
-				<!-- @foreach($pages as $k=>$page) -->
     						
                 <div class="row">
                     
@@ -34,7 +24,13 @@
                     <div class="col-md-6 col-sm-6 col-xs-12">
                         <div class="aboutus">
                             
-    						{!! $site -> text !!}
+                            @if($page_locale == "ru")
+                                {!! $site -> text_ru !!}
+                            @elseif($page_locale == "ka")
+                                {!! $site -> text_ka !!}
+                            @else
+    						    {!! $site -> text !!}
+                            @endif
     
         			        <div class="about-icons"> 
                                 <ul>            
@@ -145,103 +141,6 @@
                         
                 <div class="clearfix"></div>
                     
-                <!--Contacts-->
-                    <div class="row">
-                        <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
-                         <!--<div class="col-xs-12 col-sm-6 col-lg-4"> -->
-                        	<!--<div class="box col-lg-12 col-md-12 col-sm-12 col-xs-12">							-->
-                        	<div class="box">							
-                        		<div class="icon col-lg-12 col-md-12 col-sm-6 col-xs-12">
-                        			<div class="image"><i class="fa fa-user-circle" aria-hidden="true"></i></div>
-                        			<div class="info">
-                        				<h3 class="title">{{$site -> user_1}}</h3>
-                        				<p>
-                        					<i class="fa fa-envelope" aria-hidden="true"></i> {{$site -> mail_1}}
-                        					<br>
-                        					<br>
-                        					<i class="fa fa-mobile" aria-hidden="true"></i> {{$site -> num_1}}
-                        				</p>
-                        				<h3 class="title">
-                        					@if(($site->leng_1_1) != NULL)
-                        						{{$site -> leng_1_1}}
-                        		        	@endif
-                        				</h3>
-                        				<h3 class="title">
-                        					@if(($site->leng_1_2) != NULL)
-                        						{{$site -> leng_1_2}}
-                        		        	@endif
-                        				</h3>
-                        				<ul>      
-                        					@if(($site->fb_1) != NULL)
-                                        		<li class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
-                                                	<a target="_blank" href="{{$site -> fb_1}}">
-                                                		<i id="social-fb" class="fa fa-facebook-square fa-3x social"></i>
-                                                	</a> 
-                                                </li>
-                                            @endif 
-                        					@if(($site->inst_1) != NULL)
-                                        		<li class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
-                                                	<a target="_blank" href="{{$site -> inst_1}}">
-                                                		<i id="social-inst" class="fa fa-instagram fa-3x social"></i>
-                                                	</a> 
-                                                </li>
-                                            @endif
-                                    	</ul> 
-                        			</div>
-                        		</div>
-                        		<div class="space"></div>
-                        	</div> 
-                        </div>
-                        	
-                        <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
-                         <!--<div class="col-xs-12 col-sm-6 col-lg-4"> -->
-                        	<div class="box">							
-                        	<!--<div class="box">-->
-                        		<div class="icon col-lg-12 col-md-12 col-sm-6 col-xs-12">
-                        			<div class="image"><i class="fa fa-user-circle" aria-hidden="true"></i></div>
-                        			<div class="info">
-                        				<h3 class="title">{{$site -> user_2}}</h3>
-                        				<p>
-                        					<i class="fa fa-envelope " aria-hidden="true"></i> {{$site -> mail_2}}
-                        					<br>
-                        					<br>
-                        					<i class="fa fa-mobile" aria-hidden="true"></i> {{$site -> num_2}}
-                        				</p>
-                        				<h3 class="title">
-                        					@if(($site->leng_2_1) != NULL)
-                        						{{$site -> leng_2_1}}
-                        		        	@endif
-                        				</h3>
-                        				<h3 class="title">
-                        					@if(($site->leng_2_2) != NULL)
-                        						{{$site -> leng_2_2}}
-                        		        	@endif
-                        				</h3>
-                        				<ul>      
-                        					@if(($site->fb_2) != NULL)
-                                        		<li class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
-                                                	<a target="_blank" href="{{$site -> fb_2}}">
-                                                		<i id="social-fb" class="fa fa-facebook-square fa-3x social"></i>
-                                                	</a> 
-                                                </li>
-                                            @endif 
-                        					@if(($site->inst_2) != NULL)
-                                        		<li class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
-                                                	<a target="_blank" href="{{$site -> inst_2}}">
-                                                		<i id="social-inst" class="fa fa-instagram fa-3x social"></i>
-                                                	</a> 
-                                                </li>
-                                            @endif
-                        
-                                    	</ul>
-                        			</div>
-                        		</div>
-                        		<!-- <div class="space"></div> -->
-                        	</div> 
-                        </div>
-                    </div>
-                    
-                <!-- @endforeach -->
 			@endif    
 				
         </div>
@@ -266,7 +165,7 @@
     // });
 </script>
 
-@if($partners_count > 0 && isset($partners))	
+@if($partners_count > 0 )	
     <div class="services" id="partner">
         <div class="container h-recent-work events">
     
@@ -299,15 +198,15 @@
                   <div class="col-md-3 col-xs-6">
                     <div class="card">
                       <div class="card-img">
-                        <img src="{{ asset('images/partners_img/'.$partner->image) }}" alt="{{$partner -> title}}">
+                        <img src="{{ asset('images/partners_img/'.$partner['image']) }}" alt="{{$partner[0][0] -> title}}">
                         <!-- <img src="../assets/img/partners_img/{{ $partner->image }}"> -->
                       </div>
                       <div class="card-body">
-                        <h2>{{$partner -> title}}</h2>
+                        <h2>{{$partner[0][0] -> title}}</h2>
                         <div class="central_text">
-                        {!!$partner -> description!!}
+                        {!!$partner[0][0] -> description!!}
                         </div>
-                        <a type= "button" class="btn btn-block btn-sm" href="{{ route('partners_page', array('title'=>$partner->url_title)) }}">Read more</a>
+                        <a type= "button" class="btn btn-block btn-sm" href="{{ route('partners_page', array('title'=>$partner['url_title'])) }}">Read more</a>
                       </div>
                     </div>
                   </div>

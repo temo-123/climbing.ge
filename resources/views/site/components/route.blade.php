@@ -2,6 +2,11 @@
 @foreach($area_info as $area)
       <h3>Sector name <strong>{{$area['sectors']['name']}}</strong></h3>
 
+      <img class="sun_svg" src="{{asset('images/svg/sun.svg')}}" alt="">
+      <img class="sun_svg" src="{{asset('images/svg/sun 2.svg')}}" alt="">
+      <img class="sun_svg" src="{{asset('images/svg/sun 3.svg')}}" alt="">
+      <img class="sun_svg" src="{{asset('images/svg/sun 4.svg')}}" alt="">
+
       @if($area['sectors']['sector_img'] != NULL)
             @foreach($area['sectors']['sector_img'] as $sector_img)
                   {{$sector_img['name']}}

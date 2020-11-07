@@ -13,7 +13,7 @@ return [
     |
     */
 
-    'name' => env('APP_NAME', 'Laravel'),
+    'name' => env('APP_NAME', 'climbing.ge'),
 
     /*
     |--------------------------------------------------------------------------
@@ -52,7 +52,7 @@ return [
     |
     */
 
-    'url' => env('APP_URL', 'http://localhost'),
+    'url' => env('APP_URL', 'http://climbing.loc'),
 
     'asset_url' => env('ASSET_URL', null),
 
@@ -81,6 +81,8 @@ return [
     */
 
     'locale' => 'en',
+
+    "locales" => ["ru", "en", "ka"],
 
     /*
     |--------------------------------------------------------------------------
@@ -162,18 +164,37 @@ return [
         Illuminate\Validation\ValidationServiceProvider::class,
         Illuminate\View\ViewServiceProvider::class,
 
+
         /*
          * Package Service Providers...
          */
 
+
+
         /*
          * Application Service Providers...
          */
+
         App\Providers\AppServiceProvider::class,
         App\Providers\AuthServiceProvider::class,
         // App\Providers\BroadcastServiceProvider::class,
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
+
+
+        /*
+         * Laravel Socialite
+         */
+
+        Laravel\Socialite\SocialiteServiceProvider::class,
+        
+
+
+        /*
+         * Language localisation
+         */
+
+        App\Services\Localisation\LocalisationServiceProvider::class,
 
     ],
 
@@ -226,6 +247,25 @@ return [
         'URL' => Illuminate\Support\Facades\URL::class,
         'Validator' => Illuminate\Support\Facades\Validator::class,
         'View' => Illuminate\Support\Facades\View::class,
+
+        
+        /*
+         * Laravel Socialite
+         */
+
+        'Socialite' => Laravel\Socialite\Facades\Socialite::class,
+
+
+        /*
+         * Language localisation
+         */
+        'LocalisationService' => App\Services\Localisation\LocalisationService::class,
+
+
+        /*
+         * Get articles
+         */
+        'GetArticlesService' => App\Services\GetArticlesService::class,
 
     ],
 

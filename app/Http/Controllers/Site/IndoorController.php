@@ -10,13 +10,15 @@ use App\Models\Gallery;
 use App\Models\Comment;
 use App\Models\Star_review;
 
+use App\Services\GetArticlesService;
+
 class IndoorController extends Controller
 {
     public function indoor_list() {
     	if (view()->exists('site.indoor_list')) {
-    		$indoors = Article::latest('id')->where('category', '=', 'indoor')->where('published', '=', 1)->get();
+    		$global_indoors = Article::latest('id')->where('category', '=', 'indoor')->where('published', '=', 1)->get();
+            $indoors = GetArticlesService::get_locale_article($global_indoors);
             $article_count = Article::latest('id')->where('category', '=', 'indoor')->where('published', '=', 1)->count();
-
 
             $users_review = Star_review::where('category', '=', 'article_review')->where('review_value', '=', '2')->get();
             $users_review_count = Star_review::where('category', '=', 'article_review')->where('review_value', '=', '2')->count();
@@ -109,19 +111,22 @@ class IndoorController extends Controller
             abort(404);
         }
         if (view()->exists('site.indoor_page')) {
-            $indoor = Article::latest('id')->where('category', '=', 'indoor')->where('url_title',strip_tags($name))->first();
-            $indoor_id = $indoor->id;
+            $global_indoor = Article::latest('id')->where('category', '=', 'indoor')->where('url_title',strip_tags($name))->first();
 
-            $other_list = Article::latest('id')->where('category', '=', 'indoor')->inRandomOrder()->where('published','=','1')->limit(6)->get();
+            $indoor_id = $global_indoor->id;
+
+            $indoor = GetArticlesService::get_locale_article_in_page($global_indoor);
+
+            $global_other_list = Article::latest('id')->where('category', '=', 'indoor')->inRandomOrder()->where('published','=','1')->limit(6)->get();
+            $other_list = GetArticlesService::get_locale_article($global_other_list);
             
             $article_gallery = Gallery::where('article_id',strip_tags($indoor_id))->get();
 
             $article_gallery = Gallery::where('article_id',strip_tags($indoor_id))->limit(8)->get();
             $comments = Comment::where('article_id',strip_tags($indoor_id))->get();
-
             $data  = [
-                'title'=>$indoor->name,
-                'article'=>$indoor,
+                'title'=>$indoor[0]->title,
+                'article'=>$indoor[0],
                 'climbing'=>1,
                 'articles_gallery'=>$article_gallery,
                 'slider_link'=>'../../assets/img/indoor_img/slider_img/',
@@ -136,7 +141,7 @@ class IndoorController extends Controller
 
                 'other_article'=>$other_list,
                 'other_article_link'=>'indoor_page',
-                'other_article_img'=>'assets/img/indoor_img/',
+                'other_article_img'=>'images/indoor_img/',
                 
                 'comments'=>$comments,
                 'star_rewiev'=>0,

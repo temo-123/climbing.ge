@@ -26,7 +26,7 @@ class IndexController extends Controller
     {
         $request->user()->authorizeRoles(['admin', 'menager', 'user']);
         $data = [
-            "page_name" => "home"
+            "page_name" => "Home"
         ];
         return view('user.home', $data);
     }

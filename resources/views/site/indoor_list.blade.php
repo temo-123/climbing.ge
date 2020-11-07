@@ -18,42 +18,41 @@
     <h6>{{$site -> outdoor_description}}</h6>
     @endif
 
-    @if (isset($indoors) && is_object($indoors) )
-    @forelse($indoors as $k=>$indoor)
-    
+    @if (isset($indoors))
+    @forelse($indoors as $indoor)
     <div class="row featurette" style='margin-bottom: 7%;'>
         <div class='row'>
             <div class='col-md-6 indoor_img'>
-                <a href="{{ route('indoor_page', array('title'=>$indoor->url_title)) }}">
-                    <img src="{{asset('images/indoor_img/'.$indoor->image)}}" alt="{{$indoor -> title}}">
+                <a href="{{ route('indoor_page', array('title'=>$indoor['url_title'])) }}">
+                    <img src="{{asset('images/indoor_img/'.$indoor['image'])}}" alt="{{$indoor[0][0] -> title}}">
                 </a>
             </div>
             <div class='col-md-6 indoor_text indoot_text_for_mobile'>
             <div class="container">
                 <div class='row'>
-                    <a href="{{ route('indoor_page', array('title'=>$indoor->url_title)) }}">
-                        <h2 style="margin: 2em; text-aline: center;">{{ $indoor -> title }}</h2>
+                    <a href="{{ route('indoor_page', array('title'=>$indoor['url_title'])) }}">
+                        <h2 style="margin: 2em; text-aline: center;">{{ $indoor[0][0] -> title }}</h2>
                     </a>
-                    <p class="lead">{!! $indoor -> short_description !!}</p>
+                    <p class="lead">{!! $indoor[0][0] -> short_description !!}</p>
                 </div>
                 <div class='row'>
                     <div class='col-xs-6 col-md-4 col-lg-4 col-xl-4'>
-                        @if($indoor -> prices_from != NULL)
+                        @if($indoor[0][0] -> prices_from != NULL)
                         <b style="font-size: 120%;">Prices from</b>
-                        <p style="font-size: 100%;"><strong>{!! $indoor -> prices_from !!} GEL </strong>( USD)</p>
+                        <p style="font-size: 100%;"><strong>{!! $indoor[0][0] -> prices_from !!} GEL </strong>( USD)</p>
                         @endif
                     </div>
                     <div class='col-xs-6 col-md-4 col-lg-4 col-xl-4'>
-                        @if (($indoor -> time) != 0)
+                        @if (($indoor[0][0] -> time) != 0)
                         <b style="font-size: 120%;">Working hours</b>
-                        <p style="font-size: 100%;">{{ $indoor -> time }}</p>
+                        <p style="font-size: 100%;">{{ $indoor[0][0] -> time }}</p>
                         @endif
                     </div>
                 </div>
                 <div class='row'>
                     <div class='col-xs-12' style='text-align: center; margin-left: -10px;'>
                         @foreach($reviews as $review)
-                        @if($review['article_title'] == $indoor->url_title)
+                        @if($review['article_title'] == $indoor[0][0]->url_title)
                         <input id="input-1" name="input-1" class="rating rating-loading" data-min="0" data-max="5" data-step="0.1" value="{{$review['review']}}">
                         @endif
                         @endforeach

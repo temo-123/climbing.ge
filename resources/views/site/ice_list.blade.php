@@ -35,54 +35,26 @@
 
 <div class="container top_menu_margin h-recent-work">
 
-    <section class="portfolio" id="portfolio">
-        <div class="container-fluid">
-            <div class="row">
 
-                @if(isset($title))
+@if(isset($title))
                 <div class="artile_list_title">
                     <h1>{{$title}}</h1>
                 </div>
                 @endif
-                @if($article_count != 0) 
-                @if(isset($outdoor_climbing))
-                    @if($site->outdoor_description != NULL)
-                    <div class="bar"><i class="fa fa-exclamation-triangle"></i></div>
-                    <h6>{{$site -> outdoor_description}}</h6>
-                    @endif
-                @elseif(isset($mount))
-                    @if($site->mount_description != NULL)
-                    <div class="bar"><i class="fa fa-exclamation-triangle"></i></div>
-                    <h6>{{$site -> mount_description}}</h6>
-                    @endif
-                @elseif(isset($ice))
-                    @if($site->ice_description != NULL)
+                
+                    @if(isset($ice) && $site->ice_description != NULL)
                     <div class="bar"><i class="fa fa-exclamation-triangle"></i></div>
                     <h6>{{$site -> ice_description}}</h6>
                     @endif
-                @elseif(isset($other))
-                    @if($site->other_activity_description != NULL)
-                    <div class="bar"><i class="fa fa-exclamation-triangle"></i></div>
-                    <h6>{{$site -> other_activity_description}}</h6>
-                    @endif
-                @endif
-                @endif
 
-                @if(isset($tags) && $tags_count != NULL)
-                <div align="center">
-                    <button class="filter-button" data-filter="all">All</button>
-                    @foreach($tags as $k=>$tag)
-                    <button class="filter-button" data-filter="{!! $tag->id !!}">{!! $tag->title !!}</button>
-                    @endforeach
-                </div>
-                <hr>
-                @endif
+    <section class="portfolio" id="portfolio">
+        <div class="container-fluid">
+            <div class="row">
 
-                @if (isset($article_list) && is_object($article_list) )
-                @forelse($article_list as $k=>$article)
+                @forelse($article_list as $article)
 
                 @if(isset($tags))
-                <div class="gallery_product filter {{ $article -> mount_id }}">
+                <div class="gallery_product filter {{ $article[0] -> mount_id }}">
                     @endif
 
                     <!--<div class="food col-md-4" style='horizontal-align: bottom;'>-->
@@ -91,23 +63,23 @@
 
                                 @if(isset($time_array))
                                 @foreach($time_array as $time)
-                                @if($time['id'] == $article -> id)
-                                @if($time['time'] == 1)
+                                @if($time['id'] == $article[0][0] -> id && $time['time'] == 1)
                                 <div class="discount-percent-badge discount-badge-fourty">NEW</div>
-                                @endif
                                 @endif
                                 @endforeach
                                 @endif
 
-                                @if(isset($image_dir) && $article->image != null)
-                                <img src="{{asset('images/'.$image_dir.'/'.$article->image)}}" class="img-responsive">
+                                <!-- <div class="discount-percent-badge discount-badge-fourty">NEW</div> -->
+
+                                @if(isset($image_dir) && $article['image'] != null)
+                                <img src="{{asset('images/'.$image_dir.'/'.$article['image'])}}" class="img-responsive">
                                 @else
                                 <img src="https://via.placeholder.com/150x100" class="img-responsive">
                                 @endif
 
                                 @if(isset($articles_link))
                                 <div class="mask">
-                                    <a href="{{ route($articles_link, array('title'=>$article->url_title)) }}" class="info">
+                                    <a href="{{ route($articles_link, array('title'=>$article['url_title'])) }}" class="info">
                                         <i class="fa fa-arrow-right"></i>
                                     </a>
                                 </div>
@@ -120,13 +92,13 @@
                                 @endif
 
                                 <div class="isotope-item-dtls">
-                                    <h3>{{ $article -> title }}</h3>
+                                    <h3>{{ $article[0][0] -> title }}</h3>
                                     <div class="article_size">
-                                        {!! $article -> short_description !!}
+                                        {!! $article[0][0] -> short_description !!}
 
                                         @if(isset($route_quantity))
                                         @foreach($route_quantity as $route_num)
-                                        @if ($article -> title == $route_num[0])
+                                        @if ($article[0][0] -> title == $route_num[0])
                                         {{$route_num[1]}}
                                         {{$route_num[2]}}.
                                         {{$route_num[3]}}
@@ -205,7 +177,6 @@
                     <p style="text-align: center; ">@if(isset($empty_page_text)) {{$empty_page_text}} @else @endif</p>
                     @endforelse
 
-                    @endif
 
                 </div>
             </div>

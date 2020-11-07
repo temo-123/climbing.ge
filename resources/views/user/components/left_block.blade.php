@@ -1,83 +1,15 @@
             <ul class="list-group">
-                <li class="list-group-item text-muted">Category</li>
-                @if(isset($table_1))
-                    @if(isset($table_1_count))
-                        <li class="list-group-item text-right"><span class="pull-left"><strong>{{$table_1_name}}</strong></span> {{$table_1_count}}</li>
-                    @endif
-                @endif
-                @if(isset($table_2))
-                    @if(isset($table_2_count))
-                        <li class="list-group-item text-right"><span class="pull-left"><strong>{{$table_2_name}}</strong></span> {{$table_2_count}}</li>
-                    @endif
-                @endif
-                @if(isset($table_4))
-                    @if(isset($table_4_count))
-                        <li class="list-group-item text-right"><span class="pull-left"><strong>{{$table_1_name}}</strong></span> {{$table_4_count}}</li>
-                    @endif
-                @endif
-                @if(isset($table_4))
-                    @if(isset($table_4_count))
-                        <li class="list-group-item text-right"><span class="pull-left"><strong>{{$table_2_name}}</strong></span> {{$table_4_count}}</li>
-                    @endif
-                @endif
-
-                @if(isset($count_1) || isset($count_2) || isset($count_3) || isset($count_4) || isset($count_5))
-                    @if(isset($count_1_name) || isset($count_2_name) || isset($count_3_name) || isset($count_4_name) || isset($count_5_name))
-                <li class="list-group-item text-right"><span class="pull-left"></span></li>
-                    @endif
-                @endif
-
-                @if(isset($count_1) && isset($count_1_name))
-                <li class="list-group-item text-right"><span class="pull-left"><strong>{{$count_1_name}}</strong></span> {{$count_1}}</li>
-                @endif
-                @if(isset($count_2) && isset($count_2_name))
-                <li class="list-group-item text-right"><span class="pull-left"><strong>{{$count_2_name}}</strong></span> {{$count_2}}</li>
-                @endif
-                @if(isset($count_3) && isset($count_3_name))
-                <li class="list-group-item text-right"><span class="pull-left"><strong>{{$count_3_name}}</strong></span> {{$count_3}}</li>
-                @endif
-                @if(isset($count_4) && isset($count_4_name))
-                <li class="list-group-item text-right"><span class="pull-left"><strong>{{$count_4_name}}</strong></span> {{$count_4}}</li>
-                @endif
-                @if(isset($count_5) && isset($count_5_name))
-                <li class="list-group-item text-right"><span class="pull-left"><strong>{{$count_5_name}}</strong></span> {{$count_5}}</li>
-                @endif
-            </ul>
-
-            <style>
-                #active{
-                    background-color: #ddd;
-                }
-            </style>
-
-<!--             <ul class="list-group display_none_768px">
-                <li class="list-group-item text-muted">
-                    Your Status = 
-                    @if(Auth::user()->hasRole('admin'))
-                        Admin
-                    @elseif(Auth::user()->hasRole('manager'))
-                        Content manager
-                    @else
-                        User
-                    @endif
-                </li>
-            </ul> -->
-
-            <ul class="list-group display_none_768px">
                 <li class="list-group-item text-muted">Munu</li>
 
                 @if((Auth::user()->hasRole('user'))||(Auth::user()->hasRole('admin')) || (Auth::user()->hasRole('manager')))
-                <li class="list-group-item text-muted" @if($page_name == 'Home') id="active" @endif>
+                <li class="list-group-item text-muted @if($page_name == 'Home') menu_active @endif">
                     <a href="{{route('user_index')}}">My page </a>
                 </li>
-                <li class="list-group-item text-muted" @if($page_name == 'Products') id="active" @endif>
-                    <a href="#">My products</a>
+                <li class="list-group-item text-muted @if($page_name == 'Products') menu_active @endif">
+                    <a href="{{Route('products_list')}}">My products</a>
                 </li>
-                <li class="list-group-item text-muted" @if($page_name == 'Favorite products') id="active" @endif>
-                    <a href="#">My favorite products</a>
-                </li>
-                <li class="list-group-item text-muted" @if($page_name == 'Review & Comments') id="active" @endif>
-                    <a href="#">My Review & Comments</a>
+                <li class="list-group-item text-muted @if($page_name == 'favorite_products') menu_active @endif">
+                    <a href="{{Route('favorite')}}">My favorite products</a>
                 </li>
                 @endif
 
@@ -85,75 +17,59 @@
 
                 <li class="list-group-item text-muted"></li>
 
-                <li class="list-group-item text-muted" @if($page_name == 'Outdoor') id="active" @endif>
-                    <a href="#">Outdoor climbing</a>
+                <li class="list-group-item text-muted @if($page_name == 'Outdoor') menu_active @endif">
+                    <a href="{{route('article_list', array('article_category'=>'outdoor'))}}">Outdoor climbing</a>
                 </li>
-                <li class="list-group-item text-muted" @if($page_name == 'Climbing Secrots And Routes') id="active" @endif>
-                    <a href="#"></a>
+                <li class="list-group-item text-muted @if($page_name == 'Climbing Secrots And Routes') menu_active @endif">
+                    <a href="{{ Route('routes_and_sectors') }}">Routs & Sectors</a>
                 </li>
-                <li class="list-group-item text-muted" @if($page_name == 'Indoor') id="active" @endif>
-                    <a href="#">Indoor climbing</a>
+                <li class="list-group-item text-muted @if($page_name == 'Indoor') menu_active @endif">
+                    <a href="{{route('article_list', array('article_category'=>'indoor'))}}">Indoor climbing</a>
                 </li>
-                <li class="list-group-item text-muted" @if($page_name == 'Mount And Mount Route') id="active" @endif>
-                    <a href="#"></a>
+                <li class="list-group-item text-muted @if($page_name == 'Mount And Mount Route') menu_active @endif">
+                    <a href="{{route('mountaineering')}}">Mount & Mount Route</a>
                 </li>
-                <li class="list-group-item text-muted" @if($page_name == 'Ice') id="active" @endif>
-                    <a href="#">Ice and mixed</a>
+                <li class="list-group-item text-muted @if($page_name == 'Ice & Mixed') menu_active @endif">
+                    <a href="{{route('article_list', array('article_category'=>'ice'))}}">Ice and mixed</a>
                 </li>
-                <li class="list-group-item text-muted" @if($page_name == 'News') id="active" @endif>
-                    <a href="#">News</a>
+                <li class="list-group-item text-muted @if($page_name == 'News') menu_active @endif">
+                    <a href="{{route('article_list', array('article_category'=>'news'))}}">News</a>
                 </li>
-                <li class="list-group-item text-muted" @if($page_name == 'Other') id="active" @endif>
-                    <a href="#">Other</a>
+                <li class="list-group-item text-muted @if($page_name == 'Other') menu_active @endif" >
+                    <a href="{{route('article_list', array('article_category'=>'other'))}}" >Other</a>
                 </li>
-                <li class="list-group-item text-muted" @if($page_name == 'Securities') id="active" @endif>
-                    <a href="#">Security</a>
+                <li class="list-group-item text-muted @if($page_name == 'Security') menu_active @endif">
+                    <a href="{{route('article_list', array('article_category'=>'security'))}}">Security</a>
                 </li>
-                <li class="list-group-item text-muted" @if($page_name == 'Partners') id="active" @endif>
-                    <a href="#">Partners</a>
+                <li class="list-group-item text-muted @if($page_name == 'Partners') menu_active @endif">
+                    <a href="{{route('article_list', array('article_category'=>'partner'))}}">Partners</a>
                 </li>
-                <li class="list-group-item text-muted" @if($page_name == 'Events') id="active" @endif>
-                    <a href="#">Events</a>
+                <li class="list-group-item text-muted @if($page_name == 'Events') menu_active @endif">
+                    <a href="{{route('article_list', array('article_category'=>'event'))}}">Events</a>
                 </li>
-
-                <li class="list-group-item text-muted"></li>
-
-                <li class="list-group-item text-muted" @if($page_name == 'Gallery') id="active" @endif>
-                    <a href="#">Index Gallery</a>
+                <li class="list-group-item text-muted @if($page_name == 'Gallery') menu_active @endif">
+                    <a href="{{ Route('gallery_list') }}">Gallery</a>
                 </li>
-                <li class="list-group-item text-muted" @if($page_name == 'Article Gallery') id="active" @endif>
-                    <a href="#">Article Gallery</a>
-                </li>
-                <li class="list-group-item text-muted" @if($page_name == 'Head Slider') id="active" @endif>
-                    <a href="#">Head slider</a>
-                </li>
-
-                <li class="list-group-item text-muted"></li>
-
-                <li class="list-group-item text-muted" @if($page_name == 'About') id="active" @endif>
-                    <a href="#">About us</a>
+                <li class="list-group-item text-muted @if($page_name == 'site info') menu_active @endif">
+                    <a href="{{ Route('about') }}">About us</a>
                 </li>
                 @endif
+
+
+                <li class="list-group-item text-muted"></li>
+
+                <li class="list-group-item text-muted @if($page_name == 'Comments') menu_active @endif">
+                    <a href="{{ Route('comments_list')}}">Comments</a>
+                </li>
 
                 @if(Auth::user()->hasRole('admin'))
-
-                <li class="list-group-item text-muted"></li>
-
-                <li class="list-group-item text-muted" @if($page_name == 'Comments') id="active" @endif>
-                    <a href="#">Coment</a>
-                </li>
-                <li class="list-group-item text-muted" @if($page_name == 'Users') id="active" @endif>
-                    <a href="#">Users</a>
-                </li>
-                <li class="list-group-item text-muted" @if($page_name == 'Comments') id="active" @endif>
-                    <a href="#">Other</a>
+                <li class="list-group-item text-muted @if($page_name == 'Users') menu_active @endif">
+                    <a href="{{ Route('users') }}">Users</a>
                 </li>
                 @endif
 
-                <li class="list-group-item text-muted"></li>
-
-                <li class="list-group-item text-muted" @if($page_name == 'Options') id="active" @endif>
-                    <a href="#">Options</a>
+                <li class="list-group-item text-muted @if($page_name == 'Options') menu_active @endif">
+                    <a href="{{ Route('options') }}">Options</a>
                 </li>
 
                 <li class="list-group-item text-muted">
