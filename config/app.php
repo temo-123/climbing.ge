@@ -248,24 +248,12 @@ return [
         'Validator' => Illuminate\Support\Facades\Validator::class,
         'View' => Illuminate\Support\Facades\View::class,
 
-        
-        /*
-         * Laravel Socialite
-         */
-
-        'Socialite' => Laravel\Socialite\Facades\Socialite::class,
 
 
-        /*
-         * Language localisation
-         */
-        'LocalisationService' => App\Services\Localisation\LocalisationService::class,
-
-
-        /*
-         * Get articles
-         */
-        'GetArticlesService' => App\Services\GetArticlesService::class,
+        'Socialite' => Laravel\Socialite\Facades\Socialite::class, // Laravel Socialite
+        'LocalisationService' => App\Services\Localisation\LocalisationService::class, // Language localisation
+        'GetArticlesService' => App\Services\GetArticlesService::class, // Get articles
+        'imageEditService' => App\Services\imageEditService::class, // image upload, update & delite
 
     ],
 

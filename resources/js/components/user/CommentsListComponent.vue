@@ -14,12 +14,15 @@
                             {{table_1_info.text}}
                         </div>
                         <div class="action">
-                            <button type="button" class="btn btn-primary btn-xs" title="Edit">
+                            <!-- <button type="button" class="btn btn-primary btn-xs" title="Edit">
                                 <span class="glyphicon glyphicon-pencil"></span>
-                            </button>
-                            <button type="button" class="btn btn-danger btn-xs" title="Delete">
+                            </button> -->
+                            <!-- <button type="button" class="btn btn-danger btn-xs" title="Delete">
                                 <span class="glyphicon glyphicon-trash"></span>
-                            </button>
+                            </button> -->
+                            <form action="#" method="post" class="form-horisontal">
+                                <button class="btn btn-danger b2" type="submit" id="51btn" value="open" onclick="JavaScript:return Validator(this.id);">Delete</button>
+                            </form>
                         </div>
                     </div>
                 </div>
@@ -46,13 +49,15 @@
                             <button type="button" class="btn btn-danger btn-xs" title="Delete">
                                 <span class="glyphicon glyphicon-trash"></span>
                             </button>
+                            <form action="#" method="post" class="form-horisontal">
+                                <button class="btn btn-danger b2" type="submit" id="51btn" value="open" onclick="JavaScript:return Validator(this.id);">Delete</button>
+                            </form>
                         </div>
                     </div>
                 </div>
             </li>
         </ul>
     </div>
-
 </div>
 </template>
 
@@ -73,6 +78,18 @@
         mounted() {
             //  console.log(this.addRoute);
         },
+        methods: {
+            table_1_del(itemId) {
+                axios
+                .post('/articles/del/' + itemId, {
+                    global_id: itemId,
+                })
+                .then(Response => {
+                    console.log(response)
+                })
+                .catch(error => console.log(error))
+            },
+        }
     }
 </script>
 

@@ -10,8 +10,11 @@ use App\Models\Favorite_product;
 use Auth;
 use File;
 
+use App\Services\ImageEditService;
+
 class ProductsController extends Controller
 {
+    // private $image_dir = "/images/shop_img";
     /**
      * Create a new controller instance.
      *
@@ -114,19 +117,19 @@ class ProductsController extends Controller
     {
         $request->user()->authorizeRoles(['admin']);
 
-        if ($request -> isMethod('post')) {
-            // $input = $request -> except('_token');
+        $image_dir = "/images/shop_img";
 
-            $image_dir = "/images/shop_img";
+        if ($request -> isMethod('post')) {
+            $input = $request -> except('_token');
 
             $this->product_validate($request);
 
             $product = new product();
 
-            $product['image_1'] = $this->image_upload($image_dir, "image_1", $request);
-            $product['image_2'] = $this->image_upload($image_dir, "image_2", $request);
-            $product['image_3'] = $this->image_upload($image_dir, "image_3", $request);
-            $product['image_4'] = $this->image_upload($image_dir, "image_4", $request);
+            $product['image_1'] = ImageEditService::image_upload($image_dir, "image_1", $request);
+            $product['image_2'] = ImageEditService::image_upload($image_dir, "image_2", $request);
+            $product['image_3'] = ImageEditService::image_upload($image_dir, "image_3", $request);
+            $product['image_4'] = ImageEditService::image_upload($image_dir, "image_4", $request);
             $product['user_id'] = Auth::user()->id;
             $product['url_title'] = $this->get_url_title($request->title);
             $product['title'] = $request->title;
@@ -179,19 +182,19 @@ class ProductsController extends Controller
      */
     public function edit(Product $product, Request $request)
     {
-        $image_dir = 'product_img';
+        $image_dir = '/images/shop_img';
+
         if ($request->isMethod('post')) {
             $input = $request -> except('_token');
-            
-            $product['image_1'] = '$this->image_update($image_dir, $product, $input, $request)';
 
-            unset($input ['old_image']);
-//             $data = $product->getAttributes();
-// dd($product -> fill($input));
-// dd($product->getAttributes());
-            $product -> fill($input);
+            $this->product_validate($request);
 
-            // dd($product);
+            $product['image_1'] = ImageEditService::image_update($image_dir, $product, $input, "image_1", $request);
+            $product['image_2'] = ImageEditService::image_update($image_dir, $product, $input, "image_2", $request);
+            $product['image_3'] = ImageEditService::image_update($image_dir, $product, $input, "image_3", $request);
+            $product['image_4'] = ImageEditService::image_update($image_dir, $product, $input, "image_4", $request);
+
+            $product->touch();
 
             if ($product->update()) {
                 return redirect()->route('products_list')->with('status','product updated!'); //text
@@ -228,14 +231,16 @@ class ProductsController extends Controller
      */
     public function delete(product $product, Request $request)
     {
+        $image_dir = '/images/shop_img';
+
         if ($request->isMethod('delete')) {
-            // delete product file
-            $fileName = $product['image'];
-            $destinationPath = 'images/shop_img/';
-            File::delete($destinationPath.$fileName);
+            ImageEditService::image_delite($image_dir, $product, 'image_1');
+            ImageEditService::image_delite($image_dir, $product, 'image_2');
+            ImageEditService::image_delite($image_dir, $product, 'image_3');
+            ImageEditService::image_delite($image_dir, $product, 'image_4');
 
             // delete product from db
-            $product ->delete();
+            $product -> delete();
 
             return back()->with('good_status', 'product delited!'); //text
         }
@@ -317,61 +322,16 @@ class ProductsController extends Controller
     private function product_validate($request)
     {
         $request->validate([
+            'category' => 'required',
             'title' => 'required|max:25',
+            'text' => 'required',
+            'price' => 'required|max:5',
+            'currency' => 'required|max:4',
+            'image_1' => 'required',
         ]);
     }
 
-    public function image_upload($image_dir, $file_upload_name, $request)
-    {
-        if ($request->hasFile($file_upload_name)) {
-                
-            $file = $request -> file($file_upload_name);
-
-            $input[$file_upload_name] = $file -> getClientOriginalName();
-
-            // rename file
-            $pieces = explode( '.', $input[$file_upload_name] );
-            $fruit = array_pop($pieces);
-            $comma_separated = implode(",", $pieces);
-            $image_name = $comma_separated.'_('.date('Y-m-d-H-m-s').').'.$fruit;
-
-            // move fili in derectory
-            $file -> move(public_path().$image_dir, $image_name);
-
-            // updete file name for add in DB
-            return $image_name;
-        }
-    }
-    public function image_update($image_dir, $product, $input, $request)
-    {
-        if ($request->hasFile('image_1')) {
-
-            $file = $request -> file('image_1');
-
-            //get original file
-            $input['image_1'] = $file -> getClientOriginalName();
-
-            //rename file
-            $pieces = explode( '.', $input['image_1'] );
-            $fruit = array_pop($pieces);
-            $comma_separated = implode(",", $pieces);
-            $image_name = $comma_separated.'_('.date('Y-m-d-H-m-s').').'.$fruit;
-
-            // move fili in derectory
-            $file -> move(public_path().$image_dir, $image_name);
-
-            // delite old file
-            $fileName = $product['image_1'];
-            $destinationPath = $image_dir;
-            File::delete($destinationPath.$fileName);
-
-            // updete file name in array for add in DB
-            return $image_name; 
-        }
-        else {
-            return $input['old_image'];
-        }
-    }
+   
 
     public function get_url_title($title)
     {

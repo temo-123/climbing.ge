@@ -315,7 +315,7 @@
                                     <div class="gallery_product col-sm-3 col-xs-6 filter {!! $gallery -> filter !!} thumb" >
                                         <a class="thumbnail" href='#' data-image-id="" data-toggle="modal" data-toggle="modal" data-target="#squarespaceModal{{$gallery -> id}}">
 
-                                            <img src="{{ asset('images/gallery_img/index_gallery_img/'.$gallery -> image) }}" alt="Another alt text">
+                                            <img src="{{ asset('images/gallery_img/'.$gallery -> image) }}" alt="Another alt text">
 
                                             <div class="size">
                                                 <a data-toggle="modal" data-target="#squarespaceModal{{$gallery -> id}}">{{ $gallery -> title }}</a>
@@ -374,7 +374,7 @@
                         <div class="container">
                             <div class="row">
                                 <div class='col-md-8'>
-                                    <img class='col-xs-12' src="{{ asset('images/gallery_img/index_gallery_img/'.$gallery -> image) }}" alt="Another alt text">
+                                    <img class='col-xs-12' src="{{ asset('images/gallery_img/'.$gallery -> image) }}" alt="Another alt text">
                                 </div>
                                 <div class='col-md-4 galery_open_text'>
                                     <p>{!! $gallery -> text !!}</p>
@@ -384,7 +384,7 @@
                         @else
                         <div class="container">
                             <div class="row">
-                                <img class="col-xs-12" src="{{ asset('images/gallery_img/index_gallery_img/'.$gallery -> image) }}" alt="Another alt text">
+                                <img class="col-xs-12" src="{{ asset('images/gallery_img/'.$gallery -> image) }}" alt="Another alt text">
                             </div>
                         </div>
                         @endif
@@ -424,7 +424,7 @@
                     <h6>{{$site -> security_description}}</h6>
                     @endif
 
-                    <!-- <trchtips_component :securities="{{--$securities--}}"></trchtips_component> -->
+                    {{-- <trchtips_component securities="{{ $securities }}"></trchtips_component> --}}
                     
                 </div>
             </div>

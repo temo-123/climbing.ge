@@ -58,15 +58,22 @@
                                 <img src="{{ asset('images/shop_img/'.$product -> image_1) }}" class="img-circle img-responsive product_table_img">
                             </div>
                             <div class="col-xs-10 col-md-10">
-                                <div>
-                                    <a href="http://bootsnipp.com/BhaumikPatel/snippets/Obgj"><h3>{{$product -> title}}</h3></a>
+                                <div class="row">
+                                    <a href={{ route('shop_page', array('title' => $product->url_title )) }}> {{ $product->title }}</h3></a>
                                 </div>
+                                <div class="row">
+                                    <h3>{{ $product -> price }} {{ $product -> currency }}</h3></a>
+                                </div>
+                                <div class="row">
+                                    <h3>Category - {{ $product -> category }}</h3></a>
+                                </div>
+
                                 <!-- <div class="comment-text">
                                     Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh
                                     euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim
                                 </div> -->
                                 <div class="action">
-                                	<div style="float: left;">
+                                	{{-- <div style="float: left;">
                                         @if($product -> approved == 1)
 	                                    <button type="button" class="btn btn-success btn-xs" title="Approved">
 	                                        <span class="glyphicon glyphicon-ok"></span>
@@ -76,7 +83,7 @@
                                             <span class="glyphicon glyphicon-remove"></span>
                                         </button>
                                         @endif
-                                    </div>
+                                    </div> --}}
                                     
                                 	<div style="float: right;">
 	                                    <a type="button" class="btn btn-primary btn-xs" href="{{route('productsEdit',[$product->id])}}">
@@ -97,7 +104,11 @@
                         </div>
                     </li>
                     @empty
-                    <h2>You don't have products</h2>
+                    <div class="panel panel-default target">
+                        <div class="panel-heading" contenteditable="false">
+                            <h2>You don't have any products</h2>
+                        </div>
+                    </div>
                     @endforelse
                 </ul>
             </div>

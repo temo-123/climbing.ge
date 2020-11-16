@@ -68,7 +68,7 @@ class IceController extends Controller
             $data  = [
                 'title'=>$ice,
                 'article'=>$ice,
-                'ice'=>1,
+                // 'ice'=>1,
                 
                 'articles_gallery'=>$article_gallery,
                 

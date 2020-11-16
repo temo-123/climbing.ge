@@ -17,7 +17,7 @@
             @endif
         </div>
         <div class="form-group">
-            <a href="{{ url()->previous() }}" class='btn btn-primary'>Back</a>
+            <a href="{{ url()->previous() }}" class='btn btn-primary'  onclick="return confirm('Are you sure, you want go back?')">Back</a>
         </div>
     </div>
 
@@ -80,9 +80,7 @@
                 <label for="name" class='col-xs-2 control-label'>Text / Description </label>
                 <div class="col-xs-8">
                     @if (isset($data)) 
-                        <textarea type="text" id="text" name="text" rows="15" class="form-cotrol md-textarea form-control">
-                        {{$data['text']}}
-                        </textarea>
+                        <textarea type="text" id="text" name="text" rows="15" class="form-cotrol md-textarea form-control">{{$data['text']}}</textarea>
                     @else
                         <textarea type="text" id="text" name="text" rows="15" class="form-cotrol md-textarea form-control"></textarea>
                     @endif
@@ -113,6 +111,8 @@
                 </div>
             </div>
             
+
+            
             <div class="form-group clearfix">
                 <label for="name" class="col-xs-2 control-label">Select image to upload:</label>
                 <div class="col-xs-8">			
@@ -120,36 +120,56 @@
                     <div class="row">
                         <div class="col-xs-4">       
                             <div class="avatar-edit">
+                                @if($data['general_image'] == 1)
+                                <input type="radio" name="general_image" value="1" checked="checked">
+                                @else
+                                <input type="radio" name="general_image" value="1">
+                                @endif
                                 <input type='file' id="image" name="image_1" onchange="readURL(this);" accept=".png, .jpg, .jpeg" />
                                 <label for="imageUpload"></label>
                                 <img id="blah" src="{{asset('images/shop_img/'.$data['image_1'])}}" class="" width="200" height="150" style="margin: 5%" />
-                                <input type="hidden" id="old_image" name="old_image" value="{{$data['image_1']}}">
+                                <input type="hidden" id="old_image_1" name="old_image_1" value="{{$data['image_1']}}">
                             </div>
                         </div>
                         <div class="col-xs-4">      
                             <div class="avatar-edit">
+                                @if($data['general_image'] == 2)
+                                <input type="radio" name="general_image" value="1" checked="checked">
+                                @else
+                                <input type="radio" name="general_image" value="1">
+                                @endif
                                 <input type='file' id="image" name="image_2" onchange="readURL(this);" accept=".png, .jpg, .jpeg" />
                                 <label for="imageUpload"></label>
                                 <img id="blah" src="{{asset('images/shop_img/'.$data['image_2'])}}" class="" width="200" height="150" style="margin: 5%" />
-                                <input type="hidden" id="old_image" name="old_image" value="{{$data['image_2']}}">
+                                <input type="hidden" id="old_image_2" name="old_image_2" value="{{$data['image_2']}}">
                             </div>
                         </div>
                     </div>
                     <div class="row">
                         <div class="col-xs-4">      
                             <div class="avatar-edit">
+                                @if($data['general_image'] == 3)
+                                <input type="radio" name="general_image" value="1" checked="checked">
+                                @else
+                                <input type="radio" name="general_image" value="1">
+                                @endif
                                 <input type='file' id="image" name="image_3" onchange="readURL(this);" accept=".png, .jpg, .jpeg" />
                                 <label for="imageUpload"></label>
                                 <img id="blah" src="{{asset('images/shop_img/'.$data['image_3'])}}" class="" width="200" height="150" style="margin: 5%" />
-                                <input type="hidden" id="old_image" name="old_image" value="{{$data['image_3']}}">
+                                <input type="hidden" id="old_image_3" name="old_image_3" value="{{$data['image_3']}}">
                             </div>
                         </div>
                         <div class="col-xs-4">      
                             <div class="avatar-edit">
+                                @if($data['general_image'] == 4)
+                                <input type="radio" name="general_image" value="1" checked="checked">
+                                @else
+                                <input type="radio" name="general_image" value="1">
+                                @endif
                                 <input type='file' id="image" name="image_4" onchange="readURL(this);" accept=".png, .jpg, .jpeg" />
                                 <label for="imageUpload"></label>
                                 <img id="blah" src="{{asset('images/shop_img/'.$data['image_4'])}}" class="" width="200" height="150" style="margin: 5%" />
-                                <input type="hidden" id="old_image" name="old_image" value="{{$data['image_4']}}">
+                                <input type="hidden" id="old_image_4" name="old_image_4" value="{{$data['image_4']}}">
                             </div>
                         </div>
                     </div>

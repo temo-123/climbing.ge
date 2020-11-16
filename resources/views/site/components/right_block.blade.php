@@ -114,6 +114,6 @@
       
     </div><!-- /.blog-sidebar -->
     
-    <style>
+    <!-- <style>
         .right_navbar_sectors{margin-left: 1em;}
-    </style>
+    </style> -->

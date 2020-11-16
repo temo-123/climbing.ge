@@ -1,6 +1,6 @@
 <?php
 return [
-    'site name' => 'Climbing In Georgia',
+    'site name' => 'climbing.ge',
 
     'climbing' => 'Climbing',
     'indoor climbing' => 'indoor climbing',

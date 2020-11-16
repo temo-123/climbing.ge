@@ -6,6 +6,13 @@
 
 import Vue from 'vue';
 
+// import Vue from 'vue';
+import Carousel3d from 'vue-carousel-3d';
+
+Vue.use(Carousel3d);
+
+// import { Carousel3d, Slide } from 'vue-carousel-3d';
+
 require('./bootstrap');
 
 window.Vue = require('vue');
@@ -29,9 +36,8 @@ Vue.component('search-component',               require('./components/site/Searc
 
 Vue.component('tabs_component',             require('./components/user/TabsComponent.vue').default);
 Vue.component('comments_list_component',             require('./components/user/CommentsListComponent.vue').default);
-Vue.component('article_form_component',             require('./components/user/ArticleFormComponent.vue').default);
-Vue.component('locale-article-form-component',             require('./components/user/LocaleArticleFormComponent.vue').default);
-
+Vue.component('article_add_form_component',             require('./components/user/ArticleAddFormComponent.vue').default);
+Vue.component('article_edit_form_component',             require('./components/user/ArticleEditFormComponent.vue').default);
 /**
  * Next, we will create a fresh Vue application instance and attach it to
  * the page. Then, you may begin adding components to this application

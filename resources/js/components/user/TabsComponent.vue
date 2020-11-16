@@ -1,10 +1,14 @@
 <template>
 <div class="tabs">
     <input type="radio" name="tabs" id="1" checked="checked">
-    <label for="1" v-if="this.table_1">{{this.table_1_name}}</label>
-    <div class="tab" v-if="this.table_1">
+    <label for="1" v-if="this.table_1_get_route">{{this.table_1_name}}</label>
+    <div class="tab" v-if="this.table_1_get_route">
         <div class="add_buttom">
             <a :href="table_1_add_url" class="btn btn-primary pull-left" type="submit">New </a>
+        </div>
+        <div class="form-groupe">
+            <button @click="get_data_in_table_1" class="btn main-btn pull-right" v-if="!table_1_is_refresh">Refresh ({{table_1_reset_id}})</button>
+            <span class="badge badge-primare mb-1 pull-right" v-if="table_1_is_refresh">Updating...</span>
         </div>
         <table class="table table-hover" id="dev-table">
             <thead>
@@ -37,7 +41,6 @@
                     <td>{{table_1_info.id}}</td>
                     <th>|</th>
 
-                    <!-- <td>{{table_1_info.name}}</td> -->
                     <td v-if="table_1_name == 'Sector'">{{table_1_info.name}}</td>
                     <td v-else>{{table_1_info.url_title}} </td>
 
@@ -51,17 +54,21 @@
                     
                     <th>|</th>
                     <td>
-                        <form action="#" method="post" class="form-horisontal">
-                            <button class="btn btn-danger b2" type="submit" id="51btn" value="open" onclick="JavaScript:return Validator(this.id);">Delete</button>
+                        <form method="post" @submit.prevent="table_1_del(table_1_info.id)" >
+                            <input type="hidden" name="_token" >
+                            <div class="form-group">
+                                <button type="submit" class="btn btn-danger" onclick="return confirm('Are you sure you want to delete this item')">Delete</button>
+                            </div>
                         </form>
                     </td>
                 </tr>
             </tbody>
         </table>
     </div>
+
     <input type="radio" name="tabs" id="2">
-    <label for="2" v-if="this.table_2">{{this.table_2_name}}</label>
-    <div class="tab" v-if="this.table_2">
+    <label for="2" v-if="this.table_1_get_route">{{this.table_2_name}}</label>
+    <div class="tab" v-if="this.table_1_get_route">
         <div class="add_buttom">
             <a :href="table_2_add_url" class="btn btn-primary pull-left" type="submit">New </a>
         </div>
@@ -112,7 +119,7 @@
                     <th>|</th>
                     <td>
                         <form action="#" method="post" class="form-horisontal">
-                            <button class="btn btn-danger b2" type="submit" id="51btn" value="open" onclick="JavaScript:return Validator(this.id);">Delete</button>
+                            <button class="btn btn-danger b2" type="submit" value="open" onclick="JavaScript:return Validator(this.id);">Delete</button>
                         </form>
                     </td>
                 </tr>
@@ -121,8 +128,8 @@
     </div>
 
     <input type="radio" name="tabs" id="3">
-    <label for="3"  v-if="this.table_3">{{this.table_3_name}}</label>
-    <div class="tab" v-if="this.table_3">
+    <label for="3"  v-if="this.table_1_get_route">{{this.table_3_name}}</label>
+    <div class="tab" v-if="this.table_1_get_route">
         <div class="add_buttom">
             <a :href="table_3_add_url" class="btn btn-primary pull-left" type="submit">New </a>
         </div>
@@ -173,16 +180,17 @@
                     <th>|</th>
                     <td>
                         <form action="#" method="post" class="form-horisontal">
-                            <button class="btn btn-danger b2" type="submit" id="51btn" value="open" onclick="JavaScript:return Validator(this.id);">Delete</button>
+                            <button class="btn btn-danger b2" type="submit" value="open" onclick="JavaScript:return Validator(this.id);">Delete</button>
                         </form>
                     </td>
                 </tr>
             </tbody>
         </table>
     </div>
+
     <input type="radio" name="tabs" id="4">
-    <label for="4"  v-if="this.table_4">{{this.table_4_name}}</label>
-    <div class="tab" v-if="this.table_4">
+    <label for="4"  v-if="this.table_1_get_route">{{this.table_4_name}}</label>
+    <div class="tab" v-if="this.table_1_get_route">
         <div class="add_buttom">
             <a :href="table_4_add_url" class="btn btn-primary pull-left" type="submit">New </a>
         </div>
@@ -233,7 +241,7 @@
                     <th>|</th>
                     <td>
                         <form action="#" method="post" class="form-horisontal">
-                            <button class="btn btn-danger b2" type="submit" id="51btn" value="open" onclick="JavaScript:return Validator(this.id);">Delete</button>
+                            <button class="btn btn-danger b2" type="submit" value="open" onclick="JavaScript:return Validator(this.id);">Delete</button>
                         </form>
                     </td>
                 </tr>
@@ -246,10 +254,10 @@
 <script>
     export default {
         props: [
-            "table_1",
-            "table_2",
-            "table_3",
-            "table_4",
+            "table_1_get_route",
+            "table_2_get_route",
+            "table_3_get_route",
+            "table_4_get_route",
 
             "table_1_name",
             "table_2_name",
@@ -260,15 +268,120 @@
             "table_2_add_url",
             "table_3_add_url",
             "table_4_add_url",
+
+            "table_1_categiry",
+            "table_2_categiry",
+            "table_3_categiry",
+            "table_4_categiry",
         ],
-        data(){
+        
+        data() {
             return {
-                
+                table_1: [],
+                table_2: [],
+                table_3: [],
+                table_4: [],
+
+                table_1_is_refresh: false,
+                table_2_is_refresh: false,
+                table_3_is_refresh: false,
+                table_4_is_refresh: false,
+
+                table_1_reset_id: 0,
+                table_2_reset_id: 0,
+                table_3_reset_id: 0,
+                table_4_reset_id: 0,
+
+                url_1: "",
+                url_2: "",
+                url_3: "",
+                url_4: "",
             }
         },
         mounted() {
-            //  console.log(this.table_1[0]);
+            this.get_data_in_table_1();
+            this.get_data_in_table_2();
+            this.get_data_in_table_3();
+            this.get_data_in_table_4();
         },
+         
+        methods: {
+            get_data_in_table_1: function(){
+                this.table_1_is_refresh = true
+
+                if (this.table_1_get_route == "/articles/get_article_data/") {
+                    this.url_1 = this.table_1_get_route + this.table_1_categiry
+                } else {
+                    this.url_1 = this.table_1_get_route
+                }
+
+                axios
+                .get(this.url_1)
+                .then(response => {
+                    this.table_1 = response.data
+                    this.table_1_is_refresh = false
+                    this.table_1_reset_id++
+                })
+                .catch(
+                    error => console.log(error)
+                );
+            },
+            get_data_in_table_2: function(){
+                this.table_2_is_refresh = true
+                axios
+                .get(this.table_get_route + this.table_2_categiry)
+                .then(response => {
+                    this.table_2 = response.data
+
+                    this.table_2_is_refresh = false
+                    this.table_2_id++
+                })
+                .catch(
+                    error => console.log(error)
+                );
+            },
+            get_data_in_table_3: function(){
+                this.table_3_is_refresh = true
+                axios
+                .get(this.table_get_route + this.table_3_categiry)
+                .then(response => {
+                    this.table_3 = response.data
+
+                    this.table_3_is_refresh = false
+                    this.teble_3_id++
+                })
+                .catch(
+                    error => console.log(error)
+                );
+            },
+            get_data_in_table_4: function(){
+                this.table_4_is_refresh = true
+                axios
+                .get(this.table_get_route + this.table_4_categiry)
+                .then(response => {
+                    this.table_4 = response.data
+
+                    this.table_4_is_refresh = false
+                    this.table_4_id++
+                })
+                .catch(
+                    error => console.log(error)
+                );
+            },
+
+            
+            table_1_del(itemId) {
+                axios
+                .post('/articles/del/' + itemId, {
+                    global_id: itemId,
+                })
+                .then(Response => {
+                    console.log(response)
+                    this.get_data_in_table_1()
+                })
+                .catch(error => console.log(error))
+            },
+        }
     }
 </script>
 

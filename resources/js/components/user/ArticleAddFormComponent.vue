@@ -1,0 +1,601 @@
+<template>
+<div class="col_md_12">
+    <div class="row">
+        <div class="form-group">  
+            <button type="submit" class="btn btn-primary" v-on:click="save_all()" >Save</button>
+        </div>
+    </div>
+    <div class="row">
+        <div class="tabs">
+            <input type="radio" name="tabs" id="1" checked="checked">
+            <label for="1" >global info</label>
+            <div class="tab" >
+                <form name="contact-form" method="POST" id="global_form" @submit.prevent="add_article"  style="margin-top: 5%;" enctyp ="multipart/form-data">
+                    <div class="form-group clearfix">
+                        <label for="name" class='col-xs-2 control-label'> Publish </label>
+                        <div class="col-xs-8">
+                            <select class="form-control" v-model="published" name="published" > 
+                                <option value="0">Not public</option> 
+                                <option value="1">Public</option> 
+                            </select> 
+                        </div>
+                    </div>
+
+                    <div class="form-group clearfix" v-if="this.category == 'event'">
+                        <label for="name" class='col-xs-2 control-label'> Completed </label>
+                        <div class="col-xs-8">
+                            <select class="form-control" v-model="published" name="published"> 
+                                <option value="0">No complited</option> 
+                                <option value="1">Complited</option> 
+                            </select> 
+                        </div>
+                    </div>
+
+
+                    <div class="form-group clearfix">
+                        <label for="name" class='col-xs-2 control-label'> Map </label>
+                        <div class="col-xs-8">
+                            <input type="text" v-model="map" name="map" class="form-control"> 
+                        </div>
+                    </div>
+
+
+                    <div class="form-group clearfix"  v-if="this.category != 'event' || this.category != 'indoor' || this.category != 'partner' || this.category != 'event' || this.category != 'news'">
+                        <label for="name" class='col-xs-2 control-label'> Weather </label>
+                        <div class="col-xs-8">
+                            <input type="text" v-model="weather" name="weather" class="form-control"> 
+                        </div>
+                    </div>
+
+                    <hr v-if="this.category == 'event'">
+
+                    <div class="form-group clearfix"  v-if="this.category == 'event'">
+                        <label for="name" class='col-xs-2 control-label'> Start data </label>
+                        <div class="col-xs-4">
+                            <input type="text" v-model="start_data_day" name="start_data_day" class="form-control"> 
+                        </div>
+                        <div class="col-xs-4">
+                            <input type="text" v-model="start_data_month" name="start_data_month" class="form-control"> 
+                        </div>
+                    </div>
+
+                    <div class="form-group clearfix" v-if="this.category == 'event'">
+                        <label for="name" class='col-xs-2 control-label'> End data </label>
+                        <div class="col-xs-4">
+                            <input type="text" v-model="start_data_day" name="start_data_day" class="form-control"> 
+                        </div>
+                        <div class="col-xs-4">
+                            <input type="text" v-model="and_data_month" name="and_data_month" class="form-control"> 
+                        </div>
+                    </div>
+
+                    <hr v-if="this.category == 'event' || this.category == 'partner' || this.category == 'indoor'">
+
+                    <div class="form-group clearfix"  v-if="this.category == 'event' || this.category == 'partner' || this.category == 'indoor'">
+                        <label for="name" class='col-xs-2 control-label'> facebook / twitter </label>
+                        <div class="col-xs-4">
+                            <input type="text" v-model="fb_link" name="fb_link" class="form-control"> 
+                        </div>
+                        <div class="col-xs-4">
+                            <input type="text" v-model="twit_link" name="twit_link" class="form-control"> 
+                        </div>
+                    </div>
+                    <div class="form-group clearfix" v-if="this.category == 'event' || this.category == 'partner' || this.category == 'indoor'">
+                        <label for="name" class='col-xs-2 control-label'> google / instagram </label>
+                        <div class="col-xs-4">
+                            <input type="text" v-model="google_link" name="google_link" class="form-control"> 
+                        </div>
+                        <div class="col-xs-4">
+                            <input type="text" v-model="inst_link" name="inst_link" class="form-control"> 
+                        </div>
+                    </div>
+                    <div class="form-group clearfix" v-if="this.category == 'event' || this.category == 'partner' || this.category == 'indoor'">
+                        <label for="name" class='col-xs-2 control-label'> website </label>
+                        <div class="col-xs-8">
+                            <!-- <input type="text" v-model="name" name="value name" value="old data" class="form-control"> -->
+                            <input type="text" v-model="web_link" name="web_link" class="form-control"> 
+                        </div>
+                    </div>
+
+                    <div class="form-group clearfix">
+                        <label for="name" class='col-xs-2 control-label'> image </label>
+                        <div class="col-xs-8">                    
+                            <input type="file" name="image" id="image" v-change="image">
+                        </div>
+                    </div>
+                    <div class="form-grup" v-if="imagepreview">
+                        <img :src="imagepreview" alt="uloadind image">
+                    </div>
+
+                </form>
+            </div>
+            <input type="radio" name="tabs" id="2">
+            <label for="2" >english article</label>
+            <div class="tab" >
+
+                <form name="contact-form" method="POST" @submit.prevent="add_us_article" style="margin-top: 5%;" enctyp ="multipart/form-data">
+                    <div class="form-group clearfix">
+                        <label for="name" class='col-xs-2 control-label'> Title </label>
+                        <div class="col-xs-8">
+                            <input type="text" name="name" v-model="us_title"  class="form-control"> 
+                        </div>
+                    </div>
+
+                    <div class="form-group clearfix">
+                        <label for="name" class='col-xs-2 control-label'> Short description </label>
+                        <div class="col-xs-8">
+                            <textarea type="text"  name="short_description" v-model="us_short_description" rows="15" class="form-cotrol md-textarea form-control"></textarea>
+                        </div>
+                    </div>
+
+                    <div class="form-group clearfix">
+                        <label for="name" class='col-xs-2 control-label'> text </label>
+                        <div class="col-xs-8">
+                            <textarea type="text"  name="text" rows="15" v-model="us_text" class="form-cotrol md-textarea form-control"></textarea>
+                        </div>
+                    </div>
+
+                    <div class="form-group clearfix">
+                        <label for="name" class='col-xs-2 control-label'> Routes description </label>
+                        <div class="col-xs-8">
+                            <textarea type="text"  name="route" rows="15" v-model="us_route" class="form-cotrol md-textarea form-control"></textarea>
+                        </div>
+                    </div>
+
+                    <div class="form-group clearfix">
+                        <label for="name" class='col-xs-2 control-label'> How to get hear </label>
+                        <div class="col-xs-8">
+                            <textarea type="text"  name="how_get" rows="15" v-model="us_how_get" class="form-cotrol md-textarea form-control"></textarea>
+                        </div>
+                    </div>
+
+                    <div class="form-group clearfix">
+                        <label for="name" class='col-xs-2 control-label'> Best time for climbing </label>
+                        <div class="col-xs-8">
+                            <textarea type="text"  name="best_time" rows="15" v-model="us_best_time" class="form-cotrol md-textarea form-control"></textarea>
+                        </div>
+                    </div>
+
+                    <div class="form-group clearfix">
+                        <label for="name" class='col-xs-2 control-label'> what you need </label>
+                        <div class="col-xs-8">
+                            <textarea type="text"  name="what_need" rows="15" v-model="us_what_need" class="form-cotrol md-textarea form-control"></textarea>
+                        </div>
+                    </div>
+
+                    <div class="form-group clearfix">
+                        <label for="name" class='col-xs-2 control-label'> Info / contact </label>
+                        <div class="col-xs-8">
+                            <textarea type="text"  name="info" rows="15" v-model="us_info" class="form-cotrol md-textarea form-control"></textarea>
+                        </div>
+                    </div>
+
+                    <div class="form-group clearfix">
+                        <label for="name" class='col-xs-2 control-label'> Working time </label>
+                        <div class="col-xs-8">
+                            <!-- <input type="text" name="value name" value="old data" class="form-control"> -->
+                            <input type="text" name="time" v-model="us_time" class="form-control"> 
+                        </div>
+                    </div>
+
+                    <div class="form-group clearfix">
+                        <label for="name" class='col-xs-2 control-label'> Price description </label>
+                        <div class="col-xs-8">
+                            <textarea type="text" name="prise_text" rows="15" v-model="us_price_text"  class="form-cotrol md-textarea form-control"></textarea>
+                        </div>
+                    </div>
+
+                    <div class="form-group clearfix">
+                        <label for="name" class='col-xs-2 control-label'> Minimal price </label>
+                        <div class="col-xs-8">
+                            <!-- <input type="text" name="value name" value="old data" class="form-control"> -->
+                            <input type="text" name="price_from" value="price_from" v-model="us_price_from" class="form-control"> 
+                        </div>
+                    </div>
+
+                    <hr>
+
+
+                    <div class="form-group clearfix">
+                        <label for="name" class='col-xs-2 control-label'> Meta keyword </label>
+                        <div class="col-xs-8">
+                            <!-- <input type="text" name="value name" value="old data" class="form-control"> -->
+                            <input type="text" name="meta_keyword" value="meta_keyword" v-model="us_meta_keyword"  class="form-control"> 
+                        </div>
+                    </div>
+
+                </form>
+            </div>
+
+            <input type="radio" name="tabs" id="3">
+            <label for="3" >rusian article</label>
+            <div class="tab">
+
+                <form name="contact-form" method="POST" @submit.prevent="add_ru_article" style="margin-top: 5%;" enctyp ="multipart/form-data">
+                    <div class="form-group clearfix">
+                        <label for="name" class='col-xs-2 control-label'> Title </label>
+                        <div class="col-xs-8">
+                            <!-- <input type="text" name="value name" value="old data" class="form-control"> -->
+                            <input type="text" name="title" v-model="ru_title" class="form-control"> 
+                        </div>
+                    </div>
+
+                    <div class="form-group clearfix">
+                        <label for="name" class='col-xs-2 control-label'> Short description </label>
+                        <div class="col-xs-8">
+                            <textarea type="text"  name="short_description" v-model="ru_short_description"  rows="15" class="form-cotrol md-textarea form-control"></textarea>
+                        </div>
+                    </div>
+
+                    <div class="form-group clearfix">
+                        <label for="name" class='col-xs-2 control-label'> text </label>
+                        <div class="col-xs-8">
+                            <textarea type="text"  name="text" rows="15"  v-model="ru_text" class="form-cotrol md-textarea form-control"></textarea>
+                        </div>
+                    </div>
+
+                    <div class="form-group clearfix">
+                        <label for="name" class='col-xs-2 control-label'> Routes description </label>
+                        <div class="col-xs-8">
+                            <textarea type="text"  name="route" rows="15"  v-model="ru_route" class="form-cotrol md-textarea form-control"></textarea>
+                        </div>
+                    </div>
+
+                    <div class="form-group clearfix">
+                        <label for="name" class='col-xs-2 control-label'> How to get hear </label>
+                        <div class="col-xs-8">
+                            <textarea type="text"  name="how_get" rows="15"  v-model="ru_how_get" class="form-cotrol md-textarea form-control"></textarea>
+                        </div>
+                    </div>
+
+                    <div class="form-group clearfix">
+                        <label for="name" class='col-xs-2 control-label'> Best time for climbing </label>
+                        <div class="col-xs-8">
+                            <textarea type="text"  name="best_time" rows="15"  v-model="ru_best_time" class="form-cotrol md-textarea form-control"></textarea>
+                        </div>
+                    </div>
+
+                    <div class="form-group clearfix">
+                        <label for="name" class='col-xs-2 control-label'> what you need </label>
+                        <div class="col-xs-8">
+                            <textarea type="text"  name="what_need" rows="15" v-model="ru_what_need" class="form-cotrol md-textarea form-control"></textarea>
+                        </div>
+                    </div>
+
+                    <div class="form-group clearfix">
+                        <label for="name" class='col-xs-2 control-label'> Info / contact </label>
+                        <div class="col-xs-8">
+                            <textarea type="text"  name="info" rows="15" v-model="ru_info" class="form-cotrol md-textarea form-control"></textarea>
+                        </div>
+                    </div>
+
+                    <div class="form-group clearfix">
+                        <label for="name" class='col-xs-2 control-label'> Working time </label>
+                        <div class="col-xs-8">
+                            <!-- <input type="text" name="value name" value="old data" class="form-control"> -->
+                            <input type="text" name="time" value="time" v-model="ru_time" class="form-control"> 
+                        </div>
+                    </div>
+
+                    <div class="form-group clearfix">
+                        <label for="name" class='col-xs-2 control-label'> Price description </label>
+                        <div class="col-xs-8">
+                            <textarea type="text" name="price_text" rows="15"  v-model="ru_price_text" class="form-cotrol md-textarea form-control"></textarea>
+                        </div>
+                    </div>
+
+                    <div class="form-group clearfix">
+                        <label for="name" class='col-xs-2 control-label'> Minimal price </label>
+                        <div class="col-xs-8">
+                            <!-- <input type="text" name="value name" value="old data" class="form-control"> -->
+                            <input type="text" name="price_from" value="price_from" v-model="ru_price_from" class="form-control"> 
+                        </div>
+                    </div>
+
+                    <hr>
+
+
+                    <div class="form-group clearfix">
+                        <label for="name" class='col-xs-2 control-label'> Meta keyword </label>
+                        <div class="col-xs-8">
+                            <!-- <input type="text" name="value name" value="old data" class="form-control"> -->
+                            <input type="text" name="meta_keyword" value="meta_keyword"  v-model="ru_meta_keyword" class="form-control"> 
+                        </div>
+                    </div>
+
+                </form>
+            </div>
+
+            <input type="radio" name="tabs" id="4">
+            <label for="4" >georgian article</label>
+            <div class="tab">
+
+                <form name="contact-form" method="POST" @submit.prevent="add_ka_article" style="margin-top: 5%;" enctyp ="multipart/form-data">
+                    <div class="form-group clearfix">
+                        <label for="name" class='col-xs-2 control-label'> Title </label>
+                        <div class="col-xs-8">
+                            <!-- <input type="text" name="value name" value="old data" class="form-control"> -->
+                            <input type="text" name="value name"  v-model="ka_title" class="form-control"> 
+                        </div>
+                    </div>
+
+                    <div class="form-group clearfix">
+                        <label for="name" class='col-xs-2 control-label'> Short description </label>
+                        <div class="col-xs-8">
+                            <textarea type="text"  name="short_description"  v-model="ka_short_description" rows="15" class="form-cotrol md-textarea form-control"></textarea>
+                        </div>
+                    </div>
+
+                    <div class="form-group clearfix">
+                        <label for="name" class='col-xs-2 control-label'> text </label>
+                        <div class="col-xs-8">
+                            <textarea type="text"  name="txt" rows="15"  v-model="ka_text" class="form-cotrol md-textarea form-control"></textarea>
+                        </div>
+                    </div>
+
+                    <div class="form-group clearfix">
+                        <label for="name" class='col-xs-2 control-label'> Routes description </label>
+                        <div class="col-xs-8">
+                            <textarea type="text"  name="route" rows="15"  v-model="ka_route" class="form-cotrol md-textarea form-control"></textarea>
+                        </div>
+                    </div>
+
+                    <div class="form-group clearfix">
+                        <label for="name" class='col-xs-2 control-label'> How to get hear </label>
+                        <div class="col-xs-8">
+                            <textarea type="text"  name="how_get" rows="15"  v-model="ka_how_get" class="form-cotrol md-textarea form-control"></textarea>
+                        </div>
+                    </div>
+
+                    <div class="form-group clearfix">
+                        <label for="name" class='col-xs-2 control-label'> Best time for climbing </label>
+                        <div class="col-xs-8">
+                            <textarea type="text"  name="best_time" rows="15"  v-model="ka_best_time" class="form-cotrol md-textarea form-control"></textarea>
+                        </div>
+                    </div>
+
+                    <div class="form-group clearfix">
+                        <label for="name" class='col-xs-2 control-label'> what you need </label>
+                        <div class="col-xs-8">
+                            <textarea type="text"  name="what_need" rows="15"  v-model="ka_what_need" class="form-cotrol md-textarea form-control"></textarea>
+                        </div>
+                    </div>
+
+                    <div class="form-group clearfix">
+                        <label for="name" class='col-xs-2 control-label'> Info / contact </label>
+                        <div class="col-xs-8">
+                            <textarea type="text"  name="info" rows="15"  v-model="ka_info" class="form-cotrol md-textarea form-control"></textarea>
+                        </div>
+                    </div>
+
+                    <div class="form-group clearfix">
+                        <label for="name" class='col-xs-2 control-label'> Working time </label>
+                        <div class="col-xs-8">
+                            <!-- <input type="text" name="value name" value="old data" class="form-control"> -->
+                            <input type="text" name="time" value="time"  v-model="ka_time" class="form-control"> 
+                        </div>
+                    </div>
+
+                    <div class="form-group clearfix">
+                        <label for="name" class='col-xs-2 control-label'> Price description </label>
+                        <div class="col-xs-8">
+                            <textarea type="text" name="prixe_text" rows="15" v-model="ka_price_text"  class="form-cotrol md-textarea form-control"></textarea>
+                        </div>
+                    </div>
+
+                    <div class="form-group clearfix">
+                        <label for="name" class='col-xs-2 control-label'> Minimal price </label>
+                        <div class="col-xs-8">
+                            <!-- <input type="text" name="value name" value="old data" class="form-control"> -->
+                            <input type="text" name="price_from" value="price_from"  v-model="ka_price_from" class="form-control"> 
+                        </div>
+                    </div>
+
+                    <hr>
+
+
+                    <div class="form-group clearfix">
+                        <label for="name" class='col-xs-2 control-label'> Meta keyword </label>
+                        <div class="col-xs-8">
+                            <!-- <input type="text" name="value name" value="old data" class="form-control"> -->
+                            <input type="text" name="meta_keyword"  v-model="ka_meta_keyword" class="form-control"> 
+                        </div>
+                    </div>
+
+                </form>
+            </div>
+            
+        </div>
+    </div>
+</div>
+</template>
+
+<script>
+    export default {
+        props: [
+            'back_url',
+            'category'
+        ],
+        data(){
+            return {
+                published: "",
+                completed: "",
+                map: "",
+                weather: "",
+                start_data_day: "",
+                and_data_day: "",
+                and_data_month: "",
+                and_data_month: "",
+                fb_link: "",
+                twit_link: "",
+                google_link: "",
+                inst_link: "",
+                web_link: "",
+
+                image: null,
+                imagepreview: null,
+
+
+                // 
+                // 
+                // 
+                us_title: "",
+                us_short_description: "",
+                us_text: "",
+                us_route: "",
+                us_how_get: "",
+                us_best_time: "",
+                us_what_need: "",
+                us_info: "",
+                us_time: "",
+                us_price_from: "",
+                us_meta_keyword: "",
+
+
+                // 
+                // 
+                // 
+                ka_title: "",
+                ka_short_description: "",
+                ka_text: "",
+                ka_route: "",
+                ka_how_get: "",
+                ka_best_time: "",
+                ka_what_need: "",
+                ka_info: "",
+                ka_time: "",
+                ka_price_from: "",
+                ka_meta_keyword: "",
+
+
+                // 
+                // 
+                // 
+                ru_title: "",
+                ru_short_description: "",
+                ru_text: "",
+                ru_route: "",
+                ru_how_get: "",
+                ru_best_time: "",
+                ru_what_need: "",
+                ru_info: "",
+                ru_time: "",
+                ru_price_from: "",
+                ru_meta_keyword: "",
+            }
+        },
+        mounted() {
+            // console.log(this.catagory)
+        },
+        methods: {
+            add_global_article() {
+                let data = new FormData
+                data.append("image", this.image)
+                axios
+                .post('/articles/add/' + this.category, {
+                    published: this.published,
+                    completed: this.completed,
+                    map: this.map,
+                    weather: this.weather,
+
+                    start_data_day: this.start_data_day,
+                    and_data_day: this.and_data_day,
+                    start_data_month: this.start_data_month,
+                    and_data_month: this.and_data_month,
+
+                    fb_link: this.fb_link,
+                    twit_link: this.twit_link,
+                    google_link: this.google_link,
+                    inst_link: this.inst_link,
+                    web_link: this.web_link,
+
+                    image: this.image
+                })
+                .then(Response => { console.log(response) })
+                .catch(error => console.log(error))
+            },
+            add_ru_article() {
+                axios
+                .post('/articles/ru/add/' + this.category, {
+                    ru_title: this.ru_title,
+                    ru_short_description: this.ru_short_description,
+                    ru_text: this.ru_text,
+                    ru_route: this.ru_route,
+                    ru_how_get: this.ru_how_get,
+                    ru_best_time: this.ru_best_time,
+                    ru_what_need: this.ru_what_need,
+                    ru_info: this.ru_info,
+                    ru_time: this.ru_time,
+                    ru_price_text: this.ru_price_text,
+                    ru_price_from: this.ru_price_from,
+                    ru_meta_keyword: this.ru_meta_keyword,
+                })
+                .then(Response => { console.log(response) })
+                .catch(error => console.log(error))
+            },
+            add_us_article() {
+                axios
+                .post('/articles/us/add/' + this.category, {        
+                    us_title: this.us_title,
+                    us_short_description: this.us_short_description,
+                    us_text: this.us_text,
+                    us_route: this.us_route,
+                    us_how_get: this.us_how_get,
+                    us_best_time: this.us_best_time,
+                    us_what_need: this.us_what_need,
+                    us_info: this.us_info,
+                    us_time: this.us_time,
+                    us_price_text: this.us_price_text,
+                    us_price_from: this.us_price_from,
+                    us_meta_keyword: this.us_meta_keyword,
+                })
+                .then(Response => { console.log(response) })
+                .catch(error => console.log(error))
+            },
+            add_ka_article() {
+                axios
+                .post('/articles/ka/add/' + this.category, {
+                    ka_title: this.ka_title,
+                    ka_short_description: this.ka_short_description,
+                    ka_text: this.ka_text,
+                    ka_route: this.ka_route,
+                    ka_how_get: this.ka_how_get,
+                    ka_best_time: this.ka_best_time,
+                    ka_what_need: this.ka_what_need,
+                    ka_: this.ka_,
+                    ka_time: this.ka_time,
+                    ka_price_text: this.ka_price_text,
+                    ka_price_from: this.ka_price_from,
+                    ka_meta_keyword: this.ka_meta_keyword,
+                })
+                .then(Response => {console.log(response)})
+                .catch(error => console.log(error))
+            },
+            image_selected(e){
+                this.image = e.targer.file[0];
+
+                let reder = new FileReader()
+                reader.readAsDataUrl(this.image)
+                reader.onload = e => {
+                    this.imagepreview = e.target.resurlt
+                }
+                console.log('test')
+            },
+            save_all() {
+                this.add_us_article();
+                console.log('englihs article upload successful');
+                this.add_ka_article();
+                console.log('georgian article upload successful');
+                this.add_ru_article();
+                console.log('rusian article upload successful');
+
+                this.add_global_article();
+                // this.image_selected();
+                console.log('global article upload successful');
+
+                window.location.href = this.back_url;
+            }
+        }
+        
+    }
+</script>

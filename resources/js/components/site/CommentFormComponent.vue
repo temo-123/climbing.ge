@@ -2,16 +2,23 @@
     <div class="container">
         <div class="row">
             <div class="col-md-8">
-                <div class="col-md-12">
+                <!-- <div class="col-md-12"> -->
                     <form @submit.prevent="add_comment" id="js_form" class="contact-form" method="POST" enctype="multipart/form-data">
-                        <div class="container">
-                            <div class="row">
-                                <div class='col-md-12'>
+                        <!-- <div class="container"> -->
+                            <!-- <div class="row"> -->
+                                <!-- <div class='col-md-12'> -->
                                     
                                     <div class="row">
                                         <div class="col-md-12">
                                             <h2 id='comments'>Comments</h2>
                                             <!-- <p>Incorrect comments or comments containing obscene language will be deleted.</p> -->
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <div class="alert alert-danger" role="alert">
+                                                {{errors.get()}}
+                                            </div>
                                         </div>
                                     </div>
                                     
@@ -54,41 +61,75 @@
                                     </div>
 
                                     <div class="row">
-                                        <div class="col-md-6">
+                                        <div class="col-md-7">
                                             <div class="form-group">
                                                 <div class="form-group form_left">
                                                     <div class="g-recaptcha" data-sitekey="6LfV980UAAAAAFSMmbkzVw1J_-Q2cDroTJoBD9k1"></div>
                                                 </div>
                                             </div>
                                         </div>
-                                            <div class="col-md-6">
-                                        <div class="form-group">
-                                                <button type="submit" class="btn main-btn pull-right">Send Comment</button>
+                                        <div class="col-md-3">
+                                            <div class="form-groupe">
+                                                <button @click="update" class="btn main-btn pull-right" v-if="!is_refresh">Refresh ({{id}})</button>
+                                                <span class="badge badge-primare mb-1" v-if="is_refresh">Updating...</span>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-2">
+                                            <div class="form-group">
+                                                <button class="btn main-btn pull-right">Send</button>
+                                                <!-- <button @click="update" class="btn main-btn pull-right">Send</button> -->
                                             </div>
                                         </div>
                                     </div>
-                                    
-                                    <div class='row'>
-                                        <div class="col-md-12">
-                                        </div>
-                                    </div>
-                                
-                                </div>
-                            </div>
-                        </div>
+
+                                <!-- </div> -->
+                            <!-- </div> -->
+                        <!-- </div> -->
                     </form>
-                </div>
             </div>
         </div>
         <div class="row">
             <div class="col-md-8">
-                <comment-component :article_id_for_filtr=this.article_id></comment-component>
+
+                <!-- <comment-component :article_id_for_filtr=this.article_id></comment-component> -->
+
+                <div class="wrap">
+                    <ul>
+                        <li v-for="comment in this.comments" :key="comment.id">
+                            <div class="row">
+                                <hr>
+                                <div class="col-md-2"><img :src="'../../public/images/site_img/demo/user.png'" /></div>
+                                <div class="col-md-10">
+                                    <h2><strong>{{comment.name}} {{comment.surname}}</strong> [ {{comment.email}} ]</h2>
+                                    <div>
+                                        <p>{{comment.text}}</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+
             </div>
         </div>
     </div>
 </template>
 
 <script>
+    class Errors{
+        constructor(){
+            this.errors = {}
+        }
+        get(field){
+            if(this.errors[field]){
+                return this.errors[filed][0]
+            }
+        }
+        record(errors){
+            this.errors = errors.errors
+        }
+    }
+
     export default {
         props: [
             "article_id",
@@ -96,7 +137,6 @@
             "user_surname",
             "user_email",
             "is_login",
-            "article_id"
         ],
         data() {
             return {
@@ -104,10 +144,18 @@
                 surname: "",
                 email: "",
                 text: "",
+
+                test:"test",
+
+                errors: new Errors(),
+
+                comments: [],
+                is_refresh: false,
+                id: 0,
             }
         },
         mounted() {
-            console.log(this.is_login)
+            this.update()
         },
         methods: {
             add_comment() {
@@ -120,13 +168,37 @@
                     article_id: this.article_id
                 })
                 .then(Response => {
-                    alert("Tenk you for your coment"),
-                    this.comment.name = '',
-                    update,
+                    alert("Tenk you for your coment " + this.name + "."),
+                    this.update,
                     console.log(response)
                 })
-                .catch(error => console.log(error))
-            }
+                .catch(function(response){ 
+                    console.log("you have eny error")
+                    this.errors = error
+                    console.log(test)
+                })
+            },
+
+            update: function(){
+                this.is_refresh = true
+                axios
+                .get('/get_comments/' + this.article_id)
+                .then(response => {
+                    article_id: this.article_id,
+                    console.log("updating")
+                    console.log(response.data)
+                    this.comments = response.data
+                    this.is_refresh = false
+                    this.id++ 
+                })
+                .then(Response => {
+                    // console.log(response)
+                })
+                .catch(
+                    error => console.log(error)
+                );
+                    
+            },
         }
     }
 </script>

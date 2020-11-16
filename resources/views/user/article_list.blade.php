@@ -23,12 +23,9 @@
                         @slot('parent') Home @endslot
                         @slot('active') {{$active}} @endslot
                     @endcomponent
-
+                    
                     <tabs_component 
-                        @if(isset($table_1)) :table_1="{{$table_1}}" @endif
-                        @if(isset($table_2)) :table_2="{{$table_2}}" @endif 
-                        @if(isset($table_3)) :table_3="{{$table_3}}" @endif 
-                        @if(isset($table_4)) :table_4="{{$table_4}}" @endif 
+                        table_1_get_route="/articles/get_article_data/"
 
                         @if(isset($table_1_name)) :table_1_name="{{ json_encode($table_1_name) }}" @endif
                         @if(isset($table_2_name)) :table_2_name="{{ json_encode($table_2_name) }}" @endif
@@ -39,6 +36,11 @@
                         @if(isset($table_2_add_url)) table_2_add_url="{{ route($table_2_add_url, array('category'=>$table_2_add_category)) }}" @endif
                         @if(isset($table_3_add_url)) table_3_add_url="{{ route($table_3_add_url, array('category'=>$table_3_add_category)) }}" @endif
                         @if(isset($table_4_add_url)) table_4_add_url="{{ route($table_4_add_url, array('category'=>$table_4_add_category)) }}" @endif
+
+                        @if(isset($table_1_add_category)) table_1_categiry="{{ $table_1_add_category }}" @endif
+                        @if(isset($table_2_add_category)) table_2_categiry="{{ $table_2_add_category }}" @endif
+                        @if(isset($table_3_add_category)) table_3_categiry="{{ $table_3_add_category }}" @endif
+                        @if(isset($table_4_add_category)) table_4_categiry="{{ $table_4_add_category }}" @endif
                         >
                     </tabs_component>
 

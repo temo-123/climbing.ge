@@ -38,7 +38,7 @@
             update: function(){
                 this.is_refresh = true
                 axios.get('/get_comments').then(response => {
-                    console.log(response)
+                    // console.log(response)
                     this.comments = response.data
                     this.is_refresh = false
                     this.id++

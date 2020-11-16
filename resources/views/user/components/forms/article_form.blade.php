@@ -17,13 +17,10 @@
             @endif
         </div>
         <div class="form-group">
-            <a href="{{ url()->previous() }}" class='btn btn-primary'>Back</a>
+            <a href="{{ url()->previous() }}" class='btn btn-primary'  onclick="return confirm('Are you sure, you want go back?')">Back</a>
         </div>
-        <div class="form-group">  
-            <input type="submit" form="myform" />
-        </div>
+        <hr>
     </div>
-
     <div class="wrapper container-fluid container">
         @if (count($errors) > 0)
             <div class="alert alert-danger">
@@ -34,8 +31,8 @@
             </ul>
             </div>
         @endif
-        
-        @csrf <article_form_component  category="{{$category}}" add_url="{{ route('articleAdd', array($category)) }}"></article_form_component>
+
+        @csrf <article_add_form_component  :category="{{ json_encode($category) }}" back_url="{{ route('article_list', array($category)) }}"></article_add_form_component>
     
     </div>
 

@@ -1,6 +1,6 @@
 <?php
 return [
-    'site name' => 'მეკლდეურობა საქართველოში',
+    'site name' => 'climbing.ge',
 
     'climbing' => 'მეკლდეურობა',
     'indoor climbing' => 'საცოცი დარბაზები',

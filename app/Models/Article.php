@@ -9,14 +9,10 @@ use Spatie\Searchable\SearchResult;
 
 class Article extends Model
 {
+    public $table = 'articles';
+
     protected $fillable = [
-	    'title', 
-	    'article_title',
-	    'text', 
-	    'description_short', 
-	    'image', 
-	    'map', 
-	    'info', 
+	    'url_title',
 
 	    'fb_link', 
 		'google_link', 
@@ -28,11 +24,11 @@ class Article extends Model
 		'and_data_day', 
 		'and_data_month', 
 
+		'image',
+
 		'meta_title', 
 		'meta_description', 
 		'meta_keyword',
-	    
-	    'tags',
 
 	    'published',
 	    'completed',

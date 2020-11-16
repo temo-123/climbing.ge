@@ -44,7 +44,7 @@ Route::group(['prefix' => LocalisationService::locale(),'middleware' => 'setLoca
                 Route::post('/send_message', 'MessageController@send');
 
                 Route::any('/add_comment', 'CommentController@add_comment');
-                Route::get('/get_comments', "CommentController@get_comments");
+                Route::get('/get_comments/{article_id}', "CommentController@get_comments");
 
                 Route::get('/sitemap.xml', 'SitemapController@sitemap_xml');
                 Route::get('/sitemap', 'SitemapController@sitemap');
@@ -96,14 +96,24 @@ Route::group(['prefix' => LocalisationService::locale(),'middleware' => 'setLoca
                         // });
                     }); 
             
-                    Route::group(['prefix'=>'articles'], function() {
-                        Route::get('/{article_category}', ['uses'=>'ArticlesController@index', 'as'=>'article_list']);
-                        Route::match(['get','post'], '/add/{category}', ['uses'=>'ArticlesController@add','as'=>'articleAdd']);
-                        Route::match(['get', 'post', 'delete'], '/edit/{id}', ['uses' => 'ArticlesController@edit', 'as'=>'articleEdit']);
+                    Route::group(['prefix'=>'articles', 'namespace'=>'Article'], function() {
+                        Route::any('/get_article_data/{article_category}', 'ArticleController@get_article_data');
+
+                        Route::get('/{article_category}', ['uses'=>'ArticleController@index', 'as'=>'article_list']);
+                        Route::match(['get','post'], '/add/{category}', ['uses'=>'ArticleController@add_global_article','as'=>'articleAdd']);
+                        Route::match(['get', 'post'], '/edit/{id}', ['uses' => 'ArticleController@edit_global_article', 'as'=>'articleEdit']);
+
+                        Route::match(['get','post'], '/us/add/{category}', ['uses'=>'UsArticleController@add_us_article','as'=>'usArticleAdd']);
+                        Route::match(['get', 'post'], '/us/edit/{id}', ['uses' => 'UsArticleController@edit_us_article', 'as'=>'usArticleEdit']);
+
+                        Route::match(['get','post'], '/ru/add/{category}', ['uses'=>'RuArticleController@add_ru_article','as'=>'ruArticleAdd']);
+                        Route::match(['get', 'post'], '/ru/edit/{id}', ['uses' => 'RuArticleController@edit_ru_article', 'as'=>'ruArticleEdit']);
+
+                        Route::match(['get','post'], '/ka/add/{category}', ['uses'=>'KaArticleController@add_ka_article','as'=>'kaArticleAdd']);
+                        Route::match(['get', 'post'], '/ka/edit/{id}', ['uses' => 'KaArticleController@edit_ka_article', 'as'=>'kaArticleEdit']);
+
+                        Route::match(['post', 'delete'], '/del/{id}', ['uses' => 'ArticleController@delete', 'as'=>'articleDel']);
                     });    
-            
-
-
 
                     Route::group(['prefix'=>'products'], function() {
                         Route::get('/', ['uses'=>'ProductsController@index', 'as'=>'products_list']);
@@ -112,20 +122,13 @@ Route::group(['prefix' => LocalisationService::locale(),'middleware' => 'setLoca
                         Route::match(['delete'], '/delete/{product}', ['uses' => 'ProductsController@delete', 'as'=>'productsDel']);
                         Route::get('/favorite', ['uses'=>'ProductsController@favorite', 'as'=>'favorite']);
                     }); 
-                    
-                    
-
-
-
-
-
-
 
 
                     Route::group(['prefix'=>'gallery'], function() {
                         Route::get('/', ['uses'=>'GalleryController@index', 'as'=>'gallery_list']);
-                        Route::match(['get','post'], '/add', ['uses'=>'GalleryController@store','as'=>'galleryAdd']);
-                        Route::match(['get', 'post', 'delete'], '/edit/{id}', ['uses' => 'GalleryController@edit', 'as'=>'galleryEdit']);
+                        Route::match(['get','post'], '/add', ['uses'=>'GalleryController@add','as'=>'galleryAdd']);
+                        Route::match(['get', 'post'], '/edit/{id}', ['uses' => 'GalleryController@edit', 'as'=>'galleryEdit']);
+                        Route::match(['get', 'post', 'delete'], '/delete/{id}', ['uses' => 'GalleryController@delete', 'as'=>'galleryDel']);
                     });
                    
             

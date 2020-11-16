@@ -31,23 +31,43 @@
                     <div class="panel panel-default target">
                         <div class="panel-heading" contenteditable="false">Pets I Own</div>
                             <div class="panel-body">
-                                
                                 <div class="row">
+
+                                    <div class="col-md-4">
+                                        <div class="thumbnail">
+                                            <a href="{{ route('galleryAdd') }}">
+                                                <img alt="300x200" src="{{ asset('images/gallery_img/function_img/add_image.png') }}">
+                                            </a>
+                                        </div>
+                                    </div>
+
                                     @foreach($table_1 as $tab_1)
                                     <div class="col-md-4">
                                         <div class="thumbnail">
-                                            <img alt="300x200" src="{{ asset('images/gallery_img/'.$tab_1 -> image) }}">
+
+                                            <a href="{{route('galleryEdit',[$tab_1->id])}}">
+                                                <img alt="300x200" src="{{ asset('images/gallery_img/'.$tab_1 -> image) }}" style="height: 10em;">
+                                            </a>
+
                                             <div class="caption">
-                                                <h3>
-                                                    {{$tab_1->title}}
-                                                </h3>
-                                                <p>
-                                                    {{$tab_1->text}}
-                                                </p>
+                                                <div class="row">
+                                                    <h3> {{$tab_1->title}} </h3>
+                                                </div>
+                                                <div class="row">
+                                                    <form method="post" action="{{route('galleryDel',[$tab_1->id])}}">
+                                                        {{ method_field('DELETE') }}
+                                                        <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                                                            <button type="submit" class="btn btn-danger" onclick="return confirm('Are you sure you want to delete this item')">    
+                                                                Del
+                                                            </button>
+                                                    </form>
+                                                </div>
                                             </div>
+
                                         </div>
                                     </div>
                                     @endforeach
+
                                 </div>
                             </div>
                         </div>
@@ -57,14 +77,3 @@
         </div>
     </div>
 @endsection
-
-
-
-
-
-
-
-
-
-
-
