@@ -99,22 +99,23 @@
                                 <div class="isotope-item-dtls">
                                     <h3>{{ $article[0][0] -> title }}</h3>
                                     <div class="article_size">
-                                        {!! $article[0][0] -> short_description !!}
-
-                                        @if(isset($route_quantity))
-                                        @foreach($route_quantity as $route_num)
-                                        @if ($article[0][0] -> title == $route_num[0])
-                                        {{$route_num[1]}}
-                                        {{$route_num[2]}}.
-                                        {{$route_num[3]}}
-                                        {{$route_num[4]}}.
-                                        <div class="clearfix"></div>
-                                        @if ($route_num[5] > 0)
-                                        Multi-pitch {{$route_num[5]}}.
-                                        @endif
-                                        @endif
-                                        @endforeach
-                                        @endif
+                                        <div class="col text-center">
+                                            {!! $article[0][0] -> short_description !!}
+                                        </div>
+                                            @if(isset($route_quantity))
+                                            @foreach($route_quantity as $route_num)
+                                            @if ($article['url_title'] == $route_num[0])
+                                            {{$route_num[1]}}
+                                            {{$route_num[2]}}.
+                                            {{$route_num[3]}}
+                                            {{$route_num[4]}}.
+                                            <div class="clearfix"></div>
+                                            @if ($route_num[5] > 0)
+                                            Multi-pitch {{$route_num[5]}}.
+                                            @endif
+                                            @endif
+                                            @endforeach
+                                            @endif
                                     </div>
                                 </div><!--/isotope-item-dtls-->
 

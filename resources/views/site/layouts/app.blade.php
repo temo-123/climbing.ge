@@ -104,12 +104,12 @@
 
 
     <!-- Scripts -->
-    <!-- <script src="{{ asset('assets/js/bootstrap.min.js') }}" type="text/javascript"></script>
+    {{-- <!-- <script src="{{ asset('assets/js/bootstrap.min.js') }}" type="text/javascript"></script>
     <script src="{{ asset('assets/js/jquery.fractionslider.min.js') }}" type="text/javascript" charset="utf-8"></script>
     <script src="{{ asset('assets/js/animation.js') }}" type="text/javascript" charset="utf-8"></script>
     <script src="{{ asset('assets/js/less.js') }}" type="text/javascript"></script>
     <script src="{{ asset('assets/js/isotop.js') }}"></script>
-    <script src="{{ asset('assets/js/jquery.colorbox.js') }}"></script> -->
+    <script src="{{ asset('assets/js/jquery.colorbox.js') }}"></script> --> --}}
 
     <!--Security system on index-->
     <script src='https://cdnjs.cloudflare.com/ajax/libs/vue/2.1.7/vue.js'></script>
@@ -129,7 +129,7 @@
     <!-- My JS -->
     <script src="{{ asset('assets/js/my_js/my_scripts.js') }}" type="text/javascript" ></script>
     <script src="{{ asset('assets/js/my_js/galery_image_open.js') }}" type="text/javascript" ></script><!--For index gallery-->
-    <!-- <script src="{{ asset('assets/js/my_js/indoor_stars.js') }}" type="text/javascript"></script>For indoor stars block -->
+    {{-- <!-- <script src="{{ asset('assets/js/my_js/indoor_stars.js') }}" type="text/javascript"></script>For indoor stars block --> --}}
     
 </body>
 </html>

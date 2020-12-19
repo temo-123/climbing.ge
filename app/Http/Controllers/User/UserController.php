@@ -25,7 +25,7 @@ class UserController extends Controller
      {
          $request->user()->authorizeRoles(['admin']);
           
-         if (view()->exists('user.article_list')) {
+         if (view()->exists('user.data_table')) {
              
              $users = User::all();
              
@@ -40,7 +40,7 @@ class UserController extends Controller
                  'page_route' => 'events_page',
                  'no_edit' => '1',
              ];
-             return view('user.article_list',$data);
+             return view('user.data_table',$data);
          }
          abort(404);
      }
@@ -51,26 +51,37 @@ class UserController extends Controller
       *
       * @return \Illuminate\Http\Response
       */
-     public function options_index(Request $request)
-     {
-         $request->user()->authorizeRoles(['user', 'manager', 'admin']);
-         
-         if (view()->exists('user.options')) {
+    public function options_index(Request $request)
+    {
+        $request->user()->authorizeRoles(['user', 'manager', 'admin']);
+        
+        if (view()->exists('user.options')) {
              
-             $users = User::all();
-             
-             $data = [
-                 'title'=>'options',
-                 'table_1'=>$users,
-                 'table_1_edit_url'=>'userDel',
-                 'table_1_name'=>'Options',
-                 'user_status'=>'',
-                 'page_name' => 'Options',
-                 'active' => 'User',
-                 'page_route' => 'events_page',
-                 'no_edit' => '1',
-             ];
-             return view('user.options',$data);
+            $users = User::all();
+
+            if(Auth::user()->hasRole('admin')){
+                $status = 'Admin';
+            }
+            elseif(Auth::user()->hasRole('manager')){
+                $status = 'Content manager';
+            }
+            else{
+                $status = 'User';
+            }
+            // dd($status);
+            $data = [
+                'status' => $status,
+                'title'=>'options',
+                'table_1'=>$users,
+                'table_1_edit_url'=>'userDel',
+                'table_1_name'=>'Options',
+                'user_status'=>'',
+                'page_name' => 'Options',
+                'active' => 'User',
+                'page_route' => 'events_page',
+                'no_edit' => '1',
+            ];
+            return view('user.options',$data);
          }
          abort(404);
      }
@@ -81,9 +92,11 @@ class UserController extends Controller
       *
       * @return \Illuminate\Http\Response
       */
-     public function create()
+     public function get_user_data()
      {
-         //
+        $auth_uset_id = Auth::user()->id;
+        // return User::where('id',strip_tags(Auth::user()->id))->get();
+        return User::where('id','=',$auth_uset_id)->get();
      }
  
      /**

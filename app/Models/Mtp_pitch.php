@@ -7,4 +7,17 @@ use Illuminate\Database\Eloquent\Model;
 class Mtp_pitch extends Model
 {
     public $table = 'mtp_pitchs';
+
+    protected $fillable = [
+        "mtp_id",
+        "gread",
+        "or_gread",
+        "title",
+        "text",
+        "last_carabin",
+        "height",
+        "bolts",
+        "bolter",
+        "first_ascent",
+    ];
 }

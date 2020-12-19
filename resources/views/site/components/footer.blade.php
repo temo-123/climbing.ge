@@ -1,4 +1,4 @@
-<div class="footer__graphic"></div>
+<div class="footer__graphic" style="background-image: url({{ asset('images/svg/mountains.svg') }})"></div>
 <div class="footer"> 
     <div class="container"> 
         <div class="row">
@@ -39,8 +39,7 @@
         </div>
     </div>
 </div>
-
-<!-- <script type="text/javascript">
+{{-- <!-- <script type="text/javascript">
     // beck to top
     // $('body').append('<div id="backToTop" class="btn btn-lg"><span class="glyphicon glyphicon-chevron-up"></span></div>');
     //     $(window).scroll(function () {
@@ -68,4 +67,7 @@
         
           //gtag('config', 'UA-101870435-1');
     </script> -->
-<!-- And analytics.google.com-->
+<!-- And analytics.google.com--> --}}
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-101870435-1"></script>
+<script src="{{ asset('assets/js/analitic/climbing.ge analitic.js') }}"></script>

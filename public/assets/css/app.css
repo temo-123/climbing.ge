@@ -11088,8 +11088,9 @@ hr {
 }
 
 input,
-select {
-  font-size: 108px;
+select,
+textarea {
+  font-size: 150%;
 }
 
 /*
@@ -12308,7 +12309,13 @@ a.socialIcon:hover,
 */
 
 .sun_svg {
-  height: 1%;
+  height: 4em;
+  float: left;
+  margin: 0.5%;
+}
+
+.relief_svg {
+  height: 4em;
   float: right;
   margin: 0.5%;
 }
@@ -12330,6 +12337,28 @@ a.socialIcon:hover,
 
 .add_buttom a {
   margin-bottom: 2%;
+}
+
+.footer__graphic {
+  width: 100%;
+  height: 170px;
+  background-repeat: repeat-x;
+  background-position: 500% bottom;
+  background-size: 800px 170px;
+  position: relative;
+  margin-top: 2%;
+  /*z-index: 10;*/
+}
+
+.MyTableActive {
+  font-size: 14px;
+  text-align: center;
+  background: #bfbfbf;
+}
+
+.MyTableNormal {
+  font-size: 14px;
+  text-align: center;
 }
 
 /* 
@@ -14075,7 +14104,6 @@ button.btn,
   box-shadow: 0 -2px 0 0 rgba(0, 0, 0, 0.3) inset;
   color: white !important;
   display: inline-block;
-  font-size: 13px;
   font-weight: 500;
   height: 36px;
   line-height: 33px;
@@ -15139,29 +15167,6 @@ my other style style
     width: 160px;
     height: auto;
   }
-}
-
-.footer__graphic {
-  width: 100%;
-  height: 170px;
-  background-repeat: repeat-x;
-  background-position: 500% bottom;
-  background-size: 800px 170px;
-  background-image: url(/images/mountains.svg?0fc3ae4a688fa3c33b686001ead58b91);
-  position: relative;
-  margin-top: 2%;
-  /*z-index: 10;*/
-}
-
-.MyTableActive {
-  font-size: 14px;
-  text-align: center;
-  background: #bfbfbf;
-}
-
-.MyTableNormal {
-  font-size: 14px;
-  text-align: center;
 }
 
 .fa-arrow-right {
@@ -16876,8 +16881,6 @@ my other style style
 .cart .inputs input {
   transition: all 0.3s ease-in-out;
   border-radius: 25px;
-  font-size: 107.69231%;
-  line-height: 128.57143%;
   font-family: "montserratbold", sans-serif;
   box-shadow: rgba(17, 17, 18, 0.1) 0 2px 4px, rgba(19, 20, 20, 0.07) 0 1px 1px;
   background-color: #086fcf;

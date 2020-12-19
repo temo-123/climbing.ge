@@ -39,5 +39,30 @@ class CommentsController extends Controller
     		return view('user.comments_list',$data);
     	}
     	abort(404);
-    }
+	}
+	
+
+	
+	public function get_my_comments_data(Request $request)
+	{
+		return Comment::where('user_id', '=', Auth::user()->id)->get();
+	}
+	
+
+	
+	public function get_all_comments_data(Request $request)
+	{
+		return Comment::get();
+	}
+
+
+	
+	public function delete(Request $request)
+	{
+		if ($request->isMethod('post')) {
+            $comment = Comment::where('id',strip_tags($request->comment_id))->first();
+
+			$comment -> delete();
+		}
+	}
 }

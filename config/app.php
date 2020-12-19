@@ -164,6 +164,7 @@ return [
         Illuminate\Validation\ValidationServiceProvider::class,
         Illuminate\View\ViewServiceProvider::class,
 
+        Intervention\Image\ImageServiceProvider::class,
 
         /*
          * Package Service Providers...
@@ -254,6 +255,9 @@ return [
         'LocalisationService' => App\Services\Localisation\LocalisationService::class, // Language localisation
         'GetArticlesService' => App\Services\GetArticlesService::class, // Get articles
         'imageEditService' => App\Services\imageEditService::class, // image upload, update & delite
+
+
+        'Image' => Intervention\Image\Facades\Image::class,
 
     ],
 

@@ -468,7 +468,7 @@
             @endif 
 
 
-            @if (isset($events) && is_object($events) && count($events) != 0)
+            @if (isset($events) && count($events) != 0)
             <div class="container h-recent-work events" id="event">
                 <div class="row">
                     <div class="container">

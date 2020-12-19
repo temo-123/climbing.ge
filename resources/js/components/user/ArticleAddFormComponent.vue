@@ -7,10 +7,18 @@
     </div>
     <div class="row">
         <div class="tabs">
+
             <input type="radio" name="tabs" id="1" checked="checked">
             <label for="1" >global info</label>
             <div class="tab" >
-                <form name="contact-form" method="POST" id="global_form" @submit.prevent="add_article"  style="margin-top: 5%;" enctyp ="multipart/form-data">
+                <div class="jumbotron jumbotron-fluid">
+                    <div class="container">
+                        <h2 class="display-4">{{this.category}} article global information</h2>
+                        <p class="lead">Article global information.</p>
+                    </div>
+                </div>
+
+                <form name="contact-form" method="POST" id="global_form" ref="myForm" @submit.prevent="add_article"  style="margin-top: 5%;" enctyp ="multipart/form-data">
                     <div class="form-group clearfix">
                         <label for="name" class='col-xs-2 control-label'> Publish </label>
                         <div class="col-xs-8">
@@ -97,22 +105,33 @@
                         </div>
                     </div>
 
-                    <div class="form-group clearfix">
-                        <label for="name" class='col-xs-2 control-label'> image </label>
-                        <div class="col-xs-8">                    
-                            <input type="file" name="image" id="image" v-change="image">
-                        </div>
-                    </div>
-                    <div class="form-grup" v-if="imagepreview">
-                        <img :src="imagepreview" alt="uloadind image">
-                    </div>
+                    <!-- <div class="form-group">
+                        <label for="email">Upload Profile Pic:</label>
+                        <input type="file" name="profile_pic" id="profile_pic">
+                    </div> -->
 
                 </form>
+
+                <form @submit="checkForm" ref="myForm">
+                        <div class="form-group">
+                            <label for="email">Upload Profile Pic:</label>
+                            <input type="file" name="profile_pic" id="profile_pic">
+                        </div>
+                        <!-- <button type="submit" class="btn btn-default">Submit</button> -->
+                </form>
+
+
             </div>
+
             <input type="radio" name="tabs" id="2">
             <label for="2" >english article</label>
             <div class="tab" >
-
+                <div class="jumbotron jumbotron-fluid">
+                    <div class="container">
+                        <h2 class="display-4">{{this.category}} article english version</h2>
+                        <p class="lead">Article english version for site localisation.</p>
+                    </div>
+                </div>
                 <form name="contact-form" method="POST" @submit.prevent="add_us_article" style="margin-top: 5%;" enctyp ="multipart/form-data">
                     <div class="form-group clearfix">
                         <label for="name" class='col-xs-2 control-label'> Title </label>
@@ -124,53 +143,60 @@
                     <div class="form-group clearfix">
                         <label for="name" class='col-xs-2 control-label'> Short description </label>
                         <div class="col-xs-8">
-                            <textarea type="text"  name="short_description" v-model="us_short_description" rows="15" class="form-cotrol md-textarea form-control"></textarea>
+                            <!-- <textarea type="text" name="short_description" v-model="us_short_description" rows="15" class="form-cotrol md-textarea form-control"></textarea> -->
+                            <ckeditor v-model="us_short_description" :config="editorConfig"></ckeditor>
                         </div>
                     </div>
 
                     <div class="form-group clearfix">
                         <label for="name" class='col-xs-2 control-label'> text </label>
                         <div class="col-xs-8">
-                            <textarea type="text"  name="text" rows="15" v-model="us_text" class="form-cotrol md-textarea form-control"></textarea>
+                            <!-- <textarea type="text"  name="text" rows="15" v-model="us_text" class="form-cotrol md-textarea form-control"></textarea> -->
+                            <ckeditor v-model="us_text" :config="editorConfig"></ckeditor>
                         </div>
                     </div>
 
-                    <div class="form-group clearfix">
+                    <div class="form-group clearfix" v-if="this.category == 'outdoor'">
                         <label for="name" class='col-xs-2 control-label'> Routes description </label>
                         <div class="col-xs-8">
-                            <textarea type="text"  name="route" rows="15" v-model="us_route" class="form-cotrol md-textarea form-control"></textarea>
+                            <!-- <textarea type="text"  name="route" rows="15" v-model="us_route" class="form-cotrol md-textarea form-control"></textarea> -->
+                            <ckeditor v-model="us_route" :config="editorConfig"></ckeditor>
                         </div>
                     </div>
 
                     <div class="form-group clearfix">
                         <label for="name" class='col-xs-2 control-label'> How to get hear </label>
                         <div class="col-xs-8">
-                            <textarea type="text"  name="how_get" rows="15" v-model="us_how_get" class="form-cotrol md-textarea form-control"></textarea>
+                            <!-- <textarea type="text"  name="how_get" rows="15" v-model="us_how_get" class="form-cotrol md-textarea form-control"></textarea> -->
+                            <ckeditor v-model="us_how_get" :config="editorConfig"></ckeditor>
                         </div>
                     </div>
 
-                    <div class="form-group clearfix">
+                    <div class="form-group clearfix" v-if="this.category == 'outdoor' || this.category == 'ice' || this.category == 'mount_route' ">
                         <label for="name" class='col-xs-2 control-label'> Best time for climbing </label>
                         <div class="col-xs-8">
-                            <textarea type="text"  name="best_time" rows="15" v-model="us_best_time" class="form-cotrol md-textarea form-control"></textarea>
+                            <!-- <textarea type="text"  name="best_time" rows="15" v-model="us_best_time" class="form-cotrol md-textarea form-control"></textarea> -->
+                            <ckeditor v-model="us_best_time" :config="editorConfig"></ckeditor>
                         </div>
                     </div>
 
-                    <div class="form-group clearfix">
+                    <div class="form-group clearfix" v-if="this.category == 'outdoor' || this.category == 'ice' || this.category == 'mount_route' ">
                         <label for="name" class='col-xs-2 control-label'> what you need </label>
                         <div class="col-xs-8">
-                            <textarea type="text"  name="what_need" rows="15" v-model="us_what_need" class="form-cotrol md-textarea form-control"></textarea>
+                            <!-- <textarea type="text"  name="what_need" rows="15" v-model="us_what_need" class="form-cotrol md-textarea form-control"></textarea> -->
+                            <ckeditor v-model="us_what_need" :config="editorConfig"></ckeditor>
                         </div>
                     </div>
 
-                    <div class="form-group clearfix">
+                    <div class="form-group clearfix" v-if="this.category == 'indoor'">
                         <label for="name" class='col-xs-2 control-label'> Info / contact </label>
                         <div class="col-xs-8">
-                            <textarea type="text"  name="info" rows="15" v-model="us_info" class="form-cotrol md-textarea form-control"></textarea>
+                            <!-- <textarea type="text"  name="info" rows="15" v-model="us_info" class="form-cotrol md-textarea form-control"></textarea> -->
+                            <ckeditor v-model="us_info" :config="editorConfig"></ckeditor>
                         </div>
                     </div>
 
-                    <div class="form-group clearfix">
+                    <div class="form-group clearfix" v-if="this.category == 'indoor'">
                         <label for="name" class='col-xs-2 control-label'> Working time </label>
                         <div class="col-xs-8">
                             <!-- <input type="text" name="value name" value="old data" class="form-control"> -->
@@ -178,14 +204,15 @@
                         </div>
                     </div>
 
-                    <div class="form-group clearfix">
+                    <div class="form-group clearfix" v-if="this.category == 'indoor'">
                         <label for="name" class='col-xs-2 control-label'> Price description </label>
                         <div class="col-xs-8">
-                            <textarea type="text" name="prise_text" rows="15" v-model="us_price_text"  class="form-cotrol md-textarea form-control"></textarea>
+                            <!-- <textarea type="text" name="prise_text" rows="15" v-model="us_price_text"  class="form-cotrol md-textarea form-control"></textarea> -->
+                            <ckeditor v-model="us_price_text" :config="editorConfig"></ckeditor>
                         </div>
                     </div>
 
-                    <div class="form-group clearfix">
+                    <div class="form-group clearfix" v-if="this.category == 'indoor'">
                         <label for="name" class='col-xs-2 control-label'> Minimal price </label>
                         <div class="col-xs-8">
                             <!-- <input type="text" name="value name" value="old data" class="form-control"> -->
@@ -210,6 +237,12 @@
             <input type="radio" name="tabs" id="3">
             <label for="3" >rusian article</label>
             <div class="tab">
+                <div class="jumbotron jumbotron-fluid">
+                    <div class="container">
+                        <h2 class="display-4">{{this.category}} article rusion version</h2>
+                        <p class="lead">Article rusion version for site localisation.</p>
+                    </div>
+                </div>
 
                 <form name="contact-form" method="POST" @submit.prevent="add_ru_article" style="margin-top: 5%;" enctyp ="multipart/form-data">
                     <div class="form-group clearfix">
@@ -223,53 +256,60 @@
                     <div class="form-group clearfix">
                         <label for="name" class='col-xs-2 control-label'> Short description </label>
                         <div class="col-xs-8">
-                            <textarea type="text"  name="short_description" v-model="ru_short_description"  rows="15" class="form-cotrol md-textarea form-control"></textarea>
+                            <!-- <textarea type="text"  name="short_description" v-model="ru_short_description"  rows="15" class="form-cotrol md-textarea form-control"></textarea> -->
+                            <ckeditor v-model="ru_short_description" :config="editorConfig"></ckeditor>
                         </div>
                     </div>
 
                     <div class="form-group clearfix">
                         <label for="name" class='col-xs-2 control-label'> text </label>
                         <div class="col-xs-8">
-                            <textarea type="text"  name="text" rows="15"  v-model="ru_text" class="form-cotrol md-textarea form-control"></textarea>
+                            <!-- <textarea type="text"  name="text" rows="15"  v-model="ru_text" class="form-cotrol md-textarea form-control"></textarea> -->
+                            <ckeditor v-model="ru_text" :config="editorConfig"></ckeditor>
                         </div>
                     </div>
 
-                    <div class="form-group clearfix">
+                    <div class="form-group clearfix" v-if="this.category == 'outdoor'">
                         <label for="name" class='col-xs-2 control-label'> Routes description </label>
                         <div class="col-xs-8">
-                            <textarea type="text"  name="route" rows="15"  v-model="ru_route" class="form-cotrol md-textarea form-control"></textarea>
+                            <!-- <textarea type="text"  name="route" rows="15"  v-model="ru_route" class="form-cotrol md-textarea form-control"></textarea> -->
+                            <ckeditor v-model="ru_route" :config="editorConfig"></ckeditor>
                         </div>
                     </div>
 
                     <div class="form-group clearfix">
                         <label for="name" class='col-xs-2 control-label'> How to get hear </label>
                         <div class="col-xs-8">
-                            <textarea type="text"  name="how_get" rows="15"  v-model="ru_how_get" class="form-cotrol md-textarea form-control"></textarea>
+                            <!-- <textarea type="text"  name="how_get" rows="15"  v-model="ru_how_get" class="form-cotrol md-textarea form-control"></textarea> -->
+                            <ckeditor v-model="us_how_get" :config="editorConfig"></ckeditor>
                         </div>
                     </div>
 
-                    <div class="form-group clearfix">
+                    <div class="form-group clearfix" v-if="this.category == 'outdoor' || this.category == 'ice' || this.category == 'mount_route' ">
                         <label for="name" class='col-xs-2 control-label'> Best time for climbing </label>
                         <div class="col-xs-8">
-                            <textarea type="text"  name="best_time" rows="15"  v-model="ru_best_time" class="form-cotrol md-textarea form-control"></textarea>
+                            <!-- <textarea type="text"  name="best_time" rows="15"  v-model="ru_best_time" class="form-cotrol md-textarea form-control"></textarea> -->
+                            <ckeditor v-model="ru_best_time" :config="editorConfig"></ckeditor>
                         </div>
                     </div>
 
-                    <div class="form-group clearfix">
+                    <div class="form-group clearfix" v-if="this.category == 'outdoor' || this.category == 'ice' || this.category == 'mount_route' ">
                         <label for="name" class='col-xs-2 control-label'> what you need </label>
                         <div class="col-xs-8">
-                            <textarea type="text"  name="what_need" rows="15" v-model="ru_what_need" class="form-cotrol md-textarea form-control"></textarea>
+                            <!-- <textarea type="text"  name="what_need" rows="15" v-model="ru_what_need" class="form-cotrol md-textarea form-control"></textarea> -->
+                            <ckeditor v-model="ru_what_need" :config="editorConfig"></ckeditor>
                         </div>
                     </div>
 
                     <div class="form-group clearfix">
                         <label for="name" class='col-xs-2 control-label'> Info / contact </label>
                         <div class="col-xs-8">
-                            <textarea type="text"  name="info" rows="15" v-model="ru_info" class="form-cotrol md-textarea form-control"></textarea>
+                            <!-- <textarea type="text"  name="info" rows="15" v-model="ru_info" class="form-cotrol md-textarea form-control"></textarea> -->
+                            <ckeditor v-model="ru_info" :config="editorConfig"></ckeditor>
                         </div>
                     </div>
 
-                    <div class="form-group clearfix">
+                    <div class="form-group clearfix" v-if="this.category == 'indoor'">
                         <label for="name" class='col-xs-2 control-label'> Working time </label>
                         <div class="col-xs-8">
                             <!-- <input type="text" name="value name" value="old data" class="form-control"> -->
@@ -277,14 +317,15 @@
                         </div>
                     </div>
 
-                    <div class="form-group clearfix">
+                    <div class="form-group clearfix" v-if="this.category == 'indoor'">
                         <label for="name" class='col-xs-2 control-label'> Price description </label>
                         <div class="col-xs-8">
-                            <textarea type="text" name="price_text" rows="15"  v-model="ru_price_text" class="form-cotrol md-textarea form-control"></textarea>
+                            <!-- <textarea type="text" name="price_text" rows="15"  v-model="ru_price_text" class="form-cotrol md-textarea form-control"></textarea> -->
+                            <ckeditor v-model="ru_price_text" :config="editorConfig"></ckeditor>
                         </div>
                     </div>
 
-                    <div class="form-group clearfix">
+                    <div class="form-group clearfix" v-if="this.category == 'indoor'">
                         <label for="name" class='col-xs-2 control-label'> Minimal price </label>
                         <div class="col-xs-8">
                             <!-- <input type="text" name="value name" value="old data" class="form-control"> -->
@@ -309,6 +350,12 @@
             <input type="radio" name="tabs" id="4">
             <label for="4" >georgian article</label>
             <div class="tab">
+                <div class="jumbotron jumbotron-fluid">
+                    <div class="container">
+                        <h2 class="display-4">{{this.category}} article georgian version</h2>
+                        <p class="lead">Article georgian version for site localisation.</p>
+                    </div>
+                </div>
 
                 <form name="contact-form" method="POST" @submit.prevent="add_ka_article" style="margin-top: 5%;" enctyp ="multipart/form-data">
                     <div class="form-group clearfix">
@@ -322,53 +369,60 @@
                     <div class="form-group clearfix">
                         <label for="name" class='col-xs-2 control-label'> Short description </label>
                         <div class="col-xs-8">
-                            <textarea type="text"  name="short_description"  v-model="ka_short_description" rows="15" class="form-cotrol md-textarea form-control"></textarea>
+                            <!-- <textarea type="text"  name="short_description"  v-model="ka_short_description" rows="15" class="form-cotrol md-textarea form-control"></textarea> -->
+                            <ckeditor v-model="ka_short_description" :config="editorConfig"></ckeditor>
                         </div>
                     </div>
 
                     <div class="form-group clearfix">
                         <label for="name" class='col-xs-2 control-label'> text </label>
                         <div class="col-xs-8">
-                            <textarea type="text"  name="txt" rows="15"  v-model="ka_text" class="form-cotrol md-textarea form-control"></textarea>
+                            <!-- <textarea type="text"  name="txt" rows="15"  v-model="ka_text" class="form-cotrol md-textarea form-control"></textarea> -->
+                            <ckeditor v-model="ka_text" :config="editorConfig"></ckeditor>
                         </div>
                     </div>
 
-                    <div class="form-group clearfix">
+                    <div class="form-group clearfix" v-if="this.category == 'outdoor'">
                         <label for="name" class='col-xs-2 control-label'> Routes description </label>
                         <div class="col-xs-8">
-                            <textarea type="text"  name="route" rows="15"  v-model="ka_route" class="form-cotrol md-textarea form-control"></textarea>
+                            <!-- <textarea type="text"  name="route" rows="15"  v-model="ka_route" class="form-cotrol md-textarea form-control"></textarea> -->
+                            <ckeditor v-model="ka_route" :config="editorConfig"></ckeditor>
                         </div>
                     </div>
 
                     <div class="form-group clearfix">
                         <label for="name" class='col-xs-2 control-label'> How to get hear </label>
                         <div class="col-xs-8">
-                            <textarea type="text"  name="how_get" rows="15"  v-model="ka_how_get" class="form-cotrol md-textarea form-control"></textarea>
+                            <!-- <textarea type="text"  name="how_get" rows="15"  v-model="ka_how_get" class="form-cotrol md-textarea form-control"></textarea> -->
+                            <ckeditor v-model="ka_how_get" :config="editorConfig"></ckeditor>
                         </div>
                     </div>
 
-                    <div class="form-group clearfix">
+                    <div class="form-group clearfix" v-if="this.category == 'outdoor' || this.category == 'ice' || this.category == 'mount_route' ">
                         <label for="name" class='col-xs-2 control-label'> Best time for climbing </label>
                         <div class="col-xs-8">
-                            <textarea type="text"  name="best_time" rows="15"  v-model="ka_best_time" class="form-cotrol md-textarea form-control"></textarea>
+                            <!-- <textarea type="text"  name="best_time" rows="15"  v-model="ka_best_time" class="form-cotrol md-textarea form-control"></textarea> -->
+                            <ckeditor v-model="ka_best_time" :config="editorConfig"></ckeditor>
                         </div>
                     </div>
 
-                    <div class="form-group clearfix">
+                    <div class="form-group clearfix" v-if="this.category == 'outdoor' || this.category == 'ice' || this.category == 'mount_route' ">
                         <label for="name" class='col-xs-2 control-label'> what you need </label>
                         <div class="col-xs-8">
-                            <textarea type="text"  name="what_need" rows="15"  v-model="ka_what_need" class="form-cotrol md-textarea form-control"></textarea>
+                            <!-- <textarea type="text"  name="what_need" rows="15"  v-model="ka_what_need" class="form-cotrol md-textarea form-control"></textarea> -->
+                            <ckeditor v-model="ka_what_need" :config="editorConfig"></ckeditor>
                         </div>
                     </div>
 
                     <div class="form-group clearfix">
                         <label for="name" class='col-xs-2 control-label'> Info / contact </label>
                         <div class="col-xs-8">
-                            <textarea type="text"  name="info" rows="15"  v-model="ka_info" class="form-cotrol md-textarea form-control"></textarea>
+                            <!-- <textarea type="text"  name="info" rows="15"  v-model="ka_info" class="form-cotrol md-textarea form-control"></textarea> -->
+                            <ckeditor v-model="ka_info" :config="editorConfig"></ckeditor>
                         </div>
                     </div>
 
-                    <div class="form-group clearfix">
+                    <div class="form-group clearfix" v-if="this.category == 'indoor'">
                         <label for="name" class='col-xs-2 control-label'> Working time </label>
                         <div class="col-xs-8">
                             <!-- <input type="text" name="value name" value="old data" class="form-control"> -->
@@ -376,14 +430,15 @@
                         </div>
                     </div>
 
-                    <div class="form-group clearfix">
+                    <div class="form-group clearfix" v-if="this.category == 'indoor'">
                         <label for="name" class='col-xs-2 control-label'> Price description </label>
                         <div class="col-xs-8">
-                            <textarea type="text" name="prixe_text" rows="15" v-model="ka_price_text"  class="form-cotrol md-textarea form-control"></textarea>
+                            <!-- <textarea type="text" name="prixe_text" rows="15" v-model="ka_price_text"  class="form-cotrol md-textarea form-control"></textarea> -->
+                            <ckeditor v-model="ka_price_text" :config="editorConfig"></ckeditor>
                         </div>
                     </div>
 
-                    <div class="form-group clearfix">
+                    <div class="form-group clearfix" v-if="this.category == 'indoor'">
                         <label for="name" class='col-xs-2 control-label'> Minimal price </label>
                         <div class="col-xs-8">
                             <!-- <input type="text" name="value name" value="old data" class="form-control"> -->
@@ -432,8 +487,9 @@
                 inst_link: "",
                 web_link: "",
 
-                image: null,
-                imagepreview: null,
+                name: '',
+                image: '',
+                success: '',
 
 
                 // 
@@ -482,15 +538,26 @@
                 ru_time: "",
                 ru_price_from: "",
                 ru_meta_keyword: "",
+
+
+                //
+                //
+                //
+                is_global_article_succes: 0,
+                is_us_article_succes: 0,
+                is_ru_article_succes: 0,
+                is_ka_article_succes: 0,
+                is_image_succes: 0,
             }
         },
         mounted() {
-            // console.log(this.catagory)
         },
         methods: {
+            // add_global_article(e) {
             add_global_article() {
-                let data = new FormData
-                data.append("image", this.image)
+                var myFormData = new FormData(this.$refs.myForm)
+                console.log(myFormData);
+
                 axios
                 .post('/articles/add/' + this.category, {
                     published: this.published,
@@ -509,10 +576,24 @@
                     inst_link: this.inst_link,
                     web_link: this.web_link,
 
-                    image: this.image
+                    // image: this.image,
+
+                    data: myFormData,
+                    config: { 
+                        headers: {
+                            'Content-Type': 'multipart/form-data' 
+                        }
+                    },
                 })
-                .then(Response => { console.log(response) })
-                .catch(error => console.log(error))
+                .then((response)=>  { 
+                    this.is_global_article_succes = 1
+                    console.log(response)
+                    // alert(response.data.message);
+                    console.log('global article upload successful');
+                })
+                .catch(
+                    error => console.log(error)
+                )
             },
             add_ru_article() {
                 axios
@@ -530,7 +611,12 @@
                     ru_price_from: this.ru_price_from,
                     ru_meta_keyword: this.ru_meta_keyword,
                 })
-                .then(Response => { console.log(response) })
+                .then((response)=> { 
+                    this.is_ru_article_succes = 1
+                    // console.log(this.is_ru_article_succes);
+                    console.log(response) 
+                    console.log('rusian article upload successful');
+                })
                 .catch(error => console.log(error))
             },
             add_us_article() {
@@ -549,7 +635,11 @@
                     us_price_from: this.us_price_from,
                     us_meta_keyword: this.us_meta_keyword,
                 })
-                .then(Response => { console.log(response) })
+                .then((response)=> { 
+                    console.log(response)
+                    this.is_us_article_succes = 1
+                    console.log('englihs article upload successful');
+                })
                 .catch(error => console.log(error))
             },
             add_ka_article() {
@@ -568,34 +658,41 @@
                     ka_price_from: this.ka_price_from,
                     ka_meta_keyword: this.ka_meta_keyword,
                 })
-                .then(Response => {console.log(response)})
+                .then((response)=>  {
+                    console.log(response)
+                    this.is_ka_article_succes = 1
+                    console.log('georgian article upload successful');
+                })
                 .catch(error => console.log(error))
             },
-            image_selected(e){
-                this.image = e.targer.file[0];
 
-                let reder = new FileReader()
-                reader.readAsDataUrl(this.image)
-                reader.onload = e => {
-                    this.imagepreview = e.target.resurlt
-                }
-                console.log('test')
+
+            checkForm: function (e) {
+                var myFormData = new FormData(this.$refs.myForm)
+                axios({
+                    method: 'post',
+                    url: '/articles/upload_image/',
+                    data: myFormData,
+                    config: { headers: {'Content-Type': 'multipart/form-data' }},
+                })
+                .then((response)=>  {
+                    this.is_image_succes = 1;
+                    // alert(response.data.message);
+                });
+                e.preventDefault();
             },
-            save_all() {
+
+            save_all(Response) {
                 this.add_us_article();
-                console.log('englihs article upload successful');
                 this.add_ka_article();
-                console.log('georgian article upload successful');
                 this.add_ru_article();
-                console.log('rusian article upload successful');
 
                 this.add_global_article();
-                // this.image_selected();
-                console.log('global article upload successful');
 
-                window.location.href = this.back_url;
+                this.checkForm();
+                
+                // window.location.href = this.back_url;
             }
         }
-        
     }
 </script>

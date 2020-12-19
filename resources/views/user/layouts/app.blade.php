@@ -23,7 +23,15 @@
      <link href="http://netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
 
     <link rel="stylesheet" href="{{ asset('assets/css/app.css') }}">
-    <!-- <link rel="stylesheet" href="{{ asset('assets/css/admin/style.css') }}"> -->
+
+
+    {{-- <script src="../../../node_modules/@ckeditor/ckeditor5-build-classic/build/ckeditor.js"></script> --}}
+    {{-- <script src="../../../node_modules/@ckeditor/ckeditor5-vue/dist/ckeditor.js"></script> --}}
+
+    {{-- <link rel="stylesheet" href="{{ asset('assets/css/admin/style.css') }}"> --}}
+    {{-- <script src="../node_modules/ckeditor4/ckeditor.js"></script> --}}
+    {{-- <script src="../node_modules/ckeditor4-vue/dist/ckeditor.js"></script> --}}
+    {{-- <script src="{{ asset('../node_modules/ckeditor4-vue/dist/ckeditor.js') }}"></script> --}}
 
 </head>
 <body>
@@ -51,10 +59,12 @@
     <script src="{{ asset('assets/js/my_js/my_scripts.js') }}" type="text/javascript" ></script>
 
     <script>
-    $('body').on('submit','form', function () {
-        $(this).append('@csrf')
-    })
-    </script>
+        $('body').on('submit','form', function () {
+            $(this).append('@csrf')
+        })
+    </script>    
     
+    <script src="{{ asset('node_modules/@ckeditor/ckeditor5-build-classic/build/ckeditor.js') }}"></script>
+    <script src="{{ asset('node_modules/@ckeditor/ckeditor5-vue/dist/ckeditor.js') }}"></script>
 </body>
 </html>

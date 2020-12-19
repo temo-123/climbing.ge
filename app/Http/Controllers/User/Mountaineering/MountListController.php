@@ -14,35 +14,39 @@ class MountListController extends Controller
     {
         $request->user()->authorizeRoles(['manager', 'admin']);
         
-        // latest('id')->
-	    $articles = article::latest('id')->where('category', '=', 'mount_routes')->get();
-		$count_article = article::count();
-	    
-		$mount_systems = mount::latest('id')->get();
-		$count_mount_system = mount::count();
-        
-        if (view()->exists('user.article_list')) {
+        if (view()->exists('user.data_table')) {
     	   
     		$data = [
                 'title'=>' Mountaineering route & mount systems',
-                
-    			'table_1'=>$mount_systems,
-    		    'table_1_name' => 'Mounts',
-                'table_1_count' => $count_mount_system,
-    		    // 'table_1_add_url'=>'mount_systemAdd',
-    		    // 'table_1_edit_url'=>'mount_systemEdit',
-                
-                'table_2' => $articles,
-    		    'table_2_name' => 'Mount route',
-                'table_2_count' => $count_article,
-    		    // 'table_2_add_url'=>'articleAdd',
-    		    // 'table_2_edit_url'=>'articleEdit',
+				
+    		    'table_1_name' => 'Mount routes',
+                'table_1_del' => "/xz_route",
+				"table_1_add_url" => "articleAdd",
+                'table_1_add_category'=> 'mount_route',
+                "table_1_get_route" => "/mountaineering/get_mount_route_data/",
+				
+				
+    		    'table_2_name' => 'Mounts',
+				'table_2_del'=>"/articles/del/",
+				"table_2_add_url" => "mountAdd",
+                "table_2_get_route"=>"/mountaineering/get_mount_data/",
 
     		    'page_name' => 'Mount And Mount Route',
     		    'active' => 'articles and mount_systems',
     		];
-    		return view('user.article_list',$data);
+    		return view('user.data_table',$data);
     	}
-        abort(404);
-    }
+        abort(403);
+	}
+	
+	public function get_mount_data()
+	{
+
+        return Mount::latest('id')->get();
+	}
+
+	public function get_mount_route_data()
+	{        
+		return Article::where('category', '=', 'mount_route')->get();
+	}
 }

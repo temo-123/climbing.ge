@@ -44,6 +44,17 @@
                             <strong>Danger!</strong> Your personal data is missing, this can lead to rolling problems. check page "option", and add missing information.
                         </div>
                     @endif
+                    @if(Auth::user()->hasRole('admin'))
+                    @if($site->text || $site->text_ru || $site->text_ka || $site->short_description_ru || $site->short_description_ka || $site->short_description)
+                        <div class="alert alert-danger" role="alert">
+
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                            <strong>Danger!</strong> Your web-site information is not fool. check page "About us", and add missing information.
+                        </div>
+                    @endif
+                    @endif
                     </div>
                 </div>
 

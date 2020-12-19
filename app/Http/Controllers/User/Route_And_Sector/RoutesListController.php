@@ -9,6 +9,7 @@ use App\Models\Route;
 use App\Models\Sector;
 use App\Models\Mtp;
 use App\Models\Mtp_pitch;
+use App\Models\Article;
 
 class RoutesListController extends Controller
 {
@@ -35,7 +36,7 @@ class RoutesListController extends Controller
 		
         $route_in_sector = Route::orderBy('num')->get();
         
-        if (view()->exists('user.routes_and_sectors')) {
+        if (view()->exists('user.data_table')) {
     	   
     		$data = [
                 'title'=>'mounts',
@@ -45,7 +46,9 @@ class RoutesListController extends Controller
                 'table_1_count' => $count_sector,
                 'table_1_tags' => $sector_tags,
     		    'table_1_add_url'=>'sectorAdd',
-    		    'table_1_edit_url'=>'sectorEdit',
+				'table_1_edit_url'=>'sectorEdit',
+				'table_1_get_route'=>'routes_and_sectors/get_sector_data',
+                'table_1_del'=>"/routes_and_sectors/sector_delete/",
                 
                 'table_2' => $routes,
     		    'table_2_name' => 'Route',
@@ -53,6 +56,8 @@ class RoutesListController extends Controller
                 'table_2_tags' => $route_tags,
     		    'table_2_add_url'=>'routeAdd',
     		    'table_2_edit_url'=>'routeEdit',
+				'table_2_get_route'=>'routes_and_sectors/get_route_data',
+                'table_2_del'=>"/routes_and_sectors/route_delete/",
                 
                 'table_3' => $mtps,
     		    'table_3_name' => 'Multi-pitch',
@@ -60,15 +65,17 @@ class RoutesListController extends Controller
                 'table_3_tags' => $mtp_tags,
     		    'table_3_add_url'=>'mtpAdd',
     		    'table_3_edit_url'=>'mtpEdit',
+				'table_3_get_route'=>'routes_and_sectors/get_mtp_data',
+                'table_3_del'=>"/routes_and_sectors/mtp_delete/",
                 
                 'table_4' => $mtp_pitchs,
-                // 'table_4_name' => 'Multi-pitch pitches',
-                'table_4_name' => 'pitches',
+                'table_4_name' => 'pitches', //'Multi-pitch pitches',
                 'table_4_count' => $count_mtp_pitchs,
                 'table_4_tags' => $mtp_pitch_tags,
                 'table_4_add_url'=>'mtpPitchAdd',
                 'table_4_edit_url'=>'mtpEdit',
-
+				'table_4_get_route'=>'routes_and_sectors/get_mtp_pitch_data',
+                'table_4_del'=>"/routes_and_sectors/mtp_pitch_delete/",
 
     		    'page_name' => 'Climbing Secrots And Routes',
     		    'active' => 'routes and sectors',
@@ -80,10 +87,34 @@ class RoutesListController extends Controller
     		    'route_in_sector'=>$route_in_sector
                 
     		];
-    		return view('user.routes_and_sectors',$data);
+    		return view('user.data_table',$data);
     	}
     	abort(404);
 	}
+
+
+	public function get_sector_data(Request $request)
+	{
+		return Sector::latest('id')->get();
+	}
+	public function get_route_data(Request $request)
+	{
+		return Route::latest('id')->get();
+	}
+	public function get_mtp_data(Request $request)
+	{
+		return Mtp::latest('id')->get();
+	}
+	public function get_mtp_pitch_data(Request $request)
+	{
+		return Mtp_pitch::latest('id')->get();
+	}
+	public function get_region_data(Request $request)
+	{
+		return Article::where('category', '=', 'outdoor')->get();
+	}
+
+
 
 	public function store()
 	{

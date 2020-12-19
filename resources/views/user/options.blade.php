@@ -27,33 +27,12 @@
                     @include('user.components.left_block')
                 </div>
                 <div class="col-sm-9">
-                      
-                <div class="row">
 
-<div class="col-xs-12">
-  <div class="row">
-    <div class="col-md-6 img">
-      <i style='font-size: 1000%; margin-top: 2%;' class="fa fa-user-circle-o" aria-hidden="true"></i>
-    </div>
-    <div class="col-md-6 details">
-        <p>Name - {{ Auth::user()->name }}</p>
-        <p>Surname - {{ Auth::user()->surname }}</p>
-        <p>Email - {{ Auth::user()->email }}</p>
-        <p>Your Status = 
-            @if(Auth::user()->hasRole('admin'))
-                Admin
-            @elseif(Auth::user()->hasRole('manager'))
-                Content manager
-            @else
-                User
-            @endif
-        </p>
-    </div>
-</div>
+                        <options_form :status="{{ json_encode($status) }}" ></options_form>
 
+                        {{--  --}}
 
-
-          <form class="form" action="{{url('/options/user-update/'.Auth::user()->id)}}" method="post" id="registrationForm">
+          {{-- <form class="form" action="{{url('/options/user-update/'.Auth::user()->id)}}" method="post" id="registrationForm">
             <div class="form-group">
 {{ csrf_field() }}
 {{ method_field('patch') }}
@@ -121,12 +100,10 @@
                         <button class="btn btn-lg btn-success" type="submit"><i class="glyphicon glyphicon-ok-sign"></i> Save new user information</button>
                     </div>
               </div>
-        </form>
+        </form> --}}
 
 
-    </div>
-</div>
-
+                        
                 </div>
             </div>
         </div>

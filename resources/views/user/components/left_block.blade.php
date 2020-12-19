@@ -23,11 +23,11 @@
                 <li class="list-group-item text-muted @if($page_name == 'Climbing Secrots And Routes') menu_active @endif">
                     <a href="{{ Route('routes_and_sectors') }}">Routs & Sectors</a>
                 </li>
-                <li class="list-group-item text-muted @if($page_name == 'Indoor') menu_active @endif">
-                    <a href="{{route('article_list', array('article_category'=>'indoor'))}}">Indoor climbing</a>
-                </li>
                 <li class="list-group-item text-muted @if($page_name == 'Mount And Mount Route') menu_active @endif">
                     <a href="{{route('mountaineering')}}">Mount & Mount Route</a>
+                </li>
+                <li class="list-group-item text-muted @if($page_name == 'Indoor') menu_active @endif">
+                    <a href="{{route('article_list', array('article_category'=>'indoor'))}}">Indoor climbing</a>
                 </li>
                 <li class="list-group-item text-muted @if($page_name == 'Ice & Mixed') menu_active @endif">
                     <a href="{{route('article_list', array('article_category'=>'ice'))}}">Ice and mixed</a>

@@ -1,11 +1,44 @@
 @if(isset($area_info))
 @foreach($area_info as $area)
-      <h3>Sector name <strong>{{$area['sectors']['name']}}</strong></h3>
 
-      <img class="sun_svg" src="{{asset('images/svg/sun.svg')}}" alt="">
-      <img class="sun_svg" src="{{asset('images/svg/sun 2.svg')}}" alt="">
-      <img class="sun_svg" src="{{asset('images/svg/sun 3.svg')}}" alt="">
-      <img class="sun_svg" src="{{asset('images/svg/sun 4.svg')}}" alt="">
+      @if($area['routes'] != 0 || $area['mtps'] != 0)
+      <div class="row">
+            <h2 style="font-size: 160%">Sector name <strong>{{$area['sectors']['name']}}</strong></h2>
+      </div>
+      <div class="row">
+            <div class="col-md-6">
+                  @if ($area['sectors']['in_shade_after_10']!=null)
+                        <img class="sun_svg" src="{{asset('images/svg/in shade after 10.00 am.svg')}}" alt="">
+                  @endif
+                  @if ($area['sectors']['in_shade_after_15']!=null)
+                        <img class="sun_svg" src="{{asset('images/svg/in shade after 15.00 pm.svg')}}" alt="">
+                  @endif
+                  @if ($area['sectors']['in_the_shade_befornoon']!=null)
+                        <img class="sun_svg" src="{{asset('images/svg/in shade befor noon.svg')}}" alt="">
+                  @endif
+                  @if ($area['sectors']['in_the_shade_afternoon']!=null)
+                        <img class="sun_svg" src="{{asset('images/svg/in shade in the afternoon.svg')}}" alt="">
+                  @endif
+                  @if ($area['sectors']['all_day_in_shade']!=null)
+                        <img class="sun_svg" src="{{asset('images/svg/in the shade whole day.svg')}}" alt="">
+                  @endif
+                  @if ($area['sectors']['all_day_in_sun']!=null)
+                        <img class="sun_svg" src="{{asset('images/svg/in the sun the whole day.svg')}}" alt="">
+                  @endif
+            </div>
+            <div class="col-md-6">
+                  @if ($area['sectors']['overhang']!=null)
+                        <img class="relief_svg" src="{{asset('images/svg/overhang.svg')}}" alt="">
+                  @endif
+                  @if ($area['sectors']['slabby']!=null)
+                        <img class="relief_svg" src="{{asset('images/svg/slabby.svg')}}" alt="">
+                  @endif
+                  @if ($area['sectors']['vertical']!=null)
+                        <img class="relief_svg" src="{{asset('images/svg/vertical.svg')}}" alt="">
+                  @endif
+            </div>
+      </div>
+
 
       @if($area['sectors']['sector_img'] != NULL)
             @foreach($area['sectors']['sector_img'] as $sector_img)
@@ -14,6 +47,7 @@
       @endif
 
       {{$area['sectors']['text']}}
+      @endif
 
       @if($area['routes'] != 0)              
             <table class="table col-md-12">
@@ -56,7 +90,11 @@
                   <div class='col-xs-6 col-md-6 col-lg-6'>
                         <p>Pitch - 
                         <strong>
-                        {{$area['mtps'][$mtp_index]['mtp pitchs quantity'][0]}}
+
+                              {{-- {{ print_r($area['mtps'][$mtp_index]['mtp pitchs quantity']) }}
+                              {{ dd($area['mtps'][$mtp_index]['mtp pitchs quantity']['0']) }}
+                              {{$area['mtps'][$mtp_index]['mtp pitchs quantity']['0']}} --}}
+
                         </strong>
                         </p>
                   </div>

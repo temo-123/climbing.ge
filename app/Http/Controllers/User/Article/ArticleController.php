@@ -22,7 +22,7 @@ class ArticleController extends Controller
         
         $request->user()->authorizeRoles(['manager', 'admin']);
         
-    	if (view()->exists('user.article_list')) {
+    	if (view()->exists('user.data_table')) {
             if ($request->article_category == "outdoor") {
                 // $articles = Article::latest('id')->where('category', '=', 'outdoor')->get();
                 $title = 'Outdoor';
@@ -107,20 +107,22 @@ class ArticleController extends Controller
     		$data = [
     			'title'=>$title,
     			// 'table_1'=>$articles,
-
     		    'table_1_add_url'=>$articles_add_url,
                 'table_1_add_category'=>$article_add_category,
-        	    'table_1_edit_url'=>$articles_edit_url,
+        	    'table_1_edit_url'=>"/articles/edit/",
     		    'table_1_article_url'=>$article_page_utl,
     		    'table_1_title'=>'1',
     		    'table_1_pablic' => '',
-    		    'table_1_name'=> $table_1_name,
+                'table_1_name'=> $table_1_name,
+
+                "table_1_get_route"=>"/articles/get_article_data/",
+                'table_1_del'=>"/articles/del/",
     		    
     		    'page_name' => $page_name,
     		    'active' => 'Outdoor',
     		    'page_route' => 'outdoor_page',
             ];
-            return view('user.article_list',$data);
+            return view('user.data_table',$data);
     	}
         abort(404);	
     }
@@ -153,6 +155,8 @@ class ArticleController extends Controller
             foreach ($ru_articl as $ru) {
                 $last_ru_article_id = $ru->id;
             }
+            
+            dd($last_ru_article_id, $last_ka_article_id, $last_us_article_id);
 
             $article = new Article();
 
@@ -173,11 +177,6 @@ class ArticleController extends Controller
             $article['inst_link']=$request->inst_link;
             $article['web_link']=$request->web_link;
 
-            $image_dir = "/images/".$request->category."_img";
-            $article['image']=ImageEditService::image_upload($image_dir, "image", $request);
-
-            // dd($request);
-
             // $article['us_article_id']=$last_us_article_id+1;
             // $article['ru_article_id']=$last_ru_article_id+1;
             // $article['ka_article_id']=$last_ka_article_id+1;
@@ -187,9 +186,13 @@ class ArticleController extends Controller
             $article['ka_article_id']=$last_ka_article_id;
 
             $article -> save();
+
+            $last_ru_article_id = 0;
+            $last_us_article_id = 0;
+            $last_ka_article_id = 0;
         }
         
-        if (view() -> exists('user.components.forms.article_form')) {
+        if (view() -> exists('user.components.forms.article_add_form')) {
             $category = $request->category;
             $data=[
                 'category' => $category,
@@ -208,10 +211,47 @@ class ArticleController extends Controller
                 
                 'image' => 'article_img',
             ];
-            return view('user.components.forms.article_form', $data);
+            return view('user.components.forms.article_add_form', $data);
         }
         abort(404);
-	}
+    }
+    
+
+
+    public function image_upload(Request $request)
+    {   
+        // https://therichpost.com/vue-laravel-image-upload/
+
+        if ($request->hasFile('profile_pic'))
+        {   
+            $file      = $request->file('profile_pic');
+            $filename  = $file->getClientOriginalName();
+            $extension = $file->getClientOriginalExtension();
+            $picture   = date('His').'-'.$filename;
+            $file->move(public_path('images/articles_img/'), $picture);
+
+
+            $global_article = Article::get();
+            foreach ($global_article as $global) {
+                $last_global_article_id = $global->id;
+            }
+
+            $article = Article::where('id',strip_tags($last_global_article_id))->first();
+
+            // $article = new Article();
+
+            $article['image']=$filename;
+            $article -> save();
+
+            return response()->json(["message" => "Image Uploaded Succesfully"]);
+        } 
+        else
+        {
+            return response()->json(["message" => "Select image first."]);
+        }
+    }
+
+
 
 	public function edit_global_article(article $article, Request $request)
     {
@@ -234,16 +274,16 @@ class ArticleController extends Controller
             //     return back() -> withErrors($validator) -> withInput();
             // }
 
-            if ($request->hasFile('image')) {
-                $file = $request->file('image');
-                $file -> move(public_path().'/assets/img/article_img/',$file->getClientOriginalName());
-                $input['image'] = $file->getClientOriginalName();
-            }
-            else {
-                $input['image'] = $input['old_image'];
-            }
+            // if ($request->hasFile('image')) {
+            //     $file = $request->file('image');
+            //     $file -> move(public_path().'/assets/img/article_img/',$file->getClientOriginalName());
+            //     $input['image'] = $file->getClientOriginalName();
+            // }
+            // else {
+            //     $input['image'] = $input['old_image'];
+            // }
 
-            unset($input ['old_image']);
+            // unset($input ['old_image']);
             $article -> fill($input);
 
             if ($article->update()) {
@@ -253,9 +293,10 @@ class ArticleController extends Controller
 
         $old = $article -> toArray();
 
-        if (view()->exists('admin.components.form')) {
+        if (view()->exists('user.components.forms.article_edit_form')) {
             $data = [
-                'title' => 'Edit article - '.$old['title'],
+                // 'title' => 'Edit article - '.$old['title'],
+                'title' => 'Edit title',
                 'data' => $old,
                 'back_btn' => 'home',
                 'edit_title' => 'Edit article',
@@ -271,14 +312,14 @@ class ArticleController extends Controller
                 
                 'image' => 'article_img',
             ];
-            return view('admin.components.form', $data);
+            return view('user.components.forms.article_edit_form', $data);
         }
     }
 
     public function delete(Article $article, Request $request)
 	{
 		if ($request->isMethod('post')) {
-            $global_id=$request->global_id;
+            $global_id=$request->id;
 
             $global_article = Article::where('id',strip_tags($global_id))->first();
             $us_article = Us_article::where('id',strip_tags($global_article->us_article_id))->first();

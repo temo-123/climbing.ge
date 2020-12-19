@@ -1,6 +1,6 @@
 <!--Reed me for out (https://laravel.com/docs/5.7/queries#ordering-grouping-limit-and-offset {inRandomOrder})-->
     <div class="col-sm-3 col-sm-offset-1 blog-sidebar display-none-720px">
-      <div class="sidebar-module sidebar-module-inset">
+      {{-- <div class="sidebar-module sidebar-module-inset">
 
         <h4>About</h4>
         {!!$site -> short_description!!}
@@ -18,7 +18,7 @@
             <li> <a href="{{route('other_list')}}">Other</a> </li>
             <li> <a href="{{route('about_us_page')}}">About as</a> </li>
         </ol>
-      </div>
+      </div> --}}
       
         <nav class="navbar fading-side-menu" data-spy="affix" data-offset-bottom="900" data-offset-top="900">
             

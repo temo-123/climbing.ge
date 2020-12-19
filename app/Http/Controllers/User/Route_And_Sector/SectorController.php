@@ -109,6 +109,24 @@ class SectorController extends Controller
         }
     }
 
+    public function delete(Request $request)
+    {
+        if ($request->isMethod('post')) {
+            $sector_id=$request->id;
+
+            $sector = Sector::where('id',strip_tags($sector_id))->first();
+
+            // dd($sector);
+
+            // delete product file
+            // $fileName = $არტიცლე['image'];
+            // $destinationPath = 'images/shop_img/';
+            // File::delete($destinationPath.$fileName);
+
+            // delete product from db
+            $sector ->delete();
+        }
+    }
 
     private function sector_validate()
     {

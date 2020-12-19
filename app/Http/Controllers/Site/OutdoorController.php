@@ -52,7 +52,7 @@ class OutdoorController extends Controller
                 if($route_num == $sector_count) {
                     $route_sum=array_sum($routes_a);
                     $mtp_sum=array_sum($mtps_a);
-                    array_push($route_quantity, array($outdoor->title, $sector_count, "Sectors", $route_sum, "Route", $mtp_sum, "MTP") ); // push route num in last array
+                    array_push($route_quantity, array($outdoor->url_title, $sector_count, "Sectors", $route_sum, "Route", $mtp_sum, "MTP") ); // push route num in last array
                 }
                 else $route_sum=0;{
                     $route_num = 0;
@@ -118,7 +118,10 @@ class OutdoorController extends Controller
                         $sector_imgs = array();
                         foreach($sectors_img as $sector_img){
                             array_push($sector_imgs, 
-                                array("name"=>$sector_img['image']));
+                                array(
+                                    "name"=>$sector_img['image'],
+                                )
+                            );
                         }
                     }
                     else $sector_imgs = NULL;
@@ -168,6 +171,7 @@ class OutdoorController extends Controller
                             );
                             $mtp_pitchs = Mtp_pitch::where('mtp_id', '=', $mtp->id)->orderBy('num')->get();
                             $pitch_num = 0;
+                            $mtp_num_in_array = 0;
                             foreach($mtp_pitchs as $mtp_pitch){                            
                                 $pitch_grade_yds = 0;
                                 if ($mtp_pitch['grade'] != NULL) {
@@ -186,7 +190,7 @@ class OutdoorController extends Controller
 
                                     "pitch style"=>$mtp_pitch['style'],
                                 );
-                                array_push($mtp_info[$pitch_num_in_array]["mtp pitchs"],$mtp_pitch_info);
+                                array_push($mtp_info[$pitch_num]["mtp pitchs"],$mtp_pitch_info);
                                 $pitch_num++;
                             }
                             array_push($mtp_info[$mtp_num_in_array]['mtp pitchs quantity'],$pitch_num);
@@ -199,7 +203,18 @@ class OutdoorController extends Controller
                     $sector_info = array(
                         "name"=>$sector->name, 
                         "text"=>$sector->text, 
-                        'sector_img'=>$sector_imgs
+                        'sector_img'=>$sector_imgs,
+
+                        "all_day_in_shade"=>$sector->all_day_in_shade,
+                        "all_day_in_sun"=>$sector->all_day_in_sun,
+                        "in_the_shade_afternoon"=>$sector->in_the_shade_afternoon,
+                        "in_the_shade_befornoon"=>$sector->in_the_shade_befornoon,
+                        "in_shade_after_10"=>$sector->in_shade_after_10,
+                        "in_shade_after_15"=>$sector->in_shade_after_15,
+
+                        "overhang"=>$sector->overhang,
+                        "slabby"=>$sector->slabby,
+                        "vertical"=>$sector->vertical,
                     );
                     array_push($area_info, 
                         array(

@@ -1,5 +1,6 @@
 <template>
 <div class="tabs">
+    
     <input type="radio" name="tabs" id="1" checked="checked">
     <label for="1" v-if="this.table_1_get_route">{{this.table_1_name}}</label>
     <div class="tab" v-if="this.table_1_get_route">
@@ -49,7 +50,7 @@
                     <th>|</th>
 
                     <td>
-                        <a href="#" class="btn btn-primary" type="submit">Edit</a>
+                        <a :href="table_1_edit_url+table_1_info.id" class="btn btn-primary" type="submit">Edit</a>
                     </td>
                     
                     <th>|</th>
@@ -71,6 +72,10 @@
     <div class="tab" v-if="this.table_1_get_route">
         <div class="add_buttom">
             <a :href="table_2_add_url" class="btn btn-primary pull-left" type="submit">New </a>
+        </div>
+        <div class="form-groupe">
+            <button @click="get_data_in_table_2" class="btn main-btn pull-right" v-if="!table_2_is_refresh">Refresh ({{table_2_reset_id}})</button>
+            <span class="badge badge-primare mb-1 pull-right" v-if="table_2_is_refresh">Updating...</span>
         </div>
          <table class="table table-hover" id="dev-table">
             <thead>
@@ -105,7 +110,7 @@
                     <th>|</th>
 
                     <td v-if="table_2_name == 'Route'">{{table_2_info.name}}</td>
-                    <td v-else>{{table_2_info.title}} </td>
+                    <td v-else>{{table_2_info.name}} </td>
                     <!-- <td>{{table_2_info.title}}</td> -->
 
                     <th v-if="table_2_name != 'Route'">|</th>
@@ -118,8 +123,11 @@
                     
                     <th>|</th>
                     <td>
-                        <form action="#" method="post" class="form-horisontal">
-                            <button class="btn btn-danger b2" type="submit" value="open" onclick="JavaScript:return Validator(this.id);">Delete</button>
+                        <form method="post" @submit.prevent="table_2_del(table_2_info.id)" >
+                            <input type="hidden" name="_token" >
+                            <div class="form-group">
+                                <button type="submit" class="btn btn-danger" onclick="return confirm('Are you sure you want to delete this item')">Delete</button>
+                            </div>
                         </form>
                     </td>
                 </tr>
@@ -132,6 +140,10 @@
     <div class="tab" v-if="this.table_1_get_route">
         <div class="add_buttom">
             <a :href="table_3_add_url" class="btn btn-primary pull-left" type="submit">New </a>
+        </div>
+        <div class="form-groupe">
+            <button @click="get_data_in_table_3" class="btn main-btn pull-right" v-if="!table_3_is_refresh">Refresh ({{table_3_reset_id}})</button>
+            <span class="badge badge-primare mb-1 pull-right" v-if="table_3_is_refresh">Updating...</span>
         </div>
         <table class="table table-hover" id="dev-table">
             <thead>
@@ -179,8 +191,11 @@
                     
                     <th>|</th>
                     <td>
-                        <form action="#" method="post" class="form-horisontal">
-                            <button class="btn btn-danger b2" type="submit" value="open" onclick="JavaScript:return Validator(this.id);">Delete</button>
+                        <form method="post" @submit.prevent="table_3_del(table_3_info.id)" >
+                            <input type="hidden" name="_token" >
+                            <div class="form-group">
+                                <button type="submit" class="btn btn-danger" onclick="return confirm('Are you sure you want to delete this item')">Delete</button>
+                            </div>
                         </form>
                     </td>
                 </tr>
@@ -193,6 +208,10 @@
     <div class="tab" v-if="this.table_1_get_route">
         <div class="add_buttom">
             <a :href="table_4_add_url" class="btn btn-primary pull-left" type="submit">New </a>
+        </div>
+        <div class="form-groupe">
+            <button @click="get_data_in_table_4" class="btn main-btn pull-right" v-if="!table_4_is_refresh">Refresh ({{table_4_reset_id}})</button>
+            <span class="badge badge-primare mb-1 pull-right" v-if="table_4_is_refresh">Updating...</span>
         </div>
         <table class="table table-hover" id="dev-table">
             <thead>
@@ -240,14 +259,18 @@
                     
                     <th>|</th>
                     <td>
-                        <form action="#" method="post" class="form-horisontal">
-                            <button class="btn btn-danger b2" type="submit" value="open" onclick="JavaScript:return Validator(this.id);">Delete</button>
+                        <form method="post" @submit.prevent="table_4_del(table_4_info.id)" >
+                            <input type="hidden" name="_token" >
+                            <div class="form-group">
+                                <button type="submit" class="btn btn-danger" onclick="return confirm('Are you sure you want to delete this item')">Delete</button>
+                            </div>
                         </form>
                     </td>
                 </tr>
             </tbody>
         </table>
     </div>
+
 </div>
 </template>
 
@@ -268,6 +291,16 @@
             "table_2_add_url",
             "table_3_add_url",
             "table_4_add_url",
+
+            "table_1_edit_url",
+            "table_2_edit_url",
+            "table_3_edit_url",
+            "table_4_edit_url",
+
+            "table_1_del_url",
+            "table_2_del_url",
+            "table_3_del_url",
+            "table_4_del_url",
 
             "table_1_categiry",
             "table_2_categiry",
@@ -298,6 +331,7 @@
                 url_4: "",
             }
         },
+
         mounted() {
             this.get_data_in_table_1();
             this.get_data_in_table_2();
@@ -328,13 +362,20 @@
             },
             get_data_in_table_2: function(){
                 this.table_2_is_refresh = true
+
+                if (this.table_2_get_route == "/articles/get_article_data/") {
+                    this.url_2 = this.table_2_get_route + this.table_2_categiry
+                } else {
+                    this.url_2 = this.table_2_get_route
+                }
+
                 axios
-                .get(this.table_get_route + this.table_2_categiry)
+                .get(this.url_2)
                 .then(response => {
                     this.table_2 = response.data
 
                     this.table_2_is_refresh = false
-                    this.table_2_id++
+                    this.table_2_reset_id++
                 })
                 .catch(
                     error => console.log(error)
@@ -342,13 +383,20 @@
             },
             get_data_in_table_3: function(){
                 this.table_3_is_refresh = true
+
+                if (this.table_3_get_route == "/articles/get_article_data/") {
+                    this.url_3 = this.table_3_get_route + this.table_3_categiry
+                } else {
+                    this.url_3 = this.table_3_get_route
+                }
+
                 axios
-                .get(this.table_get_route + this.table_3_categiry)
+                .get(this.url_3)
                 .then(response => {
                     this.table_3 = response.data
 
                     this.table_3_is_refresh = false
-                    this.teble_3_id++
+                    this.table_3_reset_id++
                 })
                 .catch(
                     error => console.log(error)
@@ -356,13 +404,20 @@
             },
             get_data_in_table_4: function(){
                 this.table_4_is_refresh = true
+
+                if (this.table_4_get_route == "/articles/get_article_data/") {
+                    this.url_4 = this.table_4_get_route + this.table_4_categiry
+                } else {
+                    this.url_4 = this.table_4_get_route
+                }
+
                 axios
-                .get(this.table_get_route + this.table_4_categiry)
+                .get(this.url_4)
                 .then(response => {
                     this.table_4 = response.data
 
                     this.table_4_is_refresh = false
-                    this.table_4_id++
+                    this.table_4_reset_id++
                 })
                 .catch(
                     error => console.log(error)
@@ -372,8 +427,8 @@
             
             table_1_del(itemId) {
                 axios
-                .post('/articles/del/' + itemId, {
-                    global_id: itemId,
+                .post(this.table_1_del_url + itemId, {
+                    id: itemId,
                 })
                 .then(Response => {
                     console.log(response)
@@ -381,6 +436,40 @@
                 })
                 .catch(error => console.log(error))
             },
+            table_2_del(itemId) {
+                axios
+                .post(this.table_2_del_url + itemId, {
+                    id: itemId,
+                })
+                .then(Response => {
+                    console.log(response)
+                    this.get_data_in_table_2()
+                })
+                .catch(error => console.log(error))
+            },
+            table_3_del(itemId) {
+                axios
+                .post(this.table_3_del_url + itemId, {
+                    id: itemId,
+                })
+                .then(Response => {
+                    console.log(response)
+                    this.get_data_in_table_3()
+                })
+                .catch(error => console.log(error))
+            },
+            table_4_del(itemId) {
+                axios
+                .post(this.table_4_del_url + itemId, {
+                    id: itemId,
+                })
+                .then(Response => {
+                    console.log(response)
+                    this.get_data_in_table_4()
+                })
+                .catch(error => console.log(error))
+            },
+
         }
     }
 </script>

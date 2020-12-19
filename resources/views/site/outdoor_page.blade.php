@@ -2,7 +2,6 @@
 
 @section('content')
 
-
     @section('meta_title',  $article->title )
     @if ($article->short_description != NULL)
         @section('meta_description',  $article->short_description )
@@ -22,21 +21,11 @@
 
             <div class="row">
                 @if(isset($article))  
-                @if($article->name)
-                <h1 class="blog-title">{{ $article->name }}</h1> 
-                @else
-                <h1 class="blog-title">
+                <h1 style="font-size: 200%">
                     {{ $article->title }}
-                    @auth
-                    @if(Auth::user()->hasRole('admin'))
-                    @auth
-                    (<a href="#">Edit</a>)
-                    @endauth
-                    @endif
-                    @endauth
                 </h1> 
-                @endif
-
+            </div>
+            <div class="row">
                 <div class="col-sm-8 blog-header">
                     @component('site.components.breadcrumb')
                     @slot('parent') Home @endslot
@@ -92,19 +81,17 @@
                     @endif
 
                     @if($article -> route)
-                    <h2 id="routes">Route</h2>
-                    {!!$article -> route!!}
+                        <h2 id="routes">Route</h2>
+                        {!!$article -> route!!}
                     @endif             
 
 
                     @if(isset($sport_route_sector))
-                    @include('site.components.route')
+                        @include('site.components.route')
                     @endif
                     
-                    @if(isset($article_gallery_count))
-                    @if($article_gallery_count > 0)
-                    @include('site.components.article_gallery')
-                    @endif
+                    @if(isset($article_gallery_count) && $article_gallery_count > 0)
+                        @include('site.components.article_gallery')
                     @endif
                     
                 </div>

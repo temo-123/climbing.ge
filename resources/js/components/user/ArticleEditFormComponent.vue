@@ -7,6 +7,7 @@
     </div>
     <div class="row">
         <div class="tabs">
+
             <input type="radio" name="tabs" id="1" checked="checked">
             <label for="1" >global info</label>
             <div class="tab" >
@@ -59,6 +60,10 @@
                         <div class="col-xs-8">
                             <!-- <input type="text" name="value name" value="old data" class="form-control"> -->
                             <input type="text" name="weather" value="weather" class="form-control"> 
+
+                            <ckeditor :editor="editor" v-model="editorData" :config="editorConfig"></ckeditor>
+
+        <textarea :name="name" v-model="editorData" ></textarea>
                         </div>
                     </div>
 
@@ -121,6 +126,7 @@
 
                 </form>
             </div>
+
             <input type="radio" name="tabs" id="2">
             <label for="2" >english article</label>
             <div class="tab" >
@@ -140,7 +146,8 @@
                     <div class="form-group clearfix">
                         <label for="name" class='col-xs-2 control-label'> Short description </label>
                         <div class="col-xs-8">
-                            <textarea type="text" id="short_description" name="short_description" rows="15" class="form-cotrol md-textarea form-control"></textarea>
+                            <!-- <textarea type="text" id="short_description" name="short_description" rows="15" class="form-cotrol md-textarea form-control">gggggggggg</textarea> -->
+                            <ckeditor :editor="editor" v-model="us_short_description" :config="editorConfig">gggggggggg</ckeditor>
                         </div>
                     </div>
 
@@ -447,12 +454,16 @@
 
                 </form>
             </div>
+
         </div>
     </div>
 </div>
 </template>
 
 <script>
+    import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
+    // import Form from 'vform';
+
     export default {
         props: [
             'back_url',
@@ -460,13 +471,17 @@
         ],
         data(){
             return {
-                
+                editor: editor,
+                editorData: '<p>Your Post Content</p>',
+                editorConfig:{
+                },
             }
         },
         mounted() {
             // console.log(this.catagory)
         },
         methods: {
+
             add_global_article() {
                 axios
                 .post('/articles/add/' + this.category, {
@@ -519,6 +534,7 @@
                 })
                 .catch(error => console.log(error))
             },
+
             save_all() {
                 this.add_global_article();
                 this.add_us_article();
