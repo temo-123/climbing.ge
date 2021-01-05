@@ -20,7 +20,7 @@
             <div class="col-xs-12">
               <select class="form-control" v-if="sellected != ''" v-model="sector_id">
                 <option disabled>Please select sector</option>
-                <option v-for="sector in sectors" :key="sector.id" v-if="sellected == sector.article_id" v-bind:value="sector.id">{{ sector.name }}</option>
+                <option v-for="sector in sectors" :key="sector.id" :if="sellected == sector.article_id" v-bind:value="sector.id">{{ sector.name }}</option>
               </select>
             </div>
           </div>
@@ -188,14 +188,17 @@ export default {
         error => console.log(error)
       );
     },
-    add_global_article: function () {
+    add_route: function () {
       axios
       .post('/routes_and_sectors/route_add', {
           sector_id: this.sector_id,
           name: this.name,
           text: this.text,
+          garde: this.garde,
+          or_grade: this.or_grade,
           last_carabin: this.last_carabin,
           height: this.height,
+          bolts: this.bolts,
           bolter: this.bolter,
           first_ascent: this.first_ascent,
       })
@@ -208,10 +211,9 @@ export default {
     },
 
     save_all: function () {
-      this.add_global_article()
-      window.location.href = this.back_url;
+      this.add_route()
+      window.location.href = '/routes_and_sectors';
     }
-
   }
 }
 </script>

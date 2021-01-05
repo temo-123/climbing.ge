@@ -12,19 +12,24 @@ class Mount extends Model
         "name",
 		"name_ru",
 		"name_ka",
+
 		"short_descriptio",
-		"shop_description_ru",
-		"shop_descriptio_ka",	
+		"short_description_ru",
+		"short_description_ka",	
+
 		"text",
 		"text_ru",
 		"text_ka",
-		"map",	
+
 		"how_get",
 		"how_get_ru",
 		"how_get_ka",
+
 		"best_time",
 		"best_time_ru",
-		"betst_time_kaname_ru",
+		"best_time_ka",
+
 		"weather",
+		"map",
     ];
 }

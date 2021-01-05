@@ -18,20 +18,36 @@ class MountMassiveController extends Controller
             
             $mount = new Mount();
 
-            $mount['title']=$request->title;
+            $mount['name']=$request->name;
+            $mount['name_ru']=$request->name;
+            $mount['name_ka']=$request->name;
+
             $mount['text']=$request->text;
             $mount['text_ru']=$request->text_ru;
             $mount['text_ka']=$request->text_ka;
-            $mount['description']=$request->description;
-            $mount['description_ru']=$request->description_ru;
-            $mount['description_ka']=$request->description_ka;
-            $mount['published']=$request->published;
+
+            $mount['short_description']=$request->short_description;
+            $mount['short_description_ru']=$request->short_description_ru;
+            $mount['short_description_ka']=$request->short_description_ka;
+
+            $mount['how_get']=$request->how_get;
+            $mount['how_get_ru']=$request->how_get_ru;
+            $mount['how_get_ka']=$request->how_get_ka;
+
+            $mount['best_time']=$request->best_time;
+            $mount['best_time_ru']=$request->best_time_ru;
+            $mount['best_time_ka']=$request->best_time_ka;
+
+            $mount['map']=$request->map;
+            $mount['weather']=$request->weather;
 
             $mount -> save();
         }
-        
-        if (view() -> exists('user.components.forms.mount_massive_form')) {
+    }
 
+    public function add_form()
+    {
+        if (view() -> exists('user.components.forms.mount_add_form')) {
             $data=[
                 'title' => 'New mount',
                 'back_btn' => 'home',
@@ -48,84 +64,118 @@ class MountMassiveController extends Controller
                 
                 'image' => 'gallery_img',
             ];
-            return view('user.components.forms.mount_massive_form', $data);
+            return view('user.components.forms.mount_add_form', $data);
         }
         abort(404);
     }
 
 
-    public function edit(Gallery $gallery, Request $request)
+    public function edit(mount $mount, Request $request)
     {
-        $image_dir = '/images/gallery_img';
-
         if ($request->isMethod('post')) {
             $input = $request -> except('_token');
 
-            $this->gallery_validate($request);
+            $mount = Mount::find($request->id);
 
-            $gallery = Gallery::where('id',strip_tags($request->id))->first();
+            $mount['name']=$request->name;
+            $mount['name_ru']=$request->name;
+            $mount['name_ka']=$request->name;
 
-            $gallery['image'] = ImageEditService::image_update($image_dir, $gallery, $input, "image", $request);
+            $mount['text']=$request->text;
+            $mount['text_ru']=$request->text_ru;
+            $mount['text_ka']=$request->text_ka;
 
-            $gallery->fill($input);
+            $mount['short_description']=$request->short_description;
+            $mount['short_description_ru']=$request->short_description_ru;
+            $mount['short_description_ka']=$request->short_description_ka;
 
-            if ($gallery->update()) {
-                return redirect()->route('gallery_list')->with('status','gallery updated!'); //text
-            }
-            else{
-                return redirect()->route('gallery_list')->with('error','Error! gallery not updated'); //text
-            }
+            $mount['how_get']=$request->how_get;
+            $mount['how_get_ru']=$request->how_get_ru;
+            $mount['how_get_ka']=$request->how_get_ka;
+
+            $mount['best_time']=$request->best_time;
+            $mount['best_time_ru']=$request->best_time_ru;
+            $mount['best_time_ka']=$request->best_time_ka;
+
+            $mount['map']=$request->map;
+            $mount['weather']=$request->weather;
+// dd($mount);
+            $mount -> update();
         }
 
-        if (view()->exists('user.components.forms.gallery_form')) {
-            $image_id = $request->id;
-            $gallery = Gallery::where('id',strip_tags($request->id))->first();
-            $old = $gallery -> toArray();
-            $articles = Article::
-                where('category','=','outdoor')->
-                orWhere('category','=','indoor')->
-                orWhere('category','=','ice')->
-                orWhere('category','=','other')->
-                orWhere('category','=','prtner')->
-                orWhere('category','=','mount')->
-            get();
-            $data = [
-                'title' => 'Edit news - '.$old['title'],
-                'data' => $old,
-                "articles" => $articles,
-                "image_id" => $image_id,
+        // if (view()->exists('user.components.forms.gallery_form')) {
+        //     $image_id = $request->id;
+        //     $gallery = Gallery::where('id',strip_tags($request->id))->first();
+        //     $old = $gallery -> toArray();
+        //     $articles = Article::
+        //         where('category','=','outdoor')->
+        //         orWhere('category','=','indoor')->
+        //         orWhere('category','=','ice')->
+        //         orWhere('category','=','other')->
+        //         orWhere('category','=','prtner')->
+        //         orWhere('category','=','mount')->
+        //     get();
+        //     $data = [
+        //         'title' => 'Edit news - '.$old['title'],
+        //         'data' => $old,
+        //         "articles" => $articles,
+        //         "image_id" => $image_id,
 
-                'edit_form'=>'galleryEdit',
-                'edit_title'=>'test',
-                'edit_active'=>'test 2',
-                'published' => 1,
-                'description' => 1,
-                'text' => 1,
+        //         'edit_form'=>'galleryEdit',
+        //         'edit_title'=>'test',
+        //         'edit_active'=>'test 2',
+        //         'published' => 1,
+        //         'description' => 1,
+        //         'text' => 1,
 
-                'image' => $image_dir
-            ];          
-            return view('user.components.forms.gallery_form', $data);
-        }
+        //         'image' => $image_dir
+        //     ];          
+        //     return view('user.components.forms.gallery_form', $data);
+        // }
     }
 
+    public function get_mount_editing_data(Request $request)
+    {
+        $mount = mount::where('id',strip_tags($request->id))->first();
+        return(
+            $data = [
+                "mount" => $mount,
+            ]
+        );
+    }
 
-	public function delete(gallery $gallery, Request $request)
-	{
-		$image_dir = '/images/shop_img';
+    public function edit_form(Request $request)
+    {
+        if (view() -> exists('user.components.forms.mount_edit_form')) {
+            // dd($request->id);
+            $data=[
+                'title' => 'New mount',
+                'back_btn' => 'home',
+                'add_title' => 'Add mount',
+                'add_active' => 'Add mount',
+                
+                'add_form' => 'mountRouteAdd',
+                
+                'url_title' => 1,
+                'text' => 1, 
+                'published'=>'1',
+                'link'=>'1',
+                'gallery_filtr'=>'1',
+                
+                'image' => 'gallery_img',
 
-        if ($request->isMethod('delete')) {
-            $gallery = Gallery::where('id',strip_tags($request->id))->first();
-
-            // delete article image from folder
-            ImageEditService::image_delite($image_dir, $gallery, 'image');
-
-            // delete product from db
-            $gallery -> delete();
-
-            return back()->with('status', 'gallery delited!'); //text
+                "editing_mount_id" => $request->id,
+            ];
+            return view('user.components.forms.mount_edit_form', $data);
         }
-        else{
-            return back()->with('error', 'Error! gallery not deleted!'); //text
+        abort(404);
+    }
+
+	public function delete(mount $mount, Request $request)
+	{
+        if ($request->isMethod('post')) {
+            $mount = Mount::where('id',strip_tags($request->id))->first();
+            $mount -> delete();
         }
     }
 

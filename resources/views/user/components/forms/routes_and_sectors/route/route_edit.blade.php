@@ -3,15 +3,9 @@
 		<div class="container top_menu_margin">
 
 			@component('user.components.breadcrumb')
-				@if (isset($data['id'])) 
-					@slot('title') Route/s edit @endslot
+					@slot('title') Route edit @endslot
 					@slot('parent') Home @endslot
-					@slot('active') Route/s edit @endslot
-				@else 
-					@slot('title') Route/s add @endslot
-					@slot('parent') Home @endslot
-					@slot('active') Route/s add @endslot
-				@endif
+					@slot('active') Route edit @endslot
 			@endcomponent
 		
 			<div class="form-group">
@@ -25,7 +19,9 @@
 		<div class="container">
 			<div class="row">
 				<div class="col-md-12">
-					<route_edit_form></route_edit_form>
+					<route_edit_form
+						editing_roure_id = {{ $editing_route_id }}
+					></route_edit_form>
 				</div>
 			</div>
 		</div>

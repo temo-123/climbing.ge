@@ -25,9 +25,9 @@ class Article extends Model
 		'and_data_month', 
 
 		'image',
-
-		'meta_title', 
-		'meta_description', 
+		'working_time',
+		'price_from',
+		
 		'meta_keyword',
 
 	    'published',

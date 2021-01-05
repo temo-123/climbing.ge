@@ -68,8 +68,8 @@
     </div>
 
     <input type="radio" name="tabs" id="2">
-    <label for="2" v-if="this.table_1_get_route">{{this.table_2_name}}</label>
-    <div class="tab" v-if="this.table_1_get_route">
+    <label for="2" v-if="this.table_2_get_route">{{this.table_2_name}}</label>
+    <div class="tab" v-if="this.table_2_get_route">
         <div class="add_buttom">
             <a :href="table_2_add_url" class="btn btn-primary pull-left" type="submit">New </a>
         </div>
@@ -118,7 +118,7 @@
                     
                     <th>|</th>
                     <td>
-                        <a  class="btn btn-primary" type="submit">Edit</a>
+                        <a :href="table_2_edit_url+table_2_info.id" class="btn btn-primary" type="submit">Edit</a>
                     </td>
                     
                     <th>|</th>
@@ -136,8 +136,8 @@
     </div>
 
     <input type="radio" name="tabs" id="3">
-    <label for="3"  v-if="this.table_1_get_route">{{this.table_3_name}}</label>
-    <div class="tab" v-if="this.table_1_get_route">
+    <label for="3"  v-if="this.table_3_get_route">{{this.table_3_name}}</label>
+    <div class="tab" v-if="this.table_3_get_route">
         <div class="add_buttom">
             <a :href="table_3_add_url" class="btn btn-primary pull-left" type="submit">New </a>
         </div>
@@ -150,7 +150,6 @@
                 <tr>
                     <th style='text-align: center;'>
                         <input type="checkbox" class="all">
-                        <!-- <label><input type="checkbox" class="all"></label> -->
                     </th>
                     <th>|</th>
                     <th>ID</th>
@@ -177,16 +176,15 @@
                     <td>{{table_3_info.id}}</td>
                     <th>|</th>
 
-                    <!-- <td>{{table_3_info.title}}</td> -->
                     <td v-if="table_3_name == 'Multi-pitch'">{{table_3_info.name}}</td>
-                    <td v-else>{{table_3_info.title}} /td>
+                    <td v-else>{{table_3_info.title}} </td>
 
                     <th v-if="table_3_name != 'Multi-pitch'">|</th>
                     <td style='text-align: center;' v-if="table_3_name != 'Multi-pitch'">{{table_3_info.published}}</td>
                     
                     <th>|</th>
                     <td>
-                        <a href="#" class="btn btn-primary" type="submit">Edit</a>
+                        <a :href="table_3_edit_url+table_3_info.id" class="btn btn-primary" type="submit">Edit</a>
                     </td>
                     
                     <th>|</th>
@@ -204,8 +202,8 @@
     </div>
 
     <input type="radio" name="tabs" id="4">
-    <label for="4"  v-if="this.table_1_get_route">{{this.table_4_name}}</label>
-    <div class="tab" v-if="this.table_1_get_route">
+    <label for="4"  v-if="this.table_4_get_route">{{this.table_4_name}}</label>
+    <div class="tab" v-if="this.table_4_get_route">
         <div class="add_buttom">
             <a :href="table_4_add_url" class="btn btn-primary pull-left" type="submit">New </a>
         </div>
@@ -245,7 +243,6 @@
                     <td>{{table_4_info.id}}</td>
                     <th>|</th>
 
-                    <!-- <td>{{table_4_info.title}}</td> -->
                     <td v-if="table_4_name == 'pitches'">{{table_4_info.name}}</td>
                     <td v-else>{{table_4_info.title}} </td>
 
@@ -254,7 +251,7 @@
                     
                     <th>|</th>
                     <td>
-                        <a href="#" class="btn btn-primary" type="submit">Edit</a>
+                        <a :href="table_4_edit_url+table_4_info.id" class="btn btn-primary" type="submit">Edit</a>
                     </td>
                     
                     <th>|</th>
@@ -475,53 +472,51 @@
 </script>
 
 <style scoped>
-/**
- * Tabs
- */
-.tabs {
-	display: flex;
-	flex-wrap: wrap; /* make sure it wraps */
-}
-.tabs label {
-/* .tabs  { */
-	order: 1; /* Put the labels first */
-	display: block;
-	padding: 1rem 2rem;
-	margin-right: 0.2rem;
-	cursor: pointer;
-  background: #ccced0;
-  font-weight: bold;
-  transition: background ease 0.2s;
-}
-.tabs .tab {
-  order: 99; /* Put the tabs last */
-  flex-grow: 1;
-	width: 100%;
-	display: none;
-  padding: 1rem;
-  background: #fff;
-}
-.tabs input[type="radio"] {
-	display: none;
-}
-.tabs input[type="radio"]:checked + label {
-	background: #fff;
-}
-.tabs input[type="radio"]:checked + label + .tab {
-	display: block;
-}
+    /**
+    * Tabs
+    */
+    .tabs {
+        display: flex;
+        flex-wrap: wrap; /* make sure it wraps */
+    }
+    .tabs label {
+    /* .tabs  { */
+        order: 1; /* Put the labels first */
+        display: block;
+        padding: 1rem 2rem;
+        margin-right: 0.2rem;
+        cursor: pointer;
+    background: #ccced0;
+    font-weight: bold;
+    transition: background ease 0.2s;
+    }
+    .tabs .tab {
+    order: 99; /* Put the tabs last */
+    flex-grow: 1;
+        width: 100%;
+        display: none;
+    padding: 1rem;
+    background: #fff;
+    }
+    .tabs input[type="radio"] {
+        display: none;
+    }
+    .tabs input[type="radio"]:checked + label {
+        background: #fff;
+    }
+    .tabs input[type="radio"]:checked + label + .tab {
+        display: block;
+    }
 
-@media (max-width: 45em) {
-  .tabs .tab,
-  .tabs label {
-    order: initial;
-  }
-  .tabs label {
-    width: 100%;
-    margin-right: 0;
-    margin-top: 0.2rem;
-  }
-}
-
-
+    @media (max-width: 45em) {
+    .tabs .tab,
+    .tabs label {
+        order: initial;
+    }
+    .tabs label {
+        width: 100%;
+        margin-right: 0;
+        margin-top: 0.2rem;
+    }
+    }
 </style>

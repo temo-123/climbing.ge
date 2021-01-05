@@ -3,15 +3,9 @@
 		<div class="container top_menu_margin">
 
 			@component('user.components.breadcrumb')
-				@if (isset($data['id'])) 
-					@slot('title') Route/s edit @endslot
-					@slot('parent') Home @endslot
-					@slot('active') Route/s edit @endslot
-				@else 
 					@slot('title') Route/s add @endslot
 					@slot('parent') Home @endslot
-					@slot('active') Route/s add @endslot
-				@endif
+					@slot('active') Route/s add @endslot 
 			@endcomponent
 		
 			<div class="form-group">

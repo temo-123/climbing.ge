@@ -33,6 +33,23 @@
                     </div>
                 </div>
 
+                <div class="row justify-content-center">
+                    <div class="col-md-12">
+                        <div class="card">
+                            <div class="card-header">Sites index pages</div>
+
+                            <div class="card-body">
+                                <div class="col-md-6">
+                                    <a href='{{ route('index') }}'>climbing.ge</a>
+                                </div>
+                                <div class="col-md-6">
+                                    <a href='{{ route('shop_index') }}'>shop.climibng.ge</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
                 <div class="row">
                     <div class="col-md-12">
                     @if(Auth::user()->name || Auth::user()->surname || Auth::user()->country || Auth::user()->city ||  Auth::user()->gender || Auth::user()->email)

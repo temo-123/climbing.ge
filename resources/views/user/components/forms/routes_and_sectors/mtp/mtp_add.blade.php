@@ -17,9 +17,6 @@
 			<div class="form-group">
 				<a href="{{route('routes_and_sectors')}}" class='btn btn-primary'>Back</a>
 			</div>
-			<!-- <div class="form-grup">
-				<button id="add_buttmo">Add to collection</button>
-			</div> -->
 		</div>
 		
 		<div class="container">

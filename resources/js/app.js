@@ -42,14 +42,20 @@ Vue.component('tabs_component',                 require('./components/user/TabsC
 Vue.component('comments_list_component',        require('./components/user/CommentsListComponent.vue').default);
 Vue.component('options_form',                   require('./components/user/OptionsFormComponent.vue').default);
 
-Vue.component('article_add_form_component',     require('./components/user/ArticleAddFormComponent.vue').default);
-Vue.component('article_edit_form_component',    require('./components/user/ArticleEditFormComponent.vue').default);
+Vue.component('article_add_form_component',     require('./components/user/articles/ArticleAddFormComponent.vue').default);
+Vue.component('article_edit_form_component',    require('./components/user/articles/ArticleEditFormComponent.vue').default);
 
 Vue.component('route_add_form',                require('./components/user/routes and sectors/route/RouteAddFormComponent.vue').default);
-Vue.component('mtp_add_form',                require('./components/user/routes and sectors/mtp/MtpAddFormComponent.vue').default);
-Vue.component('mtp_pitch_add_form',                require('./components/user/routes and sectors/mtp_pitch/MtpPitchAddFormComponent.vue').default);
+Vue.component('route_edit_form',                require('./components/user/routes and sectors/route/RouteEditFormComponent.vue').default);
 
-Vue.component('mount_add_form_component',     require('./components/user/MountAddFormComponent.vue').default);
+Vue.component('mtp_add_form',                require('./components/user/routes and sectors/mtp/MtpAddFormComponent.vue').default);
+Vue.component('mtp_edit_form',                require('./components/user/routes and sectors/mtp/MtpEditFormComponent.vue').default);
+
+Vue.component('mtp_pitch_add_form',                require('./components/user/routes and sectors/mtp_pitch/MtpPitchAddFormComponent.vue').default);
+Vue.component('mtp_pitch_edit_form',                require('./components/user/routes and sectors/mtp_pitch/MtpPitchEditFormComponent.vue').default);
+
+Vue.component('mount_add_form',     require('./components/user/mounts/MountAddFormComponent.vue').default);
+Vue.component('mount_edit_form',     require('./components/user/mounts/MountEditFormComponent.vue').default);
 /**
  * Next, we will create a fresh Vue application instance and attach it to
  * the page. Then, you may begin adding components to this application

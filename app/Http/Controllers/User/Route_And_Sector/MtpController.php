@@ -40,9 +40,40 @@ class MtpController extends Controller
     	abort(404);
     }
 
-    public function edit_mtp()
+    public function edit_mtp(Request $request)
     {
-        echo "edit mtp";
+        $request->user()->authorizeRoles(['manager', 'admin']);
+
+        $mtp = mtp::find($request->id);
+
+        $mtp->sector_id = $request->sector_id;
+        $mtp->name = $request->name;
+        $mtp->text = $request->text;
+        $mtp->height = $request->height;
+        
+        $mtp->update();
+    }
+
+    public function edit_mtp_form(Request $request)
+    {
+        if (view()->exists('user.components.forms.routes_and_sectors.mtp.mtp_edit')) {
+    		$data = [
+    			'name' => 'Edit sector',
+                "editing_mtp_id" => $request->id,
+    		];
+
+    		return view('user.components.forms.routes_and_sectors.mtp.mtp_edit', $data);
+        }
+    }
+    
+    public function get_mtp_editing_data(Request $request)
+    {
+        $mtp = Mtp::where('id',strip_tags($request->id))->first();
+        return(
+            $data = [
+                "mtp" => $mtp,
+            ]
+        );
     }
 
     public function delete_mtp(Request $request)
@@ -103,7 +134,43 @@ class MtpController extends Controller
 
     public function edit_pitch()
     {
-        echo "edit pitch";
+        $request->user()->authorizeRoles(['manager', 'admin']);
+
+        $mtp_pitch = Mtp_pitch::find($request->id);
+
+        $mtp_pitch->mtp_id = $request->mtp_id;
+        $mtp_pitch->gread = $request->gread;
+        $mtp_pitch->or_gread = $request->or_gread; 
+        $mtp_pitch->name = $request->name;
+        $mtp_pitch->text = $request->text; 
+        $mtp_pitch->height = $request->height;
+        $mtp_pitch->bolts = $request->bolts;
+        $mtp_pitch->bolter = $request->bolter;
+        $mtp_pitch->first_ascent = $request->first_ascent;
+        
+        $mtp_pitch->update();
+    }
+
+    public function edit_pitch_form(Request $request)
+    {
+        if (view()->exists('user.components.forms.routes_and_sectors.mtp_pitch.mtp_pitch_edit')) {
+    		$data = [
+    			'name' => 'Edit sector',
+                "editing_pitch_id" => $request->id,
+    		];
+
+    		return view('user.components.forms.routes_and_sectors.mtp_pitch.mtp_pitch_edit', $data);
+        }
+    }
+
+    public function get_mtp_pitch_editing_data(Request $request)
+    {
+        $mtp_pitch = Mtp_pitch::where('id',strip_tags($request->id))->first();
+        return(
+            $data = [
+                "mtp_pitch" => $mtp_pitch,
+            ]
+        );
     }
 
     public function delete_pitch(Request $request)

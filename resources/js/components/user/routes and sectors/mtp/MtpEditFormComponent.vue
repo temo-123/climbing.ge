@@ -42,21 +42,11 @@
         </div>
 
         <div class="form-group clearfix">
-          <label for="name" class='col-xs-2 control-label'> Bolter & height </label>
-          <div class="col-xs-4">
-            <input type="text" name="title" class="form-control" v-model="bolter" placeholder="Bolter"> 
-          </div>
-          <div class="col-xs-3">
+          <label for="name" class='col-xs-2 control-label'> Height </label>
+          <div class="col-xs-6">
             <input type="text" name="title" class="form-control" v-model="height" placeholder="Height"> 
           </div>
           <label for="name" class='col-xs-1 control-label'> M </label>
-        </div>
-
-        <div class="form-group clearfix">
-          <label for="name" class='col-xs-2 control-label'>Firs Ascent </label>
-          <div class="col-xs-8">
-            <input type="text" name="title" class="form-control" v-model="first_ascent" placeholder="First ascent"> 
-          </div>
         </div>
 
       </form>
@@ -66,6 +56,9 @@
 
 <script>
 export default {
+    props: [
+        "editing_mtp_id",
+    ],
   data() {
     return {
       sellected: '',
@@ -75,26 +68,25 @@ export default {
       sectors: [],
 
       sector_id: "",
-      title: "",
+      name: "",
       text: "",
-      last_carabin: "",
       height: "",
-      bolter: "",
-      first_ascent: "",
 
-      published: "",
+        editing_url: '/routes_and_sectors/get_mtp_editing_data/',
+        url: '',
     }
   },
 
   mounted() {
     this.get_region_data()
     this.get_sectors_data()
+    this.get_route_editing_data()
   },
 
   methods: {
     get_region_data: function(){
       axios
-      .get("../routes_and_sectors/get_region_data")
+      .get("/routes_and_sectors/get_region_data")
       .then(response => {
         this.regions = response.data
       })
@@ -104,7 +96,7 @@ export default {
     },
     get_sectors_data: function(){
       axios
-      .get("../routes_and_sectors/get_sector_data")
+      .get("/routes_and_sectors/get_sector_data")
       .then(response => {
         this.sectors = response.data
       })
@@ -112,19 +104,40 @@ export default {
         error => console.log(error)
       );
     },
+    get_route_editing_data() {
+          this.url = this.editing_url + this.editing_mtp_id
+          axios
+          .get(this.url)
+          .then(response => {
+              this.editing_data = response.data
 
-    add_global_article: function () {
+            console.log(this.editing_data);
+              // send data in editing form value
+              this.sector_id = this.editing_data.mtp['sector_id'],
+              this.name = this.editing_data.mtp['name'],
+              this.text = this.editing_data.mtp['text'],
+              this.height = this.editing_data.mtp['height']
+              
+              for (let index = 0; index < this.sectors.length; index++) {
+                if (this.sectors[index]['id'] == this.sector_id) {
+                  this.select_region = this.sectors[index]['article_id']
+                }
+              }
+              console.log(this.select_region);
+
+          })
+          .catch(
+              error => console.log(error)
+          );
+      },
+
+    edit_global_article: function () {
       axios
-      .post('/routes_and_sectors/mtp_add', {
+      .post('/routes_and_sectors/mtp_edit/' + this.editing_mtp_id, {
           sector_id: this.sector_id,
-          gread: this.gread,
-          or_gread: this.or_gread,
           name: this.name,
           text: this.text,
           height: this.height,
-          bolts: this.bolts,
-          bolter: this.bolter,
-          first_ascent: this.first_ascent,
       })
       .then(function (response) {
           console.log("route added sucsesfule")
@@ -135,7 +148,7 @@ export default {
     },
 
     save_all: function () {
-      this.add_global_article()
+      this.edit_global_article()
       window.location.href = '/routes_and_sectors';
     }
 

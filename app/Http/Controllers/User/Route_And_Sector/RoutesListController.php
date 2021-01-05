@@ -46,7 +46,7 @@ class RoutesListController extends Controller
                 'table_1_count' => $count_sector,
                 'table_1_tags' => $sector_tags,
     		    'table_1_add_url'=>'sectorAdd',
-				'table_1_edit_url'=>'sectorEdit',
+				'table_1_edit_url'=>'routes_and_sectors/sector_edit_form/',
 				'table_1_get_route'=>'routes_and_sectors/get_sector_data',
                 'table_1_del'=>"/routes_and_sectors/sector_delete/",
                 
@@ -55,7 +55,7 @@ class RoutesListController extends Controller
                 'table_2_count' => $count_route,
                 'table_2_tags' => $route_tags,
     		    'table_2_add_url'=>'routeAdd',
-    		    'table_2_edit_url'=>'routeEdit',
+    		    'table_2_edit_url'=>'routes_and_sectors/route_edit_form/',
 				'table_2_get_route'=>'routes_and_sectors/get_route_data',
                 'table_2_del'=>"/routes_and_sectors/route_delete/",
                 
@@ -64,7 +64,7 @@ class RoutesListController extends Controller
                 'table_3_count' => $count_mtp,
                 'table_3_tags' => $mtp_tags,
     		    'table_3_add_url'=>'mtpAdd',
-    		    'table_3_edit_url'=>'mtpEdit',
+    		    'table_3_edit_url'=>'routes_and_sectors/mtp_edit_form/',
 				'table_3_get_route'=>'routes_and_sectors/get_mtp_data',
                 'table_3_del'=>"/routes_and_sectors/mtp_delete/",
                 
@@ -73,16 +73,16 @@ class RoutesListController extends Controller
                 'table_4_count' => $count_mtp_pitchs,
                 'table_4_tags' => $mtp_pitch_tags,
                 'table_4_add_url'=>'mtpPitchAdd',
-                'table_4_edit_url'=>'mtpEdit',
+                'table_4_edit_url'=>'routes_and_sectors/mtp_pitch_edit_form/',
 				'table_4_get_route'=>'routes_and_sectors/get_mtp_pitch_data',
                 'table_4_del'=>"/routes_and_sectors/mtp_pitch_delete/",
 
     		    'page_name' => 'Climbing Secrots And Routes',
     		    'active' => 'routes and sectors',
     		    
-    		    'num_1'=>1,
-    		    'num_2'=>1,
-    		    'num_3'=>1,
+    		    // 'num_1'=>1,
+    		    // 'num_2'=>1,
+    		    // 'num_3'=>1,
     		    
     		    'route_in_sector'=>$route_in_sector
                 

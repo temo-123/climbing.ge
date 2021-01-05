@@ -59,15 +59,17 @@ Route::group(['prefix' => LocalisationService::locale(),'middleware' => 'setLoca
 
                     Route::group(['prefix'=>'mountaineering', 'namespace'=>'Mountaineering'], function() {
                         Route::get('/', ['uses'=>'MountListController@index', 'as'=>'mountaineering']);
+
                         Route::any('/get_mount_data', 'MountListController@get_mount_data');
                         Route::any('/get_mount_route_data', 'MountListController@get_mount_route_data');
 
-                            Route::match(['get','post'], '/mount_add', ['uses'=>'MountMassiveController@add','as'=>'mountAdd']);
-                            Route::match(['get', 'post', 'delete'], '/mount_edit/{mount}', ['uses' => 'MountMassiveController@edit', 'as'=>'mountEdit']);
-                            Route::match(['get', 'post', 'delete'], '/mount_delete/{mount}', ['uses' => 'MountMassiveController@delete', 'as'=>'mountDel']);
-                        
-                        // Route::match(['get','post'], '/mount_route_add', ['uses'=>'MountRouteController@store','as'=>'mountRouteAdd']);
-                        // Route::match(['get', 'post', 'delete'], '/mount_route_edit/{mount_route}', ['uses' => 'MountRouteController@edit', 'as'=>'mountRouteEdit']);
+                        Route::any('/get_mount_editing_data/{id}', 'MountMassiveController@get_mount_editing_data');
+
+                        Route::match(['get','post'], '/mount_add_form', ['uses'=>'MountMassiveController@add_form','as'=>'mountAddForm']);
+                        Route::match(['get','post'], '/mount_add', ['uses'=>'MountMassiveController@add','as'=>'mountAdd']);
+                        Route::match(['get', 'post', 'delete'], '/mount_edit_form/{id}', ['uses' => 'MountMassiveController@edit_form', 'as'=>'mountEditForm']);
+                        Route::match(['get', 'post', 'delete'], '/mount_edit/{id}', ['uses' => 'MountMassiveController@edit', 'as'=>'mountEdit']);
+                        Route::match(['get', 'post', 'delete'], '/mount_delete/{id}', ['uses' => 'MountMassiveController@delete', 'as'=>'mountDel']);
                     });
                     
 
@@ -77,35 +79,37 @@ Route::group(['prefix' => LocalisationService::locale(),'middleware' => 'setLoca
                         Route::any('/get_region_data', 'RoutesListController@get_region_data');
                         
                         Route::match(['get','post'], '/sector_add', ['uses'=>'SectorController@add','as'=>'sectorAdd']);
-                        Route::match(['get', 'post', 'delete'], '/sector_edit/{id}', ['uses' => 'SectorController@edit', 'as'=>'sectorEdit']);
+                        Route::match(['get', 'post', 'delete'], '/sector_edit_form/{id}', ['uses' => 'SectorController@edit_form', 'as'=>'sectorEditForm']);
                         Route::match(['get', 'post', 'delete'], '/sector_delete/{id}', ['uses' => 'SectorController@delete', 'as'=>'sectorDel']);
+                        Route::any('/get_sector_editing_data/{id}', 'RoutesController@get_sector_editing_data');
                         Route::any('/get_sector_data', 'RoutesListController@get_sector_data');
                         
                         Route::match(['get','post'], '/route_add', ['uses'=>'RoutesController@add','as'=>'routeAdd']);
+                        Route::match(['get', 'post', 'delete'], '/route_edit_form/{id}', ['uses' => 'RoutesController@edit_form', 'as'=>'routeEditForm']);
                         Route::match(['get', 'post', 'delete'], '/route_edit/{id}', ['uses' => 'RoutesController@edit', 'as'=>'routeEdit']);
                         Route::match(['get', 'post', 'delete'], '/route_delete/{id}', ['uses' => 'RoutesController@delete', 'as'=>'routeDel']);
+                        Route::any('/get_route_editing_data/{id}', 'RoutesController@get_route_editing_data');
                         Route::any('/get_route_data', 'RoutesListController@get_route_data');
 
                         Route::match(['get','post'], '/mtp_add', ['uses'=>'MtpController@add_mtp','as'=>'mtpAdd']);
+                        Route::match(['get', 'post', 'delete'], '/mtp_edit_form/{id}', ['uses' => 'MtpController@edit_mtp_form', 'as'=>'mtpEditForm']);
                         Route::match(['get', 'post', 'delete'], '/mtp_edit/{id}', ['uses' => 'MtpController@edit_mtp', 'as'=>'mtpEdit']);
                         Route::match(['get', 'post', 'delete'], '/mtp_delete/{id}', ['uses' => 'MtpController@delete_mtp', 'as'=>'mtpDelete']);
+                        Route::any('/get_mtp_editing_data/{id}', 'MtpController@get_mtp_editing_data');
                         Route::any('/get_mtp_data', 'RoutesListController@get_mtp_data');
 
                         Route::match(['get','post'], '/mtp_pitch_add', ['uses'=>'MtpController@add_pitch','as'=>'mtpPitchAdd']);
+                        Route::match(['get', 'post', 'delete'], '/mtp_pitch_edit_form/{id}', ['uses' => 'MtpController@edit_pitch_form', 'as'=>'mtpPitchEditForm']);
                         Route::match(['get', 'post', 'delete'], '/mtp_pitch_edit/{id}', ['uses' => 'MtpController@edit_pitch', 'as'=>'mtpPitchEdit']);
                         Route::match(['get', 'post', 'delete'], '/mtp_pitch_delete/{id}', ['uses' => 'MtpController@delete_pitch', 'as'=>'mtpPitchDel']);
+                        Route::any('/get_mtp_pitch_editing_data/{id}', 'MtpController@get_mtp_pitch_editing_data');
                         Route::any('/get_mtp_pitch_data', 'RoutesListController@get_mtp_pitch_data');
                     }); 
             
 
                     Route::group(['prefix'=>'articles', 'namespace'=>'Article'], function() {
-                        Route::any('/get_article_data/{article_category}', 'ArticleController@get_article_data');
-
-                        Route::get('/{article_category}', ['uses'=>'ArticleController@index', 'as'=>'article_list']);
-                        Route::match(['get','post'], '/add/{category}', ['uses'=>'ArticleController@add_global_article','as'=>'articleAdd']);
-                        Route::match(['get', 'post'], '/edit/{id}', ['uses' => 'ArticleController@edit_global_article', 'as'=>'articleEdit']);
-                        
-                        Route::match(['get', 'post', 'HEAD'], '/upload_image', ['uses' => 'ArticleController@image_upload', 'as'=>'articleImageUpload']);
+                        Route::match(['get','post'], '/global/add/{category}', ['uses'=>'GlobalArticleController@add_global_article','as'=>'globalArticleAdd']);
+                        Route::match(['get', 'post'], '/global/edit/{id}', ['uses' => 'GlobalArticleController@edit_global_article', 'as'=>'globalArticleEdit']);
 
                         Route::match(['get','post'], '/us/add/{category}', ['uses'=>'UsArticleController@add_us_article','as'=>'usArticleAdd']);
                         Route::match(['get', 'post'], '/us/edit/{id}', ['uses' => 'UsArticleController@edit_us_article', 'as'=>'usArticleEdit']);
@@ -117,6 +121,18 @@ Route::group(['prefix' => LocalisationService::locale(),'middleware' => 'setLoca
                         Route::match(['get', 'post'], '/ka/edit/{id}', ['uses' => 'KaArticleController@edit_ka_article', 'as'=>'kaArticleEdit']);
 
                         Route::match(['post', 'delete'], '/del/{id}', ['uses' => 'ArticleController@delete', 'as'=>'articleDel']);
+
+
+
+                        Route::get('/{article_category}', ['uses'=>'ArticleController@index', 'as'=>'article_list']);
+
+                        Route::match(['get', 'post'], '/edit/{id}', ['uses' => 'ArticleController@edit_article_page', 'as'=>'articleEdit']);
+                        Route::match(['get', 'post'], '/add/{category}', ['uses' => 'ArticleController@add_article_page', 'as'=>'articleAdd']);
+
+                        Route::match(['get', 'post', 'HEAD'], '/upload_image', ['uses' => 'GlobalArticleController@image_upload', 'as'=>'articleImageUpload']);
+
+                        Route::any('/get_article_data/{article_category}', 'ArticleController@get_article_data');
+                        Route::any('/get_editing_data/{id}', 'ArticleController@get_editing_data');
                     });    
 
                     

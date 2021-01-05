@@ -63,8 +63,5 @@
             $(this).append('@csrf')
         })
     </script>    
-    
-    <script src="{{ asset('node_modules/@ckeditor/ckeditor5-build-classic/build/ckeditor.js') }}"></script>
-    <script src="{{ asset('node_modules/@ckeditor/ckeditor5-vue/dist/ckeditor.js') }}"></script>
 </body>
 </html>

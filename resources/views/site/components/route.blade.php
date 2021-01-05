@@ -68,7 +68,7 @@
                         <tr> 
                               <td>1</td>
                               <td>{{$route_loop['name']}}</td>
-                              <td>{{$route_loop['style']}}</td>
+                              {{-- <td>{{$route_loop['style']}}</td> --}}
                               <td>{{$route_loop['height']}}</td>
                               <td>{{$route_loop['bolts']}}</td>
                               <td>{{$route_loop['grade_fr']}}</td>
@@ -125,7 +125,7 @@
                         <tr>  
                         <td>1</td>
                         <td>{{$mtp_pitchs['pitch name']}}</td>
-                        <td>{{$mtp_pitchs['pitch style']}}</td>
+                        {{-- <td>{{$mtp_pitchs['pitch style']}}</td> --}}
                         <td>{{$mtp_pitchs['pitch height']}}</td>
                         <td>{{$mtp_pitchs['pitch bolts']}}</td>
                         <td>{{$mtp_pitchs['pitch grade fr']}}</td>

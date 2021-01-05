@@ -3,9 +3,9 @@
 	<div class="container top_menu_margin">
 
 		@component('user.components.breadcrumb')
-			@slot('title') Route/s add @endslot
-			@slot('parent') Home @endslot
-			@slot('active') Route/s add @endslot
+            @slot('title') Route/s edit @endslot
+            @slot('parent') Home @endslot
+            @slot('active') Route/s edit @endslot
 		@endcomponent
 	
 		<div class="form-group">
@@ -16,7 +16,9 @@
 	<div class="container">
 		<div class="row">
 			<div class="col-md-12">
-				<mtp_pitch_add_form></mtp_pitch_add_form>
+                <mtp_pitch_edit_form
+                    editing_pitch_id = {{ $editing_pitch_id }}
+                ></mtp_pitch_edit_form>
 			</div>
 		</div>
 	</div>

@@ -20,15 +20,16 @@ class MountListController extends Controller
                 'title'=>' Mountaineering route & mount systems',
 				
     		    'table_1_name' => 'Mount routes',
-                'table_1_del' => "/xz_route",
+                'table_1_del' => "/articles/del/",
 				"table_1_add_url" => "articleAdd",
+        	    'table_1_edit_url'=>"/articles/edit/",
                 'table_1_add_category'=> 'mount_route',
                 "table_1_get_route" => "/mountaineering/get_mount_route_data/",
 				
-				
     		    'table_2_name' => 'Mounts',
-				'table_2_del'=>"/articles/del/",
-				"table_2_add_url" => "mountAdd",
+				'table_2_del'=>"/mountaineering/mount_delete/",
+				"table_2_add_url" => "mountAddForm",
+        	    'table_2_edit_url'=>"/mountaineering/mount_edit_form/",
                 "table_2_get_route"=>"/mountaineering/get_mount_data/",
 
     		    'page_name' => 'Mount And Mount Route',
@@ -41,7 +42,6 @@ class MountListController extends Controller
 	
 	public function get_mount_data()
 	{
-
         return Mount::latest('id')->get();
 	}
 
