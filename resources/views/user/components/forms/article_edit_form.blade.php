@@ -33,11 +33,11 @@
         @endif
 
         @csrf 
-
-        {{-- {{ dd($editing_article_id) }} --}}
         
         <article_edit_form_component  
+            :category="{{ json_encode($category) }}" 
             :editing_article_id = {{ $editing_article_id }}
+            back_url="{{ route('article_list', array($category)) }}"
         ></article_edit_form_component>
     
     </div>

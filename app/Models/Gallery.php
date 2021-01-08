@@ -14,6 +14,7 @@ class Gallery extends Model
         'text',
         'link',
         'filter',
+        'article_id',
         'index_gallery_image',
         'published',
         'article_id',

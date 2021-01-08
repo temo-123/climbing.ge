@@ -177,8 +177,14 @@ class ArticleController extends Controller
     public function edit_article_page(article $article, Request $request)
     {
         $old = $article -> toArray();
+
+        $global_article_categoyr = Article::where('id',strip_tags($request->id))->get();
+        foreach ($global_article_categoyr as $article_category) {
+            $category = $article_category->category;
+        }
         if (view()->exists('user.components.forms.article_edit_form')) {
             $data = [
+                'category' => $category,
                 // 'title' => 'Edit article - '.$old['title'],
                 "editing_article_id" => $request->id,
                 'title' => 'Edit title',

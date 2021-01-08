@@ -55,6 +55,22 @@
                         </div>
                     </div>
 
+
+                    <div class="form-group clearfix" v-if="this.category == 'indoor'">
+                        <label for="name" class='col-xs-2 control-label'> Minimal price </label>
+                        <div class="col-xs-8">
+                            <input type="text" name="price_from" value="price_from" v-model="us_price_from" class="form-control"> 
+                        </div>
+                    </div>
+
+                    <div class="form-group clearfix" v-if="this.category == 'indoor'">
+                        <label for="name" class='col-xs-2 control-label'> Working time </label>
+                        <div class="col-xs-8">
+                            <input type="text" name="time" v-model="us_time" class="form-control"> 
+                        </div>
+                    </div>
+
+
                     <hr v-if="this.category == 'event'">
 
                     <div class="form-group clearfix"  v-if="this.category == 'event'">
@@ -196,27 +212,13 @@
                         </div>
                     </div>
 
-                    <div class="form-group clearfix" v-if="this.category == 'indoor'">
-                        <label for="name" class='col-xs-2 control-label'> Working time </label>
-                        <div class="col-xs-8">
-                            <!-- <input type="text" name="value name" value="old data" class="form-control"> -->
-                            <input type="text" name="time" v-model="us_time" class="form-control"> 
-                        </div>
-                    </div>
+                    
 
                     <div class="form-group clearfix" v-if="this.category == 'indoor'">
                         <label for="name" class='col-xs-2 control-label'> Price description </label>
                         <div class="col-xs-8">
                             <!-- <textarea type="text" name="prise_text" rows="15" v-model="us_price_text"  class="form-cotrol md-textarea form-control"></textarea> -->
                             <ckeditor v-model="us_price_text" :config="editorConfig"></ckeditor>
-                        </div>
-                    </div>
-
-                    <div class="form-group clearfix" v-if="this.category == 'indoor'">
-                        <label for="name" class='col-xs-2 control-label'> Minimal price </label>
-                        <div class="col-xs-8">
-                            <!-- <input type="text" name="value name" value="old data" class="form-control"> -->
-                            <input type="text" name="price_from" value="price_from" v-model="us_price_from" class="form-control"> 
                         </div>
                     </div>
 
@@ -309,27 +311,12 @@
                         </div>
                     </div>
 
-                    <div class="form-group clearfix" v-if="this.category == 'indoor'">
-                        <label for="name" class='col-xs-2 control-label'> Working time </label>
-                        <div class="col-xs-8">
-                            <!-- <input type="text" name="value name" value="old data" class="form-control"> -->
-                            <input type="text" name="time" value="time" v-model="ru_time" class="form-control"> 
-                        </div>
-                    </div>
 
                     <div class="form-group clearfix" v-if="this.category == 'indoor'">
                         <label for="name" class='col-xs-2 control-label'> Price description </label>
                         <div class="col-xs-8">
                             <!-- <textarea type="text" name="price_text" rows="15"  v-model="ru_price_text" class="form-cotrol md-textarea form-control"></textarea> -->
                             <ckeditor v-model="ru_price_text" :config="editorConfig"></ckeditor>
-                        </div>
-                    </div>
-
-                    <div class="form-group clearfix" v-if="this.category == 'indoor'">
-                        <label for="name" class='col-xs-2 control-label'> Minimal price </label>
-                        <div class="col-xs-8">
-                            <!-- <input type="text" name="value name" value="old data" class="form-control"> -->
-                            <input type="text" name="price_from" value="price_from" v-model="ru_price_from" class="form-control"> 
                         </div>
                     </div>
 
@@ -422,27 +409,12 @@
                         </div>
                     </div>
 
-                    <div class="form-group clearfix" v-if="this.category == 'indoor'">
-                        <label for="name" class='col-xs-2 control-label'> Working time </label>
-                        <div class="col-xs-8">
-                            <!-- <input type="text" name="value name" value="old data" class="form-control"> -->
-                            <input type="text" name="time" value="time"  v-model="ka_time" class="form-control"> 
-                        </div>
-                    </div>
 
                     <div class="form-group clearfix" v-if="this.category == 'indoor'">
                         <label for="name" class='col-xs-2 control-label'> Price description </label>
                         <div class="col-xs-8">
                             <!-- <textarea type="text" name="prixe_text" rows="15" v-model="ka_price_text"  class="form-cotrol md-textarea form-control"></textarea> -->
                             <ckeditor v-model="ka_price_text" :config="editorConfig"></ckeditor>
-                        </div>
-                    </div>
-
-                    <div class="form-group clearfix" v-if="this.category == 'indoor'">
-                        <label for="name" class='col-xs-2 control-label'> Minimal price </label>
-                        <div class="col-xs-8">
-                            <!-- <input type="text" name="value name" value="old data" class="form-control"> -->
-                            <input type="text" name="price_from" value="price_from"  v-model="ka_price_from" class="form-control"> 
                         </div>
                     </div>
 
@@ -473,6 +445,7 @@
         ],
         data(){
             return {
+                us_title_for_url_title: '',
                 published: "",
                 completed: "",
                 map: "",
@@ -553,14 +526,14 @@
         mounted() {
         },
         methods: {
-            // add_global_article(e) {
-
             add_global_article() {
-                var myFormData = new FormData(this.$refs.myForm)
-                console.log(myFormData);
+                // var myFormData = new FormData(this.$refs.myForm)
+                // console.log(myFormData);
 
                 axios
                 .post('/articles/global/add/' + this.category, {
+                    us_title_for_url_title: this.us_title,
+
                     published: this.published,
                     completed: this.completed,
                     map: this.map,
@@ -587,10 +560,10 @@
                     // },
                 })
                 .then((response)=>  { 
-                    this.is_global_article_succes = 1
-                    console.log(response)
+                    // this.is_global_article_succes = 1
+                    // console.log(response)
                     // alert(response.data.message);
-                    console.log('global article upload successful');
+                    // console.log('global article upload successful');
                 })
                 .catch(
                     error => console.log(error)
@@ -613,10 +586,10 @@
                     ru_meta_keyword: this.ru_meta_keyword,
                 })
                 .then((response)=> { 
-                    this.is_ru_article_succes = 1
+                    // this.is_ru_article_succes = 1
                     // console.log(this.is_ru_article_succes);
-                    console.log(response) 
-                    console.log('rusian article upload successful');
+                    // console.log(response) 
+                    // console.log('rusian article upload successful');
                 })
                 .catch(error => console.log(error))
             },
@@ -637,9 +610,9 @@
                     us_meta_keyword: this.us_meta_keyword,
                 })
                 .then((response)=> { 
-                    console.log(response)
-                    this.is_us_article_succes = 1
-                    console.log('englihs article upload successful');
+                    // console.log(response)
+                    // this.is_us_article_succes = 1
+                    // console.log('englihs article upload successful');
                 })
                 .catch(error => console.log(error))
             },
@@ -660,13 +633,12 @@
                     ka_meta_keyword: this.ka_meta_keyword,
                 })
                 .then((response)=>  {
-                    console.log(response)
-                    this.is_ka_article_succes = 1
-                    console.log('georgian article upload successful');
+                    // console.log(response)
+                    // this.is_ka_article_succes = 1
+                    // console.log('georgian article upload successful');
                 })
                 .catch(error => console.log(error))
             },
-
 
             checkForm: function (e) {
                 var myFormData = new FormData(this.$refs.myForm)
@@ -674,25 +646,27 @@
                     method: 'post',
                     url: '/articles/upload_image/',
                     data: myFormData,
-                    config: { headers: {'Content-Type': 'multipart/form-data' }},
+                    config: { 
+                        headers: {'Content-Type': 'multipart/form-data' },
+                    },
                 })
                 .then((response)=>  {
-                    this.is_image_succes = 1;
+                    // this.is_image_succes = 1;
                     // alert(response.data.message);
                 });
                 e.preventDefault();
             },
 
             save_all() {
-                this.add_us_article();
-                this.add_ka_article();
-                this.add_ru_article();
+                this.add_us_article(),
+                this.add_ka_article(),
+                this.add_ru_article(),
 
-                this.add_global_article();
+                this.add_global_article(),
 
                 this.checkForm();
-                
-                // window.location.href = this.back_url;
+
+                window.location.href = this.back_url;
             }
         }
     }

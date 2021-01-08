@@ -78,11 +78,14 @@ Route::group(['prefix' => LocalisationService::locale(),'middleware' => 'setLoca
                         Route::match(['post'],'/routesNumEdit', ['uses'=>'RoutesListController@store', 'as'=>'routesNumEdit']);
                         Route::any('/get_region_data', 'RoutesListController@get_region_data');
                         
+                        Route::match(['get','post'], '/sector_add_form', ['uses'=>'SectorController@add_form','as'=>'sectorAddForm']);
                         Route::match(['get','post'], '/sector_add', ['uses'=>'SectorController@add','as'=>'sectorAdd']);
                         Route::match(['get', 'post', 'delete'], '/sector_edit_form/{id}', ['uses' => 'SectorController@edit_form', 'as'=>'sectorEditForm']);
+                        Route::match(['get', 'post', 'delete'], '/sector_edit/{id}', ['uses' => 'SectorController@edit', 'as'=>'sectorEdit']);
                         Route::match(['get', 'post', 'delete'], '/sector_delete/{id}', ['uses' => 'SectorController@delete', 'as'=>'sectorDel']);
-                        Route::any('/get_sector_editing_data/{id}', 'RoutesController@get_sector_editing_data');
+                        Route::any('/get_sector_editing_data/{id}', 'SectorController@get_sector_editing_data');
                         Route::any('/get_sector_data', 'RoutesListController@get_sector_data');
+                        Route::match(['get', 'post', 'HEAD'], '/upload_sector_image', ['uses' => 'SectorController@sector_image_upload', 'as'=>'sectorImageUpload']);
                         
                         Route::match(['get','post'], '/route_add', ['uses'=>'RoutesController@add','as'=>'routeAdd']);
                         Route::match(['get', 'post', 'delete'], '/route_edit_form/{id}', ['uses' => 'RoutesController@edit_form', 'as'=>'routeEditForm']);
@@ -130,6 +133,7 @@ Route::group(['prefix' => LocalisationService::locale(),'middleware' => 'setLoca
                         Route::match(['get', 'post'], '/add/{category}', ['uses' => 'ArticleController@add_article_page', 'as'=>'articleAdd']);
 
                         Route::match(['get', 'post', 'HEAD'], '/upload_image', ['uses' => 'GlobalArticleController@image_upload', 'as'=>'articleImageUpload']);
+                        Route::match(['get', 'post', 'HEAD'], '/update_image/{id}', ['uses' => 'GlobalArticleController@image_update', 'as'=>'articleImageUpdate']);
 
                         Route::any('/get_article_data/{article_category}', 'ArticleController@get_article_data');
                         Route::any('/get_editing_data/{id}', 'ArticleController@get_editing_data');
@@ -155,7 +159,9 @@ Route::group(['prefix' => LocalisationService::locale(),'middleware' => 'setLoca
             
                     Route::group(['prefix'=>'options'], function() {
                         Route::get('/', ['uses'=>'UserController@options_index', 'as'=>'options']);
-                        Route::patch('/user-update/{user}', 'UserController@edit');
+                        // Route::patch('/user_info_update/{id}', 'UserController@user_info_update');
+                        Route::match(['get', 'post'], '/user_info_update/{id}', ['uses' => 'UserController@user_info_update', 'as'=>'userInfoUpdate']);
+                        Route::patch('/user_image_update/{id}', 'UserController@user_image_update');
                         Route::any('/get_user_data', 'UserController@get_user_data');
                     });
 

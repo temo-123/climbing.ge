@@ -36,14 +36,31 @@ class UsArticleController extends Controller
             $article['what_need']=$request->us_what_need;
             $article['info']=$request->us_info;
             $article['time']=$request->us_time;
-            $article['price_from']=$request->us_price_from;
             $article['meta_keyword']=$request->us_meta_keyword;
 
             $article -> save();
         }
     }
-    public function edit_us_article(Type $var = null)
+    public function edit_us_article(Request $request)
     {
-        # code...
+        $request->user()->authorizeRoles(['manager', 'admin']);
+
+        if ($request->isMethod('post')) {
+            $input = $request -> except('_token');
+
+            $us_article = us_article::find($request->id);
+            $us_article->title = $request->us_title;
+            $us_article->short_description = $request->us_short_description;
+            $us_article->text = $request->us_text;
+            $us_article->route = $request->us_route;
+            $us_article->how_get = $request->us_how_get;
+            $us_article->best_time = $request->us_best_time;
+            $us_article->what_need = $request->us_what_need;
+            $us_article->info = $request->us_info;
+            $us_article->time = $request->us_time;
+            $us_article->meta_keyword = $request->us_meta_keyword;
+            
+            $us_article->update();
+        }
     }
 }

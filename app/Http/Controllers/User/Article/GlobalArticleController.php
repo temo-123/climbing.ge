@@ -34,11 +34,14 @@ class GlobalArticleController extends Controller
             foreach ($ru_articl as $ru) {
                 $last_ru_article_id = $ru->id;
             }
-            
-            // dd($last_ru_article_id, $last_ka_article_id, $last_us_article_id);
+
+            // make url_title from us_title value
+            $us_title_arr = explode( ' ', $request->us_title_for_url_title);
+            $url_title = implode("_", $us_title_arr);
 
             $article = new Article();
-
+            
+            $article['url_title'] = $url_title;
             $article['category']=$request->category;
             $article['published']=$request->published;
             $article['completed']=$request->completed; 
@@ -59,6 +62,8 @@ class GlobalArticleController extends Controller
             // $article['us_article_id']=$last_us_article_id+1;
             // $article['ru_article_id']=$last_ru_article_id+1;
             // $article['ka_article_id']=$last_ka_article_id+1;
+
+            $article['price_from']=$request->ka_price_from;
 
             $article['us_article_id']=$last_us_article_id;
             $article['ru_article_id']=$last_ru_article_id;
@@ -83,8 +88,14 @@ class GlobalArticleController extends Controller
 
         if ($request->isMethod('post')) {
             $input = $request -> except('_token');
+
+            // make url_title from us_title value
+            $us_title_arr = explode( ' ', $request->us_title_for_url_title);
+            $url_title = implode("_", $us_title_arr);
             
             $global_article = Article::find($request->id);
+
+            $global_article->url_title = $url_title;
 
             $global_article->published = $request->published;
             $global_article->completed = $request->completed;
@@ -115,33 +126,64 @@ class GlobalArticleController extends Controller
     public function image_upload(Request $request)
     {   
         // https://therichpost.com/vue-laravel-image-upload/
-
-        if ($request->hasFile('profile_pic'))
-        {   
+        if ($request->hasFile('profile_pic')){   
+            // rename file
             $file      = $request->file('profile_pic');
             $filename  = $file->getClientOriginalName();
             $extension = $file->getClientOriginalExtension();
-            $picture   = date('His').'-'.$filename;
-            $file->move(public_path('images/articles_img/'), $picture);
-
+            $pieces = explode( '.', $filename );
+            $file_new_name = $pieces[0].'_('.date('Y-m-d-H-m-s').').'.$extension;
 
             $global_article = Article::get();
             foreach ($global_article as $global) {
                 $last_global_article_id = $global->id;
+                $last_global_article_category = $global->category;
             }
+            
+            // push image in folder
+            $file->move(public_path('images/'.$last_global_article_category.'_img'), $file_new_name);
 
             $article = Article::where('id',strip_tags($last_global_article_id))->first();
-
-            // $article = new Article();
-
-            $article['image']=$filename;
+            $article['image']=$file_new_name;
             $article -> save();
 
             return response()->json(["message" => "Image Uploaded Succesfully"]);
         } 
-        else
-        {
+        else{
             return response()->json(["message" => "Select image first."]);
+        }
+    }
+
+    public function image_update(Request $request)
+    {
+        if ($request->hasFile('profile_pic')){ 
+            // rename file
+            $file      = $request->file('profile_pic');
+            $filename  = $file->getClientOriginalName();
+            $extension = $file->getClientOriginalExtension();
+            $pieces = explode( '.', $filename );
+            $file_new_name = $pieces[0].'_('.date('Y-m-d-H-m-s').').'.$extension;
+
+            $global_article = Article::get();
+            foreach ($global_article as $global) {
+                $last_global_article_category = $global->category;
+            }
+            
+            // push image in folder
+            $file->move(public_path('images/'.$last_global_article_category.'_img'), $file_new_name);
+
+            $article = Article::where('id',strip_tags($request->id))->first();
+            $article['image'] = $file_new_name;
+            $article -> save();
+        }
+        else {
+            // $article = Article::where('id',strip_tags($request->id))->first();
+
+            // $global_article->published = $article->image;
+
+            // dd($article);
+            
+            // $global_article->update();
         }
     }
 }

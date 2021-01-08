@@ -139,13 +139,28 @@
                         </div>
                     </div>
 
-                    <div class="form-group clearfix">
+                    <!-- <div class="form-group clearfix">
                         <label for="name" class='col-xs-2 control-label'> image </label>
-                        <div class="col-xs-8">                    
+                        <div class="col-xs-4">                    
                             <input type="file" name="fileToUpload" id="fileToUpload">
                         </div>
-                    </div>
+                        <div class="col-md-4">
+                            <img :src="'/public/images/' + category + '_img/'+this.image_name" alt="article image">
+                        </div>
+                    </div> -->
 
+                </form>
+
+                <form @submit="checkForm" ref="myForm">
+                        <div class="form-group clearfix">
+                            <label for="name" class='col-xs-2 control-label'> image </label>
+                            <div class="col-xs-4">     
+                                <input type="file" name="profile_pic" id="profile_pic">               
+                            </div>
+                            <div class="col-xs-4">
+                                <img :src="'/public/images/' + category + '_img/'+this.image_name" alt="article image">
+                            </div>
+                        </div>
                 </form>
             </div>
 
@@ -490,8 +505,8 @@
 
     export default {
         props: [
-            // 'back_url',
-            // 'category',
+            'back_url',
+            'category',
             'editing_article_id'
         ],
         data(){
@@ -504,6 +519,7 @@
 
                 editing_data: '',
 
+                us_title_for_url_title: "",
                 published: "",
                 completed: "",
                 map: "",
@@ -517,9 +533,11 @@
                 google_link: "",
                 inst_link: "",
                 web_link: "",
+                working_time: "",
+                price_from: "",
 
                 name: '',
-                image: '',
+                image_name: '',
                 success: '',
 
 
@@ -534,8 +552,6 @@
                 us_best_time: "",
                 us_what_need: "",
                 us_info: "",
-                us_time: "",
-                us_price_from: "",
                 us_meta_keyword: "",
 
 
@@ -550,8 +566,6 @@
                 ka_best_time: "",
                 ka_what_need: "",
                 ka_info: "",
-                ka_time: "",
-                ka_price_from: "",
                 ka_meta_keyword: "",
 
 
@@ -566,9 +580,11 @@
                 ru_best_time: "",
                 ru_what_need: "",
                 ru_info: "",
-                ru_time: "",
-                ru_price_from: "",
                 ru_meta_keyword: "",
+
+                us_article_id: "",
+                ru_article_id: "",
+                ka_article_id: "",
             }
         },
     
@@ -581,6 +597,8 @@
             edit_global_article() {
                 axios
                 .post('/articles/global/edit/' + this.editing_article_id, {
+                    us_title_for_url_title: this.us_title,
+
                     published: this.published,
                     completed: this.completed,
                     map: this.map,
@@ -607,8 +625,16 @@
             },
             edit_ru_article() {
                 axios
-                .post('/articles/us/edit/' + this.category, {
-                    Publish: this.Publish,
+                .post('/articles/ru/edit/' + this.ru_article_id, {
+                    ru_title: this.ru_title,
+                    ru_short_description: this.ru_short_description,
+                    ru_text: this.ru_text,
+                    ru_route: this.ru_route,
+                    ru_how_get: this.ru_how_get,
+                    ru_best_time: this.ru_best_time,
+                    ru_what_need: this.ru_what_need,
+                    ru_info: this.ru_info,
+                    ru_meta_keyword: this.ru_meta_keyword,
                 })
                 .then(Response => {
                     // alert("Article editied"),
@@ -620,8 +646,16 @@
             },
             edit_us_article() {
                 axios
-                .post('/articles/ru/edit/' + this.category, {
-                    Publish: this.Publish,
+                .post('/articles/us/edit/' + this.us_article_id, {
+                    us_title: this.us_title,
+                    us_short_description: this.us_short_description,
+                    us_text: this.us_text,
+                    us_route: this.us_route,
+                    us_how_get: this.us_how_get,
+                    us_best_time: this.us_best_time,
+                    us_what_need: this.us_what_need,
+                    us_info: this.us_info,
+                    us_meta_keyword: this.us_meta_keyword,
                 })
                 .then(Response => {
                     // alert("Article editied"),
@@ -633,8 +667,16 @@
             },
             edit_ka_article() {
                 axios
-                .post('/articles/ka/edit/' + this.category, {
-                    Publish: this.Publish,
+                .post('/articles/ka/edit/' + this.ka_article_id, {
+                    ka_title: this.ka_title,
+                    ka_short_description: this.ka_short_description,
+                    ka_text: this.ka_text,
+                    ka_route: this.ka_route,
+                    ka_how_get: this.ka_how_get,
+                    ka_best_time: this.ka_best_time,
+                    ka_what_need: this.ka_what_need,
+                    ka_info: this.ka_info,
+                    ka_meta_keyword: this.ka_meta_keyword,
                 })
                 .then(Response => {
                     // alert("Article editied"),
@@ -645,6 +687,23 @@
                 .catch(error => console.log(error))
             },
 
+            checkForm: function (e) {
+                var myFormData = new FormData(this.$refs.myForm)
+                axios({
+                    method: 'post',
+                    url: '/articles/update_image/' + this.editing_article_id,
+                    data: myFormData,
+                    config: { 
+                        headers: {'Content-Type': 'multipart/form-data' },
+                    },
+                })
+                .then((response)=>  {
+                    // this.is_image_succes = 1;
+                    // alert(response.data.message);
+                });
+                e.preventDefault();
+            },
+
             get_editing_data() {
                 this.url = this.editing_url + this.editing_article_id
 
@@ -652,6 +711,10 @@
                 .get(this.url)
                 .then(response => {
                     this.editing_data = response.data
+
+                    this.us_article_id = this.editing_data.global_article['us_article_id'],
+                    this.ru_article_id = this.editing_data.global_article['ru_article_id'],
+                    this.ka_article_id = this.editing_data.global_article['ka_article_id'],
                     
                     // send data in editing form value
                     this.published = this.editing_data.global_article['published'],
@@ -668,7 +731,11 @@
                     this.inst_link = this.editing_data.global_article['inst_link'],
                     this.web_link = this.editing_data.global_article['web_link'],
                     this.us_price_from = this.editing_data.global_article['price_from'],
+                    this.image_name = this.editing_data.global_article['image']
 
+                    this.price_from = this.editing_data.global_article['price_from']
+                    this.working_time = this.editing_data.global_article['working_time']
+                    
                     // 
                     // 
                     // 
@@ -680,7 +747,6 @@
                     this.us_best_time = this.editing_data.us_article['best_time'],
                     this.us_what_need = this.editing_data.us_article['what_need'],
                     this.us_info = this.editing_data.us_article['info'],
-                    this.us_time = this.editing_data.us_article['time'],
                     this.us_meta_keyword = this.editing_data.us_article['meta_keyword'],
 
                     // 
@@ -694,7 +760,6 @@
                     this.ru_best_time = this.editing_data.ru_article['best_time'],
                     this.ru_what_need = this.editing_data.ru_article['what_need'],
                     this.ru_info = this.editing_data.ru_article['info'],
-                    this.ru_time = this.editing_data.ru_article['time'],
                     this.ru_meta_keyword = this.editing_data.ru_article['meta_keyword']
 
                     // 
@@ -708,9 +773,7 @@
                     this.ka_best_time = this.editing_data.ka_article['best_time'],
                     this.ka_what_need = this.editing_data.ka_article['what_need'],
                     this.ka_info = this.editing_data.ka_article['info'],
-                    this.ka_time = this.editing_data.ka_article['time'],
                     this.ka_meta_keyword = this.editing_data.ka_article['meta_keyword']
-
                 })
                 .catch(
                     error => console.log(error)
@@ -722,7 +785,10 @@
                 this.edit_us_article();
                 this.edit_ka_article();
                 this.edit_ru_article();
-                // window.location.href = this.back_url;
+
+                this.checkForm();
+
+                window.location.href = this.back_url;
             }
         }
     }

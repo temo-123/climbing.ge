@@ -8,6 +8,8 @@ use Illuminate\Http\Request;
 use App\Models\Sector;
 use App\Models\Article;
 
+use Session;
+
 class SectorController extends Controller
 {
     public function add(Request $request)
@@ -17,27 +19,41 @@ class SectorController extends Controller
         if ($request -> isMethod('post')) {
             $input = $request -> except('_token');
 
-            $sectors = sector::where("article_id","=",$input["article_id"])->get("num");
-            $sectors_count = sector::where("article_id","=",$input["article_id"])->get("num")->count();
-            if($sectors_count!=0){
-                $sector_num_array = array();
-                foreach($sectors as $sector){
-                    array_push($sector_num_array, $sector->num);
-                }
-                $sector_highst_num = max($sector_num_array);
-                $new_sector_num = $sector_highst_num + 1;
-                $input['num'] = $new_sector_num;
-            }
-            else{
-                $input['num'] = 1;
-            }
-            dd($input);
-            $sector = new sector();
-            $sector -> fill($input);
+            dd($request);
 
-            if ($sector->save()) {
-                return redirect()->route('routes_and_sectors') -> with('status', 'sector addid'); //text
-            }
+            // $sectors = sector::where("article_id","=",$input["article_id"])->get("num");
+            // $sectors_count = sector::where("article_id","=",$input["article_id"])->get("num")->count();
+            // if($sectors_count!=0){
+            //     $sector_num_array = array();
+            //     foreach($sectors as $sector){
+            //         array_push($sector_num_array, $sector->num);
+            //     }
+            //     $sector_highst_num = max($sector_num_array);
+            //     $new_sector_num = $sector_highst_num + 1;
+            //     $input['num'] = $new_sector_num;
+            // }
+            // else{
+            //     $input['num'] = 1;
+            // }
+            // $sector = new sector();
+            // $sector -> fill($input);
+
+            $sector = new sector();
+
+            $sector['article_id'] = $request->article_id;
+            $sector['name'] = $request->name;
+            $sector['text'] = $request->text;
+            $sector['all_day_in_shade'] = $request->all_day_in_shade;
+            $sector['all_day_in_sun'] = $request->all_day_in_sun;
+            $sector['in_the_shade_afternoon'] = $request->in_the_shade_afternoon;
+            $sector['in_the_shade_befornoon'] = $request->in_the_shade_befornoon;
+            $sector['in_shade_after_10'] = $request->in_shade_after_10;
+            $sector['in_shade_after_15'] = $request->in_shade_after_15;
+            $sector['slabby'] = $request->slabby;
+            $sector['vertical'] = $request->vertical;
+            $sector['overhang'] = $request->overhang;
+
+            $sector -> save();
         }
 
         if (view() -> exists('user.components.forms.routes_and_sectors.sector.sector_add')) {
@@ -62,6 +78,21 @@ class SectorController extends Controller
             return view('user.components.forms.routes_and_sectors.sector.sector_add', $data);
         }
         abort(404);
+    }
+
+    public function edit_form(Request $request)
+    {
+        if (view()->exists('user.components.forms.routes_and_sectors.sector.sector_edit')) {
+    	    $indoor_sectors = \App\Outdoor::all();
+    		$data = [
+    			'name' => 'Edit sector - '.$old['name'],
+    			'data' => $old,
+    			
+    			'indoor_sectors'=>$indoor_sectors
+    		];
+
+    		return view('user.components.forms.routes_and_sectors.sector.sector_edit', $data);
+        }
     }
 
     public function edit(sector $sector, Request $request)
@@ -95,18 +126,12 @@ class SectorController extends Controller
         }
 
     	$old = $sector -> toArray();
+    }
 
-    	if (view()->exists('user.components.forms.routes_and_sectors.sector.sector_edit')) {
-    	    $indoor_sectors = \App\Outdoor::all();
-    		$data = [
-    			'name' => 'Edit sector - '.$old['name'],
-    			'data' => $old,
-    			
-    			'indoor_sectors'=>$indoor_sectors
-    		];
-
-    		return view('user.components.forms.routes_and_sectors.sector.sector_edit', $data);
-        }
+    public function sector_image_upload()
+    {
+        Session::flush();
+        dd('test');
     }
 
     public function delete(Request $request)

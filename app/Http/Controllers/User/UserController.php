@@ -133,25 +133,47 @@ class UserController extends Controller
       * @param  int  $id
       * @return \Illuminate\Http\Response
       */
-     public function edit(user $user, Request $request){
- 
-         $request->user()->authorizeRoles(['user', 'manager', 'admin']);
-         if ($request->isMethod('patch')) {
-             if ($request['name'] != null) $user->name = $request['name'];
-             if ($request['surname'] != null) $user->surname = $request['surname'];
-             if ($request['email'] != null) $user->email = $request['email'];
-             if ($request['phone_number'] != null) $user->phone_number = $request['phone_number'];
-             if ($request['country'] != null) $user->country = $request['country'];
-             if ($request['city'] != null) $user->city = $request['city'];
-             if ($request['password'] != null)$user->password = bcrypt(request('password'));
- 
-             $user->update(); //сохраняем
-             request()->session()->flash('success', 'Обновлено!'); //выводим сообщение про обновление
- 
-             return back();
-         }
-         // $2y$10$O7RsUfT2cZ3hZQ58G7KxEejQCSodeLKPJxlILvvBSPuAJYOe7.spm = temo-1234
- }
+     public function user_info_update(Request $request){
+        $request->user()->authorizeRoles(['user', 'manager', 'admin']);
+        //  dd($request->id);
+        //  if ($request->isMethod('patch')) {
+            $user = user::find($request->id);
+            $user->name = $request['name'];
+            $user->surname = $request['surname'];
+            $user->email = $request['email'];
+            $user->phone_number = $request['phone_number'];
+            $user->country = $request['country'];
+            $user->city = $request['city'];
+            // $user->password = bcrypt(request('password'));
+            // dd($user);
+            $user->update();
+        // }
+        // $2y$10$O7RsUfT2cZ3hZQ58G7KxEejQCSodeLKPJxlILvvBSPuAJYOe7.spm = temo-1234
+    }
+
+    public function user_image_update(user $user, Request $request)
+    {
+        if ($request->hasFile('profile_pic')){   
+            // rename file
+            $file      = $request->file('profile_pic');
+            $filename  = $file->getClientOriginalName();
+            $extension = $file->getClientOriginalExtension();
+            $pieces = explode( '.', $filename );
+            $file_new_name = $pieces[0].'_('.date('Y-m-d-H-m-s').').'.$extension;
+
+            // push image in folder
+            $file->move(public_path('images/user_img'), $file_new_name);
+
+            // $article = Article::where('id',strip_tags($last_global_article_id))->first();
+            // $article['image']=$file_new_name;
+            // $article -> save();
+
+            return response()->json(["message" => "Image Uploaded Succesfully"]);
+        } 
+        else{
+            return response()->json(["message" => "Select image first."]);
+        }
+    }
  
      /**
       * Update the specified resource in storage.

@@ -13803,6 +13803,10 @@ a.socialIcon:hover,
 *
 */
 
+.user_demo_img {
+  width: 50%;
+}
+
 .tabs {
   display: flex;
   flex-wrap: wrap;
