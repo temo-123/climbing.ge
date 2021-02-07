@@ -2,10 +2,36 @@
   <div class="col-md-12">
     <div class="row">
       <div class="form-group">
+        <button type="submit" class="btn btn-primary" v-on:click="back(temporary_sector_id)">Beck</button>
+      </div>
+    </div>
+    <div class="row">
+      <div class="form-group">
         <button type="submit" class="btn btn-primary" v-on:click="save_all()">Save</button>
       </div>
     </div>
-  	<form action="#" id="js_form" class="contact-form" method="POST" enctype="multipart/form-data">
+  <!-- <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal">Open Modal</button> -->
+<!-- Modal -->
+  <div class="modal fade" id="myModal" role="dialog">
+    <div class="modal-dialog">
+    
+      <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title">Modal Header</h4>
+        </div>
+        <div class="modal-body">
+          <p>Some text in the modal.</p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+      
+    </div>
+  </div>
+  	<form @submit.prevent="add_sector" id="js_form" class="contact-form" method="POST" enctype="multipart/form-data">
 			<div class="form-group clearfix">
 				<label for="name" class='col-md-2 control-label'> Sector name </label>
 				<div class="col-md-8">
@@ -82,19 +108,70 @@
 					</div>
 				</div>
 			</div>
+
       <hr>
-
-      <uploader
-        v-model="fileList"
-        :url="'/routes_and_sectors/upload_sector_image'"
-        @on-change="onChange"
-        @on-cancel="onCancel"
-        @on-success="onSuccess"
-        @on-error="onError"
-        @on-delete="onDelete"
-      ></uploader>
-
 		</form>
+      <div class="container">
+        <div class="row">
+            <div class="card"  v-if='myModal'>
+                <div class="card-header">
+                    Add image
+                </div>
+                <div class="card-body">
+                  <div class="row">
+                      <div class="col-md-6">
+                        <div class="form-group clearfix">
+                          <button class="btn btn-primary" @click="add_sector_image(temporary_sector_id)">seve image</button>
+                        </div>
+                      </div>
+                      <div class="col-md-6">    
+                        <form @submit="add_sector_image(temporary_sector_id)"  ref="myForm">
+                          <div class="form-group clearfix">
+                            <input type="file" name="profile_pic" id="profile_pic" >
+                          </div>
+                        </form>
+                      </div>
+                    </div>
+                  </div>
+            </div>
+        </div>
+
+        <div class="row">
+          <div class="form-groupe">
+            <button class="btn btn-primary" @click="showModal()">My modal</button>
+          </div>
+          <div class="form-groupe">
+            <button @click="get_sector_image(temporary_sector_id)" class="btn main-btn pull-right" v-if="!image_is_refresh">Refresh ({{image_reset_id}})</button>
+            <span class="badge badge-primare mb-1 pull-right" v-if="image_is_refresh">Updating...</span>
+          </div>
+        </div>
+        
+    </div>
+
+    <div class="container">
+        <div class="col-md-3">
+          <div class="row">
+            <div class="col-md-12">
+              <img alt="300x200" @click="showModal()" src="/public/images/site_img/image.png">
+            </div>
+          </div>
+        </div>
+        <div class="col-md-3" v-for="image in images" :key="image.id">
+          <div class="row">
+            <div class="col-md-12">
+              <img :alt="'sector image - (' + image.image + ')'" class="sector_img" :src="'/public/images/sector_img/' + image.image">
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-6">
+              <button class="btn btn-secondary pull-left" @click="edit_image()">Edit</button>
+            </div>
+            <div class="col-md-6">
+              <button class="btn btn-danger pull-right" @click="del_sector_image(image.id)">Del</button>
+            </div>
+          </div>
+        </div>
+    </div>
   </div>
 </template>
 <script>
@@ -102,12 +179,18 @@
 
   export default {
     components: {
-      Uploader
+      Uploader,
     },
     data() {
       return {
         fileList: [], //https://github.com/eJayYoung/vux-uploader-component
         regions: '',
+
+        myModal: false,
+
+        name: '',
+        image: '',
+        success: '',
 
         article_id: '',
         name: '',
@@ -123,12 +206,48 @@
         slabby: '',
         vertical: '',
         overhang: '',
+
+        temporary_sector_id: 0,
+
+        image_is_refresh: false,
+        image_reset_id: 0,
       };
     },
     mounted() {
       this.get_region_data()
+      this.create_temporary_sector()
     },
     methods: {
+      create_temporary_sector() {
+          axios
+          .post('/routes_and_sectors/create_temporary_sector/', {
+              // ka_title: this.ka_title,
+          })
+          .then((response)=>  {
+              this.get_temporary_sector_data()
+              // console.log(response)
+              // this.is_ka_sector_succes = 1
+              // console.log('georgian sector upload successful');
+          })
+          .catch(error => console.log(error))
+      },
+      del_temporary_sector(temporary_sector_id) {
+        axios
+        .post('/routes_and_sectors/delete_temporary_sector/' + temporary_sector_id, {
+            // ka_title: this.ka_title,
+        })
+        .then((response)=>  {
+            // console.log(response)
+            // this.is_ka_sector_succes = 1
+            // console.log('georgian sector upload successful');
+        })
+        .catch(error => console.log(error))
+      },
+
+      showModal(){
+          this.myModal = !this.myModal
+      },
+
       get_region_data: function(){
         axios
         .get("../routes_and_sectors/get_region_data")
@@ -139,6 +258,34 @@
           error => console.log(error)
         );
       },
+      get_temporary_sector_data: function(){
+        axios
+        .get("/routes_and_sectors/get_temporary_sector_editing_data/")
+        .then(response => {
+            this.editing_data = response.data
+            this.get_sector_image(this.editing_data.last_temporary_sectore_id)
+            this.temporary_sector_id = this.editing_data.last_temporary_sectore_id
+        })
+        .catch(
+          error => console.log(error)
+        );
+      },
+      get_sector_image: function (temporary_sector_id) {
+        this.image_is_refresh = true
+        axios
+        .get("../../routes_and_sectors/get_sector_image/" + temporary_sector_id )
+        .then(response => {
+          this.sector_images = response.data
+          this.images = this.sector_images.sector_images
+
+          this.image_is_refresh = false
+          this.image_reset_id++
+        })
+        .catch(
+          error => console.log(error)
+        );
+      },
+
       add_sector: function () {
         axios
         .post('/routes_and_sectors/sector_add', {
@@ -162,8 +309,44 @@
             console.log("sector added is not sucsesfule!!!")
         })
       },
+      add_sector_image: function (temporary_sector_id) {
+        var myFormData = new FormData(this.$refs.myForm)
+        // console.log(temporary_sector_id);
+        axios({
+            method: 'post',
+            url: '/routes_and_sectors/upload_sector_image/' + temporary_sector_id,
+            data: myFormData,
+            config: { 
+                headers: {'Content-Type': 'multipart/form-data' },
+            },
+        })
+        .then((response)=>  {
+            // this.is_image_succes = 1;
+            // alert(response.data.message);
+        });
+        this.showModal()
+        // e.preventDefault();
+
+      },
+      del_sector_image(imageId) {
+          axios
+          .post("../../routes_and_sectors/delete_sector_image/" + imageId, {
+              id: imageId,
+          })
+          .then(Response => {
+              console.log(response)
+              this.get_data_in_table_1()
+          })
+          .catch(error => console.log(error))
+      },
+
+      back: function(temporary_sector_id) {
+        this.del_temporary_sector(temporary_sector_id)
+        window.location.href = '/routes_and_sectors';
+      },
       save_all: function () {
         this.add_sector()
+        window.location.href = '/routes_and_sectors';
       }
     }
   };

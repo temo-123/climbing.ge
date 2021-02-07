@@ -199,7 +199,7 @@ class OutdoorController extends Controller
                             }
                             $mtp_num_in_array++;
                             $pitch_num_in_array++;
-                            dd($pitch_num);
+                            // dd($pitch_num);
                             array_push($mtp_info[$mtp_num_in_array]['mtp pitchs quantity'],$pitch_num);
                             // dd($mtp_info);
                         }

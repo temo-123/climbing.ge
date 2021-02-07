@@ -26,68 +26,41 @@ class AboutController extends Controller
         return view('user.about_us', $data);
     }
 
-
-    public function edit(Site $site, Request $request)
+    public function site_info_edit_form(Request $request)
     {
-        $request->user()->authorizeRoles(['manager', 'admin']);
-
-        $site_info = Site::where('id','=','1')->first();
-
-        if ($request->isMethod('post')) {
-            $input = $request -> except('_token');
-    
-            // if ($request->hasFile('image')) {
-            //     $file = $request->file('image');
-            //     $file -> move(public_path().'/assets/img/article_img/',$file->getClientOriginalName());
-            //     $input['image'] = $file->getClientOriginalName();
-            // }
-            // else {
-            //     $input['image'] = $input['old_image'];
-            // }
-
-            // unset($input ['old_image']);
-
-            $site -> fill($input);
-
-            if ($site->update()) {
-                return redirect('user/article')->with('status','article updated'); //text
-            }
-        }
-
-        $old = $site_info -> toArray();
-        // dd($old);
-
         if (view()->exists('user.components.forms.site_info_form')) {
             $data = [
                 'title' => 'Edit site info',
-                'data' => $old,
-                'back_btn' => 'home',
-                'edit_title' => 'Edit article',
-                'edit_active' => 'Edit article',
-                
-                'edit_form' => 'home',
-                
-                'url_title' => 1,
-                'text' => 1, 
-                'published'=>'1',
-                'link'=>'1',
-                'article_filtr'=>'1',
-                
-                'image' => 'article_img',
+                "editing_info_id" => $request->id,
             ];
             return view('user.components.forms.site_info_form', $data);
         }
         abort(404);
     }
 
-    private function validate_data()
+    public function site_info_edit(Request $request)
     {
-        // $validator = validator::make($input, [
-            //     'title' => 'required|max:190',
-            //     'text' => 'max:500'
-            // ]);
-            // if ($validator->fails()) {
-            //     return back() -> withErrors($validator) -> withInput();
-            // }
+        $request->user()->authorizeRoles(['manager', 'admin']);
+        if ($request->isMethod('post')) {
+            $input = $request -> except('_token');
+
+            $site_info = site::where('id','=',$request->id)->first();
+            $site_info -> fill($input);
+            $site_info -> update();
+
+            // $site = site::where('id','=',$request->id)->first();
+            // $site['email'] = $request->email;
+            // $site -> update();
+        }
+    }
+
+    public function get_site_editing_data(Request $request)
+    {
+        $site_info = site::where('id',strip_tags($request->id))->first();
+        return(
+            $data = [
+                "site_info" => $site_info,
+            ]
+        );
     }
 }

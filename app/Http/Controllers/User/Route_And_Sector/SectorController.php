@@ -8,7 +8,7 @@ use Illuminate\Http\Request;
 use App\Models\Sector;
 use App\Models\Article;
 
-use Session;
+use App\Models\Sector_image;
 
 class SectorController extends Controller
 {
@@ -19,7 +19,7 @@ class SectorController extends Controller
         if ($request -> isMethod('post')) {
             $input = $request -> except('_token');
 
-            dd($request);
+            // dd($request);
 
             // $sectors = sector::where("article_id","=",$input["article_id"])->get("num");
             // $sectors_count = sector::where("article_id","=",$input["article_id"])->get("num")->count();
@@ -37,8 +37,13 @@ class SectorController extends Controller
             // }
             // $sector = new sector();
             // $sector -> fill($input);
+            $sectors = sector::where("name","=","temporary_sector")->get();
+            foreach ($sectors as $sectors) {
+                $last_sector_id = $sectors->id;
+            }
 
-            $sector = new sector();
+            $sector = sector::find($last_sector_id);
+            // $sector = new sector();
 
             $sector['article_id'] = $request->article_id;
             $sector['name'] = $request->name;
@@ -83,12 +88,12 @@ class SectorController extends Controller
     public function edit_form(Request $request)
     {
         if (view()->exists('user.components.forms.routes_and_sectors.sector.sector_edit')) {
-    	    $indoor_sectors = \App\Outdoor::all();
+            $sector = sector::where('id',strip_tags($request->id))->first();;
+            // dd($sector->name);
     		$data = [
-    			'name' => 'Edit sector - '.$old['name'],
-    			'data' => $old,
+    			'name' => 'Edit sector - '.$sector['name'],
     			
-    			'indoor_sectors'=>$indoor_sectors
+    			'editing_sector_id'=>$sector->id
     		];
 
     		return view('user.components.forms.routes_and_sectors.sector.sector_edit', $data);
@@ -128,14 +133,12 @@ class SectorController extends Controller
     	$old = $sector -> toArray();
     }
 
-    public function sector_image_upload()
-    {
-        Session::flush();
-        dd('test');
-    }
+    
 
     public function delete(Request $request)
     {
+        $request->user()->authorizeRoles(['manager', 'admin']);
+
         if ($request->isMethod('post')) {
             $sector_id=$request->id;
 
@@ -164,5 +167,154 @@ class SectorController extends Controller
             // if ($validator->fails()) {
             //     return back() -> withErrors($validator) -> withInput();
             // }
+    }
+
+
+
+
+
+
+
+
+    public function get_sector_image(Request $request)
+    {
+        $sector_images = Sector_image::where('sector_id',"=", $request->sector_id)->get();
+        return(
+            $data = [
+                "sector_images" => $sector_images,
+            ]
+        );
+    }
+
+    public function get_sector_editing_data(Request $request)
+    {
+        $sector = Sector::where('id',strip_tags($request->id))->first();
+        return(
+            $data = [
+                "sector" => $sector,
+            ]
+        );
+    }
+
+
+
+
+
+
+
+    public function sector_image_upload(Request $request)
+    {
+        // https://therichpost.com/vue-laravel-image-upload/ 
+            // dd($request->hasFile('profile_pic'));
+
+        if ($request->hasFile('profile_pic')){  
+            // rename file
+            $file      = $request->file('profile_pic');
+            $filename  = $file->getClientOriginalName();
+            $extension = $file->getClientOriginalExtension();
+            $pieces = explode( '.', $filename );
+            $file_new_name = $pieces[0].'_('.date('Y-m-d-H-m-s').').'.$extension;
+            
+            // push image in folder
+            $file->move(public_path('images/sector_img'), $file_new_name);
+            $article = new Sector_image();
+            // $article = Sector_image::where('id',strip_tags($last_global_article_id))->first();
+            $article['image']=$file_new_name;
+            $article['sector_id']=$request->sector_id;
+            $article -> save();
+
+            return response()->json(["message" => "Image Uploaded Succesfully"]);
+        } 
+        else{
+            return response()->json(["message" => "Image Uploaded Error."]);
+        }
+    }
+
+    public function sector_image_update(Request $request)
+    {
+        if ($request->hasFile('profile_pic')){  
+            // rename file
+            $file      = $request->file('profile_pic');
+            $filename  = $file->getClientOriginalName();
+            $extension = $file->getClientOriginalExtension();
+            $pieces = explode( '.', $filename );
+            $file_new_name = $pieces[0].'_('.date('Y-m-d-H-m-s').').'.$extension;
+            
+            // push image in folder
+            $file->move(public_path('images/sector_img'), $file_new_name);
+
+            $article = new Sector_image();
+            // $article = Sector_image::where('id',strip_tags($last_global_article_id))->first();
+            $article['image']=$file_new_name;
+            $article -> save();
+
+            return response()->json(["message" => "Image Update Succesfully"]);
+        } 
+        else{
+            return response()->json(["message" => "Image Update Error."]);
+        }
+    }
+
+    public function sector_image_delete(Request $request)
+    {
+        $request->user()->authorizeRoles(['manager', 'admin']);
+
+        if ($request->isMethod('post')) {
+            $sector_image_id=$request->id;
+
+            $sector_image = Sector_image::where('id',strip_tags($sector_image_id))->first();
+
+            // dd($sector);
+
+            // delete product file
+            // $fileName = $არტიცლე['image'];
+            // $destinationPath = 'images/shop_img/';
+            // File::delete($destinationPath.$fileName);
+
+            // delete product from db
+            $sector_image ->delete();
+        }
+    }
+
+    
+    public function create_temporary_sector()
+    {
+        $sector = new Sector();
+        $sector['name'] = 'temporary_sector';
+        $sector -> save();
+    }
+
+    public function delete_temporary_sector(Request $request)
+    {
+        if ($request->isMethod('post')) {
+            $sector_id=$request->sector_id;
+
+            $deleting_sector_images = Sector_image::where('sector_id','=',$sector_id)->get();
+            $count_deleting_sector_images = Sector_image::where('sector_id','=',$sector_id)->count();
+            
+            if ($count_deleting_sector_images > 0) {
+                foreach ($deleting_sector_images as $sector_image) {
+                    $deliting_sector_image = Sector_image::where('id',strip_tags($sector_image->id))->first();
+                    $deliting_sector_image ->delete();
+                }
+            }
+
+            $sector = Sector::where('id',strip_tags($sector_id))->first();
+            $sector ->delete();
+        }
+    }
+
+    public function get_temporary_sector_editing_data()
+    {
+        $temporary_sector = sector::where("name","=","temporary_sector")->get();
+        foreach ($temporary_sector as $sector) {
+            $last_temporary_sectore_id = $sector->id;
+        }
+
+        return(
+            $data = [
+                "last_temporary_sectore_id" => $last_temporary_sectore_id,
+            ]
+        );
     }
 }

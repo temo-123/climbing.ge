@@ -8,6 +8,7 @@
 For foront use Vue.js(3) laravel templite
 https://vuejs.org/
 https://therichpost.com/vue-laravel-image-upload/ - image uploading in vue
+https://github.com/Innologica/vue-stackable-modal - Vue mobal
 
 
 ## CkEditor4

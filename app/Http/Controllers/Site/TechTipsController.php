@@ -5,9 +5,9 @@ namespace App\Http\Controllers\Site;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
-use App\Article;
-use App\Comment;
-use App\Gallery;
+use App\Models\Article;
+use App\Models\Comment;
+use App\Models\Gallery;
 
 class TechTipsController extends Controller
 {
@@ -54,5 +54,11 @@ class TechTipsController extends Controller
         else{
             abort(404);
         }
- 	}
+     }
+     
+     public function get_security_data(Request $request)
+     {
+        $securities = Article::where('category', '=', 'security')->get();
+        return $securities;
+     }
 }

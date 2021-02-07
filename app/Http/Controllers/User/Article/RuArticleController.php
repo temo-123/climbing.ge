@@ -25,7 +25,14 @@ class RuArticleController extends Controller
 
             // parse_str($request->getContent(),$data); 
 
-            $article = new Ru_article();
+            $ru_articl = Ru_article::get();
+            foreach ($ru_articl as $ru) {
+                $last_ru_article_id = $ru->id;
+            }
+
+
+            $article = Ru_article::find($last_ru_article_id);
+            // $article = new Ru_article();
 
             $article['title']=$request->ru_title;
             $article['short_description']=$request->ru_short_description;
@@ -35,7 +42,6 @@ class RuArticleController extends Controller
             $article['best_time']=$request->ru_best_time;
             $article['what_need']=$request->ru_what_need;
             $article['info']=$request->ru_info;
-            $article['time']=$request->ru_time;
             $article['meta_keyword']=$request->ru_meta_keyword;
             
             $article -> save();
@@ -58,7 +64,6 @@ class RuArticleController extends Controller
             $ru_article->best_time = $request->ru_best_time;
             $ru_article->what_need = $request->ru_what_need;
             $ru_article->info = $request->ru_info;
-            $ru_article->time = $request->ru_time;
             $ru_article->meta_keyword = $request->ru_meta_keyword;
             
             $ru_article->update();

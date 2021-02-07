@@ -27,9 +27,11 @@
         "@braid/vue-formulate": "^2.4.5",
         "@ckeditor/ckeditor5-build-classic": "^24.0.0",
         "@ckeditor/ckeditor5-vue": "^2.0.1",
+        "@innologica/vue-stackable-modal": "^0.1.10",
         "ckeditor4-vue": "^1.2.0",
         "mdbvue": "^6.7.1",
         "vue-carousel-3d": "^1.0.1",
+        "vue-upload-multiple-image": "^1.1.6",
         "vux-uploader-component": "^1.0.23"
     }
 }

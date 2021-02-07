@@ -59,7 +59,7 @@
 @if(count($news) >= 6)
 <div class="h-recent-work">
     <div class="container">
-        <h2 class='index_h2' id="news">News</h2>
+        <h2 class='index_h2' id="news">@lang('site.title news')</h2>
         @if($site -> news_description != NULL)
         <div class="bar"><i class="fa fa-newspaper-o"></i></div>
         <h6>{{$site -> news_description}}</h6>
@@ -172,10 +172,13 @@
                 @if($site->map != NULL)
                 <div class="container h-recent-work">
 
-                    <h2 class='index_h2'>Topo</h2>
+                    <h2 class='index_h2'>@lang('site.title topo')</h2>
                     @if($site->topo_description != NULL)
                     <div class="bar"><i class="fa fa-map-marker"></i></div>
-                    <h6>{{$site -> topo_description}}</h6>
+
+                    
+                    <h6>{!! $site -> topo_description !!}</h6>
+                    
                     @endif
 
                     <div style='margin-bottom:7%;'>
@@ -185,11 +188,15 @@
                 @endif
 
 
-                @if($site -> activity_title_1 != NULL && $site -> activity_title_2 != NULL && $site -> activity_title_3 != NULL && $site -> activity_title_3 != NULL)
+                @if(
+                    $site -> indoor_description != NULL && $site -> outdoor_description != NULL && $site -> ice_description != NULL && $site -> mount_description != NULL
+                    || $site -> indoor_description_ru != NULL && $site -> outdoor_description_ru != NULL && $site -> ice_description_ru != NULL && $site -> mount_description_ru != NULL
+                    || $site -> indoor_description_ka != NULL && $site -> outdoor_description_ka != NULL && $site -> ice_description_ka != NULL && $site -> mount_description_ka != NULL
+                )
                 <div class="services">
                     <div class="container">
 
-                        <h2 class='index_h2'>What We Do</h2>
+                        <h2 class='index_h2'>@lang('site.title what we do')</h2>
 
                         <div class="bar"><i class="fa fa-book"></i></div>
                         <div class="row">
@@ -200,28 +207,28 @@
                                     <li>
                                         <h4>
                                             <a href="{{ $site -> activity_link_1 }}">
-                                                <strong>{!! $site -> activity_title_1!!}</strong>
+                                                <strong>@lang('site.title outdoor climbing')</strong>
                                                 <!-- <i class="fa fa-tablet"></i> -->
-                                                <img alt='{!! $site -> activity_title_1 !!}' class="index_category_right" src="{{ asset('images/site_img/logo/'.$site -> activity_img_1) }}">
+                                                <img alt='outdoor climbing image' class="index_category_right" src="{{ asset('images/site_img/logo/outdoor.png') }}">
                                             </a>
                                         </h4>
 
                                         <div class="content-text">
-                                            {!! $site -> activity_text_1!!}
+                                            {!! $site -> outdoor_description!!}
                                         </div>
                                     </li>
                                     <div class="clearfix"></div>
                                     <li>
                                         <h4>
                                             <a href="{{ $site -> activity_link_2 }}">
-                                                <strong>{!! $site -> activity_title_2!!}</strong>
+                                                <strong>@lang('site.title indoor climbing')</strong>
                                                 <!-- <i class="fa fa-file-code-o"></i> -->
-                                                <img alt='{!! $site -> activity_title_2 !!}' class="index_category_right" src="{{ asset('images/site_img/logo/'.$site -> activity_img_2) }}">
+                                                <img alt='indoor climbing image' class="index_category_right" src="{{ asset('images/site_img/logo/indoor.png') }}">
                                             </a>
                                         </h4>
 
                                         <div class="content-text">
-                                            {!! $site -> activity_text_2!!}
+                                            {!! $site -> indoor_description!!}
                                         </div>
                                     </li>
                                 </ul>
@@ -231,28 +238,29 @@
                                     <li>
                                         <h4>
                                             <a href="{{ $site -> activity_link_3 }}">
-                                                <strong>{!! $site -> activity_title_3!!}</strong>
+                                                <strong>@lang('site.title ice climbing')</strong>
                                                 <!-- <i class="fa fa-eye"></i> -->
-                                                <img alt='{!! $site -> activity_title_3 !!}' class="index_category_left" src="{{ asset('images/site_img/logo/'.$site -> activity_img_3) }}">
+                                                {{-- <img alt='ice climbing image' class="index_category_left" src="{{ asset('images/site_img/logo/ice.png') }}"> --}}
+                                                <img alt='indoor climbing image' class="index_category_left" src="{{ asset('images/site_img/logo/indoor.png') }}">
                                             </a>
                                         </h4>
 
                                         <div class="content-text">
-                                            {!! $site -> activity_text_3!!}
+                                            {!! $site -> ice_description!!}
                                         </div>
                                     </li>
                                     <div class="clearfix"></div>
                                     <li>
                                         <h4>
-                                            <a href="{{ $site -> activity_link_4 }}">
-                                                <strong>{!! $site -> activity_title_4!!}</strong>
+                                            <a href="$site -> activity_link_4">
+                                                <strong>@lang('site.title mountaineering')</strong>
                                                 <!-- <i class="fa fa-fire"></i> -->
-                                                <img alt='{!! $site -> activity_title_4 !!}' class="index_category_left" src="{{ asset('images/site_img/logo/'.$site -> activity_img_4) }}">
+                                                <img alt='mountaineering image' class="index_category_left" src="{{ asset('images/site_img/logo/mount.png') }}">
                                             </a>
                                         </h4>
 
                                         <div class="content-text">
-                                            {!! $site -> activity_text_4!!}
+                                            {!! $site -> mount_description!!}
                                         </div>
                                     </li>
                                 </ul>
@@ -269,7 +277,7 @@
                 <div class="h-recent-work services">
                     <div class="container">
 
-                        <h2 class='index_h2'>Gallery</h2>
+                        <h2 class='index_h2'>@lang('site.title gallery')</h2>
 
                         @if($site->index_gallery_description != NULL)
                         <div class="bar" style="margin-bottom: 5%;"><i class="fa fa-picture-o" aria-hidden="true"></i></div>
@@ -417,14 +425,14 @@
             <div class="h-recent-work services" id="services">
                 <div class="container">
 
-                    <h2 class='index_h2'>Tech tips</h2>
+                    <h2 class='index_h2'>@lang('site.title tech tips')</h2>
 
                     @if($site->security_description != NULL)
                     <div class="bar"><i class="fa fa-exclamation-triangle"></i></div>
                     <h6>{{$site -> security_description}}</h6>
                     @endif
 
-                    {{-- <trchtips_component securities="{{ $securities }}"></trchtips_component> --}}
+                    <trchtips_component></trchtips_component>
                     
                 </div>
             </div>
@@ -435,7 +443,7 @@
             <div class="h-recent-work" id="other">
                 <div class="container">
 
-                    <h2 class='index_h2'>Other Activity</h2>
+                    <h2 class='index_h2'>@lang('site.title other')</h2>
 
                     @if($site->other_activity_description != NULL)
                     <div class="bar"><i class="fa fa-dribbble"></i></div>
@@ -446,7 +454,7 @@
                     <div class="food col-md-4">
                         <div class="portfolio-img view view-first">
 
-                            <img src="{{ asset('images/other_img/'.$others[0][0] -> image )}}"class="img-responsive" alt='{{ $others[0][0] -> title }}' />
+                            <img src="{{ asset('images/other_img/'.$others['image'] )}}"class="img-responsive" alt='{{ $others[0][0] -> title }}' />
 
                             <div class="mask">
                                 <a href="{{ route('other_page', array('title'=>$others['url_title'])) }}" class="info"><i class="fa fa-arrow-right"></i></a>
@@ -473,7 +481,7 @@
                 <div class="row">
                     <div class="container">
 
-                        <h2 class='index_h2'>Events</h2>
+                        <h2 class='index_h2'>@lang('site.title events')</h2>
 
                         @if($site->other_activity_description != NULL)
                         <div class="bar"><i class="fa fa-calendar"></i></div>
@@ -495,7 +503,7 @@
                                                 </h2>
                                             </div>
                                             <div class="panel-body nopadding">
-                                                <img src="{{ asset('images/events_img/'.$event[0][0] -> image )}}"class="img-responsive" alt='{{ $event[0][0] -> title }}' />
+                                                <img src="{{ asset('images/event_img/'.$event['image'] )}}"class="img-responsive" alt='{{ $event[0][0] -> title }}' />
                                                 <div class="row nopadding">
                                                     <div class="col-sm-6 col-xs-6 nopadding">
                                                         <time class="end blue_green_2">

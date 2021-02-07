@@ -11,7 +11,7 @@
 
 <div class="container top_menu_margin h-recent-work">
 
-    <h1 class="page_title" >Indoor climbing</h1>                    
+    <h1 class="page_title" >@lang('site.title indoor climbing')</h1>                    
 
     @if($site->outdoor_description != NULL)
     <div class="bar"><i class="fa fa-exclamation-triangle"></i></div>

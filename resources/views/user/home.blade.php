@@ -37,7 +37,6 @@
                     <div class="col-md-12">
                         <div class="card">
                             <div class="card-header">Sites index pages</div>
-
                             <div class="card-body">
                                 <div class="col-md-6">
                                     <a href='{{ route('index') }}'>climbing.ge</a>

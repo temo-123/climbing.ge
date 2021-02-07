@@ -121,7 +121,7 @@ class RoutesListController extends Controller
 		$cars = $request -> all();
 		
         foreach($cars as $x => $x_value){
-            $update = \App\Route::where('id', '=', $x)->update(['number' => $x_value]);
+            $update = Route::where('id', '=', $x)->update(['number' => $x_value]);
         }
         
         return redirect(route('routes_and_sectors'));

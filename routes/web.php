@@ -10,8 +10,10 @@ Route::group(['prefix' => LocalisationService::locale(),'middleware' => 'setLoca
             Route::get('/about_us', 'AboutController@index')->name('about_us_page');
 
             Route::get('/news/{title}', ['uses'=>'NewsController@news_page', 'as'=>'news_page']);
-            Route::get('/security/{title}', ['uses'=>'SecurityController@security_page', 'as'=>'security_page']);
             Route::get('event/{title}', ['uses'=>'EventController@events_page', 'as'=>'events_page']);
+
+            Route::get('/security/{title}', ['uses'=>'TechTipsController@security_page', 'as'=>'security_page']);
+            Route::any('/get_security_data', 'TechTipsController@get_security_data');
 
             Route::get('/outdoor', 'OutdoorController@outdoor_list')->name('outdoor_list');
             Route::get('/outdoor/{title}', ['uses'=>'OutdoorController@outdoor_page', 'as'=>'outdoor_page']);
@@ -83,10 +85,20 @@ Route::group(['prefix' => LocalisationService::locale(),'middleware' => 'setLoca
                         Route::match(['get', 'post', 'delete'], '/sector_edit_form/{id}', ['uses' => 'SectorController@edit_form', 'as'=>'sectorEditForm']);
                         Route::match(['get', 'post', 'delete'], '/sector_edit/{id}', ['uses' => 'SectorController@edit', 'as'=>'sectorEdit']);
                         Route::match(['get', 'post', 'delete'], '/sector_delete/{id}', ['uses' => 'SectorController@delete', 'as'=>'sectorDel']);
-                        Route::any('/get_sector_editing_data/{id}', 'SectorController@get_sector_editing_data');
-                        Route::any('/get_sector_data', 'RoutesListController@get_sector_data');
-                        Route::match(['get', 'post', 'HEAD'], '/upload_sector_image', ['uses' => 'SectorController@sector_image_upload', 'as'=>'sectorImageUpload']);
                         
+                        Route::any('/get_sector_editing_data/{id}', 'SectorController@get_sector_editing_data');
+                        Route::any('/get_sector_image/{sector_id}', 'SectorController@get_sector_image');
+                        Route::any('/get_sector_data', 'RoutesListController@get_sector_data');
+                        Route::any('/get_temporary_sector_editing_data', 'SectorController@get_temporary_sector_editing_data');
+
+                        Route::any('/create_temporary_sector', 'SectorController@create_temporary_sector');
+                        Route::any('/delete_temporary_sector/{sector_id}', 'SectorController@delete_temporary_sector');
+
+                        Route::match(['get', 'post'], '/upload_sector_image/{sector_id}', ['uses' => 'SectorController@sector_image_upload', 'as'=>'sectorImageUpload']);
+                        Route::match(['get', 'post'], '/update_sector_image/{id}', ['uses' => 'SectorController@sector_image_update', 'as'=>'sectorImageUpdate']);
+                        Route::match(['get', 'post'], '/delete_sector_image/{id}', ['uses' => 'SectorController@sector_image_delete', 'as'=>'sectorImageDelete']);
+                        
+
                         Route::match(['get','post'], '/route_add', ['uses'=>'RoutesController@add','as'=>'routeAdd']);
                         Route::match(['get', 'post', 'delete'], '/route_edit_form/{id}', ['uses' => 'RoutesController@edit_form', 'as'=>'routeEditForm']);
                         Route::match(['get', 'post', 'delete'], '/route_edit/{id}', ['uses' => 'RoutesController@edit', 'as'=>'routeEdit']);
@@ -111,6 +123,8 @@ Route::group(['prefix' => LocalisationService::locale(),'middleware' => 'setLoca
             
 
                     Route::group(['prefix'=>'articles', 'namespace'=>'Article'], function() {
+                        Route::any('/create_temporary_article/{category}', 'ArticleController@create_temporary_article');
+
                         Route::match(['get','post'], '/global/add/{category}', ['uses'=>'GlobalArticleController@add_global_article','as'=>'globalArticleAdd']);
                         Route::match(['get', 'post'], '/global/edit/{id}', ['uses' => 'GlobalArticleController@edit_global_article', 'as'=>'globalArticleEdit']);
 
@@ -182,7 +196,10 @@ Route::group(['prefix' => LocalisationService::locale(),'middleware' => 'setLoca
 
                     Route::group(['prefix'=>'about'], function() {
                         Route::get('/', ['uses'=>'AboutController@index', 'as'=>'about']);
-                        Route::match(['get', 'post'], '/edit/{id}', ['uses' => 'AboutController@edit', 'as'=>'siteInfoEdit']);
+                        Route::match(['get', 'post'], '/site_info_edit_form/{id}', ['uses' => 'AboutController@site_info_edit_form', 'as'=>'siteInfoEditForm']);
+                        Route::match(['get', 'post'], '/site_info_edit/{id}', ['uses' => 'AboutController@site_info_edit', 'as'=>'siteInfoEdit']);
+                        Route::match(['get', 'post'], '/site_image_edit/{id}', ['uses' => 'AboutController@site_image_edit', 'as'=>'siteImageEdit']);
+                        Route::any('/get_site_editing_data/{id}', 'AboutController@get_site_editing_data');
                     });
             });
         });

@@ -1,7 +1,7 @@
 <template>
     <div class="container">
     	    
-        	<h2 class="block_title">Send message</h2>
+        	<h2 class="block_title">{{ form_title }}</h2>
         	<!-- <p>You do not need to provide a phone number, but if you specify this, it will help us to meet you. Other parameters are required.</p> -->
         	
             <!-- @if (count($errors) > 0)
@@ -83,6 +83,9 @@
 
 <script>
     export default {
+        props: [
+            'form_title'
+        ],
         data() {
             return {
                 name: "",
@@ -93,11 +96,11 @@
                 msg: "",
             }
         },
-        props: [
-            "article_id"
-        ],
+        // props: [
+        //     "article_id"
+        // ],
         mounted() {
-
+            this.form_title
         },
         methods: {
             send_message() {

@@ -11722,11 +11722,6 @@ td:first-child {
   text-align: left;
 }
 
-tr:hover td {
-  background: #D1C7BF;
-  font-weight: bold;
-}
-
 tr:last-child td:first-child {
   border-radius: 0 0 0 10px;
 }
@@ -13858,6 +13853,79 @@ a.socialIcon:hover,
     width: 100%;
     margin-right: 0;
     margin-top: 0.2rem;
+  }
+}
+
+/*
+*
+* 
+* Vue mobal style
+*
+*/
+
+@media (min-width: 768px) {
+  .modal-xl {
+    max-width: 900px;
+  }
+
+  .modal-xxl {
+    max-width: 1040px;
+  }
+
+  .modal-xxxl {
+    max-width: 1180px;
+  }
+
+  .modal-90per {
+    max-width: 90%;
+  }
+}
+
+.modal-fullscreen {
+  max-width: 100%;
+  width: 100%;
+  margin: 0;
+  height: 100%;
+}
+
+.modal-fullscreen .modal-body {
+  padding: 0;
+}
+
+.modal-fullscreen .modal-content {
+  height: 100%;
+}
+
+.modal-fullscreen.aside .modal-content {
+  height: auto;
+}
+
+.modal-fullscreen.modal-dialog.aside.modal-stack1 .modal-content {
+  transform: scale(1) translate(0, 0) !important;
+}
+
+.modal-dialog.modal-border-0 .modal-content {
+  border: none;
+}
+
+@media screen and (min-width: 800px) {
+  .modal-dialog.modal-xxl {
+    width: 98%;
+    max-width: 1040px;
+  }
+}
+
+@media screen and (min-width: 640px) {
+  .modal-dialog.modal-xxl {
+    width: 98%;
+    max-width: 1040px;
+  }
+}
+
+@media screen and (max-width: 420px) {
+  .modal-dialog,
+  .modal-content {
+    overflow: auto;
   }
 }
 
@@ -19670,6 +19738,7 @@ services
 }
 
 ul.right-text {
+  padding: 0;
   text-align: right;
   width: 100%;
   height: auto;
@@ -19703,6 +19772,7 @@ ul.right-text {
 }
 
 ul.left-text {
+  padding: 0;
   text-align: left;
   width: 100%;
   height: auto;

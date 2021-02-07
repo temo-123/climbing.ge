@@ -148,98 +148,85 @@
     
     <!--Message-->
     
-        	
+    <message-component
+        form_title = @lang('site.message form')
+    ></message-component>
+
+    @if($partners_count > 0 )	
+        <div class="services" id="partner">
+            <div class="container h-recent-work events">
+        
+            <div class="partners_block_title">
+                <h2>@lang('site.title partner')</h2>
+            </div>
             
-            <message-component></message-component>
+            <div  class="bar"><i class="fa fa-book"></i></div>
 
+            <h6>{{$site -> partner_descriptio}}</h6>	
 
+            <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Swiper/4.3.3/css/swiper.min.css"> -->
+            <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/Swiper/4.3.3/js/swiper.min.js"></script> -->
 
-<script>
-    // $(function(){
-    //     $('#js_form').submit(function(event){
-    //         var verified = grecaptcha.getResponse();
-    //         if (verified.length === 0) {
-    //             event.preventDefault();
-    //         }
-    //     });
-    // });
-</script>
+            <div class="container">     
+            <div class="row">
+            <!-- Swiper -->
+                <div class="swiper-container">
+                <div class="swiper-wrapper">
 
-@if($partners_count > 0 )	
-    <div class="services" id="partner">
-        <div class="container h-recent-work events">
-    
-		<div class="partners_block_title">
-			<h2>Partners</h2>
-		</div>
-		
-    	<div  class="bar"><i class="fa fa-book"></i></div>
+                @foreach($partners as $partner)
 
-        <h6>{{$site -> partner_descriptio}}</h6>	
+                <p style="display: none;">{{$thurs_num++}}</p>
 
-<!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Swiper/4.3.3/css/swiper.min.css"> -->
-<!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/Swiper/4.3.3/js/swiper.min.js"></script> -->
+                @if(($thurs_num) == 1)
 
-        <div class="container">     
-          <div class="row">
-          <!-- Swiper -->
-            <div class="swiper-container">
-              <div class="swiper-wrapper">
-
-              @foreach($partners as $partner)
-
-              <p style="display: none;">{{$thurs_num++}}</p>
-
-              @if(($thurs_num) == 1)
-
-              <div class="swiper-slide">
-                <div class="row">
-              @endif
-                  <div class="col-md-3 col-xs-6">
-                    <div class="card">
-                      <div class="card-img">
-                        <img src="{{ asset('images/partners_img/'.$partner['image']) }}" alt="{{$partner[0][0] -> title}}">
-                        <!-- <img src="../assets/img/partners_img/{{ $partner->image }}"> -->
-                      </div>
-                      <div class="card-body">
-                        <h2>{{$partner[0][0] -> title}}</h2>
-                        <div class="central_text">
-                        {!!$partner[0][0] -> description!!}
+                <div class="swiper-slide">
+                    <div class="row">
+                @endif
+                    <div class="col-md-3 col-xs-6">
+                        <div class="card">
+                        <div class="card-img">
+                            <img src="{{ asset('images/partners_img/'.$partner['image']) }}" alt="{{$partner[0][0] -> title}}">
+                            <!-- <img src="../assets/img/partners_img/{{ $partner->image }}"> -->
                         </div>
-                        <a type= "button" class="btn btn-block btn-sm" href="{{ route('partners_page', array('title'=>$partner['url_title'])) }}">Read more</a>
-                      </div>
+                        <div class="card-body">
+                            <h2>{{$partner[0][0] -> title}}</h2>
+                            <div class="central_text">
+                            {!!$partner[0][0] -> description!!}
+                            </div>
+                            <a type= "button" class="btn btn-block btn-sm" href="{{ route('partners_page', array('title'=>$partner['url_title'])) }}">Read more</a>
+                        </div>
+                        </div>
                     </div>
-                  </div>
-              @if(($thurs_num % 4) == 0 ) 
+                @if(($thurs_num % 4) == 0 ) 
+                    </div>
                 </div>
-              </div>
 
-              <div class="swiper-slide">
-                <div class="row">
-              @endif
-              @if(($loop->count) == $thurs_num)
+                <div class="swiper-slide">
+                    <div class="row">
+                @endif
+                @if(($loop->count) == $thurs_num)
+                    </div>
                 </div>
-              </div>
-              @endif
-              @endforeach
-            </div>
-              <!-- Add Pagination -->
+                @endif
+                @endforeach
+                </div>
+                <!-- Add Pagination -->
 
-              <div class="swiper-pagination"></div>
-              <!-- Add Arrows -->
-              <div class="swiper-button-next"></div>
-              <div class="swiper-button-prev"></div>
+                <div class="swiper-pagination"></div>
+                <!-- Add Arrows -->
+                <div class="swiper-button-next"></div>
+                <div class="swiper-button-prev"></div>
 
-              </div>
+                </div>
+                </div>
             </div>
-          </div>
+            </div>
+
+            
+            </div>
         </div>
 
-    	
-    	</div>
-    </div>
-
-@endif
+    @endif
 </div>
 
 @endsection       

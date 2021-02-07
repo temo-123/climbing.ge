@@ -9,6 +9,7 @@ use App\Models\Article;
 use App\Models\Ka_article;
 use App\Models\Us_article;
 use App\Models\Ru_article;
+
 use App\Models\Comment;
 
 use App\Services\ImageEditService;
@@ -126,7 +127,29 @@ class ArticleController extends Controller
     }
 
 
-	
+    
+    function create_temporary_article(Request $request)
+    {
+        $article = new Article();
+        $article['url_title'] = 'Temporary article';
+        $article['category']='temporary_article';
+        $article['published']=0;
+        $article['completed']=1; 
+        $article -> save();
+
+        $article_ka = new Ka_article();
+        $article_ka['title']="Ka temporary article";
+        $article_ka -> save();
+
+        $article_ru = new Ru_article();
+        $article_ru['title']="Ru temporary article";
+        $article_ru -> save();
+
+        $article_us = new Us_article();
+        $article_us['title']="Us temporary article";
+        $article_us -> save();
+    }
+
 
 
     public function get_editing_data(Request $request)

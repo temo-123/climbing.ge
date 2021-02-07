@@ -25,7 +25,13 @@ class UsArticleController extends Controller
 
             // parse_str($request->getContent(),$data); 
 
-            $article = new Us_article();
+            $us_articl = Us_article::get();
+            foreach ($us_articl as $us) {
+                $last_us_article_id = $us->id;
+            }
+
+            $article = Us_article::find($last_us_article_id);
+            // $article = new Us_article();
 
             $article['title']=$request->us_title;
             $article['short_description']=$request->us_short_description;
@@ -35,7 +41,6 @@ class UsArticleController extends Controller
             $article['best_time']=$request->us_best_time;
             $article['what_need']=$request->us_what_need;
             $article['info']=$request->us_info;
-            $article['time']=$request->us_time;
             $article['meta_keyword']=$request->us_meta_keyword;
 
             $article -> save();
@@ -57,7 +62,6 @@ class UsArticleController extends Controller
             $us_article->best_time = $request->us_best_time;
             $us_article->what_need = $request->us_what_need;
             $us_article->info = $request->us_info;
-            $us_article->time = $request->us_time;
             $us_article->meta_keyword = $request->us_meta_keyword;
             
             $us_article->update();

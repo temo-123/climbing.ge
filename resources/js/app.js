@@ -7,11 +7,17 @@
 import Vue from 'vue';
 import Carousel3d from 'vue-carousel-3d';
 import CKEditor from 'ckeditor4-vue';
+
+
+// import VueLazyload from 'vue-lazyload'
 // import DecoupledEditor from '@ckeditor/ckeditor5-build-decoupled-document';
 // import CKEditor from 'ckeditor4-vue/dist/legacy.js'
 
 Vue.use( Carousel3d );
 Vue.use( CKEditor );
+
+// Vue.use(VueLazyload)
+// Vue.http.headers.common['X-CSRF-TOKEN'] = document.querySelector('#token').getAttribute('content');
 
 // import { Carousel3d, Slide } from 'vue-carousel-3d';
 
@@ -34,7 +40,11 @@ Vue.component('comment-form-component',         require('./components/site/Comme
 Vue.component('comment-component',              require('./components/site/CommentsComponent.vue').default);
 Vue.component('message-component',              require('./components/site/MessageComponent.vue').default);
 Vue.component('search-component',               require('./components/site/SearchComponent.vue').default);
-// Vue.component('trchtips_component',             require('./components/site/TrchtipsComponent.vue').default);
+Vue.component('trchtips_component',             require('./components/site/TrchtipsComponent.vue').default);
+
+
+Vue.component('mobal',             require('./components/MobalComponent.vue').default);
+
 
 
 
@@ -46,7 +56,7 @@ Vue.component('article_add_form_component',     require('./components/user/artic
 Vue.component('article_edit_form_component',    require('./components/user/articles/ArticleEditFormComponent.vue').default);
 
 Vue.component('sector_add_form',                require('./components/user/routes and sectors/sector/SectorAddFormComponent.vue').default);
-// Vue.component('sector_edit_form',               require('./components/user/routes and sectors/sector/SectorEditFormComponent.vue').default);
+Vue.component('sector_edit_form',               require('./components/user/routes and sectors/sector/SectorEditFormComponent.vue').default);
 
 Vue.component('route_add_form',                 require('./components/user/routes and sectors/route/RouteAddFormComponent.vue').default);
 Vue.component('route_edit_form',                require('./components/user/routes and sectors/route/RouteEditFormComponent.vue').default);
@@ -59,6 +69,8 @@ Vue.component('mtp_pitch_edit_form',            require('./components/user/route
 
 Vue.component('mount_add_form',                 require('./components/user/mounts/MountAddFormComponent.vue').default);
 Vue.component('mount_edit_form',                require('./components/user/mounts/MountEditFormComponent.vue').default);
+
+Vue.component('site_info_edit_form',            require('./components/user/SiteInfoEditFormComponent.vue').default);
 /**
  * Next, we will create a fresh Vue application instance and attach it to
  * the page. Then, you may begin adding components to this application

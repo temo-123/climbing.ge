@@ -44,23 +44,23 @@
                     <ul class="nav navbar-nav pull-right top_menu_buttons">
                         <li class="dropdown">
                             <a href="#" @if(isset($indoor_climbing) || isset($outdoor_climbing)) id='actyve' @endif data-toggle="dropdown">
-                            @lang('site.climbing')
+                            @lang('site.menu climbing')
                             </a>
 
                             <ul class="dropdown-menu shadows" role="menu">
-                                <li><a style="font-size: 2em;" href="{{route('indoor_list')}}">@lang('site.indoor climbing')</a></li>
-                                <li><a style="font-size: 2em;" href="{{route('outdoor_list')}}">@lang('site.outdoor climbing')</a></li>
+                                <li><a style="font-size: 2em;" href="{{route('indoor_list')}}">@lang('site.menu indoor climbing')</a></li>
+                                <li><a style="font-size: 2em;" href="{{route('outdoor_list')}}">@lang('site.menu outdoor climbing')</a></li>
                             </ul>
                         </li>
 
-                        <li><a @if(isset($mount)) id='actyve' @endif href="{{route('mount_list')}}">@lang('site.mountaineering')</a></li>
-                        <li><a @if(isset($ice)) id='actyve' @endif href="{{route('ice_list')}}">@lang('site.ice climbing')</a></li>
-                        <li><a @if(isset($other)) id='actyve' @endif href="{{route('other_list')}}">@lang('site.other')</a></li>
-                        <li><a @if(isset($pages)) id='actyve' @endif href="{{route('about_us_page')}}">@lang('site.about us')</a></li>
+                        <li><a @if(isset($mount)) id='actyve' @endif href="{{route('mount_list')}}">@lang('site.menu mountaineering')</a></li>
+                        <li><a @if(isset($ice)) id='actyve' @endif href="{{route('ice_list')}}">@lang('site.menu ice climbing')</a></li>
+                        <li><a @if(isset($other)) id='actyve' @endif href="{{route('other_list')}}">@lang('site.menu other')</a></li>
+                        <li><a @if(isset($pages)) id='actyve' @endif href="{{route('about_us_page')}}">@lang('site.menu about us')</a></li>
 
                         @if (Auth::guest())
                         <li>
-                            <a href="{{route('user_index')}}">@lang('site.login')</a>
+                            <a href="{{route('user_index')}}">@lang('site.menu login')</a>
                         </li>
                         @endif
 
@@ -94,9 +94,9 @@
                             </a>
 
                             <ul class="dropdown-menu shadows" role="menu">
-                                <li><a style="font-size: 2em;" href="#"><img src="{{ asset('images/site_img/leng/en.png')}}" alt=""></a></li>
-                                <li><a style="font-size: 2em;" href="#"><img src="{{ asset('images/site_img/leng/ka.webp')}}" alt=""></a></li>
-                                <li><a style="font-size: 2em;" href="#"><img src="{{ asset('images/site_img/leng/ru.png')}}" alt=""></a></li>
+                                <li><a style="font-size: 2em;" href="{{ url('') }}"><img src="{{ asset('images/site_img/leng/en.png')}}" alt=""></a></li>
+                                <li><a style="font-size: 2em;" href="{{ url('ka') }}"><img src="{{ asset('images/site_img/leng/ka.webp')}}" alt=""></a></li>
+                                <li><a style="font-size: 2em;" href="{{ url('ru') }}"><img src="{{ asset('images/site_img/leng/ru.png')}}" alt=""></a></li>
                             </ul>
                         </li>
                         

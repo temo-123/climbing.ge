@@ -20,6 +20,11 @@ class GlobalArticleController extends Controller
         if ($request -> isMethod('post')) {
             $input = $request -> except('_token');
 
+            $global_article = Article::get();
+            foreach ($global_article as $global) {
+                $last_globale_id = $global->id;
+            }
+
             $us_articl = Us_article::get();
             foreach ($us_articl as $us) {
                 $last_us_article_id = $us->id;
@@ -39,7 +44,8 @@ class GlobalArticleController extends Controller
             $us_title_arr = explode( ' ', $request->us_title_for_url_title);
             $url_title = implode("_", $us_title_arr);
 
-            $article = new Article();
+            $article = Article::find($last_globale_id);
+            // $article = new Article();
             
             $article['url_title'] = $url_title;
             $article['category']=$request->category;
@@ -164,14 +170,14 @@ class GlobalArticleController extends Controller
             $pieces = explode( '.', $filename );
             $file_new_name = $pieces[0].'_('.date('Y-m-d-H-m-s').').'.$extension;
 
-            $global_article = Article::get();
-            foreach ($global_article as $global) {
-                $last_global_article_category = $global->category;
-            }
-            
-            // push image in folder
-            $file->move(public_path('images/'.$last_global_article_category.'_img'), $file_new_name);
+            // fined article category
+            $global_article = Article::where('id',strip_tags($request->id))->first();;
+            $article_category = $global_article->category;
 
+            // push image in folder
+            $file->move(public_path('images/'.$article_category.'_img'), $file_new_name);
+
+            // edit article image
             $article = Article::where('id',strip_tags($request->id))->first();
             $article['image'] = $file_new_name;
             $article -> save();

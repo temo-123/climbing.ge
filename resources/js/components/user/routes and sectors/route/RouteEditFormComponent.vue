@@ -262,7 +262,7 @@
 
       save_all: function () {
         this.edit_route()
-      window.location.href = '/routes_and_sectors';
+        window.location.href = '/routes_and_sectors';
       }
     }
   }

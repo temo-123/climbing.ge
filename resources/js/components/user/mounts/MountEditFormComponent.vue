@@ -174,6 +174,7 @@
     export default {
         props: [
             'editing_mount_id',
+            'back_url'
         ],
         data(){
             return {
@@ -282,7 +283,7 @@
             save_all(Response) {
                 this.edit_mount();
 
-                window.location.href = '/mountaineering';
+                window.location.href = this.back_url;
             }
         }
     }

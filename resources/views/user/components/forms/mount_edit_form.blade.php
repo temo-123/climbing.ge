@@ -34,6 +34,7 @@
         
         <mount_edit_form
             editing_mount_id = {{ $editing_mount_id }}
+            back_url="{{ route('mountaineering') }}"
         ></mount_edit_form>
         
     </div>

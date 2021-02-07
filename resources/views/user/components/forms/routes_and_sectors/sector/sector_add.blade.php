@@ -12,10 +12,6 @@
 				@slot('active') Sector add @endslot
 			@endif
 		@endcomponent
-	  
-		<div class="form-group">
-			<a href="{{route('routes_and_sectors')}}" class='btn btn-primary'>Back</a>
-		</div>
 	</div>
 	
 	<div class="wrapper container-fluid container">

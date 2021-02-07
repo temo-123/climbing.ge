@@ -23,7 +23,13 @@ class KaArticleController extends Controller
         if ($request -> isMethod('post')) {
             $input = $request -> except('_token');
 
-            $article = new Ka_article();
+            $ka_articl = Ka_article::get();
+            foreach ($ka_articl as $ka) {
+                $last_ka_article_id = $ka->id;
+            }
+
+            $article = Ka_article::find($last_ka_article_id);
+            // $article = new Ka_article();
 
             $article['title']=$request->ka_title;
             $article['short_description']=$request->ka_short_description;
@@ -33,9 +39,7 @@ class KaArticleController extends Controller
             $article['best_time']=$request->ka_best_time;
             $article['what_need']=$request->ka_what_need;
             $article['info']=$request->ka_info;
-            $article['time']=$request->ka_time;
             $article['meta_keyword']=$request->ka_meta_keyword;
-
 
             $article -> save();
         }
@@ -57,7 +61,6 @@ class KaArticleController extends Controller
             $ka_article->best_time = $request->ka_best_time;
             $ka_article->what_need = $request->ka_what_need;
             $ka_article->info = $request->ka_info;
-            $ka_article->time = $request->ka_time;
             $ka_article->meta_keyword = $request->ka_meta_keyword;
             
             $ka_article->update();

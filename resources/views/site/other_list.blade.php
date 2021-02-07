@@ -35,7 +35,7 @@
 
 <div class="container top_menu_margin h-recent-work">
 
-    <h1 class="page_title">Other actyvity</h1>
+    <h1 class="page_title">@lang('site.title other')</h1>
     
     @if($site->other_activity_description != NULL)
     <div class="bar"><i class="fa fa-exclamation-triangle"></i></div>

@@ -25,7 +25,7 @@
                     @endcomponent
 
                     <div class="add_buttom">
-                        <a href="{{ route('siteInfoEdit', [1]) }}" class="btn btn-primary pull-left" type="submit">Edit </a>
+                        <a href="{{ route('siteInfoEditForm', [1]) }}" class="btn btn-primary pull-left" type="submit">Edit </a>
                     </div>
 
                     <table class="table table-hover" id="dev-table">
@@ -86,12 +86,12 @@
                             <tr>
                                 <th>ka other actyvity description</th>
                                 <th>|</th>
-                                <td>{!! $site -> ka_other_activity_description!!}</td>
+                                <td>{!! $site -> other_activity_description_ka!!}</td>
                             </tr>
                             <tr>
                                 <th>ru_other_activity_description!</th>
                                 <th>|</th>
-                                <th>{!! $site -> ru_other_activity_description!!}</th>
+                                <th>{!! $site -> other_activity_description_ru!!}</th>
                             </tr>
                             <tr>
                                 <th>-</th>
@@ -106,12 +106,12 @@
                             <tr>
                                 <th>ru_outdoor description</th>
                                 <th>|</th>
-                                <td>{!! $site -> ru_outdoor_description!!}</td>
+                                <td>{!! $site -> outdoor_description_ru!!}</td>
                             </tr>
                             <tr>
                                 <th>ka outdoor escription</th>
                                 <th>|</th>
-                                <td>{!! $site -> ka_outdoor_description!!}</td>
+                                <td>{!! $site -> outdoor_description_ka!!}</td>
                             </tr>
                             <tr>
                                 <th>-</th>
@@ -126,12 +126,12 @@
                             <tr>
                                 <th>ru_ice_description</th>
                                 <th>|</th>
-                                <td>{!! $site -> ru_ice_description!!}</td>
+                                <td>{!! $site -> ice_description_ru!!}</td>
                             </tr>
                             <tr>
                                 <th>ka ice description</th>
                                 <th>|</th>
-                                <td>{!! $site -> ka_ice_description!!}</td>
+                                <td>{!! $site -> ice_description_ka!!}</td>
                             </tr>
                             <tr>
                                 <th>-</th>
@@ -146,12 +146,12 @@
                             <tr>    
                                 <th>ru indoor description</th>
                                 <th>|</th>
-                                <td>{!! $site -> ru_indor_description!!}</td>
+                                <td>{!! $site -> indor_description_ru!!}</td>
                             </tr>
                             <tr>    
                                 <th>ka indoor description</th>
                                 <th>|</th>
-                                <td>{!! $site -> ka_indor_description!!}</td>
+                                <td>{!! $site -> indor_description_ka!!}</td>
                             </tr>
                             <tr>
                                 <th>-</th>
@@ -166,12 +166,12 @@
                             <tr>
                                 <th>ru meta description</th>
                                 <th>|</th>
-                                <td>{!! $site -> ru_mount_description!!}</td>
+                                <td>{!! $site -> mount_description_ru!!}</td>
                             </tr>
                             <tr>
                                 <th>ka mount description</th>
                                 <th>|</th>
-                                <td>{!! $site -> ka_mount_description!!}</td>
+                                <td>{!! $site -> mount_description_ka!!}</td>
                             </tr>
                             <tr>
                                 <th>-</th>
@@ -179,19 +179,39 @@
                                 <td>-</td>
                             </tr>
                             <tr>    
-                                <th>meta description</th>
+                                <th>topo_description</th>
                                 <th>|</th>
-                                <td>{!! $site -> meta_description!!}</td>
+                                <td>{!! $site -> topo_description!!}</td>
                             </tr>
                             <tr>
-                                <th>ru_meta_description</th>
+                                <th>ru_topo_description</th>
                                 <th>|</th>
-                                <td>{!! $site -> ru_indor_description!!}</td>
+                                <td>{!! $site -> topo_description_ru!!}</td>
                             </tr>
                             <tr>
-                                <th>ka_meta_description</th>
+                                <th>ka_topo_description</th>
                                 <th>|</th>
-                                <td>{!! $site -> ru_indor_description!!}</td>
+                                <td>{!! $site -> topo_description_ru!!}</td>
+                            </tr>
+                            <tr>
+                                <th>-</th>
+                                <th>-</th>
+                                <td>-</td>
+                            </tr>
+                            <tr>    
+                                <th>what_we_do_description</th>
+                                <th>|</th>
+                                <td>{!! $site -> what_we_do_description!!}</td>
+                            </tr>
+                            <tr>
+                                <th>what_we_do_description ru</th>
+                                <th>|</th>
+                                <td>{!! $site -> what_we_do_description_ru!!}</td>
+                            </tr>
+                            <tr>
+                                <th>what_we_do_description ka</th>
+                                <th>|</th>
+                                <td>{!! $site -> what_we_do_description_ka!!}</td>
                             </tr>
                             <tr>
                                 <th>-</th>
@@ -218,11 +238,31 @@
                                 <th>-</th>
                                 <td>-</td>
                             </tr>
+                            <tr>    
+                                <th>meta description</th>
+                                <th>|</th>
+                                <td>{!! $site -> meta_description!!}</td>
+                            </tr>
+                            <tr>
+                                <th>ru_meta_description</th>
+                                <th>|</th>
+                                <td>{!! $site -> meta_description_ru!!}</td>
+                            </tr>
+                            <tr>
+                                <th>ka_meta_description</th>
+                                <th>|</th>
+                                <td>{!! $site -> meta_description_ka!!}</td>
+                            </tr>
+                            {{-- <tr>
+                                <th>-</th>
+                                <th>-</th>
+                                <td>-</td>
+                            </tr>
                             <tr>
                                 <th>meta keyword</th>
                                 <th>|</th>
                                 <td>{!! $site -> meta_keyword!!}</td>
-                            </tr>   
+                            </tr>    --}}
                         </tbody>
                     </table>
                 </div>

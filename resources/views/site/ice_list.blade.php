@@ -38,7 +38,7 @@
 
 @if(isset($title))
                 <div class="artile_list_title">
-                    <h1>{{$title}}</h1>
+                    <h1>@lang('site.title ice climbing')</h1>
                 </div>
                 @endif
                 

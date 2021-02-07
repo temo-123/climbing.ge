@@ -45,6 +45,7 @@ class GetArticlesService
                 }
             }
         }
+        // dd($articles);
         return $articles;
     }
 

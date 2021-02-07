@@ -29,7 +29,11 @@ class IndexController extends Controller
         $others = GetArticlesService::get_locale_article($global_others,);
 
         $global_events = Article::latest('id')->where('category', '=', 'event')->where('published', '=', 1)->where('completed', '=', 0)->limit(3)->get();
+        // dd($global_events);
         $events = GetArticlesService::get_locale_article($global_events,);
+        // foreach($events as $event){
+        //     dd($event['image']);
+        // }
 
         $head_slider = Gallery::where('category','=',1)->latest('id')->where('published', '=', 1)->limit(5)->get();
         $gallery_images = Gallery::where('published', '=', 1)->where('index_gallery_image', '=', 1)->inRandomOrder()->limit(12)->get();

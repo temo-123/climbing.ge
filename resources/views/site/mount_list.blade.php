@@ -30,7 +30,7 @@
 
 <div class="container top_menu_margin h-recent-work">
 
-    <h1 class="page_title">Mountaineering</h1>
+    <h1 class="page_title">@lang('site.title mountaineering')</h1>
 
     @if($site->mount_description != NULL)
     <div class="bar"><i class="fa fa-exclamation-triangle"></i></div>

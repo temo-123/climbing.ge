@@ -32,7 +32,7 @@
                     <div class="form-group clearfix" v-if="this.category == 'event'">
                         <label for="name" class='col-xs-2 control-label'> Completed </label>
                         <div class="col-xs-8">
-                            <select class="form-control" v-model="published" name="published"> 
+                            <select class="form-control" v-model="completed" name="completed"> 
                                 <option value="0">No complited</option> 
                                 <option value="1">Complited</option> 
                             </select> 
@@ -48,7 +48,7 @@
                     </div>
 
 
-                    <div class="form-group clearfix"  v-if="this.category != 'event' || this.category != 'indoor' || this.category != 'partner' || this.category != 'event' || this.category != 'news'">
+                    <div class="form-group clearfix"  v-if="this.category == 'outdoor' || this.category == 'ice' || this.category == 'mount_route'">
                         <label for="name" class='col-xs-2 control-label'> Weather </label>
                         <div class="col-xs-8">
                             <input type="text" v-model="weather" name="weather" class="form-control"> 
@@ -59,14 +59,14 @@
                     <div class="form-group clearfix" v-if="this.category == 'indoor'">
                         <label for="name" class='col-xs-2 control-label'> Minimal price </label>
                         <div class="col-xs-8">
-                            <input type="text" name="price_from" value="price_from" v-model="us_price_from" class="form-control"> 
+                            <input type="text" name="price_from" value="price_from" v-model="price_from" class="form-control"> 
                         </div>
                     </div>
 
                     <div class="form-group clearfix" v-if="this.category == 'indoor'">
                         <label for="name" class='col-xs-2 control-label'> Working time </label>
                         <div class="col-xs-8">
-                            <input type="text" name="time" v-model="us_time" class="form-control"> 
+                            <input type="text" name="working_time" v-model="working_time" class="form-control"> 
                         </div>
                     </div>
 
@@ -76,20 +76,20 @@
                     <div class="form-group clearfix"  v-if="this.category == 'event'">
                         <label for="name" class='col-xs-2 control-label'> Start data </label>
                         <div class="col-xs-4">
-                            <input type="text" v-model="start_data_day" name="start_data_day" class="form-control"> 
+                            <input type="text" v-model="start_data_day" name="start_data_day" class="form-control"  placeholder="start day data"> 
                         </div>
                         <div class="col-xs-4">
-                            <input type="text" v-model="start_data_month" name="start_data_month" class="form-control"> 
+                            <input type="text" v-model="start_data_month" name="start_data_month" class="form-control"  placeholder="start month"> 
                         </div>
                     </div>
 
                     <div class="form-group clearfix" v-if="this.category == 'event'">
                         <label for="name" class='col-xs-2 control-label'> End data </label>
                         <div class="col-xs-4">
-                            <input type="text" v-model="start_data_day" name="start_data_day" class="form-control"> 
+                            <input type="text" v-model="and_data_day" name="and_data_day" class="form-control"  placeholder="and day data"> 
                         </div>
                         <div class="col-xs-4">
-                            <input type="text" v-model="and_data_month" name="and_data_month" class="form-control"> 
+                            <input type="text" v-model="and_data_month" name="and_data_month" class="form-control"  placeholder="and month"> 
                         </div>
                     </div>
 
@@ -516,16 +516,30 @@
                 //
                 //
                 //
-                is_global_article_succes: 0,
-                is_us_article_succes: 0,
-                is_ru_article_succes: 0,
-                is_ka_article_succes: 0,
-                is_image_succes: 0,
+                // is_global_article_succes: 0,
+                // is_us_article_succes: 0,
+                // is_ru_article_succes: 0,
+                // is_ka_article_succes: 0,
+                // is_image_succes: 0,
             }
         },
         mounted() {
+            this.create_temporary_article()
         },
         methods: {
+            create_temporary_article() {
+                axios
+                .post('/articles/create_temporary_article/' + this.category, {
+                    // ka_title: this.ka_title,
+                })
+                .then((response)=>  {
+                    // console.log(response)
+                    // this.is_ka_article_succes = 1
+                    // console.log('georgian article upload successful');
+                })
+                .catch(error => console.log(error))
+            },
+
             add_global_article() {
                 // var myFormData = new FormData(this.$refs.myForm)
                 // console.log(myFormData);
@@ -654,17 +668,17 @@
                     // this.is_image_succes = 1;
                     // alert(response.data.message);
                 });
-                e.preventDefault();
+                // e.preventDefault(); // if this line is not comentid method - (window.location.href) dase not work in method (save_all)
             },
 
             save_all() {
-                this.add_us_article(),
-                this.add_ka_article(),
-                this.add_ru_article(),
+                this.add_global_article()
 
-                this.add_global_article(),
+                this.checkForm()
 
-                this.checkForm();
+                this.add_us_article()
+                this.add_ka_article()
+                this.add_ru_article()
 
                 window.location.href = this.back_url;
             }

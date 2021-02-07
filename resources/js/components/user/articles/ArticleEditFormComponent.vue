@@ -25,7 +25,7 @@
                     <div class="form-group clearfix">
                         <label for="name" class='col-xs-2 control-label'> Publish </label>
                         <div class="col-xs-8">
-                            <select class="form-control" name="published"> 
+                            <select class="form-control" name="published" v-model="published"> 
                                 
                                 <!-- <option value="0" @if ($data['published'] == 0) selected="" @endif>Not public</option> -->
                                 <!-- <option value="1" @if ($data['published'] == 1) selected="" @endif>Public</option> -->
@@ -37,10 +37,10 @@
                         </div>
                     </div>
 
-                    <div class="form-group clearfix">
-                        <label for="name" class='col-xs-2 control-label'> Publish </label>
+                    <div class="form-group clearfix" v-if="this.category == 'event'">
+                        <label for="name" class='col-xs-2 control-label'> completed </label>
                         <div class="col-xs-8">
-                            <select class="form-control" name="published"> 
+                            <select class="form-control" name="completed" v-model="completed"> 
                                 
                                 <!-- <option value="0" @if ($data['published'] == 0) selected="" @endif>Not public</option> -->
                                 <!-- <option value="1" @if ($data['published'] == 1) selected="" @endif>Public</option> -->
