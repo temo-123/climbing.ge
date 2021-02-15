@@ -42,7 +42,8 @@
 
       @if($area['sectors']['sector_img'] != NULL)
             @foreach($area['sectors']['sector_img'] as $sector_img)
-                  {{$sector_img['name']}}
+                  {{-- {{$sector_img['name']}} --}}
+                  <img src="{{ asset('images/sector_img/'.$sector_img['name']) }}" alt="">
             @endforeach
       @endif
 
@@ -55,7 +56,7 @@
                   <tr>
                   <td>N</td>
                   <td>Name</td>
-                  <td class="display-none-720px">Style</td>
+                  {{-- <td class="display-none-720px">Style</td> --}}
                   <td>Height</td>
                   <td>Bolts</td>
                   <td>Gread FR</td>
@@ -120,12 +121,11 @@
                         <!--<td>S</td>-->
                         </tr>
                   </tbody>
-                  @foreach($area['mtps'][$mtp_index]['mtp pitchs'] as $mtp_pitchs)
+                  {{-- @foreach($area['mtps'][$mtp_index]['mtp pitchs'] as $mtp_pitchs)
                   <tbody>
                         <tr>  
                         <td>1</td>
                         <td>{{$mtp_pitchs['pitch name']}}</td>
-                        {{-- <td>{{$mtp_pitchs['pitch style']}}</td> --}}
                         <td>{{$mtp_pitchs['pitch height']}}</td>
                         <td>{{$mtp_pitchs['pitch bolts']}}</td>
                         <td>{{$mtp_pitchs['pitch grade fr']}}</td>
@@ -133,7 +133,7 @@
                         </tr>
                   </tbody>
                   <div style='display:none;'>{{$mtp_rope_index++}}</div>
-                  @endforeach
+                  @endforeach --}}
             </table>
             <div style='display:none;'>{{$mtp_index++}}</div>
 <!--             <table class="table col-md-12">

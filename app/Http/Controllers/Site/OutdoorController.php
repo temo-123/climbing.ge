@@ -104,136 +104,18 @@ class OutdoorController extends Controller
             $global_other_list = Article::latest('id')->where('category', '=', 'outdoor')->inRandomOrder()->where('published','=','1')->limit(6)->get();
             $other_list = GetArticlesService::get_locale_article($global_other_list);
 
-            $pitch_num_in_array = 0;
-            $mtp_num_in_array = 0;
+            // 
+            // 
+            // 
+            // sectors_and_routes_array method code
+            // 
+            // 
+            // 
 
-            $area_info = array();
-            $route_info = array();
-            $sector_imgs = array();
-            $mtp_info = array();
-
-            $sector_count = Sector::where('article_id', '=', $id)->count();
-            if ($sector_count > 0) {
-                $sector_n = Sector::where('article_id', '=', $id)->orderBy('num')->get();
-                foreach($sector_n as $sector){
-
-                    $sectors_img_count = Sector_image::where('sector_id', '=', $sector->id)->count();
-                    if ($sectors_img_count > 0) {
-                        $sectors_img = Sector_image::where('sector_id', '=', $sector->id)->orderBy('num')->get();
-                        foreach($sectors_img as $sector_img){
-                            array_push($sector_imgs, 
-                                array(
-                                    "name"=>$sector_img['image'],
-                                )
-                            );
-                        }
-                    }
-                    else $sector_imgs = NULL;
-
-                    $routes_count = Route::where('sector_id', '=', $sector->id)->count();
-                    if ($routes_count > 0){
-                        $routes = Route::where('sector_id', '=', $sector->id)->orderBy('num')->get();
-                        foreach($routes as $x=>$route){
-                            $grade_yds = 0;
-                            if ($route['grade'] != NULL) {
-                                $grade_yds = $this->get_yds_grade($route);
-                            }
-                            array_push($route_info, 
-                                array(
-                                    "name"=>$route['name'], 
-                                    "text"=>$route['text'], 
-                                    "height"=>$route['height'], 
-                                    "bolts"=>$route['bolts'], 
-                                    "grade_fr"=>$route['grade'],
-                                    "grade_yds"=>$grade_yds,
-                                    "last_carabin"=>$route['last_carabin'], 
-                                    "first_ascent"=>$route['first_ascent'], 
-                                    "bolter"=>$route['bolter'], 
-                                    "dolting_data"=>$route['dolting_data'], 
-                                    "stars"=>$route['stars'],
-
-                                    // "style"=>$route['style'],
-                                )
-                            );
-                            // dd($route_info);
-                        }
-                    }
-                    // else $route_info = NULL;
-
-                    $mtps_count = MTP::where('sector_id', '=', $sector->id)->count();
-                    if ($mtps_count > 0){
-                        $mtps = MTP::where('sector_id', '=', $sector->id)->orderBy('num')->get();
-                        foreach($mtps as $mtp){
-                            array_push($mtp_info, 
-                                array(
-                                    "mtp name"=>$mtp['name'],
-                                    "mtp text"=>$mtp['text'],
-                                    // "mtp pitchs quantity"=> [],
-                                    // "mtp pitchs"=> [],
-                                )
-                            );
-                            $mtp_pitchs = Mtp_pitch::where('mtp_id', '=', $mtp->id)->orderBy('num')->get();
-                            $pitch_num = 0;
-                            $mtp_num_in_array = 0;
-                            foreach($mtp_pitchs as $mtp_pitch){                            
-                                $pitch_grade_yds = 0;
-                                if ($mtp_pitch['grade'] != NULL) {
-                                    $pitch_grade_yds = $this->get_yds_grade($mtp_pitch);
-                                }
-                                $mtp_pitch_info = array(
-                                    'pitch name'=>$mtp_pitch['name'],
-                                    "pitch text"=>$mtp_pitch['text'], 
-                                    "pitch height"=>$mtp_pitch['height'], 
-                                    "pitch bolts"=>$mtp_pitch['bolts'], 
-                                    "pitch grade fr"=>$mtp_pitch['grade'],
-                                    "pitch grade yds"=>$pitch_grade_yds,
-                                    "pitch first_ascent"=>$mtp_pitch['first_ascent'], 
-                                    "pitch bolter"=>$mtp_pitch['bolter'], 
-                                    "pitch dolting_data"=>$mtp_pitch['dolting_data'],
-
-                                    // "pitch style"=>$mtp_pitch['style'],
-                                );
-                                $pitch_num++;
-                                // dd($pitch_num);
-                                array_push($mtp_info[$pitch_num]["mtp pitchs"],$mtp_pitch_info);
-                            }
-                            $mtp_num_in_array++;
-                            $pitch_num_in_array++;
-                            // dd($pitch_num);
-                            array_push($mtp_info[$mtp_num_in_array]['mtp pitchs quantity'],$pitch_num);
-                            // dd($mtp_info);
-                        }
-                    }
-                    // else $mtp_info = NULL;
-                    $sector_info = array(
-                        "name"=>$sector->name, 
-                        "text"=>$sector->text, 
-                        'sector_img'=>$sector_imgs,
-
-                        "all_day_in_shade"=>$sector->all_day_in_shade,
-                        "all_day_in_sun"=>$sector->all_day_in_sun,
-                        "in_the_shade_afternoon"=>$sector->in_the_shade_afternoon,
-                        "in_the_shade_befornoon"=>$sector->in_the_shade_befornoon,
-                        "in_shade_after_10"=>$sector->in_shade_after_10,
-                        "in_shade_after_15"=>$sector->in_shade_after_15,
-
-                        "overhang"=>$sector->overhang,
-                        "slabby"=>$sector->slabby,
-                        "vertical"=>$sector->vertical,
-                    );
-                    // dd($route_info);
-                    array_push($area_info, 
-                        array(
-                            "sectors" => $sector_info,  
-                            "routes" => $route_info,
-                            "mtps" => $mtp_info
-                        )
-                    );
-                }
-            }
+            $area_info = $this->sectors_and_routes_array($id);
 
             // dd($sector_imgs);
-            dd($area_info);
+            // dd($area_info);
             
             $data  = [
                 'outdoor_climbing' => 0,
@@ -303,5 +185,148 @@ class OutdoorController extends Controller
         else $grade_yds = '?';
 
         return $grade_yds;
+    }
+
+    public function sectors_and_routes_array($id)
+    {
+        $pitch_num_in_array = 0;
+        $mtp_num_in_array = 0;
+        $area_info = array();
+        $route_info = array();
+        $sector_imgs = array();
+        $mtp_info = array();
+        $mtp_pitch_info = array();
+
+        $sector_count = Sector::where('article_id', '=', $id)->count();
+        if ($sector_count > 0) {
+            $sector_n = Sector::where('article_id', '=', $id)->orderBy('num')->get();
+            foreach($sector_n as $sector){
+
+                $sectors_img_count = Sector_image::where('sector_id', '=', $sector->id)->count();
+                if ($sectors_img_count > 0) {
+                    $sectors_img = Sector_image::where('sector_id', '=', $sector->id)->orderBy('num')->get();
+                    foreach($sectors_img as $sector_img){
+                        array_push($sector_imgs, 
+                            array(
+                                "name"=>$sector_img['image'],
+                            )
+                        );
+                    }
+                }
+                else $sector_imgs = NULL;
+
+                // dd($sector_imgs);
+
+                $routes_count = Route::where('sector_id', '=', $sector->id)->count();
+                if ($routes_count > 0){
+                    $routes = Route::where('sector_id', '=', $sector->id)->orderBy('num')->get();
+                    foreach($routes as $x=>$route){
+                        $grade_yds = 0;
+                        if ($route['grade'] != NULL) {
+                            $grade_yds = $this->get_yds_grade($route);
+                        }
+                        array_push($route_info, 
+                            array(
+                                "id"=>$route['id'], 
+                                "name"=>$route['name'], 
+                                "text"=>$route['text'], 
+                                "height"=>$route['height'], 
+                                "bolts"=>$route['bolts'], 
+                                "grade_fr"=>$route['grade'],
+                                "grade_yds"=>$grade_yds,
+                                "last_carabin"=>$route['last_carabin'], 
+                                "first_ascent"=>$route['first_ascent'], 
+                                "bolter"=>$route['bolter'], 
+                                "dolting_data"=>$route['dolting_data'], 
+                                "stars"=>$route['stars'],
+
+                                // "style"=>$route['style'],
+                            )
+                        );
+                        // dd($route_info);
+                    }
+                }
+                // else $route_info = NULL;
+
+                $mtps_count = MTP::where('sector_id', '=', $sector->id)->count();
+                if ($mtps_count > 0){
+                    $mtps = MTP::where('sector_id', '=', $sector->id)->orderBy('num')->get();
+                    foreach($mtps as $mtp){
+                        $mtp_pitchs = Mtp_pitch::where('mtp_id', '=', $mtp->id)->orderBy('num')->get();
+                        $mtp_pitchs_count = Mtp_pitch::where('mtp_id', '=', $mtp->id)->orderBy('num')->count();
+                        $pitch_num = 0;
+                        $mtp_num_in_array = 0;
+                        if ($mtp_pitchs_count > 0) {
+                            foreach($mtp_pitchs as $mtp_pitch){                            
+                                $pitch_grade_yds = 0;
+                                if ($mtp_pitch['grade'] != NULL) {
+                                    $pitch_grade_yds = $this->get_yds_grade($mtp_pitch);
+                                }
+                                array_push($mtp_pitch_info,
+                                    [
+                                        'pitch id'=>$mtp_pitch['id'],
+                                        'pitch name'=>$mtp_pitch['name'],
+                            //             "pitch text"=>$mtp_pitch['text'], 
+                            //             "pitch height"=>$mtp_pitch['height'], 
+                            //             "pitch bolts"=>$mtp_pitch['bolts'], 
+                            //             "pitch grade fr"=>$mtp_pitch['grade'],
+                            //             "pitch grade yds"=>$pitch_grade_yds,
+                            //             "pitch first_ascent"=>$mtp_pitch['first_ascent'], 
+                            //             "pitch bolter"=>$mtp_pitch['bolter'], 
+                            //             "pitch dolting_data"=>$mtp_pitch['dolting_data'],
+                                    ]
+                                );
+
+                            //     $pitch_num++;
+                                // array_push($mtp_info, $mtp_pitch_info);
+                            }
+                        }
+                        // $mtp_num_in_array++;
+                        // $pitch_num_in_array++;
+                        // array_push($mtp_info,$mtp_pitch_info);
+                        array_push($mtp_info, 
+                            [
+                                "mtp id"=>$mtp['id'],
+                                "mtp name"=>$mtp['name'],
+                                "mtp text"=>$mtp['text'],
+                                "mtp pitchs"=>$mtp_pitch_info
+                            ]
+                        );
+
+                        $mtp_pitch_info = array();
+
+                    }
+                    // $mtp_pitch_info = NULL;
+                }
+                // else $mtp_info = NULL;
+                $sector_info = array(
+                    "id"=>$sector->id, 
+                    "name"=>$sector->name, 
+                    "text"=>$sector->text, 
+
+                    "all_day_in_shade"=>$sector->all_day_in_shade,
+                    "all_day_in_sun"=>$sector->all_day_in_sun,
+                    "in_the_shade_afternoon"=>$sector->in_the_shade_afternoon,
+                    "in_the_shade_befornoon"=>$sector->in_the_shade_befornoon,
+                    "in_shade_after_10"=>$sector->in_shade_after_10,
+                    "in_shade_after_15"=>$sector->in_shade_after_15,
+
+                    "overhang"=>$sector->overhang,
+                    "slabby"=>$sector->slabby,
+                    "vertical"=>$sector->vertical,
+
+                    'sector_img'=>$sector_imgs,
+                );
+                // dd($route_info);
+                array_push($area_info, 
+                    array(
+                        "sectors" => $sector_info,  
+                        "routes" => $route_info,
+                        "mtps" => $mtp_info
+                    )
+                );
+            }
+        }
+        return $area_info;
     }
 }

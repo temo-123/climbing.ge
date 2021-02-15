@@ -10,8 +10,8 @@ class Route extends Model
 
     protected $fillable = [
         "sector_id",
-        "gread",
-        "or_gread",
+        "grade",
+        "or_grade",
         "title",
         "text",
         "last_carabin",

@@ -6,12 +6,22 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
 use App\Models\Interested_Event;
+use Auth;
 
 class InterestedEventController extends Controller
 {
+     // use \App\User:HasRoles;
+    
+     public function __construct()
+     {
+         $this->middleware('auth');
+     }
+     
     public function events_interes(Request $request, $events_id)
     {
-        $request->user()->authorizeRoles(['user', 'manager', 'admin']);
+        // $request->user()->authorizeRoles(['user', 'manager', 'admin']);
+
+        // $request->user()->authorizeRoles(['manager', 'admin']);
 
     	if ($request->actions == "add") {
             $input_events_id = $request -> events_id;

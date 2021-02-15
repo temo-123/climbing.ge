@@ -103,34 +103,34 @@ class SectorController extends Controller
     public function edit(sector $sector, Request $request)
     {
         $request->user()->authorizeRoles(['manager', 'admin']);
-        
-        if ($request->isMethod('delete')) {
-            $sector ->delete();
-            return redirect('admin/routes_and_sectors')->with('status', 'sector delited'); //text
-        }
 
         if ($request->isMethod('post')) {
             $input = $request -> except('_token');
             
-            $validator = Validator::make($input, [
-                'name' => 'required|max:190'
-            ]);
-            if ($validator->fails()) {
-                return redirect()->route('sectorEdit', ['sector' => $input['id']])->withErrors($validator);
-            }
-            
-            if ($request->hasFile('image_1')) {
-                $file = $request->file('image_1');
-                $file -> move(public_path().'/assets/img/sector_img/',$file->getClientOriginalName());
-                $input['image_1'] = $file->getClientOriginalName();
-            }
+            $sector = sector::find($request->id);
+            // $sector = new sector();
 
-            if ($sector->update()) {
-                return redirect('user/routes_and_sectors')->with('status','sector updated'); //text
-            }
+            // dd($sector);
+
+            $sector['article_id'] = $request->article_id;
+            $sector['name'] = $request->name;
+            $sector['text'] = $request->text;
+            $sector['all_day_in_shade'] = $request->all_day_in_shade;
+            $sector['all_day_in_sun'] = $request->all_day_in_sun;
+            $sector['in_the_shade_afternoon'] = $request->in_the_shade_afternoon;
+            $sector['in_the_shade_befornoon'] = $request->in_the_shade_befornoon;
+            $sector['in_shade_after_10'] = $request->in_shade_after_10;
+            $sector['in_shade_after_15'] = $request->in_shade_after_15;
+            $sector['slabby'] = $request->slabby;
+            $sector['vertical'] = $request->vertical;
+            $sector['overhang'] = $request->overhang;
+
+            $sector -> update();
+
+            // if ($sector->update()) {
+            //     return redirect('user/routes_and_sectors')->with('status','sector updated'); //text
+            // }
         }
-
-    	$old = $sector -> toArray();
     }
 
     

@@ -24,7 +24,7 @@
     <h6>{{$site->shop_description}} </h6>
     @endif -->
 
-    <div class="col-sm-3">
+    {{-- <div class="col-sm-3">
         <!--left col-->
        
         <div class="panel panel-default">
@@ -49,11 +49,10 @@
         </div>
         
         <div class="panel panel-default">
-            <div class="panel-body"><a href="{{route('shop_index')}}">Products</a></div>
-            <div class="panel-body"><a href="{{route('shop_index')}}">Categorys</a></div>
-            <div class="panel-body"><a href="{{route('shop_index')}}">Selers</a></div>
+            <div class="panel-body"><a href="{{route('shop_index')}}">@lang('shop.shop menu products')</a></div>
+            <div class="panel-body"><a href="{{route('shop_index')}}">@lang('shop.shop menu categoris')</a></div>
         </div>
-    </div>
+    </div> --}}
 
     <div class="col-sm-9">
         <section class="inner">

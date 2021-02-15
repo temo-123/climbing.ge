@@ -37,8 +37,8 @@
           </div>
           <div class="col-xs-4">
             <div class="col-xs-6">
-              <select class="form-control" v-if="route_type != '' && route_type == 'sport climbing'" v-model="gread">
-                <option v-for="sport in sport_route_gread" :key="sport" v-bind:value="sport">{{ sport }}</option>
+              <select class="form-control" v-if="route_type != '' && route_type == 'sport climbing'" v-model="grade">
+                <option v-for="sport in sport_route_grade" :key="sport" v-bind:value="sport">{{ sport }}</option>
               </select>
             </div>
             <div class="col-xs-6">
@@ -194,7 +194,7 @@ export default {
           sector_id: this.sector_id,
           name: this.name,
           text: this.text,
-          garde: this.garde,
+          grade: this.grade,
           or_grade: this.or_grade,
           last_carabin: this.last_carabin,
           height: this.height,

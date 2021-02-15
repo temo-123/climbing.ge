@@ -34,10 +34,8 @@
 
         @csrf 
         
-        <article_add_form  
-            :category="{{ json_encode($category) }}" 
-            back_url="{{ route('article_list', array($category)) }}"
-        ></article_add_form>
+        <product_add_form  
+        ></product_add_form>
     
     </div>
 

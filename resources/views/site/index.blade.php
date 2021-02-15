@@ -421,7 +421,7 @@
             @endif
 
 
-            @if((isset($securities)))
+            {{-- @if((isset($securities)))
             <div class="h-recent-work services" id="services">
                 <div class="container">
 
@@ -436,7 +436,7 @@
                     
                 </div>
             </div>
-            @endif
+            @endif --}}
 
 
             @if (isset($index_others) && count($index_others) != 0)

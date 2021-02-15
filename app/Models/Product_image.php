@@ -4,11 +4,12 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Favorite_product extends Model
+class Product_image extends Model
 {
-    public $table = 'Favorite_product';
+    public $table = 'product_images';
 
     protected $fillable = [
-        
+        'image',
+        "product_id"
     ];
 }

@@ -7,6 +7,10 @@
 import Vue from 'vue';
 import Carousel3d from 'vue-carousel-3d';
 import CKEditor from 'ckeditor4-vue';
+// import ComponentExample from './ComponentExample.vue'
+import VueNestable from 'vue-nestable'
+
+Vue.use(VueNestable)
 
 
 // import VueLazyload from 'vue-lazyload'
@@ -43,7 +47,7 @@ Vue.component('search-component',               require('./components/site/Searc
 Vue.component('trchtips_component',             require('./components/site/TrchtipsComponent.vue').default);
 
 
-Vue.component('mobal',             require('./components/MobalComponent.vue').default);
+// Vue.component('mobal',             require('./components/MobalComponent.vue').default);
 
 
 
@@ -52,8 +56,12 @@ Vue.component('tabs_component',                 require('./components/user/TabsC
 Vue.component('comments_list_component',        require('./components/user/CommentsListComponent.vue').default);
 Vue.component('options_form',                   require('./components/user/OptionsFormComponent.vue').default);
 
-Vue.component('article_add_form_component',     require('./components/user/articles/ArticleAddFormComponent.vue').default);
-Vue.component('article_edit_form_component',    require('./components/user/articles/ArticleEditFormComponent.vue').default);
+Vue.component('product_add_form',               require('./components/user/products/ProductAddFormComponent.vue').default);
+Vue.component('product_edit_form',              require('./components/user/products/ProductEditFormComponent.vue').default);
+Vue.component('product_list',                   require('./components/user/products/ProductListComponent.vue').default);
+
+Vue.component('article_add_form',               require('./components/user/articles/ArticleAddFormComponent.vue').default);
+Vue.component('article_edit_form',              require('./components/user/articles/ArticleEditFormComponent.vue').default);
 
 Vue.component('sector_add_form',                require('./components/user/routes and sectors/sector/SectorAddFormComponent.vue').default);
 Vue.component('sector_edit_form',               require('./components/user/routes and sectors/sector/SectorEditFormComponent.vue').default);

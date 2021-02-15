@@ -527,19 +527,94 @@
             this.create_temporary_article()
         },
         methods: {
-            create_temporary_article() {
+            // create_temporary_article() {
+            //     axios
+            //     .post('/articles/create_temporary_article/' + this.category, {
+            //         // ka_title: this.ka_title,
+            //     })
+            //     .then((response)=>  {
+            //         // console.log(response)
+            //         // this.is_ka_article_succes = 1
+            //         // console.log('georgian article upload successful');
+            //     })
+            //     .catch(error => console.log(error))
+            // },
+
+            add_us_article() {
                 axios
-                .post('/articles/create_temporary_article/' + this.category, {
-                    // ka_title: this.ka_title,
+                .post('/articles/us/add/' + this.category, {        
+                    us_title: this.us_title,
+                    us_short_description: this.us_short_description,
+                    us_text: this.us_text,
+                    us_route: this.us_route,
+                    us_how_get: this.us_how_get,
+                    us_best_time: this.us_best_time,
+                    us_what_need: this.us_what_need,
+                    us_info: this.us_info,
+                    us_time: this.us_time,
+                    us_price_text: this.us_price_text,
+                    us_price_from: this.us_price_from,
+                    us_meta_keyword: this.us_meta_keyword,
+                })
+                .then((response)=> { 
+                    // console.log(response)
+                    // this.is_us_article_succes = 1
+                    // console.log('englihs article upload successful');
+
+                    this.add_ru_article()
+                })
+                .catch(error => console.log(error))
+            },
+            add_ru_article() {
+                axios
+                .post('/articles/ru/add/' + this.category, {
+                    ru_title: this.ru_title,
+                    ru_short_description: this.ru_short_description,
+                    ru_text: this.ru_text,
+                    ru_route: this.ru_route,
+                    ru_how_get: this.ru_how_get,
+                    ru_best_time: this.ru_best_time,
+                    ru_what_need: this.ru_what_need,
+                    ru_info: this.ru_info,
+                    ru_time: this.ru_time,
+                    ru_price_text: this.ru_price_text,
+                    ru_price_from: this.ru_price_from,
+                    ru_meta_keyword: this.ru_meta_keyword,
+                })
+                .then((response)=> { 
+                    // this.is_ru_article_succes = 1
+                    // console.log(this.is_ru_article_succes);
+                    // console.log(response) 
+                    // console.log('rusian article upload successful');
+                    this.add_ka_article()
+                })
+                .catch(error => console.log(error))
+            },
+            add_ka_article() {
+                axios
+                .post('/articles/ka/add/' + this.category, {
+                    ka_title: this.ka_title,
+                    ka_short_description: this.ka_short_description,
+                    ka_text: this.ka_text,
+                    ka_route: this.ka_route,
+                    ka_how_get: this.ka_how_get,
+                    ka_best_time: this.ka_best_time,
+                    ka_what_need: this.ka_what_need,
+                    ka_: this.ka_,
+                    ka_time: this.ka_time,
+                    ka_price_text: this.ka_price_text,
+                    ka_price_from: this.ka_price_from,
+                    ka_meta_keyword: this.ka_meta_keyword,
                 })
                 .then((response)=>  {
                     // console.log(response)
                     // this.is_ka_article_succes = 1
                     // console.log('georgian article upload successful');
+
+                    this.add_global_article()
                 })
                 .catch(error => console.log(error))
             },
-
             add_global_article() {
                 // var myFormData = new FormData(this.$refs.myForm)
                 // console.log(myFormData);
@@ -578,80 +653,12 @@
                     // console.log(response)
                     // alert(response.data.message);
                     // console.log('global article upload successful');
+
+                    this.checkForm()
                 })
                 .catch(
                     error => console.log(error)
                 )
-            },
-            add_ru_article() {
-                axios
-                .post('/articles/ru/add/' + this.category, {
-                    ru_title: this.ru_title,
-                    ru_short_description: this.ru_short_description,
-                    ru_text: this.ru_text,
-                    ru_route: this.ru_route,
-                    ru_how_get: this.ru_how_get,
-                    ru_best_time: this.ru_best_time,
-                    ru_what_need: this.ru_what_need,
-                    ru_info: this.ru_info,
-                    ru_time: this.ru_time,
-                    ru_price_text: this.ru_price_text,
-                    ru_price_from: this.ru_price_from,
-                    ru_meta_keyword: this.ru_meta_keyword,
-                })
-                .then((response)=> { 
-                    // this.is_ru_article_succes = 1
-                    // console.log(this.is_ru_article_succes);
-                    // console.log(response) 
-                    // console.log('rusian article upload successful');
-                })
-                .catch(error => console.log(error))
-            },
-            add_us_article() {
-                axios
-                .post('/articles/us/add/' + this.category, {        
-                    us_title: this.us_title,
-                    us_short_description: this.us_short_description,
-                    us_text: this.us_text,
-                    us_route: this.us_route,
-                    us_how_get: this.us_how_get,
-                    us_best_time: this.us_best_time,
-                    us_what_need: this.us_what_need,
-                    us_info: this.us_info,
-                    us_time: this.us_time,
-                    us_price_text: this.us_price_text,
-                    us_price_from: this.us_price_from,
-                    us_meta_keyword: this.us_meta_keyword,
-                })
-                .then((response)=> { 
-                    // console.log(response)
-                    // this.is_us_article_succes = 1
-                    // console.log('englihs article upload successful');
-                })
-                .catch(error => console.log(error))
-            },
-            add_ka_article() {
-                axios
-                .post('/articles/ka/add/' + this.category, {
-                    ka_title: this.ka_title,
-                    ka_short_description: this.ka_short_description,
-                    ka_text: this.ka_text,
-                    ka_route: this.ka_route,
-                    ka_how_get: this.ka_how_get,
-                    ka_best_time: this.ka_best_time,
-                    ka_what_need: this.ka_what_need,
-                    ka_: this.ka_,
-                    ka_time: this.ka_time,
-                    ka_price_text: this.ka_price_text,
-                    ka_price_from: this.ka_price_from,
-                    ka_meta_keyword: this.ka_meta_keyword,
-                })
-                .then((response)=>  {
-                    // console.log(response)
-                    // this.is_ka_article_succes = 1
-                    // console.log('georgian article upload successful');
-                })
-                .catch(error => console.log(error))
             },
 
             checkForm: function (e) {
@@ -672,13 +679,7 @@
             },
 
             save_all() {
-                this.add_global_article()
-
-                this.checkForm()
-
                 this.add_us_article()
-                this.add_ka_article()
-                this.add_ru_article()
 
                 window.location.href = this.back_url;
             }

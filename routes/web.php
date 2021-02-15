@@ -154,11 +154,29 @@ Route::group(['prefix' => LocalisationService::locale(),'middleware' => 'setLoca
                     });    
 
                     
-                    Route::group(['prefix'=>'products'], function() {
-                        Route::get('/', ['uses'=>'ProductsController@index', 'as'=>'products_list']);
-                        Route::match(['get','post'], '/add', ['uses'=>'ProductsController@store','as'=>'productsAdd']);
-                        Route::match(['get', 'post'], '/edit/{product}', ['uses' => 'ProductsController@edit', 'as'=>'productsEdit']); 
-                        Route::match(['delete'], '/delete/{product}', ['uses' => 'ProductsController@delete', 'as'=>'productsDel']);
+                    Route::group(['prefix'=>'products', 'namespace'=>'Product'], function() {
+                        Route::any('/create_temporary_product', 'ProductController@create_temporary_product');
+
+                        Route::match(['get','post'], '/add_product', ['uses'=>'ProductController@add_product_page','as'=>'productAddPage']);
+                        Route::match(['get', 'post'], '/edit_product/{id}', ['uses' => 'ProductController@edit_product_page', 'as'=>'productEditPage']);
+
+                        Route::match(['get','post'], '/global/add/', ['uses'=>'GlobalProductController@add_global_product','as'=>'globalProductAdd']);
+                        Route::match(['get', 'post'], '/global/edit/{id}', ['uses' => 'GlobalProductController@edit_global_product', 'as'=>'globalProductEdit']);
+
+                        Route::match(['get','post'], '/us/add/', ['uses'=>'UsProductController@add_us_product','as'=>'usProductAdd']);
+                        Route::match(['get', 'post'], '/us/edit/{id}', ['uses' => 'UsProductController@edit_us_product', 'as'=>'usProductEdit']);
+
+                        Route::match(['get','post'], '/ru/add/', ['uses'=>'RuProductController@add_ru_product','as'=>'ruProductAdd']);
+                        Route::match(['get', 'post'], '/ru/edit/{id}', ['uses' => 'RuProductController@edit_ru_product', 'as'=>'ruProductEdit']);
+
+                        Route::match(['get','post'], '/ka/add/', ['uses'=>'KaProductController@add_ka_product','as'=>'kaProductAdd']);
+                        Route::match(['get', 'post'], '/ka/edit/{id}', ['uses' => 'KaProductController@edit_ka_product', 'as'=>'kaProductEdit']);
+
+                        Route::match(['post', 'delete'], '/del/{id}', ['uses' => 'ProductController@del_product', 'as'=>'productDel']);
+
+                        Route::get('/', ['uses'=>'ProductController@product_list_page', 'as'=>'products_list']);
+                        Route::any('/get_product_data', 'ProductController@get_product_data');
+
                         Route::get('/favorite', ['uses'=>'ProductsController@favorite', 'as'=>'favorite']);
                     }); 
 
@@ -208,10 +226,11 @@ Route::group(['prefix' => LocalisationService::locale(),'middleware' => 'setLoca
     Route::domain('shop.climbing.loc')->group(function () {
         Route::group(['namespace'=>'Shop'], function() {
             Route::get('/', 'IndexController@index')->name('shop_index');
+            Route::get('/shop_about_us', ['uses'=>'IndecController@shop_about_us', 'as'=>'shop_about_us']);
 
             // Route::get('/', 'ShopController@shop_list')->name('shop_list');
             Route::get('/product/{title}', ['uses'=>'ProductPageController@shop_page', 'as'=>'shop_page']);
-            Route::get('/seller/{id}', ['uses'=>'SellerController@seller_page', 'as'=>'seller_page']);
+            
 
             Route::get('/favorite_product/{product_id}/{actions}', ['uses'=>'PrioritiesController@favorite_product', 'as'=>'favorite_product']);
 

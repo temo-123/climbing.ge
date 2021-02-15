@@ -19,11 +19,9 @@
                <div class="f-links">
                    <h4>Links</h4>
                    <ul>
-                     <li> <a href="{{route('indoor_list')}}">Indoor climbing</a> </li>
-                     <li> <a href="{{route('outdoor_list')}}">Outdoor climbing</a> </li>
-                     <li> <a href="{{route('mount_list')}}">Mountainering</a> </li>
-                     <li> <a href="{{route('login')}}">Login</a> </li>
-                     <li> <a href="{{url('sitemap')}}">Sitemap</a> </li>
+                     <li> <a href="{{route('shop_index')}}">@lang('shop.shop menu products')</a> </li>
+                     <li> <a href="{{route('shop_index')}}">@lang('shop.shop menu about us')</a> </li>
+                     <li> <a href="{{route('login')}}">@lang('shop.shop login')</a> </li>
                    </ul>
                </div>
            </div>

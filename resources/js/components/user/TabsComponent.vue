@@ -1,26 +1,5 @@
 <template>
     <div class="tabs">
-        <!-- <div class="d-flex">
-            <div>
-                <button class="btn btn-primary" @click="show=true">Open modal</button>
-            </div>
-        </div>
-
-        <stack-modal
-                :show="show"
-                title="Modal #1"
-                @close="show=false"
-                :modal-class="{ [modalClass]: true }"
-                :saveButton="{ visible: false }"
-                :cancelButton="{ title: 'Close', btnClass: { 'btn btn-primary': true } }"
-        >
-
-            <hr/>
-            <p>Additional options: </p>
-        </stack-modal> -->
-        
-        <!-- <mobal></mobal> -->
-        
         <div class="row">
         <input type="radio" name="tabs" id="1" checked="checked">
         <label for="1" v-if="this.table_1_get_route">{{this.table_1_name}}</label>
@@ -292,7 +271,63 @@
                 </tbody>
             </table>
         </div>
+
+
+        <!-- <div class="d-flex">
+            <div>
+                <button class="btn btn-primary" @click="show=true">Open modal</button>
+            </div>
+        </div>
+
+        <stack-modal
+                :show="show"
+                title="Modal #1"
+                @close="show=false"
+                :modal-class="{ [modalClass]: true }"
+                :saveButton="{ visible: false }"
+                :cancelButton="{ title: 'Close', btnClass: { 'btn btn-primary': true } }"
+        >
+
+            <hr/>
+            <p>Additional options: </p>
+        </stack-modal> -->
+        
+        <!-- <mobal></mobal> -->
     </div>
+    <!-- <div class="row">
+        <ComponentExample link="CrossList">
+            <div class="side-by-side">
+            <div class="side">
+                <VueNestable
+                v-model="nestableItems1"
+                cross-list
+                group="cross"
+                >
+                <VueNestableHandle
+                    slot-scope="{ item }"
+                    :item="item"
+                >
+                    {{ item.text }}
+                </VueNestableHandle>
+                </VueNestable>
+            </div>
+            <div class="side">
+                <VueNestable
+                v-model="nestableItems2"
+                cross-list
+                group="cross"
+                >
+                <VueNestableHandle
+                    slot-scope="{ item }"
+                    :item="item"
+                >
+                    {{ item.text }}
+                </VueNestableHandle>
+                </VueNestable>
+            </div>
+            </div>
+        </ComponentExample>
+    </div> -->
     </div>
 </template>
 
@@ -300,9 +335,8 @@
     import StackModal from '@innologica/vue-stackable-modal'
 
     export default {
-        // name: "StackableModalDemo",
         components: {
-            StackModal
+            StackModal,
         },
 
         props: [
@@ -336,9 +370,33 @@
             "table_3_categiry",
             "table_4_categiry",
         ],
-        
         data() {
             return {
+                nestableItems1: [
+                {
+                    id: 0,
+                    text: 'Andy'
+                    }, {
+                    id: 1,
+                    text: 'Harry',
+                    children: [{
+                        id: 2,
+                        text: 'David'
+                    }]
+                    }, {
+                    id: 3,
+                    text: 'Lisa'
+                    }
+                ],
+                nestableItems2: [
+                    {
+                    id: 4,
+                    text: 'Mike'
+                    }, {
+                    id: 5,
+                    text: 'Edgar'
+                    }
+                ],
                 show: false,
                 show_second: false,
                 show_third: false,

@@ -73,7 +73,7 @@
         
         @include('shop.components.footer')
 
-        @if (session('status'))
+        {{-- @if (session('status'))
             <div id="modalOnLoad" class="modal fade">
                 <div class="modal-dialog">
                     <div class="modal-content">
@@ -91,13 +91,13 @@
                         </div>
                     </div>
                 </div>
-            </div>
+            </div> --}}
             <!-- <script type="text/javascript">
              $(document).ready(function () {
                         $("#modalOnLoad").modal('show');
                     });
             </script> -->
-        @endif
+        {{-- @endif --}}
     </div>
 
     <!-- <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
@@ -111,12 +111,12 @@
 
 
     <!-- Scripts -->
-    <!-- <script src="{{ asset('assets/js/bootstrap.min.js') }}" type="text/javascript"></script>
+    {{-- <!-- <script src="{{ asset('assets/js/bootstrap.min.js') }}" type="text/javascript"></script>
     <script src="{{ asset('assets/js/jquery.fractionslider.min.js') }}" type="text/javascript" charset="utf-8"></script>
     <script src="{{ asset('assets/js/animation.js') }}" type="text/javascript" charset="utf-8"></script>
     <script src="{{ asset('assets/js/less.js') }}" type="text/javascript"></script>
     <script src="{{ asset('assets/js/isotop.js') }}"></script>
-    <script src="{{ asset('assets/js/jquery.colorbox.js') }}"></script> -->
+    <script src="{{ asset('assets/js/jquery.colorbox.js') }}"></script> --> --}}
 
     <!--Security system on index-->
     <script src='https://cdnjs.cloudflare.com/ajax/libs/vue/2.1.7/vue.js'></script>

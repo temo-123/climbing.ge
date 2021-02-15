@@ -16,8 +16,8 @@ class MountController extends Controller
     public function mount_list()
     {
     	if (view()->exists('site.mount_list')) {
-    		$global_mounts = Article::latest('id')->where('category', '=', 'mount_routes')->where('published', '=', 1)->get();
-            $article_count = Article::latest('id')->where('category', '=', 'mount_routes')->where('published', '=', 1)->count();
+    		$global_mounts = Article::latest('id')->where('category', '=', 'mount_route')->where('published', '=', 1)->get();
+            $article_count = Article::latest('id')->where('category', '=', 'mount_route')->where('published', '=', 1)->count();
             
             $mounts = GetArticlesService::get_locale_article($global_mounts);
             $time_array = GetArticlesService::get_new_article_pin($mounts);
@@ -59,7 +59,7 @@ class MountController extends Controller
             abort(404);
         }
         if (view()->exists('site.mount_page')) {
-            $global_mount_routes = Article::where('category', '=', 'mount_routes')->where('url_title',strip_tags($name))->first();
+            $global_mount_routes = Article::where('category', '=', 'mount_route')->where('url_title',strip_tags($name))->first();
 
             $mount_route_id = $global_mount_routes->mount_id;
 
@@ -70,7 +70,7 @@ class MountController extends Controller
             $mounts_system = Mount::where('id','=',$mount_route_id)->get();
             $comments = Comment::where('article_id',strip_tags($mount_route_id))->get();
 
-            $global_other_list = Article::inRandomOrder()->where('category', '=', 'mount_routes')->where('published','=','1')->limit(6)->get();
+            $global_other_list = Article::inRandomOrder()->where('category', '=', 'mount_route')->where('published','=','1')->limit(6)->get();
             $other_list = GetArticlesService::get_locale_article($global_other_list);
 
             $data = [

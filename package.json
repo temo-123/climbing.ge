@@ -31,6 +31,7 @@
         "ckeditor4-vue": "^1.2.0",
         "mdbvue": "^6.7.1",
         "vue-carousel-3d": "^1.0.1",
+        "vue-nestable": "^2.6.0",
         "vue-upload-multiple-image": "^1.1.6",
         "vux-uploader-component": "^1.0.23"
     }

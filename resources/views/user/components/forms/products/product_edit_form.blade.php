@@ -17,7 +17,7 @@
             @endif
         </div>
         <div class="form-group">
-            <a href="{{ url()->previous() }}" class='btn btn-primary'  onclick="return confirm('Are you sure, you want go back?')">Back</a>
+            <a href="{{ url()->previous() }}" class='btn btn-primary' onclick="return confirm('Are you sure, you want go back?')">Back</a>
         </div>
         <hr>
     </div>
@@ -34,10 +34,9 @@
 
         @csrf 
         
-        <article_add_form  
-            :category="{{ json_encode($category) }}" 
-            back_url="{{ route('article_list', array($category)) }}"
-        ></article_add_form>
+        <product_edit_form  
+            :editing_article_id = {{ $editing_article_id }}
+        ></product_edit_form>
     
     </div>
 

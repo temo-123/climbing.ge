@@ -2,7 +2,7 @@
     <div class="row navbar-fixed-top top_menu">
         <div class="col-xs-12 col-sm-2 col-md-3 col-lg-3 ">
             <div class="site_title">
-                <a href="{{ route('shop_index') }}" class="site_title">shop.climbing.ge</a>
+                <a href="{{ route('shop_index') }}" class="site_title">@lang('shop.shop name')</a>
             </div>
         </div>
         <div class="col-xs-12 col-sm-10 col-md-9 col-lg-9">
@@ -42,13 +42,12 @@
                 <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                     <ul class="nav navbar-nav pull-right top_menu_buttons">
                         
-                        <li><a @if(isset($products)) id='actyve' @endif href="{{route('shop_index')}}">Products</a></li>
-                        <li><a @if(isset($categorys)) id='actyve' @endif href="{{route('shop_index')}}">Categorys</a></li>
-                        <li><a @if(isset($selers)) id='actyve' @endif href="{{route('shop_index')}}">Selers</a></li>
+                        <li><a @if(isset($products)) id='actyve' @endif href="{{route('shop_index')}}">@lang('shop.shop menu products')</a></li>
+                        <li><a @if(isset($about_us)) id='actyve' @endif href="{{route('shop_about_us')}}">@lang('shop.shop menu about us')</a> </li>
 
                         @if (Auth::guest())
                         <li>
-                            <a href="{{route('login')}}">Login</a>
+                            <a href="{{route('login')}}">@lang('shop.shop login')</a>
                         </li>
                         @endif
 

@@ -271,7 +271,7 @@
 
       edit_sector: function () {
         axios
-        .post('/routes_and_sectors/sector_edit', {
+        .post('/routes_and_sectors/sector_edit/' + this.editing_sector_id, {
             article_id: this.article_id,
             name: this.name,
             text: this.text,

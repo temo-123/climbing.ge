@@ -43,74 +43,17 @@
                 </div>
                 @endif
 
-                <div class="row list-group">
-                    <div class="add_buttom">
-                        <a href="{{ route('productsAdd') }}" class="btn btn-primary pull-left" type="submit">New </a>
-                    </div>
-                </div>
+                <product_list
+                    product_get_route = ""
+                    product_name = ""
+                    product_add_url = {{ route('productAddPage') }}
+                    product_edit_url = ""
+                    product_del_url = ""
 
-                <ul class="row list-group">
-                    @forelse($products as $product)
-                    <li class="list-group-item">
-                        <div class="row">
-                            <div class="col-xs-2 col-md-2">
-                                <!-- <img src="http://placehold.it/120" class="img-circle img-responsive" alt="" /> -->
-                                <img src="{{ asset('images/shop_img/'.$product -> image_1) }}" class="img-circle img-responsive product_table_img">
-                            </div>
-                            <div class="col-xs-10 col-md-10">
-                                <div class="row">
-                                    <a href={{ route('shop_page', array('title' => $product->url_title )) }}> {{ $product->title }}</h3></a>
-                                </div>
-                                <div class="row">
-                                    <h3>{{ $product -> price }} {{ $product -> currency }}</h3></a>
-                                </div>
-                                <div class="row">
-                                    <h3>Category - {{ $product -> category }}</h3></a>
-                                </div>
+                    {{-- product_page = {{ route('shop_page', array('title' => $product->url_title )) }} --}}
+                >
+                </product_list>
 
-                                <!-- <div class="comment-text">
-                                    Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh
-                                    euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim
-                                </div> -->
-                                <div class="action">
-                                	{{-- <div style="float: left;">
-                                        @if($product -> approved == 1)
-	                                    <button type="button" class="btn btn-success btn-xs" title="Approved">
-	                                        <span class="glyphicon glyphicon-ok"></span>
-	                                    </button>
-                                        @elseif($product -> approved == 1 || $product -> approved == NULL)
-                                        <button type="button" class="btn btn-danger btn-xs" title="Approved">
-                                            <span class="glyphicon glyphicon-remove"></span>
-                                        </button>
-                                        @endif
-                                    </div> --}}
-                                    
-                                	<div style="float: right;">
-	                                    <a type="button" class="btn btn-primary btn-xs" href="{{route('productsEdit',[$product->id])}}">
-	                                        <span class="glyphicon glyphicon-pencil"></span>
-                                        </a>
-                                        <form method="post" action="{{route('productsDel',[$product->id])}}">
-                                            {{ method_field('DELETE') }}
-                                            <input type="hidden" name="_token" value="{{ csrf_token() }}">
-                                            <div class="form-group">
-                                            <button type="submit" class="btn btn-danger" onclick="return confirm('Are you sure you want to delete this item')">    
-                                                <span class="glyphicon glyphicon-trash"></span>
-                                            </button>
-                                            </div>
-                                        </form>
-                                	</div>
-                                </div>
-                            </div>
-                        </div>
-                    </li>
-                    @empty
-                    <div class="panel panel-default target">
-                        <div class="panel-heading" contenteditable="false">
-                            <h2>You don't have any products</h2>
-                        </div>
-                    </div>
-                    @endforelse
-                </ul>
             </div>
         </div>
     </div>

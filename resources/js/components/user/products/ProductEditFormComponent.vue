@@ -701,7 +701,7 @@
                     // this.is_image_succes = 1;
                     // alert(response.data.message);
                 });
-                // e.preventDefault();
+                e.preventDefault();
             },
 
             get_editing_data() {

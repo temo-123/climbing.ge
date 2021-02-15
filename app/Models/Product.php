@@ -14,10 +14,11 @@ class Product extends Model
         'description_short',
         'price',
         'currency', 
-        'image_1',
-        'image_2',
-        'image_3',
-        'image_4',
+        
+        'us_product',
+        'ru_product',
+        'ka_product',
+
         'general_image'
 	];
 }

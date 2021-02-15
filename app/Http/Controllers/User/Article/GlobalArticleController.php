@@ -20,10 +20,10 @@ class GlobalArticleController extends Controller
         if ($request -> isMethod('post')) {
             $input = $request -> except('_token');
 
-            $global_article = Article::get();
-            foreach ($global_article as $global) {
-                $last_globale_id = $global->id;
-            }
+            // $global_article = Article::get();
+            // foreach ($global_article as $global) {
+            //     $last_globale_id = $global->id;
+            // }
 
             $us_articl = Us_article::get();
             foreach ($us_articl as $us) {
@@ -44,8 +44,8 @@ class GlobalArticleController extends Controller
             $us_title_arr = explode( ' ', $request->us_title_for_url_title);
             $url_title = implode("_", $us_title_arr);
 
-            $article = Article::find($last_globale_id);
-            // $article = new Article();
+            // $article = Article::find($last_globale_id);
+            $article = new Article();
             
             $article['url_title'] = $url_title;
             $article['category']=$request->category;
