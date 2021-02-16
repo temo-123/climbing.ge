@@ -2,8 +2,8 @@
     <div class="row navbar-fixed-top top_menu">
         <div class="col-xs-12 col-sm-2 col-md-3 col-lg-3 ">
             <div class="site_title">
-                {{-- <a href="{{ route('index') }}" class="site_title">@lang('site.site name')</a> --}}
-                <img src="{{ asset('images/site_img/site_logo/climbing.ge.png') }}" alt="Site Logo" width="100px">
+                <a href="{{ route('index') }}" class="site_title">@lang('site.site name')</a>
+                {{-- <img src="{{ asset('images/site_img/site_logo/climbing.ge.png') }}" alt="Site Logo" width="100px"> --}}
             </div>
         </div>
         <div class="col-xs-12 col-sm-10 col-md-9 col-lg-9">

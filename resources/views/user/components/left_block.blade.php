@@ -5,15 +5,21 @@
                 <li class="list-group-item text-muted @if($page_name == 'Home') menu_active @endif">
                     <a href="{{route('user_index')}}">My page </a>
                 </li>
-                <li class="list-group-item text-muted @if($page_name == 'Products') menu_active @endif">
-                    <a href="{{Route('products_list')}}">My products</a>
-                </li>
                 <li class="list-group-item text-muted @if($page_name == 'favorite_products') menu_active @endif">
                     <a href="{{Route('favorite')}}">My favorite products</a>
+                </li>
+                <li class="list-group-item text-muted @if($page_name == 'interested_events') menu_active @endif">
+                    <a href="#">Interested events</a>
                 </li>
                 @endif
 
                 @if((Auth::user()->hasRole('admin')) || (Auth::user()->hasRole('manager')))
+
+                <li class="list-group-item text-muted"></li>
+
+                <li class="list-group-item text-muted @if($page_name == 'Products') menu_active @endif">
+                    <a href="{{Route('products_list')}}">Products & Category</a>
+                </li>
 
                 <li class="list-group-item text-muted"></li>
 

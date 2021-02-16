@@ -2,32 +2,24 @@
 
 @section('content')
 
-    @section('meta_title',  $events->title )    
-    @if ($events->short_description != NULL)
+    {{-- @section('meta_title',  $events->title )     --}}
+    {{-- @if ($events->short_description != NULL)
         @section('meta_description',  $events->short_description )
     @else
         @section('meta_description',  $events->title )
-    @endif
-    @if ($events->meta_keyword != NULL)
+    @endif --}}
+    {{-- @if ($events->meta_keyword != NULL)
         @section('meta_keyword',  $events->meta_keyword )
     @else
         @section('meta_keyword',  $events->title )
-    @endif
-
-    @section('meta_img',  asset("images/events_img/".$events->image))
+    @endif --}}
+    {{-- @if(isset($image_dir))
+        @section('meta_img',  asset("images/events_img/".$events->image))
+    @endif --}}
 
 <div class="container top_menu_margin">
+    {{-- <div class="container"> --}}
     <div class='row'>
-        
-        <h1 class="blog-title">
-            {{$events->article_title}}
-            
-            @if (Route::has('login'))
-                @auth
-                <a href="">Edit</a>
-                @endauth
-            @endif
-        </h1>
             
         <div class="col-md-6">
             @component('site.components.breadcrumb')
@@ -133,6 +125,6 @@
                     :is_login="true"
             ></comment-form-component>
         @endif
-        @endif
+    @endif
 </div><!--/. container -->
 @endsection

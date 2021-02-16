@@ -17,19 +17,33 @@ class ProductController extends Controller
 {
     public function product_list_page(Request $request)
     {
-        if (view()->exists('user.my_products_list')) {
+        if (view()->exists('user.data_table')) {
             $data = [
-    			'title'=>'Shop',
-    			
-                'page_name'=>'Products',
-
-    			'shop'=>1,
-                'num' => 1,
+                'table_1'=>'Products',
+    		    'table_1_name' => 'Products',
+                // 'table_1_count' => $count_sector,
+                // 'table_1_tags' => $sector_tags,
+    		    'table_1_add_url'=>'productAddPage',
+				'table_1_edit_url'=>'products/edit/',
+				'table_1_get_route'=>'products/get_product_data',
+                'table_1_del'=>"/products/del/",
+                
+                'table_2' => "categoryies",
+    		    'table_2_name' => 'Categories',
+                // 'table_2_count' => $count_route,
+                // 'table_2_tags' => $route_tags,
+    		    'table_2_add_url'=>'routeAdd',
+    		    'table_2_edit_url'=>'routes_and_sectors/route_edit_form/',
+				'table_2_get_route'=>'products/get_product_category_data',
+                'table_2_del'=>"/routes_and_sectors/route_delete/",
+    		    
+    		    'page_name' => 'Products',
+    		    'active' => 'Outdoor',
+                'page_route' => 'outdoor_page',
 
                 'active' => 'product list',
-    		    'table_1_name'=> '$table_1_name',
             ];
-            return view('user.my_products_list',$data);
+            return view('user.data_table',$data);
     	}
     	abort(404);
     }
@@ -206,5 +220,10 @@ class ProductController extends Controller
             $ru_product ->delete();
             $ka_product ->delete();
         }
+    }
+
+    public function favorite()
+    {
+        # code...
     }
 }

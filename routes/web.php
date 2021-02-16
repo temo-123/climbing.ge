@@ -3,7 +3,7 @@
 use Illuminate\Support\Facades\Route;
 
 Route::group(['prefix' => LocalisationService::locale(),'middleware' => 'setLocale'], function() {
-    Route::domain("climbing.loc")->group(function () {
+    Route::domain(config('app.url'))->group(function () {
         Route::group(['namespace'=>'Site'], function() {
             
             Route::get('/', 'IndexController@index')->name('index');
@@ -53,7 +53,7 @@ Route::group(['prefix' => LocalisationService::locale(),'middleware' => 'setLoca
         });
     });
 
-    Route::domain('user.climbing.loc')/*->middleware('verified')*/->group(function () {
+    Route::domain('user.' . config('app.url'))/*->middleware('verified')*/->group(function () {
         Route::group(['middleware'=>'auth'], function() {
             Route::group(['namespace'=>'User'], function() {
         
@@ -74,7 +74,6 @@ Route::group(['prefix' => LocalisationService::locale(),'middleware' => 'setLoca
                         Route::match(['get', 'post', 'delete'], '/mount_delete/{id}', ['uses' => 'MountMassiveController@delete', 'as'=>'mountDel']);
                     });
                     
-
                     Route::group(['prefix'=>'routes_and_sectors', 'namespace'=>'Route_And_Sector'], function() {
                         Route::get('/', ['uses'=>'RoutesListController@index', 'as'=>'routes_and_sectors']);
                         Route::match(['post'],'/routesNumEdit', ['uses'=>'RoutesListController@store', 'as'=>'routesNumEdit']);
@@ -177,7 +176,12 @@ Route::group(['prefix' => LocalisationService::locale(),'middleware' => 'setLoca
                         Route::get('/', ['uses'=>'ProductController@product_list_page', 'as'=>'products_list']);
                         Route::any('/get_product_data', 'ProductController@get_product_data');
 
-                        Route::get('/favorite', ['uses'=>'ProductsController@favorite', 'as'=>'favorite']);
+                        Route::match(['get','post'], '/category/add/', ['uses'=>'CategoryController@add_product_category','as'=>'categoryAdd']);
+                        Route::match(['get', 'post'], '/category/edit/{id}', ['uses' => 'CategoryController@edit_product_category', 'as'=>'categoryEdit']);
+                        Route::match(['post', 'delete'], '/category/del/{id}', ['uses' => 'CategoryController@del_product_category', 'as'=>'productDel']);
+                        Route::any('/get_product_category_data', 'CategoryController@get_product_category_data');
+
+                        Route::get('/favorite', ['uses'=>'ProductController@favorite', 'as'=>'favorite']);
                     }); 
 
 
@@ -222,11 +226,11 @@ Route::group(['prefix' => LocalisationService::locale(),'middleware' => 'setLoca
             });
         });
     });
-
-    Route::domain('shop.climbing.loc')->group(function () {
+    
+    Route::domain('shop.' . config('app.url'))->group(function () {
         Route::group(['namespace'=>'Shop'], function() {
             Route::get('/', 'IndexController@index')->name('shop_index');
-            Route::get('/shop_about_us', ['uses'=>'IndecController@shop_about_us', 'as'=>'shop_about_us']);
+            Route::get('/shop_about_us', ['uses'=>'IndexController@shop_about_us', 'as'=>'shop_about_us']);
 
             // Route::get('/', 'ShopController@shop_list')->name('shop_list');
             Route::get('/product/{title}', ['uses'=>'ProductPageController@shop_page', 'as'=>'shop_page']);
@@ -234,8 +238,8 @@ Route::group(['prefix' => LocalisationService::locale(),'middleware' => 'setLoca
 
             Route::get('/favorite_product/{product_id}/{actions}', ['uses'=>'PrioritiesController@favorite_product', 'as'=>'favorite_product']);
 
-            Route::get('/sitemap.xml', 'SitemapController@sitemap_xml');
-            Route::get('/sitemap', 'SitemapController@sitemap');
+            Route::get('/sitemap.xml', 'App\SitemapController@sitemap_xml');
+            Route::get('/sitemap', 'App\SitemapController@sitemap');
         });
     });
 });

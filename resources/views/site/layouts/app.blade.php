@@ -26,7 +26,7 @@
     <!-- <link href="http://cdn.bootcss.com/animate.css/3.5.1/animate.min.css" rel="stylesheet"> -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.7.0/animate.min.css"><!--animate style-->
 
-     <!-- <link rel="stylesheet" href="{{ asset('assets/css/bootstrap-theme.min.css') }}"> -->
+     {{-- <!-- <link rel="stylesheet" href="{{ asset('assets/css/bootstrap-theme.min.css') }}"> --> --}}
 
     <!-- font femyly in style.css (line 6.12.17.23.30) || style1.css (line 6) -->
      <link href="http://netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
@@ -66,7 +66,7 @@
         
         @include('site.components.footer')
 
-        @if (session('status'))
+        {{-- @if (session('status'))
             <div id="modalOnLoad" class="modal fade">
                 <div class="modal-dialog">
                     <div class="modal-content">
@@ -90,7 +90,7 @@
                         $("#modalOnLoad").modal('show');
                     });
             </script> -->
-        @endif
+        @endif --}}
     </div>
 
     <!-- <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
