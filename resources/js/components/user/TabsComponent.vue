@@ -372,31 +372,31 @@
         ],
         data() {
             return {
-                nestableItems1: [
-                {
-                    id: 0,
-                    text: 'Andy'
-                    }, {
-                    id: 1,
-                    text: 'Harry',
-                    children: [{
-                        id: 2,
-                        text: 'David'
-                    }]
-                    }, {
-                    id: 3,
-                    text: 'Lisa'
-                    }
-                ],
-                nestableItems2: [
-                    {
-                    id: 4,
-                    text: 'Mike'
-                    }, {
-                    id: 5,
-                    text: 'Edgar'
-                    }
-                ],
+                // nestableItems1: [
+                // {
+                //     id: 0,
+                //     text: 'Andy'
+                //     }, {
+                //     id: 1,
+                //     text: 'Harry',
+                //     children: [{
+                //         id: 2,
+                //         text: 'David'
+                //     }]
+                //     }, {
+                //     id: 3,
+                //     text: 'Lisa'
+                //     }
+                // ],
+                // nestableItems2: [
+                //     {
+                //     id: 4,
+                //     text: 'Mike'
+                //     }, {
+                //     id: 5,
+                //     text: 'Edgar'
+                //     }
+                // ],
                 show: false,
                 show_second: false,
                 show_third: false,
