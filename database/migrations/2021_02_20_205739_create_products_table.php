@@ -20,7 +20,7 @@ class CreateProductsTable extends Migration
             $table->integer('published');
 
             $table->string('price');
-            $table->astring('currency');
+            $table->string('currency');
             $table->string('discount');
             $table->string('color');
             $table->string('quantity');

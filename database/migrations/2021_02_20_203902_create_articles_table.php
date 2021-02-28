@@ -22,7 +22,7 @@ class CreateArticlesTable extends Migration
             $table->integer('completed');
 
             $table->string('start_data_day');
-            $table->astring('nd_data_day');
+            $table->string('and_data_day');
             $table->string('start_data_month');
             $table->string('and_data_month');
 
