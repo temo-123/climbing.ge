@@ -43,7 +43,7 @@ class UsArticleController extends Controller
             $article['info']=$request->us_info;
             $article['meta_keyword']=$request->us_meta_keyword;
 
-            $article -> save();
+            $article -> update();
         }
     }
     public function edit_us_article(Request $request)

@@ -527,18 +527,18 @@
             this.create_temporary_article()
         },
         methods: {
-            // create_temporary_article() {
-            //     axios
-            //     .post('/articles/create_temporary_article/' + this.category, {
-            //         // ka_title: this.ka_title,
-            //     })
-            //     .then((response)=>  {
-            //         // console.log(response)
-            //         // this.is_ka_article_succes = 1
-            //         // console.log('georgian article upload successful');
-            //     })
-            //     .catch(error => console.log(error))
-            // },
+            create_temporary_article() {
+                axios
+                .post('/articles/create_temporary_article/' + this.category, {
+                    // ka_title: this.ka_title,
+                })
+                .then((response)=>  {
+                    // console.log(response)
+                    // this.is_ka_article_succes = 1
+                    // console.log('georgian article upload successful');
+                })
+                .catch(error => console.log(error))
+            },
 
             add_us_article() {
                 axios
@@ -586,7 +586,7 @@
                     // console.log(this.is_ru_article_succes);
                     // console.log(response) 
                     // console.log('rusian article upload successful');
-                    this.add_ka_article()
+                    // this.add_ka_article()
                 })
                 .catch(error => console.log(error))
             },
@@ -611,7 +611,7 @@
                     // this.is_ka_article_succes = 1
                     // console.log('georgian article upload successful');
 
-                    this.add_global_article()
+                    // this.add_global_article()
                 })
                 .catch(error => console.log(error))
             },
@@ -654,7 +654,7 @@
                     // alert(response.data.message);
                     // console.log('global article upload successful');
 
-                    this.checkForm()
+                    // this.checkForm()
                 })
                 .catch(
                     error => console.log(error)
@@ -672,14 +672,17 @@
                     },
                 })
                 .then((response)=>  {
-                    // this.is_image_succes = 1;
-                    // alert(response.data.message);
+                    
                 });
-                // e.preventDefault(); // if this line is not comentid method - (window.location.href) dase not work in method (save_all)
             },
 
             save_all() {
                 this.add_us_article()
+                this.add_ka_article()
+                this.add_ru_article()
+                this.add_global_article()
+
+                this.checkForm()
 
                 window.location.href = this.back_url;
             }

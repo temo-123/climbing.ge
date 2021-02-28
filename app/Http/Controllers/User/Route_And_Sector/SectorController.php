@@ -10,6 +10,8 @@ use App\Models\Article;
 
 use App\Models\Sector_image;
 
+use App\Services\imageControllService;
+
 class SectorController extends Controller
 {
     public function add(Request $request)
@@ -204,34 +206,21 @@ class SectorController extends Controller
 
     public function sector_image_upload(Request $request)
     {
-        // https://therichpost.com/vue-laravel-image-upload/ 
-            // dd($request->hasFile('profile_pic'));
+        $request->user()->authorizeRoles(['manager', 'admin']);
 
-        if ($request->hasFile('profile_pic')){  
-            // rename file
-            $file      = $request->file('profile_pic');
-            $filename  = $file->getClientOriginalName();
-            $extension = $file->getClientOriginalExtension();
-            $pieces = explode( '.', $filename );
-            $file_new_name = $pieces[0].'_('.date('Y-m-d-H-m-s').').'.$extension;
-            
-            // push image in folder
-            $file->move(public_path('images/sector_img'), $file_new_name);
-            $article = new Sector_image();
-            // $article = Sector_image::where('id',strip_tags($last_global_article_id))->first();
-            $article['image']=$file_new_name;
-            $article['sector_id']=$request->sector_id;
-            $article -> save();
+        $image_dir = 'sector_img';
 
-            return response()->json(["message" => "Image Uploaded Succesfully"]);
-        } 
-        else{
-            return response()->json(["message" => "Image Uploaded Error."]);
-        }
+        $article = new Sector_image();
+        $article['sector_id']=$request->sector_id;
+
+        imageControllService::image_upload($image_dir, $article, $request);
+
     }
 
     public function sector_image_update(Request $request)
     {
+        $request->user()->authorizeRoles(['manager', 'admin']);
+
         if ($request->hasFile('profile_pic')){  
             // rename file
             $file      = $request->file('profile_pic');
@@ -263,18 +252,13 @@ class SectorController extends Controller
             $sector_image_id=$request->id;
 
             $sector_image = Sector_image::where('id',strip_tags($sector_image_id))->first();
-
-            // dd($sector);
-
-            // delete product file
-            // $fileName = $არტიცლე['image'];
-            // $destinationPath = 'images/shop_img/';
-            // File::delete($destinationPath.$fileName);
-
-            // delete product from db
-            $sector_image ->delete();
+            $image_dir = "sector_img";
+            
+            imageControllService::image_delete($image_dir, $sector_image, $request);
         }
     }
+
+
 
     
     public function create_temporary_sector()

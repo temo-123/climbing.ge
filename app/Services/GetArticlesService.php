@@ -21,7 +21,13 @@ class GetArticlesService
                 $ru_articles = Ru_article::where('id', '=', $article->ru_article_id,)->get();
                 foreach ($ru_articles as $us_article) {
                     if ($us_article->id == $article->ru_article_id) {
-                        array_push($articles, [$ru_articles, "url_title"=>$article->url_title, "image" => $article->image]);
+                        array_push($articles, [$ru_articles,    "url_title"=>$article->url_title, 
+                                                                "image" => $article->image,
+                                                                "start_data_day" => $article->start_data_day,
+                                                                "and_data_day" => $article->and_data_day,
+                                                                "start_data_month" => $article->start_data_month,
+                                                                "and_data_month" => $article->and_data_month,
+                                                                ]);
                     }
                 }
             }
@@ -31,7 +37,60 @@ class GetArticlesService
                 $ka_articles = Ka_article::where('id', '=', $article->ka_article_id,)->get();
                 foreach ($ka_articles as $us_article) {
                     if ($us_article->id == $article->ka_article_id) {
-                        array_push($articles, [$ka_articles, "url_title"=>$article->url_title, "image" => $article->image]);
+                        array_push($articles, [$ka_articles,    "url_title"=>$article->url_title, 
+                                                                "image" => $article->image,
+                                                                "start_data_day" => $article->start_data_day,
+                                                                "and_data_day" => $article->and_data_day,
+                                                                "start_data_month" => $article->start_data_month,
+                                                                "and_data_month" => $article->and_data_month,
+                                                                ]);
+                    }
+                }
+            }
+        } else {
+            foreach ($global_article as $article) {
+                $us_articles = Us_article::where('id', '=', $article->us_article_id)->get();
+                foreach ($us_articles as $us_article) {
+                    if ($us_article->id == $article->us_article_id) {
+                        array_push($articles, [$us_articles,    "url_title"=>$article->url_title, 
+                                                                "image" => $article->image,
+                                                                "start_data_day" => $article->start_data_day,
+                                                                "and_data_day" => $article->and_data_day,
+                                                                "start_data_month" => $article->start_data_month,
+                                                                "and_data_month" => $article->and_data_month,
+                                                                ]);
+                    }
+                }
+            }
+        }
+        // dd($articles);
+        return $articles;
+    }
+
+    public static function get_locale_article_for_sitemap($global_article, $locale)
+    {
+        $articles = array();
+
+        if($locale == "ru"){
+            foreach ($global_article as $article) {
+                $ru_articles = Ru_article::where('id', '=', $article->ru_article_id,)->get();
+                foreach ($ru_articles as $us_article) {
+                    if ($us_article->id == $article->ru_article_id) {
+                        array_push($articles, [$ru_articles,    "url_title"=>$article->url_title, 
+                                                                "image" => $article->image,
+                                                                ]);
+                    }
+                }
+            }
+        }
+        elseif ($locale == "ka") {
+            foreach ($global_article as $article) {
+                $ka_articles = Ka_article::where('id', '=', $article->ka_article_id,)->get();
+                foreach ($ka_articles as $us_article) {
+                    if ($us_article->id == $article->ka_article_id) {
+                        array_push($articles, [$ka_articles,    "url_title"=>$article->url_title, 
+                                                                "image" => $article->image,
+                                                                ]);
                     }
                 }
             }
@@ -40,12 +99,13 @@ class GetArticlesService
                 $us_articles = Us_article::where('id', '=', $article->us_article_id,)->get();
                 foreach ($us_articles as $us_article) {
                     if ($us_article->id == $article->us_article_id) {
-                        array_push($articles, [$us_articles, "url_title"=>$article->url_title, "image" => $article->image]);
+                        array_push($articles, [$us_articles,    "url_title"=>$article->url_title, 
+                                                                "image" => $article->image,
+                                                                ]);
                     }
                 }
             }
         }
-        // dd($articles);
         return $articles;
     }
 
@@ -56,16 +116,71 @@ class GetArticlesService
 
         if($locale == "ru"){
             $ru_article_id = $article->ru_article_id;
-            $locale_article = Ru_article::where('id', '=', $ru_article_id,)->get();
-                
+            $loc_article = Ru_article::where('id', '=', $ru_article_id,)->get();$locale_article = array();
+            array_push($locale_article, [$loc_article[0], 
+                                                "id"=>$article->id, 
+                                                "start_data_day"=>$article->start_data_day, 
+                                                "and_data_day"=>$article->and_data_day, 
+                                                "start_data_month"=>$article->start_data_month, 
+                                                "and_data_month"=>$article->and_data_month, 
+                                                "fb_link"=>$article->fb_link, 
+                                                "inst_link"=>$article->inst_link, 
+                                                "google_link"=>$article->google_link, 
+                                                "twit_link"=>$article->twit_link, 
+                                                "web_link"=>$article->web_link, 
+                                                "star"=>$article->star, 
+                                                "weather"=>$article->weather, 
+                                                "price_from"=>$article->price_from, 
+                                                "working_time"=>$article->working_time, 
+                                                "map"=>$article->map,
+                                                "image"=>$article->image, 
+                                                ]);
         }
         elseif ($locale == "ka") {
             $ka_article_id = $article->ka_article_id;
-            $locale_article = Ka_article::where('id', '=', $ka_article_id,)->get();
+            $loc_article = Ka_article::where('id', '=', $ka_article_id,)->get();$locale_article = array();
+            array_push($locale_article, [$loc_article[0], 
+                                                "id"=>$article->id, 
+                                                "start_data_day"=>$article->start_data_day, 
+                                                "and_data_day"=>$article->and_data_day, 
+                                                "start_data_month"=>$article->start_data_month, 
+                                                "and_data_month"=>$article->and_data_month, 
+                                                "fb_link"=>$article->fb_link, 
+                                                "inst_link"=>$article->inst_link, 
+                                                "google_link"=>$article->google_link, 
+                                                "twit_link"=>$article->twit_link, 
+                                                "web_link"=>$article->web_link, 
+                                                "star"=>$article->star, 
+                                                "weather"=>$article->weather, 
+                                                "price_from"=>$article->price_from, 
+                                                "working_time"=>$article->working_time, 
+                                                "map"=>$article->map,
+                                                "image"=>$article->image, 
+                                                ]);
                 
         } else {
             $us_article_id = $article->us_article_id;
-            $locale_article = Us_article::where('id', '=', $us_article_id,)->get();       
+            $loc_article = Us_article::where('id', '=', $us_article_id,)->get();
+            $locale_article = array();
+            array_push($locale_article, [$loc_article[0], 
+                                                "id"=>$article->id, 
+                                                "start_data_day"=>$article->start_data_day, 
+                                                "and_data_day"=>$article->and_data_day, 
+                                                "start_data_month"=>$article->start_data_month, 
+                                                "and_data_month"=>$article->and_data_month, 
+                                                "fb_link"=>$article->fb_link, 
+                                                "inst_link"=>$article->inst_link, 
+                                                "google_link"=>$article->google_link, 
+                                                "twit_link"=>$article->twit_link, 
+                                                "web_link"=>$article->web_link, 
+                                                "star"=>$article->star, 
+                                                "weather"=>$article->weather, 
+                                                "price_from"=>$article->price_from, 
+                                                "working_time"=>$article->working_time, 
+                                                "map"=>$article->map,
+                                                "image"=>$article->image, 
+                                                ]);
+            // dd($locale_article[0][0]['title']);
         }
 
         return $locale_article;

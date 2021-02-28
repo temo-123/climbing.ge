@@ -3,22 +3,17 @@
 @section('content')
     <div class="container top_menu_margin">
         @component('user.components.breadcrumb')
-            @if(isset($data))
-                @slot('title') {{$edit_title}} @endslot
-                @slot('active') {{$edit_active}} @endslot
-            @else
-                @slot('title') {{$add_title}} @endslot
-                @slot('active') {{$add_active}} @endslot
-            @endif
+            @slot('title') Edit product @endslot
+            @slot('active') Edit ptoduct @endslot
         @endcomponent
         <div class="form-group">
             @if(Session::has('message'))
                 {{Session::get('message')}}
             @endif
         </div>
-        <div class="form-group">
+        {{-- <div class="form-group">
             <a href="{{ url()->previous() }}" class='btn btn-primary' onclick="return confirm('Are you sure, you want go back?')">Back</a>
-        </div>
+        </div> --}}
         <hr>
     </div>
     <div class="wrapper container-fluid container">
@@ -35,6 +30,7 @@
         @csrf 
         
         <product_edit_form  
+            back_url='{{ route('products_list') }}'
             :editing_article_id = {{ $editing_article_id }}
         ></product_edit_form>
     

@@ -13,9 +13,12 @@
     @else
         @section('meta_keyword',  $article->title )
     @endif
-    @if(isset($image_dir))
-        @section('meta_img',  asset('images/'.$image_dir.'/'.$article->image))
+    @if(isset($image))
+        @section('meta_img',  asset('images/'.$image))
     @endif
+
+    @section('created_at',  $article->created_at)
+    @section('updated_at',  $article->updated_at)
 
     <div class="container top_menu_margin">
         <div class="row">

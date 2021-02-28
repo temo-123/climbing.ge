@@ -21,6 +21,10 @@
                     <a href="{{Route('products_list')}}">Products & Category</a>
                 </li>
 
+                <li class="list-group-item text-muted @if($page_name == 'Services') menu_active @endif">
+                    <a href="#">Services</a>
+                </li>
+
                 <li class="list-group-item text-muted"></li>
 
                 <li class="list-group-item text-muted @if($page_name == 'Outdoor') menu_active @endif">
@@ -69,7 +73,7 @@
                 </li>
 
                 @if(Auth::user()->hasRole('admin'))
-                <li class="list-group-item text-muted @if($page_name == 'Users') menu_active @endif">
+                <li class="list-group-item text-muted @if($page_name == 'Users and Roles') menu_active @endif">
                     <a href="{{ Route('users') }}">Users</a>
                 </li>
                 @endif

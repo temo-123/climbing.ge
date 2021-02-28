@@ -508,16 +508,16 @@
                                                     <div class="col-sm-6 col-xs-6 nopadding">
                                                         <time class="end blue_green_2">
                                                             Start 
-                                                            <span class="day">{{ $event[0][0] -> start_data_day }}</span>
-                                                            <span class="month">{{ $event[0][0] -> start_data_month }}</span>
+                                                            <span class="day">{{ $event['start_data_day']  }}</span>
+                                                            <span class="month">{{ $event['start_data_month']  }}</span>
                                                             <!-- <span class="year">2016</span> -->
                                                         </time>
                                                     </div>
                                                     <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 nopadding">
                                                         <time class="end blue_green_2">
                                                             End 
-                                                            <span class="day">{{ $event[0][0] -> and_data_day }}</span>
-                                                            <span class ="month">{{ $event[0][0] -> and_data_month }}</span>
+                                                            <span class="day">{{ $event['and_data_day']  }}</span>
+                                                            <span class ="month">{{ $event['and_data_month']  }}</span>
                                                             <!-- <span class="year">2016</span> -->
                                                         </time>
                                                     </div>

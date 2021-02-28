@@ -1,8 +1,6 @@
 <p align="center"><img src="/public/images/site_img/site_logo/climibng,ge(becground).jpg" width="400"></p>
 
 
-
-
 ## Vue.js
 
 For foront use Vue.js(3) laravel templite

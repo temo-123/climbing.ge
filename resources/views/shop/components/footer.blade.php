@@ -36,32 +36,7 @@
     </div>
 </div>
 
-{{-- <script type="text/javascript">
-    // beck to top
-    $('body').append('<div id="backToTop" class="btn btn-lg"><span class="glyphicon glyphicon-chevron-up"></span></div>');
-        $(window).scroll(function () {
-            if ($(this).scrollTop() <= 200) {
-                $('#backToTop').fadeOut();
-            } else {
-                $('#backToTop').fadeIn();
-            }
-        }); 
-    $('#backToTop').click(function(){
-        $("html, body").animate({ scrollTop: 0 }, 600);
-        return false;
-    });
-    // and back to top
-</script>     --}}
-    
-<!--analytics.google.com-->
+{{-- And analytics.google.com --}}
 
-<!-- Global site tag (gtag.js) - Google Analytics -->
-<!--     <script async src="https://www.googletagmanager.com/gtag/js?id=UA-101870435-1"></script>
-        <script>
-          //window.dataLayer = window.dataLayer || [];
-          //function gtag(){dataLayer.push(arguments);}
-          //gtag('js', new Date());
-        
-          //gtag('config', 'UA-101870435-1');
-    </script> -->
-<!-- And analytics.google.com-->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-YSKGLXMWGF"></script>
+<script src="{{ asset('assets/js/analitic/shop.climbing.ge analitic.js') }}"></script>

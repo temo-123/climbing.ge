@@ -9,6 +9,7 @@ class Favorite_product extends Model
     public $table = 'favorite_products';
 
     protected $fillable = [
-        
+        "user_id",
+        "product_id"
     ];
 }

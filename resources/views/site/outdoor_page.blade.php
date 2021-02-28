@@ -2,27 +2,30 @@
 
 @section('content')
 
-    @section('meta_title',  $article->title )
-    @if ($article->short_description != NULL)
-        @section('meta_description',  $article->short_description )
+    @section('meta_title',  $article[0]['title'] )
+    @if ($article[0]['short_description'] != NULL)
+        @section('meta_description',  $article[0]['short_description'] )
     @else
-        @section('meta_description',  $article->title )
+        @section('meta_description',  $article[0]['title'] )
     @endif
-    @if ($article->meta_keyword != NULL)
-        @section('meta_keyword',  $article->meta_keyword )
+    @if ($article[0]['meta_keyword'] != NULL)
+        @section('meta_keyword',  $article[0]['meta_keyword'] )
     @else
-        @section('meta_keyword',  $article->title )
+        @section('meta_keyword',  $article[0]['title'] )
     @endif
-    @if(isset($image_dir))
-        @section('meta_img',  asset('images/'.$image_dir.'/'.$article->image))
+    @if(isset($image))
+        @section('meta_img',  asset('images/'.$image))
     @endif
+
+    @section('created_at',  $article[0]['created_at'])
+    @section('updated_at',  $article[0]['updated_at'])
 
         <div class="container top_menu_margin">
 
             <div class="row">
                 @if(isset($article))  
                 <h1 style="font-size: 200%">
-                    {{ $article->title }}
+                    {{ $article[0]['title'] }}
                 </h1> 
             </div>
             <div class="row">
@@ -31,58 +34,65 @@
                     @slot('parent') Home @endslot
                     @slot('link') {{route($all_article_but)}} @endslot
                     @slot('active') {{$article_map}} @endslot
-                    @if($article -> title)
-                    @slot('article') {{$article -> title}} @endslot
+                    @if($article [0]['title'])
+                    @slot('article') {{$article [0]['title']}} @endslot
                     @else
-                    @slot('article') {{$article -> name}} @endslot
+                    @slot('article') {{$article [0]['name']}} @endslot
                     @endif
                     @endcomponent
 
-                    <p class="blog-post-meta">{{ $article->created_at }}</p>
+                    <p class="blog-post-meta">{{ $article[0]['created_at'] }}</p>
                 </div>
             </div>
 
             <div class="row">
                 <div class="col-sm-8 blog-main">
 
-                    @if($article->text != NULL)
-                        {!!$article -> text!!}
+                    @if($article[0]['text'] != NULL)
+                        {!!$article [0]['text']!!}
                     @endif
 
-                    @if(($article->address) != NUll)
-                        <h2 id="how_to_get_there">Address</h2>
-                        {!!$article->address!!}
-                    @endif
+                    @if($article[0]['weather'] == NULL && $article[0]['best_time'] != NULL)
+                        <h2 id="best_time_to_climb">Best time to climb</h2>
+                        {!!$article[0]['best_time']!!}
+                    @elseif($article[0]['weather'] != NULL && $article[0]['best_time'] != NULL)
+                        <h2 id="best_time_to_climb">Best time to climb</h2>
 
-                    @if(($article->how_get) != NUll)
-                        <h2 id="how_to_get_there">How to get there</h2>
-                        {!!$article->how_get!!}
-                    @endif
-
-                    @if(($article->map) != NULL)
-                        <div class="article_map">
-                            {!!$article->map!!}
+                        <div class="row">
+                            <div class="col-md-6" style="margin-top: 5%;">
+                                {!!$article[0]['best_time']!!}
+                            </div>
+                            <div class="col-md-6" style="text-align: center;">
+                                {!!$article['weather']!!}
+                            </div>
                         </div>
                     @endif
 
-                    @if(($article->prices_text) != NUll)
-                        <h2 id="how_to_get_there">Prices</h2>
-                        {!!$article->prices_text!!}
+                    @if(($article[0]['how_get']) != NUll)
+                        <h2 id="how_to_get_there">How to get there</h2>
+                        {!!$article[0]['how_get']!!}
                     @endif
 
-                    @if(($article->info) != NUll)
+                    @if(($article['map']) != NULL)
+                        <div class="article_map">
+                            {!!$article['map']!!}
+                        </div>
+                    @endif
+
+
+                    @if(($article[0]['info']) != NUll)
                         <h2 id="how_to_get_there">Info</h2>
-                        {!!$article->info!!}
+                        {!!$article[0]['info']!!}
                     @endif
 
-                    @if(($article->what_need) != NUll)
+                    @if(($article[0]['what_need']) != NUll)
                         <h2 id="what_you_need">What you need</h2>
-                        {!!$article->what_need!!}
+                        {!!$article[0]['what_need']!!}
                     @endif
 
-                    @if($article -> route)
+                    @if($article [0]['route'])
                         <h2 id="routes">Route</h2>
-                        {!!$article -> route!!}
+                        {!!$article [0]['route']!!}
                     @endif             
 
 
@@ -102,10 +112,10 @@
       
             @if(isset($comments))
             @if (Auth::guest())
-                <comment-form-component :article_id="{{$article->id}}"></comment-form-component>
+                <comment-form-component :article_id="{{$article[0]['id']}}"></comment-form-component>
             @else
                 <comment-form-component 
-                        :article_id="{{$article->id}}" 
+                        :article_id="{{$article[0]['id']}}" 
                         :user_name="name" 
                         :user_surname="surname" 
                         :is_login="true"

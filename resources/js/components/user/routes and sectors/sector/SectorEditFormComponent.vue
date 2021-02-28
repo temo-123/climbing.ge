@@ -343,6 +343,7 @@
 
       save_all: function () {
         this.edit_sector()
+        window.location.href = '/routes_and_sectors';
       }
     }
   };

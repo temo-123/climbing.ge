@@ -249,11 +249,12 @@ return [
         'View' => Illuminate\Support\Facades\View::class,
 
 
-
         'Socialite' => Laravel\Socialite\Facades\Socialite::class, // Laravel Socialite
         'LocalisationService' => App\Services\Localisation\LocalisationService::class, // Language localisation
         'GetArticlesService' => App\Services\GetArticlesService::class, // Get articles
-        'imageEditService' => App\Services\imageEditService::class, // image upload, update & delite
+        'GetProductsService' => App\Services\GetProductsService::class, // Get products
+        'imageControllService' => App\Services\imageControllService::class, // image upload, update & delite
+        'get_url_title' => App\Services\get_url_title::class, // create url_title, from us_title
 
 
         'Image' => Intervention\Image\Facades\Image::class,

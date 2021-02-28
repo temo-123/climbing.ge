@@ -41,7 +41,7 @@ class KaArticleController extends Controller
             $article['info']=$request->ka_info;
             $article['meta_keyword']=$request->ka_meta_keyword;
 
-            $article -> save();
+            $article -> update();
         }
     }
     public function edit_ka_article(Request $request)

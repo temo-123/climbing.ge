@@ -711,7 +711,7 @@
                 .get(this.url)
                 .then(response => {
                     this.editing_data = response.data
-
+                    
                     this.us_article_id = this.editing_data.global_article['us_article_id'],
                     this.ru_article_id = this.editing_data.global_article['ru_article_id'],
                     this.ka_article_id = this.editing_data.global_article['ka_article_id'],

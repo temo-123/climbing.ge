@@ -16,9 +16,9 @@
                 {{Session::get('message')}}
             @endif
         </div>
-        <div class="form-group">
+        {{-- <div class="form-group">
             <a href="{{ url()->previous() }}" class='btn btn-primary'  onclick="return confirm('Are you sure, you want go back?')">Back</a>
-        </div>
+        </div> --}}
         <hr>
     </div>
     <div class="wrapper container-fluid container">
@@ -35,6 +35,7 @@
         @csrf 
         
         <product_add_form  
+            back_url='{{ route('products_list') }}'
         ></product_add_form>
     
     </div>

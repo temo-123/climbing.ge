@@ -62,7 +62,7 @@ class MountMassiveController extends Controller
                 'link'=>'1',
                 'gallery_filtr'=>'1',
                 
-                'image' => 'gallery_img',
+                'image' => 'mount_img',
             ];
             return view('user.components.forms.mount_add_form', $data);
         }
@@ -162,7 +162,7 @@ class MountMassiveController extends Controller
                 'link'=>'1',
                 'gallery_filtr'=>'1',
                 
-                'image' => 'gallery_img',
+                'image' => 'mount_img',
 
                 "editing_mount_id" => $request->id,
             ];

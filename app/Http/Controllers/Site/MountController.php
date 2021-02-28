@@ -79,6 +79,8 @@ class MountController extends Controller
                 'mounts_system'=>$mounts_system,
     			'mount'=>1,
 
+                'image' => 'mount_route_img/'.$global_mount_routes->image,
+
     			'image_dir'=>'mount_route_img',
                 'all_article_but'=>'mount_list',
                 'article_map'=>'mount',

@@ -292,7 +292,13 @@ input, select, textarea {
 .progress-bar-danger {
     background: #C9302C;
 }
-
+.about_us_page_image img{
+    height: 20em;
+    width: 100%;
+    // background-image: url('img_flowers.jpg');
+    background-size: cover;
+    border: 1px solid red;
+}
 
 
 /* 

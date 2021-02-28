@@ -8,31 +8,50 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
     <title>@yield('title')</title>
-    <!-- <title>{{ config('app.name') }}</title> -->
-    <link href="{{ asset('images/site_img/site_logo/'.$site->image) }}" rel="shortcut icon">
+    <link href="{{ asset('images/site_img/site_logo/x.png') }}" rel="shortcut icon">
 
-    <!-- <meta property="og:image"           content=""> -->
-    <meta property="og:title"           content="@yield('meta_title')"/>
-    <meta property="og:description"     content="@yield('meta_description')"/>
-    <meta name="keywords"               content="@yield('meta_keyword')">
-    <meta property="og:image" 			content="@yield('meta_img')">
-    <meta property="og:type"            content="website"/>
-    <meta property="og:url"             content="http://www.climibng.ge" />
-    <meta name="MobileOptimized"        content="320">
+    <meta name="description" content="@yield('meta_description')" />
 
-    <!--font femyly in style.css (line 6.12.17.23.30) || style1.css (line 6)-->
-    <!-- <link href="https://fonts.googleapis.com/css?family=Lora" rel="stylesheet"> -->
-    <!-- <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css" rel="stylesheet"> -->
-    <!-- <link href="http://cdn.bootcss.com/animate.css/3.5.1/animate.min.css" rel="stylesheet"> -->
+    <!-- Schema.org markup for Google+ -->
+    <meta itemprop="name" content="@yield('title')">
+    <meta itemprop="description" content="@yield('meta_description')">
+    <meta itemprop="image" content="@yield('meta_img')">
+
+    <!-- Twitter Card data -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:site" content="@publisher_handle">
+    <meta name="twitter:title" content="@yield('title')">
+    <meta name="twitter:description" content="@yield('meta_description')">
+    <meta name="twitter:creator" content="@author_handle">
+    <!-- Twitter summary card with large image must be at least 280x150px -->
+    <meta name="twitter:image:src" content="@yield('meta_img')">
+
+    <!-- Open Graph data -->
+    <meta property="og:title" content="@yield('title')" />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="http://{{ config('app.url') }}" />
+    <meta property="og:image" content="@yield('meta_img')" />
+    <meta property="og:description" content="@yield('meta_description')" />
+    <meta property="og:site_name" content="{{ config('app.url') }}" />
+    
+    <meta property="article:published_time" content="@yield('created_at')" />
+    <meta property="article:modified_time" content="@yield('updated_at')" />
+    <meta property="article:author" content="Temo Samsonadze" />
+    <meta property="article:section" content="Climbing" />
+    <meta property="article:tag" content="@yield('meta_keyword')" />
+    {{-- <meta property="fb:admins" content="Facebook numberic ID" /> --}}
+
+    <meta property="og:locale" content="en_GB" />
+    <meta property="og:locale:alternate" content="ka_KA" />
+    <meta property="og:locale:alternate" content="ru_RU" />
+
+
+
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.7.0/animate.min.css"><!--animate style-->
-
-     {{-- <!-- <link rel="stylesheet" href="{{ asset('assets/css/bootstrap-theme.min.css') }}"> --> --}}
-
     <!-- font femyly in style.css (line 6.12.17.23.30) || style1.css (line 6) -->
-     <link href="http://netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
-     <!-- <link href="https://fonts.googleapis.com/css?family=Lora" rel="stylesheet"> -->
+    <link href="http://netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
 
-    <!-- <link rel="stylesheet" href="{{ asset('assets/css/my_css/style.css') }}" > -->
+    {{-- <!-- <link rel="stylesheet" href="{{ asset('assets/css/my_css/style.css') }}" > --> --}}
     <link rel="stylesheet" href="{{ asset('assets/css/app.css') }}">
 
     <!-- fonts -->
@@ -43,7 +62,6 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
 
     <!--For gallry -->
-    <!-- <script src="//code.jquery.com/jquery-1.11.1.min.js"></script> -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.2.5/jquery.fancybox.min.css"/>
     <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
 
@@ -93,23 +111,7 @@
         @endif --}}
     </div>
 
-    <!-- <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
-     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script> -->
-    <!-- <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV" crossorigin="anonymous"></script> -->
-
-    <!-- status script -->
-    <!-- <script src="http://code.jquery.com/jquery-1.11.1.min.js"></script> -->
     <script src="http://netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script> <!-- conflict to site menu -->
-
-
-
-    <!-- Scripts -->
-    {{-- <!-- <script src="{{ asset('assets/js/bootstrap.min.js') }}" type="text/javascript"></script>
-    <script src="{{ asset('assets/js/jquery.fractionslider.min.js') }}" type="text/javascript" charset="utf-8"></script>
-    <script src="{{ asset('assets/js/animation.js') }}" type="text/javascript" charset="utf-8"></script>
-    <script src="{{ asset('assets/js/less.js') }}" type="text/javascript"></script>
-    <script src="{{ asset('assets/js/isotop.js') }}"></script>
-    <script src="{{ asset('assets/js/jquery.colorbox.js') }}"></script> --> --}}
 
     <!--Security system on index-->
     <script src='https://cdnjs.cloudflare.com/ajax/libs/vue/2.1.7/vue.js'></script>
@@ -118,18 +120,13 @@
     <!-- For gallery -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.2.5/jquery.fancybox.min.js"></script>
     
-    <!-- Comment text form color control -->
-    <!-- <script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/jquery.bootstrapvalidator/0.5.2/js/bootstrapValidator.min.js"></script> -->
-
     <script src="https://www.google.com/recaptcha/api.js" async defer></script><!-- Google recaptcha -->
 
     <script src="{{ asset('assets/js/app.js') }}"></script>
 
-
     <!-- My JS -->
     <script src="{{ asset('assets/js/my_js/my_scripts.js') }}" type="text/javascript" ></script>
     <script src="{{ asset('assets/js/my_js/galery_image_open.js') }}" type="text/javascript" ></script><!--For index gallery-->
-    {{-- <!-- <script src="{{ asset('assets/js/my_js/indoor_stars.js') }}" type="text/javascript"></script>For indoor stars block --> --}}
     
 </body>
 </html>

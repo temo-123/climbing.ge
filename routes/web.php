@@ -31,9 +31,6 @@ Route::group(['prefix' => LocalisationService::locale(),'middleware' => 'setLoca
             Route::get('/other/{title}', ['uses'=>'OtherActivityController@other_page', 'as'=>'other_page']);
 
             Route::get('/partniors/{title}', ['uses'=>'PartnersController@partners_page', 'as'=>'partners_page']);
-
-            Route::get('/sitemap.xml', 'SitemapController@sitemap_xml');
-            Route::get('/sitemap', 'SitemapController@sitemap');
         
             Route::group(['namespace'=>'App'], function() {
 
@@ -48,8 +45,22 @@ Route::group(['prefix' => LocalisationService::locale(),'middleware' => 'setLoca
                 Route::get('/get_comments/{article_id}', "CommentController@get_comments");
 
                 Route::get('/sitemap.xml', 'SitemapController@sitemap_xml');
-                Route::get('/sitemap', 'SitemapController@sitemap');
+                // Route::get('/sitdemap', 'SitemapController@sitemap');
             });
+        });
+    });
+    
+    Route::domain('shop.' . config('app.url'))->group(function () {
+        Route::group(['namespace'=>'Shop'], function() {
+            Route::get('/', 'IndexController@index')->name('shop_index');
+            Route::get('/shop_about_us', ['uses'=>'IndexController@shop_about_us', 'as'=>'shop_about_us']);
+
+            Route::get('/product/{title}', ['uses'=>'ProductPageController@shop_page', 'as'=>'shop_page']);
+            
+            Route::get('/favorite_product/{product_id}/{actions}', ['uses'=>'App\PrioritiesController@favorite_product', 'as'=>'favorite_product']);
+
+            Route::get('/sitemap.xml', 'App\SitemapController@sitemap_xml');
+            // Route::get('/sitemap', 'App\SitemapController@sitemap');
         });
     });
 
@@ -155,6 +166,7 @@ Route::group(['prefix' => LocalisationService::locale(),'middleware' => 'setLoca
                     
                     Route::group(['prefix'=>'products', 'namespace'=>'Product'], function() {
                         Route::any('/create_temporary_product', 'ProductController@create_temporary_product');
+                        Route::any('/del_temporary_product/{id}', 'ProductController@del_temporary_product');
 
                         Route::match(['get','post'], '/add_product', ['uses'=>'ProductController@add_product_page','as'=>'productAddPage']);
                         Route::match(['get', 'post'], '/edit_product/{id}', ['uses' => 'ProductController@edit_product_page', 'as'=>'productEditPage']);
@@ -175,11 +187,21 @@ Route::group(['prefix' => LocalisationService::locale(),'middleware' => 'setLoca
 
                         Route::get('/', ['uses'=>'ProductController@product_list_page', 'as'=>'products_list']);
                         Route::any('/get_product_data', 'ProductController@get_product_data');
+                        Route::any('/get_product_editing_data/{editing_product_id}', 'ProductController@get_product_editing_data');
+                        Route::any('/get_temporary_product_editing_data', 'ProductController@get_temporary_product_editing_data');
+                        Route::any('/get_product_image/{product_id}', 'ProductController@get_product_image');
 
+                        Route::any('/upload_product_image/{product_id}', 'ProductController@upload_product_image');
+                        Route::any('/del_product_image/{image_id}', 'ProductController@del_product_image');
+                        Route::any('/update_product_image/{id}', 'ProductController@update_product_image');
+
+                        Route::match(['get','post'], '/category/add/form/', ['uses'=>'CategoryController@product_add_form','as'=>'categoryAddForm']);
                         Route::match(['get','post'], '/category/add/', ['uses'=>'CategoryController@add_product_category','as'=>'categoryAdd']);
+                        Route::match(['get', 'post'], '/category/edit/form/{id}', ['uses' => 'CategoryController@product_edit_form', 'as'=>'categoryEditForm']);
                         Route::match(['get', 'post'], '/category/edit/{id}', ['uses' => 'CategoryController@edit_product_category', 'as'=>'categoryEdit']);
-                        Route::match(['post', 'delete'], '/category/del/{id}', ['uses' => 'CategoryController@del_product_category', 'as'=>'productDel']);
+                        Route::match(['post', 'delete'], '/category/del/{id}', ['uses' => 'CategoryController@del_product_category', 'as'=>'categoryDel']);
                         Route::any('/get_product_category_data', 'CategoryController@get_product_category_data');
+                        Route::any('/get_editing_category_data/{id}', 'CategoryController@get_editing_category_data');
 
                         Route::get('/favorite', ['uses'=>'ProductController@favorite', 'as'=>'favorite']);
                     }); 
@@ -195,7 +217,6 @@ Route::group(['prefix' => LocalisationService::locale(),'middleware' => 'setLoca
             
                     Route::group(['prefix'=>'options'], function() {
                         Route::get('/', ['uses'=>'UserController@options_index', 'as'=>'options']);
-                        // Route::patch('/user_info_update/{id}', 'UserController@user_info_update');
                         Route::match(['get', 'post'], '/user_info_update/{id}', ['uses' => 'UserController@user_info_update', 'as'=>'userInfoUpdate']);
                         Route::patch('/user_image_update/{id}', 'UserController@user_image_update');
                         Route::any('/get_user_data', 'UserController@get_user_data');
@@ -204,7 +225,10 @@ Route::group(['prefix' => LocalisationService::locale(),'middleware' => 'setLoca
 
                     Route::group(['prefix'=>'users'], function() {
                         Route::get('/', ['uses'=>'UserController@users_list', 'as'=>'users']);
-                        Route::match(['delete'], '/edit/{user}', ['uses' => 'UserController@destroy', 'as'=>'userDel']);
+                        Route::match(['post'], '/del_user/{user_id}', ['uses' => 'UserController@destroy', 'as'=>'userDel']);
+
+                        Route::any('/get_all_users_data', 'UserController@get_all_users_data');
+                        Route::any('/get_roles_data', 'UserController@get_roles_data');
                     });
 
 
@@ -224,22 +248,6 @@ Route::group(['prefix' => LocalisationService::locale(),'middleware' => 'setLoca
                         Route::any('/get_site_editing_data/{id}', 'AboutController@get_site_editing_data');
                     });
             });
-        });
-    });
-    
-    Route::domain('shop.' . config('app.url'))->group(function () {
-        Route::group(['namespace'=>'Shop'], function() {
-            Route::get('/', 'IndexController@index')->name('shop_index');
-            Route::get('/shop_about_us', ['uses'=>'IndexController@shop_about_us', 'as'=>'shop_about_us']);
-
-            // Route::get('/', 'ShopController@shop_list')->name('shop_list');
-            Route::get('/product/{title}', ['uses'=>'ProductPageController@shop_page', 'as'=>'shop_page']);
-            
-
-            Route::get('/favorite_product/{product_id}/{actions}', ['uses'=>'PrioritiesController@favorite_product', 'as'=>'favorite_product']);
-
-            Route::get('/sitemap.xml', 'App\SitemapController@sitemap_xml');
-            Route::get('/sitemap', 'App\SitemapController@sitemap');
         });
     });
 });

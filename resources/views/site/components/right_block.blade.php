@@ -26,7 +26,7 @@
 
             <li><h4>Navigation Menu</h4></li>
                 
-          	@if(isset($mounts_system))
+          	{{-- @if(isset($mounts_system))
                 <li>
                     <a href="#">
                         <span class="fa fa-angle-double-right text-primary"></span>Mount System Description
@@ -80,9 +80,9 @@
                     </a>
                 </li>
                 
-            @endif              
+            @endif               --}}
             
-            @if(isset($articles_gallery))
+            {{-- @if(isset($articles_gallery)) --}}
             
                 <li>
                     <a href="#gallery">
@@ -90,7 +90,7 @@
                     </a>
                 </li>
                 
-            @endif   
+            {{-- @endif    --}}
             
                 <li>
                     <a href="#comments">
@@ -98,14 +98,14 @@
                     </a>
                 </li>
                 
-            @if (isset($other_article))
+            {{-- @if (isset($other_article)) --}}
             
                 <li>
                     <a href="#other">
                         <span class="fa fa-angle-double-right text-primary"></span>Other
                     </a>
                 </li>
-            @endif
+            {{-- @endif --}}
             
             </ul>
             

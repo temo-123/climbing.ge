@@ -51,7 +51,7 @@
 
                 <div class="row">
                     <div class="col-md-12">
-                    @if(Auth::user()->name || Auth::user()->surname || Auth::user()->country || Auth::user()->city ||  Auth::user()->gender || Auth::user()->email)
+                    @if(Auth::user()->name == NULL || Auth::user()->surname == NULL || Auth::user()->country == NULL || Auth::user()->city == NULL || Auth::user()->email == NULL)
                         <div class="alert alert-danger" role="alert">
 
                             <button type="button" class="close" data-dismiss="alert" aria-label="Close">
@@ -61,7 +61,7 @@
                         </div>
                     @endif
                     @if(Auth::user()->hasRole('admin'))
-                    @if($site->text || $site->text_ru || $site->text_ka || $site->short_description_ru || $site->short_description_ka || $site->short_description)
+                    @if($site->text  == NULL || $site->text_ru  == NULL || $site->text_ka  == NULL || $site->short_description_ru  == NULL || $site->short_description_ka  == NULL || $site->short_description == NULL )
                         <div class="alert alert-danger" role="alert">
 
                             <button type="button" class="close" data-dismiss="alert" aria-label="Close">

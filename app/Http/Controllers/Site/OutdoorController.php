@@ -119,7 +119,7 @@ class OutdoorController extends Controller
             
             $data  = [
                 'outdoor_climbing' => 0,
-                'title'=>$outdoors[0]->title,
+                'title'=>$outdoors[0][0]['title'],
                 'article'=>$outdoors[0],
 
                 'area_info'=>$area_info,
@@ -133,7 +133,8 @@ class OutdoorController extends Controller
                 'article_map'=>'Outdoor',
                 'view_360'=>1,
                 'what_need'=>1,
-                'image_dir' => 'outdoor_img',
+                
+                'image' => 'outdoor_img'.$outdoors[0]['image'],
                 
                 'article_edit_link'=>'outdoorEdit',
 
@@ -181,7 +182,6 @@ class OutdoorController extends Controller
         elseif ($route['grade'] == '9b+') $grade_yds = '5.15c';
         elseif ($route['grade'] == '9c') $grade_yds = '5.15d';
         elseif ($route['grade'] == '9c+') $grade_yds = '5.16a';
-        elseif ($route['style'] == 'Aid Climbing') $grade_yds = '?';
         else $grade_yds = '?';
 
         return $grade_yds;
@@ -207,15 +207,11 @@ class OutdoorController extends Controller
                     $sectors_img = Sector_image::where('sector_id', '=', $sector->id)->orderBy('num')->get();
                     foreach($sectors_img as $sector_img){
                         array_push($sector_imgs, 
-                            array(
-                                "name"=>$sector_img['image'],
-                            )
+                            array('image' => $sector_img->image)
                         );
                     }
                 }
-                else $sector_imgs = NULL;
-
-                // dd($sector_imgs);
+                else $sector_imgs = array();
 
                 $routes_count = Route::where('sector_id', '=', $sector->id)->count();
                 if ($routes_count > 0){
@@ -239,14 +235,11 @@ class OutdoorController extends Controller
                                 "bolter"=>$route['bolter'], 
                                 "dolting_data"=>$route['dolting_data'], 
                                 "stars"=>$route['stars'],
-
-                                // "style"=>$route['style'],
                             )
                         );
-                        // dd($route_info);
                     }
                 }
-                // else $route_info = NULL;
+                else $route_info = array();
 
                 $mtps_count = MTP::where('sector_id', '=', $sector->id)->count();
                 if ($mtps_count > 0){
@@ -266,24 +259,18 @@ class OutdoorController extends Controller
                                     [
                                         'pitch id'=>$mtp_pitch['id'],
                                         'pitch name'=>$mtp_pitch['name'],
-                            //             "pitch text"=>$mtp_pitch['text'], 
-                            //             "pitch height"=>$mtp_pitch['height'], 
-                            //             "pitch bolts"=>$mtp_pitch['bolts'], 
-                            //             "pitch grade fr"=>$mtp_pitch['grade'],
-                            //             "pitch grade yds"=>$pitch_grade_yds,
-                            //             "pitch first_ascent"=>$mtp_pitch['first_ascent'], 
-                            //             "pitch bolter"=>$mtp_pitch['bolter'], 
-                            //             "pitch dolting_data"=>$mtp_pitch['dolting_data'],
+                                        "pitch text"=>$mtp_pitch['text'], 
+                                        "pitch height"=>$mtp_pitch['height'], 
+                                        "pitch bolts"=>$mtp_pitch['bolts'], 
+                                        "pitch grade fr"=>$mtp_pitch['grade'],
+                                        "pitch grade yds"=>$pitch_grade_yds,
+                                        "pitch first_ascent"=>$mtp_pitch['first_ascent'], 
+                                        "pitch bolter"=>$mtp_pitch['bolter'], 
+                                        "pitch dolting_data"=>$mtp_pitch['dolting_data'],
                                     ]
                                 );
-
-                            //     $pitch_num++;
-                                // array_push($mtp_info, $mtp_pitch_info);
                             }
                         }
-                        // $mtp_num_in_array++;
-                        // $pitch_num_in_array++;
-                        // array_push($mtp_info,$mtp_pitch_info);
                         array_push($mtp_info, 
                             [
                                 "mtp id"=>$mtp['id'],
@@ -296,9 +283,8 @@ class OutdoorController extends Controller
                         $mtp_pitch_info = array();
 
                     }
-                    // $mtp_pitch_info = NULL;
                 }
-                // else $mtp_info = NULL;
+                else $mtp_info = array();
                 $sector_info = array(
                     "id"=>$sector->id, 
                     "name"=>$sector->name, 
@@ -317,7 +303,7 @@ class OutdoorController extends Controller
 
                     'sector_img'=>$sector_imgs,
                 );
-                // dd($route_info);
+                
                 array_push($area_info, 
                     array(
                         "sectors" => $sector_info,  
@@ -327,6 +313,7 @@ class OutdoorController extends Controller
                 );
             }
         }
+
         return $area_info;
     }
 }

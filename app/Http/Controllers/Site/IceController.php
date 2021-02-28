@@ -27,7 +27,7 @@ class IceController extends Controller
     			'title'=>'Ice And Mixed',
     			'article_list'=>$ices,
     			'article_count'=>$article_count,
-    			'ice'=>'',
+    			'ice'=>1,
                 'time_array' => $time_array,
     			
     			'num'=>1,
@@ -48,7 +48,7 @@ class IceController extends Controller
         if (!$name) {
             abort(404);
         }
-        if (view()->exists('site.ice_page')) {
+        if (view()->exists('site.standart_article_page')) {
 
             // $locale = request()->segment(1, '');
 
@@ -66,16 +66,16 @@ class IceController extends Controller
             $other_list = GetArticlesService::get_locale_article($global_other_list);
             
             $data  = [
-                'title'=>$ice,
+    			'title'=>'Ice And Mixed',
                 'article'=>$ice,
-                // 'ice'=>1,
+                'ice'=>1,
                 
                 'articles_gallery'=>$article_gallery,
                 
                 'slider_link'=>'../../images/ice_img/slider_img/',
                 'all_article_but'=>'ice_list',
                 'article_map'=>'ice',
-                'image_dir' => 'ice_img',
+                'image' => 'ice_img/'.$global_ice->image,
 
                 'article_edit_link'=>'articlesEdit',
                 
@@ -88,7 +88,7 @@ class IceController extends Controller
                 // 'article'=>$article
             ];
 
-            return view('site.ice_page', $data);
+            return view('site.standart_article_page', $data);
         }
         else {
             abort(404);

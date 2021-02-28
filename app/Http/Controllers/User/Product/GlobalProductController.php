@@ -5,6 +5,14 @@ namespace App\Http\Controllers\User\Product;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
+use App\Models\Product;
+use App\Models\Us_product;
+use App\Models\Ka_product;
+use App\Models\Ru_product;
+use Auth;
+
+use App\Services\URLTitleService;
+
 class GlobalProductController extends Controller
 {
     // private $image_dir = "/images/shop_img";
@@ -28,61 +36,45 @@ class GlobalProductController extends Controller
     {
         $request->user()->authorizeRoles(['admin']);
 
-        $image_dir = "/images/shop_img";
-
         if ($request -> isMethod('post')) {
-            $input = $request -> except('_token');
 
-            $this->product_validate($request);
+            $global_product = product::where('url_title', '=', 'temporary_product')->get();
+            foreach ($global_product as $global) {
+                $last_globale_id = $global->id;
+            }
 
-            $product = new product();
+            $us_articl = Us_product::where('title', '=', 'Us temporary product')->get();
+            foreach ($us_articl as $us) {
+                $last_us_product_id = $us->id;
+            }
 
-            $product['image_1'] = ImageEditService::image_upload($image_dir, "image_1", $request);
-            $product['image_2'] = ImageEditService::image_upload($image_dir, "image_2", $request);
-            $product['image_3'] = ImageEditService::image_upload($image_dir, "image_3", $request);
-            $product['image_4'] = ImageEditService::image_upload($image_dir, "image_4", $request);
+            $ka_articl = Ka_product::where('title', '=', 'Ka temporary product')->get();
+            foreach ($ka_articl as $ka) {
+                $last_ka_product_id = $ka->id;
+            }
+
+            $ru_articl = Ru_product::where('title', '=', 'Ru temporary product')->get();
+            foreach ($ru_articl as $ru) {
+                $last_ru_product_id = $ru->id;
+            }
+
+            $url_title = URLTitleService::get_url_title($request->us_title_for_url_title);
+
+            $product = product::find($last_globale_id);
+
             $product['user_id'] = Auth::user()->id;
-            $product['url_title'] = $this->get_url_title($request->title);
-            $product['title'] = $request->title;
-            $product['text'] = $request->text;
+            $product['url_title'] = $url_title;
+            // $product['discount']=$request->discount;
             $product['price'] = $request->price;
             $product['currency'] = $request->currency;
-            $product['category'] = $request->category;
+            $product['category_id'] = $request->category_id;
+
+            $product['us_product_id'] = $last_us_product_id;
+            $product['ru_product_id'] = $last_ru_product_id;
+            $product['ka_product_id'] = $last_ka_product_id;
             
-            if ($request->general_image == NULL) {
-                $product['general_image'] = 1;
-            }
-
-            // $product -> fill($input);
-            $product -> save();
-
-            if ($product->save()) {
-                return  redirect()->route('products_list') -> with('status', 'Product addid');
-            }
+            $product -> update();
         }
-        
-        if (view() -> exists('user.components.forms.products_form')) {
-            $category = $request->category;
-            $data=[
-                'category' => $category,
-                'title' => 'New '.$category,
-                'back_btn' => 'home',
-                'add_title' => 'Add '.$category,
-                'add_active' => 'Add '.$category,
-                
-                'add_form' => 'articleAdd',
-                
-                'url_title' => 1,
-                'text' => 1, 
-                'published'=>'1',
-                'link'=>'1',
-                'article_filtr'=>'1',
-                
-                'image' => 'article_img',
-            ];
-            return view('user.components.forms.products_form', $data);
-        }
-        abort(404);
     }
 
 
@@ -91,46 +83,22 @@ class GlobalProductController extends Controller
      *
      * @return void
      */
-    public function edit(Product $product, Request $request)
+    public function edit_global_product(Product $product, Request $request)
     {
-        $image_dir = '/images/shop_img';
-
         if ($request->isMethod('post')) {
-            $input = $request -> except('_token');
+            $product = Product::where('id',strip_tags($request->id))->first();
+            
+            // $product['url_title'] = $url_title;
+            // $product['discount']=$request->discount;
+            $product['price']=$request->price;
+            $product['currency']=$request->currency;
+            $product['category_id']=$request->category;
+            $product['user_id']=Auth::user()->id;;
 
-            $this->product_validate($request);
-
-            $product['image_1'] = ImageEditService::image_update($image_dir, $product, $input, "image_1", $request);
-            $product['image_2'] = ImageEditService::image_update($image_dir, $product, $input, "image_2", $request);
-            $product['image_3'] = ImageEditService::image_update($image_dir, $product, $input, "image_3", $request);
-            $product['image_4'] = ImageEditService::image_update($image_dir, $product, $input, "image_4", $request);
-
-            $product->touch();
-
-            if ($product->update()) {
-                return redirect()->route('products_list')->with('status','product updated!'); //text
-            }
-            else{
-                return redirect()->route('products_list')->with('error','Error! product not updated'); //text
-            }
-        }
-        $old = $product -> toArray();
-
-        if (view()->exists('user.components.forms.products_form')) {
-            $data = [
-                'title' => 'Edit news - '.$old['title'],
-                'data' => $old,
-
-                'edit_form'=>'productEdit',
-                'edit_title'=>'test',
-                'edit_active'=>'test 2',
-                'published' => 1,
-                'description' => 1,
-                'text' => 1,
-
-                'image' => $image_dir
-            ];          
-            return view('user.components.forms.products_form', $data);
+            // $product['us_product_id']=$last_us_product_id;
+            // $product['ru_product_id']=$last_ru_product_id;
+            // $product['ka_product_id']=$last_ka_product_id;
+            $product -> update();
         }
     }
 
@@ -145,10 +113,6 @@ class GlobalProductController extends Controller
         $image_dir = '/images/shop_img';
 
         if ($request->isMethod('delete')) {
-            ImageEditService::image_delite($image_dir, $product, 'image_1');
-            ImageEditService::image_delite($image_dir, $product, 'image_2');
-            ImageEditService::image_delite($image_dir, $product, 'image_3');
-            ImageEditService::image_delite($image_dir, $product, 'image_4');
 
             // delete product from db
             $product -> delete();
@@ -242,13 +206,4 @@ class GlobalProductController extends Controller
         ]);
     }
 
-   
-
-    public function get_url_title($title)
-    {
-        $title_pieces = explode(" ", $title);
-        $url_title = implode("_", $title_pieces);
-
-        return $url_title;
-    }
 }

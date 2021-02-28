@@ -20,7 +20,7 @@
                     <label for="name" class='col-xs-2 control-label'> Title </label>
                     <div class="col-xs-8">
                         <!-- <input type="text" name="value name" value="old data" class="form-control"> -->
-                        <input type="text" name="us_title" v-model="title_us" class="form-control"> 
+                        <input type="text" name="us_title" v-model="title" class="form-control"> 
                     </div>
                 </div>
                 <div class="form-group clearfix">
@@ -84,7 +84,7 @@
                         <label for="name" class='col-xs-2 control-label'> Title </label>
                         <div class="col-xs-8">
                             <!-- <input type="text" name="value name" value="old data" class="form-control"> -->
-                            <input type="text" name="us_title" v-model="title_us" class="form-control"> 
+                            <input type="text" name="us_title" v-model="title" class="form-control"> 
                         </div>
                     </div>
 
@@ -92,7 +92,7 @@
                         <label for="name" class='col-xs-2 control-label'> Short description </label>
                         <div class="col-xs-8">
                             <!-- <textarea type="text" id="short_description" name="short_description" rows="15" class="form-cotrol md-textarea form-control">gggggggggg</textarea> -->
-                            <ckeditor :editor="editor" v-model="short_description_us" :config="editorConfig"></ckeditor>
+                            <ckeditor :editor="editor" v-model="short_description" :config="editorConfig"></ckeditor>
                         </div>
                     </div>
 

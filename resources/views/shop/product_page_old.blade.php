@@ -22,19 +22,20 @@
         <hr>
       <div class="large-5 column">
         <div class="xzoom-container">
+{{ dd($first_product_images) }}
+          @foreach ($first_product_images as $first_product_image)
+          <img class="xzoom" id="xzoom-default" src="{{ asset('images/product_img/'.$first_product_image -> image) }}" xoriginal="{{ asset('images/product_img/'.$first_product_image -> image) }}" />
+          @endforeach
 
-          @if($product -> image_1 != null)
-          <img class="xzoom" id="xzoom-default" src="{{ asset('images/shop_img/'.$product -> image_1) }}" xoriginal="{{ asset('images/shop_img/'.$product -> image_1) }}" />
-          @endif
-
+              
           <div class="xzoom-thumbs">
-            @if($product -> image_1 != null)
+            @foreach ($product_images as $product_image)
             <a href="{{ asset('images/shop_img/'.$product -> image_1) }}">
               <img class="xzoom-gallery" width="80" src="{{ asset('images/shop_img/'.$product -> image_1) }}"  xpreview="{{ asset('images/shop_img/'.$product -> image_1) }}" title="{{$product -> short_descriptio}}">
             </a>
-            @endif
+            @endforeach
             
-            @if($product -> image_2 != null)
+            {{-- @if($product -> image_2 != null)
             <a href="{{ asset('images/shop_img/'.$product -> image_2) }}">
               <img class="xzoom-gallery" width="80" src="{{ asset('images/shop_img/'.$product -> image_2) }}" title="{{$product -> short_descriptio}}">
             </a>
@@ -50,7 +51,7 @@
             <a href="{{ asset('images/shop_img/'.$product -> image_4) }}">
               <img class="xzoom-gallery" width="80" src="{{ asset('images/shop_img/'.$product -> image_4) }}" title="{{$product -> short_descriptio}}">
             </a>
-            @endif
+            @endif --}}
           </div>
         </div>        
       </div>
@@ -351,7 +352,7 @@
     <aside class="related">
       <div class="_cont">
         <h2>You might also like</h2>
-        <div class="collection-list cols-4" id="collection-list" data-products-per-page="4">
+        <div class="product_images-list cols-4" id="collection-list" data-products-per-page="4">
         @foreach($othe_products as $other_product)
           <a class="product-box" href="{{route('shop_page', array('title'=>$other_product->url_title))}}">
             <span class="img">

@@ -12,6 +12,5 @@ class Product_category extends Model
         "us_name",
         "ka_name",
         "ru_name",
-        "product_id",
     ];
 }

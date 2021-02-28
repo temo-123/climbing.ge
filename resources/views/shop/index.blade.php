@@ -17,12 +17,12 @@
 
 <div class="container top_menu_margin h-recent-work">
 
-    <!-- <h1 class="page_title">Products</h1>
+    <h1 class="page_title">Products</h1>
 
     @if($site->shop_description != null)
     <div class="bar"><i class="fa fa-exclamation-triangle"></i></div>
-    <h6>{{$site->shop_description}} </h6>
-    @endif -->
+    <h6>{!! $site->shop_description !!}</h6>
+    @endif
 
     {{-- <div class="col-sm-3">
         <!--left col-->
@@ -54,7 +54,7 @@
         </div>
     </div> --}}
 
-    <div class="col-sm-9">
+    <div class="col-sm-12">
         <section class="inner">
             <section class="portfolio" id="portfolio">
                 <!-- <div class="container-fluid"> -->
@@ -66,39 +66,41 @@
                                 @forelse($products as $product)
                                 <li class="grid-tile">
                                     <div class="item">
-                                        <a href="{{route('shop_page', array('title'=>$product->url_title))}}">
+                                        <a href="{{route('shop_page', array('title'=>$product['url_title']))}}">
                                             <div class="item-img">
-                                                <img src="{{ asset('images/shop_img/'.$product -> image_1) }}" alt="">
+                                                @if ($product['image'])
+                                                    <img src="{{ asset('images/product_img/'.$product['image']) }}" alt="">
+                                                @endif
                                             </div>
                                         </a>
                                         <div class="item-pnl product-image">
-                                            @if($product->discount != null)
-                                            <div class="discount-percent-badge discount-badge-fourty">-{{$product->discount}}%</div>
+                                            @if($product[0][0]->discount != null)
+                                            <div class="discount-percent-badge discount-badge-fourty">-{{$product[0][0]->discount}}%</div>
                                             @endif
                                             <div class="pnl-wrapper">
                                                 <div class="pnl-description">
-                                                    <a href="{{route('shop_page', array('title'=>$product->url_title))}}">
-                                                        <span class="pnl-label"><h2>{{$product -> title}}</h2></span>
+                                                    <a href="{{route('shop_page', array('title'=>$product['url_title']))}}">
+                                                        <span class="pnl-label"><h2>{{$product[0][0] -> title}}</h2></span>
                                                     </a>
-                                                    @if($product->discount != null)
-                                                    @foreach($price_array as $new_price)
-                                                    @if($new_price['product_id'] == $product->id)
-                                                    <div class="old_price">
-                                                        <span class="pnl-price ">
-                                                            {{$product -> currency}}{{$product -> price}}
-                                                        </span>
-                                                    </div>
+                                                    @if($product['discount'] != null)
+                                                        @foreach($price_array as $new_price)
+                                                            @if($new_price['product_id'] == $product['id'])
+                                                            <div class="old_price">
+                                                                <span class="pnl-price ">
+                                                                    {{$product['currency']}}{{$product['price']}}
+                                                                </span>
+                                                            </div>
 
-                                                    <div class="price">
-                                                        <span class="pnl-price price">
-                                                            {{$product -> currency}}{{$new_price['new_price']}}
-                                                        </span>
-                                                    </div>
-                                                    @endif
-                                                    @endforeach
+                                                            <div class="price">
+                                                                <span class="pnl-price price">
+                                                                    {{$product['currency']}}{{$new_price['new_price']}}
+                                                                </span>
+                                                            </div>
+                                                            @endif
+                                                        @endforeach
                                                     @else
                                                     <div class="price">
-                                                        <span class="pnl-price price">{{$product -> currency}}{{$product -> price}}</span>
+                                                        <span class="pnl-price price">{{$product['currency']}}{{$product['price']}}</span>
                                                     </div>
                                                     @endif
                                                 </div>
@@ -106,18 +108,18 @@
                                                 <div class="pnl-favorites">
                                                     <span class="pnl-ic">
                                                         @if(Auth::guest())
-                                                        <a href="{{route('favorite_product', array('product_id'=>$product->id, 'actions'=>'add'))}}">
+                                                        <a href="{{route('favorite_product', array('product_id'=>$product['id'], 'actions'=>'add'))}}">
                                                             <i class="fa fa-heart-o" aria-hidden="true" style="font-size: 120%; margin-right: 0.5em; margin-top: 0.8em;"></i>
                                                         </a>
                                                         @else
                                                             @foreach($favorite_array as $favorite)
-                                                                @if($favorite["product_id"] == $product -> id)
+                                                                @if($favorite["product_id"] == $product['id'])
                                                                     @if($favorite["users_favorite"] == 1)
-                                                                        <a href="{{route('favorite_product', array('product_id'=>$product->id, 'actions'=>'del'))}}">
+                                                                        <a href="{{route('favorite_product', array('product_id'=>$product['id'], 'actions'=>'del'))}}">
                                                                             <i class="fa fa-heart" aria-hidden="true" style="font-size: 250%;"></i>
                                                                         </a>
                                                                     @elseif($favorite["users_favorite"] == 0)
-                                                                        <a href="{{route('favorite_product', array('product_id'=>$product->id, 'actions'=>'add'))}}">
+                                                                        <a href="{{route('favorite_product', array('product_id'=>$product['id'], 'actions'=>'add'))}}">
                                                                             <i class="fa fa-heart-o" aria-hidden="true" style="font-size: 250%;"></i>
                                                                         </a>
                                                                     @endif

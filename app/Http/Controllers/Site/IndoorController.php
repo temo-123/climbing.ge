@@ -110,7 +110,7 @@ class IndoorController extends Controller
         if (!$name) {
             abort(404);
         }
-        if (view()->exists('site.indoor_page')) {
+        if (view()->exists('site.standart_article_page')) {
             $global_indoor = Article::latest('id')->where('category', '=', 'indoor')->where('url_title',strip_tags($name))->first();
 
             $indoor_id = $global_indoor->id;
@@ -125,7 +125,7 @@ class IndoorController extends Controller
             $article_gallery = Gallery::where('article_id',strip_tags($indoor_id))->limit(8)->get();
             $comments = Comment::where('article_id',strip_tags($indoor_id))->get();
             $data  = [
-                'title'=>$indoor[0]->title,
+                'title'=>$indoor[0][0]['title'],
                 'article'=>$indoor[0],
                 'climbing'=>1,
                 'articles_gallery'=>$article_gallery,
@@ -133,7 +133,7 @@ class IndoorController extends Controller
                 'all_article_but'=>'indoor_list',
                 'article_map'=>'indoor',
                 
-                'image_dir' => 'indoor_img',
+                'image' => 'indoor_img/'.$indoor[0]['image'],
                 
                 'articles_gallery'=>$article_gallery,
                 
@@ -147,7 +147,7 @@ class IndoorController extends Controller
                 'star_rewiev'=>0,
             ];
             
-            return view('site.indoor_page',$data);
+            return view('site.standart_article_page',$data);
         }
         else {
             abort(404);

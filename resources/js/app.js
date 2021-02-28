@@ -41,7 +41,7 @@ window.Vue = require('vue');
 // files.keys().map(key => Vue.component(key.split('/').pop().split('.')[0], files(key).default))
 
 Vue.component('comment-form-component',         require('./components/site/CommentFormComponent.vue').default);
-Vue.component('comment-component',              require('./components/site/CommentsComponent.vue').default);
+// Vue.component('comment-component',  :src="'../../public/images/site_img/demo/user.png'"            require('./components/site/CommentsComponent.vue').default);
 Vue.component('message-component',              require('./components/site/MessageComponent.vue').default);
 Vue.component('search-component',               require('./components/site/SearchComponent.vue').default);
 Vue.component('trchtips_component',             require('./components/site/TrchtipsComponent.vue').default);
@@ -51,14 +51,14 @@ Vue.component('trchtips_component',             require('./components/site/Trcht
 
 
 
-
 Vue.component('tabs_component',                 require('./components/user/TabsComponent.vue').default);
 Vue.component('comments_list_component',        require('./components/user/CommentsListComponent.vue').default);
 Vue.component('options_form',                   require('./components/user/OptionsFormComponent.vue').default);
 
 Vue.component('product_add_form',               require('./components/user/products/ProductAddFormComponent.vue').default);
 Vue.component('product_edit_form',              require('./components/user/products/ProductEditFormComponent.vue').default);
-Vue.component('product_list',                   require('./components/user/products/ProductListComponent.vue').default);
+Vue.component('category_add_form',              require('./components/user/products/CategoryAddFormComponent.vue').default);
+Vue.component('category_edit_form',             require('./components/user/products/CategoryEditFormComponent.vue').default);
 
 Vue.component('article_add_form',               require('./components/user/articles/ArticleAddFormComponent.vue').default);
 Vue.component('article_edit_form',              require('./components/user/articles/ArticleEditFormComponent.vue').default);

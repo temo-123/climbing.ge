@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 
 use App\Models\Site;
 use App\Models\Article;
+use App\Models\Gallery;
 
 use App\Services\GetArticlesService;
 
@@ -20,6 +21,8 @@ class AboutController extends Controller
             $global_partners = Article::latest('id')->where('category', '=', 'partner')->where('published','=','1')->get();
             $partners = GetArticlesService::get_locale_article($global_partners);
             $partners_count = Article::latest('id')->where('category', '=', 'partner')->where('published','=','1')->count();
+
+            $gallery_images = Gallery::where('published', '=', 1)->where('index_gallery_image', '=', 1)->inRandomOrder()->limit(1)->get();
             
             $locale = request()->segment(1, '');
             if($locale == "ru"){
@@ -40,6 +43,9 @@ class AboutController extends Controller
                 "page_locale" => $page_locale,
                 
                 'article_edit_link'=>'aboutEdit',
+
+
+                'gallery_images' => $gallery_images,
             )); 
         }
         abort(404);

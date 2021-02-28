@@ -44,7 +44,7 @@ class RuArticleController extends Controller
             $article['info']=$request->ru_info;
             $article['meta_keyword']=$request->ru_meta_keyword;
             
-            $article -> save();
+            $article -> update();
         }
     }
     public function edit_ru_article(Request $request)

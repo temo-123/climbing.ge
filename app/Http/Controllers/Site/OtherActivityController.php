@@ -15,7 +15,7 @@ class OtherActivityController extends Controller
 {
     public function other_list()
     {
-    	if (view()->exists('site.ice_list')) {
+    	if (view()->exists('site.other_list')) {
     		$global_others = Article::latest('id')->where('category', '=', 'other')->where('published','=','1')->get();
             $article_count = Article::latest('id')->where('category', '=', 'other')->where('published','=','1')->count();
 
@@ -38,7 +38,7 @@ class OtherActivityController extends Controller
                 'meta_description' => 'In Georgia are many interesting activity. You can see the full information about these regions and visit one of them.',
                 'meta_img' => 'outdoor.jpg'
     		];
-    		return view('site.ice_list',$data);
+    		return view('site.other_list',$data);
     	}
     	abort(404);
     }
@@ -47,7 +47,7 @@ class OtherActivityController extends Controller
         if (!$name) {
             abort(404);
         }
-        if (view()->exists('site.ice_page')) {
+        if (view()->exists('site.standart_article_page')) {
             $global_others = Article::latest('id')->where('category', '=', 'other')->where('url_title',strip_tags($name))->first();
             $other_id = $global_others->id;
 
@@ -60,11 +60,11 @@ class OtherActivityController extends Controller
             $other_list = GetArticlesService::get_locale_article($global_other_list);
 
             $data  = [
-                'title'=>$other[0]->title,
+                'title'=>$other[0][0]['title'],
                 'article'=>$other[0],
     			'other'=>1,
     			
-                'image_dir' => 'other_img',
+                'image' => 'other_img/'.$other[0]['image'],
                 
                 'articles_gallery'=>$article_gallery,
                 'comments'=>$comments,
@@ -80,7 +80,7 @@ class OtherActivityController extends Controller
                 'other_article_img'=>'images/other_img/',
             ];
 
-            return view('site.ice_page',$data);
+            return view('site.standart_article_page',$data);
         }
         else{
             abort(404);

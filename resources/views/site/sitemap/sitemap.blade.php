@@ -5,7 +5,7 @@
 
 <div class="container top_menu_margin">
 
-<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.13/css/all.css"> 
+{{-- <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.13/css/all.css">  --}}
 <!---- Must Add above thing or you can use alternative icons or CSS Entities---->
 
 	<div class="tree ">
@@ -106,7 +106,7 @@
 							<ul>
 								<div id="news" class="collapse">
 									@foreach($news as $new)
-									<li><span><i class="far fa-file"></i><a href="{{route('news_page', array('title'=>$new->url_title))}}"> {{$new -> title}} </a></span></li>
+									<li><span><i class="far fa-file"></i><a href="{{route('news_page', array('title'=>$new['url_title']))}}"> {{$new[0][0] -> title}} </a></span></li>
 	    							@endforeach
 								</div>
 							</ul>

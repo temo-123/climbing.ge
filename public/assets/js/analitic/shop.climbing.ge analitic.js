@@ -1,1 +1,5 @@
-G-1V3NMY4FBC
+window.dataLayer = window.dataLayer || [];
+function gtag(){dataLayer.push(arguments);}
+gtag('js', new Date());
+
+gtag('config', 'G-YSKGLXMWGF');

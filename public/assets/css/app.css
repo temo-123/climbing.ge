@@ -11238,6 +11238,13 @@ textarea {
   background: #C9302C;
 }
 
+.about_us_page_image img {
+  height: 20em;
+  width: 100%;
+  background-size: cover;
+  border: 1px solid red;
+}
+
 /* 
 *
 *     Partner block style in "about us" page

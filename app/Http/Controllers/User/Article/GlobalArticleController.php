@@ -10,6 +10,8 @@ use App\Models\Ka_article;
 use App\Models\Us_article;
 use App\Models\Ru_article;
 
+use App\Services\URLTitleService;
+
 class GlobalArticleController extends Controller
 {
     public function add_global_article(Request $request)
@@ -20,10 +22,10 @@ class GlobalArticleController extends Controller
         if ($request -> isMethod('post')) {
             $input = $request -> except('_token');
 
-            // $global_article = Article::get();
-            // foreach ($global_article as $global) {
-            //     $last_globale_id = $global->id;
-            // }
+            $global_article = Article::get();
+            foreach ($global_article as $global) {
+                $last_globale_id = $global->id;
+            }
 
             $us_articl = Us_article::get();
             foreach ($us_articl as $us) {
@@ -41,11 +43,9 @@ class GlobalArticleController extends Controller
             }
 
             // make url_title from us_title value
-            $us_title_arr = explode( ' ', $request->us_title_for_url_title);
-            $url_title = implode("_", $us_title_arr);
+            $url_title = URLTitleService::get_url_title($request->us_title_for_url_title);
 
-            // $article = Article::find($last_globale_id);
-            $article = new Article();
+            $article = Article::find($last_globale_id);
             
             $article['url_title'] = $url_title;
             $article['category']=$request->category;
@@ -74,8 +74,8 @@ class GlobalArticleController extends Controller
             $article['us_article_id']=$last_us_article_id;
             $article['ru_article_id']=$last_ru_article_id;
             $article['ka_article_id']=$last_ka_article_id;
-
-            $article -> save();
+// dd($article);
+            $article -> update();
 
             $last_ru_article_id = 0;
             $last_us_article_id = 0;

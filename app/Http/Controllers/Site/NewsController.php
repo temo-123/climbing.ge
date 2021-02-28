@@ -17,7 +17,7 @@ class NewsController extends Controller
         if (!$name) {
             abort(404);
         }
-        if (view()->exists('site.news_page')) {
+        if (view()->exists('site.standart_article_page')) {
             $global_news = Article::where('url_title',strip_tags($name))->first();
 
             $news_id = $global_news->id;
@@ -31,11 +31,11 @@ class NewsController extends Controller
             $other_list = GetArticlesService::get_locale_article($global_other_list);
 
             $data  = [
-                'title'=>$news[0]->title,
+                'title'=>$news[0][0]['title'],
                 'article'=>$news[0],
     			// 'other'=>1,
     			
-                'image_dir' => 'news_img',
+                'image' => 'news_img/'.$news[0]['image'],
                 
                 'articles_gallery'=>$article_gallery,
                 'comments'=>$comments,
@@ -51,7 +51,7 @@ class NewsController extends Controller
                 'other_article_img'=>'images/news_img/',
             ];
 
-            return view('site.news_page',$data);
+            return view('site.standart_article_page',$data);
         }
         else{
             abort(404);

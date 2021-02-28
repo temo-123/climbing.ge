@@ -54,20 +54,9 @@
     //     return false;
     // });
     // and back to top
-</script>     -->
+</script>     --> --}}
     
-<!--analytics.google.com-->
-
-<!-- Global site tag (gtag.js) - Google Analytics -->
-<!--     <script async src="https://www.googletagmanager.com/gtag/js?id=UA-101870435-1"></script>
-        <script>
-          //window.dataLayer = window.dataLayer || [];
-          //function gtag(){dataLayer.push(arguments);}
-          //gtag('js', new Date());
-        
-          //gtag('config', 'UA-101870435-1');
-    </script> -->
-<!-- And analytics.google.com--> --}}
+{{-- analytics.google.com --}}
 
 <script async src="https://www.googletagmanager.com/gtag/js?id=UA-101870435-1"></script>
 <script src="{{ asset('assets/js/analitic/climbing.ge analitic.js') }}"></script>

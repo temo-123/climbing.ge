@@ -10,6 +10,8 @@ class Ru_product extends Model
 
     protected $fillable = [
         'title',
+        'short_description',
         'text',
+        'meta_keyword'
     ];
 }

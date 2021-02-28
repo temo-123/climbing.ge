@@ -15,7 +15,7 @@ class TechTipsController extends Controller
         if (!$name) {
             abort(404);
         }
-        if (view()->exists('site.teachtips')) {
+        if (view()->exists('site.standart_article_page')) {
             $security = Article::where('category', '=', 'security')->where('url_title',strip_tags($name))->first();
             $security_id = $security->id;
             
@@ -49,7 +49,7 @@ class TechTipsController extends Controller
                 'article'=>$article
             ];
 
-            return view('site.teachtips',$data);
+            return view('site.standart_article_page',$data);
         }
         else{
             abort(404);

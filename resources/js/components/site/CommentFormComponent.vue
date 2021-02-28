@@ -98,7 +98,7 @@
                         <li v-for="comment in this.comments" :key="comment.id">
                             <div class="row">
                                 <hr>
-                                <div class="col-md-2"><img :src="'../../public/images/site_img/demo/user.png'" /></div>
+                                <div class="col-md-2"><img :src="'/public/images/user_img/user_demo_img/user_demo_img.gif'" /></div>
                                 <div class="col-md-10">
                                     <h2><strong>{{comment.name}} {{comment.surname}}</strong> [ {{comment.email}} ]</h2>
                                     <div>

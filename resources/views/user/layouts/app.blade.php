@@ -52,6 +52,8 @@
         @include('user.components.navbar')
 
         @yield('content')
+
+        @include('user.components.footer')
     </div>
 
     <script src="{{ asset('assets/js/app.js') }}"></script>

@@ -10,7 +10,7 @@ class Site extends Model
         "name",
         'published',
         'title:',
-        'title_ru:', 
+        'title_ru', 
         'title_ka',
         'text_ru', 
         'text_ka', 

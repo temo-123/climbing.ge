@@ -341,6 +341,7 @@
       },
 
       back: function(temporary_sector_id) {
+        confirm('Are you sure, you want go back?')
         this.del_temporary_sector(temporary_sector_id)
         window.location.href = '/routes_and_sectors';
       },

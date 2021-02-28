@@ -12,6 +12,7 @@ use App\Models\Ka_product;
 
 use App\Models\Favorite_product;
 
+use App\Models\Product_image;
 
 class ProductController extends Controller
 {
@@ -21,21 +22,17 @@ class ProductController extends Controller
             $data = [
                 'table_1'=>'Products',
     		    'table_1_name' => 'Products',
-                // 'table_1_count' => $count_sector,
-                // 'table_1_tags' => $sector_tags,
     		    'table_1_add_url'=>'productAddPage',
-				'table_1_edit_url'=>'products/edit/',
+				'table_1_edit_url'=>'products/edit_product/',
 				'table_1_get_route'=>'products/get_product_data',
                 'table_1_del'=>"/products/del/",
                 
                 'table_2' => "categoryies",
     		    'table_2_name' => 'Categories',
-                // 'table_2_count' => $count_route,
-                // 'table_2_tags' => $route_tags,
-    		    'table_2_add_url'=>'routeAdd',
-    		    'table_2_edit_url'=>'routes_and_sectors/route_edit_form/',
+    		    'table_2_add_url'=>'categoryAddForm',
+    		    'table_2_edit_url'=>'/products/category/edit/form/',
 				'table_2_get_route'=>'products/get_product_category_data',
-                'table_2_del'=>"/routes_and_sectors/route_delete/",
+                'table_2_del'=>"/products/category/del/",
     		    
     		    'page_name' => 'Products',
     		    'active' => 'Outdoor',
@@ -124,11 +121,6 @@ class ProductController extends Controller
 
     public function create_temporary_product()
     {
-        $product = new Product();
-        $product['url_title'] = 'Temporary product';
-        $product['published']=0;
-        $product -> save();
-
         $product_ka = new Ka_product();
         $product_ka['title']="Ka temporary product";
         $product_ka -> save();
@@ -140,6 +132,58 @@ class ProductController extends Controller
         $product_us = new Us_product();
         $product_us['title']="Us temporary product";
         $product_us -> save();
+
+
+        $products_us = US_Product::where('title','=','Us temporary product')->get();
+        $products_ka = Ka_product::where('title','=','Ka temporary product')->get();
+        $products_ru = Ru_product::where('title','=','Ru temporary product')->get();
+
+        $last_us_product_id = 0;
+        $last_ka_product_id = 0;
+        $last_ru_product_id = 0;
+        foreach ($products_us as $product_us) {
+            $last_us_product_id = $product_us->id;
+        }
+        foreach ($products_ka as $product_ka) {
+            $last_ka_product_id = $product_ka->id;
+        }
+        foreach ($products_ru as $product_ru) {
+            $last_ru_product_id = $product_ru->id;
+        }
+
+        $product = new Product();
+        $product['url_title'] = 'temporary_product';
+        $product['published']=0;
+        $product['us_product_id']=$last_us_product_id;
+        $product['ru_product_id']=$last_ru_product_id;
+        $product['ka_product_id']=$last_ka_product_id;
+        $product -> save();
+    }
+
+    public function del_temporary_product(Request $request)
+    {
+        if ($request->isMethod('post')) {
+            $product_id=$request->id;
+            $deleting_product_images = Product_image::where('product_id','=',$product_id)->get();
+            $count_deleting_product_images = Product_image::where('product_id','=',$product_id)->count();
+            
+            if ($count_deleting_product_images > 0) {
+                foreach ($deleting_product_images as $product_image) {
+                    $deliting_product_image = Product_image::where('id',strip_tags($product_image->id))->first();
+                    $deliting_product_image ->delete();
+                }
+            }
+
+            $product = Product::where('id','=', $product_id)->first();
+            $product_us = US_Product::where('id','=',$product->us_product_id)->first();
+            $product_ka = Ka_product::where('id','=',$product->ka_product_id)->first();
+            $product_ru = Ru_product::where('id','=',$product->ru_product_id)->first();
+
+            $product ->delete();
+            $product_us ->delete();
+            $product_ka ->delete();
+            $product_ru ->delete();
+        }
     }
 
     public function add_product_page(Request $request)
@@ -168,34 +212,12 @@ class ProductController extends Controller
         abort(404);
     }
 
-    public function edit_product_page()
+    public function edit_product_page(Request $request)
     {
-        $old = $article -> toArray();
-
-        $global_article_categoyr = Article::where('id',strip_tags($request->id))->get();
-        foreach ($global_article_categoyr as $article_category) {
-            $category = $article_category->category;
-        }
         if (view()->exists('user.components.forms.products.product_edit_form')) {
+            $product_id = $request->id;
             $data = [
-                'category' => $category,
-                // 'title' => 'Edit article - '.$old['title'],
-                "editing_article_id" => $request->id,
-                'title' => 'Edit title',
-                'data' => $old,
-                'back_btn' => 'home',
-                'edit_title' => 'Edit article',
-                'edit_active' => 'Edit article',
-                
-                'edit_form' => 'home',
-                
-                'url_title' => 1,
-                'text' => 1, 
-                'published'=>'1',
-                'link'=>'1',
-                'article_filtr'=>'1',
-                
-                'image' => 'article_img',
+                'editing_article_id' => $request->id
             ];
             // dd($data);
             return view('user.components.forms.products.product_edit_form', $data);
@@ -221,6 +243,99 @@ class ProductController extends Controller
             $ka_product ->delete();
         }
     }
+    public function get_temporary_product_editing_data()
+    {
+        $temporary_product = Product::where("url_title","=","temporary_product")->get();
+        foreach ($temporary_product as $product) {
+            $last_temporary_product_id = $product->id;
+        }
+
+        return(
+            $data = [
+                "last_temporary_product_id" => $last_temporary_product_id,
+            ]
+        );
+    }
+    public function get_product_image(Request $request)
+    {
+        $product_images = Product_image::where('product_id',"=", $request->product_id)->get();
+        return(
+            $data = [
+                "product_images" => $product_images,
+            ]
+        );
+    }
+
+    public function get_product_editing_data(Request $request)
+    {
+        $product = Product::where('id',strip_tags($request->editing_product_id))->first();
+        
+        $us_product = Us_product::where('id',strip_tags($product->us_product_id))->first();
+        $ru_product = Ru_product::where('id',strip_tags($product->ru_product_id))->first();
+        $ka_product = Ka_product::where('id',strip_tags($product->ka_product_id))->first();
+
+        return(
+            $data = [
+                "editing_product" => $product,
+                "editing_product_us" => $us_product,
+                "editing_product_ru" => $ru_product,
+                "editing_product_ka" => $ka_product,
+            ]
+        );
+    }
+
+    public function upload_product_image(Request $request)
+    {
+        if ($request->hasFile('profile_pic')){  
+            // rename file
+            $file      = $request->file('profile_pic');
+            $filename  = $file->getClientOriginalName();
+            $extension = $file->getClientOriginalExtension();
+            $pieces = explode( '.', $filename );
+            $file_new_name = $pieces[0].'_('.date('Y-m-d-H-m-s').').'.$extension;
+            
+            // push image in folder
+            $file->move(public_path('images/product_img'), $file_new_name);
+            $product = new product_image();
+            // $product = product_image::where('id',strip_tags($last_global_product_id))->first();
+            $product['image']=$file_new_name;
+            $product['product_id']=$request->product_id;
+            $product -> save();
+
+            return response()->json(["message" => "Image Uploaded Succesfully"]);
+        } 
+        else{
+            return response()->json(["message" => "Image Uploaded Error."]);
+        }
+    }
+
+    public function update_product_image(Request $request)
+    {
+        # code...
+    }
+    public function del_product_image(Request $request)
+    {
+        $request->user()->authorizeRoles(['manager', 'admin']);
+
+        if ($request->isMethod('post')) {
+            $product_image_id=$request->image_id;
+
+            $product_image = Product_image::where('id',strip_tags($product_image_id))->first();
+
+            // dd($product);
+
+            // delete product file
+            // $fileName = $არტიცლე['image'];
+            // $destinationPath = 'images/shop_img/';
+            // File::delete($destinationPath.$fileName);
+
+            // delete product from db
+            $product_image ->delete();
+        }
+    }
+
+
+
 
     public function favorite()
     {

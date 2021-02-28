@@ -1,6 +1,11 @@
 <template>
 <div class="col_md_12">
     <div class="row">
+      <div class="form-group">
+        <button type="submit" class="btn btn-primary" v-on:click="back(temporary_product_id)">Beck</button>
+      </div>
+    </div>
+    <div class="row">
         <div class="form-group">  
             <button type="submit" class="btn btn-primary" v-on:click="save_all()" >Save</button>
         </div>
@@ -36,7 +41,7 @@
                         </div>
 
                         <div class="col-xs-2">
-                            <select class="form-control" v-model="published" name="published" > 
+                            <select class="form-control" v-model="currency" name="currency" > 
                                 <option value="GEL">GEL</option> 
                                 <option value="USD">USD</option> 
                                 <option value="EUR">EUR</option> 
@@ -47,9 +52,8 @@
                     <div class="form-group clearfix">
                         <label for="name" class='col-xs-2 control-label'> category </label>
                         <div class="col-xs-8">
-                            <select class="form-control" v-model="published" name="published" > 
-                                <option value="climbing">climbing</option> 
-                                <option value="mountaineering">mountaineering</option> 
+                            <select class="form-control" v-model="category" name="category" > 
+                                <option  v-for="cat in categories" :key="cat.id" v-bind:value="cat.id"> {{ cat.us_name }}</option>
                             </select> 
                         </div>
                     </div>
@@ -68,11 +72,11 @@
                             <div class="row">
                                 <div class="col-md-6">
                                     <div class="form-group clearfix">
-                                    <button class="btn btn-primary" @click="add_sector_image(temporary_sector_id)">seve image</button>
+                                    <button class="btn btn-primary" @click="add_product_image(temporary_product_id)">seve image</button>
                                     </div>
                                 </div>
                                 <div class="col-md-6">    
-                                    <form @submit="add_sector_image(temporary_sector_id)"  ref="myForm">
+                                    <form @submit="add_product_image(temporary_product_id)"  ref="myForm">
                                     <div class="form-group clearfix">
                                         <input type="file" name="profile_pic" id="profile_pic" >
                                     </div>
@@ -84,28 +88,29 @@
                     </div>
 
                     <div class="row">
-                        <div class="form-groupe">
-                            <button class="btn btn-primary" @click="showModal()">My modal</button>
-                        </div>
-                        <div class="form-groupe">
-                            <button @click="get_sector_image(temporary_sector_id)" class="btn main-btn pull-right" v-if="!image_is_refresh">Refresh ({{image_reset_id}})</button>
-                            <span class="badge badge-primare mb-1 pull-right" v-if="image_is_refresh">Updating...</span>
-                        </div>
+                    <div class="form-groupe">
+                        <button class="btn btn-primary" @click="showModal()">My modal</button>
                     </div>
+                    <div class="form-groupe">
+                        <button @click="get_product_image(temporary_product_id)" class="btn main-btn pull-right" v-if="!image_is_refresh">Refresh ({{image_reset_id}})</button>
+                        <span class="badge badge-primare mb-1 pull-right" v-if="image_is_refresh">Updating...</span>
+                    </div>
+                    </div>
+                    
                 </div>
 
                 <div class="container">
-                    <div class="col-md-3">
+                    <!-- <div class="col-md-3">
                     <div class="row">
                         <div class="col-md-12">
                         <img alt="300x200" @click="showModal()" src="/public/images/site_img/image.png">
                         </div>
                     </div>
-                    </div>
+                    </div> -->
                     <div class="col-md-3" v-for="image in images" :key="image.id">
                     <div class="row">
                         <div class="col-md-12">
-                        <img :alt="'sector image - (' + image.image + ')'" class="sector_img" :src="'/public/images/sector_img/' + image.image">
+                        <img :alt="'product image - (' + image.image + ')'" class="product_img" :src="'/public/images/product_img/' + image.image">
                         </div>
                     </div>
                     <div class="row">
@@ -113,11 +118,12 @@
                         <button class="btn btn-secondary pull-left" @click="edit_image()">Edit</button>
                         </div>
                         <div class="col-md-6">
-                        <button class="btn btn-danger pull-right" @click="del_sector_image(image.id)">Del</button>
+                        <button class="btn btn-danger pull-right" @click="del_product_image(image.id)">Del</button>
                         </div>
                     </div>
                     </div>
                 </div>
+
             </div>
 
             <input type="radio" name="tabs" id="2">
@@ -273,16 +279,21 @@
     export default {
         props: [
             'back_url',
-            'category'
+            // 'category'
         ],
         data(){
             return {
-                us_title_for_url_title: '',
-                published: "",
+                image_is_refresh: false,
+                image_reset_id: 0,
 
-                name: '',
-                image: '',
-                success: '',
+                categories: [],
+
+                us_title_for_url_title: '',
+
+                published: "",
+                currency: "",
+                price: "",
+                category: "",
 
 
                 // 
@@ -313,15 +324,28 @@
 
 
                 myModal: false,
+
+                temporary_product_id: ""
             }
         },
         mounted() {
             this.create_temporary_product()
+            this.get_product_category_data()
         },
         methods: {
             create_temporary_product() {
                 axios
                 .post('/products/create_temporary_product/', {
+                })
+                .then((response)=>  {
+                    this.get_temporary_product_data()
+                    // console.log('georgian product upload successful');
+                })
+                .catch(error => console.log(error))
+            },
+            del_temporary_product(temporary_product_id) {
+                axios
+                .post('/products/del_temporary_product/' + temporary_product_id, {
                     // ka_title: this.ka_title,
                 })
                 .then((response)=>  {
@@ -338,76 +362,39 @@
 
             add_us_product() {
                 axios
-                .post('/products/us/add/' + this.category, {        
+                .post('/products/us/add/', {        
                     us_title: this.us_title,
                     us_short_description: this.us_short_description,
                     us_text: this.us_text,
-                    us_route: this.us_route,
-                    us_how_get: this.us_how_get,
-                    us_best_time: this.us_best_time,
-                    us_what_need: this.us_what_need,
-                    us_info: this.us_info,
-                    us_time: this.us_time,
-                    us_price_text: this.us_price_text,
-                    us_price_from: this.us_price_from,
                     us_meta_keyword: this.us_meta_keyword,
                 })
                 .then((response)=> { 
-                    // console.log(response)
-                    // this.is_us_product_succes = 1
-                    // console.log('englihs product upload successful');
-
-                    this.add_ru_product()
+                    // this.add_ru_product()
                 })
                 .catch(error => console.log(error))
             },
             add_ru_product() {
                 axios
-                .post('/products/ru/add/' + this.category, {
+                .post('/products/ru/add/', {
                     ru_title: this.ru_title,
                     ru_short_description: this.ru_short_description,
                     ru_text: this.ru_text,
-                    ru_route: this.ru_route,
-                    ru_how_get: this.ru_how_get,
-                    ru_best_time: this.ru_best_time,
-                    ru_what_need: this.ru_what_need,
-                    ru_info: this.ru_info,
-                    ru_time: this.ru_time,
-                    ru_price_text: this.ru_price_text,
-                    ru_price_from: this.ru_price_from,
                     ru_meta_keyword: this.ru_meta_keyword,
                 })
                 .then((response)=> { 
-                    // this.is_ru_product_succes = 1
-                    // console.log(this.is_ru_product_succes);
-                    // console.log(response) 
-                    // console.log('rusian product upload successful');
-                    this.add_ka_product()
                 })
                 .catch(error => console.log(error))
             },
             add_ka_product() {
                 axios
-                .post('/products/ka/add/' + this.category, {
+                .post('/products/ka/add/', {
                     ka_title: this.ka_title,
                     ka_short_description: this.ka_short_description,
                     ka_text: this.ka_text,
-                    ka_route: this.ka_route,
-                    ka_how_get: this.ka_how_get,
-                    ka_best_time: this.ka_best_time,
-                    ka_what_need: this.ka_what_need,
-                    ka_: this.ka_,
-                    ka_time: this.ka_time,
-                    ka_price_text: this.ka_price_text,
-                    ka_price_from: this.ka_price_from,
                     ka_meta_keyword: this.ka_meta_keyword,
                 })
                 .then((response)=>  {
-                    // console.log(response)
-                    // this.is_ka_product_succes = 1
-                    // console.log('georgian product upload successful');
-
-                    this.add_global_product()
+                    // this.add_global_product()
                 })
                 .catch(error => console.log(error))
             },
@@ -416,33 +403,12 @@
                 // console.log(myFormData);
 
                 axios
-                .post('/products/global/add/' + this.category, {
-                    us_title_for_url_title: this.us_title,
-
+                .post('/products/global/add/', {
                     published: this.published,
-                    completed: this.completed,
-                    map: this.map,
-                    weather: this.weather,
-
-                    start_data_day: this.start_data_day,
-                    and_data_day: this.and_data_day,
-                    start_data_month: this.start_data_month,
-                    and_data_month: this.and_data_month,
-
-                    fb_link: this.fb_link,
-                    twit_link: this.twit_link,
-                    google_link: this.google_link,
-                    inst_link: this.inst_link,
-                    web_link: this.web_link,
-
-                    // image: this.image,
-
-                    // data: myFormData,
-                    // config: { 
-                    //     headers: {
-                    //         'Content-Type': 'multipart/form-data' 
-                    //     }
-                    // },
+                    price: this.price,
+                    currency: this.currency,
+                    category: this.category,
+                    us_title_for_url_title: this.us_title,
                 })
                 .then((response)=>  { 
                     // this.is_global_product_succes = 1
@@ -450,18 +416,59 @@
                     // alert(response.data.message);
                     // console.log('global product upload successful');
 
-                    this.checkForm()
+                    // this.checkForm()
                 })
                 .catch(
                     error => console.log(error)
                 )
             },
 
-            checkForm: function (e) {
+            get_temporary_product_data: function(){
+                axios
+                .get("/products/get_temporary_product_editing_data/")
+                .then(response => {
+                    this.editing_data = response.data
+                    this.get_product_image(this.editing_data.last_temporary_product_id)
+                    // console.log(this.editing_data.last_temporary_product_id);
+                    this.temporary_product_id = this.editing_data.last_temporary_product_id
+                })
+                .catch(
+                error => console.log(error)
+                );
+            },
+
+            get_product_category_data: function(){
+                axios
+                .get("../../products/get_product_category_data/")
+                .then(response => {
+                    this.product_category = response.data
+                    this.categories = this.product_category
+                })
+                .catch(
+                    error => console.log(error)
+                );
+            },
+
+            get_product_image: function (temporary_product_id) {
+                this.image_is_refresh = true
+                axios
+                .get("../../products/get_product_image/" + temporary_product_id )
+                .then(response => {
+                    this.product_images = response.data
+                    this.images = this.product_images.product_images
+
+                    this.image_is_refresh = false
+                    this.image_reset_id++
+                })
+                .catch(
+                    error => console.log(error)
+                );
+            },
+            add_product_image: function (temporary_product_id) {
                 var myFormData = new FormData(this.$refs.myForm)
                 axios({
                     method: 'post',
-                    url: '/articles/upload_image/',
+                    url: '/products/upload_product_image/' + temporary_product_id,
                     data: myFormData,
                     config: { 
                         headers: {'Content-Type': 'multipart/form-data' },
@@ -471,11 +478,33 @@
                     // this.is_image_succes = 1;
                     // alert(response.data.message);
                 });
-                // e.preventDefault(); // if this line is not comentid method - (window.location.href) dase not work in method (save_all)
+                this.showModal()
+                // e.preventDefault();
+
+            },
+            del_product_image(imageId) {
+                axios
+                .post("/products/del_product_image/" + imageId, {
+                    image_id: imageId,
+                })
+                .then(Response => {
+                    console.log(response)
+                    this.get_data_in_table_1()
+                })
+                .catch(error => console.log(error))
             },
 
+
+            back: function(temporary_product_id) {
+                confirm('Are you sure, you want go back?')
+                this.del_temporary_product(temporary_product_id)
+                window.location.href = this.back_url;
+            },
             save_all() {
-                this.add_us_article()
+                this.add_us_product()
+                this.add_ka_product()
+                this.add_ru_product()
+                this.add_global_product()
 
                 window.location.href = this.back_url;
             }
