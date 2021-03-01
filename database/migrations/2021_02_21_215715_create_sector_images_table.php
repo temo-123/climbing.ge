@@ -16,11 +16,11 @@ class CreateSectorImagesTable extends Migration
         Schema::create('sector_images', function (Blueprint $table) {
             $table->id();
 
-            $table->string('title');
-            $table->string('image');
+            $table->string('title')->nullable();
+            $table->string('image')->nullable();
             
-            $table->integer('num');
-            $table->integer('sector_id');
+            $table->integer('num')->nullable();
+            $table->integer('sector_id')->nullable();
 
             $table->timestamps();
         });

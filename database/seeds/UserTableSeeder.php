@@ -17,8 +17,8 @@ class UserTableSeeder extends Seeder
       $role_admin = Role::where('name', 'admin')->first();
 
       $admin = new User();
-      $admin->name = 'admin Name';
-      $admin->email = 'admin@example.com';
+      $admin->name = 'admin';
+      $admin->email = 'admin@'.config('app.url');
       $admin->password = bcrypt('secret');
       $admin->save();
 

@@ -10,6 +10,7 @@ class Product extends Model
 
     protected $fillable = [
         'title', 
+        'published',
         'url_title',
         'category_id',
 	    'text', 

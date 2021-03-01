@@ -14,6 +14,8 @@ use App\Models\Comment;
 
 use App\Services\ImageEditService;
 
+use App\Services\imageControllService;
+
 use File;
 
 class ArticleController extends Controller
@@ -132,7 +134,7 @@ class ArticleController extends Controller
     {
         $article = new Article();
         $article['url_title'] = 'Temporary article';
-        $article['category']='temporary_article';
+        $article['category']=$request->category;
         $article['published']=0;
         $article['completed']=1; 
         $article -> save();
@@ -243,12 +245,8 @@ class ArticleController extends Controller
             $ru_article = Ru_article::where('id',strip_tags($global_article->ru_article_id))->first();
             $ka_article = Ka_article::where('id',strip_tags($global_article->ka_article_id))->first();
 
-            // dd($global_article);
-
             // delete product file
-            // $fileName = $არტიცლე['image'];
-            // $destinationPath = 'images/shop_img/';
-            // File::delete($destinationPath.$fileName);
+            imageControllService::image_delete($global_article->category.'_img', $global_article, $request);
 
             // delete product from db
             $global_article ->delete();

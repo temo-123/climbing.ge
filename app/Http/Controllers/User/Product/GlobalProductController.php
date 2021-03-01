@@ -11,6 +11,8 @@ use App\Models\Ka_product;
 use App\Models\Ru_product;
 use Auth;
 
+use App\Services\imageControllService;
+
 use App\Services\URLTitleService;
 
 class GlobalProductController extends Controller
@@ -37,6 +39,10 @@ class GlobalProductController extends Controller
         $request->user()->authorizeRoles(['admin']);
 
         if ($request -> isMethod('post')) {
+            $last_globale_id = 0;
+            $last_us_product_id = 0;
+            $last_ka_product_id = 0;
+            $last_ru_product_id = 0;
 
             $global_product = product::where('url_title', '=', 'temporary_product')->get();
             foreach ($global_product as $global) {
@@ -64,7 +70,9 @@ class GlobalProductController extends Controller
 
             $product['user_id'] = Auth::user()->id;
             $product['url_title'] = $url_title;
+
             // $product['discount']=$request->discount;
+            $product['published'] = $request->published;
             $product['price'] = $request->price;
             $product['currency'] = $request->currency;
             $product['category_id'] = $request->category_id;
@@ -93,7 +101,8 @@ class GlobalProductController extends Controller
             $product['price']=$request->price;
             $product['currency']=$request->currency;
             $product['category_id']=$request->category;
-            $product['user_id']=Auth::user()->id;;
+            $product['published'] = $request->published;
+            // $product['user_id']=Auth::user()->id;
 
             // $product['us_product_id']=$last_us_product_id;
             // $product['ru_product_id']=$last_ru_product_id;
@@ -110,9 +119,10 @@ class GlobalProductController extends Controller
      */
     public function delete(product $product, Request $request)
     {
-        $image_dir = '/images/shop_img';
-
         if ($request->isMethod('delete')) {
+
+            $image_dir = '/images/shop_img';
+            imageControllService::image_delete($image_dir, $sector_image, $request);
 
             // delete product from db
             $product -> delete();

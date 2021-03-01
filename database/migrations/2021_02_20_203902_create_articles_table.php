@@ -15,36 +15,37 @@ class CreateArticlesTable extends Migration
     {
         Schema::create('articles', function (Blueprint $table) {
             $table->id();
-            $table->integer('category');
-            $table->string('url_title');
+            $table->string('category')->nullable();
+            $table->string('url_title')->nullable();
 
-            $table->integer('published');
-            $table->integer('completed');
+            $table->integer('published')->nullable();
+            $table->integer('completed')->nullable();
 
-            $table->string('start_data_day');
-            $table->string('and_data_day');
-            $table->string('start_data_month');
-            $table->string('and_data_month');
+            $table->string('start_data_day')->nullable();
+            $table->string('and_data_day')->nullable();
+            $table->string('start_data_month')->nullable();
+            $table->string('and_data_month')->nullable();
 
-            $table->string('fb_link');
-            $table->string('inst_link');
-            $table->string('google_link');
-            $table->string('twit_link');
-            $table->string('web_link');
+            $table->string('fb_link')->nullable();
+            $table->string('inst_link')->nullable();
+            $table->string('google_link')->nullable();
+            $table->string('twit_link')->nullable();
+            $table->string('web_link')->nullable();
 
-            $table->string('star');
+            $table->string('star')->nullable();
 
-            $table->string('price_from');
-            $table->string('working_time');
+            $table->string('price_from')->nullable();
+            $table->string('working_time')->nullable();
 
-            $table->text('weather');
-            $table->text('map');
+            $table->text('weather')->nullable();
+            $table->text('map')->nullable();
+            $table->string('image')->nullable();
 
-            $table->integer('mount_id');
+            $table->integer('mount_id')->nullable();
 
-            $table->integer('us_article_id');
-            $table->integer('ru_article_id');
-            $table->integer('ka_article_id');
+            $table->integer('us_article_id')->nullable();
+            $table->integer('ru_article_id')->nullable();
+            $table->integer('ka_article_id')->nullable();
 
             $table->timestamps();
         });

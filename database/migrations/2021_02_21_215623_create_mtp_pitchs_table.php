@@ -16,20 +16,20 @@ class CreateMtpPitchsTable extends Migration
         Schema::create('mtp_pitchs', function (Blueprint $table) {
             $table->id();
 
-            $table->string('name');
-            $table->text('text');
+            $table->string('name')->nullable();
+            $table->text('text')->nullable();
 
-            $table->string('gread');
-            $table->string('or_gread');
+            $table->string('gread')->nullable();
+            $table->string('or_gread')->nullable();
 
-            $table->string('bolts');
-            $table->string('bolter');
-            $table->string('bolting_data');
-            $table->string('height');
-            $table->string('first_ascent');
+            $table->string('bolts')->nullable();
+            $table->string('bolter')->nullable();
+            $table->string('bolting_data')->nullable();
+            $table->string('height')->nullable();
+            $table->string('first_ascent')->nullable();
 
-            $table->integer('num');
-            $table->integer('mtp_id');
+            $table->integer('num')->nullable();
+            $table->integer('mtp_id')->nullable();
             
             $table->timestamps();
         });

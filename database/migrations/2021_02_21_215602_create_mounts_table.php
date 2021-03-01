@@ -15,30 +15,30 @@ class CreateMountsTable extends Migration
     {
         Schema::create('mounts', function (Blueprint $table) {
             $table->id();
-            $table->integer('published');
+            $table->integer('published')->nullable();
             
-            $table->string('name');
-            $table->string('name_ru');
-            $table->string('name_ka');
+            $table->string('name')->nullable();
+            $table->string('name_ru')->nullable();
+            $table->string('name_ka')->nullable();
             
-            $table->string('description');
-            $table->string('description_ru');
-            $table->string('description_ka');
+            $table->string('description')->nullable();
+            $table->string('description_ru')->nullable();
+            $table->string('description_ka')->nullable();
             
-            $table->text('text');
-            $table->text('text_ru');
-            $table->text('text_ka');
+            $table->text('text')->nullable();
+            $table->text('text_ru')->nullable();
+            $table->text('text_ka')->nullable();
             
-            $table->text('how_get');
-            $table->text('how_get_ru');
-            $table->text('how_get_ka');
+            $table->text('how_get')->nullable();
+            $table->text('how_get_ru')->nullable();
+            $table->text('how_get_ka')->nullable();
             
-            $table->text('best_time');
-            $table->text('best_time_ru');
-            $table->text('best_time_ka');
+            $table->text('best_time')->nullable();
+            $table->text('best_time_ru')->nullable();
+            $table->text('best_time_ka')->nullable();
 
-            $table->text('map');
-            $table->text('weather');
+            $table->text('map')->nullable();
+            $table->text('weather')->nullable();
             
             $table->timestamps();
         });

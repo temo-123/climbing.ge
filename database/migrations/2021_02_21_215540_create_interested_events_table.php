@@ -15,8 +15,8 @@ class CreateInterestedEventsTable extends Migration
     {
         Schema::create('interested_events', function (Blueprint $table) {
             $table->id();
-            $table->integer('user_id');
-            $table->integer('article_id');
+            $table->integer('user_id')->nullable();
+            $table->integer('article_id')->nullable();
             $table->timestamps();
         });
     }

@@ -16,22 +16,22 @@ class CreateSectorsTable extends Migration
         Schema::create('sectors', function (Blueprint $table) {
             $table->id();
 
-            $table->string('name');
-            $table->text('text');
+            $table->string('name')->nullable();
+            $table->text('text')->nullable();
 
-            $table->string('all_day_in_shade');
-            $table->string('all_day_in_sun');
-            $table->string('in_the_shade_afternoon');
-            $table->string('in_the_shade_befornoon');
-            $table->string('in_shade_after_10');
-            $table->string('in_shade_after_15');
+            $table->string('all_day_in_shade')->nullable();
+            $table->string('all_day_in_sun')->nullable();
+            $table->string('in_the_shade_afternoon')->nullable();
+            $table->string('in_the_shade_befornoon')->nullable();
+            $table->string('in_shade_after_10')->nullable();
+            $table->string('in_shade_after_15')->nullable();
             
-            $table->string('overhang');
-            $table->string('slabby');
-            $table->string('vertical');
+            $table->string('overhang')->nullable();
+            $table->string('slabby')->nullable();
+            $table->string('vertical')->nullable();
 
-            $table->integer('num');
-            $table->integer('article_id');
+            $table->integer('num')->nullable();
+            $table->integer('article_id')->nullable();
             
             $table->timestamps();
         });

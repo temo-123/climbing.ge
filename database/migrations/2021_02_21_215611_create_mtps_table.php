@@ -15,11 +15,11 @@ class CreateMtpsTable extends Migration
     {
         Schema::create('mtps', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
-            $table->text('text');
-            $table->integer('height');
-            $table->integer('num');
-            $table->integer('sector_id');
+            $table->string('name')->nullable();
+            $table->text('text')->nullable();
+            $table->integer('height')->nullable();
+            $table->integer('num')->nullable();
+            $table->integer('sector_id')->nullable();
             $table->timestamps();
         });
     }

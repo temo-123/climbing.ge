@@ -14,6 +14,8 @@ use App\Models\Favorite_product;
 
 use App\Models\Product_image;
 
+use App\Services\imageControllService;
+
 class ProductController extends Controller
 {
     public function product_list_page(Request $request)
@@ -234,7 +236,15 @@ class ProductController extends Controller
             $ru_product = Ru_product::where('id',strip_tags($global_product->ru_product_id))->first();
             $ka_product = Ka_product::where('id',strip_tags($global_product->ka_product_id))->first();
 
-            // dd($global_product->us_product_id);
+            // delete product images
+            $product_images = Product_image::where('product_id',strip_tags($global_id))->get();
+            $product_images_count = Product_image::where('product_id',strip_tags($global_id))->count();
+            if ($product_images_count > 0) {
+                foreach ($product_images as $product_image) {
+                    imageControllService::image_delete('product_img', $product_image, $request);
+                    $product_image ->delete();
+                }
+            }
 
             // delete product from db
             $global_product ->delete();
@@ -322,12 +332,8 @@ class ProductController extends Controller
 
             $product_image = Product_image::where('id',strip_tags($product_image_id))->first();
 
-            // dd($product);
-
-            // delete product file
-            // $fileName = $არტიცლე['image'];
-            // $destinationPath = 'images/shop_img/';
-            // File::delete($destinationPath.$fileName);
+            // delite image
+            imageControllService::image_delete('product_img', $product_image, $request);
 
             // delete product from db
             $product_image ->delete();

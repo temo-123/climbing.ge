@@ -146,12 +146,16 @@ class SectorController extends Controller
 
             $sector = Sector::where('id',strip_tags($sector_id))->first();
 
-            // dd($sector);
-
             // delete product file
-            // $fileName = $არტიცლე['image'];
-            // $destinationPath = 'images/shop_img/';
-            // File::delete($destinationPath.$fileName);
+            $sector_images = Sector_image::where('sector_id',strip_tags($sector_id))->get();
+            $sector_images_count = Sector_image::where('sector_id',strip_tags($sector_id))->count();
+            // dd($sector_images_count);
+            if ($sector_images_count > 0) {
+                foreach ($sector_images as $sector_image) {
+                    imageControllService::image_delete('sector_img', $sector_image, $request);
+                    $sector_image ->delete();
+                }
+            }
 
             // delete product from db
             $sector ->delete();

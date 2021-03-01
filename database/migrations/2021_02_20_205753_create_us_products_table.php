@@ -16,11 +16,11 @@ class CreateUsProductsTable extends Migration
         Schema::create('us_products', function (Blueprint $table) {
             $table->id();
 
-            $table->string('title');
-            $table->string('short_description');
-            $table->text('text');
+            $table->string('title')->nullable();
+            $table->string('short_description')->nullable();
+            $table->text('text')->nullable();
             
-            $table->string('meta_keyword');
+            $table->string('meta_keyword')->nullable();
 
             $table->timestamps();
         });

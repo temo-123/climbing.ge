@@ -15,15 +15,15 @@ class CreateGalleriesTable extends Migration
     {
         Schema::create('galleries', function (Blueprint $table) {
             $table->id();
-            $table->integer('published');
-            $table->integer('category');
-            $table->string('title');
-            $table->text('text');
-            $table->string('image');
-            $table->string('filter');
-            $table->integer('index_gallery_image');
-            $table->integer('index_header_image');
-            $table->integer('article_id');
+            $table->integer('published')->nullable();
+            $table->integer('category')->nullable();
+            $table->string('title')->nullable();
+            $table->text('text')->nullable();
+            $table->string('image')->nullable();
+            $table->string('filter')->nullable();
+            $table->integer('index_gallery_image')->nullable();
+            $table->integer('index_header_image')->nullable();
+            $table->integer('article_id')->nullable();
             $table->timestamps();
         });
     }

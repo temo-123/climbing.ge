@@ -108,8 +108,8 @@ class imageControllService
         if(file_exists($file)){
             File::delete($file);
         }else{
-            echo $file;
-            dd('File does not exists.');
+            echo ('<p> File does not exists.</p>');
+            echo ('<p>'.$file.'</p>');
         }
 
         // delete product from db

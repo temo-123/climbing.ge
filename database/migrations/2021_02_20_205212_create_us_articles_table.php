@@ -15,17 +15,17 @@ class CreateUsArticlesTable extends Migration
     {
         Schema::create('us_articles', function (Blueprint $table) {
             $table->id();
-            $table->string('title');
-            $table->string('short_description');
-            $table->text('text');
-            $table->text('route');
-            $table->text('how_get');
-            $table->text('best_time');
-            $table->text('what_need');
-            $table->text('info');
-            $table->text('price_text');
-            $table->string('address');
-            $table->string('meta_keyword');
+            $table->string('title')->nullable();
+            $table->string('short_description')->nullable();
+            $table->text('text')->nullable();
+            $table->text('route')->nullable();
+            $table->text('how_get')->nullable();
+            $table->text('best_time')->nullable();
+            $table->text('what_need')->nullable();
+            $table->text('info')->nullable();
+            $table->text('price_text')->nullable();
+            $table->string('address')->nullable();
+            $table->string('meta_keyword')->nullable();
             $table->timestamps();
         });
     }

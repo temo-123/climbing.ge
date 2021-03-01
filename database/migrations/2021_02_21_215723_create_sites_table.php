@@ -16,57 +16,53 @@ class CreateSitesTable extends Migration
         Schema::create('sites', function (Blueprint $table) {
             $table->id();
             
-            $table->string('title');
-            $table->string('title_ru');
-            $table->string('title_ka');
+            $table->string('title')->nullable();
+            $table->string('title_ru')->nullable();
+            $table->string('title_ka')->nullable();
             
-            $table->text('text');
-            $table->text('text_ru');
-            $table->text('text_ka');
+            $table->text('text')->nullable();
+            $table->text('text_ru')->nullable();
+            $table->text('text_ka')->nullable();
             
-            $table->string('short_description');
-            $table->string('short_description_ru');
-            $table->string('short_description_ka');
+            $table->string('short_description')->nullable();
+            $table->string('short_description_ru')->nullable();
+            $table->string('short_description_ka')->nullable();
             
-            $table->text('other_activity_description');
-            $table->text('other_activity_description_ru');
-            $table->text('other_activity_description_ka');
+            $table->text('other_activity_description')->nullable();
+            $table->text('other_activity_description_ru')->nullable();
+            $table->text('other_activity_description_ka')->nullable();
             
-            $table->text('mount_description');
-            $table->text('mount_description_ru');
-            $table->text('mount_description_ka');
+            $table->text('mount_description')->nullable();
+            $table->text('mount_description_ru')->nullable();
+            $table->text('mount_description_ka')->nullable();
             
-            $table->text('outdoor_description');
-            $table->text('outdoor_description_ru');
-            $table->text('outdoor_description_ka');
+            $table->text('outdoor_description')->nullable();
+            $table->text('outdoor_description_ru')->nullable();
+            $table->text('outdoor_description_ka')->nullable();
             
-            $table->text('indoor_description');
-            $table->text('indoor_description_ru');
-            $table->text('indoor_description_ka');
+            $table->text('indoor_description')->nullable();
+            $table->text('indoor_description_ru')->nullable();
+            $table->text('indoor_description_ka')->nullable();
             
-            $table->text('topo_description');
-            $table->text('topo_description_ru');
-            $table->text('topo_description_ka');
+            $table->text('topo_description')->nullable();
+            $table->text('topo_description_ru')->nullable();
+            $table->text('topo_description_ka')->nullable();
             
-            $table->text('what_we_do_description');
-            $table->text('what_we_do_description_ru');
-            $table->text('what_we_do_description_ka');
+            $table->text('what_we_do_description')->nullable();
+            $table->text('what_we_do_description_ru')->nullable();
+            $table->text('what_we_do_description_ka')->nullable();
             
-            $table->text('shop_description');
-            $table->text('shop_description_ru');
-            $table->text('shop_description_ka');
-            
-            $table->text('meta_description');
-            $table->text('meta_description_ru');
-            $table->text('meta_description_ka');
+            $table->text('shop_description')->nullable();
+            $table->text('shop_description_ru')->nullable();
+            $table->text('shop_description_ka')->nullable();
 
-            $table->string('fb_link');
-            $table->string('inst_link');
-            $table->string('google_link');
-            $table->string('twit_link');
+            $table->string('fb_link')->nullable();
+            $table->string('inst_link')->nullable();
+            $table->string('google_link')->nullable();
+            $table->string('twit_link')->nullable();
 
-            $table->text('email');
-            $table->text('map');
+            $table->text('email')->nullable();
+            $table->text('map')->nullable();
 
             $table->timestamps();
         });

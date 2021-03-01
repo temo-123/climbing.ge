@@ -16,12 +16,12 @@ class CreateStarReviewsTable extends Migration
         Schema::create('star_reviews', function (Blueprint $table) {
             $table->id();
 
-            $table->string('category');
-            $table->string('article_review');
+            $table->string('category')->nullable();
+            $table->string('article_review')->nullable();
 
-            $table->integer('review_value');
-            $table->integer('user_id');
-            $table->integer('sector_id');
+            $table->integer('review_value')->nullable();
+            $table->integer('user_id')->nullable();
+            $table->integer('sector_id')->nullable();
             
             $table->timestamps();
         });
