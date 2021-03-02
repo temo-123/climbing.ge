@@ -63,7 +63,7 @@
                     </div>
 
 
-                    <div class="form-group clearfix">
+                    <div class="form-group clearfix" v-if="this.category == 'outdoor' || this.category == 'ice' || this.category == 'mount_route'">
                         <label for="name" class='col-xs-2 control-label'> Weather </label>
                         <div class="col-xs-8">
                             <!-- <input type="text" name="value name" value="old data" class="form-control"> -->
@@ -73,7 +73,7 @@
 
                     <hr>
 
-                    <div class="form-group clearfix">
+                    <div class="form-group clearfix" v-if="this.category == 'indoor'">
                         <label for="name" class='col-xs-2 control-label'> Minimal price </label>
                         <div class="col-xs-8">
                             <!-- <input type="text" name="value name" value="old data" class="form-control"> -->
@@ -82,16 +82,16 @@
                         </div>
                     </div>
 
-                    <div class="form-group clearfix">
+                    <div class="form-group clearfix" v-if="this.category == 'indoor'">
                         <label for="name" class='col-xs-2 control-label'> Working time </label>
                         <div class="col-xs-8">
                             <input type="text" name="time" value="time" v-model="working_time" class="form-control"> 
                         </div>
                     </div>
 
-                    <hr>
+                    <hr v-if="this.category == 'event'">
 
-                    <div class="form-group clearfix">
+                    <div class="form-group clearfix" v-if="this.category == 'event'">
                         <label for="name" class='col-xs-2 control-label'> Start data </label>
                         <div class="col-xs-4">
                             <input type="text" name="start_data_day" v-model="start_data_day"  class="form-control"> 
@@ -101,7 +101,7 @@
                         </div>
                     </div>
 
-                    <div class="form-group clearfix">
+                    <div class="form-group clearfix" v-if="this.category == 'event'">
                         <label for="name" class='col-xs-2 control-label'> End data </label>
                         <div class="col-xs-4">
                             <input type="text" name="and_data_day" v-model="and_data_day"  class="form-control"> 
@@ -111,9 +111,9 @@
                         </div>
                     </div>
 
-                    <hr>
+                    <hr v-if="this.category == 'event' || this.category == 'partner' || this.category == 'indoor'">
 
-                    <div class="form-group clearfix">
+                    <div class="form-group clearfix" v-if="this.category == 'event' || this.category == 'partner' || this.category == 'indoor'">
                         <label for="name" class='col-xs-2 control-label'> facebook / twitter </label>
                         <div class="col-xs-4">
                             <input type="text" name="fb_link"  v-model="fb_link" class="form-control"> 
@@ -122,7 +122,7 @@
                             <input type="text" name="twit_link"  v-model="twit_link" class="form-control"> 
                         </div>
                     </div>
-                    <div class="form-group clearfix">
+                    <div class="form-group clearfix" v-if="this.category == 'event' || this.category == 'partner' || this.category == 'indoor'">
                         <label for="name" class='col-xs-2 control-label'> google / instagram </label>
                         <div class="col-xs-4">
                             <input type="text" name="google_link"  v-model="google_link" class="form-control"> 
@@ -131,7 +131,7 @@
                             <input type="text" name="inst_link"  v-model="inst_link" class="form-control"> 
                         </div>
                     </div>
-                    <div class="form-group clearfix">
+                    <div class="form-group clearfix" v-if="this.category == 'event' || this.category == 'partner' || this.category == 'indoor'">
                         <label for="name" class='col-xs-2 control-label'> website </label>
                         <div class="col-xs-8">
                             <!-- <input type="text" name="value name" value="old data" class="form-control"> -->
@@ -202,7 +202,7 @@
                         </div>
                     </div>
 
-                    <div class="form-group clearfix">
+                    <div class="form-group clearfix" v-if="this.category == 'outdoor'">
                         <label for="name" class='col-xs-2 control-label'> Routes description </label>
                         <div class="col-xs-8">
                             <ckeditor :editor="editor" v-model="us_route" :config="editorConfig"></ckeditor>
@@ -218,7 +218,7 @@
                         </div>
                     </div>
 
-                    <div class="form-group clearfix">
+                    <div class="form-group clearfix" v-if="this.category == 'outdoor' || this.category == 'ice' || this.category == 'mount_route' ">
                         <label for="name" class='col-xs-2 control-label'> Best time for climbing </label>
                         <div class="col-xs-8">
                             <ckeditor :editor="editor" v-model="us_best_time" :config="editorConfig"></ckeditor>
@@ -226,7 +226,7 @@
                         </div>
                     </div>
 
-                    <div class="form-group clearfix">
+                    <div class="form-group clearfix" v-if="this.category == 'outdoor' || this.category == 'ice' || this.category == 'mount_route' ">
                         <label for="name" class='col-xs-2 control-label'> what you need </label>
                         <div class="col-xs-8">
                             <ckeditor :editor="editor" v-model="us_what_need" :config="editorConfig"></ckeditor>
@@ -242,7 +242,7 @@
                         </div>
                     </div>
 
-                    <div class="form-group clearfix">
+                    <div class="form-group clearfix" v-if="this.category == 'indoor'">
                         <label for="name" class='col-xs-2 control-label'> Price description </label>
                         <div class="col-xs-8">
                             <ckeditor :editor="editor" v-model="us_price_text" :config="editorConfig"></ckeditor>
@@ -302,7 +302,7 @@
                         </div>
                     </div>
 
-                    <div class="form-group clearfix">
+                    <div class="form-group clearfix" v-if="this.category == 'outdoor'">
                         <label for="name" class='col-xs-2 control-label'> Routes description </label>
                         <div class="col-xs-8">
                             <ckeditor :editor="editor" v-model="ru_route" :config="editorConfig"></ckeditor>
@@ -318,7 +318,7 @@
                         </div>
                     </div>
 
-                    <div class="form-group clearfix">
+                    <div class="form-group clearfix" v-if="this.category == 'outdoor' || this.category == 'ice' || this.category == 'mount_route' ">
                         <label for="name" class='col-xs-2 control-label'> Best time for climbing </label>
                         <div class="col-xs-8">
                             <ckeditor :editor="editor" v-model="ru_best_time" :config="editorConfig"></ckeditor>
@@ -326,7 +326,7 @@
                         </div>
                     </div>
 
-                    <div class="form-group clearfix">
+                    <div class="form-group clearfix" v-if="this.category == 'outdoor' || this.category == 'ice' || this.category == 'mount_route' ">
                         <label for="name" class='col-xs-2 control-label'> what you need </label>
                         <div class="col-xs-8">
                             <ckeditor :editor="editor" v-model="ru_what_need" :config="editorConfig"></ckeditor>
@@ -350,7 +350,7 @@
                         </div>
                     </div> -->
 
-                    <div class="form-group clearfix">
+                    <div class="form-group clearfix" v-if="this.category == 'indoor'">
                         <label for="name" class='col-xs-2 control-label'> Price description </label>
                         <div class="col-xs-8">
                             <ckeditor :editor="editor" v-model="ru_price_text" :config="editorConfig"></ckeditor>
@@ -418,7 +418,7 @@
                         </div>
                     </div>
 
-                    <div class="form-group clearfix">
+                    <div class="form-group clearfix" v-if="this.category == 'outdoor'">
                         <label for="name" class='col-xs-2 control-label'> Routes description </label>
                         <div class="col-xs-8">
                             <ckeditor :editor="editor" v-model="ka_route" :config="editorConfig"></ckeditor>
@@ -434,7 +434,7 @@
                         </div>
                     </div>
 
-                    <div class="form-group clearfix">
+                    <div class="form-group clearfix" v-if="this.category == 'outdoor' || this.category == 'ice' || this.category == 'mount_route' ">
                         <label for="name" class='col-xs-2 control-label'> Best time for climbing </label>
                         <div class="col-xs-8">
                             <ckeditor :editor="editor" v-model="ka_best_time" :config="editorConfig"></ckeditor>
@@ -442,7 +442,7 @@
                         </div>
                     </div>
 
-                    <div class="form-group clearfix">
+                    <div class="form-group clearfix" v-if="this.category == 'outdoor' || this.category == 'ice' || this.category == 'mount_route' ">
                         <label for="name" class='col-xs-2 control-label'> what you need </label>
                         <div class="col-xs-8">
                             <ckeditor :editor="editor" v-model="ka_what_need" :config="editorConfig"></ckeditor>
@@ -465,7 +465,7 @@
                         </div>
                     </div> -->
 
-                    <div class="form-group clearfix">
+                    <div class="form-group clearfix" v-if="this.category == 'indoor'">
                         <label for="name" class='col-xs-2 control-label'> Price description </label>
                         <div class="col-xs-8">
                             <ckeditor :editor="editor" v-model="ka_price_description" :config="editorConfig"></ckeditor>

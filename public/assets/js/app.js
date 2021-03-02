@@ -53505,36 +53505,34 @@ var render = function() {
                   ])
                 : _vm._e(),
               _vm._v(" "),
-              this.category == "indoor"
-                ? _c("div", { staticClass: "form-group clearfix" }, [
-                    _c(
-                      "label",
-                      {
-                        staticClass: "col-xs-2 control-label",
-                        attrs: { for: "name" }
-                      },
-                      [_vm._v(" Info / contact ")]
-                    ),
-                    _vm._v(" "),
-                    _c(
-                      "div",
-                      { staticClass: "col-xs-8" },
-                      [
-                        _c("ckeditor", {
-                          attrs: { config: _vm.editorConfig },
-                          model: {
-                            value: _vm.us_info,
-                            callback: function($$v) {
-                              _vm.us_info = $$v
-                            },
-                            expression: "us_info"
-                          }
-                        })
-                      ],
-                      1
-                    )
-                  ])
-                : _vm._e(),
+              _c("div", { staticClass: "form-group clearfix" }, [
+                _c(
+                  "label",
+                  {
+                    staticClass: "col-xs-2 control-label",
+                    attrs: { for: "name" }
+                  },
+                  [_vm._v(" Info / contact ")]
+                ),
+                _vm._v(" "),
+                _c(
+                  "div",
+                  { staticClass: "col-xs-8" },
+                  [
+                    _c("ckeditor", {
+                      attrs: { config: _vm.editorConfig },
+                      model: {
+                        value: _vm.us_info,
+                        callback: function($$v) {
+                          _vm.us_info = $$v
+                        },
+                        expression: "us_info"
+                      }
+                    })
+                  ],
+                  1
+                )
+              ]),
               _vm._v(" "),
               this.category == "indoor"
                 ? _c("div", { staticClass: "form-group clearfix" }, [
@@ -54573,391 +54571,419 @@ var render = function() {
                 ])
               ]),
               _vm._v(" "),
-              _c("div", { staticClass: "form-group clearfix" }, [
-                _c(
-                  "label",
-                  {
-                    staticClass: "col-xs-2 control-label",
-                    attrs: { for: "name" }
-                  },
-                  [_vm._v(" Weather ")]
-                ),
-                _vm._v(" "),
-                _c("div", { staticClass: "col-xs-8" }, [
-                  _c("input", {
-                    directives: [
+              this.category == "outdoor" ||
+              this.category == "ice" ||
+              this.category == "mount_route"
+                ? _c("div", { staticClass: "form-group clearfix" }, [
+                    _c(
+                      "label",
                       {
-                        name: "model",
-                        rawName: "v-model",
-                        value: _vm.weather,
-                        expression: "weather"
-                      }
-                    ],
-                    staticClass: "form-control",
-                    attrs: { type: "text", name: "weather" },
-                    domProps: { value: _vm.weather },
-                    on: {
-                      input: function($event) {
-                        if ($event.target.composing) {
-                          return
+                        staticClass: "col-xs-2 control-label",
+                        attrs: { for: "name" }
+                      },
+                      [_vm._v(" Weather ")]
+                    ),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "col-xs-8" }, [
+                      _c("input", {
+                        directives: [
+                          {
+                            name: "model",
+                            rawName: "v-model",
+                            value: _vm.weather,
+                            expression: "weather"
+                          }
+                        ],
+                        staticClass: "form-control",
+                        attrs: { type: "text", name: "weather" },
+                        domProps: { value: _vm.weather },
+                        on: {
+                          input: function($event) {
+                            if ($event.target.composing) {
+                              return
+                            }
+                            _vm.weather = $event.target.value
+                          }
                         }
-                        _vm.weather = $event.target.value
-                      }
-                    }
-                  })
-                ])
-              ]),
+                      })
+                    ])
+                  ])
+                : _vm._e(),
               _vm._v(" "),
               _c("hr"),
               _vm._v(" "),
-              _c("div", { staticClass: "form-group clearfix" }, [
-                _c(
-                  "label",
-                  {
-                    staticClass: "col-xs-2 control-label",
-                    attrs: { for: "name" }
-                  },
-                  [_vm._v(" Minimal price ")]
-                ),
-                _vm._v(" "),
-                _c("div", { staticClass: "col-xs-8" }, [
-                  _c("input", {
-                    directives: [
+              this.category == "indoor"
+                ? _c("div", { staticClass: "form-group clearfix" }, [
+                    _c(
+                      "label",
                       {
-                        name: "model",
-                        rawName: "v-model",
-                        value: _vm.price_from,
-                        expression: "price_from"
-                      }
-                    ],
-                    staticClass: "form-control",
-                    attrs: {
-                      type: "text",
-                      name: "price_from",
-                      value: "price_from"
-                    },
-                    domProps: { value: _vm.price_from },
-                    on: {
-                      input: function($event) {
-                        if ($event.target.composing) {
-                          return
+                        staticClass: "col-xs-2 control-label",
+                        attrs: { for: "name" }
+                      },
+                      [_vm._v(" Minimal price ")]
+                    ),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "col-xs-8" }, [
+                      _c("input", {
+                        directives: [
+                          {
+                            name: "model",
+                            rawName: "v-model",
+                            value: _vm.price_from,
+                            expression: "price_from"
+                          }
+                        ],
+                        staticClass: "form-control",
+                        attrs: {
+                          type: "text",
+                          name: "price_from",
+                          value: "price_from"
+                        },
+                        domProps: { value: _vm.price_from },
+                        on: {
+                          input: function($event) {
+                            if ($event.target.composing) {
+                              return
+                            }
+                            _vm.price_from = $event.target.value
+                          }
                         }
-                        _vm.price_from = $event.target.value
-                      }
-                    }
-                  })
-                ])
-              ]),
+                      })
+                    ])
+                  ])
+                : _vm._e(),
               _vm._v(" "),
-              _c("div", { staticClass: "form-group clearfix" }, [
-                _c(
-                  "label",
-                  {
-                    staticClass: "col-xs-2 control-label",
-                    attrs: { for: "name" }
-                  },
-                  [_vm._v(" Working time ")]
-                ),
-                _vm._v(" "),
-                _c("div", { staticClass: "col-xs-8" }, [
-                  _c("input", {
-                    directives: [
+              this.category == "indoor"
+                ? _c("div", { staticClass: "form-group clearfix" }, [
+                    _c(
+                      "label",
                       {
-                        name: "model",
-                        rawName: "v-model",
-                        value: _vm.working_time,
-                        expression: "working_time"
-                      }
-                    ],
-                    staticClass: "form-control",
-                    attrs: { type: "text", name: "time", value: "time" },
-                    domProps: { value: _vm.working_time },
-                    on: {
-                      input: function($event) {
-                        if ($event.target.composing) {
-                          return
+                        staticClass: "col-xs-2 control-label",
+                        attrs: { for: "name" }
+                      },
+                      [_vm._v(" Working time ")]
+                    ),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "col-xs-8" }, [
+                      _c("input", {
+                        directives: [
+                          {
+                            name: "model",
+                            rawName: "v-model",
+                            value: _vm.working_time,
+                            expression: "working_time"
+                          }
+                        ],
+                        staticClass: "form-control",
+                        attrs: { type: "text", name: "time", value: "time" },
+                        domProps: { value: _vm.working_time },
+                        on: {
+                          input: function($event) {
+                            if ($event.target.composing) {
+                              return
+                            }
+                            _vm.working_time = $event.target.value
+                          }
                         }
-                        _vm.working_time = $event.target.value
-                      }
-                    }
-                  })
-                ])
-              ]),
+                      })
+                    ])
+                  ])
+                : _vm._e(),
               _vm._v(" "),
-              _c("hr"),
+              this.category == "event" ? _c("hr") : _vm._e(),
               _vm._v(" "),
-              _c("div", { staticClass: "form-group clearfix" }, [
-                _c(
-                  "label",
-                  {
-                    staticClass: "col-xs-2 control-label",
-                    attrs: { for: "name" }
-                  },
-                  [_vm._v(" Start data ")]
-                ),
-                _vm._v(" "),
-                _c("div", { staticClass: "col-xs-4" }, [
-                  _c("input", {
-                    directives: [
+              this.category == "event"
+                ? _c("div", { staticClass: "form-group clearfix" }, [
+                    _c(
+                      "label",
                       {
-                        name: "model",
-                        rawName: "v-model",
-                        value: _vm.start_data_day,
-                        expression: "start_data_day"
-                      }
-                    ],
-                    staticClass: "form-control",
-                    attrs: { type: "text", name: "start_data_day" },
-                    domProps: { value: _vm.start_data_day },
-                    on: {
-                      input: function($event) {
-                        if ($event.target.composing) {
-                          return
+                        staticClass: "col-xs-2 control-label",
+                        attrs: { for: "name" }
+                      },
+                      [_vm._v(" Start data ")]
+                    ),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "col-xs-4" }, [
+                      _c("input", {
+                        directives: [
+                          {
+                            name: "model",
+                            rawName: "v-model",
+                            value: _vm.start_data_day,
+                            expression: "start_data_day"
+                          }
+                        ],
+                        staticClass: "form-control",
+                        attrs: { type: "text", name: "start_data_day" },
+                        domProps: { value: _vm.start_data_day },
+                        on: {
+                          input: function($event) {
+                            if ($event.target.composing) {
+                              return
+                            }
+                            _vm.start_data_day = $event.target.value
+                          }
                         }
-                        _vm.start_data_day = $event.target.value
-                      }
-                    }
-                  })
-                ]),
-                _vm._v(" "),
-                _c("div", { staticClass: "col-xs-4" }, [
-                  _c("input", {
-                    directives: [
-                      {
-                        name: "model",
-                        rawName: "v-model",
-                        value: _vm.start_data_month,
-                        expression: "start_data_month"
-                      }
-                    ],
-                    staticClass: "form-control",
-                    attrs: { type: "text", name: "start_data_month" },
-                    domProps: { value: _vm.start_data_month },
-                    on: {
-                      input: function($event) {
-                        if ($event.target.composing) {
-                          return
+                      })
+                    ]),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "col-xs-4" }, [
+                      _c("input", {
+                        directives: [
+                          {
+                            name: "model",
+                            rawName: "v-model",
+                            value: _vm.start_data_month,
+                            expression: "start_data_month"
+                          }
+                        ],
+                        staticClass: "form-control",
+                        attrs: { type: "text", name: "start_data_month" },
+                        domProps: { value: _vm.start_data_month },
+                        on: {
+                          input: function($event) {
+                            if ($event.target.composing) {
+                              return
+                            }
+                            _vm.start_data_month = $event.target.value
+                          }
                         }
-                        _vm.start_data_month = $event.target.value
-                      }
-                    }
-                  })
-                ])
-              ]),
+                      })
+                    ])
+                  ])
+                : _vm._e(),
               _vm._v(" "),
-              _c("div", { staticClass: "form-group clearfix" }, [
-                _c(
-                  "label",
-                  {
-                    staticClass: "col-xs-2 control-label",
-                    attrs: { for: "name" }
-                  },
-                  [_vm._v(" End data ")]
-                ),
-                _vm._v(" "),
-                _c("div", { staticClass: "col-xs-4" }, [
-                  _c("input", {
-                    directives: [
+              this.category == "event"
+                ? _c("div", { staticClass: "form-group clearfix" }, [
+                    _c(
+                      "label",
                       {
-                        name: "model",
-                        rawName: "v-model",
-                        value: _vm.and_data_day,
-                        expression: "and_data_day"
-                      }
-                    ],
-                    staticClass: "form-control",
-                    attrs: { type: "text", name: "and_data_day" },
-                    domProps: { value: _vm.and_data_day },
-                    on: {
-                      input: function($event) {
-                        if ($event.target.composing) {
-                          return
+                        staticClass: "col-xs-2 control-label",
+                        attrs: { for: "name" }
+                      },
+                      [_vm._v(" End data ")]
+                    ),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "col-xs-4" }, [
+                      _c("input", {
+                        directives: [
+                          {
+                            name: "model",
+                            rawName: "v-model",
+                            value: _vm.and_data_day,
+                            expression: "and_data_day"
+                          }
+                        ],
+                        staticClass: "form-control",
+                        attrs: { type: "text", name: "and_data_day" },
+                        domProps: { value: _vm.and_data_day },
+                        on: {
+                          input: function($event) {
+                            if ($event.target.composing) {
+                              return
+                            }
+                            _vm.and_data_day = $event.target.value
+                          }
                         }
-                        _vm.and_data_day = $event.target.value
-                      }
-                    }
-                  })
-                ]),
-                _vm._v(" "),
-                _c("div", { staticClass: "col-xs-4" }, [
-                  _c("input", {
-                    directives: [
-                      {
-                        name: "model",
-                        rawName: "v-model",
-                        value: _vm.and_data_month,
-                        expression: "and_data_month"
-                      }
-                    ],
-                    staticClass: "form-control",
-                    attrs: { type: "text", name: "and_data_month" },
-                    domProps: { value: _vm.and_data_month },
-                    on: {
-                      input: function($event) {
-                        if ($event.target.composing) {
-                          return
+                      })
+                    ]),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "col-xs-4" }, [
+                      _c("input", {
+                        directives: [
+                          {
+                            name: "model",
+                            rawName: "v-model",
+                            value: _vm.and_data_month,
+                            expression: "and_data_month"
+                          }
+                        ],
+                        staticClass: "form-control",
+                        attrs: { type: "text", name: "and_data_month" },
+                        domProps: { value: _vm.and_data_month },
+                        on: {
+                          input: function($event) {
+                            if ($event.target.composing) {
+                              return
+                            }
+                            _vm.and_data_month = $event.target.value
+                          }
                         }
-                        _vm.and_data_month = $event.target.value
-                      }
-                    }
-                  })
-                ])
-              ]),
+                      })
+                    ])
+                  ])
+                : _vm._e(),
               _vm._v(" "),
-              _c("hr"),
+              this.category == "event" ||
+              this.category == "partner" ||
+              this.category == "indoor"
+                ? _c("hr")
+                : _vm._e(),
               _vm._v(" "),
-              _c("div", { staticClass: "form-group clearfix" }, [
-                _c(
-                  "label",
-                  {
-                    staticClass: "col-xs-2 control-label",
-                    attrs: { for: "name" }
-                  },
-                  [_vm._v(" facebook / twitter ")]
-                ),
-                _vm._v(" "),
-                _c("div", { staticClass: "col-xs-4" }, [
-                  _c("input", {
-                    directives: [
+              this.category == "event" ||
+              this.category == "partner" ||
+              this.category == "indoor"
+                ? _c("div", { staticClass: "form-group clearfix" }, [
+                    _c(
+                      "label",
                       {
-                        name: "model",
-                        rawName: "v-model",
-                        value: _vm.fb_link,
-                        expression: "fb_link"
-                      }
-                    ],
-                    staticClass: "form-control",
-                    attrs: { type: "text", name: "fb_link" },
-                    domProps: { value: _vm.fb_link },
-                    on: {
-                      input: function($event) {
-                        if ($event.target.composing) {
-                          return
+                        staticClass: "col-xs-2 control-label",
+                        attrs: { for: "name" }
+                      },
+                      [_vm._v(" facebook / twitter ")]
+                    ),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "col-xs-4" }, [
+                      _c("input", {
+                        directives: [
+                          {
+                            name: "model",
+                            rawName: "v-model",
+                            value: _vm.fb_link,
+                            expression: "fb_link"
+                          }
+                        ],
+                        staticClass: "form-control",
+                        attrs: { type: "text", name: "fb_link" },
+                        domProps: { value: _vm.fb_link },
+                        on: {
+                          input: function($event) {
+                            if ($event.target.composing) {
+                              return
+                            }
+                            _vm.fb_link = $event.target.value
+                          }
                         }
-                        _vm.fb_link = $event.target.value
-                      }
-                    }
-                  })
-                ]),
-                _vm._v(" "),
-                _c("div", { staticClass: "col-xs-4" }, [
-                  _c("input", {
-                    directives: [
-                      {
-                        name: "model",
-                        rawName: "v-model",
-                        value: _vm.twit_link,
-                        expression: "twit_link"
-                      }
-                    ],
-                    staticClass: "form-control",
-                    attrs: { type: "text", name: "twit_link" },
-                    domProps: { value: _vm.twit_link },
-                    on: {
-                      input: function($event) {
-                        if ($event.target.composing) {
-                          return
+                      })
+                    ]),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "col-xs-4" }, [
+                      _c("input", {
+                        directives: [
+                          {
+                            name: "model",
+                            rawName: "v-model",
+                            value: _vm.twit_link,
+                            expression: "twit_link"
+                          }
+                        ],
+                        staticClass: "form-control",
+                        attrs: { type: "text", name: "twit_link" },
+                        domProps: { value: _vm.twit_link },
+                        on: {
+                          input: function($event) {
+                            if ($event.target.composing) {
+                              return
+                            }
+                            _vm.twit_link = $event.target.value
+                          }
                         }
-                        _vm.twit_link = $event.target.value
-                      }
-                    }
-                  })
-                ])
-              ]),
+                      })
+                    ])
+                  ])
+                : _vm._e(),
               _vm._v(" "),
-              _c("div", { staticClass: "form-group clearfix" }, [
-                _c(
-                  "label",
-                  {
-                    staticClass: "col-xs-2 control-label",
-                    attrs: { for: "name" }
-                  },
-                  [_vm._v(" google / instagram ")]
-                ),
-                _vm._v(" "),
-                _c("div", { staticClass: "col-xs-4" }, [
-                  _c("input", {
-                    directives: [
+              this.category == "event" ||
+              this.category == "partner" ||
+              this.category == "indoor"
+                ? _c("div", { staticClass: "form-group clearfix" }, [
+                    _c(
+                      "label",
                       {
-                        name: "model",
-                        rawName: "v-model",
-                        value: _vm.google_link,
-                        expression: "google_link"
-                      }
-                    ],
-                    staticClass: "form-control",
-                    attrs: { type: "text", name: "google_link" },
-                    domProps: { value: _vm.google_link },
-                    on: {
-                      input: function($event) {
-                        if ($event.target.composing) {
-                          return
+                        staticClass: "col-xs-2 control-label",
+                        attrs: { for: "name" }
+                      },
+                      [_vm._v(" google / instagram ")]
+                    ),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "col-xs-4" }, [
+                      _c("input", {
+                        directives: [
+                          {
+                            name: "model",
+                            rawName: "v-model",
+                            value: _vm.google_link,
+                            expression: "google_link"
+                          }
+                        ],
+                        staticClass: "form-control",
+                        attrs: { type: "text", name: "google_link" },
+                        domProps: { value: _vm.google_link },
+                        on: {
+                          input: function($event) {
+                            if ($event.target.composing) {
+                              return
+                            }
+                            _vm.google_link = $event.target.value
+                          }
                         }
-                        _vm.google_link = $event.target.value
-                      }
-                    }
-                  })
-                ]),
-                _vm._v(" "),
-                _c("div", { staticClass: "col-xs-4" }, [
-                  _c("input", {
-                    directives: [
-                      {
-                        name: "model",
-                        rawName: "v-model",
-                        value: _vm.inst_link,
-                        expression: "inst_link"
-                      }
-                    ],
-                    staticClass: "form-control",
-                    attrs: { type: "text", name: "inst_link" },
-                    domProps: { value: _vm.inst_link },
-                    on: {
-                      input: function($event) {
-                        if ($event.target.composing) {
-                          return
+                      })
+                    ]),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "col-xs-4" }, [
+                      _c("input", {
+                        directives: [
+                          {
+                            name: "model",
+                            rawName: "v-model",
+                            value: _vm.inst_link,
+                            expression: "inst_link"
+                          }
+                        ],
+                        staticClass: "form-control",
+                        attrs: { type: "text", name: "inst_link" },
+                        domProps: { value: _vm.inst_link },
+                        on: {
+                          input: function($event) {
+                            if ($event.target.composing) {
+                              return
+                            }
+                            _vm.inst_link = $event.target.value
+                          }
                         }
-                        _vm.inst_link = $event.target.value
-                      }
-                    }
-                  })
-                ])
-              ]),
+                      })
+                    ])
+                  ])
+                : _vm._e(),
               _vm._v(" "),
-              _c("div", { staticClass: "form-group clearfix" }, [
-                _c(
-                  "label",
-                  {
-                    staticClass: "col-xs-2 control-label",
-                    attrs: { for: "name" }
-                  },
-                  [_vm._v(" website ")]
-                ),
-                _vm._v(" "),
-                _c("div", { staticClass: "col-xs-8" }, [
-                  _c("input", {
-                    directives: [
+              this.category == "event" ||
+              this.category == "partner" ||
+              this.category == "indoor"
+                ? _c("div", { staticClass: "form-group clearfix" }, [
+                    _c(
+                      "label",
                       {
-                        name: "model",
-                        rawName: "v-model",
-                        value: _vm.web_link,
-                        expression: "web_link"
-                      }
-                    ],
-                    staticClass: "form-control",
-                    attrs: { type: "text", name: "web_link" },
-                    domProps: { value: _vm.web_link },
-                    on: {
-                      input: function($event) {
-                        if ($event.target.composing) {
-                          return
+                        staticClass: "col-xs-2 control-label",
+                        attrs: { for: "name" }
+                      },
+                      [_vm._v(" website ")]
+                    ),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "col-xs-8" }, [
+                      _c("input", {
+                        directives: [
+                          {
+                            name: "model",
+                            rawName: "v-model",
+                            value: _vm.web_link,
+                            expression: "web_link"
+                          }
+                        ],
+                        staticClass: "form-control",
+                        attrs: { type: "text", name: "web_link" },
+                        domProps: { value: _vm.web_link },
+                        on: {
+                          input: function($event) {
+                            if ($event.target.composing) {
+                              return
+                            }
+                            _vm.web_link = $event.target.value
+                          }
                         }
-                        _vm.web_link = $event.target.value
-                      }
-                    }
-                  })
-                ])
-              ])
+                      })
+                    ])
+                  ])
+                : _vm._e()
             ]
           ),
           _vm._v(" "),
@@ -55131,34 +55157,39 @@ var render = function() {
                 )
               ]),
               _vm._v(" "),
-              _c("div", { staticClass: "form-group clearfix" }, [
-                _c(
-                  "label",
-                  {
-                    staticClass: "col-xs-2 control-label",
-                    attrs: { for: "name" }
-                  },
-                  [_vm._v(" Routes description ")]
-                ),
-                _vm._v(" "),
-                _c(
-                  "div",
-                  { staticClass: "col-xs-8" },
-                  [
-                    _c("ckeditor", {
-                      attrs: { editor: _vm.editor, config: _vm.editorConfig },
-                      model: {
-                        value: _vm.us_route,
-                        callback: function($$v) {
-                          _vm.us_route = $$v
-                        },
-                        expression: "us_route"
-                      }
-                    })
-                  ],
-                  1
-                )
-              ]),
+              this.category == "outdoor"
+                ? _c("div", { staticClass: "form-group clearfix" }, [
+                    _c(
+                      "label",
+                      {
+                        staticClass: "col-xs-2 control-label",
+                        attrs: { for: "name" }
+                      },
+                      [_vm._v(" Routes description ")]
+                    ),
+                    _vm._v(" "),
+                    _c(
+                      "div",
+                      { staticClass: "col-xs-8" },
+                      [
+                        _c("ckeditor", {
+                          attrs: {
+                            editor: _vm.editor,
+                            config: _vm.editorConfig
+                          },
+                          model: {
+                            value: _vm.us_route,
+                            callback: function($$v) {
+                              _vm.us_route = $$v
+                            },
+                            expression: "us_route"
+                          }
+                        })
+                      ],
+                      1
+                    )
+                  ])
+                : _vm._e(),
               _vm._v(" "),
               _c("div", { staticClass: "form-group clearfix" }, [
                 _c(
@@ -55189,63 +55220,77 @@ var render = function() {
                 )
               ]),
               _vm._v(" "),
-              _c("div", { staticClass: "form-group clearfix" }, [
-                _c(
-                  "label",
-                  {
-                    staticClass: "col-xs-2 control-label",
-                    attrs: { for: "name" }
-                  },
-                  [_vm._v(" Best time for climbing ")]
-                ),
-                _vm._v(" "),
-                _c(
-                  "div",
-                  { staticClass: "col-xs-8" },
-                  [
-                    _c("ckeditor", {
-                      attrs: { editor: _vm.editor, config: _vm.editorConfig },
-                      model: {
-                        value: _vm.us_best_time,
-                        callback: function($$v) {
-                          _vm.us_best_time = $$v
-                        },
-                        expression: "us_best_time"
-                      }
-                    })
-                  ],
-                  1
-                )
-              ]),
+              this.category == "outdoor" ||
+              this.category == "ice" ||
+              this.category == "mount_route"
+                ? _c("div", { staticClass: "form-group clearfix" }, [
+                    _c(
+                      "label",
+                      {
+                        staticClass: "col-xs-2 control-label",
+                        attrs: { for: "name" }
+                      },
+                      [_vm._v(" Best time for climbing ")]
+                    ),
+                    _vm._v(" "),
+                    _c(
+                      "div",
+                      { staticClass: "col-xs-8" },
+                      [
+                        _c("ckeditor", {
+                          attrs: {
+                            editor: _vm.editor,
+                            config: _vm.editorConfig
+                          },
+                          model: {
+                            value: _vm.us_best_time,
+                            callback: function($$v) {
+                              _vm.us_best_time = $$v
+                            },
+                            expression: "us_best_time"
+                          }
+                        })
+                      ],
+                      1
+                    )
+                  ])
+                : _vm._e(),
               _vm._v(" "),
-              _c("div", { staticClass: "form-group clearfix" }, [
-                _c(
-                  "label",
-                  {
-                    staticClass: "col-xs-2 control-label",
-                    attrs: { for: "name" }
-                  },
-                  [_vm._v(" what you need ")]
-                ),
-                _vm._v(" "),
-                _c(
-                  "div",
-                  { staticClass: "col-xs-8" },
-                  [
-                    _c("ckeditor", {
-                      attrs: { editor: _vm.editor, config: _vm.editorConfig },
-                      model: {
-                        value: _vm.us_what_need,
-                        callback: function($$v) {
-                          _vm.us_what_need = $$v
-                        },
-                        expression: "us_what_need"
-                      }
-                    })
-                  ],
-                  1
-                )
-              ]),
+              this.category == "outdoor" ||
+              this.category == "ice" ||
+              this.category == "mount_route"
+                ? _c("div", { staticClass: "form-group clearfix" }, [
+                    _c(
+                      "label",
+                      {
+                        staticClass: "col-xs-2 control-label",
+                        attrs: { for: "name" }
+                      },
+                      [_vm._v(" what you need ")]
+                    ),
+                    _vm._v(" "),
+                    _c(
+                      "div",
+                      { staticClass: "col-xs-8" },
+                      [
+                        _c("ckeditor", {
+                          attrs: {
+                            editor: _vm.editor,
+                            config: _vm.editorConfig
+                          },
+                          model: {
+                            value: _vm.us_what_need,
+                            callback: function($$v) {
+                              _vm.us_what_need = $$v
+                            },
+                            expression: "us_what_need"
+                          }
+                        })
+                      ],
+                      1
+                    )
+                  ])
+                : _vm._e(),
               _vm._v(" "),
               _c("div", { staticClass: "form-group clearfix" }, [
                 _c(
@@ -55276,34 +55321,39 @@ var render = function() {
                 )
               ]),
               _vm._v(" "),
-              _c("div", { staticClass: "form-group clearfix" }, [
-                _c(
-                  "label",
-                  {
-                    staticClass: "col-xs-2 control-label",
-                    attrs: { for: "name" }
-                  },
-                  [_vm._v(" Price description ")]
-                ),
-                _vm._v(" "),
-                _c(
-                  "div",
-                  { staticClass: "col-xs-8" },
-                  [
-                    _c("ckeditor", {
-                      attrs: { editor: _vm.editor, config: _vm.editorConfig },
-                      model: {
-                        value: _vm.us_price_text,
-                        callback: function($$v) {
-                          _vm.us_price_text = $$v
-                        },
-                        expression: "us_price_text"
-                      }
-                    })
-                  ],
-                  1
-                )
-              ]),
+              this.category == "indoor"
+                ? _c("div", { staticClass: "form-group clearfix" }, [
+                    _c(
+                      "label",
+                      {
+                        staticClass: "col-xs-2 control-label",
+                        attrs: { for: "name" }
+                      },
+                      [_vm._v(" Price description ")]
+                    ),
+                    _vm._v(" "),
+                    _c(
+                      "div",
+                      { staticClass: "col-xs-8" },
+                      [
+                        _c("ckeditor", {
+                          attrs: {
+                            editor: _vm.editor,
+                            config: _vm.editorConfig
+                          },
+                          model: {
+                            value: _vm.us_price_text,
+                            callback: function($$v) {
+                              _vm.us_price_text = $$v
+                            },
+                            expression: "us_price_text"
+                          }
+                        })
+                      ],
+                      1
+                    )
+                  ])
+                : _vm._e(),
               _vm._v(" "),
               _c("hr"),
               _vm._v(" "),
@@ -55490,34 +55540,39 @@ var render = function() {
                 )
               ]),
               _vm._v(" "),
-              _c("div", { staticClass: "form-group clearfix" }, [
-                _c(
-                  "label",
-                  {
-                    staticClass: "col-xs-2 control-label",
-                    attrs: { for: "name" }
-                  },
-                  [_vm._v(" Routes description ")]
-                ),
-                _vm._v(" "),
-                _c(
-                  "div",
-                  { staticClass: "col-xs-8" },
-                  [
-                    _c("ckeditor", {
-                      attrs: { editor: _vm.editor, config: _vm.editorConfig },
-                      model: {
-                        value: _vm.ru_route,
-                        callback: function($$v) {
-                          _vm.ru_route = $$v
-                        },
-                        expression: "ru_route"
-                      }
-                    })
-                  ],
-                  1
-                )
-              ]),
+              this.category == "outdoor"
+                ? _c("div", { staticClass: "form-group clearfix" }, [
+                    _c(
+                      "label",
+                      {
+                        staticClass: "col-xs-2 control-label",
+                        attrs: { for: "name" }
+                      },
+                      [_vm._v(" Routes description ")]
+                    ),
+                    _vm._v(" "),
+                    _c(
+                      "div",
+                      { staticClass: "col-xs-8" },
+                      [
+                        _c("ckeditor", {
+                          attrs: {
+                            editor: _vm.editor,
+                            config: _vm.editorConfig
+                          },
+                          model: {
+                            value: _vm.ru_route,
+                            callback: function($$v) {
+                              _vm.ru_route = $$v
+                            },
+                            expression: "ru_route"
+                          }
+                        })
+                      ],
+                      1
+                    )
+                  ])
+                : _vm._e(),
               _vm._v(" "),
               _c("div", { staticClass: "form-group clearfix" }, [
                 _c(
@@ -55548,63 +55603,77 @@ var render = function() {
                 )
               ]),
               _vm._v(" "),
-              _c("div", { staticClass: "form-group clearfix" }, [
-                _c(
-                  "label",
-                  {
-                    staticClass: "col-xs-2 control-label",
-                    attrs: { for: "name" }
-                  },
-                  [_vm._v(" Best time for climbing ")]
-                ),
-                _vm._v(" "),
-                _c(
-                  "div",
-                  { staticClass: "col-xs-8" },
-                  [
-                    _c("ckeditor", {
-                      attrs: { editor: _vm.editor, config: _vm.editorConfig },
-                      model: {
-                        value: _vm.ru_best_time,
-                        callback: function($$v) {
-                          _vm.ru_best_time = $$v
-                        },
-                        expression: "ru_best_time"
-                      }
-                    })
-                  ],
-                  1
-                )
-              ]),
+              this.category == "outdoor" ||
+              this.category == "ice" ||
+              this.category == "mount_route"
+                ? _c("div", { staticClass: "form-group clearfix" }, [
+                    _c(
+                      "label",
+                      {
+                        staticClass: "col-xs-2 control-label",
+                        attrs: { for: "name" }
+                      },
+                      [_vm._v(" Best time for climbing ")]
+                    ),
+                    _vm._v(" "),
+                    _c(
+                      "div",
+                      { staticClass: "col-xs-8" },
+                      [
+                        _c("ckeditor", {
+                          attrs: {
+                            editor: _vm.editor,
+                            config: _vm.editorConfig
+                          },
+                          model: {
+                            value: _vm.ru_best_time,
+                            callback: function($$v) {
+                              _vm.ru_best_time = $$v
+                            },
+                            expression: "ru_best_time"
+                          }
+                        })
+                      ],
+                      1
+                    )
+                  ])
+                : _vm._e(),
               _vm._v(" "),
-              _c("div", { staticClass: "form-group clearfix" }, [
-                _c(
-                  "label",
-                  {
-                    staticClass: "col-xs-2 control-label",
-                    attrs: { for: "name" }
-                  },
-                  [_vm._v(" what you need ")]
-                ),
-                _vm._v(" "),
-                _c(
-                  "div",
-                  { staticClass: "col-xs-8" },
-                  [
-                    _c("ckeditor", {
-                      attrs: { editor: _vm.editor, config: _vm.editorConfig },
-                      model: {
-                        value: _vm.ru_what_need,
-                        callback: function($$v) {
-                          _vm.ru_what_need = $$v
-                        },
-                        expression: "ru_what_need"
-                      }
-                    })
-                  ],
-                  1
-                )
-              ]),
+              this.category == "outdoor" ||
+              this.category == "ice" ||
+              this.category == "mount_route"
+                ? _c("div", { staticClass: "form-group clearfix" }, [
+                    _c(
+                      "label",
+                      {
+                        staticClass: "col-xs-2 control-label",
+                        attrs: { for: "name" }
+                      },
+                      [_vm._v(" what you need ")]
+                    ),
+                    _vm._v(" "),
+                    _c(
+                      "div",
+                      { staticClass: "col-xs-8" },
+                      [
+                        _c("ckeditor", {
+                          attrs: {
+                            editor: _vm.editor,
+                            config: _vm.editorConfig
+                          },
+                          model: {
+                            value: _vm.ru_what_need,
+                            callback: function($$v) {
+                              _vm.ru_what_need = $$v
+                            },
+                            expression: "ru_what_need"
+                          }
+                        })
+                      ],
+                      1
+                    )
+                  ])
+                : _vm._e(),
               _vm._v(" "),
               _c("div", { staticClass: "form-group clearfix" }, [
                 _c(
@@ -55635,34 +55704,39 @@ var render = function() {
                 )
               ]),
               _vm._v(" "),
-              _c("div", { staticClass: "form-group clearfix" }, [
-                _c(
-                  "label",
-                  {
-                    staticClass: "col-xs-2 control-label",
-                    attrs: { for: "name" }
-                  },
-                  [_vm._v(" Price description ")]
-                ),
-                _vm._v(" "),
-                _c(
-                  "div",
-                  { staticClass: "col-xs-8" },
-                  [
-                    _c("ckeditor", {
-                      attrs: { editor: _vm.editor, config: _vm.editorConfig },
-                      model: {
-                        value: _vm.ru_price_text,
-                        callback: function($$v) {
-                          _vm.ru_price_text = $$v
-                        },
-                        expression: "ru_price_text"
-                      }
-                    })
-                  ],
-                  1
-                )
-              ]),
+              this.category == "indoor"
+                ? _c("div", { staticClass: "form-group clearfix" }, [
+                    _c(
+                      "label",
+                      {
+                        staticClass: "col-xs-2 control-label",
+                        attrs: { for: "name" }
+                      },
+                      [_vm._v(" Price description ")]
+                    ),
+                    _vm._v(" "),
+                    _c(
+                      "div",
+                      { staticClass: "col-xs-8" },
+                      [
+                        _c("ckeditor", {
+                          attrs: {
+                            editor: _vm.editor,
+                            config: _vm.editorConfig
+                          },
+                          model: {
+                            value: _vm.ru_price_text,
+                            callback: function($$v) {
+                              _vm.ru_price_text = $$v
+                            },
+                            expression: "ru_price_text"
+                          }
+                        })
+                      ],
+                      1
+                    )
+                  ])
+                : _vm._e(),
               _vm._v(" "),
               _c("hr"),
               _vm._v(" "),
@@ -55849,34 +55923,39 @@ var render = function() {
                 )
               ]),
               _vm._v(" "),
-              _c("div", { staticClass: "form-group clearfix" }, [
-                _c(
-                  "label",
-                  {
-                    staticClass: "col-xs-2 control-label",
-                    attrs: { for: "name" }
-                  },
-                  [_vm._v(" Routes description ")]
-                ),
-                _vm._v(" "),
-                _c(
-                  "div",
-                  { staticClass: "col-xs-8" },
-                  [
-                    _c("ckeditor", {
-                      attrs: { editor: _vm.editor, config: _vm.editorConfig },
-                      model: {
-                        value: _vm.ka_route,
-                        callback: function($$v) {
-                          _vm.ka_route = $$v
-                        },
-                        expression: "ka_route"
-                      }
-                    })
-                  ],
-                  1
-                )
-              ]),
+              this.category == "outdoor"
+                ? _c("div", { staticClass: "form-group clearfix" }, [
+                    _c(
+                      "label",
+                      {
+                        staticClass: "col-xs-2 control-label",
+                        attrs: { for: "name" }
+                      },
+                      [_vm._v(" Routes description ")]
+                    ),
+                    _vm._v(" "),
+                    _c(
+                      "div",
+                      { staticClass: "col-xs-8" },
+                      [
+                        _c("ckeditor", {
+                          attrs: {
+                            editor: _vm.editor,
+                            config: _vm.editorConfig
+                          },
+                          model: {
+                            value: _vm.ka_route,
+                            callback: function($$v) {
+                              _vm.ka_route = $$v
+                            },
+                            expression: "ka_route"
+                          }
+                        })
+                      ],
+                      1
+                    )
+                  ])
+                : _vm._e(),
               _vm._v(" "),
               _c("div", { staticClass: "form-group clearfix" }, [
                 _c(
@@ -55907,63 +55986,77 @@ var render = function() {
                 )
               ]),
               _vm._v(" "),
-              _c("div", { staticClass: "form-group clearfix" }, [
-                _c(
-                  "label",
-                  {
-                    staticClass: "col-xs-2 control-label",
-                    attrs: { for: "name" }
-                  },
-                  [_vm._v(" Best time for climbing ")]
-                ),
-                _vm._v(" "),
-                _c(
-                  "div",
-                  { staticClass: "col-xs-8" },
-                  [
-                    _c("ckeditor", {
-                      attrs: { editor: _vm.editor, config: _vm.editorConfig },
-                      model: {
-                        value: _vm.ka_best_time,
-                        callback: function($$v) {
-                          _vm.ka_best_time = $$v
-                        },
-                        expression: "ka_best_time"
-                      }
-                    })
-                  ],
-                  1
-                )
-              ]),
+              this.category == "outdoor" ||
+              this.category == "ice" ||
+              this.category == "mount_route"
+                ? _c("div", { staticClass: "form-group clearfix" }, [
+                    _c(
+                      "label",
+                      {
+                        staticClass: "col-xs-2 control-label",
+                        attrs: { for: "name" }
+                      },
+                      [_vm._v(" Best time for climbing ")]
+                    ),
+                    _vm._v(" "),
+                    _c(
+                      "div",
+                      { staticClass: "col-xs-8" },
+                      [
+                        _c("ckeditor", {
+                          attrs: {
+                            editor: _vm.editor,
+                            config: _vm.editorConfig
+                          },
+                          model: {
+                            value: _vm.ka_best_time,
+                            callback: function($$v) {
+                              _vm.ka_best_time = $$v
+                            },
+                            expression: "ka_best_time"
+                          }
+                        })
+                      ],
+                      1
+                    )
+                  ])
+                : _vm._e(),
               _vm._v(" "),
-              _c("div", { staticClass: "form-group clearfix" }, [
-                _c(
-                  "label",
-                  {
-                    staticClass: "col-xs-2 control-label",
-                    attrs: { for: "name" }
-                  },
-                  [_vm._v(" what you need ")]
-                ),
-                _vm._v(" "),
-                _c(
-                  "div",
-                  { staticClass: "col-xs-8" },
-                  [
-                    _c("ckeditor", {
-                      attrs: { editor: _vm.editor, config: _vm.editorConfig },
-                      model: {
-                        value: _vm.ka_what_need,
-                        callback: function($$v) {
-                          _vm.ka_what_need = $$v
-                        },
-                        expression: "ka_what_need"
-                      }
-                    })
-                  ],
-                  1
-                )
-              ]),
+              this.category == "outdoor" ||
+              this.category == "ice" ||
+              this.category == "mount_route"
+                ? _c("div", { staticClass: "form-group clearfix" }, [
+                    _c(
+                      "label",
+                      {
+                        staticClass: "col-xs-2 control-label",
+                        attrs: { for: "name" }
+                      },
+                      [_vm._v(" what you need ")]
+                    ),
+                    _vm._v(" "),
+                    _c(
+                      "div",
+                      { staticClass: "col-xs-8" },
+                      [
+                        _c("ckeditor", {
+                          attrs: {
+                            editor: _vm.editor,
+                            config: _vm.editorConfig
+                          },
+                          model: {
+                            value: _vm.ka_what_need,
+                            callback: function($$v) {
+                              _vm.ka_what_need = $$v
+                            },
+                            expression: "ka_what_need"
+                          }
+                        })
+                      ],
+                      1
+                    )
+                  ])
+                : _vm._e(),
               _vm._v(" "),
               _c("div", { staticClass: "form-group clearfix" }, [
                 _c(
@@ -55994,34 +56087,39 @@ var render = function() {
                 )
               ]),
               _vm._v(" "),
-              _c("div", { staticClass: "form-group clearfix" }, [
-                _c(
-                  "label",
-                  {
-                    staticClass: "col-xs-2 control-label",
-                    attrs: { for: "name" }
-                  },
-                  [_vm._v(" Price description ")]
-                ),
-                _vm._v(" "),
-                _c(
-                  "div",
-                  { staticClass: "col-xs-8" },
-                  [
-                    _c("ckeditor", {
-                      attrs: { editor: _vm.editor, config: _vm.editorConfig },
-                      model: {
-                        value: _vm.ka_price_description,
-                        callback: function($$v) {
-                          _vm.ka_price_description = $$v
-                        },
-                        expression: "ka_price_description"
-                      }
-                    })
-                  ],
-                  1
-                )
-              ]),
+              this.category == "indoor"
+                ? _c("div", { staticClass: "form-group clearfix" }, [
+                    _c(
+                      "label",
+                      {
+                        staticClass: "col-xs-2 control-label",
+                        attrs: { for: "name" }
+                      },
+                      [_vm._v(" Price description ")]
+                    ),
+                    _vm._v(" "),
+                    _c(
+                      "div",
+                      { staticClass: "col-xs-8" },
+                      [
+                        _c("ckeditor", {
+                          attrs: {
+                            editor: _vm.editor,
+                            config: _vm.editorConfig
+                          },
+                          model: {
+                            value: _vm.ka_price_description,
+                            callback: function($$v) {
+                              _vm.ka_price_description = $$v
+                            },
+                            expression: "ka_price_description"
+                          }
+                        })
+                      ],
+                      1
+                    )
+                  ])
+                : _vm._e(),
               _vm._v(" "),
               _c("hr"),
               _vm._v(" "),

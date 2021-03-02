@@ -204,7 +204,7 @@
                         </div>
                     </div>
 
-                    <div class="form-group clearfix" v-if="this.category == 'indoor'">
+                    <div class="form-group clearfix">
                         <label for="name" class='col-xs-2 control-label'> Info / contact </label>
                         <div class="col-xs-8">
                             <!-- <textarea type="text"  name="info" rows="15" v-model="us_info" class="form-cotrol md-textarea form-control"></textarea> -->
