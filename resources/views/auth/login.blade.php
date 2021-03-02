@@ -7,7 +7,7 @@
             <div class="card">
                 <div class="card-header">{{ __('Login') }}</div>
 
-                <div class="card-body">
+                {{-- <div class="card-body">
                     <div class="col-md-4">
                         <a href="#">
                             <i class="fa fa-google" aria-hidden="true"></i>
@@ -29,7 +29,7 @@
                 .col-md-4 i {
                     text-align:center;
                 }
-                </style>
+                </style> --}}
 
                 <div class="card-body">
                     <form method="POST" action="{{ route('login') }}">
@@ -87,7 +87,7 @@
                         
                         <div class="form-group row mb-0">
                             <div class="col-md-6 offset-md-4">
-                                <a class="btn btn-link" href="{{route('register')}}">Regidter</a>
+                                <a class="btn btn-primary" href="{{route('register')}}">Register</a>
                             </div>
                         </div>
                     </form>
