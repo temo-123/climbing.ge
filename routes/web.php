@@ -134,6 +134,8 @@ Route::group(['prefix' => LocalisationService::locale(),'middleware' => 'setLoca
 
                     Route::group(['prefix'=>'articles', 'namespace'=>'Article'], function() {
                         Route::any('/create_temporary_article/{category}', 'ArticleController@create_temporary_article');
+                        Route::any('/del_temporary_article/{id}', 'ArticleController@delete');
+                        Route::any('/get_temporary_article_editing_data', 'ArticleController@get_temporary_article_editing_data');
 
                         Route::match(['get','post'], '/global/add/{category}', ['uses'=>'GlobalArticleController@add_global_article','as'=>'globalArticleAdd']);
                         Route::match(['get', 'post'], '/global/edit/{id}', ['uses' => 'GlobalArticleController@edit_global_article', 'as'=>'globalArticleEdit']);

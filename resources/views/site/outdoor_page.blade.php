@@ -52,10 +52,10 @@
                         {!!$article [0]['text']!!}
                     @endif
 
-                    @if($article[0]['weather'] == NULL && $article[0]['best_time'] != NULL)
+                    @if($article['weather'] == NULL && $article[0]['best_time'] != NULL)
                         <h2 id="best_time_to_climb">Best time to climb</h2>
                         {!!$article[0]['best_time']!!}
-                    @elseif($article[0]['weather'] != NULL && $article[0]['best_time'] != NULL)
+                    @elseif($article['weather'] != NULL && $article[0]['best_time'] != NULL)
                         <h2 id="best_time_to_climb">Best time to climb</h2>
 
                         <div class="row">

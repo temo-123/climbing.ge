@@ -59,22 +59,19 @@ class GlobalArticleController extends Controller
             $article['and_data_month']=$request->and_data_month;
             $article['start_data_month']=$request->start_data_month;
 
+            $article['working_time'] = $request->working_time;
+            $article['price_from'] = $request->price_from;
+
             $article['fb_link']=$request->fb_link;
             $article['twit_link']=$request->twit_link; 
             $article['google_link']=$request->google_link;
             $article['inst_link']=$request->inst_link;
             $article['web_link']=$request->web_link;
 
-            // $article['us_article_id']=$last_us_article_id+1;
-            // $article['ru_article_id']=$last_ru_article_id+1;
-            // $article['ka_article_id']=$last_ka_article_id+1;
-
-            $article['price_from']=$request->ka_price_from;
-
             $article['us_article_id']=$last_us_article_id;
             $article['ru_article_id']=$last_ru_article_id;
             $article['ka_article_id']=$last_ka_article_id;
-// dd($article);
+            
             $article -> update();
 
             $last_ru_article_id = 0;

@@ -132,12 +132,9 @@ class ArticleController extends Controller
     
     function create_temporary_article(Request $request)
     {
-        $article = new Article();
-        $article['url_title'] = 'Temporary article';
-        $article['category']=$request->category;
-        $article['published']=0;
-        $article['completed']=1; 
-        $article -> save();
+        $article_us = new Us_article();
+        $article_us['title']="Us temporary article";
+        $article_us -> save();
 
         $article_ka = new Ka_article();
         $article_ka['title']="Ka temporary article";
@@ -147,9 +144,45 @@ class ArticleController extends Controller
         $article_ru['title']="Ru temporary article";
         $article_ru -> save();
 
-        $article_us = new Us_article();
-        $article_us['title']="Us temporary article";
-        $article_us -> save();
+        $us_articl = Us_article::get();
+        foreach ($us_articl as $us) {
+            $last_us_article_id = $us->id;
+        }
+
+        $ka_articl = Ka_article::get();
+        foreach ($ka_articl as $ka) {
+            $last_ka_article_id = $ka->id;
+        }
+
+        $ru_articl = Ru_article::get();
+        foreach ($ru_articl as $ru) {
+            $last_ru_article_id = $ru->id;
+        }
+
+        $article = new Article();
+        $article['url_title'] = 'temporary_article';
+        $article['category']=$request->category;
+        $article['published']=0;
+        $article['completed']=1; 
+
+        $article['us_article_id']=$last_us_article_id;
+        $article['ru_article_id']=$last_ru_article_id;
+        $article['ka_article_id']=$last_ka_article_id;
+
+        $article -> save();
+    }
+    public function get_temporary_article_editing_data()
+    {
+        $temporary_article = Article::where("url_title","=","temporary_article")->get();
+        foreach ($temporary_article as $article) {
+            $last_temporary_article_id = $article->id;
+        }
+
+        return(
+            $data = [
+                "last_temporary_article_id" => $last_temporary_article_id,
+            ]
+        );
     }
 
 
@@ -244,11 +277,11 @@ class ArticleController extends Controller
             $us_article = Us_article::where('id',strip_tags($global_article->us_article_id))->first();
             $ru_article = Ru_article::where('id',strip_tags($global_article->ru_article_id))->first();
             $ka_article = Ka_article::where('id',strip_tags($global_article->ka_article_id))->first();
-
-            // delete product file
+            
+            // delete article file
             imageControllService::image_delete($global_article->category.'_img', $global_article, $request);
 
-            // delete product from db
+            // delete article from db
             $global_article ->delete();
             $us_article ->delete();
             $ru_article ->delete();

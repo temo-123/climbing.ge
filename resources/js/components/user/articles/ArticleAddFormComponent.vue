@@ -1,10 +1,18 @@
 <template>
 <div class="col_md_12">
+
+    <div class="row">
+      <div class="form-group">
+        <button type="submit" class="btn btn-primary" v-on:click="back(temporary_article_id)">Beck</button>
+      </div>
+    </div>
+
     <div class="row">
         <div class="form-group">  
             <button type="submit" class="btn btn-primary" v-on:click="save_all()" >Save</button>
         </div>
     </div>
+
     <div class="row">
         <div class="tabs">
 
@@ -520,7 +528,7 @@
                 // is_us_article_succes: 0,
                 // is_ru_article_succes: 0,
                 // is_ka_article_succes: 0,
-                // is_image_succes: 0,
+                temporary_article_id: '',
             }
         },
         mounted() {
@@ -533,11 +541,34 @@
                     // ka_title: this.ka_title,
                 })
                 .then((response)=>  {
+                    this.get_temporary_article_data()
                     // console.log(response)
                     // this.is_ka_article_succes = 1
                     // console.log('georgian article upload successful');
                 })
                 .catch(error => console.log(error))
+            },
+            del_temporary_article(temporary_article_id) {
+                axios
+                .post('/articles/del_temporary_article/' + temporary_article_id, {
+                    // ka_title: this.ka_title,
+                })
+                .then((response)=>  {
+                    // this.is_ka_article_succes = 1
+                    // console.log('georgian article upload successful');
+                })
+                .catch(error => console.log(error))
+            },
+            get_temporary_article_data: function(){
+                axios
+                .get("/articles/get_temporary_article_editing_data/")
+                .then(response => {
+                    this.editing_data = response.data
+                    this.temporary_article_id = this.editing_data.last_temporary_article_id
+                })
+                .catch(
+                error => console.log(error)
+                );
             },
 
             add_us_article() {
@@ -633,20 +664,14 @@
                     start_data_month: this.start_data_month,
                     and_data_month: this.and_data_month,
 
+                    working_time: this.working_time,
+                    price_from: this.price_from,
+
                     fb_link: this.fb_link,
                     twit_link: this.twit_link,
                     google_link: this.google_link,
                     inst_link: this.inst_link,
                     web_link: this.web_link,
-
-                    // image: this.image,
-
-                    // data: myFormData,
-                    // config: { 
-                    //     headers: {
-                    //         'Content-Type': 'multipart/form-data' 
-                    //     }
-                    // },
                 })
                 .then((response)=>  { 
                     // this.is_global_article_succes = 1
@@ -675,7 +700,12 @@
                     
                 });
             },
-
+            
+            back: function(temporary_article_id) {
+                confirm('Are you sure, you want go back?')
+                this.del_temporary_article(temporary_article_id)
+                window.location.href = this.back_url;
+            },
             save_all() {
                 this.add_us_article()
                 this.add_ka_article()

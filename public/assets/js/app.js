@@ -4363,6 +4363,14 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: ['back_url', 'category'],
   data: function data() {
@@ -4377,23 +4385,45 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       start_data_day: "",
       and_data_day: "",
       and_data_month: ""
-    }, _defineProperty(_ref, "and_data_month", ""), _defineProperty(_ref, "fb_link", ""), _defineProperty(_ref, "twit_link", ""), _defineProperty(_ref, "google_link", ""), _defineProperty(_ref, "inst_link", ""), _defineProperty(_ref, "web_link", ""), _defineProperty(_ref, "name", ''), _defineProperty(_ref, "image", ''), _defineProperty(_ref, "success", ''), _defineProperty(_ref, "us_title", ""), _defineProperty(_ref, "us_short_description", ""), _defineProperty(_ref, "us_text", ""), _defineProperty(_ref, "us_route", ""), _defineProperty(_ref, "us_how_get", ""), _defineProperty(_ref, "us_best_time", ""), _defineProperty(_ref, "us_what_need", ""), _defineProperty(_ref, "us_info", ""), _defineProperty(_ref, "us_time", ""), _defineProperty(_ref, "us_price_from", ""), _defineProperty(_ref, "us_meta_keyword", ""), _defineProperty(_ref, "ka_title", ""), _defineProperty(_ref, "ka_short_description", ""), _defineProperty(_ref, "ka_text", ""), _defineProperty(_ref, "ka_route", ""), _defineProperty(_ref, "ka_how_get", ""), _defineProperty(_ref, "ka_best_time", ""), _defineProperty(_ref, "ka_what_need", ""), _defineProperty(_ref, "ka_info", ""), _defineProperty(_ref, "ka_time", ""), _defineProperty(_ref, "ka_price_from", ""), _defineProperty(_ref, "ka_meta_keyword", ""), _defineProperty(_ref, "ru_title", ""), _defineProperty(_ref, "ru_short_description", ""), _defineProperty(_ref, "ru_text", ""), _defineProperty(_ref, "ru_route", ""), _defineProperty(_ref, "ru_how_get", ""), _defineProperty(_ref, "ru_best_time", ""), _defineProperty(_ref, "ru_what_need", ""), _defineProperty(_ref, "ru_info", ""), _defineProperty(_ref, "ru_time", ""), _defineProperty(_ref, "ru_price_from", ""), _defineProperty(_ref, "ru_meta_keyword", ""), _ref;
+    }, _defineProperty(_ref, "and_data_month", ""), _defineProperty(_ref, "fb_link", ""), _defineProperty(_ref, "twit_link", ""), _defineProperty(_ref, "google_link", ""), _defineProperty(_ref, "inst_link", ""), _defineProperty(_ref, "web_link", ""), _defineProperty(_ref, "name", ''), _defineProperty(_ref, "image", ''), _defineProperty(_ref, "success", ''), _defineProperty(_ref, "us_title", ""), _defineProperty(_ref, "us_short_description", ""), _defineProperty(_ref, "us_text", ""), _defineProperty(_ref, "us_route", ""), _defineProperty(_ref, "us_how_get", ""), _defineProperty(_ref, "us_best_time", ""), _defineProperty(_ref, "us_what_need", ""), _defineProperty(_ref, "us_info", ""), _defineProperty(_ref, "us_time", ""), _defineProperty(_ref, "us_price_from", ""), _defineProperty(_ref, "us_meta_keyword", ""), _defineProperty(_ref, "ka_title", ""), _defineProperty(_ref, "ka_short_description", ""), _defineProperty(_ref, "ka_text", ""), _defineProperty(_ref, "ka_route", ""), _defineProperty(_ref, "ka_how_get", ""), _defineProperty(_ref, "ka_best_time", ""), _defineProperty(_ref, "ka_what_need", ""), _defineProperty(_ref, "ka_info", ""), _defineProperty(_ref, "ka_time", ""), _defineProperty(_ref, "ka_price_from", ""), _defineProperty(_ref, "ka_meta_keyword", ""), _defineProperty(_ref, "ru_title", ""), _defineProperty(_ref, "ru_short_description", ""), _defineProperty(_ref, "ru_text", ""), _defineProperty(_ref, "ru_route", ""), _defineProperty(_ref, "ru_how_get", ""), _defineProperty(_ref, "ru_best_time", ""), _defineProperty(_ref, "ru_what_need", ""), _defineProperty(_ref, "ru_info", ""), _defineProperty(_ref, "ru_time", ""), _defineProperty(_ref, "ru_price_from", ""), _defineProperty(_ref, "ru_meta_keyword", ""), _defineProperty(_ref, "temporary_article_id", ''), _ref;
   },
   mounted: function mounted() {
     this.create_temporary_article();
   },
   methods: {
     create_temporary_article: function create_temporary_article() {
+      var _this = this;
+
       axios.post('/articles/create_temporary_article/' + this.category, {// ka_title: this.ka_title,
-      }).then(function (response) {// console.log(response)
+      }).then(function (response) {
+        _this.get_temporary_article_data(); // console.log(response)
         // this.is_ka_article_succes = 1
+        // console.log('georgian article upload successful');
+
+      })["catch"](function (error) {
+        return console.log(error);
+      });
+    },
+    del_temporary_article: function del_temporary_article(temporary_article_id) {
+      axios.post('/articles/del_temporary_article/' + temporary_article_id, {// ka_title: this.ka_title,
+      }).then(function (response) {// this.is_ka_article_succes = 1
         // console.log('georgian article upload successful');
       })["catch"](function (error) {
         return console.log(error);
       });
     },
+    get_temporary_article_data: function get_temporary_article_data() {
+      var _this2 = this;
+
+      axios.get("/articles/get_temporary_article_editing_data/").then(function (response) {
+        _this2.editing_data = response.data;
+        _this2.temporary_article_id = _this2.editing_data.last_temporary_article_id;
+      })["catch"](function (error) {
+        return console.log(error);
+      });
+    },
     add_us_article: function add_us_article() {
-      var _this = this;
+      var _this3 = this;
 
       axios.post('/articles/us/add/' + this.category, {
         us_title: this.us_title,
@@ -4412,7 +4442,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         // console.log(response)
         // this.is_us_article_succes = 1
         // console.log('englihs article upload successful');
-        _this.add_ru_article();
+        _this3.add_ru_article();
       })["catch"](function (error) {
         return console.log(error);
       });
@@ -4475,18 +4505,13 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         and_data_day: this.and_data_day,
         start_data_month: this.start_data_month,
         and_data_month: this.and_data_month,
+        working_time: this.working_time,
+        price_from: this.price_from,
         fb_link: this.fb_link,
         twit_link: this.twit_link,
         google_link: this.google_link,
         inst_link: this.inst_link,
-        web_link: this.web_link // image: this.image,
-        // data: myFormData,
-        // config: { 
-        //     headers: {
-        //         'Content-Type': 'multipart/form-data' 
-        //     }
-        // },
-
+        web_link: this.web_link
       }).then(function (response) {// this.is_global_article_succes = 1
         // console.log(response)
         // alert(response.data.message);
@@ -4508,6 +4533,11 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
           }
         }
       }).then(function (response) {});
+    },
+    back: function back(temporary_article_id) {
+      confirm('Are you sure, you want go back?');
+      this.del_temporary_article(temporary_article_id);
+      window.location.href = this.back_url;
     },
     save_all: function save_all() {
       this.add_us_article();
@@ -52616,6 +52646,24 @@ var render = function() {
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
   return _c("div", { staticClass: "col_md_12" }, [
+    _c("div", { staticClass: "row" }, [
+      _c("div", { staticClass: "form-group" }, [
+        _c(
+          "button",
+          {
+            staticClass: "btn btn-primary",
+            attrs: { type: "submit" },
+            on: {
+              click: function($event) {
+                return _vm.back(_vm.temporary_article_id)
+              }
+            }
+          },
+          [_vm._v("Beck")]
+        )
+      ])
+    ]),
+    _vm._v(" "),
     _c("div", { staticClass: "row" }, [
       _c("div", { staticClass: "form-group" }, [
         _c(
