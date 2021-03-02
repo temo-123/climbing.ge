@@ -37,7 +37,7 @@ class UsArticleController extends Controller
             $article['short_description']=$request->us_short_description;
             $article['text']=$request->us_text;
             $article['route']=$request->us_route;
-            $article['how_get']=$request->us_how_gety;
+            $article['how_get']=$request->us_how_get;
             $article['best_time']=$request->us_best_time;
             $article['what_need']=$request->us_what_need;
             $article['info']=$request->us_info;
