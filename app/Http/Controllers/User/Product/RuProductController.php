@@ -37,10 +37,10 @@ class RuProductController extends Controller
         if ($request->isMethod('post')) {
             $ru_product = Ru_product::where('id',strip_tags($request->id))->first();
             
-            $ru_product['title']=$request->title;
-            $ru_product['short_description']=$request->short_description;
-            $ru_product['text']=$request->text;
-            $ru_product['meta_keyword']=$request->meta_keyword;
+            $ru_product->title=$request->ru_title;
+            $ru_product->short_description=$request->ru_short_description;
+            $ru_product->text=$request->ru_text;
+            $ru_product->meta_keyword=$request->ru_meta_keyword;
             
             $ru_product -> update();
         }

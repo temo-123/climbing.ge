@@ -2,11 +2,27 @@
 
 @section('content')
 
+    @section('meta_title',  $product['title'] )
+    @if ($product['short_description'] != NULL)
+        @section('meta_description',  $product['short_description'] )
+    @else
+        @section('meta_description',  $product['title'] )
+    @endif
+    @if ($product['meta_keyword'] != NULL)
+        @section('meta_keyword',  $product['meta_keyword'] )
+    @else
+        @section('meta_keyword',  $product['title'] )
+    @endif
+    @if(isset($first_product_images))
+        @section('meta_img',  asset('images/product_img/'.$first_product_images->image))
+    @endif
+    @section('price',  $global_product->price.' '.$global_product->currency)
+    @section('color',  $global_product->color)
+
+    @section('created_at',  $product['created_at'])
+    @section('updated_at',  $product['updated_at'])
 
 <section aria-label="Main content" role="main" class="product-detail top_menu_margin">
-  {{-- <div itemscope itemtype="http://schema.org/Product"> --}}
-<!--     <meta itemprop="url" content="http://html-koder-test.myshopify.com/products/tommy-hilfiger-t-shirt-new-york">
-    <meta itemprop="image" content="//cdn.shopify.com/s/files/1/1047/6452/products/product_grande.png?v=1446769025"> -->
     <div class="row">
       <div class="_cont detail-top">
         <div class="cols">
@@ -15,10 +31,8 @@
             <div class="big">
               <div class="container">
                 
-                <!-- default start -->
                 <section id="default" class="padding-top0">
                 <div class="row">
-                  {{-- <!-- <div class="large-12 column"><h3>{{$product -> title}}</h3></div> --> --}}
                     <hr>
                   <div class="large-5 column">
                     <div class="xzoom-container">
@@ -36,7 +50,6 @@
                   <div class="large-7 column"></div>
                 </div>
                 </section>
-                <!-- default end -->
               </div>
             </div>
           </div>
@@ -66,19 +79,12 @@
             <!-- </div> -->
 
             <div itemprop="offers">
-            <!-- <div itemprop="offers" itemscope itemtype="http://schema.org/Offer"> -->
-              <!-- <meta itemprop="priceCurrency" content="USD">
-              <link itemprop="availability" href="https://schema.org/InStock"> -->
               <div class="price-shipping">
                 <div class="price" id="price-preview">
-                <!-- <div class="price" id="price-preview" quickbeam="price" quickbeam-price="800"> -->
 
                   @if($global_product->discount != null)
                   @foreach($price_array as $new_price)
                   @if($new_price[0] == $global_product->id)
-
-                    <!-- <div class="row">
-                      <div class="col-xs-6 col-md-6 col-lg-6 "> -->
 
                       <div class="price_pege">
                       @if($global_product -> currency == 'GEL')
@@ -92,9 +98,6 @@
                         </p>
                       </div>
 
-                      <!-- </div>
-                      <div class="col-xs-6 col-md-6 col-lg-6 "> -->
-
                       <div class="old_price_page">
                       @if($global_product -> currency == 'GEL')
                         <p title="GEL {{$global_product -> price}}">₾
@@ -107,14 +110,6 @@
                         </p>
                       </div>
 
-
-                      <!-- </div> -->
-                    <!-- </div> -->
-
-
-                  {{-- <!-- <p>
-                    {{$product -> currency}}{{$new_price[1]}}
-                  </p> --> --}}
                   @endif
                   @endforeach
                   @else
@@ -136,137 +131,106 @@
                 </div>
               </div>
 
-
-              @if($global_product -> size_style != null && $global_product -> size != null)
-              <div class="swatches">
-                <div class="row">
-                <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
-                <div class="swatch clearfix" data-option-index="0">
-                  <div class="header">Size ({{$global_product -> size_style}})</div>
-                  <div data-value="M" class="swatch-element plain m available">
-                    <input id="swatch-0-m" type="radio" name="option-0" value="M" checked  />
-                    <label for="swatch-0-m">
-                      {{$global_product -> size}}
-                      <img class="crossed-out" src="//cdn.shopify.com/s/files/1/1047/6452/t/1/assets/soldout.png?10994296540668815886" />
-                    </label>
-                  </div>
-                </div>
-                </div>
-                @endif
-                @if($global_product -> color != null)
-                <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
-                <div class="swatch clearfix" data-option-index="1">
-                  <div class="header">Color ({{$global_product -> color}})</div>
-                    @if($global_product -> color == 'White')
-                    <div data-value="Red" class="swatch-element color white available">
-                      <div class="tooltip">white</div>
-                      <input quickbeam="color" id="swatch-1-white" type="radio" name="option-1" value="white" />
-                      <label for="swatch-1-white" style="border-color: grey;">
-                        <img class="crossed-out" src="//cdn.shopify.com/s/files/1/1047/6452/t/1/assets/soldout.png?10994296540668815886" />
-                        <span style="background-color: #d2d2d2;"></span>
-                        <!--<span style="background-color: white;"></span>-->
-                      </label>
-                    </div>
-                    @elseif($global_product -> color == 'Black')
-                    <div data-value="Red" class="swatch-element color black available">
-                      <div class="tooltip">black</div>
-                      <input quickbeam="color" id="swatch-1-black" type="radio" name="option-1" value="black"  />
-                      <label for="swatch-1-black" style="border-color: black;">
-                        <img class="crossed-out" src="//cdn.shopify.com/s/files/1/1047/6452/t/1/assets/soldout.png?10994296540668815886" />
-                        <span style="background-color: black;"></span>
-                      </label>
-                    </div>
-                    @elseif($global_product -> color == 'Brown')
-                    <div data-value="Red" class="swatch-element color brown available">
-                      <div class="tooltip">brown</div>
-                      <input quickbeam="color" id="swatch-1-brown" type="radio" name="option-1" value="brown"  />
-                      <label for="swatch-1-brown" style="border-color: brown;">
-                        <img class="crossed-out" src="//cdn.shopify.com/s/files/1/1047/6452/t/1/assets/soldout.png?10994296540668815886" />
-                        <span style="background-color: orange;"></span>
-                      </label>
-                    </div>
-                    @elseif($global_product -> color == 'Red')
-                    <div data-value="Red" class="swatch-element color red available">
-                      <div class="tooltip">red</div>
-                      <input quickbeam="color" id="swatch-1-red" type="radio" name="option-1" value="red"  />
-                      <label for="swatch-1-red" style="border-color: red;">
-                        <img class="crossed-out" src="//cdn.shopify.com/s/files/1/1047/6452/t/1/assets/soldout.png?10994296540668815886" />
-                        <span style="background-color: orange;"></span>
-                      </label>
-                    </div>
-                    @elseif($global_product -> color == 'Orange')
-                    <div data-value="Red" class="swatch-element color orange available">
-                      <div class="tooltip">orange</div>
-                      <input quickbeam="color" id="swatch-1-orange" type="radio" name="option-1" value="orange"  />
-                      <label for="swatch-1-orange" style="border-color: orange;">
-                        <img class="crossed-out" src="//cdn.shopify.com/s/files/1/1047/6452/t/1/assets/soldout.png?10994296540668815886" />
-                        <span style="background-color: orange;"></span>
-                      </label>
-                    </div>
-                    @elseif($global_product -> color == 'Yellow')
-                    <div data-value="Red" class="swatch-element color yellow available">
-                      <div class="tooltip">yellow</div>
-                      <input quickbeam="color" id="swatch-1-yellow" type="radio" name="option-1" value="yellow"  />
-                      <label for="swatch-1-yellow" style="border-color: yellow;">
-                        <img class="crossed-out" src="//cdn.shopify.com/s/files/1/1047/6452/t/1/assets/soldout.png?10994296540668815886" />
-                        <span style="background-color: yellow;"></span>
-                      </label>
-                    </div>
-                    @elseif($global_product -> color == 'Green')
-                    <div data-value="Red" class="swatch-element color green available">
-                      <div class="tooltip">green</div>
-                      <input quickbeam="color" id="swatch-1-green" type="radio" name="option-1" value="green"  />
-                      <label for="swatch-1-green" style="border-color: green;">
-                        <img class="crossed-out" src="//cdn.shopify.com/s/files/1/1047/6452/t/1/assets/soldout.png?10994296540668815886" />
-                        <span style="background-color: green;"></span>
-                      </label>
-                    </div>
-                    @elseif($global_product -> color == 'Blue')
-                    <div data-value="Red" class="swatch-element color blue available">
-                      <div class="tooltip">blue</div>
-                      <input quickbeam="color" id="swatch-1-blue" type="radio" name="option-1" value="blue"  />
-                      <label for="swatch-1-blue" style="border-color: blue;">
-                        <img class="crossed-out" src="//cdn.shopify.com/s/files/1/1047/6452/t/1/assets/soldout.png?10994296540668815886" />
-                        <span style="background-color: blue;"></span>
-                      </label>
-                    </div>
-                    @elseif($global_product -> color == 'Purple')
-                    <div data-value="Red" class="swatch-element color purple available">
-                      <div class="tooltip">purple</div>
-                      <input quickbeam="color" id="swatch-1-purple" type="radio" name="option-1" value="purple"  />
-                      <label for="swatch-1-purple" style="border-color: purple;">
-                        <img class="crossed-out" src="//cdn.shopify.com/s/files/1/1047/6452/t/1/assets/soldout.png?10994296540668815886" />
-                        <span style="background-color: purple;"></span>
-                      </label>
-                    </div>
-                    @elseif($global_product -> color == 'Grey')
-                    <div data-value="Red" class="swatch-element color grey available">
-                      <div class="tooltip">grey</div>
-                      <input quickbeam="color" id="swatch-1-grey" type="radio" name="option-1" value="grey"  />
-                      <label for="swatch-1-grey" style="border-color: grey;">
-                        <img class="crossed-out" src="//cdn.shopify.com/s/files/1/1047/6452/t/1/assets/soldout.png?10994296540668815886" />
-                        <span style="background-color: grey;"></span>
-                      </label>
-                    </div>
-                    @endif
-                    </div>
-                </div>
-                </div>
-              </div>
-              @endif
-                
               <div class="clearfix"></div>
 
-              <div>
-                Seler - {{$product_seller->name}} {{$product_seller->surname}}
-              </div>
-              @if($global_product -> category != null)
-              <div>
-                Category - {{$global_product -> category}}
-              </div>
-              @endif
-              </div>
+              <div class="swatches">
+                <div class="row">
+                @if($global_product -> size != null)
+                  <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                    <div class="swatch clearfix" data-option-index="0">
+                      {{-- <div class="header">Size ({{$global_product -> size_style}})</div> --}}
+                      <div data-value="M" class="swatch-element plain m available">
+                        <input id="swatch-0-m" type="radio" name="option-0" value="M" checked  />
+                        <label for="swatch-0-m">
+                          {{$global_product -> size}}
+                          <img class="crossed-out" src="//cdn.shopify.com/s/files/1/1047/6452/t/1/assets/soldout.png?10994296540668815886" />
+                        </label>
+                      </div>
+                    </div>
+                  </div>
+                @endif
 
+                
+                @if($global_product -> color != null)
+                  <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                    <div class="swatch clearfix" data-option-index="1">
+                      @if($global_product -> color == 'White')
+                      <div data-value="Red" class="swatch-element color white available">
+                        <div class="tooltip">white</div>
+                        <label for="swatch-1-white" style="border-color: white;">
+                          <span style="background-color: white;"></span>
+                        </label>
+                      </div>
+                      @elseif($global_product -> color == 'Black')
+                      <div data-value="Red" class="swatch-element color black available">
+                        <div class="tooltip">black</div>
+                        <label for="swatch-1-black" style="border-color: black;">
+                          <span style="background-color: black;"></span>
+                        </label>
+                      </div>
+                      @elseif($global_product -> color == 'Brown')
+                      <div data-value="Red" class="swatch-element color brown available">
+                        <div class="tooltip">brown</div>
+                        <label for="swatch-1-brown" style="border-color: brown;">
+                          <span style="background-color: brown;"></span>
+                        </label>
+                      </div>
+                      @elseif($global_product -> color == 'Red')
+                      <div data-value="Red" class="swatch-element color red available">
+                        <div class="tooltip">red</div>
+                        <label for="swatch-1-red" style="border-color: red;">
+                          <span style="background-color: red;"></span>
+                        </label>
+                      </div>
+                      @elseif($global_product -> color == 'Orange')
+                      <div data-value="Red" class="swatch-element color orange available">
+                        <div class="tooltip">orange</div>
+                        <label for="swatch-1-orange" style="border-color: orange;">
+                          <span style="background-color: orange;"></span>
+                        </label>
+                      </div>
+                      @elseif($global_product -> color == 'Yellow')
+                      <div data-value="Red" class="swatch-element color yellow available">
+                        <div class="tooltip">yellow</div>
+                        <label for="swatch-1-yellow" style="border-color: yellow;">
+                          <span style="background-color: yellow;"></span>
+                        </label>
+                      </div>
+                      @elseif($global_product -> color == 'Green')
+                      <div data-value="Red" class="swatch-element color green available">
+                        <div class="tooltip">green</div>
+                        <label for="swatch-1-green" style="border-color: green;">
+                          <span style="background-color: green;"></span>
+                        </label>
+                      </div>
+                      @elseif($global_product -> color == 'Blue')
+                      <div data-value="Red" class="swatch-element color blue available">
+                        <div class="tooltip">blue</div>
+                        <label for="swatch-1-blue" style="border-color: blue;">
+                          <span style="background-color: blue;"></span>
+                        </label>
+                      </div>
+                      @elseif($global_product -> color == 'Purple')
+                      <div data-value="Red" class="swatch-element color purple available">
+                        <div class="tooltip">purple</div>
+                        <label for="swatch-1-purple" style="border-color: purple;">
+                          <span style="background-color: purple;"></span>
+                        </label>
+                      </div>
+                      @elseif($global_product -> color == 'Grey')
+                      <div data-value="Red" class="swatch-element color grey available">
+                        <div class="tooltip">grey</div>
+                        <label for="swatch-1-grey" style="border-color: grey;">
+                          <span style="background-color: grey;"></span>
+                        </label>
+                      </div>
+                      @endif
+                    </div>
+                  </div>
+                @endif
+              </div>
+              <h2><strong style="color: #f70000;">Limited quantity</strong></h2>
+              </div>
             </div>
           </div>
         </div>
@@ -286,10 +250,33 @@
 
             <div class="tab-content">
               <div class="tab-pane active" id="home">
+
+                @if($global_product->category_id != null)
+                <p class="product_p"><strong>Category</strong> - @if($page_locale == "ru")
+                                    {{ $category -> ru_name }}
+                                  @elseif($page_locale == "ka")
+                                    {{ $category -> ka_name }}
+                                  @else
+                                    {{ $category -> us_name}}
+                                  @endif</p>
+                @endif
+
+                @if($global_product->material != null)
+                <p class="product_p"><strong>Material</strong> - {{$global_product->material}}</p>
+                @endif
+
+                <p class="product_p"><strong>Seler</strong> - {{$product_seller->name}} {{$product_seller->surname}}</p>
+
                 {!!$product -> text!!}
-              </div><!--/tab-pane-->
+              </div>
               <div class="tab-pane" id="contacts">
-                <p>cintact info</p>
+                @if($page_locale == "ru")
+                    {!! $site -> shop_description_ru !!}
+                @elseif($page_locale == "ka")
+                    {!! $site -> shop_description_ka !!}
+                @else
+                    {!! $site -> shop_description !!}
+                @endif
               </div>
             </div>
 
@@ -308,7 +295,7 @@
 
 
 
-    @if(isset($othe_products))
+    {{-- @if(isset($othe_products))
     <div class="container">
     <div class="row">
     <div class="related">
@@ -401,7 +388,7 @@
         </div>
     </div>
     </div>
-    @endif
+    @endif --}}
   </div>
   
   
@@ -561,26 +548,4 @@
     });
   })(jQuery);
   </script>
-
-
-
-
-<style type="text/css">
-  .price p{
-    margin-bottom: 10px;
-  }
-  .old_price_page p{ 
-    text-decoration:line-through;
-    color: #696969;
-  }
-  .old_price_page{
-    font-size: 50%;
-    margin-top: -25%;
-    margin-bottom: -15%;
-    color: #696969;
-  }
-  .price_pege{
-
-  }
-</style>
 @endsection

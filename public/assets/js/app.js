@@ -3704,6 +3704,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   components: {
@@ -6237,8 +6238,54 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
-  props: ['back_url' // 'category'
+  props: ['back_url' // 'category_id'
   ],
   data: function data() {
     return {
@@ -6249,7 +6296,11 @@ __webpack_require__.r(__webpack_exports__);
       published: "",
       currency: "",
       price: "",
-      category: "",
+      category_id: "",
+      material: "",
+      color: "",
+      discount: "",
+      quantity: "",
       // 
       // 
       // 
@@ -6341,7 +6392,12 @@ __webpack_require__.r(__webpack_exports__);
         published: this.published,
         price: this.price,
         currency: this.currency,
-        category: this.category,
+        category_id: this.category_id,
+        material: this.material,
+        color: this.color,
+        discount: this.discount,
+        quantity: this.quantity,
+        size: this.size,
         us_title_for_url_title: this.us_title
       }).then(function (response) {// this.is_global_product_succes = 1
         // console.log(response)
@@ -6721,6 +6777,54 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: ['back_url', 'editing_article_id'],
   data: function data() {
@@ -6733,6 +6837,10 @@ __webpack_require__.r(__webpack_exports__);
       currency: "",
       price: "",
       category: "",
+      material: "",
+      color: "",
+      discount: "",
+      quantity: "",
       // 
       // 
       // 
@@ -6760,7 +6868,7 @@ __webpack_require__.r(__webpack_exports__);
       us_product_id: 0,
       ru_product_id: 0,
       ka_product_id: 0,
-      myModal: false // editing_article_id: ""
+      myModal: false // category_id: ""
 
     };
   },
@@ -6776,7 +6884,10 @@ __webpack_require__.r(__webpack_exports__);
       axios.post('/products/get_product_editing_data/' + this.editing_article_id, {
         published: this.published
       }).then(function (response) {
-        _this.editing_product = response.data, _this.published = _this.editing_product.editing_product['published'], _this.price = _this.editing_product.editing_product['price'], _this.currency = _this.editing_product.editing_product['currency'], _this.category_id = _this.editing_product.editing_product['category'], _this.us_product_id = _this.editing_product.editing_product['us_product_id'], _this.ru_product_id = _this.editing_product.editing_product['ru_product_id'], _this.ka_product_id = _this.editing_product.editing_product['ka_product_id'], _this.us_title = _this.editing_product.editing_product_us['title'], _this.us_short_description = _this.editing_product.editing_product_us['short_description'], _this.us_text = _this.editing_product.editing_product_us['text'], _this.us_meta_keyword = _this.editing_product.editing_product_us['meta_keyword'], _this.ru_title = _this.editing_product.editing_product_ru['title'], _this.ru_short_description = _this.editing_product.editing_product_ru['short_description'], _this.ru_text = _this.editing_product.editing_product_ru['text'], _this.ru_meta_keyword = _this.editing_product.editing_product_ru['meta_keyword'], _this.ka_title = _this.editing_product.editing_product_ka['title'], _this.ka_short_description = _this.editing_product.editing_product_ka['short_description'], _this.ka_text = _this.editing_product.editing_product_ka['text'], _this.ka_meta_keyword = _this.editing_product.editing_product_ka['meta_keyword'];
+        _this.editing_product = response.data, _this.published = _this.editing_product.editing_product['published'], _this.price = _this.editing_product.editing_product['price'], _this.currency = _this.editing_product.editing_product['currency'], _this.category_id = _this.editing_product.editing_product['category_id'], _this.material = _this.editing_product.editing_product['material'], _this.color = _this.editing_product.editing_product['color'], _this.discount = _this.editing_product.editing_product['discount'], _this.quantity = _this.editing_product.editing_product['quantity'], _this.size = _this.editing_product.editing_product['size'], // this.us_product_id = this.editing_product.editing_product['us_product_id'],
+        // this.ru_product_id = this.editing_product.editing_product['ru_product_id'],
+        // this.ka_product_id = this.editing_product.editing_product['ka_product_id'],
+        _this.us_title = _this.editing_product.editing_product_us['title'], _this.us_short_description = _this.editing_product.editing_product_us['short_description'], _this.us_text = _this.editing_product.editing_product_us['text'], _this.us_meta_keyword = _this.editing_product.editing_product_us['meta_keyword'], _this.ru_title = _this.editing_product.editing_product_ru['title'], _this.ru_short_description = _this.editing_product.editing_product_ru['short_description'], _this.ru_text = _this.editing_product.editing_product_ru['text'], _this.ru_meta_keyword = _this.editing_product.editing_product_ru['meta_keyword'], _this.ka_title = _this.editing_product.editing_product_ka['title'], _this.ka_short_description = _this.editing_product.editing_product_ka['short_description'], _this.ka_text = _this.editing_product.editing_product_ka['text'], _this.ka_meta_keyword = _this.editing_product.editing_product_ka['meta_keyword'];
       })["catch"](function (error) {
         return console.log(error);
       });
@@ -6823,8 +6934,13 @@ __webpack_require__.r(__webpack_exports__);
         published: this.published,
         price: this.price,
         currency: this.currency,
-        category: this.category,
-        us_title_for_url_title: this.us_title
+        category: this.category_id,
+        us_title_for_url_title: this.us_title,
+        material: this.material,
+        color: this.color,
+        discount: this.discount,
+        quantity: this.quantity,
+        size: this.size
       }).then(function (response) {// this.is_global_product_succes = 1
         // console.log(response)
         // alert(response.data.message);
@@ -6838,8 +6954,8 @@ __webpack_require__.r(__webpack_exports__);
       var _this2 = this;
 
       axios.get("../../products/get_product_category_data/").then(function (response) {
-        _this2.product_category = response.data;
-        _this2.categories = _this2.product_category;
+        _this2.categories = response.data; // console.log();
+        // this.category = this.product_category
       })["catch"](function (error) {
         return console.log(error);
       });
@@ -13128,7 +13244,7 @@ exports = module.exports = __webpack_require__(/*! ../../../../node_modules/css-
 
 
 // module
-exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n/**\n* Tabs\n*/\n.tabs[data-v-15bdc074] {\n    display: flex;\n    flex-wrap: wrap; /* make sure it wraps */\n}\n.tabs label[data-v-15bdc074] {\n/* .tabs  { */\n    order: 1; /* Put the labels first */\n    display: block;\n    padding: 1rem 2rem;\n    margin-right: 0.2rem;\n    cursor: pointer;\nbackground: #ccced0;\nfont-weight: bold;\ntransition: background ease 0.2s;\n}\n.tabs .tab[data-v-15bdc074] {\norder: 99; /* Put the tabs last */\nflex-grow: 1;\n    width: 100%;\n    display: none;\npadding: 1rem;\nbackground: #fff;\n}\n.tabs input[type=\"radio\"][data-v-15bdc074] {\n    display: none;\n}\n.tabs input[type=\"radio\"]:checked + label[data-v-15bdc074] {\n    background: #fff;\n}\n.tabs input[type=\"radio\"]:checked + label + .tab[data-v-15bdc074] {\n    display: block;\n}\n@media (max-width: 45em) {\n.tabs .tab[data-v-15bdc074],\n.tabs label[data-v-15bdc074] {\n    order: initial;\n}\n.tabs label[data-v-15bdc074] {\n    width: 100%;\n    margin-right: 0;\n    margin-top: 0.2rem;\n}\n}\n\n", ""]);
+exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n/**\n* Tabs\n*/\n.tabs[data-v-15bdc074] {\n    display: flex;\n    flex-wrap: wrap; /* make sure it wraps */\n}\n.tabs label[data-v-15bdc074] {\n/* .tabs  { */\n    order: 1; /* Put the labels first */\n    display: block;\n    padding: 1rem 2rem;\n    margin-right: 0.2rem;\n    cursor: pointer;\nbackground: #ccced0;\nfont-weight: bold;\ntransition: background ease 0.2s;\n}\n.tabs .tab[data-v-15bdc074] {\norder: 99; /* Put the tabs last */\nflex-grow: 1;\n    width: 100%;\n    display: none;\npadding: 1rem;\nbackground: #fff;\n}\n.tabs input[type=\"radio\"][data-v-15bdc074] {\n    display: none;\n}\n.tabs input[type=\"radio\"]:checked + label[data-v-15bdc074] {\n    background: #fff;\n}\n.tabs input[type=\"radio\"]:checked + label + .tab[data-v-15bdc074] {\n    display: block;\n}\n@media (max-width: 45em) {\n.tabs .tab[data-v-15bdc074],\n.tabs label[data-v-15bdc074] {\n    order: initial;\n}\n.tabs label[data-v-15bdc074] {\n    width: 100%;\n    margin-right: 0;\n    margin-top: 0.2rem;\n}\n}\n\n", ""]);
 
 // exports
 
@@ -51883,10 +51999,6 @@ var render = function() {
                             _vm._v(_vm._s(table_1_info.url_title) + " ")
                           ]),
                       _vm._v(" "),
-                      _vm.table_1_name != "Users"
-                        ? _c("td", [_vm._v("|")])
-                        : _vm._e(),
-                      _vm._v(" "),
                       _vm.table_1_name == "Sector"
                         ? _c(
                             "th",
@@ -58037,17 +58149,7 @@ var render = function() {
         _c("label", { attrs: { for: "1" } }, [_vm._v("global info")]),
         _vm._v(" "),
         _c("div", { staticClass: "tab" }, [
-          _c("div", { staticClass: "jumbotron jumbotron-fluid" }, [
-            _c("div", { staticClass: "container" }, [
-              _c("h2", { staticClass: "display-4" }, [
-                _vm._v(_vm._s(this.category) + " article global information")
-              ]),
-              _vm._v(" "),
-              _c("p", { staticClass: "lead" }, [
-                _vm._v("Article global information.")
-              ])
-            ])
-          ]),
+          _vm._m(0),
           _vm._v(" "),
           _c(
             "form",
@@ -58207,7 +58309,147 @@ var render = function() {
                     staticClass: "col-xs-2 control-label",
                     attrs: { for: "name" }
                   },
-                  [_vm._v(" category ")]
+                  [_vm._v(" discount (%) ")]
+                ),
+                _vm._v(" "),
+                _c("div", { staticClass: "col-xs-8" }, [
+                  _c("input", {
+                    directives: [
+                      {
+                        name: "model",
+                        rawName: "v-model",
+                        value: _vm.discount,
+                        expression: "discount"
+                      }
+                    ],
+                    staticClass: "form-control",
+                    attrs: { type: "text", name: "discount" },
+                    domProps: { value: _vm.discount },
+                    on: {
+                      input: function($event) {
+                        if ($event.target.composing) {
+                          return
+                        }
+                        _vm.discount = $event.target.value
+                      }
+                    }
+                  })
+                ])
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "form-group clearfix" }, [
+                _c(
+                  "label",
+                  {
+                    staticClass: "col-xs-2 control-label",
+                    attrs: { for: "name" }
+                  },
+                  [_vm._v(" material")]
+                ),
+                _vm._v(" "),
+                _c("div", { staticClass: "col-xs-8" }, [
+                  _c("input", {
+                    directives: [
+                      {
+                        name: "model",
+                        rawName: "v-model",
+                        value: _vm.material,
+                        expression: "material"
+                      }
+                    ],
+                    staticClass: "form-control",
+                    attrs: { type: "text", name: "material" },
+                    domProps: { value: _vm.material },
+                    on: {
+                      input: function($event) {
+                        if ($event.target.composing) {
+                          return
+                        }
+                        _vm.material = $event.target.value
+                      }
+                    }
+                  })
+                ])
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "form-group clearfix" }, [
+                _c(
+                  "label",
+                  {
+                    staticClass: "col-xs-2 control-label",
+                    attrs: { for: "name" }
+                  },
+                  [_vm._v(" quantity ")]
+                ),
+                _vm._v(" "),
+                _c("div", { staticClass: "col-xs-8" }, [
+                  _c("input", {
+                    directives: [
+                      {
+                        name: "model",
+                        rawName: "v-model",
+                        value: _vm.quantity,
+                        expression: "quantity"
+                      }
+                    ],
+                    staticClass: "form-control",
+                    attrs: { type: "text", name: "quantity" },
+                    domProps: { value: _vm.quantity },
+                    on: {
+                      input: function($event) {
+                        if ($event.target.composing) {
+                          return
+                        }
+                        _vm.quantity = $event.target.value
+                      }
+                    }
+                  })
+                ])
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "form-group clearfix" }, [
+                _c(
+                  "label",
+                  {
+                    staticClass: "col-xs-2 control-label",
+                    attrs: { for: "name" }
+                  },
+                  [_vm._v(" size ")]
+                ),
+                _vm._v(" "),
+                _c("div", { staticClass: "col-xs-8" }, [
+                  _c("input", {
+                    directives: [
+                      {
+                        name: "model",
+                        rawName: "v-model",
+                        value: _vm.size,
+                        expression: "size"
+                      }
+                    ],
+                    staticClass: "form-control",
+                    attrs: { type: "text", name: "size" },
+                    domProps: { value: _vm.size },
+                    on: {
+                      input: function($event) {
+                        if ($event.target.composing) {
+                          return
+                        }
+                        _vm.size = $event.target.value
+                      }
+                    }
+                  })
+                ])
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "form-group clearfix" }, [
+                _c(
+                  "label",
+                  {
+                    staticClass: "col-xs-2 control-label",
+                    attrs: { for: "name" }
+                  },
+                  [_vm._v(" color ")]
                 ),
                 _vm._v(" "),
                 _c("div", { staticClass: "col-xs-8" }, [
@@ -58218,12 +58460,12 @@ var render = function() {
                         {
                           name: "model",
                           rawName: "v-model",
-                          value: _vm.category,
-                          expression: "category"
+                          value: _vm.color,
+                          expression: "color"
                         }
                       ],
                       staticClass: "form-control",
-                      attrs: { name: "category" },
+                      attrs: { name: "color" },
                       on: {
                         change: function($event) {
                           var $$selectedVal = Array.prototype.filter
@@ -58234,7 +58476,92 @@ var render = function() {
                               var val = "_value" in o ? o._value : o.value
                               return val
                             })
-                          _vm.category = $event.target.multiple
+                          _vm.color = $event.target.multiple
+                            ? $$selectedVal
+                            : $$selectedVal[0]
+                        }
+                      }
+                    },
+                    [
+                      _c("option", { attrs: { value: "white" } }, [
+                        _vm._v("White")
+                      ]),
+                      _vm._v(" "),
+                      _c("option", { attrs: { value: "black" } }, [
+                        _vm._v("Black")
+                      ]),
+                      _vm._v(" "),
+                      _c("option", { attrs: { value: "brown" } }, [
+                        _vm._v("Brown")
+                      ]),
+                      _vm._v(" "),
+                      _c("option", { attrs: { value: "red" } }, [
+                        _vm._v("Red")
+                      ]),
+                      _vm._v(" "),
+                      _c("option", { attrs: { value: "orange" } }, [
+                        _vm._v("Orange")
+                      ]),
+                      _vm._v(" "),
+                      _c("option", { attrs: { value: "yellow" } }, [
+                        _vm._v("Yellow")
+                      ]),
+                      _vm._v(" "),
+                      _c("option", { attrs: { value: "green" } }, [
+                        _vm._v("Green")
+                      ]),
+                      _vm._v(" "),
+                      _c("option", { attrs: { value: "blue" } }, [
+                        _vm._v("Blue")
+                      ]),
+                      _vm._v(" "),
+                      _c("option", { attrs: { value: "purple" } }, [
+                        _vm._v("Purple")
+                      ]),
+                      _vm._v(" "),
+                      _c("option", { attrs: { value: "grey" } }, [
+                        _vm._v("Grey")
+                      ])
+                    ]
+                  )
+                ])
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "form-group clearfix" }, [
+                _c(
+                  "label",
+                  {
+                    staticClass: "col-xs-2 control-label",
+                    attrs: { for: "name" }
+                  },
+                  [_vm._v(" category_id ")]
+                ),
+                _vm._v(" "),
+                _c("div", { staticClass: "col-xs-8" }, [
+                  _c(
+                    "select",
+                    {
+                      directives: [
+                        {
+                          name: "model",
+                          rawName: "v-model",
+                          value: _vm.category_id,
+                          expression: "category_id"
+                        }
+                      ],
+                      staticClass: "form-control",
+                      attrs: { name: "category_id" },
+                      on: {
+                        change: function($event) {
+                          var $$selectedVal = Array.prototype.filter
+                            .call($event.target.options, function(o) {
+                              return o.selected
+                            })
+                            .map(function(o) {
+                              var val = "_value" in o ? o._value : o.value
+                              return val
+                            })
+                          _vm.category_id = $event.target.multiple
                             ? $$selectedVal
                             : $$selectedVal[0]
                         }
@@ -58298,7 +58625,7 @@ var render = function() {
                                 }
                               }
                             },
-                            [_vm._m(0)]
+                            [_vm._m(1)]
                           )
                         ])
                       ])
@@ -58411,17 +58738,7 @@ var render = function() {
         _c("label", { attrs: { for: "2" } }, [_vm._v("english article")]),
         _vm._v(" "),
         _c("div", { staticClass: "tab" }, [
-          _c("div", { staticClass: "jumbotron jumbotron-fluid" }, [
-            _c("div", { staticClass: "container" }, [
-              _c("h2", { staticClass: "display-4" }, [
-                _vm._v(_vm._s(this.category) + " article english version")
-              ]),
-              _vm._v(" "),
-              _c("p", { staticClass: "lead" }, [
-                _vm._v("Article english version for site localisation.")
-              ])
-            ])
-          ]),
+          _vm._m(2),
           _vm._v(" "),
           _c(
             "form",
@@ -58582,17 +58899,7 @@ var render = function() {
         _c("label", { attrs: { for: "3" } }, [_vm._v("rusian article")]),
         _vm._v(" "),
         _c("div", { staticClass: "tab" }, [
-          _c("div", { staticClass: "jumbotron jumbotron-fluid" }, [
-            _c("div", { staticClass: "container" }, [
-              _c("h2", { staticClass: "display-4" }, [
-                _vm._v(_vm._s(this.category) + " article rusion version")
-              ]),
-              _vm._v(" "),
-              _c("p", { staticClass: "lead" }, [
-                _vm._v("Article rusion version for site localisation.")
-              ])
-            ])
-          ]),
+          _vm._m(3),
           _vm._v(" "),
           _c(
             "form",
@@ -58753,17 +59060,7 @@ var render = function() {
         _c("label", { attrs: { for: "4" } }, [_vm._v("georgian article")]),
         _vm._v(" "),
         _c("div", { staticClass: "tab" }, [
-          _c("div", { staticClass: "jumbotron jumbotron-fluid" }, [
-            _c("div", { staticClass: "container" }, [
-              _c("h2", { staticClass: "display-4" }, [
-                _vm._v(_vm._s(this.category) + " article georgian version")
-              ]),
-              _vm._v(" "),
-              _c("p", { staticClass: "lead" }, [
-                _vm._v("Article georgian version for site localisation.")
-              ])
-            ])
-          ]),
+          _vm._m(4),
           _vm._v(" "),
           _c(
             "form",
@@ -58923,10 +59220,74 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "jumbotron jumbotron-fluid" }, [
+      _c("div", { staticClass: "container" }, [
+        _c("h2", { staticClass: "display-4" }, [
+          _vm._v("Product global information")
+        ]),
+        _vm._v(" "),
+        _c("p", { staticClass: "lead" }, [
+          _vm._v("Article global information.")
+        ])
+      ])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
     return _c("div", { staticClass: "form-group clearfix" }, [
       _c("input", {
         attrs: { type: "file", name: "profile_pic", id: "profile_pic" }
       })
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "jumbotron jumbotron-fluid" }, [
+      _c("div", { staticClass: "container" }, [
+        _c("h2", { staticClass: "display-4" }, [
+          _vm._v("Product english version")
+        ]),
+        _vm._v(" "),
+        _c("p", { staticClass: "lead" }, [
+          _vm._v("Article english version for site localisation.")
+        ])
+      ])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "jumbotron jumbotron-fluid" }, [
+      _c("div", { staticClass: "container" }, [
+        _c("h2", { staticClass: "display-4" }, [
+          _vm._v("Product rusion version")
+        ]),
+        _vm._v(" "),
+        _c("p", { staticClass: "lead" }, [
+          _vm._v("Article rusion version for site localisation.")
+        ])
+      ])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "jumbotron jumbotron-fluid" }, [
+      _c("div", { staticClass: "container" }, [
+        _c("h2", { staticClass: "display-4" }, [
+          _vm._v("Product georgian version")
+        ]),
+        _vm._v(" "),
+        _c("p", { staticClass: "lead" }, [
+          _vm._v("Article georgian version for site localisation.")
+        ])
+      ])
     ])
   }
 ]
@@ -58997,17 +59358,7 @@ var render = function() {
         _c("label", { attrs: { for: "1" } }, [_vm._v("global info")]),
         _vm._v(" "),
         _c("div", { staticClass: "tab" }, [
-          _c("div", { staticClass: "jumbotron jumbotron-fluid" }, [
-            _c("div", { staticClass: "container" }, [
-              _c("h2", { staticClass: "display-4" }, [
-                _vm._v(_vm._s(this.category) + " article global information")
-              ]),
-              _vm._v(" "),
-              _c("p", { staticClass: "lead" }, [
-                _vm._v("Article global information.")
-              ])
-            ])
-          ]),
+          _vm._m(0),
           _vm._v(" "),
           _c(
             "form",
@@ -59167,6 +59518,231 @@ var render = function() {
                     staticClass: "col-xs-2 control-label",
                     attrs: { for: "name" }
                   },
+                  [_vm._v(" discount (%) ")]
+                ),
+                _vm._v(" "),
+                _c("div", { staticClass: "col-xs-8" }, [
+                  _c("input", {
+                    directives: [
+                      {
+                        name: "model",
+                        rawName: "v-model",
+                        value: _vm.discount,
+                        expression: "discount"
+                      }
+                    ],
+                    staticClass: "form-control",
+                    attrs: { type: "text", name: "discount" },
+                    domProps: { value: _vm.discount },
+                    on: {
+                      input: function($event) {
+                        if ($event.target.composing) {
+                          return
+                        }
+                        _vm.discount = $event.target.value
+                      }
+                    }
+                  })
+                ])
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "form-group clearfix" }, [
+                _c(
+                  "label",
+                  {
+                    staticClass: "col-xs-2 control-label",
+                    attrs: { for: "name" }
+                  },
+                  [_vm._v(" material")]
+                ),
+                _vm._v(" "),
+                _c("div", { staticClass: "col-xs-8" }, [
+                  _c("input", {
+                    directives: [
+                      {
+                        name: "model",
+                        rawName: "v-model",
+                        value: _vm.material,
+                        expression: "material"
+                      }
+                    ],
+                    staticClass: "form-control",
+                    attrs: { type: "text", name: "material" },
+                    domProps: { value: _vm.material },
+                    on: {
+                      input: function($event) {
+                        if ($event.target.composing) {
+                          return
+                        }
+                        _vm.material = $event.target.value
+                      }
+                    }
+                  })
+                ])
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "form-group clearfix" }, [
+                _c(
+                  "label",
+                  {
+                    staticClass: "col-xs-2 control-label",
+                    attrs: { for: "name" }
+                  },
+                  [_vm._v(" quantity ")]
+                ),
+                _vm._v(" "),
+                _c("div", { staticClass: "col-xs-8" }, [
+                  _c("input", {
+                    directives: [
+                      {
+                        name: "model",
+                        rawName: "v-model",
+                        value: _vm.quantity,
+                        expression: "quantity"
+                      }
+                    ],
+                    staticClass: "form-control",
+                    attrs: { type: "text", name: "quantity" },
+                    domProps: { value: _vm.quantity },
+                    on: {
+                      input: function($event) {
+                        if ($event.target.composing) {
+                          return
+                        }
+                        _vm.quantity = $event.target.value
+                      }
+                    }
+                  })
+                ])
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "form-group clearfix" }, [
+                _c(
+                  "label",
+                  {
+                    staticClass: "col-xs-2 control-label",
+                    attrs: { for: "name" }
+                  },
+                  [_vm._v(" size ")]
+                ),
+                _vm._v(" "),
+                _c("div", { staticClass: "col-xs-8" }, [
+                  _c("input", {
+                    directives: [
+                      {
+                        name: "model",
+                        rawName: "v-model",
+                        value: _vm.size,
+                        expression: "size"
+                      }
+                    ],
+                    staticClass: "form-control",
+                    attrs: { type: "text", name: "size" },
+                    domProps: { value: _vm.size },
+                    on: {
+                      input: function($event) {
+                        if ($event.target.composing) {
+                          return
+                        }
+                        _vm.size = $event.target.value
+                      }
+                    }
+                  })
+                ])
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "form-group clearfix" }, [
+                _c(
+                  "label",
+                  {
+                    staticClass: "col-xs-2 control-label",
+                    attrs: { for: "name" }
+                  },
+                  [_vm._v(" color ")]
+                ),
+                _vm._v(" "),
+                _c("div", { staticClass: "col-xs-8" }, [
+                  _c(
+                    "select",
+                    {
+                      directives: [
+                        {
+                          name: "model",
+                          rawName: "v-model",
+                          value: _vm.color,
+                          expression: "color"
+                        }
+                      ],
+                      staticClass: "form-control",
+                      attrs: { name: "color" },
+                      on: {
+                        change: function($event) {
+                          var $$selectedVal = Array.prototype.filter
+                            .call($event.target.options, function(o) {
+                              return o.selected
+                            })
+                            .map(function(o) {
+                              var val = "_value" in o ? o._value : o.value
+                              return val
+                            })
+                          _vm.color = $event.target.multiple
+                            ? $$selectedVal
+                            : $$selectedVal[0]
+                        }
+                      }
+                    },
+                    [
+                      _c("option", { attrs: { value: "white" } }, [
+                        _vm._v("White")
+                      ]),
+                      _vm._v(" "),
+                      _c("option", { attrs: { value: "black" } }, [
+                        _vm._v("Black")
+                      ]),
+                      _vm._v(" "),
+                      _c("option", { attrs: { value: "brown" } }, [
+                        _vm._v("Brown")
+                      ]),
+                      _vm._v(" "),
+                      _c("option", { attrs: { value: "red" } }, [
+                        _vm._v("Red")
+                      ]),
+                      _vm._v(" "),
+                      _c("option", { attrs: { value: "orange" } }, [
+                        _vm._v("Orange")
+                      ]),
+                      _vm._v(" "),
+                      _c("option", { attrs: { value: "yellow" } }, [
+                        _vm._v("Yellow")
+                      ]),
+                      _vm._v(" "),
+                      _c("option", { attrs: { value: "green" } }, [
+                        _vm._v("Green")
+                      ]),
+                      _vm._v(" "),
+                      _c("option", { attrs: { value: "blue" } }, [
+                        _vm._v("Blue")
+                      ]),
+                      _vm._v(" "),
+                      _c("option", { attrs: { value: "purple" } }, [
+                        _vm._v("Purple")
+                      ]),
+                      _vm._v(" "),
+                      _c("option", { attrs: { value: "grey" } }, [
+                        _vm._v("Grey")
+                      ])
+                    ]
+                  )
+                ])
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "form-group clearfix" }, [
+                _c(
+                  "label",
+                  {
+                    staticClass: "col-xs-2 control-label",
+                    attrs: { for: "name" }
+                  },
                   [_vm._v(" category ")]
                 ),
                 _vm._v(" "),
@@ -59178,12 +59754,11 @@ var render = function() {
                         {
                           name: "model",
                           rawName: "v-model",
-                          value: _vm.category,
-                          expression: "category"
+                          value: _vm.category_id,
+                          expression: "category_id"
                         }
                       ],
                       staticClass: "form-control",
-                      attrs: { name: "category" },
                       on: {
                         change: function($event) {
                           var $$selectedVal = Array.prototype.filter
@@ -59194,7 +59769,7 @@ var render = function() {
                               var val = "_value" in o ? o._value : o.value
                               return val
                             })
-                          _vm.category = $event.target.multiple
+                          _vm.category_id = $event.target.multiple
                             ? $$selectedVal
                             : $$selectedVal[0]
                         }
@@ -59254,7 +59829,7 @@ var render = function() {
                                 }
                               }
                             },
-                            [_vm._m(0)]
+                            [_vm._m(1)]
                           )
                         ])
                       ])
@@ -59365,17 +59940,7 @@ var render = function() {
         _c("label", { attrs: { for: "2" } }, [_vm._v("english article")]),
         _vm._v(" "),
         _c("div", { staticClass: "tab" }, [
-          _c("div", { staticClass: "jumbotron jumbotron-fluid" }, [
-            _c("div", { staticClass: "container" }, [
-              _c("h2", { staticClass: "display-4" }, [
-                _vm._v(_vm._s(this.category) + " article english version")
-              ]),
-              _vm._v(" "),
-              _c("p", { staticClass: "lead" }, [
-                _vm._v("Article english version for site localisation.")
-              ])
-            ])
-          ]),
+          _vm._m(2),
           _vm._v(" "),
           _c(
             "form",
@@ -59536,17 +60101,7 @@ var render = function() {
         _c("label", { attrs: { for: "3" } }, [_vm._v("rusian article")]),
         _vm._v(" "),
         _c("div", { staticClass: "tab" }, [
-          _c("div", { staticClass: "jumbotron jumbotron-fluid" }, [
-            _c("div", { staticClass: "container" }, [
-              _c("h2", { staticClass: "display-4" }, [
-                _vm._v(_vm._s(this.category) + " article rusion version")
-              ]),
-              _vm._v(" "),
-              _c("p", { staticClass: "lead" }, [
-                _vm._v("Article rusion version for site localisation.")
-              ])
-            ])
-          ]),
+          _vm._m(3),
           _vm._v(" "),
           _c(
             "form",
@@ -59707,17 +60262,7 @@ var render = function() {
         _c("label", { attrs: { for: "4" } }, [_vm._v("georgian article")]),
         _vm._v(" "),
         _c("div", { staticClass: "tab" }, [
-          _c("div", { staticClass: "jumbotron jumbotron-fluid" }, [
-            _c("div", { staticClass: "container" }, [
-              _c("h2", { staticClass: "display-4" }, [
-                _vm._v(_vm._s(this.category) + " article georgian version")
-              ]),
-              _vm._v(" "),
-              _c("p", { staticClass: "lead" }, [
-                _vm._v("Article georgian version for site localisation.")
-              ])
-            ])
-          ]),
+          _vm._m(4),
           _vm._v(" "),
           _c(
             "form",
@@ -59877,10 +60422,74 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "jumbotron jumbotron-fluid" }, [
+      _c("div", { staticClass: "container" }, [
+        _c("h2", { staticClass: "display-4" }, [
+          _vm._v("Product global information")
+        ]),
+        _vm._v(" "),
+        _c("p", { staticClass: "lead" }, [
+          _vm._v("Article global information.")
+        ])
+      ])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
     return _c("div", { staticClass: "form-group clearfix" }, [
       _c("input", {
         attrs: { type: "file", name: "profile_pic", id: "profile_pic" }
       })
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "jumbotron jumbotron-fluid" }, [
+      _c("div", { staticClass: "container" }, [
+        _c("h2", { staticClass: "display-4" }, [
+          _vm._v("Product english version")
+        ]),
+        _vm._v(" "),
+        _c("p", { staticClass: "lead" }, [
+          _vm._v("Article english version for site localisation.")
+        ])
+      ])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "jumbotron jumbotron-fluid" }, [
+      _c("div", { staticClass: "container" }, [
+        _c("h2", { staticClass: "display-4" }, [
+          _vm._v("Product rusion version")
+        ]),
+        _vm._v(" "),
+        _c("p", { staticClass: "lead" }, [
+          _vm._v("Article rusion version for site localisation.")
+        ])
+      ])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "jumbotron jumbotron-fluid" }, [
+      _c("div", { staticClass: "container" }, [
+        _c("h2", { staticClass: "display-4" }, [
+          _vm._v("Product georgian version")
+        ]),
+        _vm._v(" "),
+        _c("p", { staticClass: "lead" }, [
+          _vm._v("Article georgian version for site localisation.")
+        ])
+      ])
     ])
   }
 ]
@@ -62024,59 +62633,49 @@ var render = function() {
           _vm._v(" "),
           _c("div", { staticClass: "col-xs-4" }, [
             _c("div", { staticClass: "col-xs-12" }, [
-              _vm.sellect_region != ""
-                ? _c(
-                    "select",
+              _c(
+                "select",
+                {
+                  directives: [
                     {
-                      directives: [
-                        {
-                          name: "model",
-                          rawName: "v-model",
-                          value: _vm.sector_id,
-                          expression: "sector_id"
-                        }
-                      ],
-                      staticClass: "form-control",
-                      on: {
-                        change: function($event) {
-                          var $$selectedVal = Array.prototype.filter
-                            .call($event.target.options, function(o) {
-                              return o.selected
-                            })
-                            .map(function(o) {
-                              var val = "_value" in o ? o._value : o.value
-                              return val
-                            })
-                          _vm.sector_id = $event.target.multiple
-                            ? $$selectedVal
-                            : $$selectedVal[0]
-                        }
-                      }
-                    },
-                    [
-                      _c("option", { attrs: { disabled: "" } }, [
-                        _vm._v("Please select sector")
-                      ]),
-                      _vm._v(" "),
-                      _vm._l(_vm.sectors, function(sector) {
-                        return _c(
-                          "option",
-                          {
-                            key: sector.id,
-                            attrs: {
-                              if:
-                                _vm.sellect_region == sector.article_id &&
-                                this.sector_id == sector.article_id
-                            },
-                            domProps: { value: sector.id }
-                          },
-                          [_vm._v(_vm._s(sector.name))]
-                        )
-                      })
-                    ],
-                    2
-                  )
-                : _vm._e()
+                      name: "model",
+                      rawName: "v-model",
+                      value: _vm.sector_id,
+                      expression: "sector_id"
+                    }
+                  ],
+                  staticClass: "form-control",
+                  on: {
+                    change: function($event) {
+                      var $$selectedVal = Array.prototype.filter
+                        .call($event.target.options, function(o) {
+                          return o.selected
+                        })
+                        .map(function(o) {
+                          var val = "_value" in o ? o._value : o.value
+                          return val
+                        })
+                      _vm.sector_id = $event.target.multiple
+                        ? $$selectedVal
+                        : $$selectedVal[0]
+                    }
+                  }
+                },
+                [
+                  _c("option", { attrs: { disabled: "" } }, [
+                    _vm._v("Please select sector")
+                  ]),
+                  _vm._v(" "),
+                  _vm._l(_vm.sectors, function(sector) {
+                    return _c(
+                      "option",
+                      { key: sector.id, domProps: { value: sector.id } },
+                      [_vm._v(_vm._s(sector.name))]
+                    )
+                  })
+                ],
+                2
+              )
             ])
           ])
         ]),

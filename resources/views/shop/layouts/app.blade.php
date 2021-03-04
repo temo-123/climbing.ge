@@ -6,66 +6,52 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <meta name="csrf-token" content="{{ csrf_token() }}">
-
-    <title>@yield('title')</title>
-    {{-- <!-- <title>{{ config('app.name') }}</title> --> --}}
-    <link href="{{ asset('images/site_img/site_logo/'.$site->image) }}" rel="shortcut icon">
-
-    <!-- <meta property="og:image"           content=""> -->
-    <meta property="og:title"           content="@yield('meta_title')"/>
-    <meta property="og:description"     content="@yield('meta_description')"/>
-    <meta name="keywords"               content="@yield('meta_keyword')">
-    <meta property="og:image" 			content="@yield('meta_img')">
-    <meta property="og:type"            content="website"/>
-    <meta property="og:url"             content="http://www.climibng.ge" />
-    <meta name="MobileOptimized"        content="320">
-
-
     
-    <title>Page Title. Maximum length 60-70 characters</title>
-    <meta name="description" content="Page description. No longer than 155 characters." />
+    <title>@yield('meta_title')</title>
+    <link href="{{ asset('images/site_img/site_logo/x.png') }}" rel="shortcut icon">
 
     <!-- Schema.org markup for Google+ -->
-    <meta itemprop="name" content="The Name or Title Here">
-    <meta itemprop="description" content="This is the page description">
-    <meta itemprop="image" content="http://www.example.com/image.jpg">
+    <meta itemprop="name"               content="@yield('meta_title')">
+    <meta itemprop="description"        content="@yield('meta_description')">
+    <meta itemprop="image"              content="@yield('meta_img')">
+    <meta name="keywords"               content="@yield('meta_keyword')">
+    <meta name="description"            content="@yield('meta_description')" />
 
     <!-- Twitter Card data -->
-    <meta name="twitter:card" content="product">
-    <meta name="twitter:site" content="@publisher_handle">
-    <meta name="twitter:title" content="Page Title">
-    <meta name="twitter:description" content="Page description less than 200 characters">
-    <meta name="twitter:creator" content="@author_handle">
-    <meta name="twitter:image" content="http://www.example.com/image.jpg">
-    <meta name="twitter:data1" content="$3">
-    <meta name="twitter:label1" content="Price">
-    <meta name="twitter:data2" content="Black">
-    <meta name="twitter:label2" content="Color">
+    <meta name="twitter:card"           content="product">
+    <meta name="twitter:site"           content="@publisher_handle">
+    <meta name="twitter:title"          content="@yield('meta_title')">
+    <meta name="twitter:description"    content="@yield('meta_description')">
+    <meta name="twitter:creator"        content="@author_handle">
+    <meta name="twitter:image"          content="@yield('meta_img')">
+    @if(isset($products))
+    @else
+    
+    <meta name="twitter:data1"          content="@yield('price')">
+    <meta name="twitter:label1"         content="Price">
+    <meta name="twitter:data2"          content="@yield('color')">
+    <meta name="twitter:label2"         content="Color">
+    @endif
 
     <!-- Open Graph data -->
-    <meta property="og:title" content="Title Here" />
-    <meta property="og:type" content="article" />
-    <meta property="og:url" content="http://www.example.com/" />
-    <meta property="og:image" content="http://example.com/image.jpg" />
-    <meta property="og:description" content="Description Here" />
-    <meta property="og:site_name" content="Site Name, i.e. Moz" />
-    <meta property="og:price:amount" content="15.00" />
-    <meta property="og:price:currency" content="USD" />
+    <meta property="og:title"           content="@yield('meta_title')" />
+    <meta property="og:type"            content="website" />
+    <meta property="og:url"             content="http://shop.climibng.ge" />
+    <meta property="og:image"           content="@yield('meta_img')" />
+    <meta property="og:description"     content="@yield('meta_description')" />
+    <meta property="og:site_name"       content="climbing.ge" />
+    @if(isset($products))
+    @else
+
+    <meta property="og:price:amount"    content="@yield('price')" />
+    <meta property="og:price:currency"  content="USD" />
+    @endif
 
 
-
-
-    <!--font femyly in style.css (line 6.12.17.23.30) || style1.css (line 6)-->
-    <!-- <link href="https://fonts.googleapis.com/css?family=Lora" rel="stylesheet"> -->
-    <!-- <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css" rel="stylesheet"> -->
-    <!-- <link href="http://cdn.bootcss.com/animate.css/3.5.1/animate.min.css" rel="stylesheet"> -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.7.0/animate.min.css"><!--animate style-->
-
-     <!-- <link rel="stylesheet" href="{{ asset('assets/css/bootstrap-theme.min.css') }}"> -->
 
     <!-- font femyly in style.css (line 6.12.17.23.30) || style1.css (line 6) -->
      <link href="http://netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
-     <!-- <link href="https://fonts.googleapis.com/css?family=Lora" rel="stylesheet"> -->
 
     <!-- <link rel="stylesheet" href="{{ asset('assets/css/my_css/style.css') }}" > -->
     <link rel="stylesheet" href="{{ asset('assets/css/app.css') }}">
@@ -134,24 +120,9 @@
             </script> -->
         {{-- @endif --}}
     </div>
-
-    <!-- <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
-     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script> -->
-    <!-- <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV" crossorigin="anonymous"></script> -->
-
     <!-- status script -->
     <!-- <script src="http://code.jquery.com/jquery-1.11.1.min.js"></script> -->
     <script src="http://netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script> <!-- conflict to site menu -->
-
-
-
-    <!-- Scripts -->
-    {{-- <!-- <script src="{{ asset('assets/js/bootstrap.min.js') }}" type="text/javascript"></script>
-    <script src="{{ asset('assets/js/jquery.fractionslider.min.js') }}" type="text/javascript" charset="utf-8"></script>
-    <script src="{{ asset('assets/js/animation.js') }}" type="text/javascript" charset="utf-8"></script>
-    <script src="{{ asset('assets/js/less.js') }}" type="text/javascript"></script>
-    <script src="{{ asset('assets/js/isotop.js') }}"></script>
-    <script src="{{ asset('assets/js/jquery.colorbox.js') }}"></script> --> --}}
 
     <!--Security system on index-->
     <script src='https://cdnjs.cloudflare.com/ajax/libs/vue/2.1.7/vue.js'></script>

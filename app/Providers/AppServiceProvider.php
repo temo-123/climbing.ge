@@ -43,5 +43,18 @@ class AppServiceProvider extends ServiceProvider
 
         $about = $about_us_array[0];
         View::share('site', $about);
+
+        $locale = request()->segment(1, '');
+        if($locale == "ru"){
+            $page_locale = "ru";
+            View::share('page_locale', $page_locale);
+        }
+        elseif ($locale == "ka") {
+            $page_locale = "ka";
+            View::share('page_locale', $page_locale);
+        } else {
+            $page_locale = "us";
+            View::share('page_locale', $page_locale);
+        }
     }
 }

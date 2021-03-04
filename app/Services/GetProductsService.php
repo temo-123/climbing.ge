@@ -66,6 +66,7 @@ class GetProductsService
                 }
             }
         } else {
+            // dd($global_product);
             foreach ($global_product as $product) {
                 $product_images = Product_image::where('product_id', '=', $product->id)->first();
                 // dd($product_images);
@@ -96,7 +97,7 @@ class GetProductsService
                 $image = array();
             }
         }
-        // dd($products[1]);
+        // dd($products);
         return $products;
     }
 

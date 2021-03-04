@@ -16,7 +16,13 @@ class Product extends Model
 	    'text', 
         'description_short',
         'price',
-        'currency', 
+        'currency',
+
+        'material',
+        'color',
+        'discount',
+        'quantity',
+        'size',
         
         'us_product',
         'ru_product',

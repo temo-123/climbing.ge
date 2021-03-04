@@ -18,7 +18,7 @@ class IndexController extends Controller
             // $products = product::latest('id')->get();
             $global_products = product::latest('id')->where('published', '=', 1)->get();
             $products = GetProductsService::get_locale_product($global_products);
-            // dd($products);
+            // dd("products");
 
             $products_count = product::count();
 

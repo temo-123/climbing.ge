@@ -18,7 +18,7 @@
             <div class="tab" >
                 <div class="jumbotron jumbotron-fluid">
                     <div class="container">
-                        <h2 class="display-4">{{this.category}} article global information</h2>
+                        <h2 class="display-4">Product global information</h2>
                         <p class="lead">Article global information.</p>
                     </div>
                 </div>
@@ -49,10 +49,58 @@
                         </div>
                     </div>
 
+
+                    <div class="form-group clearfix">
+                        <label for="name" class='col-xs-2 control-label'> discount (%) </label>
+                        <div class="col-xs-8">
+                            <input type="text" v-model="discount" name="discount" class="form-control"> 
+                        </div>
+                    </div>
+
+                    <div class="form-group clearfix">
+                        <label for="name" class='col-xs-2 control-label'> material</label>
+                        <div class="col-xs-8">
+                            <input type="text" v-model="material" name="material" class="form-control"> 
+                        </div>
+                    </div>
+
+                    <div class="form-group clearfix">
+                        <label for="name" class='col-xs-2 control-label'> quantity </label>
+                        <div class="col-xs-8">
+                            <input type="text" v-model="quantity" name="quantity" class="form-control"> 
+                        </div>
+                    </div>
+
+                    <div class="form-group clearfix">
+                        <label for="name" class='col-xs-2 control-label'> size </label>
+                        <div class="col-xs-8">
+                            <input type="text" v-model="size" name="size" class="form-control"> 
+                        </div>
+                    </div>
+
+                    <div class="form-group clearfix">
+                        <label for="name" class='col-xs-2 control-label'> color </label>
+                        <div class="col-xs-8">
+                            <select class="form-control" v-model="color" name="color" > 
+                                <option value="white">White</option>
+                                <option value="black">Black</option>
+                                <option value="brown">Brown</option>
+                                <option value="red">Red</option>
+                                <option value="orange">Orange</option>
+                                <option value="yellow">Yellow</option>
+                                <option value="green">Green</option>
+                                <option value="blue">Blue</option>
+                                <option value="purple">Purple</option>
+                                <option value="grey">Grey</option>
+                            </select> 
+                        </div>
+                    </div>
+
+
                     <div class="form-group clearfix">
                         <label for="name" class='col-xs-2 control-label'> category </label>
                         <div class="col-xs-8">
-                            <select class="form-control" v-model="category" name="category" > 
+                            <select class="form-control" v-model="category_id"> 
                                 <option  v-for="cat in categories" :key="cat.id" v-bind:value="cat.id"> {{ cat.us_name }}</option>
                             </select> 
                         </div>
@@ -131,7 +179,7 @@
             <div class="tab" >
                 <div class="jumbotron jumbotron-fluid">
                     <div class="container">
-                        <h2 class="display-4">{{this.category}} article english version</h2>
+                        <h2 class="display-4">Product english version</h2>
                         <p class="lead">Article english version for site localisation.</p>
                     </div>
                 </div>
@@ -177,7 +225,7 @@
             <div class="tab">
                 <div class="jumbotron jumbotron-fluid">
                     <div class="container">
-                        <h2 class="display-4">{{this.category}} article rusion version</h2>
+                        <h2 class="display-4">Product rusion version</h2>
                         <p class="lead">Article rusion version for site localisation.</p>
                     </div>
                 </div>
@@ -227,7 +275,7 @@
             <div class="tab">
                 <div class="jumbotron jumbotron-fluid">
                     <div class="container">
-                        <h2 class="display-4">{{this.category}} article georgian version</h2>
+                        <h2 class="display-4">Product georgian version</h2>
                         <p class="lead">Article georgian version for site localisation.</p>
                     </div>
                 </div>
@@ -294,6 +342,10 @@
                 currency: "",
                 price: "",
                 category: "",
+                material: "",
+                color: "",
+                discount: "",
+                quantity: "",
 
 
                 // 
@@ -332,7 +384,7 @@
 
                 myModal: false,
 
-                // editing_article_id: ""
+                // category_id: ""
             }
         },
         mounted() {
@@ -352,11 +404,17 @@
                     this.published = this.editing_product.editing_product['published'],
                     this.price = this.editing_product.editing_product['price'],
                     this.currency = this.editing_product.editing_product['currency'],
-                    this.category_id = this.editing_product.editing_product['category'],
+                    this.category_id = this.editing_product.editing_product['category_id'],
 
-                    this.us_product_id = this.editing_product.editing_product['us_product_id'],
-                    this.ru_product_id = this.editing_product.editing_product['ru_product_id'],
-                    this.ka_product_id = this.editing_product.editing_product['ka_product_id'],
+                    this.material = this.editing_product.editing_product['material'],
+                    this.color = this.editing_product.editing_product['color'],
+                    this.discount = this.editing_product.editing_product['discount'],
+                    this.quantity = this.editing_product.editing_product['quantity'],
+                    this.size = this.editing_product.editing_product['size'],
+
+                    // this.us_product_id = this.editing_product.editing_product['us_product_id'],
+                    // this.ru_product_id = this.editing_product.editing_product['ru_product_id'],
+                    // this.ka_product_id = this.editing_product.editing_product['ka_product_id'],
                     
                     this.us_title = this.editing_product.editing_product_us['title'],
                     this.us_short_description = this.editing_product.editing_product_us['short_description'],
@@ -427,8 +485,14 @@
                     published: this.published,
                     price: this.price,
                     currency: this.currency,
-                    category: this.category,
-                    us_title_for_url_title: this.us_title
+                    category: this.category_id,
+                    us_title_for_url_title: this.us_title,
+
+                    material: this.material,
+                    color: this.color,
+                    discount: this.discount,
+                    quantity: this.quantity,
+                    size: this.size,
                 })
                 .then((response)=>  { 
                     // this.is_global_product_succes = 1
@@ -448,8 +512,9 @@
                 axios
                 .get("../../products/get_product_category_data/")
                 .then(response => {
-                    this.product_category = response.data
-                    this.categories = this.product_category
+                    this.categories = response.data
+                    // console.log();
+                    // this.category = this.product_category
                 })
                 .catch(
                     error => console.log(error)

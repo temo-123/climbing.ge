@@ -27,20 +27,20 @@ class GlobalArticleController extends Controller
                 $last_globale_id = $global->id;
             }
 
-            $us_articl = Us_article::get();
-            foreach ($us_articl as $us) {
-                $last_us_article_id = $us->id;
-            }
+            // $us_articl = Us_article::get();
+            // foreach ($us_articl as $us) {
+            //     $last_us_article_id = $us->id;
+            // }
 
-            $ka_articl = Ka_article::get();
-            foreach ($ka_articl as $ka) {
-                $last_ka_article_id = $ka->id;
-            }
+            // $ka_articl = Ka_article::get();
+            // foreach ($ka_articl as $ka) {
+            //     $last_ka_article_id = $ka->id;
+            // }
 
-            $ru_articl = Ru_article::get();
-            foreach ($ru_articl as $ru) {
-                $last_ru_article_id = $ru->id;
-            }
+            // $ru_articl = Ru_article::get();
+            // foreach ($ru_articl as $ru) {
+            //     $last_ru_article_id = $ru->id;
+            // }
 
             // make url_title from us_title value
             $url_title = URLTitleService::get_url_title($request->us_title_for_url_title);
@@ -68,15 +68,15 @@ class GlobalArticleController extends Controller
             $article['inst_link']=$request->inst_link;
             $article['web_link']=$request->web_link;
 
-            $article['us_article_id']=$last_us_article_id;
-            $article['ru_article_id']=$last_ru_article_id;
-            $article['ka_article_id']=$last_ka_article_id;
+            // $article['us_article_id']=$last_us_article_id;
+            // $article['ru_article_id']=$last_ru_article_id;
+            // $article['ka_article_id']=$last_ka_article_id;
             
             $article -> update();
 
-            $last_ru_article_id = 0;
-            $last_us_article_id = 0;
-            $last_ka_article_id = 0;
+            // $last_ru_article_id = 0;
+            // $last_us_article_id = 0;
+            // $last_ka_article_id = 0;
         }
         
         

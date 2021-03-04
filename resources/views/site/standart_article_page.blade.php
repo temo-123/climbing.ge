@@ -1,8 +1,6 @@
 @extends('site.layouts.app')
 
 @section('content')
-
-
     @section('meta_title',  $article[0]['title'] )
     @if ($article[0]['short_description'] != NULL)
         @section('meta_description',  $article[0]['short_description'] )

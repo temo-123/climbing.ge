@@ -22,9 +22,11 @@ class CreateProductsTable extends Migration
             $table->string('price')->nullable();
             $table->string('currency')->nullable();
             $table->string('discount')->nullable();
+            
             $table->string('color')->nullable();
             $table->string('quantity')->nullable();
             $table->string('material')->nullable();
+            $table->string('size')->nullable();
 
             $table->integer('category_id')->nullable();
             $table->integer('user_id')->nullable();

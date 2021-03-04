@@ -11,6 +11,7 @@ use App\Models\Favorite_product;
 use App\User;
 use App\Services\GetProductsService;
 use Auth;
+use App\Models\Product_category;
 
 class ProductPageController extends Controller
 {
@@ -18,6 +19,8 @@ class ProductPageController extends Controller
         if (view()->exists('shop.product_page')) {
             $global_product = Product::latest('id')->where('url_title',strip_tags($name))->first();
             $product = GetProductsService::get_locale_product_in_page($global_product);
+
+            $category = Product_category::where('id',strip_tags($global_product -> category_id))->first();
 
             $product_images = Product_image::latest('id')->where('product_id',strip_tags($global_product->id))->get();
             $first_product_images = Product_image::latest('id')->where('product_id',strip_tags($global_product->id))->first();
@@ -55,6 +58,7 @@ class ProductPageController extends Controller
                 'shop'=>1,
                 
                 'global_product' => $global_product,
+                "category" => $category,
     			
                 'image_dir' => 'other_img',
                 'price_array'=>$price_array,

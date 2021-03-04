@@ -37,10 +37,10 @@ class KaProductController extends Controller
         if ($request->isMethod('post')) {
             $ka_product = Ka_product::where('id',strip_tags($request->id))->first();
             
-            $ka_product['title']=$request->title;
-            $ka_product['short_description']=$request->short_description;
-            $ka_product['text']=$request->text;
-            $ka_product['meta_keyword']=$request->meta_keyword;
+            $ka_product->title=$request->ka_title;
+            $ka_product->short_description=$request->ka_short_description;
+            $ka_product->text=$request->ka_text;
+            $ka_product->meta_keyword=$request->ka_meta_keyword;
             
             $ka_product -> update();
         }

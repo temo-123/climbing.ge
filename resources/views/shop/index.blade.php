@@ -1,19 +1,16 @@
 @extends('shop.layouts.app')
 
 @section('content')
-@section('title', $title)
+    @section('meta_title', 'Climbing store')
 
-@section('meta_title', 'Climbing store')
+    @if($site->shop_description != null)
+    @section('meta_keyword', $site->shop_description)
+    @else
+    @section('meta_keyword', 'Climbing gear shop In Georgia')
+    @endif
 
-@if($site->shop_description != null)
-@section('meta_keyword', $site->shop_description)
-@else
-@section('meta_keyword', 'Climbing gear shop In Georgia')
-@endif
-
-@section('meta_description', 'Gear store in Georgia')
-
-@section('meta_img', (asset('images/meta_img/shop.jpg')))
+    @section('meta_description', $site->shop_description)
+    @section('meta_img', (asset('images/meta_img/shop.jpg')))
 
 <div class="container top_menu_margin h-recent-work">
 
@@ -137,7 +134,6 @@
                                     <li class="clearfix"></li>
                                 @endif
                                 @empty
-                                    <div class="bar"><i class="fa fa-exclamation-triangle"></i></div>
                                     <h6>{{$site->shop_empty}} </h6>
                                     <img class="article_404" src="{{asset('images/404/empty_page/11.jpg')}}">
                                 @endforelse

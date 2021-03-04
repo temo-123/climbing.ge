@@ -18,9 +18,9 @@
           </div>
           <div class="col-xs-4">
             <div class="col-xs-12">
-              <select class="form-control" v-if="sellect_region != ''" v-model="sector_id">
+              <select class="form-control" v-model="sector_id">
                 <option disabled>Please select sector</option>
-                <option v-for="sector in sectors" :key="sector.id" :if="sellect_region == sector.article_id && this.sector_id == sector.article_id"  v-bind:value="sector.id">{{ sector.name }}</option>
+                <option v-for="sector in sectors" :key="sector.id"  v-bind:value="sector.id">{{ sector.name }}</option>
               </select>
             </div>
           </div>

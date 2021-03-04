@@ -464,10 +464,14 @@ border-radius: 50%;
     right:13px
 }
 
-
-
 /*-----------------------------------------------------------------------------------------------------*/
 
+
+/*
+*
+*   events style
+*
+*/
 .eav{
     /*margin-top: 2%;*/
     margin-bottom: 5%;
@@ -1177,11 +1181,37 @@ a.socialIcon:hover, .socialHoverClass {
 
 
 
+/*
+*
+*   shop product page style
+*
+*/
+.product_p{
+    margin: 0 0 0;
+}
+.price p{
+    margin-bottom: 10px;
+}
+.old_price_page p{ 
+    margin-top: 12%;
+    text-decoration: line-through;
+    color: #696969;
+}
+.old_price_page{
+    font-size: 50%;
+    margin-top: -25%;
+    margin-bottom: -15%;
+    color: #696969;
+}
+
+
+
+
 
 
 /*
 *
-*   my other style style
+*   my other style
 *
 */
 

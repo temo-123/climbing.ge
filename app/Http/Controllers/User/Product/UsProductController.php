@@ -37,10 +37,10 @@ class UsProductController extends Controller
         if ($request->isMethod('post')) {
             $us_product = Us_product::where('id',strip_tags($request->id))->first();
             
-            $us_product['title']=$request->title;
-            $us_product['short_description']=$request->short_description;
-            $us_product['text']=$request->text;
-            $us_product['meta_keyword']=$request->meta_keyword;
+            $us_product->title=$request->us_title;
+            $us_product->short_description=$request->us_short_description;
+            $us_product->text=$request->us_text;
+            $us_product->meta_keyword=$request->us_meta_keyword;
             
             $us_product -> update();
         }

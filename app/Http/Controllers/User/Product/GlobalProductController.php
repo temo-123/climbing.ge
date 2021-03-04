@@ -40,28 +40,28 @@ class GlobalProductController extends Controller
 
         if ($request -> isMethod('post')) {
             $last_globale_id = 0;
-            $last_us_product_id = 0;
-            $last_ka_product_id = 0;
-            $last_ru_product_id = 0;
+            // $last_us_product_id = 0;
+            // $last_ka_product_id = 0;
+            // $last_ru_product_id = 0;
+
+            // $us_articl = Us_product::where('title', '=', 'Us temporary product')->get();
+            // foreach ($us_articl as $us) {
+            //     $last_us_product_id = $us->id;
+            // }
+
+            // $ka_articl = Ka_product::where('title', '=', 'Ka temporary product')->get();
+            // foreach ($ka_articl as $ka) {
+            //     $last_ka_product_id = $ka->id;
+            // }
+
+            // $ru_articl = Ru_product::where('title', '=', 'Ru temporary product')->get();
+            // foreach ($ru_articl as $ru) {
+            //     $last_ru_product_id = $ru->id;
+            // }
 
             $global_product = product::where('url_title', '=', 'temporary_product')->get();
             foreach ($global_product as $global) {
                 $last_globale_id = $global->id;
-            }
-
-            $us_articl = Us_product::where('title', '=', 'Us temporary product')->get();
-            foreach ($us_articl as $us) {
-                $last_us_product_id = $us->id;
-            }
-
-            $ka_articl = Ka_product::where('title', '=', 'Ka temporary product')->get();
-            foreach ($ka_articl as $ka) {
-                $last_ka_product_id = $ka->id;
-            }
-
-            $ru_articl = Ru_product::where('title', '=', 'Ru temporary product')->get();
-            foreach ($ru_articl as $ru) {
-                $last_ru_product_id = $ru->id;
             }
 
             $url_title = URLTitleService::get_url_title($request->us_title_for_url_title);
@@ -77,9 +77,15 @@ class GlobalProductController extends Controller
             $product['currency'] = $request->currency;
             $product['category_id'] = $request->category_id;
 
-            $product['us_product_id'] = $last_us_product_id;
-            $product['ru_product_id'] = $last_ru_product_id;
-            $product['ka_product_id'] = $last_ka_product_id;
+            $product['material'] = $request->material;
+            $product['color'] = $request->color;
+            $product['discount'] = $request->discount;
+            $product['quantity'] = $request->quantity;
+            $product['size'] = $request->size;
+
+            // $product['us_product_id'] = $last_us_product_id;
+            // $product['ru_product_id'] = $last_ru_product_id;
+            // $product['ka_product_id'] = $last_ka_product_id;
             
             $product -> update();
         }
@@ -103,6 +109,12 @@ class GlobalProductController extends Controller
             $product['category_id']=$request->category;
             $product['published'] = $request->published;
             // $product['user_id']=Auth::user()->id;
+
+            $product['material'] = $request->material;
+            $product['color'] = $request->color;
+            $product['discount'] = $request->discount;
+            $product['quantity'] = $request->quantity;
+            $product['size'] = $request->size;
 
             // $product['us_product_id']=$last_us_product_id;
             // $product['ru_product_id']=$last_ru_product_id;

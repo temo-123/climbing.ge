@@ -18,7 +18,7 @@
             <div class="tab" >
                 <div class="jumbotron jumbotron-fluid">
                     <div class="container">
-                        <h2 class="display-4">{{this.category}} article global information</h2>
+                        <h2 class="display-4">Product global information</h2>
                         <p class="lead">Article global information.</p>
                     </div>
                 </div>
@@ -50,9 +50,55 @@
                     </div>
 
                     <div class="form-group clearfix">
-                        <label for="name" class='col-xs-2 control-label'> category </label>
+                        <label for="name" class='col-xs-2 control-label'> discount (%) </label>
                         <div class="col-xs-8">
-                            <select class="form-control" v-model="category" name="category" > 
+                            <input type="text" v-model="discount" name="discount" class="form-control"> 
+                        </div>
+                    </div>
+
+                    <div class="form-group clearfix">
+                        <label for="name" class='col-xs-2 control-label'> material</label>
+                        <div class="col-xs-8">
+                            <input type="text" v-model="material" name="material" class="form-control"> 
+                        </div>
+                    </div>
+
+                    <div class="form-group clearfix">
+                        <label for="name" class='col-xs-2 control-label'> quantity </label>
+                        <div class="col-xs-8">
+                            <input type="text" v-model="quantity" name="quantity" class="form-control"> 
+                        </div>
+                    </div>
+
+                    <div class="form-group clearfix">
+                        <label for="name" class='col-xs-2 control-label'> size </label>
+                        <div class="col-xs-8">
+                            <input type="text" v-model="size" name="size" class="form-control"> 
+                        </div>
+                    </div>
+
+                    <div class="form-group clearfix">
+                        <label for="name" class='col-xs-2 control-label'> color </label>
+                        <div class="col-xs-8">
+                            <select class="form-control" v-model="color" name="color" > 
+                                <option value="white">White</option>
+                                <option value="black">Black</option>
+                                <option value="brown">Brown</option>
+                                <option value="red">Red</option>
+                                <option value="orange">Orange</option>
+                                <option value="yellow">Yellow</option>
+                                <option value="green">Green</option>
+                                <option value="blue">Blue</option>
+                                <option value="purple">Purple</option>
+                                <option value="grey">Grey</option>
+                            </select> 
+                        </div>
+                    </div>
+
+                    <div class="form-group clearfix">
+                        <label for="name" class='col-xs-2 control-label'> category_id </label>
+                        <div class="col-xs-8">
+                            <select class="form-control" v-model="category_id" name="category_id" > 
                                 <option  v-for="cat in categories" :key="cat.id" v-bind:value="cat.id"> {{ cat.us_name }}</option>
                             </select> 
                         </div>
@@ -131,7 +177,7 @@
             <div class="tab" >
                 <div class="jumbotron jumbotron-fluid">
                     <div class="container">
-                        <h2 class="display-4">{{this.category}} article english version</h2>
+                        <h2 class="display-4">Product english version</h2>
                         <p class="lead">Article english version for site localisation.</p>
                     </div>
                 </div>
@@ -177,7 +223,7 @@
             <div class="tab">
                 <div class="jumbotron jumbotron-fluid">
                     <div class="container">
-                        <h2 class="display-4">{{this.category}} article rusion version</h2>
+                        <h2 class="display-4">Product rusion version</h2>
                         <p class="lead">Article rusion version for site localisation.</p>
                     </div>
                 </div>
@@ -227,7 +273,7 @@
             <div class="tab">
                 <div class="jumbotron jumbotron-fluid">
                     <div class="container">
-                        <h2 class="display-4">{{this.category}} article georgian version</h2>
+                        <h2 class="display-4">Product georgian version</h2>
                         <p class="lead">Article georgian version for site localisation.</p>
                     </div>
                 </div>
@@ -279,7 +325,7 @@
     export default {
         props: [
             'back_url',
-            // 'category'
+            // 'category_id'
         ],
         data(){
             return {
@@ -293,7 +339,12 @@
                 published: "",
                 currency: "",
                 price: "",
-                category: "",
+                category_id: "",
+                material: "",
+                color: "",
+                discount: "",
+                quantity: "",
+
 
 
                 // 
@@ -407,7 +458,14 @@
                     published: this.published,
                     price: this.price,
                     currency: this.currency,
-                    category: this.category,
+                    category_id: this.category_id,
+
+                    material: this.material,
+                    color: this.color,
+                    discount: this.discount,
+                    quantity: this.quantity,
+                    size: this.size,
+
                     us_title_for_url_title: this.us_title,
                 })
                 .then((response)=>  { 
