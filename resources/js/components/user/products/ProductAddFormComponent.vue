@@ -81,16 +81,16 @@
                         <label for="name" class='col-xs-2 control-label'> color </label>
                         <div class="col-xs-8">
                             <select class="form-control" v-model="color" name="color" > 
-                                <option value="white">White</option>
-                                <option value="black">Black</option>
-                                <option value="brown">Brown</option>
-                                <option value="red">Red</option>
-                                <option value="orange">Orange</option>
-                                <option value="yellow">Yellow</option>
-                                <option value="green">Green</option>
-                                <option value="blue">Blue</option>
-                                <option value="purple">Purple</option>
-                                <option value="grey">Grey</option>
+                                <option value="White">White</option>
+                                <option value="Black">Black</option>
+                                <option value="Brown">Brown</option>
+                                <option value="Red">Red</option>
+                                <option value="Orange">Orange</option>
+                                <option value="Yellow">Yellow</option>
+                                <option value="Green">Green</option>
+                                <option value="Blue">Blue</option>
+                                <option value="Purple">Purple</option>
+                                <option value="Grey">Grey</option>
                             </select> 
                         </div>
                     </div>

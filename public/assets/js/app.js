@@ -58483,43 +58483,43 @@ var render = function() {
                       }
                     },
                     [
-                      _c("option", { attrs: { value: "white" } }, [
+                      _c("option", { attrs: { value: "White" } }, [
                         _vm._v("White")
                       ]),
                       _vm._v(" "),
-                      _c("option", { attrs: { value: "black" } }, [
+                      _c("option", { attrs: { value: "Black" } }, [
                         _vm._v("Black")
                       ]),
                       _vm._v(" "),
-                      _c("option", { attrs: { value: "brown" } }, [
+                      _c("option", { attrs: { value: "Brown" } }, [
                         _vm._v("Brown")
                       ]),
                       _vm._v(" "),
-                      _c("option", { attrs: { value: "red" } }, [
+                      _c("option", { attrs: { value: "Red" } }, [
                         _vm._v("Red")
                       ]),
                       _vm._v(" "),
-                      _c("option", { attrs: { value: "orange" } }, [
+                      _c("option", { attrs: { value: "Orange" } }, [
                         _vm._v("Orange")
                       ]),
                       _vm._v(" "),
-                      _c("option", { attrs: { value: "yellow" } }, [
+                      _c("option", { attrs: { value: "Yellow" } }, [
                         _vm._v("Yellow")
                       ]),
                       _vm._v(" "),
-                      _c("option", { attrs: { value: "green" } }, [
+                      _c("option", { attrs: { value: "Green" } }, [
                         _vm._v("Green")
                       ]),
                       _vm._v(" "),
-                      _c("option", { attrs: { value: "blue" } }, [
+                      _c("option", { attrs: { value: "Blue" } }, [
                         _vm._v("Blue")
                       ]),
                       _vm._v(" "),
-                      _c("option", { attrs: { value: "purple" } }, [
+                      _c("option", { attrs: { value: "Purple" } }, [
                         _vm._v("Purple")
                       ]),
                       _vm._v(" "),
-                      _c("option", { attrs: { value: "grey" } }, [
+                      _c("option", { attrs: { value: "Grey" } }, [
                         _vm._v("Grey")
                       ])
                     ]
@@ -59692,43 +59692,43 @@ var render = function() {
                       }
                     },
                     [
-                      _c("option", { attrs: { value: "white" } }, [
+                      _c("option", { attrs: { value: "White" } }, [
                         _vm._v("White")
                       ]),
                       _vm._v(" "),
-                      _c("option", { attrs: { value: "black" } }, [
+                      _c("option", { attrs: { value: "Black" } }, [
                         _vm._v("Black")
                       ]),
                       _vm._v(" "),
-                      _c("option", { attrs: { value: "brown" } }, [
+                      _c("option", { attrs: { value: "Brown" } }, [
                         _vm._v("Brown")
                       ]),
                       _vm._v(" "),
-                      _c("option", { attrs: { value: "red" } }, [
+                      _c("option", { attrs: { value: "Red" } }, [
                         _vm._v("Red")
                       ]),
                       _vm._v(" "),
-                      _c("option", { attrs: { value: "orange" } }, [
+                      _c("option", { attrs: { value: "Orange" } }, [
                         _vm._v("Orange")
                       ]),
                       _vm._v(" "),
-                      _c("option", { attrs: { value: "yellow" } }, [
+                      _c("option", { attrs: { value: "Yellow" } }, [
                         _vm._v("Yellow")
                       ]),
                       _vm._v(" "),
-                      _c("option", { attrs: { value: "green" } }, [
+                      _c("option", { attrs: { value: "Green" } }, [
                         _vm._v("Green")
                       ]),
                       _vm._v(" "),
-                      _c("option", { attrs: { value: "blue" } }, [
+                      _c("option", { attrs: { value: "Blue" } }, [
                         _vm._v("Blue")
                       ]),
                       _vm._v(" "),
-                      _c("option", { attrs: { value: "purple" } }, [
+                      _c("option", { attrs: { value: "Purple" } }, [
                         _vm._v("Purple")
                       ]),
                       _vm._v(" "),
-                      _c("option", { attrs: { value: "grey" } }, [
+                      _c("option", { attrs: { value: "Grey" } }, [
                         _vm._v("Grey")
                       ])
                     ]

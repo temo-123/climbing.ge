@@ -88,7 +88,7 @@
 
                       <div class="price_pege">
                       @if($global_product -> currency == 'GEL')
-                        <p title="GEL {{$new_price[1]}}">₾
+                        <p title="GEL {{$new_price[1]}}">L
                       @elseif($global_product -> currency == 'USD')
                         <p title="USD {{$new_price[1]}}">$
                       @else
@@ -100,7 +100,7 @@
 
                       <div class="old_price_page">
                       @if($global_product -> currency == 'GEL')
-                        <p title="GEL {{$global_product -> price}}">₾
+                        <p title="GEL {{$global_product -> price}}">L
                       @elseif($global_product -> currency == 'USD')
                         <p title="USD {{$global_product -> price}}">$
                       @else
@@ -116,7 +116,7 @@
                   
                   <div class="price_pege">
                   @if($global_product -> currency == 'GEL')
-                    <p title="GEL {{$global_product -> price}}">₾
+                    <p title="GEL {{$global_product -> price}}">L
                   @elseif($global_product -> currency == 'USD')
                     <p title="USD {{$global_product -> price}}">$
                   @else
@@ -229,7 +229,9 @@
                   </div>
                 @endif
               </div>
-              <h2><strong style="color: #f70000;">Limited quantity</strong></h2>
+              @if ($global_product->quantity != NULL && $global_product->quantity <= 3)
+                <h2><strong style="color: #f70000;">Limited quantity</strong></h2>
+              @endif
               </div>
             </div>
           </div>
@@ -266,7 +268,7 @@
                 @endif
 
                 <p class="product_p"><strong>Seler</strong> - {{$product_seller->name}} {{$product_seller->surname}}</p>
-
+                <hr>
                 {!!$product -> text!!}
               </div>
               <div class="tab-pane" id="contacts">
@@ -313,7 +315,7 @@
               <strong href="{{route('shop_page', array('title'=>$other_product->url_title))}}">{{$other_product -> title}}</strong>
               <span>
               @if($other_product -> currency == 'GEL')
-              ₾
+              L
               @elseif($other_product -> currency == 'USD')
               $
               @else
