@@ -36,6 +36,9 @@
 				<label for="name" class='col-md-2 control-label'> Sector name </label>
 				<div class="col-md-8">
 						<input type="text" v-model="name" name="name" placeholder="Name" class="form-control textarea">
+            <div class="alert alert-danger" role="alert" v-if="errors.name">
+                {{ errors.name[0] }}
+            </div>
 				</div>
 			</div>
 	
@@ -45,6 +48,9 @@
 					<select class="form-control" name="article_id" v-model="article_id"> 
 						<option v-for="region in regions" :key="region" v-bind:value="region.id">{{ region.url_title }}</option>
 					</select> 
+          <div class="alert alert-danger" role="alert" v-if="errors.article_id">
+                {{ errors.article_id[0] }}
+            </div>
 				</div>
 			</div>
 	
@@ -113,6 +119,9 @@
 		</form>
       <div class="container">
         <div class="row">
+            <div class="alert alert-danger" role="alert" v-if="image_errors.image">
+                {{ image_errors.image[0] }}
+            </div>
             <div class="card"  v-if='myModal'>
                 <div class="card-header">
                     Add image
@@ -187,6 +196,9 @@
         regions: '',
 
         myModal: false,
+
+        errors: [],
+        image_errors: [],
 
         name: '',
         image: '',
@@ -303,10 +315,12 @@
             overhang: this.overhang,
         })
         .then(function (response) {
-            console.log("sector added sucsesfule")
+            // window.location.href = '/routes_and_sectors';
         })
-        .catch(function (response){
-            console.log("sector added is not sucsesfule!!!")
+        .catch(error => {
+            if (error.response.status == 422) {
+              this.errors = error.response.data.errors
+            }
         })
       },
       add_sector_image: function (temporary_sector_id) {
@@ -323,6 +337,11 @@
         .then((response)=>  {
             // this.is_image_succes = 1;
             // alert(response.data.message);
+        })
+        .catch(error => {
+            if (error.response.status == 422) {
+              this.image_errors = error.response.data.errors
+            }
         });
         this.showModal()
         // e.preventDefault();
@@ -347,7 +366,6 @@
       },
       save_all: function () {
         this.add_sector()
-        window.location.href = '/routes_and_sectors';
       }
     }
   };

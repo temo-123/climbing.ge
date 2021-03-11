@@ -14,6 +14,7 @@ class RuProductController extends Controller
         $request->user()->authorizeRoles(['manager', 'admin']);
         if ($request -> isMethod('post')) {
             // $input = $request -> except('_token');
+            $this->ru_product_validate($request);
 
             $ru_articl = ru_product::get();
             foreach ($ru_articl as $ru) {
@@ -35,6 +36,7 @@ class RuProductController extends Controller
     public function edit_ru_product(Request $request)
     {
         if ($request->isMethod('post')) {
+            $this->ru_product_validate($request);
             $ru_product = Ru_product::where('id',strip_tags($request->id))->first();
             
             $ru_product->title=$request->ru_title;
@@ -44,5 +46,15 @@ class RuProductController extends Controller
             
             $ru_product -> update();
         }
+    }
+
+
+    private function ru_product_validate($request)
+    {
+        $request->validate([
+            'ru_title' => 'required',
+            'ru_short_description' => 'required',
+            'ru_text' => 'required',
+        ]);
     }
 }

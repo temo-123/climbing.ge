@@ -32,12 +32,12 @@
             </div>
         @endif
         @if(isset($data))
-        <form id="contact-form form-horizontal" name="contact-form" method="POST" action="{{ route('galleryEdit', array($data['id'])) }}" style="margin-top: 5%;" enctype ="multipart/form-data">
+        <form method="POST" action="{{ route('galleryEdit', array($data['id'])) }}"   style="margin-top: 5%;" enctype="multipart/form-data">
         @else
-        <form id="contact-form form-horizontal" name="contact-form" method="POST" action="{{ route('galleryAdd') }}" style="margin-top: 5%;" enctype ="multipart/form-data">
+        <form method="POST" action="{{ route('galleryAdd') }}"                        style="margin-top: 5%;" enctype="multipart/form-data">
         @endif
 
-        @csrf
+            @csrf
 
             <div class="form-group clearfix">
                 <label for="name" class='col-xs-2 control-label'> Publish </label>
@@ -175,8 +175,7 @@
                 @else
                     <div class="row">
                         <div class="col-xs-4">
-                            <input type="file" name="image" id="image" value="{{ csrf_token() }}">
-                            {{-- <label for="imageUpload"></label> --}}
+                            <input type="file" name="image" id="image" value="image">
                         </div>
                     </div>
                 @endif

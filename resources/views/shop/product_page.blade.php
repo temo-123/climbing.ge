@@ -157,7 +157,7 @@
                       @if($global_product -> color == 'White')
                       <div data-value="Red" class="swatch-element color white available">
                         <div class="tooltip">white</div>
-                        <label for="swatch-1-white" style="border-color: white;">
+                        <label for="swatch-1-white" style="border-color: black;">
                           <span style="background-color: white;"></span>
                         </label>
                       </div>
@@ -272,6 +272,9 @@
                 {!!$product -> text!!}
               </div>
               <div class="tab-pane" id="contacts">
+                <p class="product_p"><strong>Email</strong> - {{ $site->email }}</p>
+                <p class="product_p"><strong>Phone number</strong> - {{ $site->number }}</p>
+                <hr>
                 @if($page_locale == "ru")
                     {!! $site -> shop_description_ru !!}
                 @elseif($page_locale == "ka")

@@ -10,8 +10,8 @@ class Mtp_pitch extends Model
 
     protected $fillable = [
         "mtp_id",
-        "gread",
-        "or_gread",
+        "grade",
+        "or_grade",
         "title",
         "text",
         "last_carabin",

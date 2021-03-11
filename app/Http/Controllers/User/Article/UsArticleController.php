@@ -21,9 +21,7 @@ class UsArticleController extends Controller
     {
         $request->user()->authorizeRoles(['manager', 'admin']);
         if ($request -> isMethod('post')) {
-            $input = $request -> except('_token');
-
-            // parse_str($request->getContent(),$data); 
+            $this->us_sector_validate($request);
 
             $us_articl = Us_article::get();
             foreach ($us_articl as $us) {
@@ -51,7 +49,7 @@ class UsArticleController extends Controller
         $request->user()->authorizeRoles(['manager', 'admin']);
 
         if ($request->isMethod('post')) {
-            $input = $request -> except('_token');
+            $this->us_sector_validate($request);
 
             $us_article = us_article::find($request->id);
             $us_article->title = $request->us_title;
@@ -66,5 +64,16 @@ class UsArticleController extends Controller
             
             $us_article->update();
         }
+    }
+
+
+    public function us_sector_validate($request)
+    {
+        $request->validate([
+            'us_title' => 'required',
+            'us_short_description' => 'required',
+            'us_text' => 'required',
+            'us_info' => 'required',
+        ]);
     }
 }

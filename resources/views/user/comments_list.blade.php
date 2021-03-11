@@ -11,9 +11,6 @@
             <div class="col-sm-9">
 
             <comments_list_component
-                {{-- @if(isset($table_1)) :table_1="{{$table_1}}" @endif
-                @if(isset($table_2)) :table_2="{{$table_2}}" @endif  --}}
-
                 @if(isset($table_1_name)) :table_1_name="{{ json_encode($table_1_name) }}" @endif
                 @if(isset($table_2_name)) :table_2_name="{{ json_encode($table_2_name) }}" @endif
             > 

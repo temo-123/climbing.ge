@@ -38,6 +38,8 @@ class CategoryController extends Controller
         $request->user()->authorizeRoles(['admin', 'seller']);
 
         if ($request -> isMethod('post')) {
+            $this->category_validate($request);
+
             $category = new Product_category();
 
             $category['us_name'] = $request->us_name;
@@ -79,6 +81,8 @@ class CategoryController extends Controller
         $request->user()->authorizeRoles(['admin', 'seller']);
 
         if ($request -> isMethod('post')) {
+            $this->category_validate($request);
+            
             $category = Product_category::find($request->id);
 
             $category['us_name'] = $request->us_name;
@@ -115,5 +119,14 @@ class CategoryController extends Controller
                 "product_category" => $product_category,
             ]
         );
+    }
+
+    private function category_validate($request)
+    {
+        $request->validate([
+            'us_name' => 'required',
+            'ka_name' => 'required',
+            'ru_name' => 'required',
+        ]);
     }
 }

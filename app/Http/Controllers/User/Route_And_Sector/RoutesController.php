@@ -16,18 +16,20 @@ class RoutesController extends Controller
     	$request->user()->authorizeRoles(['manager', 'admin']);
 
         if ($request -> isMethod('post')) {
-            $input = $request -> except('_token');
+            $this->route_validate($request);
+
             $article = new Route();
 
             $article['sector_id']=$request->sector_id;
-            $article['gread']=$request->gread;
-            $article['or_gread']=$request->or_gread; 
+            $article['grade']=$request->grade;
+            $article['or_grade']=$request->or_grade; 
             $article['name']=$request->name;
             $article['text']=$request->text; 
             $article['last_carabin']=$request->last_carabin;
             $article['height']=$request->height;
             $article['bolts']=$request->bolts;
             $article['bolter']=$request->bolter;
+            $article['bolting_data']=$request->bolting_data;
             $article['first_ascent']=$request->first_ascent;
 
             $article -> save();
@@ -59,20 +61,25 @@ class RoutesController extends Controller
     {
         $request->user()->authorizeRoles(['manager', 'admin']);
 
-        $route = route::find($request->id);
+        if ($request -> isMethod('post')) {
+            $this->route_validate($request);
 
-        $route->sector_id = $request->sector_id;
-        $route->gread = $request->gread;
-        $route->or_gread = $request->or_gread; 
-        $route->name = $request->name;
-        $route->text = $request->text; 
-        $route->last_carabin = $request->last_carabin;
-        $route->height = $request->height;
-        $route->bolts = $request->bolts;
-        $route->bolter = $request->bolter;
-        $route->first_ascent = $request->first_ascent;
-        
-        $route->update();
+            $route = route::find($request->id);
+
+            $route->sector_id = $request->sector_id;
+            $route->grade = $request->grade;
+            $route->or_grade = $request->or_grade; 
+            $route->name = $request->name;
+            $route->text = $request->text; 
+            $route->last_carabin = $request->last_carabin;
+            $route->height = $request->height;
+            $route->bolts = $request->bolts;
+            $route->bolter = $request->bolter;
+            $route->bolting_data = $request->bolting_data;
+            $route->first_ascent = $request->first_ascent;
+            
+            $route->update();
+        }
     }
 
     public function edit_form(Request $request)
@@ -115,5 +122,15 @@ class RoutesController extends Controller
             // delete product from db
             $sector ->delete();
         }
+    }
+
+
+    private function route_validate($request)
+    {
+        $request->validate([
+            'name' => 'required|max:190',
+            'grade' => 'required',
+            'sector_id' => 'required',
+        ]);
     }
 }

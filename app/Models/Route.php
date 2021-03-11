@@ -18,6 +18,7 @@ class Route extends Model
         "height",
         "bolts",
         "bolter",
+        "bolting_data",
         "first_ascent",
     ];
 }

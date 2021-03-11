@@ -14,6 +14,7 @@ class KaProductController extends Controller
         $request->user()->authorizeRoles(['manager', 'admin']);
         if ($request -> isMethod('post')) {
             // $input = $request -> except('_token');
+            $this->ka_product_validate($request);
 
             $ka_articl = Ka_product::get();
             foreach ($ka_articl as $ka) {
@@ -35,6 +36,8 @@ class KaProductController extends Controller
     public function edit_ka_product(Request $request)
     {
         if ($request->isMethod('post')) {
+            $this->ka_product_validate($request);
+
             $ka_product = Ka_product::where('id',strip_tags($request->id))->first();
             
             $ka_product->title=$request->ka_title;
@@ -44,5 +47,15 @@ class KaProductController extends Controller
             
             $ka_product -> update();
         }
+    }
+
+
+    private function ka_product_validate($request)
+    {
+        $request->validate([
+            'ka_title' => 'required',
+            'ka_short_description' => 'required',
+            'ka_text' => 'required',
+        ]);
     }
 }

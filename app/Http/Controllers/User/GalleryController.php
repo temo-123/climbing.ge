@@ -7,7 +7,8 @@ use Illuminate\Http\Request;
 
 use App\Models\Gallery;
 use App\Models\Article;
-use App\Services\ImageEditService;
+use App\Services\imageControllService;
+use File;
 
 class GalleryController extends Controller
 {
@@ -47,12 +48,8 @@ class GalleryController extends Controller
         $request->user()->authorizeRoles(['manager', 'admin']);
         
         if ($request -> isMethod('post')) {
-            $input = $request -> except('_token');
 
             $this->gallery_validate($request);
-            $request->validate([
-                'image' => 'required',
-            ]);
             
             $gallery = new gallery();
 
@@ -65,10 +62,11 @@ class GalleryController extends Controller
             $gallery['published']=$request->published;
             $gallery['article_id']=$request->article_id;
 
-            $image_dir = "/images/gallery_img";
-            $gallery['image']=ImageEditService::image_upload($image_dir, "image", $request);
+            $gallery['image']=$this->upload_gallery_iamge($request);
 
             $gallery -> save();
+
+            return redirect()->route('gallery_list');
         }
         
         if (view() -> exists('user.components.forms.gallery_form')) {
@@ -112,12 +110,15 @@ class GalleryController extends Controller
 
         if ($request->isMethod('post')) {
             $input = $request -> except('_token');
-
-            $this->gallery_validate($request);
+            
+            $this->gallery_validate_for_editing($request);
 
             $gallery = Gallery::where('id',strip_tags($request->id))->first();
 
-            $gallery['image'] = ImageEditService::image_update($image_dir, $gallery, $input, "image", $request);
+            if ($request->hasFile('image')){ 
+                $this->del_gallery_image('images/gallery_img/'.$gallery->image);
+                $gallery['image']=$this->upload_gallery_iamge($request);
+            }
 
             $gallery->fill($input);
 
@@ -167,9 +168,9 @@ class GalleryController extends Controller
 
         if ($request->isMethod('delete')) {
             $gallery = Gallery::where('id',strip_tags($request->id))->first();
-
+            
             // delete article image from folder
-            ImageEditService::image_delite($image_dir, $gallery, 'image');
+            $this->del_gallery_image('images/gallery_img/'.$gallery->image);
 
             // delete product from db
             $gallery -> delete();
@@ -180,6 +181,59 @@ class GalleryController extends Controller
             return back()->with('error', 'Error! gallery not deleted!'); //text
         }
     }
+    
+
+    public function upload_gallery_iamge($request)
+    {
+        if ($request->hasFile('image')){   
+            // rename file
+            $file      = $request->file('image');
+            $filename  = $file->getClientOriginalName();
+            $extension = $file->getClientOriginalExtension();
+            $pieces = explode( '.', $filename );
+            $file_new_name = $pieces[0].'_('.date('Y-m-d-H-m-s').').'.$extension;
+            
+            // push image in folder
+            $file->move(public_path('images/gallery_img'), $file_new_name);
+
+            // save new value in db
+            return $file_new_name;
+        }
+    }
+
+    public function update_gallery_image($request, $image_path)
+    {
+        if ($request->hasFile('image')){ 
+            // delete old image
+            $this->del_gallery_image($image_path);
+
+            // rename file
+            $file      = $request->file('image');
+            $filename  = $file->getClientOriginalName();
+            $extension = $file->getClientOriginalExtension();
+            $pieces = explode( '.', $filename );
+            $file_new_name = $pieces[0].'_('.date('Y-m-d-H-m-s').').'.$extension;
+            
+            // push image in folder
+            $file->move(public_path('images/gallery_img'), $file_new_name);
+
+            // save new value in db
+            return $file_new_name;
+        }
+    }
+
+    public function del_gallery_image($image_path)
+    {
+        $file = public_path($image_path);
+        
+        if(file_exists($file)){
+            File::delete($file);
+        }else{
+            echo ('<p> File does not exists.</p>');
+            echo ('<p>'.$file.'</p>');
+        }
+    }
+
 
 
     public function gallery_validate($request)
@@ -189,7 +243,16 @@ class GalleryController extends Controller
             'category' => 'required',
             'title' => 'required|max:25',
             'text' => 'required|max:225',
-            'filter' => 'required',
+            'image' => 'required',
+        ]);
+    }
+    public function gallery_validate_for_editing($request)
+    {
+        $request->validate([
+            'published' => 'required',
+            'category' => 'required',
+            'title' => 'required|max:25',
+            'text' => 'required|max:225',
         ]);
     }
 }

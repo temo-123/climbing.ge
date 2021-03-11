@@ -59,4 +59,4 @@
 {{-- analytics.google.com --}}
 
 <script async src="https://www.googletagmanager.com/gtag/js?id=UA-101870435-1"></script>
-<script src="{{ asset('assets/js/analitic/climbing.ge analitic.js') }}"></script>
+<script src="{{ asset('assets/js/analitic/climbing.ge_analitic.js') }}"></script>

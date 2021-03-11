@@ -26,13 +26,20 @@
                         <label for="name" class='col-xs-2 control-label'> Publish </label>
                         <div class="col-xs-8">
                             <select class="form-control" name="published" v-model="published"> 
-                                
-                                <!-- <option value="0" @if ($data['published'] == 0) selected="" @endif>Not public</option> -->
-                                <!-- <option value="1" @if ($data['published'] == 1) selected="" @endif>Public</option> -->
-                            
                                 <option value="0">Not public</option> 
                                 <option value="1">Public</option> 
-                                
+                            </select> 
+                            <div class="alert alert-danger" role="alert" v-if="global_article_error.published">
+                                {{ global_article_error.published[0] }}
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group clearfix" v-if="this.category == 'mount_route'">
+                        <label for="name" class='col-xs-2 control-label'> Mountain </label>
+                        <div class="col-xs-8">
+                            <select class="form-control" v-model="mount_id" name="mount_id"> 
+                                <option  v-for="mount in mount_data" :key="mount.id" v-bind:value="mount.id">{{mount.name}}</option> 
                             </select> 
                         </div>
                     </div>
@@ -53,7 +60,7 @@
                     </div>
 
 
-                    <div class="form-group clearfix">
+                    <div class="form-group clearfix" v-if="this.category != 'mount_route'">
                         <label for="name" class='col-xs-2 control-label'> Map </label>
                         <div class="col-xs-8">
                             <!-- <input type="text" name="value name" value="old data" class="form-control"> -->
@@ -63,7 +70,7 @@
                     </div>
 
 
-                    <div class="form-group clearfix" v-if="this.category == 'outdoor' || this.category == 'ice' || this.category == 'mount_route'">
+                    <div class="form-group clearfix" v-if="this.category == 'outdoor' || this.category == 'ice' || this.category != 'mount_route'">
                         <label for="name" class='col-xs-2 control-label'> Weather </label>
                         <div class="col-xs-8">
                             <!-- <input type="text" name="value name" value="old data" class="form-control"> -->
@@ -183,6 +190,9 @@
                         <div class="col-xs-8">
                             <!-- <input type="text" name="value name" value="old data" class="form-control"> -->
                             <input type="text" name="us_title" v-model="us_title" class="form-control"> 
+                            <div class="alert alert-danger" role="alert" v-if="us_article_error.us_title">
+                                {{ us_article_error.us_title[0] }}
+                            </div>
                         </div>
                     </div>
 
@@ -191,6 +201,9 @@
                         <div class="col-xs-8">
                             <!-- <textarea type="text" id="short_description" name="short_description" rows="15" class="form-cotrol md-textarea form-control">gggggggggg</textarea> -->
                             <ckeditor :editor="editor" v-model="us_short_description" :config="editorConfig"></ckeditor>
+                            <div class="alert alert-danger" role="alert" v-if="us_article_error.us_short_description">
+                                {{ us_article_error.us_short_description[0] }}
+                            </div>
                         </div>
                     </div>
 
@@ -199,6 +212,9 @@
                         <div class="col-xs-8">
                             <ckeditor :editor="editor" v-model="us_text" :config="editorConfig"></ckeditor>
                             <!-- <textarea type="text" id="txt" name="txt" rows="15" class="form-cotrol md-textarea form-control"></textarea> -->
+                            <div class="alert alert-danger" role="alert" v-if="us_article_error.us_text">
+                                {{ us_article_error.us_text[0] }}
+                            </div>
                         </div>
                     </div>
 
@@ -238,6 +254,9 @@
                         <label for="name" class='col-xs-2 control-label'> Info / contact </label>
                         <div class="col-xs-8">
                             <ckeditor :editor="editor" v-model="us_info" :config="editorConfig"></ckeditor>
+                            <div class="alert alert-danger" role="alert" v-if="us_article_error.us_info">
+                                {{ us_article_error.us_info[0] }}
+                            </div>
                             <!-- <textarea type="text"  name="info" rows="15" class="form-cotrol md-textarea form-control"></textarea> -->
                         </div>
                     </div>
@@ -283,6 +302,9 @@
                         <div class="col-xs-8">
                             <!-- <input type="text" name="value name" value="old data" class="form-control"> -->
                             <input type="text" name="value name" v-model="ru_title" class="form-control"> 
+                            <div class="alert alert-danger" role="alert" v-if="ru_article_error.ru_title">
+                                {{ ru_article_error.ru_title[0] }}
+                            </div>
                         </div>
                     </div>
 
@@ -291,6 +313,9 @@
                         <div class="col-xs-8">
                             <ckeditor :editor="editor" v-model="ru_short_description" :config="editorConfig"></ckeditor>
                             <!-- <textarea type="text" id="short_description" name="short_description" rows="15" class="form-cotrol md-textarea form-control"></textarea> -->
+                            <div class="alert alert-danger" role="alert" v-if="ru_article_error.ru_short_description">
+                                {{ ru_article_error.ru_short_description[0] }}
+                            </div>
                         </div>
                     </div>
 
@@ -299,6 +324,9 @@
                         <div class="col-xs-8">
                             <ckeditor :editor="editor" v-model="ru_text" :config="editorConfig"></ckeditor>
                             <!-- <textarea type="text" id="txt" name="txt" rows="15" class="form-cotrol md-textarea form-control"></textarea> -->
+                            <div class="alert alert-danger" role="alert" v-if="ru_article_error.ru_text">
+                                {{ ru_article_error.ru_text[0] }}
+                            </div>
                         </div>
                     </div>
 
@@ -339,6 +367,9 @@
                         <div class="col-xs-8">
                             <ckeditor :editor="editor" v-model="ru_info" :config="editorConfig"></ckeditor>
                             <!-- <textarea type="text"  name="info" rows="15" class="form-cotrol md-textarea form-control"></textarea> -->
+                            <div class="alert alert-danger" role="alert" v-if="ru_article_error.ru_info">
+                                {{ ru_article_error.ru_info[0] }}
+                            </div>
                         </div>
                     </div>
 
@@ -399,6 +430,9 @@
                         <div class="col-xs-8">
                             <!-- <input type="text" name="value name" value="old data" class="form-control"> -->
                             <input type="text" name="value name" v-model="ka_title" class="form-control"> 
+                            <div class="alert alert-danger" role="alert" v-if="ka_article_error.ka_text">
+                                {{ ka_article_error.ka_text[0] }}
+                            </div>
                         </div>
                     </div>
 
@@ -407,6 +441,9 @@
                         <div class="col-xs-8">
                             <ckeditor :editor="editor" v-model="ka_short_description" :config="editorConfig"></ckeditor>
                             <!-- <textarea type="text" id="short_description" name="short_description" rows="15" class="form-cotrol md-textarea form-control"></textarea> -->
+                            <div class="alert alert-danger" role="alert" v-if="ka_article_error.ka_short_description">
+                                {{ ka_article_error.ka_short_description[0] }}
+                            </div>
                         </div>
                     </div>
 
@@ -414,6 +451,9 @@
                         <label for="name" class='col-xs-2 control-label'> text </label>
                         <div class="col-xs-8">
                             <ckeditor :editor="editor" v-model="ka_text" :config="editorConfig"></ckeditor>
+                            <div class="alert alert-danger" role="alert" v-if="ka_article_error.ka_text">
+                                {{ ka_article_error.ka_text[0] }}
+                            </div>
                             <!-- <textarea type="text" id="txt" name="txt" rows="15" class="form-cotrol md-textarea form-control"></textarea> -->
                         </div>
                     </div>
@@ -454,6 +494,9 @@
                         <label for="name" class='col-xs-2 control-label'> Info / contact </label>
                         <div class="col-xs-8">
                             <ckeditor :editor="editor" v-model="ka_info" :config="editorConfig"></ckeditor>
+                            <div class="alert alert-danger" role="alert" v-if="ka_article_error.ka_info">
+                                {{ ka_article_error.ka_info[0] }}
+                            </div>
                             <!-- <textarea type="text"  name="info" rows="15" class="form-cotrol md-textarea form-control"></textarea> -->
                         </div>
                     </div>
@@ -500,9 +543,6 @@
 </template>
 
 <script>
-    import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
-    // import Form from 'vform';
-
     export default {
         props: [
             'back_url',
@@ -511,6 +551,15 @@
         ],
         data(){
             return {
+                global_article_error: [],
+                is_global_article_error: true,
+                ka_article_error: [],
+                is_ka_article_error: true,
+                ru_article_error: [],
+                is_ru_article_error: true,
+                us_article_error: [],
+                is_us_article_error: true,
+
                 editor: 'editor',
                 editorConfig:{},
 
@@ -590,16 +639,19 @@
     
         mounted() {
             this.get_editing_data()
+            if (this.category == 'mount_route') {
+                this.get_mount_massive_data()
+            }
         },
 
         methods: {
-
             edit_global_article() {
                 axios
                 .post('/articles/global/edit/' + this.editing_article_id, {
                     us_title_for_url_title: this.us_title,
 
                     published: this.published,
+                    mount_id: this.mount_id,
                     completed: this.completed,
                     map: this.map,
                     weather: this.weather,
@@ -619,9 +671,15 @@
                     web_link: this.web_link,
                 })
                 .then(Response => {
-                    console.log(response)
+                    this.is_global_article_error = false
+                    this.if_isset_go_beck(this.is_global_article_error)
                 })
-                .catch(error => console.log(error))
+                .catch(error =>{
+                    if (error.response.status == 422) {
+                        this.global_article_error = error.response.data.errors
+                    }
+                    this.is_global_article_error = true
+                })
             },
             edit_ru_article() {
                 axios
@@ -637,12 +695,15 @@
                     ru_meta_keyword: this.ru_meta_keyword,
                 })
                 .then(Response => {
-                    // alert("Article editied"),
-                    // this.comment.name = '',
-                    update,
-                    console.log(response)
+                    this.is_ru_article_error = false
+                    this.if_isset_go_beck(this.is_ru_article_error)
                 })
-                .catch(error => console.log(error))
+                .catch(error =>{
+                    if (error.response.status == 422) {
+                        this.ru_article_error = error.response.data.errors
+                    }
+                    this.is_ru_article_error = true
+                })
             },
             edit_us_article() {
                 axios
@@ -658,12 +719,15 @@
                     us_meta_keyword: this.us_meta_keyword,
                 })
                 .then(Response => {
-                    // alert("Article editied"),
-                    // this.comment.name = '',
-                    update,
-                    console.log(response)
+                    this.is_us_article_error = false
+                    this.if_isset_go_beck(this.is_us_article_error)
                 })
-                .catch(error => console.log(error))
+                .catch(error =>{
+                    if (error.response.status == 422) {
+                        this.us_article_error = error.response.data.errors
+                    }
+                    this.is_us_article_error = true
+                })
             },
             edit_ka_article() {
                 axios
@@ -679,12 +743,26 @@
                     ka_meta_keyword: this.ka_meta_keyword,
                 })
                 .then(Response => {
-                    // alert("Article editied"),
-                    this.comment.name = '',
-                    update,
-                    console.log(response)
+                    this.is_ka_article_error = false
+                    this.if_isset_go_beck(this.is_ka_article_error)
                 })
-                .catch(error => console.log(error))
+                .catch(error =>{
+                    if (error.response.status == 422) {
+                        this.ka_article_error = error.response.data.errors
+                    }
+                    this.is_ka_article_error = true
+                })
+            },
+
+            get_mount_massive_data: function(){
+                axios
+                .get("/mountaineering/get_mount_data/")
+                .then(response => {
+                    this.mount_data = response.data
+                })
+                .catch(
+                error => console.log(error)
+                );
             },
 
             checkForm: function (e) {
@@ -718,6 +796,7 @@
                     
                     // send data in editing form value
                     this.published = this.editing_data.global_article['published'],
+                    this.mount_id = this.editing_data.global_article['mount_id'],
                     this.completed = this.editing_data.global_article['completed'],
                     this.map = this.editing_data.global_article['map'],
                     this.weather = this.editing_data.global_article['weather'],
@@ -787,8 +866,17 @@
                 this.edit_ru_article();
 
                 this.checkForm();
+            },
 
-                window.location.href = this.back_url;
+            if_isset_go_beck() {
+                if (
+                    this.is_global_article_error == false &&
+                    this.is_ka_article_error == false &&
+                    this.is_ru_article_error == false &&
+                    this.is_us_article_error == false
+                ) {
+                    // window.location.href = this.back_url;
+                }
             }
         }
     }

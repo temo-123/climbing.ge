@@ -9,18 +9,19 @@ use App\Models\Article;
 use App\Models\Ka_article;
 use App\Models\Us_article;
 use App\Models\Ru_article;
-
 use App\Services\URLTitleService;
+use Intervention\Image\ImageManagerStatic as Image;
+// use Intervention\Image\Facades\Image;
 
 class GlobalArticleController extends Controller
 {
     public function add_global_article(Request $request)
 	{
         $request->user()->authorizeRoles(['manager', 'admin']);
-        // dd(1);
         
         if ($request -> isMethod('post')) {
-            $input = $request -> except('_token');
+            // $input = $request -> except('_token');
+            $this->global_sector_validate($request);
 
             $global_article = Article::get();
             foreach ($global_article as $global) {
@@ -48,7 +49,9 @@ class GlobalArticleController extends Controller
             $article = Article::find($last_globale_id);
             
             $article['url_title'] = $url_title;
+
             $article['category']=$request->category;
+            $article['mount_id']=$request->mount_id;
             $article['published']=$request->published;
             $article['completed']=$request->completed; 
             $article['map']=$request->map;
@@ -90,7 +93,8 @@ class GlobalArticleController extends Controller
         $request->user()->authorizeRoles(['manager', 'admin']);
 
         if ($request->isMethod('post')) {
-            $input = $request -> except('_token');
+            
+            $this->global_sector_validate($request);
 
             // make url_title from us_title value
             $us_title_arr = explode( ' ', $request->us_title_for_url_title);
@@ -101,6 +105,7 @@ class GlobalArticleController extends Controller
             $global_article->url_title = $url_title;
 
             $global_article->published = $request->published;
+            $global_article->mount_id = $request->mount_id;
             $global_article->completed = $request->completed;
             $global_article->map = $request->map; 
             $global_article->weather = $request->weather;
@@ -130,6 +135,14 @@ class GlobalArticleController extends Controller
     {   
         // https://therichpost.com/vue-laravel-image-upload/
         if ($request->hasFile('profile_pic')){   
+            // $this->global_sector_image_validate($request);
+
+            $global_article = Article::get();
+            foreach ($global_article as $global) {
+                $last_global_article_id = $global->id;
+                $last_global_article_category = $global->category;
+            }
+
             // rename file
             $file      = $request->file('profile_pic');
             $filename  = $file->getClientOriginalName();
@@ -137,18 +150,28 @@ class GlobalArticleController extends Controller
             $pieces = explode( '.', $filename );
             $file_new_name = $pieces[0].'_('.date('Y-m-d-H-m-s').').'.$extension;
 
-            $global_article = Article::get();
-            foreach ($global_article as $global) {
-                $last_global_article_id = $global->id;
-                $last_global_article_category = $global->category;
-            }
-            
             // push image in folder
             $file->move(public_path('images/'.$last_global_article_category.'_img'), $file_new_name);
 
             $article = Article::where('id',strip_tags($last_global_article_id))->first();
             $article['image']=$file_new_name;
             $article -> save();
+
+
+
+            // open an image file
+            $img = Image::make('images/'.$last_global_article_category.'_img'.$file_new_name);
+
+            // now you are able to resize the instance
+            $img->resize(320, 240);
+
+            // and insert a watermark for example
+            // $img->insert('images/'.$last_global_article_category.'_img'.$file_new_name);
+
+            // finally we save the image as a new file
+            $img->move(public_path('images/'.$last_global_article_category.'_img/demo_img/'), $file_new_name);
+
+
 
             return response()->json(["message" => "Image Uploaded Succesfully"]);
         } 
@@ -172,21 +195,34 @@ class GlobalArticleController extends Controller
             $article_category = $global_article->category;
 
             // push image in folder
-            $file->move(public_path('images/'.$article_category.'_img'), $file_new_name);
+            $file->move(public_path('images/'.$article_category.'_img/origin_img'), $file_new_name);
+            // chmod(public_path('images/'.$article_category.'_img'.$file_new_name), 0755);
 
             // edit article image
             $article = Article::where('id',strip_tags($request->id))->first();
             $article['image'] = $file_new_name;
             $article -> save();
-        }
-        else {
-            // $article = Article::where('id',strip_tags($request->id))->first();
 
-            // $global_article->published = $article->image;
+$test_filename = '158208217_916347415858602_6227987547054177502_n_(2021-03-10-19-03-19).jpg';
 
-            // dd($article);
-            
-            // $global_article->update();
+            // open an image file
+            $img = Image::make('images/'.$article->category.'_img/origin_img/'.$test_filename);
+
+            // now you are able to resize the instance
+            $img->resize(1024, 576);
+
+            // finally we save the image as a new file
+            $img->save(public_path('images/'.$article->category.'_img/'.$test_filename));
+
+            dd($img);
         }
+    }
+
+
+    public function global_sector_validate($request)
+    {
+        $request->validate([
+            'published' => 'required',
+        ]);
     }
 }

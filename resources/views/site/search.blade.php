@@ -38,7 +38,7 @@
                                     <img src="{{asset('images/outdoor_img/'.$outdoor->image)}}" class="img-responsive">
                                         
                                     <div class="mask">
-                                        <a href="{{ route('outdoor_page', array('title'=>$outdoor->title)) }}" class="info">
+                                        <a href="{{ route('outdoor_page', array('title'=>$outdoor->url_title)) }}" class="info">
                                             <i class="fa fa-arrow-right"></i>
                                         </a>
                                     </div>
@@ -126,7 +126,7 @@
                                     <img src="{{asset('images/mount_route_img/'.$mount->image)}}" class="img-responsive">
                                         
                                     <div class="mask">
-                                        <a href="{{ route('mount_page', array('title'=>$mount->title)) }}" class="info">
+                                        <a href="{{ route('mount_page', array('title'=>$mount->url_title)) }}" class="info">
                                             <i class="fa fa-arrow-right"></i>
                                         </a>
                                     </div>
@@ -168,7 +168,7 @@
                                     <img src="{{asset('images/ice_img/'.$ice->image)}}" class="img-responsive">
                                         
                                     <div class="mask">
-                                        <a href="{{ route('ice_page', array('title'=>$ice->title)) }}" class="info">
+                                        <a href="{{ route('ice_page', array('title'=>$ice->url_title)) }}" class="info">
                                             <i class="fa fa-arrow-right"></i>
                                         </a>
                                     </div>
@@ -209,7 +209,7 @@
                                     <img src="{{asset('images/other_img/'.$other->image)}}" class="img-responsive">
                                         
                                     <div class="mask">
-                                        <a href="{{ route('other_page', array('title'=>$other->title)) }}" class="info">
+                                        <a href="{{ route('other_page', array('title'=>$other->url_title)) }}" class="info">
                                             <i class="fa fa-arrow-right"></i>
                                         </a>
                                     </div>
@@ -252,7 +252,7 @@
                                                     <div class="panel-primary event-primary">
                                                         <div class="panel-heading">
                                                             <h2>
-                                                                <a href="{{ route('events_page', array('title'=>$event->title)) }}">
+                                                                <a href="{{ route('events_page', array('title'=>$event->url_title)) }}">
                                                                     {{ $event -> article_title }}
                                                                 </a>
                                                             </h2>
@@ -284,7 +284,7 @@
                                                                 {!! $event -> description_short !!}
                                                             </div>
                                                             
-                                                            <a href="{{ route('events_page', array('title'=>$event->title)) }}" class="btn btn-success">
+                                                            <a href="{{ route('events_page', array('title'=>$event->url_title)) }}" class="btn btn-success">
                                                                 Read more...
                                                             </a>
                         

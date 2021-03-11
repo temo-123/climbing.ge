@@ -1,16 +1,21 @@
 @component('mail::message')
-# Introduction
+# Message
 
-The body of your message.
+<hr>
 
-@component('mail::button', ['url' => ''])
+<p>{{$msg}}</p>
+
+{{-- @component('mail::button', ['url' => ''])
 Button Text
-@endcomponent
+@endcomponent --}}
 
 @component('mail::panel', ['url' => ''])
-Panel Text
+<p>From - {{$name}} {{$surname}}</p>
+<p>Email - {{$email}}</p>
+<p>Cuntry - {{$country}}</p>
+<p>Phon number - {{$num}}</p>
 @endcomponent
 
-Thanks,<br>
+{{-- Thanks,<br> --}}
 {{ config('app.name') }}
 @endcomponent

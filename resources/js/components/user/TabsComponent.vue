@@ -55,10 +55,10 @@
                             <td>|</td>
 
                             <td v-if="table_1_name == 'Sector'">{{table_1_info.name}}</td>
-                            <td v-if="table_1_name == 'Users'">{{table_1_info.name}} {{table_1_info.surname}}</td>
+                            <td v-else-if="table_1_name == 'Users'">{{table_1_info.name}} {{table_1_info.surname}}</td>
                             <td v-else>{{table_1_info.url_title}} </td>
 
-                            <!-- <td  v-if="table_1_name != 'Users'">|</td> -->
+                            <td  v-if="table_1_name != 'Users'">|</td>
 
                             <th style='text-align: center;' v-if="table_1_name == 'Sector'">
                                 <div v-for="region in regions" :key="region.id" >

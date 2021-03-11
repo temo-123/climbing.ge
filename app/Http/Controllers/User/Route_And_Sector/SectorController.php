@@ -7,10 +7,10 @@ use Illuminate\Http\Request;
 
 use App\Models\Sector;
 use App\Models\Article;
-
 use App\Models\Sector_image;
-
 use App\Services\imageControllService;
+
+use Validator;
 
 class SectorController extends Controller
 {
@@ -21,6 +21,7 @@ class SectorController extends Controller
         if ($request -> isMethod('post')) {
             $input = $request -> except('_token');
 
+            $this->sector_validate($request);
             // dd($request);
 
             // $sectors = sector::where("article_id","=",$input["article_id"])->get("num");
@@ -109,6 +110,8 @@ class SectorController extends Controller
         if ($request->isMethod('post')) {
             $input = $request -> except('_token');
             
+            $this->sector_validate($request);
+            
             $sector = sector::find($request->id);
             // $sector = new sector();
 
@@ -135,8 +138,6 @@ class SectorController extends Controller
         }
     }
 
-    
-
     public function delete(Request $request)
     {
         $request->user()->authorizeRoles(['manager', 'admin']);
@@ -162,26 +163,6 @@ class SectorController extends Controller
         }
     }
 
-    private function sector_validate()
-    {
-        
-            // $validator = validator::make($input, [
-            //     'title' => 'required|max:190',
-            //     'image' => 'required',
-            //     'text' => 'max:500',
-            // ]);
-            // if ($validator->fails()) {
-            //     return back() -> withErrors($validator) -> withInput();
-            // }
-    }
-
-
-
-
-
-
-
-
     public function get_sector_image(Request $request)
     {
         $sector_images = Sector_image::where('sector_id',"=", $request->sector_id)->get();
@@ -202,15 +183,11 @@ class SectorController extends Controller
         );
     }
 
-
-
-
-
-
-
     public function sector_image_upload(Request $request)
     {
         $request->user()->authorizeRoles(['manager', 'admin']);
+
+        $this->sector_image_validate($request);
 
         $image_dir = 'sector_img';
 
@@ -262,9 +239,6 @@ class SectorController extends Controller
         }
     }
 
-
-
-    
     public function create_temporary_sector()
     {
         $sector = new Sector();
@@ -304,5 +278,22 @@ class SectorController extends Controller
                 "last_temporary_sectore_id" => $last_temporary_sectore_id,
             ]
         );
+    }
+
+
+
+    public function sector_image_validate($request)
+    {
+        $request->validate([
+            'image' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+        ]);
+    }
+
+    private function sector_validate($request)
+    {
+        $request->validate([
+            'name' => 'required|max:190',
+            'article_id' => 'required'
+        ]);
     }
 }

@@ -21,9 +21,7 @@ class RuArticleController extends Controller
     {
         $request->user()->authorizeRoles(['manager', 'admin']);
         if ($request -> isMethod('post')) {
-            $input = $request -> except('_token');
-
-            // parse_str($request->getContent(),$data); 
+            $this->ru_sector_validate($request);
 
             $ru_articl = Ru_article::get();
             foreach ($ru_articl as $ru) {
@@ -52,7 +50,7 @@ class RuArticleController extends Controller
         $request->user()->authorizeRoles(['manager', 'admin']);
 
         if ($request->isMethod('post')) {
-            $input = $request -> except('_token');
+            $this->ru_sector_validate($request);
             
             $ru_article = ru_article::find($request->id);
 
@@ -68,5 +66,15 @@ class RuArticleController extends Controller
             
             $ru_article->update();
         }
+    }
+
+    public function ru_sector_validate($request)
+    {
+        $request->validate([
+            'ru_title' => 'required',
+            'ru_short_description' => 'required',
+            'ru_text' => 'required',
+            'ru_info' => 'required',
+        ]);
     }
 }

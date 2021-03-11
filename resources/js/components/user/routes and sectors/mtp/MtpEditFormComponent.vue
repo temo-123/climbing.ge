@@ -9,27 +9,36 @@
       <form action="">
         
         <div class="form-group clearfix">
-          <label for="name" class='col-xs-2 control-label'> Region </label>
+          <label for="name" class='col-xs-2 control-label'> Region / Sector </label>
           <div class="col-xs-4">
-            <select class="form-control"  v-model="sellected">
-              <option disabled>Please select sector</option>
+            <select class="form-control"  v-model="sellected_region">
               <option v-for="region in regions" :key="region.id" v-bind:value="region.id">{{ region.url_title  }}</option>
             </select>
           </div>
           <div class="col-xs-4">
             <div class="col-xs-12">
-              <select class="form-control" v-if="sellected != ''" v-model="sector_id">
-                <option disabled>Please select sector</option>
-                <option v-for="sector in sectors" :key="sector.id" :if="sellected == sector.article_id" v-bind:value="sector.id">{{ sector.name }}</option>
+              <select class="form-control" v-if="sellected_region != ''" v-model="sector_id">
+                <option v-for="sector in sectors" :key="sector.id" v-if="sellected_region == sector.article_id" v-bind:value="sector.id">{{ sector.name }}</option>
               </select>
             </div>
           </div>
+        </div>
+        
+        <div class="form-group clearfix" v-if="errors.sector_id">
+            <div class="col-xs-12">
+              <div class="alert alert-danger" role="alert">
+                {{ errors.sector_id[0] }}
+              </div>
+            </div>
         </div>
 
         <div class="form-group clearfix">
           <label for="name" class='col-xs-2 control-label'> Route name </label>
           <div class="col-xs-8">
             <input type="text" name="name" v-model="name" class="form-control" placeholder="Route name.."> 
+              <div class="alert alert-danger" role="alert" v-if="errors.name">
+                {{ errors.name[0] }}
+              </div>
           </div>
         </div>
 
@@ -41,14 +50,6 @@
           </div>
         </div>
 
-        <div class="form-group clearfix">
-          <label for="name" class='col-xs-2 control-label'> Height </label>
-          <div class="col-xs-6">
-            <input type="text" name="title" class="form-control" v-model="height" placeholder="Height"> 
-          </div>
-          <label for="name" class='col-xs-1 control-label'> M </label>
-        </div>
-
       </form>
     </div>
   </div>
@@ -56,16 +57,18 @@
 
 <script>
 export default {
-    props: [
-        "editing_mtp_id",
-    ],
+  props: [
+      "editing_mtp_id",
+  ],
   data() {
     return {
-      sellected: '',
+      sellected_region: '',
       route_type: '',
 
       regions: [],
       sectors: [],
+
+      errors: [],
 
       sector_id: "",
       name: "",
@@ -80,7 +83,7 @@ export default {
   mounted() {
     this.get_region_data()
     this.get_sectors_data()
-    this.get_route_editing_data()
+    this.get_mtp_editing_data()
   },
 
   methods: {
@@ -104,32 +107,37 @@ export default {
         error => console.log(error)
       );
     },
-    get_route_editing_data() {
-          this.url = this.editing_url + this.editing_mtp_id
-          axios
-          .get(this.url)
-          .then(response => {
-              this.editing_data = response.data
 
-            console.log(this.editing_data);
-              // send data in editing form value
-              this.sector_id = this.editing_data.mtp['sector_id'],
-              this.name = this.editing_data.mtp['name'],
-              this.text = this.editing_data.mtp['text'],
-              this.height = this.editing_data.mtp['height']
-              
-              for (let index = 0; index < this.sectors.length; index++) {
-                if (this.sectors[index]['id'] == this.sector_id) {
-                  this.select_region = this.sectors[index]['article_id']
-                }
-              }
-              console.log(this.select_region);
+    get_mtp_editing_data() {
+      this.url = this.editing_url + this.editing_mtp_id
+      axios
+      .get(this.url)
+      .then(response => {
+          this.editing_data = response.data
 
-          })
-          .catch(
-              error => console.log(error)
-          );
-      },
+        console.log(this.editing_data);
+          // send data in editing form value
+          this.sector_id = this.editing_data.mtp['sector_id'],
+          this.name = this.editing_data.mtp['name'],
+          this.text = this.editing_data.mtp['text'],
+          this.height = this.editing_data.mtp['height']
+
+          this.value_sector_region(this.editing_data)
+      })
+      .catch(
+          error => console.log(error)
+      );
+    },
+
+    value_sector_region: function(editing_data){
+      if (editing_data.mtp['sector_id'] != "" || editing_data.mtp['sector_id'] != NULL) {
+        for (let index = 0; index < this.sectors.length; index++) {
+          if (this.sectors[index]['id'] == this.sector_id) {
+            this.sellected_region = this.sectors[index]['article_id']
+          }
+        }
+      }
+    },
 
     edit_global_article: function () {
       axios
@@ -140,16 +148,17 @@ export default {
           height: this.height,
       })
       .then(function (response) {
-          console.log("route added sucsesfule")
+          window.location.href = '/routes_and_sectors';
       })
-      .catch(function (response){
-          console.log("route added is not sucsesfule!!!")
+      .catch(error =>{
+          if (error.response.status == 422) {
+            this.errors = error.response.data.errors
+          }
       })
     },
 
     save_all: function () {
       this.edit_global_article()
-      window.location.href = '/routes_and_sectors';
     }
 
   }

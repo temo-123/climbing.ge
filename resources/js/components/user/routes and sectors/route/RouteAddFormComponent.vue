@@ -11,23 +11,29 @@
         <div class="form-group clearfix">
           <label for="name" class='col-xs-2 control-label'> Region </label>
           <div class="col-xs-4">
-            <select class="form-control"  v-model="sellected">
-              <option disabled>Please select sector</option>
+            <select class="form-control"  v-model="sellected_region">
               <option v-for="region in regions" :key="region.id" v-bind:value="region.id">{{ region.url_title  }}</option>
             </select>
           </div>
           <div class="col-xs-4">
             <div class="col-xs-12">
-              <select class="form-control" v-if="sellected != ''" v-model="sector_id">
-                <option disabled>Please select sector</option>
-                <option v-for="sector in sectors" :key="sector.id" :if="sellected == sector.article_id" v-bind:value="sector.id">{{ sector.name }}</option>
+              <select class="form-control" v-if="sellected_region != ''" v-model="sector_id">
+                <option v-for="sector in sectors" :key="sector.id" v-if="sellected_region == sector.article_id" v-bind:value="sector.id">{{ sector.name }}</option>
               </select>
             </div>
           </div>
         </div>
 
+        <div class="form-group clearfix" v-if="errors.sector_id">
+            <div class="col-xs-12">
+              <div class="alert alert-danger" role="alert">
+                {{ errors.sector_id[0] }}
+              </div>
+            </div>
+        </div>
+
         <div class="form-group clearfix">
-          <label for="name" class='col-xs-2 control-label'> Gread </label>
+          <label for="name" class='col-xs-2 control-label'> grade </label>
           <div class="col-xs-4">
             <select class="form-control"  v-model="route_type">
               <option disabled>Please select route type</option>
@@ -38,35 +44,50 @@
           <div class="col-xs-4">
             <div class="col-xs-6">
               <select class="form-control" v-if="route_type != '' && route_type == 'sport climbing'" v-model="grade">
-                <option v-for="sport in sport_route_grade" :key="sport" v-bind:value="sport">{{ sport }}</option>
+                <option v-bind:value="NULL"> No grade </option>
+                <option v-for="sport in sport_route_grade" :key="sport" v-bind:value="sport" :selected="true" >{{ sport }}</option>
               </select>
             </div>
             <div class="col-xs-6">
-              <select class="form-control" v-if="route_type != '' && route_type == 'sport climbing'" v-model="or_gread">
-                <option>No</option>
-                <option v-for="sport in sport_route_gread" :key="sport" v-bind:value="sport">{{ sport }}</option>
+              <select class="form-control" v-if="route_type != '' && route_type == 'sport climbing'" v-model="or_grade">
+                <option v-bind:value="NULL"> No grade </option>
+                <option>Project</option>
+                <option v-for="sport in sport_route_grade" :key="sport" v-bind:value="sport" :selected="true" >{{ sport }}</option>
               </select>
             </div>
           </div>
           <div class="col-xs-4">
             <div class="col-xs-6">
-              <select class="form-control" v-if="route_type != '' && route_type == 'bouldering'" v-model="gread">
-                <option v-for="boulder in boulder_route_gread" :key="boulder" v-bind:value="boulder">{{ boulder }}</option>
+              <select class="form-control" v-if="route_type != '' && route_type == 'bouldering'" v-model="grade">
+                <option v-bind:value="NULL"> No grade </option>
+                <option v-for="boulder in boulder_route_grade" :key="boulder" v-bind:value="boulder" :selected="true" >{{ boulder }}</option>
               </select>
             </div>
             <div class="col-xs-6">
-              <select class="form-control" v-if="route_type != '' && route_type == 'bouldering'" v-model="or_gread">
-                <option>No</option>
-                <option v-for="boulder in boulder_route_gread" :key="boulder" v-bind:value="boulder">{{ boulder }}</option>
+              <select class="form-control" v-if="route_type != '' && route_type == 'bouldering'" v-model="or_grade">
+                <option v-bind:value="NULL"> No grade </option>
+                <option>Project</option>
+                <option v-for="boulder in boulder_route_grade" :key="boulder" v-bind:value="boulder" :selected="true" >{{ boulder }}</option>
               </select>
             </div>
           </div>
+        </div>
+
+        <div class="form-group clearfix" v-if="errors.grade">
+            <div class="col-xs-12">
+              <div class="alert alert-danger" role="alert">
+                {{ errors.grade[0] }}
+              </div>
+            </div>
         </div>
 
         <div class="form-group clearfix">
           <label for="name" class='col-xs-2 control-label'> Route name </label>
           <div class="col-xs-8">
             <input type="text" name="name" v-model="name" class="form-control" placeholder="Route name.."> 
+              <div class="alert alert-danger" role="alert" v-if="errors.name">
+                {{ errors.name[0] }}
+              </div>
           </div>
         </div>
 
@@ -94,10 +115,17 @@
         </div>
 
         <div class="form-group clearfix">
-          <label for="name" class='col-xs-2 control-label'> Bolter & Firs Ascent </label>
+          <label for="name" class='col-xs-2 control-label'> Bolter & Bolting data </label>
           <div class="col-xs-4">
             <input type="text" name="title" class="form-control" v-model="bolter" placeholder="Bolter"> 
           </div>
+          <div class="col-xs-4">
+            <input type="text" name="title" class="form-control" v-model="bolting_data" placeholder="Bolting Data"> 
+          </div>
+        </div>
+
+        <div class="form-group clearfix">
+          <label for="name" class='col-xs-2 control-label'>Firs Ascent </label>
           <div class="col-xs-4">
             <input type="text" name="title" class="form-control" v-model="first_ascent" placeholder="First ascent"> 
           </div>
@@ -112,15 +140,16 @@
 export default {
   data() {
     return {
-      sellected: '',
+      sellected_region: '',
       route_type: '',
+      errors: [],
 
       regions: [],
       sectors: [],
 
       article_id: "",
-      gread: "",
-      or_gread: "",
+      grade: "",
+      or_grade: "",
       title: "",
       text: "",
       last_carabin: "",
@@ -129,7 +158,7 @@ export default {
       bolter: "",
       first_ascent: "",
 
-      sport_route_gread: [
+      sport_route_grade: [
         "4",
         "5a", "5b", "5c", "5c+",
         "6a", "6a+", "6b", "6b+", "6c", "6c+",
@@ -137,7 +166,7 @@ export default {
         "8a", "8a+", "8b", "8b+", "8c", "8c+",
         "9a", "9a+", "9b", "9b+", "9c", "9c+",
       ],
-      boulder_route_gread: [
+      boulder_route_grade: [
         "V1", "V1+",
         "V2", "V2+",
         "V3", "V3+",
@@ -188,6 +217,7 @@ export default {
         error => console.log(error)
       );
     },
+
     add_route: function () {
       axios
       .post('/routes_and_sectors/route_add', {
@@ -200,19 +230,21 @@ export default {
           height: this.height,
           bolts: this.bolts,
           bolter: this.bolter,
+          bolting_data: this.bolting_data,
           first_ascent: this.first_ascent,
       })
       .then(function (response) {
-          console.log("route added sucsesfule")
+          window.location.href = '/routes_and_sectors';
       })
-      .catch(function (response){
-          console.log("route added is not sucsesfule!!!")
+      .catch(error =>{
+          if (error.response.status == 422) {
+            this.errors = error.response.data.errors
+          }
       })
     },
 
     save_all: function () {
       this.add_route()
-      window.location.href = '/routes_and_sectors';
     }
   }
 }

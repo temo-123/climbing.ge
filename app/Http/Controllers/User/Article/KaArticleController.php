@@ -21,7 +21,7 @@ class KaArticleController extends Controller
     {
         $request->user()->authorizeRoles(['manager', 'admin']);
         if ($request -> isMethod('post')) {
-            $input = $request -> except('_token');
+            $this->ka_sector_validate($request);
 
             $ka_articl = Ka_article::get();
             foreach ($ka_articl as $ka) {
@@ -29,8 +29,7 @@ class KaArticleController extends Controller
             }
 
             $article = Ka_article::find($last_ka_article_id);
-            // $article = new Ka_article();
-
+            
             $article['title']=$request->ka_title;
             $article['short_description']=$request->ka_short_description;
             $article['text']=$request->ka_text;
@@ -49,8 +48,7 @@ class KaArticleController extends Controller
         $request->user()->authorizeRoles(['manager', 'admin']);
 
         if ($request->isMethod('post')) {
-            $input = $request -> except('_token');
-            // dd($request->id);
+            $this->ka_sector_validate($request);
             $ka_article = Ka_article::find($request->id);
 
             $ka_article->title = $request->ka_title;
@@ -65,5 +63,15 @@ class KaArticleController extends Controller
             
             $ka_article->update();
         }
+    }
+
+    public function ka_sector_validate($request)
+    {
+        $request->validate([
+            'ka_title' => 'required',
+            'ka_short_description' => 'required',
+            'ka_text' => 'required',
+            'ka_info' => 'required',
+        ]);
     }
 }

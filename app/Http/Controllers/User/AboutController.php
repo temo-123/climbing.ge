@@ -63,4 +63,11 @@ class AboutController extends Controller
             ]
         );
     }
+
+    private function site_info_validate($request)
+    {
+        $request->validate([
+            'title' => 'required',
+        ]);
+    }
 }

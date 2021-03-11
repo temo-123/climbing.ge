@@ -45,7 +45,6 @@ Route::group(['prefix' => LocalisationService::locale(),'middleware' => 'setLoca
                 Route::get('/get_comments/{article_id}', "CommentController@get_comments");
 
                 Route::get('/sitemap.xml', 'SitemapController@sitemap_xml');
-                // Route::get('/sitdemap', 'SitemapController@sitemap');
             });
         });
     });
@@ -53,14 +52,17 @@ Route::group(['prefix' => LocalisationService::locale(),'middleware' => 'setLoca
     Route::domain('shop.' . config('app.url'))->group(function () {
         Route::group(['namespace'=>'Shop'], function() {
             Route::get('/', 'IndexController@index')->name('shop_index');
-            Route::get('/shop_about_us', ['uses'=>'IndexController@shop_about_us', 'as'=>'shop_about_us']);
+            Route::get('/about_us', ['uses'=>'About_usController@about_us', 'as'=>'about_shop']);
 
             Route::get('/product/{title}', ['uses'=>'ProductPageController@shop_page', 'as'=>'shop_page']);
             
             Route::get('/favorite_product/{product_id}/{actions}', ['uses'=>'App\PrioritiesController@favorite_product', 'as'=>'favorite_product']);
 
             Route::get('/sitemap.xml', 'App\SitemapController@sitemap_xml');
-            // Route::get('/sitemap', 'App\SitemapController@sitemap');
+
+            Route::group(['namespace'=>'App'], function() {
+                Route::post('/search', 'SearchController@search');
+            });
         });
     });
 

@@ -31,6 +31,12 @@
 				<label for="name" class='col-md-2 control-label'> Sector name </label>
 				<div class="col-md-8">
 						<input type="text" v-model="name" name="name" placeholder="Name" class="form-control textarea">
+            <div class="alert alert-danger" role="alert" v-if="errors.name">
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                {{ errors.name[0] }}
+            </div>
 				</div>
 			</div>
 	
@@ -40,6 +46,12 @@
 					<select class="form-control" name="article_id" v-model="article_id"> 
 						<option v-for="region in regions" :key="region" v-bind:value="region.id">{{ region.url_title }}</option>
 					</select> 
+          <div class="alert alert-danger" role="alert" v-if="errors.article_id">
+              <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+              </button>
+              {{ errors.article_id[0] }}
+          </div>
 				</div>
 			</div>
 	
@@ -182,6 +194,8 @@
         fileList: [], //https://github.com/eJayYoung/vux-uploader-component
         regions: '',
 
+        errors: [],
+
         myModal: false,
 
         name: '',
@@ -286,10 +300,12 @@
             overhang: this.overhang,
         })
         .then(function (response) {
-            console.log("sector edited sucsesfule")
+            window.location.href = '/routes_and_sectors';
         })
-        .catch(function (response){
-            console.log("sector edited is not sucsesfule!!!")
+        .catch(error =>{
+            if (error.response.status == 422) {
+              this.errors = error.response.data.errors
+            }
         })
       },
 
@@ -321,9 +337,8 @@
                 headers: {'Content-Type': 'multipart/form-data' },
             },
         })
-        .then((response)=>  {
-            // this.is_image_succes = 1;
-            // alert(response.data.message);
+        .then(error =>  {
+            // ...
         });
         this.showModal()
         e.preventDefault();
@@ -343,7 +358,6 @@
 
       save_all: function () {
         this.edit_sector()
-        window.location.href = '/routes_and_sectors';
       }
     }
   };

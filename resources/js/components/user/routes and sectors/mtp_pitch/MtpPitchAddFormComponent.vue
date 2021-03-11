@@ -20,7 +20,7 @@
             <div class="col-xs-12">
               <select class="form-control" v-if="sellected_region != ''" v-model="sellected_sector">
                 <option disabled>Please select sector</option>
-                <option v-for="sector in sectors" :key="sector.id" :if="sellected_region == sector.article_id" v-bind:value="sector.id">{{ sector.name }}</option>
+                <option v-for="sector in sectors" :key="sector.id" v-if="sellected_region == sector.article_id" v-bind:value="sector.id">{{ sector.name }}</option>
               </select>
             </div>
           </div>
@@ -30,32 +30,46 @@
           <label for="name" class='col-xs-2 control-label'> Multy-pitch </label>
           <div class="col-xs-8">
             <select class="form-control" v-model="mtp_id">
-              <option v-for="mtp in mtps" :key="mtp.id" :if="sellected_sector == mtp.sector_id" v-bind:value="mtp.id">{{ mtp.name }}</option>
+              <option v-for="mtp in mtps" :key="mtp.id" v-if="sellected_sector == mtp.sector_id" v-bind:value="mtp.id">{{ mtp.name }}</option>
             </select>
+            <div class="alert alert-danger" role="alert" v-if="errors.mtp_id">
+              {{ errors.mtp_id[0] }}
+            </div>
           </div>
         </div>
 
         <div class="form-group clearfix">
-          <label for="name" class='col-xs-2 control-label'> Gread </label>
-          <div class="col-xs-8">
-            <div class="col-xs-6">
-              <select class="form-control" v-model="gread">
-                <option v-for="sport in sport_route_gread" :key="sport" v-bind:value="sport">{{ sport }}</option>
-              </select>
-            </div>
-            <div class="col-xs-6">
-              <select class="form-control" v-model="or_gread">
-                <option selected>No</option>
-                <option v-for="sport in sport_route_gread" :key="sport" v-bind:value="sport">{{ sport }}</option>
-              </select>
-            </div>
+          <label for="name" class='col-xs-2 control-label'> grade </label>
+          <div class="col-xs-4">
+            <select class="form-control" v-model="grade">
+                <option v-bind:value="NULL"> No grade </option>
+                <option>Project</option>
+              <option v-for="sport in sport_route_grade" :key="sport" v-bind:value="sport">{{ sport }}</option>
+            </select>
           </div>
+          <div class="col-xs-4">
+            <select class="form-control" v-model="or_grade">
+                <option v-bind:value="NULL"> No grade </option>
+              <option v-for="sport in sport_route_grade" :key="sport" v-bind:value="sport">{{ sport }}</option>
+            </select>
+          </div>
+        </div>
+        
+        <div class="form-group clearfix" v-if="errors.grade">
+            <div class="col-xs-12">
+              <div class="alert alert-danger" role="alert">
+                {{ errors.grade[0] }}
+              </div>
+            </div>
         </div>
 
         <div class="form-group clearfix">
           <label for="name" class='col-xs-2 control-label'> Route name </label>
           <div class="col-xs-8">
             <input type="text" name="name" v-model="name" class="form-control" placeholder="Route name.."> 
+            <div class="alert alert-danger" role="alert" v-if="errors.name">
+              {{ errors.name[0] }}
+            </div>
           </div>
         </div>
 
@@ -100,13 +114,15 @@ export default {
       sellected_sector: '',
       selected_mtp: '',
 
+      errors: [],
+
       regions: [],
       sectors: [],
       mtps: [],
 
       mtp_id: "",
-      gread: "",
-      or_gread: "",
+      grade: "",
+      or_grade: "",
       name: "",
       text: "",
       last_carabin: "",
@@ -115,7 +131,7 @@ export default {
       bolter: "",
       first_ascent: "",
 
-      sport_route_gread: [
+      sport_route_grade: [
         "4",
         "5a", "5b", "5c", "5c+",
         "6a", "6a+", "6b", "6b+", "6c", "6c+",
@@ -171,8 +187,8 @@ export default {
       .post('/routes_and_sectors/mtp_pitch_add', {
           mtp_id: this.mtp_id,
           name: this.name,
-          gread: this.gread,
-          or_gread: this.or_gread,
+          grade: this.grade,
+          or_grade: this.or_grade,
           text: this.text,
           height: this.height,
           bolter: this.bolter,
@@ -180,16 +196,17 @@ export default {
           first_ascent: this.first_ascent,
       })
       .then(function (response) {
-          console.log("route added sucsesfule")
+          window.location.href = '/routes_and_sectors';
       })
-      .catch(function (response){
-          console.log("route added is not sucsesfule!!!")
+      .catch(error =>{
+          if (error.response.status == 422) {
+            this.errors = error.response.data.errors
+          }
       })
     },
 
     save_all: function () {
       this.add_mtp_pitch_article()
-      window.location.href = '/routes_and_sectors';
     }
 
   }

@@ -98,7 +98,17 @@ class ArticleController extends Controller
                 $articles_edit_url = 'articleEdit';
                 $article_page_url = 'index';
             }
+            elseif ($request->article_category == "mount_route") {
+                $title = 'Mount routes';
+                $page_name = $title;
+                $table_1_name = $title;
+                $articles_add_url = 'articleAdd';
+                $article_add_category = 'mount_route';
+                $articles_edit_url = 'articleEdit';
+                $article_page_url = 'index';
+            }
             
+            // dd($request->article_category);
     		$data = [
     			'title'=>$title,
     			// 'table_1'=>$articles,

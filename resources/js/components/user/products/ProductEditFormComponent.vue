@@ -331,6 +331,15 @@
         ],
         data(){
             return {
+                global_article_error: [],
+                is_global_article_error: true,
+                ka_article_error: [],
+                is_ka_article_error: true,
+                ru_article_error: [],
+                is_ru_article_error: true,
+                us_article_error: [],
+                is_us_article_error: true,
+
                 image_is_refresh: false,
                 image_reset_id: 0,
 
@@ -447,9 +456,15 @@
                     us_meta_keyword: this.us_meta_keyword,
                 })
                 .then((response)=> { 
-                    // this.edit_ru_product()
+                    this.is_us_article_error = false
+                    this.if_isset_go_beck(this.is_us_article_error)
                 })
-                .catch(error => console.log(error))
+                .catch(error =>{
+                    if (error.response.status == 422) {
+                        this.us_article_error = error.response.data.errors
+                    }
+                    this.is_us_article_error = true
+                })
             },
             edit_ru_product() {
                 axios
@@ -460,8 +475,15 @@
                     ru_meta_keyword: this.ru_meta_keyword,
                 })
                 .then((response)=> { 
+                    this.is_ru_article_error = false
+                    this.if_isset_go_beck(this.is_ru_article_error)
                 })
-                .catch(error => console.log(error))
+                .catch(error =>{
+                    if (error.response.status == 422) {
+                        this.ru_article_error = error.response.data.errors
+                    }
+                    this.is_ru_article_error = true
+                })
             },
             edit_ka_product() {
                 axios
@@ -472,14 +494,17 @@
                     ka_meta_keyword: this.ka_meta_keyword,
                 })
                 .then((response)=>  {
-                    // this.edit_global_product()
+                    this.is_ka_article_error = false
+                    this.if_isset_go_beck(this.is_ka_article_error)
                 })
-                .catch(error => console.log(error))
+                .catch(error =>{
+                    if (error.response.status == 422) {
+                        this.ka_article_error = error.response.data.errors
+                    }
+                    this.is_ka_article_error = true
+                })
             },
             edit_global_product() {
-                // var myFormData = new FormData(this.$refs.myForm)
-                // console.log(myFormData);
-
                 axios
                 .post('/products/global/edit/'+ this.editing_article_id, {
                     published: this.published,
@@ -495,16 +520,15 @@
                     size: this.size,
                 })
                 .then((response)=>  { 
-                    // this.is_global_product_succes = 1
-                    // console.log(response)
-                    // alert(response.data.message);
-                    // console.log('global product upload successful');
-
-                    // this.checkForm()
+                    this.is_global_article_error = false
+                    this.if_isset_go_beck(this.is_global_article_error)
                 })
-                .catch(
-                    error => console.log(error)
-                )
+                .catch(error =>{
+                    if (error.response.status == 422) {
+                        this.global_article_error = error.response.data.errors
+                    }
+                    this.is_global_article_error = true
+                })
             },
 
 
@@ -578,7 +602,19 @@
                 this.edit_ru_product()
                 this.edit_global_product()
 
-                window.location.href = this.back_url;
+                // window.location.href = this.back_url;
+            },
+            
+            if_isset_go_beck() {
+                if (
+                    this.is_global_article_error == false &&
+                    this.is_ka_article_error == false &&
+                    this.is_ru_article_error == false &&
+                    this.is_us_article_error == false
+                ) {
+                    window.location.href = this.back_url;
+                    // alert('test')
+                }
             }
         }
     }

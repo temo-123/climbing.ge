@@ -23,18 +23,27 @@
                         <label for="name" class='col-xs-2 control-label'> us name </label>
                         <div class="col-xs-8">
                             <input type="text" v-model="us_name" name="us_name" class="form-control"> 
+                            <div class="alert alert-danger" role="alert" v-if="errors.us_name">
+                                {{ errors.us_name[0] }}
+                            </div>
                         </div>
                     </div>
                     <div class="form-group clearfix">
                         <label for="name" class='col-xs-2 control-label'> ru name </label>
                         <div class="col-xs-8">
                             <input type="text" v-model="ru_name" name="ru_name" class="form-control"> 
+                            <div class="alert alert-danger" role="alert" v-if="errors.ru_name">
+                                {{ errors.ru_name[0] }}
+                            </div>
                         </div>
                     </div>
                     <div class="form-group clearfix">
                         <label for="name" class='col-xs-2 control-label'> ka name </label>
                         <div class="col-xs-8">
                             <input type="text" v-model="ka_name" name="ka_name" class="form-control"> 
+                            <div class="alert alert-danger" role="alert" v-if="errors.ka_name">
+                                {{ errors.ka_name[0] }}
+                            </div>
                         </div>
                     </div>
                 </form>
@@ -58,6 +67,8 @@
                 ka_name: '',
 
                 editing_data: '',
+
+                errors: [],
             }
         },
         mounted() {
@@ -87,15 +98,17 @@
                     web_link: this.web_link,
                 })
                 .then((response)=> { 
-                    // ...
+                    window.location.href = this.back_url;
                 })
-                .catch(error => console.log(error))
+                .catch(error =>{
+                    if (error.response.status == 422) {
+                        this.errors = error.response.data.errors
+                    }
+                })
             },
 
             save_all() {
                 this.edit_category()
-
-                window.location.href = this.back_url;
             }
         }
     }

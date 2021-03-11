@@ -79,16 +79,4 @@
     </div>
 </div>
 
-<script>
-    CKEDITOR.replace('msg');
-
-        CKEDITOR.config.filebrowserBrowseUrl = "{{ asset('assets/php/browse.php') }}";
-        CKEDITOR.config.filebrowserUploadUrl = "{{ asset('assets/php/upload.php') }}";
-
-
-    $('#myAlert').on('closed.bs.alert', function () {
-        $(".alert").alert('close')
-    })
-</script>
-
 @endsection

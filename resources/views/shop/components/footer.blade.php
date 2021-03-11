@@ -35,8 +35,3 @@
         </div>
     </div>
 </div>
-
-{{-- And analytics.google.com --}}
-
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-YSKGLXMWGF"></script>
-<script src="{{ asset('assets/js/analitic/shop.climbing.ge analitic.js') }}"></script>

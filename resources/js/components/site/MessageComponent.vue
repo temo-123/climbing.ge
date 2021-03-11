@@ -21,6 +21,9 @@
                             <div class="col-md-12">
                                 <div class="form-group">
                                     <input type="text" class="form-control" v-model="name" name="name"  id="name" placeholder="Name*">
+                                    <div class="alert alert-danger" role="alert" v-if="errors.name">
+                                        {{ errors.name[0] }}
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -28,6 +31,9 @@
                             <div class="col-md-12">
                                 <div class="form-group">
                                     <input type="text" class="form-control" v-model="surname" name="surname"  id="surname" placeholder="Surname*">
+                                    <div class="alert alert-danger" role="alert" v-if="errors.surname">
+                                        {{ errors.surname[0] }}
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -35,6 +41,9 @@
                             <div class="col-md-12">
                                 <div class="form-group">
                                     <input type="email" name="email" v-model="email" class="form-control textarea" placeholder="E_mail">
+                                    <div class="alert alert-danger" role="alert" v-if="errors.email">
+                                        {{ errors.email[0] }}
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -42,6 +51,9 @@
                             <div class="col-md-12">
                                 <div class="form-group">
                                     <input type="text" class="form-control" v-model="num"  name="num"  id="num" placeholder="Phone number">
+                                    <div class="alert alert-danger" role="alert" v-if="errors.num">
+                                        {{ errors.num[0] }}
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -49,6 +61,9 @@
                             <div class="col-md-12">
                                 <div class="form-group form_left">
                                     <input type="text" class="form-control" v-model="country"  name="country"  id="country" placeholder="Yout country">
+                                    <div class="alert alert-danger" role="alert" v-if="errors.country">
+                                        {{ errors.country[0] }}
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -65,8 +80,10 @@
                     
                     <div class="col-xs-6">
                         <div class="form-group">
-                            <textarea rows="15" name="msg" id="msg" v-model="msg" placeholder="Your message" class="form-control textarea">
-                            </textarea>
+                            <textarea rows="15" name="msg" id="msg" v-model="msg" placeholder="Your message" class="form-control textarea"></textarea>
+                            <div class="alert alert-danger" role="alert" v-if="errors.msg">
+                                {{ errors.msg[0] }}
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -94,11 +111,10 @@
                 num: "",
                 country: "",
                 msg: "",
+
+                errors: []
             }
         },
-        // props: [
-        //     "article_id"
-        // ],
         mounted() {
             this.form_title
         },
@@ -112,6 +128,14 @@
                     msg: this.msg,
                     num: this.num,
                     country: this.country,
+                })
+                .then(Response => {
+                    alert("Tenk you for your message " + this.name + ".")
+                })
+                .catch(error =>{
+                    if (error.response.status == 422) {
+                        this.errors = error.response.data.errors
+                    }
                 })
             }
         }

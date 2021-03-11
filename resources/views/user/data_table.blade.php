@@ -35,7 +35,7 @@
                         @if(isset($table_2_name)) :table_2_name="{{ json_encode($table_2_name) }}" @endif
                         @if(isset($table_3_name)) :table_3_name="{{ json_encode($table_3_name) }}" @endif
                         @if(isset($table_4_name)) :table_4_name="{{ json_encode($table_4_name) }}" @endif
-{{-- {{ dd($table_1_add_category) }} --}}
+                        
                         @if(isset($table_1_add_url)) 
                             @if (isset($table_1_add_category))
                                 table_1_add_url="{{ route($table_1_add_url, array('category'=>$table_1_add_category)) }}" 

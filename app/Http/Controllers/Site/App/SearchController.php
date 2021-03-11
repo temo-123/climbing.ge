@@ -7,7 +7,6 @@ use Illuminate\Http\Request;
 
 // use Illuminate\Support\Facades\Input;
 use App\Models\Article;
-use App\Models\Mount_route;
 use Spatie\Searchable\Search;
 
 class SearchController extends Controller
@@ -18,14 +17,14 @@ class SearchController extends Controller
 		// dd($request['request']);
 	    $q = $request['request'];
 	    if ($q != "") {
-		    $outdoor = Article::where('published', '=', 1)->where('category', '=', 'outdoor')->orWhere('short_description', 'LIKE', '%'.$q.'%')->get();
-		    $indoor = Article::where('published', '=', 1)->where('category', '=', 'indoor')->orWhere('short_description', 'LIKE', '%'.$q.'%')->get();
-		    $ice = Article::where('published', '=', 1)->where('category', '=', 'ice')->orWhere('short_description', 'LIKE', '%'.$q.'%')->get();
-		    $other = Article::where('published', '=', 1)->where('category', '=', 'other')->orWhere('short_description', 'LIKE', '%'.$q.'%')->get();
+		    // $outdoor = Article::where('published', '=', 1)->where('category', '=', 'outdoor')->orWhere('short_description', 'LIKE', '%'.$q.'%')->get();
+		    $outdoor = Article::where('published', '=', 1)->where('category', '=', 'outdoor')->get();
+		    $indoor = Article::where('published', '=', 1)->where('category', '=', 'indoor')->get();
+		    $ice = Article::where('published', '=', 1)->where('category', '=', 'ice')->get();
+		    $other = Article::where('published', '=', 1)->where('category', '=', 'other')->get();
+		    $mount = Article::where('published', '=', 1)->where('category', '=', 'mount_route')->get();
 
-		    $event = Article::where('published', '=', 1)->where('completed', '=', 0)->where('category', '=', 'event')->orWhere('short_description', 'LIKE', '%'.$q.'%')->get();
-		    
-		    $mount = Mount_route::Where('short_description', 'LIKE', '%'.$q.'%')->orWhere('meta_keyword', 'LIKE', '%'.$q.'%')->get();
+		    $event = Article::where('published', '=', 1)->where('completed', '=', 0)->where('category', '=', 'event')->get();
             
 	        return view('site.search', 
                         array(

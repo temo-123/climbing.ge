@@ -16,17 +16,21 @@ class Article extends Model
 		'completed',
 		'map',
 		'weather',
+
 		'start_data_day',
 		'and_data_day',
 		'start_data_month',
 		'and_data_month',
+
 		'fb_link',
 		'twit_link',
 		'google_link',
 		'inst_link',
 		'web_link',
-		'price_from',
+	
 		'image',
+
+		'mount_route',
 
 		'price_from',
 		'working_time'

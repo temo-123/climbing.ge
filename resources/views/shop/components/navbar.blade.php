@@ -43,7 +43,7 @@
                     <ul class="nav navbar-nav pull-right top_menu_buttons">
                         
                         <li><a @if(isset($products)) id='actyve' @endif href="{{route('shop_index')}}">@lang('shop.shop menu products')</a></li>
-                        <li><a @if(isset($about_us)) id='actyve' @endif href="{{route('shop_about_us')}}">@lang('shop.shop menu about us')</a> </li>
+                        <li><a @if(isset($about_us)) id='actyve' @endif href="{{route('about_shop')}}">@lang('shop.shop menu about us')</a> </li>
 
                         @if (Auth::guest())
                         <li>
@@ -52,18 +52,17 @@
                         @endif
 
                         <li class="dropdown">
-                            <a href="#" class="dropdown-toggle margin_right admin_menu_for_desctop" data-toggle="dropdown">
+                            <a href="#" class="margin_right admin_menu_for_desctop" data-toggle="dropdown">
                                 <i class="fa fa-search" @if(isset($search)) id='actyve' @endif aria-hidden="true"></i>
                             </a>
                             <ul class="dropdown-menu shadows menu_margin_left_850" role="menu" style="width: 1000%;">
                                 <li>
-                                    <form action="#" method="POST" role="search" class="navbar-form">
+                                    <form action="/search" method="POST" role="search" class="navbar-form">
                                         {{csrf_field ()}} 
                                         <div class="form-group" style="display:inline;">
                                             <div class="input-group" style="display:table;">
-                                            <input class="form-control" name="q" placeholder="Search Here" autocomplete="off" autofocus="autofocus" type="text">
-                                            
-                                            <span class="input-group-btn"> 
+                                            <span class="input-group"> 
+                                                <input class="form-control" name="request" placeholder="Search Here" autocomplete="off" autofocus="autofocus" type="text">
                                                 <button type="submit" class="input-group-addon"> 
                                                     <span class="glyphicon glyphicon-search"></span>
                                                 </button>

@@ -1983,12 +1983,6 @@ module.exports = {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
-
-function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
-
 //
 //
 //
@@ -2097,39 +2091,6 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
-//
-//
-var Errors = /*#__PURE__*/function () {
-  function Errors() {
-    _classCallCheck(this, Errors);
-
-    this.errors = {};
-  }
-
-  _createClass(Errors, [{
-    key: "get",
-    value: function get(field) {
-      if (this.errors[field]) {
-        return this.errors[filed][0];
-      }
-    }
-  }, {
-    key: "record",
-    value: function record(errors) {
-      this.errors = errors.errors;
-    }
-  }]);
-
-  return Errors;
-}();
-
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: ["article_id", "user_name", "user_surname", "user_email", "is_login"],
   data: function data() {
@@ -2139,10 +2100,10 @@ var Errors = /*#__PURE__*/function () {
       email: "",
       text: "",
       test: "test",
-      errors: new Errors(),
       comments: [],
       is_refresh: false,
-      id: 0
+      id: 0,
+      errors: []
     };
   },
   mounted: function mounted() {
@@ -2159,11 +2120,12 @@ var Errors = /*#__PURE__*/function () {
         text: this.text,
         article_id: this.article_id
       }).then(function (Response) {
-        alert("Tenk you for your coment " + _this.name + "."), _this.update, console.log(response);
-      })["catch"](function (response) {
-        console.log("you have eny error");
-        this.errors = error;
-        console.log(test);
+        alert("Tenk you for your coment " + _this.name + "."); // this.update()
+        // console.log(response)
+      })["catch"](function (error) {
+        if (error.response.status == 422) {
+          _this.errors = error.response.data.errors;
+        }
       });
     },
     update: function update() {
@@ -2178,9 +2140,7 @@ var Errors = /*#__PURE__*/function () {
         _this2.is_refresh = false;
         _this2.id++;
       }).then(function (Response) {// console.log(response)
-      })["catch"](function (error) {
-        return console.log(error);
-      });
+      })["catch"]();
     }
   }
 });
@@ -2279,6 +2239,23 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: ['form_title'],
   data: function data() {
@@ -2288,17 +2265,17 @@ __webpack_require__.r(__webpack_exports__);
       email: "",
       num: "",
       country: "",
-      msg: ""
+      msg: "",
+      errors: []
     };
   },
-  // props: [
-  //     "article_id"
-  // ],
   mounted: function mounted() {
     this.form_title;
   },
   methods: {
     send_message: function send_message() {
+      var _this = this;
+
       axios.post('/send_message', {
         name: this.name,
         surname: this.surname,
@@ -2306,6 +2283,12 @@ __webpack_require__.r(__webpack_exports__);
         msg: this.msg,
         num: this.num,
         country: this.country
+      }).then(function (Response) {
+        alert("Tenk you for your message " + _this.name + ".");
+      })["catch"](function (error) {
+        if (error.response.status == 422) {
+          _this.errors = error.response.data.errors;
+        }
       });
     }
   }
@@ -4372,12 +4355,60 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: ['back_url', 'category'],
   data: function data() {
     var _ref;
 
     return _ref = {
+      global_article_error: [],
+      is_global_article_error: true,
+      ka_article_error: [],
+      is_ka_article_error: true,
+      ru_article_error: [],
+      is_ru_article_error: true,
+      us_article_error: [],
+      is_us_article_error: true,
       us_title_for_url_title: '',
       published: "",
       completed: "",
@@ -4386,10 +4417,14 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       start_data_day: "",
       and_data_day: "",
       and_data_month: ""
-    }, _defineProperty(_ref, "and_data_month", ""), _defineProperty(_ref, "fb_link", ""), _defineProperty(_ref, "twit_link", ""), _defineProperty(_ref, "google_link", ""), _defineProperty(_ref, "inst_link", ""), _defineProperty(_ref, "web_link", ""), _defineProperty(_ref, "name", ''), _defineProperty(_ref, "image", ''), _defineProperty(_ref, "success", ''), _defineProperty(_ref, "us_title", ""), _defineProperty(_ref, "us_short_description", ""), _defineProperty(_ref, "us_text", ""), _defineProperty(_ref, "us_route", ""), _defineProperty(_ref, "us_how_get", ""), _defineProperty(_ref, "us_best_time", ""), _defineProperty(_ref, "us_what_need", ""), _defineProperty(_ref, "us_info", ""), _defineProperty(_ref, "us_time", ""), _defineProperty(_ref, "us_price_from", ""), _defineProperty(_ref, "us_meta_keyword", ""), _defineProperty(_ref, "ka_title", ""), _defineProperty(_ref, "ka_short_description", ""), _defineProperty(_ref, "ka_text", ""), _defineProperty(_ref, "ka_route", ""), _defineProperty(_ref, "ka_how_get", ""), _defineProperty(_ref, "ka_best_time", ""), _defineProperty(_ref, "ka_what_need", ""), _defineProperty(_ref, "ka_info", ""), _defineProperty(_ref, "ka_time", ""), _defineProperty(_ref, "ka_price_from", ""), _defineProperty(_ref, "ka_meta_keyword", ""), _defineProperty(_ref, "ru_title", ""), _defineProperty(_ref, "ru_short_description", ""), _defineProperty(_ref, "ru_text", ""), _defineProperty(_ref, "ru_route", ""), _defineProperty(_ref, "ru_how_get", ""), _defineProperty(_ref, "ru_best_time", ""), _defineProperty(_ref, "ru_what_need", ""), _defineProperty(_ref, "ru_info", ""), _defineProperty(_ref, "ru_time", ""), _defineProperty(_ref, "ru_price_from", ""), _defineProperty(_ref, "ru_meta_keyword", ""), _defineProperty(_ref, "temporary_article_id", ''), _ref;
+    }, _defineProperty(_ref, "and_data_month", ""), _defineProperty(_ref, "fb_link", ""), _defineProperty(_ref, "twit_link", ""), _defineProperty(_ref, "google_link", ""), _defineProperty(_ref, "inst_link", ""), _defineProperty(_ref, "web_link", ""), _defineProperty(_ref, "name", ''), _defineProperty(_ref, "image", ''), _defineProperty(_ref, "success", ''), _defineProperty(_ref, "mount_data", ''), _defineProperty(_ref, "us_title", ""), _defineProperty(_ref, "us_short_description", ""), _defineProperty(_ref, "us_text", ""), _defineProperty(_ref, "us_route", ""), _defineProperty(_ref, "us_how_get", ""), _defineProperty(_ref, "us_best_time", ""), _defineProperty(_ref, "us_what_need", ""), _defineProperty(_ref, "us_info", ""), _defineProperty(_ref, "us_time", ""), _defineProperty(_ref, "us_price_from", ""), _defineProperty(_ref, "us_meta_keyword", ""), _defineProperty(_ref, "ka_title", ""), _defineProperty(_ref, "ka_short_description", ""), _defineProperty(_ref, "ka_text", ""), _defineProperty(_ref, "ka_route", ""), _defineProperty(_ref, "ka_how_get", ""), _defineProperty(_ref, "ka_best_time", ""), _defineProperty(_ref, "ka_what_need", ""), _defineProperty(_ref, "ka_info", ""), _defineProperty(_ref, "ka_time", ""), _defineProperty(_ref, "ka_price_from", ""), _defineProperty(_ref, "ka_meta_keyword", ""), _defineProperty(_ref, "ru_title", ""), _defineProperty(_ref, "ru_short_description", ""), _defineProperty(_ref, "ru_text", ""), _defineProperty(_ref, "ru_route", ""), _defineProperty(_ref, "ru_how_get", ""), _defineProperty(_ref, "ru_best_time", ""), _defineProperty(_ref, "ru_what_need", ""), _defineProperty(_ref, "ru_info", ""), _defineProperty(_ref, "ru_time", ""), _defineProperty(_ref, "ru_price_from", ""), _defineProperty(_ref, "ru_meta_keyword", ""), _defineProperty(_ref, "temporary_article_id", ''), _ref;
   },
   mounted: function mounted() {
     this.create_temporary_article();
+
+    if (this.category == 'mount_route') {
+      this.get_mount_massive_data();
+    }
   },
   methods: {
     create_temporary_article: function create_temporary_article() {
@@ -4423,9 +4458,19 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         return console.log(error);
       });
     },
-    add_us_article: function add_us_article() {
+    get_mount_massive_data: function get_mount_massive_data() {
       var _this3 = this;
 
+      axios.get("/mountaineering/get_mount_data/").then(function (response) {
+        _this3.mount_data = response.data;
+      })["catch"](function (error) {
+        return console.log(error);
+      });
+    },
+    add_us_article: function add_us_article() {
+      var _this4 = this;
+
+      this.is_us_article_error = false;
       axios.post('/articles/us/add/' + this.category, {
         us_title: this.us_title,
         us_short_description: this.us_short_description,
@@ -4440,15 +4485,20 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         us_price_from: this.us_price_from,
         us_meta_keyword: this.us_meta_keyword
       }).then(function (response) {
-        // console.log(response)
-        // this.is_us_article_succes = 1
-        // console.log('englihs article upload successful');
-        _this3.add_ru_article();
+        _this4.is_us_article_error = false;
+
+        _this4.if_isset_go_beck(_this4.is_us_article_error);
       })["catch"](function (error) {
-        return console.log(error);
+        if (error.response.status == 422) {
+          _this4.us_article_error = error.response.data.errors;
+        }
+
+        _this4.is_us_article_error = true;
       });
     },
     add_ru_article: function add_ru_article() {
+      var _this5 = this;
+
       axios.post('/articles/ru/add/' + this.category, {
         ru_title: this.ru_title,
         ru_short_description: this.ru_short_description,
@@ -4462,16 +4512,21 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         ru_price_text: this.ru_price_text,
         ru_price_from: this.ru_price_from,
         ru_meta_keyword: this.ru_meta_keyword
-      }).then(function (response) {// this.is_ru_article_succes = 1
-        // console.log(this.is_ru_article_succes);
-        // console.log(response) 
-        // console.log('rusian article upload successful');
-        // this.add_ka_article()
+      }).then(function (response) {
+        _this5.is_ru_article_error = false;
+
+        _this5.if_isset_go_beck(_this5.is_ru_article_error);
       })["catch"](function (error) {
-        return console.log(error);
+        if (error.response.status == 422) {
+          _this5.ru_article_error = error.response.data.errors;
+        }
+
+        _this5.is_ru_article_error = true;
       });
     },
     add_ka_article: function add_ka_article() {
+      var _this6 = this;
+
       axios.post('/articles/ka/add/' + this.category, {
         ka_title: this.ka_title,
         ka_short_description: this.ka_short_description,
@@ -4480,25 +4535,30 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         ka_how_get: this.ka_how_get,
         ka_best_time: this.ka_best_time,
         ka_what_need: this.ka_what_need,
-        ka_: this.ka_,
+        ka_info: this.ka_info,
         ka_time: this.ka_time,
         ka_price_text: this.ka_price_text,
         ka_price_from: this.ka_price_from,
         ka_meta_keyword: this.ka_meta_keyword
-      }).then(function (response) {// console.log(response)
-        // this.is_ka_article_succes = 1
-        // console.log('georgian article upload successful');
-        // this.add_global_article()
+      }).then(function (response) {
+        _this6.is_ka_article_error = false;
+
+        _this6.if_isset_go_beck(_this6.is_ka_article_error);
       })["catch"](function (error) {
-        return console.log(error);
+        if (error.response.status == 422) {
+          _this6.ka_article_error = error.response.data.errors;
+        }
+
+        _this6.is_ka_article_error = true;
       });
     },
     add_global_article: function add_global_article() {
-      // var myFormData = new FormData(this.$refs.myForm)
-      // console.log(myFormData);
+      var _this7 = this;
+
       axios.post('/articles/global/add/' + this.category, {
         us_title_for_url_title: this.us_title,
         published: this.published,
+        mount_id: this.mount_id,
         completed: this.completed,
         map: this.map,
         weather: this.weather,
@@ -4513,16 +4573,19 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         google_link: this.google_link,
         inst_link: this.inst_link,
         web_link: this.web_link
-      }).then(function (response) {// this.is_global_article_succes = 1
-        // console.log(response)
-        // alert(response.data.message);
-        // console.log('global article upload successful');
-        // this.checkForm()
+      }).then(function (response) {
+        _this7.is_global_article_error = false;
+
+        _this7.if_isset_go_beck(_this7.is_global_article_error);
       })["catch"](function (error) {
-        return console.log(error);
+        if (error.response.status == 422) {
+          _this7.global_article_error = error.response.data.errors;
+        }
+
+        _this7.is_global_article_error = true;
       });
     },
-    checkForm: function checkForm(e) {
+    checkForm: function checkForm() {
       var myFormData = new FormData(this.$refs.myForm);
       axios({
         method: 'post',
@@ -4546,7 +4609,11 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       this.add_ru_article();
       this.add_global_article();
       this.checkForm();
-      window.location.href = this.back_url;
+    },
+    if_isset_go_beck: function if_isset_go_beck() {
+      if (this.is_global_article_error == false && this.is_ka_article_error == false && this.is_ru_article_error == false && this.is_us_article_error == false) {
+        window.location.href = this.back_url;
+      }
     }
   }
 });
@@ -4562,8 +4629,6 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _ckeditor_ckeditor5_build_classic__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @ckeditor/ckeditor5-build-classic */ "./node_modules/@ckeditor/ckeditor5-build-classic/build/ckeditor.js");
-/* harmony import */ var _ckeditor_ckeditor5_build_classic__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_ckeditor_ckeditor5_build_classic__WEBPACK_IMPORTED_MODULE_0__);
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
 //
@@ -5067,14 +5132,63 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 //
- // import Form from 'vform';
-
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: ['back_url', 'category', 'editing_article_id'],
   data: function data() {
     var _ref;
 
     return _ref = {
+      global_article_error: [],
+      is_global_article_error: true,
+      ka_article_error: [],
+      is_ka_article_error: true,
+      ru_article_error: [],
+      is_ru_article_error: true,
+      us_article_error: [],
+      is_us_article_error: true,
       editor: 'editor',
       editorConfig: {},
       editing_url: '/articles/get_editing_data/',
@@ -5092,12 +5206,19 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
   },
   mounted: function mounted() {
     this.get_editing_data();
+
+    if (this.category == 'mount_route') {
+      this.get_mount_massive_data();
+    }
   },
   methods: {
     edit_global_article: function edit_global_article() {
+      var _this = this;
+
       axios.post('/articles/global/edit/' + this.editing_article_id, {
         us_title_for_url_title: this.us_title,
         published: this.published,
+        mount_id: this.mount_id,
         completed: this.completed,
         map: this.map,
         weather: this.weather,
@@ -5113,12 +5234,20 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         inst_link: this.inst_link,
         web_link: this.web_link
       }).then(function (Response) {
-        console.log(response);
+        _this.is_global_article_error = false;
+
+        _this.if_isset_go_beck(_this.is_global_article_error);
       })["catch"](function (error) {
-        return console.log(error);
+        if (error.response.status == 422) {
+          _this.global_article_error = error.response.data.errors;
+        }
+
+        _this.is_global_article_error = true;
       });
     },
     edit_ru_article: function edit_ru_article() {
+      var _this2 = this;
+
       axios.post('/articles/ru/edit/' + this.ru_article_id, {
         ru_title: this.ru_title,
         ru_short_description: this.ru_short_description,
@@ -5130,14 +5259,20 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         ru_info: this.ru_info,
         ru_meta_keyword: this.ru_meta_keyword
       }).then(function (Response) {
-        // alert("Article editied"),
-        // this.comment.name = '',
-        update, console.log(response);
+        _this2.is_ru_article_error = false;
+
+        _this2.if_isset_go_beck(_this2.is_ru_article_error);
       })["catch"](function (error) {
-        return console.log(error);
+        if (error.response.status == 422) {
+          _this2.ru_article_error = error.response.data.errors;
+        }
+
+        _this2.is_ru_article_error = true;
       });
     },
     edit_us_article: function edit_us_article() {
+      var _this3 = this;
+
       axios.post('/articles/us/edit/' + this.us_article_id, {
         us_title: this.us_title,
         us_short_description: this.us_short_description,
@@ -5149,15 +5284,19 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         us_info: this.us_info,
         us_meta_keyword: this.us_meta_keyword
       }).then(function (Response) {
-        // alert("Article editied"),
-        // this.comment.name = '',
-        update, console.log(response);
+        _this3.is_us_article_error = false;
+
+        _this3.if_isset_go_beck(_this3.is_us_article_error);
       })["catch"](function (error) {
-        return console.log(error);
+        if (error.response.status == 422) {
+          _this3.us_article_error = error.response.data.errors;
+        }
+
+        _this3.is_us_article_error = true;
       });
     },
     edit_ka_article: function edit_ka_article() {
-      var _this = this;
+      var _this4 = this;
 
       axios.post('/articles/ka/edit/' + this.ka_article_id, {
         ka_title: this.ka_title,
@@ -5170,8 +5309,22 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         ka_info: this.ka_info,
         ka_meta_keyword: this.ka_meta_keyword
       }).then(function (Response) {
-        // alert("Article editied"),
-        _this.comment.name = '', update, console.log(response);
+        _this4.is_ka_article_error = false;
+
+        _this4.if_isset_go_beck(_this4.is_ka_article_error);
+      })["catch"](function (error) {
+        if (error.response.status == 422) {
+          _this4.ka_article_error = error.response.data.errors;
+        }
+
+        _this4.is_ka_article_error = true;
+      });
+    },
+    get_mount_massive_data: function get_mount_massive_data() {
+      var _this5 = this;
+
+      axios.get("/mountaineering/get_mount_data/").then(function (response) {
+        _this5.mount_data = response.data;
       })["catch"](function (error) {
         return console.log(error);
       });
@@ -5192,26 +5345,26 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       }); // e.preventDefault();
     },
     get_editing_data: function get_editing_data() {
-      var _this2 = this;
+      var _this6 = this;
 
       this.url = this.editing_url + this.editing_article_id;
       axios.get(this.url).then(function (response) {
-        _this2.editing_data = response.data;
-        _this2.us_article_id = _this2.editing_data.global_article['us_article_id'], _this2.ru_article_id = _this2.editing_data.global_article['ru_article_id'], _this2.ka_article_id = _this2.editing_data.global_article['ka_article_id'], // send data in editing form value
-        _this2.published = _this2.editing_data.global_article['published'], _this2.completed = _this2.editing_data.global_article['completed'], _this2.map = _this2.editing_data.global_article['map'], _this2.weather = _this2.editing_data.global_article['weather'], _this2.start_data_day = _this2.editing_data.global_article['start_data_day'], _this2.and_data_day = _this2.editing_data.global_article['and_data_day'], _this2.start_data_month = _this2.editing_data.global_article['start_data_month'], _this2.and_data_month = _this2.editing_data.global_article['and_data_month'], _this2.fb_link = _this2.editing_data.global_article['fb_link'], _this2.twit_link = _this2.editing_data.global_article['twit_link'], _this2.google_link = _this2.editing_data.global_article['google_link'], _this2.inst_link = _this2.editing_data.global_article['inst_link'], _this2.web_link = _this2.editing_data.global_article['web_link'], _this2.us_price_from = _this2.editing_data.global_article['price_from'], _this2.image_name = _this2.editing_data.global_article['image'];
-        _this2.price_from = _this2.editing_data.global_article['price_from'];
-        _this2.working_time = _this2.editing_data.global_article['working_time']; // 
+        _this6.editing_data = response.data;
+        _this6.us_article_id = _this6.editing_data.global_article['us_article_id'], _this6.ru_article_id = _this6.editing_data.global_article['ru_article_id'], _this6.ka_article_id = _this6.editing_data.global_article['ka_article_id'], // send data in editing form value
+        _this6.published = _this6.editing_data.global_article['published'], _this6.mount_id = _this6.editing_data.global_article['mount_id'], _this6.completed = _this6.editing_data.global_article['completed'], _this6.map = _this6.editing_data.global_article['map'], _this6.weather = _this6.editing_data.global_article['weather'], _this6.start_data_day = _this6.editing_data.global_article['start_data_day'], _this6.and_data_day = _this6.editing_data.global_article['and_data_day'], _this6.start_data_month = _this6.editing_data.global_article['start_data_month'], _this6.and_data_month = _this6.editing_data.global_article['and_data_month'], _this6.fb_link = _this6.editing_data.global_article['fb_link'], _this6.twit_link = _this6.editing_data.global_article['twit_link'], _this6.google_link = _this6.editing_data.global_article['google_link'], _this6.inst_link = _this6.editing_data.global_article['inst_link'], _this6.web_link = _this6.editing_data.global_article['web_link'], _this6.us_price_from = _this6.editing_data.global_article['price_from'], _this6.image_name = _this6.editing_data.global_article['image'];
+        _this6.price_from = _this6.editing_data.global_article['price_from'];
+        _this6.working_time = _this6.editing_data.global_article['working_time']; // 
         // 
         // 
 
-        _this2.us_title = _this2.editing_data.us_article['title'], _this2.us_short_description = _this2.editing_data.us_article['short_description'], _this2.us_text = _this2.editing_data.us_article['text'], _this2.us_route = _this2.editing_data.us_article['route'], _this2.us_how_get = _this2.editing_data.us_article['how_get'], _this2.us_best_time = _this2.editing_data.us_article['best_time'], _this2.us_what_need = _this2.editing_data.us_article['what_need'], _this2.us_info = _this2.editing_data.us_article['info'], _this2.us_meta_keyword = _this2.editing_data.us_article['meta_keyword'], // 
+        _this6.us_title = _this6.editing_data.us_article['title'], _this6.us_short_description = _this6.editing_data.us_article['short_description'], _this6.us_text = _this6.editing_data.us_article['text'], _this6.us_route = _this6.editing_data.us_article['route'], _this6.us_how_get = _this6.editing_data.us_article['how_get'], _this6.us_best_time = _this6.editing_data.us_article['best_time'], _this6.us_what_need = _this6.editing_data.us_article['what_need'], _this6.us_info = _this6.editing_data.us_article['info'], _this6.us_meta_keyword = _this6.editing_data.us_article['meta_keyword'], // 
         // 
         // 
-        _this2.ru_title = _this2.editing_data.ru_article['title'], _this2.ru_short_description = _this2.editing_data.ru_article['short_description'], _this2.ru_text = _this2.editing_data.ru_article['text'], _this2.ru_route = _this2.editing_data.ru_article['route'], _this2.ru_how_get = _this2.editing_data.ru_article['how_get'], _this2.ru_best_time = _this2.editing_data.ru_article['best_time'], _this2.ru_what_need = _this2.editing_data.ru_article['what_need'], _this2.ru_info = _this2.editing_data.ru_article['info'], _this2.ru_meta_keyword = _this2.editing_data.ru_article['meta_keyword']; // 
+        _this6.ru_title = _this6.editing_data.ru_article['title'], _this6.ru_short_description = _this6.editing_data.ru_article['short_description'], _this6.ru_text = _this6.editing_data.ru_article['text'], _this6.ru_route = _this6.editing_data.ru_article['route'], _this6.ru_how_get = _this6.editing_data.ru_article['how_get'], _this6.ru_best_time = _this6.editing_data.ru_article['best_time'], _this6.ru_what_need = _this6.editing_data.ru_article['what_need'], _this6.ru_info = _this6.editing_data.ru_article['info'], _this6.ru_meta_keyword = _this6.editing_data.ru_article['meta_keyword']; // 
         // 
         // 
 
-        _this2.ka_title = _this2.editing_data.ka_article['title'], _this2.ka_short_description = _this2.editing_data.ka_article['short_description'], _this2.ka_text = _this2.editing_data.ka_article['text'], _this2.ka_route = _this2.editing_data.ka_article['route'], _this2.ka_how_get = _this2.editing_data.ka_article['how_get'], _this2.ka_best_time = _this2.editing_data.ka_article['best_time'], _this2.ka_what_need = _this2.editing_data.ka_article['what_need'], _this2.ka_info = _this2.editing_data.ka_article['info'], _this2.ka_meta_keyword = _this2.editing_data.ka_article['meta_keyword'];
+        _this6.ka_title = _this6.editing_data.ka_article['title'], _this6.ka_short_description = _this6.editing_data.ka_article['short_description'], _this6.ka_text = _this6.editing_data.ka_article['text'], _this6.ka_route = _this6.editing_data.ka_article['route'], _this6.ka_how_get = _this6.editing_data.ka_article['how_get'], _this6.ka_best_time = _this6.editing_data.ka_article['best_time'], _this6.ka_what_need = _this6.editing_data.ka_article['what_need'], _this6.ka_info = _this6.editing_data.ka_article['info'], _this6.ka_meta_keyword = _this6.editing_data.ka_article['meta_keyword'];
       })["catch"](function (error) {
         return console.log(error);
       });
@@ -5222,7 +5375,10 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       this.edit_ka_article();
       this.edit_ru_article();
       this.checkForm();
-      window.location.href = this.back_url;
+    },
+    if_isset_go_beck: function if_isset_go_beck() {
+      if (this.is_global_article_error == false && this.is_ka_article_error == false && this.is_ru_article_error == false && this.is_us_article_error == false) {// window.location.href = this.back_url;
+      }
     }
   }
 });
@@ -5410,12 +5566,79 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: ['back_url', 'category'],
   data: function data() {
     return {
       map: "",
       weather: "",
+      published: "",
+      errors: [],
       // 
       // 
       // 
@@ -5447,15 +5670,13 @@ __webpack_require__.r(__webpack_exports__);
   mounted: function mounted() {// console.log(this.catagory)
   },
   methods: {
-    // add_global_article(e) {
-    add_mount: function add_mount(e) {
+    add_mount: function add_mount() {
       var _this = this;
 
-      var myFormData = new FormData(this.$refs.myForm);
-      console.log(myFormData);
       axios.post('/mountaineering/mount_add/', {
         map: this.map,
         weather: this.weather,
+        published: this.published,
         name: this.name,
         short_description: this.short_description,
         text: this.text,
@@ -5472,18 +5693,15 @@ __webpack_require__.r(__webpack_exports__);
         how_get_ru: this.how_get_ru,
         best_time_ru: this.best_time_ru
       }).then(function (Response) {
-        _this.is_global_article_succes = true;
-        console.log(response);
-        alert(response.data.message);
-        console.log('global article upload successful');
+        window.location.href = '../../mountaineering';
       })["catch"](function (error) {
-        return console.log(error);
+        if (error.response.status == 422) {
+          _this.errors = error.response.data.errors;
+        }
       });
-      e.preventDefault();
     },
-    save_all: function save_all(Response) {
+    save_all: function save_all() {
       this.add_mount();
-      window.location.href = this.back_url;
     }
   }
 });
@@ -5671,12 +5889,79 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: ['editing_mount_id', 'back_url'],
   data: function data() {
     return {
       map: "",
       weather: "",
+      published: "",
+      errors: [],
       name: "",
       short_description: "",
       text: "",
@@ -5700,7 +5985,6 @@ __webpack_require__.r(__webpack_exports__);
   },
   mounted: function mounted() {
     this.get_editing_data();
-    console.log(this.editing_mount_id);
   },
   methods: {
     edit_mount: function edit_mount() {
@@ -5709,6 +5993,7 @@ __webpack_require__.r(__webpack_exports__);
       axios.post('/mountaineering/mount_edit/' + this.editing_mount_id, {
         map: this.map,
         weather: this.weather,
+        published: this.published,
         name: this.name,
         short_description: this.short_description,
         text: this.text,
@@ -5725,12 +6010,11 @@ __webpack_require__.r(__webpack_exports__);
         how_get_ru: this.how_get_ru,
         best_time_ru: this.best_time_ru
       }).then(function (Response) {
-        _this.is_global_article_succes = true;
-        console.log(response);
-        alert(response.data.message);
-        console.log('global article upload successful');
+        window.location.href = _this.back_url;
       })["catch"](function (error) {
-        return console.log(error);
+        if (error.response.status == 422) {
+          _this.errors = error.response.data.errors;
+        }
       });
     },
     get_editing_data: function get_editing_data() {
@@ -5740,7 +6024,7 @@ __webpack_require__.r(__webpack_exports__);
       axios.get(this.url).then(function (response) {
         _this2.editing_data = response.data; // send data in editing form value
 
-        _this2.map = _this2.editing_data.mount['map'], _this2.weather = _this2.editing_data.mount['weather'], _this2.name = _this2.editing_data.mount['name'], _this2.short_description = _this2.editing_data.mount['short_description'];
+        _this2.published = _this2.editing_data.mount['published'], _this2.map = _this2.editing_data.mount['map'], _this2.weather = _this2.editing_data.mount['weather'], _this2.name = _this2.editing_data.mount['name'], _this2.short_description = _this2.editing_data.mount['short_description'];
         _this2.text = _this2.editing_data.mount['text'];
         _this2.how_get = _this2.editing_data.mount['how_get'];
         _this2.best_time = _this2.editing_data.mount['best_time'];
@@ -5749,16 +6033,15 @@ __webpack_require__.r(__webpack_exports__);
         _this2.how_get_ka = _this2.editing_data.mount['how_get_ka'];
         _this2.best_time_ka = _this2.editing_data.mount['best_time_ka'];
         _this2.name_ru = _this2.editing_data.mount['name_ru'], _this2.short_description_ru = _this2.editing_data.mount['short_description_ru'];
-        _this2.text_ka = _this2.editing_data.mount['text_ka'];
-        _this2.how_get_ka = _this2.editing_data.mount['how_get_ka'];
-        _this2.best_time_ka = _this2.editing_data.mount['best_time_ka'];
+        _this2.text_ru = _this2.editing_data.mount['text_ru'];
+        _this2.how_get_ru = _this2.editing_data.mount['how_get_ru'];
+        _this2.best_time_ru = _this2.editing_data.mount['best_time_ru'];
       })["catch"](function (error) {
         return console.log(error);
       });
     },
     save_all: function save_all(Response) {
       this.edit_mount();
-      window.location.href = this.back_url;
     }
   }
 });
@@ -5821,30 +6104,44 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: ['back_url'],
   data: function data() {
     return {
       us_name: '',
       ru_name: '',
-      ka_name: ''
+      ka_name: '',
+      errors: []
     };
   },
   mounted: function mounted() {},
   methods: {
     add_category: function add_category() {
+      var _this = this;
+
       axios.post('/products/category/add/', {
         us_name: this.us_name,
         ru_name: this.ru_name,
         ka_name: this.ka_name
-      }).then(function (response) {// ...
+      }).then(function (response) {
+        window.location.href = _this.back_url;
       })["catch"](function (error) {
-        return console.log(error);
+        if (error.response.status == 422) {
+          _this.errors = error.response.data.errors;
+        }
       });
     },
     save_all: function save_all() {
       this.add_category();
-      window.location.href = this.back_url;
     }
   }
 });
@@ -5907,6 +6204,15 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: ['back_url', 'editing_category_id'],
   data: function data() {
@@ -5914,7 +6220,8 @@ __webpack_require__.r(__webpack_exports__);
       us_name: '',
       ru_name: '',
       ka_name: '',
-      editing_data: ''
+      editing_data: '',
+      errors: []
     };
   },
   mounted: function mounted() {
@@ -5932,20 +6239,24 @@ __webpack_require__.r(__webpack_exports__);
       });
     },
     edit_category: function edit_category() {
+      var _this2 = this;
+
       axios.post('/products/category/edit/' + this.editing_category_id, {
         us_name: this.us_name,
         ru_name: this.ru_name,
         ka_name: this.ka_name,
         inst_link: this.inst_link,
         web_link: this.web_link
-      }).then(function (response) {// ...
+      }).then(function (response) {
+        window.location.href = _this2.back_url;
       })["catch"](function (error) {
-        return console.log(error);
+        if (error.response.status == 422) {
+          _this2.errors = error.response.data.errors;
+        }
       });
     },
     save_all: function save_all() {
       this.edit_category();
-      window.location.href = this.back_url;
     }
   }
 });
@@ -6284,11 +6595,57 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
-  props: ['back_url' // 'category_id'
-  ],
+  props: ['back_url'],
   data: function data() {
     return {
+      global_article_error: [],
+      is_global_article_error: true,
+      ka_article_error: [],
+      is_ka_article_error: true,
+      ru_article_error: [],
+      is_ru_article_error: true,
+      us_article_error: [],
+      is_us_article_error: true,
       image_is_refresh: false,
       image_reset_id: 0,
       categories: [],
@@ -6354,40 +6711,68 @@ __webpack_require__.r(__webpack_exports__);
       this.myModal = !this.myModal;
     },
     add_us_product: function add_us_product() {
+      var _this2 = this;
+
       axios.post('/products/us/add/', {
         us_title: this.us_title,
         us_short_description: this.us_short_description,
         us_text: this.us_text,
         us_meta_keyword: this.us_meta_keyword
-      }).then(function (response) {// this.add_ru_product()
+      }).then(function (response) {
+        _this2.is_us_article_error = false;
+
+        _this2.if_isset_go_beck(_this2.is_us_article_error);
       })["catch"](function (error) {
-        return console.log(error);
+        if (error.response.status == 422) {
+          _this2.us_article_error = error.response.data.errors;
+        }
+
+        _this2.is_us_article_error = true;
       });
     },
     add_ru_product: function add_ru_product() {
+      var _this3 = this;
+
       axios.post('/products/ru/add/', {
         ru_title: this.ru_title,
         ru_short_description: this.ru_short_description,
         ru_text: this.ru_text,
         ru_meta_keyword: this.ru_meta_keyword
-      }).then(function (response) {})["catch"](function (error) {
-        return console.log(error);
+      }).then(function (response) {
+        _this3.is_ru_article_error = false;
+
+        _this3.if_isset_go_beck(_this3.is_ru_article_error);
+      })["catch"](function (error) {
+        if (error.response.status == 422) {
+          _this3.ru_article_error = error.response.data.errors;
+        }
+
+        _this3.is_ru_article_error = true;
       });
     },
     add_ka_product: function add_ka_product() {
+      var _this4 = this;
+
       axios.post('/products/ka/add/', {
         ka_title: this.ka_title,
         ka_short_description: this.ka_short_description,
         ka_text: this.ka_text,
         ka_meta_keyword: this.ka_meta_keyword
-      }).then(function (response) {// this.add_global_product()
+      }).then(function (response) {
+        _this4.is_ka_article_error = false;
+
+        _this4.if_isset_go_beck(_this4.is_ka_article_error);
       })["catch"](function (error) {
-        return console.log(error);
+        if (error.response.status == 422) {
+          _this4.ka_article_error = error.response.data.errors;
+        }
+
+        _this4.is_ka_article_error = true;
       });
     },
     add_global_product: function add_global_product() {
-      // var myFormData = new FormData(this.$refs.myForm)
-      // console.log(myFormData);
+      var _this5 = this;
+
       axios.post('/products/global/add/', {
         published: this.published,
         price: this.price,
@@ -6399,48 +6784,51 @@ __webpack_require__.r(__webpack_exports__);
         quantity: this.quantity,
         size: this.size,
         us_title_for_url_title: this.us_title
-      }).then(function (response) {// this.is_global_product_succes = 1
-        // console.log(response)
-        // alert(response.data.message);
-        // console.log('global product upload successful');
-        // this.checkForm()
+      }).then(function (response) {
+        _this5.is_global_article_error = false;
+
+        _this5.if_isset_go_beck(_this5.is_global_article_error);
       })["catch"](function (error) {
-        return console.log(error);
+        if (error.response.status == 422) {
+          _this5.global_article_error = error.response.data.errors;
+        }
+
+        _this5.is_global_article_error = true;
       });
     },
     get_temporary_product_data: function get_temporary_product_data() {
-      var _this2 = this;
+      var _this6 = this;
 
       axios.get("/products/get_temporary_product_editing_data/").then(function (response) {
-        _this2.editing_data = response.data;
+        _this6.editing_data = response.data;
 
-        _this2.get_product_image(_this2.editing_data.last_temporary_product_id); // console.log(this.editing_data.last_temporary_product_id);
+        _this6.get_product_image(_this6.editing_data.last_temporary_product_id); // console.log(this.editing_data.last_temporary_product_id);
 
 
-        _this2.temporary_product_id = _this2.editing_data.last_temporary_product_id;
+        _this6.temporary_product_id = _this6.editing_data.last_temporary_product_id;
       })["catch"](function (error) {
         return console.log(error);
       });
     },
     get_product_category_data: function get_product_category_data() {
-      var _this3 = this;
+      var _this7 = this;
 
       axios.get("../../products/get_product_category_data/").then(function (response) {
-        _this3.product_category = response.data;
-        _this3.categories = _this3.product_category;
+        _this7.product_category = response.data;
+        _this7.categories = _this7.product_category;
       })["catch"](function (error) {
         return console.log(error);
       });
     },
     get_product_image: function get_product_image(temporary_product_id) {
-      var _this4 = this;
+      var _this8 = this;
 
       this.image_is_refresh = true;
       axios.get("../../products/get_product_image/" + temporary_product_id).then(function (response) {
-        _this4.product_images = response.data;
-        _this4.images = _this4.product_images.product_images;
-        _this4.image_is_refresh = false;
-        _this4.image_reset_id++;
+        _this8.product_images = response.data;
+        _this8.images = _this8.product_images.product_images;
+        _this8.image_is_refresh = false;
+        _this8.image_reset_id++;
       })["catch"](function (error) {
         return console.log(error);
       });
@@ -6462,14 +6850,14 @@ __webpack_require__.r(__webpack_exports__);
       this.showModal(); // e.preventDefault();
     },
     del_product_image: function del_product_image(imageId) {
-      var _this5 = this;
+      var _this9 = this;
 
       axios.post("/products/del_product_image/" + imageId, {
         image_id: imageId
       }).then(function (Response) {
         console.log(response);
 
-        _this5.get_data_in_table_1();
+        _this9.get_data_in_table_1();
       })["catch"](function (error) {
         return console.log(error);
       });
@@ -6484,7 +6872,11 @@ __webpack_require__.r(__webpack_exports__);
       this.add_ka_product();
       this.add_ru_product();
       this.add_global_product();
-      window.location.href = this.back_url;
+    },
+    if_isset_go_beck: function if_isset_go_beck() {
+      if (this.is_global_article_error == false && this.is_ka_article_error == false && this.is_ru_article_error == false && this.is_us_article_error == false) {
+        window.location.href = this.back_url;
+      }
     }
   }
 });
@@ -6829,6 +7221,14 @@ __webpack_require__.r(__webpack_exports__);
   props: ['back_url', 'editing_article_id'],
   data: function data() {
     return {
+      global_article_error: [],
+      is_global_article_error: true,
+      ka_article_error: [],
+      is_ka_article_error: true,
+      ru_article_error: [],
+      is_ru_article_error: true,
+      us_article_error: [],
+      is_us_article_error: true,
       image_is_refresh: false,
       image_reset_id: 0,
       categories: [],
@@ -6896,40 +7296,68 @@ __webpack_require__.r(__webpack_exports__);
       this.myModal = !this.myModal;
     },
     edit_us_product: function edit_us_product() {
+      var _this2 = this;
+
       axios.post('/products/us/edit/' + this.us_product_id, {
         us_title: this.us_title,
         us_short_description: this.us_short_description,
         us_text: this.us_text,
         us_meta_keyword: this.us_meta_keyword
-      }).then(function (response) {// this.edit_ru_product()
+      }).then(function (response) {
+        _this2.is_us_article_error = false;
+
+        _this2.if_isset_go_beck(_this2.is_us_article_error);
       })["catch"](function (error) {
-        return console.log(error);
+        if (error.response.status == 422) {
+          _this2.us_article_error = error.response.data.errors;
+        }
+
+        _this2.is_us_article_error = true;
       });
     },
     edit_ru_product: function edit_ru_product() {
+      var _this3 = this;
+
       axios.post('/products/ru/edit/' + this.ru_product_id, {
         ru_title: this.ru_title,
         ru_short_description: this.ru_short_description,
         ru_text: this.ru_text,
         ru_meta_keyword: this.ru_meta_keyword
-      }).then(function (response) {})["catch"](function (error) {
-        return console.log(error);
+      }).then(function (response) {
+        _this3.is_ru_article_error = false;
+
+        _this3.if_isset_go_beck(_this3.is_ru_article_error);
+      })["catch"](function (error) {
+        if (error.response.status == 422) {
+          _this3.ru_article_error = error.response.data.errors;
+        }
+
+        _this3.is_ru_article_error = true;
       });
     },
     edit_ka_product: function edit_ka_product() {
+      var _this4 = this;
+
       axios.post('/products/ka/edit/' + this.ka_product_id, {
         ka_title: this.ka_title,
         ka_short_description: this.ka_short_description,
         ka_text: this.ka_text,
         ka_meta_keyword: this.ka_meta_keyword
-      }).then(function (response) {// this.edit_global_product()
+      }).then(function (response) {
+        _this4.is_ka_article_error = false;
+
+        _this4.if_isset_go_beck(_this4.is_ka_article_error);
       })["catch"](function (error) {
-        return console.log(error);
+        if (error.response.status == 422) {
+          _this4.ka_article_error = error.response.data.errors;
+        }
+
+        _this4.is_ka_article_error = true;
       });
     },
     edit_global_product: function edit_global_product() {
-      // var myFormData = new FormData(this.$refs.myForm)
-      // console.log(myFormData);
+      var _this5 = this;
+
       axios.post('/products/global/edit/' + this.editing_article_id, {
         published: this.published,
         price: this.price,
@@ -6941,34 +7369,37 @@ __webpack_require__.r(__webpack_exports__);
         discount: this.discount,
         quantity: this.quantity,
         size: this.size
-      }).then(function (response) {// this.is_global_product_succes = 1
-        // console.log(response)
-        // alert(response.data.message);
-        // console.log('global product upload successful');
-        // this.checkForm()
+      }).then(function (response) {
+        _this5.is_global_article_error = false;
+
+        _this5.if_isset_go_beck(_this5.is_global_article_error);
       })["catch"](function (error) {
-        return console.log(error);
+        if (error.response.status == 422) {
+          _this5.global_article_error = error.response.data.errors;
+        }
+
+        _this5.is_global_article_error = true;
       });
     },
     get_product_category_data: function get_product_category_data() {
-      var _this2 = this;
+      var _this6 = this;
 
       axios.get("../../products/get_product_category_data/").then(function (response) {
-        _this2.categories = response.data; // console.log();
+        _this6.categories = response.data; // console.log();
         // this.category = this.product_category
       })["catch"](function (error) {
         return console.log(error);
       });
     },
     get_product_image: function get_product_image() {
-      var _this3 = this;
+      var _this7 = this;
 
       this.image_is_refresh = true;
       axios.get("/products/get_product_image/" + this.editing_article_id).then(function (response) {
-        _this3.product_images = response.data;
-        _this3.images = _this3.product_images.product_images;
-        _this3.image_is_refresh = false;
-        _this3.image_reset_id++;
+        _this7.product_images = response.data;
+        _this7.images = _this7.product_images.product_images;
+        _this7.image_is_refresh = false;
+        _this7.image_reset_id++;
       })["catch"](function (error) {
         return console.log(error);
       });
@@ -6990,14 +7421,14 @@ __webpack_require__.r(__webpack_exports__);
       this.showModal(); // e.preventDefault();
     },
     del_product_image: function del_product_image(imageId) {
-      var _this4 = this;
+      var _this8 = this;
 
       axios.post("/products/del_product_image/" + imageId, {
         image_id: imageId
       }).then(function (Response) {
         console.log(response);
 
-        _this4.get_data_in_table_1();
+        _this8.get_data_in_table_1();
       })["catch"](function (error) {
         return console.log(error);
       });
@@ -7010,8 +7441,12 @@ __webpack_require__.r(__webpack_exports__);
       this.edit_us_product();
       this.edit_ka_product();
       this.edit_ru_product();
-      this.edit_global_product();
-      window.location.href = this.back_url;
+      this.edit_global_product(); // window.location.href = this.back_url;
+    },
+    if_isset_go_beck: function if_isset_go_beck() {
+      if (this.is_global_article_error == false && this.is_ka_article_error == false && this.is_ru_article_error == false && this.is_us_article_error == false) {
+        window.location.href = this.back_url; // alert('test')
+      }
     }
   }
 });
@@ -7093,6 +7528,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
@@ -7100,6 +7536,7 @@ __webpack_require__.r(__webpack_exports__);
       route_type: '',
       regions: [],
       sectors: [],
+      errors: [],
       sector_id: "",
       title: "",
       text: "",
@@ -7133,26 +7570,24 @@ __webpack_require__.r(__webpack_exports__);
         return console.log(error);
       });
     },
-    add_global_article: function add_global_article() {
+    add_mtp: function add_mtp() {
+      var _this3 = this;
+
       axios.post('/routes_and_sectors/mtp_add', {
         sector_id: this.sector_id,
-        gread: this.gread,
-        or_gread: this.or_gread,
         name: this.name,
         text: this.text,
-        height: this.height,
-        bolts: this.bolts,
-        bolter: this.bolter,
-        first_ascent: this.first_ascent
+        height: this.height
       }).then(function (response) {
-        console.log("route added sucsesfule");
-      })["catch"](function (response) {
-        console.log("route added is not sucsesfule!!!");
+        window.location.href = '/routes_and_sectors';
+      })["catch"](function (error) {
+        if (error.response.status == 422) {
+          _this3.errors = error.response.data.errors;
+        }
       });
     },
     save_all: function save_all() {
-      this.add_global_article();
-      window.location.href = '/routes_and_sectors';
+      this.add_mtp();
     }
   }
 });
@@ -7224,14 +7659,16 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: ["editing_mtp_id"],
   data: function data() {
     return {
-      sellected: '',
+      sellected_region: '',
       route_type: '',
       regions: [],
       sectors: [],
+      errors: [],
       sector_id: "",
       name: "",
       text: "",
@@ -7243,7 +7680,7 @@ __webpack_require__.r(__webpack_exports__);
   mounted: function mounted() {
     this.get_region_data();
     this.get_sectors_data();
-    this.get_route_editing_data();
+    this.get_mtp_editing_data();
   },
   methods: {
     get_region_data: function get_region_data() {
@@ -7264,7 +7701,7 @@ __webpack_require__.r(__webpack_exports__);
         return console.log(error);
       });
     },
-    get_route_editing_data: function get_route_editing_data() {
+    get_mtp_editing_data: function get_mtp_editing_data() {
       var _this3 = this;
 
       this.url = this.editing_url + this.editing_mtp_id;
@@ -7274,32 +7711,38 @@ __webpack_require__.r(__webpack_exports__);
 
         _this3.sector_id = _this3.editing_data.mtp['sector_id'], _this3.name = _this3.editing_data.mtp['name'], _this3.text = _this3.editing_data.mtp['text'], _this3.height = _this3.editing_data.mtp['height'];
 
-        for (var index = 0; index < _this3.sectors.length; index++) {
-          if (_this3.sectors[index]['id'] == _this3.sector_id) {
-            _this3.select_region = _this3.sectors[index]['article_id'];
-          }
-        }
-
-        console.log(_this3.select_region);
+        _this3.value_sector_region(_this3.editing_data);
       })["catch"](function (error) {
         return console.log(error);
       });
     },
+    value_sector_region: function value_sector_region(editing_data) {
+      if (editing_data.mtp['sector_id'] != "" || editing_data.mtp['sector_id'] != NULL) {
+        for (var index = 0; index < this.sectors.length; index++) {
+          if (this.sectors[index]['id'] == this.sector_id) {
+            this.sellected_region = this.sectors[index]['article_id'];
+          }
+        }
+      }
+    },
     edit_global_article: function edit_global_article() {
+      var _this4 = this;
+
       axios.post('/routes_and_sectors/mtp_edit/' + this.editing_mtp_id, {
         sector_id: this.sector_id,
         name: this.name,
         text: this.text,
         height: this.height
       }).then(function (response) {
-        console.log("route added sucsesfule");
-      })["catch"](function (response) {
-        console.log("route added is not sucsesfule!!!");
+        window.location.href = '/routes_and_sectors';
+      })["catch"](function (error) {
+        if (error.response.status == 422) {
+          _this4.errors = error.response.data.errors;
+        }
       });
     },
     save_all: function save_all() {
       this.edit_global_article();
-      window.location.href = '/routes_and_sectors';
     }
   }
 });
@@ -7409,18 +7852,33 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
       sellected_region: '',
       sellected_sector: '',
       selected_mtp: '',
+      errors: [],
       regions: [],
       sectors: [],
       mtps: [],
       mtp_id: "",
-      gread: "",
-      or_gread: "",
+      grade: "",
+      or_grade: "",
       name: "",
       text: "",
       last_carabin: "",
@@ -7428,7 +7886,7 @@ __webpack_require__.r(__webpack_exports__);
       bolts: "",
       bolter: "",
       first_ascent: "",
-      sport_route_gread: ["4", "5a", "5b", "5c", "5c+", "6a", "6a+", "6b", "6b+", "6c", "6c+", "7a", "7a+", "7b", "7b+", "7c", "7c+", "8a", "8a+", "8b", "8b+", "8c", "8c+", "9a", "9a+", "9b", "9b+", "9c", "9c+"],
+      sport_route_grade: ["4", "5a", "5b", "5c", "5c+", "6a", "6a+", "6b", "6b+", "6c", "6c+", "7a", "7a+", "7b", "7b+", "7c", "7c+", "8a", "8a+", "8b", "8b+", "8c", "8c+", "9a", "9a+", "9b", "9b+", "9c", "9c+"],
       published: ""
     };
   },
@@ -7466,25 +7924,28 @@ __webpack_require__.r(__webpack_exports__);
       });
     },
     add_mtp_pitch_article: function add_mtp_pitch_article() {
+      var _this4 = this;
+
       axios.post('/routes_and_sectors/mtp_pitch_add', {
         mtp_id: this.mtp_id,
         name: this.name,
-        gread: this.gread,
-        or_gread: this.or_gread,
+        grade: this.grade,
+        or_grade: this.or_grade,
         text: this.text,
         height: this.height,
         bolter: this.bolter,
         bolts: this.bolts,
         first_ascent: this.first_ascent
       }).then(function (response) {
-        console.log("route added sucsesfule");
-      })["catch"](function (response) {
-        console.log("route added is not sucsesfule!!!");
+        window.location.href = '/routes_and_sectors';
+      })["catch"](function (error) {
+        if (error.response.status == 422) {
+          _this4.errors = error.response.data.errors;
+        }
       });
     },
     save_all: function save_all() {
       this.add_mtp_pitch_article();
-      window.location.href = '/routes_and_sectors';
     }
   }
 });
@@ -7576,6 +8037,36 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: ['editing_pitch_id'],
   data: function data() {
@@ -7583,12 +8074,13 @@ __webpack_require__.r(__webpack_exports__);
       sellected_region: '',
       sellected_sector: '',
       selected_mtp: '',
+      errors: [],
       regions: [],
       sectors: [],
       mtps: [],
       mtp_id: "",
-      gread: "",
-      or_gread: "",
+      grade: "",
+      or_grade: "",
       name: "",
       text: "",
       last_carabin: "",
@@ -7597,62 +8089,101 @@ __webpack_require__.r(__webpack_exports__);
       bolter: "",
       first_ascent: "",
       editing_url: '/routes_and_sectors/get_mtp_pitch_editing_data/',
-      sport_route_gread: ["4", "5a", "5b", "5c", "5c+", "6a", "6a+", "6b", "6b+", "6c", "6c+", "7a", "7a+", "7b", "7b+", "7c", "7c+", "8a", "8a+", "8b", "8b+", "8c", "8c+", "9a", "9a+", "9b", "9b+", "9c", "9c+"]
+      sport_route_grade: ["4", "5a", "5b", "5c", "5c+", "6a", "6a+", "6b", "6b+", "6c", "6c+", "7a", "7a+", "7b", "7b+", "7c", "7c+", "8a", "8a+", "8b", "8b+", "8c", "8c+", "9a", "9a+", "9b", "9b+", "9c", "9c+"]
     };
   },
   mounted: function mounted() {
+    this.get_region_data();
+    this.get_sectors_data();
     this.get_mtp_data();
     this.get_mtp_pitch_editing_data();
   },
   methods: {
-    get_mtp_data: function get_mtp_data() {
+    get_region_data: function get_region_data() {
       var _this = this;
 
-      axios.get("../get_mtp_data").then(function (response) {
-        _this.mtps = response.data;
-        console.log(_this.mtps);
+      axios.get("../../routes_and_sectors/get_region_data").then(function (response) {
+        _this.regions = response.data;
+      })["catch"](function (error) {
+        return console.log(error);
+      });
+    },
+    get_sectors_data: function get_sectors_data() {
+      var _this2 = this;
+
+      axios.get("../../routes_and_sectors/get_sector_data").then(function (response) {
+        _this2.sectors = response.data;
+      })["catch"](function (error) {
+        return console.log(error);
+      });
+    },
+    get_mtp_data: function get_mtp_data() {
+      var _this3 = this;
+
+      axios.get("../../routes_and_sectors/get_mtp_data").then(function (response) {
+        _this3.mtps = response.data;
       })["catch"](function (error) {
         return console.log(error);
       });
     },
     get_mtp_pitch_editing_data: function get_mtp_pitch_editing_data() {
-      var _this2 = this;
+      var _this4 = this;
 
       this.url = this.editing_url + this.editing_pitch_id;
       axios.get(this.url).then(function (response) {
-        _this2.editing_data = response.data; // send data in editing form value
+        _this4.editing_data = response.data; // send data in editing form value
 
-        _this2.mtp_id = _this2.editing_data.mtp_pitch['mtp_id'], _this2.gread = _this2.editing_data.mtp_pitch['gread'], _this2.or_gread = _this2.editing_data.mtp_pitch['or_gread'], _this2.name = _this2.editing_data.mtp_pitch['name'], _this2.text = _this2.editing_data.mtp_pitch['text'], _this2.height = _this2.editing_data.mtp_pitch['height'], _this2.bolts = _this2.editing_data.mtp_pitch['bolts'], _this2.bolter = _this2.editing_data.mtp_pitch['bolter'], _this2.first_ascent = _this2.editing_data.mtp_pitch['first_ascent'];
+        _this4.mtp_id = _this4.editing_data.mtp_pitch['mtp_id'], _this4.grade = _this4.editing_data.mtp_pitch['grade'], _this4.or_grade = _this4.editing_data.mtp_pitch['or_grade'], _this4.name = _this4.editing_data.mtp_pitch['name'], _this4.text = _this4.editing_data.mtp_pitch['text'], _this4.height = _this4.editing_data.mtp_pitch['height'], _this4.bolts = _this4.editing_data.mtp_pitch['bolts'], _this4.bolter = _this4.editing_data.mtp_pitch['bolter'], _this4.first_ascent = _this4.editing_data.mtp_pitch['first_ascent'];
 
-        for (var index = 0; index < _this2.sectors.length; index++) {
-          if (_this2.sectors[index]['id'] == _this2.sector_id) {
-            _this2.select_region = _this2.sectors[index]['article_id'];
-          }
-        }
+        _this4.value_sector(response.data);
       })["catch"](function (error) {
         return console.log(error);
       });
     },
+    value_region: function value_region(editing_data) {
+      if (editing_data.route['sector_id'] != "" || editing_data.route['sector_id'] != NULL) {
+        for (var index = 0; index < this.sectors.length; index++) {
+          if (this.sectors[index]['id'] == this.sector_id) {
+            this.sellected_regfion = this.sectors[index]['article_id'];
+          }
+        }
+      }
+    },
+    value_sector: function value_sector(editing_data) {
+      if (editing_data.mtp_pitch['mtp_id'] != "" || editing_data.mtp_pitch['mtp_id'] != NULL) {
+        console.log(editing_data.mtp_pitch);
+
+        for (var index = 0; index < editing_data.mtp_pitch.length; index++) {
+          if (this.mtp_pitch[index]['id'] == editing_data.mtp_pitch['mtp_id']) {
+            this.sellected_sector = editing_data.mtp_pitch['mtp_id'];
+            console.log(editing_data.mtp_pitch['mtp_id']);
+          }
+        }
+      }
+    },
     edit_mtp_pitch: function edit_mtp_pitch() {
+      var _this5 = this;
+
       axios.post('/routes_and_sectors/mtp_pitch_add', {
         mtp_id: this.mtp_id,
         name: this.name,
-        gread: this.gread,
-        or_gread: this.or_gread,
+        grade: this.grade,
+        or_grade: this.or_grade,
         text: this.text,
         height: this.height,
         bolter: this.bolter,
         bolts: this.bolts,
         first_ascent: this.first_ascent
       }).then(function (response) {
-        console.log("route added sucsesfule");
-      })["catch"](function (response) {
-        console.log("route added is not sucsesfule!!!");
+        window.location.href = '/routes_and_sectors';
+      })["catch"](function (error) {
+        if (error.response.status == 422) {
+          _this5.errors = error.response.data.errors;
+        }
       });
     },
     save_all: function save_all() {
       this.edit_mtp_pitch();
-      window.location.href = '/routes_and_sectors';
     }
   }
 });
@@ -7778,16 +8309,45 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
-      sellected: '',
+      sellected_region: '',
       route_type: '',
+      errors: [],
       regions: [],
       sectors: [],
       article_id: "",
-      gread: "",
-      or_gread: "",
+      grade: "",
+      or_grade: "",
       title: "",
       text: "",
       last_carabin: "",
@@ -7795,8 +8355,8 @@ __webpack_require__.r(__webpack_exports__);
       bolts: "",
       bolter: "",
       first_ascent: "",
-      sport_route_gread: ["4", "5a", "5b", "5c", "5c+", "6a", "6a+", "6b", "6b+", "6c", "6c+", "7a", "7a+", "7b", "7b+", "7c", "7c+", "8a", "8a+", "8b", "8b+", "8c", "8c+", "9a", "9a+", "9b", "9b+", "9c", "9c+"],
-      boulder_route_gread: ["V1", "V1+", "V2", "V2+", "V3", "V3+", "V4", "V4+", "V5", "V5+", "V6", "V6+", "V7", "V7+", "V8", "V8+", "V9", "V9+", "V10", "V10+", "V11", "V11+", "V12", "V12+", "V13", "V13+", "V14", "V14+", "V15", "V15+", "V16", "V16+", "V17", "V17+", "V18", "V18+"],
+      sport_route_grade: ["4", "5a", "5b", "5c", "5c+", "6a", "6a+", "6b", "6b+", "6c", "6c+", "7a", "7a+", "7b", "7b+", "7c", "7c+", "8a", "8a+", "8b", "8b+", "8c", "8c+", "9a", "9a+", "9b", "9b+", "9c", "9c+"],
+      boulder_route_grade: ["V1", "V1+", "V2", "V2+", "V3", "V3+", "V4", "V4+", "V5", "V5+", "V6", "V6+", "V7", "V7+", "V8", "V8+", "V9", "V9+", "V10", "V10+", "V11", "V11+", "V12", "V12+", "V13", "V13+", "V14", "V14+", "V15", "V15+", "V16", "V16+", "V17", "V17+", "V18", "V18+"],
       published: ""
     };
   },
@@ -7824,6 +8384,8 @@ __webpack_require__.r(__webpack_exports__);
       });
     },
     add_route: function add_route() {
+      var _this3 = this;
+
       axios.post('/routes_and_sectors/route_add', {
         sector_id: this.sector_id,
         name: this.name,
@@ -7834,16 +8396,18 @@ __webpack_require__.r(__webpack_exports__);
         height: this.height,
         bolts: this.bolts,
         bolter: this.bolter,
+        bolting_data: this.bolting_data,
         first_ascent: this.first_ascent
       }).then(function (response) {
-        console.log("route added sucsesfule");
-      })["catch"](function (response) {
-        console.log("route added is not sucsesfule!!!");
+        window.location.href = '/routes_and_sectors';
+      })["catch"](function (error) {
+        if (error.response.status == 422) {
+          _this3.errors = error.response.data.errors;
+        }
       });
     },
     save_all: function save_all() {
       this.add_route();
-      window.location.href = '/routes_and_sectors';
     }
   }
 });
@@ -7973,30 +8537,61 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: ["editing_roure_id"],
   data: function data() {
     return {
-      // sellect_region:"",
+      sellected_region: "",
       route_type: '',
+      errors: [],
       regions: [],
       sectors: [],
+      sector_id: "",
       article_id: "",
       category: "",
-      gread: "",
-      or_gread: "",
+      grade: "",
+      or_grade: "",
       name: "",
       text: "",
       last_carabin: "",
       height: "",
       bolts: "",
       bolter: "",
+      bolting_data: "",
       first_ascent: "",
       editing_data: "",
       editing_url: '/routes_and_sectors/get_route_editing_data/',
       url: '',
-      sport_route_gread: ["4", "5a", "5b", "5c", "5c+", "6a", "6a+", "6b", "6b+", "6c", "6c+", "7a", "7a+", "7b", "7b+", "7c", "7c+", "8a", "8a+", "8b", "8b+", "8c", "8c+", "9a", "9a+", "9b", "9b+", "9c", "9c+"],
-      boulder_route_gread: ["V1", "V1+", "V2", "V2+", "V3", "V3+", "V4", "V4+", "V5", "V5+", "V6", "V6+", "V7", "V7+", "V8", "V8+", "V9", "V9+", "V10", "V10+", "V11", "V11+", "V12", "V12+", "V13", "V13+", "V14", "V14+", "V15", "V15+", "V16", "V16+", "V17", "V17+", "V18", "V18+"],
+      sport_route_grade: ["4", "5a", "5b", "5c", "5c+", "6a", "6a+", "6b", "6b+", "6c", "6c+", "7a", "7a+", "7b", "7b+", "7c", "7c+", "8a", "8a+", "8b", "8b+", "8c", "8c+", "9a", "9a+", "9b", "9b+", "9c", "9c+"],
+      boulder_route_grade: ["V1", "V1+", "V2", "V2+", "V3", "V3+", "V4", "V4+", "V5", "V5+", "V6", "V6+", "V7", "V7+", "V8", "V8+", "V9", "V9+", "V10", "V10+", "V11", "V11+", "V12", "V12+", "V13", "V13+", "V14", "V14+", "V15", "V15+", "V16", "V16+", "V17", "V17+", "V18", "V18+"],
       published: ""
     };
   },
@@ -8032,40 +8627,56 @@ __webpack_require__.r(__webpack_exports__);
       axios.get(this.url).then(function (response) {
         _this3.editing_data = response.data; // send data in editing form value
 
-        _this3.sector_id = _this3.editing_data.route['sector_id'], _this3.route_type = _this3.editing_data.route['category'], _this3.gread = _this3.editing_data.route['gread'], _this3.or_gread = _this3.editing_data.route['or_gread'], _this3.name = _this3.editing_data.route['name'], _this3.text = _this3.editing_data.route['text'], _this3.last_carabin = _this3.editing_data.route['last_carabin'], _this3.height = _this3.editing_data.route['height'], _this3.bolts = _this3.editing_data.route['bolts'], _this3.bolter = _this3.editing_data.route['bolter'], _this3.first_ascent = _this3.editing_data.route['first_ascent'];
+        _this3.sector_id = _this3.editing_data.route['sector_id'], _this3.route_type = _this3.editing_data.route['category'], _this3.grade = _this3.editing_data.route['grade'], _this3.or_grade = _this3.editing_data.route['or_grade'], _this3.name = _this3.editing_data.route['name'], _this3.text = _this3.editing_data.route['text'], _this3.last_carabin = _this3.editing_data.route['last_carabin'], _this3.height = _this3.editing_data.route['height'], _this3.bolts = _this3.editing_data.route['bolts'], _this3.bolter = _this3.editing_data.route['bolter'], _this3.bolting_data = _this3.editing_data.route['bolting_data'], _this3.first_ascent = _this3.editing_data.route['first_ascent'];
 
-        for (var index = 0; index < _this3.sectors.length; index++) {
-          if (_this3.sectors[index]['id'] == _this3.sector_id) {
-            _this3.select_region = _this3.sectors[index]['article_id'];
-          }
-        }
+        _this3.value_sector_region(_this3.editing_data);
 
-        console.log(_this3.select_region);
+        _this3.value_route_grade();
       })["catch"](function (error) {
         return console.log(error);
       });
     },
+    value_sector_region: function value_sector_region(editing_data) {
+      if (editing_data.route['sector_id'] != "" || editing_data.route['sector_id'] != NULL) {
+        for (var index = 0; index < this.sectors.length; index++) {
+          if (this.sectors[index]['id'] == this.sector_id) {
+            this.sellected_region = this.sectors[index]['article_id'];
+          }
+        }
+      }
+    },
+    value_route_grade: function value_route_grade() {
+      if (this.grade == "4" || this.grade == "5a" || this.grade == "5b" || this.grade == "5c" || this.grade == "5c+" || this.grade == "6a" || this.grade == "6a+" || this.grade == "6b" || this.grade == "6b+" || this.grade == "6c" || this.grade == "6c+" || this.grade == "7a" || this.grade == "7a+" || this.grade == "7b" || this.grade == "7b+" || this.grade == "7c" || this.grade == "7c+" || this.grade == "8a" || this.grade == "8a+" || this.grade == "8b" || this.grade == "8b+" || this.grade == "8c" || this.grade == "8c+" || this.grade == "9a" || this.grade == "9a+" || this.grade == "9b" || this.grade == "9b+" || this.grade == "9c" || this.grade == "9c+") {
+        this.route_type = 'sport climbing';
+      } else {
+        this.route_type = 'bouldering';
+      }
+    },
     edit_route: function edit_route() {
+      var _this4 = this;
+
       axios.post('/routes_and_sectors/route_edit/' + this.editing_roure_id, {
         sector_id: this.sector_id,
         name: this.name,
         text: this.text,
-        gread: this.gread,
-        or_gread: this.or_gread,
+        grade: this.grade,
+        or_grade: this.or_grade,
         last_carabin: this.last_carabin,
         height: this.height,
         bolts: this.bolts,
         bolter: this.bolter,
+        bolting_data: this.bolting_data,
         first_ascent: this.first_ascent
       }).then(function (response) {
-        console.log("route edited sucsesfule");
-      })["catch"](function (response) {
-        console.log("route edited is not sucsesfule!!!");
+        window.location.href = '/routes_and_sectors';
+      })["catch"](function (error) {
+        if (error.response.status == 422) {
+          _this4.errors = error.response.data.errors;
+        }
       });
     },
     save_all: function save_all() {
       this.edit_route();
-      window.location.href = '/routes_and_sectors';
     }
   }
 });
@@ -8261,6 +8872,15 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   components: {
@@ -8274,6 +8894,8 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       //https://github.com/eJayYoung/vux-uploader-component
       regions: '',
       myModal: false,
+      errors: [],
+      image_errors: [],
       name: '',
       image: '',
       success: '',
@@ -8346,6 +8968,8 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       });
     },
     add_sector: function add_sector() {
+      var _this5 = this;
+
       axios.post('/routes_and_sectors/sector_add', {
         article_id: this.article_id,
         name: this.name,
@@ -8359,13 +8983,16 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         slabby: this.slabby,
         vertical: this.vertical,
         overhang: this.overhang
-      }).then(function (response) {
-        console.log("sector added sucsesfule");
-      })["catch"](function (response) {
-        console.log("sector added is not sucsesfule!!!");
+      }).then(function (response) {// window.location.href = '/routes_and_sectors';
+      })["catch"](function (error) {
+        if (error.response.status == 422) {
+          _this5.errors = error.response.data.errors;
+        }
       });
     },
     add_sector_image: function add_sector_image(temporary_sector_id) {
+      var _this6 = this;
+
       var myFormData = new FormData(this.$refs.myForm); // console.log(temporary_sector_id);
 
       axios({
@@ -8379,18 +9006,22 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         }
       }).then(function (response) {// this.is_image_succes = 1;
         // alert(response.data.message);
+      })["catch"](function (error) {
+        if (error.response.status == 422) {
+          _this6.image_errors = error.response.data.errors;
+        }
       });
       this.showModal(); // e.preventDefault();
     },
     del_sector_image: function del_sector_image(imageId) {
-      var _this5 = this;
+      var _this7 = this;
 
       axios.post("../../routes_and_sectors/delete_sector_image/" + imageId, {
         id: imageId
       }).then(function (Response) {
         console.log(response);
 
-        _this5.get_data_in_table_1();
+        _this7.get_data_in_table_1();
       })["catch"](function (error) {
         return console.log(error);
       });
@@ -8402,7 +9033,6 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     },
     save_all: function save_all() {
       this.add_sector();
-      window.location.href = '/routes_and_sectors';
     }
   }
 });
@@ -8589,6 +9219,18 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   components: {
@@ -8600,6 +9242,7 @@ __webpack_require__.r(__webpack_exports__);
       fileList: [],
       //https://github.com/eJayYoung/vux-uploader-component
       regions: '',
+      errors: [],
       myModal: false,
       name: '',
       article_id: '',
@@ -8673,6 +9316,8 @@ __webpack_require__.r(__webpack_exports__);
       });
     },
     edit_sector: function edit_sector() {
+      var _this4 = this;
+
       axios.post('/routes_and_sectors/sector_edit/' + this.editing_sector_id, {
         article_id: this.article_id,
         name: this.name,
@@ -8687,9 +9332,11 @@ __webpack_require__.r(__webpack_exports__);
         vertical: this.vertical,
         overhang: this.overhang
       }).then(function (response) {
-        console.log("sector edited sucsesfule");
-      })["catch"](function (response) {
-        console.log("sector edited is not sucsesfule!!!");
+        window.location.href = '/routes_and_sectors';
+      })["catch"](function (error) {
+        if (error.response.status == 422) {
+          _this4.errors = error.response.data.errors;
+        }
       });
     },
     add_sector_image: function add_sector_image(e) {
@@ -8720,28 +9367,26 @@ __webpack_require__.r(__webpack_exports__);
             'Content-Type': 'multipart/form-data'
           }
         }
-      }).then(function (response) {// this.is_image_succes = 1;
-        // alert(response.data.message);
+      }).then(function (error) {// ...
       });
       this.showModal();
       e.preventDefault();
     },
     del_sector_image: function del_sector_image(imageId) {
-      var _this4 = this;
+      var _this5 = this;
 
       axios.post("../../routes_and_sectors/delete_sector_image/" + imageId, {
         id: imageId
       }).then(function (Response) {
         console.log(response);
 
-        _this4.get_data_in_table_1();
+        _this5.get_data_in_table_1();
       })["catch"](function (error) {
         return console.log(error);
       });
     },
     save_all: function save_all() {
       this.edit_sector();
-      window.location.href = '/routes_and_sectors';
     }
   }
 });
@@ -48970,25 +49615,6 @@ var render = function() {
           [
             _vm._m(0),
             _vm._v(" "),
-            _c("div", { staticClass: "row" }, [
-              _c("div", { staticClass: "col-md-12" }, [
-                _c(
-                  "div",
-                  {
-                    staticClass: "alert alert-danger",
-                    attrs: { role: "alert" }
-                  },
-                  [
-                    _vm._v(
-                      "\n                                            " +
-                        _vm._s(_vm.errors.get()) +
-                        "\n                                        "
-                    )
-                  ]
-                )
-              ])
-            ]),
-            _vm._v(" "),
             this.is_login == true
               ? _c("div", { staticStyle: { display: "none" } }, [
                   _c("input", {
@@ -49053,7 +49679,24 @@ var render = function() {
                             }
                           }
                         }),
-                        _c("br")
+                        _c("br"),
+                        _vm._v(" "),
+                        _vm.errors.name
+                          ? _c(
+                              "div",
+                              {
+                                staticClass: "alert alert-danger",
+                                attrs: { role: "alert" }
+                              },
+                              [
+                                _vm._v(
+                                  "\n                                    " +
+                                    _vm._s(_vm.errors.name[0]) +
+                                    "\n                                "
+                                )
+                              ]
+                            )
+                          : _vm._e()
                       ])
                     ]),
                     _vm._v(" "),
@@ -49084,7 +49727,24 @@ var render = function() {
                             }
                           }
                         }),
-                        _c("br")
+                        _c("br"),
+                        _vm._v(" "),
+                        _vm.errors.surname
+                          ? _c(
+                              "div",
+                              {
+                                staticClass: "alert alert-danger",
+                                attrs: { role: "alert" }
+                              },
+                              [
+                                _vm._v(
+                                  "\n                                    " +
+                                    _vm._s(_vm.errors.surname[0]) +
+                                    "\n                                "
+                                )
+                              ]
+                            )
+                          : _vm._e()
                       ])
                     ])
                   ]),
@@ -49117,7 +49777,24 @@ var render = function() {
                             }
                           }
                         }),
-                        _c("br")
+                        _c("br"),
+                        _vm._v(" "),
+                        _vm.errors.email
+                          ? _c(
+                              "div",
+                              {
+                                staticClass: "alert alert-danger",
+                                attrs: { role: "alert" }
+                              },
+                              [
+                                _vm._v(
+                                  "\n                                    " +
+                                    _vm._s(_vm.errors.email[0]) +
+                                    "\n                                "
+                                )
+                              ]
+                            )
+                          : _vm._e()
                       ])
                     ])
                   ])
@@ -49153,7 +49830,24 @@ var render = function() {
                         _vm.text = $event.target.value
                       }
                     }
-                  })
+                  }),
+                  _vm._v(" "),
+                  _vm.errors.text
+                    ? _c(
+                        "div",
+                        {
+                          staticClass: "alert alert-danger",
+                          attrs: { role: "alert" }
+                        },
+                        [
+                          _vm._v(
+                            "\n                                " +
+                              _vm._s(_vm.errors.text[0]) +
+                              "\n                            "
+                          )
+                        ]
+                      )
+                    : _vm._e()
                 ])
               ])
             ]),
@@ -49337,7 +50031,24 @@ var render = function() {
                         _vm.name = $event.target.value
                       }
                     }
-                  })
+                  }),
+                  _vm._v(" "),
+                  _vm.errors.name
+                    ? _c(
+                        "div",
+                        {
+                          staticClass: "alert alert-danger",
+                          attrs: { role: "alert" }
+                        },
+                        [
+                          _vm._v(
+                            "\n                                    " +
+                              _vm._s(_vm.errors.name[0]) +
+                              "\n                                "
+                          )
+                        ]
+                      )
+                    : _vm._e()
                 ])
               ])
             ]),
@@ -49370,7 +50081,24 @@ var render = function() {
                         _vm.surname = $event.target.value
                       }
                     }
-                  })
+                  }),
+                  _vm._v(" "),
+                  _vm.errors.surname
+                    ? _c(
+                        "div",
+                        {
+                          staticClass: "alert alert-danger",
+                          attrs: { role: "alert" }
+                        },
+                        [
+                          _vm._v(
+                            "\n                                    " +
+                              _vm._s(_vm.errors.surname[0]) +
+                              "\n                                "
+                          )
+                        ]
+                      )
+                    : _vm._e()
                 ])
               ])
             ]),
@@ -49402,7 +50130,24 @@ var render = function() {
                         _vm.email = $event.target.value
                       }
                     }
-                  })
+                  }),
+                  _vm._v(" "),
+                  _vm.errors.email
+                    ? _c(
+                        "div",
+                        {
+                          staticClass: "alert alert-danger",
+                          attrs: { role: "alert" }
+                        },
+                        [
+                          _vm._v(
+                            "\n                                    " +
+                              _vm._s(_vm.errors.email[0]) +
+                              "\n                                "
+                          )
+                        ]
+                      )
+                    : _vm._e()
                 ])
               ])
             ]),
@@ -49435,7 +50180,24 @@ var render = function() {
                         _vm.num = $event.target.value
                       }
                     }
-                  })
+                  }),
+                  _vm._v(" "),
+                  _vm.errors.num
+                    ? _c(
+                        "div",
+                        {
+                          staticClass: "alert alert-danger",
+                          attrs: { role: "alert" }
+                        },
+                        [
+                          _vm._v(
+                            "\n                                    " +
+                              _vm._s(_vm.errors.num[0]) +
+                              "\n                                "
+                          )
+                        ]
+                      )
+                    : _vm._e()
                 ])
               ])
             ]),
@@ -49468,7 +50230,24 @@ var render = function() {
                         _vm.country = $event.target.value
                       }
                     }
-                  })
+                  }),
+                  _vm._v(" "),
+                  _vm.errors.country
+                    ? _c(
+                        "div",
+                        {
+                          staticClass: "alert alert-danger",
+                          attrs: { role: "alert" }
+                        },
+                        [
+                          _vm._v(
+                            "\n                                    " +
+                              _vm._s(_vm.errors.country[0]) +
+                              "\n                                "
+                          )
+                        ]
+                      )
+                    : _vm._e()
                 ])
               ])
             ]),
@@ -49503,7 +50282,24 @@ var render = function() {
                     _vm.msg = $event.target.value
                   }
                 }
-              })
+              }),
+              _vm._v(" "),
+              _vm.errors.msg
+                ? _c(
+                    "div",
+                    {
+                      staticClass: "alert alert-danger",
+                      attrs: { role: "alert" }
+                    },
+                    [
+                      _vm._v(
+                        "\n                            " +
+                          _vm._s(_vm.errors.msg[0]) +
+                          "\n                        "
+                      )
+                    ]
+                  )
+                : _vm._e()
             ])
           ])
         ]),
@@ -51985,9 +52781,7 @@ var render = function() {
                       _vm._v(" "),
                       _vm.table_1_name == "Sector"
                         ? _c("td", [_vm._v(_vm._s(table_1_info.name))])
-                        : _vm._e(),
-                      _vm._v(" "),
-                      _vm.table_1_name == "Users"
+                        : _vm.table_1_name == "Users"
                         ? _c("td", [
                             _vm._v(
                               _vm._s(table_1_info.name) +
@@ -51998,6 +52792,10 @@ var render = function() {
                         : _c("td", [
                             _vm._v(_vm._s(table_1_info.url_title) + " ")
                           ]),
+                      _vm._v(" "),
+                      _vm.table_1_name != "Users"
+                        ? _c("td", [_vm._v("|")])
+                        : _vm._e(),
                       _vm._v(" "),
                       _vm.table_1_name == "Sector"
                         ? _c(
@@ -52883,9 +53681,80 @@ var render = function() {
                         _vm._v("Public")
                       ])
                     ]
-                  )
+                  ),
+                  _vm._v(" "),
+                  _vm.global_article_error.published
+                    ? _c(
+                        "div",
+                        {
+                          staticClass: "alert alert-danger",
+                          attrs: { role: "alert" }
+                        },
+                        [
+                          _vm._v(
+                            "\n                                " +
+                              _vm._s(_vm.global_article_error.published[0]) +
+                              "\n                            "
+                          )
+                        ]
+                      )
+                    : _vm._e()
                 ])
               ]),
+              _vm._v(" "),
+              this.category == "mount_route"
+                ? _c("div", { staticClass: "form-group clearfix" }, [
+                    _c(
+                      "label",
+                      {
+                        staticClass: "col-xs-2 control-label",
+                        attrs: { for: "name" }
+                      },
+                      [_vm._v(" Mountain ")]
+                    ),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "col-xs-8" }, [
+                      _c(
+                        "select",
+                        {
+                          directives: [
+                            {
+                              name: "model",
+                              rawName: "v-model",
+                              value: _vm.mount_id,
+                              expression: "mount_id"
+                            }
+                          ],
+                          staticClass: "form-control",
+                          attrs: { name: "mount_id" },
+                          on: {
+                            change: function($event) {
+                              var $$selectedVal = Array.prototype.filter
+                                .call($event.target.options, function(o) {
+                                  return o.selected
+                                })
+                                .map(function(o) {
+                                  var val = "_value" in o ? o._value : o.value
+                                  return val
+                                })
+                              _vm.mount_id = $event.target.multiple
+                                ? $$selectedVal
+                                : $$selectedVal[0]
+                            }
+                          }
+                        },
+                        _vm._l(_vm.mount_data, function(mount) {
+                          return _c(
+                            "option",
+                            { key: mount.id, domProps: { value: mount.id } },
+                            [_vm._v(_vm._s(mount.name))]
+                          )
+                        }),
+                        0
+                      )
+                    ])
+                  ])
+                : _vm._e(),
               _vm._v(" "),
               this.category == "event"
                 ? _c("div", { staticClass: "form-group clearfix" }, [
@@ -52942,44 +53811,46 @@ var render = function() {
                   ])
                 : _vm._e(),
               _vm._v(" "),
-              _c("div", { staticClass: "form-group clearfix" }, [
-                _c(
-                  "label",
-                  {
-                    staticClass: "col-xs-2 control-label",
-                    attrs: { for: "name" }
-                  },
-                  [_vm._v(" Map ")]
-                ),
-                _vm._v(" "),
-                _c("div", { staticClass: "col-xs-8" }, [
-                  _c("input", {
-                    directives: [
+              this.category != "mount_route"
+                ? _c("div", { staticClass: "form-group clearfix" }, [
+                    _c(
+                      "label",
                       {
-                        name: "model",
-                        rawName: "v-model",
-                        value: _vm.map,
-                        expression: "map"
-                      }
-                    ],
-                    staticClass: "form-control",
-                    attrs: { type: "text", name: "map" },
-                    domProps: { value: _vm.map },
-                    on: {
-                      input: function($event) {
-                        if ($event.target.composing) {
-                          return
+                        staticClass: "col-xs-2 control-label",
+                        attrs: { for: "name" }
+                      },
+                      [_vm._v(" Map ")]
+                    ),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "col-xs-8" }, [
+                      _c("input", {
+                        directives: [
+                          {
+                            name: "model",
+                            rawName: "v-model",
+                            value: _vm.map,
+                            expression: "map"
+                          }
+                        ],
+                        staticClass: "form-control",
+                        attrs: { type: "text", name: "map" },
+                        domProps: { value: _vm.map },
+                        on: {
+                          input: function($event) {
+                            if ($event.target.composing) {
+                              return
+                            }
+                            _vm.map = $event.target.value
+                          }
                         }
-                        _vm.map = $event.target.value
-                      }
-                    }
-                  })
-                ])
-              ]),
+                      })
+                    ])
+                  ])
+                : _vm._e(),
               _vm._v(" "),
               this.category == "outdoor" ||
               this.category == "ice" ||
-              this.category == "mount_route"
+              this.category != "mount_route"
                 ? _c("div", { staticClass: "form-group clearfix" }, [
                     _c(
                       "label",
@@ -53477,7 +54348,24 @@ var render = function() {
                         _vm.us_title = $event.target.value
                       }
                     }
-                  })
+                  }),
+                  _vm._v(" "),
+                  _vm.us_article_error.us_title
+                    ? _c(
+                        "div",
+                        {
+                          staticClass: "alert alert-danger",
+                          attrs: { role: "alert" }
+                        },
+                        [
+                          _vm._v(
+                            "\n                                " +
+                              _vm._s(_vm.us_article_error.us_title[0]) +
+                              "\n                            "
+                          )
+                        ]
+                      )
+                    : _vm._e()
                 ])
               ]),
               _vm._v(" "),
@@ -53504,7 +54392,26 @@ var render = function() {
                         },
                         expression: "us_short_description"
                       }
-                    })
+                    }),
+                    _vm._v(" "),
+                    _vm.us_article_error.us_short_description
+                      ? _c(
+                          "div",
+                          {
+                            staticClass: "alert alert-danger",
+                            attrs: { role: "alert" }
+                          },
+                          [
+                            _vm._v(
+                              "\n                                " +
+                                _vm._s(
+                                  _vm.us_article_error.us_short_description[0]
+                                ) +
+                                "\n                            "
+                            )
+                          ]
+                        )
+                      : _vm._e()
                   ],
                   1
                 )
@@ -53533,7 +54440,24 @@ var render = function() {
                         },
                         expression: "us_text"
                       }
-                    })
+                    }),
+                    _vm._v(" "),
+                    _vm.us_article_error.us_text
+                      ? _c(
+                          "div",
+                          {
+                            staticClass: "alert alert-danger",
+                            attrs: { role: "alert" }
+                          },
+                          [
+                            _vm._v(
+                              "\n                                " +
+                                _vm._s(_vm.us_article_error.us_text[0]) +
+                                "\n                            "
+                            )
+                          ]
+                        )
+                      : _vm._e()
                   ],
                   1
                 )
@@ -53688,7 +54612,24 @@ var render = function() {
                         },
                         expression: "us_info"
                       }
-                    })
+                    }),
+                    _vm._v(" "),
+                    _vm.us_article_error.us_info
+                      ? _c(
+                          "div",
+                          {
+                            staticClass: "alert alert-danger",
+                            attrs: { role: "alert" }
+                          },
+                          [
+                            _vm._v(
+                              "\n                                " +
+                                _vm._s(_vm.us_article_error.us_info[0]) +
+                                "\n                            "
+                            )
+                          ]
+                        )
+                      : _vm._e()
                   ],
                   1
                 )
@@ -53834,7 +54775,24 @@ var render = function() {
                         _vm.ru_title = $event.target.value
                       }
                     }
-                  })
+                  }),
+                  _vm._v(" "),
+                  _vm.ru_article_error.ru_title
+                    ? _c(
+                        "div",
+                        {
+                          staticClass: "alert alert-danger",
+                          attrs: { role: "alert" }
+                        },
+                        [
+                          _vm._v(
+                            "\n                                " +
+                              _vm._s(_vm.ru_article_error.ru_title[0]) +
+                              "\n                            "
+                          )
+                        ]
+                      )
+                    : _vm._e()
                 ])
               ]),
               _vm._v(" "),
@@ -53861,7 +54819,26 @@ var render = function() {
                         },
                         expression: "ru_short_description"
                       }
-                    })
+                    }),
+                    _vm._v(" "),
+                    _vm.ru_article_error.ru_short_description
+                      ? _c(
+                          "div",
+                          {
+                            staticClass: "alert alert-danger",
+                            attrs: { role: "alert" }
+                          },
+                          [
+                            _vm._v(
+                              "\n                                " +
+                                _vm._s(
+                                  _vm.ru_article_error.ru_short_description[0]
+                                ) +
+                                "\n                            "
+                            )
+                          ]
+                        )
+                      : _vm._e()
                   ],
                   1
                 )
@@ -53890,7 +54867,24 @@ var render = function() {
                         },
                         expression: "ru_text"
                       }
-                    })
+                    }),
+                    _vm._v(" "),
+                    _vm.ru_article_error.ru_text
+                      ? _c(
+                          "div",
+                          {
+                            staticClass: "alert alert-danger",
+                            attrs: { role: "alert" }
+                          },
+                          [
+                            _vm._v(
+                              "\n                                " +
+                                _vm._s(_vm.ru_article_error.ru_text[0]) +
+                                "\n                            "
+                            )
+                          ]
+                        )
+                      : _vm._e()
                   ],
                   1
                 )
@@ -54045,7 +55039,24 @@ var render = function() {
                         },
                         expression: "ru_info"
                       }
-                    })
+                    }),
+                    _vm._v(" "),
+                    _vm.ru_article_error.ru_info
+                      ? _c(
+                          "div",
+                          {
+                            staticClass: "alert alert-danger",
+                            attrs: { role: "alert" }
+                          },
+                          [
+                            _vm._v(
+                              "\n                                " +
+                                _vm._s(_vm.ru_article_error.ru_info[0]) +
+                                "\n                            "
+                            )
+                          ]
+                        )
+                      : _vm._e()
                   ],
                   1
                 )
@@ -54191,7 +55202,24 @@ var render = function() {
                         _vm.ka_title = $event.target.value
                       }
                     }
-                  })
+                  }),
+                  _vm._v(" "),
+                  _vm.ka_article_error.ka_text
+                    ? _c(
+                        "div",
+                        {
+                          staticClass: "alert alert-danger",
+                          attrs: { role: "alert" }
+                        },
+                        [
+                          _vm._v(
+                            "\n                                " +
+                              _vm._s(_vm.ka_article_error.ka_text[0]) +
+                              "\n                            "
+                          )
+                        ]
+                      )
+                    : _vm._e()
                 ])
               ]),
               _vm._v(" "),
@@ -54218,7 +55246,26 @@ var render = function() {
                         },
                         expression: "ka_short_description"
                       }
-                    })
+                    }),
+                    _vm._v(" "),
+                    _vm.ka_article_error.ka_short_description
+                      ? _c(
+                          "div",
+                          {
+                            staticClass: "alert alert-danger",
+                            attrs: { role: "alert" }
+                          },
+                          [
+                            _vm._v(
+                              "\n                                " +
+                                _vm._s(
+                                  _vm.ka_article_error.ka_short_description[0]
+                                ) +
+                                "\n                            "
+                            )
+                          ]
+                        )
+                      : _vm._e()
                   ],
                   1
                 )
@@ -54247,7 +55294,24 @@ var render = function() {
                         },
                         expression: "ka_text"
                       }
-                    })
+                    }),
+                    _vm._v(" "),
+                    _vm.ka_article_error.ka_text
+                      ? _c(
+                          "div",
+                          {
+                            staticClass: "alert alert-danger",
+                            attrs: { role: "alert" }
+                          },
+                          [
+                            _vm._v(
+                              "\n                                " +
+                                _vm._s(_vm.ka_article_error.ka_text[0]) +
+                                "\n                            "
+                            )
+                          ]
+                        )
+                      : _vm._e()
                   ],
                   1
                 )
@@ -54402,7 +55466,24 @@ var render = function() {
                         },
                         expression: "ka_info"
                       }
-                    })
+                    }),
+                    _vm._v(" "),
+                    _vm.ka_article_error.ka_info
+                      ? _c(
+                          "div",
+                          {
+                            staticClass: "alert alert-danger",
+                            attrs: { role: "alert" }
+                          },
+                          [
+                            _vm._v(
+                              "\n                                " +
+                                _vm._s(_vm.ka_article_error.ka_info[0]) +
+                                "\n                            "
+                            )
+                          ]
+                        )
+                      : _vm._e()
                   ],
                   1
                 )
@@ -54637,9 +55718,80 @@ var render = function() {
                         _vm._v("Public")
                       ])
                     ]
-                  )
+                  ),
+                  _vm._v(" "),
+                  _vm.global_article_error.published
+                    ? _c(
+                        "div",
+                        {
+                          staticClass: "alert alert-danger",
+                          attrs: { role: "alert" }
+                        },
+                        [
+                          _vm._v(
+                            "\n                                " +
+                              _vm._s(_vm.global_article_error.published[0]) +
+                              "\n                            "
+                          )
+                        ]
+                      )
+                    : _vm._e()
                 ])
               ]),
+              _vm._v(" "),
+              this.category == "mount_route"
+                ? _c("div", { staticClass: "form-group clearfix" }, [
+                    _c(
+                      "label",
+                      {
+                        staticClass: "col-xs-2 control-label",
+                        attrs: { for: "name" }
+                      },
+                      [_vm._v(" Mountain ")]
+                    ),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "col-xs-8" }, [
+                      _c(
+                        "select",
+                        {
+                          directives: [
+                            {
+                              name: "model",
+                              rawName: "v-model",
+                              value: _vm.mount_id,
+                              expression: "mount_id"
+                            }
+                          ],
+                          staticClass: "form-control",
+                          attrs: { name: "mount_id" },
+                          on: {
+                            change: function($event) {
+                              var $$selectedVal = Array.prototype.filter
+                                .call($event.target.options, function(o) {
+                                  return o.selected
+                                })
+                                .map(function(o) {
+                                  var val = "_value" in o ? o._value : o.value
+                                  return val
+                                })
+                              _vm.mount_id = $event.target.multiple
+                                ? $$selectedVal
+                                : $$selectedVal[0]
+                            }
+                          }
+                        },
+                        _vm._l(_vm.mount_data, function(mount) {
+                          return _c(
+                            "option",
+                            { key: mount.id, domProps: { value: mount.id } },
+                            [_vm._v(_vm._s(mount.name))]
+                          )
+                        }),
+                        0
+                      )
+                    ])
+                  ])
+                : _vm._e(),
               _vm._v(" "),
               this.category == "event"
                 ? _c("div", { staticClass: "form-group clearfix" }, [
@@ -54696,44 +55848,46 @@ var render = function() {
                   ])
                 : _vm._e(),
               _vm._v(" "),
-              _c("div", { staticClass: "form-group clearfix" }, [
-                _c(
-                  "label",
-                  {
-                    staticClass: "col-xs-2 control-label",
-                    attrs: { for: "name" }
-                  },
-                  [_vm._v(" Map ")]
-                ),
-                _vm._v(" "),
-                _c("div", { staticClass: "col-xs-8" }, [
-                  _c("input", {
-                    directives: [
+              this.category != "mount_route"
+                ? _c("div", { staticClass: "form-group clearfix" }, [
+                    _c(
+                      "label",
                       {
-                        name: "model",
-                        rawName: "v-model",
-                        value: _vm.map,
-                        expression: "map"
-                      }
-                    ],
-                    staticClass: "form-control",
-                    attrs: { type: "text", name: "map" },
-                    domProps: { value: _vm.map },
-                    on: {
-                      input: function($event) {
-                        if ($event.target.composing) {
-                          return
+                        staticClass: "col-xs-2 control-label",
+                        attrs: { for: "name" }
+                      },
+                      [_vm._v(" Map ")]
+                    ),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "col-xs-8" }, [
+                      _c("input", {
+                        directives: [
+                          {
+                            name: "model",
+                            rawName: "v-model",
+                            value: _vm.map,
+                            expression: "map"
+                          }
+                        ],
+                        staticClass: "form-control",
+                        attrs: { type: "text", name: "map" },
+                        domProps: { value: _vm.map },
+                        on: {
+                          input: function($event) {
+                            if ($event.target.composing) {
+                              return
+                            }
+                            _vm.map = $event.target.value
+                          }
                         }
-                        _vm.map = $event.target.value
-                      }
-                    }
-                  })
-                ])
-              ]),
+                      })
+                    ])
+                  ])
+                : _vm._e(),
               _vm._v(" "),
               this.category == "outdoor" ||
               this.category == "ice" ||
-              this.category == "mount_route"
+              this.category != "mount_route"
                 ? _c("div", { staticClass: "form-group clearfix" }, [
                     _c(
                       "label",
@@ -55255,7 +56409,24 @@ var render = function() {
                         _vm.us_title = $event.target.value
                       }
                     }
-                  })
+                  }),
+                  _vm._v(" "),
+                  _vm.us_article_error.us_title
+                    ? _c(
+                        "div",
+                        {
+                          staticClass: "alert alert-danger",
+                          attrs: { role: "alert" }
+                        },
+                        [
+                          _vm._v(
+                            "\n                                " +
+                              _vm._s(_vm.us_article_error.us_title[0]) +
+                              "\n                            "
+                          )
+                        ]
+                      )
+                    : _vm._e()
                 ])
               ]),
               _vm._v(" "),
@@ -55282,7 +56453,26 @@ var render = function() {
                         },
                         expression: "us_short_description"
                       }
-                    })
+                    }),
+                    _vm._v(" "),
+                    _vm.us_article_error.us_short_description
+                      ? _c(
+                          "div",
+                          {
+                            staticClass: "alert alert-danger",
+                            attrs: { role: "alert" }
+                          },
+                          [
+                            _vm._v(
+                              "\n                                " +
+                                _vm._s(
+                                  _vm.us_article_error.us_short_description[0]
+                                ) +
+                                "\n                            "
+                            )
+                          ]
+                        )
+                      : _vm._e()
                   ],
                   1
                 )
@@ -55311,7 +56501,24 @@ var render = function() {
                         },
                         expression: "us_text"
                       }
-                    })
+                    }),
+                    _vm._v(" "),
+                    _vm.us_article_error.us_text
+                      ? _c(
+                          "div",
+                          {
+                            staticClass: "alert alert-danger",
+                            attrs: { role: "alert" }
+                          },
+                          [
+                            _vm._v(
+                              "\n                                " +
+                                _vm._s(_vm.us_article_error.us_text[0]) +
+                                "\n                            "
+                            )
+                          ]
+                        )
+                      : _vm._e()
                   ],
                   1
                 )
@@ -55475,7 +56682,24 @@ var render = function() {
                         },
                         expression: "us_info"
                       }
-                    })
+                    }),
+                    _vm._v(" "),
+                    _vm.us_article_error.us_info
+                      ? _c(
+                          "div",
+                          {
+                            staticClass: "alert alert-danger",
+                            attrs: { role: "alert" }
+                          },
+                          [
+                            _vm._v(
+                              "\n                                " +
+                                _vm._s(_vm.us_article_error.us_info[0]) +
+                                "\n                            "
+                            )
+                          ]
+                        )
+                      : _vm._e()
                   ],
                   1
                 )
@@ -55638,7 +56862,24 @@ var render = function() {
                         _vm.ru_title = $event.target.value
                       }
                     }
-                  })
+                  }),
+                  _vm._v(" "),
+                  _vm.ru_article_error.ru_title
+                    ? _c(
+                        "div",
+                        {
+                          staticClass: "alert alert-danger",
+                          attrs: { role: "alert" }
+                        },
+                        [
+                          _vm._v(
+                            "\n                                " +
+                              _vm._s(_vm.ru_article_error.ru_title[0]) +
+                              "\n                            "
+                          )
+                        ]
+                      )
+                    : _vm._e()
                 ])
               ]),
               _vm._v(" "),
@@ -55665,7 +56906,26 @@ var render = function() {
                         },
                         expression: "ru_short_description"
                       }
-                    })
+                    }),
+                    _vm._v(" "),
+                    _vm.ru_article_error.ru_short_description
+                      ? _c(
+                          "div",
+                          {
+                            staticClass: "alert alert-danger",
+                            attrs: { role: "alert" }
+                          },
+                          [
+                            _vm._v(
+                              "\n                                " +
+                                _vm._s(
+                                  _vm.ru_article_error.ru_short_description[0]
+                                ) +
+                                "\n                            "
+                            )
+                          ]
+                        )
+                      : _vm._e()
                   ],
                   1
                 )
@@ -55694,7 +56954,24 @@ var render = function() {
                         },
                         expression: "ru_text"
                       }
-                    })
+                    }),
+                    _vm._v(" "),
+                    _vm.ru_article_error.ru_text
+                      ? _c(
+                          "div",
+                          {
+                            staticClass: "alert alert-danger",
+                            attrs: { role: "alert" }
+                          },
+                          [
+                            _vm._v(
+                              "\n                                " +
+                                _vm._s(_vm.ru_article_error.ru_text[0]) +
+                                "\n                            "
+                            )
+                          ]
+                        )
+                      : _vm._e()
                   ],
                   1
                 )
@@ -55858,7 +57135,24 @@ var render = function() {
                         },
                         expression: "ru_info"
                       }
-                    })
+                    }),
+                    _vm._v(" "),
+                    _vm.ru_article_error.ru_info
+                      ? _c(
+                          "div",
+                          {
+                            staticClass: "alert alert-danger",
+                            attrs: { role: "alert" }
+                          },
+                          [
+                            _vm._v(
+                              "\n                                " +
+                                _vm._s(_vm.ru_article_error.ru_info[0]) +
+                                "\n                            "
+                            )
+                          ]
+                        )
+                      : _vm._e()
                   ],
                   1
                 )
@@ -56021,7 +57315,24 @@ var render = function() {
                         _vm.ka_title = $event.target.value
                       }
                     }
-                  })
+                  }),
+                  _vm._v(" "),
+                  _vm.ka_article_error.ka_text
+                    ? _c(
+                        "div",
+                        {
+                          staticClass: "alert alert-danger",
+                          attrs: { role: "alert" }
+                        },
+                        [
+                          _vm._v(
+                            "\n                                " +
+                              _vm._s(_vm.ka_article_error.ka_text[0]) +
+                              "\n                            "
+                          )
+                        ]
+                      )
+                    : _vm._e()
                 ])
               ]),
               _vm._v(" "),
@@ -56048,7 +57359,26 @@ var render = function() {
                         },
                         expression: "ka_short_description"
                       }
-                    })
+                    }),
+                    _vm._v(" "),
+                    _vm.ka_article_error.ka_short_description
+                      ? _c(
+                          "div",
+                          {
+                            staticClass: "alert alert-danger",
+                            attrs: { role: "alert" }
+                          },
+                          [
+                            _vm._v(
+                              "\n                                " +
+                                _vm._s(
+                                  _vm.ka_article_error.ka_short_description[0]
+                                ) +
+                                "\n                            "
+                            )
+                          ]
+                        )
+                      : _vm._e()
                   ],
                   1
                 )
@@ -56077,7 +57407,24 @@ var render = function() {
                         },
                         expression: "ka_text"
                       }
-                    })
+                    }),
+                    _vm._v(" "),
+                    _vm.ka_article_error.ka_text
+                      ? _c(
+                          "div",
+                          {
+                            staticClass: "alert alert-danger",
+                            attrs: { role: "alert" }
+                          },
+                          [
+                            _vm._v(
+                              "\n                                " +
+                                _vm._s(_vm.ka_article_error.ka_text[0]) +
+                                "\n                            "
+                            )
+                          ]
+                        )
+                      : _vm._e()
                   ],
                   1
                 )
@@ -56241,7 +57588,24 @@ var render = function() {
                         },
                         expression: "ka_info"
                       }
-                    })
+                    }),
+                    _vm._v(" "),
+                    _vm.ka_article_error.ka_info
+                      ? _c(
+                          "div",
+                          {
+                            staticClass: "alert alert-danger",
+                            attrs: { role: "alert" }
+                          },
+                          [
+                            _vm._v(
+                              "\n                                " +
+                                _vm._s(_vm.ka_article_error.ka_info[0]) +
+                                "\n                            "
+                            )
+                          ]
+                        )
+                      : _vm._e()
                   ],
                   1
                 )
@@ -56396,16 +57760,81 @@ var render = function() {
               attrs: {
                 name: "contact-form",
                 method: "POST",
+                acrion: "#",
                 enctyp: "multipart/form-data"
-              },
-              on: {
-                submit: function($event) {
-                  $event.preventDefault()
-                  return _vm.add_ru_article($event)
-                }
               }
             },
             [
+              _c("div", { staticClass: "form-group clearfix" }, [
+                _c(
+                  "label",
+                  {
+                    staticClass: "col-xs-2 control-label",
+                    attrs: { for: "name" }
+                  },
+                  [_vm._v(" Publish ")]
+                ),
+                _vm._v(" "),
+                _c("div", { staticClass: "col-xs-8" }, [
+                  _c(
+                    "select",
+                    {
+                      directives: [
+                        {
+                          name: "model",
+                          rawName: "v-model",
+                          value: _vm.published,
+                          expression: "published"
+                        }
+                      ],
+                      staticClass: "form-control",
+                      attrs: { name: "published" },
+                      on: {
+                        change: function($event) {
+                          var $$selectedVal = Array.prototype.filter
+                            .call($event.target.options, function(o) {
+                              return o.selected
+                            })
+                            .map(function(o) {
+                              var val = "_value" in o ? o._value : o.value
+                              return val
+                            })
+                          _vm.published = $event.target.multiple
+                            ? $$selectedVal
+                            : $$selectedVal[0]
+                        }
+                      }
+                    },
+                    [
+                      _c("option", { attrs: { value: "0" } }, [
+                        _vm._v("Not public")
+                      ]),
+                      _vm._v(" "),
+                      _c("option", { attrs: { value: "1" } }, [
+                        _vm._v("Public")
+                      ])
+                    ]
+                  ),
+                  _vm._v(" "),
+                  _vm.errors.published
+                    ? _c(
+                        "div",
+                        {
+                          staticClass: "alert alert-danger",
+                          attrs: { role: "alert" }
+                        },
+                        [
+                          _vm._v(
+                            "\n                                " +
+                              _vm._s(_vm.errors.published[0]) +
+                              "\n                            "
+                          )
+                        ]
+                      )
+                    : _vm._e()
+                ])
+              ]),
+              _vm._v(" "),
               _c("div", { staticClass: "form-group clearfix" }, [
                 _c(
                   "label",
@@ -56437,7 +57866,24 @@ var render = function() {
                         _vm.map = $event.target.value
                       }
                     }
-                  })
+                  }),
+                  _vm._v(" "),
+                  _vm.errors.map
+                    ? _c(
+                        "div",
+                        {
+                          staticClass: "alert alert-danger",
+                          attrs: { role: "alert" }
+                        },
+                        [
+                          _vm._v(
+                            "\n                                " +
+                              _vm._s(_vm.errors.map[0]) +
+                              "\n                            "
+                          )
+                        ]
+                      )
+                    : _vm._e()
                 ])
               ]),
               _vm._v(" "),
@@ -56477,7 +57923,24 @@ var render = function() {
                             _vm.weather = $event.target.value
                           }
                         }
-                      })
+                      }),
+                      _vm._v(" "),
+                      _vm.errors.weather
+                        ? _c(
+                            "div",
+                            {
+                              staticClass: "alert alert-danger",
+                              attrs: { role: "alert" }
+                            },
+                            [
+                              _vm._v(
+                                "\n                                " +
+                                  _vm._s(_vm.errors.weather[0]) +
+                                  "\n                            "
+                              )
+                            ]
+                          )
+                        : _vm._e()
                     ])
                   ])
                 : _vm._e()
@@ -56534,7 +57997,24 @@ var render = function() {
                         _vm.name = $event.target.value
                       }
                     }
-                  })
+                  }),
+                  _vm._v(" "),
+                  _vm.errors.name
+                    ? _c(
+                        "div",
+                        {
+                          staticClass: "alert alert-danger",
+                          attrs: { role: "alert" }
+                        },
+                        [
+                          _vm._v(
+                            "\n                                " +
+                              _vm._s(_vm.errors.name[0]) +
+                              "\n                            "
+                          )
+                        ]
+                      )
+                    : _vm._e()
                 ])
               ]),
               _vm._v(" "),
@@ -56563,7 +58043,24 @@ var render = function() {
                         },
                         expression: "text"
                       }
-                    })
+                    }),
+                    _vm._v(" "),
+                    _vm.errors.text
+                      ? _c(
+                          "div",
+                          {
+                            staticClass: "alert alert-danger",
+                            attrs: { role: "alert" }
+                          },
+                          [
+                            _vm._v(
+                              "\n                                " +
+                                _vm._s(_vm.errors.text[0]) +
+                                "\n                            "
+                            )
+                          ]
+                        )
+                      : _vm._e()
                   ],
                   1
                 )
@@ -56592,7 +58089,24 @@ var render = function() {
                         },
                         expression: "short_description"
                       }
-                    })
+                    }),
+                    _vm._v(" "),
+                    _vm.errors.short_description
+                      ? _c(
+                          "div",
+                          {
+                            staticClass: "alert alert-danger",
+                            attrs: { role: "alert" }
+                          },
+                          [
+                            _vm._v(
+                              "\n                                " +
+                                _vm._s(_vm.errors.short_description[0]) +
+                                "\n                            "
+                            )
+                          ]
+                        )
+                      : _vm._e()
                   ],
                   1
                 )
@@ -56621,7 +58135,24 @@ var render = function() {
                         },
                         expression: "how_get"
                       }
-                    })
+                    }),
+                    _vm._v(" "),
+                    _vm.errors.how_get
+                      ? _c(
+                          "div",
+                          {
+                            staticClass: "alert alert-danger",
+                            attrs: { role: "alert" }
+                          },
+                          [
+                            _vm._v(
+                              "\n                                " +
+                                _vm._s(_vm.errors.how_get[0]) +
+                                "\n                            "
+                            )
+                          ]
+                        )
+                      : _vm._e()
                   ],
                   1
                 )
@@ -56650,7 +58181,24 @@ var render = function() {
                         },
                         expression: "best_time"
                       }
-                    })
+                    }),
+                    _vm._v(" "),
+                    _vm.errors.best_time
+                      ? _c(
+                          "div",
+                          {
+                            staticClass: "alert alert-danger",
+                            attrs: { role: "alert" }
+                          },
+                          [
+                            _vm._v(
+                              "\n                                " +
+                                _vm._s(_vm.errors.best_time[0]) +
+                                "\n                            "
+                            )
+                          ]
+                        )
+                      : _vm._e()
                   ],
                   1
                 )
@@ -56712,7 +58260,24 @@ var render = function() {
                         _vm.name_ru = $event.target.value
                       }
                     }
-                  })
+                  }),
+                  _vm._v(" "),
+                  _vm.errors.name_ru
+                    ? _c(
+                        "div",
+                        {
+                          staticClass: "alert alert-danger",
+                          attrs: { role: "alert" }
+                        },
+                        [
+                          _vm._v(
+                            "\n                                " +
+                              _vm._s(_vm.errors.name_ru[0]) +
+                              "\n                            "
+                          )
+                        ]
+                      )
+                    : _vm._e()
                 ])
               ]),
               _vm._v(" "),
@@ -56741,7 +58306,24 @@ var render = function() {
                         },
                         expression: "text_ru"
                       }
-                    })
+                    }),
+                    _vm._v(" "),
+                    _vm.errors.text_ru
+                      ? _c(
+                          "div",
+                          {
+                            staticClass: "alert alert-danger",
+                            attrs: { role: "alert" }
+                          },
+                          [
+                            _vm._v(
+                              "\n                                " +
+                                _vm._s(_vm.errors.text_ru[0]) +
+                                "\n                            "
+                            )
+                          ]
+                        )
+                      : _vm._e()
                   ],
                   1
                 )
@@ -56770,7 +58352,24 @@ var render = function() {
                         },
                         expression: "short_description_ru"
                       }
-                    })
+                    }),
+                    _vm._v(" "),
+                    _vm.errors.short_description_ru
+                      ? _c(
+                          "div",
+                          {
+                            staticClass: "alert alert-danger",
+                            attrs: { role: "alert" }
+                          },
+                          [
+                            _vm._v(
+                              "\n                                " +
+                                _vm._s(_vm.errors.short_description_ru[0]) +
+                                "\n                            "
+                            )
+                          ]
+                        )
+                      : _vm._e()
                   ],
                   1
                 )
@@ -56799,7 +58398,24 @@ var render = function() {
                         },
                         expression: "how_get_ru"
                       }
-                    })
+                    }),
+                    _vm._v(" "),
+                    _vm.errors.how_get_ru
+                      ? _c(
+                          "div",
+                          {
+                            staticClass: "alert alert-danger",
+                            attrs: { role: "alert" }
+                          },
+                          [
+                            _vm._v(
+                              "\n                                " +
+                                _vm._s(_vm.errors.how_get_ru[0]) +
+                                "\n                            "
+                            )
+                          ]
+                        )
+                      : _vm._e()
                   ],
                   1
                 )
@@ -56828,7 +58444,24 @@ var render = function() {
                         },
                         expression: "best_time_ru"
                       }
-                    })
+                    }),
+                    _vm._v(" "),
+                    _vm.errors.best_time_ru
+                      ? _c(
+                          "div",
+                          {
+                            staticClass: "alert alert-danger",
+                            attrs: { role: "alert" }
+                          },
+                          [
+                            _vm._v(
+                              "\n                                " +
+                                _vm._s(_vm.errors.best_time_ru[0]) +
+                                "\n                            "
+                            )
+                          ]
+                        )
+                      : _vm._e()
                   ],
                   1
                 )
@@ -56890,7 +58523,24 @@ var render = function() {
                         _vm.name_ka = $event.target.value
                       }
                     }
-                  })
+                  }),
+                  _vm._v(" "),
+                  _vm.errors.name_ka
+                    ? _c(
+                        "div",
+                        {
+                          staticClass: "alert alert-danger",
+                          attrs: { role: "alert" }
+                        },
+                        [
+                          _vm._v(
+                            "\n                                " +
+                              _vm._s(_vm.errors.name_ka[0]) +
+                              "\n                            "
+                          )
+                        ]
+                      )
+                    : _vm._e()
                 ])
               ]),
               _vm._v(" "),
@@ -56919,7 +58569,24 @@ var render = function() {
                         },
                         expression: "text_ka"
                       }
-                    })
+                    }),
+                    _vm._v(" "),
+                    _vm.errors.text_ka
+                      ? _c(
+                          "div",
+                          {
+                            staticClass: "alert alert-danger",
+                            attrs: { role: "alert" }
+                          },
+                          [
+                            _vm._v(
+                              "\n                                " +
+                                _vm._s(_vm.errors.text_ka[0]) +
+                                "\n                            "
+                            )
+                          ]
+                        )
+                      : _vm._e()
                   ],
                   1
                 )
@@ -56948,7 +58615,24 @@ var render = function() {
                         },
                         expression: "short_description_ka"
                       }
-                    })
+                    }),
+                    _vm._v(" "),
+                    _vm.errors.short_description_ka
+                      ? _c(
+                          "div",
+                          {
+                            staticClass: "alert alert-danger",
+                            attrs: { role: "alert" }
+                          },
+                          [
+                            _vm._v(
+                              "\n                                " +
+                                _vm._s(_vm.errors.short_description_ka[0]) +
+                                "\n                            "
+                            )
+                          ]
+                        )
+                      : _vm._e()
                   ],
                   1
                 )
@@ -56977,7 +58661,24 @@ var render = function() {
                         },
                         expression: "how_get_ka"
                       }
-                    })
+                    }),
+                    _vm._v(" "),
+                    _vm.errors.how_get_ka
+                      ? _c(
+                          "div",
+                          {
+                            staticClass: "alert alert-danger",
+                            attrs: { role: "alert" }
+                          },
+                          [
+                            _vm._v(
+                              "\n                                " +
+                                _vm._s(_vm.errors.how_get_ka[0]) +
+                                "\n                            "
+                            )
+                          ]
+                        )
+                      : _vm._e()
                   ],
                   1
                 )
@@ -57006,7 +58707,24 @@ var render = function() {
                         },
                         expression: "best_time_ka"
                       }
-                    })
+                    }),
+                    _vm._v(" "),
+                    _vm.errors.best_time_ka
+                      ? _c(
+                          "div",
+                          {
+                            staticClass: "alert alert-danger",
+                            attrs: { role: "alert" }
+                          },
+                          [
+                            _vm._v(
+                              "\n                                " +
+                                _vm._s(_vm.errors.best_time_ka[0]) +
+                                "\n                            "
+                            )
+                          ]
+                        )
+                      : _vm._e()
                   ],
                   1
                 )
@@ -57075,16 +58793,81 @@ var render = function() {
               attrs: {
                 name: "contact-form",
                 method: "POST",
+                action: "#",
                 enctyp: "multipart/form-data"
-              },
-              on: {
-                submit: function($event) {
-                  $event.preventDefault()
-                  return _vm.add_ru_article($event)
-                }
               }
             },
             [
+              _c("div", { staticClass: "form-group clearfix" }, [
+                _c(
+                  "label",
+                  {
+                    staticClass: "col-xs-2 control-label",
+                    attrs: { for: "name" }
+                  },
+                  [_vm._v(" Publish ")]
+                ),
+                _vm._v(" "),
+                _c("div", { staticClass: "col-xs-8" }, [
+                  _c(
+                    "select",
+                    {
+                      directives: [
+                        {
+                          name: "model",
+                          rawName: "v-model",
+                          value: _vm.published,
+                          expression: "published"
+                        }
+                      ],
+                      staticClass: "form-control",
+                      attrs: { name: "published" },
+                      on: {
+                        change: function($event) {
+                          var $$selectedVal = Array.prototype.filter
+                            .call($event.target.options, function(o) {
+                              return o.selected
+                            })
+                            .map(function(o) {
+                              var val = "_value" in o ? o._value : o.value
+                              return val
+                            })
+                          _vm.published = $event.target.multiple
+                            ? $$selectedVal
+                            : $$selectedVal[0]
+                        }
+                      }
+                    },
+                    [
+                      _c("option", { attrs: { value: "0" } }, [
+                        _vm._v("Not public")
+                      ]),
+                      _vm._v(" "),
+                      _c("option", { attrs: { value: "1" } }, [
+                        _vm._v("Public")
+                      ])
+                    ]
+                  ),
+                  _vm._v(" "),
+                  _vm.errors.published
+                    ? _c(
+                        "div",
+                        {
+                          staticClass: "alert alert-danger",
+                          attrs: { role: "alert" }
+                        },
+                        [
+                          _vm._v(
+                            "\n                                " +
+                              _vm._s(_vm.errors.published[0]) +
+                              "\n                            "
+                          )
+                        ]
+                      )
+                    : _vm._e()
+                ])
+              ]),
+              _vm._v(" "),
               _c("div", { staticClass: "form-group clearfix" }, [
                 _c(
                   "label",
@@ -57116,7 +58899,24 @@ var render = function() {
                         _vm.map = $event.target.value
                       }
                     }
-                  })
+                  }),
+                  _vm._v(" "),
+                  _vm.errors.map
+                    ? _c(
+                        "div",
+                        {
+                          staticClass: "alert alert-danger",
+                          attrs: { role: "alert" }
+                        },
+                        [
+                          _vm._v(
+                            "\n                                " +
+                              _vm._s(_vm.errors.map[0]) +
+                              "\n                            "
+                          )
+                        ]
+                      )
+                    : _vm._e()
                 ])
               ]),
               _vm._v(" "),
@@ -57156,7 +58956,24 @@ var render = function() {
                             _vm.weather = $event.target.value
                           }
                         }
-                      })
+                      }),
+                      _vm._v(" "),
+                      _vm.errors.weather
+                        ? _c(
+                            "div",
+                            {
+                              staticClass: "alert alert-danger",
+                              attrs: { role: "alert" }
+                            },
+                            [
+                              _vm._v(
+                                "\n                                " +
+                                  _vm._s(_vm.errors.weather[0]) +
+                                  "\n                            "
+                              )
+                            ]
+                          )
+                        : _vm._e()
                     ])
                   ])
                 : _vm._e()
@@ -57213,7 +59030,24 @@ var render = function() {
                         _vm.name = $event.target.value
                       }
                     }
-                  })
+                  }),
+                  _vm._v(" "),
+                  _vm.errors.name
+                    ? _c(
+                        "div",
+                        {
+                          staticClass: "alert alert-danger",
+                          attrs: { role: "alert" }
+                        },
+                        [
+                          _vm._v(
+                            "\n                                " +
+                              _vm._s(_vm.errors.name[0]) +
+                              "\n                            "
+                          )
+                        ]
+                      )
+                    : _vm._e()
                 ])
               ]),
               _vm._v(" "),
@@ -57242,7 +59076,24 @@ var render = function() {
                         },
                         expression: "text"
                       }
-                    })
+                    }),
+                    _vm._v(" "),
+                    _vm.errors.text
+                      ? _c(
+                          "div",
+                          {
+                            staticClass: "alert alert-danger",
+                            attrs: { role: "alert" }
+                          },
+                          [
+                            _vm._v(
+                              "\n                                " +
+                                _vm._s(_vm.errors.text[0]) +
+                                "\n                            "
+                            )
+                          ]
+                        )
+                      : _vm._e()
                   ],
                   1
                 )
@@ -57271,7 +59122,24 @@ var render = function() {
                         },
                         expression: "short_description"
                       }
-                    })
+                    }),
+                    _vm._v(" "),
+                    _vm.errors.short_description
+                      ? _c(
+                          "div",
+                          {
+                            staticClass: "alert alert-danger",
+                            attrs: { role: "alert" }
+                          },
+                          [
+                            _vm._v(
+                              "\n                                " +
+                                _vm._s(_vm.errors.short_description[0]) +
+                                "\n                            "
+                            )
+                          ]
+                        )
+                      : _vm._e()
                   ],
                   1
                 )
@@ -57300,7 +59168,24 @@ var render = function() {
                         },
                         expression: "how_get"
                       }
-                    })
+                    }),
+                    _vm._v(" "),
+                    _vm.errors.how_get
+                      ? _c(
+                          "div",
+                          {
+                            staticClass: "alert alert-danger",
+                            attrs: { role: "alert" }
+                          },
+                          [
+                            _vm._v(
+                              "\n                                " +
+                                _vm._s(_vm.errors.how_get[0]) +
+                                "\n                            "
+                            )
+                          ]
+                        )
+                      : _vm._e()
                   ],
                   1
                 )
@@ -57329,7 +59214,24 @@ var render = function() {
                         },
                         expression: "best_time"
                       }
-                    })
+                    }),
+                    _vm._v(" "),
+                    _vm.errors.best_time
+                      ? _c(
+                          "div",
+                          {
+                            staticClass: "alert alert-danger",
+                            attrs: { role: "alert" }
+                          },
+                          [
+                            _vm._v(
+                              "\n                                " +
+                                _vm._s(_vm.errors.best_time[0]) +
+                                "\n                            "
+                            )
+                          ]
+                        )
+                      : _vm._e()
                   ],
                   1
                 )
@@ -57391,7 +59293,24 @@ var render = function() {
                         _vm.name_ru = $event.target.value
                       }
                     }
-                  })
+                  }),
+                  _vm._v(" "),
+                  _vm.errors.name_ru
+                    ? _c(
+                        "div",
+                        {
+                          staticClass: "alert alert-danger",
+                          attrs: { role: "alert" }
+                        },
+                        [
+                          _vm._v(
+                            "\n                                " +
+                              _vm._s(_vm.errors.name_ru[0]) +
+                              "\n                            "
+                          )
+                        ]
+                      )
+                    : _vm._e()
                 ])
               ]),
               _vm._v(" "),
@@ -57420,7 +59339,24 @@ var render = function() {
                         },
                         expression: "text_ru"
                       }
-                    })
+                    }),
+                    _vm._v(" "),
+                    _vm.errors.text_ru
+                      ? _c(
+                          "div",
+                          {
+                            staticClass: "alert alert-danger",
+                            attrs: { role: "alert" }
+                          },
+                          [
+                            _vm._v(
+                              "\n                                " +
+                                _vm._s(_vm.errors.text_ru[0]) +
+                                "\n                            "
+                            )
+                          ]
+                        )
+                      : _vm._e()
                   ],
                   1
                 )
@@ -57449,7 +59385,24 @@ var render = function() {
                         },
                         expression: "short_description_ru"
                       }
-                    })
+                    }),
+                    _vm._v(" "),
+                    _vm.errors.short_description_ru
+                      ? _c(
+                          "div",
+                          {
+                            staticClass: "alert alert-danger",
+                            attrs: { role: "alert" }
+                          },
+                          [
+                            _vm._v(
+                              "\n                                " +
+                                _vm._s(_vm.errors.short_description_ru[0]) +
+                                "\n                            "
+                            )
+                          ]
+                        )
+                      : _vm._e()
                   ],
                   1
                 )
@@ -57478,7 +59431,24 @@ var render = function() {
                         },
                         expression: "how_get_ru"
                       }
-                    })
+                    }),
+                    _vm._v(" "),
+                    _vm.errors.how_get_ru
+                      ? _c(
+                          "div",
+                          {
+                            staticClass: "alert alert-danger",
+                            attrs: { role: "alert" }
+                          },
+                          [
+                            _vm._v(
+                              "\n                                " +
+                                _vm._s(_vm.errors.how_get_ru[0]) +
+                                "\n                            "
+                            )
+                          ]
+                        )
+                      : _vm._e()
                   ],
                   1
                 )
@@ -57507,7 +59477,24 @@ var render = function() {
                         },
                         expression: "best_time_ru"
                       }
-                    })
+                    }),
+                    _vm._v(" "),
+                    _vm.errors.best_time_ru
+                      ? _c(
+                          "div",
+                          {
+                            staticClass: "alert alert-danger",
+                            attrs: { role: "alert" }
+                          },
+                          [
+                            _vm._v(
+                              "\n                                " +
+                                _vm._s(_vm.errors.best_time_ru[0]) +
+                                "\n                            "
+                            )
+                          ]
+                        )
+                      : _vm._e()
                   ],
                   1
                 )
@@ -57569,7 +59556,24 @@ var render = function() {
                         _vm.name_ka = $event.target.value
                       }
                     }
-                  })
+                  }),
+                  _vm._v(" "),
+                  _vm.errors.name_ka
+                    ? _c(
+                        "div",
+                        {
+                          staticClass: "alert alert-danger",
+                          attrs: { role: "alert" }
+                        },
+                        [
+                          _vm._v(
+                            "\n                                " +
+                              _vm._s(_vm.errors.name_ka[0]) +
+                              "\n                            "
+                          )
+                        ]
+                      )
+                    : _vm._e()
                 ])
               ]),
               _vm._v(" "),
@@ -57598,7 +59602,24 @@ var render = function() {
                         },
                         expression: "text_ka"
                       }
-                    })
+                    }),
+                    _vm._v(" "),
+                    _vm.errors.text_ka
+                      ? _c(
+                          "div",
+                          {
+                            staticClass: "alert alert-danger",
+                            attrs: { role: "alert" }
+                          },
+                          [
+                            _vm._v(
+                              "\n                                " +
+                                _vm._s(_vm.errors.text_ka[0]) +
+                                "\n                            "
+                            )
+                          ]
+                        )
+                      : _vm._e()
                   ],
                   1
                 )
@@ -57627,7 +59648,24 @@ var render = function() {
                         },
                         expression: "short_description_ka"
                       }
-                    })
+                    }),
+                    _vm._v(" "),
+                    _vm.errors.short_description_ka
+                      ? _c(
+                          "div",
+                          {
+                            staticClass: "alert alert-danger",
+                            attrs: { role: "alert" }
+                          },
+                          [
+                            _vm._v(
+                              "\n                                " +
+                                _vm._s(_vm.errors.short_description_ka[0]) +
+                                "\n                            "
+                            )
+                          ]
+                        )
+                      : _vm._e()
                   ],
                   1
                 )
@@ -57656,7 +59694,24 @@ var render = function() {
                         },
                         expression: "how_get_ka"
                       }
-                    })
+                    }),
+                    _vm._v(" "),
+                    _vm.errors.how_get_ka
+                      ? _c(
+                          "div",
+                          {
+                            staticClass: "alert alert-danger",
+                            attrs: { role: "alert" }
+                          },
+                          [
+                            _vm._v(
+                              "\n                                " +
+                                _vm._s(_vm.errors.how_get_ka[0]) +
+                                "\n                            "
+                            )
+                          ]
+                        )
+                      : _vm._e()
                   ],
                   1
                 )
@@ -57685,7 +59740,24 @@ var render = function() {
                         },
                         expression: "best_time_ka"
                       }
-                    })
+                    }),
+                    _vm._v(" "),
+                    _vm.errors.best_time_ka
+                      ? _c(
+                          "div",
+                          {
+                            staticClass: "alert alert-danger",
+                            attrs: { role: "alert" }
+                          },
+                          [
+                            _vm._v(
+                              "\n                                " +
+                                _vm._s(_vm.errors.best_time_ka[0]) +
+                                "\n                            "
+                            )
+                          ]
+                        )
+                      : _vm._e()
                   ],
                   1
                 )
@@ -57809,7 +59881,24 @@ var render = function() {
                         _vm.us_name = $event.target.value
                       }
                     }
-                  })
+                  }),
+                  _vm._v(" "),
+                  _vm.errors.us_name
+                    ? _c(
+                        "div",
+                        {
+                          staticClass: "alert alert-danger",
+                          attrs: { role: "alert" }
+                        },
+                        [
+                          _vm._v(
+                            "\n                                " +
+                              _vm._s(_vm.errors.us_name[0]) +
+                              "\n                            "
+                          )
+                        ]
+                      )
+                    : _vm._e()
                 ])
               ]),
               _vm._v(" "),
@@ -57844,7 +59933,24 @@ var render = function() {
                         _vm.ru_name = $event.target.value
                       }
                     }
-                  })
+                  }),
+                  _vm._v(" "),
+                  _vm.errors.ru_name
+                    ? _c(
+                        "div",
+                        {
+                          staticClass: "alert alert-danger",
+                          attrs: { role: "alert" }
+                        },
+                        [
+                          _vm._v(
+                            "\n                                " +
+                              _vm._s(_vm.errors.ru_name[0]) +
+                              "\n                            "
+                          )
+                        ]
+                      )
+                    : _vm._e()
                 ])
               ]),
               _vm._v(" "),
@@ -57879,7 +59985,24 @@ var render = function() {
                         _vm.ka_name = $event.target.value
                       }
                     }
-                  })
+                  }),
+                  _vm._v(" "),
+                  _vm.errors.ka_name
+                    ? _c(
+                        "div",
+                        {
+                          staticClass: "alert alert-danger",
+                          attrs: { role: "alert" }
+                        },
+                        [
+                          _vm._v(
+                            "\n                                " +
+                              _vm._s(_vm.errors.ka_name[0]) +
+                              "\n                            "
+                          )
+                        ]
+                      )
+                    : _vm._e()
                 ])
               ])
             ]
@@ -58001,7 +60124,24 @@ var render = function() {
                         _vm.us_name = $event.target.value
                       }
                     }
-                  })
+                  }),
+                  _vm._v(" "),
+                  _vm.errors.us_name
+                    ? _c(
+                        "div",
+                        {
+                          staticClass: "alert alert-danger",
+                          attrs: { role: "alert" }
+                        },
+                        [
+                          _vm._v(
+                            "\n                                " +
+                              _vm._s(_vm.errors.us_name[0]) +
+                              "\n                            "
+                          )
+                        ]
+                      )
+                    : _vm._e()
                 ])
               ]),
               _vm._v(" "),
@@ -58036,7 +60176,24 @@ var render = function() {
                         _vm.ru_name = $event.target.value
                       }
                     }
-                  })
+                  }),
+                  _vm._v(" "),
+                  _vm.errors.ru_name
+                    ? _c(
+                        "div",
+                        {
+                          staticClass: "alert alert-danger",
+                          attrs: { role: "alert" }
+                        },
+                        [
+                          _vm._v(
+                            "\n                                " +
+                              _vm._s(_vm.errors.ru_name[0]) +
+                              "\n                            "
+                          )
+                        ]
+                      )
+                    : _vm._e()
                 ])
               ]),
               _vm._v(" "),
@@ -58071,7 +60228,24 @@ var render = function() {
                         _vm.ka_name = $event.target.value
                       }
                     }
-                  })
+                  }),
+                  _vm._v(" "),
+                  _vm.errors.ka_name
+                    ? _c(
+                        "div",
+                        {
+                          staticClass: "alert alert-danger",
+                          attrs: { role: "alert" }
+                        },
+                        [
+                          _vm._v(
+                            "\n                                " +
+                              _vm._s(_vm.errors.ka_name[0]) +
+                              "\n                            "
+                          )
+                        ]
+                      )
+                    : _vm._e()
                 ])
               ])
             ]
@@ -58219,7 +60393,24 @@ var render = function() {
                         _vm._v("Public")
                       ])
                     ]
-                  )
+                  ),
+                  _vm._v(" "),
+                  _vm.global_article_error.published
+                    ? _c(
+                        "div",
+                        {
+                          staticClass: "alert alert-danger",
+                          attrs: { role: "alert" }
+                        },
+                        [
+                          _vm._v(
+                            "\n                                " +
+                              _vm._s(_vm.global_article_error.published[0]) +
+                              "\n                            "
+                          )
+                        ]
+                      )
+                    : _vm._e()
                 ])
               ]),
               _vm._v(" "),
@@ -58254,7 +60445,24 @@ var render = function() {
                         _vm.price = $event.target.value
                       }
                     }
-                  })
+                  }),
+                  _vm._v(" "),
+                  _vm.global_article_error.price
+                    ? _c(
+                        "div",
+                        {
+                          staticClass: "alert alert-danger",
+                          attrs: { role: "alert" }
+                        },
+                        [
+                          _vm._v(
+                            "\n                                " +
+                              _vm._s(_vm.global_article_error.price[0]) +
+                              "\n                            "
+                          )
+                        ]
+                      )
+                    : _vm._e()
                 ]),
                 _vm._v(" "),
                 _c("div", { staticClass: "col-xs-2" }, [
@@ -58298,7 +60506,24 @@ var render = function() {
                       _vm._v(" "),
                       _c("option", { attrs: { value: "EUR" } }, [_vm._v("EUR")])
                     ]
-                  )
+                  ),
+                  _vm._v(" "),
+                  _vm.global_article_error.currency
+                    ? _c(
+                        "div",
+                        {
+                          staticClass: "alert alert-danger",
+                          attrs: { role: "alert" }
+                        },
+                        [
+                          _vm._v(
+                            "\n                                " +
+                              _vm._s(_vm.global_article_error.currency[0]) +
+                              "\n                            "
+                          )
+                        ]
+                      )
+                    : _vm._e()
                 ])
               ]),
               _vm._v(" "),
@@ -58575,7 +60800,24 @@ var render = function() {
                       )
                     }),
                     0
-                  )
+                  ),
+                  _vm._v(" "),
+                  _vm.global_article_error.category_id
+                    ? _c(
+                        "div",
+                        {
+                          staticClass: "alert alert-danger",
+                          attrs: { role: "alert" }
+                        },
+                        [
+                          _vm._v(
+                            "\n                                " +
+                              _vm._s(_vm.global_article_error.category_id[0]) +
+                              "\n                            "
+                          )
+                        ]
+                      )
+                    : _vm._e()
                 ])
               ])
             ]
@@ -58788,7 +61030,24 @@ var render = function() {
                         _vm.us_title = $event.target.value
                       }
                     }
-                  })
+                  }),
+                  _vm._v(" "),
+                  _vm.us_article_error.us_title
+                    ? _c(
+                        "div",
+                        {
+                          staticClass: "alert alert-danger",
+                          attrs: { role: "alert" }
+                        },
+                        [
+                          _vm._v(
+                            "\n                                " +
+                              _vm._s(_vm.us_article_error.us_title[0]) +
+                              "\n                            "
+                          )
+                        ]
+                      )
+                    : _vm._e()
                 ])
               ]),
               _vm._v(" "),
@@ -58815,7 +61074,26 @@ var render = function() {
                         },
                         expression: "us_short_description"
                       }
-                    })
+                    }),
+                    _vm._v(" "),
+                    _vm.us_article_error.us_short_description
+                      ? _c(
+                          "div",
+                          {
+                            staticClass: "alert alert-danger",
+                            attrs: { role: "alert" }
+                          },
+                          [
+                            _vm._v(
+                              "\n                                " +
+                                _vm._s(
+                                  _vm.us_article_error.us_short_description[0]
+                                ) +
+                                "\n                            "
+                            )
+                          ]
+                        )
+                      : _vm._e()
                   ],
                   1
                 )
@@ -58844,7 +61122,24 @@ var render = function() {
                         },
                         expression: "us_text"
                       }
-                    })
+                    }),
+                    _vm._v(" "),
+                    _vm.us_article_error.us_text
+                      ? _c(
+                          "div",
+                          {
+                            staticClass: "alert alert-danger",
+                            attrs: { role: "alert" }
+                          },
+                          [
+                            _vm._v(
+                              "\n                                " +
+                                _vm._s(_vm.us_article_error.us_text[0]) +
+                                "\n                            "
+                            )
+                          ]
+                        )
+                      : _vm._e()
                   ],
                   1
                 )
@@ -58949,7 +61244,24 @@ var render = function() {
                         _vm.ru_title = $event.target.value
                       }
                     }
-                  })
+                  }),
+                  _vm._v(" "),
+                  _vm.ru_article_error.ru_title
+                    ? _c(
+                        "div",
+                        {
+                          staticClass: "alert alert-danger",
+                          attrs: { role: "alert" }
+                        },
+                        [
+                          _vm._v(
+                            "\n                                " +
+                              _vm._s(_vm.ru_article_error.ru_title[0]) +
+                              "\n                            "
+                          )
+                        ]
+                      )
+                    : _vm._e()
                 ])
               ]),
               _vm._v(" "),
@@ -58976,7 +61288,26 @@ var render = function() {
                         },
                         expression: "ru_short_description"
                       }
-                    })
+                    }),
+                    _vm._v(" "),
+                    _vm.ru_article_error.ru_short_description
+                      ? _c(
+                          "div",
+                          {
+                            staticClass: "alert alert-danger",
+                            attrs: { role: "alert" }
+                          },
+                          [
+                            _vm._v(
+                              "\n                                " +
+                                _vm._s(
+                                  _vm.ru_article_error.ru_short_description[0]
+                                ) +
+                                "\n                            "
+                            )
+                          ]
+                        )
+                      : _vm._e()
                   ],
                   1
                 )
@@ -59005,7 +61336,24 @@ var render = function() {
                         },
                         expression: "ru_text"
                       }
-                    })
+                    }),
+                    _vm._v(" "),
+                    _vm.ru_article_error.ru_text
+                      ? _c(
+                          "div",
+                          {
+                            staticClass: "alert alert-danger",
+                            attrs: { role: "alert" }
+                          },
+                          [
+                            _vm._v(
+                              "\n                                " +
+                                _vm._s(_vm.ru_article_error.ru_text[0]) +
+                                "\n                            "
+                            )
+                          ]
+                        )
+                      : _vm._e()
                   ],
                   1
                 )
@@ -59110,7 +61458,24 @@ var render = function() {
                         _vm.ka_title = $event.target.value
                       }
                     }
-                  })
+                  }),
+                  _vm._v(" "),
+                  _vm.ka_article_error.ka_title
+                    ? _c(
+                        "div",
+                        {
+                          staticClass: "alert alert-danger",
+                          attrs: { role: "alert" }
+                        },
+                        [
+                          _vm._v(
+                            "\n                                " +
+                              _vm._s(_vm.ka_article_error.ka_title[0]) +
+                              "\n                            "
+                          )
+                        ]
+                      )
+                    : _vm._e()
                 ])
               ]),
               _vm._v(" "),
@@ -59137,7 +61502,26 @@ var render = function() {
                         },
                         expression: "ka_short_description"
                       }
-                    })
+                    }),
+                    _vm._v(" "),
+                    _vm.ka_article_error.ka_short_description
+                      ? _c(
+                          "div",
+                          {
+                            staticClass: "alert alert-danger",
+                            attrs: { role: "alert" }
+                          },
+                          [
+                            _vm._v(
+                              "\n                                " +
+                                _vm._s(
+                                  _vm.ka_article_error.ka_short_description[0]
+                                ) +
+                                "\n                            "
+                            )
+                          ]
+                        )
+                      : _vm._e()
                   ],
                   1
                 )
@@ -59166,7 +61550,24 @@ var render = function() {
                         },
                         expression: "ka_text"
                       }
-                    })
+                    }),
+                    _vm._v(" "),
+                    _vm.ka_article_error.ka_text
+                      ? _c(
+                          "div",
+                          {
+                            staticClass: "alert alert-danger",
+                            attrs: { role: "alert" }
+                          },
+                          [
+                            _vm._v(
+                              "\n                                " +
+                                _vm._s(_vm.ka_article_error.ka_text[0]) +
+                                "\n                            "
+                            )
+                          ]
+                        )
+                      : _vm._e()
                   ],
                   1
                 )
@@ -60625,15 +63026,16 @@ var render = function() {
                       ]),
                       _vm._v(" "),
                       _vm._l(_vm.sectors, function(sector) {
-                        return _c(
-                          "option",
-                          {
-                            key: sector.id,
-                            attrs: { if: _vm.sellected == sector.article_id },
-                            domProps: { value: sector.id }
-                          },
-                          [_vm._v(_vm._s(sector.name))]
-                        )
+                        return _vm.sellected == sector.article_id
+                          ? _c(
+                              "option",
+                              {
+                                key: sector.id,
+                                domProps: { value: sector.id }
+                              },
+                              [_vm._v(_vm._s(sector.name))]
+                            )
+                          : _vm._e()
                       })
                     ],
                     2
@@ -60643,319 +63045,26 @@ var render = function() {
           ])
         ]),
         _vm._v(" "),
-        _c("div", { staticClass: "form-group clearfix" }, [
-          _c(
-            "label",
-            { staticClass: "col-xs-2 control-label", attrs: { for: "name" } },
-            [_vm._v(" Route name ")]
-          ),
-          _vm._v(" "),
-          _c("div", { staticClass: "col-xs-8" }, [
-            _c("input", {
-              directives: [
-                {
-                  name: "model",
-                  rawName: "v-model",
-                  value: _vm.name,
-                  expression: "name"
-                }
-              ],
-              staticClass: "form-control",
-              attrs: {
-                type: "text",
-                name: "name",
-                placeholder: "Route name.."
-              },
-              domProps: { value: _vm.name },
-              on: {
-                input: function($event) {
-                  if ($event.target.composing) {
-                    return
-                  }
-                  _vm.name = $event.target.value
-                }
-              }
-            })
-          ])
-        ]),
-        _vm._v(" "),
-        _c("div", { staticClass: "form-group clearfix" }, [
-          _c(
-            "label",
-            { staticClass: "col-xs-2 control-label", attrs: { for: "name" } },
-            [_vm._v(" text ")]
-          ),
-          _vm._v(" "),
-          _c(
-            "div",
-            { staticClass: "col-xs-8" },
-            [
-              _c("ckeditor", {
-                attrs: { config: _vm.editorConfig },
-                model: {
-                  value: _vm.text,
-                  callback: function($$v) {
-                    _vm.text = $$v
-                  },
-                  expression: "text"
-                }
-              })
-            ],
-            1
-          )
-        ]),
-        _vm._v(" "),
-        _c("div", { staticClass: "form-group clearfix" }, [
-          _c(
-            "label",
-            { staticClass: "col-xs-2 control-label", attrs: { for: "name" } },
-            [_vm._v(" Bolter & height ")]
-          ),
-          _vm._v(" "),
-          _c("div", { staticClass: "col-xs-4" }, [
-            _c("input", {
-              directives: [
-                {
-                  name: "model",
-                  rawName: "v-model",
-                  value: _vm.bolter,
-                  expression: "bolter"
-                }
-              ],
-              staticClass: "form-control",
-              attrs: { type: "text", name: "title", placeholder: "Bolter" },
-              domProps: { value: _vm.bolter },
-              on: {
-                input: function($event) {
-                  if ($event.target.composing) {
-                    return
-                  }
-                  _vm.bolter = $event.target.value
-                }
-              }
-            })
-          ]),
-          _vm._v(" "),
-          _c("div", { staticClass: "col-xs-3" }, [
-            _c("input", {
-              directives: [
-                {
-                  name: "model",
-                  rawName: "v-model",
-                  value: _vm.height,
-                  expression: "height"
-                }
-              ],
-              staticClass: "form-control",
-              attrs: { type: "text", name: "title", placeholder: "Height" },
-              domProps: { value: _vm.height },
-              on: {
-                input: function($event) {
-                  if ($event.target.composing) {
-                    return
-                  }
-                  _vm.height = $event.target.value
-                }
-              }
-            })
-          ]),
-          _vm._v(" "),
-          _c(
-            "label",
-            { staticClass: "col-xs-1 control-label", attrs: { for: "name" } },
-            [_vm._v(" M ")]
-          )
-        ]),
-        _vm._v(" "),
-        _c("div", { staticClass: "form-group clearfix" }, [
-          _c(
-            "label",
-            { staticClass: "col-xs-2 control-label", attrs: { for: "name" } },
-            [_vm._v("Firs Ascent ")]
-          ),
-          _vm._v(" "),
-          _c("div", { staticClass: "col-xs-8" }, [
-            _c("input", {
-              directives: [
-                {
-                  name: "model",
-                  rawName: "v-model",
-                  value: _vm.first_ascent,
-                  expression: "first_ascent"
-                }
-              ],
-              staticClass: "form-control",
-              attrs: {
-                type: "text",
-                name: "title",
-                placeholder: "First ascent"
-              },
-              domProps: { value: _vm.first_ascent },
-              on: {
-                input: function($event) {
-                  if ($event.target.composing) {
-                    return
-                  }
-                  _vm.first_ascent = $event.target.value
-                }
-              }
-            })
-          ])
-        ])
-      ])
-    ])
-  ])
-}
-var staticRenderFns = []
-render._withStripped = true
-
-
-
-/***/ }),
-
-/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/user/routes and sectors/mtp/MtpEditFormComponent.vue?vue&type=template&id=44450094&":
-/*!***************************************************************************************************************************************************************************************************************************************************!*\
-  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/user/routes and sectors/mtp/MtpEditFormComponent.vue?vue&type=template&id=44450094& ***!
-  \***************************************************************************************************************************************************************************************************************************************************/
-/*! exports provided: render, staticRenderFns */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "render", function() { return render; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
-var render = function() {
-  var _vm = this
-  var _h = _vm.$createElement
-  var _c = _vm._self._c || _h
-  return _c("div", { staticClass: "col_md_12" }, [
-    _c("div", { staticClass: "row" }, [
-      _c("div", { staticClass: "form-group" }, [
-        _c(
-          "button",
-          {
-            staticClass: "btn btn-primary",
-            attrs: { type: "submit" },
-            on: {
-              click: function($event) {
-                return _vm.save_all()
-              }
-            }
-          },
-          [_vm._v("Save")]
-        )
-      ])
-    ]),
-    _vm._v(" "),
-    _c("div", { staticClass: "wrapper container-fluid container" }, [
-      _c("form", { attrs: { action: "" } }, [
-        _c("div", { staticClass: "form-group clearfix" }, [
-          _c(
-            "label",
-            { staticClass: "col-xs-2 control-label", attrs: { for: "name" } },
-            [_vm._v(" Region ")]
-          ),
-          _vm._v(" "),
-          _c("div", { staticClass: "col-xs-4" }, [
-            _c(
-              "select",
-              {
-                directives: [
+        _vm.errors.sector_id
+          ? _c("div", { staticClass: "form-group clearfix" }, [
+              _c("div", { staticClass: "col-xs-12" }, [
+                _c(
+                  "div",
                   {
-                    name: "model",
-                    rawName: "v-model",
-                    value: _vm.sellected,
-                    expression: "sellected"
-                  }
-                ],
-                staticClass: "form-control",
-                on: {
-                  change: function($event) {
-                    var $$selectedVal = Array.prototype.filter
-                      .call($event.target.options, function(o) {
-                        return o.selected
-                      })
-                      .map(function(o) {
-                        var val = "_value" in o ? o._value : o.value
-                        return val
-                      })
-                    _vm.sellected = $event.target.multiple
-                      ? $$selectedVal
-                      : $$selectedVal[0]
-                  }
-                }
-              },
-              [
-                _c("option", { attrs: { disabled: "" } }, [
-                  _vm._v("Please select sector")
-                ]),
-                _vm._v(" "),
-                _vm._l(_vm.regions, function(region) {
-                  return _c(
-                    "option",
-                    { key: region.id, domProps: { value: region.id } },
-                    [_vm._v(_vm._s(region.url_title))]
-                  )
-                })
-              ],
-              2
-            )
-          ]),
-          _vm._v(" "),
-          _c("div", { staticClass: "col-xs-4" }, [
-            _c("div", { staticClass: "col-xs-12" }, [
-              _vm.sellected != ""
-                ? _c(
-                    "select",
-                    {
-                      directives: [
-                        {
-                          name: "model",
-                          rawName: "v-model",
-                          value: _vm.sector_id,
-                          expression: "sector_id"
-                        }
-                      ],
-                      staticClass: "form-control",
-                      on: {
-                        change: function($event) {
-                          var $$selectedVal = Array.prototype.filter
-                            .call($event.target.options, function(o) {
-                              return o.selected
-                            })
-                            .map(function(o) {
-                              var val = "_value" in o ? o._value : o.value
-                              return val
-                            })
-                          _vm.sector_id = $event.target.multiple
-                            ? $$selectedVal
-                            : $$selectedVal[0]
-                        }
-                      }
-                    },
-                    [
-                      _c("option", { attrs: { disabled: "" } }, [
-                        _vm._v("Please select sector")
-                      ]),
-                      _vm._v(" "),
-                      _vm._l(_vm.sectors, function(sector) {
-                        return _c(
-                          "option",
-                          {
-                            key: sector.id,
-                            attrs: { if: _vm.sellected == sector.article_id },
-                            domProps: { value: sector.id }
-                          },
-                          [_vm._v(_vm._s(sector.name))]
-                        )
-                      })
-                    ],
-                    2
-                  )
-                : _vm._e()
+                    staticClass: "alert alert-danger",
+                    attrs: { role: "alert" }
+                  },
+                  [
+                    _vm._v(
+                      "\n              " +
+                        _vm._s(_vm.errors.sector_id[0]) +
+                        "\n            "
+                    )
+                  ]
+                )
+              ])
             ])
-          ])
-        ]),
+          : _vm._e(),
         _vm._v(" "),
         _c("div", { staticClass: "form-group clearfix" }, [
           _c(
@@ -60989,7 +63098,24 @@ var render = function() {
                   _vm.name = $event.target.value
                 }
               }
-            })
+            }),
+            _vm._v(" "),
+            _vm.errors.name
+              ? _c(
+                  "div",
+                  {
+                    staticClass: "alert alert-danger",
+                    attrs: { role: "alert" }
+                  },
+                  [
+                    _vm._v(
+                      "\n              " +
+                        _vm._s(_vm.errors.name[0]) +
+                        "\n            "
+                    )
+                  ]
+                )
+              : _vm._e()
           ])
         ]),
         _vm._v(" "),
@@ -61052,8 +63178,248 @@ var render = function() {
           _vm._v(" "),
           _c(
             "label",
-            { staticClass: "col-xs-1 control-label", attrs: { for: "name" } },
+            { staticClass: "col-xs-2 control-label", attrs: { for: "name" } },
             [_vm._v(" M ")]
+          )
+        ])
+      ])
+    ])
+  ])
+}
+var staticRenderFns = []
+render._withStripped = true
+
+
+
+/***/ }),
+
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/user/routes and sectors/mtp/MtpEditFormComponent.vue?vue&type=template&id=44450094&":
+/*!***************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/user/routes and sectors/mtp/MtpEditFormComponent.vue?vue&type=template&id=44450094& ***!
+  \***************************************************************************************************************************************************************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "render", function() { return render; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("div", { staticClass: "col_md_12" }, [
+    _c("div", { staticClass: "row" }, [
+      _c("div", { staticClass: "form-group" }, [
+        _c(
+          "button",
+          {
+            staticClass: "btn btn-primary",
+            attrs: { type: "submit" },
+            on: {
+              click: function($event) {
+                return _vm.save_all()
+              }
+            }
+          },
+          [_vm._v("Save")]
+        )
+      ])
+    ]),
+    _vm._v(" "),
+    _c("div", { staticClass: "wrapper container-fluid container" }, [
+      _c("form", { attrs: { action: "" } }, [
+        _c("div", { staticClass: "form-group clearfix" }, [
+          _c(
+            "label",
+            { staticClass: "col-xs-2 control-label", attrs: { for: "name" } },
+            [_vm._v(" Region / Sector ")]
+          ),
+          _vm._v(" "),
+          _c("div", { staticClass: "col-xs-4" }, [
+            _c(
+              "select",
+              {
+                directives: [
+                  {
+                    name: "model",
+                    rawName: "v-model",
+                    value: _vm.sellected_region,
+                    expression: "sellected_region"
+                  }
+                ],
+                staticClass: "form-control",
+                on: {
+                  change: function($event) {
+                    var $$selectedVal = Array.prototype.filter
+                      .call($event.target.options, function(o) {
+                        return o.selected
+                      })
+                      .map(function(o) {
+                        var val = "_value" in o ? o._value : o.value
+                        return val
+                      })
+                    _vm.sellected_region = $event.target.multiple
+                      ? $$selectedVal
+                      : $$selectedVal[0]
+                  }
+                }
+              },
+              _vm._l(_vm.regions, function(region) {
+                return _c(
+                  "option",
+                  { key: region.id, domProps: { value: region.id } },
+                  [_vm._v(_vm._s(region.url_title))]
+                )
+              }),
+              0
+            )
+          ]),
+          _vm._v(" "),
+          _c("div", { staticClass: "col-xs-4" }, [
+            _c("div", { staticClass: "col-xs-12" }, [
+              _vm.sellected_region != ""
+                ? _c(
+                    "select",
+                    {
+                      directives: [
+                        {
+                          name: "model",
+                          rawName: "v-model",
+                          value: _vm.sector_id,
+                          expression: "sector_id"
+                        }
+                      ],
+                      staticClass: "form-control",
+                      on: {
+                        change: function($event) {
+                          var $$selectedVal = Array.prototype.filter
+                            .call($event.target.options, function(o) {
+                              return o.selected
+                            })
+                            .map(function(o) {
+                              var val = "_value" in o ? o._value : o.value
+                              return val
+                            })
+                          _vm.sector_id = $event.target.multiple
+                            ? $$selectedVal
+                            : $$selectedVal[0]
+                        }
+                      }
+                    },
+                    _vm._l(_vm.sectors, function(sector) {
+                      return _vm.sellected_region == sector.article_id
+                        ? _c(
+                            "option",
+                            { key: sector.id, domProps: { value: sector.id } },
+                            [_vm._v(_vm._s(sector.name))]
+                          )
+                        : _vm._e()
+                    }),
+                    0
+                  )
+                : _vm._e()
+            ])
+          ])
+        ]),
+        _vm._v(" "),
+        _vm.errors.sector_id
+          ? _c("div", { staticClass: "form-group clearfix" }, [
+              _c("div", { staticClass: "col-xs-12" }, [
+                _c(
+                  "div",
+                  {
+                    staticClass: "alert alert-danger",
+                    attrs: { role: "alert" }
+                  },
+                  [
+                    _vm._v(
+                      "\n              " +
+                        _vm._s(_vm.errors.sector_id[0]) +
+                        "\n            "
+                    )
+                  ]
+                )
+              ])
+            ])
+          : _vm._e(),
+        _vm._v(" "),
+        _c("div", { staticClass: "form-group clearfix" }, [
+          _c(
+            "label",
+            { staticClass: "col-xs-2 control-label", attrs: { for: "name" } },
+            [_vm._v(" Route name ")]
+          ),
+          _vm._v(" "),
+          _c("div", { staticClass: "col-xs-8" }, [
+            _c("input", {
+              directives: [
+                {
+                  name: "model",
+                  rawName: "v-model",
+                  value: _vm.name,
+                  expression: "name"
+                }
+              ],
+              staticClass: "form-control",
+              attrs: {
+                type: "text",
+                name: "name",
+                placeholder: "Route name.."
+              },
+              domProps: { value: _vm.name },
+              on: {
+                input: function($event) {
+                  if ($event.target.composing) {
+                    return
+                  }
+                  _vm.name = $event.target.value
+                }
+              }
+            }),
+            _vm._v(" "),
+            _vm.errors.name
+              ? _c(
+                  "div",
+                  {
+                    staticClass: "alert alert-danger",
+                    attrs: { role: "alert" }
+                  },
+                  [
+                    _vm._v(
+                      "\n              " +
+                        _vm._s(_vm.errors.name[0]) +
+                        "\n            "
+                    )
+                  ]
+                )
+              : _vm._e()
+          ])
+        ]),
+        _vm._v(" "),
+        _c("div", { staticClass: "form-group clearfix" }, [
+          _c(
+            "label",
+            { staticClass: "col-xs-2 control-label", attrs: { for: "name" } },
+            [_vm._v(" text ")]
+          ),
+          _vm._v(" "),
+          _c(
+            "div",
+            { staticClass: "col-xs-8" },
+            [
+              _c("ckeditor", {
+                attrs: { config: _vm.editorConfig },
+                model: {
+                  value: _vm.text,
+                  callback: function($$v) {
+                    _vm.text = $$v
+                  },
+                  expression: "text"
+                }
+              })
+            ],
+            1
           )
         ])
       ])
@@ -61193,17 +63559,16 @@ var render = function() {
                       ]),
                       _vm._v(" "),
                       _vm._l(_vm.sectors, function(sector) {
-                        return _c(
-                          "option",
-                          {
-                            key: sector.id,
-                            attrs: {
-                              if: _vm.sellected_region == sector.article_id
-                            },
-                            domProps: { value: sector.id }
-                          },
-                          [_vm._v(_vm._s(sector.name))]
-                        )
+                        return _vm.sellected_region == sector.article_id
+                          ? _c(
+                              "option",
+                              {
+                                key: sector.id,
+                                domProps: { value: sector.id }
+                              },
+                              [_vm._v(_vm._s(sector.name))]
+                            )
+                          : _vm._e()
                       })
                     ],
                     2
@@ -61250,18 +63615,31 @@ var render = function() {
                 }
               },
               _vm._l(_vm.mtps, function(mtp) {
-                return _c(
-                  "option",
-                  {
-                    key: mtp.id,
-                    attrs: { if: _vm.sellected_sector == mtp.sector_id },
-                    domProps: { value: mtp.id }
-                  },
-                  [_vm._v(_vm._s(mtp.name))]
-                )
+                return _vm.sellected_sector == mtp.sector_id
+                  ? _c("option", { key: mtp.id, domProps: { value: mtp.id } }, [
+                      _vm._v(_vm._s(mtp.name))
+                    ])
+                  : _vm._e()
               }),
               0
-            )
+            ),
+            _vm._v(" "),
+            _vm.errors.mtp_id
+              ? _c(
+                  "div",
+                  {
+                    staticClass: "alert alert-danger",
+                    attrs: { role: "alert" }
+                  },
+                  [
+                    _vm._v(
+                      "\n            " +
+                        _vm._s(_vm.errors.mtp_id[0]) +
+                        "\n          "
+                    )
+                  ]
+                )
+              : _vm._e()
           ])
         ]),
         _vm._v(" "),
@@ -61269,95 +63647,124 @@ var render = function() {
           _c(
             "label",
             { staticClass: "col-xs-2 control-label", attrs: { for: "name" } },
-            [_vm._v(" Gread ")]
+            [_vm._v(" grade ")]
           ),
           _vm._v(" "),
-          _c("div", { staticClass: "col-xs-8" }, [
-            _c("div", { staticClass: "col-xs-6" }, [
-              _c(
-                "select",
-                {
-                  directives: [
-                    {
-                      name: "model",
-                      rawName: "v-model",
-                      value: _vm.gread,
-                      expression: "gread"
-                    }
-                  ],
-                  staticClass: "form-control",
-                  on: {
-                    change: function($event) {
-                      var $$selectedVal = Array.prototype.filter
-                        .call($event.target.options, function(o) {
-                          return o.selected
-                        })
-                        .map(function(o) {
-                          var val = "_value" in o ? o._value : o.value
-                          return val
-                        })
-                      _vm.gread = $event.target.multiple
-                        ? $$selectedVal
-                        : $$selectedVal[0]
-                    }
+          _c("div", { staticClass: "col-xs-4" }, [
+            _c(
+              "select",
+              {
+                directives: [
+                  {
+                    name: "model",
+                    rawName: "v-model",
+                    value: _vm.grade,
+                    expression: "grade"
                   }
-                },
-                _vm._l(_vm.sport_route_gread, function(sport) {
+                ],
+                staticClass: "form-control",
+                on: {
+                  change: function($event) {
+                    var $$selectedVal = Array.prototype.filter
+                      .call($event.target.options, function(o) {
+                        return o.selected
+                      })
+                      .map(function(o) {
+                        var val = "_value" in o ? o._value : o.value
+                        return val
+                      })
+                    _vm.grade = $event.target.multiple
+                      ? $$selectedVal
+                      : $$selectedVal[0]
+                  }
+                }
+              },
+              [
+                _c("option", { domProps: { value: _vm.NULL } }, [
+                  _vm._v(" No grade ")
+                ]),
+                _vm._v(" "),
+                _c("option", [_vm._v("Project")]),
+                _vm._v(" "),
+                _vm._l(_vm.sport_route_grade, function(sport) {
                   return _c(
                     "option",
                     { key: sport, domProps: { value: sport } },
                     [_vm._v(_vm._s(sport))]
                   )
-                }),
-                0
-              )
-            ]),
-            _vm._v(" "),
-            _c("div", { staticClass: "col-xs-6" }, [
-              _c(
-                "select",
-                {
-                  directives: [
-                    {
-                      name: "model",
-                      rawName: "v-model",
-                      value: _vm.or_gread,
-                      expression: "or_gread"
-                    }
-                  ],
-                  staticClass: "form-control",
-                  on: {
-                    change: function($event) {
-                      var $$selectedVal = Array.prototype.filter
-                        .call($event.target.options, function(o) {
-                          return o.selected
-                        })
-                        .map(function(o) {
-                          var val = "_value" in o ? o._value : o.value
-                          return val
-                        })
-                      _vm.or_gread = $event.target.multiple
-                        ? $$selectedVal
-                        : $$selectedVal[0]
-                    }
+                })
+              ],
+              2
+            )
+          ]),
+          _vm._v(" "),
+          _c("div", { staticClass: "col-xs-4" }, [
+            _c(
+              "select",
+              {
+                directives: [
+                  {
+                    name: "model",
+                    rawName: "v-model",
+                    value: _vm.or_grade,
+                    expression: "or_grade"
                   }
-                },
-                [
-                  _c("option", { attrs: { selected: "" } }, [_vm._v("No")]),
-                  _vm._v(" "),
-                  _vm._l(_vm.sport_route_gread, function(sport) {
-                    return _c(
-                      "option",
-                      { key: sport, domProps: { value: sport } },
-                      [_vm._v(_vm._s(sport))]
-                    )
-                  })
                 ],
-                2
-              )
-            ])
+                staticClass: "form-control",
+                on: {
+                  change: function($event) {
+                    var $$selectedVal = Array.prototype.filter
+                      .call($event.target.options, function(o) {
+                        return o.selected
+                      })
+                      .map(function(o) {
+                        var val = "_value" in o ? o._value : o.value
+                        return val
+                      })
+                    _vm.or_grade = $event.target.multiple
+                      ? $$selectedVal
+                      : $$selectedVal[0]
+                  }
+                }
+              },
+              [
+                _c("option", { domProps: { value: _vm.NULL } }, [
+                  _vm._v(" No grade ")
+                ]),
+                _vm._v(" "),
+                _vm._l(_vm.sport_route_grade, function(sport) {
+                  return _c(
+                    "option",
+                    { key: sport, domProps: { value: sport } },
+                    [_vm._v(_vm._s(sport))]
+                  )
+                })
+              ],
+              2
+            )
           ])
         ]),
+        _vm._v(" "),
+        _vm.errors.grade
+          ? _c("div", { staticClass: "form-group clearfix" }, [
+              _c("div", { staticClass: "col-xs-12" }, [
+                _c(
+                  "div",
+                  {
+                    staticClass: "alert alert-danger",
+                    attrs: { role: "alert" }
+                  },
+                  [
+                    _vm._v(
+                      "\n              " +
+                        _vm._s(_vm.errors.grade[0]) +
+                        "\n            "
+                    )
+                  ]
+                )
+              ])
+            ])
+          : _vm._e(),
         _vm._v(" "),
         _c("div", { staticClass: "form-group clearfix" }, [
           _c(
@@ -61391,7 +63798,24 @@ var render = function() {
                   _vm.name = $event.target.value
                 }
               }
-            })
+            }),
+            _vm._v(" "),
+            _vm.errors.name
+              ? _c(
+                  "div",
+                  {
+                    staticClass: "alert alert-danger",
+                    attrs: { role: "alert" }
+                  },
+                  [
+                    _vm._v(
+                      "\n            " +
+                        _vm._s(_vm.errors.name[0]) +
+                        "\n          "
+                    )
+                  ]
+                )
+              : _vm._e()
           ])
         ]),
         _vm._v(" "),
@@ -61593,6 +64017,100 @@ var render = function() {
           _c(
             "label",
             { staticClass: "col-xs-2 control-label", attrs: { for: "name" } },
+            [_vm._v(" Region ")]
+          ),
+          _vm._v(" "),
+          _c("div", { staticClass: "col-xs-4" }, [
+            _c(
+              "select",
+              {
+                directives: [
+                  {
+                    name: "model",
+                    rawName: "v-model",
+                    value: _vm.sellected_region,
+                    expression: "sellected_region"
+                  }
+                ],
+                staticClass: "form-control",
+                on: {
+                  change: function($event) {
+                    var $$selectedVal = Array.prototype.filter
+                      .call($event.target.options, function(o) {
+                        return o.selected
+                      })
+                      .map(function(o) {
+                        var val = "_value" in o ? o._value : o.value
+                        return val
+                      })
+                    _vm.sellected_region = $event.target.multiple
+                      ? $$selectedVal
+                      : $$selectedVal[0]
+                  }
+                }
+              },
+              _vm._l(_vm.regions, function(region) {
+                return _c(
+                  "option",
+                  { key: region.id, domProps: { value: region.id } },
+                  [_vm._v(_vm._s(region.url_title))]
+                )
+              }),
+              0
+            )
+          ]),
+          _vm._v(" "),
+          _c("div", { staticClass: "col-xs-4" }, [
+            _c("div", { staticClass: "col-xs-12" }, [
+              _vm.sellected_region != ""
+                ? _c(
+                    "select",
+                    {
+                      directives: [
+                        {
+                          name: "model",
+                          rawName: "v-model",
+                          value: _vm.sellected_sector,
+                          expression: "sellected_sector"
+                        }
+                      ],
+                      staticClass: "form-control",
+                      on: {
+                        change: function($event) {
+                          var $$selectedVal = Array.prototype.filter
+                            .call($event.target.options, function(o) {
+                              return o.selected
+                            })
+                            .map(function(o) {
+                              var val = "_value" in o ? o._value : o.value
+                              return val
+                            })
+                          _vm.sellected_sector = $event.target.multiple
+                            ? $$selectedVal
+                            : $$selectedVal[0]
+                        }
+                      }
+                    },
+                    _vm._l(_vm.sectors, function(sector) {
+                      return _vm.sellected_region == sector.article_id
+                        ? _c(
+                            "option",
+                            { key: sector.id, domProps: { value: sector.id } },
+                            [_vm._v(_vm._s(sector.name))]
+                          )
+                        : _vm._e()
+                    }),
+                    0
+                  )
+                : _vm._e()
+            ])
+          ])
+        ]),
+        _vm._v(" "),
+        _c("div", { staticClass: "form-group clearfix" }, [
+          _c(
+            "label",
+            { staticClass: "col-xs-2 control-label", attrs: { for: "name" } },
             [_vm._v(" Multy-pitch ")]
           ),
           _vm._v(" "),
@@ -61633,7 +64151,24 @@ var render = function() {
                 )
               }),
               0
-            )
+            ),
+            _vm._v(" "),
+            _vm.errors.mtp_id
+              ? _c(
+                  "div",
+                  {
+                    staticClass: "alert alert-danger",
+                    attrs: { role: "alert" }
+                  },
+                  [
+                    _vm._v(
+                      "\n            " +
+                        _vm._s(_vm.errors.mtp_id[0]) +
+                        "\n          "
+                    )
+                  ]
+                )
+              : _vm._e()
           ])
         ]),
         _vm._v(" "),
@@ -61641,95 +64176,124 @@ var render = function() {
           _c(
             "label",
             { staticClass: "col-xs-2 control-label", attrs: { for: "name" } },
-            [_vm._v(" Gread ")]
+            [_vm._v(" grade ")]
           ),
           _vm._v(" "),
-          _c("div", { staticClass: "col-xs-8" }, [
-            _c("div", { staticClass: "col-xs-6" }, [
-              _c(
-                "select",
-                {
-                  directives: [
-                    {
-                      name: "model",
-                      rawName: "v-model",
-                      value: _vm.gread,
-                      expression: "gread"
-                    }
-                  ],
-                  staticClass: "form-control",
-                  on: {
-                    change: function($event) {
-                      var $$selectedVal = Array.prototype.filter
-                        .call($event.target.options, function(o) {
-                          return o.selected
-                        })
-                        .map(function(o) {
-                          var val = "_value" in o ? o._value : o.value
-                          return val
-                        })
-                      _vm.gread = $event.target.multiple
-                        ? $$selectedVal
-                        : $$selectedVal[0]
-                    }
+          _c("div", { staticClass: "col-xs-4" }, [
+            _c(
+              "select",
+              {
+                directives: [
+                  {
+                    name: "model",
+                    rawName: "v-model",
+                    value: _vm.grade,
+                    expression: "grade"
                   }
-                },
-                _vm._l(_vm.sport_route_gread, function(sport) {
+                ],
+                staticClass: "form-control",
+                on: {
+                  change: function($event) {
+                    var $$selectedVal = Array.prototype.filter
+                      .call($event.target.options, function(o) {
+                        return o.selected
+                      })
+                      .map(function(o) {
+                        var val = "_value" in o ? o._value : o.value
+                        return val
+                      })
+                    _vm.grade = $event.target.multiple
+                      ? $$selectedVal
+                      : $$selectedVal[0]
+                  }
+                }
+              },
+              [
+                _c("option", { domProps: { value: _vm.NULL } }, [
+                  _vm._v(" No grade ")
+                ]),
+                _vm._v(" "),
+                _c("option", [_vm._v("Project")]),
+                _vm._v(" "),
+                _vm._l(_vm.sport_route_grade, function(sport) {
                   return _c(
                     "option",
                     { key: sport, domProps: { value: sport } },
                     [_vm._v(_vm._s(sport))]
                   )
-                }),
-                0
-              )
-            ]),
-            _vm._v(" "),
-            _c("div", { staticClass: "col-xs-6" }, [
-              _c(
-                "select",
-                {
-                  directives: [
-                    {
-                      name: "model",
-                      rawName: "v-model",
-                      value: _vm.or_gread,
-                      expression: "or_gread"
-                    }
-                  ],
-                  staticClass: "form-control",
-                  on: {
-                    change: function($event) {
-                      var $$selectedVal = Array.prototype.filter
-                        .call($event.target.options, function(o) {
-                          return o.selected
-                        })
-                        .map(function(o) {
-                          var val = "_value" in o ? o._value : o.value
-                          return val
-                        })
-                      _vm.or_gread = $event.target.multiple
-                        ? $$selectedVal
-                        : $$selectedVal[0]
-                    }
+                })
+              ],
+              2
+            )
+          ]),
+          _vm._v(" "),
+          _c("div", { staticClass: "col-xs-4" }, [
+            _c(
+              "select",
+              {
+                directives: [
+                  {
+                    name: "model",
+                    rawName: "v-model",
+                    value: _vm.or_grade,
+                    expression: "or_grade"
                   }
-                },
-                [
-                  _c("option", { attrs: { selected: "" } }, [_vm._v("No")]),
-                  _vm._v(" "),
-                  _vm._l(_vm.sport_route_gread, function(sport) {
-                    return _c(
-                      "option",
-                      { key: sport, domProps: { value: sport } },
-                      [_vm._v(_vm._s(sport))]
-                    )
-                  })
                 ],
-                2
-              )
-            ])
+                staticClass: "form-control",
+                on: {
+                  change: function($event) {
+                    var $$selectedVal = Array.prototype.filter
+                      .call($event.target.options, function(o) {
+                        return o.selected
+                      })
+                      .map(function(o) {
+                        var val = "_value" in o ? o._value : o.value
+                        return val
+                      })
+                    _vm.or_grade = $event.target.multiple
+                      ? $$selectedVal
+                      : $$selectedVal[0]
+                  }
+                }
+              },
+              [
+                _c("option", { domProps: { value: _vm.NULL } }, [
+                  _vm._v(" No grade ")
+                ]),
+                _vm._v(" "),
+                _vm._l(_vm.sport_route_grade, function(sport) {
+                  return _c(
+                    "option",
+                    { key: sport, domProps: { value: sport } },
+                    [_vm._v(_vm._s(sport))]
+                  )
+                })
+              ],
+              2
+            )
           ])
         ]),
+        _vm._v(" "),
+        _vm.errors.grade
+          ? _c("div", { staticClass: "form-group clearfix" }, [
+              _c("div", { staticClass: "col-xs-12" }, [
+                _c(
+                  "div",
+                  {
+                    staticClass: "alert alert-danger",
+                    attrs: { role: "alert" }
+                  },
+                  [
+                    _vm._v(
+                      "\n              " +
+                        _vm._s(_vm.errors.grade[0]) +
+                        "\n            "
+                    )
+                  ]
+                )
+              ])
+            ])
+          : _vm._e(),
         _vm._v(" "),
         _c("div", { staticClass: "form-group clearfix" }, [
           _c(
@@ -61763,7 +64327,24 @@ var render = function() {
                   _vm.name = $event.target.value
                 }
               }
-            })
+            }),
+            _vm._v(" "),
+            _vm.errors.name
+              ? _c(
+                  "div",
+                  {
+                    staticClass: "alert alert-danger",
+                    attrs: { role: "alert" }
+                  },
+                  [
+                    _vm._v(
+                      "\n            " +
+                        _vm._s(_vm.errors.name[0]) +
+                        "\n          "
+                    )
+                  ]
+                )
+              : _vm._e()
           ])
         ]),
         _vm._v(" "),
@@ -61976,8 +64557,8 @@ var render = function() {
                   {
                     name: "model",
                     rawName: "v-model",
-                    value: _vm.sellected,
-                    expression: "sellected"
+                    value: _vm.sellected_region,
+                    expression: "sellected_region"
                   }
                 ],
                 staticClass: "form-control",
@@ -61991,32 +64572,26 @@ var render = function() {
                         var val = "_value" in o ? o._value : o.value
                         return val
                       })
-                    _vm.sellected = $event.target.multiple
+                    _vm.sellected_region = $event.target.multiple
                       ? $$selectedVal
                       : $$selectedVal[0]
                   }
                 }
               },
-              [
-                _c("option", { attrs: { disabled: "" } }, [
-                  _vm._v("Please select sector")
-                ]),
-                _vm._v(" "),
-                _vm._l(_vm.regions, function(region) {
-                  return _c(
-                    "option",
-                    { key: region.id, domProps: { value: region.id } },
-                    [_vm._v(_vm._s(region.url_title))]
-                  )
-                })
-              ],
-              2
+              _vm._l(_vm.regions, function(region) {
+                return _c(
+                  "option",
+                  { key: region.id, domProps: { value: region.id } },
+                  [_vm._v(_vm._s(region.url_title))]
+                )
+              }),
+              0
             )
           ]),
           _vm._v(" "),
           _c("div", { staticClass: "col-xs-4" }, [
             _c("div", { staticClass: "col-xs-12" }, [
-              _vm.sellected != ""
+              _vm.sellected_region != ""
                 ? _c(
                     "select",
                     {
@@ -62045,35 +64620,48 @@ var render = function() {
                         }
                       }
                     },
-                    [
-                      _c("option", { attrs: { disabled: "" } }, [
-                        _vm._v("Please select sector")
-                      ]),
-                      _vm._v(" "),
-                      _vm._l(_vm.sectors, function(sector) {
-                        return _c(
-                          "option",
-                          {
-                            key: sector.id,
-                            attrs: { if: _vm.sellected == sector.article_id },
-                            domProps: { value: sector.id }
-                          },
-                          [_vm._v(_vm._s(sector.name))]
-                        )
-                      })
-                    ],
-                    2
+                    _vm._l(_vm.sectors, function(sector) {
+                      return _vm.sellected_region == sector.article_id
+                        ? _c(
+                            "option",
+                            { key: sector.id, domProps: { value: sector.id } },
+                            [_vm._v(_vm._s(sector.name))]
+                          )
+                        : _vm._e()
+                    }),
+                    0
                   )
                 : _vm._e()
             ])
           ])
         ]),
         _vm._v(" "),
+        _vm.errors.sector_id
+          ? _c("div", { staticClass: "form-group clearfix" }, [
+              _c("div", { staticClass: "col-xs-12" }, [
+                _c(
+                  "div",
+                  {
+                    staticClass: "alert alert-danger",
+                    attrs: { role: "alert" }
+                  },
+                  [
+                    _vm._v(
+                      "\n              " +
+                        _vm._s(_vm.errors.sector_id[0]) +
+                        "\n            "
+                    )
+                  ]
+                )
+              ])
+            ])
+          : _vm._e(),
+        _vm._v(" "),
         _c("div", { staticClass: "form-group clearfix" }, [
           _c(
             "label",
             { staticClass: "col-xs-2 control-label", attrs: { for: "name" } },
-            [_vm._v(" Gread ")]
+            [_vm._v(" grade ")]
           ),
           _vm._v(" "),
           _c("div", { staticClass: "col-xs-4" }, [
@@ -62152,14 +64740,23 @@ var render = function() {
                         }
                       }
                     },
-                    _vm._l(_vm.sport_route_grade, function(sport) {
-                      return _c(
-                        "option",
-                        { key: sport, domProps: { value: sport } },
-                        [_vm._v(_vm._s(sport))]
-                      )
-                    }),
-                    0
+                    [
+                      _c("option", { domProps: { value: _vm.NULL } }, [
+                        _vm._v(" No grade ")
+                      ]),
+                      _vm._v(" "),
+                      _vm._l(_vm.sport_route_grade, function(sport) {
+                        return _c(
+                          "option",
+                          {
+                            key: sport,
+                            domProps: { value: sport, selected: true }
+                          },
+                          [_vm._v(_vm._s(sport))]
+                        )
+                      })
+                    ],
+                    2
                   )
                 : _vm._e()
             ]),
@@ -62173,8 +64770,8 @@ var render = function() {
                         {
                           name: "model",
                           rawName: "v-model",
-                          value: _vm.or_gread,
-                          expression: "or_gread"
+                          value: _vm.or_grade,
+                          expression: "or_grade"
                         }
                       ],
                       staticClass: "form-control",
@@ -62188,19 +64785,26 @@ var render = function() {
                               var val = "_value" in o ? o._value : o.value
                               return val
                             })
-                          _vm.or_gread = $event.target.multiple
+                          _vm.or_grade = $event.target.multiple
                             ? $$selectedVal
                             : $$selectedVal[0]
                         }
                       }
                     },
                     [
-                      _c("option", [_vm._v("No")]),
+                      _c("option", { domProps: { value: _vm.NULL } }, [
+                        _vm._v(" No grade ")
+                      ]),
                       _vm._v(" "),
-                      _vm._l(_vm.sport_route_gread, function(sport) {
+                      _c("option", [_vm._v("Project")]),
+                      _vm._v(" "),
+                      _vm._l(_vm.sport_route_grade, function(sport) {
                         return _c(
                           "option",
-                          { key: sport, domProps: { value: sport } },
+                          {
+                            key: sport,
+                            domProps: { value: sport, selected: true }
+                          },
                           [_vm._v(_vm._s(sport))]
                         )
                       })
@@ -62221,8 +64825,8 @@ var render = function() {
                         {
                           name: "model",
                           rawName: "v-model",
-                          value: _vm.gread,
-                          expression: "gread"
+                          value: _vm.grade,
+                          expression: "grade"
                         }
                       ],
                       staticClass: "form-control",
@@ -62236,20 +64840,29 @@ var render = function() {
                               var val = "_value" in o ? o._value : o.value
                               return val
                             })
-                          _vm.gread = $event.target.multiple
+                          _vm.grade = $event.target.multiple
                             ? $$selectedVal
                             : $$selectedVal[0]
                         }
                       }
                     },
-                    _vm._l(_vm.boulder_route_gread, function(boulder) {
-                      return _c(
-                        "option",
-                        { key: boulder, domProps: { value: boulder } },
-                        [_vm._v(_vm._s(boulder))]
-                      )
-                    }),
-                    0
+                    [
+                      _c("option", { domProps: { value: _vm.NULL } }, [
+                        _vm._v(" No grade ")
+                      ]),
+                      _vm._v(" "),
+                      _vm._l(_vm.boulder_route_grade, function(boulder) {
+                        return _c(
+                          "option",
+                          {
+                            key: boulder,
+                            domProps: { value: boulder, selected: true }
+                          },
+                          [_vm._v(_vm._s(boulder))]
+                        )
+                      })
+                    ],
+                    2
                   )
                 : _vm._e()
             ]),
@@ -62263,8 +64876,8 @@ var render = function() {
                         {
                           name: "model",
                           rawName: "v-model",
-                          value: _vm.or_gread,
-                          expression: "or_gread"
+                          value: _vm.or_grade,
+                          expression: "or_grade"
                         }
                       ],
                       staticClass: "form-control",
@@ -62278,19 +64891,26 @@ var render = function() {
                               var val = "_value" in o ? o._value : o.value
                               return val
                             })
-                          _vm.or_gread = $event.target.multiple
+                          _vm.or_grade = $event.target.multiple
                             ? $$selectedVal
                             : $$selectedVal[0]
                         }
                       }
                     },
                     [
-                      _c("option", [_vm._v("No")]),
+                      _c("option", { domProps: { value: _vm.NULL } }, [
+                        _vm._v(" No grade ")
+                      ]),
                       _vm._v(" "),
-                      _vm._l(_vm.boulder_route_gread, function(boulder) {
+                      _c("option", [_vm._v("Project")]),
+                      _vm._v(" "),
+                      _vm._l(_vm.boulder_route_grade, function(boulder) {
                         return _c(
                           "option",
-                          { key: boulder, domProps: { value: boulder } },
+                          {
+                            key: boulder,
+                            domProps: { value: boulder, selected: true }
+                          },
                           [_vm._v(_vm._s(boulder))]
                         )
                       })
@@ -62301,6 +64921,27 @@ var render = function() {
             ])
           ])
         ]),
+        _vm._v(" "),
+        _vm.errors.grade
+          ? _c("div", { staticClass: "form-group clearfix" }, [
+              _c("div", { staticClass: "col-xs-12" }, [
+                _c(
+                  "div",
+                  {
+                    staticClass: "alert alert-danger",
+                    attrs: { role: "alert" }
+                  },
+                  [
+                    _vm._v(
+                      "\n              " +
+                        _vm._s(_vm.errors.grade[0]) +
+                        "\n            "
+                    )
+                  ]
+                )
+              ])
+            ])
+          : _vm._e(),
         _vm._v(" "),
         _c("div", { staticClass: "form-group clearfix" }, [
           _c(
@@ -62334,7 +64975,24 @@ var render = function() {
                   _vm.name = $event.target.value
                 }
               }
-            })
+            }),
+            _vm._v(" "),
+            _vm.errors.name
+              ? _c(
+                  "div",
+                  {
+                    staticClass: "alert alert-danger",
+                    attrs: { role: "alert" }
+                  },
+                  [
+                    _vm._v(
+                      "\n              " +
+                        _vm._s(_vm.errors.name[0]) +
+                        "\n            "
+                    )
+                  ]
+                )
+              : _vm._e()
           ])
         ]),
         _vm._v(" "),
@@ -62476,7 +65134,7 @@ var render = function() {
           _c(
             "label",
             { staticClass: "col-xs-2 control-label", attrs: { for: "name" } },
-            [_vm._v(" Bolter & Firs Ascent ")]
+            [_vm._v(" Bolter & Bolting data ")]
           ),
           _vm._v(" "),
           _c("div", { staticClass: "col-xs-4" }, [
@@ -62502,6 +65160,42 @@ var render = function() {
               }
             })
           ]),
+          _vm._v(" "),
+          _c("div", { staticClass: "col-xs-4" }, [
+            _c("input", {
+              directives: [
+                {
+                  name: "model",
+                  rawName: "v-model",
+                  value: _vm.bolting_data,
+                  expression: "bolting_data"
+                }
+              ],
+              staticClass: "form-control",
+              attrs: {
+                type: "text",
+                name: "title",
+                placeholder: "Bolting Data"
+              },
+              domProps: { value: _vm.bolting_data },
+              on: {
+                input: function($event) {
+                  if ($event.target.composing) {
+                    return
+                  }
+                  _vm.bolting_data = $event.target.value
+                }
+              }
+            })
+          ])
+        ]),
+        _vm._v(" "),
+        _c("div", { staticClass: "form-group clearfix" }, [
+          _c(
+            "label",
+            { staticClass: "col-xs-2 control-label", attrs: { for: "name" } },
+            [_vm._v("Firs Ascent ")]
+          ),
           _vm._v(" "),
           _c("div", { staticClass: "col-xs-4" }, [
             _c("input", {
@@ -62582,7 +65276,7 @@ var render = function() {
           _c(
             "label",
             { staticClass: "col-xs-2 control-label", attrs: { for: "name" } },
-            [_vm._v(" Region ")]
+            [_vm._v(" Region / Sector ")]
           ),
           _vm._v(" "),
           _c("div", { staticClass: "col-xs-4" }, [
@@ -62593,8 +65287,8 @@ var render = function() {
                   {
                     name: "model",
                     rawName: "v-model",
-                    value: _vm.sellect_region,
-                    expression: "sellect_region"
+                    value: _vm.sellected_region,
+                    expression: "sellected_region"
                   }
                 ],
                 staticClass: "form-control",
@@ -62608,83 +65302,96 @@ var render = function() {
                         var val = "_value" in o ? o._value : o.value
                         return val
                       })
-                    _vm.sellect_region = $event.target.multiple
+                    _vm.sellected_region = $event.target.multiple
                       ? $$selectedVal
                       : $$selectedVal[0]
                   }
                 }
               },
-              [
-                _c("option", { attrs: { disabled: "" } }, [
-                  _vm._v("Please select sector")
-                ]),
-                _vm._v(" "),
-                _vm._l(_vm.regions, function(region) {
-                  return _c(
-                    "option",
-                    { key: region.id, domProps: { value: region.id } },
-                    [_vm._v(_vm._s(region.url_title))]
-                  )
-                })
-              ],
-              2
+              _vm._l(_vm.regions, function(region) {
+                return _c(
+                  "option",
+                  { key: region.id, domProps: { value: region.id } },
+                  [_vm._v(_vm._s(region.url_title))]
+                )
+              }),
+              0
             )
           ]),
           _vm._v(" "),
           _c("div", { staticClass: "col-xs-4" }, [
             _c("div", { staticClass: "col-xs-12" }, [
-              _c(
-                "select",
-                {
-                  directives: [
+              _vm.sellected_region != ""
+                ? _c(
+                    "select",
                     {
-                      name: "model",
-                      rawName: "v-model",
-                      value: _vm.sector_id,
-                      expression: "sector_id"
-                    }
-                  ],
-                  staticClass: "form-control",
-                  on: {
-                    change: function($event) {
-                      var $$selectedVal = Array.prototype.filter
-                        .call($event.target.options, function(o) {
-                          return o.selected
-                        })
-                        .map(function(o) {
-                          var val = "_value" in o ? o._value : o.value
-                          return val
-                        })
-                      _vm.sector_id = $event.target.multiple
-                        ? $$selectedVal
-                        : $$selectedVal[0]
-                    }
-                  }
-                },
-                [
-                  _c("option", { attrs: { disabled: "" } }, [
-                    _vm._v("Please select sector")
-                  ]),
-                  _vm._v(" "),
-                  _vm._l(_vm.sectors, function(sector) {
-                    return _c(
-                      "option",
-                      { key: sector.id, domProps: { value: sector.id } },
-                      [_vm._v(_vm._s(sector.name))]
-                    )
-                  })
-                ],
-                2
-              )
+                      directives: [
+                        {
+                          name: "model",
+                          rawName: "v-model",
+                          value: _vm.sector_id,
+                          expression: "sector_id"
+                        }
+                      ],
+                      staticClass: "form-control",
+                      on: {
+                        change: function($event) {
+                          var $$selectedVal = Array.prototype.filter
+                            .call($event.target.options, function(o) {
+                              return o.selected
+                            })
+                            .map(function(o) {
+                              var val = "_value" in o ? o._value : o.value
+                              return val
+                            })
+                          _vm.sector_id = $event.target.multiple
+                            ? $$selectedVal
+                            : $$selectedVal[0]
+                        }
+                      }
+                    },
+                    _vm._l(_vm.sectors, function(sector) {
+                      return _vm.sellected_region == sector.article_id
+                        ? _c(
+                            "option",
+                            { key: sector.id, domProps: { value: sector.id } },
+                            [_vm._v(_vm._s(sector.name))]
+                          )
+                        : _vm._e()
+                    }),
+                    0
+                  )
+                : _vm._e()
             ])
           ])
         ]),
+        _vm._v(" "),
+        _vm.errors.sector_id
+          ? _c("div", { staticClass: "form-group clearfix" }, [
+              _c("div", { staticClass: "col-xs-12" }, [
+                _c(
+                  "div",
+                  {
+                    staticClass: "alert alert-danger",
+                    attrs: { role: "alert" }
+                  },
+                  [
+                    _vm._v(
+                      "\n              " +
+                        _vm._s(_vm.errors.sector_id[0]) +
+                        "\n            "
+                    )
+                  ]
+                )
+              ])
+            ])
+          : _vm._e(),
         _vm._v(" "),
         _c("div", { staticClass: "form-group clearfix" }, [
           _c(
             "label",
             { staticClass: "col-xs-2 control-label", attrs: { for: "name" } },
-            [_vm._v(" Gread ")]
+            [_vm._v(" grade ")]
           ),
           _vm._v(" "),
           _c("div", { staticClass: "col-xs-4" }, [
@@ -62751,8 +65458,8 @@ var render = function() {
                             {
                               name: "model",
                               rawName: "v-model",
-                              value: _vm.gread,
-                              expression: "gread"
+                              value: _vm.grade,
+                              expression: "grade"
                             }
                           ],
                           staticClass: "form-control",
@@ -62766,23 +65473,29 @@ var render = function() {
                                   var val = "_value" in o ? o._value : o.value
                                   return val
                                 })
-                              _vm.gread = $event.target.multiple
+                              _vm.grade = $event.target.multiple
                                 ? $$selectedVal
                                 : $$selectedVal[0]
                             }
                           }
                         },
-                        _vm._l(_vm.sport_route_gread, function(sport) {
-                          return _c(
-                            "option",
-                            {
-                              key: sport,
-                              domProps: { value: sport, selected: true }
-                            },
-                            [_vm._v(_vm._s(sport) + " ")]
-                          )
-                        }),
-                        0
+                        [
+                          _c("option", { domProps: { value: _vm.NULL } }, [
+                            _vm._v(" No grade ")
+                          ]),
+                          _vm._v(" "),
+                          _vm._l(_vm.sport_route_grade, function(sport) {
+                            return _c(
+                              "option",
+                              {
+                                key: sport,
+                                domProps: { value: sport, selected: true }
+                              },
+                              [_vm._v(_vm._s(sport) + " ")]
+                            )
+                          })
+                        ],
+                        2
                       )
                     : _vm._e()
                 ]),
@@ -62796,8 +65509,8 @@ var render = function() {
                             {
                               name: "model",
                               rawName: "v-model",
-                              value: _vm.or_gread,
-                              expression: "or_gread"
+                              value: _vm.or_grade,
+                              expression: "or_grade"
                             }
                           ],
                           staticClass: "form-control",
@@ -62811,16 +65524,20 @@ var render = function() {
                                   var val = "_value" in o ? o._value : o.value
                                   return val
                                 })
-                              _vm.or_gread = $event.target.multiple
+                              _vm.or_grade = $event.target.multiple
                                 ? $$selectedVal
                                 : $$selectedVal[0]
                             }
                           }
                         },
                         [
+                          _c("option", { domProps: { value: _vm.NULL } }, [
+                            _vm._v(" No grade ")
+                          ]),
+                          _vm._v(" "),
                           _c("option", [_vm._v("Project")]),
                           _vm._v(" "),
-                          _vm._l(_vm.sport_route_gread, function(sport) {
+                          _vm._l(_vm.sport_route_grade, function(sport) {
                             return _c(
                               "option",
                               {
@@ -62848,8 +65565,8 @@ var render = function() {
                         {
                           name: "model",
                           rawName: "v-model",
-                          value: _vm.gread,
-                          expression: "gread"
+                          value: _vm.grade,
+                          expression: "grade"
                         }
                       ],
                       staticClass: "form-control",
@@ -62863,23 +65580,29 @@ var render = function() {
                               var val = "_value" in o ? o._value : o.value
                               return val
                             })
-                          _vm.gread = $event.target.multiple
+                          _vm.grade = $event.target.multiple
                             ? $$selectedVal
                             : $$selectedVal[0]
                         }
                       }
                     },
-                    _vm._l(_vm.boulder_route_gread, function(boulder) {
-                      return _c(
-                        "option",
-                        {
-                          key: boulder,
-                          domProps: { value: boulder, selected: true }
-                        },
-                        [_vm._v(_vm._s(boulder))]
-                      )
-                    }),
-                    0
+                    [
+                      _c("option", { domProps: { value: _vm.NULL } }, [
+                        _vm._v(" No grade ")
+                      ]),
+                      _vm._v(" "),
+                      _vm._l(_vm.boulder_route_grade, function(boulder) {
+                        return _c(
+                          "option",
+                          {
+                            key: boulder,
+                            domProps: { value: boulder, selected: true }
+                          },
+                          [_vm._v(_vm._s(boulder))]
+                        )
+                      })
+                    ],
+                    2
                   )
                 : _vm._e()
             ]),
@@ -62893,8 +65616,8 @@ var render = function() {
                         {
                           name: "model",
                           rawName: "v-model",
-                          value: _vm.or_gread,
-                          expression: "or_gread"
+                          value: _vm.or_grade,
+                          expression: "or_grade"
                         }
                       ],
                       staticClass: "form-control",
@@ -62908,16 +65631,20 @@ var render = function() {
                               var val = "_value" in o ? o._value : o.value
                               return val
                             })
-                          _vm.or_gread = $event.target.multiple
+                          _vm.or_grade = $event.target.multiple
                             ? $$selectedVal
                             : $$selectedVal[0]
                         }
                       }
                     },
                     [
+                      _c("option", { domProps: { value: _vm.NULL } }, [
+                        _vm._v(" No grade ")
+                      ]),
+                      _vm._v(" "),
                       _c("option", [_vm._v("Project")]),
                       _vm._v(" "),
-                      _vm._l(_vm.boulder_route_gread, function(boulder) {
+                      _vm._l(_vm.boulder_route_grade, function(boulder) {
                         return _c(
                           "option",
                           {
@@ -62934,6 +65661,27 @@ var render = function() {
             ])
           ])
         ]),
+        _vm._v(" "),
+        _vm.errors.grade
+          ? _c("div", { staticClass: "form-group clearfix" }, [
+              _c("div", { staticClass: "col-xs-12" }, [
+                _c(
+                  "div",
+                  {
+                    staticClass: "alert alert-danger",
+                    attrs: { role: "alert" }
+                  },
+                  [
+                    _vm._v(
+                      "\n              " +
+                        _vm._s(_vm.errors.grade[0]) +
+                        "\n            "
+                    )
+                  ]
+                )
+              ])
+            ])
+          : _vm._e(),
         _vm._v(" "),
         _c("div", { staticClass: "form-group clearfix" }, [
           _c(
@@ -62953,11 +65701,7 @@ var render = function() {
                 }
               ],
               staticClass: "form-control",
-              attrs: {
-                type: "text",
-                name: "name",
-                placeholder: "Route name.."
-              },
+              attrs: { type: "text", name: "name", placeholder: "Route name" },
               domProps: { value: _vm.name },
               on: {
                 input: function($event) {
@@ -62967,7 +65711,24 @@ var render = function() {
                   _vm.name = $event.target.value
                 }
               }
-            })
+            }),
+            _vm._v(" "),
+            _vm.errors.name
+              ? _c(
+                  "div",
+                  {
+                    staticClass: "alert alert-danger",
+                    attrs: { role: "alert" }
+                  },
+                  [
+                    _vm._v(
+                      "\n              " +
+                        _vm._s(_vm.errors.name[0]) +
+                        "\n            "
+                    )
+                  ]
+                )
+              : _vm._e()
           ])
         ]),
         _vm._v(" "),
@@ -63109,7 +65870,7 @@ var render = function() {
           _c(
             "label",
             { staticClass: "col-xs-2 control-label", attrs: { for: "name" } },
-            [_vm._v(" Bolter & Firs Ascent ")]
+            [_vm._v(" Bolter & Bolting data ")]
           ),
           _vm._v(" "),
           _c("div", { staticClass: "col-xs-4" }, [
@@ -63137,6 +65898,42 @@ var render = function() {
           ]),
           _vm._v(" "),
           _c("div", { staticClass: "col-xs-4" }, [
+            _c("input", {
+              directives: [
+                {
+                  name: "model",
+                  rawName: "v-model",
+                  value: _vm.bolting_data,
+                  expression: "bolting_data"
+                }
+              ],
+              staticClass: "form-control",
+              attrs: {
+                type: "text",
+                name: "title",
+                placeholder: "Bolting Data"
+              },
+              domProps: { value: _vm.bolting_data },
+              on: {
+                input: function($event) {
+                  if ($event.target.composing) {
+                    return
+                  }
+                  _vm.bolting_data = $event.target.value
+                }
+              }
+            })
+          ])
+        ]),
+        _vm._v(" "),
+        _c("div", { staticClass: "form-group clearfix" }, [
+          _c(
+            "label",
+            { staticClass: "col-xs-2 control-label", attrs: { for: "name" } },
+            [_vm._v("Firs Ascent ")]
+          ),
+          _vm._v(" "),
+          _c("div", { staticClass: "col-xs-8" }, [
             _c("input", {
               directives: [
                 {
@@ -63274,7 +66071,24 @@ var render = function() {
                   _vm.name = $event.target.value
                 }
               }
-            })
+            }),
+            _vm._v(" "),
+            _vm.errors.name
+              ? _c(
+                  "div",
+                  {
+                    staticClass: "alert alert-danger",
+                    attrs: { role: "alert" }
+                  },
+                  [
+                    _vm._v(
+                      "\n                " +
+                        _vm._s(_vm.errors.name[0]) +
+                        "\n            "
+                    )
+                  ]
+                )
+              : _vm._e()
           ])
         ]),
         _vm._v(" "),
@@ -63321,7 +66135,24 @@ var render = function() {
                 )
               }),
               0
-            )
+            ),
+            _vm._v(" "),
+            _vm.errors.article_id
+              ? _c(
+                  "div",
+                  {
+                    staticClass: "alert alert-danger",
+                    attrs: { role: "alert" }
+                  },
+                  [
+                    _vm._v(
+                      "\n                " +
+                        _vm._s(_vm.errors.article_id[0]) +
+                        "\n            "
+                    )
+                  ]
+                )
+              : _vm._e()
           ])
         ]),
         _vm._v(" "),
@@ -63796,6 +66627,20 @@ var render = function() {
     _vm._v(" "),
     _c("div", { staticClass: "container" }, [
       _c("div", { staticClass: "row" }, [
+        _vm.image_errors.image
+          ? _c(
+              "div",
+              { staticClass: "alert alert-danger", attrs: { role: "alert" } },
+              [
+                _vm._v(
+                  "\n                " +
+                    _vm._s(_vm.image_errors.image[0]) +
+                    "\n            "
+                )
+              ]
+            )
+          : _vm._e(),
+        _vm._v(" "),
         _vm.myModal
           ? _c("div", { staticClass: "card" }, [
               _c("div", { staticClass: "card-header" }, [
@@ -64101,7 +66946,25 @@ var render = function() {
                   _vm.name = $event.target.value
                 }
               }
-            })
+            }),
+            _vm._v(" "),
+            _vm.errors.name
+              ? _c(
+                  "div",
+                  {
+                    staticClass: "alert alert-danger",
+                    attrs: { role: "alert" }
+                  },
+                  [
+                    _vm._m(1),
+                    _vm._v(
+                      "\n                " +
+                        _vm._s(_vm.errors.name[0]) +
+                        "\n            "
+                    )
+                  ]
+                )
+              : _vm._e()
           ])
         ]),
         _vm._v(" "),
@@ -64148,7 +67011,25 @@ var render = function() {
                 )
               }),
               0
-            )
+            ),
+            _vm._v(" "),
+            _vm.errors.article_id
+              ? _c(
+                  "div",
+                  {
+                    staticClass: "alert alert-danger",
+                    attrs: { role: "alert" }
+                  },
+                  [
+                    _vm._m(2),
+                    _vm._v(
+                      "\n              " +
+                        _vm._s(_vm.errors.article_id[0]) +
+                        "\n          "
+                    )
+                  ]
+                )
+              : _vm._e()
           ])
         ]),
         _vm._v(" "),
@@ -64659,7 +67540,7 @@ var render = function() {
                           }
                         }
                       },
-                      [_vm._m(1)]
+                      [_vm._m(3)]
                     )
                   ])
                 ])
@@ -64806,6 +67687,40 @@ var staticRenderFns = [
           ])
         ])
       ]
+    )
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c(
+      "button",
+      {
+        staticClass: "close",
+        attrs: {
+          type: "button",
+          "data-dismiss": "alert",
+          "aria-label": "Close"
+        }
+      },
+      [_c("span", { attrs: { "aria-hidden": "true" } }, [_vm._v("×")])]
+    )
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c(
+      "button",
+      {
+        staticClass: "close",
+        attrs: {
+          type: "button",
+          "data-dismiss": "alert",
+          "aria-label": "Close"
+        }
+      },
+      [_c("span", { attrs: { "aria-hidden": "true" } }, [_vm._v("×")])]
     )
   },
   function() {

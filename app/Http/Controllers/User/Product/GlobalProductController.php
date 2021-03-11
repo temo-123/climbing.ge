@@ -39,6 +39,8 @@ class GlobalProductController extends Controller
         $request->user()->authorizeRoles(['admin']);
 
         if ($request -> isMethod('post')) {
+            $this->global_product_validate($request);
+
             $last_globale_id = 0;
             // $last_us_product_id = 0;
             // $last_ka_product_id = 0;
@@ -100,6 +102,8 @@ class GlobalProductController extends Controller
     public function edit_global_product(Product $product, Request $request)
     {
         if ($request->isMethod('post')) {
+            $this->global_product_validate($request);
+
             $product = Product::where('id',strip_tags($request->id))->first();
             
             // $product['url_title'] = $url_title;
@@ -209,22 +213,13 @@ class GlobalProductController extends Controller
     }
 
 
-
-
-
-
-
-
-
-    private function product_validate($request)
+    private function global_product_validate($request)
     {
         $request->validate([
-            'category' => 'required',
-            'title' => 'required|max:25',
-            'text' => 'required',
-            'price' => 'required|max:5',
-            'currency' => 'required|max:4',
-            'image_1' => 'required',
+            'category_id' => 'required',
+            'published' => 'required',
+            'price' => 'required',
+            'currency' => 'required',
         ]);
     }
 

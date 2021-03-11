@@ -34,6 +34,10 @@
     {{-- <script src="../node_modules/ckeditor4-vue/dist/ckeditor.js"></script> --}}
     {{-- <script src="{{ asset('../node_modules/ckeditor4-vue/dist/ckeditor.js') }}"></script> --}}
 
+    {{-- Google analitics --}}
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-N8TE74E1BE"></script>
+    <script src="{{ asset('assets/js/analitic/user.climbing.ge_analitic.js') }}"></script>
+
 </head>
 <body>
     <style>

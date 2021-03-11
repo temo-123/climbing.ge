@@ -37,7 +37,11 @@
         <article_edit_form  
             :category="{{ json_encode($category) }}" 
             :editing_article_id = {{ $editing_article_id }}
-            back_url="{{ route('article_list', array($category)) }}"
+            @if ($category == "mount_route")
+                back_url="{{ route('article_list', '../mountaineering') }}"
+            @else
+                back_url="{{ route('article_list', array($category)) }}"
+            @endif
         ></article_edit_form>
     
     </div>

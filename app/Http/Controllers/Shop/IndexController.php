@@ -83,36 +83,4 @@ class IndexController extends Controller
     	}
     	abort(404);
     }
-
-    public function shop_about_us()
-    {
-        $data  = [
-            'seller'=>$seller,
-            'products'=>$seler_products,
-            'seler_products_count'=>$seler_products_count,
-            'shop'=>1,
-            'favorite_products'=>$favorite_products,
-            'favorite_products_array'=>$favorite_products_array,
-            
-            'image_dir' => 'other_img',
-            'price_array'=>$price_array,
-            'loop_num_var' => 0,
-            
-            'favorite_array'=>$favorite_array,
-            // 'articles_gallery'=>$article_gallery,
-            // 'comments'=>$comments,
-            
-            'slider_link'=>'../../assets/img/other_img/slider_img/',
-            'all_article_but'=>'other_list',
-            'article_map'=>'Other',
-            
-            'article_edit_link'=>'otherEdit',
-            
-            // 'other_article'=>$other_outdoors_list,
-            'other_article_link'=>'other_page',
-            'other_article_img'=>'assets/img/other_img/',
-        ];
-
-        return view('blog.seller_page',$data);
-    }
 }

@@ -14,7 +14,7 @@
     <!--About text-->
     <div class="aboutus-section">
         <div class="container">
-            <div class="row">
+            {{-- <div class="row">
                 <div class="col-md-12 col-sm-12 col-xs-12">
                     <div class="about_us_page_image">
                         @foreach($gallery_images as $image)
@@ -22,7 +22,7 @@
                         @endforeach
                     </div>
                 </div>
-            </div>
+            </div> --}}
                 
             @if (isset($site) && is_object($site) )	
             <div class="row">
@@ -73,19 +73,30 @@
                         </div> --}}
                     </div>
                 </div>
-                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                <div class="row">
+                    <div class="col-md-12 col-sm-12 col-xs-12">
+                        <hr>
+                        <div class="about_us_page_shop_section">
+                            @foreach($gallery_images as $image)
+                                <a href="{{ route('shop_index') }}"><img src="{{ asset('images/site_img/site_logo/climibng,ge shop (becground).jpg') }}" alt="" style="rounded mx-auto d-block"></a>
+                            @endforeach
+                            <a href="{{ route('shop_index') }}"><h2><strong>climbing.ge shop</strong></h2></a>
+                            {!! $site->shop_short_description !!}
+                        </div>
+                    </div>
+                </div>
+                {{-- <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                     <h2>Gread charts</h2>
                     <img alt="{!! $site -> meta_keyword!!}" src="{{ asset('images/site_img/'.$site -> image) }}">
-                </div>
+                </div> --}}
                 <!--Actyvity list-->
-                <div class="col-md-12 col-sm-12 col-xs-12">
+                {{-- <div class="col-md-12 col-sm-12 col-xs-12">
                     <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
                         <ul class="right-text">
                             <li>
                                 <h4>
                                     <a href="{{ $site -> activity_link_1 }}">
                                         <strong>@lang('site.title outdoor climbing')</strong>
-                                        <!-- <i class="fa fa-tablet"></i> -->
                                         <img alt='outdoor climbing image' class="index_category_right" src="{{ asset('images/site_img/logo/outdoor.png') }}">
                                     </a>
                                 </h4>
@@ -99,7 +110,6 @@
                                 <h4>
                                     <a href="{{ $site -> activity_link_2 }}">
                                         <strong>@lang('site.title indoor climbing')</strong>
-                                        <!-- <i class="fa fa-file-code-o"></i> -->
                                         <img alt='indoor climbing image' class="index_category_right" src="{{ asset('images/site_img/logo/indoor.png') }}">
                                     </a>
                                 </h4>
@@ -116,8 +126,6 @@
                                 <h4>
                                     <a href="{{ $site -> activity_link_3 }}">
                                         <strong>@lang('site.title ice climbing')</strong>
-                                        <!-- <i class="fa fa-eye"></i> -->
-                                        {{-- <img alt='ice climbing image' class="index_category_left" src="{{ asset('images/site_img/logo/ice.png') }}"> --}}
                                         <img alt='indoor climbing image' class="index_category_left" src="{{ asset('images/site_img/logo/indoor.png') }}">
                                     </a>
                                 </h4>
@@ -131,7 +139,6 @@
                                 <h4>
                                     <a href="$site -> activity_link_4">
                                         <strong>@lang('site.title mountaineering')</strong>
-                                        <!-- <i class="fa fa-fire"></i> -->
                                         <img alt='mountaineering image' class="index_category_left" src="{{ asset('images/site_img/logo/mount.png') }}">
                                     </a>
                                 </h4>
@@ -142,7 +149,7 @@
                             </li>
                         </ul>
                     </div>
-                </div>                    
+                </div>                     --}}
             </div>
                     
             <div class="clearfix"></div>
@@ -170,8 +177,8 @@
 
             <h6>{{$site -> partner_descriptio}}</h6>	
 
-            <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Swiper/4.3.3/css/swiper.min.css"> -->
-            <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/Swiper/4.3.3/js/swiper.min.js"></script> -->
+            {{-- <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Swiper/4.3.3/css/swiper.min.css"> -->
+            <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/Swiper/4.3.3/js/swiper.min.js"></script> --> --}}
 
             <div class="container">     
             <div class="row">

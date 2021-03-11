@@ -20,16 +20,27 @@
             <div class="col-xs-12">
               <select class="form-control" v-if="sellected != ''" v-model="sector_id">
                 <option disabled>Please select sector</option>
-                <option v-for="sector in sectors" :key="sector.id" :if="sellected == sector.article_id" v-bind:value="sector.id">{{ sector.name }}</option>
+                <option v-for="sector in sectors" :key="sector.id" v-if="sellected == sector.article_id" v-bind:value="sector.id">{{ sector.name }}</option>
               </select>
             </div>
           </div>
+        </div>
+        
+        <div class="form-group clearfix" v-if="errors.sector_id">
+            <div class="col-xs-12">
+              <div class="alert alert-danger" role="alert">
+                {{ errors.sector_id[0] }}
+              </div>
+            </div>
         </div>
 
         <div class="form-group clearfix">
           <label for="name" class='col-xs-2 control-label'> Route name </label>
           <div class="col-xs-8">
             <input type="text" name="name" v-model="name" class="form-control" placeholder="Route name.."> 
+              <div class="alert alert-danger" role="alert" v-if="errors.name">
+                {{ errors.name[0] }}
+              </div>
           </div>
         </div>
 
@@ -42,21 +53,11 @@
         </div>
 
         <div class="form-group clearfix">
-          <label for="name" class='col-xs-2 control-label'> Bolter & height </label>
-          <div class="col-xs-4">
-            <input type="text" name="title" class="form-control" v-model="bolter" placeholder="Bolter"> 
-          </div>
-          <div class="col-xs-3">
+          <label for="name" class='col-xs-2 control-label'> Height </label>
+          <div class="col-xs-6">
             <input type="text" name="title" class="form-control" v-model="height" placeholder="Height"> 
           </div>
-          <label for="name" class='col-xs-1 control-label'> M </label>
-        </div>
-
-        <div class="form-group clearfix">
-          <label for="name" class='col-xs-2 control-label'>Firs Ascent </label>
-          <div class="col-xs-8">
-            <input type="text" name="title" class="form-control" v-model="first_ascent" placeholder="First ascent"> 
-          </div>
+          <label for="name" class='col-xs-2 control-label'> M </label>
         </div>
 
       </form>
@@ -73,6 +74,8 @@ export default {
 
       regions: [],
       sectors: [],
+
+      errors: [],
 
       sector_id: "",
       title: "",
@@ -113,30 +116,26 @@ export default {
       );
     },
 
-    add_global_article: function () {
+    add_mtp: function () {
       axios
       .post('/routes_and_sectors/mtp_add', {
           sector_id: this.sector_id,
-          gread: this.gread,
-          or_gread: this.or_gread,
           name: this.name,
           text: this.text,
           height: this.height,
-          bolts: this.bolts,
-          bolter: this.bolter,
-          first_ascent: this.first_ascent,
       })
       .then(function (response) {
-          console.log("route added sucsesfule")
+          window.location.href = '/routes_and_sectors';
       })
-      .catch(function (response){
-          console.log("route added is not sucsesfule!!!")
+      .catch(error =>{
+          if (error.response.status == 422) {
+            this.errors = error.response.data.errors
+          }
       })
     },
 
     save_all: function () {
-      this.add_global_article()
-      window.location.href = '/routes_and_sectors';
+      this.add_mtp()
     }
 
   }

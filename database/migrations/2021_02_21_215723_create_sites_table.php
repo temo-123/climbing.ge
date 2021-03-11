@@ -44,6 +44,10 @@ class CreateSitesTable extends Migration
             $table->text('indoor_description_ru')->nullable();
             $table->text('indoor_description_ka')->nullable();
             
+            $table->text('ice_description')->nullable();
+            $table->text('ice_description_ru')->nullable();
+            $table->text('ice_description_ka')->nullable();
+            
             $table->text('topo_description')->nullable();
             $table->text('topo_description_ru')->nullable();
             $table->text('topo_description_ka')->nullable();
@@ -61,7 +65,8 @@ class CreateSitesTable extends Migration
             $table->string('google_link')->nullable();
             $table->string('twit_link')->nullable();
 
-            $table->text('email')->nullable();
+            $table->string('email')->nullable();
+            $table->string('number')->nullable();
             $table->text('map')->nullable();
 
             $table->timestamps();

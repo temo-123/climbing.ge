@@ -34,6 +34,18 @@
                                 <option value="0">Not public</option> 
                                 <option value="1">Public</option> 
                             </select> 
+                            <div class="alert alert-danger" role="alert" v-if="global_article_error.published">
+                                {{ global_article_error.published[0] }}
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group clearfix" v-if="this.category == 'mount_route'">
+                        <label for="name" class='col-xs-2 control-label'> Mountain </label>
+                        <div class="col-xs-8">
+                            <select class="form-control" v-model="mount_id" name="mount_id"> 
+                                <option  v-for="mount in mount_data" :key="mount.id" v-bind:value="mount.id">{{mount.name}}</option> 
+                            </select> 
                         </div>
                     </div>
 
@@ -48,7 +60,7 @@
                     </div>
 
 
-                    <div class="form-group clearfix">
+                    <div class="form-group clearfix" v-if="this.category != 'mount_route'">
                         <label for="name" class='col-xs-2 control-label'> Map </label>
                         <div class="col-xs-8">
                             <input type="text" v-model="map" name="map" class="form-control"> 
@@ -56,7 +68,7 @@
                     </div>
 
 
-                    <div class="form-group clearfix"  v-if="this.category == 'outdoor' || this.category == 'ice' || this.category == 'mount_route'">
+                    <div class="form-group clearfix"  v-if="this.category == 'outdoor' || this.category == 'ice' || this.category != 'mount_route'">
                         <label for="name" class='col-xs-2 control-label'> Weather </label>
                         <div class="col-xs-8">
                             <input type="text" v-model="weather" name="weather" class="form-control"> 
@@ -128,22 +140,14 @@
                             <input type="text" v-model="web_link" name="web_link" class="form-control"> 
                         </div>
                     </div>
-
-                    <!-- <div class="form-group">
-                        <label for="email">Upload Profile Pic:</label>
-                        <input type="file" name="profile_pic" id="profile_pic">
-                    </div> -->
-
                 </form>
 
                 <form @submit="checkForm" ref="myForm">
-                        <div class="form-group">
-                            <label for="email">Upload Profile Pic:</label>
-                            <input type="file" name="profile_pic" id="profile_pic">
-                        </div>
-                        <!-- <button type="submit" class="btn btn-default">Submit</button> -->
+                    <div class="form-group">
+                        <label for="email">Upload Profile Pic:</label>
+                        <input type="file" name="profile_pic" id="profile_pic">
+                    </div>
                 </form>
-
 
             </div>
 
@@ -161,6 +165,9 @@
                         <label for="name" class='col-xs-2 control-label'> Title </label>
                         <div class="col-xs-8">
                             <input type="text" name="name" v-model="us_title"  class="form-control"> 
+                            <div class="alert alert-danger" role="alert" v-if="us_article_error.us_title">
+                                {{ us_article_error.us_title[0] }}
+                            </div>
                         </div>
                     </div>
 
@@ -169,6 +176,9 @@
                         <div class="col-xs-8">
                             <!-- <textarea type="text" name="short_description" v-model="us_short_description" rows="15" class="form-cotrol md-textarea form-control"></textarea> -->
                             <ckeditor v-model="us_short_description" :config="editorConfig"></ckeditor>
+                            <div class="alert alert-danger" role="alert" v-if="us_article_error.us_short_description">
+                                {{ us_article_error.us_short_description[0] }}
+                            </div>
                         </div>
                     </div>
 
@@ -177,6 +187,9 @@
                         <div class="col-xs-8">
                             <!-- <textarea type="text"  name="text" rows="15" v-model="us_text" class="form-cotrol md-textarea form-control"></textarea> -->
                             <ckeditor v-model="us_text" :config="editorConfig"></ckeditor>
+                            <div class="alert alert-danger" role="alert" v-if="us_article_error.us_text">
+                                {{ us_article_error.us_text[0] }}
+                            </div>
                         </div>
                     </div>
 
@@ -217,6 +230,9 @@
                         <div class="col-xs-8">
                             <!-- <textarea type="text"  name="info" rows="15" v-model="us_info" class="form-cotrol md-textarea form-control"></textarea> -->
                             <ckeditor v-model="us_info" :config="editorConfig"></ckeditor>
+                            <div class="alert alert-danger" role="alert" v-if="us_article_error.us_info">
+                                {{ us_article_error.us_info[0] }}
+                            </div>
                         </div>
                     </div>
 
@@ -253,13 +269,16 @@
                         <p class="lead">Article rusion version for site localisation.</p>
                     </div>
                 </div>
-
+                
                 <form name="contact-form" method="POST" @submit.prevent="add_ru_article" style="margin-top: 5%;" enctyp ="multipart/form-data">
                     <div class="form-group clearfix">
                         <label for="name" class='col-xs-2 control-label'> Title </label>
                         <div class="col-xs-8">
                             <!-- <input type="text" name="value name" value="old data" class="form-control"> -->
                             <input type="text" name="title" v-model="ru_title" class="form-control"> 
+                            <div class="alert alert-danger" role="alert" v-if="ru_article_error.ru_title">
+                                {{ ru_article_error.ru_title[0] }}
+                            </div>
                         </div>
                     </div>
 
@@ -268,6 +287,9 @@
                         <div class="col-xs-8">
                             <!-- <textarea type="text"  name="short_description" v-model="ru_short_description"  rows="15" class="form-cotrol md-textarea form-control"></textarea> -->
                             <ckeditor v-model="ru_short_description" :config="editorConfig"></ckeditor>
+                            <div class="alert alert-danger" role="alert" v-if="ru_article_error.ru_short_description">
+                                {{ ru_article_error.ru_short_description[0] }}
+                            </div>
                         </div>
                     </div>
 
@@ -276,6 +298,9 @@
                         <div class="col-xs-8">
                             <!-- <textarea type="text"  name="text" rows="15"  v-model="ru_text" class="form-cotrol md-textarea form-control"></textarea> -->
                             <ckeditor v-model="ru_text" :config="editorConfig"></ckeditor>
+                            <div class="alert alert-danger" role="alert" v-if="ru_article_error.ru_text">
+                                {{ ru_article_error.ru_text[0] }}
+                            </div>
                         </div>
                     </div>
 
@@ -316,6 +341,9 @@
                         <div class="col-xs-8">
                             <!-- <textarea type="text"  name="info" rows="15" v-model="ru_info" class="form-cotrol md-textarea form-control"></textarea> -->
                             <ckeditor v-model="ru_info" :config="editorConfig"></ckeditor>
+                            <div class="alert alert-danger" role="alert" v-if="ru_article_error.ru_info">
+                                {{ ru_article_error.ru_info[0] }}
+                            </div>
                         </div>
                     </div>
 
@@ -358,6 +386,9 @@
                         <div class="col-xs-8">
                             <!-- <input type="text" name="value name" value="old data" class="form-control"> -->
                             <input type="text" name="value name"  v-model="ka_title" class="form-control"> 
+                            <div class="alert alert-danger" role="alert" v-if="ka_article_error.ka_text">
+                                {{ ka_article_error.ka_text[0] }}
+                            </div>
                         </div>
                     </div>
 
@@ -366,6 +397,9 @@
                         <div class="col-xs-8">
                             <!-- <textarea type="text"  name="short_description"  v-model="ka_short_description" rows="15" class="form-cotrol md-textarea form-control"></textarea> -->
                             <ckeditor v-model="ka_short_description" :config="editorConfig"></ckeditor>
+                            <div class="alert alert-danger" role="alert" v-if="ka_article_error.ka_short_description">
+                                {{ ka_article_error.ka_short_description[0] }}
+                            </div>
                         </div>
                     </div>
 
@@ -374,6 +408,9 @@
                         <div class="col-xs-8">
                             <!-- <textarea type="text"  name="txt" rows="15"  v-model="ka_text" class="form-cotrol md-textarea form-control"></textarea> -->
                             <ckeditor v-model="ka_text" :config="editorConfig"></ckeditor>
+                            <div class="alert alert-danger" role="alert" v-if="ka_article_error.ka_text">
+                                {{ ka_article_error.ka_text[0] }}
+                            </div>
                         </div>
                     </div>
 
@@ -414,6 +451,9 @@
                         <div class="col-xs-8">
                             <!-- <textarea type="text"  name="info" rows="15"  v-model="ka_info" class="form-cotrol md-textarea form-control"></textarea> -->
                             <ckeditor v-model="ka_info" :config="editorConfig"></ckeditor>
+                            <div class="alert alert-danger" role="alert" v-if="ka_article_error.ka_info">
+                                {{ ka_article_error.ka_info[0] }}
+                            </div>
                         </div>
                     </div>
 
@@ -453,6 +493,15 @@
         ],
         data(){
             return {
+                global_article_error: [],
+                is_global_article_error: true,
+                ka_article_error: [],
+                is_ka_article_error: true,
+                ru_article_error: [],
+                is_ru_article_error: true,
+                us_article_error: [],
+                is_us_article_error: true,
+
                 us_title_for_url_title: '',
                 published: "",
                 completed: "",
@@ -471,6 +520,8 @@
                 name: '',
                 image: '',
                 success: '',
+
+                mount_data: '',
 
 
                 // 
@@ -533,6 +584,9 @@
         },
         mounted() {
             this.create_temporary_article()
+            if (this.category == 'mount_route') {
+                this.get_mount_massive_data()
+            }
         },
         methods: {
             create_temporary_article() {
@@ -571,7 +625,19 @@
                 );
             },
 
+            get_mount_massive_data: function(){
+                axios
+                .get("/mountaineering/get_mount_data/")
+                .then(response => {
+                    this.mount_data = response.data
+                })
+                .catch(
+                error => console.log(error)
+                );
+            },
+
             add_us_article() {
+                this.is_us_article_error = false
                 axios
                 .post('/articles/us/add/' + this.category, {        
                     us_title: this.us_title,
@@ -588,13 +654,15 @@
                     us_meta_keyword: this.us_meta_keyword,
                 })
                 .then((response)=> { 
-                    // console.log(response)
-                    // this.is_us_article_succes = 1
-                    // console.log('englihs article upload successful');
-
-                    this.add_ru_article()
+                    this.is_us_article_error = false
+                    this.if_isset_go_beck(this.is_us_article_error)
                 })
-                .catch(error => console.log(error))
+                .catch(error =>{
+                    if (error.response.status == 422) {
+                        this.us_article_error = error.response.data.errors
+                    }
+                    this.is_us_article_error = true
+                })
             },
             add_ru_article() {
                 axios
@@ -612,14 +680,16 @@
                     ru_price_from: this.ru_price_from,
                     ru_meta_keyword: this.ru_meta_keyword,
                 })
-                .then((response)=> { 
-                    // this.is_ru_article_succes = 1
-                    // console.log(this.is_ru_article_succes);
-                    // console.log(response) 
-                    // console.log('rusian article upload successful');
-                    // this.add_ka_article()
+                .then((response)=> {
+                    this.is_ru_article_error = false
+                    this.if_isset_go_beck(this.is_ru_article_error)
                 })
-                .catch(error => console.log(error))
+                .catch(error =>{
+                    if (error.response.status == 422) {
+                        this.ru_article_error = error.response.data.errors
+                    }
+                    this.is_ru_article_error = true
+                })
             },
             add_ka_article() {
                 axios
@@ -631,30 +701,30 @@
                     ka_how_get: this.ka_how_get,
                     ka_best_time: this.ka_best_time,
                     ka_what_need: this.ka_what_need,
-                    ka_: this.ka_,
+                    ka_info: this.ka_info,
                     ka_time: this.ka_time,
                     ka_price_text: this.ka_price_text,
                     ka_price_from: this.ka_price_from,
                     ka_meta_keyword: this.ka_meta_keyword,
                 })
                 .then((response)=>  {
-                    // console.log(response)
-                    // this.is_ka_article_succes = 1
-                    // console.log('georgian article upload successful');
-
-                    // this.add_global_article()
+                    this.is_ka_article_error = false
+                    this.if_isset_go_beck(this.is_ka_article_error)
                 })
-                .catch(error => console.log(error))
+                .catch(error =>{
+                    if (error.response.status == 422) {
+                        this.ka_article_error = error.response.data.errors
+                    }
+                    this.is_ka_article_error = true
+                })
             },
             add_global_article() {
-                // var myFormData = new FormData(this.$refs.myForm)
-                // console.log(myFormData);
-
                 axios
                 .post('/articles/global/add/' + this.category, {
                     us_title_for_url_title: this.us_title,
 
                     published: this.published,
+                    mount_id: this.mount_id,
                     completed: this.completed,
                     map: this.map,
                     weather: this.weather,
@@ -674,19 +744,18 @@
                     web_link: this.web_link,
                 })
                 .then((response)=>  { 
-                    // this.is_global_article_succes = 1
-                    // console.log(response)
-                    // alert(response.data.message);
-                    // console.log('global article upload successful');
-
-                    // this.checkForm()
+                    this.is_global_article_error = false
+                    this.if_isset_go_beck(this.is_global_article_error)
                 })
-                .catch(
-                    error => console.log(error)
-                )
+                .catch(error =>{
+                    if (error.response.status == 422) {
+                        this.global_article_error = error.response.data.errors
+                    }
+                    this.is_global_article_error = true
+                })
             },
 
-            checkForm: function (e) {
+            checkForm: function () {
                 var myFormData = new FormData(this.$refs.myForm)
                 axios({
                     method: 'post',
@@ -713,8 +782,17 @@
                 this.add_global_article()
 
                 this.checkForm()
+            },
 
-                window.location.href = this.back_url;
+            if_isset_go_beck() {
+                if (
+                    this.is_global_article_error == false &&
+                    this.is_ka_article_error == false &&
+                    this.is_ru_article_error == false &&
+                    this.is_us_article_error == false
+                ) {
+                    window.location.href = this.back_url;
+                }
             }
         }
     }

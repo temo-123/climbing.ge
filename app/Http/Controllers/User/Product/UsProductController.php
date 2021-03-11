@@ -14,6 +14,7 @@ class UsProductController extends Controller
         $request->user()->authorizeRoles(['manager', 'admin']);
         if ($request -> isMethod('post')) {
             // $input = $request -> except('_token');
+            $this->us_product_validate($request);
 
             $us_articl = us_product::get();
             foreach ($us_articl as $us) {
@@ -35,6 +36,8 @@ class UsProductController extends Controller
     public function edit_us_product(Request $request)
     {
         if ($request->isMethod('post')) {
+            $this->us_product_validate($request);
+            
             $us_product = Us_product::where('id',strip_tags($request->id))->first();
             
             $us_product->title=$request->us_title;
@@ -44,5 +47,15 @@ class UsProductController extends Controller
             
             $us_product -> update();
         }
+    }
+
+
+    private function us_product_validate($request)
+    {
+        $request->validate([
+            'us_title' => 'required',
+            'us_short_description' => 'required',
+            'us_text' => 'required',
+        ]);
     }
 }

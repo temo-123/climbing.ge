@@ -9,25 +9,31 @@
       <form action="">
         
         <div class="form-group clearfix">
-          <label for="name" class='col-xs-2 control-label'> Region </label>
+          <label for="name" class='col-xs-2 control-label'> Region / Sector </label>
           <div class="col-xs-4">
-            <select class="form-control"  v-model="sellect_region">
-              <option disabled>Please select sector</option>
+            <select class="form-control"  v-model="sellected_region">
               <option v-for="region in regions" :key="region.id" v-bind:value="region.id">{{ region.url_title  }}</option>
             </select>
           </div>
           <div class="col-xs-4">
             <div class="col-xs-12">
-              <select class="form-control" v-model="sector_id">
-                <option disabled>Please select sector</option>
-                <option v-for="sector in sectors" :key="sector.id"  v-bind:value="sector.id">{{ sector.name }}</option>
+              <select class="form-control" v-if="sellected_region != ''" v-model="sector_id">
+                <option v-for="sector in sectors" :key="sector.id" v-if="sellected_region == sector.article_id" v-bind:value="sector.id">{{ sector.name }}</option>
               </select>
             </div>
           </div>
         </div>
 
+        <div class="form-group clearfix" v-if="errors.sector_id">
+            <div class="col-xs-12">
+              <div class="alert alert-danger" role="alert">
+                {{ errors.sector_id[0] }}
+              </div>
+            </div>
+        </div>
+
         <div class="form-group clearfix">
-          <label for="name" class='col-xs-2 control-label'> Gread </label>
+          <label for="name" class='col-xs-2 control-label'> grade </label>
           <div class="col-xs-4">
             <select class="form-control" v-model="route_type">
               <option disabled>Please select route type</option>
@@ -42,36 +48,51 @@
           </div>
           <div class="col-xs-4" v-if="route_type != ''">
             <div class="col-xs-6">
-              <select class="form-control" v-if="route_type == 'sport climbing'" v-model="gread">
-                <option v-for="sport in sport_route_gread" :key="sport" v-bind:value="sport" :selected="true" >{{ sport }} </option>
+              <select class="form-control" v-if="route_type == 'sport climbing'" v-model="grade">
+                <option v-bind:value="NULL"> No grade </option>
+                <option v-for="sport in sport_route_grade" :key="sport" v-bind:value="sport" :selected="true" >{{ sport }} </option>
               </select>
             </div>
             <div class="col-xs-6">
-              <select class="form-control" v-if="route_type == 'sport climbing'" v-model="or_gread">
+              <select class="form-control" v-if="route_type == 'sport climbing'" v-model="or_grade">
+                <option v-bind:value="NULL"> No grade </option>
                 <option>Project</option>
-                <option v-for="sport in sport_route_gread" :key="sport" v-bind:value="sport" :selected="true" >{{ sport }}</option>
+                <option v-for="sport in sport_route_grade" :key="sport" v-bind:value="sport" :selected="true" >{{ sport }}</option>
               </select>
             </div>
           </div>
           <div class="col-xs-4">
             <div class="col-xs-6">
-              <select class="form-control" v-if="route_type == 'bouldering'" v-model="gread">
-                <option v-for="boulder in boulder_route_gread" :key="boulder" v-bind:value="boulder" :selected="true" >{{ boulder }}</option>
+              <select class="form-control" v-if="route_type == 'bouldering'" v-model="grade">
+                <option v-bind:value="NULL"> No grade </option>
+                <option v-for="boulder in boulder_route_grade" :key="boulder" v-bind:value="boulder" :selected="true" >{{ boulder }}</option>
               </select>
             </div>
             <div class="col-xs-6">
-              <select class="form-control" v-if="route_type == 'bouldering'" v-model="or_gread">
+              <select class="form-control" v-if="route_type == 'bouldering'" v-model="or_grade">
+                <option v-bind:value="NULL"> No grade </option>
                 <option>Project</option>
-                <option v-for="boulder in boulder_route_gread" :key="boulder" v-bind:value="boulder" :selected="true" >{{ boulder }}</option>
+                <option v-for="boulder in boulder_route_grade" :key="boulder" v-bind:value="boulder" :selected="true" >{{ boulder }}</option>
               </select>
             </div>
           </div>
         </div>
 
+        <div class="form-group clearfix" v-if="errors.grade">
+            <div class="col-xs-12">
+              <div class="alert alert-danger" role="alert">
+                {{ errors.grade[0] }}
+              </div>
+            </div>
+        </div>
+
         <div class="form-group clearfix">
           <label for="name" class='col-xs-2 control-label'> Route name </label>
           <div class="col-xs-8">
-            <input type="text" name="name" v-model="name" class="form-control" placeholder="Route name.."> 
+            <input type="text" name="name" v-model="name" class="form-control" placeholder="Route name"> 
+              <div class="alert alert-danger" role="alert" v-if="errors.name">
+                {{ errors.name[0] }}
+              </div>
           </div>
         </div>
 
@@ -98,11 +119,18 @@
         </div>
 
         <div class="form-group clearfix">
-          <label for="name" class='col-xs-2 control-label'> Bolter & Firs Ascent </label>
+          <label for="name" class='col-xs-2 control-label'> Bolter & Bolting data </label>
           <div class="col-xs-4">
             <input type="text" name="title" class="form-control" v-model="bolter" placeholder="Bolter"> 
           </div>
           <div class="col-xs-4">
+            <input type="text" name="title" class="form-control" v-model="bolting_data" placeholder="Bolting Data"> 
+          </div>
+        </div>
+
+        <div class="form-group clearfix">
+          <label for="name" class='col-xs-2 control-label'>Firs Ascent </label>
+          <div class="col-xs-8">
             <input type="text" name="title" class="form-control" v-model="first_ascent" placeholder="First ascent"> 
           </div>
         </div>
@@ -119,22 +147,25 @@
     ],
     data() {
       return {
-        // sellect_region:"",
+        sellected_region:"",
         route_type: '',
+        errors: [],
 
         regions: [],
         sectors: [],
+        sector_id: "",
 
         article_id: "",
         category: "",
-        gread: "",
-        or_gread: "",
+        grade: "",
+        or_grade: "",
         name: "",
         text: "",
         last_carabin: "",
         height: "",
         bolts: "",
         bolter: "",
+        bolting_data: "",
         first_ascent: "",
 
         editing_data: "",
@@ -142,7 +173,7 @@
         editing_url: '/routes_and_sectors/get_route_editing_data/',
         url: '',
 
-        sport_route_gread: [
+        sport_route_grade: [
           "4",
           "5a", "5b", "5c", "5c+",
           "6a", "6a+", "6b", "6b+", "6c", "6c+",
@@ -150,7 +181,7 @@
           "8a", "8a+", "8b", "8b+", "8c", "8c+",
           "9a", "9a+", "9b", "9b+", "9c", "9c+",
         ],
-        boulder_route_gread: [
+        boulder_route_grade: [
           "V1", "V1+",
           "V2", "V2+",
           "V3", "V3+",
@@ -205,6 +236,7 @@
           error => console.log(error)
         );
       },
+
       get_route_editing_data() {
           this.url = this.editing_url + this.editing_roure_id
           axios
@@ -215,28 +247,51 @@
               // send data in editing form value
               this.sector_id = this.editing_data.route['sector_id'],
               this.route_type = this.editing_data.route['category'],
-              this.gread = this.editing_data.route['gread'],
-              this.or_gread = this.editing_data.route['or_gread'],
+              this.grade = this.editing_data.route['grade'],
+              this.or_grade = this.editing_data.route['or_grade'],
               this.name = this.editing_data.route['name'],
               this.text = this.editing_data.route['text'],
               this.last_carabin = this.editing_data.route['last_carabin'],
               this.height = this.editing_data.route['height'],
               this.bolts = this.editing_data.route['bolts'],
               this.bolter = this.editing_data.route['bolter'],
+              this.bolting_data = this.editing_data.route['bolting_data'],
               this.first_ascent = this.editing_data.route['first_ascent']
-              
-              for (let index = 0; index < this.sectors.length; index++) {
-                if (this.sectors[index]['id'] == this.sector_id) {
-                  this.select_region = this.sectors[index]['article_id']
-                }
-              }
-              console.log(this.select_region);
 
+              this.value_sector_region(this.editing_data)
+              this.value_route_grade()
           })
           .catch(
               error => console.log(error)
           );
       },
+
+      value_sector_region: function(editing_data){
+        if (editing_data.route['sector_id'] != "" || editing_data.route['sector_id'] != NULL) {
+          for (let index = 0; index < this.sectors.length; index++) {
+            if (this.sectors[index]['id'] == this.sector_id) {
+              this.sellected_region = this.sectors[index]['article_id']
+            }
+          }
+        }
+      },
+      value_route_grade: function(){
+        if (
+          this.grade == "4" ||
+          this.grade == "5a" || this.grade == "5b" || this.grade == "5c" || this.grade == "5c+" || 
+          this.grade == "6a" || this.grade == "6a+" || this.grade == "6b" || this.grade == "6b+" || this.grade == "6c" || this.grade == "6c+" ||  
+          this.grade == "7a" || this.grade == "7a+" || this.grade == "7b" || this.grade == "7b+" || this.grade == "7c" || this.grade == "7c+" ||  
+          this.grade == "8a" || this.grade == "8a+" || this.grade == "8b" || this.grade == "8b+" || this.grade == "8c" || this.grade == "8c+" || 
+          this.grade == "9a" || this.grade == "9a+" || this.grade == "9b" || this.grade == "9b+" || this.grade == "9c" || this.grade == "9c+" 
+          
+        ) {
+          this.route_type = 'sport climbing'
+        }
+        else{
+          this.route_type = 'bouldering'
+        }
+      },
+
 
       edit_route: function () {
         axios
@@ -244,25 +299,27 @@
             sector_id: this.sector_id,
             name: this.name,
             text: this.text,
-            gread: this.gread,
-            or_gread: this.or_gread,
+            grade: this.grade,
+            or_grade: this.or_grade,
             last_carabin: this.last_carabin,
             height: this.height,
             bolts: this.bolts,
             bolter: this.bolter,
+            bolting_data: this.bolting_data,
             first_ascent: this.first_ascent,
         })
         .then(function (response) {
-            console.log("route edited sucsesfule")
+            window.location.href = '/routes_and_sectors';
         })
-        .catch(function (response){
-            console.log("route edited is not sucsesfule!!!")
+        .catch(error =>{
+          if (error.response.status == 422) {
+            this.errors = error.response.data.errors
+          }
         })
       },
 
       save_all: function () {
         this.edit_route()
-        window.location.href = '/routes_and_sectors';
       }
     }
   }

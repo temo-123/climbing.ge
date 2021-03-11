@@ -9,6 +9,7 @@ use App\Models\Sector;
 use App\Models\Route;
 use App\Models\Mtp;
 use App\Models\Mtp_pitch;
+use Validate;
 
 class MtpController extends Controller
 {
@@ -17,7 +18,7 @@ class MtpController extends Controller
 		$request->user()->authorizeRoles(['manager', 'admin']);
         
         if ($request -> isMethod('post')) {
-            $input = $request -> except('_token'); 
+            $this->mtp_validate($request); 
             
             $article = new Mtp();
 
@@ -25,8 +26,6 @@ class MtpController extends Controller
             $article['name']=$request->name;
             $article['text']=$request->text; 
             $article['height']=$request->height;
-            $article['bolter']=$request->bolter;
-            $article['first_ascent']=$request->first_ascent;
 
             $article -> save();
         }
@@ -44,14 +43,18 @@ class MtpController extends Controller
     {
         $request->user()->authorizeRoles(['manager', 'admin']);
 
-        $mtp = mtp::find($request->id);
+        if ($request -> isMethod('post')) {
+            $this->mtp_validate($request); 
 
-        $mtp->sector_id = $request->sector_id;
-        $mtp->name = $request->name;
-        $mtp->text = $request->text;
-        $mtp->height = $request->height;
-        
-        $mtp->update();
+            $mtp = mtp::find($request->id);
+
+            $mtp->sector_id = $request->sector_id;
+            $mtp->name = $request->name;
+            $mtp->text = $request->text;
+            $mtp->height = $request->height;
+            
+            $mtp->update();
+        }
     }
 
     public function edit_mtp_form(Request $request)
@@ -79,25 +82,14 @@ class MtpController extends Controller
     public function delete_mtp(Request $request)
     {
         if ($request->isMethod('post')) {
-            $sector_id=$request->id;
+            $mtp = Mtp::where('id',strip_tags($request->id))->first();
 
-            $sector = Mtp::where('id',strip_tags($sector_id))->first();
+            $mtp_pitch = Mtp_pitch::where('mtp_id',strip_tags($mtp->id))->get();
 
-            // dd($sector);
-
-            // delete product file
-            // $fileName = $არტიცლე['image'];
-            // $destinationPath = 'images/shop_img/';
-            // File::delete($destinationPath.$fileName);
-
-            // delete product from db
-            $sector ->delete();
+            // delete mtp from db
+            $mtp ->delete();
         }
     }
-
-
-
-
 
 
     public function add_pitch(Request $request)
@@ -105,13 +97,13 @@ class MtpController extends Controller
 		$request->user()->authorizeRoles(['manager', 'admin']);
         
         if ($request -> isMethod('post')) {
-            $input = $request -> except('_token');
+            $this->mtp_pitch_validate($request);
             
             $article = new mtp_pitch();
 
             $article['mtp_id']=$request->mtp_id;
-            $article['gread']=$request->gread;
-            $article['or_gread']=$request->or_gread; 
+            $article['grade']=$request->grade;
+            $article['or_grade']=$request->or_grade; 
             $article['name']=$request->name;
             $article['text']=$request->text;
             $article['height']=$request->height;
@@ -136,19 +128,23 @@ class MtpController extends Controller
     {
         $request->user()->authorizeRoles(['manager', 'admin']);
 
-        $mtp_pitch = Mtp_pitch::find($request->id);
+        if ($request -> isMethod('post')) {
+            $this->mtp_pitch_validate($request);
 
-        $mtp_pitch->mtp_id = $request->mtp_id;
-        $mtp_pitch->gread = $request->gread;
-        $mtp_pitch->or_gread = $request->or_gread; 
-        $mtp_pitch->name = $request->name;
-        $mtp_pitch->text = $request->text; 
-        $mtp_pitch->height = $request->height;
-        $mtp_pitch->bolts = $request->bolts;
-        $mtp_pitch->bolter = $request->bolter;
-        $mtp_pitch->first_ascent = $request->first_ascent;
-        
-        $mtp_pitch->update();
+            $mtp_pitch = Mtp_pitch::find($request->id);
+
+            $mtp_pitch->mtp_id = $request->mtp_id;
+            $mtp_pitch->grade = $request->grade;
+            $mtp_pitch->or_grade = $request->or_grade; 
+            $mtp_pitch->name = $request->name;
+            $mtp_pitch->text = $request->text; 
+            $mtp_pitch->height = $request->height;
+            $mtp_pitch->bolts = $request->bolts;
+            $mtp_pitch->bolter = $request->bolter;
+            $mtp_pitch->first_ascent = $request->first_ascent;
+            
+            $mtp_pitch->update();
+        }
     }
 
     public function edit_pitch_form(Request $request)
@@ -180,15 +176,24 @@ class MtpController extends Controller
 
             $sector = Mtp_pitch::where('id',strip_tags($sector_id))->first();
 
-            // dd($sector);
-
-            // delete product file
-            // $fileName = $არტიცლე['image'];
-            // $destinationPath = 'images/shop_img/';
-            // File::delete($destinationPath.$fileName);
-
             // delete product from db
             $sector ->delete();
         }
+    }
+
+    public function mtp_validate($request)
+    {
+        $request->validate([
+            'name' => 'required|max:190',
+            'sector_id' => 'required',
+        ]);
+    }
+    public function mtp_pitch_validate($request)
+    {
+        $request->validate([
+            'name' => 'required|max:190',
+            'grade' => 'required',
+            'mtp_id' => 'required',
+        ]);
     }
 }

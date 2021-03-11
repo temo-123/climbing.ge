@@ -39,9 +39,13 @@ class SiteTableSeeder extends Seeder
 		$site->outdoor_description_ru	 = 'Скалолазание на открытом воздухе в Грузии';
         $site->outdoor_description_ka	 = 'ცოცვა ბუნებრივ კლდეზე';
         
-		$site->indoor_description	 = 'Indoor climbing gyms in georgia';
+		$site->indoor_description	 = 'Indoor climbing gyms in Georgia';
 		$site->indoor_description_ru	 = 'Скалолазные залы в грузии';
         $site->indoor_description_ka = 'საცოცი დარბაზები';
+        
+		$site->ice_description	 = 'Ice climbing in Georgia';
+		$site->ice_description_ru	 = 'Ледолазание в Грузии';
+        $site->ice_description_ka = 'ყინულზე ცოცვა';
         	
 		$site->topo_description	 = 'Climbing topo';
 		$site->topo_description_ru	 = 'Восхождение на вершину';
@@ -56,6 +60,7 @@ class SiteTableSeeder extends Seeder
         $site->shop_description_ka	 = 'საცოცი პროდუკტები წარმოებული ჩვენი კომპანიის მიერ';
 
         $site->email = 'samsonadze.temo9@gmail.com';
+        $site->number = '+995 598 45 70 48';
         $site->map = '<iframe src="https://www.google.com/maps/d/embed?mid=1vp_Rgh8UmlN7nZGFGHChh_rRy1t5GdOv" width="100%" height="480"></iframe>';
         $site->save();
     }

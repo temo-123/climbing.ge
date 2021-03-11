@@ -14,7 +14,8 @@ class MountMassiveController extends Controller
         $request->user()->authorizeRoles(['manager', 'admin']);
         
         if ($request -> isMethod('post')) {
-            $input = $request -> except('_token');
+            // $input = $request -> except('_token');
+            $this->mount_validate($request);
             
             $mount = new Mount();
 
@@ -40,6 +41,7 @@ class MountMassiveController extends Controller
 
             $mount['map']=$request->map;
             $mount['weather']=$request->weather;
+            $mount['published']=$request->published;
 
             $mount -> save();
         }
@@ -73,10 +75,11 @@ class MountMassiveController extends Controller
     public function edit(mount $mount, Request $request)
     {
         if ($request->isMethod('post')) {
-            $input = $request -> except('_token');
-
-            $mount = Mount::find($request->id);
-
+            // $input = $request -> except('_token');
+            $this->mount_validate($request);
+            // $mount = Mount::find($request->id);
+            $mount = Mount::where('id',strip_tags($request->id))->first();
+            
             $mount['name']=$request->name;
             $mount['name_ru']=$request->name;
             $mount['name_ka']=$request->name;
@@ -99,39 +102,10 @@ class MountMassiveController extends Controller
 
             $mount['map']=$request->map;
             $mount['weather']=$request->weather;
-// dd($mount);
+            $mount['published']=$request->published;
+            
             $mount -> update();
         }
-
-        // if (view()->exists('user.components.forms.gallery_form')) {
-        //     $image_id = $request->id;
-        //     $gallery = Gallery::where('id',strip_tags($request->id))->first();
-        //     $old = $gallery -> toArray();
-        //     $articles = Article::
-        //         where('category','=','outdoor')->
-        //         orWhere('category','=','indoor')->
-        //         orWhere('category','=','ice')->
-        //         orWhere('category','=','other')->
-        //         orWhere('category','=','prtner')->
-        //         orWhere('category','=','mount')->
-        //     get();
-        //     $data = [
-        //         'title' => 'Edit news - '.$old['title'],
-        //         'data' => $old,
-        //         "articles" => $articles,
-        //         "image_id" => $image_id,
-
-        //         'edit_form'=>'galleryEdit',
-        //         'edit_title'=>'test',
-        //         'edit_active'=>'test 2',
-        //         'published' => 1,
-        //         'description' => 1,
-        //         'text' => 1,
-
-        //         'image' => $image_dir
-        //     ];          
-        //     return view('user.components.forms.gallery_form', $data);
-        // }
     }
 
     public function get_mount_editing_data(Request $request)
@@ -180,14 +154,32 @@ class MountMassiveController extends Controller
     }
 
 
-    public function gallery_validate($request)
+    public function mount_validate($request)
     {
         $request->validate([
             'published' => 'required',
-            'category' => 'required',
-            'title' => 'required|max:25',
-            'text' => 'required|max:225',
-            'filter' => 'required',
+            'map' => 'required',
+            'weather' => 'required',
+            
+            'name' => 'required',
+            'name_ru' => 'required',
+            'name_ka' => 'required',
+
+            'text' => 'required',
+            'text_ru' => 'required',
+            'text_ka' => 'required',
+
+            'short_description' => 'required',
+            'short_description_ru' => 'required',
+            'short_description_ka' => 'required',
+
+            'how_get' => 'required',
+            'how_get_ru' => 'required',
+            'how_get_ka' => 'required',
+
+            'best_time' => 'required',
+            'best_time_ru' => 'required',
+            'best_time_ka' => 'required',
         ]);
     }
 }
