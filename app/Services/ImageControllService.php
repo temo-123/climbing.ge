@@ -105,7 +105,8 @@ class imageControllService
         $filename  = $file->getClientOriginalName();
         $extension = $file->getClientOriginalExtension();
         $pieces = explode( '.', $filename );
-        $file_new_name = $pieces[0].'_('.date('Y-m-d-H-m-s').').'.$extension;
+        // $file_new_name = $pieces[0].'_('.date('Y-m-d-H-m-s').').'.$extension;
+        $file_new_name = date('Y-m-d-H-m-s');
 
         return $file_new_name;
     }
