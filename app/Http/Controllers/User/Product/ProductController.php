@@ -14,7 +14,7 @@ use App\Models\Favorite_product;
 
 use App\Models\Product_image;
 
-use App\Services\imageControllService;
+use App\Services\ImageControllService;
 
 class ProductController extends Controller
 {
@@ -241,7 +241,8 @@ class ProductController extends Controller
             $product_images_count = Product_image::where('product_id',strip_tags($global_id))->count();
             if ($product_images_count > 0) {
                 foreach ($product_images as $product_image) {
-                    imageControllService::image_delete('product_img', $product_image, $request);
+                    // dd($product_image);
+                    imageControllService::image_delete('images/product_img/', $product_image, $request);
                     $product_image ->delete();
                 }
             }
@@ -296,47 +297,27 @@ class ProductController extends Controller
 
     public function upload_product_image(Request $request)
     {
-        if ($request->hasFile('profile_pic')){  
-            // rename file
-            $file      = $request->file('profile_pic');
-            $filename  = $file->getClientOriginalName();
-            $extension = $file->getClientOriginalExtension();
-            $pieces = explode( '.', $filename );
-            $file_new_name = $pieces[0].'_('.date('Y-m-d-H-m-s').').'.$extension;
-            
-            // push image in folder
-            $file->move(public_path('images/product_img'), $file_new_name);
-            $product = new product_image();
-            // $product = product_image::where('id',strip_tags($last_global_product_id))->first();
-            $product['image']=$file_new_name;
-            $product['product_id']=$request->product_id;
-            $product -> save();
+        $request->user()->authorizeRoles(['manager', 'admin']);
+        
+        $product_image = new Product_image();
 
-            return response()->json(["message" => "Image Uploaded Succesfully"]);
-        } 
-        else{
-            return response()->json(["message" => "Image Uploaded Error."]);
-        }
+        $file_new_name = ImageControllService::image_upload('images/product_img/', $request, 'profile_pic', 1);
+
+        $product_image['image'] = $file_new_name;
+        $product_image['product_id'] = $request->product_id;
+        $product_image -> save();
     }
 
-    public function update_product_image(Request $request)
-    {
-        # code...
-    }
     public function del_product_image(Request $request)
     {
         $request->user()->authorizeRoles(['manager', 'admin']);
 
         if ($request->isMethod('post')) {
-            $product_image_id=$request->image_id;
+            $product_image = Product_image::where('id',strip_tags($request->image_id))->first();
 
-            $product_image = Product_image::where('id',strip_tags($product_image_id))->first();
+            ImageControllService::image_delete('images/product_img/', $product_image);
 
-            // delite image
-            imageControllService::image_delete('product_img', $product_image, $request);
-
-            // delete product from db
-            $product_image ->delete();
+            $product_image -> delete();
         }
     }
 

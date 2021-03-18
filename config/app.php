@@ -253,7 +253,7 @@ return [
         'LocalisationService' => App\Services\Localisation\LocalisationService::class, // Language localisation
         'GetArticlesService' => App\Services\GetArticlesService::class, // Get articles
         'GetProductsService' => App\Services\GetProductsService::class, // Get products
-        'imageControllService' => App\Services\imageControllService::class, // image upload, update & delite
+        'ImageControllService' => App\Services\ImageControllService::class, // image upload, update & delite
         'get_url_title' => App\Services\get_url_title::class, // create url_title, from us_title
 
 

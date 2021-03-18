@@ -23,7 +23,7 @@
     @section('updated_at',  $product['updated_at'])
 
 <section aria-label="Main content" role="main" class="product-detail top_menu_margin">
-    <div class="row">
+  <div class="container">
       <div class="_cont detail-top">
         <div class="cols">
           <div class="left-col">
@@ -88,7 +88,7 @@
 
                       <div class="price_pege">
                       @if($global_product -> currency == 'GEL')
-                        <p title="GEL {{$new_price[1]}}">L
+                        <p title="GEL {{$new_price[1]}}">₾
                       @elseif($global_product -> currency == 'USD')
                         <p title="USD {{$new_price[1]}}">$
                       @else
@@ -100,7 +100,7 @@
 
                       <div class="old_price_page">
                       @if($global_product -> currency == 'GEL')
-                        <p title="GEL {{$global_product -> price}}">L
+                        <p title="GEL {{$global_product -> price}}">₾
                       @elseif($global_product -> currency == 'USD')
                         <p title="USD {{$global_product -> price}}">$
                       @else
@@ -116,7 +116,7 @@
                   
                   <div class="price_pege">
                   @if($global_product -> currency == 'GEL')
-                    <p title="GEL {{$global_product -> price}}">L
+                    <p title="GEL {{$global_product -> price}}">₾
                   @elseif($global_product -> currency == 'USD')
                     <p title="USD {{$global_product -> price}}">$
                   @else
@@ -230,14 +230,14 @@
                 @endif
               </div>
               @if ($global_product->quantity != NULL && $global_product->quantity <= 3)
-                <h2><strong style="color: #f70000;">Limited quantity</strong></h2>
+                <h2><strong style="color: #f70000;">₾imited quantity ( @if($global_product->quantity == 1) 1 @else 3 > @endif )</strong></h2>
               @endif
               </div>
             </div>
           </div>
         </div>
       </div>
-    
+  </div>
 
     <div class="clearfix"></div>
 
@@ -290,9 +290,6 @@
       </div>
     </div>
     </div>
-          {{-- </div>
-        </div>
-      </div> --}}
     
     
 
@@ -300,100 +297,100 @@
 
 
 
-    {{-- @if(isset($othe_products))
+    @if(isset($othe_products))
     <div class="container">
-    <div class="row">
-    <div class="related">
-        <h2>You might also like</h2>
-        <div class="collection-list">
-        @foreach($othe_products as $other_product)
-          <a class="product-box" href="{{route('shop_page', array('title'=>$other_product->url_title))}}">
-            <span class="img">
-              <span style="background-image: url('{{ asset('images/shop_img/'.$other_product -> image_1) }}')" class="i first">
-              </span>
-              <span class="i second" style="background-image: url('{{ asset('images/shop_img/'.$other_product -> image_1) }}')">
-              </span>
-            </span>
-            <span class="text">
-              <strong href="{{route('shop_page', array('title'=>$other_product->url_title))}}">{{$other_product -> title}}</strong>
-              <span>
-              @if($other_product -> currency == 'GEL')
-              L
-              @elseif($other_product -> currency == 'USD')
-              $
-              @else
-              {{$other_product -> currency}}
-              @endif
-              {{$other_product -> price}}
-              </span>
-              <div class="variants">
-                @if($other_product -> size != null && $other_product -> size_style != null)
-                <div class="variant">
-                  <div class="var m available">
-                    <div>{{$other_product -> size}}({{$other_product -> size_style}})</div>
-                  </div>
-                </div>
-                @endif
-                @if($other_product -> color != null)
-                <div class="variant">
-                      @if($other_product -> color == 'White')
-                      <div class="var color white available">
-                        <div class="c" style="background-color: white;"></div>
-                      </div>
-                      @elseif($other_product -> color == 'Black')
-                      <div class="var color black available">
-                        <div class="c" style="background-color: black;"></div>
-                      </div>
-                      @elseif($other_product -> color == 'Brown')
-                      <div class="var color brown available">
-                        <div class="c" style="background-color: brown;"></div>
-                      </div>
-                      @elseif($other_product -> color == 'Red')
-                      <div class="var color red available">
-                        <div class="c" style="background-color: red;"></div>
-                      </div>
-                      @elseif($other_product -> color == 'Orange')
-                      <div class="var color orange available">
-                        <div class="c" style="background-color: orange;"></div>
-                      </div>
-                      @elseif($other_product -> color == 'Yellow')
-                      <div class="var color yellow available">
-                        <div class="c" style="background-color: yellow;"></div>
-                      </div>
-                      @elseif($other_product -> color == 'Green')
-                      <div class="var color green available">
-                        <div class="c" style="background-color: green;"></div>
-                      </div>
-                      @elseif($other_product -> color == 'Blue')
-                      <div class="var color blue available">
-                        <div class="c" style="background-color: blue;"></div>
-                      </div>
-                      @elseif($other_product -> color == 'Purple')
-                      <div class="var color purple available">
-                        <div class="c" style="background-color: purple;"></div>
-                      </div>
-                      @elseif($other_product -> color == 'Grey')
-                      <div class="var color grey available">
-                        <div class="c" style="background-color: grey;"></div>
+      <div class="row">
+        <div class="related">
+            <h2>You might also like</h2>
+            @foreach($othe_products as $other_product)
+            <div class="collection-list">
+                <a class="product-box" href="{{route('shop_page', array('title'=>$other_product->url_title))}}">
+                  <span class="img">
+                    <span style="background-image: url('{{ asset('images/shop_img/'.$other_product -> image_1) }}')" class="i first">
+                    </span>
+                    <span class="i second" style="background-image: url('{{ asset('images/shop_img/'.$other_product -> image_1) }}')">
+                    </span>
+                  </span>
+                  <span class="text">
+                    <strong href="{{route('shop_page', array('title'=>$other_product->url_title))}}">{{$other_product -> title}}</strong>
+                    <span>
+                    @if($other_product -> currency == 'GEL')
+                    ₾
+                    @elseif($other_product -> currency == 'USD')
+                    $
+                    @else
+                    {{$other_product -> currency}}
+                    @endif
+                    {{$other_product -> price}}
+                    </span>
+                    <div class="variants">
+                      @if($other_product -> size != null && $other_product -> size_style != null)
+                      <div class="variant">
+                        <div class="var m available">
+                          <div>{{$other_product -> size}}({{$other_product -> size_style}})</div>
+                        </div>
                       </div>
                       @endif
-                </div>
-                @endif
-              </div>
-            </span>
-          </a>
+                      @if($other_product -> color != null)
+                      <div class="variant">
+                            @if($other_product -> color == 'White')
+                            <div class="var color white available">
+                              <div class="c" style="background-color: white;"></div>
+                            </div>
+                            @elseif($other_product -> color == 'Black')
+                            <div class="var color black available">
+                              <div class="c" style="background-color: black;"></div>
+                            </div>
+                            @elseif($other_product -> color == 'Brown')
+                            <div class="var color brown available">
+                              <div class="c" style="background-color: brown;"></div>
+                            </div>
+                            @elseif($other_product -> color == 'Red')
+                            <div class="var color red available">
+                              <div class="c" style="background-color: red;"></div>
+                            </div>
+                            @elseif($other_product -> color == 'Orange')
+                            <div class="var color orange available">
+                              <div class="c" style="background-color: orange;"></div>
+                            </div>
+                            @elseif($other_product -> color == 'Yellow')
+                            <div class="var color yellow available">
+                              <div class="c" style="background-color: yellow;"></div>
+                            </div>
+                            @elseif($other_product -> color == 'Green')
+                            <div class="var color green available">
+                              <div class="c" style="background-color: green;"></div>
+                            </div>
+                            @elseif($other_product -> color == 'Blue')
+                            <div class="var color blue available">
+                              <div class="c" style="background-color: blue;"></div>
+                            </div>
+                            @elseif($other_product -> color == 'Purple')
+                            <div class="var color purple available">
+                              <div class="c" style="background-color: purple;"></div>
+                            </div>
+                            @elseif($other_product -> color == 'Grey')
+                            <div class="var color grey available">
+                              <div class="c" style="background-color: grey;"></div>
+                            </div>
+                            @endif
+                      </div>
+                      @endif
+                    </div>
+                  </span>
+                </a>
+            </div>
+            @endforeach
+            <div class="more-products" id="more-products-wrap">
+              <a href="{{route('shop_index')}}"><span id="more-products" data-rows_per_page="1">More products</span></a>
+            </div>
         </div>
-          @endforeach
-
-
-
-        </div>
-        <div class="more-products" id="more-products-wrap">
-          <a href="{{route('shop_index')}}"><span id="more-products" data-rows_per_page="1">More products</span></a>
-        </div>
+      </div>
     </div>
-    </div>
-    @endif --}}
+    @endif
+
+
+
   </div>
   
   

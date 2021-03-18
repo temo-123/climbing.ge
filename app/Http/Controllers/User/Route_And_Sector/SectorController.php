@@ -8,7 +8,7 @@ use Illuminate\Http\Request;
 use App\Models\Sector;
 use App\Models\Article;
 use App\Models\Sector_image;
-use App\Services\imageControllService;
+use App\Services\ImageControllService;
 
 use Validator;
 
@@ -153,7 +153,7 @@ class SectorController extends Controller
             // dd($sector_images_count);
             if ($sector_images_count > 0) {
                 foreach ($sector_images as $sector_image) {
-                    imageControllService::image_delete('sector_img', $sector_image, $request);
+                    imageControllService::image_delete('images/sector_img/', $sector_image, $request);
                     $sector_image ->delete();
                 }
             }
@@ -189,40 +189,24 @@ class SectorController extends Controller
 
         $this->sector_image_validate($request);
 
-        $image_dir = 'sector_img';
+        $sector = new Sector_image();
+        $sector['sector_id']=$request->sector_id; 
 
-        $article = new Sector_image();
-        $article['sector_id']=$request->sector_id;
+        $file_new_name = ImageControllService::image_upload('images/sector_img/', $request, 'profile_pic', 0);
 
-        imageControllService::image_upload($image_dir, $article, $request);
-
+        $sector['image'] = $file_new_name;
+        $sector -> save();
     }
 
     public function sector_image_update(Request $request)
     {
         $request->user()->authorizeRoles(['manager', 'admin']);
 
-        if ($request->hasFile('profile_pic')){  
-            // rename file
-            $file      = $request->file('profile_pic');
-            $filename  = $file->getClientOriginalName();
-            $extension = $file->getClientOriginalExtension();
-            $pieces = explode( '.', $filename );
-            $file_new_name = $pieces[0].'_('.date('Y-m-d-H-m-s').').'.$extension;
-            
-            // push image in folder
-            $file->move(public_path('images/sector_img'), $file_new_name);
+        $article = Article::where('id',strip_tags($request->id))->first();
+        $file_new_name = ImageControllService::image_update('images/sector_img/', $article, $request, 'profile_pic', 1);
 
-            $article = new Sector_image();
-            // $article = Sector_image::where('id',strip_tags($last_global_article_id))->first();
-            $article['image']=$file_new_name;
-            $article -> save();
-
-            return response()->json(["message" => "Image Update Succesfully"]);
-        } 
-        else{
-            return response()->json(["message" => "Image Update Error."]);
-        }
+        $article['image'] = $file_new_name;
+        $article -> save();
     }
 
     public function sector_image_delete(Request $request)
@@ -230,12 +214,11 @@ class SectorController extends Controller
         $request->user()->authorizeRoles(['manager', 'admin']);
 
         if ($request->isMethod('post')) {
-            $sector_image_id=$request->id;
+            $sector_image = Sector_image::where('id',strip_tags($request->id))->first();
 
-            $sector_image = Sector_image::where('id',strip_tags($sector_image_id))->first();
-            $image_dir = "sector_img";
-            
-            imageControllService::image_delete($image_dir, $sector_image, $request);
+            ImageControllService::image_delete('images/sector_img/', $sector_image);
+
+            $sector_image -> delete();
         }
     }
 
@@ -285,7 +268,7 @@ class SectorController extends Controller
     public function sector_image_validate($request)
     {
         $request->validate([
-            'image' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            // 'image' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
         ]);
     }
 

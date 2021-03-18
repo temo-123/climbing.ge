@@ -421,9 +421,9 @@
                     this.quantity = this.editing_product.editing_product['quantity'],
                     this.size = this.editing_product.editing_product['size'],
 
-                    // this.us_product_id = this.editing_product.editing_product['us_product_id'],
-                    // this.ru_product_id = this.editing_product.editing_product['ru_product_id'],
-                    // this.ka_product_id = this.editing_product.editing_product['ka_product_id'],
+                    this.us_product_id = this.editing_product.editing_product['us_product_id'],
+                    this.ru_product_id = this.editing_product.editing_product['ru_product_id'],
+                    this.ka_product_id = this.editing_product.editing_product['ka_product_id'],
                     
                     this.us_title = this.editing_product.editing_product_us['title'],
                     this.us_short_description = this.editing_product.editing_product_us['short_description'],
@@ -510,7 +510,7 @@
                     published: this.published,
                     price: this.price,
                     currency: this.currency,
-                    category: this.category_id,
+                    category_id: this.category_id,
                     us_title_for_url_title: this.us_title,
 
                     material: this.material,
@@ -601,8 +601,6 @@
                 this.edit_ka_product()
                 this.edit_ru_product()
                 this.edit_global_product()
-
-                // window.location.href = this.back_url;
             },
             
             if_isset_go_beck() {
@@ -613,7 +611,6 @@
                     this.is_us_article_error == false
                 ) {
                     window.location.href = this.back_url;
-                    // alert('test')
                 }
             }
         }

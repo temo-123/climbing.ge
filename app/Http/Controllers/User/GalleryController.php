@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 
 use App\Models\Gallery;
 use App\Models\Article;
-use App\Services\imageControllService;
+use App\Services\ImageControllService;
 use File;
 
 class GalleryController extends Controller
@@ -61,8 +61,13 @@ class GalleryController extends Controller
             $gallery['index_gallery_image']=$request->index_gallery_image;
             $gallery['published']=$request->published;
             $gallery['article_id']=$request->article_id;
+    
+            $file_new_name = ImageControllService::image_upload('images/gallery_img/', $request, 'image', 1);
+    
+            $gallery['image'] = $file_new_name;
+            // $sector -> save();
 
-            $gallery['image']=$this->upload_gallery_iamge($request);
+            // $gallery['image']=$this->upload_gallery_iamge($request);
 
             $gallery -> save();
 
@@ -115,10 +120,13 @@ class GalleryController extends Controller
 
             $gallery = Gallery::where('id',strip_tags($request->id))->first();
 
-            if ($request->hasFile('image')){ 
-                $this->del_gallery_image('images/gallery_img/'.$gallery->image);
-                $gallery['image']=$this->upload_gallery_iamge($request);
-            }
+            // if ($request->hasFile('image')){ 
+            //     $this->del_gallery_image('images/gallery_img/'.$gallery->image);
+            //     $gallery['image']=$this->upload_gallery_iamge($request);
+            // }
+            
+            $file_new_name = ImageControllService::image_update('images/gallery_img/', $gallery, $request, 'image', 1);
+            $gallery['image']=$file_new_name;
 
             $gallery->fill($input);
 
@@ -170,7 +178,8 @@ class GalleryController extends Controller
             $gallery = Gallery::where('id',strip_tags($request->id))->first();
             
             // delete article image from folder
-            $this->del_gallery_image('images/gallery_img/'.$gallery->image);
+            // $this->del_gallery_image('images/gallery_img/'.$gallery->image);
+            ImageControllService::image_delete('images/gallery_img/', $gallery);
 
             // delete product from db
             $gallery -> delete();
@@ -183,56 +192,56 @@ class GalleryController extends Controller
     }
     
 
-    public function upload_gallery_iamge($request)
-    {
-        if ($request->hasFile('image')){   
-            // rename file
-            $file      = $request->file('image');
-            $filename  = $file->getClientOriginalName();
-            $extension = $file->getClientOriginalExtension();
-            $pieces = explode( '.', $filename );
-            $file_new_name = $pieces[0].'_('.date('Y-m-d-H-m-s').').'.$extension;
+    // public function upload_gallery_iamge($request)
+    // {
+    //     if ($request->hasFile('image')){   
+    //         // rename file
+    //         $file      = $request->file('image');
+    //         $filename  = $file->getClientOriginalName();
+    //         $extension = $file->getClientOriginalExtension();
+    //         $pieces = explode( '.', $filename );
+    //         $file_new_name = $pieces[0].'_('.date('Y-m-d-H-m-s').').'.$extension;
             
-            // push image in folder
-            $file->move(public_path('images/gallery_img'), $file_new_name);
+    //         // push image in folder
+    //         $file->move(public_path('images/gallery_img'), $file_new_name);
 
-            // save new value in db
-            return $file_new_name;
-        }
-    }
+    //         // save new value in db
+    //         return $file_new_name;
+    //     }
+    // }
 
-    public function update_gallery_image($request, $image_path)
-    {
-        if ($request->hasFile('image')){ 
-            // delete old image
-            $this->del_gallery_image($image_path);
+    // public function update_gallery_image($request, $image_path)
+    // {
+    //     if ($request->hasFile('image')){ 
+    //         // delete old image
+    //         $this->del_gallery_image($image_path);
 
-            // rename file
-            $file      = $request->file('image');
-            $filename  = $file->getClientOriginalName();
-            $extension = $file->getClientOriginalExtension();
-            $pieces = explode( '.', $filename );
-            $file_new_name = $pieces[0].'_('.date('Y-m-d-H-m-s').').'.$extension;
+    //         // rename file
+    //         $file      = $request->file('image');
+    //         $filename  = $file->getClientOriginalName();
+    //         $extension = $file->getClientOriginalExtension();
+    //         $pieces = explode( '.', $filename );
+    //         $file_new_name = $pieces[0].'_('.date('Y-m-d-H-m-s').').'.$extension;
             
-            // push image in folder
-            $file->move(public_path('images/gallery_img'), $file_new_name);
+    //         // push image in folder
+    //         $file->move(public_path('images/gallery_img'), $file_new_name);
 
-            // save new value in db
-            return $file_new_name;
-        }
-    }
+    //         // save new value in db
+    //         return $file_new_name;
+    //     }
+    // }
 
-    public function del_gallery_image($image_path)
-    {
-        $file = public_path($image_path);
+    // public function del_gallery_image($image_path)
+    // {
+    //     $file = public_path($image_path);
         
-        if(file_exists($file)){
-            File::delete($file);
-        }else{
-            echo ('<p> File does not exists.</p>');
-            echo ('<p>'.$file.'</p>');
-        }
-    }
+    //     if(file_exists($file)){
+    //         File::delete($file);
+    //     }else{
+    //         echo ('<p> File does not exists.</p>');
+    //         echo ('<p>'.$file.'</p>');
+    //     }
+    // }
 
 
 

@@ -14,7 +14,7 @@ use App\Models\Comment;
 
 use App\Services\ImageEditService;
 
-use App\Services\imageControllService;
+use App\Services\ImageControllService;
 
 use File;
 
@@ -289,7 +289,7 @@ class ArticleController extends Controller
             $ka_article = Ka_article::where('id',strip_tags($global_article->ka_article_id))->first();
             
             // delete article file
-            imageControllService::image_delete($global_article->category.'_img', $global_article, $request);
+            ImageControllService::image_delete('images/'.$global_article->category.'_img/', $global_article);
 
             // delete article from db
             $global_article ->delete();

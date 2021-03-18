@@ -10,7 +10,8 @@ use App\Models\Ka_article;
 use App\Models\Us_article;
 use App\Models\Ru_article;
 use App\Services\URLTitleService;
-use Intervention\Image\ImageManagerStatic as Image;
+use App\Services\ImageControllService;
+// use Intervention\Image\ImageManagerStatic as Image;
 // use Intervention\Image\Facades\Image;
 
 class GlobalArticleController extends Controller
@@ -133,91 +134,37 @@ class GlobalArticleController extends Controller
 
     public function image_upload(Request $request)
     {   
-        // https://therichpost.com/vue-laravel-image-upload/
-        if ($request->hasFile('profile_pic')){   
-            // $this->global_sector_image_validate($request);
+        // https://therichpost.com/vue-laravel-image-upload/ 
+        if ($request->hasFile('profile_pic')){ 
+            $last_global_article_id = 0;
+            $last_global_article_category = '';
 
             $global_article = Article::get();
             foreach ($global_article as $global) {
                 $last_global_article_id = $global->id;
                 $last_global_article_category = $global->category;
             }
-
-            // rename file
-            $file      = $request->file('profile_pic');
-            $filename  = $file->getClientOriginalName();
-            $extension = $file->getClientOriginalExtension();
-            $pieces = explode( '.', $filename );
-            $file_new_name = $pieces[0].'_('.date('Y-m-d-H-m-s').').'.$extension;
-
-            // push image in folder
-            $file->move(public_path('images/'.$last_global_article_category.'_img'), $file_new_name);
-
             $article = Article::where('id',strip_tags($last_global_article_id))->first();
-            $article['image']=$file_new_name;
+            
+            $file_new_name = ImageControllService::image_upload('images/'.$last_global_article_category.'_img/', $request, 'profile_pic', 1);
+
+            $article['image'] = $file_new_name;
             $article -> save();
 
-
-
-            // open an image file
-            $img = Image::make('images/'.$last_global_article_category.'_img'.$file_new_name);
-
-            // now you are able to resize the instance
-            $img->resize(320, 240);
-
-            // and insert a watermark for example
-            // $img->insert('images/'.$last_global_article_category.'_img'.$file_new_name);
-
-            // finally we save the image as a new file
-            $img->move(public_path('images/'.$last_global_article_category.'_img/demo_img/'), $file_new_name);
-
-
-
-            return response()->json(["message" => "Image Uploaded Succesfully"]);
-        } 
-        else{
-            return response()->json(["message" => "Select image first."]);
+            // return response()->json(["message" => "Image Uploaded Succesfully"]);
         }
     }
 
     public function image_update(Request $request)
     {
-        if ($request->hasFile('profile_pic')){ 
-            // rename file
-            $file      = $request->file('profile_pic');
-            $filename  = $file->getClientOriginalName();
-            $extension = $file->getClientOriginalExtension();
-            $pieces = explode( '.', $filename );
-            $file_new_name = $pieces[0].'_('.date('Y-m-d-H-m-s').').'.$extension;
-
-            // fined article category
-            $global_article = Article::where('id',strip_tags($request->id))->first();;
-            $article_category = $global_article->category;
-
-            // push image in folder
-            $file->move(public_path('images/'.$article_category.'_img/origin_img'), $file_new_name);
-            // chmod(public_path('images/'.$article_category.'_img'.$file_new_name), 0755);
-
-            // edit article image
+        if ($request->hasFile('profile_pic')){
             $article = Article::where('id',strip_tags($request->id))->first();
+            $file_new_name = ImageControllService::image_update('images/'.$article->category.'_img/', $article, $request, 'profile_pic', 1);
+
             $article['image'] = $file_new_name;
             $article -> save();
-
-$test_filename = '158208217_916347415858602_6227987547054177502_n_(2021-03-10-19-03-19).jpg';
-
-            // open an image file
-            $img = Image::make('images/'.$article->category.'_img/origin_img/'.$test_filename);
-
-            // now you are able to resize the instance
-            $img->resize(1024, 576);
-
-            // finally we save the image as a new file
-            $img->save(public_path('images/'.$article->category.'_img/'.$test_filename));
-
-            dd($img);
         }
     }
-
 
     public function global_sector_validate($request)
     {

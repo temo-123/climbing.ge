@@ -61,7 +61,8 @@ class GlobalProductController extends Controller
             //     $last_ru_product_id = $ru->id;
             // }
 
-            $global_product = product::where('url_title', '=', 'temporary_product')->get();
+            // $global_product = product::where('url_title', '=', 'temporary_product')->get();
+            $global_product = product::get();
             foreach ($global_product as $global) {
                 $last_globale_id = $global->id;
             }
@@ -110,7 +111,7 @@ class GlobalProductController extends Controller
             // $product['discount']=$request->discount;
             $product['price']=$request->price;
             $product['currency']=$request->currency;
-            $product['category_id']=$request->category;
+            $product['category_id']=$request->category_id;
             $product['published'] = $request->published;
             // $product['user_id']=Auth::user()->id;
 

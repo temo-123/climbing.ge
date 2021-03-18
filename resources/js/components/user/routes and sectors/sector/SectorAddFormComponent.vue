@@ -315,7 +315,7 @@
             overhang: this.overhang,
         })
         .then(function (response) {
-            // window.location.href = '/routes_and_sectors';
+            window.location.href = '/routes_and_sectors';
         })
         .catch(error => {
             if (error.response.status == 422) {

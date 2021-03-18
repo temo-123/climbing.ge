@@ -634,7 +634,7 @@
                     this.is_ru_article_error == false &&
                     this.is_us_article_error == false
                 ) {
-                    window.location.href = this.back_url;
+                    // window.location.href = this.back_url;
                 }
             }
         }

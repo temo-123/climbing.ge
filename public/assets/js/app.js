@@ -5377,7 +5377,8 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       this.checkForm();
     },
     if_isset_go_beck: function if_isset_go_beck() {
-      if (this.is_global_article_error == false && this.is_ka_article_error == false && this.is_ru_article_error == false && this.is_us_article_error == false) {// window.location.href = this.back_url;
+      if (this.is_global_article_error == false && this.is_ka_article_error == false && this.is_ru_article_error == false && this.is_us_article_error == false) {
+        window.location.href = this.back_url;
       }
     }
   }
@@ -6874,8 +6875,7 @@ __webpack_require__.r(__webpack_exports__);
       this.add_global_product();
     },
     if_isset_go_beck: function if_isset_go_beck() {
-      if (this.is_global_article_error == false && this.is_ka_article_error == false && this.is_ru_article_error == false && this.is_us_article_error == false) {
-        window.location.href = this.back_url;
+      if (this.is_global_article_error == false && this.is_ka_article_error == false && this.is_ru_article_error == false && this.is_us_article_error == false) {// window.location.href = this.back_url;
       }
     }
   }
@@ -7284,10 +7284,7 @@ __webpack_require__.r(__webpack_exports__);
       axios.post('/products/get_product_editing_data/' + this.editing_article_id, {
         published: this.published
       }).then(function (response) {
-        _this.editing_product = response.data, _this.published = _this.editing_product.editing_product['published'], _this.price = _this.editing_product.editing_product['price'], _this.currency = _this.editing_product.editing_product['currency'], _this.category_id = _this.editing_product.editing_product['category_id'], _this.material = _this.editing_product.editing_product['material'], _this.color = _this.editing_product.editing_product['color'], _this.discount = _this.editing_product.editing_product['discount'], _this.quantity = _this.editing_product.editing_product['quantity'], _this.size = _this.editing_product.editing_product['size'], // this.us_product_id = this.editing_product.editing_product['us_product_id'],
-        // this.ru_product_id = this.editing_product.editing_product['ru_product_id'],
-        // this.ka_product_id = this.editing_product.editing_product['ka_product_id'],
-        _this.us_title = _this.editing_product.editing_product_us['title'], _this.us_short_description = _this.editing_product.editing_product_us['short_description'], _this.us_text = _this.editing_product.editing_product_us['text'], _this.us_meta_keyword = _this.editing_product.editing_product_us['meta_keyword'], _this.ru_title = _this.editing_product.editing_product_ru['title'], _this.ru_short_description = _this.editing_product.editing_product_ru['short_description'], _this.ru_text = _this.editing_product.editing_product_ru['text'], _this.ru_meta_keyword = _this.editing_product.editing_product_ru['meta_keyword'], _this.ka_title = _this.editing_product.editing_product_ka['title'], _this.ka_short_description = _this.editing_product.editing_product_ka['short_description'], _this.ka_text = _this.editing_product.editing_product_ka['text'], _this.ka_meta_keyword = _this.editing_product.editing_product_ka['meta_keyword'];
+        _this.editing_product = response.data, _this.published = _this.editing_product.editing_product['published'], _this.price = _this.editing_product.editing_product['price'], _this.currency = _this.editing_product.editing_product['currency'], _this.category_id = _this.editing_product.editing_product['category_id'], _this.material = _this.editing_product.editing_product['material'], _this.color = _this.editing_product.editing_product['color'], _this.discount = _this.editing_product.editing_product['discount'], _this.quantity = _this.editing_product.editing_product['quantity'], _this.size = _this.editing_product.editing_product['size'], _this.us_product_id = _this.editing_product.editing_product['us_product_id'], _this.ru_product_id = _this.editing_product.editing_product['ru_product_id'], _this.ka_product_id = _this.editing_product.editing_product['ka_product_id'], _this.us_title = _this.editing_product.editing_product_us['title'], _this.us_short_description = _this.editing_product.editing_product_us['short_description'], _this.us_text = _this.editing_product.editing_product_us['text'], _this.us_meta_keyword = _this.editing_product.editing_product_us['meta_keyword'], _this.ru_title = _this.editing_product.editing_product_ru['title'], _this.ru_short_description = _this.editing_product.editing_product_ru['short_description'], _this.ru_text = _this.editing_product.editing_product_ru['text'], _this.ru_meta_keyword = _this.editing_product.editing_product_ru['meta_keyword'], _this.ka_title = _this.editing_product.editing_product_ka['title'], _this.ka_short_description = _this.editing_product.editing_product_ka['short_description'], _this.ka_text = _this.editing_product.editing_product_ka['text'], _this.ka_meta_keyword = _this.editing_product.editing_product_ka['meta_keyword'];
       })["catch"](function (error) {
         return console.log(error);
       });
@@ -7362,7 +7359,7 @@ __webpack_require__.r(__webpack_exports__);
         published: this.published,
         price: this.price,
         currency: this.currency,
-        category: this.category_id,
+        category_id: this.category_id,
         us_title_for_url_title: this.us_title,
         material: this.material,
         color: this.color,
@@ -7441,11 +7438,11 @@ __webpack_require__.r(__webpack_exports__);
       this.edit_us_product();
       this.edit_ka_product();
       this.edit_ru_product();
-      this.edit_global_product(); // window.location.href = this.back_url;
+      this.edit_global_product();
     },
     if_isset_go_beck: function if_isset_go_beck() {
       if (this.is_global_article_error == false && this.is_ka_article_error == false && this.is_ru_article_error == false && this.is_us_article_error == false) {
-        window.location.href = this.back_url; // alert('test')
+        window.location.href = this.back_url;
       }
     }
   }
@@ -8983,7 +8980,8 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         slabby: this.slabby,
         vertical: this.vertical,
         overhang: this.overhang
-      }).then(function (response) {// window.location.href = '/routes_and_sectors';
+      }).then(function (response) {
+        window.location.href = '/routes_and_sectors';
       })["catch"](function (error) {
         if (error.response.status == 422) {
           _this5.errors = error.response.data.errors;
