@@ -6875,7 +6875,8 @@ __webpack_require__.r(__webpack_exports__);
       this.add_global_product();
     },
     if_isset_go_beck: function if_isset_go_beck() {
-      if (this.is_global_article_error == false && this.is_ka_article_error == false && this.is_ru_article_error == false && this.is_us_article_error == false) {// window.location.href = this.back_url;
+      if (this.is_global_article_error == false && this.is_ka_article_error == false && this.is_ru_article_error == false && this.is_us_article_error == false) {
+        window.location.href = this.back_url;
       }
     }
   }
@@ -6892,6 +6893,45 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -61827,7 +61867,24 @@ var render = function() {
                         _vm._v("Public")
                       ])
                     ]
-                  )
+                  ),
+                  _vm._v(" "),
+                  _vm.global_article_error.published
+                    ? _c(
+                        "div",
+                        {
+                          staticClass: "alert alert-danger",
+                          attrs: { role: "alert" }
+                        },
+                        [
+                          _vm._v(
+                            "\n                                " +
+                              _vm._s(_vm.global_article_error.published[0]) +
+                              "\n                            "
+                          )
+                        ]
+                      )
+                    : _vm._e()
                 ])
               ]),
               _vm._v(" "),
@@ -61862,7 +61919,24 @@ var render = function() {
                         _vm.price = $event.target.value
                       }
                     }
-                  })
+                  }),
+                  _vm._v(" "),
+                  _vm.global_article_error.price
+                    ? _c(
+                        "div",
+                        {
+                          staticClass: "alert alert-danger",
+                          attrs: { role: "alert" }
+                        },
+                        [
+                          _vm._v(
+                            "\n                                " +
+                              _vm._s(_vm.global_article_error.price[0]) +
+                              "\n                            "
+                          )
+                        ]
+                      )
+                    : _vm._e()
                 ]),
                 _vm._v(" "),
                 _c("div", { staticClass: "col-xs-2" }, [
@@ -61906,7 +61980,24 @@ var render = function() {
                       _vm._v(" "),
                       _c("option", { attrs: { value: "EUR" } }, [_vm._v("EUR")])
                     ]
-                  )
+                  ),
+                  _vm._v(" "),
+                  _vm.global_article_error.currency
+                    ? _c(
+                        "div",
+                        {
+                          staticClass: "alert alert-danger",
+                          attrs: { role: "alert" }
+                        },
+                        [
+                          _vm._v(
+                            "\n                                " +
+                              _vm._s(_vm.global_article_error.currency[0]) +
+                              "\n                            "
+                          )
+                        ]
+                      )
+                    : _vm._e()
                 ])
               ]),
               _vm._v(" "),
@@ -62182,7 +62273,24 @@ var render = function() {
                       )
                     }),
                     0
-                  )
+                  ),
+                  _vm._v(" "),
+                  _vm.global_article_error.category_id
+                    ? _c(
+                        "div",
+                        {
+                          staticClass: "alert alert-danger",
+                          attrs: { role: "alert" }
+                        },
+                        [
+                          _vm._v(
+                            "\n                                " +
+                              _vm._s(_vm.global_article_error.category_id[0]) +
+                              "\n                            "
+                          )
+                        ]
+                      )
+                    : _vm._e()
                 ])
               ])
             ]
@@ -62389,7 +62497,24 @@ var render = function() {
                         _vm.us_title = $event.target.value
                       }
                     }
-                  })
+                  }),
+                  _vm._v(" "),
+                  _vm.us_article_error.us_title
+                    ? _c(
+                        "div",
+                        {
+                          staticClass: "alert alert-danger",
+                          attrs: { role: "alert" }
+                        },
+                        [
+                          _vm._v(
+                            "\n                                " +
+                              _vm._s(_vm.us_article_error.us_title[0]) +
+                              "\n                            "
+                          )
+                        ]
+                      )
+                    : _vm._e()
                 ])
               ]),
               _vm._v(" "),
@@ -62416,7 +62541,26 @@ var render = function() {
                         },
                         expression: "us_short_description"
                       }
-                    })
+                    }),
+                    _vm._v(" "),
+                    _vm.us_article_error.us_short_description
+                      ? _c(
+                          "div",
+                          {
+                            staticClass: "alert alert-danger",
+                            attrs: { role: "alert" }
+                          },
+                          [
+                            _vm._v(
+                              "\n                                " +
+                                _vm._s(
+                                  _vm.us_article_error.us_short_description[0]
+                                ) +
+                                "\n                            "
+                            )
+                          ]
+                        )
+                      : _vm._e()
                   ],
                   1
                 )
@@ -62445,7 +62589,24 @@ var render = function() {
                         },
                         expression: "us_text"
                       }
-                    })
+                    }),
+                    _vm._v(" "),
+                    _vm.us_article_error.us_text
+                      ? _c(
+                          "div",
+                          {
+                            staticClass: "alert alert-danger",
+                            attrs: { role: "alert" }
+                          },
+                          [
+                            _vm._v(
+                              "\n                                " +
+                                _vm._s(_vm.us_article_error.us_text[0]) +
+                                "\n                            "
+                            )
+                          ]
+                        )
+                      : _vm._e()
                   ],
                   1
                 )
@@ -62550,7 +62711,24 @@ var render = function() {
                         _vm.ru_title = $event.target.value
                       }
                     }
-                  })
+                  }),
+                  _vm._v(" "),
+                  _vm.ru_article_error.ru_title
+                    ? _c(
+                        "div",
+                        {
+                          staticClass: "alert alert-danger",
+                          attrs: { role: "alert" }
+                        },
+                        [
+                          _vm._v(
+                            "\n                                " +
+                              _vm._s(_vm.ru_article_error.ru_title[0]) +
+                              "\n                            "
+                          )
+                        ]
+                      )
+                    : _vm._e()
                 ])
               ]),
               _vm._v(" "),
@@ -62577,7 +62755,26 @@ var render = function() {
                         },
                         expression: "ru_short_description"
                       }
-                    })
+                    }),
+                    _vm._v(" "),
+                    _vm.ru_article_error.ru_short_description
+                      ? _c(
+                          "div",
+                          {
+                            staticClass: "alert alert-danger",
+                            attrs: { role: "alert" }
+                          },
+                          [
+                            _vm._v(
+                              "\n                                " +
+                                _vm._s(
+                                  _vm.ru_article_error.ru_short_description[0]
+                                ) +
+                                "\n                            "
+                            )
+                          ]
+                        )
+                      : _vm._e()
                   ],
                   1
                 )
@@ -62606,7 +62803,24 @@ var render = function() {
                         },
                         expression: "ru_text"
                       }
-                    })
+                    }),
+                    _vm._v(" "),
+                    _vm.ru_article_error.ru_text
+                      ? _c(
+                          "div",
+                          {
+                            staticClass: "alert alert-danger",
+                            attrs: { role: "alert" }
+                          },
+                          [
+                            _vm._v(
+                              "\n                                " +
+                                _vm._s(_vm.ru_article_error.ru_text[0]) +
+                                "\n                            "
+                            )
+                          ]
+                        )
+                      : _vm._e()
                   ],
                   1
                 )
@@ -62711,7 +62925,24 @@ var render = function() {
                         _vm.ka_title = $event.target.value
                       }
                     }
-                  })
+                  }),
+                  _vm._v(" "),
+                  _vm.ka_article_error.ka_title
+                    ? _c(
+                        "div",
+                        {
+                          staticClass: "alert alert-danger",
+                          attrs: { role: "alert" }
+                        },
+                        [
+                          _vm._v(
+                            "\n                                " +
+                              _vm._s(_vm.ka_article_error.ka_title[0]) +
+                              "\n                            "
+                          )
+                        ]
+                      )
+                    : _vm._e()
                 ])
               ]),
               _vm._v(" "),
@@ -62738,7 +62969,26 @@ var render = function() {
                         },
                         expression: "ka_short_description"
                       }
-                    })
+                    }),
+                    _vm._v(" "),
+                    _vm.ka_article_error.ka_short_description
+                      ? _c(
+                          "div",
+                          {
+                            staticClass: "alert alert-danger",
+                            attrs: { role: "alert" }
+                          },
+                          [
+                            _vm._v(
+                              "\n                                " +
+                                _vm._s(
+                                  _vm.ka_article_error.ka_short_description[0]
+                                ) +
+                                "\n                            "
+                            )
+                          ]
+                        )
+                      : _vm._e()
                   ],
                   1
                 )
@@ -62767,7 +63017,24 @@ var render = function() {
                         },
                         expression: "ka_text"
                       }
-                    })
+                    }),
+                    _vm._v(" "),
+                    _vm.ka_article_error.ka_text
+                      ? _c(
+                          "div",
+                          {
+                            staticClass: "alert alert-danger",
+                            attrs: { role: "alert" }
+                          },
+                          [
+                            _vm._v(
+                              "\n                                " +
+                                _vm._s(_vm.ka_article_error.ka_text[0]) +
+                                "\n                            "
+                            )
+                          ]
+                        )
+                      : _vm._e()
                   ],
                   1
                 )

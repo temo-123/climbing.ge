@@ -297,7 +297,7 @@
 
 
 
-    @if(isset($othe_products))
+    {{-- @if(isset($othe_products))
     <div class="container">
       <div class="row">
         <div class="related">
@@ -387,9 +387,7 @@
         </div>
       </div>
     </div>
-    @endif
-
-
+    @endif --}}
 
   </div>
   

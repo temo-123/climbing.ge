@@ -31,6 +31,9 @@
                                 <option value="0">Not public</option> 
                                 <option value="1">Public</option> 
                             </select> 
+                            <div class="alert alert-danger" role="alert" v-if="global_article_error.published">
+                                {{ global_article_error.published[0] }}
+                            </div>
                         </div>
                     </div>
 
@@ -38,6 +41,9 @@
                         <label for="name" class='col-xs-2 control-label'> price </label>
                         <div class="col-xs-6">
                             <input type="text" v-model="price" name="price" class="form-control"> 
+                            <div class="alert alert-danger" role="alert" v-if="global_article_error.price">
+                                {{ global_article_error.price[0] }}
+                            </div>
                         </div>
 
                         <div class="col-xs-2">
@@ -46,6 +52,9 @@
                                 <option value="USD">USD</option> 
                                 <option value="EUR">EUR</option> 
                             </select> 
+                            <div class="alert alert-danger" role="alert" v-if="global_article_error.currency">
+                                {{ global_article_error.currency[0] }}
+                            </div>
                         </div>
                     </div>
 
@@ -103,6 +112,9 @@
                             <select class="form-control" v-model="category_id"> 
                                 <option  v-for="cat in categories" :key="cat.id" v-bind:value="cat.id"> {{ cat.us_name }}</option>
                             </select> 
+                            <div class="alert alert-danger" role="alert" v-if="global_article_error.category_id">
+                                {{ global_article_error.category_id[0] }}
+                            </div>
                         </div>
                     </div>
 
@@ -188,6 +200,9 @@
                         <label for="name" class='col-xs-2 control-label'> Title </label>
                         <div class="col-xs-8">
                             <input type="text" name="name" v-model="us_title"  class="form-control"> 
+                            <div class="alert alert-danger" role="alert" v-if="us_article_error.us_title">
+                                {{ us_article_error.us_title[0] }}
+                            </div>
                         </div>
                     </div>
 
@@ -196,6 +211,9 @@
                         <div class="col-xs-8">
                             <!-- <textarea type="text" name="short_description" v-model="us_short_description" rows="15" class="form-cotrol md-textarea form-control"></textarea> -->
                             <ckeditor v-model="us_short_description" :config="editorConfig"></ckeditor>
+                            <div class="alert alert-danger" role="alert" v-if="us_article_error.us_short_description">
+                                {{ us_article_error.us_short_description[0] }}
+                            </div>
                         </div>
                     </div>
 
@@ -204,6 +222,9 @@
                         <div class="col-xs-8">
                             <!-- <textarea type="text"  name="text" rows="15" v-model="us_text" class="form-cotrol md-textarea form-control"></textarea> -->
                             <ckeditor v-model="us_text" :config="editorConfig"></ckeditor>
+                            <div class="alert alert-danger" role="alert" v-if="us_article_error.us_text">
+                                {{ us_article_error.us_text[0] }}
+                            </div>
                         </div>
                     </div>
 
@@ -236,6 +257,9 @@
                         <div class="col-xs-8">
                             <!-- <input type="text" name="value name" value="old data" class="form-control"> -->
                             <input type="text" name="title" v-model="ru_title" class="form-control"> 
+                            <div class="alert alert-danger" role="alert" v-if="ru_article_error.ru_title">
+                                {{ ru_article_error.ru_title[0] }}
+                            </div>
                         </div>
                     </div>
 
@@ -244,6 +268,9 @@
                         <div class="col-xs-8">
                             <!-- <textarea type="text"  name="short_description" v-model="ru_short_description"  rows="15" class="form-cotrol md-textarea form-control"></textarea> -->
                             <ckeditor v-model="ru_short_description" :config="editorConfig"></ckeditor>
+                            <div class="alert alert-danger" role="alert" v-if="ru_article_error.ru_short_description">
+                                {{ ru_article_error.ru_short_description[0] }}
+                            </div>
                         </div>
                     </div>
 
@@ -252,6 +279,9 @@
                         <div class="col-xs-8">
                             <!-- <textarea type="text"  name="text" rows="15"  v-model="ru_text" class="form-cotrol md-textarea form-control"></textarea> -->
                             <ckeditor v-model="ru_text" :config="editorConfig"></ckeditor>
+                            <div class="alert alert-danger" role="alert" v-if="ru_article_error.ru_text">
+                                {{ ru_article_error.ru_text[0] }}
+                            </div>
                         </div>
                     </div>
 
@@ -286,6 +316,9 @@
                         <div class="col-xs-8">
                             <!-- <input type="text" name="value name" value="old data" class="form-control"> -->
                             <input type="text" name="value name"  v-model="ka_title" class="form-control"> 
+                            <div class="alert alert-danger" role="alert" v-if="ka_article_error.ka_title">
+                                {{ ka_article_error.ka_title[0] }}
+                            </div>
                         </div>
                     </div>
 
@@ -294,6 +327,9 @@
                         <div class="col-xs-8">
                             <!-- <textarea type="text"  name="short_description"  v-model="ka_short_description" rows="15" class="form-cotrol md-textarea form-control"></textarea> -->
                             <ckeditor v-model="ka_short_description" :config="editorConfig"></ckeditor>
+                            <div class="alert alert-danger" role="alert" v-if="ka_article_error.ka_short_description">
+                                {{ ka_article_error.ka_short_description[0] }}
+                            </div>
                         </div>
                     </div>
 
@@ -302,6 +338,9 @@
                         <div class="col-xs-8">
                             <!-- <textarea type="text"  name="txt" rows="15"  v-model="ka_text" class="form-cotrol md-textarea form-control"></textarea> -->
                             <ckeditor v-model="ka_text" :config="editorConfig"></ckeditor>
+                            <div class="alert alert-danger" role="alert" v-if="ka_article_error.ka_text">
+                                {{ ka_article_error.ka_text[0] }}
+                            </div>
                         </div>
                     </div>
 
