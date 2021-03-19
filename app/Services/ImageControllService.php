@@ -32,7 +32,7 @@ class imageControllService
 
             // push image in folder
             $file = $request->file($form_value_id);
-            $file -> move(public_path($image_dir.'/origin_img'), $file_new_name);
+            $file -> move(public_path($image_dir.'origin_img/'), $file_new_name);
 
             // create demo image
             ImageControllService::create_demo_image($image_dir, $file_new_name, $resize);
@@ -64,7 +64,7 @@ class imageControllService
             $file      = $request->file($form_value_id);
 
             // push image in folder
-            $file->move(public_path($image_dir.'/origin_img'), $file_new_name);
+            $file->move(public_path($image_dir.'origin_img/'), $file_new_name);
 
             // create demo image
             ImageControllService::create_demo_image($image_dir, $file_new_name, $resize);

@@ -16,10 +16,11 @@ class OtherActivityController extends Controller
     public function other_list()
     {
     	if (view()->exists('site.other_list')) {
-    		$global_others = Article::latest('id')->where('category', '=', 'other')->where('published','=','1')->get();
-            $article_count = Article::latest('id')->where('category', '=', 'other')->where('published','=','1')->count();
+            $global_others = Article::where('category', '=', 'other')->where('published', '=', 1)->get();
+            $article_count = Article::where('category', '=', 'other')->where('published', '=', 1)->count(); 
 
             $others = GetArticlesService::get_locale_article($global_others);
+
             $time_array = GetArticlesService::get_new_article_pin($others);
 
     		$data = [
