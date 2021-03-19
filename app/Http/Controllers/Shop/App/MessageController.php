@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Site\App;
+namespace App\Http\Controllers\Shop\App;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
@@ -23,7 +23,7 @@ class MessageController extends Controller
         if($request->country != null)   $country = $request->country;     else $country = null;
         if($request->msg != null)       $msg = $request->msg;             else $msg = null;
 
-        $from_site = "climbing.ge";
+        $from_site = "shop.climbing.ge";
         
         $EmailArray = array(
             'name' => $name,

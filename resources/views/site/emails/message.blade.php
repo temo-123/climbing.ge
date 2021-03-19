@@ -1,5 +1,5 @@
 @component('mail::message')
-# Message
+# Message from - {{ $from_site }}
 
 <hr>
 

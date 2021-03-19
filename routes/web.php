@@ -58,9 +58,9 @@ Route::group(['prefix' => LocalisationService::locale(),'middleware' => 'setLoca
             
             Route::get('/favorite_product/{product_id}/{actions}', ['uses'=>'App\PrioritiesController@favorite_product', 'as'=>'favorite_product']);
 
-            Route::get('/sitemap.xml', 'App\SitemapController@sitemap_xml');
-
             Route::group(['namespace'=>'App'], function() {
+                Route::get('/sitemap.xml', 'SitemapController@sitemap_xml');
+                Route::post('/send_message', 'MessageController@send');
                 Route::post('/search', 'SearchController@search');
             });
         });

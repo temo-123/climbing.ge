@@ -20,15 +20,16 @@ class GetProductsService
 
         if($locale == "ru"){
             foreach ($global_product as $product) {
-                $product_images = Product_image::where('product_id', '=', $product->id)->first()->get();
-                foreach ($product_images as $product_image) {
-                    $image = $product_image->image;
+                $product_images = Product_image::where('product_id', '=', $product->id)->first();
+                $image = array();
+                if ($product_images != NULL) {
+                    $image = $product_images->image;
                 }
 
                 $ru_products = Ru_product::where('id', '=', $product->ru_product_id,)->get();
-                foreach ($ru_products as $us_product) {
-                    if ($us_product->id == $product->ru_product_id) {
-                        array_push($products, [$ru_products,   
+                foreach ($ru_products as $ru_product) {
+                    if ($ru_product->id == $product->ru_product_id) {
+                        array_push($products, [$ru_products,    
                                                                 "id"=>$product->id,
                                                                 "url_title"=>$product->url_title, 
                                                                 "price"=>$product->price, 
@@ -38,21 +39,24 @@ class GetProductsService
                                                                 "user_id"=>$product->user_id,
                                                                 "image"=>$image
                                                                 ]);
+                                                                
                     }
                 }
+                $image = array();
             }
         }
         elseif ($locale == "ka") {
             foreach ($global_product as $product) {
                 $product_images = Product_image::where('product_id', '=', $product->id)->first();
-                foreach ($product_images as $product_image) {
-                    $image = $product_image->image;
+                $image = array();
+                if ($product_images != NULL) {
+                    $image = $product_images->image;
                 }
 
                 $ka_products = Ka_product::where('id', '=', $product->ka_product_id,)->get();
-                foreach ($ka_products as $us_product) {
-                    if ($us_product->id == $product->ka_product_id) {
-                        array_push($products, [$ka_products,   
+                foreach ($ka_products as $ka_product) {
+                    if ($ka_product->id == $product->ka_product_id) {
+                        array_push($products, [$ka_products,    
                                                                 "id"=>$product->id,
                                                                 "url_title"=>$product->url_title, 
                                                                 "price"=>$product->price, 
@@ -62,21 +66,19 @@ class GetProductsService
                                                                 "user_id"=>$product->user_id,
                                                                 "image"=>$image
                                                                 ]);
+                                                                
                     }
                 }
+                $image = array();
             }
-        } else {
-            // dd($global_product);
+        } 
+        else {
             foreach ($global_product as $product) {
                 $product_images = Product_image::where('product_id', '=', $product->id)->first();
-                // dd($product_images);
                 $image = array();
                 if ($product_images != NULL) {
                     $image = $product_images->image;
-                    // dd($image);
                 }
-
-                // dd($image);
 
                 $us_products = Us_product::where('id', '=', $product->us_product_id,)->get();
                 foreach ($us_products as $us_product) {
@@ -97,7 +99,7 @@ class GetProductsService
                 $image = array();
             }
         }
-        // dd($products);
+
         return $products;
     }
 

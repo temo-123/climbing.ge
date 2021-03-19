@@ -24,6 +24,7 @@ class Message extends Mailable
         $this->num = $EmailArray['num'];
         $this->country = $EmailArray['country'];
         $this->msg = $EmailArray['message'];
+        $this->from_site = $EmailArray['from_site'];
     }
 
     /**
@@ -33,7 +34,7 @@ class Message extends Mailable
      */
     public function build()
     {
-        $subject = 'User message from the site climbing.ge';
+        $subject = 'User message from the site '.$this->from_site;
         
         return $this->markdown('site/emails/message')->with([
             'name'=>$this->name,
@@ -42,6 +43,7 @@ class Message extends Mailable
             'num'=>$this->num,
             'country'=>$this->country,
             'msg'=>$this->msg,
+            'from_site'=>$this->from_site,
         ])->subject($subject);
     }
 }
