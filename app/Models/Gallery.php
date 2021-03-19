@@ -15,7 +15,6 @@ class Gallery extends Model
         'link',
         'filter',
         'article_id',
-        'index_gallery_image',
         'published',
         'article_id',
     ];

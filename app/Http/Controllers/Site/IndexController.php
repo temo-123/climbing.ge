@@ -32,9 +32,9 @@ class IndexController extends Controller
         $events = GetArticlesService::get_locale_article($global_events,);
         // dd($events);
 
-        $head_slider = Gallery::where('index_header_image','=',1)->latest('id')->where('published', '=', 1)->limit(5)->get();
-        $gallery_images = Gallery::where('published', '=', 1)->where('index_gallery_image', '=', 1)->inRandomOrder()->limit(12)->get();
-        $tags = Gallery::distinct()->where('published', '=', 1)->where('index_gallery_image', '=', 1)->get(['filter', 'id']);
+        $head_slider = Gallery::where('category','=',1)->latest('id')->where('published', '=', 1)->limit(5)->get();
+        $gallery_images = Gallery::where('category', '=', 2)->where('published', '=', 1)->inRandomOrder()->limit(12)->get();
+        $tags = Gallery::distinct()->where('category', '=', 2)->where('published', '=', 1)->get(['filter', 'id']);
         
         return view('site.index', array(
             'news' => $news,

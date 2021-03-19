@@ -65,9 +65,6 @@ class GalleryController extends Controller
             $file_new_name = ImageControllService::image_upload('images/gallery_img/', $request, 'image', 1);
     
             $gallery['image'] = $file_new_name;
-            // $sector -> save();
-
-            // $gallery['image']=$this->upload_gallery_iamge($request);
 
             $gallery -> save();
 
@@ -114,21 +111,31 @@ class GalleryController extends Controller
         $image_dir = '/images/gallery_img';
 
         if ($request->isMethod('post')) {
-            $input = $request -> except('_token');
+            // $input = $request -> except('_token');
             
             $this->gallery_validate_for_editing($request);
 
             $gallery = Gallery::where('id',strip_tags($request->id))->first();
 
-            // if ($request->hasFile('image')){ 
-            //     $this->del_gallery_image('images/gallery_img/'.$gallery->image);
-            //     $gallery['image']=$this->upload_gallery_iamge($request);
-            // }
+            $gallery['category']=$request->category;
+            $gallery['title']=$request->title;
+            $gallery['text']=$request->text;
+            $gallery['link']=$request->link;
+            $gallery['filter']=$request->filtr;
+            $gallery['index_gallery_image']=$request->index_gallery_image;
+            $gallery['published']=$request->published;
+            $gallery['article_id']=$request->article_id;
             
-            $file_new_name = ImageControllService::image_update('images/gallery_img/', $gallery, $request, 'image', 1);
+            $file_new_name = '';
+            if ($request->hasFile('image')){ 
+                $file_new_name = ImageControllService::image_update('images/gallery_img/', $gallery, $request, 'image', 1);
+            }
+            else{
+                $file_new_name = $gallery['image'];
+            }
             $gallery['image']=$file_new_name;
 
-            $gallery->fill($input);
+            $gallery->update();
 
             if ($gallery->update()) {
                 return redirect()->route('gallery_list')->with('status','gallery updated!'); //text

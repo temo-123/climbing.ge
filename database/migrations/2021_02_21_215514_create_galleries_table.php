@@ -21,8 +21,6 @@ class CreateGalleriesTable extends Migration
             $table->text('text')->nullable();
             $table->string('image')->nullable();
             $table->string('filter')->nullable();
-            $table->integer('index_gallery_image')->nullable();
-            $table->integer('index_header_image')->nullable();
             $table->integer('article_id')->nullable();
             $table->timestamps();
         });
