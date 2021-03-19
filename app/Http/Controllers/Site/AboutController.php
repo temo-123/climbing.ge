@@ -22,7 +22,7 @@ class AboutController extends Controller
             $partners = GetArticlesService::get_locale_article($global_partners);
             $partners_count = Article::latest('id')->where('category', '=', 'partner')->where('published','=','1')->count();
 
-            $gallery_images = Gallery::where('published', '=', 1)->where('index_gallery_image', '=', 1)->inRandomOrder()->limit(1)->get();
+            $gallery_images = Gallery::where('published', '=', 1)->where('category', '=', 1)->inRandomOrder()->limit(1)->get();
             
             $locale = request()->segment(1, '');
             if($locale == "ru"){

@@ -77,10 +77,13 @@
                     <div class="col-md-12 col-sm-12 col-xs-12">
                         <hr>
                         <div class="about_us_page_shop_section">
-                            @foreach($gallery_images as $image)
-                                <a href="{{ route('shop_index') }}"><img src="{{ asset('images/site_img/site_logo/climibng,ge shop (becground).jpg') }}" alt="" style="rounded mx-auto d-block"></a>
-                            @endforeach
-                            <a href="{{ route('shop_index') }}"><h2><strong>climbing.ge shop</strong></h2></a>
+                            <a href="{{ route('shop_index') }}">
+                                <img src="{{ asset('images/site_img/site_logo/climibng,ge shop (becground).jpg') }}" alt="climbing.ge shop" style="rounded mx-auto d-block">
+                            </a>
+                            
+                            <a href="{{ route('shop_index') }}">
+                                <h2><strong>climbing.ge shop</strong></h2>
+                            </a>
                             {!! $site->shop_short_description !!}
                         </div>
                     </div>
