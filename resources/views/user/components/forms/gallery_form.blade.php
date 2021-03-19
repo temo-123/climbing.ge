@@ -92,14 +92,14 @@
                     </select> 
                 </div>
 
-                <label for="name" class='col-xs-3 control-label'> Show in ingex page </label>
+                {{-- <label for="name" class='col-xs-3 control-label'> Show in ingex page </label>
                 <div class="col-xs-1">
                     @if (isset($data))
                         <input type="checkbox" name="index_gallery_image" value="1" @if($data['index_gallery_image'] == 1) checked="checked" @endif></input>
                     @else
                         <input type="checkbox" name="index_gallery_image" value="1"></input>
                     @endif
-                </div>
+                </div> --}}
             </div>
 
             <div class="form-group clearfix">
