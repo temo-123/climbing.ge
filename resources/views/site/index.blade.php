@@ -287,7 +287,7 @@
                         <section class="portfolio" id="portfolio">
                             <div class="container-fluid">
 
-                                <div class="row">
+                                {{-- <div class="row">
                                     <div class="container">
                                         <div class="filter_button_block" >
                                             <button class="filter-button" data-filter="all">All</button>
@@ -302,12 +302,12 @@
                                         @endif
                                         </div>
                                     </div>
-                                </div>
+                                </div> --}}
 
                                     
                                     @forelse($index_gallery as $k=>$gallery)
 
-                                    <div class="filter xz_filtr thumb" >
+                                    {{-- <div class="filter xz_filtr thumb" >
                                     <div class='clearfix_big'>
                                         @if(($gallery -> id % 4) == 0)
                                         <div class="clearfix"></div>
@@ -318,7 +318,7 @@
                                         <div class="clearfix"></div>
                                         @endif 
                                     </div>
-                                    </div>
+                                    </div> --}}
 
                                     <div class="gallery_product col-sm-3 col-xs-6 filter {!! $gallery -> filter !!} thumb" >
                                         <a class="thumbnail" href='#' data-image-id="" data-toggle="modal" data-toggle="modal" data-target="#squarespaceModal{{$gallery -> id}}">

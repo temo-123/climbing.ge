@@ -57,7 +57,7 @@ class GalleryController extends Controller
             $gallery['title']=$request->title;
             $gallery['text']=$request->text;
             $gallery['link']=$request->link;
-            $gallery['filter']=$request->filtr;
+            $gallery['filter']=$request->filter;
             $gallery['published']=$request->published;
             $gallery['article_id']=$request->article_id;
     
@@ -120,7 +120,7 @@ class GalleryController extends Controller
             $gallery['title']=$request->title;
             $gallery['text']=$request->text;
             $gallery['link']=$request->link;
-            $gallery['filter']=$request->filtr;
+            $gallery['filter']=$request->filter;
             $gallery['published']=$request->published;
             $gallery['article_id']=$request->article_id;
             
