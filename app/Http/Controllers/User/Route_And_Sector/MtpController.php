@@ -124,7 +124,7 @@ class MtpController extends Controller
     	abort(404);
     }
 
-    public function edit_pitch()
+    public function edit_pitch(Request $request)
     {
         $request->user()->authorizeRoles(['manager', 'admin']);
 

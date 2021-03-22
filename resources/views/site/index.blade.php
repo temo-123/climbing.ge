@@ -272,155 +272,6 @@
                 </div><!-- /services -->
                 @endif
 
-
-                @if(isset($index_gallery) && count($index_gallery) != 0)
-                <div class="h-recent-work services">
-                    <div class="container">
-
-                        <h2 class='index_h2'>@lang('site.title gallery')</h2>
-
-                        @if($site->index_gallery_description != NULL)
-                        <div class="bar" style="margin-bottom: 5%;"><i class="fa fa-picture-o" aria-hidden="true"></i></div>
-                        <h6>{{$site -> index_gallery_description}}</h6>
-                        @endif
-
-                        <section class="portfolio" id="portfolio">
-                            <div class="container-fluid">
-
-                                {{-- <div class="row">
-                                    <div class="container">
-                                        <div class="filter_button_block" >
-                                            <button class="filter-button" data-filter="all">All</button>
-                                        </div>
-                                        <div class="filter_button_block" >
-                                        @if(isset($tags))
-                                        @foreach($tags as $k=>$tag)
-
-                                        <button class="filter-button" data-filter="{!! $tag->filter !!}">{!! $tag->filter !!}</button>
-
-                                        @endforeach
-                                        @endif
-                                        </div>
-                                    </div>
-                                </div> --}}
-
-                                    
-                                    @forelse($index_gallery as $k=>$gallery)
-
-                                    {{-- <div class="filter xz_filtr thumb" >
-                                    <div class='clearfix_big'>
-                                        @if(($gallery -> id % 4) == 0)
-                                        <div class="clearfix"></div>
-                                        @endif
-                                    </div>
-                                    <div class='clearfix_mini'>
-                                        @if(($gallery -> id % 2) == 0)
-                                        <div class="clearfix"></div>
-                                        @endif 
-                                    </div>
-                                    </div> --}}
-
-                                    <div class="gallery_product col-sm-3 col-xs-6 filter {!! $gallery -> filter !!} thumb" >
-                                        <a class="thumbnail" href='#' data-image-id="" data-toggle="modal" data-toggle="modal" data-target="#squarespaceModal{{$gallery -> id}}">
-
-                                            <img src="{{ asset('images/gallery_img/'.$gallery -> image) }}" alt="Another alt text">
-
-                                            <div class="size">
-                                                <a data-toggle="modal" data-target="#squarespaceModal{{$gallery -> id}}">{{ $gallery -> title }}</a>
-                                            </div>
-                                        </a>
-                                    </div>       
-                                    @empty
-                                    <h2 class="text-center">No text</h2>
-                                    @endforelse
-                                </div>
-                        </section>
-                    </div>
-                </div>
-                @endif
-
-
-                @if(isset($index_gallery))
-                @foreach($index_gallery as $k=>$gallery)
-                <div class="modal fade" id="squarespaceModal{{$gallery->id}}" id="image-gallery" tabindex="-1" role="dialog" aria-labelledby="modalLabel" aria-hidden="true">
-
-                    @if(($gallery -> text) != NULL)
-                    <div class="modal-dialog modal-lg galery_page_big">
-                        @else
-                        <div class="modal-dialog modal-lg galery_page_smal">
-                            @endif
-
-                            <div class="modal-content">
-                               <div class="modal-header">
-                                <h2 class="modal-title" id="image-gallery-title">{{ $gallery -> title }}</h2>
-                                <button type="button" class="close" data-dismiss="modal" style='margin-top: -29px; font-size: 41px;'>
-                                   <i class="fa fa-close" aria-hidden="true"></i>
-                               </button>
-
-                               @auth
-                            @if(Auth::user()->hasRole('admin'))
-                            <ul class="nav navbar-nav pull-right blog-sidebar display-none-720px">
-                                <li class="dropdown" style='margin-top: -35px; font-size: 31px; float: right; margin-right: 1%;'>
-
-                                    <a href="#" class="dropdown-toggle margin_right"  data-toggle="dropdown">
-                                        <i class="fa fa-chevron-circle-down" aria-hidden="true"></i>
-                                    </a>
-
-                                    <ul class="dropdown-menu shadows" role="menu">
-                                        <li><a href="#">All galeri list</a></li>
-                                        <hr>
-                                        <li>
-                                            <a href="#">Edit</a>
-                                        </li>
-                                    </ul>
-                                </li>
-                            </ul>
-                            @endif
-                            @endauth
-                        </div>
-                        @if(($gallery -> text) != NULL)
-                        <div class="container">
-                            <div class="row">
-                                <div class='col-md-8'>
-                                    <img class='col-xs-12' src="{{ asset('images/gallery_img/'.$gallery -> image) }}" alt="Another alt text">
-                                </div>
-                                <div class='col-md-4 galery_open_text'>
-                                    <p>{!! $gallery -> text !!}</p>
-                                </div>
-                            </div>
-                        </div>
-                        @else
-                        <div class="container">
-                            <div class="row">
-                                <img class="col-xs-12" src="{{ asset('images/gallery_img/'.$gallery -> image) }}" alt="Another alt text">
-                            </div>
-                        </div>
-                        @endif
-                        <div class="modal-footer">
-
-                            @if (Route::has('login'))
-                            @auth 
-                            @if(($gallery -> link) != NULL)
-                            <button type="button" id="image-gallery-text" class="btn btn-secondary float-left"  style="float: left;">More</button>
-                            @endif
-                            @endauth
-                            @endif
-
-                            <button type="button" id="show-previous-image" class="btn btn-secondary float-left">
-                                <i class="fa fa-arrow-left"></i>
-                            </button>
-
-                            <button type="button" id="show-next-image" class="btn btn-secondary float-right">
-                                <i class="fa fa-arrow-right"></i>
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            @endforeach
-            @endif
-
-
             {{-- @if((isset($securities)))
             <div class="h-recent-work services" id="services">
                 <div class="container">
@@ -544,5 +395,153 @@
                     </div>
                 </div>
                 @endif
+
+                @if(isset($index_gallery) && count($index_gallery) != 0)
+                <div class="h-recent-work services">
+                    <div class="container">
+
+                        <h2 class='index_h2'>@lang('site.title gallery')</h2>
+
+                        @if($site->index_gallery_description != NULL)
+                        <div class="bar" style="margin-bottom: 5%;"><i class="fa fa-picture-o" aria-hidden="true"></i></div>
+                        <h6>{{$site -> index_gallery_description}}</h6>
+                        @endif
+
+                        <section class="portfolio" id="portfolio">
+                            <div class="container-fluid">
+
+                                {{-- <div class="row">
+                                    <div class="container">
+                                        <div class="filter_button_block" >
+                                            <button class="filter-button" data-filter="all">All</button>
+                                        </div>
+                                        <div class="filter_button_block" >
+                                        @if(isset($tags))
+                                        @foreach($tags as $k=>$tag)
+
+                                        <button class="filter-button" data-filter="{!! $tag->filter !!}">{!! $tag->filter !!}</button>
+
+                                        @endforeach
+                                        @endif
+                                        </div>
+                                    </div>
+                                </div> --}}
+
+                                    
+                                    @forelse($index_gallery as $k=>$gallery)
+
+                                    {{-- <div class="filter xz_filtr thumb" >
+                                    <div class='clearfix_big'>
+                                        @if(($gallery -> id % 4) == 0)
+                                        <div class="clearfix"></div>
+                                        @endif
+                                    </div>
+                                    <div class='clearfix_mini'>
+                                        @if(($gallery -> id % 2) == 0)
+                                        <div class="clearfix"></div>
+                                        @endif 
+                                    </div>
+                                    </div> --}}
+                                    <div class="col-md-4 col-lg-3 ">
+                                        <div class="gallery_product filter {!! $gallery -> filter !!} thumb" >
+                                            <a class="thumbnail" href='#' data-image-id="" data-toggle="modal" data-toggle="modal" data-target="#squarespaceModal{{$gallery -> id}}">
+
+                                                <img src="{{ asset('images/gallery_img/'.$gallery -> image) }}" alt="Another alt text">
+
+                                                <div class="size">
+                                                    <a data-toggle="modal" data-target="#squarespaceModal{{$gallery -> id}}">{{ $gallery -> title }}</a>
+                                                </div>
+                                            </a>
+                                        </div>  
+                                    </div>     
+                                    @empty
+                                    <h2 class="text-center">No text</h2>
+                                    @endforelse
+                                </div>
+                        </section>
+                    </div>
+                </div>
+                @endif
+
+
+                @if(isset($index_gallery))
+                @foreach($index_gallery as $k=>$gallery)
+                <div class="modal fade" id="squarespaceModal{{$gallery->id}}" id="image-gallery" tabindex="-1" role="dialog" aria-labelledby="modalLabel" aria-hidden="true">
+
+                    @if(($gallery -> text) != NULL)
+                    <div class="modal-dialog modal-lg galery_page_big">
+                        @else
+                        <div class="modal-dialog modal-lg galery_page_smal">
+                            @endif
+
+                            <div class="modal-content">
+                               <div class="modal-header">
+                                <h2 class="modal-title" id="image-gallery-title">{{ $gallery -> title }}</h2>
+                                <button type="button" class="close" data-dismiss="modal" style='margin-top: -29px; font-size: 41px;'>
+                                   <i class="fa fa-close" aria-hidden="true"></i>
+                               </button>
+
+                               @auth
+                            @if(Auth::user()->hasRole('admin'))
+                            <ul class="nav navbar-nav pull-right blog-sidebar display-none-720px">
+                                <li class="dropdown" style='margin-top: -35px; font-size: 31px; float: right; margin-right: 1%;'>
+
+                                    <a href="#" class="dropdown-toggle margin_right"  data-toggle="dropdown">
+                                        <i class="fa fa-chevron-circle-down" aria-hidden="true"></i>
+                                    </a>
+
+                                    <ul class="dropdown-menu shadows" role="menu">
+                                        <li><a href="#">All galeri list</a></li>
+                                        <hr>
+                                        <li>
+                                            <a href="#">Edit</a>
+                                        </li>
+                                    </ul>
+                                </li>
+                            </ul>
+                            @endif
+                            @endauth
+                        </div>
+                        @if(($gallery -> text) != NULL)
+                        <div class="container">
+                            <div class="row">
+                                <div class='col-md-8'>
+                                    <img class='col-xs-12' src="{{ asset('images/gallery_img/'.$gallery -> image) }}" alt="Another alt text">
+                                </div>
+                                <div class='col-md-4 galery_open_text'>
+                                    <p>{!! $gallery -> text !!}</p>
+                                </div>
+                            </div>
+                        </div>
+                        @else
+                        <div class="container">
+                            <div class="row">
+                                <img class="col-xs-12" src="{{ asset('images/gallery_img/'.$gallery -> image) }}" alt="Another alt text">
+                            </div>
+                        </div>
+                        @endif
+                        <div class="modal-footer">
+
+                            @if (Route::has('login'))
+                            @auth 
+                            @if(($gallery -> link) != NULL)
+                            <button type="button" id="image-gallery-text" class="btn btn-secondary float-left"  style="float: left;">More</button>
+                            @endif
+                            @endauth
+                            @endif
+
+                            <button type="button" id="show-previous-image" class="btn btn-secondary float-left">
+                                <i class="fa fa-arrow-left"></i>
+                            </button>
+
+                            <button type="button" id="show-next-image" class="btn btn-secondary float-right">
+                                <i class="fa fa-arrow-right"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            @endforeach
+            @endif
 
 @endsection

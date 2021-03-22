@@ -77,7 +77,6 @@ class OutdoorController extends Controller
                 'articles_link' => 'outdoor_page',
                 'image_dir' => 'outdoor_img',
                 
-                // Meta teg
                 'meta_title' => 'Outdoor climbing regions in Georgia',
                 'meta_description' => 'In Georgia are many outdoor climbing zone. You can see the full information about these regions and visit one of them.',
                 'meta_img' => 'outdoor.jpg'
@@ -104,18 +103,7 @@ class OutdoorController extends Controller
             $global_other_list = Article::latest('id')->where('category', '=', 'outdoor')->inRandomOrder()->where('published','=','1')->limit(6)->get();
             $other_list = GetArticlesService::get_locale_article($global_other_list);
 
-            // 
-            // 
-            // 
-            // sectors_and_routes_array method code
-            // 
-            // 
-            // 
-
             $area_info = $this->sectors_and_routes_array($id);
-
-            // dd($sector_imgs);
-            // dd($area_info);
             
             $data  = [
                 'outdoor_climbing' => 0,
@@ -201,10 +189,10 @@ class OutdoorController extends Controller
         if ($sector_count > 0) {
             $sector_n = Sector::where('article_id', '=', $id)->orderBy('num')->get();
             foreach($sector_n as $sector){
-
                 $sectors_img_count = Sector_image::where('sector_id', '=', $sector->id)->count();
                 if ($sectors_img_count > 0) {
                     $sectors_img = Sector_image::where('sector_id', '=', $sector->id)->orderBy('num')->get();
+                    $sector_imgs = array();
                     foreach($sectors_img as $sector_img){
                         array_push($sector_imgs, 
                             array('image' => $sector_img->image)
@@ -216,6 +204,7 @@ class OutdoorController extends Controller
                 $routes_count = Route::where('sector_id', '=', $sector->id)->count();
                 if ($routes_count > 0){
                     $routes = Route::where('sector_id', '=', $sector->id)->orderBy('num')->get();
+                    $route_info = array();
                     foreach($routes as $x=>$route){
                         $grade_yds = 0;
                         if ($route['grade'] != NULL) {
@@ -244,13 +233,15 @@ class OutdoorController extends Controller
                 $mtps_count = MTP::where('sector_id', '=', $sector->id)->count();
                 if ($mtps_count > 0){
                     $mtps = MTP::where('sector_id', '=', $sector->id)->orderBy('num')->get();
+                    $mtp_info = array();
                     foreach($mtps as $mtp){
                         $mtp_pitchs = Mtp_pitch::where('mtp_id', '=', $mtp->id)->orderBy('num')->get();
                         $mtp_pitchs_count = Mtp_pitch::where('mtp_id', '=', $mtp->id)->orderBy('num')->count();
                         $pitch_num = 0;
                         $mtp_num_in_array = 0;
                         if ($mtp_pitchs_count > 0) {
-                            foreach($mtp_pitchs as $mtp_pitch){                            
+                            $mtp_pitch_info = array();
+                            foreach($mtp_pitchs as $mtp_pitch){                
                                 $pitch_grade_yds = 0;
                                 if ($mtp_pitch['grade'] != NULL) {
                                     $pitch_grade_yds = $this->get_yds_grade($mtp_pitch);
@@ -279,12 +270,10 @@ class OutdoorController extends Controller
                                 "mtp pitchs"=>$mtp_pitch_info
                             ]
                         );
-
-                        $mtp_pitch_info = array();
-
                     }
                 }
                 else $mtp_info = array();
+
                 $sector_info = array(
                     "id"=>$sector->id, 
                     "name"=>$sector->name, 
@@ -313,7 +302,6 @@ class OutdoorController extends Controller
                 );
             }
         }
-
         return $area_info;
     }
 }

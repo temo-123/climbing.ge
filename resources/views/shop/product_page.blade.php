@@ -56,10 +56,66 @@
           <div class="right-col">
 
             <div class="row">
-              <div class="col-md-9">
-                <h1 itemprop="name">{{$product -> title}}</h1>
+              <div class="col-md-9 product_page_title">
+                <h1>{{$product -> title}}</h1>
               </div>
-              <div class="col-md-3">
+            </div>
+            <div class="row">
+
+              <div class="col-md-10">
+                <div class="price-shipping">
+                  <div class="price" id="price-preview">
+
+                    @if($global_product->discount != null)
+                    @foreach($price_array as $new_price)
+                    @if($new_price[0] == $global_product->id)
+
+                        <div class="price_pege">
+                        @if($global_product -> currency == 'GEL')
+                          <p title="GEL {{$new_price[1]}}">₾
+                        @elseif($global_product -> currency == 'USD')
+                          <p title="USD {{$new_price[1]}}">$
+                        @else
+                          <p title="{{$global_product -> currency}} {{$new_price[1]}}">{{$global_product -> currency}}
+                        @endif
+                        {{$new_price[1]}}
+                          </p>
+                        </div>
+
+                        <div class="old_price_page">
+                        @if($global_product -> currency == 'GEL')
+                          <p title="GEL {{$global_product -> price}}">₾
+                        @elseif($global_product -> currency == 'USD')
+                          <p title="USD {{$global_product -> price}}">$
+                        @else
+                          <p title="{{$global_product -> currency}} {{$global_product -> price}}">{{$global_product -> currency}}
+                        @endif
+                        {{$global_product -> price}}
+                          </p>
+                        </div>
+
+                    @endif
+                    @endforeach
+                    @else
+                    
+                    <div class="price_pege">
+                      @if($global_product -> currency == 'GEL')
+                        <p title="GEL {{$global_product -> price}}">₾
+                      @elseif($global_product -> currency == 'USD')
+                        <p title="USD {{$global_product -> price}}">$
+                      @else
+                        <p title="{{$global_product -> currency}} {{$global_product -> price}}">{{$global_product -> currency}}
+                      @endif
+                      {{$global_product -> price}}
+                      </p>
+                    </div>
+
+                    @endif
+                  </div>
+                </div>
+              </div>
+
+              <div class="col-md-2">
                 @if(Auth::guest())
                 <a href="{{route('favorite_product', array('product_id'=>$product->id, 'actions'=>'add'))}}"> 
                   <i class="fa fa-heart-o" aria-hidden="true" style="font-size: 250%; float: right;"></i>
@@ -75,166 +131,114 @@
                     </a>
                   @endif
                 @endif
+                {{-- </div> --}}
               </div>
-            <!-- </div> -->
 
-            <div itemprop="offers">
-              <div class="price-shipping">
-                <div class="price" id="price-preview">
+            </div>
 
-                  @if($global_product->discount != null)
-                  @foreach($price_array as $new_price)
-                  @if($new_price[0] == $global_product->id)
-
-                      <div class="price_pege">
-                      @if($global_product -> currency == 'GEL')
-                        <p title="GEL {{$new_price[1]}}">₾
-                      @elseif($global_product -> currency == 'USD')
-                        <p title="USD {{$new_price[1]}}">$
-                      @else
-                        <p title="{{$global_product -> currency}} {{$new_price[1]}}">{{$global_product -> currency}}
-                      @endif
-                      {{$new_price[1]}}
-                        </p>
-                      </div>
-
-                      <div class="old_price_page">
-                      @if($global_product -> currency == 'GEL')
-                        <p title="GEL {{$global_product -> price}}">₾
-                      @elseif($global_product -> currency == 'USD')
-                        <p title="USD {{$global_product -> price}}">$
-                      @else
-                        <p title="{{$global_product -> currency}} {{$global_product -> price}}">{{$global_product -> currency}}
-                      @endif
-                      {{$global_product -> price}}
-                        </p>
-                      </div>
-
-                  @endif
-                  @endforeach
-                  @else
-                  
-                  <div class="price_pege">
-                  @if($global_product -> currency == 'GEL')
-                    <p title="GEL {{$global_product -> price}}">₾
-                  @elseif($global_product -> currency == 'USD')
-                    <p title="USD {{$global_product -> price}}">$
-                  @else
-                    <p title="{{$global_product -> currency}} {{$global_product -> price}}">{{$global_product -> currency}}
-                  @endif
-                  {{$global_product -> price}}
-                    </p>
-                  </p>
+            <div class="row">
+              @if($global_product -> size != null)
+                <div class="col">
+                  <div class="swatch clearfix" data-option-index="0">
+                    {{-- <div class="header">Size ({{$global_product -> size_style}})</div> --}}
+                    <div data-value="M" class="swatch-element plain m available">
+                      <input id="swatch-0-m" type="radio" name="option-0" value="M" checked  />
+                      <label for="swatch-0-m">
+                        {{$global_product -> size}}
+                        <img class="crossed-out" src="//cdn.shopify.com/s/files/1/1047/6452/t/1/assets/soldout.png?10994296540668815886" />
+                      </label>
+                    </div>
                   </div>
-
-                  @endif
                 </div>
-              </div>
-
-              <div class="clearfix"></div>
-
-              <div class="swatches">
-                <div class="row">
-                @if($global_product -> size != null)
-                  <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
-                    <div class="swatch clearfix" data-option-index="0">
-                      {{-- <div class="header">Size ({{$global_product -> size_style}})</div> --}}
-                      <div data-value="M" class="swatch-element plain m available">
-                        <input id="swatch-0-m" type="radio" name="option-0" value="M" checked  />
-                        <label for="swatch-0-m">
-                          {{$global_product -> size}}
-                          <img class="crossed-out" src="//cdn.shopify.com/s/files/1/1047/6452/t/1/assets/soldout.png?10994296540668815886" />
-                        </label>
-                      </div>
-                    </div>
-                  </div>
-                @endif
-
-                
-                @if($global_product -> color != null)
-                  <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
-                    <div class="swatch clearfix" data-option-index="1">
-                      @if($global_product -> color == 'White')
-                      <div data-value="Red" class="swatch-element color white available">
-                        <div class="tooltip">white</div>
-                        <label for="swatch-1-white" style="border-color: black;">
-                          <span style="background-color: white;"></span>
-                        </label>
-                      </div>
-                      @elseif($global_product -> color == 'Black')
-                      <div data-value="Red" class="swatch-element color black available">
-                        <div class="tooltip">black</div>
-                        <label for="swatch-1-black" style="border-color: black;">
-                          <span style="background-color: black;"></span>
-                        </label>
-                      </div>
-                      @elseif($global_product -> color == 'Brown')
-                      <div data-value="Red" class="swatch-element color brown available">
-                        <div class="tooltip">brown</div>
-                        <label for="swatch-1-brown" style="border-color: brown;">
-                          <span style="background-color: brown;"></span>
-                        </label>
-                      </div>
-                      @elseif($global_product -> color == 'Red')
-                      <div data-value="Red" class="swatch-element color red available">
-                        <div class="tooltip">red</div>
-                        <label for="swatch-1-red" style="border-color: red;">
-                          <span style="background-color: red;"></span>
-                        </label>
-                      </div>
-                      @elseif($global_product -> color == 'Orange')
-                      <div data-value="Red" class="swatch-element color orange available">
-                        <div class="tooltip">orange</div>
-                        <label for="swatch-1-orange" style="border-color: orange;">
-                          <span style="background-color: orange;"></span>
-                        </label>
-                      </div>
-                      @elseif($global_product -> color == 'Yellow')
-                      <div data-value="Red" class="swatch-element color yellow available">
-                        <div class="tooltip">yellow</div>
-                        <label for="swatch-1-yellow" style="border-color: yellow;">
-                          <span style="background-color: yellow;"></span>
-                        </label>
-                      </div>
-                      @elseif($global_product -> color == 'Green')
-                      <div data-value="Red" class="swatch-element color green available">
-                        <div class="tooltip">green</div>
-                        <label for="swatch-1-green" style="border-color: green;">
-                          <span style="background-color: green;"></span>
-                        </label>
-                      </div>
-                      @elseif($global_product -> color == 'Blue')
-                      <div data-value="Red" class="swatch-element color blue available">
-                        <div class="tooltip">blue</div>
-                        <label for="swatch-1-blue" style="border-color: blue;">
-                          <span style="background-color: blue;"></span>
-                        </label>
-                      </div>
-                      @elseif($global_product -> color == 'Purple')
-                      <div data-value="Red" class="swatch-element color purple available">
-                        <div class="tooltip">purple</div>
-                        <label for="swatch-1-purple" style="border-color: purple;">
-                          <span style="background-color: purple;"></span>
-                        </label>
-                      </div>
-                      @elseif($global_product -> color == 'Grey')
-                      <div data-value="Red" class="swatch-element color grey available">
-                        <div class="tooltip">grey</div>
-                        <label for="swatch-1-grey" style="border-color: grey;">
-                          <span style="background-color: grey;"></span>
-                        </label>
-                      </div>
-                      @endif
-                    </div>
-                  </div>
-                @endif
-              </div>
-              @if ($global_product->quantity != NULL && $global_product->quantity <= 3)
-                <h2><strong style="color: #f70000;">₾imited quantity ( @if($global_product->quantity == 1) 1 @else 3 > @endif )</strong></h2>
               @endif
-              </div>
+
+              @if($global_product -> color != null)
+                <div class="col">
+                  <div class="swatch clearfix" data-option-index="1">
+                    @if($global_product -> color == 'White')
+                    <div data-value="Red" class="swatch-element color white available">
+                      <div class="tooltip">white</div>
+                      <label for="swatch-1-white" style="border-color: black;">
+                        <span style="background-color: white;"></span>
+                      </label>
+                    </div>
+                    @elseif($global_product -> color == 'Black')
+                    <div data-value="Red" class="swatch-element color black available">
+                      <div class="tooltip">black</div>
+                      <label for="swatch-1-black" style="border-color: black;">
+                        <span style="background-color: black;"></span>
+                      </label>
+                    </div>
+                    @elseif($global_product -> color == 'Brown')
+                    <div data-value="Red" class="swatch-element color brown available">
+                      <div class="tooltip">brown</div>
+                      <label for="swatch-1-brown" style="border-color: brown;">
+                        <span style="background-color: brown;"></span>
+                      </label>
+                    </div>
+                    @elseif($global_product -> color == 'Red')
+                    <div data-value="Red" class="swatch-element color red available">
+                      <div class="tooltip">red</div>
+                      <label for="swatch-1-red" style="border-color: red;">
+                        <span style="background-color: red;"></span>
+                      </label>
+                    </div>
+                    @elseif($global_product -> color == 'Orange')
+                    <div data-value="Red" class="swatch-element color orange available">
+                      <div class="tooltip">orange</div>
+                      <label for="swatch-1-orange" style="border-color: orange;">
+                        <span style="background-color: orange;"></span>
+                      </label>
+                    </div>
+                    @elseif($global_product -> color == 'Yellow')
+                    <div data-value="Red" class="swatch-element color yellow available">
+                      <div class="tooltip">yellow</div>
+                      <label for="swatch-1-yellow" style="border-color: yellow;">
+                        <span style="background-color: yellow;"></span>
+                      </label>
+                    </div>
+                    @elseif($global_product -> color == 'Green')
+                    <div data-value="Red" class="swatch-element color green available">
+                      <div class="tooltip">green</div>
+                      <label for="swatch-1-green" style="border-color: green;">
+                        <span style="background-color: green;"></span>
+                      </label>
+                    </div>
+                    @elseif($global_product -> color == 'Blue')
+                    <div data-value="Red" class="swatch-element color blue available">
+                      <div class="tooltip">blue</div>
+                      <label for="swatch-1-blue" style="border-color: blue;">
+                        <span style="background-color: blue;"></span>
+                      </label>
+                    </div>
+                    @elseif($global_product -> color == 'Purple')
+                    <div data-value="Red" class="swatch-element color purple available">
+                      <div class="tooltip">purple</div>
+                      <label for="swatch-1-purple" style="border-color: purple;">
+                        <span style="background-color: purple;"></span>
+                      </label>
+                    </div>
+                    @elseif($global_product -> color == 'Grey')
+                    <div data-value="Red" class="swatch-element color grey available">
+                      <div class="tooltip">grey</div>
+                      <label for="swatch-1-grey" style="border-color: grey;">
+                        <span style="background-color: grey;"></span>
+                      </label>
+                    </div>
+                    @endif
+                  </div>
+                </div>
+              @endif
+            </div>
+
+            {{-- </div> --}}
+            <div class="row">
+              @if ($global_product->quantity != NULL && $global_product->quantity <= 3)
+                <h2 style=""><strong style="color: #f70000; text-align: center !important;">Limited quantity ( @if($global_product->quantity == 1) 1 @else 3 > @endif )</strong></h2>
+              @endif
             </div>
           </div>
+
         </div>
       </div>
   </div>

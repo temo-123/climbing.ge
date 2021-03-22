@@ -24,9 +24,9 @@
     <meta name="twitter:description"    content="@yield('meta_description')">
     <meta name="twitter:creator"        content="@author_handle">
     <meta name="twitter:image"          content="@yield('meta_img')">
+
     @if(isset($products))
     @else
-    
     <meta name="twitter:data1"          content="@yield('price')">
     <meta name="twitter:label1"         content="Price">
     <meta name="twitter:data2"          content="@yield('color')">
@@ -129,8 +129,8 @@
     <script src="http://netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script> <!-- conflict to site menu -->
 
     <!--Security system on index-->
-    <script src='https://cdnjs.cloudflare.com/ajax/libs/vue/2.1.7/vue.js'></script>
-    <script src='https://rawgit.com/Wlada/vue-carousel-3d/master/dist/vue-carousel-3d.min.js'></script>
+    {{-- <script src='https://cdnjs.cloudflare.com/ajax/libs/vue/2.1.7/vue.js'></script> --}}
+    {{-- <script src='https://rawgit.com/Wlada/vue-carousel-3d/master/dist/vue-carousel-3d.min.js'></script> --}}
 
     <!-- For gallery -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.2.5/jquery.fancybox.min.js"></script>
@@ -146,7 +146,7 @@
     <!-- My JS -->
     <script src="{{ asset('assets/js/my_js/my_scripts.js') }}" type="text/javascript" ></script>
     <script src="{{ asset('assets/js/my_js/galery_image_open.js') }}" type="text/javascript" ></script><!--For index gallery-->
-    <!-- <script src="{{ asset('assets/js/my_js/indoor_stars.js') }}" type="text/javascript"></script>For indoor stars block -->
+    {{-- <!-- <script src="{{ asset('assets/js/my_js/indoor_stars.js') }}" type="text/javascript"></script>For indoor stars block --> --}}
     
 </body>
 </html>

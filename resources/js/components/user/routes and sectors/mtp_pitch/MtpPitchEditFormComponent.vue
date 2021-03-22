@@ -234,7 +234,7 @@ console.log(editing_data.mtp_pitch);
 
     edit_mtp_pitch: function () {
       axios
-      .post('/routes_and_sectors/mtp_pitch_add', {
+      .post('/routes_and_sectors/mtp_pitch_edit/' + this.editing_pitch_id, {
           mtp_id: this.mtp_id,
           name: this.name,
           grade: this.grade,

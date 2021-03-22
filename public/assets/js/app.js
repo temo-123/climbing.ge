@@ -8201,7 +8201,7 @@ __webpack_require__.r(__webpack_exports__);
     edit_mtp_pitch: function edit_mtp_pitch() {
       var _this5 = this;
 
-      axios.post('/routes_and_sectors/mtp_pitch_add', {
+      axios.post('/routes_and_sectors/mtp_pitch_edit/' + this.editing_pitch_id, {
         mtp_id: this.mtp_id,
         name: this.name,
         grade: this.grade,
