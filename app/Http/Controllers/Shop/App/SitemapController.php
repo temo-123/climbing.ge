@@ -12,9 +12,17 @@ class SitemapController extends Controller
     public function sitemap_xml()
     {
         $products = Product::where('published', '=', 1)->get();
-        // dd($products);
     	return response()->view('shop/sitemap/sitemap_xml', compact(
     		'products',
     			))->header('Content-Type', 'text/xml');
     }
+
+	public function robots()
+	{
+		echo(
+			'
+				Sitemap: http://shop.climbing.loc/sitemap.xml
+			'
+		);
+	}
 }

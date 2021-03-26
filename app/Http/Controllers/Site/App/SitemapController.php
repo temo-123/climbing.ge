@@ -35,6 +35,7 @@ class SitemapController extends Controller
 			'mountains',
     			))->header('Content-Type', 'text/xml');
     }
+
     public function sitemap()
     {   
 		$global_news = Article::latest('id')->where('category', '=', 'news')->where('published', '=', 1)->get();
@@ -65,4 +66,14 @@ class SitemapController extends Controller
 
     	return response()->view('site/sitemap/sitemap', $data);
     }
+
+	public function robots()
+	{
+		echo(
+			'
+				Disallow: /search
+				Sitemap: http://climbing.loc/sitemap.xml
+			'
+		);
+	}
 }

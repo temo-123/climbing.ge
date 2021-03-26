@@ -46,7 +46,7 @@ Route::group(['prefix' => LocalisationService::locale(),'middleware' => 'setLoca
 
                 Route::get('/sitemap.xml', 'SitemapController@sitemap_xml');
                 Route::get('/sitemap', 'SitemapController@sitemap_xml');
-                Route::get('/robots.txt', 'SitemapController@sitemap_xml');
+                Route::get('/robots.txt', 'SitemapController@robots');
             });
         });
     });
@@ -63,7 +63,7 @@ Route::group(['prefix' => LocalisationService::locale(),'middleware' => 'setLoca
             Route::group(['namespace'=>'App'], function() {
                 Route::get('/sitemap.xml', 'SitemapController@sitemap_xml');
                 Route::get('/sitemap', 'SitemapController@sitemap_xml');
-                Route::get('/robots.txt', 'SitemapController@sitemap_xml');
+                Route::get('/robots.txt', 'SitemapController@robots');
 
                 Route::post('/send_message', 'MessageController@send');
                 Route::post('/search', 'SearchController@search');
