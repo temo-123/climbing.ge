@@ -206,7 +206,7 @@
                                 <ul class="right-text">
                                     <li>
                                         <h4>
-                                            <a href="{{ $site -> activity_link_1 }}">
+                                            <a href="{{ route('outdoor_list') }}">
                                                 <strong>@lang('site.title outdoor climbing')</strong>
                                                 <!-- <i class="fa fa-tablet"></i> -->
                                                 <img alt='outdoor climbing image' class="index_category_right" src="{{ asset('images/site_img/logo/outdoor.png') }}">
@@ -220,7 +220,7 @@
                                     <div class="clearfix"></div>
                                     <li>
                                         <h4>
-                                            <a href="{{ $site -> activity_link_2 }}">
+                                            <a href="{{ route('indoor_list') }}">
                                                 <strong>@lang('site.title indoor climbing')</strong>
                                                 <!-- <i class="fa fa-file-code-o"></i> -->
                                                 <img alt='indoor climbing image' class="index_category_right" src="{{ asset('images/site_img/logo/indoor.png') }}">
@@ -237,7 +237,7 @@
                                 <ul class="left-text">
                                     <li>
                                         <h4>
-                                            <a href="{{ $site -> activity_link_3 }}">
+                                            <a href="{{ route('ice_list') }}">
                                                 <strong>@lang('site.title ice climbing')</strong>
                                                 <!-- <i class="fa fa-eye"></i> -->
                                                 {{-- <img alt='ice climbing image' class="index_category_left" src="{{ asset('images/site_img/logo/ice.png') }}"> --}}
@@ -252,7 +252,7 @@
                                     <div class="clearfix"></div>
                                     <li>
                                         <h4>
-                                            <a href="$site -> activity_link_4">
+                                            <a href="{{ route('mount_list') }}">
                                                 <strong>@lang('site.title mountaineering')</strong>
                                                 <!-- <i class="fa fa-fire"></i> -->
                                                 <img alt='mountaineering image' class="index_category_left" src="{{ asset('images/site_img/logo/mount.png') }}">

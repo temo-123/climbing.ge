@@ -1360,6 +1360,85 @@ font-weight: 500;
 
 
 
+
+
+/*
+*
+*   form value style style
+*
+*/
+// optgroup { font-size:40px; }
+
+input[type="text"]
+{
+    font-size:18px;
+}
+input[type="textarea"]
+{
+    font-size:18px;
+}
+input[type="email"]
+{
+    font-size:18px;
+}
+input[type="selected"]
+{
+    font-size:18px;
+}
+input[type="options"]
+{
+    font-size:18px;
+}
+button.btn-sm, .btn-sm {
+    height: 31px;
+    line-height: 28px;
+    padding: 0 15px !important;
+}
+.btn, input[type="submit"], input[type="button"], button.btn, .btn-primary {
+  //   background-color: #279fbb;
+    border: medium none;
+    border-radius: 3px;
+    box-shadow: 0 -2px 0 0 rgba(0, 0, 0, 0.3) inset;
+    color: white !important;
+    display: inline-block;
+  //   font-size: 13px;
+    font-weight: 500;
+    height: 36px;
+    line-height: 33px;
+    /*margin: 0 10px 10px 0;*/
+    padding: 0 25px !important;
+    position: relative;
+    text-shadow: 0 1px 0 rgba(0, 0, 0, 0.3);
+    text-transform: uppercase;
+    transition: background 0.2s ease 0s, opacity 0.2s ease 0s;
+}
+
+
+.btn:hover, input[type="submit"]:hover, input[type="button"]:hover, button.btn:hover, .btn-primary:hover {
+    background-color: #279fbb;
+}
+.btn:hover, input[type="submit"]:hover, input[type="button"]:hover, button.btn:hover, .btn-primary:hover {
+    background-color: #279fbb;
+    color: white !important;
+    opacity: 0.78;
+    text-decoration: none !important;
+}
+.tabs input[type="radio"] {
+  display: none;
+}
+.tabs input[type="radio"]:checked + label {
+  background: #fff;
+}
+.tabs input[type="radio"]:checked + label + .tab {
+  display: block;
+}
+
+
+
+
+
+
+
 /*
 *
 *   my other style
@@ -1603,16 +1682,16 @@ border: 1px solid;}
     animation-duration: 3s;
 }
 
-.form-control
-{
-    border-radius:0px;
-    border:1px solid #EDEDED;
-}
+// .form-control
+// {
+//     border-radius:0px;
+//     border:1px solid #EDEDED;
+// }
 
-.form-control:focus
-{
-    border:1px solid #00bfff;
-}
+// .form-control:focus
+// {
+//     border:1px solid #00bfff;
+// }
 
 .textarea-contact
 {
@@ -2945,15 +3024,7 @@ border: 1px solid;}
   padding: 1rem;
   background: #fff;
 }
-.tabs input[type="radio"] {
-	display: none;
-}
-.tabs input[type="radio"]:checked + label {
-	background: #fff;
-}
-.tabs input[type="radio"]:checked + label + .tab {
-	display: block;
-}
+
 
 @media (max-width: 45em) {
   .tabs .tab,
@@ -3548,40 +3619,7 @@ $modal-90per: 90%;
   
   
   
-  button.btn-sm, .btn-sm {
-      height: 31px;
-      line-height: 28px;
-      padding: 0 15px !important;
-  }
-  .btn, input[type="submit"], input[type="button"], button.btn, .btn-primary {
-    //   background-color: #279fbb;
-      border: medium none;
-      border-radius: 3px;
-      box-shadow: 0 -2px 0 0 rgba(0, 0, 0, 0.3) inset;
-      color: white !important;
-      display: inline-block;
-    //   font-size: 13px;
-      font-weight: 500;
-      height: 36px;
-      line-height: 33px;
-      /*margin: 0 10px 10px 0;*/
-      padding: 0 25px !important;
-      position: relative;
-      text-shadow: 0 1px 0 rgba(0, 0, 0, 0.3);
-      text-transform: uppercase;
-      transition: background 0.2s ease 0s, opacity 0.2s ease 0s;
-  }
-  
-  
-  .btn:hover, input[type="submit"]:hover, input[type="button"]:hover, button.btn:hover, .btn-primary:hover {
-      background-color: #279fbb;
-  }
-  .btn:hover, input[type="submit"]:hover, input[type="button"]:hover, button.btn:hover, .btn-primary:hover {
-      background-color: #279fbb;
-      color: white !important;
-      opacity: 0.78;
-      text-decoration: none !important;
-  }
+
   
   .body-wrapper a:hover, .tab a:hover, accordion .title:hover, .top-body a:hover, .bottom-body a:hover, .accordion .active h4, .accordion .title:hover h4, .side-navigation .menu-item.current-menu-item a, .side-navigation .menu-item:hover a:after, .side-navigation .menu-item:hover a, a.tool-tip, .team-member .team-member-position, .team-member-progress .team-member-position, .item-img-overlay i, ul.icon-content-list-container li.icon-content-single .icon-box i, .item-img-overlay .portfolio-zoom:hover, .navigation ul li:hover > a, .blog_post_quote:after, .item-img-overlay .portfolio-zoom, body .white-text .feature-details a:hover {
       color: #279fbb;

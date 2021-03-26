@@ -20,7 +20,7 @@
                    <h4>Links</h4>
                    <ul>
                      <li> <a href="{{route('shop_index')}}">@lang('shop.shop menu products')</a> </li>
-                     <li> <a href="{{route('shop_index')}}">@lang('shop.shop menu about us')</a> </li>
+                     <li> <a href="{{route('about_shop')}}">@lang('shop.shop menu about us')</a> </li>
                      <li> <a href="{{route('login')}}">@lang('shop.shop login')</a> </li>
                    </ul>
                </div>

@@ -201,8 +201,13 @@
                     <div class="col-md-3 col-xs-6">
                         <div class="card">
                         <div class="card-img">
-                            <img src="{{ asset('images/partner_img/'.$partner['image']) }}" alt="{{$partner[0][0] -> title}}">
+                            {{-- <img src="{{ asset('images/partner_img/'.$partner['image']) }}" alt="{{$partner[0][0] -> title}}"> --}}
                             {{-- <!-- <img src="../assets/img/partners_img/{{ $partner->image }}"> --> --}}
+                            @if(isset($image_dir) && $partner['image'] != null)
+                            <img src="{{asset('images/'.$image_dir.'/'.$partner['image'])}}" class="img-responsive">
+                            @else
+                            <img src="https://via.placeholder.com/1024X576" class="img-responsive">
+                            @endif
                         </div>
                         <div class="card-body">
                             <h2>{{$partner[0][0] -> title}}</h2>

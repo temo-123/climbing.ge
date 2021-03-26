@@ -25,7 +25,6 @@
                       <li> <a href="{{route('other_list')}}">Other</a> </li>
                       <li> <a href="{{route('about_us_page')}}">About as</a> </li>
                       <li> <a href="{{route('login')}}">Login</a> </li>
-                      <li> <a href="{{url('sitemap')}}">Sitemap</a> </li>
                     </ul>
                 </div>
             </div>

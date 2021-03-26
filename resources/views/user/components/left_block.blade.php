@@ -22,7 +22,7 @@
                 </li>
 
                 <li class="list-group-item text-muted @if($page_name == 'Services') menu_active @endif">
-                    <a href="#">Services</a>
+                    <a href="{{Route('services_list')}}">Services</a>
                 </li>
 
                 <li class="list-group-item text-muted"></li>

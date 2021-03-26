@@ -47,6 +47,7 @@
 
 
 
+
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.7.0/animate.min.css"><!--animate style-->
     <!-- font femyly in style.css (line 6.12.17.23.30) || style1.css (line 6) -->
     <link href="http://netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
@@ -62,14 +63,17 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
 
     <!--For gallry -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.2.5/jquery.fancybox.min.css"/>
-    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
+    {{-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.2.5/jquery.fancybox.min.css"/>
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet"> --}}
 
     <!--For about us-->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="http://cdnjs.cloudflare.com/ajax/libs/jquery.bootstrapvalidator/0.5.2/css/bootstrapValidator.min.css"/>
     <script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/jquery.bootstrapvalidator/0.5.2/js/bootstrapValidator.min.js"></script> 
 
+    {{-- And analytics.google.com --}}
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-YSKGLXMWGF"></script>
+    <script src="{{ asset('assets/js/analitic/climbing.ge_analitic.js') }}"></script>
 </head>
 <body>
 
@@ -83,50 +87,24 @@
         @yield('content')
         
         @include('site.components.footer')
-
-        {{-- @if (session('status'))
-            <div id="modalOnLoad" class="modal fade">
-                <div class="modal-dialog">
-                    <div class="modal-content">
-                        <div class="modal-body text-center">
-                            <div class="panel panel-default">
-                                <div class="panel-body">
-                                    @if(session('status'))
-                                      <div class="alert alert-danger">
-                                        {{ session('status') }}
-                                      </div>
-                                    @endif
-                                </div>
-                            </div>
-                            <button type="button" class="btn blue btn-outline" data-dismiss="modal" aria-hidden="true">Close</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <!-- <script type="text/javascript">
-             $(document).ready(function () {
-                        $("#modalOnLoad").modal('show');
-                    });
-            </script> -->
-        @endif --}}
     </div>
 
     <script src="http://netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script> <!-- conflict to site menu -->
 
     <!--Security system on index-->
-    <script src='https://cdnjs.cloudflare.com/ajax/libs/vue/2.1.7/vue.js'></script>
+    {{-- <script src='https://cdnjs.cloudflare.com/ajax/libs/vue/2.1.7/vue.js'></script> --}}
     {{-- <script src='https://rawgit.com/Wlada/vue-carousel-3d/master/dist/vue-carousel-3d.min.js'></script> --}}
 
     <!-- For gallery -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.2.5/jquery.fancybox.min.js"></script>
     
-    <script src="https://www.google.com/recaptcha/api.js" async defer></script><!-- Google recaptcha -->
-
-    <script src="{{ asset('assets/js/app.js') }}"></script>
+    {{-- <script src="https://www.google.com/recaptcha/api.js" async defer></script><!-- Google recaptcha --> --}}
 
     <!-- My JS -->
     <script src="{{ asset('assets/js/my_js/my_scripts.js') }}" type="text/javascript" ></script>
-    <script src="{{ asset('assets/js/my_js/galery_image_open.js') }}" type="text/javascript" ></script><!--For index gallery-->
+    {{-- <script src="{{ asset('assets/js/my_js/galery_image_open.js') }}" type="text/javascript" ></script><!--For index gallery--> --}}
+
+    <script src="{{ asset('assets/js/app.js') }}"></script> 
     
 </body>
 </html>

@@ -40,6 +40,8 @@ class AboutController extends Controller
                 'partners_count' => $partners_count,
                 'thurs_num' => 0,
 
+                'image_dir' => 'partner_img',
+
                 "page_locale" => $page_locale,
                 
                 'article_edit_link'=>'aboutEdit',
