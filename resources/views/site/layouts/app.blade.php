@@ -76,6 +76,7 @@
     {{-- And analytics.google.com --}}
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-YSKGLXMWGF"></script>
     <script src="{{ asset('assets/js/analitic/climbing.ge_analitic.js') }}"></script>
+
 </head>
 <body>
 
@@ -107,6 +108,5 @@
     {{-- <script src="{{ asset('assets/js/my_js/galery_image_open.js') }}" type="text/javascript" ></script><!--For index gallery--> --}}
 
     <script src="{{ asset('assets/js/app.js') }}"></script> 
-    
 </body>
 </html>

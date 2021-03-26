@@ -206,54 +206,57 @@ $('#js_form').bootstrapValidator({
 
 
 
-
 /*
 * -----------------------------------------------------------------------------------------------------------------------------
 *   Partners block moving in about page
 * -----------------------------------------------------------------------------------------------------------------------------
 */
-
 var swiper = new Swiper('.swiper-container', {
     navigation: {
-        nextEl: '.swiper-button-next',
-        prevEl: '.swiper-button-prev',
+      nextEl: '.swiper-button-next',
+      prevEl: '.swiper-button-prev',
     },
 });
 
-/*
-* -----------------------------------------------------------------------------------------------------------------------------
-*   Partners block moving in about page
-* -----------------------------------------------------------------------------------------------------------------------------
-*/
 
-function Login_password_show() {
-  var x = document.getElementById("inputPassword");
-  if (x.type === "password") {
-    x.type = "text";
-  } else {
-    x.type = "password";
-  }
-}
-function Register_password_show() {
-  var x = document.getElementById("password");
-  if (x.type === "password") {
-    x.type = "text";
-  } else {
-    x.type = "password";
-  }
-}
+
+
+
 
 /*
 * -----------------------------------------------------------------------------------------------------------------------------
-*   Partners block moving in about page
+*   Partners block moving in about page  (XZ)
 * -----------------------------------------------------------------------------------------------------------------------------
 */
 
-$(function(){
-    $('#js_form').submit(function(event){
-        var verified = grecaptcha.getResponse();
-        if (verified.length === 0) {
-            event.preventDefault();
-        }
-    });
-});
+// function Login_password_show() {
+//   var x = document.getElementById("inputPassword");
+//   if (x.type === "password") {
+//     x.type = "text";
+//   } else {
+//     x.type = "password";
+//   }
+// }
+// function Register_password_show() {
+//   var x = document.getElementById("password");
+//   if (x.type === "password") {
+//     x.type = "text";
+//   } else {
+//     x.type = "password";
+//   }
+// }
+
+/*
+* -----------------------------------------------------------------------------------------------------------------------------
+*   Partners block moving in about page  (XZ)
+* -----------------------------------------------------------------------------------------------------------------------------
+*/
+
+// $(function(){
+//     $('#js_form').submit(function(event){
+//         var verified = grecaptcha.getResponse();
+//         if (verified.length === 0) {
+//             event.preventDefault();
+//         }
+//     });
+// });

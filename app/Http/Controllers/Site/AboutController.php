@@ -18,11 +18,11 @@ class AboutController extends Controller
     	if (view()->exists('site.about_us_page')) {
             $pages = Site::all();
     
-            $global_partners = Article::latest('id')->where('category', '=', 'partner')->where('published','=','1')->get();
+            $global_partners = Article::latest('id')->limit(5)->where('category', '=', 'partner')->where('published','=','1')->get();
             $partners = GetArticlesService::get_locale_article($global_partners);
-            $partners_count = Article::latest('id')->where('category', '=', 'partner')->where('published','=','1')->count();
+            $partners_count = Article::latest('id')->where('category', '=', 'partner')->where('published','=','1')->limit(5)->count();
 
-            $gallery_images = Gallery::where('published', '=', 1)->where('category', '=', 1)->inRandomOrder()->limit(1)->get();
+            // $gallery_images = Gallery::where('published', '=', 1)->where('category', '=', 1)->inRandomOrder()->limit(1)->get();
             
             $locale = request()->segment(1, '');
             if($locale == "ru"){
@@ -47,7 +47,7 @@ class AboutController extends Controller
                 'article_edit_link'=>'aboutEdit',
 
 
-                'gallery_images' => $gallery_images,
+                // 'gallery_images' => $gallery_images,
             )); 
         }
         abort(404);
