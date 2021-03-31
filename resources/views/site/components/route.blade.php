@@ -54,21 +54,21 @@
       @endif
 
       @if($area['routes'] != 0)              
-            <table class="table col-md-12">
+            <table class="table col-md-12 table table-hover" >
               <tbody>
                   <tr>
-                  <td>N</td>
-                  <td>Name</td>
-                  <td>Height</td>
-                  <td>Bolts</td>
-                  <td>Gread FR</td>
-                  <td class="display-none-720px">Gread YDS</td> 
+                        <td>N</td>
+                        <td>Name</td>
+                        <td>Height</td>
+                        <td>Bolts</td>
+                        <td>Gread FR</td>
+                        <td class="display-none-720px">Gread YDS</td> 
                   </tr>
               </tbody>
             @foreach($area['routes'] as $route_loop)
                   <tbody>
                         <tr> 
-                              <td>1</td>
+                              <td>{{$route_loop['num']}}</td>
                               <td>{{$route_loop['name']}}</td>
                               <td>{{$route_loop['height']}}</td>
                               <td>{{$route_loop['bolts']}}</td>
@@ -95,26 +95,26 @@
                   </div>
             </div>
 
-            <table class="table col-md-12">
+            <table class="table col-md-12 table table-hover" id="dev-table">
                   <tbody>
                         <tr>
-                        <td>N</td>
-                        <td>Name</td>
-                        <td>Height</td>
-                        <td>Bolts</td>
-                        <td>Gread FR</td>
-                        <td class="display-none-720px">Gread YDS</td>
+                              <td>N</td>
+                              <td>Name</td>
+                              <td>Height</td>
+                              <td>Bolts</td>
+                              <td>Gread FR</td>
+                              <td class="display-none-720px">Gread YDS</td>
                         </tr>
                   </tbody>
                   @foreach($area['mtps'][$mtp_index]['mtp pitchs'] as $mtp_pitchs)
                   <tbody>
                         <tr>  
-                        <td>1</td>
-                        <td>{{$mtp_pitchs['pitch name']}}</td>
-                        <td>{{$mtp_pitchs['pitch height']}}</td>
-                        <td>{{$mtp_pitchs['pitch bolts']}}</td>
-                        <td>{{$mtp_pitchs['pitch grade fr']}}</td>
-                        <td>{{$mtp_pitchs['pitch grade yds']}}</td>
+                              <td>{{$mtp_pitchs['pitch num']}}</td>
+                              <td>{{$mtp_pitchs['pitch name']}}</td>
+                              <td>{{$mtp_pitchs['pitch height']}}</td>
+                              <td>{{$mtp_pitchs['pitch bolts']}}</td>
+                              <td>{{$mtp_pitchs['pitch grade fr']}}</td>
+                              <td>{{$mtp_pitchs['pitch grade yds']}}</td>
                         </tr>
                   </tbody>
                   <div style='display:none;'>{{$mtp_rope_index++}}</div>

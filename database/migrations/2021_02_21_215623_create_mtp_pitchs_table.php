@@ -19,8 +19,8 @@ class CreateMtpPitchsTable extends Migration
             $table->string('name')->nullable();
             $table->text('text')->nullable();
 
-            $table->string('gread')->nullable();
-            $table->string('or_gread')->nullable();
+            $table->string('grade')->nullable();
+            $table->string('or_grade')->nullable();
 
             $table->string('bolts')->nullable();
             $table->string('bolter')->nullable();

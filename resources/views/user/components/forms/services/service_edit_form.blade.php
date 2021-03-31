@@ -20,10 +20,10 @@
 
         @csrf 
         
-        <product_edit_form  
-            back_url='{{ route('products_list') }}'
+        <service_edit_form  
+            back_url='{{ route('services_list') }}'
             :editing_article_id = {{ $editing_article_id }}
-        ></product_edit_form>
+        ></service_edit_form>
     
     </div>
 

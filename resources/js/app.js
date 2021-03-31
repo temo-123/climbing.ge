@@ -55,6 +55,9 @@ Vue.component('tabs_component',                 require('./components/user/TabsC
 Vue.component('comments_list_component',        require('./components/user/CommentsListComponent.vue').default);
 Vue.component('options_form',                   require('./components/user/OptionsFormComponent.vue').default);
 
+Vue.component('service_add_form',               require('./components/user/services/ServicesAddFormComponent.vue').default);
+Vue.component('service_edit_form',              require('./components/user/services/ServicesEditFormComponent.vue').default);
+
 Vue.component('product_add_form',               require('./components/user/products/ProductAddFormComponent.vue').default);
 Vue.component('product_edit_form',              require('./components/user/products/ProductEditFormComponent.vue').default);
 Vue.component('category_add_form',              require('./components/user/products/CategoryAddFormComponent.vue').default);

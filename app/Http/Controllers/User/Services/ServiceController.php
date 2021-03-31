@@ -36,26 +36,38 @@ class ServiceController extends Controller
         $request->user()->authorizeRoles(['manager', 'admin']);
 
         $services = Service::latest('id')->get();
-        // $services_count = Service::count();
-        // $tags = Service::get();
-        // $tags_count = Service::count();
-
-        // $price_array = array();
-        // foreach ($services as $service) {
-        //     if ($service->discount != null) {
-        //         $old_price = $service->price;
-        //         $sale = $service->discount;
-        //         $price_x_sale = $sale * $old_price;
-        //         $var_1 = $price_x_sale/100;
-        //         $new_price = $old_price - $var_1;
-        //         array_push($price_array, ['service_id'=>$service->id, 'old_price'=>$old_price, 'sale'=>$sale, 'new_price'=>$new_price]);
-        //     }
-        //     else{
-        //         $old_price = $service->price;
-        //         array_push($price_array, ['service_id'=>$service->id, 'old_price'=>$old_price, 'sale'=>'0', 'new_price'=>$old_price]);
-        //     }
-        // }
 
         return $services;	
+    }
+
+    public function add_service_page(Request $request)
+    {
+        if (view() -> exists('user.components.forms.services.service_add_form')) {
+            $service = $request->service;
+            $data=[
+                'service' => $service,
+                'title' => 'New '.$service,
+                'back_btn' => 'home',
+                'add_title' => 'Add '.$service,
+                'add_active' => 'Add '.$service,
+                
+                'add_form' => 'articleAdd',
+                
+                'url_title' => 1,
+                'text' => 1, 
+                'published'=>'1',
+                'link'=>'1',
+                'article_filtr'=>'1',
+                
+                'image' => 'article_img',
+            ];
+            return view('user.components.forms.services.service_add_form', $data);
+        }
+        abort(404);
+    }
+
+    public function edit_service_page(Request $request)
+    {
+        # code...
     }
 }

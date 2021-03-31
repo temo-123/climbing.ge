@@ -16,18 +16,18 @@
                 {{Session::get('message')}}
             @endif
         </div>
-        <div class="form-group">
+        {{-- <div class="form-group">
             <a href="{{ url()->previous() }}" class='btn btn-primary'  onclick="return confirm('Are you sure, you want go back?')">Back</a>
-        </div>
+        </div> --}}
         <hr>
     </div>
     <div class="wrapper container-fluid container">
 
         @csrf 
         
-        <category_add_form  
-            back_url="{{ route('products_list') }}"
-        ></category_add_form>
+        <service_add_form  
+            back_url='{{ route('services_list') }}'
+        ></service_add_form>
     
     </div>
 

@@ -17,7 +17,7 @@
         <hr>
     </div>
     <div class="wrapper container-fluid container">
-        @if (count($errors) > 0)
+        {{-- @if (count($errors) > 0)
             <div class="alert alert-danger">
             <ul>
                 @foreach ($errors->all() as $error)
@@ -25,7 +25,7 @@
                 @endforeach
             </ul>
             </div>
-        @endif
+        @endif --}}
 
         @csrf 
         

@@ -139,42 +139,6 @@ class OutdoorController extends Controller
         else abort(404);
     }
 
-
-    public static function get_yds_grade($route)
-    {
-        if ($route['grade'] == '4') $grade_yds = '5.6';
-        elseif ($route['grade'] == '5a'||$route['grade'] == '5a+') $grade_yds = '5.7';
-        elseif ($route['grade'] == '5b'||$route['grade'] == '5b+') $grade_yds = '5.8';
-        elseif ($route['grade'] == '5c'||$route['grade'] == '5c+') $grade_yds = '5.9';
-        elseif ($route['grade'] == '6a') $grade_yds = '5.10a';
-        elseif ($route['grade'] == '6a+') $grade_yds = '5.10b';
-        elseif ($route['grade'] == '6b') $grade_yds = '5.10c';
-        elseif ($route['grade'] == '6b+') $grade_yds = '5.10d';
-        elseif ($route['grade'] == '6c') $grade_yds = '5.11a/5.11b';
-        elseif ($route['grade'] == '6c+') $grade_yds = '5.11c';
-        elseif ($route['grade'] == '7a') $grade_yds = '5.11d';
-        elseif ($route['grade'] == '7a+') $grade_yds = '5.12a';
-        elseif ($route['grade'] == '7b') $grade_yds = '5.12b';
-        elseif ($route['grade'] == '7b+') $grade_yds = '5.12c';
-        elseif ($route['grade'] == '7c') $grade_yds = '5.12d';
-        elseif ($route['grade'] == '7c+') $grade_yds = '5.13a';
-        elseif ($route['grade'] == '8a') $grade_yds = '5.13b';
-        elseif ($route['grade'] == '8a+') $grade_yds = '5.13c';
-        elseif ($route['grade'] == '8b') $grade_yds = '5.13d';
-        elseif ($route['grade'] == '8b+') $grade_yds = '5.14a';
-        elseif ($route['grade'] == '8c') $grade_yds = '5.14b';
-        elseif ($route['grade'] == '8c+') $grade_yds = '5.14c';
-        elseif ($route['grade'] == '9a') $grade_yds = '5.14d';
-        elseif ($route['grade'] == '9a+') $grade_yds = '5.15a';
-        elseif ($route['grade'] == '9b') $grade_yds = '5.15b';
-        elseif ($route['grade'] == '9b+') $grade_yds = '5.15c';
-        elseif ($route['grade'] == '9c') $grade_yds = '5.15d';
-        elseif ($route['grade'] == '9c+') $grade_yds = '5.16a';
-        else $grade_yds = '?';
-
-        return $grade_yds;
-    }
-
     public function sectors_and_routes_array($id)
     {
         $pitch_num_in_array = 0;
@@ -184,6 +148,9 @@ class OutdoorController extends Controller
         $sector_imgs = array();
         $mtp_info = array();
         $mtp_pitch_info = array();
+
+        $route_num = 0;
+        $mtp_pitch_num = 0;
 
         $sector_count = Sector::where('article_id', '=', $id)->count();
         if ($sector_count > 0) {
@@ -210,9 +177,11 @@ class OutdoorController extends Controller
                         if ($route['grade'] != NULL) {
                             $grade_yds = $this->get_yds_grade($route);
                         }
+                        $route_num++;
                         array_push($route_info, 
                             array(
                                 "id"=>$route['id'], 
+                                "num"=>$route_num,
                                 "name"=>$route['name'], 
                                 "text"=>$route['text'], 
                                 "height"=>$route['height'], 
@@ -227,6 +196,8 @@ class OutdoorController extends Controller
                             )
                         );
                     }
+                    // dd($route_info);
+                    $route_num = 0;
                 }
                 else $route_info = array();
 
@@ -246,9 +217,11 @@ class OutdoorController extends Controller
                                 if ($mtp_pitch['grade'] != NULL) {
                                     $pitch_grade_yds = $this->get_yds_grade($mtp_pitch);
                                 }
+                                $mtp_pitch_num++;
                                 array_push($mtp_pitch_info,
                                     [
                                         'pitch id'=>$mtp_pitch['id'],
+                                        'pitch num'=>$mtp_pitch_num,
                                         'pitch name'=>$mtp_pitch['name'],
                                         "pitch text"=>$mtp_pitch['text'], 
                                         "pitch height"=>$mtp_pitch['height'], 
@@ -261,6 +234,7 @@ class OutdoorController extends Controller
                                     ]
                                 );
                             }
+                            $mtp_pitch_num = 0;
                         }
                         array_push($mtp_info, 
                             [
@@ -303,5 +277,41 @@ class OutdoorController extends Controller
             }
         }
         return $area_info;
+    }
+
+
+    public static function get_yds_grade($route)
+    {
+        if ($route['grade'] == '4') $grade_yds = '5.6';
+        elseif ($route['grade'] == '5a'||$route['grade'] == '5a+') $grade_yds = '5.7';
+        elseif ($route['grade'] == '5b'||$route['grade'] == '5b+') $grade_yds = '5.8';
+        elseif ($route['grade'] == '5c'||$route['grade'] == '5c+') $grade_yds = '5.9';
+        elseif ($route['grade'] == '6a') $grade_yds = '5.10a';
+        elseif ($route['grade'] == '6a+') $grade_yds = '5.10b';
+        elseif ($route['grade'] == '6b') $grade_yds = '5.10c';
+        elseif ($route['grade'] == '6b+') $grade_yds = '5.10d';
+        elseif ($route['grade'] == '6c') $grade_yds = '5.11a/5.11b';
+        elseif ($route['grade'] == '6c+') $grade_yds = '5.11c';
+        elseif ($route['grade'] == '7a') $grade_yds = '5.11d';
+        elseif ($route['grade'] == '7a+') $grade_yds = '5.12a';
+        elseif ($route['grade'] == '7b') $grade_yds = '5.12b';
+        elseif ($route['grade'] == '7b+') $grade_yds = '5.12c';
+        elseif ($route['grade'] == '7c') $grade_yds = '5.12d';
+        elseif ($route['grade'] == '7c+') $grade_yds = '5.13a';
+        elseif ($route['grade'] == '8a') $grade_yds = '5.13b';
+        elseif ($route['grade'] == '8a+') $grade_yds = '5.13c';
+        elseif ($route['grade'] == '8b') $grade_yds = '5.13d';
+        elseif ($route['grade'] == '8b+') $grade_yds = '5.14a';
+        elseif ($route['grade'] == '8c') $grade_yds = '5.14b';
+        elseif ($route['grade'] == '8c+') $grade_yds = '5.14c';
+        elseif ($route['grade'] == '9a') $grade_yds = '5.14d';
+        elseif ($route['grade'] == '9a+') $grade_yds = '5.15a';
+        elseif ($route['grade'] == '9b') $grade_yds = '5.15b';
+        elseif ($route['grade'] == '9b+') $grade_yds = '5.15c';
+        elseif ($route['grade'] == '9c') $grade_yds = '5.15d';
+        elseif ($route['grade'] == '9c+') $grade_yds = '5.16a';
+        else $grade_yds = '?';
+
+        return $grade_yds;
     }
 }

@@ -219,34 +219,32 @@ Route::group(['prefix' => LocalisationService::locale(),'middleware' => 'setLoca
                         Route::any('/create_temporary_Service', 'ServiceController@create_temporary_Service');
                         Route::any('/del_temporary_Service/{id}', 'ServiceController@del_temporary_Service');
 
-                        Route::match(['get','post'], '/add_Service', ['uses'=>'ServiceController@add_Service_page','as'=>'serviceAddPage']);
-                        Route::match(['get', 'post'], '/edit_Service/{id}', ['uses' => 'ServiceController@edit_Service_page', 'as'=>'serviceEditPage']);
+                        Route::match(['get','post'], '/add_service', ['uses'=>'ServiceController@add_service_page','as'=>'serviceAddPage']);
+                        Route::match(['get', 'post'], '/edit_Service/{id}', ['uses' => 'ServiceController@edit_service_page', 'as'=>'serviceEditPage']);
 
-                        Route::match(['get','post'], '/global/add/', ['uses'=>'GlobalServiceController@add_global_Service','as'=>'globalServiceAdd']);
-                        Route::match(['get', 'post'], '/global/edit/{id}', ['uses' => 'GlobalServiceController@edit_global_Service', 'as'=>'globalServiceEdit']);
+                        Route::match(['get','post'], '/global/add/', ['uses'=>'GlobalServiceController@add_global_service','as'=>'globalServiceAdd']);
+                        Route::match(['get', 'post'], '/global/edit/{id}', ['uses' => 'GlobalServiceController@edit_global_service', 'as'=>'globalServiceEdit']);
 
-                        Route::match(['get','post'], '/us/add/', ['uses'=>'UsServiceController@add_us_Service','as'=>'usServiceAdd']);
-                        Route::match(['get', 'post'], '/us/edit/{id}', ['uses' => 'UsServiceController@edit_us_Service', 'as'=>'usServiceEdit']);
+                        Route::match(['get','post'], '/us/add/', ['uses'=>'UsServiceController@add_us_service','as'=>'usServiceAdd']);
+                        Route::match(['get', 'post'], '/us/edit/{id}', ['uses' => 'UsServiceController@edit_us_service', 'as'=>'usServiceEdit']);
 
-                        Route::match(['get','post'], '/ru/add/', ['uses'=>'RuServiceController@add_ru_Service','as'=>'ruServiceAdd']);
-                        Route::match(['get', 'post'], '/ru/edit/{id}', ['uses' => 'RuServiceController@edit_ru_Service', 'as'=>'ruServiceEdit']);
+                        Route::match(['get','post'], '/ru/add/', ['uses'=>'RuServiceController@add_ru_service','as'=>'ruServiceAdd']);
+                        Route::match(['get', 'post'], '/ru/edit/{id}', ['uses' => 'RuServiceController@edit_ru_service', 'as'=>'ruServiceEdit']);
 
-                        Route::match(['get','post'], '/ka/add/', ['uses'=>'KaServiceController@add_ka_Service','as'=>'kaServiceAdd']);
-                        Route::match(['get', 'post'], '/ka/edit/{id}', ['uses' => 'KaServiceController@edit_ka_Service', 'as'=>'kaServiceEdit']);
+                        Route::match(['get','post'], '/ka/add/', ['uses'=>'KaServiceController@add_ka_service','as'=>'kaServiceAdd']);
+                        Route::match(['get', 'post'], '/ka/edit/{id}', ['uses' => 'KaServiceController@edit_ka_service', 'as'=>'kaServiceEdit']);
 
-                        Route::match(['post', 'delete'], '/del/{id}', ['uses' => 'ServiceController@del_Service', 'as'=>'ServiceDel']);
+                        Route::match(['post', 'delete'], '/del/{id}', ['uses' => 'ServiceController@del_service', 'as'=>'ServiceDel']);
 
-                        Route::get('/', ['uses'=>'ServiceController@Service_list', 'as'=>'services_list']);
-                        Route::any('/get_service_data', 'ServiceController@get_Service_data');
-                        Route::any('/get_Service_editing_data/{editing_Service_id}', 'ServiceController@get_Service_editing_data');
-                        Route::any('/get_temporary_Service_editing_data', 'ServiceController@get_temporary_Service_editing_data');
-                        Route::any('/get_Service_image/{Service_id}', 'ServiceController@get_Service_image');
+                        Route::get('/', ['uses'=>'ServiceController@service_list', 'as'=>'services_list']);
+                        Route::any('/get_service_data', 'ServiceController@get_service_data');
+                        Route::any('/get_Service_editing_data/{editing_Service_id}', 'ServiceController@get_service_editing_data');
+                        Route::any('/get_temporary_Service_editing_data', 'ServiceController@get_temporary_service_editing_data');
+                        Route::any('/get_Service_image/{Service_id}', 'ServiceController@get_S\service_image');
 
-                        Route::any('/upload_Service_image/{Service_id}', 'ServiceController@upload_Service_image');
-                        Route::any('/del_Service_image/{image_id}', 'ServiceController@del_Service_image');
-                        Route::any('/update_Service_image/{id}', 'ServiceController@update_Service_image');
-
-                        Route::get('/favorite', ['uses'=>'ServiceController@favorite', 'as'=>'favorite']);
+                        Route::any('/upload_Service_image/{Service_id}', 'ServiceController@upload_service_image');
+                        Route::any('/del_Service_image/{image_id}', 'ServiceController@del_service_image');
+                        Route::any('/update_Service_image/{id}', 'ServiceController@update_service_image');
                     }); 
 
 
