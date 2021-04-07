@@ -5,13 +5,12 @@
             <button type="submit" class="btn btn-primary" v-on:click="save_all()" >Save all</button>
         </div>
     </div>
-    <!-- {{ editing_data.ka_article['map'] }} -->
     <div class="row">
         <div class="tabs">
 
-            <input type="radio" name="tabs" id="1" checked="checked">
-            <label for="1" >global info</label>
-            <div class="tab" >
+            <input type="radio" name="tabs" id="1" checked="checked"    v-if="this.permission == 'admin' || this.permission == 'manager'">
+            <label for="1"                                              v-if="this.permission == 'admin' || this.permission == 'manager'">global info</label>
+            <div class="tab"                                            v-if="this.permission == 'admin' || this.permission == 'manager'">
                 <div class="jumbotron jumbotron-fluid">
                     <div class="container">
                         <h2 class="display-4">{{this.category}} article global information</h2>
@@ -171,9 +170,9 @@
                 </form>
             </div>
 
-            <input type="radio" name="tabs" id="2">
-            <label for="2" >english article</label>
-            <div class="tab" >
+            <input type="radio" name="tabs" id="2"                      v-if="this.permission == 'admin' || this.permission == 'manager' || this.permission == 'us_manager'">
+            <label for="2"                                              v-if="this.permission == 'admin' || this.permission == 'manager' || this.permission == 'us_manager'">english article</label>
+            <div class="tab"                                            v-if="this.permission == 'admin' || this.permission == 'manager' || this.permission == 'us_manager'">
                 <div class="jumbotron jumbotron-fluid">
                     <div class="container">
                         <h2 class="display-4">{{this.category}} article english information</h2>
@@ -282,9 +281,9 @@
                 </form>
             </div>
 
-            <input type="radio" name="tabs" id="3">
-            <label for="3" >russian article</label>
-            <div class="tab">
+            <input type="radio" name="tabs" id="3"                      v-if="this.permission == 'admin' || this.permission == 'manager' || this.permission == 'ru_manager'">
+            <label for="3"                                              v-if="this.permission == 'admin' || this.permission == 'manager' || this.permission == 'ru_manager'">russian article</label>
+            <div class="tab"                                            v-if="this.permission == 'admin' || this.permission == 'manager' || this.permission == 'ru_manager'">
                 <div class="form-group"  v-if="this.old_data">  
                     <input type="submit" value="save rusian article" class="btn btn-primary" form="global_form">
                 </div>
@@ -410,9 +409,9 @@
                 </form>
             </div>
 
-            <input type="radio" name="tabs" id="4">
-            <label for="4" >georgian article</label>
-            <div class="tab">
+            <input type="radio" name="tabs" id="4"                      v-if="this.permission == 'admin' || this.permission == 'manager' || this.permission == 'ka_manager'">
+            <label for="4"                                              v-if="this.permission == 'admin' || this.permission == 'manager' || this.permission == 'ka_manager'">georgian article</label>
+            <div class="tab"                                            v-if="this.permission == 'admin' || this.permission == 'manager' || this.permission == 'ka_manager'">
                 <div class="form-group"  v-if="this.old_data">  
                     <input type="submit" value="save anglish article" class="btn btn-primary" form="global_form">
                 </div>
@@ -563,6 +562,8 @@
                 editor: 'editor',
                 editorConfig:{},
 
+                permission: '',
+
                 editing_url: '/articles/get_editing_data/',
                 url: '',
 
@@ -642,9 +643,20 @@
             if (this.category == 'mount_route') {
                 this.get_mount_massive_data()
             }
+            this.check_permission()
         },
 
         methods: {
+            check_permission(){
+                axios
+                .get('../../../check_permission/')
+                .then(Response => {
+                    this.permission =  Response.data
+                })
+                .catch(error =>{
+                })
+            },
+
             edit_global_article() {
                 axios
                 .post('/articles/global/edit/' + this.editing_article_id, {

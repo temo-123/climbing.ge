@@ -6,30 +6,14 @@
         <div class="col-md-8">
             <div class="card">
                 <div class="card-header">{{ __('Login') }}</div>
-
-                {{-- <div class="card-body">
-                    <div class="col-md-4">
-                        <a href="#">
-                            <i class="fa fa-google" aria-hidden="true"></i>
-                        </a>
+                <form>
+                    <div class="form-group row">
+                        <div class="col-md-6 offset-md-4">
+                             <a href="{{ url('/login/facebook') }}" class="btn btn-facebook"> Facebook</a>
+                             
+                        </div>
                     </div>
-                    <div class="col-md-4">
-                        <a href="{{url('/redirect')}}">
-                            <i class="fa fa-facebook" aria-hidden="true"></i>
-                        </a>
-                    </div>
-                    <div class="col-md-4">
-                        <a href="#">
-                            <i class="fa fa-twitter" aria-hidden="true"></i>
-                        </a>
-                    </div>
-                </div> 
-
-                <style>
-                .col-md-4 i {
-                    text-align:center;
-                }
-                </style> --}}
+                </form>
 
                 <div class="card-body">
                     <form method="POST" action="{{ route('login') }}">

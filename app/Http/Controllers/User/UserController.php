@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 
 use App\User;
 use App\Models\Role;
-use App\Models\user_role;
+use App\Models\User_role;
 use Auth;
 use DB;
 
@@ -118,41 +118,25 @@ class UserController extends Controller
         return Role::get();
     }
 
-    /**
-     * Store a newly created resource in storage.
-    *
-    * @param  \Illuminate\Http\Request  $request
-    * @return \Illuminate\Http\Response
-    */
-    public function store(user $user, Request $request)
+    public function edit_user_permission(Request $request)
     {
-        // $user_info = $request -> all();
+        $request->user()->authorizeRoles(['admin']);
         
-        // dd($user_info);
-        
-        // foreach($user_info as $x => $x_value){
-        //     $update = \App\User::where('id', '=', $x)->update(['name' => $x_value]);
-        // }
+        $this->validate_parmission($request);
+
+        $user = user::find($request->user_id);
+        $role = Role::where('name', '=', $request->parmission)->get();
+        $user_role = User_role::where('user_id', '=', $request->user_id)->first();
+        if($user_role){
+            $user_role->role_id = $role[0]->id;
+            $user_role->save();
+        }
+        else{
+            $user->roles()->attach(Role::where('name', $request->parmission)->first());
+        }
     }
 
-    /**
-     * Display the specified resource.
-    *
-    * @param  int  $id
-    * @return \Illuminate\Http\Response
-    */
-    public function show($id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-    *
-    * @param  int  $id
-    * @return \Illuminate\Http\Response
-    */
-     public function user_info_update(Request $request){
+    public function user_info_update(Request $request){
         $request->user()->authorizeRoles(['user', 'manager', 'admin']);
         //  dd($request->id);
         //  if ($request->isMethod('patch')) {
@@ -193,25 +177,16 @@ class UserController extends Controller
             return response()->json(["message" => "Select image first."]);
         }
     }
- 
-    /**
-     * Update the specified resource in storage.
-    *
-    * @param  \Illuminate\Http\Request  $request
-    * @param  int  $id
-    * @return \Illuminate\Http\Response
-    */
-    public function update(Request $request, $id)
+    
+    public function get_role(Request $request)
     {
-        //
+        // $user_roles = User_role::where('user_id','=',$request->user_id)->first();
+        // $role = Role::where('id','=',$user_roles->role_id)->first();
+        // return $user_roles->id;
+        $test = "infinity loop error";
+        return $test;
     }
 
-    /**
-     * Remove the specified resource from storage.
-    *
-    * @param  int  $id
-    * @return \Illuminate\Http\Response
-    */
     public function destroy(user $user, Request $request)
     {
         $request->user()->authorizeRoles(['admin']);
@@ -219,9 +194,20 @@ class UserController extends Controller
         if ($request->isMethod('post')){
             $deleted_user = User::where('id','=',$request->user_id)->first();
             $deleted_user_role = DB::table('role_user')->where('user_id','=',$deleted_user->id)->first();
-// dd($deleted_user_role->id);
             $deleted_user -> delete();
             $deleted_user_role -> delete();
         }
+    }
+
+    public function validate_parmission($request)
+    {
+        $request->validate([
+            'user_new_parmission' => 'required',
+        ]);
+    }
+
+    public function validate_info()
+    {
+        # code...
     }
 }

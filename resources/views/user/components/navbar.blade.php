@@ -1,5 +1,5 @@
 <div class="header navbar-expand-lg navbar-right bg-light">
-    <div class="row navbar-fixed-top top_menu">
+    <div class="row fixed-top top_menu">
         <div class="col-xs-12 col-sm-2 col-md-3 col-lg-3 ">
             <div class="site_title">
                 <a href="{{ route('user_index') }}" class="site_title">
@@ -13,18 +13,7 @@
         </div>
         <div class="col-xs-12 col-sm-10 col-md-9 col-lg-9">
             <nav class="navbar navbar-default  float-right float-top" role="navigation">
-                <div class="container-fluid">
-                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
-                        <i class="fa fa-angle-down"></i>
-                    </button>                  
-                    
-                    <button type="button" class="navbar-toggle margin_right" data-toggle="dropdown">
-                        <i class="fa fa-search" aria-hidden="true"></i>
-                    </button>   
-                    
-                    <button type="button" class="navbar-toggle">
-                        <li><a href="#"><i class="fa fa-user" style='color: #000;'></i></a></li>
-                    </button>                      
+                <div class="container-fluid">                    
                     
                     <ul class="dropdown-menu shadows" role="menu" style="width: 100%;">
                         <li>

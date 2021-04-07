@@ -35,7 +35,7 @@
         @csrf 
         
         <article_edit_form  
-            :category="{{ json_encode($category) }}" 
+            :category="{{ json_encode($category) }}"
             :editing_article_id = {{ $editing_article_id }}
             @if ($category == "mount_route")
                 back_url="{{ route('article_list', '../mountaineering') }}"

@@ -1,7 +1,7 @@
 <template>
     <div class="tabs">
         <div class="row">
-
+            
             <input type="radio" name="tabs" id="1" checked="checked">
             <label for="1" v-if="this.table_1_get_route">{{this.table_1_name}}</label>
             <div class="tab" v-if="this.table_1_get_route">
@@ -17,12 +17,9 @@
                         <tr>
                             <th style='text-align: center;'>
                                 <input type="checkbox" class="all">
-                                <!-- <label><input type="checkbox" class="all"></label> -->
                             </th>
                             <th>|</th>
                             <th>ID</th>
-                            <!-- <td v-if="table_1_name == 'Sector'">|</td> -->
-                            <!-- <th v-if="table_1_name == 'Sector'">Add img</th> -->
                             <th>|</th>
                             <th>Name</th>
 
@@ -54,7 +51,10 @@
                             <!-- <td v-if="table_1_name == 'Sector'"><button class="btn btn-primary" @click="show=true">+</button></td> -->
                             <td>|</td>
 
-                            <td v-if="table_1_name == 'Sector'">{{table_1_info.name}}</td>
+                            <td v-if="table_1_name == 'Sector'" >
+                                <a @click="show=true" href="#">{{table_1_info.name}}</a>
+                                <!-- <button class="btn btn-info" @click="show_parmission_edit_madssssel(table_1_info.id)">{{table_1_info.name}}</button> -->
+                            </td>
                             <td v-else-if="table_1_name == 'Users'">{{table_1_info.name}} {{table_1_info.surname}}</td>
                             <td v-else>{{table_1_info.url_title}} </td>
 
@@ -73,12 +73,15 @@
                             <td style='text-align: center;' v-if="table_1_name != 'Sector' && table_1_name != 'Users'">{{table_1_info.published}}</td>
 
                             <td v-if="table_1_name == 'Users'">|</td>
-                            <th style='text-align: center;' v-if="table_1_name == 'Users'">n</th>
+                            <th style='text-align: center;' v-if="table_1_name == 'Users'">
+                                {{ get_user_role(table_1_info.id) }}
+                                {{ user_role }}
+                            </th>
                             
                             <td>|</td>
 
                             <td v-if="table_1_name == 'Users'">
-                                <a :href="table_1_edit_url+table_1_info.id" class="btn btn-primary" type="submit">Edit Role</a>
+                                <button class="btn btn-primary" @click="show_parmission_edit_madel(table_1_info.id)">Edit roles</button>
                             </td>
                             <td v-else>
                                 <a :href="table_1_edit_url+table_1_info.id" class="btn btn-primary" type="submit">Edit</a>
@@ -124,10 +127,10 @@
                             <th style='text-align: center;' v-if="table_2_name != 'Route' && table_2_name != 'Categories' && table_2_name != 'Mounts' && table_2_name != 'Roles'">Published</th>
                             
                             <th>|</th>
-                            <th>Edit</th>
+                            <th v-if="table_1_name != 'Users'">Edit</th>
                             
-                            <th>|</th>
-                            <th>Delite</th>
+                            <th v-if="table_1_name != 'Users'">|</th>
+                            <th v-if="table_1_name != 'Users'">Delite</th>
                             
                         </tr>
                     </thead>
@@ -149,12 +152,12 @@
                             <td style='text-align: center;' v-if="table_2_name != 'Route' && table_2_name != 'Categories' && table_2_name != 'Mounts' && table_2_name != 'Roles'">{{table_2_info.published}}</td>
                             
                             <td>|</td>
-                            <td>
+                            <td v-if="table_1_name != 'Users'">
                                 <a :href="table_2_edit_url+table_2_info.id" class="btn btn-primary" type="submit">Edit</a>
                             </td>
                             
-                            <td>|</td>
-                            <td>
+                            <td v-if="table_1_name != 'Users'">|</td>
+                            <td v-if="table_1_name != 'Users'">
                                 <form method="post" @submit.prevent="table_2_del(table_2_info.id)" >
                                     <input type="hidden" name="_token" >
                                     <div class="form-group">
@@ -302,70 +305,98 @@
         
         </div>
 
-    <!-- <div class="d-flex">
-        <div>
-            <button class="btn btn-primary" @click="show=true">Open modal</button>
-        </div>
-    </div>
 
-    <stack-modal
+            
+
+
+        <!-- <SlickList lockAxis="y" v-model="items" tag="table">
+            <tr>
+                <td>ID</td>
+                <td>Num</td>
+                <td>Name</td>
+            </tr>
+            <SlickItem v-for="(item, index) in items" :index="index" :key="index" tag="tr">
+                <td style='cursor_mooving'>{{ item.id }}</td>
+                <td style='cursor_mooving'>{{ num }}</td>
+                <td style='cursor_mooving'>{{ item.name }}</td>
+            </SlickItem>
+        </SlickList> -->
+
+        <stack-modal
             :show="show"
             title="Modal #1"
             @close="show=false"
             :modal-class="{ [modalClass]: true }"
             :saveButton="{ visible: false }"
-            :cancelButton="{ title: 'Close', btnClass: { 'btn btn-primary': true } }"
-    >
-
-        <hr/>
-        <p>Additional options: </p>
-    </stack-modal> -->
-    <!-- <div class="row">
-        <ComponentExample link="CrossList">
-            <div class="side-by-side">
-            <div class="side">
-                <VueNestable
-                v-model="nestableItems1"
-                cross-list
-                group="cross"
-                >
-                <VueNestableHandle
-                    slot-scope="{ item }"
-                    :item="item"
-                >
-                    {{ item.text }}
-                </VueNestableHandle>
-                </VueNestable>
+            :cancelButton="{ title: 'Close', btnClass: { 'btn btn-primary': true } }">
+            <pre class="language-vue">
+                <div class="root">
+                    <SlickList lockAxis="y" v-model="items" tag="table">
+                        <tr>
+                            <td>ID</td>
+                            <td>Num</td>
+                            <td>Name</td>
+                        </tr>
+                        <SlickItem v-for="(item, index) in items" :index="index" :key="index" tag="tr">
+                            <td>{{ item.id }}</td>
+                            <td>{{ num }}</td>
+                            <td>{{ item.name }}</td>
+                        </SlickItem>
+                    </SlickList>
+                </div>
+            </pre>
+        </stack-modal>
+        
+        <stack-modal
+                :show="roles_modal"
+                title="Edit roles"
+                @close="roles_modal=false"
+                :modal-class="{ [modalClass]: true }"
+                :saveButton="{ visible: true, title: 'Save', btnClass: { 'btn btn-primary': true } }"
+                :cancelButton="{ visible: false, title: 'Close', btnClass: { 'btn btn-danger': true } }"
+            >
+            <pre class="language-vue">
+                <form>
+                    <select class="form-control" v-model="user_new_parmission"> 
+                        <option value="user">User</option> 
+                        <option value="ru_menager">English contrnt menager</option> 
+                        <option value="ru_menager">Russian contrnt menager</option> 
+                        <option value="ka_menager">Georgian contrnt menager</option> 
+                        <option value="menager">Content manager</option>
+                        <option value="seller">Seller</option>  
+                        <option value="admin">Admin</option> 
+                    </select>
+                    <div class="alert alert-danger" role="alert" v-if="is_parmision_error">
+                        {{ parmision_error.user_new_parmission[0] }}
+                    </div>
+                </form>
+            </pre>
+            <div slot="modal-footer">
+                <div class="modal-footer">
+                    <button
+                            type="button"
+                            :class="{'btn btn-primary': true}"
+                            @click="edit_permission(1)"
+                        >
+                    Save
+                    </button>
+                </div>
             </div>
-            <div class="side">
-                <VueNestable
-                v-model="nestableItems2"
-                cross-list
-                group="cross"
-                >
-                <VueNestableHandle
-                    slot-scope="{ item }"
-                    :item="item"
-                >
-                    {{ item.text }}
-                </VueNestableHandle>
-                </VueNestable>
-            </div>
-            </div>
-        </ComponentExample>
-    </div> -->
-    
+        </stack-modal>
+        
     </div>
 </template>
 
 <script>
+    import { SlickList, SlickItem } from 'vue-slicksort'; //https://github.com/Jexordexan/vue-slicksort
     import StackModal from '@innologica/vue-stackable-modal'
 
     export default {
         components: {
             StackModal,
+            SlickItem,
+            SlickList,
         },
-
         props: [
             "table_1_get_route",
             "table_2_get_route",
@@ -401,36 +432,34 @@
             return {
                 regions: '',
 
-                // nestableItems1: [
-                // {
-                //     id: 0,
-                //     text: 'Andy'
-                //     }, {
-                //     id: 1,
-                //     text: 'Harry',
-                //     children: [{
-                //         id: 2,
-                //         text: 'David'
-                //     }]
-                //     }, {
-                //     id: 3,
-                //     text: 'Lisa'
-                //     }
-                // ],
-                // nestableItems2: [
-                //     {
-                //     id: 4,
-                //     text: 'Mike'
-                //     }, {
-                //     id: 5,
-                //     text: 'Edgar'
-                //     }
-                // ],
+                items: [
+                    {
+                        id: 1,
+                        name: 'Item 1',
+                    },
+                    {
+                        id: 2,
+                        name: 'Item 2',
+                    },
+                    {
+                        id: 3,
+                        name: 'Item 3',
+                    },
+                ],
+
                 show: false,
-                show_second: false,
-                show_third: false,
+                roles_modal: false,
                 modalClass: '',
 
+                user_role: '',
+
+                parmision_error: '',
+                is_parmision_error: false,
+
+                num: 0,
+
+                user_id_for_rditing_parmission: 0,
+                user_new_parmission: "",
 
                 table_1: [],
                 table_2: [],
@@ -458,6 +487,7 @@
             if (this.table_1_name == 'Sector') {
                 this.get_region_data();
             }
+            
 
             this.get_data_in_table_1();
             this.get_data_in_table_2();
@@ -611,36 +641,67 @@
                 .catch(error => console.log(error))
             },
 
+            show_parmission_edit_madel(user_id){
+                this.roles_modal=true;
+                this.user_id_for_rditing_parmission = user_id
+            },
+
+            edit_permission(user_id) {
+                axios
+                .post('users/edit_user_permission/' + this.user_id_for_rditing_parmission, {
+                    parmission: this.user_new_parmission,
+                })
+                .then(Response => {
+                    this.roles_modal=false
+                })
+                .catch(error =>{
+                    if (error.response.status == 422) {
+                        this.parmision_error = error.response.data.errors
+                    }
+                    this.is_parmision_error = true
+                })
+            },
+
+            get_user_role(user_id){
+                axios
+                .post('users/get_role/' + user_id, {
+                    user_id: user_id,
+                })
+                .then(Response => {
+                    console.log(Response.data);
+                    this.user_role = Response.data
+                })
+                .catch(error => {
+                    this.user_role = "error"
+                })
+            }
         }
     }
 </script>
 
 <style scoped>
-    /**
-    * Tabs
-    */
+
     .tabs {
         display: flex;
-        flex-wrap: wrap; /* make sure it wraps */
+        flex-wrap: wrap;
     }
     .tabs label {
-    /* .tabs  { */
-        order: 1; /* Put the labels first */
+        order: 1;
         display: block;
         padding: 1rem 2rem;
         margin-right: 0.2rem;
         cursor: pointer;
-    background: #ccced0;
-    font-weight: bold;
-    transition: background ease 0.2s;
+        background: #ccced0;
+        font-weight: bold;
+        transition: background ease 0.2s;
     }
     .tabs .tab {
-    order: 99; /* Put the tabs last */
-    flex-grow: 1;
+        order: 99;
+        flex-grow: 1;
         width: 100%;
         display: none;
-    padding: 1rem;
-    background: #fff;
+        padding: 1rem;
+        background: #fff;
     }
     .tabs input[type="radio"] {
         display: none;
@@ -653,15 +714,14 @@
     }
 
     @media (max-width: 45em) {
-    .tabs .tab,
-    .tabs label {
-        order: initial;
+        .tabs .tab,
+        .tabs label {
+            order: initial;
+        }
+        .tabs label {
+            width: 100%;
+            margin-right: 0;
+            margin-top: 0.2rem;
+        }
     }
-    .tabs label {
-        width: 100%;
-        margin-right: 0;
-        margin-top: 0.2rem;
-    }
-    }
-    
 </style>

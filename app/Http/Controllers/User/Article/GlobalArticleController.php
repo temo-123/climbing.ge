@@ -22,7 +22,7 @@ class GlobalArticleController extends Controller
         
         if ($request -> isMethod('post')) {
             // $input = $request -> except('_token');
-            $this->global_sector_validate($request);
+            $this->global_article_validate($request);
 
             $global_article = Article::get();
             foreach ($global_article as $global) {
@@ -95,7 +95,7 @@ class GlobalArticleController extends Controller
 
         if ($request->isMethod('post')) {
             
-            $this->global_sector_validate($request);
+            $this->global_article_validate($request);
 
             // make url_title from us_title value
             $us_title_arr = explode( ' ', $request->us_title_for_url_title);
@@ -166,7 +166,7 @@ class GlobalArticleController extends Controller
         }
     }
 
-    public function global_sector_validate($request)
+    public function global_article_validate($request)
     {
         $request->validate([
             'published' => 'required',

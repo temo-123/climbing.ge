@@ -20,8 +20,23 @@ class RoleTableSeeder extends Seeder
 
       $role_manager = new Role();
       $role_manager->name = 'manager';
-      $role_manager->description = 'Content Manager';
+      $role_manager->description = 'Global content manager';
       $role_manager->save();
+
+      $role_ka_manager = new Role();
+      $role_ka_manager->name = 'ka_manager';
+      $role_ka_manager->description = 'Georgian Content mnager';
+      $role_ka_manager->save();
+
+      $role_ru_manager = new Role();
+      $role_ru_manager->name = 'ru_mennager';
+      $role_ru_manager->description = 'Russian content mennager';
+      $role_ru_manager->save();
+
+      $role_us_manager = new Role();
+      $role_us_manager->name = 'us_manager';
+      $role_us_manager->description = 'English content manager';
+      $role_us_manager->save();
 
       $role_seller = new Role();
       $role_seller->name = 'seller';

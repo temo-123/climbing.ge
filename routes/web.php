@@ -268,6 +268,9 @@ Route::group(['prefix' => LocalisationService::locale(),'middleware' => 'setLoca
                         Route::get('/', ['uses'=>'UserController@users_list', 'as'=>'users']);
                         Route::match(['post'], '/del_user/{user_id}', ['uses' => 'UserController@destroy', 'as'=>'userDel']);
 
+                        Route::any('/edit_user_permission/{user_id}', 'UserController@edit_user_permission');
+                        Route::any('/get_role/{user_id}', 'UserController@get_role');
+
                         Route::any('/get_all_users_data', 'UserController@get_all_users_data');
                         Route::any('/get_roles_data', 'UserController@get_roles_data');
                     });
@@ -293,7 +296,10 @@ Route::group(['prefix' => LocalisationService::locale(),'middleware' => 'setLoca
     });
 });
 
-Route::get('/redirect', 'Auth\SocialAuthFacebookController@redirect');
-Route::get('/callback', 'Auth\SocialAuthFacebookController@callback');
+Route::get('login/{provider}/callback','Auth\SocialController@Callback');
+Route::get('login/{provider}', 'Auth\SocialController@redirect');
+
+
+Route::get('/check_permission', 'PermissionController@permission');
 
 Auth::routes(['verify' => true]);

@@ -10,7 +10,7 @@ try {
     window.Popper = require('popper.js').default;
     window.$ = window.jQuery = require('jquery');
 
-    require('bootstrap');
+    // require('bootstrap'); //comentid for fixing npm error after uninstal bootstrap pakeg
 } catch (e) {}
 
 /**

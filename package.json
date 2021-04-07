@@ -11,7 +11,6 @@
     },
     "devDependencies": {
         "axios": "^0.21.1",
-        "bootstrap": "^4.0.0",
         "cross-env": "^7.0",
         "jquery": "^3.2",
         "laravel-mix": "^5.0.9",
@@ -30,8 +29,10 @@
         "@innologica/vue-stackable-modal": "^0.1.10",
         "ckeditor4-vue": "^1.2.0",
         "mdbvue": "^6.7.1",
+        "vue-bootstrap4-modal": "^2.2.0",
         "vue-carousel-3d": "^1.0.1",
         "vue-nestable": "^2.6.0",
+        "vue-slicksort": "^1.2.0",
         "vue-upload-multiple-image": "^1.1.6",
         "vux-uploader-component": "^1.0.23"
     }
