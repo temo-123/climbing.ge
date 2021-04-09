@@ -73,8 +73,8 @@
     <link rel="stylesheet" href="http://cdnjs.cloudflare.com/ajax/libs/jquery.bootstrapvalidator/0.5.2/css/bootstrapValidator.min.css"/>
     <script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/jquery.bootstrapvalidator/0.5.2/js/bootstrapValidator.min.js"></script> 
 
-    {{-- And analytics.google.com --}}
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-YSKGLXMWGF"></script>
+    {{-- And analytics.google.com (Global site tag (gtag.js) - Google Analytics) --}}
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-101870435-2"></script>
     <script src="{{ asset('assets/js/analitic/shop.climbing.ge_analitic.js') }}"></script>
 
 </head>

@@ -33,7 +33,6 @@
                 
                 <section id="default" class="padding-top0">
                 <div class="row">
-                    <hr>
                   <div class="large-5 column">
                     <div class="xzoom-container">
                       <img class="xzoom" id="xzoom-default" src="{{ asset('images/product_img/'.$first_product_images->image) }}" xoriginal="{{ asset('images/product_img/'.$first_product_images->image) }}" />

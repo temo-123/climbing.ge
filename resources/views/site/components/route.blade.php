@@ -39,17 +39,17 @@
             </div>
       </div>
 
-            {!! $area['sectors']['text'] !!}
-            
-            @if($area['sectors']['sector_img'] != NULL)
-                  <div class="row">
-                        @foreach($area['sectors']['sector_img'] as $sector_img)
-                        <div class="col">
-                        <img src="{{ asset('images/sector_img/'.$sector_img['image']) }}" alt="">
-                        </div>
-                        @endforeach
-                  </div>
-            @endif
+      {!! $area['sectors']['text'] !!}
+      
+      @if($area['sectors']['sector_img'] != NULL)
+      <div class="row">
+            @foreach($area['sectors']['sector_img'] as $sector_img)
+            <div class="col">
+                  <img src="{{ asset('images/sector_img/'.$sector_img['image']) }}" alt="">
+            </div>
+            @endforeach
+      </div>
+      @endif
 
       @endif
 

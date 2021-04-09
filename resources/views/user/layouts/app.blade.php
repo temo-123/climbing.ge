@@ -18,8 +18,8 @@
     <link rel="stylesheet" href="{{ asset('assets/css/app.css') }}">
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
 
-    {{-- Google analitics --}}
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-N8TE74E1BE"></script>
+    {{-- Google analitics (Global site tag (gtag.js) - Google Analytics) --}}
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-101870435-3"></script>
     <script src="{{ asset('assets/js/analitic/user.climbing.ge_analitic.js') }}"></script>
 
 </head>
