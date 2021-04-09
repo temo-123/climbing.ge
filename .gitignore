@@ -2,9 +2,7 @@
 /public/hot
 
 /public/images
-/public/assets/js/analitic/climbing.ge_analitic.js
-/public/assets/js/analitic/shop.climbing.ge_analitic.js
-/public/assets/js/analitic/user.climbing.ge_analitic.js
+/public/assets/js/analitic
 
 /public/storage
 /storage/*.key
