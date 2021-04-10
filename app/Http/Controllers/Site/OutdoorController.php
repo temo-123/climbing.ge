@@ -159,10 +159,22 @@ class OutdoorController extends Controller
                 $sectors_img_count = Sector_image::where('sector_id', '=', $sector->id)->count();
                 if ($sectors_img_count > 0) {
                     $sectors_img = Sector_image::where('sector_id', '=', $sector->id)->orderBy('num')->get();
+                    $sectors_img_ouent = Sector_image::where('sector_id', '=', $sector->id)->orderBy('num')->count();
+                    // dd($sectors_img_ouent);
+
+                    $sector_img_size = 100;
+                    if($sectors_img_ouent > 1){
+                        $sector_img_size = 100 / $sectors_img_ouent;
+                        $sector_img_size = $sector_img_size - 1;
+                    }
+
                     $sector_imgs = array();
                     foreach($sectors_img as $sector_img){
                         array_push($sector_imgs, 
-                            array('image' => $sector_img->image)
+                            array(
+                                'image' => $sector_img->image,
+                                'sector_img_size'=>$sector_img_size,
+                                )   
                         );
                     }
                 }

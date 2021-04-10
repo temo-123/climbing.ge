@@ -8,33 +8,33 @@
       <div class="row">
             <div class="col-md-6">
                   @if ($area['sectors']['in_shade_after_10']!=null)
-                        <img class="sun_svg" src="{{asset('images/svg/in shade after 10.00 am.svg')}}" alt="">
+                        <img class="sun_svg" src="{{asset('images/svg/in shade after 10.00 am.svg')}}" alt="In shade after 10.00 am" title="In shade after 10.00 am">
                   @endif
                   @if ($area['sectors']['in_shade_after_15']!=null)
-                        <img class="sun_svg" src="{{asset('images/svg/in shade after 15.00 pm.svg')}}" alt="">
+                        <img class="sun_svg" src="{{asset('images/svg/in shade after 15.00 pm.svg')}}" alt="In shade after 15.00 pm" title="In shade after 15.00 pm">
                   @endif
                   @if ($area['sectors']['in_the_shade_befornoon']!=null)
-                        <img class="sun_svg" src="{{asset('images/svg/in shade befor noon.svg')}}" alt="">
+                        <img class="sun_svg" src="{{asset('images/svg/in shade befor noon.svg')}}" alt="In shade befor noon" title="In shade befor noon">
                   @endif
                   @if ($area['sectors']['in_the_shade_afternoon']!=null)
-                        <img class="sun_svg" src="{{asset('images/svg/in shade in the afternoon.svg')}}" alt="">
+                        <img class="sun_svg" src="{{asset('images/svg/in shade in the afternoon.svg')}}" alt="In shade in the afternoon" title="In shade in the afternoon">
                   @endif
                   @if ($area['sectors']['all_day_in_shade']!=null)
-                        <img class="sun_svg" src="{{asset('images/svg/in the shade whole day.svg')}}" alt="">
+                        <img class="sun_svg" src="{{asset('images/svg/in the shade whole day.svg')}}" alt="In the shade whole day" title="In the shade whole day">
                   @endif
                   @if ($area['sectors']['all_day_in_sun']!=null)
-                        <img class="sun_svg" src="{{asset('images/svg/in the sun the whole day.svg')}}" alt="">
+                        <img class="sun_svg" src="{{asset('images/svg/in the sun the whole day.svg')}}" alt="In the sun the whole day" title="In the sun the whole day">
                   @endif
             </div>
             <div class="col-md-6">
                   @if ($area['sectors']['overhang']!=null)
-                        <img class="relief_svg" src="{{asset('images/svg/overhang.svg')}}" alt="">
+                        <img class="relief_svg" src="{{asset('images/svg/overhang.svg')}}" alt="Overhang" title="Overhang">
                   @endif
                   @if ($area['sectors']['slabby']!=null)
-                        <img class="relief_svg" src="{{asset('images/svg/slabby.svg')}}" alt="">
+                        <img class="relief_svg" src="{{asset('images/svg/slabby.svg')}}" alt="Slabby" title="Slabby">
                   @endif
                   @if ($area['sectors']['vertical']!=null)
-                        <img class="relief_svg" src="{{asset('images/svg/vertical.svg')}}" alt="">
+                        <img class="relief_svg" src="{{asset('images/svg/vertical.svg')}}" alt="Vertical" title="Vertical">
                   @endif
             </div>
       </div>
@@ -44,9 +44,7 @@
       @if($area['sectors']['sector_img'] != NULL)
       <div class="row">
             @foreach($area['sectors']['sector_img'] as $sector_img)
-            <div class="col">
-                  <img src="{{ asset('images/sector_img/'.$sector_img['image']) }}" alt="">
-            </div>
+                  <img style="width: {{ $sector_img['sector_img_size'] }}%" src="{{ asset('images/sector_img/'.$sector_img['image']) }}" alt="">
             @endforeach
       </div>
       @endif
