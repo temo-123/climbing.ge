@@ -1,8 +1,8 @@
 /node_modules
 /public/hot
 
-/public/images
-/public/assets/js/analitic
+# /public/images
+# /public/assets/js/analitic
 
 /public/storage
 /storage/*.key
