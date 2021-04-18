@@ -2,24 +2,13 @@
 
 @section('content')
 
-        {{-- {{ dd($article[0]['start_data_day']) }} --}}
-    @section('meta_title',  $article[0]['title'] )
-    @if ($article[0]['short_description'] != NULL)
-        @section('meta_description',  $article[0]['short_description'] )
-    @else
-        @section('meta_description',  $article[0]['title'] )
-    @endif
-    @if ($article[0]['meta_keyword'] != NULL)
-        @section('meta_keyword',  $article[0]['meta_keyword'] )
-    @else
-        @section('meta_keyword',  $article[0]['title'] )
-    @endif
-    @if(isset($image))
-        @section('meta_img',  asset('images/'.$image))
-    @endif
+@section('title',  $article[0]['title'] )
+@section('meta_description',  $article[0]['short_description'] )
+@section('meta_keyword',  $article[0]['title'] )
+@section('meta_img',  asset('images/'.$image))
 
-    @section('created_at',  $article[0]['created_at'])
-    @section('updated_at',  $article[0]['updated_at'])
+@section('created_at',  $article[0]['created_at'])
+@section('updated_at',  $article[0]['updated_at'])
 
 <div class="container top_menu_margin">
     {{-- <div class="container"> --}}
@@ -35,7 +24,8 @@
             <p class="calendar">
                 {{ $article ['start_data_day'] }}<em>{!!$article['start_data_month']!!}</em>
             </p>
-            
+            {{ $event_countdown }}
+            <hr>
             {!!$article[0]['text']!!}
         </div>
         

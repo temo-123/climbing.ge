@@ -3719,6 +3719,18 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
  //https://github.com/Jexordexan/vue-slicksort
 
 
@@ -4451,6 +4463,34 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: ['back_url', 'category'],
   data: function data() {
@@ -4687,6 +4727,34 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 __webpack_require__.r(__webpack_exports__);
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -9837,15 +9905,13 @@ __webpack_require__.r(__webpack_exports__);
   },
   mounted: function mounted() {
     this.create_temporary_service();
-    this.get_service_category_data();
   },
   methods: {
     create_temporary_service: function create_temporary_service() {
       var _this = this;
 
-      axios.post('/services/create_temporary_service/', {}).then(function (response) {
-        _this.get_temporary_service_data(); // console.log('georgian service upload successful');
-
+      axios.post('../services/create_temporary_service/', {}).then(function (response) {
+        _this.get_temporary_service_data();
       })["catch"](function (error) {
         return console.log(error);
       });
@@ -9962,25 +10028,15 @@ __webpack_require__.r(__webpack_exports__);
         return console.log(error);
       });
     },
-    get_service_category_data: function get_service_category_data() {
+    get_service_image: function get_service_image(temporary_service_id) {
       var _this7 = this;
 
-      axios.get("../../services/get_service_category_data/").then(function (response) {
-        _this7.service_category = response.data;
-        _this7.categories = _this7.service_category;
-      })["catch"](function (error) {
-        return console.log(error);
-      });
-    },
-    get_service_image: function get_service_image(temporary_service_id) {
-      var _this8 = this;
-
       this.image_is_refresh = true;
-      axios.get("../../services/get_service_image/" + temporary_service_id).then(function (response) {
-        _this8.service_images = response.data;
-        _this8.images = _this8.service_images.service_images;
-        _this8.image_is_refresh = false;
-        _this8.image_reset_id++;
+      axios.get("../services/get_service_image/" + temporary_service_id).then(function (response) {
+        _this7.service_images = response.data;
+        _this7.images = _this7.service_images.service_images;
+        _this7.image_is_refresh = false;
+        _this7.image_reset_id++;
       })["catch"](function (error) {
         return console.log(error);
       });
@@ -10002,14 +10058,14 @@ __webpack_require__.r(__webpack_exports__);
       this.showModal(); // e.preventDefault();
     },
     del_service_image: function del_service_image(imageId) {
-      var _this9 = this;
+      var _this8 = this;
 
       axios.post("/services/del_service_image/" + imageId, {
         image_id: imageId
       }).then(function (Response) {
         console.log(response);
 
-        _this9.get_data_in_table_1();
+        _this8.get_data_in_table_1();
       })["catch"](function (error) {
         return console.log(error);
       });
@@ -10381,7 +10437,6 @@ __webpack_require__.r(__webpack_exports__);
   },
   mounted: function mounted() {
     this.get_service_editing_data();
-    this.get_service_category_data();
     this.get_service_image();
   },
   methods: {
@@ -10485,25 +10540,15 @@ __webpack_require__.r(__webpack_exports__);
         _this5.is_global_article_error = true;
       });
     },
-    get_service_category_data: function get_service_category_data() {
-      var _this6 = this;
-
-      axios.get("../../services/get_service_category_data/").then(function (response) {
-        _this6.categories = response.data; // console.log();
-        // this.category = this.service_category
-      })["catch"](function (error) {
-        return console.log(error);
-      });
-    },
     get_service_image: function get_service_image() {
-      var _this7 = this;
+      var _this6 = this;
 
       this.image_is_refresh = true;
       axios.get("/services/get_service_image/" + this.editing_article_id).then(function (response) {
-        _this7.service_images = response.data;
-        _this7.images = _this7.service_images.service_images;
-        _this7.image_is_refresh = false;
-        _this7.image_reset_id++;
+        _this6.service_images = response.data;
+        _this6.images = _this6.service_images.service_images;
+        _this6.image_is_refresh = false;
+        _this6.image_reset_id++;
       })["catch"](function (error) {
         return console.log(error);
       });
@@ -10525,14 +10570,14 @@ __webpack_require__.r(__webpack_exports__);
       this.showModal(); // e.preventDefault();
     },
     del_service_image: function del_service_image(imageId) {
-      var _this8 = this;
+      var _this7 = this;
 
       axios.post("/services/del_service_image/" + imageId, {
         image_id: imageId
       }).then(function (Response) {
         console.log(response);
 
-        _this8.get_data_in_table_1();
+        _this7.get_data_in_table_1();
       })["catch"](function (error) {
         return console.log(error);
       });
@@ -51025,31 +51070,85 @@ var render = function() {
                     ]),
                     _vm._v(" "),
                     _c("div", { staticClass: "col-xs-4" }, [
-                      _c("input", {
-                        directives: [
-                          {
-                            name: "model",
-                            rawName: "v-model",
-                            value: _vm.start_data_month,
-                            expression: "start_data_month"
-                          }
-                        ],
-                        staticClass: "form-control",
-                        attrs: {
-                          type: "text",
-                          name: "start_data_month",
-                          placeholder: "start month"
-                        },
-                        domProps: { value: _vm.start_data_month },
-                        on: {
-                          input: function($event) {
-                            if ($event.target.composing) {
-                              return
+                      _c(
+                        "select",
+                        {
+                          directives: [
+                            {
+                              name: "model",
+                              rawName: "v-model",
+                              value: _vm.start_data_month,
+                              expression: "start_data_month"
                             }
-                            _vm.start_data_month = $event.target.value
+                          ],
+                          staticClass: "form-control",
+                          attrs: { name: "start_data_month" },
+                          on: {
+                            change: function($event) {
+                              var $$selectedVal = Array.prototype.filter
+                                .call($event.target.options, function(o) {
+                                  return o.selected
+                                })
+                                .map(function(o) {
+                                  var val = "_value" in o ? o._value : o.value
+                                  return val
+                                })
+                              _vm.start_data_month = $event.target.multiple
+                                ? $$selectedVal
+                                : $$selectedVal[0]
+                            }
                           }
-                        }
-                      })
+                        },
+                        [
+                          _c("option", { attrs: { value: "January" } }, [
+                            _vm._v("January")
+                          ]),
+                          _vm._v(" "),
+                          _c("option", { attrs: { value: "February" } }, [
+                            _vm._v("February")
+                          ]),
+                          _vm._v(" "),
+                          _c("option", { attrs: { value: "March" } }, [
+                            _vm._v("March")
+                          ]),
+                          _vm._v(" "),
+                          _c("option", { attrs: { value: "April" } }, [
+                            _vm._v("April")
+                          ]),
+                          _vm._v(" "),
+                          _c("option", { attrs: { value: "May" } }, [
+                            _vm._v("May")
+                          ]),
+                          _vm._v(" "),
+                          _c("option", { attrs: { value: "June" } }, [
+                            _vm._v("June")
+                          ]),
+                          _vm._v(" "),
+                          _c("option", { attrs: { value: "July" } }, [
+                            _vm._v("July")
+                          ]),
+                          _vm._v(" "),
+                          _c("option", { attrs: { value: "August" } }, [
+                            _vm._v("August")
+                          ]),
+                          _vm._v(" "),
+                          _c("option", { attrs: { value: "September" } }, [
+                            _vm._v("September")
+                          ]),
+                          _vm._v(" "),
+                          _c("option", { attrs: { value: "October" } }, [
+                            _vm._v("October")
+                          ]),
+                          _vm._v(" "),
+                          _c("option", { attrs: { value: "November" } }, [
+                            _vm._v("November")
+                          ]),
+                          _vm._v(" "),
+                          _c("option", { attrs: { value: "December" } }, [
+                            _vm._v("December")
+                          ])
+                        ]
+                      )
                     ])
                   ])
                 : _vm._e(),
@@ -51094,31 +51193,85 @@ var render = function() {
                     ]),
                     _vm._v(" "),
                     _c("div", { staticClass: "col-xs-4" }, [
-                      _c("input", {
-                        directives: [
-                          {
-                            name: "model",
-                            rawName: "v-model",
-                            value: _vm.and_data_month,
-                            expression: "and_data_month"
-                          }
-                        ],
-                        staticClass: "form-control",
-                        attrs: {
-                          type: "text",
-                          name: "and_data_month",
-                          placeholder: "and month"
-                        },
-                        domProps: { value: _vm.and_data_month },
-                        on: {
-                          input: function($event) {
-                            if ($event.target.composing) {
-                              return
+                      _c(
+                        "select",
+                        {
+                          directives: [
+                            {
+                              name: "model",
+                              rawName: "v-model",
+                              value: _vm.and_data_month,
+                              expression: "and_data_month"
                             }
-                            _vm.and_data_month = $event.target.value
+                          ],
+                          staticClass: "form-control",
+                          attrs: { name: "and_data_month" },
+                          on: {
+                            change: function($event) {
+                              var $$selectedVal = Array.prototype.filter
+                                .call($event.target.options, function(o) {
+                                  return o.selected
+                                })
+                                .map(function(o) {
+                                  var val = "_value" in o ? o._value : o.value
+                                  return val
+                                })
+                              _vm.and_data_month = $event.target.multiple
+                                ? $$selectedVal
+                                : $$selectedVal[0]
+                            }
                           }
-                        }
-                      })
+                        },
+                        [
+                          _c("option", { attrs: { value: "January" } }, [
+                            _vm._v("January")
+                          ]),
+                          _vm._v(" "),
+                          _c("option", { attrs: { value: "February" } }, [
+                            _vm._v("February")
+                          ]),
+                          _vm._v(" "),
+                          _c("option", { attrs: { value: "March" } }, [
+                            _vm._v("March")
+                          ]),
+                          _vm._v(" "),
+                          _c("option", { attrs: { value: "April" } }, [
+                            _vm._v("April")
+                          ]),
+                          _vm._v(" "),
+                          _c("option", { attrs: { value: "May" } }, [
+                            _vm._v("May")
+                          ]),
+                          _vm._v(" "),
+                          _c("option", { attrs: { value: "June" } }, [
+                            _vm._v("June")
+                          ]),
+                          _vm._v(" "),
+                          _c("option", { attrs: { value: "July" } }, [
+                            _vm._v("July")
+                          ]),
+                          _vm._v(" "),
+                          _c("option", { attrs: { value: "August" } }, [
+                            _vm._v("August")
+                          ]),
+                          _vm._v(" "),
+                          _c("option", { attrs: { value: "September" } }, [
+                            _vm._v("September")
+                          ]),
+                          _vm._v(" "),
+                          _c("option", { attrs: { value: "October" } }, [
+                            _vm._v("October")
+                          ]),
+                          _vm._v(" "),
+                          _c("option", { attrs: { value: "November" } }, [
+                            _vm._v("November")
+                          ]),
+                          _vm._v(" "),
+                          _c("option", { attrs: { value: "December" } }, [
+                            _vm._v("December")
+                          ])
+                        ]
+                      )
                     ])
                   ])
                 : _vm._e(),
@@ -53083,27 +53236,86 @@ var render = function() {
                         ]),
                         _vm._v(" "),
                         _c("div", { staticClass: "col-xs-4" }, [
-                          _c("input", {
-                            directives: [
-                              {
-                                name: "model",
-                                rawName: "v-model",
-                                value: _vm.start_data_month,
-                                expression: "start_data_month"
-                              }
-                            ],
-                            staticClass: "form-control",
-                            attrs: { type: "text", name: "start_data_month" },
-                            domProps: { value: _vm.start_data_month },
-                            on: {
-                              input: function($event) {
-                                if ($event.target.composing) {
-                                  return
+                          _c(
+                            "select",
+                            {
+                              directives: [
+                                {
+                                  name: "model",
+                                  rawName: "v-model",
+                                  value: _vm.start_data_month,
+                                  expression: "start_data_month"
                                 }
-                                _vm.start_data_month = $event.target.value
+                              ],
+                              staticClass: "form-control",
+                              attrs: { name: "start_data_month" },
+                              on: {
+                                change: function($event) {
+                                  var $$selectedVal = Array.prototype.filter
+                                    .call($event.target.options, function(o) {
+                                      return o.selected
+                                    })
+                                    .map(function(o) {
+                                      var val =
+                                        "_value" in o ? o._value : o.value
+                                      return val
+                                    })
+                                  _vm.start_data_month = $event.target.multiple
+                                    ? $$selectedVal
+                                    : $$selectedVal[0]
+                                }
                               }
-                            }
-                          })
+                            },
+                            [
+                              _c("option", { attrs: { value: "January" } }, [
+                                _vm._v("January")
+                              ]),
+                              _vm._v(" "),
+                              _c("option", { attrs: { value: "February" } }, [
+                                _vm._v("February")
+                              ]),
+                              _vm._v(" "),
+                              _c("option", { attrs: { value: "March" } }, [
+                                _vm._v("March")
+                              ]),
+                              _vm._v(" "),
+                              _c("option", { attrs: { value: "April" } }, [
+                                _vm._v("April")
+                              ]),
+                              _vm._v(" "),
+                              _c("option", { attrs: { value: "May" } }, [
+                                _vm._v("May")
+                              ]),
+                              _vm._v(" "),
+                              _c("option", { attrs: { value: "June" } }, [
+                                _vm._v("June")
+                              ]),
+                              _vm._v(" "),
+                              _c("option", { attrs: { value: "July" } }, [
+                                _vm._v("July")
+                              ]),
+                              _vm._v(" "),
+                              _c("option", { attrs: { value: "August" } }, [
+                                _vm._v("August")
+                              ]),
+                              _vm._v(" "),
+                              _c("option", { attrs: { value: "September" } }, [
+                                _vm._v("September")
+                              ]),
+                              _vm._v(" "),
+                              _c("option", { attrs: { value: "October" } }, [
+                                _vm._v("October")
+                              ]),
+                              _vm._v(" "),
+                              _c("option", { attrs: { value: "November" } }, [
+                                _vm._v("November")
+                              ]),
+                              _vm._v(" "),
+                              _c("option", { attrs: { value: "December" } }, [
+                                _vm._v("December")
+                              ])
+                            ]
+                          )
                         ])
                       ])
                     : _vm._e(),
@@ -53144,27 +53356,86 @@ var render = function() {
                         ]),
                         _vm._v(" "),
                         _c("div", { staticClass: "col-xs-4" }, [
-                          _c("input", {
-                            directives: [
-                              {
-                                name: "model",
-                                rawName: "v-model",
-                                value: _vm.and_data_month,
-                                expression: "and_data_month"
-                              }
-                            ],
-                            staticClass: "form-control",
-                            attrs: { type: "text", name: "and_data_month" },
-                            domProps: { value: _vm.and_data_month },
-                            on: {
-                              input: function($event) {
-                                if ($event.target.composing) {
-                                  return
+                          _c(
+                            "select",
+                            {
+                              directives: [
+                                {
+                                  name: "model",
+                                  rawName: "v-model",
+                                  value: _vm.and_data_month,
+                                  expression: "and_data_month"
                                 }
-                                _vm.and_data_month = $event.target.value
+                              ],
+                              staticClass: "form-control",
+                              attrs: { name: "and_data_month" },
+                              on: {
+                                change: function($event) {
+                                  var $$selectedVal = Array.prototype.filter
+                                    .call($event.target.options, function(o) {
+                                      return o.selected
+                                    })
+                                    .map(function(o) {
+                                      var val =
+                                        "_value" in o ? o._value : o.value
+                                      return val
+                                    })
+                                  _vm.and_data_month = $event.target.multiple
+                                    ? $$selectedVal
+                                    : $$selectedVal[0]
+                                }
                               }
-                            }
-                          })
+                            },
+                            [
+                              _c("option", { attrs: { value: "January" } }, [
+                                _vm._v("January")
+                              ]),
+                              _vm._v(" "),
+                              _c("option", { attrs: { value: "February" } }, [
+                                _vm._v("February")
+                              ]),
+                              _vm._v(" "),
+                              _c("option", { attrs: { value: "March" } }, [
+                                _vm._v("March")
+                              ]),
+                              _vm._v(" "),
+                              _c("option", { attrs: { value: "April" } }, [
+                                _vm._v("April")
+                              ]),
+                              _vm._v(" "),
+                              _c("option", { attrs: { value: "May" } }, [
+                                _vm._v("May")
+                              ]),
+                              _vm._v(" "),
+                              _c("option", { attrs: { value: "June" } }, [
+                                _vm._v("June")
+                              ]),
+                              _vm._v(" "),
+                              _c("option", { attrs: { value: "July" } }, [
+                                _vm._v("July")
+                              ]),
+                              _vm._v(" "),
+                              _c("option", { attrs: { value: "August" } }, [
+                                _vm._v("August")
+                              ]),
+                              _vm._v(" "),
+                              _c("option", { attrs: { value: "September" } }, [
+                                _vm._v("September")
+                              ]),
+                              _vm._v(" "),
+                              _c("option", { attrs: { value: "October" } }, [
+                                _vm._v("October")
+                              ]),
+                              _vm._v(" "),
+                              _c("option", { attrs: { value: "November" } }, [
+                                _vm._v("November")
+                              ]),
+                              _vm._v(" "),
+                              _c("option", { attrs: { value: "December" } }, [
+                                _vm._v("December")
+                              ])
+                            ]
+                          )
                         ])
                       ])
                     : _vm._e(),

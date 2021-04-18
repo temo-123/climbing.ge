@@ -2,12 +2,31 @@
 
 @section('content')
 
-@section('title', 'Indoor')
+@section('title', $title)
 
-@section('meta_title', 'Indoor climbing in Georgia')
-@section('meta_keyword', 'Climbing in Georgia')
-@section('meta_description', 'In Georgia there are several climbing gyms for beginners and professionals. You can visit one of them')
-@section('meta_img', (asset('assets/img/meta_img/indoor.jpg')))
+@if(isset($meta_title))
+@section('meta_title', $meta_title)
+@else
+@section('meta_title', 'Climbing In Georgia')
+@endif
+
+@if(isset($meta_keyword))
+@section('meta_keyword', $meta_keyword)
+@else
+@section('meta_keyword', 'Climbing In Georgia')
+@endif
+
+@if(isset($meta_description))
+@section('meta_description', $meta_description)
+@else
+@section('meta_description', 'Climbing In Georgia')
+@endif
+
+@if(isset($meta_img))
+@section('meta_img', (asset('assets/img/meta_img/'.$meta_img)))
+@else
+@section('meta_img', (asset('assets/img/site_logo/x.png')))
+@endif
 
 <div class="container top_menu_margin h-recent-work">
 

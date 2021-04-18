@@ -60,6 +60,14 @@ class CreateSitesTable extends Migration
             $table->text('shop_description_ru')->nullable();
             $table->text('shop_description_ka')->nullable();
 
+            $table->text('products_description')->nullable();
+            $table->text('products_description_ru')->nullable();
+            $table->text('products_description_ka')->nullable();
+
+            $table->text('services_description')->nullable();
+            $table->text('services_description_ru')->nullable();
+            $table->text('services_description_ka')->nullable();
+
             $table->string('fb_link')->nullable();
             $table->string('inst_link')->nullable();
             $table->string('google_link')->nullable();

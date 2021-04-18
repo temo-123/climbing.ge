@@ -2,21 +2,11 @@
 
 @section('content')
 
-    @section('meta_title',  $article[0]['title'] )
-    @if ($article[0]['short_description'] != NULL)
-        @section('meta_description',  $article[0]['short_description'] )
-    @else
-        @section('meta_description',  $article[0]['title'] )
-    @endif
-    @if ($article[0]['meta_keyword'] != NULL)
-        @section('meta_keyword',  $article[0]['meta_keyword'] )
-    @else
-        @section('meta_keyword',  $article[0]['title'] )
-    @endif
-    @if(isset($image))
-        @section('meta_img',  asset('images/'.$image))
-    @endif
-
+    @section('title',  $article[0]['title'] )
+    @section('meta_description',  $article[0]['short_description'] )
+    @section('meta_keyword',  $article[0]['title'] )
+    @section('meta_img',  asset('images/'.$image))
+    
     @section('created_at',  $article[0]['created_at'])
     @section('updated_at',  $article[0]['updated_at'])
 

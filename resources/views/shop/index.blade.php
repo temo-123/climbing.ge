@@ -1,16 +1,18 @@
 @extends('shop.layouts.app')
 
 @section('content')
-    @section('meta_title', 'Climbing store')
 
-    @if($site->shop_description != null)
-    @section('meta_keyword', $site->shop_description)
-    @else
-    @section('meta_keyword', 'Climbing gear shop In Georgia')
-    @endif
+@section('title', $title)
 
-    @section('meta_description', $site->shop_description)
-    @section('meta_img', (asset('images/meta_img/shop.jpg')))
+@if($site->shop_description != null)
+@section('meta_keyword', $site->shop_description)
+@else
+@section('meta_keyword', 'Climbing gear shop In Georgia')
+@endif
+
+@section('meta_description', $site->shop_description)
+@section('meta_img', (asset('images/meta_img/shop.jpg')))
+
 
 <div class="container top_menu_margin h-recent-work">
 
@@ -61,6 +63,7 @@
                             <ul class="grid">
                                 @if(isset($products))
                                 @forelse($products as $product)
+                                {{-- {{ dd($products) }} --}}
                                 <li class="grid-tile">
                                     <div class="item">
                                         <a href="{{route('shop_page', array('title'=>$product['url_title']))}}">

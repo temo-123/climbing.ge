@@ -7,7 +7,7 @@
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <meta name="csrf-token" content="{{ csrf_token() }}">
     
-    <title>@yield('meta_title')</title>
+    <title>@yield('title') - shop.climibng.ge</title>
     <link href="{{ asset('images/site_img/site_logo/x.png') }}" rel="shortcut icon">
 
     <!-- Schema.org markup for Google+ -->

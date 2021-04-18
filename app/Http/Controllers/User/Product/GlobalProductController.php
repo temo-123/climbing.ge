@@ -12,7 +12,6 @@ use App\Models\Ru_product;
 use Auth;
 
 use App\Services\imageControllService;
-
 use App\Services\URLTitleService;
 
 class GlobalProductController extends Controller

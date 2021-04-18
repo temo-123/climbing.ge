@@ -9,12 +9,12 @@ use App\Models\Product;
 use App\Models\Us_product;
 use App\Models\Ru_product;
 use App\Models\Ka_product;
-
 use App\Models\Favorite_product;
-
 use App\Models\Product_image;
 
 use App\Services\ImageControllService;
+use App\Services\GetProductsService;
+use Auth;
 
 class ProductController extends Controller
 {
@@ -289,6 +289,35 @@ class ProductController extends Controller
 
     public function favorite()
     {
-        # code...
+        if (view()->exists('user.favorite_products')) {
+
+            $favorite_product = Favorite_product::latest('id')->where("user_id","=",Auth::user()->id)->get();
+            $favorite_product_count = Favorite_product::latest('id')->where("user_id","=",Auth::user()->id)->count();
+
+            $products = array();
+
+            if ($favorite_product_count > 0) {
+                foreach ($favorite_product as $Favorite_product) {
+                    $global_product = Product::latest('id')->where('id', '=', $Favorite_product->product_id)->where('published', '=', 1)->limit(3)->get();
+                    $locale_product = GetProductsService::get_locale_product($global_product);
+                    array_push($products, $locale_product);
+                }
+            }
+
+    		$data = [
+    			'title'=>'favorite_products',
+    			'favorite_products'=>$products,
+                'page_name'=>'favorite_products',
+                'active' => 'inteested event',
+
+    			'user'=>1,
+                'num' => 1,
+                
+                'articles_link' => 'other_page',
+                'image_dir' => 'user_img',
+    		];
+    		return view('user.favorite_products',$data);
+    	}
+    	abort(404);
     }
 }

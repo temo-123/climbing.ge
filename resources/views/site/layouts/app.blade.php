@@ -7,7 +7,7 @@
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>@yield('title')</title>
+    <title>@yield('title') - climbing.ge</title>
     <link href="{{ asset('images/site_img/site_logo/x.png') }}" rel="shortcut icon">
 
     <meta name="description" content="@yield('meta_description')" />

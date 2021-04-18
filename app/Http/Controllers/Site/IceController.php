@@ -24,7 +24,7 @@ class IceController extends Controller
             $time_array = GetArticlesService::get_new_article_pin($ices);
             
     		$data = [
-    			'title'=>'Ice And Mixed',
+    			'title'=>'Ice And Mixed Climbing',
     			'article_list'=>$ices,
     			'article_count'=>$article_count,
     			'ice'=>1,

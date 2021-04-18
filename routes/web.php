@@ -60,6 +60,9 @@ Route::group(['prefix' => LocalisationService::locale(),'middleware' => 'setLoca
             
             Route::get('/favorite_product/{product_id}/{actions}', ['uses'=>'App\PrioritiesController@favorite_product', 'as'=>'favorite_product']);
 
+            Route::get('/services', 'ServiceController@services_list')->name('services');
+            Route::get('/service/{id}', 'ServiceController@service_page')->name('service_page');
+
             Route::group(['namespace'=>'App'], function() {
                 Route::get('/sitemap.xml', 'SitemapController@sitemap_xml');
                 Route::get('/sitemap', 'SitemapController@sitemap_xml');
@@ -216,11 +219,11 @@ Route::group(['prefix' => LocalisationService::locale(),'middleware' => 'setLoca
                     }); 
 
                     Route::group(['prefix'=>'services', 'namespace'=>'Services'], function() {
-                        Route::any('/create_temporary_Service', 'ServiceController@create_temporary_Service');
-                        Route::any('/del_temporary_Service/{id}', 'ServiceController@del_temporary_Service');
+                        Route::any('/create_temporary_service', 'ServiceController@create_temporary_service');
+                        Route::any('/del_temporary_service/{id}', 'ServiceController@del_temporary_service');
 
                         Route::match(['get','post'], '/add_service', ['uses'=>'ServiceController@add_service_page','as'=>'serviceAddPage']);
-                        Route::match(['get', 'post'], '/edit_Service/{id}', ['uses' => 'ServiceController@edit_service_page', 'as'=>'serviceEditPage']);
+                        Route::match(['get', 'post'], '/edit_service/{id}', ['uses' => 'ServiceController@edit_service_page', 'as'=>'serviceEditPage']);
 
                         Route::match(['get','post'], '/global/add/', ['uses'=>'GlobalServiceController@add_global_service','as'=>'globalServiceAdd']);
                         Route::match(['get', 'post'], '/global/edit/{id}', ['uses' => 'GlobalServiceController@edit_global_service', 'as'=>'globalServiceEdit']);
@@ -238,13 +241,13 @@ Route::group(['prefix' => LocalisationService::locale(),'middleware' => 'setLoca
 
                         Route::get('/', ['uses'=>'ServiceController@service_list', 'as'=>'services_list']);
                         Route::any('/get_service_data', 'ServiceController@get_service_data');
-                        Route::any('/get_Service_editing_data/{editing_Service_id}', 'ServiceController@get_service_editing_data');
-                        Route::any('/get_temporary_Service_editing_data', 'ServiceController@get_temporary_service_editing_data');
-                        Route::any('/get_Service_image/{Service_id}', 'ServiceController@get_S\service_image');
+                        Route::any('/get_service_editing_data/{editing_service_id}', 'ServiceController@get_service_editing_data');
+                        Route::any('/get_temporary_service_editing_data', 'ServiceController@get_temporary_service_editing_data');
+                        Route::any('/get_service_image/{service_id}', 'ServiceController@get_service_image');
 
-                        Route::any('/upload_Service_image/{Service_id}', 'ServiceController@upload_service_image');
-                        Route::any('/del_Service_image/{image_id}', 'ServiceController@del_service_image');
-                        Route::any('/update_Service_image/{id}', 'ServiceController@update_service_image');
+                        Route::any('/upload_service_image/{service_id}', 'ServiceController@upload_service_image');
+                        Route::any('/del_service_image/{image_id}', 'ServiceController@del_service_image');
+                        Route::any('/update_service_image/{id}', 'ServiceController@update_service_image');
                     }); 
 
 
@@ -290,6 +293,11 @@ Route::group(['prefix' => LocalisationService::locale(),'middleware' => 'setLoca
                         Route::match(['get', 'post'], '/site_info_edit/{id}', ['uses' => 'AboutController@site_info_edit', 'as'=>'siteInfoEdit']);
                         Route::match(['get', 'post'], '/site_image_edit/{id}', ['uses' => 'AboutController@site_image_edit', 'as'=>'siteImageEdit']);
                         Route::any('/get_site_editing_data/{id}', 'AboutController@get_site_editing_data');
+                    });
+
+
+                    Route::group(['prefix'=>'events'], function() {
+                        Route::get('/interested', ['uses'=>'InteestedEventCntroller@interested', 'as'=>'interested']);
                     });
             });
         });

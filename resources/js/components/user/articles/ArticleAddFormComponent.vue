@@ -99,7 +99,21 @@
                             <input type="text" v-model="start_data_day" name="start_data_day" class="form-control"  placeholder="start day data"> 
                         </div>
                         <div class="col-xs-4">
-                            <input type="text" v-model="start_data_month" name="start_data_month" class="form-control"  placeholder="start month"> 
+                            <!-- <input type="text" v-model="start_data_month" name="start_data_month" class="form-control"  placeholder="start month">  -->
+                            <select class="form-control" v-model="start_data_month" name="start_data_month"> 
+                                <option value="January">January</option>
+                                <option value="February">February</option>
+                                <option value="March">March</option>
+                                <option value="April">April</option>
+                                <option value="May">May</option>
+                                <option value="June">June</option>
+                                <option value="July">July</option>
+                                <option value="August">August</option>
+                                <option value="September">September</option>
+                                <option value="October">October</option>
+                                <option value="November">November</option>
+                                <option value="December">December</option>
+                            </select> 
                         </div>
                     </div>
 
@@ -109,7 +123,21 @@
                             <input type="text" v-model="and_data_day" name="and_data_day" class="form-control"  placeholder="and day data"> 
                         </div>
                         <div class="col-xs-4">
-                            <input type="text" v-model="and_data_month" name="and_data_month" class="form-control"  placeholder="and month"> 
+                            <!-- <input type="text" v-model="and_data_month" name="and_data_month" class="form-control"  placeholder="and month">  -->
+                            <select class="form-control" v-model="and_data_month" name="and_data_month"> 
+                                <option value="January">January</option>
+                                <option value="February">February</option>
+                                <option value="March">March</option>
+                                <option value="April">April</option>
+                                <option value="May">May</option>
+                                <option value="June">June</option>
+                                <option value="July">July</option>
+                                <option value="August">August</option>
+                                <option value="September">September</option>
+                                <option value="October">October</option>
+                                <option value="November">November</option>
+                                <option value="December">December</option>
+                            </select> 
                         </div>
                     </div>
 

@@ -2,25 +2,13 @@
 
 @section('content')
 
-    @section('meta_title',  $product['title'] )
-    @if ($product['short_description'] != NULL)
-        @section('meta_description',  $product['short_description'] )
-    @else
-        @section('meta_description',  $product['title'] )
-    @endif
-    @if ($product['meta_keyword'] != NULL)
-        @section('meta_keyword',  $product['meta_keyword'] )
-    @else
-        @section('meta_keyword',  $product['title'] )
-    @endif
-    @if(isset($first_product_images))
-        @section('meta_img',  asset('images/product_img/'.$first_product_images->image))
-    @endif
-    @section('price',  $global_product->price.' '.$global_product->currency)
-    @section('color',  $global_product->color)
+@section('title',  $product->title)
+@section('meta_description',  $product->short_description)
+@section('meta_keyword',  $product->title)
+@section('meta_img',  asset('images/product_img/'.$first_product_images->image))
 
-    @section('created_at',  $product['created_at'])
-    @section('updated_at',  $product['updated_at'])
+@section('created_at',  $product->created_at)
+@section('updated_at',  $product->updated_at)
 
 <section aria-label="Main content" role="main" class="product-detail top_menu_margin">
   <div class="container">
@@ -294,103 +282,104 @@
     </div>
     </div>
     
-    
-
-
-
-
-
-    {{-- @if(isset($othe_products))
-    <div class="container">
-      <div class="row">
-        <div class="related">
-            <h2>You might also like</h2>
-            @foreach($othe_products as $other_product)
-            <div class="collection-list">
-                <a class="product-box" href="{{route('shop_page', array('title'=>$other_product->url_title))}}">
-                  <span class="img">
-                    <span style="background-image: url('{{ asset('images/shop_img/'.$other_product -> image_1) }}')" class="i first">
-                    </span>
-                    <span class="i second" style="background-image: url('{{ asset('images/shop_img/'.$other_product -> image_1) }}')">
-                    </span>
+    @if(isset($othe_products))
+      <div class="container">
+        <div class="row related">
+          <h2>You might also like</h2>
+          @foreach($othe_products as $other_product)
+          {{-- {{ dd($other_product['price']) }} --}}
+          <div class="collection-list col-lg-4 col-md-4 col-sm-4">
+              <a class="product-box" href="{{route('shop_page', array('title'=>$other_product['url_title']))}}">
+                <span class="img">
+                  <span style="background-image: url('{{ asset('images/product_img/'.$other_product['image']) }}')" class="i first">
                   </span>
-                  <span class="text">
-                    <strong href="{{route('shop_page', array('title'=>$other_product->url_title))}}">{{$other_product -> title}}</strong>
-                    <span>
-                    @if($other_product -> currency == 'GEL')
-                    ₾
-                    @elseif($other_product -> currency == 'USD')
-                    $
-                    @else
-                    {{$other_product -> currency}}
-                    @endif
-                    {{$other_product -> price}}
-                    </span>
-                    <div class="variants">
-                      @if($other_product -> size != null && $other_product -> size_style != null)
-                      <div class="variant">
-                        <div class="var m available">
-                          <div>{{$other_product -> size}}({{$other_product -> size_style}})</div>
-                        </div>
+                  <span class="i second" style="background-image: url('{{ asset('images/product_img/'.$other_product['image']) }}')">
+                  </span>
+                </span>
+                <span class="text">
+                  <strong href="{{route('shop_page', array('title'=>$other_product['url_title']))}}">{{ $other_product[0][0]['title'] }}</strong>
+                  @if($other_product['discount'] != null)
+                    @foreach($other_product_price_array as $new_price)
+                      @if($new_price['product_id'] == $other_product['id'])
+                      <div class="old_price">
+                        <span>
+                          {{ $other_product['currency']}} {{$other_product['price']}}
+                        </span>
                       </div>
+                      <span>
+                        {{  $other_product['currency'] }} {{$new_price['new_price']}}
+                      </span>
                       @endif
-                      @if($other_product -> color != null)
-                      <div class="variant">
-                            @if($other_product -> color == 'White')
-                            <div class="var color white available">
-                              <div class="c" style="background-color: white;"></div>
-                            </div>
-                            @elseif($other_product -> color == 'Black')
-                            <div class="var color black available">
-                              <div class="c" style="background-color: black;"></div>
-                            </div>
-                            @elseif($other_product -> color == 'Brown')
-                            <div class="var color brown available">
-                              <div class="c" style="background-color: brown;"></div>
-                            </div>
-                            @elseif($other_product -> color == 'Red')
-                            <div class="var color red available">
-                              <div class="c" style="background-color: red;"></div>
-                            </div>
-                            @elseif($other_product -> color == 'Orange')
-                            <div class="var color orange available">
-                              <div class="c" style="background-color: orange;"></div>
-                            </div>
-                            @elseif($other_product -> color == 'Yellow')
-                            <div class="var color yellow available">
-                              <div class="c" style="background-color: yellow;"></div>
-                            </div>
-                            @elseif($other_product -> color == 'Green')
-                            <div class="var color green available">
-                              <div class="c" style="background-color: green;"></div>
-                            </div>
-                            @elseif($other_product -> color == 'Blue')
-                            <div class="var color blue available">
-                              <div class="c" style="background-color: blue;"></div>
-                            </div>
-                            @elseif($other_product -> color == 'Purple')
-                            <div class="var color purple available">
-                              <div class="c" style="background-color: purple;"></div>
-                            </div>
-                            @elseif($other_product -> color == 'Grey')
-                            <div class="var color grey available">
-                              <div class="c" style="background-color: grey;"></div>
-                            </div>
-                            @endif
+                    @endforeach
+                  @else
+                    <span>{{ $other_product['currency'] }} {{$other_product['price']}}</span>
+                  @endif
+                  <div class="variants">
+                    @if($other_product['price'] != null)
+                    <div class="variant">
+                      <div class="var m available">
+                        <div>{{$other_product['size']}}</div>
                       </div>
-                      @endif
                     </div>
-                  </span>
-                </a>
-            </div>
-            @endforeach
-            <div class="more-products" id="more-products-wrap">
-              <a href="{{route('shop_index')}}"><span id="more-products" data-rows_per_page="1">More products</span></a>
-            </div>
+                    @endif
+                    @if($other_product['color'] != null)
+                    <div class="variant">
+                          @if($other_product['color'] == 'White')
+                          <div class="var color white available">
+                            <div class="c" style="background-color: white;"></div>
+                          </div>
+                          @elseif($other_product['color'] == 'Black')
+                          <div class="var color black available">
+                            <div class="c" style="background-color: black;"></div>
+                          </div>
+                          @elseif($other_product['color'] == 'Brown')
+                          <div class="var color brown available">
+                            <div class="c" style="background-color: brown;"></div>
+                          </div>
+                          @elseif($other_product['color'] == 'Red')
+                          <div class="var color red available">
+                            <div class="c" style="background-color: red;"></div>
+                          </div>
+                          @elseif($other_product['color'] == 'Orange')
+                          <div class="var color orange available">
+                            <div class="c" style="background-color: orange;"></div>
+                          </div>
+                          @elseif($other_product['color'] == 'Yellow')
+                          <div class="var color yellow available">
+                            <div class="c" style="background-color: yellow;"></div>
+                          </div>
+                          @elseif($other_product['color'] == 'Green')
+                          <div class="var color green available">
+                            <div class="c" style="background-color: green;"></div>
+                          </div>
+                          @elseif($other_product['color'] == 'Blue')
+                          <div class="var color blue available">
+                            <div class="c" style="background-color: blue;"></div>
+                          </div>
+                          @elseif($other_product['color'] == 'Purple')
+                          <div class="var color purple available">
+                            <div class="c" style="background-color: purple;"></div>
+                          </div>
+                          @elseif($other_product['color'] == 'Grey')
+                          <div class="var color grey available">
+                            <div class="c" style="background-color: grey;"></div>
+                          </div>
+                          @endif
+                    </div>
+                    @endif
+                  </div>
+                </span>
+              </a>
+          </div>
+          @endforeach
+        </div>
+        <div class="row">
+          <div class="more-products" id="more-products-wrap">
+            <a href="{{route('shop_index')}}"><span id="more-products" data-rows_per_page="1">All products</span></a>
+          </div>
         </div>
       </div>
-    </div>
-    @endif --}}
+    @endif
 
   </div>
   

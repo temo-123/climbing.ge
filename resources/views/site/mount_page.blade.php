@@ -2,23 +2,13 @@
 
 @section('content')
 
-    @section('meta_title',  $article->title )
-    @if ($article->short_description != NULL)
-        @section('meta_description',  $article->short_description )
-    @else
-        @section('meta_description',  $article->title )
-    @endif
-    @if ($article->meta_keyword != NULL)
-        @section('meta_keyword',  $article->meta_keyword )
-    @else
-        @section('meta_keyword',  $article->title )
-    @endif
-    @if(isset($image))
-        @section('meta_img',  asset('images/'.$image))
-    @endif
+@section('title',  $article[0]['title'] )
+@section('meta_description',  $article[0]['short_description'] )
+@section('meta_keyword',  $article[0]['title'] )
+@section('meta_img',  asset('images/'.$image))
 
-    @section('created_at',  $article->created_at)
-    @section('updated_at',  $article->updated_at)
+@section('created_at',  $article[0]['created_at'])
+@section('updated_at',  $article[0]['updated_at'])
 
     <div class="container top_menu_margin">
         <div class="row">

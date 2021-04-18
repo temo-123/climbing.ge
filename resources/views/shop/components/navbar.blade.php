@@ -42,8 +42,9 @@
                 <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                     <ul class="nav navbar-nav pull-right top_menu_buttons">
                         
-                        <li><a @if(isset($products)) id='actyve' @endif href="{{route('shop_index')}}">@lang('shop.shop menu products')</a></li>
-                        <li><a @if(isset($about_us)) id='actyve' @endif href="{{route('about_shop')}}">@lang('shop.shop menu about us')</a> </li>
+                        <li><a @if(isset($products) || isset($product)) id='actyve' @endif href="{{route('shop_index')}}">@lang('shop.shop menu products')</a></li>
+                        <li><a @if(isset($services)) id='actyve' @endif href="{{route('services')}}">@lang('shop.shop menu services')</a></li>
+                        <li><a @if(isset($about_us)) id='actyve' @endif href="{{route('about_shop')}}">@lang('shop.shop menu about us')</a></li>
 
                         @if (Auth::guest())
                         <li>

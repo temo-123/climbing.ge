@@ -122,7 +122,7 @@ class OutdoorController extends Controller
                 'view_360'=>1,
                 'what_need'=>1,
                 
-                'image' => 'outdoor_img'.$outdoors[0]['image'],
+                'image' => 'outdoor_img/'.$outdoors[0]['image'],
                 
                 'article_edit_link'=>'outdoorEdit',
 

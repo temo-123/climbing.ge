@@ -347,16 +347,14 @@
         },
         mounted() {
             this.create_temporary_service()
-            this.get_service_category_data()
         },
         methods: {
             create_temporary_service() {
                 axios
-                .post('/services/create_temporary_service/', {
+                .post('../services/create_temporary_service/', {
                 })
                 .then((response)=>  {
                     this.get_temporary_service_data()
-                    // console.log('georgian service upload successful');
                 })
                 .catch(error => console.log(error))
             },
@@ -476,22 +474,10 @@
                 );
             },
 
-            get_service_category_data: function(){
-                axios
-                .get("../../services/get_service_category_data/")
-                .then(response => {
-                    this.service_category = response.data
-                    this.categories = this.service_category
-                })
-                .catch(
-                    error => console.log(error)
-                );
-            },
-
             get_service_image: function (temporary_service_id) {
                 this.image_is_refresh = true
                 axios
-                .get("../../services/get_service_image/" + temporary_service_id )
+                .get("../services/get_service_image/" + temporary_service_id )
                 .then(response => {
                     this.service_images = response.data
                     this.images = this.service_images.service_images

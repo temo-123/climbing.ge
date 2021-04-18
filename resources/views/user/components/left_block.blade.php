@@ -9,7 +9,7 @@
                     <a href="{{Route('favorite')}}">My favorite products</a>
                 </li>
                 <li class="list-group-item text-muted @if($page_name == 'interested_events') menu_active @endif">
-                    <a href="#">Interested events</a>
+                    <a href="{{Route('interested')}}">Interested events</a>
                 </li>
                 @endif
 

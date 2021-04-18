@@ -15,14 +15,15 @@ class CreateServicesTable extends Migration
     {
         Schema::create('services', function (Blueprint $table) {
             $table->id();
-            
             $table->string('url_title')->nullable();
 
             $table->integer('published')->nullable();
 
-            $table->integer('us_product_id')->nullable();
-            $table->integer('ru_product_id')->nullable();
-            $table->integer('ka_product_id')->nullable();
+            $table->integer('user_id')->nullable();
+
+            $table->integer('us_service_id')->nullable();
+            $table->integer('ru_service_id')->nullable();
+            $table->integer('ka_service_id')->nullable();
 
             $table->timestamps();
         });

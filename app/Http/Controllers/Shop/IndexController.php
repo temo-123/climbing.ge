@@ -5,9 +5,9 @@ namespace App\Http\Controllers\Shop;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
+use Auth;
 use App\Models\Product;
 use App\Models\Favorite_product;
-use Auth;
 use App\Services\GetProductsService;
 
 class IndexController extends Controller
@@ -18,7 +18,6 @@ class IndexController extends Controller
             // $products = product::latest('id')->get();
             $global_products = product::latest('id')->where('published', '=', 1)->get();
             $products = GetProductsService::get_locale_product($global_products);
-            // dd("products");
 
             $products_count = product::count();
 
@@ -63,7 +62,7 @@ class IndexController extends Controller
             // dd($price_array);
 
     		$data = [
-    			'title'=>'Shop',
+    			'title'=>'Climbing store',
     			'products'=>$products,
                 'products_count'=>$products_count,
 

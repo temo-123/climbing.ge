@@ -353,7 +353,6 @@
         },
         mounted() {
             this.get_service_editing_data()
-            this.get_service_category_data()
             this.get_service_image()
         },
         methods: {
@@ -484,20 +483,6 @@
                     }
                     this.is_global_article_error = true
                 })
-            },
-
-
-            get_service_category_data: function(){
-                axios
-                .get("../../services/get_service_category_data/")
-                .then(response => {
-                    this.categories = response.data
-                    // console.log();
-                    // this.category = this.service_category
-                })
-                .catch(
-                    error => console.log(error)
-                );
             },
 
 
