@@ -16,7 +16,7 @@
     
     
     
-    <style>
+    {{-- <style>
         #demo {
   height:100%;
   position:relative;
@@ -83,5 +83,5 @@ img.zoom {
 	});
 });
     
-    </script>
+    </script> --}}
 

@@ -1,29 +1,39 @@
 <template>
     <div class="tabs">
         <div class="row">
-            
             <input type="radio" name="tabs" id="1" checked="checked">
             <label for="1" v-if="this.table_1_get_route">{{this.table_1_name}}</label>
             <div class="tab" v-if="this.table_1_get_route">
-                <!-- <div class="accordion accordion-flush" id="accordionFlushExample">
-                    <div class="accordion-item">
-                        <h2 class="accordion-header" id="flush-headingOne">
-                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseOne" aria-expanded="false" aria-controls="flush-collapseOne">
-                            Accordion Item #1
-                        </button>
-                        </h2>
-                        <div id="flush-collapseOne" class="accordion-collapse collapse" aria-labelledby="flush-headingOne" data-bs-parent="#accordionFlushExample">
-                        <div class="accordion-body">Placeholder content for this accordion, which is intended to demonstrate the <code>.accordion-flush</code> class. This is the first item's accordion body.</div>
-                        </div>
-                    </div>
-                </div> -->
+                
+                <h3 v-if="table_1_name == 'Mount routes'">Filter Mount routes By Mounts</h3> 
+                <select v-if="table_1_name == 'Mount routes'" v-model="value_mount_id">
+                    <option v-bind:value="'all'">All</option>
+                    <option v-for="mount in mounts" :key="mount" v-bind:value="mount.id">{{ mount.name }}</option>
+                </select> 
+                <!-- <ul v-if="table_1_name == 'Mount routes'">
+                    <li v-for="product in filterProductsByCategory">Product Name : {{product.name}} - Price : {{product.price}} ({{product.category}})</li>
+                </ul> -->
+                
+                <h3 v-if="table_1_name == 'Products'">Filter Products By Category</h3> 
+                <select v-if="table_1_name == 'Products'" v-model="value_product_category_id">
+                    <option v-bind:value="'all'">All</option>
+                    <option v-for="category in product_categorys" :key="category" v-bind:value="category.id">{{ category.us_name }}</option>
+                </select>
+
+                <h3 v-if="table_1_name == 'Sector'">Filter Sectors By Region</h3> 
+                <select v-if="table_1_name == 'Sector'" v-model="value_region_id">
+                    <option v-bind:value="'all'">All</option>
+                    <option v-for="region in regions" :key="region" v-bind:value="region.id">{{ region.url_title }}</option>
+                </select>
+
                 <div class="add_buttom">
-                    <a :href="table_1_add_url" class="btn btn-primary pull-left" type="submit">New </a>
+                    <a :href="table_1_add_url" class="btn btn-primary pull-left" type="submit">New</a>
                 </div>
                 <div class="form-groupe">
                     <button @click="get_data_in_table_1" class="btn main-btn pull-right" v-if="!table_1_is_refresh">Refresh ({{table_1_reset_id}})</button>
                     <span class="badge badge-primare mb-1 pull-right" v-if="table_1_is_refresh">Updating...</span>
                 </div>
+
                 <table class="table table-hover" id="dev-table">
                     <thead>
                         <tr>
@@ -37,9 +47,11 @@
 
                             <th v-if="table_1_name != 'Users'">|</th>
                             <th style='text-align: center;' v-if="table_1_name == 'Sector'">Region</th>
-                            <th style='text-align: center;' v-if="table_1_name == 'Products' && table_1_name != 'Users'">Category</th>
+                            <th style='text-align: center;' v-if="table_1_name == 'Products' && table_1_name != 'Users'">Price</th>
                             <td v-if="table_1_name == 'Products'">|</td>
-                            <th style='text-align: center;' v-if="table_1_name != 'Sector' && table_1_name != 'Users'">Published</th>
+                            <th style='text-align: center;' v-if="table_1_name == 'Products' && table_1_name != 'Users'">Quantity</th>
+                            <td v-if="table_1_name == 'Products'">|</td>
+                            <th style='text-align: center;' v-if="table_1_name != 'Sector' && table_1_name != 'Users'">Public</th>
 
                             <td v-if="table_1_name == 'Users'">|</td>
                             <th style='text-align: center;' v-if="table_1_name == 'Users'">Role</th>
@@ -52,7 +64,135 @@
                             
                         </tr>
                     </thead>
-                    <tbody>
+                    <tbody v-if="table_1_name == 'Mount routes'">
+                        <tr v-for="table_1_info in filterMountsByMount_system" :key="table_1_info.id">
+                            <td style='text-align: center;'>
+                                <input type="checkbox">
+                            </td>
+                            <td>|</td>
+                            <td>{{table_1_info.id}}</td>
+                            <!-- <td v-if="table_1_name == 'Sector'">|</td> -->
+                            <!-- <td v-if="table_1_name == 'Sector'"><button class="btn btn-primary" @click="show=true">+</button></td> -->
+                            <td>|</td>
+
+                            <td v-if="table_1_name == 'Sector'" >
+                                <a @click="show_sector_model(table_1_info.id)" href="#">{{table_1_info.name}}</a>
+                                <!-- <button class="btn btn-info" @click="show_parmission_edit_madssssel(table_1_info.id)">{{table_1_info.name}}</button> -->
+                            </td>
+                            <td v-else-if="table_1_name == 'Users'">{{table_1_info.name}} {{table_1_info.surname}}</td>
+                            <td v-else>{{table_1_info.url_title}} </td>
+
+                            <td  v-if="table_1_name != 'Users'">|</td>
+
+                            <th style='text-align: center;' v-if="table_1_name == 'Sector'">
+                                <div v-for="region in regions" :key="region.id" >
+                                    <div v-if="region.id == table_1_info.article_id">
+                                        {{region.url_title}}
+                                    </div>
+                                </div>
+                            </th>
+
+                            <td style='text-align: center;' v-if="table_1_name == 'Products' && table_1_name != 'Users'">{{table_1_info.category_id}}</td>
+                            <td v-if="table_1_name == 'Products'">|</td>
+                            <td style='text-align: center;' v-if="table_1_name != 'Sector' && table_1_name != 'Users'">{{table_1_info.published}}</td>
+
+                            <td v-if="table_1_name == 'Users'">|</td>
+                            <th style='text-align: center;' v-if="table_1_name == 'Users'">
+                                {{ get_user_role(table_1_info.id) }}
+                                {{ user_role }}
+                            </th>
+                            
+                            <td>|</td>
+
+                            <td v-if="table_1_name == 'Users'">
+                                <button class="btn btn-primary" @click="show_parmission_edit_madel(table_1_info.id)">Edit roles</button>
+                            </td>
+                            <td v-else>
+                                <a :href="table_1_edit_url+table_1_info.id" class="btn btn-primary" type="submit">Edit</a>
+                            </td>
+                            
+                            <td>|</td>
+                            <td>
+                                <form method="post" @submit.prevent="table_1_del(table_1_info.id)" >
+                                    <input type="hidden" name="_token" >
+                                    <div class="form-group">
+                                        <button type="submit" class="btn btn-danger" onclick="return confirm('Are you sure you want to delete this item')">Delete</button>
+                                    </div>
+                                </form>
+                            </td>
+                        </tr>
+                    </tbody>
+                    <tbody v-else-if="table_1_name == 'Products'">
+                        <tr v-for="table_1_info in filterProductsByCategory" :key="table_1_info.id">
+                            <td style='text-align: center;'>
+                                <input type="checkbox">
+                            </td>
+                            <td>|</td>
+                            <td>{{table_1_info.id}}</td>
+                            <td>|</td>
+                            <td>{{table_1_info.url_title}} </td>
+                            <td>|</td>
+                            <td style='text-align: center;'>{{table_1_info.price}} {{table_1_info.currency}}</td>
+                            <td>|</td>
+                            <td style='text-align: center;'>{{table_1_info.quantity}}</td>
+                            <td>|</td>
+                            <td style='text-align: center;'>{{table_1_info.published}}</td>
+                            <td>|</td>
+                            <td>
+                                <a :href="table_1_edit_url+table_1_info.id" class="btn btn-primary" type="submit">Edit</a>
+                            </td>
+                            
+                            <td>|</td>
+                            <td>
+                                <form method="post" @submit.prevent="table_1_del(table_1_info.id)" >
+                                    <input type="hidden" name="_token" >
+                                    <div class="form-group">
+                                        <button type="submit" class="btn btn-danger" onclick="return confirm('Are you sure you want to delete this item')">Delete</button>
+                                    </div>
+                                </form>
+                            </td>
+                        </tr>
+                    </tbody>
+                    <tbody v-else-if="table_1_name == 'Sector'">
+                        <tr v-for="table_1_info in filterSectorsByRegion" :key="table_1_info.id">
+                            <td style='text-align: center;'>
+                                <input type="checkbox">
+                            </td>
+                            <td>|</td>
+                            <td>{{table_1_info.id}}</td>
+                            <td>|</td>
+
+                            <td v-if="table_1_name == 'Sector'" >
+                                <a @click="show_sector_model(table_1_info.id)" href="#">{{table_1_info.name}}</a>
+                            </td>
+                            <td>|</td>
+
+                            <th style='text-align: center;' v-if="table_1_name == 'Sector'">
+                                <div v-for="region in regions" :key="region.id" >
+                                    <div v-if="region.id == table_1_info.article_id">
+                                        {{region.url_title}}
+                                    </div>
+                                </div>
+                            </th>
+                            
+                            <td>|</td>
+
+                            <td >
+                                <a :href="table_1_edit_url+table_1_info.id" class="btn btn-primary" type="submit">Edit</a>
+                            </td>
+                            
+                            <td>|</td>
+                            <td>
+                                <form method="post" @submit.prevent="table_1_del(table_1_info.id)" >
+                                    <input type="hidden" name="_token" >
+                                    <div class="form-group">
+                                        <button type="submit" class="btn btn-danger" onclick="return confirm('Are you sure you want to delete this item')">Delete</button>
+                                    </div>
+                                </form>
+                            </td>
+                        </tr>
+                    </tbody>
+                    <tbody v-else>
                         <tr v-for="table_1_info in table_1" :key="table_1_info.id">
                             <td style='text-align: center;'>
                                 <input type="checkbox">
@@ -64,7 +204,7 @@
                             <td>|</td>
 
                             <td v-if="table_1_name == 'Sector'" >
-                                <a @click="show=true" href="#">{{table_1_info.name}}</a>
+                                <a @click="show_sector_model(table_1_info.id)" href="#">{{table_1_info.name}}</a>
                                 <!-- <button class="btn btn-info" @click="show_parmission_edit_madssssel(table_1_info.id)">{{table_1_info.name}}</button> -->
                             </td>
                             <td v-else-if="table_1_name == 'Users'">{{table_1_info.name}} {{table_1_info.surname}}</td>
@@ -116,6 +256,13 @@
             <input type="radio" name="tabs" id="2">
             <label for="2" v-if="this.table_2_get_route">{{this.table_2_name}}</label>
             <div class="tab" v-if="this.table_2_get_route">
+
+                <h3 v-if="table_2_name == 'Route'">Filter Routes By Sector</h3> 
+                <select v-if="table_2_name == 'Route'" v-model="value_sector_id">
+                    <option v-bind:value="'all'">All</option>
+                    <option v-for="sector in sectors" :key="sector" v-bind:value="sector.id">{{ sector.name }}</option>
+                </select>
+
                 <div class="add_buttom">
                     <a :href="table_2_add_url" class="btn btn-primary pull-left" type="submit">New </a>
                 </div>
@@ -123,6 +270,7 @@
                     <button @click="get_data_in_table_2" class="btn main-btn pull-right" v-if="!table_2_is_refresh">Refresh ({{table_2_reset_id}})</button>
                     <span class="badge badge-primare mb-1 pull-right" v-if="table_2_is_refresh">Updating...</span>
                 </div>
+
                 <table class="table table-hover" id="dev-table">
                     <thead>
                         <tr>
@@ -137,6 +285,10 @@
 
                             <th                             v-if="table_2_name != 'Route' && table_2_name != 'Categories' && table_2_name != 'Mounts' && table_2_name != 'Roles'">|</th>
                             <th style='text-align: center;' v-if="table_2_name != 'Route' && table_2_name != 'Categories' && table_2_name != 'Mounts' && table_2_name != 'Roles'">Published</th>
+
+
+                            <th                             v-if="table_2_name == 'Route' ">|</th>
+                            <th style='text-align: center;' v-if="table_2_name == 'Route' ">Grade</th>
                             
                             <th>|</th>
                             <th v-if="table_1_name != 'Users'">Edit</th>
@@ -146,8 +298,44 @@
                             
                         </tr>
                     </thead>
-                    <tbody>
-                    <tr v-for="table_2_info in table_2" :key="table_2_info.id">
+                    <tbody v-if="table_2_name === 'Route'">
+                        <tr v-for="table_2_info in filterRoutesBySector" :key="table_2_info.id">
+                            <td style='text-align: center;'>
+                                <input type="checkbox">
+                            </td>
+                            <td>|</td>
+                            <td>{{table_2_info.id}}</td>
+                            <td>|</td>
+
+                            <td v-if="table_2_name == 'Route'">{{table_2_info.name}}</td>
+                            <td v-else-if="table_2_name == 'Categories'">{{table_2_info.us_name}}</td>
+                            <td v-else>{{table_2_info.name}} </td>
+
+
+                            <td v-if="table_2_name == 'Route'">|</td>
+                            <td v-if="table_2_name == 'Route'">
+                                                            <div v-if="table_2_info.or_grade != NULL">{{table_2_info.grade}} / {{ table_2_info.or_grade }}</div>
+                                                            <div v-else>{{table_2_info.grade}}</div>
+                            </td>
+
+                            <td>|</td>
+                            <td v-if="table_1_name != 'Users'">
+                                <a :href="table_2_edit_url+table_2_info.id" class="btn btn-primary" type="submit">Edit</a>
+                            </td>
+                            
+                            <td v-if="table_1_name != 'Users'">|</td>
+                            <td v-if="table_1_name != 'Users'">
+                                <form method="post" @submit.prevent="table_2_del(table_2_info.id)" >
+                                    <input type="hidden" name="_token" >
+                                    <div class="form-group">
+                                        <button type="submit" class="btn btn-danger" onclick="return confirm('Are you sure you want to delete this item')">Delete</button>
+                                    </div>
+                                </form>
+                            </td>
+                        </tr>
+                    </tbody>
+                    <tbody v-else> 
+                        <tr v-for="table_2_info in table_2" :key="table_2_info.id">
                             <td style='text-align: center;'>
                                 <input type="checkbox">
                             </td>
@@ -185,6 +373,13 @@
             <input type="radio" name="tabs" id="3">
             <label for="3"  v-if="this.table_3_get_route">{{this.table_3_name}}</label>
             <div class="tab" v-if="this.table_3_get_route">
+
+                <h3 v-if="table_3_name == 'Multi-pitch'">Filter Multi-pitch By Sector</h3> 
+                <select v-if="table_3_name == 'Multi-pitch'" v-model="value_mtp_sector_id">
+                    <option v-bind:value="'all'">All</option>
+                    <option v-for="sector in sectors" :key="sector" v-bind:value="sector.id">{{ sector.name }}</option>
+                </select>
+
                 <div class="add_buttom">
                     <a :href="table_3_add_url" class="btn btn-primary pull-left" type="submit">New </a>
                 </div>
@@ -214,7 +409,38 @@
                             
                         </tr>
                     </thead>
-                    <tbody>
+                    <tbody v-if="table_3_name == 'Multi-pitch'">
+                        <tr v-for="table_3_info in filterMTPBySector" :key="table_3_info.id">
+                            <td style='text-align: center;'>
+                                <input type="checkbox">
+                            </td>
+                            <td>|</td>
+                            <td>{{table_3_info.id}}</td>
+                            <td>|</td>
+
+                            <td v-if="table_3_name == 'Multi-pitch'">{{table_3_info.name}}</td>
+                            <td v-else>{{table_3_info.title}} </td>
+
+                            <td v-if="table_3_name != 'Multi-pitch'">|</td>
+                            <td style='text-align: center;' v-if="table_3_name != 'Multi-pitch'">{{table_3_info.published}}</td>
+                            
+                            <td>|</td>
+                            <td>
+                                <a :href="table_3_edit_url+table_3_info.id" class="btn btn-primary" type="submit">Edit</a>
+                            </td>
+                            
+                            <td>|</td>
+                            <td>
+                                <form method="post" @submit.prevent="table_3_del(table_3_info.id)" >
+                                    <input type="hidden" name="_token" >
+                                    <div class="form-group">
+                                        <button type="submit" class="btn btn-danger" onclick="return confirm('Are you sure you want to delete this item')">Delete</button>
+                                    </div>
+                                </form>
+                            </td>
+                        </tr>
+                    </tbody>
+                    <tbody v-else>
                         <tr v-for="table_3_info in table_3" :key="table_3_info.id">
                             <td style='text-align: center;'>
                                 <input type="checkbox">
@@ -251,6 +477,13 @@
             <input type="radio" name="tabs" id="4">
             <label for="4"  v-if="this.table_4_get_route">{{this.table_4_name}}</label>
             <div class="tab" v-if="this.table_4_get_route">
+
+                <h3 v-if="table_4_name == 'pitches'">Filter pitches By Multi-pitch</h3> 
+                <select v-if="table_4_name == 'pitches'" v-model="value_mtp_id">
+                    <option v-bind:value="'all'">All</option>
+                    <option v-for="MTP in MTPs" :key="MTP" v-bind:value="MTP.id">{{ MTP.name }}</option>
+                </select>
+
                 <div class="add_buttom">
                     <a :href="table_4_add_url" class="btn btn-primary pull-left" type="submit">New </a>
                 </div>
@@ -272,6 +505,9 @@
 
                             <th v-if="table_4_name != 'pitches'">|</th>
                             <th style='text-align: center;' v-if="table_4_name != 'pitches'">Published</th>
+
+                            <th v-if="table_4_name == 'pitches'">|</th>
+                            <th style='text-align: center;' v-if="table_4_name == 'pitches'">Grade</th>
                             
                             <th>|</th>
                             <th>Edit</th>
@@ -281,7 +517,44 @@
                             
                         </tr>
                     </thead>
-                    <tbody>
+                    <tbody v-if="table_4_name == 'pitches'">
+                        <tr v-for="table_4_info in filterMTP_PitchByMTP" :key="table_4_info.id">
+                            <td style='text-align: center;'>
+                                <input type="checkbox">
+                            </td>
+                            <td>|</td>
+                            <td>{{table_4_info.id}}</td>
+
+                            <td>|</td>
+                            <td v-if="table_4_name == 'pitches'">{{table_4_info.name}}</td>
+                            <td v-else>{{table_4_info.title}} </td>
+
+                            <td v-if="table_4_name != 'pitches'">|</td>
+                            <td style='text-align: center;' v-if="table_4_name != 'pitches'">{{table_4_info.published}}</td>
+                            
+                            <td>|</td>
+                            <td v-if="table_4_name == 'pitches'">
+                                                            <div v-if="table_4_info.or_grade != NULL">{{table_4_info.grade}} / {{ table_4_info.or_grade }}</div>
+                                                            <div v-else>{{table_4_info.grade}}</div>
+                            </td>
+
+                            <td>|</td>
+                            <td>
+                                <a :href="table_4_edit_url+table_4_info.id" class="btn btn-primary" type="submit">Edit</a>
+                            </td>
+                            
+                            <td>|</td>
+                            <td>
+                                <form method="post" @submit.prevent="table_4_del(table_4_info.id)" >
+                                    <input type="hidden" name="_token" >
+                                    <div class="form-group">
+                                        <button type="submit" class="btn btn-danger" onclick="return confirm('Are you sure you want to delete this item')">Delete</button>
+                                    </div>
+                                </form>
+                            </td>
+                        </tr>
+                    </tbody>
+                    <tbody v-else>
                         <tr v-for="table_4_info in table_4" :key="table_4_info.id">
                             <td style='text-align: center;'>
                                 <input type="checkbox">
@@ -311,15 +584,11 @@
                                 </form>
                             </td>
                         </tr>
+
                     </tbody>
                 </table>
             </div>
-        
         </div>
-
-
-            
-
 
         <!-- <SlickList lockAxis="y" v-model="items" tag="table">
             <tr>
@@ -333,28 +602,41 @@
                 <td style='cursor_mooving'>{{ item.name }}</td>
             </SlickItem>
         </SlickList> -->
-
+        
         <stack-modal
             :show="show"
-            title="Modal #1"
+            title="kkk"
             @close="show=false"
             :modal-class="{ [modalClass]: true }"
             :saveButton="{ visible: false }"
             :cancelButton="{ title: 'Close', btnClass: { 'btn btn-primary': true } }">
             <pre class="language-vue">
                 <div class="root">
-                    <SlickList lockAxis="y" v-model="items" tag="table">
-                        <tr>
-                            <td>ID</td>
-                            <td>Num</td>
-                            <td>Name</td>
-                        </tr>
-                        <SlickItem v-for="(item, index) in items" :index="index" :key="index" tag="tr">
-                            <td>{{ item.id }}</td>
-                            <td>{{ num }}</td>
-                            <td>{{ item.name }}</td>
-                        </SlickItem>
-                    </SlickList>
+                    <div class="col-md-12">
+                        <div class="row">
+                            <img v-for="sector_image in sector_images" :key="sector_image.id" :src="'/public/images/sector_img/'+sector_image.image" alt="image" :style="'width:' + sector_images_size + '%'">
+                        </div>
+                        <div class="row">
+                            <SlickList lockAxis="y" v-model="items" tag="table" style="width: 100%">
+                                <tr>
+                                    <td>ID</td>
+                                    <td>Num</td>
+                                    <td>Name</td>
+                                    <td>Grade</td>
+                                    <td>Height</td>
+                                    <td>Bolts</td>
+                                </tr>
+                                <SlickItem v-for="(route, index) in sector_routes" :index='index' :key="index" tag="tr">
+                                    <td>{{ route.id }}</td>
+                                    <td>num</td>
+                                    <td>{{ route.name }}</td>
+                                    <td>{{ route.grade }}</td>
+                                    <td>{{ route.height }}</td>
+                                    <td>{{ route.bolts }}</td>
+                                </SlickItem>
+                            </SlickList>
+                        </div>
+                    </div>
                 </div>
             </pre>
         </stack-modal>
@@ -409,6 +691,45 @@
             SlickItem,
             SlickList,
         },
+        computed: {
+            filterProductsByCategory: function(){
+                if(this.value_product_category_id == "" || this.value_product_category_id == "all"){
+                    return this.products
+                }
+                return this.products.filter(product => product.category_id == this.value_product_category_id)
+                // return this.products.filter(product => !product.category.indexOf(this.category))
+            },
+            filterSectorsByRegion: function(){
+                if(this.value_region_id == "" || this.value_region_id == "all"){
+                    return this.sectors
+                }
+                return this.sectors.filter(sector => sector.article_id == this.value_region_id)
+            },
+            filterRoutesBySector: function(){
+                if(this.value_sector_id == "" || this.value_sector_id == "all"){
+                    return this.routes
+                }
+                return this.routes.filter(route => route.sector_id == this.value_sector_id)
+            },
+            filterMTPBySector: function(){
+                if(this.value_mtp_sector_id == "" || this.value_mtp_sector_id == "all"){
+                    return this.MTPs
+                }
+                return this.MTPs.filter(MTPs => MTPs.sector_id == this.value_mtp_sector_id)
+            },
+            filterMTP_PitchByMTP: function(){
+                if(this.value_mtp_id == "" || this.value_mtp_id == "all"){
+                    return this.MTP_pitchs
+                }
+                return this.MTP_pitchs.filter(MTP_pitch => MTP_pitch.mtp_id == this.value_mtp_id)
+            },
+            filterMountsByMount_system: function(){
+                if(this.value_mount_id == "" || this.value_mount_id == "all"){
+                    return this.mount_routes
+                }
+                return this.mount_routes.filter(mount_route => mount_route.mount_id == this.value_mount_id)
+            }
+        },
         props: [
             "table_1_get_route",
             "table_2_get_route",
@@ -442,7 +763,8 @@
         ],
         data() {
             return {
-                regions: '',
+                product_categorys: '',
+                products: '',
 
                 items: [
                     {
@@ -458,6 +780,27 @@
                         name: 'Item 3',
                     },
                 ],
+
+                sector_routes: "",
+                sector_images: "",
+                sector_images_size: "",
+                model_tible: "",
+
+                routes: "",
+                sectors: "",
+                regions: "",
+                MTPs: "",
+                MTP_pitchs: "",
+                mount_routes: "",
+                mounts: "",
+
+                value_route_id: "",
+                value_mtp_id: "",
+                value_mtp_sector_id: "",
+                value_sector_id: "",
+                value_region_id: "",
+                value_product_category_id: "",
+                value_mount_id: "",
 
                 show: false,
                 roles_modal: false,
@@ -497,9 +840,20 @@
 
         mounted() {
             if (this.table_1_name == 'Sector') {
+                this.get_sectors_data();
                 this.get_region_data();
+                this.get_routes_data();
+                this.get_MTP_data()
+                this.get_MTP_pitch_data()
             }
-            
+            if (this.table_1_name == 'Products') {
+                this.get_product_category_data();
+                this.get_product_data();
+            }
+            if (this.table_1_name == 'Mount routes') {
+                this.get_mount_route_data();
+                this.get_mount_data();
+            }
 
             this.get_data_in_table_1();
             this.get_data_in_table_2();
@@ -529,7 +883,6 @@
                 .catch(
                     error => console.log(error)
                 );
-
             },
             get_data_in_table_2: function(){
                 this.table_2_is_refresh = true
@@ -596,17 +949,6 @@
             },
 
 
-            get_region_data: function(){
-                axios
-                .get("../routes_and_sectors/get_region_data")
-                .then(response => {
-                    this.regions = response.data
-                })
-                .catch(
-                    error => console.log(error)
-                );
-            },
-
             
             table_1_del(itemId) {
                 axios
@@ -614,7 +956,7 @@
                     id: itemId,
                 })
                 .then(Response => {
-                    console.log(response)
+                    // console.log(response)
                     this.get_data_in_table_1()
                 })
                 .catch(error => console.log(error))
@@ -625,7 +967,7 @@
                     id: itemId,
                 })
                 .then(Response => {
-                    console.log(response)
+                    // console.log(response)
                     this.get_data_in_table_2()
                 })
                 .catch(error => console.log(error))
@@ -636,7 +978,7 @@
                     id: itemId,
                 })
                 .then(Response => {
-                    console.log(response)
+                    // console.log(response)
                     this.get_data_in_table_3()
                 })
                 .catch(error => console.log(error))
@@ -647,17 +989,18 @@
                     id: itemId,
                 })
                 .then(Response => {
-                    console.log(response)
+                    // console.log(response)
                     this.get_data_in_table_4()
                 })
                 .catch(error => console.log(error))
             },
 
+
+
             show_parmission_edit_madel(user_id){
                 this.roles_modal=true;
                 this.user_id_for_rditing_parmission = user_id
             },
-
             edit_permission(user_id) {
                 axios
                 .post('users/edit_user_permission/' + this.user_id_for_rditing_parmission, {
@@ -673,7 +1016,6 @@
                     this.is_parmision_error = true
                 })
             },
-
             get_user_role(user_id){
                 axios
                 .post('users/get_role/' + user_id, {
@@ -686,7 +1028,129 @@
                 .catch(error => {
                     this.user_role = "error"
                 })
-            }
+            },
+            show_sector_model(sector_id){
+                this.show=true
+
+                if (this.show==true) {
+                    axios
+                    .get('/routes_and_sectors/get_routes_for_model/'+ sector_id)
+                    .then(response => {
+                        this.sector_routes = response.data
+                        // console.log(this.sector_routes);
+                    })
+                    .catch(
+                        error => console.log(error)
+                    );
+
+                    axios
+                    .get('/routes_and_sectors/get_sector_image/'+ sector_id)
+                    .then(response => {
+                        this.sector_images = response.data.sector_images
+                        this.sector_images_size = response.data.sector_images_size
+                        // console.log(this.sector_images);
+                    })
+                    .catch(
+                        error => console.log(error)
+                    );
+                }
+                else{
+                    this.sector_routes = ""
+                    this.sector_images = ""
+                }
+            },
+
+
+
+            get_routes_data: function() {
+                axios
+                .get("../routes_and_sectors/get_route_data")
+                .then(response => {
+                    this.routes = response.data
+                    // console.log(this.routes.[0].id);
+                })
+                .catch(error => console.log(error))
+            },
+            get_sectors_data: function(){
+                axios
+                .get("../routes_and_sectors/get_sector_data")
+                .then(response => {
+                    this.sectors = response.data
+                })
+                .catch(
+                    error => console.log(error)
+                );
+            },
+            get_region_data: function(){
+                axios
+                .get("../routes_and_sectors/get_region_data")
+                .then(response => {
+                    this.regions = response.data
+                })
+                .catch(
+                    error => console.log(error)
+                );
+            },
+            get_MTP_data: function(){
+                axios
+                .get("../routes_and_sectors/get_mtp_data")
+                .then(response => {
+                    this.MTPs = response.data
+                })
+                .catch(
+                    error => console.log(error)
+                );
+            },
+            get_MTP_pitch_data: function(){
+                axios
+                .get("../routes_and_sectors/get_mtp_pitch_data")
+                .then(response => {
+                    this.MTP_pitchs = response.data
+                })
+                .catch(
+                    error => console.log(error)
+                );
+            },
+            get_product_category_data: function(){
+                axios
+                .get("../products/get_product_category_data")
+                .then(response => {
+                    this.product_categorys = response.data
+                })
+                .catch(
+                    error => console.log(error)
+                );
+            },
+            get_product_data: function(){
+                axios
+                .get("../products/get_product_data")
+                .then(response => {
+                    this.products = response.data
+                })
+                .catch(
+                    error => console.log(error)
+                );
+            },
+            get_mount_route_data: function(){
+                axios
+                .get("../articles/get_article_data/mount_route")
+                .then(response => {
+                    this.mount_routes = response.data
+                })
+                .catch(
+                    error => console.log(error)
+                );
+            },
+            get_mount_data: function(){
+                axios
+                .get("../mountaineering/get_mount_data")
+                .then(response => {
+                    this.mounts = response.data
+                })
+                .catch(
+                    error => console.log(error)
+                );
+            },
         }
     }
 </script>

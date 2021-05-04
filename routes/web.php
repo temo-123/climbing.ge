@@ -125,6 +125,7 @@ Route::group(['prefix' => LocalisationService::locale(),'middleware' => 'setLoca
                         Route::match(['get', 'post', 'delete'], '/route_delete/{id}', ['uses' => 'RoutesController@delete', 'as'=>'routeDel']);
                         Route::any('/get_route_editing_data/{id}', 'RoutesController@get_route_editing_data');
                         Route::any('/get_route_data', 'RoutesListController@get_route_data');
+                        Route::any('/get_routes_for_model/{sector_id}', 'RoutesListController@get_routes_for_model');
 
                         Route::match(['get','post'], '/mtp_add', ['uses'=>'MtpController@add_mtp','as'=>'mtpAdd']);
                         Route::match(['get', 'post', 'delete'], '/mtp_edit_form/{id}', ['uses' => 'MtpController@edit_mtp_form', 'as'=>'mtpEditForm']);

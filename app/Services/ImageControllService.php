@@ -27,8 +27,10 @@ class imageControllService
 
         if ($request->hasFile($form_value_id)){   
 
-            // rename file
+            // rename file->;
             $file_new_name = ImageControllService::rename_image($request, $form_value_id);
+            $extension = $request->file($form_value_id)->getClientOriginalExtension();
+            $file_new_name = $file_new_name.'.'.$extension;
 
             // push image in folder
             $file = $request->file($form_value_id);

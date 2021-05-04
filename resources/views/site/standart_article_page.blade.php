@@ -148,6 +148,7 @@
                 @endif
                 @endif
                 
+                {{-- @include('site.components.article_gallery') --}}
             </div>
             @include('site.components.right_block')
             

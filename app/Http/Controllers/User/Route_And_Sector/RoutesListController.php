@@ -115,7 +115,6 @@ class RoutesListController extends Controller
 	}
 
 
-
 	public function store()
 	{
 		$cars = $request -> all();
@@ -126,4 +125,12 @@ class RoutesListController extends Controller
         
         return redirect(route('routes_and_sectors'));
 	}
+
+
+    public function get_routes_for_model(Request $request)
+    {
+        $routes = Route::where('sector_id',strip_tags($request->sector_id))->get();
+        return( $routes );
+    }
+
 }

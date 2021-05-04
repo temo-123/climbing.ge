@@ -3731,6 +3731,288 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
  //https://github.com/Jexordexan/vue-slicksort
 
 
@@ -3740,10 +4022,79 @@ __webpack_require__.r(__webpack_exports__);
     SlickItem: vue_slicksort__WEBPACK_IMPORTED_MODULE_0__["SlickItem"],
     SlickList: vue_slicksort__WEBPACK_IMPORTED_MODULE_0__["SlickList"]
   },
+  computed: {
+    filterProductsByCategory: function filterProductsByCategory() {
+      var _this = this;
+
+      if (this.value_product_category_id == "" || this.value_product_category_id == "all") {
+        return this.products;
+      }
+
+      return this.products.filter(function (product) {
+        return product.category_id == _this.value_product_category_id;
+      }); // return this.products.filter(product => !product.category.indexOf(this.category))
+    },
+    filterSectorsByRegion: function filterSectorsByRegion() {
+      var _this2 = this;
+
+      if (this.value_region_id == "" || this.value_region_id == "all") {
+        return this.sectors;
+      }
+
+      return this.sectors.filter(function (sector) {
+        return sector.article_id == _this2.value_region_id;
+      });
+    },
+    filterRoutesBySector: function filterRoutesBySector() {
+      var _this3 = this;
+
+      if (this.value_sector_id == "" || this.value_sector_id == "all") {
+        return this.routes;
+      }
+
+      return this.routes.filter(function (route) {
+        return route.sector_id == _this3.value_sector_id;
+      });
+    },
+    filterMTPBySector: function filterMTPBySector() {
+      var _this4 = this;
+
+      if (this.value_mtp_sector_id == "" || this.value_mtp_sector_id == "all") {
+        return this.MTPs;
+      }
+
+      return this.MTPs.filter(function (MTPs) {
+        return MTPs.sector_id == _this4.value_mtp_sector_id;
+      });
+    },
+    filterMTP_PitchByMTP: function filterMTP_PitchByMTP() {
+      var _this5 = this;
+
+      if (this.value_mtp_id == "" || this.value_mtp_id == "all") {
+        return this.MTP_pitchs;
+      }
+
+      return this.MTP_pitchs.filter(function (MTP_pitch) {
+        return MTP_pitch.mtp_id == _this5.value_mtp_id;
+      });
+    },
+    filterMountsByMount_system: function filterMountsByMount_system() {
+      var _this6 = this;
+
+      if (this.value_mount_id == "" || this.value_mount_id == "all") {
+        return this.mount_routes;
+      }
+
+      return this.mount_routes.filter(function (mount_route) {
+        return mount_route.mount_id == _this6.value_mount_id;
+      });
+    }
+  },
   props: ["table_1_get_route", "table_2_get_route", "table_3_get_route", "table_4_get_route", "table_1_name", "table_2_name", "table_3_name", "table_4_name", "table_1_add_url", "table_2_add_url", "table_3_add_url", "table_4_add_url", "table_1_edit_url", "table_2_edit_url", "table_3_edit_url", "table_4_edit_url", "table_1_del_url", "table_2_del_url", "table_3_del_url", "table_4_del_url", "table_1_categiry", "table_2_categiry", "table_3_categiry", "table_4_categiry"],
   data: function data() {
     return {
-      regions: '',
+      product_categorys: '',
+      products: '',
       items: [{
         id: 1,
         name: 'Item 1'
@@ -3754,6 +4105,24 @@ __webpack_require__.r(__webpack_exports__);
         id: 3,
         name: 'Item 3'
       }],
+      sector_routes: "",
+      sector_images: "",
+      sector_images_size: "",
+      model_tible: "",
+      routes: "",
+      sectors: "",
+      regions: "",
+      MTPs: "",
+      MTP_pitchs: "",
+      mount_routes: "",
+      mounts: "",
+      value_route_id: "",
+      value_mtp_id: "",
+      value_mtp_sector_id: "",
+      value_sector_id: "",
+      value_region_id: "",
+      value_product_category_id: "",
+      value_mount_id: "",
       show: false,
       roles_modal: false,
       modalClass: '',
@@ -3783,7 +4152,21 @@ __webpack_require__.r(__webpack_exports__);
   },
   mounted: function mounted() {
     if (this.table_1_name == 'Sector') {
+      this.get_sectors_data();
       this.get_region_data();
+      this.get_routes_data();
+      this.get_MTP_data();
+      this.get_MTP_pitch_data();
+    }
+
+    if (this.table_1_name == 'Products') {
+      this.get_product_category_data();
+      this.get_product_data();
+    }
+
+    if (this.table_1_name == 'Mount routes') {
+      this.get_mount_route_data();
+      this.get_mount_data();
     }
 
     this.get_data_in_table_1();
@@ -3793,7 +4176,7 @@ __webpack_require__.r(__webpack_exports__);
   },
   methods: {
     get_data_in_table_1: function get_data_in_table_1() {
-      var _this = this;
+      var _this7 = this;
 
       this.table_1_is_refresh = true;
 
@@ -3804,15 +4187,15 @@ __webpack_require__.r(__webpack_exports__);
       }
 
       axios.get(this.url_1).then(function (response) {
-        _this.table_1 = response.data;
-        _this.table_1_is_refresh = false;
-        _this.table_1_reset_id++; // this.get_data_in_table_1();
+        _this7.table_1 = response.data;
+        _this7.table_1_is_refresh = false;
+        _this7.table_1_reset_id++; // this.get_data_in_table_1();
       })["catch"](function (error) {
         return console.log(error);
       });
     },
     get_data_in_table_2: function get_data_in_table_2() {
-      var _this2 = this;
+      var _this8 = this;
 
       this.table_2_is_refresh = true;
 
@@ -3823,15 +4206,15 @@ __webpack_require__.r(__webpack_exports__);
       }
 
       axios.get(this.url_2).then(function (response) {
-        _this2.table_2 = response.data;
-        _this2.table_2_is_refresh = false;
-        _this2.table_2_reset_id++;
+        _this8.table_2 = response.data;
+        _this8.table_2_is_refresh = false;
+        _this8.table_2_reset_id++;
       })["catch"](function (error) {
         return console.log(error);
       });
     },
     get_data_in_table_3: function get_data_in_table_3() {
-      var _this3 = this;
+      var _this9 = this;
 
       this.table_3_is_refresh = true;
 
@@ -3842,15 +4225,15 @@ __webpack_require__.r(__webpack_exports__);
       }
 
       axios.get(this.url_3).then(function (response) {
-        _this3.table_3 = response.data;
-        _this3.table_3_is_refresh = false;
-        _this3.table_3_reset_id++;
+        _this9.table_3 = response.data;
+        _this9.table_3_is_refresh = false;
+        _this9.table_3_reset_id++;
       })["catch"](function (error) {
         return console.log(error);
       });
     },
     get_data_in_table_4: function get_data_in_table_4() {
-      var _this4 = this;
+      var _this10 = this;
 
       this.table_4_is_refresh = true;
 
@@ -3861,70 +4244,57 @@ __webpack_require__.r(__webpack_exports__);
       }
 
       axios.get(this.url_4).then(function (response) {
-        _this4.table_4 = response.data;
-        _this4.table_4_is_refresh = false;
-        _this4.table_4_reset_id++;
-      })["catch"](function (error) {
-        return console.log(error);
-      });
-    },
-    get_region_data: function get_region_data() {
-      var _this5 = this;
-
-      axios.get("../routes_and_sectors/get_region_data").then(function (response) {
-        _this5.regions = response.data;
+        _this10.table_4 = response.data;
+        _this10.table_4_is_refresh = false;
+        _this10.table_4_reset_id++;
       })["catch"](function (error) {
         return console.log(error);
       });
     },
     table_1_del: function table_1_del(itemId) {
-      var _this6 = this;
+      var _this11 = this;
 
       axios.post(this.table_1_del_url + itemId, {
         id: itemId
       }).then(function (Response) {
-        console.log(response);
-
-        _this6.get_data_in_table_1();
+        // console.log(response)
+        _this11.get_data_in_table_1();
       })["catch"](function (error) {
         return console.log(error);
       });
     },
     table_2_del: function table_2_del(itemId) {
-      var _this7 = this;
+      var _this12 = this;
 
       axios.post(this.table_2_del_url + itemId, {
         id: itemId
       }).then(function (Response) {
-        console.log(response);
-
-        _this7.get_data_in_table_2();
+        // console.log(response)
+        _this12.get_data_in_table_2();
       })["catch"](function (error) {
         return console.log(error);
       });
     },
     table_3_del: function table_3_del(itemId) {
-      var _this8 = this;
+      var _this13 = this;
 
       axios.post(this.table_3_del_url + itemId, {
         id: itemId
       }).then(function (Response) {
-        console.log(response);
-
-        _this8.get_data_in_table_3();
+        // console.log(response)
+        _this13.get_data_in_table_3();
       })["catch"](function (error) {
         return console.log(error);
       });
     },
     table_4_del: function table_4_del(itemId) {
-      var _this9 = this;
+      var _this14 = this;
 
       axios.post(this.table_4_del_url + itemId, {
         id: itemId
       }).then(function (Response) {
-        console.log(response);
-
-        _this9.get_data_in_table_4();
+        // console.log(response)
+        _this14.get_data_in_table_4();
       })["catch"](function (error) {
         return console.log(error);
       });
@@ -3934,30 +4304,133 @@ __webpack_require__.r(__webpack_exports__);
       this.user_id_for_rditing_parmission = user_id;
     },
     edit_permission: function edit_permission(user_id) {
-      var _this10 = this;
+      var _this15 = this;
 
       axios.post('users/edit_user_permission/' + this.user_id_for_rditing_parmission, {
         parmission: this.user_new_parmission
       }).then(function (Response) {
-        _this10.roles_modal = false;
+        _this15.roles_modal = false;
       })["catch"](function (error) {
         if (error.response.status == 422) {
-          _this10.parmision_error = error.response.data.errors;
+          _this15.parmision_error = error.response.data.errors;
         }
 
-        _this10.is_parmision_error = true;
+        _this15.is_parmision_error = true;
       });
     },
     get_user_role: function get_user_role(user_id) {
-      var _this11 = this;
+      var _this16 = this;
 
       axios.post('users/get_role/' + user_id, {
         user_id: user_id
       }).then(function (Response) {
         console.log(Response.data);
-        _this11.user_role = Response.data;
+        _this16.user_role = Response.data;
       })["catch"](function (error) {
-        _this11.user_role = "error";
+        _this16.user_role = "error";
+      });
+    },
+    show_sector_model: function show_sector_model(sector_id) {
+      var _this17 = this;
+
+      this.show = true;
+
+      if (this.show == true) {
+        axios.get('/routes_and_sectors/get_routes_for_model/' + sector_id).then(function (response) {
+          _this17.sector_routes = response.data; // console.log(this.sector_routes);
+        })["catch"](function (error) {
+          return console.log(error);
+        });
+        axios.get('/routes_and_sectors/get_sector_image/' + sector_id).then(function (response) {
+          _this17.sector_images = response.data.sector_images;
+          _this17.sector_images_size = response.data.sector_images_size; // console.log(this.sector_images);
+        })["catch"](function (error) {
+          return console.log(error);
+        });
+      } else {
+        this.sector_routes = "";
+        this.sector_images = "";
+      }
+    },
+    get_routes_data: function get_routes_data() {
+      var _this18 = this;
+
+      axios.get("../routes_and_sectors/get_route_data").then(function (response) {
+        _this18.routes = response.data; // console.log(this.routes.[0].id);
+      })["catch"](function (error) {
+        return console.log(error);
+      });
+    },
+    get_sectors_data: function get_sectors_data() {
+      var _this19 = this;
+
+      axios.get("../routes_and_sectors/get_sector_data").then(function (response) {
+        _this19.sectors = response.data;
+      })["catch"](function (error) {
+        return console.log(error);
+      });
+    },
+    get_region_data: function get_region_data() {
+      var _this20 = this;
+
+      axios.get("../routes_and_sectors/get_region_data").then(function (response) {
+        _this20.regions = response.data;
+      })["catch"](function (error) {
+        return console.log(error);
+      });
+    },
+    get_MTP_data: function get_MTP_data() {
+      var _this21 = this;
+
+      axios.get("../routes_and_sectors/get_mtp_data").then(function (response) {
+        _this21.MTPs = response.data;
+      })["catch"](function (error) {
+        return console.log(error);
+      });
+    },
+    get_MTP_pitch_data: function get_MTP_pitch_data() {
+      var _this22 = this;
+
+      axios.get("../routes_and_sectors/get_mtp_pitch_data").then(function (response) {
+        _this22.MTP_pitchs = response.data;
+      })["catch"](function (error) {
+        return console.log(error);
+      });
+    },
+    get_product_category_data: function get_product_category_data() {
+      var _this23 = this;
+
+      axios.get("../products/get_product_category_data").then(function (response) {
+        _this23.product_categorys = response.data;
+      })["catch"](function (error) {
+        return console.log(error);
+      });
+    },
+    get_product_data: function get_product_data() {
+      var _this24 = this;
+
+      axios.get("../products/get_product_data").then(function (response) {
+        _this24.products = response.data;
+      })["catch"](function (error) {
+        return console.log(error);
+      });
+    },
+    get_mount_route_data: function get_mount_route_data() {
+      var _this25 = this;
+
+      axios.get("../articles/get_article_data/mount_route").then(function (response) {
+        _this25.mount_routes = response.data;
+      })["catch"](function (error) {
+        return console.log(error);
+      });
+    },
+    get_mount_data: function get_mount_data() {
+      var _this26 = this;
+
+      axios.get("../mountaineering/get_mount_data").then(function (response) {
+        _this26.mounts = response.data;
+      })["catch"](function (error) {
+        return console.log(error);
       });
     }
   }
@@ -49455,6 +49928,153 @@ var render = function() {
         _vm._v(" "),
         this.table_1_get_route
           ? _c("div", { staticClass: "tab" }, [
+              _vm.table_1_name == "Mount routes"
+                ? _c("h3", [_vm._v("Filter Mount routes By Mounts")])
+                : _vm._e(),
+              _vm._v(" "),
+              _vm.table_1_name == "Mount routes"
+                ? _c(
+                    "select",
+                    {
+                      directives: [
+                        {
+                          name: "model",
+                          rawName: "v-model",
+                          value: _vm.value_mount_id,
+                          expression: "value_mount_id"
+                        }
+                      ],
+                      on: {
+                        change: function($event) {
+                          var $$selectedVal = Array.prototype.filter
+                            .call($event.target.options, function(o) {
+                              return o.selected
+                            })
+                            .map(function(o) {
+                              var val = "_value" in o ? o._value : o.value
+                              return val
+                            })
+                          _vm.value_mount_id = $event.target.multiple
+                            ? $$selectedVal
+                            : $$selectedVal[0]
+                        }
+                      }
+                    },
+                    [
+                      _c("option", { domProps: { value: "all" } }, [
+                        _vm._v("All")
+                      ]),
+                      _vm._v(" "),
+                      _vm._l(_vm.mounts, function(mount) {
+                        return _c(
+                          "option",
+                          { key: mount, domProps: { value: mount.id } },
+                          [_vm._v(_vm._s(mount.name))]
+                        )
+                      })
+                    ],
+                    2
+                  )
+                : _vm._e(),
+              _vm._v(" "),
+              _vm.table_1_name == "Products"
+                ? _c("h3", [_vm._v("Filter Products By Category")])
+                : _vm._e(),
+              _vm._v(" "),
+              _vm.table_1_name == "Products"
+                ? _c(
+                    "select",
+                    {
+                      directives: [
+                        {
+                          name: "model",
+                          rawName: "v-model",
+                          value: _vm.value_product_category_id,
+                          expression: "value_product_category_id"
+                        }
+                      ],
+                      on: {
+                        change: function($event) {
+                          var $$selectedVal = Array.prototype.filter
+                            .call($event.target.options, function(o) {
+                              return o.selected
+                            })
+                            .map(function(o) {
+                              var val = "_value" in o ? o._value : o.value
+                              return val
+                            })
+                          _vm.value_product_category_id = $event.target.multiple
+                            ? $$selectedVal
+                            : $$selectedVal[0]
+                        }
+                      }
+                    },
+                    [
+                      _c("option", { domProps: { value: "all" } }, [
+                        _vm._v("All")
+                      ]),
+                      _vm._v(" "),
+                      _vm._l(_vm.product_categorys, function(category) {
+                        return _c(
+                          "option",
+                          { key: category, domProps: { value: category.id } },
+                          [_vm._v(_vm._s(category.us_name))]
+                        )
+                      })
+                    ],
+                    2
+                  )
+                : _vm._e(),
+              _vm._v(" "),
+              _vm.table_1_name == "Sector"
+                ? _c("h3", [_vm._v("Filter Sectors By Region")])
+                : _vm._e(),
+              _vm._v(" "),
+              _vm.table_1_name == "Sector"
+                ? _c(
+                    "select",
+                    {
+                      directives: [
+                        {
+                          name: "model",
+                          rawName: "v-model",
+                          value: _vm.value_region_id,
+                          expression: "value_region_id"
+                        }
+                      ],
+                      on: {
+                        change: function($event) {
+                          var $$selectedVal = Array.prototype.filter
+                            .call($event.target.options, function(o) {
+                              return o.selected
+                            })
+                            .map(function(o) {
+                              var val = "_value" in o ? o._value : o.value
+                              return val
+                            })
+                          _vm.value_region_id = $event.target.multiple
+                            ? $$selectedVal
+                            : $$selectedVal[0]
+                        }
+                      }
+                    },
+                    [
+                      _c("option", { domProps: { value: "all" } }, [
+                        _vm._v("All")
+                      ]),
+                      _vm._v(" "),
+                      _vm._l(_vm.regions, function(region) {
+                        return _c(
+                          "option",
+                          { key: region, domProps: { value: region.id } },
+                          [_vm._v(_vm._s(region.url_title))]
+                        )
+                      })
+                    ],
+                    2
+                  )
+                : _vm._e(),
+              _vm._v(" "),
               _c("div", { staticClass: "add_buttom" }, [
                 _c(
                   "a",
@@ -49462,7 +50082,7 @@ var render = function() {
                     staticClass: "btn btn-primary pull-left",
                     attrs: { href: _vm.table_1_add_url, type: "submit" }
                   },
-                  [_vm._v("New ")]
+                  [_vm._v("New")]
                 )
               ]),
               _vm._v(" "),
@@ -49523,7 +50143,20 @@ var render = function() {
                         ? _c(
                             "th",
                             { staticStyle: { "text-align": "center" } },
-                            [_vm._v("Category")]
+                            [_vm._v("Price")]
+                          )
+                        : _vm._e(),
+                      _vm._v(" "),
+                      _vm.table_1_name == "Products"
+                        ? _c("td", [_vm._v("|")])
+                        : _vm._e(),
+                      _vm._v(" "),
+                      _vm.table_1_name == "Products" &&
+                      _vm.table_1_name != "Users"
+                        ? _c(
+                            "th",
+                            { staticStyle: { "text-align": "center" } },
+                            [_vm._v("Quantity")]
                           )
                         : _vm._e(),
                       _vm._v(" "),
@@ -49536,7 +50169,7 @@ var render = function() {
                         ? _c(
                             "th",
                             { staticStyle: { "text-align": "center" } },
-                            [_vm._v("Published")]
+                            [_vm._v("Public")]
                           )
                         : _vm._e(),
                       _vm._v(" "),
@@ -49562,132 +50195,233 @@ var render = function() {
                     ])
                   ]),
                   _vm._v(" "),
-                  _c(
-                    "tbody",
-                    _vm._l(_vm.table_1, function(table_1_info) {
-                      return _c("tr", { key: table_1_info.id }, [
-                        _vm._m(1, true),
-                        _vm._v(" "),
-                        _c("td", [_vm._v("|")]),
-                        _vm._v(" "),
-                        _c("td", [_vm._v(_vm._s(table_1_info.id))]),
-                        _vm._v(" "),
-                        _c("td", [_vm._v("|")]),
-                        _vm._v(" "),
-                        _vm.table_1_name == "Sector"
-                          ? _c("td", [
+                  _vm.table_1_name == "Mount routes"
+                    ? _c(
+                        "tbody",
+                        _vm._l(_vm.filterMountsByMount_system, function(
+                          table_1_info
+                        ) {
+                          return _c("tr", { key: table_1_info.id }, [
+                            _vm._m(1, true),
+                            _vm._v(" "),
+                            _c("td", [_vm._v("|")]),
+                            _vm._v(" "),
+                            _c("td", [_vm._v(_vm._s(table_1_info.id))]),
+                            _vm._v(" "),
+                            _c("td", [_vm._v("|")]),
+                            _vm._v(" "),
+                            _vm.table_1_name == "Sector"
+                              ? _c("td", [
+                                  _c(
+                                    "a",
+                                    {
+                                      attrs: { href: "#" },
+                                      on: {
+                                        click: function($event) {
+                                          return _vm.show_sector_model(
+                                            table_1_info.id
+                                          )
+                                        }
+                                      }
+                                    },
+                                    [_vm._v(_vm._s(table_1_info.name))]
+                                  )
+                                ])
+                              : _vm.table_1_name == "Users"
+                              ? _c("td", [
+                                  _vm._v(
+                                    _vm._s(table_1_info.name) +
+                                      " " +
+                                      _vm._s(table_1_info.surname)
+                                  )
+                                ])
+                              : _c("td", [
+                                  _vm._v(_vm._s(table_1_info.url_title) + " ")
+                                ]),
+                            _vm._v(" "),
+                            _vm.table_1_name != "Users"
+                              ? _c("td", [_vm._v("|")])
+                              : _vm._e(),
+                            _vm._v(" "),
+                            _vm.table_1_name == "Sector"
+                              ? _c(
+                                  "th",
+                                  { staticStyle: { "text-align": "center" } },
+                                  _vm._l(_vm.regions, function(region) {
+                                    return _c("div", { key: region.id }, [
+                                      region.id == table_1_info.article_id
+                                        ? _c("div", [
+                                            _vm._v(
+                                              "\n                                    " +
+                                                _vm._s(region.url_title) +
+                                                "\n                                "
+                                            )
+                                          ])
+                                        : _vm._e()
+                                    ])
+                                  }),
+                                  0
+                                )
+                              : _vm._e(),
+                            _vm._v(" "),
+                            _vm.table_1_name == "Products" &&
+                            _vm.table_1_name != "Users"
+                              ? _c(
+                                  "td",
+                                  { staticStyle: { "text-align": "center" } },
+                                  [_vm._v(_vm._s(table_1_info.category_id))]
+                                )
+                              : _vm._e(),
+                            _vm._v(" "),
+                            _vm.table_1_name == "Products"
+                              ? _c("td", [_vm._v("|")])
+                              : _vm._e(),
+                            _vm._v(" "),
+                            _vm.table_1_name != "Sector" &&
+                            _vm.table_1_name != "Users"
+                              ? _c(
+                                  "td",
+                                  { staticStyle: { "text-align": "center" } },
+                                  [_vm._v(_vm._s(table_1_info.published))]
+                                )
+                              : _vm._e(),
+                            _vm._v(" "),
+                            _vm.table_1_name == "Users"
+                              ? _c("td", [_vm._v("|")])
+                              : _vm._e(),
+                            _vm._v(" "),
+                            _vm.table_1_name == "Users"
+                              ? _c(
+                                  "th",
+                                  { staticStyle: { "text-align": "center" } },
+                                  [
+                                    _vm._v(
+                                      "\n                            " +
+                                        _vm._s(
+                                          _vm.get_user_role(table_1_info.id)
+                                        ) +
+                                        "\n                            " +
+                                        _vm._s(_vm.user_role) +
+                                        "\n                        "
+                                    )
+                                  ]
+                                )
+                              : _vm._e(),
+                            _vm._v(" "),
+                            _c("td", [_vm._v("|")]),
+                            _vm._v(" "),
+                            _vm.table_1_name == "Users"
+                              ? _c("td", [
+                                  _c(
+                                    "button",
+                                    {
+                                      staticClass: "btn btn-primary",
+                                      on: {
+                                        click: function($event) {
+                                          return _vm.show_parmission_edit_madel(
+                                            table_1_info.id
+                                          )
+                                        }
+                                      }
+                                    },
+                                    [_vm._v("Edit roles")]
+                                  )
+                                ])
+                              : _c("td", [
+                                  _c(
+                                    "a",
+                                    {
+                                      staticClass: "btn btn-primary",
+                                      attrs: {
+                                        href:
+                                          _vm.table_1_edit_url +
+                                          table_1_info.id,
+                                        type: "submit"
+                                      }
+                                    },
+                                    [_vm._v("Edit")]
+                                  )
+                                ]),
+                            _vm._v(" "),
+                            _c("td", [_vm._v("|")]),
+                            _vm._v(" "),
+                            _c("td", [
                               _c(
-                                "a",
+                                "form",
                                 {
-                                  attrs: { href: "#" },
+                                  attrs: { method: "post" },
                                   on: {
-                                    click: function($event) {
-                                      _vm.show = true
+                                    submit: function($event) {
+                                      $event.preventDefault()
+                                      return _vm.table_1_del(table_1_info.id)
                                     }
                                   }
                                 },
-                                [_vm._v(_vm._s(table_1_info.name))]
+                                [
+                                  _c("input", {
+                                    attrs: { type: "hidden", name: "_token" }
+                                  }),
+                                  _vm._v(" "),
+                                  _vm._m(2, true)
+                                ]
                               )
                             ])
-                          : _vm.table_1_name == "Users"
-                          ? _c("td", [
-                              _vm._v(
-                                _vm._s(table_1_info.name) +
-                                  " " +
-                                  _vm._s(table_1_info.surname)
-                              )
-                            ])
-                          : _c("td", [
+                          ])
+                        }),
+                        0
+                      )
+                    : _vm.table_1_name == "Products"
+                    ? _c(
+                        "tbody",
+                        _vm._l(_vm.filterProductsByCategory, function(
+                          table_1_info
+                        ) {
+                          return _c("tr", { key: table_1_info.id }, [
+                            _vm._m(3, true),
+                            _vm._v(" "),
+                            _c("td", [_vm._v("|")]),
+                            _vm._v(" "),
+                            _c("td", [_vm._v(_vm._s(table_1_info.id))]),
+                            _vm._v(" "),
+                            _c("td", [_vm._v("|")]),
+                            _vm._v(" "),
+                            _c("td", [
                               _vm._v(_vm._s(table_1_info.url_title) + " ")
                             ]),
-                        _vm._v(" "),
-                        _vm.table_1_name != "Users"
-                          ? _c("td", [_vm._v("|")])
-                          : _vm._e(),
-                        _vm._v(" "),
-                        _vm.table_1_name == "Sector"
-                          ? _c(
-                              "th",
-                              { staticStyle: { "text-align": "center" } },
-                              _vm._l(_vm.regions, function(region) {
-                                return _c("div", { key: region.id }, [
-                                  region.id == table_1_info.article_id
-                                    ? _c("div", [
-                                        _vm._v(
-                                          "\n                                    " +
-                                            _vm._s(region.url_title) +
-                                            "\n                                "
-                                        )
-                                      ])
-                                    : _vm._e()
-                                ])
-                              }),
-                              0
-                            )
-                          : _vm._e(),
-                        _vm._v(" "),
-                        _vm.table_1_name == "Products" &&
-                        _vm.table_1_name != "Users"
-                          ? _c(
+                            _vm._v(" "),
+                            _c("td", [_vm._v("|")]),
+                            _vm._v(" "),
+                            _c(
                               "td",
-                              { staticStyle: { "text-align": "center" } },
-                              [_vm._v(_vm._s(table_1_info.category_id))]
-                            )
-                          : _vm._e(),
-                        _vm._v(" "),
-                        _vm.table_1_name == "Products"
-                          ? _c("td", [_vm._v("|")])
-                          : _vm._e(),
-                        _vm._v(" "),
-                        _vm.table_1_name != "Sector" &&
-                        _vm.table_1_name != "Users"
-                          ? _c(
-                              "td",
-                              { staticStyle: { "text-align": "center" } },
-                              [_vm._v(_vm._s(table_1_info.published))]
-                            )
-                          : _vm._e(),
-                        _vm._v(" "),
-                        _vm.table_1_name == "Users"
-                          ? _c("td", [_vm._v("|")])
-                          : _vm._e(),
-                        _vm._v(" "),
-                        _vm.table_1_name == "Users"
-                          ? _c(
-                              "th",
                               { staticStyle: { "text-align": "center" } },
                               [
                                 _vm._v(
-                                  "\n                            " +
-                                    _vm._s(_vm.get_user_role(table_1_info.id)) +
-                                    "\n                            " +
-                                    _vm._s(_vm.user_role) +
-                                    "\n                        "
+                                  _vm._s(table_1_info.price) +
+                                    " " +
+                                    _vm._s(table_1_info.currency)
                                 )
                               ]
-                            )
-                          : _vm._e(),
-                        _vm._v(" "),
-                        _c("td", [_vm._v("|")]),
-                        _vm._v(" "),
-                        _vm.table_1_name == "Users"
-                          ? _c("td", [
-                              _c(
-                                "button",
-                                {
-                                  staticClass: "btn btn-primary",
-                                  on: {
-                                    click: function($event) {
-                                      return _vm.show_parmission_edit_madel(
-                                        table_1_info.id
-                                      )
-                                    }
-                                  }
-                                },
-                                [_vm._v("Edit roles")]
-                              )
-                            ])
-                          : _c("td", [
+                            ),
+                            _vm._v(" "),
+                            _c("td", [_vm._v("|")]),
+                            _vm._v(" "),
+                            _c(
+                              "td",
+                              { staticStyle: { "text-align": "center" } },
+                              [_vm._v(_vm._s(table_1_info.quantity))]
+                            ),
+                            _vm._v(" "),
+                            _c("td", [_vm._v("|")]),
+                            _vm._v(" "),
+                            _c(
+                              "td",
+                              { staticStyle: { "text-align": "center" } },
+                              [_vm._v(_vm._s(table_1_info.published))]
+                            ),
+                            _vm._v(" "),
+                            _c("td", [_vm._v("|")]),
+                            _vm._v(" "),
+                            _c("td", [
                               _c(
                                 "a",
                                 {
@@ -49701,34 +50435,307 @@ var render = function() {
                                 [_vm._v("Edit")]
                               )
                             ]),
-                        _vm._v(" "),
-                        _c("td", [_vm._v("|")]),
-                        _vm._v(" "),
-                        _c("td", [
-                          _c(
-                            "form",
-                            {
-                              attrs: { method: "post" },
-                              on: {
-                                submit: function($event) {
-                                  $event.preventDefault()
-                                  return _vm.table_1_del(table_1_info.id)
-                                }
-                              }
-                            },
-                            [
-                              _c("input", {
-                                attrs: { type: "hidden", name: "_token" }
-                              }),
-                              _vm._v(" "),
-                              _vm._m(2, true)
-                            ]
-                          )
-                        ])
-                      ])
-                    }),
-                    0
-                  )
+                            _vm._v(" "),
+                            _c("td", [_vm._v("|")]),
+                            _vm._v(" "),
+                            _c("td", [
+                              _c(
+                                "form",
+                                {
+                                  attrs: { method: "post" },
+                                  on: {
+                                    submit: function($event) {
+                                      $event.preventDefault()
+                                      return _vm.table_1_del(table_1_info.id)
+                                    }
+                                  }
+                                },
+                                [
+                                  _c("input", {
+                                    attrs: { type: "hidden", name: "_token" }
+                                  }),
+                                  _vm._v(" "),
+                                  _vm._m(4, true)
+                                ]
+                              )
+                            ])
+                          ])
+                        }),
+                        0
+                      )
+                    : _vm.table_1_name == "Sector"
+                    ? _c(
+                        "tbody",
+                        _vm._l(_vm.filterSectorsByRegion, function(
+                          table_1_info
+                        ) {
+                          return _c("tr", { key: table_1_info.id }, [
+                            _vm._m(5, true),
+                            _vm._v(" "),
+                            _c("td", [_vm._v("|")]),
+                            _vm._v(" "),
+                            _c("td", [_vm._v(_vm._s(table_1_info.id))]),
+                            _vm._v(" "),
+                            _c("td", [_vm._v("|")]),
+                            _vm._v(" "),
+                            _vm.table_1_name == "Sector"
+                              ? _c("td", [
+                                  _c(
+                                    "a",
+                                    {
+                                      attrs: { href: "#" },
+                                      on: {
+                                        click: function($event) {
+                                          return _vm.show_sector_model(
+                                            table_1_info.id
+                                          )
+                                        }
+                                      }
+                                    },
+                                    [_vm._v(_vm._s(table_1_info.name))]
+                                  )
+                                ])
+                              : _vm._e(),
+                            _vm._v(" "),
+                            _c("td", [_vm._v("|")]),
+                            _vm._v(" "),
+                            _vm.table_1_name == "Sector"
+                              ? _c(
+                                  "th",
+                                  { staticStyle: { "text-align": "center" } },
+                                  _vm._l(_vm.regions, function(region) {
+                                    return _c("div", { key: region.id }, [
+                                      region.id == table_1_info.article_id
+                                        ? _c("div", [
+                                            _vm._v(
+                                              "\n                                    " +
+                                                _vm._s(region.url_title) +
+                                                "\n                                "
+                                            )
+                                          ])
+                                        : _vm._e()
+                                    ])
+                                  }),
+                                  0
+                                )
+                              : _vm._e(),
+                            _vm._v(" "),
+                            _c("td", [_vm._v("|")]),
+                            _vm._v(" "),
+                            _c("td", [
+                              _c(
+                                "a",
+                                {
+                                  staticClass: "btn btn-primary",
+                                  attrs: {
+                                    href:
+                                      _vm.table_1_edit_url + table_1_info.id,
+                                    type: "submit"
+                                  }
+                                },
+                                [_vm._v("Edit")]
+                              )
+                            ]),
+                            _vm._v(" "),
+                            _c("td", [_vm._v("|")]),
+                            _vm._v(" "),
+                            _c("td", [
+                              _c(
+                                "form",
+                                {
+                                  attrs: { method: "post" },
+                                  on: {
+                                    submit: function($event) {
+                                      $event.preventDefault()
+                                      return _vm.table_1_del(table_1_info.id)
+                                    }
+                                  }
+                                },
+                                [
+                                  _c("input", {
+                                    attrs: { type: "hidden", name: "_token" }
+                                  }),
+                                  _vm._v(" "),
+                                  _vm._m(6, true)
+                                ]
+                              )
+                            ])
+                          ])
+                        }),
+                        0
+                      )
+                    : _c(
+                        "tbody",
+                        _vm._l(_vm.table_1, function(table_1_info) {
+                          return _c("tr", { key: table_1_info.id }, [
+                            _vm._m(7, true),
+                            _vm._v(" "),
+                            _c("td", [_vm._v("|")]),
+                            _vm._v(" "),
+                            _c("td", [_vm._v(_vm._s(table_1_info.id))]),
+                            _vm._v(" "),
+                            _c("td", [_vm._v("|")]),
+                            _vm._v(" "),
+                            _vm.table_1_name == "Sector"
+                              ? _c("td", [
+                                  _c(
+                                    "a",
+                                    {
+                                      attrs: { href: "#" },
+                                      on: {
+                                        click: function($event) {
+                                          return _vm.show_sector_model(
+                                            table_1_info.id
+                                          )
+                                        }
+                                      }
+                                    },
+                                    [_vm._v(_vm._s(table_1_info.name))]
+                                  )
+                                ])
+                              : _vm.table_1_name == "Users"
+                              ? _c("td", [
+                                  _vm._v(
+                                    _vm._s(table_1_info.name) +
+                                      " " +
+                                      _vm._s(table_1_info.surname)
+                                  )
+                                ])
+                              : _c("td", [
+                                  _vm._v(_vm._s(table_1_info.url_title) + " ")
+                                ]),
+                            _vm._v(" "),
+                            _vm.table_1_name != "Users"
+                              ? _c("td", [_vm._v("|")])
+                              : _vm._e(),
+                            _vm._v(" "),
+                            _vm.table_1_name == "Sector"
+                              ? _c(
+                                  "th",
+                                  { staticStyle: { "text-align": "center" } },
+                                  _vm._l(_vm.regions, function(region) {
+                                    return _c("div", { key: region.id }, [
+                                      region.id == table_1_info.article_id
+                                        ? _c("div", [
+                                            _vm._v(
+                                              "\n                                    " +
+                                                _vm._s(region.url_title) +
+                                                "\n                                "
+                                            )
+                                          ])
+                                        : _vm._e()
+                                    ])
+                                  }),
+                                  0
+                                )
+                              : _vm._e(),
+                            _vm._v(" "),
+                            _vm.table_1_name == "Products" &&
+                            _vm.table_1_name != "Users"
+                              ? _c(
+                                  "td",
+                                  { staticStyle: { "text-align": "center" } },
+                                  [_vm._v(_vm._s(table_1_info.category_id))]
+                                )
+                              : _vm._e(),
+                            _vm._v(" "),
+                            _vm.table_1_name == "Products"
+                              ? _c("td", [_vm._v("|")])
+                              : _vm._e(),
+                            _vm._v(" "),
+                            _vm.table_1_name != "Sector" &&
+                            _vm.table_1_name != "Users"
+                              ? _c(
+                                  "td",
+                                  { staticStyle: { "text-align": "center" } },
+                                  [_vm._v(_vm._s(table_1_info.published))]
+                                )
+                              : _vm._e(),
+                            _vm._v(" "),
+                            _vm.table_1_name == "Users"
+                              ? _c("td", [_vm._v("|")])
+                              : _vm._e(),
+                            _vm._v(" "),
+                            _vm.table_1_name == "Users"
+                              ? _c(
+                                  "th",
+                                  { staticStyle: { "text-align": "center" } },
+                                  [
+                                    _vm._v(
+                                      "\n                            " +
+                                        _vm._s(
+                                          _vm.get_user_role(table_1_info.id)
+                                        ) +
+                                        "\n                            " +
+                                        _vm._s(_vm.user_role) +
+                                        "\n                        "
+                                    )
+                                  ]
+                                )
+                              : _vm._e(),
+                            _vm._v(" "),
+                            _c("td", [_vm._v("|")]),
+                            _vm._v(" "),
+                            _vm.table_1_name == "Users"
+                              ? _c("td", [
+                                  _c(
+                                    "button",
+                                    {
+                                      staticClass: "btn btn-primary",
+                                      on: {
+                                        click: function($event) {
+                                          return _vm.show_parmission_edit_madel(
+                                            table_1_info.id
+                                          )
+                                        }
+                                      }
+                                    },
+                                    [_vm._v("Edit roles")]
+                                  )
+                                ])
+                              : _c("td", [
+                                  _c(
+                                    "a",
+                                    {
+                                      staticClass: "btn btn-primary",
+                                      attrs: {
+                                        href:
+                                          _vm.table_1_edit_url +
+                                          table_1_info.id,
+                                        type: "submit"
+                                      }
+                                    },
+                                    [_vm._v("Edit")]
+                                  )
+                                ]),
+                            _vm._v(" "),
+                            _c("td", [_vm._v("|")]),
+                            _vm._v(" "),
+                            _c("td", [
+                              _c(
+                                "form",
+                                {
+                                  attrs: { method: "post" },
+                                  on: {
+                                    submit: function($event) {
+                                      $event.preventDefault()
+                                      return _vm.table_1_del(table_1_info.id)
+                                    }
+                                  }
+                                },
+                                [
+                                  _c("input", {
+                                    attrs: { type: "hidden", name: "_token" }
+                                  }),
+                                  _vm._v(" "),
+                                  _vm._m(8, true)
+                                ]
+                              )
+                            ])
+                          ])
+                        }),
+                        0
+                      )
                 ]
               )
             ])
@@ -49744,6 +50751,55 @@ var render = function() {
         _vm._v(" "),
         this.table_2_get_route
           ? _c("div", { staticClass: "tab" }, [
+              _vm.table_2_name == "Route"
+                ? _c("h3", [_vm._v("Filter Routes By Sector")])
+                : _vm._e(),
+              _vm._v(" "),
+              _vm.table_2_name == "Route"
+                ? _c(
+                    "select",
+                    {
+                      directives: [
+                        {
+                          name: "model",
+                          rawName: "v-model",
+                          value: _vm.value_sector_id,
+                          expression: "value_sector_id"
+                        }
+                      ],
+                      on: {
+                        change: function($event) {
+                          var $$selectedVal = Array.prototype.filter
+                            .call($event.target.options, function(o) {
+                              return o.selected
+                            })
+                            .map(function(o) {
+                              var val = "_value" in o ? o._value : o.value
+                              return val
+                            })
+                          _vm.value_sector_id = $event.target.multiple
+                            ? $$selectedVal
+                            : $$selectedVal[0]
+                        }
+                      }
+                    },
+                    [
+                      _c("option", { domProps: { value: "all" } }, [
+                        _vm._v("All")
+                      ]),
+                      _vm._v(" "),
+                      _vm._l(_vm.sectors, function(sector) {
+                        return _c(
+                          "option",
+                          { key: sector, domProps: { value: sector.id } },
+                          [_vm._v(_vm._s(sector.name))]
+                        )
+                      })
+                    ],
+                    2
+                  )
+                : _vm._e(),
+              _vm._v(" "),
               _c("div", { staticClass: "add_buttom" }, [
                 _c(
                   "a",
@@ -49785,7 +50841,7 @@ var render = function() {
                 [
                   _c("thead", [
                     _c("tr", [
-                      _vm._m(3),
+                      _vm._m(9),
                       _vm._v(" "),
                       _c("th", [_vm._v("|")]),
                       _vm._v(" "),
@@ -49813,6 +50869,18 @@ var render = function() {
                           )
                         : _vm._e(),
                       _vm._v(" "),
+                      _vm.table_2_name == "Route"
+                        ? _c("th", [_vm._v("|")])
+                        : _vm._e(),
+                      _vm._v(" "),
+                      _vm.table_2_name == "Route"
+                        ? _c(
+                            "th",
+                            { staticStyle: { "text-align": "center" } },
+                            [_vm._v("Grade")]
+                          )
+                        : _vm._e(),
+                      _vm._v(" "),
                       _c("th", [_vm._v("|")]),
                       _vm._v(" "),
                       _vm.table_1_name != "Users"
@@ -49829,92 +50897,199 @@ var render = function() {
                     ])
                   ]),
                   _vm._v(" "),
-                  _c(
-                    "tbody",
-                    _vm._l(_vm.table_2, function(table_2_info) {
-                      return _c("tr", { key: table_2_info.id }, [
-                        _vm._m(4, true),
-                        _vm._v(" "),
-                        _c("td", [_vm._v("|")]),
-                        _vm._v(" "),
-                        _c("td", [_vm._v(_vm._s(table_2_info.id))]),
-                        _vm._v(" "),
-                        _c("td", [_vm._v("|")]),
-                        _vm._v(" "),
-                        _vm.table_2_name == "Route"
-                          ? _c("td", [_vm._v(_vm._s(table_2_info.name))])
-                          : _vm.table_2_name == "Categories"
-                          ? _c("td", [_vm._v(_vm._s(table_2_info.us_name))])
-                          : _c("td", [_vm._v(_vm._s(table_2_info.name) + " ")]),
-                        _vm._v(" "),
-                        _vm.table_2_name != "Route" &&
-                        _vm.table_2_name != "Categories" &&
-                        _vm.table_2_name != "Mounts" &&
-                        _vm.table_2_name != "Roles"
-                          ? _c("td", [_vm._v("|")])
-                          : _vm._e(),
-                        _vm._v(" "),
-                        _vm.table_2_name != "Route" &&
-                        _vm.table_2_name != "Categories" &&
-                        _vm.table_2_name != "Mounts" &&
-                        _vm.table_2_name != "Roles"
-                          ? _c(
-                              "td",
-                              { staticStyle: { "text-align": "center" } },
-                              [_vm._v(_vm._s(table_2_info.published))]
-                            )
-                          : _vm._e(),
-                        _vm._v(" "),
-                        _c("td", [_vm._v("|")]),
-                        _vm._v(" "),
-                        _vm.table_1_name != "Users"
-                          ? _c("td", [
-                              _c(
-                                "a",
-                                {
-                                  staticClass: "btn btn-primary",
-                                  attrs: {
-                                    href:
-                                      _vm.table_2_edit_url + table_2_info.id,
-                                    type: "submit"
-                                  }
-                                },
-                                [_vm._v("Edit")]
-                              )
-                            ])
-                          : _vm._e(),
-                        _vm._v(" "),
-                        _vm.table_1_name != "Users"
-                          ? _c("td", [_vm._v("|")])
-                          : _vm._e(),
-                        _vm._v(" "),
-                        _vm.table_1_name != "Users"
-                          ? _c("td", [
-                              _c(
-                                "form",
-                                {
-                                  attrs: { method: "post" },
-                                  on: {
-                                    submit: function($event) {
-                                      $event.preventDefault()
-                                      return _vm.table_2_del(table_2_info.id)
-                                    }
-                                  }
-                                },
-                                [
-                                  _c("input", {
-                                    attrs: { type: "hidden", name: "_token" }
-                                  }),
-                                  _vm._v(" "),
-                                  _vm._m(5, true)
-                                ]
-                              )
-                            ])
-                          : _vm._e()
-                      ])
-                    }),
-                    0
-                  )
+                  _vm.table_2_name === "Route"
+                    ? _c(
+                        "tbody",
+                        _vm._l(_vm.filterRoutesBySector, function(
+                          table_2_info
+                        ) {
+                          return _c("tr", { key: table_2_info.id }, [
+                            _vm._m(10, true),
+                            _vm._v(" "),
+                            _c("td", [_vm._v("|")]),
+                            _vm._v(" "),
+                            _c("td", [_vm._v(_vm._s(table_2_info.id))]),
+                            _vm._v(" "),
+                            _c("td", [_vm._v("|")]),
+                            _vm._v(" "),
+                            _vm.table_2_name == "Route"
+                              ? _c("td", [_vm._v(_vm._s(table_2_info.name))])
+                              : _vm.table_2_name == "Categories"
+                              ? _c("td", [_vm._v(_vm._s(table_2_info.us_name))])
+                              : _c("td", [
+                                  _vm._v(_vm._s(table_2_info.name) + " ")
+                                ]),
+                            _vm._v(" "),
+                            _vm.table_2_name == "Route"
+                              ? _c("td", [_vm._v("|")])
+                              : _vm._e(),
+                            _vm._v(" "),
+                            _vm.table_2_name == "Route"
+                              ? _c("td", [
+                                  table_2_info.or_grade != _vm.NULL
+                                    ? _c("div", [
+                                        _vm._v(
+                                          _vm._s(table_2_info.grade) +
+                                            " / " +
+                                            _vm._s(table_2_info.or_grade)
+                                        )
+                                      ])
+                                    : _c("div", [
+                                        _vm._v(_vm._s(table_2_info.grade))
+                                      ])
+                                ])
+                              : _vm._e(),
+                            _vm._v(" "),
+                            _c("td", [_vm._v("|")]),
+                            _vm._v(" "),
+                            _vm.table_1_name != "Users"
+                              ? _c("td", [
+                                  _c(
+                                    "a",
+                                    {
+                                      staticClass: "btn btn-primary",
+                                      attrs: {
+                                        href:
+                                          _vm.table_2_edit_url +
+                                          table_2_info.id,
+                                        type: "submit"
+                                      }
+                                    },
+                                    [_vm._v("Edit")]
+                                  )
+                                ])
+                              : _vm._e(),
+                            _vm._v(" "),
+                            _vm.table_1_name != "Users"
+                              ? _c("td", [_vm._v("|")])
+                              : _vm._e(),
+                            _vm._v(" "),
+                            _vm.table_1_name != "Users"
+                              ? _c("td", [
+                                  _c(
+                                    "form",
+                                    {
+                                      attrs: { method: "post" },
+                                      on: {
+                                        submit: function($event) {
+                                          $event.preventDefault()
+                                          return _vm.table_2_del(
+                                            table_2_info.id
+                                          )
+                                        }
+                                      }
+                                    },
+                                    [
+                                      _c("input", {
+                                        attrs: {
+                                          type: "hidden",
+                                          name: "_token"
+                                        }
+                                      }),
+                                      _vm._v(" "),
+                                      _vm._m(11, true)
+                                    ]
+                                  )
+                                ])
+                              : _vm._e()
+                          ])
+                        }),
+                        0
+                      )
+                    : _c(
+                        "tbody",
+                        _vm._l(_vm.table_2, function(table_2_info) {
+                          return _c("tr", { key: table_2_info.id }, [
+                            _vm._m(12, true),
+                            _vm._v(" "),
+                            _c("td", [_vm._v("|")]),
+                            _vm._v(" "),
+                            _c("td", [_vm._v(_vm._s(table_2_info.id))]),
+                            _vm._v(" "),
+                            _c("td", [_vm._v("|")]),
+                            _vm._v(" "),
+                            _vm.table_2_name == "Route"
+                              ? _c("td", [_vm._v(_vm._s(table_2_info.name))])
+                              : _vm.table_2_name == "Categories"
+                              ? _c("td", [_vm._v(_vm._s(table_2_info.us_name))])
+                              : _c("td", [
+                                  _vm._v(_vm._s(table_2_info.name) + " ")
+                                ]),
+                            _vm._v(" "),
+                            _vm.table_2_name != "Route" &&
+                            _vm.table_2_name != "Categories" &&
+                            _vm.table_2_name != "Mounts" &&
+                            _vm.table_2_name != "Roles"
+                              ? _c("td", [_vm._v("|")])
+                              : _vm._e(),
+                            _vm._v(" "),
+                            _vm.table_2_name != "Route" &&
+                            _vm.table_2_name != "Categories" &&
+                            _vm.table_2_name != "Mounts" &&
+                            _vm.table_2_name != "Roles"
+                              ? _c(
+                                  "td",
+                                  { staticStyle: { "text-align": "center" } },
+                                  [_vm._v(_vm._s(table_2_info.published))]
+                                )
+                              : _vm._e(),
+                            _vm._v(" "),
+                            _c("td", [_vm._v("|")]),
+                            _vm._v(" "),
+                            _vm.table_1_name != "Users"
+                              ? _c("td", [
+                                  _c(
+                                    "a",
+                                    {
+                                      staticClass: "btn btn-primary",
+                                      attrs: {
+                                        href:
+                                          _vm.table_2_edit_url +
+                                          table_2_info.id,
+                                        type: "submit"
+                                      }
+                                    },
+                                    [_vm._v("Edit")]
+                                  )
+                                ])
+                              : _vm._e(),
+                            _vm._v(" "),
+                            _vm.table_1_name != "Users"
+                              ? _c("td", [_vm._v("|")])
+                              : _vm._e(),
+                            _vm._v(" "),
+                            _vm.table_1_name != "Users"
+                              ? _c("td", [
+                                  _c(
+                                    "form",
+                                    {
+                                      attrs: { method: "post" },
+                                      on: {
+                                        submit: function($event) {
+                                          $event.preventDefault()
+                                          return _vm.table_2_del(
+                                            table_2_info.id
+                                          )
+                                        }
+                                      }
+                                    },
+                                    [
+                                      _c("input", {
+                                        attrs: {
+                                          type: "hidden",
+                                          name: "_token"
+                                        }
+                                      }),
+                                      _vm._v(" "),
+                                      _vm._m(13, true)
+                                    ]
+                                  )
+                                ])
+                              : _vm._e()
+                          ])
+                        }),
+                        0
+                      )
                 ]
               )
             ])
@@ -49930,6 +51105,55 @@ var render = function() {
         _vm._v(" "),
         this.table_3_get_route
           ? _c("div", { staticClass: "tab" }, [
+              _vm.table_3_name == "Multi-pitch"
+                ? _c("h3", [_vm._v("Filter Multi-pitch By Sector")])
+                : _vm._e(),
+              _vm._v(" "),
+              _vm.table_3_name == "Multi-pitch"
+                ? _c(
+                    "select",
+                    {
+                      directives: [
+                        {
+                          name: "model",
+                          rawName: "v-model",
+                          value: _vm.value_mtp_sector_id,
+                          expression: "value_mtp_sector_id"
+                        }
+                      ],
+                      on: {
+                        change: function($event) {
+                          var $$selectedVal = Array.prototype.filter
+                            .call($event.target.options, function(o) {
+                              return o.selected
+                            })
+                            .map(function(o) {
+                              var val = "_value" in o ? o._value : o.value
+                              return val
+                            })
+                          _vm.value_mtp_sector_id = $event.target.multiple
+                            ? $$selectedVal
+                            : $$selectedVal[0]
+                        }
+                      }
+                    },
+                    [
+                      _c("option", { domProps: { value: "all" } }, [
+                        _vm._v("All")
+                      ]),
+                      _vm._v(" "),
+                      _vm._l(_vm.sectors, function(sector) {
+                        return _c(
+                          "option",
+                          { key: sector, domProps: { value: sector.id } },
+                          [_vm._v(_vm._s(sector.name))]
+                        )
+                      })
+                    ],
+                    2
+                  )
+                : _vm._e(),
+              _vm._v(" "),
               _c("div", { staticClass: "add_buttom" }, [
                 _c(
                   "a",
@@ -49971,7 +51195,7 @@ var render = function() {
                 [
                   _c("thead", [
                     _c("tr", [
-                      _vm._m(6),
+                      _vm._m(14),
                       _vm._v(" "),
                       _c("th", [_vm._v("|")]),
                       _vm._v(" "),
@@ -50003,79 +51227,155 @@ var render = function() {
                     ])
                   ]),
                   _vm._v(" "),
-                  _c(
-                    "tbody",
-                    _vm._l(_vm.table_3, function(table_3_info) {
-                      return _c("tr", { key: table_3_info.id }, [
-                        _vm._m(7, true),
-                        _vm._v(" "),
-                        _c("td", [_vm._v("|")]),
-                        _vm._v(" "),
-                        _c("td", [_vm._v(_vm._s(table_3_info.id))]),
-                        _vm._v(" "),
-                        _c("td", [_vm._v("|")]),
-                        _vm._v(" "),
-                        _vm.table_3_name == "Multi-pitch"
-                          ? _c("td", [_vm._v(_vm._s(table_3_info.name))])
-                          : _c("td", [
-                              _vm._v(_vm._s(table_3_info.title) + " ")
+                  _vm.table_3_name == "Multi-pitch"
+                    ? _c(
+                        "tbody",
+                        _vm._l(_vm.filterMTPBySector, function(table_3_info) {
+                          return _c("tr", { key: table_3_info.id }, [
+                            _vm._m(15, true),
+                            _vm._v(" "),
+                            _c("td", [_vm._v("|")]),
+                            _vm._v(" "),
+                            _c("td", [_vm._v(_vm._s(table_3_info.id))]),
+                            _vm._v(" "),
+                            _c("td", [_vm._v("|")]),
+                            _vm._v(" "),
+                            _vm.table_3_name == "Multi-pitch"
+                              ? _c("td", [_vm._v(_vm._s(table_3_info.name))])
+                              : _c("td", [
+                                  _vm._v(_vm._s(table_3_info.title) + " ")
+                                ]),
+                            _vm._v(" "),
+                            _vm.table_3_name != "Multi-pitch"
+                              ? _c("td", [_vm._v("|")])
+                              : _vm._e(),
+                            _vm._v(" "),
+                            _vm.table_3_name != "Multi-pitch"
+                              ? _c(
+                                  "td",
+                                  { staticStyle: { "text-align": "center" } },
+                                  [_vm._v(_vm._s(table_3_info.published))]
+                                )
+                              : _vm._e(),
+                            _vm._v(" "),
+                            _c("td", [_vm._v("|")]),
+                            _vm._v(" "),
+                            _c("td", [
+                              _c(
+                                "a",
+                                {
+                                  staticClass: "btn btn-primary",
+                                  attrs: {
+                                    href:
+                                      _vm.table_3_edit_url + table_3_info.id,
+                                    type: "submit"
+                                  }
+                                },
+                                [_vm._v("Edit")]
+                              )
                             ]),
-                        _vm._v(" "),
-                        _vm.table_3_name != "Multi-pitch"
-                          ? _c("td", [_vm._v("|")])
-                          : _vm._e(),
-                        _vm._v(" "),
-                        _vm.table_3_name != "Multi-pitch"
-                          ? _c(
-                              "td",
-                              { staticStyle: { "text-align": "center" } },
-                              [_vm._v(_vm._s(table_3_info.published))]
-                            )
-                          : _vm._e(),
-                        _vm._v(" "),
-                        _c("td", [_vm._v("|")]),
-                        _vm._v(" "),
-                        _c("td", [
-                          _c(
-                            "a",
-                            {
-                              staticClass: "btn btn-primary",
-                              attrs: {
-                                href: _vm.table_3_edit_url + table_3_info.id,
-                                type: "submit"
-                              }
-                            },
-                            [_vm._v("Edit")]
-                          )
-                        ]),
-                        _vm._v(" "),
-                        _c("td", [_vm._v("|")]),
-                        _vm._v(" "),
-                        _c("td", [
-                          _c(
-                            "form",
-                            {
-                              attrs: { method: "post" },
-                              on: {
-                                submit: function($event) {
-                                  $event.preventDefault()
-                                  return _vm.table_3_del(table_3_info.id)
-                                }
-                              }
-                            },
-                            [
-                              _c("input", {
-                                attrs: { type: "hidden", name: "_token" }
-                              }),
-                              _vm._v(" "),
-                              _vm._m(8, true)
-                            ]
-                          )
-                        ])
-                      ])
-                    }),
-                    0
-                  )
+                            _vm._v(" "),
+                            _c("td", [_vm._v("|")]),
+                            _vm._v(" "),
+                            _c("td", [
+                              _c(
+                                "form",
+                                {
+                                  attrs: { method: "post" },
+                                  on: {
+                                    submit: function($event) {
+                                      $event.preventDefault()
+                                      return _vm.table_3_del(table_3_info.id)
+                                    }
+                                  }
+                                },
+                                [
+                                  _c("input", {
+                                    attrs: { type: "hidden", name: "_token" }
+                                  }),
+                                  _vm._v(" "),
+                                  _vm._m(16, true)
+                                ]
+                              )
+                            ])
+                          ])
+                        }),
+                        0
+                      )
+                    : _c(
+                        "tbody",
+                        _vm._l(_vm.table_3, function(table_3_info) {
+                          return _c("tr", { key: table_3_info.id }, [
+                            _vm._m(17, true),
+                            _vm._v(" "),
+                            _c("td", [_vm._v("|")]),
+                            _vm._v(" "),
+                            _c("td", [_vm._v(_vm._s(table_3_info.id))]),
+                            _vm._v(" "),
+                            _c("td", [_vm._v("|")]),
+                            _vm._v(" "),
+                            _vm.table_3_name == "Multi-pitch"
+                              ? _c("td", [_vm._v(_vm._s(table_3_info.name))])
+                              : _c("td", [
+                                  _vm._v(_vm._s(table_3_info.title) + " ")
+                                ]),
+                            _vm._v(" "),
+                            _vm.table_3_name != "Multi-pitch"
+                              ? _c("td", [_vm._v("|")])
+                              : _vm._e(),
+                            _vm._v(" "),
+                            _vm.table_3_name != "Multi-pitch"
+                              ? _c(
+                                  "td",
+                                  { staticStyle: { "text-align": "center" } },
+                                  [_vm._v(_vm._s(table_3_info.published))]
+                                )
+                              : _vm._e(),
+                            _vm._v(" "),
+                            _c("td", [_vm._v("|")]),
+                            _vm._v(" "),
+                            _c("td", [
+                              _c(
+                                "a",
+                                {
+                                  staticClass: "btn btn-primary",
+                                  attrs: {
+                                    href:
+                                      _vm.table_3_edit_url + table_3_info.id,
+                                    type: "submit"
+                                  }
+                                },
+                                [_vm._v("Edit")]
+                              )
+                            ]),
+                            _vm._v(" "),
+                            _c("td", [_vm._v("|")]),
+                            _vm._v(" "),
+                            _c("td", [
+                              _c(
+                                "form",
+                                {
+                                  attrs: { method: "post" },
+                                  on: {
+                                    submit: function($event) {
+                                      $event.preventDefault()
+                                      return _vm.table_3_del(table_3_info.id)
+                                    }
+                                  }
+                                },
+                                [
+                                  _c("input", {
+                                    attrs: { type: "hidden", name: "_token" }
+                                  }),
+                                  _vm._v(" "),
+                                  _vm._m(18, true)
+                                ]
+                              )
+                            ])
+                          ])
+                        }),
+                        0
+                      )
                 ]
               )
             ])
@@ -50091,6 +51391,55 @@ var render = function() {
         _vm._v(" "),
         this.table_4_get_route
           ? _c("div", { staticClass: "tab" }, [
+              _vm.table_4_name == "pitches"
+                ? _c("h3", [_vm._v("Filter pitches By Multi-pitch")])
+                : _vm._e(),
+              _vm._v(" "),
+              _vm.table_4_name == "pitches"
+                ? _c(
+                    "select",
+                    {
+                      directives: [
+                        {
+                          name: "model",
+                          rawName: "v-model",
+                          value: _vm.value_mtp_id,
+                          expression: "value_mtp_id"
+                        }
+                      ],
+                      on: {
+                        change: function($event) {
+                          var $$selectedVal = Array.prototype.filter
+                            .call($event.target.options, function(o) {
+                              return o.selected
+                            })
+                            .map(function(o) {
+                              var val = "_value" in o ? o._value : o.value
+                              return val
+                            })
+                          _vm.value_mtp_id = $event.target.multiple
+                            ? $$selectedVal
+                            : $$selectedVal[0]
+                        }
+                      }
+                    },
+                    [
+                      _c("option", { domProps: { value: "all" } }, [
+                        _vm._v("All")
+                      ]),
+                      _vm._v(" "),
+                      _vm._l(_vm.MTPs, function(MTP) {
+                        return _c(
+                          "option",
+                          { key: MTP, domProps: { value: MTP.id } },
+                          [_vm._v(_vm._s(MTP.name))]
+                        )
+                      })
+                    ],
+                    2
+                  )
+                : _vm._e(),
+              _vm._v(" "),
               _c("div", { staticClass: "add_buttom" }, [
                 _c(
                   "a",
@@ -50132,7 +51481,7 @@ var render = function() {
                 [
                   _c("thead", [
                     _c("tr", [
-                      _vm._m(9),
+                      _vm._m(19),
                       _vm._v(" "),
                       _c("th", [_vm._v("|")]),
                       _vm._v(" "),
@@ -50154,6 +51503,18 @@ var render = function() {
                           )
                         : _vm._e(),
                       _vm._v(" "),
+                      _vm.table_4_name == "pitches"
+                        ? _c("th", [_vm._v("|")])
+                        : _vm._e(),
+                      _vm._v(" "),
+                      _vm.table_4_name == "pitches"
+                        ? _c(
+                            "th",
+                            { staticStyle: { "text-align": "center" } },
+                            [_vm._v("Grade")]
+                          )
+                        : _vm._e(),
+                      _vm._v(" "),
                       _c("th", [_vm._v("|")]),
                       _vm._v(" "),
                       _c("th", [_vm._v("Edit")]),
@@ -50164,79 +51525,175 @@ var render = function() {
                     ])
                   ]),
                   _vm._v(" "),
-                  _c(
-                    "tbody",
-                    _vm._l(_vm.table_4, function(table_4_info) {
-                      return _c("tr", { key: table_4_info.id }, [
-                        _vm._m(10, true),
-                        _vm._v(" "),
-                        _c("td", [_vm._v("|")]),
-                        _vm._v(" "),
-                        _c("td", [_vm._v(_vm._s(table_4_info.id))]),
-                        _vm._v(" "),
-                        _c("td", [_vm._v("|")]),
-                        _vm._v(" "),
-                        _vm.table_4_name == "pitches"
-                          ? _c("td", [_vm._v(_vm._s(table_4_info.name))])
-                          : _c("td", [
-                              _vm._v(_vm._s(table_4_info.title) + " ")
+                  _vm.table_4_name == "pitches"
+                    ? _c(
+                        "tbody",
+                        _vm._l(_vm.filterMTP_PitchByMTP, function(
+                          table_4_info
+                        ) {
+                          return _c("tr", { key: table_4_info.id }, [
+                            _vm._m(20, true),
+                            _vm._v(" "),
+                            _c("td", [_vm._v("|")]),
+                            _vm._v(" "),
+                            _c("td", [_vm._v(_vm._s(table_4_info.id))]),
+                            _vm._v(" "),
+                            _c("td", [_vm._v("|")]),
+                            _vm._v(" "),
+                            _vm.table_4_name == "pitches"
+                              ? _c("td", [_vm._v(_vm._s(table_4_info.name))])
+                              : _c("td", [
+                                  _vm._v(_vm._s(table_4_info.title) + " ")
+                                ]),
+                            _vm._v(" "),
+                            _vm.table_4_name != "pitches"
+                              ? _c("td", [_vm._v("|")])
+                              : _vm._e(),
+                            _vm._v(" "),
+                            _vm.table_4_name != "pitches"
+                              ? _c(
+                                  "td",
+                                  { staticStyle: { "text-align": "center" } },
+                                  [_vm._v(_vm._s(table_4_info.published))]
+                                )
+                              : _vm._e(),
+                            _vm._v(" "),
+                            _c("td", [_vm._v("|")]),
+                            _vm._v(" "),
+                            _vm.table_4_name == "pitches"
+                              ? _c("td", [
+                                  table_4_info.or_grade != _vm.NULL
+                                    ? _c("div", [
+                                        _vm._v(
+                                          _vm._s(table_4_info.grade) +
+                                            " / " +
+                                            _vm._s(table_4_info.or_grade)
+                                        )
+                                      ])
+                                    : _c("div", [
+                                        _vm._v(_vm._s(table_4_info.grade))
+                                      ])
+                                ])
+                              : _vm._e(),
+                            _vm._v(" "),
+                            _c("td", [_vm._v("|")]),
+                            _vm._v(" "),
+                            _c("td", [
+                              _c(
+                                "a",
+                                {
+                                  staticClass: "btn btn-primary",
+                                  attrs: {
+                                    href:
+                                      _vm.table_4_edit_url + table_4_info.id,
+                                    type: "submit"
+                                  }
+                                },
+                                [_vm._v("Edit")]
+                              )
                             ]),
-                        _vm._v(" "),
-                        _vm.table_4_name != "pitches"
-                          ? _c("td", [_vm._v("|")])
-                          : _vm._e(),
-                        _vm._v(" "),
-                        _vm.table_4_name != "pitches"
-                          ? _c(
-                              "td",
-                              { staticStyle: { "text-align": "center" } },
-                              [_vm._v(_vm._s(table_4_info.published))]
-                            )
-                          : _vm._e(),
-                        _vm._v(" "),
-                        _c("td", [_vm._v("|")]),
-                        _vm._v(" "),
-                        _c("td", [
-                          _c(
-                            "a",
-                            {
-                              staticClass: "btn btn-primary",
-                              attrs: {
-                                href: _vm.table_4_edit_url + table_4_info.id,
-                                type: "submit"
-                              }
-                            },
-                            [_vm._v("Edit")]
-                          )
-                        ]),
-                        _vm._v(" "),
-                        _c("td", [_vm._v("|")]),
-                        _vm._v(" "),
-                        _c("td", [
-                          _c(
-                            "form",
-                            {
-                              attrs: { method: "post" },
-                              on: {
-                                submit: function($event) {
-                                  $event.preventDefault()
-                                  return _vm.table_4_del(table_4_info.id)
-                                }
-                              }
-                            },
-                            [
-                              _c("input", {
-                                attrs: { type: "hidden", name: "_token" }
-                              }),
-                              _vm._v(" "),
-                              _vm._m(11, true)
-                            ]
-                          )
-                        ])
-                      ])
-                    }),
-                    0
-                  )
+                            _vm._v(" "),
+                            _c("td", [_vm._v("|")]),
+                            _vm._v(" "),
+                            _c("td", [
+                              _c(
+                                "form",
+                                {
+                                  attrs: { method: "post" },
+                                  on: {
+                                    submit: function($event) {
+                                      $event.preventDefault()
+                                      return _vm.table_4_del(table_4_info.id)
+                                    }
+                                  }
+                                },
+                                [
+                                  _c("input", {
+                                    attrs: { type: "hidden", name: "_token" }
+                                  }),
+                                  _vm._v(" "),
+                                  _vm._m(21, true)
+                                ]
+                              )
+                            ])
+                          ])
+                        }),
+                        0
+                      )
+                    : _c(
+                        "tbody",
+                        _vm._l(_vm.table_4, function(table_4_info) {
+                          return _c("tr", { key: table_4_info.id }, [
+                            _vm._m(22, true),
+                            _vm._v(" "),
+                            _c("td", [_vm._v("|")]),
+                            _vm._v(" "),
+                            _c("td", [_vm._v(_vm._s(table_4_info.id))]),
+                            _vm._v(" "),
+                            _c("td", [_vm._v("|")]),
+                            _vm._v(" "),
+                            _vm.table_4_name == "pitches"
+                              ? _c("td", [_vm._v(_vm._s(table_4_info.name))])
+                              : _c("td", [
+                                  _vm._v(_vm._s(table_4_info.title) + " ")
+                                ]),
+                            _vm._v(" "),
+                            _vm.table_4_name != "pitches"
+                              ? _c("td", [_vm._v("|")])
+                              : _vm._e(),
+                            _vm._v(" "),
+                            _vm.table_4_name != "pitches"
+                              ? _c(
+                                  "td",
+                                  { staticStyle: { "text-align": "center" } },
+                                  [_vm._v(_vm._s(table_4_info.published))]
+                                )
+                              : _vm._e(),
+                            _vm._v(" "),
+                            _c("td", [_vm._v("|")]),
+                            _vm._v(" "),
+                            _c("td", [
+                              _c(
+                                "a",
+                                {
+                                  staticClass: "btn btn-primary",
+                                  attrs: {
+                                    href:
+                                      _vm.table_4_edit_url + table_4_info.id,
+                                    type: "submit"
+                                  }
+                                },
+                                [_vm._v("Edit")]
+                              )
+                            ]),
+                            _vm._v(" "),
+                            _c("td", [_vm._v("|")]),
+                            _vm._v(" "),
+                            _c("td", [
+                              _c(
+                                "form",
+                                {
+                                  attrs: { method: "post" },
+                                  on: {
+                                    submit: function($event) {
+                                      $event.preventDefault()
+                                      return _vm.table_4_del(table_4_info.id)
+                                    }
+                                  }
+                                },
+                                [
+                                  _c("input", {
+                                    attrs: { type: "hidden", name: "_token" }
+                                  }),
+                                  _vm._v(" "),
+                                  _vm._m(23, true)
+                                ]
+                              )
+                            ])
+                          ])
+                        }),
+                        0
+                      )
                 ]
               )
             ])
@@ -50248,7 +51705,7 @@ var render = function() {
         {
           attrs: {
             show: _vm.show,
-            title: "Modal #1",
+            title: "kkk",
             "modal-class": ((_obj = {}), (_obj[_vm.modalClass] = true), _obj),
             saveButton: { visible: false },
             cancelButton: {
@@ -50265,58 +51722,100 @@ var render = function() {
         [
           _c("pre", { staticClass: "language-vue" }, [
             _vm._v("            "),
-            _c(
-              "div",
-              { staticClass: "root" },
-              [
-                _vm._v("\n                "),
+            _c("div", { staticClass: "root" }, [
+              _vm._v("\n                "),
+              _c("div", { staticClass: "col-md-12" }, [
+                _vm._v("\n                    "),
                 _c(
-                  "SlickList",
-                  {
-                    attrs: { lockAxis: "y", tag: "table" },
-                    model: {
-                      value: _vm.items,
-                      callback: function($$v) {
-                        _vm.items = $$v
-                      },
-                      expression: "items"
-                    }
-                  },
+                  "div",
+                  { staticClass: "row" },
                   [
-                    _vm._v("\n                    "),
-                    _c("tr", [
-                      _vm._v("\n                        "),
-                      _c("td", [_vm._v("ID")]),
-                      _vm._v("\n                        "),
-                      _c("td", [_vm._v("Num")]),
-                      _vm._v("\n                        "),
-                      _c("td", [_vm._v("Name")]),
-                      _vm._v("\n                    ")
-                    ]),
-                    _vm._v("\n                    "),
-                    _vm._l(_vm.items, function(item, index) {
-                      return _c(
-                        "SlickItem",
-                        { key: index, attrs: { index: index, tag: "tr" } },
-                        [
-                          _vm._v("\n                        "),
-                          _c("td", [_vm._v(_vm._s(item.id))]),
-                          _vm._v("\n                        "),
-                          _c("td", [_vm._v(_vm._s(_vm.num))]),
-                          _vm._v("\n                        "),
-                          _c("td", [_vm._v(_vm._s(item.name))]),
-                          _vm._v("\n                    ")
-                        ]
-                      )
+                    _vm._v("\n                        "),
+                    _vm._l(_vm.sector_images, function(sector_image) {
+                      return _c("img", {
+                        key: sector_image.id,
+                        style: "width:" + _vm.sector_images_size + "%",
+                        attrs: {
+                          src:
+                            "/public/images/sector_img/" + sector_image.image,
+                          alt: "image"
+                        }
+                      })
                     }),
-                    _vm._v("\n                ")
+                    _vm._v("\n                    ")
                   ],
                   2
                 ),
-                _vm._v("\n            ")
-              ],
-              1
-            ),
+                _vm._v("\n                    "),
+                _c(
+                  "div",
+                  { staticClass: "row" },
+                  [
+                    _vm._v("\n                        "),
+                    _c(
+                      "SlickList",
+                      {
+                        staticStyle: { width: "100%" },
+                        attrs: { lockAxis: "y", tag: "table" },
+                        model: {
+                          value: _vm.items,
+                          callback: function($$v) {
+                            _vm.items = $$v
+                          },
+                          expression: "items"
+                        }
+                      },
+                      [
+                        _vm._v("\n                            "),
+                        _c("tr", [
+                          _vm._v("\n                                "),
+                          _c("td", [_vm._v("ID")]),
+                          _vm._v("\n                                "),
+                          _c("td", [_vm._v("Num")]),
+                          _vm._v("\n                                "),
+                          _c("td", [_vm._v("Name")]),
+                          _vm._v("\n                                "),
+                          _c("td", [_vm._v("Grade")]),
+                          _vm._v("\n                                "),
+                          _c("td", [_vm._v("Height")]),
+                          _vm._v("\n                                "),
+                          _c("td", [_vm._v("Bolts")]),
+                          _vm._v("\n                            ")
+                        ]),
+                        _vm._v("\n                            "),
+                        _vm._l(_vm.sector_routes, function(route, index) {
+                          return _c(
+                            "SlickItem",
+                            { key: index, attrs: { index: index, tag: "tr" } },
+                            [
+                              _vm._v("\n                                "),
+                              _c("td", [_vm._v(_vm._s(route.id))]),
+                              _vm._v("\n                                "),
+                              _c("td", [_vm._v("num")]),
+                              _vm._v("\n                                "),
+                              _c("td", [_vm._v(_vm._s(route.name))]),
+                              _vm._v("\n                                "),
+                              _c("td", [_vm._v(_vm._s(route.grade))]),
+                              _vm._v("\n                                "),
+                              _c("td", [_vm._v(_vm._s(route.height))]),
+                              _vm._v("\n                                "),
+                              _c("td", [_vm._v(_vm._s(route.bolts))]),
+                              _vm._v("\n                            ")
+                            ]
+                          )
+                        }),
+                        _vm._v("\n                        ")
+                      ],
+                      2
+                    ),
+                    _vm._v("\n                    ")
+                  ],
+                  1
+                ),
+                _vm._v("\n                ")
+              ]),
+              _vm._v("\n            ")
+            ]),
             _vm._v("\n        ")
           ])
         ]
@@ -50495,8 +51994,54 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("th", { staticStyle: { "text-align": "center" } }, [
-      _c("input", { staticClass: "all", attrs: { type: "checkbox" } })
+    return _c("td", { staticStyle: { "text-align": "center" } }, [
+      _c("input", { attrs: { type: "checkbox" } })
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "form-group" }, [
+      _c(
+        "button",
+        {
+          staticClass: "btn btn-danger",
+          attrs: {
+            type: "submit",
+            onclick:
+              "return confirm('Are you sure you want to delete this item')"
+          }
+        },
+        [_vm._v("Delete")]
+      )
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("td", { staticStyle: { "text-align": "center" } }, [
+      _c("input", { attrs: { type: "checkbox" } })
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "form-group" }, [
+      _c(
+        "button",
+        {
+          staticClass: "btn btn-danger",
+          attrs: {
+            type: "submit",
+            onclick:
+              "return confirm('Are you sure you want to delete this item')"
+          }
+        },
+        [_vm._v("Delete")]
+      )
     ])
   },
   function() {
@@ -50565,8 +52110,124 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
+    return _c("td", { staticStyle: { "text-align": "center" } }, [
+      _c("input", { attrs: { type: "checkbox" } })
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "form-group" }, [
+      _c(
+        "button",
+        {
+          staticClass: "btn btn-danger",
+          attrs: {
+            type: "submit",
+            onclick:
+              "return confirm('Are you sure you want to delete this item')"
+          }
+        },
+        [_vm._v("Delete")]
+      )
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
     return _c("th", { staticStyle: { "text-align": "center" } }, [
       _c("input", { staticClass: "all", attrs: { type: "checkbox" } })
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("td", { staticStyle: { "text-align": "center" } }, [
+      _c("input", { attrs: { type: "checkbox" } })
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "form-group" }, [
+      _c(
+        "button",
+        {
+          staticClass: "btn btn-danger",
+          attrs: {
+            type: "submit",
+            onclick:
+              "return confirm('Are you sure you want to delete this item')"
+          }
+        },
+        [_vm._v("Delete")]
+      )
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("td", { staticStyle: { "text-align": "center" } }, [
+      _c("input", { attrs: { type: "checkbox" } })
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "form-group" }, [
+      _c(
+        "button",
+        {
+          staticClass: "btn btn-danger",
+          attrs: {
+            type: "submit",
+            onclick:
+              "return confirm('Are you sure you want to delete this item')"
+          }
+        },
+        [_vm._v("Delete")]
+      )
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("th", { staticStyle: { "text-align": "center" } }, [
+      _c("input", { staticClass: "all", attrs: { type: "checkbox" } })
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("td", { staticStyle: { "text-align": "center" } }, [
+      _c("input", { attrs: { type: "checkbox" } })
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "form-group" }, [
+      _c(
+        "button",
+        {
+          staticClass: "btn btn-danger",
+          attrs: {
+            type: "submit",
+            onclick:
+              "return confirm('Are you sure you want to delete this item')"
+          }
+        },
+        [_vm._v("Delete")]
+      )
     ])
   },
   function() {
