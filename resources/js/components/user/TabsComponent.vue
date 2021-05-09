@@ -589,26 +589,13 @@
                 </table>
             </div>
         </div>
-
-        <!-- <SlickList lockAxis="y" v-model="items" tag="table">
-            <tr>
-                <td>ID</td>
-                <td>Num</td>
-                <td>Name</td>
-            </tr>
-            <SlickItem v-for="(item, index) in items" :index="index" :key="index" tag="tr">
-                <td style='cursor_mooving'>{{ item.id }}</td>
-                <td style='cursor_mooving'>{{ num }}</td>
-                <td style='cursor_mooving'>{{ item.name }}</td>
-            </SlickItem>
-        </SlickList> -->
         
         <stack-modal
-            :show="show"
-            title="kkk"
-            @close="show=false"
-            :modal-class="{ [modalClass]: true }"
-            :saveButton="{ visible: false }"
+            :show="show_sector_modal"
+            title="Sector"
+            @close="show_sector_modal=false"
+            :modal-class="{ [SectorModalClass]: true }"
+            :saveButton="{ visible: true }"
             :cancelButton="{ title: 'Close', btnClass: { 'btn btn-primary': true } }">
             <pre class="language-vue">
                 <div class="root">
@@ -617,7 +604,7 @@
                             <img v-for="sector_image in sector_images" :key="sector_image.id" :src="'/public/images/sector_img/'+sector_image.image" alt="image" :style="'width:' + sector_images_size + '%'">
                         </div>
                         <div class="row">
-                            <SlickList lockAxis="y" v-model="items" tag="table" style="width: 100%">
+                            <SlickList lockAxis="y" v-model="sector_routes" tag="table" style="width: 100%">
                                 <tr>
                                     <td>ID</td>
                                     <td>Num</td>
@@ -625,20 +612,35 @@
                                     <td>Grade</td>
                                     <td>Height</td>
                                     <td>Bolts</td>
+                                    <td>Bolter</td>
+                                    <td>First ascent</td>
                                 </tr>
                                 <SlickItem v-for="(route, index) in sector_routes" :index='index' :key="index" tag="tr">
                                     <td>{{ route.id }}</td>
-                                    <td>num</td>
+                                    <td>{{ route.num }}</td>
                                     <td>{{ route.name }}</td>
                                     <td>{{ route.grade }}</td>
                                     <td>{{ route.height }}</td>
                                     <td>{{ route.bolts }}</td>
+                                    <td>{{ route.bolter }}</td>
+                                    <td>{{ route.first_ascent }}</td>
                                 </SlickItem>
                             </SlickList>
                         </div>
                     </div>
                 </div>
             </pre>
+            <div slot="modal-footer">
+                <div class="modal-footer">
+                    <button
+                            type="button"
+                            :class="{'btn btn-primary': true}"
+                            @click="save_routes_sequence()"
+                        >
+                    Save
+                    </button>
+                </div>
+            </div>
         </stack-modal>
         
         <stack-modal
@@ -677,13 +679,13 @@
                 </div>
             </div>
         </stack-modal>
-        
+
     </div>
 </template>
 
 <script>
     import { SlickList, SlickItem } from 'vue-slicksort'; //https://github.com/Jexordexan/vue-slicksort
-    import StackModal from '@innologica/vue-stackable-modal'
+    import StackModal from '@innologica/vue-stackable-modal'  //https://innologica.github.io/vue-stackable-modal/#sample-css
 
     export default {
         components: {
@@ -766,21 +768,6 @@
                 product_categorys: '',
                 products: '',
 
-                items: [
-                    {
-                        id: 1,
-                        name: 'Item 1',
-                    },
-                    {
-                        id: 2,
-                        name: 'Item 2',
-                    },
-                    {
-                        id: 3,
-                        name: 'Item 3',
-                    },
-                ],
-
                 sector_routes: "",
                 sector_images: "",
                 sector_images_size: "",
@@ -802,8 +789,9 @@
                 value_product_category_id: "",
                 value_mount_id: "",
 
-                show: false,
+                show_sector_modal: false,
                 roles_modal: false,
+                SectorModalClass: 'modal-xxxl',
                 modalClass: '',
 
                 user_role: '',
@@ -1030,9 +1018,9 @@
                 })
             },
             show_sector_model(sector_id){
-                this.show=true
+                this.show_sector_modal=true
 
-                if (this.show==true) {
+                if (this.show_sector_modal==true) {
                     axios
                     .get('/routes_and_sectors/get_routes_for_model/'+ sector_id)
                     .then(response => {
@@ -1151,12 +1139,24 @@
                     error => console.log(error)
                 );
             },
+
+            save_routes_sequence(){
+                console.log(this.sector_routes)
+                axios
+                .post('../routes_and_sectors/routes_sequence/', {
+                    routes_sequence: this.sector_routes,
+                })
+                .then((response)=> { 
+                    this.show_sector_modal = false
+                })
+                .catch(error =>{
+                })
+            },
         }
     }
 </script>
 
 <style scoped>
-
     .tabs {
         display: flex;
         flex-wrap: wrap;

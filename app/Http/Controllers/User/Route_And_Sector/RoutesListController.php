@@ -129,7 +129,7 @@ class RoutesListController extends Controller
 
     public function get_routes_for_model(Request $request)
     {
-        $routes = Route::where('sector_id',strip_tags($request->sector_id))->get();
+        $routes = Route::where('sector_id',strip_tags($request->sector_id))->orderBy('num')->get();
         return( $routes );
     }
 

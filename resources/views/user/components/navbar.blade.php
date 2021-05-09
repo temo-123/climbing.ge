@@ -14,10 +14,9 @@
         <div class="col-xs-12 col-sm-10 col-md-9 col-lg-9">
             <nav class="navbar navbar-default  float-right float-top" role="navigation">
                 <div class="container-fluid">                    
-                    
                     <ul class="dropdown-menu shadows" role="menu" style="width: 100%;">
                         <li>
-                            <form action="eeeee" method="POST" role="search" class="navbar-form">
+                            <form action="" method="POST" role="search" class="navbar-form">
                                 {{csrf_field ()}} 
                                 <div class="form-group" style="display:inline;">
                                 <div class="input-group" style="display:table;">
@@ -35,10 +34,15 @@
                     </ul>
                 </div>
                 <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-                    <ul class="nav navbar-nav pull-right top_menu_buttons">
-                        
-                        <li class="nav navbar-nav pull-right top_menu_buttons">
-                            <a href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">Logout</a>
+                    <ul class="navbar-nav mr-auto nav pull-right top_menu_buttons">
+
+                        @if((Auth::user()->hasRole('admin')) || (Auth::user()->hasRole('manager')))
+                        <li class="nav navbar-nav"> <a class="nav-link" href="{{ route('index') }}" target="_blank">climibng.ge</a> </li>
+                        <li class="nav navbar-nav"> <a class="nav-link" href="{{ route('shop_index') }}" target="_blank">shop.climibng.ge</a> </li>
+                        @endif
+
+                        <li class="nav navbar-nav">
+                            <a href="{{ route('logout') }}" class="nav-link" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">Logout</a>
                         </li>
                         <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
                             {{ csrf_field() }}

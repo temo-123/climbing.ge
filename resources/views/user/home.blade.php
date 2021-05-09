@@ -38,11 +38,13 @@
                         <div class="card">
                             <div class="card-header">Sites index pages</div>
                             <div class="card-body">
-                                <div class="col-md-6">
-                                    <a href='{{ route('index') }}'>climbing.ge</a>
-                                </div>
-                                <div class="col-md-6">
-                                    <a href='{{ route('shop_index') }}'>shop.climibng.ge</a>
+                                <div class="row">
+                                    <div class="col-sm-6 col-md-6 col-lg-6">
+                                        <a href='{{ route('index') }}' target="_blank">climbing.ge</a>
+                                    </div>
+                                    <div class="col-sm-6 col-md-6 col-lg-6">
+                                        <a href='{{ route('shop_index') }}' target="_blank">shop.climibng.ge</a>
+                                    </div>
                                 </div>
                             </div>
                         </div>

@@ -99,6 +99,8 @@ Route::group(['prefix' => LocalisationService::locale(),'middleware' => 'setLoca
                         Route::get('/', ['uses'=>'RoutesListController@index', 'as'=>'routes_and_sectors']);
                         Route::match(['post'],'/routesNumEdit', ['uses'=>'RoutesListController@store', 'as'=>'routesNumEdit']);
                         Route::any('/get_region_data', 'RoutesListController@get_region_data');
+                        Route::any('/get_route_data', 'RoutesListController@get_route_data');
+                        Route::any('/get_routes_for_model/{sector_id}', 'RoutesListController@get_routes_for_model');
                         
                         Route::match(['get','post'], '/sector_add_form', ['uses'=>'SectorController@add_form','as'=>'sectorAddForm']);
                         Route::match(['get','post'], '/sector_add', ['uses'=>'SectorController@add','as'=>'sectorAdd']);
@@ -124,8 +126,7 @@ Route::group(['prefix' => LocalisationService::locale(),'middleware' => 'setLoca
                         Route::match(['get', 'post', 'delete'], '/route_edit/{id}', ['uses' => 'RoutesController@edit', 'as'=>'routeEdit']);
                         Route::match(['get', 'post', 'delete'], '/route_delete/{id}', ['uses' => 'RoutesController@delete', 'as'=>'routeDel']);
                         Route::any('/get_route_editing_data/{id}', 'RoutesController@get_route_editing_data');
-                        Route::any('/get_route_data', 'RoutesListController@get_route_data');
-                        Route::any('/get_routes_for_model/{sector_id}', 'RoutesListController@get_routes_for_model');
+                        Route::any('/routes_sequence', 'RoutesController@routes_sequence');
 
                         Route::match(['get','post'], '/mtp_add', ['uses'=>'MtpController@add_mtp','as'=>'mtpAdd']);
                         Route::match(['get', 'post', 'delete'], '/mtp_edit_form/{id}', ['uses' => 'MtpController@edit_mtp_form', 'as'=>'mtpEditForm']);

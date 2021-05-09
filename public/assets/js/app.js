@@ -4013,8 +4013,11 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
  //https://github.com/Jexordexan/vue-slicksort
 
+ //https://innologica.github.io/vue-stackable-modal/#sample-css
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   components: {
@@ -4095,16 +4098,6 @@ __webpack_require__.r(__webpack_exports__);
     return {
       product_categorys: '',
       products: '',
-      items: [{
-        id: 1,
-        name: 'Item 1'
-      }, {
-        id: 2,
-        name: 'Item 2'
-      }, {
-        id: 3,
-        name: 'Item 3'
-      }],
       sector_routes: "",
       sector_images: "",
       sector_images_size: "",
@@ -4123,8 +4116,9 @@ __webpack_require__.r(__webpack_exports__);
       value_region_id: "",
       value_product_category_id: "",
       value_mount_id: "",
-      show: false,
+      show_sector_modal: false,
       roles_modal: false,
+      SectorModalClass: 'modal-xxxl',
       modalClass: '',
       user_role: '',
       parmision_error: '',
@@ -4333,9 +4327,9 @@ __webpack_require__.r(__webpack_exports__);
     show_sector_model: function show_sector_model(sector_id) {
       var _this17 = this;
 
-      this.show = true;
+      this.show_sector_modal = true;
 
-      if (this.show == true) {
+      if (this.show_sector_modal == true) {
         axios.get('/routes_and_sectors/get_routes_for_model/' + sector_id).then(function (response) {
           _this17.sector_routes = response.data; // console.log(this.sector_routes);
         })["catch"](function (error) {
@@ -4432,6 +4426,16 @@ __webpack_require__.r(__webpack_exports__);
       })["catch"](function (error) {
         return console.log(error);
       });
+    },
+    save_routes_sequence: function save_routes_sequence() {
+      var _this27 = this;
+
+      console.log(this.sector_routes);
+      axios.post('../routes_and_sectors/routes_sequence/', {
+        routes_sequence: this.sector_routes
+      }).then(function (response) {
+        _this27.show_sector_modal = false;
+      })["catch"](function (error) {});
     }
   }
 });
@@ -51704,10 +51708,11 @@ var render = function() {
         "stack-modal",
         {
           attrs: {
-            show: _vm.show,
-            title: "kkk",
-            "modal-class": ((_obj = {}), (_obj[_vm.modalClass] = true), _obj),
-            saveButton: { visible: false },
+            show: _vm.show_sector_modal,
+            title: "Sector",
+            "modal-class":
+              ((_obj = {}), (_obj[_vm.SectorModalClass] = true), _obj),
+            saveButton: { visible: true },
             cancelButton: {
               title: "Close",
               btnClass: { "btn btn-primary": true }
@@ -51715,7 +51720,7 @@ var render = function() {
           },
           on: {
             close: function($event) {
-              _vm.show = false
+              _vm.show_sector_modal = false
             }
           }
         },
@@ -51758,11 +51763,11 @@ var render = function() {
                         staticStyle: { width: "100%" },
                         attrs: { lockAxis: "y", tag: "table" },
                         model: {
-                          value: _vm.items,
+                          value: _vm.sector_routes,
                           callback: function($$v) {
-                            _vm.items = $$v
+                            _vm.sector_routes = $$v
                           },
-                          expression: "items"
+                          expression: "sector_routes"
                         }
                       },
                       [
@@ -51780,6 +51785,10 @@ var render = function() {
                           _c("td", [_vm._v("Height")]),
                           _vm._v("\n                                "),
                           _c("td", [_vm._v("Bolts")]),
+                          _vm._v("\n                                "),
+                          _c("td", [_vm._v("Bolter")]),
+                          _vm._v("\n                                "),
+                          _c("td", [_vm._v("First ascent")]),
                           _vm._v("\n                            ")
                         ]),
                         _vm._v("\n                            "),
@@ -51791,7 +51800,7 @@ var render = function() {
                               _vm._v("\n                                "),
                               _c("td", [_vm._v(_vm._s(route.id))]),
                               _vm._v("\n                                "),
-                              _c("td", [_vm._v("num")]),
+                              _c("td", [_vm._v(_vm._s(route.num))]),
                               _vm._v("\n                                "),
                               _c("td", [_vm._v(_vm._s(route.name))]),
                               _vm._v("\n                                "),
@@ -51800,6 +51809,10 @@ var render = function() {
                               _c("td", [_vm._v(_vm._s(route.height))]),
                               _vm._v("\n                                "),
                               _c("td", [_vm._v(_vm._s(route.bolts))]),
+                              _vm._v("\n                                "),
+                              _c("td", [_vm._v(_vm._s(route.bolter))]),
+                              _vm._v("\n                                "),
+                              _c("td", [_vm._v(_vm._s(route.first_ascent))]),
                               _vm._v("\n                            ")
                             ]
                           )
@@ -51817,6 +51830,24 @@ var render = function() {
               _vm._v("\n            ")
             ]),
             _vm._v("\n        ")
+          ]),
+          _vm._v(" "),
+          _c("div", { attrs: { slot: "modal-footer" }, slot: "modal-footer" }, [
+            _c("div", { staticClass: "modal-footer" }, [
+              _c(
+                "button",
+                {
+                  class: { "btn btn-primary": true },
+                  attrs: { type: "button" },
+                  on: {
+                    click: function($event) {
+                      return _vm.save_routes_sequence()
+                    }
+                  }
+                },
+                [_vm._v("\n                Save\n                ")]
+              )
+            ])
           ])
         ]
       ),

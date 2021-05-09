@@ -221,7 +221,9 @@
             {{-- </div> --}}
             <div class="row">
               @if ($global_product->quantity != NULL && $global_product->quantity <= 3)
-                <h2 style=""><strong style="color: #f70000; text-align: center !important;">Limited quantity ( @if($global_product->quantity == 1) 1 @else 3 > @endif )</strong></h2>
+                <h3 style=""><strong style="color: #df9800; text-align: center !important;">@lang('shop.limited quantity')( @if($global_product->quantity == 1) 1 @else 3 > @endif )</strong></h3>
+              @elseif ($global_product->quantity != NULL && $global_product->quantity == 3)
+                <h3 style=""><strong style="color: #f70000; text-align: center !important;">@lang('shop.out of stock') ( @if($global_product->quantity == 1) 1 @else 3 > @endif )</strong></h3>
               @endif
             </div>
           </div>

@@ -17,10 +17,14 @@ class RoutesController extends Controller
 
         if ($request -> isMethod('post')) {
             $this->route_validate($request);
-
+            
+            $sector_route_count = Route::where('sector_id',strip_tags($request->sector_id))->count();
+            $new_route_num = $sector_route_count+1;
+            // dd($new_route_num);
             $article = new Route();
 
             $article['sector_id']=$request->sector_id;
+            $article['num']=$new_route_num;
             $article['grade']=$request->grade;
             $article['or_grade']=$request->or_grade; 
             $article['name']=$request->name;
@@ -108,11 +112,11 @@ class RoutesController extends Controller
     public function delete(Request $request)
     {
         if ($request->isMethod('post')) {
-            $sector_id=$request->id;
+            $route_id=$request->id;
 
-            $sector = Route::where('id',strip_tags($sector_id))->first();
+            $route = Route::where('id',strip_tags($route_id))->first();
 
-            // dd($sector);
+            // dd($route);
 
             // delete product file
             // $fileName = $არტიცლე['image'];
@@ -120,10 +124,22 @@ class RoutesController extends Controller
             // File::delete($destinationPath.$fileName);
 
             // delete product from db
-            $sector ->delete();
+            $route ->delete();
         }
     }
 
+    public function routes_sequence(Request $request)
+    {
+        $route_num = 0;
+        foreach ($request->routes_sequence as $route) {
+            $route_id = $route['id'];
+            $route = Route::where('id',strip_tags($route_id))->first();
+            $route_num++;
+            $route['num'] = $route_num;
+            $route->update();
+        }
+        // dd($request->routes_sequence);
+    }
 
     private function route_validate($request)
     {

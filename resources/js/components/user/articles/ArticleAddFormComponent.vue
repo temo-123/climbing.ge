@@ -599,14 +599,6 @@
                 ru_price_from: "",
                 ru_meta_keyword: "",
 
-
-                //
-                //
-                //
-                // is_global_article_succes: 0,
-                // is_us_article_succes: 0,
-                // is_ru_article_succes: 0,
-                // is_ka_article_succes: 0,
                 temporary_article_id: '',
             }
         },

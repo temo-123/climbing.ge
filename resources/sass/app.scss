@@ -2045,26 +2045,207 @@ border: 1px solid;}
 .center {
     margin-top:50px;   
 }
-.modal-header {
-    padding-bottom: 5px;
+// .modal-header {
+//     padding-bottom: 5px;
+// }
+
+// .modal-footer {
+//     padding: 0;
+// }   
+// .modal-footer .btn-group button {
+//     height:40px;
+//     border-top-left-radius : 0;
+//     border-top-right-radius : 0;
+//     border: none;
+//     border-right: 1px solid #ddd;
+// }
+// .modal-footer .btn-group:last-child > button {
+//     border-right: 0;
+// }
+// .modal-backdrop {
+//     z-index: 0;
+// }
+
+
+
+/*
+*
+*	Vue.js modal
+*   https://innologica.github.io/vue-stackable-modal/#sample-css#
+*
+*/
+/*
+*
+* 
+* Vue mobal style
+*
+*/
+$modal-xl: 900px;
+$modal-xxl: 1040px;
+$modal-xxxl: 1180px;
+$modal-90per: 90%;
+
+@media (min-width: 768px) {
+  .modal-xl {
+    max-width: $modal-xl !important;;
+  }
+  .modal-xxl {
+    max-width: $modal-xxl !important;;
+  }
+  .modal-xxxl{
+    max-width: $modal-xxxl !important;;
+  }
+  .modal-90per {
+    max-width: $modal-90per !important;;
+  }
 }
 
-.modal-footer {
+.modal-fullscreen {
+  max-width: 100%;
+  width: 100%;
+  margin: 0;
+  height: 100%;
+
+  .modal-body {
     padding: 0;
-}   
-.modal-footer .btn-group button {
-    height:40px;
-    border-top-left-radius : 0;
-    border-top-right-radius : 0;
+  }
+
+  .modal-content {
+    height: 100%;
+  }
+
+  &.aside .modal-content {
+    height: auto;
+  }
+
+  &.modal-dialog.aside.modal-stack1 .modal-content {
+    transform: scale(1) translate(0, 0) !important;
+  }
+}
+
+//modal without border
+.modal-dialog.modal-border-0 {
+  .modal-content {
     border: none;
-    border-right: 1px solid #ddd;
+  }
 }
-.modal-footer .btn-group:last-child > button {
-    border-right: 0;
+
+@media screen and (min-width: 800px){
+  .modal-dialog {
+    &.modal-xxl{
+      width: 98%;
+      max-width: 1040px;
+    }
+  }
 }
-.modal-backdrop {
-    z-index: 0;
+
+
+@media screen and (min-width: 640px){
+  .modal-dialog {
+    &.modal-xxl{
+      width: 98%;
+      max-width: 1040px;
+    }
+  }
 }
+
+@media screen and (max-width: 420px){
+  .modal-dialog,
+  .modal-content{
+    overflow: auto;
+  }
+}
+
+// $modal-xl: 900px;
+// $modal-xxl: 1040px;
+// $modal-xxxl: 1180px;
+// $modal-90per: 90%;
+
+// @media (min-width: 768px) {
+//   .modal-xl {
+//     max-width: $modal-xl;
+//   }
+//   .modal-xxl {
+//     max-width: $modal-xxl;
+//   }
+//   .modal-xxxl{
+//     max-width: $modal-xxxl;
+//   }
+//   .modal-90per {
+//     max-width: $modal-90per;
+//   }
+// }
+
+// @media (min-width: 768px) {
+//     .modal-xl {
+//         max-width: 900px;
+//     }
+//     .modal-xxl {
+//         max-width: 1040px;
+//     }
+//     .modal-xxxl{
+//         max-width: 1180px;
+//     }
+//     .modal-90per {
+//         max-width: 90%;
+//     }
+// }
+
+// .modal-fullscreen {
+//   max-width: 100%;
+//   width: 100%;
+//   margin: 0;
+//   height: 100%;
+
+//   .modal-body {
+//     padding: 0;
+//   }
+
+//   .modal-content {
+//     height: 100%;
+//   }
+
+//   &.aside .modal-content {
+//     height: auto;
+//   }
+
+//   &.modal-dialog.aside.modal-stack1 .modal-content {
+//     transform: scale(1) translate(0, 0) !important;
+//   }
+// }
+
+// //modal without border
+// .modal-dialog.modal-border-0 {
+//   .modal-content {
+//     border: none;
+//   }
+// }
+
+// @media screen and (min-width: 800px){
+//   .modal-dialog {
+//     &.modal-xxl{
+//       width: 98%;
+//       max-width: 1040px;
+//     }
+//   }
+// }
+
+
+// @media screen and (min-width: 640px){
+//   .modal-dialog {
+//     &.modal-xxl{
+//       width: 98%;
+//       max-width: 1040px;
+//     }
+//   }
+// }
+
+// @media screen and (max-width: 420px){
+//   .modal-dialog,
+//   .modal-content{
+//     overflow: auto;
+//   }
+// }
 
 
 
@@ -3308,87 +3489,7 @@ border: 1px solid;}
   }
 }
 
-/*
-*
-* 
-* Vue mobal style
-*
-*/
-$modal-xl: 900px;
-$modal-xxl: 1040px;
-$modal-xxxl: 1180px;
-$modal-90per: 90%;
 
-@media (min-width: 768px) {
-  .modal-xl {
-    max-width: $modal-xl;
-  }
-  .modal-xxl {
-    max-width: $modal-xxl;
-  }
-  .modal-xxxl{
-    max-width: $modal-xxxl;
-  }
-  .modal-90per {
-    max-width: $modal-90per;
-  }
-}
-
-.modal-fullscreen {
-  max-width: 100%;
-  width: 100%;
-  margin: 0;
-  height: 100%;
-
-  .modal-body {
-    padding: 0;
-  }
-
-  .modal-content {
-    height: 100%;
-  }
-
-  &.aside .modal-content {
-    height: auto;
-  }
-
-  &.modal-dialog.aside.modal-stack1 .modal-content {
-    transform: scale(1) translate(0, 0) !important;
-  }
-}
-
-//modal without border
-.modal-dialog.modal-border-0 {
-  .modal-content {
-    border: none;
-  }
-}
-
-@media screen and (min-width: 800px){
-  .modal-dialog {
-    &.modal-xxl{
-      width: 98%;
-      max-width: 1040px;
-    }
-  }
-}
-
-
-@media screen and (min-width: 640px){
-  .modal-dialog {
-    &.modal-xxl{
-      width: 98%;
-      max-width: 1040px;
-    }
-  }
-}
-
-@media screen and (max-width: 420px){
-  .modal-dialog,
-  .modal-content{
-    overflow: auto;
-  }
-}
 
 
 

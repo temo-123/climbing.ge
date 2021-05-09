@@ -23,8 +23,20 @@
                         @slot('parent') Home @endslot
                         @slot('active') {{$active}} @endslot
                     @endcomponent
-
-
+                    
+                    @if ($table_1_name == 'Mount routes')
+                        <h4><a target="_blank" href="{{ route('mount_list') }}">Mountain route list on general site</a></h4>
+                    @elseif ($table_1_name == 'Products')
+                        <h4><a target="_blank" href="{{ route('shop_index') }}">Products list on general site</a></h4>
+                    @elseif ($table_1_name == 'Services')
+                        <h4><a target="_blank" href="{{ route('services') }}">Services list on general site</a></h4>
+                    @else
+                    {{-- {{ dd($table_1_name) }} --}}
+                        @if($table_1_name != 'Sector' && $table_1_name != 'Gallery' && $table_1_name != 'Users')
+                            <h4><a target="_blank" href="{{ route($table_1_add_category.'_list') }}">Article list on general site</a></h4>
+                        @endif
+                    @endif
+                    
                     <tabs_component 
                         @if(isset($table_1_get_route)) table_1_get_route={{ $table_1_get_route }} @endif
                         @if(isset($table_2_get_route)) table_2_get_route={{ $table_2_get_route }} @endif

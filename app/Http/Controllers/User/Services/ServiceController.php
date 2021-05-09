@@ -21,7 +21,7 @@ class ServiceController extends Controller
         if (view()->exists('user.data_table')) {
             $data = [
                 'table_1'=>'services',
-    		    'table_1_name' => 'services',
+    		    'table_1_name' => 'Services',
     		    'table_1_add_url'=>'serviceAddPage',
 				'table_1_edit_url'=>'services/edit_service/',
 				'table_1_get_route'=>'services/get_service_data',
