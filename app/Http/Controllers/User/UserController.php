@@ -127,6 +127,7 @@ class UserController extends Controller
         $user = user::find($request->user_id);
         $role = Role::where('name', '=', $request->parmission)->get();
         $user_role = User_role::where('user_id', '=', $request->user_id)->first();
+        // dd($role[0]->id);
         if($user_role){
             $user_role->role_id = $role[0]->id;
             $user_role->save();
@@ -180,11 +181,13 @@ class UserController extends Controller
     
     public function get_role(Request $request)
     {
-        // $user_roles = User_role::where('user_id','=',$request->user_id)->first();
-        // $role = Role::where('id','=',$user_roles->role_id)->first();
-        // return $user_roles->id;
-        $test = "infinity loop error";
-        return $test;
+        
+            $user_roles = User_role::get();
+            // $role = Role::where('id','=',$user_roles->role_id)->first();
+            return $user_roles;
+        
+        // $test = "infinity loop error";
+        // return $test;
     }
 
     public function destroy(user $user, Request $request)
@@ -202,7 +205,7 @@ class UserController extends Controller
     public function validate_parmission($request)
     {
         $request->validate([
-            'user_new_parmission' => 'required',
+            'parmission' => 'required',
         ]);
     }
 

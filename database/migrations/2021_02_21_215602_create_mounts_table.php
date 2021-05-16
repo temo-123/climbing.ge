@@ -21,9 +21,9 @@ class CreateMountsTable extends Migration
             $table->string('name_ru')->nullable();
             $table->string('name_ka')->nullable();
             
-            $table->string('description')->nullable();
-            $table->string('description_ru')->nullable();
-            $table->string('description_ka')->nullable();
+            $table->string('short_description')->nullable();
+            $table->string('short_description_ru')->nullable();
+            $table->string('short_description_ka')->nullable();
             
             $table->text('text')->nullable();
             $table->text('text_ru')->nullable();

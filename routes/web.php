@@ -141,6 +141,8 @@ Route::group(['prefix' => LocalisationService::locale(),'middleware' => 'setLoca
                         Route::match(['get', 'post', 'delete'], '/mtp_pitch_delete/{id}', ['uses' => 'MtpController@delete_pitch', 'as'=>'mtpPitchDel']);
                         Route::any('/get_mtp_pitch_editing_data/{id}', 'MtpController@get_mtp_pitch_editing_data');
                         Route::any('/get_mtp_pitch_data', 'RoutesListController@get_mtp_pitch_data');
+                        Route::any('/get_mtp_pitch_for_modal/{mtp_id}', 'MtpController@get_mtp_pitch_for_modal');
+                        Route::any('/pitchs_sequence', 'MtpController@pitchs_sequence');
                     }); 
             
 
@@ -274,7 +276,7 @@ Route::group(['prefix' => LocalisationService::locale(),'middleware' => 'setLoca
                         Route::match(['post'], '/del_user/{user_id}', ['uses' => 'UserController@destroy', 'as'=>'userDel']);
 
                         Route::any('/edit_user_permission/{user_id}', 'UserController@edit_user_permission');
-                        Route::any('/get_role/{user_id}', 'UserController@get_role');
+                        Route::any('/get_role', 'UserController@get_role');
 
                         Route::any('/get_all_users_data', 'UserController@get_all_users_data');
                         Route::any('/get_roles_data', 'UserController@get_roles_data');

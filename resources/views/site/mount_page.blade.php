@@ -225,9 +225,9 @@
         @endif
         @endif
 
-        <a href="{{ URL::previous() }}" class='btn'>Go Back</a>
+        <a href="{{ URL::previous() }}" class='btn btn-primary'>Go Back</a>
         @if(isset($all_article_but))
-        <a href="{{ route($all_article_but) }}" class="btn">All Articles</a>
+        <a href="{{ route($all_article_but) }}" class="btn btn-primary">All Articles</a>
         @endif
 
         <!--Comments And Form-->

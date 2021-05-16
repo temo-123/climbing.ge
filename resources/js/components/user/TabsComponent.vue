@@ -199,13 +199,10 @@
                             </td>
                             <td>|</td>
                             <td>{{table_1_info.id}}</td>
-                            <!-- <td v-if="table_1_name == 'Sector'">|</td> -->
-                            <!-- <td v-if="table_1_name == 'Sector'"><button class="btn btn-primary" @click="show=true">+</button></td> -->
                             <td>|</td>
 
                             <td v-if="table_1_name == 'Sector'" >
                                 <a @click="show_sector_model(table_1_info.id)" href="#">{{table_1_info.name}}</a>
-                                <!-- <button class="btn btn-info" @click="show_parmission_edit_madssssel(table_1_info.id)">{{table_1_info.name}}</button> -->
                             </td>
                             <td v-else-if="table_1_name == 'Users'">{{table_1_info.name}} {{table_1_info.surname}}</td>
                             <td v-else>{{table_1_info.url_title}} </td>
@@ -225,9 +222,18 @@
                             <td style='text-align: center;' v-if="table_1_name != 'Sector' && table_1_name != 'Users'">{{table_1_info.published}}</td>
 
                             <td v-if="table_1_name == 'Users'">|</td>
+
                             <th style='text-align: center;' v-if="table_1_name == 'Users'">
-                                {{ get_user_role(table_1_info.id) }}
-                                {{ user_role }}
+                                <div v-for="user_role in user_roles" :key="user_role.id" v-if='user_role.user_id == table_1_info.id'>
+                                    <div v-if="table_2_name == 'Roles'">
+                                        <div v-for="table_2_info in table_2" :key="table_2_info.id" v-if='user_role.role_id == table_2_info.id'>
+                                            {{ table_2_info.name }}
+                                        </div>
+                                    </div>
+                                    <div v-else>
+                                        {{ user_role.role_id }}
+                                    </div>
+                                </div>
                             </th>
                             
                             <td>|</td>
@@ -418,7 +424,10 @@
                             <td>{{table_3_info.id}}</td>
                             <td>|</td>
 
-                            <td v-if="table_3_name == 'Multi-pitch'">{{table_3_info.name}}</td>
+                            <!-- <td v-if="table_3_name == 'Multi-pitch'">{{table_3_info.name}}</td> -->
+                            <td v-if="table_3_name == 'Multi-pitch'">
+                                <a @click="show_mtp_model(table_3_info.id)" href="#">{{table_3_info.name}}</a>
+                            </td>
                             <td v-else>{{table_3_info.title}} </td>
 
                             <td v-if="table_3_name != 'Multi-pitch'">|</td>
@@ -526,7 +535,11 @@
                             <td>{{table_4_info.id}}</td>
 
                             <td>|</td>
-                            <td v-if="table_4_name == 'pitches'">{{table_4_info.name}}</td>
+
+                            <td v-if="table_4_name == 'pitches'">
+                                {{table_4_info.name}}
+                            </td>
+
                             <td v-else>{{table_4_info.title}} </td>
 
                             <td v-if="table_4_name != 'pitches'">|</td>
@@ -642,7 +655,57 @@
                 </div>
             </div>
         </stack-modal>
-        
+
+        <stack-modal
+            :show="show_mtp_modal"
+            title="Multy-pitch"
+            @close="show_mtp_modal=false"
+            :modal-class="{ [SectorModalClass]: true }"
+            :saveButton="{ visible: true }"
+            :cancelButton="{ title: 'Close', btnClass: { 'btn btn-primary': true } }">
+            <pre class="language-vue">
+                <div class="root">
+                    <div class="col-md-12">
+                        <div class="row">
+                            <SlickList lockAxis="y" v-model="mtp_pitch_for_modal" tag="table" style="width: 100%">
+                                <tr>
+                                    <td>ID</td>
+                                    <td>Num</td>
+                                    <td>Name</td>
+                                    <td>Grade</td>
+                                    <td>Height</td>
+                                    <td>Bolts</td>
+                                    <td>Bolter</td>
+                                    <td>First ascent</td>
+                                </tr>
+                                <SlickItem v-for="(pitch, index) in mtp_pitch_for_modal" :index='index' :key="index" tag="tr">
+                                    <td>{{ pitch.id }}</td>
+                                    <td>{{ pitch.num }}</td>
+                                    <td>{{ pitch.name }}</td>
+                                    <td>{{ pitch.grade }}</td>
+                                    <td>{{ pitch.height }}</td>
+                                    <td>{{ pitch.bolts }}</td>
+                                    <td>{{ pitch.bolter }}</td>
+                                    <td>{{ pitch.first_ascent }}</td>
+                                </SlickItem>
+                            </SlickList>
+                        </div>
+                    </div>
+                </div>
+            </pre>
+            <div slot="modal-footer">
+                <div class="modal-footer">
+                    <button
+                            type="button"
+                            :class="{'btn btn-primary': true}"
+                            @click="save_pitchs_sequence()"
+                        >
+                    Save
+                    </button>
+                </div>
+            </div>
+        </stack-modal>
+
         <stack-modal
                 :show="roles_modal"
                 title="Edit roles"
@@ -658,13 +721,14 @@
                         <option value="ru_menager">English contrnt menager</option> 
                         <option value="ru_menager">Russian contrnt menager</option> 
                         <option value="ka_menager">Georgian contrnt menager</option> 
-                        <option value="menager">Content manager</option>
+                        <option value="manager">Content manager</option>
                         <option value="seller">Seller</option>  
                         <option value="admin">Admin</option> 
                     </select>
-                    <div class="alert alert-danger" role="alert" v-if="is_parmision_error">
-                        {{ parmision_error.user_new_parmission[0] }}
-                    </div>
+                    <!-- <div class="alert alert-danger" role="alert" v-if="is_parmision_error"> -->
+                    <p class="alert alert-danger" role="alert" v-if="is_parmision_error">
+                        {{ parmision_error.parmission[0] }}
+                    </p>
                 </form>
             </pre>
             <div slot="modal-footer">
@@ -672,7 +736,7 @@
                     <button
                             type="button"
                             :class="{'btn btn-primary': true}"
-                            @click="edit_permission(1)"
+                            @click="edit_permission(user_id_for_rditing_parmission)"
                         >
                     Save
                     </button>
@@ -790,11 +854,14 @@
                 value_mount_id: "",
 
                 show_sector_modal: false,
+                show_mtp_modal: false,
                 roles_modal: false,
                 SectorModalClass: 'modal-xxxl',
                 modalClass: '',
 
-                user_role: '',
+                mtp_pitch_for_modal: '',
+
+                user_roles: '',
 
                 parmision_error: '',
                 is_parmision_error: false,
@@ -827,6 +894,11 @@
         },
 
         mounted() {
+            this.get_data_in_table_1();
+            this.get_data_in_table_2();
+            this.get_data_in_table_3();
+            this.get_data_in_table_4();
+
             if (this.table_1_name == 'Sector') {
                 this.get_sectors_data();
                 this.get_region_data();
@@ -842,11 +914,9 @@
                 this.get_mount_route_data();
                 this.get_mount_data();
             }
-
-            this.get_data_in_table_1();
-            this.get_data_in_table_2();
-            this.get_data_in_table_3();
-            this.get_data_in_table_4();
+            if(this.table_1_name == 'Users'){
+                this.get_user_role()
+            }
         },
          
         methods: {
@@ -865,8 +935,6 @@
                     this.table_1 = response.data
                     this.table_1_is_refresh = false
                     this.table_1_reset_id++
-
-                    // this.get_data_in_table_1();
                 })
                 .catch(
                     error => console.log(error)
@@ -989,13 +1057,13 @@
                 this.roles_modal=true;
                 this.user_id_for_rditing_parmission = user_id
             },
-            edit_permission(user_id) {
+            edit_permission(id) {
                 axios
-                .post('users/edit_user_permission/' + this.user_id_for_rditing_parmission, {
+                .post('users/edit_user_permission/' + id, {
                     parmission: this.user_new_parmission,
                 })
-                .then(Response => {
-                    this.roles_modal=false
+                .then((response)=> { 
+                    this.roles_modal = false
                 })
                 .catch(error =>{
                     if (error.response.status == 422) {
@@ -1004,19 +1072,20 @@
                     this.is_parmision_error = true
                 })
             },
-            get_user_role(user_id){
+            get_user_role: function(user_id){
                 axios
-                .post('users/get_role/' + user_id, {
-                    user_id: user_id,
+                .get('users/get_role/', {
+
                 })
                 .then(Response => {
                     console.log(Response.data);
-                    this.user_role = Response.data
+                    this.user_roles = Response.data
                 })
                 .catch(error => {
-                    this.user_role = "error"
+                    // this.user_role = "error"
                 })
             },
+
             show_sector_model(sector_id){
                 this.show_sector_modal=true
 
@@ -1047,7 +1116,23 @@
                     this.sector_images = ""
                 }
             },
+            show_mtp_model(mtp_id){
+                this.show_mtp_modal=true
 
+                if (this.show_mtp_modal==true) {
+                    axios
+                    .get('/routes_and_sectors/get_mtp_pitch_for_modal/'+ mtp_id)
+                    .then(response => {
+                        this.mtp_pitch_for_modal = response.data
+                    })
+                    .catch(
+                        error => console.log(error)
+                    );
+                }
+                else{
+                    this.mtp_pitch_for_modal = ""
+                }
+            },
 
 
             get_routes_data: function() {
@@ -1140,8 +1225,19 @@
                 );
             },
 
+            save_pitchs_sequence(){
+                // console.log(this.mtp_pitch_for_modal);
+                axios
+                .post('../routes_and_sectors/pitchs_sequence/', {
+                    pitchs_sequence: this.mtp_pitch_for_modal,
+                })
+                .then((response)=> { 
+                    this.show_mtp_modal = false
+                })
+                .catch(error =>{
+                })
+            },
             save_routes_sequence(){
-                console.log(this.sector_routes)
                 axios
                 .post('../routes_and_sectors/routes_sequence/', {
                     routes_sequence: this.sector_routes,

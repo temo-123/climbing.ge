@@ -70,8 +70,8 @@
                               <td>{{$route_loop['name']}}</td>
                               <td>{{$route_loop['height']}}</td>
                               <td>{{$route_loop['bolts']}}</td>
-                              <td>{{$route_loop['grade_fr']}}</td>
-                              <td>{{$route_loop['grade_yds']}}</td>
+                              <td>{{$route_loop['grade_fr']}} @if ($route_loop['or_grade_fr'] != NULL) / {{$route_loop['or_grade_fr']}} @endif</td>
+                              <td>{{$route_loop['grade_yds']}} @if ($route_loop['or_grade_yds'] != NULL) / {{$route_loop['or_grade_yds']}} @endif</td>
                         </tr>
                   </tbody>
             @endforeach

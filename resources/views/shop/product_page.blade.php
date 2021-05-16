@@ -143,70 +143,70 @@
                 <div class="col">
                   <div class="swatch clearfix" data-option-index="1">
                     @if($global_product -> color == 'White')
-                    <div data-value="Red" class="swatch-element color white available">
+                    <div data-value="White" class="swatch-element color available">
                       <div class="tooltip">white</div>
                       <label for="swatch-1-white" style="border-color: black;">
                         <span style="background-color: white;"></span>
                       </label>
                     </div>
                     @elseif($global_product -> color == 'Black')
-                    <div data-value="Red" class="swatch-element color black available">
+                    <div data-value="Black" class="swatch-element color available">
                       <div class="tooltip">black</div>
                       <label for="swatch-1-black" style="border-color: black;">
                         <span style="background-color: black;"></span>
                       </label>
                     </div>
                     @elseif($global_product -> color == 'Brown')
-                    <div data-value="Red" class="swatch-element color brown available">
+                    <div data-value="Brown" class="swatch-element color available">
                       <div class="tooltip">brown</div>
                       <label for="swatch-1-brown" style="border-color: brown;">
                         <span style="background-color: brown;"></span>
                       </label>
                     </div>
                     @elseif($global_product -> color == 'Red')
-                    <div data-value="Red" class="swatch-element color red available">
+                    <div data-value="Red" class="swatch-element color available">
                       <div class="tooltip">red</div>
                       <label for="swatch-1-red" style="border-color: red;">
                         <span style="background-color: red;"></span>
                       </label>
                     </div>
                     @elseif($global_product -> color == 'Orange')
-                    <div data-value="Red" class="swatch-element color orange available">
+                    <div data-value="Orange" class="swatch-element color available">
                       <div class="tooltip">orange</div>
                       <label for="swatch-1-orange" style="border-color: orange;">
                         <span style="background-color: orange;"></span>
                       </label>
                     </div>
                     @elseif($global_product -> color == 'Yellow')
-                    <div data-value="Red" class="swatch-element color yellow available">
+                    <div data-value="Yellow" class="swatch-element color available">
                       <div class="tooltip">yellow</div>
                       <label for="swatch-1-yellow" style="border-color: yellow;">
                         <span style="background-color: yellow;"></span>
                       </label>
                     </div>
                     @elseif($global_product -> color == 'Green')
-                    <div data-value="Red" class="swatch-element color green available">
+                    <div data-value="Green" class="swatch-element color available">
                       <div class="tooltip">green</div>
                       <label for="swatch-1-green" style="border-color: green;">
                         <span style="background-color: green;"></span>
                       </label>
                     </div>
                     @elseif($global_product -> color == 'Blue')
-                    <div data-value="Red" class="swatch-element color blue available">
+                    <div data-value="Blue" class="swatch-element color available">
                       <div class="tooltip">blue</div>
                       <label for="swatch-1-blue" style="border-color: blue;">
                         <span style="background-color: blue;"></span>
                       </label>
                     </div>
                     @elseif($global_product -> color == 'Purple')
-                    <div data-value="Red" class="swatch-element color purple available">
+                    <div data-value="Purple" class="swatch-element color available">
                       <div class="tooltip">purple</div>
                       <label for="swatch-1-purple" style="border-color: purple;">
                         <span style="background-color: purple;"></span>
                       </label>
                     </div>
                     @elseif($global_product -> color == 'Grey')
-                    <div data-value="Red" class="swatch-element color grey available">
+                    <div data-value="Grey" class="swatch-element color available">
                       <div class="tooltip">grey</div>
                       <label for="swatch-1-grey" style="border-color: grey;">
                         <span style="background-color: grey;"></span>

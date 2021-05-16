@@ -189,6 +189,10 @@ class OutdoorController extends Controller
                         if ($route['grade'] != NULL) {
                             $grade_yds = $this->get_yds_grade($route);
                         }
+                        $or_grade_yds = 0;
+                        if ($route['or_grade'] != NULL) {
+                            $or_grade_yds = $this->get_yds_grade($route);
+                        }
                         $route_num++;
                         array_push($route_info, 
                             array(
@@ -199,7 +203,9 @@ class OutdoorController extends Controller
                                 "height"=>$route['height'], 
                                 "bolts"=>$route['bolts'], 
                                 "grade_fr"=>$route['grade'],
+                                "or_grade_fr"=>$route['or_grade'],
                                 "grade_yds"=>$grade_yds,
+                                "or_grade_yds"=>$or_grade_yds,
                                 "last_carabin"=>$route['last_carabin'], 
                                 "first_ascent"=>$route['first_ascent'], 
                                 "bolter"=>$route['bolter'], 

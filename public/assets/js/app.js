@@ -4015,6 +4015,70 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
  //https://github.com/Jexordexan/vue-slicksort
 
  //https://innologica.github.io/vue-stackable-modal/#sample-css
@@ -4117,10 +4181,12 @@ __webpack_require__.r(__webpack_exports__);
       value_product_category_id: "",
       value_mount_id: "",
       show_sector_modal: false,
+      show_mtp_modal: false,
       roles_modal: false,
       SectorModalClass: 'modal-xxxl',
       modalClass: '',
-      user_role: '',
+      mtp_pitch_for_modal: '',
+      user_roles: '',
       parmision_error: '',
       is_parmision_error: false,
       num: 0,
@@ -4145,6 +4211,11 @@ __webpack_require__.r(__webpack_exports__);
     };
   },
   mounted: function mounted() {
+    this.get_data_in_table_1();
+    this.get_data_in_table_2();
+    this.get_data_in_table_3();
+    this.get_data_in_table_4();
+
     if (this.table_1_name == 'Sector') {
       this.get_sectors_data();
       this.get_region_data();
@@ -4163,10 +4234,9 @@ __webpack_require__.r(__webpack_exports__);
       this.get_mount_data();
     }
 
-    this.get_data_in_table_1();
-    this.get_data_in_table_2();
-    this.get_data_in_table_3();
-    this.get_data_in_table_4();
+    if (this.table_1_name == 'Users') {
+      this.get_user_role();
+    }
   },
   methods: {
     get_data_in_table_1: function get_data_in_table_1() {
@@ -4183,7 +4253,7 @@ __webpack_require__.r(__webpack_exports__);
       axios.get(this.url_1).then(function (response) {
         _this7.table_1 = response.data;
         _this7.table_1_is_refresh = false;
-        _this7.table_1_reset_id++; // this.get_data_in_table_1();
+        _this7.table_1_reset_id++;
       })["catch"](function (error) {
         return console.log(error);
       });
@@ -4297,12 +4367,12 @@ __webpack_require__.r(__webpack_exports__);
       this.roles_modal = true;
       this.user_id_for_rditing_parmission = user_id;
     },
-    edit_permission: function edit_permission(user_id) {
+    edit_permission: function edit_permission(id) {
       var _this15 = this;
 
-      axios.post('users/edit_user_permission/' + this.user_id_for_rditing_parmission, {
+      axios.post('users/edit_user_permission/' + id, {
         parmission: this.user_new_parmission
-      }).then(function (Response) {
+      }).then(function (response) {
         _this15.roles_modal = false;
       })["catch"](function (error) {
         if (error.response.status == 422) {
@@ -4315,13 +4385,10 @@ __webpack_require__.r(__webpack_exports__);
     get_user_role: function get_user_role(user_id) {
       var _this16 = this;
 
-      axios.post('users/get_role/' + user_id, {
-        user_id: user_id
-      }).then(function (Response) {
+      axios.get('users/get_role/', {}).then(function (Response) {
         console.log(Response.data);
-        _this16.user_role = Response.data;
-      })["catch"](function (error) {
-        _this16.user_role = "error";
+        _this16.user_roles = Response.data;
+      })["catch"](function (error) {// this.user_role = "error"
       });
     },
     show_sector_model: function show_sector_model(sector_id) {
@@ -4346,95 +4413,119 @@ __webpack_require__.r(__webpack_exports__);
         this.sector_images = "";
       }
     },
-    get_routes_data: function get_routes_data() {
+    show_mtp_model: function show_mtp_model(mtp_id) {
       var _this18 = this;
 
+      this.show_mtp_modal = true;
+
+      if (this.show_mtp_modal == true) {
+        axios.get('/routes_and_sectors/get_mtp_pitch_for_modal/' + mtp_id).then(function (response) {
+          _this18.mtp_pitch_for_modal = response.data;
+        })["catch"](function (error) {
+          return console.log(error);
+        });
+      } else {
+        this.mtp_pitch_for_modal = "";
+      }
+    },
+    get_routes_data: function get_routes_data() {
+      var _this19 = this;
+
       axios.get("../routes_and_sectors/get_route_data").then(function (response) {
-        _this18.routes = response.data; // console.log(this.routes.[0].id);
+        _this19.routes = response.data; // console.log(this.routes.[0].id);
       })["catch"](function (error) {
         return console.log(error);
       });
     },
     get_sectors_data: function get_sectors_data() {
-      var _this19 = this;
+      var _this20 = this;
 
       axios.get("../routes_and_sectors/get_sector_data").then(function (response) {
-        _this19.sectors = response.data;
+        _this20.sectors = response.data;
       })["catch"](function (error) {
         return console.log(error);
       });
     },
     get_region_data: function get_region_data() {
-      var _this20 = this;
+      var _this21 = this;
 
       axios.get("../routes_and_sectors/get_region_data").then(function (response) {
-        _this20.regions = response.data;
+        _this21.regions = response.data;
       })["catch"](function (error) {
         return console.log(error);
       });
     },
     get_MTP_data: function get_MTP_data() {
-      var _this21 = this;
+      var _this22 = this;
 
       axios.get("../routes_and_sectors/get_mtp_data").then(function (response) {
-        _this21.MTPs = response.data;
+        _this22.MTPs = response.data;
       })["catch"](function (error) {
         return console.log(error);
       });
     },
     get_MTP_pitch_data: function get_MTP_pitch_data() {
-      var _this22 = this;
+      var _this23 = this;
 
       axios.get("../routes_and_sectors/get_mtp_pitch_data").then(function (response) {
-        _this22.MTP_pitchs = response.data;
+        _this23.MTP_pitchs = response.data;
       })["catch"](function (error) {
         return console.log(error);
       });
     },
     get_product_category_data: function get_product_category_data() {
-      var _this23 = this;
+      var _this24 = this;
 
       axios.get("../products/get_product_category_data").then(function (response) {
-        _this23.product_categorys = response.data;
+        _this24.product_categorys = response.data;
       })["catch"](function (error) {
         return console.log(error);
       });
     },
     get_product_data: function get_product_data() {
-      var _this24 = this;
+      var _this25 = this;
 
       axios.get("../products/get_product_data").then(function (response) {
-        _this24.products = response.data;
+        _this25.products = response.data;
       })["catch"](function (error) {
         return console.log(error);
       });
     },
     get_mount_route_data: function get_mount_route_data() {
-      var _this25 = this;
+      var _this26 = this;
 
       axios.get("../articles/get_article_data/mount_route").then(function (response) {
-        _this25.mount_routes = response.data;
+        _this26.mount_routes = response.data;
       })["catch"](function (error) {
         return console.log(error);
       });
     },
     get_mount_data: function get_mount_data() {
-      var _this26 = this;
+      var _this27 = this;
 
       axios.get("../mountaineering/get_mount_data").then(function (response) {
-        _this26.mounts = response.data;
+        _this27.mounts = response.data;
       })["catch"](function (error) {
         return console.log(error);
       });
     },
-    save_routes_sequence: function save_routes_sequence() {
-      var _this27 = this;
+    save_pitchs_sequence: function save_pitchs_sequence() {
+      var _this28 = this;
 
-      console.log(this.sector_routes);
+      // console.log(this.mtp_pitch_for_modal);
+      axios.post('../routes_and_sectors/pitchs_sequence/', {
+        pitchs_sequence: this.mtp_pitch_for_modal
+      }).then(function (response) {
+        _this28.show_mtp_modal = false;
+      })["catch"](function (error) {});
+    },
+    save_routes_sequence: function save_routes_sequence() {
+      var _this29 = this;
+
       axios.post('../routes_and_sectors/routes_sequence/', {
         routes_sequence: this.sector_routes
       }).then(function (response) {
-        _this27.show_sector_modal = false;
+        _this29.show_sector_modal = false;
       })["catch"](function (error) {});
     }
   }
@@ -49911,7 +50002,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "render", function() { return render; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
 var render = function() {
-  var _obj, _obj$1
+  var _obj, _obj$1, _obj$2
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
@@ -50664,17 +50755,47 @@ var render = function() {
                               ? _c(
                                   "th",
                                   { staticStyle: { "text-align": "center" } },
-                                  [
-                                    _vm._v(
-                                      "\n                            " +
-                                        _vm._s(
-                                          _vm.get_user_role(table_1_info.id)
-                                        ) +
-                                        "\n                            " +
-                                        _vm._s(_vm.user_role) +
-                                        "\n                        "
-                                    )
-                                  ]
+                                  _vm._l(_vm.user_roles, function(user_role) {
+                                    return user_role.user_id == table_1_info.id
+                                      ? _c("div", { key: user_role.id }, [
+                                          _vm.table_2_name == "Roles"
+                                            ? _c(
+                                                "div",
+                                                _vm._l(_vm.table_2, function(
+                                                  table_2_info
+                                                ) {
+                                                  return user_role.role_id ==
+                                                    table_2_info.id
+                                                    ? _c(
+                                                        "div",
+                                                        {
+                                                          key: table_2_info.id
+                                                        },
+                                                        [
+                                                          _vm._v(
+                                                            "\n                                        " +
+                                                              _vm._s(
+                                                                table_2_info.name
+                                                              ) +
+                                                              "\n                                    "
+                                                          )
+                                                        ]
+                                                      )
+                                                    : _vm._e()
+                                                }),
+                                                0
+                                              )
+                                            : _c("div", [
+                                                _vm._v(
+                                                  "\n                                    " +
+                                                    _vm._s(user_role.role_id) +
+                                                    "\n                                "
+                                                )
+                                              ])
+                                        ])
+                                      : _vm._e()
+                                  }),
+                                  0
                                 )
                               : _vm._e(),
                             _vm._v(" "),
@@ -51245,7 +51366,22 @@ var render = function() {
                             _c("td", [_vm._v("|")]),
                             _vm._v(" "),
                             _vm.table_3_name == "Multi-pitch"
-                              ? _c("td", [_vm._v(_vm._s(table_3_info.name))])
+                              ? _c("td", [
+                                  _c(
+                                    "a",
+                                    {
+                                      attrs: { href: "#" },
+                                      on: {
+                                        click: function($event) {
+                                          return _vm.show_mtp_model(
+                                            table_3_info.id
+                                          )
+                                        }
+                                      }
+                                    },
+                                    [_vm._v(_vm._s(table_3_info.name))]
+                                  )
+                                ])
                               : _c("td", [
                                   _vm._v(_vm._s(table_3_info.title) + " ")
                                 ]),
@@ -51545,7 +51681,13 @@ var render = function() {
                             _c("td", [_vm._v("|")]),
                             _vm._v(" "),
                             _vm.table_4_name == "pitches"
-                              ? _c("td", [_vm._v(_vm._s(table_4_info.name))])
+                              ? _c("td", [
+                                  _vm._v(
+                                    "\n                            " +
+                                      _vm._s(table_4_info.name) +
+                                      "\n                        "
+                                  )
+                                ])
                               : _c("td", [
                                   _vm._v(_vm._s(table_4_info.title) + " ")
                                 ]),
@@ -51856,10 +51998,137 @@ var render = function() {
         "stack-modal",
         {
           attrs: {
+            show: _vm.show_mtp_modal,
+            title: "Multy-pitch",
+            "modal-class":
+              ((_obj$1 = {}), (_obj$1[_vm.SectorModalClass] = true), _obj$1),
+            saveButton: { visible: true },
+            cancelButton: {
+              title: "Close",
+              btnClass: { "btn btn-primary": true }
+            }
+          },
+          on: {
+            close: function($event) {
+              _vm.show_mtp_modal = false
+            }
+          }
+        },
+        [
+          _c("pre", { staticClass: "language-vue" }, [
+            _vm._v("            "),
+            _c("div", { staticClass: "root" }, [
+              _vm._v("\n                "),
+              _c("div", { staticClass: "col-md-12" }, [
+                _vm._v("\n                    "),
+                _c(
+                  "div",
+                  { staticClass: "row" },
+                  [
+                    _vm._v("\n                        "),
+                    _c(
+                      "SlickList",
+                      {
+                        staticStyle: { width: "100%" },
+                        attrs: { lockAxis: "y", tag: "table" },
+                        model: {
+                          value: _vm.mtp_pitch_for_modal,
+                          callback: function($$v) {
+                            _vm.mtp_pitch_for_modal = $$v
+                          },
+                          expression: "mtp_pitch_for_modal"
+                        }
+                      },
+                      [
+                        _vm._v("\n                            "),
+                        _c("tr", [
+                          _vm._v("\n                                "),
+                          _c("td", [_vm._v("ID")]),
+                          _vm._v("\n                                "),
+                          _c("td", [_vm._v("Num")]),
+                          _vm._v("\n                                "),
+                          _c("td", [_vm._v("Name")]),
+                          _vm._v("\n                                "),
+                          _c("td", [_vm._v("Grade")]),
+                          _vm._v("\n                                "),
+                          _c("td", [_vm._v("Height")]),
+                          _vm._v("\n                                "),
+                          _c("td", [_vm._v("Bolts")]),
+                          _vm._v("\n                                "),
+                          _c("td", [_vm._v("Bolter")]),
+                          _vm._v("\n                                "),
+                          _c("td", [_vm._v("First ascent")]),
+                          _vm._v("\n                            ")
+                        ]),
+                        _vm._v("\n                            "),
+                        _vm._l(_vm.mtp_pitch_for_modal, function(pitch, index) {
+                          return _c(
+                            "SlickItem",
+                            { key: index, attrs: { index: index, tag: "tr" } },
+                            [
+                              _vm._v("\n                                "),
+                              _c("td", [_vm._v(_vm._s(pitch.id))]),
+                              _vm._v("\n                                "),
+                              _c("td", [_vm._v(_vm._s(pitch.num))]),
+                              _vm._v("\n                                "),
+                              _c("td", [_vm._v(_vm._s(pitch.name))]),
+                              _vm._v("\n                                "),
+                              _c("td", [_vm._v(_vm._s(pitch.grade))]),
+                              _vm._v("\n                                "),
+                              _c("td", [_vm._v(_vm._s(pitch.height))]),
+                              _vm._v("\n                                "),
+                              _c("td", [_vm._v(_vm._s(pitch.bolts))]),
+                              _vm._v("\n                                "),
+                              _c("td", [_vm._v(_vm._s(pitch.bolter))]),
+                              _vm._v("\n                                "),
+                              _c("td", [_vm._v(_vm._s(pitch.first_ascent))]),
+                              _vm._v("\n                            ")
+                            ]
+                          )
+                        }),
+                        _vm._v("\n                        ")
+                      ],
+                      2
+                    ),
+                    _vm._v("\n                    ")
+                  ],
+                  1
+                ),
+                _vm._v("\n                ")
+              ]),
+              _vm._v("\n            ")
+            ]),
+            _vm._v("\n        ")
+          ]),
+          _vm._v(" "),
+          _c("div", { attrs: { slot: "modal-footer" }, slot: "modal-footer" }, [
+            _c("div", { staticClass: "modal-footer" }, [
+              _c(
+                "button",
+                {
+                  class: { "btn btn-primary": true },
+                  attrs: { type: "button" },
+                  on: {
+                    click: function($event) {
+                      return _vm.save_pitchs_sequence()
+                    }
+                  }
+                },
+                [_vm._v("\n                Save\n                ")]
+              )
+            ])
+          ])
+        ]
+      ),
+      _vm._v(" "),
+      _c(
+        "stack-modal",
+        {
+          attrs: {
             show: _vm.roles_modal,
             title: "Edit roles",
             "modal-class":
-              ((_obj$1 = {}), (_obj$1[_vm.modalClass] = true), _obj$1),
+              ((_obj$2 = {}), (_obj$2[_vm.modalClass] = true), _obj$2),
             saveButton: {
               visible: true,
               title: "Save",
@@ -51926,7 +52195,7 @@ var render = function() {
                     _vm._v("Georgian contrnt menager")
                   ]),
                   _vm._v(" \n                    "),
-                  _c("option", { attrs: { value: "menager" } }, [
+                  _c("option", { attrs: { value: "manager" } }, [
                     _vm._v("Content manager")
                   ]),
                   _vm._v("\n                    "),
@@ -51941,9 +52210,10 @@ var render = function() {
                 ]
               ),
               _vm._v("\n                "),
+              _vm._v("\n                "),
               _vm.is_parmision_error
                 ? _c(
-                    "div",
+                    "p",
                     {
                       staticClass: "alert alert-danger",
                       attrs: { role: "alert" }
@@ -51951,7 +52221,7 @@ var render = function() {
                     [
                       _vm._v(
                         "\n                    " +
-                          _vm._s(_vm.parmision_error.user_new_parmission[0]) +
+                          _vm._s(_vm.parmision_error.parmission[0]) +
                           "\n                "
                       )
                     ]
@@ -51971,7 +52241,9 @@ var render = function() {
                   attrs: { type: "button" },
                   on: {
                     click: function($event) {
-                      return _vm.edit_permission(1)
+                      return _vm.edit_permission(
+                        _vm.user_id_for_rditing_parmission
+                      )
                     }
                   }
                 },
