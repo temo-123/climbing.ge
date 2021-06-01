@@ -1822,23 +1822,32 @@ border: 1px solid;}
 }
 
 @media (max-width: 720px){
-    .site_title{display: none;}
+    .site_title{
+        display: none;
+    }
 }
-@media (min-width: 720px){
-    .site_title_mobile{display: none;}
+@media (max-width: 1000px){
+    .site_title{
+        display: none;
+    }
 }
+// @media (min-width: 720px){
+//     .site_title_mobile{
+//         display: none;
+//     }
+// }
 .site_title{
     margin-left: 4%;
     margin-top: 4%;
     color: #fff; 
     font-size: 135%;
 }
-.site_title_mobile{
-    margin-top: 5%;
-    margin-left: 8%;
-    color: #fff;
-    font-size: 160%;
-}
+// .site_title_mobile{
+//     margin-top: 5%;
+//     margin-left: 8%;
+//     color: #fff;
+//     font-size: 160%;
+// }
 
 
 @media (max-width: 720px){

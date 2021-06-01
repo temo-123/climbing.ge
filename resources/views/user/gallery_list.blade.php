@@ -51,16 +51,28 @@
 
                                             <div class="caption">
                                                 <div class="row">
-                                                    <h3> {{$tab_1->title}} </h3>
-                                                </div>
-                                                <div class="row">
                                                     <form method="post" action="{{route('galleryDel',[$tab_1->id])}}">
                                                         {{ method_field('DELETE') }}
                                                         <input type="hidden" name="_token" value="{{ csrf_token() }}">
-                                                            <button type="submit" class="btn btn-danger" onclick="return confirm('Are you sure you want to delete this item')">    
-                                                                Del
-                                                            </button>
+                                                        <button type="submit" class="btn btn-danger" onclick="return confirm('Are you sure you want to delete this item')">    
+                                                            Del
+                                                        </button>
                                                     </form>
+                                                </div>
+                                                <div class="row">
+                                                    <h4> {{$tab_1->title}} </h4>
+                                                </div>
+                                                <div class="row">
+                                                    @if ($tab_1->published == 1)
+                                                        <h5>Public</h5>
+                                                    @else
+                                                        <h5>No public</h5>
+                                                    @endif
+                                                    @if ($tab_1->category == 1)
+                                                        <h6>(Index header image)</h6>
+                                                    @elseif($tab_1->category == 2)
+                                                        <h6>(Gallery image)</h6>
+                                                    @endif
                                                 </div>
                                             </div>
 

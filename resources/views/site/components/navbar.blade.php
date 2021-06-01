@@ -1,10 +1,11 @@
 <div class="header navbar-expand-lg navbar-right bg-light">
     <div class="row navbar-fixed-top top_menu">
-        <div class="col-xs-12 col-sm-2 col-md-3 col-lg-3 ">
+        <div class="col-xs-12 col-sm-2 col-md-3 col-lg-3" style="z-index: 1001;">
             <div class="site_title">
                 <a href="{{ route('index') }}" class="site_title">@lang('site.site name')</a>
             </div>
         </div>
+        {{-- <a href="{{ route('index') }}" class="site_title">@lang('site.site name')</a> --}}
         <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
             <nav class="navbar navbar-default float-top" role="navigation">
                 <div class="container-fluid">

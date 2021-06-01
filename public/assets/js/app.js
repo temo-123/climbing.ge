@@ -6141,7 +6141,8 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       this.upload_region_image();
     },
     if_isset_go_beck: function if_isset_go_beck() {
-      if (this.is_global_article_error == false && this.is_ka_article_error == false && this.is_ru_article_error == false && this.is_us_article_error == false) {// window.location.href = this.back_url;
+      if (this.is_global_article_error == false && this.is_ka_article_error == false && this.is_ru_article_error == false && this.is_us_article_error == false) {
+        window.location.href = this.back_url;
       }
     }
   }

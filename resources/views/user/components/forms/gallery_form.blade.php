@@ -32,16 +32,16 @@
             </div>
         @endif
         @if(isset($data))
-        <form method="POST" action="{{ route('galleryEdit', array($data['id'])) }}"   style="margin-top: 5%;" enctype="multipart/form-data">
+        <form name="contact-form" method="POST" action="{{ route('galleryEdit', array($data['id'])) }}"   style="margin-top: 5%;" enctype="multipart/form-data">
         @else
-        <form method="POST" action="{{ route('galleryAdd') }}"                        style="margin-top: 5%;" enctype="multipart/form-data">
+        <form name="contact-form" method="POST" action="{{ route('galleryAdd') }}"                        style="margin-top: 5%;" enctype="multipart/form-data">
         @endif
 
             @csrf
 
-            <div class="form-group clearfix">
-                <label for="name" class='col-xs-2 control-label'> Publish </label>
-                <div class="col-xs-8">
+            <div class="form-group clearfix row">
+                <label for="name" class='col-md-2 control-label'> Publish </label>
+                <div class="col-md-8">
                     <select class="form-control" name="published" id="published"> 
                         @if (isset($data))
                             <option value="0" @if ($data['published'] == '0') selected="" @endif>Not public</option> 
@@ -54,9 +54,9 @@
                 </div>
             </div>
 
-            <div class="form-group clearfix">
-                <label for="name" class='col-xs-2 control-label'> Category </label>
-                <div class="col-xs-8">
+            <div class="form-group clearfix row">
+                <label for="name" class='col-md-2 control-label'> Category </label>
+                <div class="col-md-8">
                     <select class="form-control" name="category" id="category"  > 
                         @if (isset($data))
                             <option value="1" @if ($data['category'] == '1') selected="" @endif>Index header image</option> 
@@ -69,9 +69,9 @@
                 </div>
             </div>
             
-            <div class="form-group clearfix">
-                <label for="name" class='col-xs-2 control-label'> Article </label>
-                <div class="col-xs-4">
+            <div class="form-group clearfix row">
+                <label for="name" class='col-md-2 control-label'> Article </label>
+                <div class="col-md-4">
                     <select class="form-control" name="article_id" > 
                         @if (isset($data))
                             @if ($data['article_id'] == $image_id)
@@ -92,8 +92,8 @@
                     </select> 
                 </div>
 
-                {{-- <label for="name" class='col-xs-3 control-label'> Show in ingex page </label>
-                <div class="col-xs-1">
+                {{-- <label for="name" class='col-md-3 control-label'> Show in ingex page </label>
+                <div class="col-md-1">
                     @if (isset($data))
                         <input type="checkbox" name="index_gallery_image" value="1" @if($data['index_gallery_image'] == 1) checked="checked" @endif></input>
                     @else
@@ -102,9 +102,9 @@
                 </div> --}}
             </div>
 
-            <div class="form-group clearfix">
-                <label for="name" class='col-xs-2 control-label'> Filter caregory </label>
-                <div class="col-xs-8">
+            <div class="form-group clearfix row">
+                <label for="name" class='col-md-2 control-label'> Filter caregory </label>
+                <div class="col-md-8">
                     <select class="form-control" name="filter" > 
                         @if (isset($data))
                             <option value="climbing" @if ($data['filter'] == 'climbing') selected="" @endif>                climbing</option> 
@@ -123,9 +123,9 @@
                 </div>
             </div>
 
-            <div class="form-group clearfix">
-                <label for="name" class='col-xs-2 control-label'> Title </label>
-                <div class="col-xs-8">
+            <div class="form-group clearfix row">
+                <label for="name" class='col-md-2 control-label'> Title </label>
+                <div class="col-md-8">
                     @if (isset($data))
                         <input type="text" name="title" value="{{ $data['title'] }}" class="form-control"> 
                     @else
@@ -135,9 +135,9 @@
             </div>
 
 
-            <div class="form-group clearfix">
-                <label for="name" class='col-xs-2 control-label'> text </label>
-                <div class="col-xs-8">
+            <div class="form-group clearfix row">
+                <label for="name" class='col-md-2 control-label'> text </label>
+                <div class="col-md-8">
                     @if (isset($data))
                         <textarea type="text"  name="text" rows="15"class="form-cotrol md-textarea form-control">{{ $data['text'] }}</textarea>
                     @else
@@ -146,9 +146,9 @@
                 </div>
             </div>
 
-            <div class="form-group clearfix">
-                <label for="name" class='col-xs-2 control-label'> Link </label>
-                <div class="col-xs-8">
+            <div class="form-group clearfix row">
+                <label for="name" class='col-md-2 control-label'> Link </label>
+                <div class="col-md-8">
                     @if (isset($data))
                         <input type="text" name="link" class="form-control" value='{{ $data['link'] }}'> 
                     @else
@@ -158,12 +158,12 @@
             </div>
 
             
-            <div class="form-group clearfix">
-                <label for="name" class="col-xs-2 control-label">Select image to upload:</label>
-                <div class="col-xs-8">
+            <div class="form-group clearfix row">
+                <label for="name" class="col-md-2 control-label">Select image to upload:</label>
+                <div class="col-md-8">
                 @if (isset($data))
                     <div class="row">
-                        <div class="col-xs-4">       
+                        <div class="col-md-4">       
                             <div class="avatar-edit">
                                 <input type='file' id="image" name="image" onchange="readURL(this);" accept=".png, .jpg, .jpeg" />
                                 <label for="imageUpload"></label>
@@ -174,7 +174,7 @@
                     </div>
                 @else
                     <div class="row">
-                        <div class="col-xs-4">
+                        <div class="col-md-4">
                             <input type="file" name="image" id="image" value="image">
                         </div>
                     </div>

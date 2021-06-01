@@ -32,11 +32,11 @@
             <img src="{{ asset('images/gallery_img/'.$head -> image) }}" data-color="lightblue" alt="{{ $head -> title }}">
             <img src="{{ asset('images/gallery_img/'.$head -> image) }}" data-color="lightblue" alt="{{ $head -> title }}">
             <div class="carousel-caption">
-                <h2 class='stroke animated bounceInDown delay-1s' style='font-size: 450%;'>
+                <h2 class='stroke animated bounceInDown delay-1s'>
                     <a href="{{ $head -> link }}">{{ $head -> title }}</a>
                 </h2>
                 <p>{{$head -> text}}</p>
-                <h3 class='stroke animated bounceInUp delay-1s' style='font-size: 150%;'>Climbing.ge</h3>
+                <h3 class='stroke animated bounceInUp delay-1s' style='font-size: 100%;'>Climbing.ge</h3>
             </div>
         </div>
         @empty
@@ -297,7 +297,7 @@
 
                     @if($site->other_activity_description != NULL)
                     <div class="bar"><i class="fa fa-dribbble"></i></div>
-                    <h6>{{$site -> other_activity_description}}</h6>
+                    <h6>{!! $site -> other_activity_description !!}</h6>
                     @endif
 
                     @forelse($index_others as $others)
@@ -335,7 +335,7 @@
 
                         @if($site->other_activity_description != NULL)
                         <div class="bar"><i class="fa fa-calendar"></i></div>
-                        <h6>{{$site -> event_description}}</h6>
+                        <h6>{!! $site -> event_description !!}</h6>
                         @endif
 
                         <div class="container">
@@ -403,7 +403,7 @@
 
                         @if($site->index_gallery_description != NULL)
                         <div class="bar" style="margin-bottom: 5%;"><i class="fa fa-picture-o" aria-hidden="true"></i></div>
-                        <h6>{{$site -> index_gallery_description}}</h6>
+                        <h6>{!! $site -> index_gallery_description !!}</h6>
                         @endif
 
                         <section class="portfolio" id="portfolio">
@@ -441,7 +441,7 @@
                                         @endif 
                                     </div>
                                     </div> --}}
-                                    <div class="col-sm-6 col-md-4 col-lg-3 ">
+                                    <div class="col-xs-6 col-md-4 col-lg-3 ">
                                         <div class="gallery_product filter {!! $gallery -> filter !!} thumb" >
                                             <a class="thumbnail" href='#' data-image-id="" data-toggle="modal" data-toggle="modal" data-target="#squarespaceModal{{$gallery -> id}}">
 

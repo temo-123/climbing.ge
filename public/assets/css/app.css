@@ -2031,8 +2031,8 @@ button.btn:hover,
   }
 }
 
-@media (min-width: 720px) {
-  .site_title_mobile {
+@media (max-width: 1000px) {
+  .site_title {
     display: none;
   }
 }
@@ -2042,13 +2042,6 @@ button.btn:hover,
   margin-top: 4%;
   color: #fff;
   font-size: 135%;
-}
-
-.site_title_mobile {
-  margin-top: 5%;
-  margin-left: 8%;
-  color: #fff;
-  font-size: 160%;
 }
 
 @media (max-width: 720px) {
