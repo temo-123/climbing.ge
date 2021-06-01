@@ -11,6 +11,8 @@ class KaServiceController extends Controller
 {
     public function add_ka_service(Request $request)
     {
+
+        $this->parmision($request);
         $request->user()->authorizeRoles(['manager', 'admin']);
         if ($request -> isMethod('post')) {
             // $input = $request -> except('_token');
@@ -35,6 +37,8 @@ class KaServiceController extends Controller
 
     public function edit_ka_service(Request $request)
     {
+
+        $this->parmision($request);
         if ($request->isMethod('post')) {
             $this->ka_service_validate($request);
 
@@ -57,5 +61,19 @@ class KaServiceController extends Controller
             'ka_short_description' => 'required',
             'ka_text' => 'required',
         ]);
+    }
+
+
+    public function parmision($request)
+    {
+        $request->user()->authorizeRoles(
+            [
+                'admin', 
+                'manager', 
+                'ka_manager', 
+                'ru_manager', 
+                'us_manager', 
+                'seller', 
+            ]);
     }
 }

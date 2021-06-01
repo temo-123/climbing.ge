@@ -5059,6 +5059,18 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: ['back_url', 'category'],
   data: function data() {
@@ -5085,6 +5097,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
   },
   mounted: function mounted() {
     this.create_temporary_article();
+    this.check_permission();
 
     if (this.category == 'mount_route') {
       this.get_mount_massive_data();
@@ -5262,6 +5275,20 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         }
       }).then(function (response) {});
     },
+    upload_region_image: function upload_region_image() {
+      // var mySectorRegionImageData = new Array(this.$refs.sectorRegionImage)
+      var mySectorRegionImageData = new FormData(this.$refs.sectorRegionImage);
+      axios({
+        method: 'post',
+        url: '/articles/region_sectors_image_upload/',
+        data: mySectorRegionImageData,
+        config: {
+          headers: {
+            'Content-Type': 'multipart/form-data'
+          }
+        }
+      }).then(function (response) {});
+    },
     back: function back(temporary_article_id) {
       confirm('Are you sure, you want go back?');
       this.del_temporary_article(temporary_article_id);
@@ -5273,11 +5300,15 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       this.add_ru_article();
       this.add_global_article();
       this.checkForm();
+      this.upload_region_image();
     },
     if_isset_go_beck: function if_isset_go_beck() {
       if (this.is_global_article_error == false && this.is_ka_article_error == false && this.is_ru_article_error == false && this.is_us_article_error == false) {
         window.location.href = this.back_url;
       }
+    },
+    check_permission: function check_permission() {
+      axios.get('/users/get_user_parmisions/', {}).then(function (response) {})["catch"](function (error) {});
     }
   }
 });
@@ -5295,6 +5326,17 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 __webpack_require__.r(__webpack_exports__);
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -5894,7 +5936,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       start_data_day: "",
       and_data_day: "",
       and_data_month: ""
-    }, _defineProperty(_ref, "and_data_month", ""), _defineProperty(_ref, "fb_link", ""), _defineProperty(_ref, "twit_link", ""), _defineProperty(_ref, "google_link", ""), _defineProperty(_ref, "inst_link", ""), _defineProperty(_ref, "web_link", ""), _defineProperty(_ref, "working_time", ""), _defineProperty(_ref, "price_from", ""), _defineProperty(_ref, "name", ''), _defineProperty(_ref, "image_name", ''), _defineProperty(_ref, "success", ''), _defineProperty(_ref, "us_title", ""), _defineProperty(_ref, "us_short_description", ""), _defineProperty(_ref, "us_text", ""), _defineProperty(_ref, "us_route", ""), _defineProperty(_ref, "us_how_get", ""), _defineProperty(_ref, "us_best_time", ""), _defineProperty(_ref, "us_what_need", ""), _defineProperty(_ref, "us_info", ""), _defineProperty(_ref, "us_meta_keyword", ""), _defineProperty(_ref, "ka_title", ""), _defineProperty(_ref, "ka_short_description", ""), _defineProperty(_ref, "ka_text", ""), _defineProperty(_ref, "ka_route", ""), _defineProperty(_ref, "ka_how_get", ""), _defineProperty(_ref, "ka_best_time", ""), _defineProperty(_ref, "ka_what_need", ""), _defineProperty(_ref, "ka_info", ""), _defineProperty(_ref, "ka_meta_keyword", ""), _defineProperty(_ref, "ru_title", ""), _defineProperty(_ref, "ru_short_description", ""), _defineProperty(_ref, "ru_text", ""), _defineProperty(_ref, "ru_route", ""), _defineProperty(_ref, "ru_how_get", ""), _defineProperty(_ref, "ru_best_time", ""), _defineProperty(_ref, "ru_what_need", ""), _defineProperty(_ref, "ru_info", ""), _defineProperty(_ref, "ru_meta_keyword", ""), _defineProperty(_ref, "us_article_id", ""), _defineProperty(_ref, "ru_article_id", ""), _defineProperty(_ref, "ka_article_id", ""), _ref;
+    }, _defineProperty(_ref, "and_data_month", ""), _defineProperty(_ref, "fb_link", ""), _defineProperty(_ref, "twit_link", ""), _defineProperty(_ref, "google_link", ""), _defineProperty(_ref, "inst_link", ""), _defineProperty(_ref, "web_link", ""), _defineProperty(_ref, "working_time", ""), _defineProperty(_ref, "price_from", ""), _defineProperty(_ref, "name", ''), _defineProperty(_ref, "image_name", ''), _defineProperty(_ref, "region_sectors_image_name", ''), _defineProperty(_ref, "success", ''), _defineProperty(_ref, "us_title", ""), _defineProperty(_ref, "us_short_description", ""), _defineProperty(_ref, "us_text", ""), _defineProperty(_ref, "us_route", ""), _defineProperty(_ref, "us_how_get", ""), _defineProperty(_ref, "us_best_time", ""), _defineProperty(_ref, "us_what_need", ""), _defineProperty(_ref, "us_info", ""), _defineProperty(_ref, "us_meta_keyword", ""), _defineProperty(_ref, "ka_title", ""), _defineProperty(_ref, "ka_short_description", ""), _defineProperty(_ref, "ka_text", ""), _defineProperty(_ref, "ka_route", ""), _defineProperty(_ref, "ka_how_get", ""), _defineProperty(_ref, "ka_best_time", ""), _defineProperty(_ref, "ka_what_need", ""), _defineProperty(_ref, "ka_info", ""), _defineProperty(_ref, "ka_meta_keyword", ""), _defineProperty(_ref, "ru_title", ""), _defineProperty(_ref, "ru_short_description", ""), _defineProperty(_ref, "ru_text", ""), _defineProperty(_ref, "ru_route", ""), _defineProperty(_ref, "ru_how_get", ""), _defineProperty(_ref, "ru_best_time", ""), _defineProperty(_ref, "ru_what_need", ""), _defineProperty(_ref, "ru_info", ""), _defineProperty(_ref, "ru_meta_keyword", ""), _defineProperty(_ref, "us_article_id", ""), _defineProperty(_ref, "ru_article_id", ""), _defineProperty(_ref, "ka_article_id", ""), _ref;
   },
   mounted: function mounted() {
     this.get_editing_data();
@@ -5911,7 +5953,12 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
       axios.get('../../../check_permission/').then(function (Response) {
         _this.permission = Response.data;
-      })["catch"](function (error) {});
+      })["catch"](function (error) {}); // axios
+      // .get('/users/get_user_parmisions/', { })
+      // .then((response)=> { 
+      // })
+      // .catch(error =>{
+      // })
     },
     edit_global_article: function edit_global_article() {
       var _this2 = this;
@@ -6045,6 +6092,20 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         // alert(response.data.message);
       }); // e.preventDefault();
     },
+    upload_region_image: function upload_region_image() {
+      // var mySectorRegionImageData = new Array(this.$refs.sectorRegionImage)
+      var mySectorRegionImageData = new FormData(this.$refs.sectorRegionImage);
+      axios({
+        method: 'post',
+        url: '/articles/region_sectors_image_update/' + this.editing_article_id,
+        data: mySectorRegionImageData,
+        config: {
+          headers: {
+            'Content-Type': 'multipart/form-data'
+          }
+        }
+      }).then(function (response) {});
+    },
     get_editing_data: function get_editing_data() {
       var _this7 = this;
 
@@ -6053,6 +6114,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         _this7.editing_data = response.data;
         _this7.us_article_id = _this7.editing_data.global_article['us_article_id'], _this7.ru_article_id = _this7.editing_data.global_article['ru_article_id'], _this7.ka_article_id = _this7.editing_data.global_article['ka_article_id'], // send data in editing form value
         _this7.published = _this7.editing_data.global_article['published'], _this7.mount_id = _this7.editing_data.global_article['mount_id'], _this7.completed = _this7.editing_data.global_article['completed'], _this7.map = _this7.editing_data.global_article['map'], _this7.weather = _this7.editing_data.global_article['weather'], _this7.start_data_day = _this7.editing_data.global_article['start_data_day'], _this7.and_data_day = _this7.editing_data.global_article['and_data_day'], _this7.start_data_month = _this7.editing_data.global_article['start_data_month'], _this7.and_data_month = _this7.editing_data.global_article['and_data_month'], _this7.fb_link = _this7.editing_data.global_article['fb_link'], _this7.twit_link = _this7.editing_data.global_article['twit_link'], _this7.google_link = _this7.editing_data.global_article['google_link'], _this7.inst_link = _this7.editing_data.global_article['inst_link'], _this7.web_link = _this7.editing_data.global_article['web_link'], _this7.us_price_from = _this7.editing_data.global_article['price_from'], _this7.image_name = _this7.editing_data.global_article['image'];
+        _this7.region_sectors_image_name = _this7.editing_data.global_article['climbing_area_image'];
         _this7.price_from = _this7.editing_data.global_article['price_from'];
         _this7.working_time = _this7.editing_data.global_article['working_time']; // 
         // 
@@ -6076,10 +6138,10 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       this.edit_ka_article();
       this.edit_ru_article();
       this.checkForm();
+      this.upload_region_image();
     },
     if_isset_go_beck: function if_isset_go_beck() {
-      if (this.is_global_article_error == false && this.is_ka_article_error == false && this.is_ru_article_error == false && this.is_us_article_error == false) {
-        window.location.href = this.back_url;
+      if (this.is_global_article_error == false && this.is_ka_article_error == false && this.is_ru_article_error == false && this.is_us_article_error == false) {// window.location.href = this.back_url;
       }
     }
   }
@@ -52659,17 +52721,17 @@ var render = function() {
               }
             },
             [
-              _c("div", { staticClass: "form-group clearfix" }, [
+              _c("div", { staticClass: "form-group clearfix row" }, [
                 _c(
                   "label",
                   {
-                    staticClass: "col-xs-2 control-label",
-                    attrs: { for: "name" }
+                    staticClass: "col-md-2 control-label ",
+                    attrs: { for: "published" }
                   },
                   [_vm._v(" Publish ")]
                 ),
                 _vm._v(" "),
-                _c("div", { staticClass: "col-xs-8" }, [
+                _c("div", { staticClass: "col-md-8" }, [
                   _c(
                     "select",
                     {
@@ -52730,17 +52792,17 @@ var render = function() {
               ]),
               _vm._v(" "),
               this.category == "mount_route"
-                ? _c("div", { staticClass: "form-group clearfix" }, [
+                ? _c("div", { staticClass: "form-group clearfix row" }, [
                     _c(
                       "label",
                       {
-                        staticClass: "col-xs-2 control-label",
+                        staticClass: "col-md-2 control-label",
                         attrs: { for: "name" }
                       },
                       [_vm._v(" Mountain ")]
                     ),
                     _vm._v(" "),
-                    _c("div", { staticClass: "col-xs-8" }, [
+                    _c("div", { staticClass: "col-md-8" }, [
                       _c(
                         "select",
                         {
@@ -52784,17 +52846,17 @@ var render = function() {
                 : _vm._e(),
               _vm._v(" "),
               this.category == "event"
-                ? _c("div", { staticClass: "form-group clearfix" }, [
+                ? _c("div", { staticClass: "form-group clearfix row" }, [
                     _c(
                       "label",
                       {
-                        staticClass: "col-xs-2 control-label",
+                        staticClass: "col-md-2 control-label",
                         attrs: { for: "name" }
                       },
                       [_vm._v(" Completed ")]
                     ),
                     _vm._v(" "),
-                    _c("div", { staticClass: "col-xs-8" }, [
+                    _c("div", { staticClass: "col-md-8" }, [
                       _c(
                         "select",
                         {
@@ -52839,17 +52901,17 @@ var render = function() {
                 : _vm._e(),
               _vm._v(" "),
               this.category != "mount_route"
-                ? _c("div", { staticClass: "form-group clearfix" }, [
+                ? _c("div", { staticClass: "form-group clearfix row" }, [
                     _c(
                       "label",
                       {
-                        staticClass: "col-xs-2 control-label",
+                        staticClass: "col-md-2 control-label",
                         attrs: { for: "name" }
                       },
                       [_vm._v(" Map ")]
                     ),
                     _vm._v(" "),
-                    _c("div", { staticClass: "col-xs-8" }, [
+                    _c("div", { staticClass: "col-md-8" }, [
                       _c("input", {
                         directives: [
                           {
@@ -52878,17 +52940,17 @@ var render = function() {
               this.category == "outdoor" ||
               this.category == "ice" ||
               this.category != "mount_route"
-                ? _c("div", { staticClass: "form-group clearfix" }, [
+                ? _c("div", { staticClass: "form-group clearfix row" }, [
                     _c(
                       "label",
                       {
-                        staticClass: "col-xs-2 control-label",
+                        staticClass: "col-md-2 control-label",
                         attrs: { for: "name" }
                       },
                       [_vm._v(" Weather ")]
                     ),
                     _vm._v(" "),
-                    _c("div", { staticClass: "col-xs-8" }, [
+                    _c("div", { staticClass: "col-md-8" }, [
                       _c("input", {
                         directives: [
                           {
@@ -52915,17 +52977,17 @@ var render = function() {
                 : _vm._e(),
               _vm._v(" "),
               this.category == "indoor"
-                ? _c("div", { staticClass: "form-group clearfix" }, [
+                ? _c("div", { staticClass: "form-group clearfix row" }, [
                     _c(
                       "label",
                       {
-                        staticClass: "col-xs-2 control-label",
+                        staticClass: "col-md-2 control-label",
                         attrs: { for: "name" }
                       },
                       [_vm._v(" Minimal price ")]
                     ),
                     _vm._v(" "),
-                    _c("div", { staticClass: "col-xs-8" }, [
+                    _c("div", { staticClass: "col-md-8" }, [
                       _c("input", {
                         directives: [
                           {
@@ -52956,17 +53018,17 @@ var render = function() {
                 : _vm._e(),
               _vm._v(" "),
               this.category == "indoor"
-                ? _c("div", { staticClass: "form-group clearfix" }, [
+                ? _c("div", { staticClass: "form-group clearfix row" }, [
                     _c(
                       "label",
                       {
-                        staticClass: "col-xs-2 control-label",
+                        staticClass: "col-md-2 control-label",
                         attrs: { for: "name" }
                       },
                       [_vm._v(" Working time ")]
                     ),
                     _vm._v(" "),
-                    _c("div", { staticClass: "col-xs-8" }, [
+                    _c("div", { staticClass: "col-md-8" }, [
                       _c("input", {
                         directives: [
                           {
@@ -52995,17 +53057,17 @@ var render = function() {
               this.category == "event" ? _c("hr") : _vm._e(),
               _vm._v(" "),
               this.category == "event"
-                ? _c("div", { staticClass: "form-group clearfix" }, [
+                ? _c("div", { staticClass: "form-group clearfix row" }, [
                     _c(
                       "label",
                       {
-                        staticClass: "col-xs-2 control-label",
+                        staticClass: "col-md-2 control-label",
                         attrs: { for: "name" }
                       },
                       [_vm._v(" Start data ")]
                     ),
                     _vm._v(" "),
-                    _c("div", { staticClass: "col-xs-4" }, [
+                    _c("div", { staticClass: "col-md-4" }, [
                       _c("input", {
                         directives: [
                           {
@@ -53033,7 +53095,7 @@ var render = function() {
                       })
                     ]),
                     _vm._v(" "),
-                    _c("div", { staticClass: "col-xs-4" }, [
+                    _c("div", { staticClass: "col-md-4" }, [
                       _c(
                         "select",
                         {
@@ -53118,17 +53180,17 @@ var render = function() {
                 : _vm._e(),
               _vm._v(" "),
               this.category == "event"
-                ? _c("div", { staticClass: "form-group clearfix" }, [
+                ? _c("div", { staticClass: "form-group clearfix row" }, [
                     _c(
                       "label",
                       {
-                        staticClass: "col-xs-2 control-label",
+                        staticClass: "col-md-2 control-label",
                         attrs: { for: "name" }
                       },
                       [_vm._v(" End data ")]
                     ),
                     _vm._v(" "),
-                    _c("div", { staticClass: "col-xs-4" }, [
+                    _c("div", { staticClass: "col-md-4" }, [
                       _c("input", {
                         directives: [
                           {
@@ -53156,7 +53218,7 @@ var render = function() {
                       })
                     ]),
                     _vm._v(" "),
-                    _c("div", { staticClass: "col-xs-4" }, [
+                    _c("div", { staticClass: "col-md-4" }, [
                       _c(
                         "select",
                         {
@@ -53249,17 +53311,17 @@ var render = function() {
               this.category == "event" ||
               this.category == "partner" ||
               this.category == "indoor"
-                ? _c("div", { staticClass: "form-group clearfix" }, [
+                ? _c("div", { staticClass: "form-group clearfix row" }, [
                     _c(
                       "label",
                       {
-                        staticClass: "col-xs-2 control-label",
+                        staticClass: "col-md-2 control-label",
                         attrs: { for: "name" }
                       },
                       [_vm._v(" facebook / twitter ")]
                     ),
                     _vm._v(" "),
-                    _c("div", { staticClass: "col-xs-4" }, [
+                    _c("div", { staticClass: "col-md-4" }, [
                       _c("input", {
                         directives: [
                           {
@@ -53283,7 +53345,7 @@ var render = function() {
                       })
                     ]),
                     _vm._v(" "),
-                    _c("div", { staticClass: "col-xs-4" }, [
+                    _c("div", { staticClass: "col-md-4" }, [
                       _c("input", {
                         directives: [
                           {
@@ -53312,17 +53374,17 @@ var render = function() {
               this.category == "event" ||
               this.category == "partner" ||
               this.category == "indoor"
-                ? _c("div", { staticClass: "form-group clearfix" }, [
+                ? _c("div", { staticClass: "form-group clearfix row" }, [
                     _c(
                       "label",
                       {
-                        staticClass: "col-xs-2 control-label",
+                        staticClass: "col-md-2 control-label",
                         attrs: { for: "name" }
                       },
                       [_vm._v(" google / instagram ")]
                     ),
                     _vm._v(" "),
-                    _c("div", { staticClass: "col-xs-4" }, [
+                    _c("div", { staticClass: "col-md-4" }, [
                       _c("input", {
                         directives: [
                           {
@@ -53346,7 +53408,7 @@ var render = function() {
                       })
                     ]),
                     _vm._v(" "),
-                    _c("div", { staticClass: "col-xs-4" }, [
+                    _c("div", { staticClass: "col-md-4" }, [
                       _c("input", {
                         directives: [
                           {
@@ -53375,17 +53437,17 @@ var render = function() {
               this.category == "event" ||
               this.category == "partner" ||
               this.category == "indoor"
-                ? _c("div", { staticClass: "form-group clearfix" }, [
+                ? _c("div", { staticClass: "form-group clearfix row" }, [
                     _c(
                       "label",
                       {
-                        staticClass: "col-xs-2 control-label",
+                        staticClass: "col-md-2 control-label",
                         attrs: { for: "name" }
                       },
                       [_vm._v(" website ")]
                     ),
                     _vm._v(" "),
-                    _c("div", { staticClass: "col-xs-8" }, [
+                    _c("div", { staticClass: "col-md-8" }, [
                       _c("input", {
                         directives: [
                           {
@@ -53413,8 +53475,19 @@ var render = function() {
             ]
           ),
           _vm._v(" "),
+          this.category == "outdoor"
+            ? _c(
+                "form",
+                {
+                  ref: "sectorRegionImage",
+                  on: { submit: _vm.upload_region_image }
+                },
+                [_vm._m(0)]
+              )
+            : _vm._e(),
+          _vm._v(" "),
           _c("form", { ref: "myForm", on: { submit: _vm.checkForm } }, [
-            _vm._m(0)
+            _vm._m(1)
           ])
         ]),
         _vm._v(" "),
@@ -53452,17 +53525,17 @@ var render = function() {
               }
             },
             [
-              _c("div", { staticClass: "form-group clearfix" }, [
+              _c("div", { staticClass: "form-group clearfix row" }, [
                 _c(
                   "label",
                   {
-                    staticClass: "col-xs-2 control-label",
+                    staticClass: "col-md-2 control-label",
                     attrs: { for: "name" }
                   },
                   [_vm._v(" Title ")]
                 ),
                 _vm._v(" "),
-                _c("div", { staticClass: "col-xs-8" }, [
+                _c("div", { staticClass: "col-md-8" }, [
                   _c("input", {
                     directives: [
                       {
@@ -53504,11 +53577,11 @@ var render = function() {
                 ])
               ]),
               _vm._v(" "),
-              _c("div", { staticClass: "form-group clearfix" }, [
+              _c("div", { staticClass: "form-group clearfix row" }, [
                 _c(
                   "label",
                   {
-                    staticClass: "col-xs-2 control-label",
+                    staticClass: "col-md-2 control-label",
                     attrs: { for: "name" }
                   },
                   [_vm._v(" Short description ")]
@@ -53516,7 +53589,7 @@ var render = function() {
                 _vm._v(" "),
                 _c(
                   "div",
-                  { staticClass: "col-xs-8" },
+                  { staticClass: "col-md-8" },
                   [
                     _c("ckeditor", {
                       attrs: { config: _vm.editorConfig },
@@ -53552,11 +53625,11 @@ var render = function() {
                 )
               ]),
               _vm._v(" "),
-              _c("div", { staticClass: "form-group clearfix" }, [
+              _c("div", { staticClass: "form-group clearfix row" }, [
                 _c(
                   "label",
                   {
-                    staticClass: "col-xs-2 control-label",
+                    staticClass: "col-md-2 control-label",
                     attrs: { for: "name" }
                   },
                   [_vm._v(" text ")]
@@ -53564,7 +53637,7 @@ var render = function() {
                 _vm._v(" "),
                 _c(
                   "div",
-                  { staticClass: "col-xs-8" },
+                  { staticClass: "col-md-8" },
                   [
                     _c("ckeditor", {
                       attrs: { config: _vm.editorConfig },
@@ -53599,11 +53672,11 @@ var render = function() {
               ]),
               _vm._v(" "),
               this.category == "outdoor"
-                ? _c("div", { staticClass: "form-group clearfix" }, [
+                ? _c("div", { staticClass: "form-group clearfix row" }, [
                     _c(
                       "label",
                       {
-                        staticClass: "col-xs-2 control-label",
+                        staticClass: "col-md-2 control-label",
                         attrs: { for: "name" }
                       },
                       [_vm._v(" Routes description ")]
@@ -53611,7 +53684,7 @@ var render = function() {
                     _vm._v(" "),
                     _c(
                       "div",
-                      { staticClass: "col-xs-8" },
+                      { staticClass: "col-md-8" },
                       [
                         _c("ckeditor", {
                           attrs: { config: _vm.editorConfig },
@@ -53629,11 +53702,11 @@ var render = function() {
                   ])
                 : _vm._e(),
               _vm._v(" "),
-              _c("div", { staticClass: "form-group clearfix" }, [
+              _c("div", { staticClass: "form-group clearfix row" }, [
                 _c(
                   "label",
                   {
-                    staticClass: "col-xs-2 control-label",
+                    staticClass: "col-md-2 control-label",
                     attrs: { for: "name" }
                   },
                   [_vm._v(" How to get hear ")]
@@ -53641,7 +53714,7 @@ var render = function() {
                 _vm._v(" "),
                 _c(
                   "div",
-                  { staticClass: "col-xs-8" },
+                  { staticClass: "col-md-8" },
                   [
                     _c("ckeditor", {
                       attrs: { config: _vm.editorConfig },
@@ -53661,11 +53734,11 @@ var render = function() {
               this.category == "outdoor" ||
               this.category == "ice" ||
               this.category == "mount_route"
-                ? _c("div", { staticClass: "form-group clearfix" }, [
+                ? _c("div", { staticClass: "form-group clearfix row" }, [
                     _c(
                       "label",
                       {
-                        staticClass: "col-xs-2 control-label",
+                        staticClass: "col-md-2 control-label",
                         attrs: { for: "name" }
                       },
                       [_vm._v(" Best time for climbing ")]
@@ -53673,7 +53746,7 @@ var render = function() {
                     _vm._v(" "),
                     _c(
                       "div",
-                      { staticClass: "col-xs-8" },
+                      { staticClass: "col-md-8" },
                       [
                         _c("ckeditor", {
                           attrs: { config: _vm.editorConfig },
@@ -53694,11 +53767,11 @@ var render = function() {
               this.category == "outdoor" ||
               this.category == "ice" ||
               this.category == "mount_route"
-                ? _c("div", { staticClass: "form-group clearfix" }, [
+                ? _c("div", { staticClass: "form-group clearfix row" }, [
                     _c(
                       "label",
                       {
-                        staticClass: "col-xs-2 control-label",
+                        staticClass: "col-md-2 control-label",
                         attrs: { for: "name" }
                       },
                       [_vm._v(" what you need ")]
@@ -53706,7 +53779,7 @@ var render = function() {
                     _vm._v(" "),
                     _c(
                       "div",
-                      { staticClass: "col-xs-8" },
+                      { staticClass: "col-md-8" },
                       [
                         _c("ckeditor", {
                           attrs: { config: _vm.editorConfig },
@@ -53724,11 +53797,11 @@ var render = function() {
                   ])
                 : _vm._e(),
               _vm._v(" "),
-              _c("div", { staticClass: "form-group clearfix" }, [
+              _c("div", { staticClass: "form-group clearfix row" }, [
                 _c(
                   "label",
                   {
-                    staticClass: "col-xs-2 control-label",
+                    staticClass: "col-md-2 control-label",
                     attrs: { for: "name" }
                   },
                   [_vm._v(" Info / contact ")]
@@ -53736,7 +53809,7 @@ var render = function() {
                 _vm._v(" "),
                 _c(
                   "div",
-                  { staticClass: "col-xs-8" },
+                  { staticClass: "col-md-8" },
                   [
                     _c("ckeditor", {
                       attrs: { config: _vm.editorConfig },
@@ -53771,11 +53844,11 @@ var render = function() {
               ]),
               _vm._v(" "),
               this.category == "indoor"
-                ? _c("div", { staticClass: "form-group clearfix" }, [
+                ? _c("div", { staticClass: "form-group clearfix row" }, [
                     _c(
                       "label",
                       {
-                        staticClass: "col-xs-2 control-label",
+                        staticClass: "col-md-2 control-label",
                         attrs: { for: "name" }
                       },
                       [_vm._v(" Price description ")]
@@ -53783,7 +53856,7 @@ var render = function() {
                     _vm._v(" "),
                     _c(
                       "div",
-                      { staticClass: "col-xs-8" },
+                      { staticClass: "col-md-8" },
                       [
                         _c("ckeditor", {
                           attrs: { config: _vm.editorConfig },
@@ -53803,17 +53876,17 @@ var render = function() {
               _vm._v(" "),
               _c("hr"),
               _vm._v(" "),
-              _c("div", { staticClass: "form-group clearfix" }, [
+              _c("div", { staticClass: "form-group clearfix row" }, [
                 _c(
                   "label",
                   {
-                    staticClass: "col-xs-2 control-label",
+                    staticClass: "col-md-2 control-label",
                     attrs: { for: "name" }
                   },
                   [_vm._v(" Meta keyword ")]
                 ),
                 _vm._v(" "),
-                _c("div", { staticClass: "col-xs-8" }, [
+                _c("div", { staticClass: "col-md-8" }, [
                   _c("input", {
                     directives: [
                       {
@@ -53879,17 +53952,17 @@ var render = function() {
               }
             },
             [
-              _c("div", { staticClass: "form-group clearfix" }, [
+              _c("div", { staticClass: "form-group clearfix row" }, [
                 _c(
                   "label",
                   {
-                    staticClass: "col-xs-2 control-label",
+                    staticClass: "col-md-2 control-label",
                     attrs: { for: "name" }
                   },
                   [_vm._v(" Title ")]
                 ),
                 _vm._v(" "),
-                _c("div", { staticClass: "col-xs-8" }, [
+                _c("div", { staticClass: "col-md-8" }, [
                   _c("input", {
                     directives: [
                       {
@@ -53931,11 +54004,11 @@ var render = function() {
                 ])
               ]),
               _vm._v(" "),
-              _c("div", { staticClass: "form-group clearfix" }, [
+              _c("div", { staticClass: "form-group clearfix row" }, [
                 _c(
                   "label",
                   {
-                    staticClass: "col-xs-2 control-label",
+                    staticClass: "col-md-2 control-label",
                     attrs: { for: "name" }
                   },
                   [_vm._v(" Short description ")]
@@ -53943,7 +54016,7 @@ var render = function() {
                 _vm._v(" "),
                 _c(
                   "div",
-                  { staticClass: "col-xs-8" },
+                  { staticClass: "col-md-8" },
                   [
                     _c("ckeditor", {
                       attrs: { config: _vm.editorConfig },
@@ -53979,11 +54052,11 @@ var render = function() {
                 )
               ]),
               _vm._v(" "),
-              _c("div", { staticClass: "form-group clearfix" }, [
+              _c("div", { staticClass: "form-group clearfix row" }, [
                 _c(
                   "label",
                   {
-                    staticClass: "col-xs-2 control-label",
+                    staticClass: "col-md-2 control-label",
                     attrs: { for: "name" }
                   },
                   [_vm._v(" text ")]
@@ -53991,7 +54064,7 @@ var render = function() {
                 _vm._v(" "),
                 _c(
                   "div",
-                  { staticClass: "col-xs-8" },
+                  { staticClass: "col-md-8" },
                   [
                     _c("ckeditor", {
                       attrs: { config: _vm.editorConfig },
@@ -54026,11 +54099,11 @@ var render = function() {
               ]),
               _vm._v(" "),
               this.category == "outdoor"
-                ? _c("div", { staticClass: "form-group clearfix" }, [
+                ? _c("div", { staticClass: "form-group clearfix row" }, [
                     _c(
                       "label",
                       {
-                        staticClass: "col-xs-2 control-label",
+                        staticClass: "col-md-2 control-label",
                         attrs: { for: "name" }
                       },
                       [_vm._v(" Routes description ")]
@@ -54038,7 +54111,7 @@ var render = function() {
                     _vm._v(" "),
                     _c(
                       "div",
-                      { staticClass: "col-xs-8" },
+                      { staticClass: "col-md-8" },
                       [
                         _c("ckeditor", {
                           attrs: { config: _vm.editorConfig },
@@ -54056,11 +54129,11 @@ var render = function() {
                   ])
                 : _vm._e(),
               _vm._v(" "),
-              _c("div", { staticClass: "form-group clearfix" }, [
+              _c("div", { staticClass: "form-group clearfix row" }, [
                 _c(
                   "label",
                   {
-                    staticClass: "col-xs-2 control-label",
+                    staticClass: "col-md-2 control-label",
                     attrs: { for: "name" }
                   },
                   [_vm._v(" How to get hear ")]
@@ -54068,7 +54141,7 @@ var render = function() {
                 _vm._v(" "),
                 _c(
                   "div",
-                  { staticClass: "col-xs-8" },
+                  { staticClass: "col-md-8" },
                   [
                     _c("ckeditor", {
                       attrs: { config: _vm.editorConfig },
@@ -54088,11 +54161,11 @@ var render = function() {
               this.category == "outdoor" ||
               this.category == "ice" ||
               this.category == "mount_route"
-                ? _c("div", { staticClass: "form-group clearfix" }, [
+                ? _c("div", { staticClass: "form-group clearfix row" }, [
                     _c(
                       "label",
                       {
-                        staticClass: "col-xs-2 control-label",
+                        staticClass: "col-md-2 control-label",
                         attrs: { for: "name" }
                       },
                       [_vm._v(" Best time for climbing ")]
@@ -54100,7 +54173,7 @@ var render = function() {
                     _vm._v(" "),
                     _c(
                       "div",
-                      { staticClass: "col-xs-8" },
+                      { staticClass: "col-md-8" },
                       [
                         _c("ckeditor", {
                           attrs: { config: _vm.editorConfig },
@@ -54121,11 +54194,11 @@ var render = function() {
               this.category == "outdoor" ||
               this.category == "ice" ||
               this.category == "mount_route"
-                ? _c("div", { staticClass: "form-group clearfix" }, [
+                ? _c("div", { staticClass: "form-group clearfix row" }, [
                     _c(
                       "label",
                       {
-                        staticClass: "col-xs-2 control-label",
+                        staticClass: "col-md-2 control-label",
                         attrs: { for: "name" }
                       },
                       [_vm._v(" what you need ")]
@@ -54133,7 +54206,7 @@ var render = function() {
                     _vm._v(" "),
                     _c(
                       "div",
-                      { staticClass: "col-xs-8" },
+                      { staticClass: "col-md-8" },
                       [
                         _c("ckeditor", {
                           attrs: { config: _vm.editorConfig },
@@ -54151,11 +54224,11 @@ var render = function() {
                   ])
                 : _vm._e(),
               _vm._v(" "),
-              _c("div", { staticClass: "form-group clearfix" }, [
+              _c("div", { staticClass: "form-group clearfix row" }, [
                 _c(
                   "label",
                   {
-                    staticClass: "col-xs-2 control-label",
+                    staticClass: "col-md-2 control-label",
                     attrs: { for: "name" }
                   },
                   [_vm._v(" Info / contact ")]
@@ -54163,7 +54236,7 @@ var render = function() {
                 _vm._v(" "),
                 _c(
                   "div",
-                  { staticClass: "col-xs-8" },
+                  { staticClass: "col-md-8" },
                   [
                     _c("ckeditor", {
                       attrs: { config: _vm.editorConfig },
@@ -54198,11 +54271,11 @@ var render = function() {
               ]),
               _vm._v(" "),
               this.category == "indoor"
-                ? _c("div", { staticClass: "form-group clearfix" }, [
+                ? _c("div", { staticClass: "form-group clearfix row" }, [
                     _c(
                       "label",
                       {
-                        staticClass: "col-xs-2 control-label",
+                        staticClass: "col-md-2 control-label",
                         attrs: { for: "name" }
                       },
                       [_vm._v(" Price description ")]
@@ -54210,7 +54283,7 @@ var render = function() {
                     _vm._v(" "),
                     _c(
                       "div",
-                      { staticClass: "col-xs-8" },
+                      { staticClass: "col-md-8" },
                       [
                         _c("ckeditor", {
                           attrs: { config: _vm.editorConfig },
@@ -54230,17 +54303,17 @@ var render = function() {
               _vm._v(" "),
               _c("hr"),
               _vm._v(" "),
-              _c("div", { staticClass: "form-group clearfix" }, [
+              _c("div", { staticClass: "form-group clearfix row" }, [
                 _c(
                   "label",
                   {
-                    staticClass: "col-xs-2 control-label",
+                    staticClass: "col-md-2 control-label",
                     attrs: { for: "name" }
                   },
                   [_vm._v(" Meta keyword ")]
                 ),
                 _vm._v(" "),
-                _c("div", { staticClass: "col-xs-8" }, [
+                _c("div", { staticClass: "col-md-8" }, [
                   _c("input", {
                     directives: [
                       {
@@ -54306,17 +54379,17 @@ var render = function() {
               }
             },
             [
-              _c("div", { staticClass: "form-group clearfix" }, [
+              _c("div", { staticClass: "form-group clearfix row" }, [
                 _c(
                   "label",
                   {
-                    staticClass: "col-xs-2 control-label",
+                    staticClass: "col-md-2 control-label",
                     attrs: { for: "name" }
                   },
                   [_vm._v(" Title ")]
                 ),
                 _vm._v(" "),
-                _c("div", { staticClass: "col-xs-8" }, [
+                _c("div", { staticClass: "col-md-8" }, [
                   _c("input", {
                     directives: [
                       {
@@ -54358,11 +54431,11 @@ var render = function() {
                 ])
               ]),
               _vm._v(" "),
-              _c("div", { staticClass: "form-group clearfix" }, [
+              _c("div", { staticClass: "form-group clearfix row" }, [
                 _c(
                   "label",
                   {
-                    staticClass: "col-xs-2 control-label",
+                    staticClass: "col-md-2 control-label",
                     attrs: { for: "name" }
                   },
                   [_vm._v(" Short description ")]
@@ -54370,7 +54443,7 @@ var render = function() {
                 _vm._v(" "),
                 _c(
                   "div",
-                  { staticClass: "col-xs-8" },
+                  { staticClass: "col-md-8" },
                   [
                     _c("ckeditor", {
                       attrs: { config: _vm.editorConfig },
@@ -54406,11 +54479,11 @@ var render = function() {
                 )
               ]),
               _vm._v(" "),
-              _c("div", { staticClass: "form-group clearfix" }, [
+              _c("div", { staticClass: "form-group clearfix row" }, [
                 _c(
                   "label",
                   {
-                    staticClass: "col-xs-2 control-label",
+                    staticClass: "col-md-2 control-label",
                     attrs: { for: "name" }
                   },
                   [_vm._v(" text ")]
@@ -54418,7 +54491,7 @@ var render = function() {
                 _vm._v(" "),
                 _c(
                   "div",
-                  { staticClass: "col-xs-8" },
+                  { staticClass: "col-md-8" },
                   [
                     _c("ckeditor", {
                       attrs: { config: _vm.editorConfig },
@@ -54453,11 +54526,11 @@ var render = function() {
               ]),
               _vm._v(" "),
               this.category == "outdoor"
-                ? _c("div", { staticClass: "form-group clearfix" }, [
+                ? _c("div", { staticClass: "form-group clearfix row" }, [
                     _c(
                       "label",
                       {
-                        staticClass: "col-xs-2 control-label",
+                        staticClass: "col-md-2 control-label",
                         attrs: { for: "name" }
                       },
                       [_vm._v(" Routes description ")]
@@ -54465,7 +54538,7 @@ var render = function() {
                     _vm._v(" "),
                     _c(
                       "div",
-                      { staticClass: "col-xs-8" },
+                      { staticClass: "col-md-8" },
                       [
                         _c("ckeditor", {
                           attrs: { config: _vm.editorConfig },
@@ -54483,11 +54556,11 @@ var render = function() {
                   ])
                 : _vm._e(),
               _vm._v(" "),
-              _c("div", { staticClass: "form-group clearfix" }, [
+              _c("div", { staticClass: "form-group clearfix row" }, [
                 _c(
                   "label",
                   {
-                    staticClass: "col-xs-2 control-label",
+                    staticClass: "col-md-2 control-label",
                     attrs: { for: "name" }
                   },
                   [_vm._v(" How to get hear ")]
@@ -54495,7 +54568,7 @@ var render = function() {
                 _vm._v(" "),
                 _c(
                   "div",
-                  { staticClass: "col-xs-8" },
+                  { staticClass: "col-md-8" },
                   [
                     _c("ckeditor", {
                       attrs: { config: _vm.editorConfig },
@@ -54515,11 +54588,11 @@ var render = function() {
               this.category == "outdoor" ||
               this.category == "ice" ||
               this.category == "mount_route"
-                ? _c("div", { staticClass: "form-group clearfix" }, [
+                ? _c("div", { staticClass: "form-group clearfix row" }, [
                     _c(
                       "label",
                       {
-                        staticClass: "col-xs-2 control-label",
+                        staticClass: "col-md-2 control-label",
                         attrs: { for: "name" }
                       },
                       [_vm._v(" Best time for climbing ")]
@@ -54527,7 +54600,7 @@ var render = function() {
                     _vm._v(" "),
                     _c(
                       "div",
-                      { staticClass: "col-xs-8" },
+                      { staticClass: "col-md-8" },
                       [
                         _c("ckeditor", {
                           attrs: { config: _vm.editorConfig },
@@ -54548,11 +54621,11 @@ var render = function() {
               this.category == "outdoor" ||
               this.category == "ice" ||
               this.category == "mount_route"
-                ? _c("div", { staticClass: "form-group clearfix" }, [
+                ? _c("div", { staticClass: "form-group clearfix row" }, [
                     _c(
                       "label",
                       {
-                        staticClass: "col-xs-2 control-label",
+                        staticClass: "col-md-2 control-label",
                         attrs: { for: "name" }
                       },
                       [_vm._v(" what you need ")]
@@ -54560,7 +54633,7 @@ var render = function() {
                     _vm._v(" "),
                     _c(
                       "div",
-                      { staticClass: "col-xs-8" },
+                      { staticClass: "col-md-8" },
                       [
                         _c("ckeditor", {
                           attrs: { config: _vm.editorConfig },
@@ -54578,11 +54651,11 @@ var render = function() {
                   ])
                 : _vm._e(),
               _vm._v(" "),
-              _c("div", { staticClass: "form-group clearfix" }, [
+              _c("div", { staticClass: "form-group clearfix row" }, [
                 _c(
                   "label",
                   {
-                    staticClass: "col-xs-2 control-label",
+                    staticClass: "col-md-2 control-label",
                     attrs: { for: "name" }
                   },
                   [_vm._v(" Info / contact ")]
@@ -54590,7 +54663,7 @@ var render = function() {
                 _vm._v(" "),
                 _c(
                   "div",
-                  { staticClass: "col-xs-8" },
+                  { staticClass: "col-md-8" },
                   [
                     _c("ckeditor", {
                       attrs: { config: _vm.editorConfig },
@@ -54625,11 +54698,11 @@ var render = function() {
               ]),
               _vm._v(" "),
               this.category == "indoor"
-                ? _c("div", { staticClass: "form-group clearfix" }, [
+                ? _c("div", { staticClass: "form-group clearfix row" }, [
                     _c(
                       "label",
                       {
-                        staticClass: "col-xs-2 control-label",
+                        staticClass: "col-md-2 control-label",
                         attrs: { for: "name" }
                       },
                       [_vm._v(" Price description ")]
@@ -54637,7 +54710,7 @@ var render = function() {
                     _vm._v(" "),
                     _c(
                       "div",
-                      { staticClass: "col-xs-8" },
+                      { staticClass: "col-md-8" },
                       [
                         _c("ckeditor", {
                           attrs: { config: _vm.editorConfig },
@@ -54657,17 +54730,17 @@ var render = function() {
               _vm._v(" "),
               _c("hr"),
               _vm._v(" "),
-              _c("div", { staticClass: "form-group clearfix" }, [
+              _c("div", { staticClass: "form-group clearfix row" }, [
                 _c(
                   "label",
                   {
-                    staticClass: "col-xs-2 control-label",
+                    staticClass: "col-md-2 control-label",
                     attrs: { for: "name" }
                   },
                   [_vm._v(" Meta keyword ")]
                 ),
                 _vm._v(" "),
-                _c("div", { staticClass: "col-xs-8" }, [
+                _c("div", { staticClass: "col-md-8" }, [
                   _c("input", {
                     directives: [
                       {
@@ -54703,12 +54776,40 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "form-group" }, [
-      _c("label", { attrs: { for: "email" } }, [_vm._v("Upload Profile Pic:")]),
+    return _c("div", { staticClass: "form-group clearfix row" }, [
+      _c(
+        "label",
+        { staticClass: "col-md-5 control-label", attrs: { for: "email" } },
+        [_vm._v("Upload outdoor climbing area sector images:")]
+      ),
       _vm._v(" "),
-      _c("input", {
-        attrs: { type: "file", name: "profile_pic", id: "profile_pic" }
-      })
+      _c("div", { staticClass: "col-md-6" }, [
+        _c("input", {
+          attrs: {
+            type: "file",
+            name: "region_sectors_img",
+            id: "region_sectors_img"
+          }
+        })
+      ])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "form-group clearfix row" }, [
+      _c(
+        "label",
+        { staticClass: "col-md-5 control-label", attrs: { for: "email" } },
+        [_vm._v("Upload article image:")]
+      ),
+      _vm._v(" "),
+      _c("div", { staticClass: "col-md-6" }, [
+        _c("input", {
+          attrs: { type: "file", name: "profile_pic", id: "profile_pic" }
+        })
+      ])
     ])
   }
 ]
@@ -54816,17 +54917,17 @@ var render = function() {
                   }
                 },
                 [
-                  _c("div", { staticClass: "form-group clearfix" }, [
+                  _c("div", { staticClass: "form-group clearfix row" }, [
                     _c(
                       "label",
                       {
-                        staticClass: "col-xs-2 control-label",
+                        staticClass: "col-md-2 control-label",
                         attrs: { for: "name" }
                       },
                       [_vm._v(" Publish ")]
                     ),
                     _vm._v(" "),
-                    _c("div", { staticClass: "col-xs-8" }, [
+                    _c("div", { staticClass: "col-md-8" }, [
                       _c(
                         "select",
                         {
@@ -54889,17 +54990,17 @@ var render = function() {
                   ]),
                   _vm._v(" "),
                   this.category == "mount_route"
-                    ? _c("div", { staticClass: "form-group clearfix" }, [
+                    ? _c("div", { staticClass: "form-group clearfix row" }, [
                         _c(
                           "label",
                           {
-                            staticClass: "col-xs-2 control-label",
+                            staticClass: "col-md-2 control-label",
                             attrs: { for: "name" }
                           },
                           [_vm._v(" Mountain ")]
                         ),
                         _vm._v(" "),
-                        _c("div", { staticClass: "col-xs-8" }, [
+                        _c("div", { staticClass: "col-md-8" }, [
                           _c(
                             "select",
                             {
@@ -54947,17 +55048,17 @@ var render = function() {
                     : _vm._e(),
                   _vm._v(" "),
                   this.category == "event"
-                    ? _c("div", { staticClass: "form-group clearfix" }, [
+                    ? _c("div", { staticClass: "form-group clearfix row" }, [
                         _c(
                           "label",
                           {
-                            staticClass: "col-xs-2 control-label",
+                            staticClass: "col-md-2 control-label",
                             attrs: { for: "name" }
                           },
                           [_vm._v(" completed ")]
                         ),
                         _vm._v(" "),
-                        _c("div", { staticClass: "col-xs-8" }, [
+                        _c("div", { staticClass: "col-md-8" }, [
                           _c(
                             "select",
                             {
@@ -55003,17 +55104,17 @@ var render = function() {
                     : _vm._e(),
                   _vm._v(" "),
                   this.category != "mount_route"
-                    ? _c("div", { staticClass: "form-group clearfix" }, [
+                    ? _c("div", { staticClass: "form-group clearfix row" }, [
                         _c(
                           "label",
                           {
-                            staticClass: "col-xs-2 control-label",
+                            staticClass: "col-md-2 control-label",
                             attrs: { for: "name" }
                           },
                           [_vm._v(" Map ")]
                         ),
                         _vm._v(" "),
-                        _c("div", { staticClass: "col-xs-8" }, [
+                        _c("div", { staticClass: "col-md-8" }, [
                           _c("input", {
                             directives: [
                               {
@@ -55042,17 +55143,17 @@ var render = function() {
                   this.category == "outdoor" ||
                   this.category == "ice" ||
                   this.category != "mount_route"
-                    ? _c("div", { staticClass: "form-group clearfix" }, [
+                    ? _c("div", { staticClass: "form-group clearfix row" }, [
                         _c(
                           "label",
                           {
-                            staticClass: "col-xs-2 control-label",
+                            staticClass: "col-md-2 control-label",
                             attrs: { for: "name" }
                           },
                           [_vm._v(" Weather ")]
                         ),
                         _vm._v(" "),
-                        _c("div", { staticClass: "col-xs-8" }, [
+                        _c("div", { staticClass: "col-md-8" }, [
                           _c("input", {
                             directives: [
                               {
@@ -55081,17 +55182,17 @@ var render = function() {
                   _c("hr"),
                   _vm._v(" "),
                   this.category == "indoor"
-                    ? _c("div", { staticClass: "form-group clearfix" }, [
+                    ? _c("div", { staticClass: "form-group clearfix row" }, [
                         _c(
                           "label",
                           {
-                            staticClass: "col-xs-2 control-label",
+                            staticClass: "col-md-2 control-label",
                             attrs: { for: "name" }
                           },
                           [_vm._v(" Minimal price ")]
                         ),
                         _vm._v(" "),
-                        _c("div", { staticClass: "col-xs-8" }, [
+                        _c("div", { staticClass: "col-md-8" }, [
                           _c("input", {
                             directives: [
                               {
@@ -55122,17 +55223,17 @@ var render = function() {
                     : _vm._e(),
                   _vm._v(" "),
                   this.category == "indoor"
-                    ? _c("div", { staticClass: "form-group clearfix" }, [
+                    ? _c("div", { staticClass: "form-group clearfix row" }, [
                         _c(
                           "label",
                           {
-                            staticClass: "col-xs-2 control-label",
+                            staticClass: "col-md-2 control-label",
                             attrs: { for: "name" }
                           },
                           [_vm._v(" Working time ")]
                         ),
                         _vm._v(" "),
-                        _c("div", { staticClass: "col-xs-8" }, [
+                        _c("div", { staticClass: "col-md-8" }, [
                           _c("input", {
                             directives: [
                               {
@@ -55165,17 +55266,17 @@ var render = function() {
                   this.category == "event" ? _c("hr") : _vm._e(),
                   _vm._v(" "),
                   this.category == "event"
-                    ? _c("div", { staticClass: "form-group clearfix" }, [
+                    ? _c("div", { staticClass: "form-group clearfix row" }, [
                         _c(
                           "label",
                           {
-                            staticClass: "col-xs-2 control-label",
+                            staticClass: "col-md-2 control-label",
                             attrs: { for: "name" }
                           },
                           [_vm._v(" Start data ")]
                         ),
                         _vm._v(" "),
-                        _c("div", { staticClass: "col-xs-4" }, [
+                        _c("div", { staticClass: "col-md-4" }, [
                           _c("input", {
                             directives: [
                               {
@@ -55199,7 +55300,7 @@ var render = function() {
                           })
                         ]),
                         _vm._v(" "),
-                        _c("div", { staticClass: "col-xs-4" }, [
+                        _c("div", { staticClass: "col-md-4" }, [
                           _c(
                             "select",
                             {
@@ -55285,17 +55386,17 @@ var render = function() {
                     : _vm._e(),
                   _vm._v(" "),
                   this.category == "event"
-                    ? _c("div", { staticClass: "form-group clearfix" }, [
+                    ? _c("div", { staticClass: "form-group clearfix row" }, [
                         _c(
                           "label",
                           {
-                            staticClass: "col-xs-2 control-label",
+                            staticClass: "col-md-2 control-label",
                             attrs: { for: "name" }
                           },
                           [_vm._v(" End data ")]
                         ),
                         _vm._v(" "),
-                        _c("div", { staticClass: "col-xs-4" }, [
+                        _c("div", { staticClass: "col-md-4" }, [
                           _c("input", {
                             directives: [
                               {
@@ -55319,7 +55420,7 @@ var render = function() {
                           })
                         ]),
                         _vm._v(" "),
-                        _c("div", { staticClass: "col-xs-4" }, [
+                        _c("div", { staticClass: "col-md-4" }, [
                           _c(
                             "select",
                             {
@@ -55413,17 +55514,17 @@ var render = function() {
                   this.category == "event" ||
                   this.category == "partner" ||
                   this.category == "indoor"
-                    ? _c("div", { staticClass: "form-group clearfix" }, [
+                    ? _c("div", { staticClass: "form-group clearfix row" }, [
                         _c(
                           "label",
                           {
-                            staticClass: "col-xs-2 control-label",
+                            staticClass: "col-md-2 control-label",
                             attrs: { for: "name" }
                           },
                           [_vm._v(" facebook / twitter ")]
                         ),
                         _vm._v(" "),
-                        _c("div", { staticClass: "col-xs-4" }, [
+                        _c("div", { staticClass: "col-md-4" }, [
                           _c("input", {
                             directives: [
                               {
@@ -55447,7 +55548,7 @@ var render = function() {
                           })
                         ]),
                         _vm._v(" "),
-                        _c("div", { staticClass: "col-xs-4" }, [
+                        _c("div", { staticClass: "col-md-4" }, [
                           _c("input", {
                             directives: [
                               {
@@ -55476,17 +55577,17 @@ var render = function() {
                   this.category == "event" ||
                   this.category == "partner" ||
                   this.category == "indoor"
-                    ? _c("div", { staticClass: "form-group clearfix" }, [
+                    ? _c("div", { staticClass: "form-group clearfix row" }, [
                         _c(
                           "label",
                           {
-                            staticClass: "col-xs-2 control-label",
+                            staticClass: "col-md-2 control-label",
                             attrs: { for: "name" }
                           },
                           [_vm._v(" google / instagram ")]
                         ),
                         _vm._v(" "),
-                        _c("div", { staticClass: "col-xs-4" }, [
+                        _c("div", { staticClass: "col-md-4" }, [
                           _c("input", {
                             directives: [
                               {
@@ -55510,7 +55611,7 @@ var render = function() {
                           })
                         ]),
                         _vm._v(" "),
-                        _c("div", { staticClass: "col-xs-4" }, [
+                        _c("div", { staticClass: "col-md-4" }, [
                           _c("input", {
                             directives: [
                               {
@@ -55539,17 +55640,17 @@ var render = function() {
                   this.category == "event" ||
                   this.category == "partner" ||
                   this.category == "indoor"
-                    ? _c("div", { staticClass: "form-group clearfix" }, [
+                    ? _c("div", { staticClass: "form-group clearfix row" }, [
                         _c(
                           "label",
                           {
-                            staticClass: "col-xs-2 control-label",
+                            staticClass: "col-md-2 control-label",
                             attrs: { for: "name" }
                           },
                           [_vm._v(" website ")]
                         ),
                         _vm._v(" "),
-                        _c("div", { staticClass: "col-xs-8" }, [
+                        _c("div", { staticClass: "col-md-8" }, [
                           _c("input", {
                             directives: [
                               {
@@ -55577,30 +55678,51 @@ var render = function() {
                 ]
               ),
               _vm._v(" "),
+              this.category == "outdoor"
+                ? _c(
+                    "form",
+                    {
+                      ref: "sectorRegionImage",
+                      on: { submit: _vm.upload_region_image }
+                    },
+                    [
+                      _c("div", { staticClass: "form-group clearfix" }, [
+                        _vm._m(0),
+                        _vm._v(" "),
+                        _c("div", { staticClass: "row" }, [
+                          _c("div", { staticClass: "col-md-4" }, [
+                            _c("img", {
+                              attrs: {
+                                src:
+                                  "/public/images/region_sectors_img/" +
+                                  this.region_sectors_image_name,
+                                alt: "article image"
+                              }
+                            })
+                          ])
+                        ])
+                      ])
+                    ]
+                  )
+                : _vm._e(),
+              _vm._v(" "),
               _c("form", { ref: "myForm", on: { submit: _vm.checkForm } }, [
                 _c("div", { staticClass: "form-group clearfix" }, [
-                  _c(
-                    "label",
-                    {
-                      staticClass: "col-xs-2 control-label",
-                      attrs: { for: "name" }
-                    },
-                    [_vm._v(" image ")]
-                  ),
+                  _vm._m(1),
                   _vm._v(" "),
-                  _vm._m(0),
-                  _vm._v(" "),
-                  _c("div", { staticClass: "col-xs-4" }, [
-                    _c("img", {
-                      attrs: {
-                        src:
-                          "/public/images/" +
-                          _vm.category +
-                          "_img/" +
-                          this.image_name,
-                        alt: "article image"
-                      }
-                    })
+                  _c("div", { staticClass: "row" }, [
+                    _c("div", { staticClass: "col-md-4" }, [
+                      _c("img", {
+                        attrs: {
+                          src:
+                            "/public/images/" +
+                            _vm.category +
+                            "_img/" +
+                            this.image_name,
+                          alt: "article image"
+                        }
+                      })
+                    ])
                   ])
                 ])
               ])
@@ -55668,17 +55790,17 @@ var render = function() {
                   }
                 },
                 [
-                  _c("div", { staticClass: "form-group clearfix" }, [
+                  _c("div", { staticClass: "form-group clearfix row" }, [
                     _c(
                       "label",
                       {
-                        staticClass: "col-xs-2 control-label",
+                        staticClass: "col-md-2 control-label",
                         attrs: { for: "name" }
                       },
                       [_vm._v(" Title ")]
                     ),
                     _vm._v(" "),
-                    _c("div", { staticClass: "col-xs-8" }, [
+                    _c("div", { staticClass: "col-md-8" }, [
                       _c("input", {
                         directives: [
                           {
@@ -55720,11 +55842,11 @@ var render = function() {
                     ])
                   ]),
                   _vm._v(" "),
-                  _c("div", { staticClass: "form-group clearfix" }, [
+                  _c("div", { staticClass: "form-group clearfix row" }, [
                     _c(
                       "label",
                       {
-                        staticClass: "col-xs-2 control-label",
+                        staticClass: "col-md-2 control-label",
                         attrs: { for: "name" }
                       },
                       [_vm._v(" Short description ")]
@@ -55732,7 +55854,7 @@ var render = function() {
                     _vm._v(" "),
                     _c(
                       "div",
-                      { staticClass: "col-xs-8" },
+                      { staticClass: "col-md-8" },
                       [
                         _c("ckeditor", {
                           attrs: {
@@ -55772,11 +55894,11 @@ var render = function() {
                     )
                   ]),
                   _vm._v(" "),
-                  _c("div", { staticClass: "form-group clearfix" }, [
+                  _c("div", { staticClass: "form-group clearfix row" }, [
                     _c(
                       "label",
                       {
-                        staticClass: "col-xs-2 control-label",
+                        staticClass: "col-md-2 control-label",
                         attrs: { for: "name" }
                       },
                       [_vm._v(" text ")]
@@ -55784,7 +55906,7 @@ var render = function() {
                     _vm._v(" "),
                     _c(
                       "div",
-                      { staticClass: "col-xs-8" },
+                      { staticClass: "col-md-8" },
                       [
                         _c("ckeditor", {
                           attrs: {
@@ -55822,11 +55944,11 @@ var render = function() {
                   ]),
                   _vm._v(" "),
                   this.category == "outdoor"
-                    ? _c("div", { staticClass: "form-group clearfix" }, [
+                    ? _c("div", { staticClass: "form-group clearfix row" }, [
                         _c(
                           "label",
                           {
-                            staticClass: "col-xs-2 control-label",
+                            staticClass: "col-md-2 control-label",
                             attrs: { for: "name" }
                           },
                           [_vm._v(" Routes description ")]
@@ -55834,7 +55956,7 @@ var render = function() {
                         _vm._v(" "),
                         _c(
                           "div",
-                          { staticClass: "col-xs-8" },
+                          { staticClass: "col-md-8" },
                           [
                             _c("ckeditor", {
                               attrs: {
@@ -55855,11 +55977,11 @@ var render = function() {
                       ])
                     : _vm._e(),
                   _vm._v(" "),
-                  _c("div", { staticClass: "form-group clearfix" }, [
+                  _c("div", { staticClass: "form-group clearfix row" }, [
                     _c(
                       "label",
                       {
-                        staticClass: "col-xs-2 control-label",
+                        staticClass: "col-md-2 control-label",
                         attrs: { for: "name" }
                       },
                       [_vm._v(" How to get hear ")]
@@ -55867,7 +55989,7 @@ var render = function() {
                     _vm._v(" "),
                     _c(
                       "div",
-                      { staticClass: "col-xs-8" },
+                      { staticClass: "col-md-8" },
                       [
                         _c("ckeditor", {
                           attrs: {
@@ -55890,11 +56012,11 @@ var render = function() {
                   this.category == "outdoor" ||
                   this.category == "ice" ||
                   this.category == "mount_route"
-                    ? _c("div", { staticClass: "form-group clearfix" }, [
+                    ? _c("div", { staticClass: "form-group clearfix row" }, [
                         _c(
                           "label",
                           {
-                            staticClass: "col-xs-2 control-label",
+                            staticClass: "col-md-2 control-label",
                             attrs: { for: "name" }
                           },
                           [_vm._v(" Best time for climbing ")]
@@ -55902,7 +56024,7 @@ var render = function() {
                         _vm._v(" "),
                         _c(
                           "div",
-                          { staticClass: "col-xs-8" },
+                          { staticClass: "col-md-8" },
                           [
                             _c("ckeditor", {
                               attrs: {
@@ -55926,11 +56048,11 @@ var render = function() {
                   this.category == "outdoor" ||
                   this.category == "ice" ||
                   this.category == "mount_route"
-                    ? _c("div", { staticClass: "form-group clearfix" }, [
+                    ? _c("div", { staticClass: "form-group clearfix row" }, [
                         _c(
                           "label",
                           {
-                            staticClass: "col-xs-2 control-label",
+                            staticClass: "col-md-2 control-label",
                             attrs: { for: "name" }
                           },
                           [_vm._v(" what you need ")]
@@ -55938,7 +56060,7 @@ var render = function() {
                         _vm._v(" "),
                         _c(
                           "div",
-                          { staticClass: "col-xs-8" },
+                          { staticClass: "col-md-8" },
                           [
                             _c("ckeditor", {
                               attrs: {
@@ -55959,11 +56081,11 @@ var render = function() {
                       ])
                     : _vm._e(),
                   _vm._v(" "),
-                  _c("div", { staticClass: "form-group clearfix" }, [
+                  _c("div", { staticClass: "form-group clearfix row" }, [
                     _c(
                       "label",
                       {
-                        staticClass: "col-xs-2 control-label",
+                        staticClass: "col-md-2 control-label",
                         attrs: { for: "name" }
                       },
                       [_vm._v(" Info / contact ")]
@@ -55971,7 +56093,7 @@ var render = function() {
                     _vm._v(" "),
                     _c(
                       "div",
-                      { staticClass: "col-xs-8" },
+                      { staticClass: "col-md-8" },
                       [
                         _c("ckeditor", {
                           attrs: {
@@ -56009,11 +56131,11 @@ var render = function() {
                   ]),
                   _vm._v(" "),
                   this.category == "indoor"
-                    ? _c("div", { staticClass: "form-group clearfix" }, [
+                    ? _c("div", { staticClass: "form-group clearfix row" }, [
                         _c(
                           "label",
                           {
-                            staticClass: "col-xs-2 control-label",
+                            staticClass: "col-md-2 control-label",
                             attrs: { for: "name" }
                           },
                           [_vm._v(" Price description ")]
@@ -56021,7 +56143,7 @@ var render = function() {
                         _vm._v(" "),
                         _c(
                           "div",
-                          { staticClass: "col-xs-8" },
+                          { staticClass: "col-md-8" },
                           [
                             _c("ckeditor", {
                               attrs: {
@@ -56044,17 +56166,17 @@ var render = function() {
                   _vm._v(" "),
                   _c("hr"),
                   _vm._v(" "),
-                  _c("div", { staticClass: "form-group clearfix" }, [
+                  _c("div", { staticClass: "form-group clearfix row" }, [
                     _c(
                       "label",
                       {
-                        staticClass: "col-xs-2 control-label",
+                        staticClass: "col-md-2 control-label",
                         attrs: { for: "name" }
                       },
                       [_vm._v(" Meta keyword ")]
                     ),
                     _vm._v(" "),
-                    _c("div", { staticClass: "col-xs-8" }, [
+                    _c("div", { staticClass: "col-md-8" }, [
                       _c("input", {
                         directives: [
                           {
@@ -56148,17 +56270,17 @@ var render = function() {
                   }
                 },
                 [
-                  _c("div", { staticClass: "form-group clearfix" }, [
+                  _c("div", { staticClass: "form-group clearfix row" }, [
                     _c(
                       "label",
                       {
-                        staticClass: "col-xs-2 control-label",
+                        staticClass: "col-md-2 control-label",
                         attrs: { for: "name" }
                       },
                       [_vm._v(" Title ")]
                     ),
                     _vm._v(" "),
-                    _c("div", { staticClass: "col-xs-8" }, [
+                    _c("div", { staticClass: "col-md-8" }, [
                       _c("input", {
                         directives: [
                           {
@@ -56200,11 +56322,11 @@ var render = function() {
                     ])
                   ]),
                   _vm._v(" "),
-                  _c("div", { staticClass: "form-group clearfix" }, [
+                  _c("div", { staticClass: "form-group clearfix row" }, [
                     _c(
                       "label",
                       {
-                        staticClass: "col-xs-2 control-label",
+                        staticClass: "col-md-2 control-label",
                         attrs: { for: "name" }
                       },
                       [_vm._v(" Short description ")]
@@ -56212,7 +56334,7 @@ var render = function() {
                     _vm._v(" "),
                     _c(
                       "div",
-                      { staticClass: "col-xs-8" },
+                      { staticClass: "col-md-8" },
                       [
                         _c("ckeditor", {
                           attrs: {
@@ -56252,11 +56374,11 @@ var render = function() {
                     )
                   ]),
                   _vm._v(" "),
-                  _c("div", { staticClass: "form-group clearfix" }, [
+                  _c("div", { staticClass: "form-group clearfix row" }, [
                     _c(
                       "label",
                       {
-                        staticClass: "col-xs-2 control-label",
+                        staticClass: "col-md-2 control-label",
                         attrs: { for: "name" }
                       },
                       [_vm._v(" text ")]
@@ -56264,7 +56386,7 @@ var render = function() {
                     _vm._v(" "),
                     _c(
                       "div",
-                      { staticClass: "col-xs-8" },
+                      { staticClass: "col-md-8" },
                       [
                         _c("ckeditor", {
                           attrs: {
@@ -56302,11 +56424,11 @@ var render = function() {
                   ]),
                   _vm._v(" "),
                   this.category == "outdoor"
-                    ? _c("div", { staticClass: "form-group clearfix" }, [
+                    ? _c("div", { staticClass: "form-group clearfix row" }, [
                         _c(
                           "label",
                           {
-                            staticClass: "col-xs-2 control-label",
+                            staticClass: "col-md-2 control-label",
                             attrs: { for: "name" }
                           },
                           [_vm._v(" Routes description ")]
@@ -56314,7 +56436,7 @@ var render = function() {
                         _vm._v(" "),
                         _c(
                           "div",
-                          { staticClass: "col-xs-8" },
+                          { staticClass: "col-md-8" },
                           [
                             _c("ckeditor", {
                               attrs: {
@@ -56335,11 +56457,11 @@ var render = function() {
                       ])
                     : _vm._e(),
                   _vm._v(" "),
-                  _c("div", { staticClass: "form-group clearfix" }, [
+                  _c("div", { staticClass: "form-group clearfix row" }, [
                     _c(
                       "label",
                       {
-                        staticClass: "col-xs-2 control-label",
+                        staticClass: "col-md-2 control-label",
                         attrs: { for: "name" }
                       },
                       [_vm._v(" How to get hear ")]
@@ -56347,7 +56469,7 @@ var render = function() {
                     _vm._v(" "),
                     _c(
                       "div",
-                      { staticClass: "col-xs-8" },
+                      { staticClass: "col-md-8" },
                       [
                         _c("ckeditor", {
                           attrs: {
@@ -56370,11 +56492,11 @@ var render = function() {
                   this.category == "outdoor" ||
                   this.category == "ice" ||
                   this.category == "mount_route"
-                    ? _c("div", { staticClass: "form-group clearfix" }, [
+                    ? _c("div", { staticClass: "form-group clearfix row" }, [
                         _c(
                           "label",
                           {
-                            staticClass: "col-xs-2 control-label",
+                            staticClass: "col-md-2 control-label",
                             attrs: { for: "name" }
                           },
                           [_vm._v(" Best time for climbing ")]
@@ -56382,7 +56504,7 @@ var render = function() {
                         _vm._v(" "),
                         _c(
                           "div",
-                          { staticClass: "col-xs-8" },
+                          { staticClass: "col-md-8" },
                           [
                             _c("ckeditor", {
                               attrs: {
@@ -56406,11 +56528,11 @@ var render = function() {
                   this.category == "outdoor" ||
                   this.category == "ice" ||
                   this.category == "mount_route"
-                    ? _c("div", { staticClass: "form-group clearfix" }, [
+                    ? _c("div", { staticClass: "form-group clearfix row" }, [
                         _c(
                           "label",
                           {
-                            staticClass: "col-xs-2 control-label",
+                            staticClass: "col-md-2 control-label",
                             attrs: { for: "name" }
                           },
                           [_vm._v(" what you need ")]
@@ -56418,7 +56540,7 @@ var render = function() {
                         _vm._v(" "),
                         _c(
                           "div",
-                          { staticClass: "col-xs-8" },
+                          { staticClass: "col-md-8" },
                           [
                             _c("ckeditor", {
                               attrs: {
@@ -56439,11 +56561,11 @@ var render = function() {
                       ])
                     : _vm._e(),
                   _vm._v(" "),
-                  _c("div", { staticClass: "form-group clearfix" }, [
+                  _c("div", { staticClass: "form-group clearfix row" }, [
                     _c(
                       "label",
                       {
-                        staticClass: "col-xs-2 control-label",
+                        staticClass: "col-md-2 control-label",
                         attrs: { for: "name" }
                       },
                       [_vm._v(" Info / contact ")]
@@ -56451,7 +56573,7 @@ var render = function() {
                     _vm._v(" "),
                     _c(
                       "div",
-                      { staticClass: "col-xs-8" },
+                      { staticClass: "col-md-8" },
                       [
                         _c("ckeditor", {
                           attrs: {
@@ -56489,11 +56611,11 @@ var render = function() {
                   ]),
                   _vm._v(" "),
                   this.category == "indoor"
-                    ? _c("div", { staticClass: "form-group clearfix" }, [
+                    ? _c("div", { staticClass: "form-group clearfix row" }, [
                         _c(
                           "label",
                           {
-                            staticClass: "col-xs-2 control-label",
+                            staticClass: "col-md-2 control-label",
                             attrs: { for: "name" }
                           },
                           [_vm._v(" Price description ")]
@@ -56501,7 +56623,7 @@ var render = function() {
                         _vm._v(" "),
                         _c(
                           "div",
-                          { staticClass: "col-xs-8" },
+                          { staticClass: "col-md-8" },
                           [
                             _c("ckeditor", {
                               attrs: {
@@ -56524,17 +56646,17 @@ var render = function() {
                   _vm._v(" "),
                   _c("hr"),
                   _vm._v(" "),
-                  _c("div", { staticClass: "form-group clearfix" }, [
+                  _c("div", { staticClass: "form-group clearfix row" }, [
                     _c(
                       "label",
                       {
-                        staticClass: "col-xs-2 control-label",
+                        staticClass: "col-md-2 control-label",
                         attrs: { for: "name" }
                       },
                       [_vm._v(" Meta keyword ")]
                     ),
                     _vm._v(" "),
-                    _c("div", { staticClass: "col-xs-8" }, [
+                    _c("div", { staticClass: "col-md-8" }, [
                       _c("input", {
                         directives: [
                           {
@@ -56628,17 +56750,17 @@ var render = function() {
                   }
                 },
                 [
-                  _c("div", { staticClass: "form-group clearfix" }, [
+                  _c("div", { staticClass: "form-group clearfix row" }, [
                     _c(
                       "label",
                       {
-                        staticClass: "col-xs-2 control-label",
+                        staticClass: "col-md-2 control-label",
                         attrs: { for: "name" }
                       },
                       [_vm._v(" Title ")]
                     ),
                     _vm._v(" "),
-                    _c("div", { staticClass: "col-xs-8" }, [
+                    _c("div", { staticClass: "col-md-8" }, [
                       _c("input", {
                         directives: [
                           {
@@ -56680,11 +56802,11 @@ var render = function() {
                     ])
                   ]),
                   _vm._v(" "),
-                  _c("div", { staticClass: "form-group clearfix" }, [
+                  _c("div", { staticClass: "form-group clearfix row" }, [
                     _c(
                       "label",
                       {
-                        staticClass: "col-xs-2 control-label",
+                        staticClass: "col-md-2 control-label",
                         attrs: { for: "name" }
                       },
                       [_vm._v(" Short description ")]
@@ -56692,7 +56814,7 @@ var render = function() {
                     _vm._v(" "),
                     _c(
                       "div",
-                      { staticClass: "col-xs-8" },
+                      { staticClass: "col-md-8" },
                       [
                         _c("ckeditor", {
                           attrs: {
@@ -56732,11 +56854,11 @@ var render = function() {
                     )
                   ]),
                   _vm._v(" "),
-                  _c("div", { staticClass: "form-group clearfix" }, [
+                  _c("div", { staticClass: "form-group clearfix row" }, [
                     _c(
                       "label",
                       {
-                        staticClass: "col-xs-2 control-label",
+                        staticClass: "col-md-2 control-label",
                         attrs: { for: "name" }
                       },
                       [_vm._v(" text ")]
@@ -56744,7 +56866,7 @@ var render = function() {
                     _vm._v(" "),
                     _c(
                       "div",
-                      { staticClass: "col-xs-8" },
+                      { staticClass: "col-md-8" },
                       [
                         _c("ckeditor", {
                           attrs: {
@@ -56782,11 +56904,11 @@ var render = function() {
                   ]),
                   _vm._v(" "),
                   this.category == "outdoor"
-                    ? _c("div", { staticClass: "form-group clearfix" }, [
+                    ? _c("div", { staticClass: "form-group clearfix row" }, [
                         _c(
                           "label",
                           {
-                            staticClass: "col-xs-2 control-label",
+                            staticClass: "col-md-2 control-label",
                             attrs: { for: "name" }
                           },
                           [_vm._v(" Routes description ")]
@@ -56794,7 +56916,7 @@ var render = function() {
                         _vm._v(" "),
                         _c(
                           "div",
-                          { staticClass: "col-xs-8" },
+                          { staticClass: "col-md-8" },
                           [
                             _c("ckeditor", {
                               attrs: {
@@ -56815,11 +56937,11 @@ var render = function() {
                       ])
                     : _vm._e(),
                   _vm._v(" "),
-                  _c("div", { staticClass: "form-group clearfix" }, [
+                  _c("div", { staticClass: "form-group clearfix row" }, [
                     _c(
                       "label",
                       {
-                        staticClass: "col-xs-2 control-label",
+                        staticClass: "col-md-2 control-label",
                         attrs: { for: "name" }
                       },
                       [_vm._v(" How to get hear ")]
@@ -56827,7 +56949,7 @@ var render = function() {
                     _vm._v(" "),
                     _c(
                       "div",
-                      { staticClass: "col-xs-8" },
+                      { staticClass: "col-md-8" },
                       [
                         _c("ckeditor", {
                           attrs: {
@@ -56850,11 +56972,11 @@ var render = function() {
                   this.category == "outdoor" ||
                   this.category == "ice" ||
                   this.category == "mount_route"
-                    ? _c("div", { staticClass: "form-group clearfix" }, [
+                    ? _c("div", { staticClass: "form-group clearfix row" }, [
                         _c(
                           "label",
                           {
-                            staticClass: "col-xs-2 control-label",
+                            staticClass: "col-md-2 control-label",
                             attrs: { for: "name" }
                           },
                           [_vm._v(" Best time for climbing ")]
@@ -56862,7 +56984,7 @@ var render = function() {
                         _vm._v(" "),
                         _c(
                           "div",
-                          { staticClass: "col-xs-8" },
+                          { staticClass: "col-md-8" },
                           [
                             _c("ckeditor", {
                               attrs: {
@@ -56886,11 +57008,11 @@ var render = function() {
                   this.category == "outdoor" ||
                   this.category == "ice" ||
                   this.category == "mount_route"
-                    ? _c("div", { staticClass: "form-group clearfix" }, [
+                    ? _c("div", { staticClass: "form-group clearfix row" }, [
                         _c(
                           "label",
                           {
-                            staticClass: "col-xs-2 control-label",
+                            staticClass: "col-md-2 control-label",
                             attrs: { for: "name" }
                           },
                           [_vm._v(" what you need ")]
@@ -56898,7 +57020,7 @@ var render = function() {
                         _vm._v(" "),
                         _c(
                           "div",
-                          { staticClass: "col-xs-8" },
+                          { staticClass: "col-md-8" },
                           [
                             _c("ckeditor", {
                               attrs: {
@@ -56919,11 +57041,11 @@ var render = function() {
                       ])
                     : _vm._e(),
                   _vm._v(" "),
-                  _c("div", { staticClass: "form-group clearfix" }, [
+                  _c("div", { staticClass: "form-group clearfix row" }, [
                     _c(
                       "label",
                       {
-                        staticClass: "col-xs-2 control-label",
+                        staticClass: "col-md-2 control-label",
                         attrs: { for: "name" }
                       },
                       [_vm._v(" Info / contact ")]
@@ -56931,7 +57053,7 @@ var render = function() {
                     _vm._v(" "),
                     _c(
                       "div",
-                      { staticClass: "col-xs-8" },
+                      { staticClass: "col-md-8" },
                       [
                         _c("ckeditor", {
                           attrs: {
@@ -56969,11 +57091,11 @@ var render = function() {
                   ]),
                   _vm._v(" "),
                   this.category == "indoor"
-                    ? _c("div", { staticClass: "form-group clearfix" }, [
+                    ? _c("div", { staticClass: "form-group clearfix row" }, [
                         _c(
                           "label",
                           {
-                            staticClass: "col-xs-2 control-label",
+                            staticClass: "col-md-2 control-label",
                             attrs: { for: "name" }
                           },
                           [_vm._v(" Price description ")]
@@ -56981,7 +57103,7 @@ var render = function() {
                         _vm._v(" "),
                         _c(
                           "div",
-                          { staticClass: "col-xs-8" },
+                          { staticClass: "col-md-8" },
                           [
                             _c("ckeditor", {
                               attrs: {
@@ -57004,17 +57126,17 @@ var render = function() {
                   _vm._v(" "),
                   _c("hr"),
                   _vm._v(" "),
-                  _c("div", { staticClass: "form-group clearfix" }, [
+                  _c("div", { staticClass: "form-group clearfix row" }, [
                     _c(
                       "label",
                       {
-                        staticClass: "col-xs-2 control-label",
+                        staticClass: "col-md-2 control-label",
                         attrs: { for: "name" }
                       },
                       [_vm._v(" Meta keyword ")]
                     ),
                     _vm._v(" "),
-                    _c("div", { staticClass: "col-xs-8" }, [
+                    _c("div", { staticClass: "col-md-8" }, [
                       _c("input", {
                         directives: [
                           {
@@ -57055,10 +57177,40 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "col-xs-4" }, [
-      _c("input", {
-        attrs: { type: "file", name: "profile_pic", id: "profile_pic" }
-      })
+    return _c("div", { staticClass: "row" }, [
+      _c(
+        "label",
+        { staticClass: "col-md-5 control-label", attrs: { for: "email" } },
+        [_vm._v("Upload outdoor climbing area sector images:")]
+      ),
+      _vm._v(" "),
+      _c("div", { staticClass: "col-md-4" }, [
+        _c("input", {
+          attrs: {
+            type: "file",
+            name: "region_sectors_img",
+            id: "region_sectors_img"
+          }
+        })
+      ])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "row" }, [
+      _c(
+        "label",
+        { staticClass: "col-md-2 control-label", attrs: { for: "name" } },
+        [_vm._v(" image ")]
+      ),
+      _vm._v(" "),
+      _c("div", { staticClass: "col-md-4" }, [
+        _c("input", {
+          attrs: { type: "file", name: "profile_pic", id: "profile_pic" }
+        })
+      ])
     ])
   }
 ]

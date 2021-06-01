@@ -1,7 +1,14 @@
             <ul class="list-group">
                 <li class="list-group-item text-muted">Munu</li>
 
-                @if((Auth::user()->hasRole('user'))||(Auth::user()->hasRole('admin')) || (Auth::user()->hasRole('manager')))
+                @if(
+                    (Auth::user()->hasRole('user')) ||
+                    (Auth::user()->hasRole('admin')) || 
+                    (Auth::user()->hasRole('us_manager')) || 
+                    (Auth::user()->hasRole('ka_manager')) || 
+                    (Auth::user()->hasRole('ru_manager')) || 
+                    (Auth::user()->hasRole('manager'))
+                )
                 <li class="list-group-item text-muted @if($page_name == 'Home') menu_active @endif">
                     <a href="{{route('user_index')}}">My page </a>
                 </li>
@@ -13,18 +20,31 @@
                 </li>
                 @endif
 
-                @if((Auth::user()->hasRole('admin')) || (Auth::user()->hasRole('manager')))
-
+                @if(
+                    (Auth::user()->hasRole('admin')) || 
+                    (Auth::user()->hasRole('us_manager')) || 
+                    (Auth::user()->hasRole('ka_manager')) || 
+                    (Auth::user()->hasRole('ru_manager')) || 
+                    (Auth::user()->hasRole('manager')) ||
+                    (Auth::user()->hasRole('seller'))
+                )
                 <li class="list-group-item text-muted"></li>
 
                 <li class="list-group-item text-muted @if($page_name == 'Products') menu_active @endif">
                     <a href="{{Route('products_list')}}">Products & Category</a>
                 </li>
-
                 <li class="list-group-item text-muted @if($page_name == 'Services') menu_active @endif">
                     <a href="{{Route('services_list')}}">Services</a>
                 </li>
+                @endif
 
+                @if(
+                    (Auth::user()->hasRole('admin')) || 
+                    (Auth::user()->hasRole('us_manager')) || 
+                    (Auth::user()->hasRole('ka_manager')) || 
+                    (Auth::user()->hasRole('ru_manager')) || 
+                    (Auth::user()->hasRole('manager'))
+                )
                 <li class="list-group-item text-muted"></li>
 
                 <li class="list-group-item text-muted @if($page_name == 'Outdoor') menu_active @endif">
@@ -65,14 +85,13 @@
                 </li>
                 @endif
 
-
                 <li class="list-group-item text-muted"></li>
 
+                @if(Auth::user()->hasRole('admin'))
                 <li class="list-group-item text-muted @if($page_name == 'Comments') menu_active @endif">
                     <a href="{{ Route('comments_list')}}">Comments</a>
                 </li>
 
-                @if(Auth::user()->hasRole('admin'))
                 <li class="list-group-item text-muted @if($page_name == 'Users and Roles') menu_active @endif">
                     <a href="{{ Route('users') }}">Users</a>
                 </li>

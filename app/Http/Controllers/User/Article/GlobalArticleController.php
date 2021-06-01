@@ -166,6 +166,38 @@ class GlobalArticleController extends Controller
         }
     }
 
+    public function region_sectors_image_upload(Request $request)
+    { 
+        if ($request->hasFile('region_sectors_img')){ 
+
+            $last_global_article_id = 0;
+            $last_global_article_category = '';
+
+            $global_article = Article::get();
+            foreach ($global_article as $global) {
+                $last_global_article_id = $global->id;
+                $last_global_article_category = $global->category;
+            }
+            $article = Article::where('id',strip_tags($last_global_article_id))->first();
+            
+            $file_new_name = ImageControllService::image_upload('images/region_sectors_img/', $request, 'region_sectors_img', 1);
+
+            $article['climbing_area_image'] = $file_new_name;
+            $article -> save();
+        }
+    }
+
+    public function region_sectors_image_update(Request $request)
+    {
+        if ($request->hasFile('region_sectors_img')){
+            $article = Article::where('id',strip_tags($request->id))->first();
+            $file_new_name = ImageControllService::image_update('images/region_sectors_img/', $article, $request, 'region_sectors_img', 1);
+
+            $article['climbing_area_image'] = $file_new_name;
+            $article -> save();
+        }
+    }
+
     public function global_article_validate($request)
     {
         $request->validate([

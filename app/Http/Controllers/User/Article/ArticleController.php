@@ -290,6 +290,7 @@ class ArticleController extends Controller
             
             // delete article file
             ImageControllService::image_delete('images/'.$global_article->category.'_img/', $global_article);
+            ImageControllService::image_delete('images/region_sectors_img_img/', $global_article);
 
             // delete article from db
             $global_article ->delete();

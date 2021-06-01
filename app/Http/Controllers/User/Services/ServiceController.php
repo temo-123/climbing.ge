@@ -18,6 +18,7 @@ class ServiceController extends Controller
 {
     public function Service_list(Request $request)
     {
+        $this->parmision($request);
         if (view()->exists('user.data_table')) {
             $data = [
                 'table_1'=>'services',
@@ -40,7 +41,7 @@ class ServiceController extends Controller
 
     public function get_service_data(Request $request)
     {
-        $request->user()->authorizeRoles(['manager', 'admin']);
+        $this->parmision($request);
 
         $services = Service::latest('id')->get();
 
@@ -49,6 +50,7 @@ class ServiceController extends Controller
 
     public function add_service_page(Request $request)
     {
+        $this->parmision($request);
         if (view() -> exists('user.components.forms.services.service_add_form')) {
             $service = $request->service;
             $data=[
@@ -75,6 +77,7 @@ class ServiceController extends Controller
 
     public function edit_service_page(Request $request)
     {
+        $this->parmision($request);
         if (view()->exists('user.components.forms.services.service_edit_form')) {
             $services_id = $request->id;
             $data = [
@@ -87,6 +90,7 @@ class ServiceController extends Controller
 
     public function create_temporary_service()
     {
+        $this->parmision($request);
         $service_ka = new Ka_service();
         $service_ka['title']="Ka temporary service";
         $service_ka -> save();
@@ -128,6 +132,7 @@ class ServiceController extends Controller
 
     public function del_temporary_service(Request $request)
     {
+        $this->parmision($request);
         if ($request->isMethod('post')) {
             $service_id=$request->id;
             $deleting_service_images = service_image::where('service_id','=',$service_id)->get();
@@ -154,6 +159,7 @@ class ServiceController extends Controller
 
     public function del_service(Request $request)
     {
+        $this->parmision($request);
         if ($request->isMethod('post')) {
             $global_id=$request->id;
 
@@ -182,6 +188,7 @@ class ServiceController extends Controller
     }
     public function get_temporary_service_editing_data()
     {
+        $this->parmision($request);
         $temporary_service = service::where("url_title","=","temporary_service")->get();
         foreach ($temporary_service as $service) {
             $last_temporary_service_id = $service->id;
@@ -195,6 +202,7 @@ class ServiceController extends Controller
     }
     public function get_service_image(Request $request)
     {
+        $this->parmision($request);
         $service_images = service_image::where('service_id',"=", $request->service_id)->get();
         return(
             $data = [
@@ -205,6 +213,7 @@ class ServiceController extends Controller
 
     public function get_service_editing_data(Request $request)
     {
+        $this->parmision($request);
         $service = Service::where('id',strip_tags($request->editing_service_id))->first();
         
         $us_service = Us_service::where('id',strip_tags($service->us_service_id))->first();
@@ -223,7 +232,7 @@ class ServiceController extends Controller
 
     public function upload_service_image(Request $request)
     {
-        $request->user()->authorizeRoles(['manager', 'admin']);
+        $this->parmision($request);
         
         $service_image = new service_image();
 
@@ -236,7 +245,7 @@ class ServiceController extends Controller
 
     public function del_service_image(Request $request)
     {
-        $request->user()->authorizeRoles(['manager', 'admin']);
+        $this->parmision($request);
 
         if ($request->isMethod('post')) {
             $service_image = service_image::where('id',strip_tags($request->image_id))->first();
@@ -245,5 +254,17 @@ class ServiceController extends Controller
 
             $service_image -> delete();
         }
+    }
+    public function parmision($request)
+    {
+        $request->user()->authorizeRoles(
+            [
+                'admin', 
+                'manager', 
+                'ka_manager', 
+                'ru_manager', 
+                'us_manager', 
+                'seller', 
+            ]);
     }
 }

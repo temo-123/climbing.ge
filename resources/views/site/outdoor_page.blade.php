@@ -83,7 +83,11 @@
                     @if($article [0]['route'])
                         <h2 id="routes">Route</h2>
                         {!!$article [0]['route']!!}
-                    @endif             
+                    @endif   
+                    
+                    @if($article['climbing_area_image'])
+                        <img src="{{asset('images/region_sectors_img/'. $article['climbing_area_image'])}}" alt="{{ $article[0]['title'] . ' - area image' }}">
+                    @endif          
 
 
                     @if(isset($sport_route_sector))

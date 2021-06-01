@@ -29,7 +29,7 @@ class RoleTableSeeder extends Seeder
       $role_ka_manager->save();
 
       $role_ru_manager = new Role();
-      $role_ru_manager->name = 'ru_mennager';
+      $role_ru_manager->name = 'ru_mannager';
       $role_ru_manager->description = 'Russian content mennager';
       $role_ru_manager->save();
 

@@ -136,6 +136,17 @@ hr {
   .top_menu_margin {
     margin-top: 32%;
   }
+
+  .mobile_nav_menu {
+    height: auto;
+    /* margin-top: 15%; */
+    float: left;
+    width: 100%;
+  }
+
+  .top_menu_buttons {
+    float: left !important;
+  }
 }
 
 .input-group-addon,
@@ -2042,7 +2053,7 @@ button.btn:hover,
 
 @media (max-width: 720px) {
   .display-none-720px {
-    display: none;
+    display: none !important;
   }
 }
 
@@ -3575,7 +3586,7 @@ button.btn:hover,
 
 .tabs label {
   /* .tabs  { */
-  order: 1;
+  /*order: 1;*/
   /* Put the labels first */
   display: block;
   padding: 1rem 2rem;
@@ -3656,6 +3667,17 @@ a.logo {
 .navbar-default .navbar-nav > li > a {
   padding-bottom: 30px;
   padding-top: 30px;
+}
+
+@media (max-width: 720px) {
+  .navbar-default .navbar-nav > li > a {
+    padding-bottom: 18px;
+    padding-top: 18px;
+  }
+}
+
+.nav_dropdown {
+  margin-bottom: 10%;
 }
 
 .navbar-default {

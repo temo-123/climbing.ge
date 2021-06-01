@@ -9,5 +9,19 @@ return [
     'limited quantity' => 'შეზღუდული რაოდენობა ',
     'out of stock' => 'არ არის მარაგში',
 
+    'product description' => 'პროდუკტის აღწერა',
+    'seller contact' => 'კონტაკტი',
+
+    'products' => 'პროდუკტები',
+
+    'category' => 'კატეგორია',
+    'material' => 'მატერიალი',
+    'seller' => 'გამყიდველი',
+    'email' => 'მეილი',
+    'phone number' => 'ტელეფონის ნომერი',
+
+    'you might also like' => 'აგრეთვე იხილეთ',
+    'all products' => 'ყველა პროდუკტი',
+
     'shop login' => 'ავტორიზაცია',
 ];

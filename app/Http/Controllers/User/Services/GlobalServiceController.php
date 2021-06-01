@@ -34,7 +34,7 @@ class GlobalServiceController extends Controller
      */
     public function add_global_service(Request $request)
     {
-        $request->user()->authorizeRoles(['admin']);
+        $this->parmision($request);
 
         if ($request -> isMethod('post')) {
             $this->global_service_validate($request);
@@ -69,6 +69,7 @@ class GlobalServiceController extends Controller
      */
     public function edit_global_service(service $service, Request $request)
     {
+        $this->parmision($request);
         if ($request->isMethod('post')) {
             $this->global_service_validate($request);
 
@@ -88,6 +89,7 @@ class GlobalServiceController extends Controller
      */
     public function delete(Service $service, Request $request)
     {
+        $this->parmision($request);
         if ($request->isMethod('delete')) {
 
             $image_dir = '/images/shop_img';
@@ -111,6 +113,7 @@ class GlobalServiceController extends Controller
      */
     public function favorite()
     {
+        $this->parmision($request);
         if (view()->exists('user.favorite_services')) {
 
             $favorite_services = Favorite_service::where('user_id', '=', Auth::user()->id)->get();
@@ -144,5 +147,19 @@ class GlobalServiceController extends Controller
         $request->validate([
             'published' => 'required',
         ]);
+    }
+
+
+    public function parmision($request)
+    {
+        $request->user()->authorizeRoles(
+            [
+                'admin', 
+                'manager', 
+                'ka_manager', 
+                'ru_manager', 
+                'us_manager', 
+                'seller', 
+            ]);
     }
 }

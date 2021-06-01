@@ -10,9 +10,10 @@
         <div class="row justify-content-center">
             <div class="col-md-8 col-md-offset-2">
                 <div class="card">
-                    <div class="card-header">{{ __('Register') }}</div>
+                    <div class="card-header text-center"><h1>{{ __('Register') }}</h1></div>
 
                     <div class="card-body">
+
                         <form method="POST" action="{{ route('register') }}">
                             @csrf
 
@@ -34,7 +35,7 @@
                                 <label for="surname" class="col-md-4 col-form-label text-md-right">{{ __('surname') }}</label>
 
                                 <div class="col-md-6">
-                                    <input id="surname" type="surname" class="form-control @error('surname') is-invalid @enderror" name="surname" required autocomplete="new-surname">
+                                    <input id="surname" type="surname" class="form-control @error('surname') is-invalid @enderror" name="surname" value="{{ old('surname') }}" required autocomplete="new-surname">
 
                                     @error('surname')
                                         <span class="invalid-feedback" role="alert">
@@ -48,7 +49,7 @@
                                 <label for="country" class="col-md-4 col-form-label text-md-right">{{ __('country') }}</label>
 
                                 <div class="col-md-6">
-                                    <input id="country" type="country" class="form-control @error('country') is-invalid @enderror" name="country" required autocomplete="new-country">
+                                    <input id="country" type="country" class="form-control @error('country') is-invalid @enderror" name="country" value="{{ old('country') }}" required autocomplete="new-country">
 
                                     @error('country')
                                         <span class="invalid-feedback" role="alert">
@@ -62,7 +63,7 @@
                                 <label for="city" class="col-md-4 col-form-label text-md-right">{{ __('city') }}</label>
 
                                 <div class="col-md-6">
-                                    <input id="city" type="city" class="form-control @error('city') is-invalid @enderror" name="city" required autocomplete="new-city">
+                                    <input id="city" type="city" class="form-control @error('city') is-invalid @enderror" name="city" value="{{ old('city') }}" required autocomplete="new-city">
 
                                     @error('city')
                                         <span class="invalid-feedback" role="alert">
@@ -76,7 +77,7 @@
                                 <label for="phone_number" class="col-md-4 col-form-label text-md-right">{{ __('phone_number') }}</label>
 
                                 <div class="col-md-6">
-                                    <input id="phone_number" type="phone_number" class="form-control @error('phone_number') is-invalid @enderror" name="phone_number" required autocomplete="new-phone_number">
+                                    <input id="phone_number" type="phone_number" class="form-control @error('phone_number') is-invalid @enderror" name="phone_number" value="{{ old('phone_number') }}" required autocomplete="new-phone_number">
 
                                     @error('phone_number')
                                         <span class="invalid-feedback" role="alert">
@@ -130,6 +131,15 @@
                                 </div>
                             </div>
                         </form>
+
+                        <hr>
+
+                        <div class="form-group row mb-0">
+                            <div class="col-md-6 col-md-offset-4">
+                                <a class="btn btn-primary" href="{{route('user_index')}}">@lang('site.menu login')</a>
+                            </div>
+                        </div>
+
                     </div>
                 </div>
             </div>

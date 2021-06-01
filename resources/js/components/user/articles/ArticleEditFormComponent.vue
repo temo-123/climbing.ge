@@ -21,9 +21,10 @@
                     <input type="submit" value="save global article" class="btn btn-primary" form="global_form">
                 </div>
                 <form name="contact-form" method="POST" id="global_form" @submit.prevent="edit_article"  style="margin-top: 5%;" enctyp ="multipart/form-data">
-                    <div class="form-group clearfix">
-                        <label for="name" class='col-xs-2 control-label'> Publish </label>
-                        <div class="col-xs-8">
+
+                    <div class="form-group clearfix row">
+                        <label for="name" class='col-md-2 control-label'> Publish </label>
+                        <div class="col-md-8">
                             <select class="form-control" name="published" v-model="published"> 
                                 <option value="0">Not public</option> 
                                 <option value="1">Public</option> 
@@ -34,18 +35,18 @@
                         </div>
                     </div>
 
-                    <div class="form-group clearfix" v-if="this.category == 'mount_route'">
-                        <label for="name" class='col-xs-2 control-label'> Mountain </label>
-                        <div class="col-xs-8">
+                    <div class="form-group clearfix row" v-if="this.category == 'mount_route'">
+                        <label for="name" class='col-md-2 control-label'> Mountain </label>
+                        <div class="col-md-8">
                             <select class="form-control" v-model="mount_id" name="mount_id"> 
                                 <option  v-for="mount in mount_data" :key="mount.id" v-bind:value="mount.id">{{mount.name}}</option> 
                             </select> 
                         </div>
                     </div>
 
-                    <div class="form-group clearfix" v-if="this.category == 'event'">
-                        <label for="name" class='col-xs-2 control-label'> completed </label>
-                        <div class="col-xs-8">
+                    <div class="form-group clearfix row" v-if="this.category == 'event'">
+                        <label for="name" class='col-md-2 control-label'> completed </label>
+                        <div class="col-md-8">
                             <select class="form-control" name="completed" v-model="completed"> 
                                 
                                 <!-- <option value="0" @if ($data['published'] == 0) selected="" @endif>Not public</option> -->
@@ -59,9 +60,9 @@
                     </div>
 
 
-                    <div class="form-group clearfix" v-if="this.category != 'mount_route'">
-                        <label for="name" class='col-xs-2 control-label'> Map </label>
-                        <div class="col-xs-8">
+                    <div class="form-group clearfix row" v-if="this.category != 'mount_route'">
+                        <label for="name" class='col-md-2 control-label'> Map </label>
+                        <div class="col-md-8">
                             <!-- <input type="text" name="value name" value="old data" class="form-control"> -->
                             <!-- <input type="text" name="map"  v-model="map" :value="editing_data.global_article['map']" class="form-control">  -->
                             <input type="text" name="map"  v-model="map" class="form-control"> 
@@ -69,9 +70,9 @@
                     </div>
 
 
-                    <div class="form-group clearfix" v-if="this.category == 'outdoor' || this.category == 'ice' || this.category != 'mount_route'">
-                        <label for="name" class='col-xs-2 control-label'> Weather </label>
-                        <div class="col-xs-8">
+                    <div class="form-group clearfix row" v-if="this.category == 'outdoor' || this.category == 'ice' || this.category != 'mount_route'">
+                        <label for="name" class='col-md-2 control-label'> Weather </label>
+                        <div class="col-md-8">
                             <!-- <input type="text" name="value name" value="old data" class="form-control"> -->
                             <input type="text" name="weather" v-model="weather" class="form-control"> 
                         </div>
@@ -79,30 +80,30 @@
 
                     <hr>
 
-                    <div class="form-group clearfix" v-if="this.category == 'indoor'">
-                        <label for="name" class='col-xs-2 control-label'> Minimal price </label>
-                        <div class="col-xs-8">
+                    <div class="form-group clearfix row" v-if="this.category == 'indoor'">
+                        <label for="name" class='col-md-2 control-label'> Minimal price </label>
+                        <div class="col-md-8">
                             <!-- <input type="text" name="value name" value="old data" class="form-control"> -->
                             <input type="text" name="price_from" value="price_from" v-model="price_from" class="form-control"> 
                             <!-- <ckeditor :editor="editor" v-model="us_price_from" :config="editorConfig"></ckeditor> -->
                         </div>
                     </div>
 
-                    <div class="form-group clearfix" v-if="this.category == 'indoor'">
-                        <label for="name" class='col-xs-2 control-label'> Working time </label>
-                        <div class="col-xs-8">
+                    <div class="form-group clearfix row" v-if="this.category == 'indoor'">
+                        <label for="name" class='col-md-2 control-label'> Working time </label>
+                        <div class="col-md-8">
                             <input type="text" name="time" value="time" v-model="working_time" class="form-control"> 
                         </div>
                     </div>
 
                     <hr v-if="this.category == 'event'">
 
-                    <div class="form-group clearfix" v-if="this.category == 'event'">
-                        <label for="name" class='col-xs-2 control-label'> Start data </label>
-                        <div class="col-xs-4">
+                    <div class="form-group clearfix row" v-if="this.category == 'event'">
+                        <label for="name" class='col-md-2 control-label'> Start data </label>
+                        <div class="col-md-4">
                             <input type="text" name="start_data_day" v-model="start_data_day"  class="form-control"> 
                         </div>
-                        <div class="col-xs-4">
+                        <div class="col-md-4">
                             <!-- <input type="text" name="start_data_month" v-model="start_data_month"  class="form-control">  -->
                             <select class="form-control" v-model="start_data_month" name="start_data_month"> 
                                 <option value="January">January</option>
@@ -121,12 +122,12 @@
                         </div>
                     </div>
 
-                    <div class="form-group clearfix" v-if="this.category == 'event'">
-                        <label for="name" class='col-xs-2 control-label'> End data </label>
-                        <div class="col-xs-4">
+                    <div class="form-group clearfix row" v-if="this.category == 'event'">
+                        <label for="name" class='col-md-2 control-label'> End data </label>
+                        <div class="col-md-4">
                             <input type="text" name="and_data_day" v-model="and_data_day"  class="form-control"> 
                         </div>
-                        <div class="col-xs-4">
+                        <div class="col-md-4">
                             <!-- <input type="text" name="and_data_month" v-model="and_data_month"  class="form-control">  -->
                             <select class="form-control" v-model="and_data_month" name="and_data_month"> 
                                 <option value="January">January</option>
@@ -147,52 +148,62 @@
 
                     <hr v-if="this.category == 'event' || this.category == 'partner' || this.category == 'indoor'">
 
-                    <div class="form-group clearfix" v-if="this.category == 'event' || this.category == 'partner' || this.category == 'indoor'">
-                        <label for="name" class='col-xs-2 control-label'> facebook / twitter </label>
-                        <div class="col-xs-4">
+                    <div class="form-group clearfix row" v-if="this.category == 'event' || this.category == 'partner' || this.category == 'indoor'">
+                        <label for="name" class='col-md-2 control-label'> facebook / twitter </label>
+                        <div class="col-md-4">
                             <input type="text" name="fb_link"  v-model="fb_link" class="form-control"> 
                         </div>
-                        <div class="col-xs-4">
+                        <div class="col-md-4">
                             <input type="text" name="twit_link"  v-model="twit_link" class="form-control"> 
                         </div>
                     </div>
-                    <div class="form-group clearfix" v-if="this.category == 'event' || this.category == 'partner' || this.category == 'indoor'">
-                        <label for="name" class='col-xs-2 control-label'> google / instagram </label>
-                        <div class="col-xs-4">
+                    <div class="form-group clearfix row" v-if="this.category == 'event' || this.category == 'partner' || this.category == 'indoor'">
+                        <label for="name" class='col-md-2 control-label'> google / instagram </label>
+                        <div class="col-md-4">
                             <input type="text" name="google_link"  v-model="google_link" class="form-control"> 
                         </div>
-                        <div class="col-xs-4">
+                        <div class="col-md-4">
                             <input type="text" name="inst_link"  v-model="inst_link" class="form-control"> 
                         </div>
                     </div>
-                    <div class="form-group clearfix" v-if="this.category == 'event' || this.category == 'partner' || this.category == 'indoor'">
-                        <label for="name" class='col-xs-2 control-label'> website </label>
-                        <div class="col-xs-8">
+                    <div class="form-group clearfix row" v-if="this.category == 'event' || this.category == 'partner' || this.category == 'indoor'">
+                        <label for="name" class='col-md-2 control-label'> website </label>
+                        <div class="col-md-8">
                             <!-- <input type="text" name="value name" value="old data" class="form-control"> -->
                             <input type="text" name="web_link" v-model="web_link" class="form-control"> 
                         </div>
                     </div>
 
-                    <!-- <div class="form-group clearfix">
-                        <label for="name" class='col-xs-2 control-label'> image </label>
-                        <div class="col-xs-4">                    
-                            <input type="file" name="fileToUpload" id="fileToUpload">
-                        </div>
-                        <div class="col-md-4">
-                            <img :src="'/public/images/' + category + '_img/'+this.image_name" alt="article image">
-                        </div>
-                    </div> -->
+                </form>
 
+                <form @submit="upload_region_image" ref="sectorRegionImage" v-if="this.category == 'outdoor'">
+                    <div class="form-group clearfix">
+                        <div class="row">
+                            <label for="email" class='col-md-5 control-label'>Upload outdoor climbing area sector images:</label>
+                            <div class="col-md-4">
+                                <input type="file" name="region_sectors_img" id="region_sectors_img">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-4">
+                                <img :src="'/public/images/region_sectors_img/'+this.region_sectors_image_name" alt="article image">
+                            </div>
+                        </div>
+                    </div>
                 </form>
 
                 <form @submit="checkForm" ref="myForm">
                         <div class="form-group clearfix">
-                            <label for="name" class='col-xs-2 control-label'> image </label>
-                            <div class="col-xs-4">     
-                                <input type="file" name="profile_pic" id="profile_pic">               
+                            <div class="row">
+                                <label for="name" class='col-md-2 control-label'> image </label>
+                                <div class="col-md-4">     
+                                    <input type="file" name="profile_pic" id="profile_pic">               
+                                </div>
                             </div>
-                            <div class="col-xs-4">
-                                <img :src="'/public/images/' + category + '_img/'+this.image_name" alt="article image">
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <img :src="'/public/images/' + category + '_img/'+this.image_name" alt="article image">
+                                </div>
                             </div>
                         </div>
                 </form>
@@ -212,9 +223,9 @@
                 </div>
 
                 <form id="us_form" name="contact-form" method="POST" @submit.prevent="edit_ka_article" style="margin-top: 5%;" enctyp ="multipart/form-data">
-                    <div class="form-group clearfix">
-                        <label for="name" class='col-xs-2 control-label'> Title </label>
-                        <div class="col-xs-8">
+                    <div class="form-group clearfix row">
+                        <label for="name" class='col-md-2 control-label'> Title </label>
+                        <div class="col-md-8">
                             <!-- <input type="text" name="value name" value="old data" class="form-control"> -->
                             <input type="text" name="us_title" v-model="us_title" class="form-control"> 
                             <div class="alert alert-danger" role="alert" v-if="us_article_error.us_title">
@@ -223,9 +234,9 @@
                         </div>
                     </div>
 
-                    <div class="form-group clearfix">
-                        <label for="name" class='col-xs-2 control-label'> Short description </label>
-                        <div class="col-xs-8">
+                    <div class="form-group clearfix row">
+                        <label for="name" class='col-md-2 control-label'> Short description </label>
+                        <div class="col-md-8">
                             <!-- <textarea type="text" id="short_description" name="short_description" rows="15" class="form-cotrol md-textarea form-control">gggggggggg</textarea> -->
                             <ckeditor :editor="editor" v-model="us_short_description" :config="editorConfig"></ckeditor>
                             <div class="alert alert-danger" role="alert" v-if="us_article_error.us_short_description">
@@ -234,9 +245,9 @@
                         </div>
                     </div>
 
-                    <div class="form-group clearfix">
-                        <label for="name" class='col-xs-2 control-label'> text </label>
-                        <div class="col-xs-8">
+                    <div class="form-group clearfix row">
+                        <label for="name" class='col-md-2 control-label'> text </label>
+                        <div class="col-md-8">
                             <ckeditor :editor="editor" v-model="us_text" :config="editorConfig"></ckeditor>
                             <!-- <textarea type="text" id="txt" name="txt" rows="15" class="form-cotrol md-textarea form-control"></textarea> -->
                             <div class="alert alert-danger" role="alert" v-if="us_article_error.us_text">
@@ -245,41 +256,41 @@
                         </div>
                     </div>
 
-                    <div class="form-group clearfix" v-if="this.category == 'outdoor'">
-                        <label for="name" class='col-xs-2 control-label'> Routes description </label>
-                        <div class="col-xs-8">
+                    <div class="form-group clearfix row" v-if="this.category == 'outdoor'">
+                        <label for="name" class='col-md-2 control-label'> Routes description </label>
+                        <div class="col-md-8">
                             <ckeditor :editor="editor" v-model="us_route" :config="editorConfig"></ckeditor>
                             <!-- <textarea type="text" id="route" name="route" rows="15" class="form-cotrol md-textarea form-control"></textarea> -->
                         </div>
                     </div>
 
-                    <div class="form-group clearfix">
-                        <label for="name" class='col-xs-2 control-label'> How to get hear </label>
-                        <div class="col-xs-8">
+                    <div class="form-group clearfix row">
+                        <label for="name" class='col-md-2 control-label'> How to get hear </label>
+                        <div class="col-md-8">
                             <ckeditor :editor="editor" v-model="us_how_get" :config="editorConfig"></ckeditor>
                             <!-- <textarea type="text" id="how_get" name="how_get" rows="15" class="form-cotrol md-textarea form-control"></textarea> -->
                         </div>
                     </div>
 
-                    <div class="form-group clearfix" v-if="this.category == 'outdoor' || this.category == 'ice' || this.category == 'mount_route' ">
-                        <label for="name" class='col-xs-2 control-label'> Best time for climbing </label>
-                        <div class="col-xs-8">
+                    <div class="form-group clearfix row" v-if="this.category == 'outdoor' || this.category == 'ice' || this.category == 'mount_route' ">
+                        <label for="name" class='col-md-2 control-label'> Best time for climbing </label>
+                        <div class="col-md-8">
                             <ckeditor :editor="editor" v-model="us_best_time" :config="editorConfig"></ckeditor>
                             <!-- <textarea type="text" id="best_time" name="best_time" rows="15" class="form-cotrol md-textarea form-control"></textarea> -->
                         </div>
                     </div>
 
-                    <div class="form-group clearfix" v-if="this.category == 'outdoor' || this.category == 'ice' || this.category == 'mount_route' ">
-                        <label for="name" class='col-xs-2 control-label'> what you need </label>
-                        <div class="col-xs-8">
+                    <div class="form-group clearfix row" v-if="this.category == 'outdoor' || this.category == 'ice' || this.category == 'mount_route' ">
+                        <label for="name" class='col-md-2 control-label'> what you need </label>
+                        <div class="col-md-8">
                             <ckeditor :editor="editor" v-model="us_what_need" :config="editorConfig"></ckeditor>
                             <!-- <textarea type="text" id="what_need" name="what_need" rows="15" class="form-cotrol md-textarea form-control"></textarea> -->
                         </div>
                     </div>
 
-                    <div class="form-group clearfix">
-                        <label for="name" class='col-xs-2 control-label'> Info / contact </label>
-                        <div class="col-xs-8">
+                    <div class="form-group clearfix row">
+                        <label for="name" class='col-md-2 control-label'> Info / contact </label>
+                        <div class="col-md-8">
                             <ckeditor :editor="editor" v-model="us_info" :config="editorConfig"></ckeditor>
                             <div class="alert alert-danger" role="alert" v-if="us_article_error.us_info">
                                 {{ us_article_error.us_info[0] }}
@@ -288,9 +299,9 @@
                         </div>
                     </div>
 
-                    <div class="form-group clearfix" v-if="this.category == 'indoor'">
-                        <label for="name" class='col-xs-2 control-label'> Price description </label>
-                        <div class="col-xs-8">
+                    <div class="form-group clearfix row" v-if="this.category == 'indoor'">
+                        <label for="name" class='col-md-2 control-label'> Price description </label>
+                        <div class="col-md-8">
                             <ckeditor :editor="editor" v-model="us_price_text" :config="editorConfig"></ckeditor>
                             <!-- <textarea type="text" id="prixe_text" name="prixe_text" rows="15" class="form-cotrol md-textarea form-control"></textarea> -->
                         </div>
@@ -298,9 +309,9 @@
 
                     <hr>
 
-                    <div class="form-group clearfix">
-                        <label for="name" class='col-xs-2 control-label'> Meta keyword </label>
-                        <div class="col-xs-8">
+                    <div class="form-group clearfix row">
+                        <label for="name" class='col-md-2 control-label'> Meta keyword </label>
+                        <div class="col-md-8">
                             <!-- <input type="text" name="value name" value="old data" class="form-control"> -->
                             <input type="text" name="meta_keyword" value="meta_keyword" v-model="us_meta_keyword" class="form-control"> 
                         </div>
@@ -324,9 +335,9 @@
                 </div>
 
                 <form id="us_form" name="contact-form" method="POST" @submit.prevent="edit_ru_article" style="margin-top: 5%;" enctyp ="multipart/form-data">
-                    <div class="form-group clearfix">
-                        <label for="name" class='col-xs-2 control-label'> Title </label>
-                        <div class="col-xs-8">
+                    <div class="form-group clearfix row">
+                        <label for="name" class='col-md-2 control-label'> Title </label>
+                        <div class="col-md-8">
                             <!-- <input type="text" name="value name" value="old data" class="form-control"> -->
                             <input type="text" name="value name" v-model="ru_title" class="form-control"> 
                             <div class="alert alert-danger" role="alert" v-if="ru_article_error.ru_title">
@@ -335,9 +346,9 @@
                         </div>
                     </div>
 
-                    <div class="form-group clearfix">
-                        <label for="name" class='col-xs-2 control-label'> Short description </label>
-                        <div class="col-xs-8">
+                    <div class="form-group clearfix row">
+                        <label for="name" class='col-md-2 control-label'> Short description </label>
+                        <div class="col-md-8">
                             <ckeditor :editor="editor" v-model="ru_short_description" :config="editorConfig"></ckeditor>
                             <!-- <textarea type="text" id="short_description" name="short_description" rows="15" class="form-cotrol md-textarea form-control"></textarea> -->
                             <div class="alert alert-danger" role="alert" v-if="ru_article_error.ru_short_description">
@@ -346,9 +357,9 @@
                         </div>
                     </div>
 
-                    <div class="form-group clearfix">
-                        <label for="name" class='col-xs-2 control-label'> text </label>
-                        <div class="col-xs-8">
+                    <div class="form-group clearfix row">
+                        <label for="name" class='col-md-2 control-label'> text </label>
+                        <div class="col-md-8">
                             <ckeditor :editor="editor" v-model="ru_text" :config="editorConfig"></ckeditor>
                             <!-- <textarea type="text" id="txt" name="txt" rows="15" class="form-cotrol md-textarea form-control"></textarea> -->
                             <div class="alert alert-danger" role="alert" v-if="ru_article_error.ru_text">
@@ -357,41 +368,41 @@
                         </div>
                     </div>
 
-                    <div class="form-group clearfix" v-if="this.category == 'outdoor'">
-                        <label for="name" class='col-xs-2 control-label'> Routes description </label>
-                        <div class="col-xs-8">
+                    <div class="form-group clearfix row" v-if="this.category == 'outdoor'">
+                        <label for="name" class='col-md-2 control-label'> Routes description </label>
+                        <div class="col-md-8">
                             <ckeditor :editor="editor" v-model="ru_route" :config="editorConfig"></ckeditor>
                             <!-- <textarea type="text" id="route" name="route" rows="15" class="form-cotrol md-textarea form-control"></textarea> -->
                         </div>
                     </div>
 
-                    <div class="form-group clearfix">
-                        <label for="name" class='col-xs-2 control-label'> How to get hear </label>
-                        <div class="col-xs-8">
+                    <div class="form-group clearfix row">
+                        <label for="name" class='col-md-2 control-label'> How to get hear </label>
+                        <div class="col-md-8">
                             <ckeditor :editor="editor" v-model="ru_how_get" :config="editorConfig"></ckeditor>
                             <!-- <textarea type="text" id="how_get" name="how_get" rows="15" class="form-cotrol md-textarea form-control"></textarea> -->
                         </div>
                     </div>
 
-                    <div class="form-group clearfix" v-if="this.category == 'outdoor' || this.category == 'ice' || this.category == 'mount_route' ">
-                        <label for="name" class='col-xs-2 control-label'> Best time for climbing </label>
-                        <div class="col-xs-8">
+                    <div class="form-group clearfix row" v-if="this.category == 'outdoor' || this.category == 'ice' || this.category == 'mount_route' ">
+                        <label for="name" class='col-md-2 control-label'> Best time for climbing </label>
+                        <div class="col-md-8">
                             <ckeditor :editor="editor" v-model="ru_best_time" :config="editorConfig"></ckeditor>
                             <!-- <textarea type="text" id="best_time" name="best_time" rows="15" class="form-cotrol md-textarea form-control"></textarea> -->
                         </div>
                     </div>
 
-                    <div class="form-group clearfix" v-if="this.category == 'outdoor' || this.category == 'ice' || this.category == 'mount_route' ">
-                        <label for="name" class='col-xs-2 control-label'> what you need </label>
-                        <div class="col-xs-8">
+                    <div class="form-group clearfix row" v-if="this.category == 'outdoor' || this.category == 'ice' || this.category == 'mount_route' ">
+                        <label for="name" class='col-md-2 control-label'> what you need </label>
+                        <div class="col-md-8">
                             <ckeditor :editor="editor" v-model="ru_what_need" :config="editorConfig"></ckeditor>
                             <!-- <textarea type="text" id="what_need" name="what_need" rows="15" class="form-cotrol md-textarea form-control"></textarea> -->
                         </div>
                     </div>
 
-                    <div class="form-group clearfix">
-                        <label for="name" class='col-xs-2 control-label'> Info / contact </label>
-                        <div class="col-xs-8">
+                    <div class="form-group clearfix row">
+                        <label for="name" class='col-md-2 control-label'> Info / contact </label>
+                        <div class="col-md-8">
                             <ckeditor :editor="editor" v-model="ru_info" :config="editorConfig"></ckeditor>
                             <!-- <textarea type="text"  name="info" rows="15" class="form-cotrol md-textarea form-control"></textarea> -->
                             <div class="alert alert-danger" role="alert" v-if="ru_article_error.ru_info">
@@ -400,25 +411,25 @@
                         </div>
                     </div>
 
-                    <!-- <div class="form-group clearfix">
-                        <label for="name" class='col-xs-2 control-label'> Working time </label>
-                        <div class="col-xs-8">
+                    <!-- <div class="form-group clearfix row">
+                        <label for="name" class='col-md-2 control-label'> Working time </label>
+                        <div class="col-md-8">
                             <input type="text" name="value name" value="old data" class="form-control">
                             <input type="text" name="time" value="time" class="form-control"> 
                         </div>
                     </div> -->
 
-                    <div class="form-group clearfix" v-if="this.category == 'indoor'">
-                        <label for="name" class='col-xs-2 control-label'> Price description </label>
-                        <div class="col-xs-8">
+                    <div class="form-group clearfix row" v-if="this.category == 'indoor'">
+                        <label for="name" class='col-md-2 control-label'> Price description </label>
+                        <div class="col-md-8">
                             <ckeditor :editor="editor" v-model="ru_price_text" :config="editorConfig"></ckeditor>
                             <!-- <textarea type="text" id="prixe_text" name="prixe_text" rows="15" class="form-cotrol md-textarea form-control"></textarea> -->
                         </div>
                     </div>
 
-                    <!-- <div class="form-group clearfix">
-                        <label for="name" class='col-xs-2 control-label'> Minimal price </label>
-                        <div class="col-xs-8">
+                    <!-- <div class="form-group clearfix row">
+                        <label for="name" class='col-md-2 control-label'> Minimal price </label>
+                        <div class="col-md-8">
                             <input type="text" name="value name" value="old data" class="form-control">
                             <input type="text" name="price_from" value="price_from" class="form-control"> 
                         </div>
@@ -426,9 +437,9 @@
 
                     <hr>
 
-                    <div class="form-group clearfix">
-                        <label for="name" class='col-xs-2 control-label'> Meta keyword </label>
-                        <div class="col-xs-8">
+                    <div class="form-group clearfix row">
+                        <label for="name" class='col-md-2 control-label'> Meta keyword </label>
+                        <div class="col-md-8">
                             <!-- <input type="text" name="value name" value="old data" class="form-control"> -->
                             <input type="text" name="meta_keyword" v-model="ru_meta_keyword" value="meta_keyword" class="form-control"> 
                         </div>
@@ -452,9 +463,9 @@
                 </div>
 
                 <form id="us_form" name="contact-form" method="POST" @submit.prevent="edit_ka_article" style="margin-top: 5%;" enctyp ="multipart/form-data">
-                    <div class="form-group clearfix">
-                        <label for="name" class='col-xs-2 control-label'> Title </label>
-                        <div class="col-xs-8">
+                    <div class="form-group clearfix row">
+                        <label for="name" class='col-md-2 control-label'> Title </label>
+                        <div class="col-md-8">
                             <!-- <input type="text" name="value name" value="old data" class="form-control"> -->
                             <input type="text" name="value name" v-model="ka_title" class="form-control"> 
                             <div class="alert alert-danger" role="alert" v-if="ka_article_error.ka_text">
@@ -463,9 +474,9 @@
                         </div>
                     </div>
 
-                    <div class="form-group clearfix">
-                        <label for="name" class='col-xs-2 control-label'> Short description </label>
-                        <div class="col-xs-8">
+                    <div class="form-group clearfix row">
+                        <label for="name" class='col-md-2 control-label'> Short description </label>
+                        <div class="col-md-8">
                             <ckeditor :editor="editor" v-model="ka_short_description" :config="editorConfig"></ckeditor>
                             <!-- <textarea type="text" id="short_description" name="short_description" rows="15" class="form-cotrol md-textarea form-control"></textarea> -->
                             <div class="alert alert-danger" role="alert" v-if="ka_article_error.ka_short_description">
@@ -474,9 +485,9 @@
                         </div>
                     </div>
 
-                    <div class="form-group clearfix">
-                        <label for="name" class='col-xs-2 control-label'> text </label>
-                        <div class="col-xs-8">
+                    <div class="form-group clearfix row">
+                        <label for="name" class='col-md-2 control-label'> text </label>
+                        <div class="col-md-8">
                             <ckeditor :editor="editor" v-model="ka_text" :config="editorConfig"></ckeditor>
                             <div class="alert alert-danger" role="alert" v-if="ka_article_error.ka_text">
                                 {{ ka_article_error.ka_text[0] }}
@@ -485,41 +496,41 @@
                         </div>
                     </div>
 
-                    <div class="form-group clearfix" v-if="this.category == 'outdoor'">
-                        <label for="name" class='col-xs-2 control-label'> Routes description </label>
-                        <div class="col-xs-8">
+                    <div class="form-group clearfix row" v-if="this.category == 'outdoor'">
+                        <label for="name" class='col-md-2 control-label'> Routes description </label>
+                        <div class="col-md-8">
                             <ckeditor :editor="editor" v-model="ka_route" :config="editorConfig"></ckeditor>
                             <!-- <textarea type="text" id="route" name="route" rows="15" class="form-cotrol md-textarea form-control"></textarea> -->
                         </div>
                     </div>
 
-                    <div class="form-group clearfix">
-                        <label for="name" class='col-xs-2 control-label'> How to get hear </label>
-                        <div class="col-xs-8">
+                    <div class="form-group clearfix row">
+                        <label for="name" class='col-md-2 control-label'> How to get hear </label>
+                        <div class="col-md-8">
                             <ckeditor :editor="editor" v-model="ka_how_get" :config="editorConfig"></ckeditor>
                             <!-- <textarea type="text" id="how_get" name="how_get" rows="15" class="form-cotrol md-textarea form-control"></textarea> -->
                         </div>
                     </div>
 
-                    <div class="form-group clearfix" v-if="this.category == 'outdoor' || this.category == 'ice' || this.category == 'mount_route' ">
-                        <label for="name" class='col-xs-2 control-label'> Best time for climbing </label>
-                        <div class="col-xs-8">
+                    <div class="form-group clearfix row" v-if="this.category == 'outdoor' || this.category == 'ice' || this.category == 'mount_route' ">
+                        <label for="name" class='col-md-2 control-label'> Best time for climbing </label>
+                        <div class="col-md-8">
                             <ckeditor :editor="editor" v-model="ka_best_time" :config="editorConfig"></ckeditor>
                             <!-- <textarea type="text" id="best_time" name="best_time" rows="15" class="form-cotrol md-textarea form-control"></textarea> -->
                         </div>
                     </div>
 
-                    <div class="form-group clearfix" v-if="this.category == 'outdoor' || this.category == 'ice' || this.category == 'mount_route' ">
-                        <label for="name" class='col-xs-2 control-label'> what you need </label>
-                        <div class="col-xs-8">
+                    <div class="form-group clearfix row" v-if="this.category == 'outdoor' || this.category == 'ice' || this.category == 'mount_route' ">
+                        <label for="name" class='col-md-2 control-label'> what you need </label>
+                        <div class="col-md-8">
                             <ckeditor :editor="editor" v-model="ka_what_need" :config="editorConfig"></ckeditor>
                             <!-- <textarea type="text" id="what_need" name="what_need" rows="15" class="form-cotrol md-textarea form-control"></textarea> -->
                         </div>
                     </div>
 
-                    <div class="form-group clearfix">
-                        <label for="name" class='col-xs-2 control-label'> Info / contact </label>
-                        <div class="col-xs-8">
+                    <div class="form-group clearfix row">
+                        <label for="name" class='col-md-2 control-label'> Info / contact </label>
+                        <div class="col-md-8">
                             <ckeditor :editor="editor" v-model="ka_info" :config="editorConfig"></ckeditor>
                             <div class="alert alert-danger" role="alert" v-if="ka_article_error.ka_info">
                                 {{ ka_article_error.ka_info[0] }}
@@ -528,24 +539,24 @@
                         </div>
                     </div>
 
-                    <!-- <div class="form-group clearfix">
-                        <label for="name" class='col-xs-2 control-label'> Working time </label>
-                        <div class="col-xs-8">
+                    <!-- <div class="form-group clearfix row">
+                        <label for="name" class='col-md-2 control-label'> Working time </label>
+                        <div class="col-md-8">
                             <input type="text" name="time" value="time" class="form-control"> 
                         </div>
                     </div> -->
 
-                    <div class="form-group clearfix" v-if="this.category == 'indoor'">
-                        <label for="name" class='col-xs-2 control-label'> Price description </label>
-                        <div class="col-xs-8">
+                    <div class="form-group clearfix row" v-if="this.category == 'indoor'">
+                        <label for="name" class='col-md-2 control-label'> Price description </label>
+                        <div class="col-md-8">
                             <ckeditor :editor="editor" v-model="ka_price_description" :config="editorConfig"></ckeditor>
                             <!-- <textarea type="text" id="prixe_text" name="prixe_text" rows="15" class="form-cotrol md-textarea form-control"></textarea> -->
                         </div>
                     </div>
 
-                    <!-- <div class="form-group clearfix">
-                        <label for="name" class='col-xs-2 control-label'> Minimal price </label>
-                        <div class="col-xs-8">
+                    <!-- <div class="form-group clearfix row">
+                        <label for="name" class='col-md-2 control-label'> Minimal price </label>
+                        <div class="col-md-8">
                             <input type="text" name="price_from" value="price_from" class="form-control"> 
                         </div>
                     </div> -->
@@ -553,9 +564,9 @@
                     <hr>
 
 
-                    <div class="form-group clearfix">
-                        <label for="name" class='col-xs-2 control-label'> Meta keyword </label>
-                        <div class="col-xs-8">
+                    <div class="form-group clearfix row">
+                        <label for="name" class='col-md-2 control-label'> Meta keyword </label>
+                        <div class="col-md-8">
                             <!-- <input type="text" name="value name" value="old data" class="form-control"> -->
                             <input type="text" name="meta_keyword" value="meta_keyword" v-model='ka_meta_keyword' class="form-control"> 
                         </div>
@@ -616,6 +627,7 @@
 
                 name: '',
                 image_name: '',
+                region_sectors_image_name: '',
                 success: '',
 
 
@@ -683,6 +695,15 @@
                 })
                 .catch(error =>{
                 })
+
+                // axios
+                // .get('/users/get_user_parmisions/', { })
+                // .then((response)=> { 
+                    
+                // })
+                // .catch(error =>{
+                    
+                // })
             },
 
             edit_global_article() {
@@ -821,6 +842,21 @@
                 });
                 // e.preventDefault();
             },
+            upload_region_image: function () {
+                // var mySectorRegionImageData = new Array(this.$refs.sectorRegionImage)
+                var mySectorRegionImageData = new FormData(this.$refs.sectorRegionImage)
+                axios({
+                    method: 'post',
+                    url: '/articles/region_sectors_image_update/' + this.editing_article_id,
+                    data: mySectorRegionImageData,
+                    config: { 
+                        headers: {'Content-Type': 'multipart/form-data' },
+                    },
+                })
+                .then((response)=>  {
+                    
+                });
+            },
 
             get_editing_data() {
                 this.url = this.editing_url + this.editing_article_id
@@ -851,6 +887,7 @@
                     this.web_link = this.editing_data.global_article['web_link'],
                     this.us_price_from = this.editing_data.global_article['price_from'],
                     this.image_name = this.editing_data.global_article['image']
+                    this.region_sectors_image_name = this.editing_data.global_article['climbing_area_image']
 
                     this.price_from = this.editing_data.global_article['price_from']
                     this.working_time = this.editing_data.global_article['working_time']
@@ -906,6 +943,7 @@
                 this.edit_ru_article();
 
                 this.checkForm();
+                this.upload_region_image();
             },
 
             if_isset_go_beck() {
@@ -915,7 +953,7 @@
                     this.is_ru_article_error == false &&
                     this.is_us_article_error == false
                 ) {
-                    window.location.href = this.back_url;
+                    // window.location.href = this.back_url;
                 }
             }
         }

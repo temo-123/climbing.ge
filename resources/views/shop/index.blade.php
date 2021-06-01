@@ -16,11 +16,17 @@
 
 <div class="container top_menu_margin h-recent-work">
 
-    <h1 class="page_title">Products</h1>
+    <h1 class="page_title">@lang('shop.products')</h1>
 
     @if($site->shop_description != null)
-    <div class="bar"><i class="fa fa-exclamation-triangle"></i></div>
-    <h6>{!! $site->shop_description !!}</h6>
+        <div class="bar"><i class="fa fa-exclamation-triangle"></i></div>
+        @if($page_locale == "ru")
+            <h6>{!! $site -> shop_description_ru !!}</h6>
+        @elseif($page_locale == "ka")
+            <h6>{!! $site -> shop_description_ka !!}</h6>
+        @else
+            <h6>{!! $site -> shop_description !!}</h6>
+        @endif
     @endif
 
     {{-- <div class="col-sm-3">

@@ -22,6 +22,7 @@ class GetArticlesService
                 foreach ($ru_articles as $us_article) {
                     if ($us_article->id == $article->ru_article_id) {
                         array_push($articles, [$ru_articles,    "url_title"=>$article->url_title, 
+                                                                "climbing_area_image" => $article->climbing_area_image,
                                                                 "image" => $article->image,
                                                                 "start_data_day" => $article->start_data_day,
                                                                 "and_data_day" => $article->and_data_day,
@@ -38,6 +39,7 @@ class GetArticlesService
                 foreach ($ka_articles as $us_article) {
                     if ($us_article->id == $article->ka_article_id) {
                         array_push($articles, [$ka_articles,    "url_title"=>$article->url_title, 
+                                                                "climbing_area_image" => $article->climbing_area_image,
                                                                 "image" => $article->image,
                                                                 "start_data_day" => $article->start_data_day,
                                                                 "and_data_day" => $article->and_data_day,
@@ -53,6 +55,7 @@ class GetArticlesService
                 foreach ($us_articles as $us_article) {
                     if ($us_article->id == $article->us_article_id) {
                         array_push($articles, [$us_articles,    "url_title"=>$article->url_title, 
+                                                                "climbing_area_image" => $article->climbing_area_image,
                                                                 "image" => $article->image,
                                                                 "start_data_day" => $article->start_data_day,
                                                                 "and_data_day" => $article->and_data_day,
@@ -133,6 +136,7 @@ class GetArticlesService
                                                 "price_from"=>$article->price_from, 
                                                 "working_time"=>$article->working_time, 
                                                 "map"=>$article->map,
+                                                "climbing_area_image"=>$article->climbing_area_image,
                                                 "image"=>$article->image, 
                                                 ]);
         }
@@ -155,6 +159,7 @@ class GetArticlesService
                                                 "price_from"=>$article->price_from, 
                                                 "working_time"=>$article->working_time, 
                                                 "map"=>$article->map,
+                                                "climbing_area_image"=>$article->climbing_area_image,
                                                 "image"=>$article->image, 
                                                 ]);
                 
@@ -178,6 +183,7 @@ class GetArticlesService
                                                 "price_from"=>$article->price_from, 
                                                 "working_time"=>$article->working_time, 
                                                 "map"=>$article->map,
+                                                "climbing_area_image"=>$article->climbing_area_image,
                                                 "image"=>$article->image, 
                                                 ]);
             // dd($locale_article[0][0]['title']);

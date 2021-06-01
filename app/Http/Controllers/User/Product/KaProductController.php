@@ -11,6 +11,7 @@ class KaProductController extends Controller
 {
     public function add_ka_product(Request $request)
     {
+        $this->parmision($request);
         $request->user()->authorizeRoles(['manager', 'admin']);
         if ($request -> isMethod('post')) {
             // $input = $request -> except('_token');
@@ -35,6 +36,7 @@ class KaProductController extends Controller
 
     public function edit_ka_product(Request $request)
     {
+        $this->parmision($request);
         if ($request->isMethod('post')) {
             $this->ka_product_validate($request);
 
@@ -57,5 +59,18 @@ class KaProductController extends Controller
             'ka_short_description' => 'required',
             'ka_text' => 'required',
         ]);
+    }
+
+    public function parmision($request)
+    {
+        $request->user()->authorizeRoles(
+            [
+                'admin', 
+                'manager', 
+                'ka_manager', 
+                'ru_manager', 
+                'us_manager', 
+                'seller', 
+            ]);
     }
 }

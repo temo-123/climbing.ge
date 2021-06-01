@@ -220,10 +220,10 @@
 
             {{-- </div> --}}
             <div class="row">
-              @if ($global_product->quantity != NULL && $global_product->quantity <= 3)
+              @if ($global_product->quantity != NULL && $global_product->quantity == 0)
+                <h3 style=""><strong style="color: #f70000; text-align: center !important;">@lang('shop.out of stock')</strong></h3>
+              @elseif ($global_product->quantity != NULL && $global_product->quantity <= 3)
                 <h3 style=""><strong style="color: #df9800; text-align: center !important;">@lang('shop.limited quantity')( @if($global_product->quantity == 1) 1 @else 3 > @endif )</strong></h3>
-              @elseif ($global_product->quantity != NULL && $global_product->quantity == 3)
-                <h3 style=""><strong style="color: #f70000; text-align: center !important;">@lang('shop.out of stock') ( @if($global_product->quantity == 1) 1 @else 3 > @endif )</strong></h3>
               @endif
             </div>
           </div>
@@ -239,15 +239,15 @@
           <div class="col-md-10 col-md-offset-1">
 
             <ul class="nav nav-tabs" id="myTab">
-              <li class="active"><a href="#home" data-toggle="tab">Description</a></li>
-              <li><a href="#contacts" data-toggle="tab">contacts</a></li>
+              <li class="active"><a href="#home" data-toggle="tab">@lang('shop.product description')</a></li>
+              <li><a href="#contacts" data-toggle="tab">@lang('shop.seller contact')</a></li>
             </ul>
 
             <div class="tab-content">
               <div class="tab-pane active" id="home">
 
                 @if($global_product->category_id != null)
-                <p class="product_p"><strong>Category</strong> - @if($page_locale == "ru")
+                <p class="product_p"><strong>@lang('shop.category')</strong> - @if($page_locale == "ru")
                                     {{ $category -> ru_name }}
                                   @elseif($page_locale == "ka")
                                     {{ $category -> ka_name }}
@@ -257,16 +257,16 @@
                 @endif
 
                 @if($global_product->material != null)
-                <p class="product_p"><strong>Material</strong> - {{$global_product->material}}</p>
+                <p class="product_p"><strong>@lang('shop.material')</strong> - {{$global_product->material}}</p>
                 @endif
 
-                <p class="product_p"><strong>Seler</strong> - {{$product_seller->name}} {{$product_seller->surname}}</p>
+                <p class="product_p"><strong>@lang('shop.seller')</strong> - {{$product_seller->name}} {{$product_seller->surname}}</p>
                 <hr>
                 {!!$product -> text!!}
               </div>
               <div class="tab-pane" id="contacts">
-                <p class="product_p"><strong>Email</strong> - {{ $site->email }}</p>
-                <p class="product_p"><strong>Phone number</strong> - {{ $site->number }}</p>
+                <p class="product_p"><strong>@lang('shop.email')</strong> - {{ $site->email }}</p>
+                <p class="product_p"><strong>@lang('shop.phone number')</strong> - {{ $site->number }}</p>
                 <hr>
                 @if($page_locale == "ru")
                     {!! $site -> shop_description_ru !!}
@@ -287,7 +287,7 @@
     @if(isset($othe_products))
       <div class="container">
         <div class="row related">
-          <h2>You might also like</h2>
+          <h2>@lang('shop.you might also like')</h2>
           @foreach($othe_products as $other_product)
           {{-- {{ dd($other_product['price']) }} --}}
           <div class="collection-list col-lg-4 col-md-4 col-sm-4">
@@ -377,7 +377,7 @@
         </div>
         <div class="row">
           <div class="more-products" id="more-products-wrap">
-            <a href="{{route('shop_index')}}"><span id="more-products" data-rows_per_page="1">All products</span></a>
+            <a href="{{route('shop_index')}}"><span id="more-products" data-rows_per_page="1">@lang('shop.all products')</span></a>
           </div>
         </div>
       </div>

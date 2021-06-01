@@ -3,25 +3,32 @@
         <div class="col-xs-12 col-sm-2 col-md-3 col-lg-3 ">
             <div class="site_title">
                 <a href="{{ route('index') }}" class="site_title">@lang('site.site name')</a>
-                {{-- <img src="{{ asset('images/site_img/site_logo/climbing.ge.png') }}" alt="Site Logo" width="100px"> --}}
             </div>
         </div>
-        <div class="col-xs-12 col-sm-10 col-md-9 col-lg-9">
-            <nav class="navbar navbar-default  float-right float-top" role="navigation">
+        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+            <nav class="navbar navbar-default float-top" role="navigation">
                 <div class="container-fluid">
+
                     <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
                         <i class="fa fa-angle-down"></i>
                     </button>                  
                     
-                    <button type="button" class="navbar-toggle margin_right" data-toggle="dropdown">
+                    {{-- <button type="button" class="navbar-toggle margin_right" data-toggle="dropdown">
                         <i class="fa fa-search" aria-hidden="true"></i>
-                    </button>   
+                    </button>   --}}
                     
-                    <button type="button" class="navbar-toggle">
-                        <li><a href="#"><i class="fa fa-user" ></i></a></li>
-                    </button>                      
+                    <button type="button" class="navbar-toggle margin_right" data-toggle="dropdown">
+                        <i class="fa fa-language" aria-hidden="true"></i>
+                    </button>
                     
-                    <ul class="dropdown-menu shadows" role="menu" >
+                    <button type="button" class="navbar-toggle margin_right">
+                        
+                        <a style="margin-top: -5%; font-size: 120%; color: #333333;" href="{{route('user_index')}}">
+                            <i class="fa fa-user" ></i>
+                        </a>
+                    </button>
+                    
+                    {{-- <ul class="dropdown-menu shadows" role="menu" >
                         <li>
                             <form action="eeeee" method="POST" role="search" class="navbar-form">
                                 {{csrf_field ()}} 
@@ -38,18 +45,24 @@
                                 </div>
                             </form>
                         </li>
+                    </ul> --}}
+                    
+                    <ul class="dropdown-menu shadows" role="menu" >
+                        <li><a href="{{ url('') }}"><img style="width: 20%;  margin-left: 40%;" src="{{ asset('images/site_img/leng/en.png')}}" alt=""></a></li>
+                        <li><a href="{{ url('ka') }}"><img style="width: 20%;  margin-left: 40%;" src="{{ asset('images/site_img/leng/ka.webp')}}" alt=""></a></li>
+                        <li><a href="{{ url('ru') }}"><img style="width: 20%;  margin-left: 40%;" src="{{ asset('images/site_img/leng/ru.png')}}" alt=""></a></li>
                     </ul>
                 </div>
-                <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <div class="collapse navbar-collapse mobile_nav_menu" id="bs-example-navbar-collapse-1">
                     <ul class="nav navbar-nav pull-right top_menu_buttons">
                         <li class="dropdown">
                             <a href="#" @if(isset($indoor_climbing) || isset($outdoor_climbing)) id='actyve' @endif data-toggle="dropdown">
                             @lang('site.menu climbing')
                             </a>
 
-                            <ul class="dropdown-menu shadows" role="menu">
-                                <li><a style="font-size: 2em;" href="{{route('indoor_list')}}">@lang('site.menu indoor climbing')</a></li>
-                                <li><a style="font-size: 2em;" href="{{route('outdoor_list')}}">@lang('site.menu outdoor climbing')</a></li>
+                            <ul class="dropdown-menu " role="menu" style="background: #1994b1; position: absolute;">
+                                <li><a style="font-size: 1.5em;" href="{{route('indoor_list')}}">@lang('site.menu indoor climbing')</a></li>
+                                <li><a style="font-size: 1.5em;" href="{{route('outdoor_list')}}">@lang('site.menu outdoor climbing')</a></li>
                             </ul>
                         </li>
 
@@ -58,11 +71,6 @@
                         <li><a @if(isset($other)) id='actyve' @endif href="{{route('other_list')}}">@lang('site.menu other')</a></li>
                         <li><a @if(isset($pages)) id='actyve' @endif href="{{route('about_us_page')}}">@lang('site.menu about us')</a></li>
 
-                        @if (Auth::guest())
-                        <li>
-                            <a href="{{route('user_index')}}">@lang('site.menu login')</a>
-                        </li>
-                        @endif
 
                         <li class="dropdown">
                             <a href="#" class="margin_right admin_menu_for_desctop" data-toggle="dropdown">
@@ -88,28 +96,34 @@
                             </ul>
                         </li>
 
-                        <li class="dropdown">
+                        <li class="dropdown display-none-720px">
                             <a href="#" data-toggle="dropdown">
-                            <i class="fa fa-language" aria-hidden="true"></i>
+                                <i class="fa fa-language" aria-hidden="true"></i>
                             </a>
 
                             <ul class="dropdown-menu shadows" role="menu">
-                                <li><a style="font-size: 2em;" href="{{ url('') }}"><img src="{{ asset('images/site_img/leng/en.png')}}" alt=""></a></li>
-                                <li><a style="font-size: 2em;" href="{{ url('ka') }}"><img src="{{ asset('images/site_img/leng/ka.webp')}}" alt=""></a></li>
-                                <li><a style="font-size: 2em;" href="{{ url('ru') }}"><img src="{{ asset('images/site_img/leng/ru.png')}}" alt=""></a></li>
+                                <li><a href="{{ url('') }}"><img style="width: 50%; margin-left: 25%;" src="{{ asset('images/site_img/leng/en.png')}}" alt=""></a></li>
+                                <li><a href="{{ url('ka') }}"><img style="width: 50%; margin-left: 25%;" src="{{ asset('images/site_img/leng/ka.webp')}}" alt=""></a></li>
+                                <li><a href="{{ url('ru') }}"><img style="width: 50%; margin-left: 25%;" src="{{ asset('images/site_img/leng/ru.png')}}" alt=""></a></li>
                             </ul>
                         </li>
                         
                         @if (Route::has('login'))
-                        @auth
-                        <li>
-                            <a style="margin-top: -5%; font-size: 150%;" href="{{route('user_index')}}">
-                                <i class="fa fa-user-circle"></i>
-                            </a>
-                        </li>
-                        @endauth
+                            @auth
+                            <li class="display-none-720px">
+                                <a style="margin-top: -5%; font-size: 120%;" href="{{route('user_index')}}">
+                                    <i class="fa fa-user-circle"></i>
+                                </a>
+                            </li>
+                            @endauth
                         @endif
-                        
+                        @if (Auth::guest())
+                            <li class="display-none-720px">
+                                <a style="margin-top: -5%; font-size: 120%;" href="{{route('user_index')}}">
+                                    <i class="fa fa-user-circle"></i>
+                                </a>
+                            </li>
+                        @endif
                     </ul>
                 </div>
             </nav>

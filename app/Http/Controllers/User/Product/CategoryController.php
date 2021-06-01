@@ -11,6 +11,7 @@ class CategoryController extends Controller
 {
     public function product_add_form(Request $request)
     {
+        $this->parmision($request);
         if (view() -> exists('user.components.forms.products.category_add_form')) {
             
             $data=[
@@ -35,7 +36,7 @@ class CategoryController extends Controller
     }
     public function add_product_category(Request $request)
     {
-        $request->user()->authorizeRoles(['admin', 'seller']);
+        $this->parmision($request);
 
         if ($request -> isMethod('post')) {
             $this->category_validate($request);
@@ -52,6 +53,8 @@ class CategoryController extends Controller
 
     public function product_edit_form(Request $request)
     {
+
+        $this->parmision($request);
         if (view() -> exists('user.components.forms.products.category_edit_form')) {
             
             $data=[
@@ -78,7 +81,7 @@ class CategoryController extends Controller
     }
     public function edit_product_category(Request $request)
     {
-        $request->user()->authorizeRoles(['admin', 'seller']);
+        $this->parmision($request);
 
         if ($request -> isMethod('post')) {
             $this->category_validate($request);
@@ -95,6 +98,7 @@ class CategoryController extends Controller
 
     public function del_product_category(Request $request)
     {
+        $this->parmision($request);
         if ($request->isMethod('post')) {
             $product_id=$request->id;
 
@@ -107,12 +111,13 @@ class CategoryController extends Controller
 
     public function get_product_category_data()
     {
+        $this->parmision($request);
         return Product_category::latest('id')->get();
     }
 
     public function get_editing_category_data(Request $request)
     {
-
+        $this->parmision($request);
         $product_category = Product_category::where('id',strip_tags($request->id))->first();
         return(
             $data = [
@@ -128,5 +133,18 @@ class CategoryController extends Controller
             'ka_name' => 'required',
             'ru_name' => 'required',
         ]);
+    }
+
+    public function parmision($request)
+    {
+        $request->user()->authorizeRoles(
+            [
+                'admin', 
+                'manager', 
+                'ka_manager', 
+                'ru_manager', 
+                'us_manager', 
+                'seller', 
+            ]);
     }
 }

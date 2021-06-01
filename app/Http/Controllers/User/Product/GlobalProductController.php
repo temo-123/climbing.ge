@@ -35,7 +35,8 @@ class GlobalProductController extends Controller
      */
     public function add_global_product(Request $request)
     {
-        $request->user()->authorizeRoles(['admin']);
+        
+        $this->parmision($request);
 
         if ($request -> isMethod('post')) {
             $this->global_product_validate($request);
@@ -101,6 +102,7 @@ class GlobalProductController extends Controller
      */
     public function edit_global_product(Product $product, Request $request)
     {
+        $this->parmision($request);
         if ($request->isMethod('post')) {
             $this->global_product_validate($request);
 
@@ -135,6 +137,7 @@ class GlobalProductController extends Controller
      */
     public function delete(product $product, Request $request)
     {
+        $this->parmision($request);
         if ($request->isMethod('delete')) {
 
             $image_dir = '/images/shop_img';
@@ -158,6 +161,7 @@ class GlobalProductController extends Controller
      */
     public function favorite()
     {
+        $this->parmision($request);
         if (view()->exists('user.favorite_products')) {
 
             $favorite_products = Favorite_product::where('user_id', '=', Auth::user()->id)->get();
@@ -222,5 +226,16 @@ class GlobalProductController extends Controller
             'currency' => 'required',
         ]);
     }
-
+    public function parmision($request)
+    {
+        $request->user()->authorizeRoles(
+            [
+                'admin', 
+                'manager', 
+                'ka_manager', 
+                'ru_manager', 
+                'us_manager', 
+                'seller', 
+            ]);
+    }
 }

@@ -175,6 +175,12 @@ Route::group(['prefix' => LocalisationService::locale(),'middleware' => 'setLoca
                         Route::match(['get', 'post', 'HEAD'], '/upload_image', ['uses' => 'GlobalArticleController@image_upload', 'as'=>'articleImageUpload']);
                         Route::match(['get', 'post', 'HEAD'], '/update_image/{id}', ['uses' => 'GlobalArticleController@image_update', 'as'=>'articleImageUpdate']);
 
+                        Route::match(['post',], '/region_sectors_image_upload', ['uses' => 'GlobalArticleController@region_sectors_image_upload', 'as'=>'region_sectors_image_upload']);
+                        Route::match(['post',], '/region_sectors_image_update/{id}', ['uses' => 'GlobalArticleController@region_sectors_image_update', 'as'=>'region_sectors_image_update']);
+
+                        // Route::any('/region_sectors_image_upload', 'GlobalArticleController@region_sectors_image_upload');
+                        // Route::any('/region_sectors_image_update/{id}', 'GlobalArticleController@region_sectors_image_update');
+
                         Route::any('/get_article_data/{article_category}', 'ArticleController@get_article_data');
                         Route::any('/get_editing_data/{id}', 'ArticleController@get_editing_data');
                     });    
@@ -280,6 +286,8 @@ Route::group(['prefix' => LocalisationService::locale(),'middleware' => 'setLoca
 
                         Route::any('/get_all_users_data', 'UserController@get_all_users_data');
                         Route::any('/get_roles_data', 'UserController@get_roles_data');
+
+                        Route::any('/get_user_parmisions', 'UserController@get_user_parmisions');
                     });
 
 

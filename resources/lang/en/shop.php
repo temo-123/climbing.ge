@@ -9,5 +9,19 @@ return [
     'limited quantity' => 'Limited quantity ',
     'out of stock' => 'Out of stock',
 
+    'product description' => 'Description',
+    'seller contact' => 'Contacts',
+
+    'products' => 'Products',
+
+    'category' => 'Category',
+    'material' => 'Material',
+    'seller' => 'Seler',
+    'email' => 'Email',
+    'phone number' => 'Phone number',
+
+    'you might also like' => 'You might also like',
+    'all products' => 'All products',
+
     'shop login' => 'Login',
 ];

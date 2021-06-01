@@ -71,7 +71,7 @@
                               <td>{{$route_loop['height']}}</td>
                               <td>{{$route_loop['bolts']}}</td>
                               <td>{{$route_loop['grade_fr']}} @if ($route_loop['or_grade_fr'] != NULL) / {{$route_loop['or_grade_fr']}} @endif</td>
-                              <td>{{$route_loop['grade_yds']}} @if ($route_loop['or_grade_yds'] != NULL) / {{$route_loop['or_grade_yds']}} @endif</td>
+                              <td class="display-none-720px">{{$route_loop['grade_yds']}} @if ($route_loop['or_grade_yds'] != NULL) / {{$route_loop['or_grade_yds']}} @endif</td>
                         </tr>
                   </tbody>
             @endforeach
@@ -112,7 +112,7 @@
                               <td>{{$mtp_pitchs['pitch height']}}</td>
                               <td>{{$mtp_pitchs['pitch bolts']}}</td>
                               <td>{{$mtp_pitchs['pitch grade fr']}}</td>
-                              <td>{{$mtp_pitchs['pitch grade yds']}}</td>
+                              <td class="display-none-720px">{{$mtp_pitchs['pitch grade yds']}}</td>
                         </tr>
                   </tbody>
                   <div style='display:none;'>{{$mtp_rope_index++}}</div>

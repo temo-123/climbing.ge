@@ -190,6 +190,30 @@ class UserController extends Controller
         // return $test;
     }
 
+    public function get_user_parmisions(Request $request)
+    {
+        if(Auth::user()->hasRole('admin')){
+            $status = 'admin';
+        }
+        elseif(Auth::user()->hasRole('manager')){
+            $status = 'content_manager';
+        }
+        elseif(Auth::user()->hasRole('ka_manager')){
+            $status = 'georgian_content_manager';
+        }
+        elseif(Auth::user()->hasRole('ru_manager')){
+            $status = 'russian_content_manager';
+        }
+        elseif(Auth::user()->hasRole('us_manager')){
+            $status = 'english_content_manager';
+        }
+        else{
+            $status = 'user';
+        }
+
+        return $status;
+    }
+
     public function destroy(user $user, Request $request)
     {
         $request->user()->authorizeRoles(['admin']);

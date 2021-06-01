@@ -40,6 +40,7 @@
     <meta property="og:image"           content="@yield('meta_img')" />
     <meta property="og:description"     content="@yield('meta_description')" />
     <meta property="og:site_name"       content="climbing.ge" />
+    
     @if(isset($products))
     @else
 

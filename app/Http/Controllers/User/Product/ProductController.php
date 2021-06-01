@@ -20,6 +20,7 @@ class ProductController extends Controller
 {
     public function product_list_page(Request $request)
     {
+        $this->parmision($request);
         if (view()->exists('user.data_table')) {
             $data = [
                 'table_1'=>'Products',
@@ -49,7 +50,7 @@ class ProductController extends Controller
 
     public function get_product_data(Request $request)
     {
-        $request->user()->authorizeRoles(['manager', 'admin']);
+        $this->parmision($request);
 
         $products = product::latest('id')->get();
         // $products = product::latest('id')->where('user_id', '=', Auth::user()->id)->get();
@@ -86,6 +87,7 @@ class ProductController extends Controller
 
     public function create_temporary_product()
     {
+        $this->parmision($request);
         $product_ka = new Ka_product();
         $product_ka['title']="Ka temporary product";
         $product_ka -> save();
@@ -127,6 +129,7 @@ class ProductController extends Controller
 
     public function del_temporary_product(Request $request)
     {
+        $this->parmision($request);
         if ($request->isMethod('post')) {
             $product_id=$request->id;
             $deleting_product_images = Product_image::where('product_id','=',$product_id)->get();
@@ -153,6 +156,7 @@ class ProductController extends Controller
 
     public function add_product_page(Request $request)
     {
+        $this->parmision($request);
         if (view() -> exists('user.components.forms.products.product_add_form')) {
             $category = $request->category;
             $data=[
@@ -179,6 +183,7 @@ class ProductController extends Controller
 
     public function edit_product_page(Request $request)
     {
+        $this->parmision($request);
         if (view()->exists('user.components.forms.products.product_edit_form')) {
             $product_id = $request->id;
             $data = [
@@ -191,6 +196,7 @@ class ProductController extends Controller
 
     public function del_product(Request $request)
     {
+        $this->parmision($request);
         if ($request->isMethod('post')) {
             $global_id=$request->id;
 
@@ -219,6 +225,7 @@ class ProductController extends Controller
     }
     public function get_temporary_product_editing_data()
     {
+        $this->parmision($request);
         $temporary_product = Product::where("url_title","=","temporary_product")->get();
         foreach ($temporary_product as $product) {
             $last_temporary_product_id = $product->id;
@@ -232,6 +239,7 @@ class ProductController extends Controller
     }
     public function get_product_image(Request $request)
     {
+        $this->parmision($request);
         $product_images = Product_image::where('product_id',"=", $request->product_id)->get();
         return(
             $data = [
@@ -242,6 +250,7 @@ class ProductController extends Controller
 
     public function get_product_editing_data(Request $request)
     {
+        $this->parmision($request);
         $product = Product::where('id',strip_tags($request->editing_product_id))->first();
         
         $us_product = Us_product::where('id',strip_tags($product->us_product_id))->first();
@@ -260,6 +269,7 @@ class ProductController extends Controller
 
     public function upload_product_image(Request $request)
     {
+        $this->parmision($request);
         $request->user()->authorizeRoles(['manager', 'admin']);
         
         $product_image = new Product_image();
@@ -273,6 +283,7 @@ class ProductController extends Controller
 
     public function del_product_image(Request $request)
     {
+        $this->parmision($request);
         $request->user()->authorizeRoles(['manager', 'admin']);
 
         if ($request->isMethod('post')) {
@@ -289,6 +300,7 @@ class ProductController extends Controller
 
     public function favorite()
     {
+        $this->parmision($request);
         if (view()->exists('user.favorite_products')) {
 
             $favorite_product = Favorite_product::latest('id')->where("user_id","=",Auth::user()->id)->get();
@@ -319,5 +331,19 @@ class ProductController extends Controller
     		return view('user.favorite_products',$data);
     	}
     	abort(404);
+    }
+
+
+    public function parmision($request)
+    {
+        $request->user()->authorizeRoles(
+            [
+                'admin', 
+                'manager', 
+                'ka_manager', 
+                'ru_manager', 
+                'us_manager', 
+                'seller', 
+            ]);
     }
 }

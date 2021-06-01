@@ -11,6 +11,7 @@ class UsProductController extends Controller
 {
     public function add_us_product(Request $request)
     {
+        $this->parmision($request);
         $request->user()->authorizeRoles(['manager', 'admin']);
         if ($request -> isMethod('post')) {
             // $input = $request -> except('_token');
@@ -35,6 +36,7 @@ class UsProductController extends Controller
 
     public function edit_us_product(Request $request)
     {
+        $this->parmision($request);
         if ($request->isMethod('post')) {
             $this->us_product_validate($request);
             
@@ -57,5 +59,18 @@ class UsProductController extends Controller
             'us_short_description' => 'required',
             'us_text' => 'required',
         ]);
+    }
+
+    public function parmision($request)
+    {
+        $request->user()->authorizeRoles(
+            [
+                'admin', 
+                'manager', 
+                'ka_manager', 
+                'ru_manager', 
+                'us_manager', 
+                'seller', 
+            ]);
     }
 }

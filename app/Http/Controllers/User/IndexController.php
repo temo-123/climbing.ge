@@ -24,7 +24,17 @@ class IndexController extends Controller
      */
     public function index(Request $request)
     {
-        $request->user()->authorizeRoles(['admin', 'menager', 'user']);
+        $request->user()->authorizeRoles(
+            [
+                'admin', 
+                'manager', 
+                'ka_manager', 
+                'ru_manager', 
+                'us_manager', 
+                'seller', 
+                'user'
+            ]);
+
         $data = [
             "page_name" => "Home"
         ];

@@ -11,6 +11,7 @@ class RuServiceController extends Controller
 {
     public function add_ru_service(Request $request)
     {
+        $this->parmision($request);
         $request->user()->authorizeRoles(['manager', 'admin']);
         if ($request -> isMethod('post')) {
             // $input = $request -> except('_token');
@@ -35,6 +36,7 @@ class RuServiceController extends Controller
 
     public function edit_ru_service(Request $request)
     {
+        $this->parmision($request);
         if ($request->isMethod('post')) {
             $this->ru_service_validate($request);
             $ru_service = Ru_service::where('id',strip_tags($request->id))->first();
@@ -56,5 +58,18 @@ class RuServiceController extends Controller
             'ru_short_description' => 'required',
             'ru_text' => 'required',
         ]);
+    }
+
+    public function parmision($request)
+    {
+        $request->user()->authorizeRoles(
+            [
+                'admin', 
+                'manager', 
+                'ka_manager', 
+                'ru_manager', 
+                'us_manager', 
+                'seller', 
+            ]);
     }
 }

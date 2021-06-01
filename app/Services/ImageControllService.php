@@ -28,9 +28,10 @@ class imageControllService
         if ($request->hasFile($form_value_id)){   
 
             // rename file->;
-            $file_new_name = ImageControllService::rename_image($request, $form_value_id);
             $extension = $request->file($form_value_id)->getClientOriginalExtension();
+            $file_new_name = ImageControllService::rename_image($request, $form_value_id);
             $file_new_name = $file_new_name.'.'.$extension;
+            // dd($file_new_name);
 
             // push image in folder
             $file = $request->file($form_value_id);
@@ -62,7 +63,9 @@ class imageControllService
             ImageControllService::image_delete($image_dir, $model);
 
             // rename file
+            $extension = $request->file($form_value_id)->getClientOriginalExtension();
             $file_new_name = ImageControllService::rename_image($request, $form_value_id);
+            $file_new_name = $file_new_name.'.'.$extension;
             $file      = $request->file($form_value_id);
 
             // push image in folder
