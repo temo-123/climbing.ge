@@ -4,8 +4,7 @@
 @section('title', 'Climbing in Georgia')
     @section('meta_keyword', 'Climbing in Georgia')
     @section('meta_description', 'Climbing, mountaineering, ice and mixed climbing in Georgia')
-    @section('meta_img', asset('assets/img/meta_img/indoor.jpg'))
-
+    @section('meta_img', asset('/images/meta_img/indoor.jpg'))
     @if (isset($head_slider) && is_object($head_slider) )
     <div id="mycarousel" class="carousel slide" data-ride="carousel">
       <!-- Indicators -->
@@ -442,7 +441,7 @@
                                         @endif 
                                     </div>
                                     </div> --}}
-                                    <div class="col-md-4 col-lg-3 ">
+                                    <div class="col-sm-6 col-md-4 col-lg-3 ">
                                         <div class="gallery_product filter {!! $gallery -> filter !!} thumb" >
                                             <a class="thumbnail" href='#' data-image-id="" data-toggle="modal" data-toggle="modal" data-target="#squarespaceModal{{$gallery -> id}}">
 

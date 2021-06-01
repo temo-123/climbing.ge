@@ -22,11 +22,8 @@
 @section('meta_description', 'Climbing In Georgia')
 @endif
 
-@if(isset($meta_img))
-@section('meta_img', (asset('assets/img/meta_img/'.$meta_img)))
-@else
-@section('meta_img', (asset('assets/img/site_logo/x.png')))
-@endif
+
+@section('meta_img', (asset('/images/meta_img/ice.jpg')))
 
 <!-- <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
 
@@ -44,7 +41,7 @@
                 
                     @if(isset($ice) && $site->ice_description != NULL)
                     <div class="bar"><i class="fa fa-exclamation-triangle"></i></div>
-                    <h6>{{$site -> ice_description}}</h6>
+                    <h6>{!!$site -> ice_description!!}</h6>
                     @endif
 
     <section class="portfolio" id="portfolio">
