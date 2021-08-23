@@ -55,25 +55,22 @@
                     <div class="col-md-12">
                     @if(Auth::user()->name == NULL || Auth::user()->surname == NULL || Auth::user()->country == NULL || Auth::user()->city == NULL || Auth::user()->email == NULL)
                         <div class="alert alert-danger" role="alert">
-
-                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
                             <strong>Danger!</strong> Your personal data is missing, this can lead to rolling problems. check page "option", and add missing information.
                         </div>
                     @endif
                     @if(Auth::user()->hasRole('admin'))
                     @if($site->text  == NULL || $site->text_ru  == NULL || $site->text_ka  == NULL || $site->short_description_ru  == NULL || $site->short_description_ka  == NULL || $site->short_description == NULL )
                         <div class="alert alert-danger" role="alert">
-
-                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
                             <strong>Danger!</strong> Your web-site information is not fool. check page "About us", and add missing information.
                         </div>
                     @endif
                     @endif
+                    @if(Auth::user()->email_verified_at == NULL)
+                    <div class="alert alert-danger" role="alert">
+                        We sent you an email for verification, please check your email and confirm it.
                     </div>
+                    </div>
+                    @endif
                 </div>
 
             </div>

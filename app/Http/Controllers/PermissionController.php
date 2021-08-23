@@ -13,8 +13,8 @@ class PermissionController extends Controller
         if(Auth::user()->hasRole('admin')){
             return 'admin';
         }
-        elseif (Auth::user()->hasRole('menager')) {
-            return 'menager';
+        elseif (Auth::user()->hasRole('manager')) {
+            return 'manager';
         }
         elseif (Auth::user()->hasRole('ka_manager')) {
             return 'ka_manager';

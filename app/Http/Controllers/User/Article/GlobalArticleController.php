@@ -150,7 +150,6 @@ class GlobalArticleController extends Controller
 
             $article['image'] = $file_new_name;
             $article -> save();
-
             // return response()->json(["message" => "Image Uploaded Succesfully"]);
         }
     }
@@ -159,7 +158,7 @@ class GlobalArticleController extends Controller
     {
         if ($request->hasFile('profile_pic')){
             $article = Article::where('id',strip_tags($request->id))->first();
-            $file_new_name = ImageControllService::image_update('images/'.$article->category.'_img/', $article, $request, 'profile_pic', 1);
+            $file_new_name = ImageControllService::image_update('images/'.$article->category.'_img/', $article, $request, 'profile_pic', 1, 'image');
 
             $article['image'] = $file_new_name;
             $article -> save();
@@ -191,7 +190,7 @@ class GlobalArticleController extends Controller
     {
         if ($request->hasFile('region_sectors_img')){
             $article = Article::where('id',strip_tags($request->id))->first();
-            $file_new_name = ImageControllService::image_update('images/region_sectors_img/', $article, $request, 'region_sectors_img', 1);
+            $file_new_name = ImageControllService::image_update('images/region_sectors_img/', $article, $request, 'region_sectors_img', 1, 'climbing_area_image');
 
             $article['climbing_area_image'] = $file_new_name;
             $article -> save();

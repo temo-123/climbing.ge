@@ -16,7 +16,8 @@ return [
 
     'category' => 'Category',
     'material' => 'Material',
-    'seller' => 'Seler',
+    'weight' => 'Weight',
+    'seller' => 'Seller',
     'email' => 'Email',
     'phone number' => 'Phone number',
 
@@ -24,4 +25,7 @@ return [
     'all products' => 'All products',
 
     'shop login' => 'Login',
+
+    'services title' => 'Services',
+    'service page other services' => 'Other services'
 ];

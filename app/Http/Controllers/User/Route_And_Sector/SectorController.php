@@ -165,8 +165,8 @@ class SectorController extends Controller
 
     public function get_sector_image(Request $request)
     {
-        $sector_images = Sector_image::where('sector_id',"=", $request->sector_id)->get();
-        $sector_images_count = Sector_image::where('sector_id',"=", $request->sector_id)->count();
+        $sector_images = Sector_image::where('sector_id',"=", $request->sector_id)->orderBy('num')->get();
+        $sector_images_count = Sector_image::where('sector_id',"=", $request->sector_id)->orderBy('num')->count();
 
         $sector_images_size = 100;
         if($sector_images_count > 1){
@@ -180,6 +180,23 @@ class SectorController extends Controller
                 "sector_images_size" => $sector_images_size,
             ]
         );
+    }
+
+    public function save_sector_images_sequence(Request $request)
+    {
+        $image_num = 0;
+        $images_sequence = $request->sector_images_sequence;
+        foreach ($images_sequence as $image_sequence) {
+            $image_sequence_id = $image_sequence['id'];
+            $image = Sector_image::where('id',strip_tags($image_sequence_id))->first();
+            // var_dump($image);
+            // dd($image_sequence_id);
+            $image_num++;
+            // http_response_code(500);
+            // dd('$image_num');
+            $image['num'] = $image_num;
+            $image->update();
+        }
     }
 
     public function get_sector_editing_data(Request $request)
@@ -207,17 +224,6 @@ class SectorController extends Controller
         $sector -> save();
     }
 
-    public function sector_image_update(Request $request)
-    {
-        $request->user()->authorizeRoles(['manager', 'admin']);
-
-        $article = Article::where('id',strip_tags($request->id))->first();
-        $file_new_name = ImageControllService::image_update('images/sector_img/', $article, $request, 'profile_pic', 1);
-
-        $article['image'] = $file_new_name;
-        $article -> save();
-    }
-
     public function sector_image_delete(Request $request)
     {
         $request->user()->authorizeRoles(['manager', 'admin']);
@@ -225,7 +231,7 @@ class SectorController extends Controller
         if ($request->isMethod('post')) {
             $sector_image = Sector_image::where('id',strip_tags($request->id))->first();
 
-            ImageControllService::image_delete('images/sector_img/', $sector_image);
+            ImageControllService::image_delete('images/sector_img/', $sector_image, 'image');
 
             $sector_image -> delete();
         }

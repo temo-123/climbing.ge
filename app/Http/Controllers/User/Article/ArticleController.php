@@ -289,8 +289,8 @@ class ArticleController extends Controller
             $ka_article = Ka_article::where('id',strip_tags($global_article->ka_article_id))->first();
             
             // delete article file
-            ImageControllService::image_delete('images/'.$global_article->category.'_img/', $global_article);
-            ImageControllService::image_delete('images/region_sectors_img_img/', $global_article);
+            ImageControllService::image_delete('images/'.$global_article->category.'_img/', $global_article, 'image');
+            ImageControllService::image_delete('images/region_sectors_img/', $global_article, 'climbing_area_image');
 
             // delete article from db
             $global_article ->delete();

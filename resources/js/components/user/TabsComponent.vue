@@ -1,38 +1,51 @@
 <template>
     <div class="tabs">
         <div class="row">
+            
             <input type="radio" name="tabs" id="1" checked="checked">
             <label for="1" v-if="this.table_1_get_route">{{this.table_1_name}}</label>
             <div class="tab" v-if="this.table_1_get_route">
                 
-                <h3 v-if="table_1_name == 'Mount routes'">Filter Mount routes By Mounts</h3> 
-                <select v-if="table_1_name == 'Mount routes'" v-model="value_mount_id">
-                    <option v-bind:value="'all'">All</option>
-                    <option v-for="mount in mounts" :key="mount" v-bind:value="mount.id">{{ mount.name }}</option>
-                </select> 
+                <div>
+                    <h3 v-if="table_1_name == 'Mount routes'">Filter Mount routes By Mounts</h3> 
+                    <select v-if="table_1_name == 'Mount routes'" v-model="value_mount_id">
+                        <option v-bind:value="'all'">All</option>
+                        <option v-for="mount in mounts" :key="mount" v-bind:value="mount.id">{{ mount.name }}</option>
+                    </select> 
+                </div>
+
                 <!-- <ul v-if="table_1_name == 'Mount routes'">
                     <li v-for="product in filterProductsByCategory">Product Name : {{product.name}} - Price : {{product.price}} ({{product.category}})</li>
                 </ul> -->
                 
-                <h3 v-if="table_1_name == 'Products'">Filter Products By Category</h3> 
-                <select v-if="table_1_name == 'Products'" v-model="value_product_category_id">
-                    <option v-bind:value="'all'">All</option>
-                    <option v-for="category in product_categorys" :key="category" v-bind:value="category.id">{{ category.us_name }}</option>
-                </select>
+                <div>
+                    <h3 v-if="table_1_name == 'Products'">Filter Products By Category</h3> 
+                    <select v-if="table_1_name == 'Products'" v-model="value_product_category_id">
+                        <option v-bind:value="'all'">All</option>
+                        <option v-for="category in product_categorys" :key="category" v-bind:value="category.id">{{ category.us_name }}</option>
+                    </select>
+                </div>
 
-                <h3 v-if="table_1_name == 'Sector'">Filter Sectors By Region</h3> 
-                <select v-if="table_1_name == 'Sector'" v-model="value_region_id">
-                    <option v-bind:value="'all'">All</option>
-                    <option v-for="region in regions" :key="region" v-bind:value="region.id">{{ region.url_title }}</option>
-                </select>
+
+                <div>
+                    <h3 v-if="table_1_name == 'Sector'">Filter Sectors By Region</h3> 
+                    <select v-if="table_1_name == 'Sector'" v-model="value_region_id">
+                        <option v-bind:value="'all'">All</option>
+                        <option v-for="region in regions" :key="region" v-bind:value="region.id">{{ region.url_title }}</option>
+                    </select>
+                </div>
+
 
                 <div class="add_buttom">
                     <a :href="table_1_add_url" class="btn btn-primary pull-left" type="submit">New</a>
                 </div>
+
+
                 <div class="form-groupe">
                     <button @click="get_data_in_table_1" class="btn main-btn pull-right" v-if="!table_1_is_refresh">Refresh ({{table_1_reset_id}})</button>
                     <span class="badge badge-primare mb-1 pull-right" v-if="table_1_is_refresh">Updating...</span>
                 </div>
+
 
                 <table class="table table-hover" id="dev-table">
                     <thead>
@@ -263,11 +276,22 @@
             <label for="2" v-if="this.table_2_get_route">{{this.table_2_name}}</label>
             <div class="tab" v-if="this.table_2_get_route">
 
-                <h3 v-if="table_2_name == 'Route'">Filter Routes By Sector</h3> 
-                <select v-if="table_2_name == 'Route'" v-model="value_sector_id">
-                    <option v-bind:value="'all'">All</option>
-                    <option v-for="sector in sectors" :key="sector" v-bind:value="sector.id">{{ sector.name }}</option>
-                </select>
+                <!-- <div class="row"> -->
+                    <div>
+                        <h3 v-if="table_1_name == 'Sector'">Filter Routes sectors By Region</h3> 
+                        <select v-if="table_1_name == 'Sector'" v-model="value_region_id">
+                            <option v-bind:value="'all'">All</option>
+                            <option v-for="region in regions" :key="region" v-bind:value="region.id">{{ region.url_title }}</option>
+                        </select>
+                    </div>
+                    <div>
+                        <h3 v-if="table_2_name == 'Route'">Filter Routes By Sector</h3> 
+                        <select v-if="table_2_name == 'Route'" v-model="value_sector_id">
+                            <option v-bind:value="'all'">All</option>
+                            <option v-for="sector in sectors" :key="sector" v-bind:value="sector.id">{{ sector.name }}</option>
+                        </select>
+                    </div>
+                <!-- </div> -->
 
                 <div class="add_buttom">
                     <a :href="table_2_add_url" class="btn btn-primary pull-left" type="submit">New </a>
@@ -380,11 +404,20 @@
             <label for="3"  v-if="this.table_3_get_route">{{this.table_3_name}}</label>
             <div class="tab" v-if="this.table_3_get_route">
 
-                <h3 v-if="table_3_name == 'Multi-pitch'">Filter Multi-pitch By Sector</h3> 
-                <select v-if="table_3_name == 'Multi-pitch'" v-model="value_mtp_sector_id">
-                    <option v-bind:value="'all'">All</option>
-                    <option v-for="sector in sectors" :key="sector" v-bind:value="sector.id">{{ sector.name }}</option>
-                </select>
+                <div>
+                    <h3 v-if="table_1_name == 'Sector'">Filter Multi-pitch sectors By Region</h3> 
+                    <select v-if="table_1_name == 'Sector'" v-model="value_region_id">
+                        <option v-bind:value="'all'">All</option>
+                        <option v-for="region in regions" :key="region" v-bind:value="region.id">{{ region.url_title }}</option>
+                    </select>
+                </div>
+                <div>
+                    <h3 v-if="table_3_name == 'Multi-pitch'">Filter Multi-pitch By Sector</h3> 
+                    <select v-if="table_3_name == 'Multi-pitch'" v-model="value_mtp_sector_id">
+                        <option v-bind:value="'all'">All</option>
+                        <option v-for="sector in sectors" :key="sector" v-bind:value="sector.id">{{ sector.name }}</option>
+                    </select>
+                </div>
 
                 <div class="add_buttom">
                     <a :href="table_3_add_url" class="btn btn-primary pull-left" type="submit">New </a>
@@ -486,12 +519,27 @@
             <input type="radio" name="tabs" id="4">
             <label for="4"  v-if="this.table_4_get_route">{{this.table_4_name}}</label>
             <div class="tab" v-if="this.table_4_get_route">
-
-                <h3 v-if="table_4_name == 'pitches'">Filter pitches By Multi-pitch</h3> 
-                <select v-if="table_4_name == 'pitches'" v-model="value_mtp_id">
-                    <option v-bind:value="'all'">All</option>
-                    <option v-for="MTP in MTPs" :key="MTP" v-bind:value="MTP.id">{{ MTP.name }}</option>
-                </select>
+                <div>
+                    <h3 v-if="table_1_name == 'Sector'">Filter Multi-pitch sectors By Region</h3> 
+                    <select v-if="table_1_name == 'Sector'" v-model="value_region_id">
+                        <option v-bind:value="'all'">All</option>
+                        <option v-for="region in regions" :key="region" v-bind:value="region.id">{{ region.url_title }}</option>
+                    </select>
+                </div>
+                <div>
+                    <h3 v-if="table_3_name == 'Multi-pitch'">Filter Multi-pitch By Sector</h3> 
+                    <select v-if="table_3_name == 'Multi-pitch'" v-model="value_mtp_sector_id">
+                        <option v-bind:value="'all'">All</option>
+                        <option v-for="sector in sectors" :key="sector" v-bind:value="sector.id">{{ sector.name }}</option>
+                    </select>
+                </div>
+                <div>
+                    <h3 v-if="table_4_name == 'pitches'">Filter pitches By Multi-pitch</h3> 
+                    <select v-if="table_4_name == 'pitches'" v-model="value_mtp_id">
+                        <option v-bind:value="'all'">All</option>
+                        <option v-for="MTP in MTPs" :key="MTP" v-bind:value="MTP.id">{{ MTP.name }}</option>
+                    </select>
+                </div>
 
                 <div class="add_buttom">
                     <a :href="table_4_add_url" class="btn btn-primary pull-left" type="submit">New </a>
@@ -617,7 +665,8 @@
                             <img v-for="sector_image in sector_images" :key="sector_image.id" :src="'/public/images/sector_img/'+sector_image.image" alt="image" :style="'width:' + sector_images_size + '%'">
                         </div>
                         <div class="row">
-                            <SlickList lockAxis="y" v-model="sector_routes" tag="table" style="width: 100%">
+                            <h2 v-if="sector_routes != ''">Sport climbing routes</h2>
+                            <SlickList lockAxis="y" v-model="sector_routes" v-if="sector_routes != ''" tag="table" style="width: 100%">
                                 <tr>
                                     <td>ID</td>
                                     <td>Num</td>
@@ -637,6 +686,21 @@
                                     <td>{{ route.bolts }}</td>
                                     <td>{{ route.bolter }}</td>
                                     <td>{{ route.first_ascent }}</td>
+                                </SlickItem>
+                            </SlickList>
+
+                            <h2 v-if="sector_mtps != ''">Mupli pitchs</h2>
+
+                            <SlickList lockAxis="y" v-model="sector_mtps" v-if="sector_mtps != ''" tag="table" style="width: 100%">
+                                <tr>
+                                    <td>ID</td>
+                                    <td>Num</td>
+                                    <td>Name</td>
+                                </tr>
+                                <SlickItem v-for="(mtp, index) in sector_mtps" :index='index' :key="index" tag="tr">
+                                    <td>{{ mtp.id }}</td>
+                                    <td>{{ mtp.num }}</td>
+                                    <td>{{ mtp.name }}</td>
                                 </SlickItem>
                             </SlickList>
                         </div>
@@ -667,7 +731,7 @@
                 <div class="root">
                     <div class="col-md-12">
                         <div class="row">
-                            <SlickList lockAxis="y" v-model="mtp_pitch_for_modal" tag="table" style="width: 100%">
+                            <SlickList lockAxis="y" v-model="sector_mtp_pitchs_for_modal" tag="table" style="width: 100%">
                                 <tr>
                                     <td>ID</td>
                                     <td>Num</td>
@@ -678,7 +742,7 @@
                                     <td>Bolter</td>
                                     <td>First ascent</td>
                                 </tr>
-                                <SlickItem v-for="(pitch, index) in mtp_pitch_for_modal" :index='index' :key="index" tag="tr">
+                                <SlickItem v-for="(pitch, index) in sector_mtp_pitchs_for_modal" :index='index' :key="index" tag="tr">
                                     <td>{{ pitch.id }}</td>
                                     <td>{{ pitch.num }}</td>
                                     <td>{{ pitch.name }}</td>
@@ -827,14 +891,18 @@
             "table_3_categiry",
             "table_4_categiry",
         ],
+
         data() {
             return {
+                items: ['Item 1', 'Item 2', 'Item 3', 'Item 4', 'Item 5', 'Item 6', 'Item 7', 'Item 8'],
                 product_categorys: '',
                 products: '',
 
                 sector_routes: "",
                 sector_images: "",
                 sector_images_size: "",
+                sector_mtps: "",
+                sector_mtp_pitchs: "",
                 model_tible: "",
 
                 routes: "",
@@ -859,7 +927,7 @@
                 SectorModalClass: 'modal-xxxl',
                 modalClass: '',
 
-                mtp_pitch_for_modal: '',
+                sector_mtp_pitchs_for_modal: '',
 
                 user_roles: '',
 
@@ -1012,7 +1080,16 @@
                     id: itemId,
                 })
                 .then(Response => {
-                    // console.log(response)
+                    if (this.table_1_name == 'Sector') {
+                        this.get_sectors_data();
+                    }
+                    if (this.table_1_name == 'Products') {
+                        this.get_product_data();
+                    }
+                    if (this.table_1_name == 'Mount routes') {
+                        this.get_mount_route_data();
+                    }
+
                     this.get_data_in_table_1()
                 })
                 .catch(error => console.log(error))
@@ -1023,8 +1100,11 @@
                     id: itemId,
                 })
                 .then(Response => {
-                    // console.log(response)
                     this.get_data_in_table_2()
+
+                    if (this.table_2_name == 'Route') {
+                        this.get_route_data();
+                    }
                 })
                 .catch(error => console.log(error))
             },
@@ -1034,8 +1114,11 @@
                     id: itemId,
                 })
                 .then(Response => {
-                    // console.log(response)
                     this.get_data_in_table_3()
+
+                    if (this.table_3_name == 'Multi-pitch') {
+                        this.get_MTP_data();
+                    }
                 })
                 .catch(error => console.log(error))
             },
@@ -1045,8 +1128,11 @@
                     id: itemId,
                 })
                 .then(Response => {
-                    // console.log(response)
                     this.get_data_in_table_4()
+
+                    if (this.table_3_name == 'pitches') {
+                        this.get_MTP_pitch_data();
+                    }
                 })
                 .catch(error => console.log(error))
             },
@@ -1086,6 +1172,9 @@
                 })
             },
 
+
+                    
+
             show_sector_model(sector_id){
                 this.show_sector_modal=true
 
@@ -1094,7 +1183,6 @@
                     .get('/routes_and_sectors/get_routes_for_model/'+ sector_id)
                     .then(response => {
                         this.sector_routes = response.data
-                        // console.log(this.sector_routes);
                     })
                     .catch(
                         error => console.log(error)
@@ -1105,7 +1193,15 @@
                     .then(response => {
                         this.sector_images = response.data.sector_images
                         this.sector_images_size = response.data.sector_images_size
-                        // console.log(this.sector_images);
+                    })
+                    .catch(
+                        error => console.log(error)
+                    );
+
+                    axios
+                    .get('/routes_and_sectors/get_mtp_for_model/'+ sector_id)
+                    .then(response => {
+                        this.sector_mtps = response.data
                     })
                     .catch(
                         error => console.log(error)
@@ -1114,6 +1210,7 @@
                 else{
                     this.sector_routes = ""
                     this.sector_images = ""
+                    this.sector_mtp = ""
                 }
             },
             show_mtp_model(mtp_id){
@@ -1121,16 +1218,16 @@
 
                 if (this.show_mtp_modal==true) {
                     axios
-                    .get('/routes_and_sectors/get_mtp_pitch_for_modal/'+ mtp_id)
+                    .get('/routes_and_sectors/get_mtp_pitchs_for_model/'+ mtp_id)
                     .then(response => {
-                        this.mtp_pitch_for_modal = response.data
+                        this.sector_mtp_pitchs_for_modal = response.data
                     })
                     .catch(
                         error => console.log(error)
                     );
                 }
                 else{
-                    this.mtp_pitch_for_modal = ""
+                    this.sector_mtp_pitchs_for_modal = ""
                 }
             },
 
@@ -1226,10 +1323,9 @@
             },
 
             save_pitchs_sequence(){
-                // console.log(this.mtp_pitch_for_modal);
                 axios
                 .post('../routes_and_sectors/pitchs_sequence/', {
-                    pitchs_sequence: this.mtp_pitch_for_modal,
+                    pitchs_sequence: this.sector_mtp_pitchs_for_modal,
                 })
                 .then((response)=> { 
                     this.show_mtp_modal = false
@@ -1241,6 +1337,7 @@
                 axios
                 .post('../routes_and_sectors/routes_sequence/', {
                     routes_sequence: this.sector_routes,
+                    mtp_sequence: this.sector_mtps,
                 })
                 .then((response)=> { 
                     this.show_sector_modal = false

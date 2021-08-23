@@ -41,12 +41,13 @@
                         <li class="nav navbar-nav"> <a class="nav-link" href="{{ route('shop_index') }}" target="_blank">shop.climibng.ge</a> </li>
                         @endif
 
-                        <li class="nav navbar-nav">
+                        {{-- <li class="nav navbar-nav">
                             <a href="{{ route('logout') }}" class="nav-link" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">Logout</a>
-                        </li>
-                        <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                        </li> --}}
+
+                        {{-- <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
                             {{ csrf_field() }}
-                        </form>
+                        </form> --}}
                     </ul>
                 </div>
             </nav>

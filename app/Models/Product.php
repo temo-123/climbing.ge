@@ -23,6 +23,7 @@ class Product extends Model
         'discount',
         'quantity',
         'size',
+        'weight',
         
         'us_product',
         'ru_product',

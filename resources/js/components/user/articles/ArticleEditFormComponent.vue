@@ -8,9 +8,9 @@
     <div class="row">
         <div class="tabs">
 
-            <input type="radio" name="tabs" id="1" checked="checked"    v-if="this.permission == 'admin' || this.permission == 'manager'">
-            <label for="1"                                              v-if="this.permission == 'admin' || this.permission == 'manager'">global info</label>
-            <div class="tab"                                            v-if="this.permission == 'admin' || this.permission == 'manager'">
+            <input type="radio" name="tabs" id="1" checked="checked"    v-if="permission == 'admin' || permission == 'manager'">
+            <label for="1"                                              v-if="permission == 'admin' || permission == 'manager'">global info</label>
+            <div class="tab"                                            v-if="permission == 'admin' || permission == 'manager'">
                 <div class="jumbotron jumbotron-fluid">
                     <div class="container">
                         <h2 class="display-4">{{this.category}} article global information</h2>
@@ -70,7 +70,7 @@
                     </div>
 
 
-                    <div class="form-group clearfix row" v-if="this.category == 'outdoor' || this.category == 'ice' || this.category != 'mount_route'">
+                    <div class="form-group clearfix row" v-if="this.category == 'outdoor' || this.category == 'ice' || this.category == 'mount_route'">
                         <label for="name" class='col-md-2 control-label'> Weather </label>
                         <div class="col-md-8">
                             <!-- <input type="text" name="value name" value="old data" class="form-control"> -->
@@ -695,15 +695,6 @@
                 })
                 .catch(error =>{
                 })
-
-                // axios
-                // .get('/users/get_user_parmisions/', { })
-                // .then((response)=> { 
-                    
-                // })
-                // .catch(error =>{
-                    
-                // })
             },
 
             edit_global_article() {

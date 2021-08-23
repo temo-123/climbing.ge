@@ -17,7 +17,7 @@
             @endif
         </div>
         <div class="form-group">
-            <a href="{{ url()->previous() }}" class='btn btn-primary' onclick="return confirm('Are you sure, you want go back?')">Back</a>
+            <a href="{{ url()->previous() }}" class='btn btn-primary' onclick="return confirm('Editeded information will be deleted!!! Are you sure, you want go back?')">Back</a>
         </div>
         <hr>
     </div>

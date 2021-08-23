@@ -51,4 +51,23 @@ class IndexController extends Controller
             'head_slider_num' => 0,
         )); 
     }
+
+    public function get_index_gallery_image(Request $request)
+    {
+        $gallery = array();
+        $full_image = '';
+        $image = '';
+
+        $gallery_images = Gallery::limit(8)->get();
+        $image_url = 'http://climbing.loc/images/gallery_img/';
+
+        foreach ($gallery_images as $gallery_img) {
+            $image = $gallery_img->image;
+            $image = strval($image);
+            $full_image = $image_url . $image;
+            array_push($gallery, $full_image);
+        }
+
+        return $gallery;
+    }
 }

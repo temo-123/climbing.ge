@@ -220,9 +220,10 @@ class UserController extends Controller
         
         if ($request->isMethod('post')){
             $deleted_user = User::where('id','=',$request->user_id)->first();
-            $deleted_user_role = DB::table('role_user')->where('user_id','=',$deleted_user->id)->first();
+            // $deleted_user_role = DB::table('role_user')->where('user_id','=',$deleted_user->id)->first();
+            DB::table('role_user')->where('user_id','=',$deleted_user->id)->delete();
             $deleted_user -> delete();
-            $deleted_user_role -> delete();
+            // $deleted_user_role -> delete();
         }
     }
 

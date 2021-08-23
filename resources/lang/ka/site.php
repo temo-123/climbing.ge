@@ -26,6 +26,19 @@ return [
     'title about us' => 'ჩვენ შესახებ',
     'title partner' => 'პარტნიორები',
 
+    // routes and sectors table
+    'name' => 'სახელი',
+    'height' => 'სიმაღლე',
+    'bolts' => 'შლამბურები',
+    'grade FR' => 'სირთულე FR',
+    'grade YDS' => 'სირთულე UDS',
+    'sector name' => 'სეცტორის სახელი',
+    'bolter' => 'მარშრუტის შემქმნელი',
+    'bolting data' => 'მარშრუტის შექმინს თარიღი',
+    'first ascent' => 'პირველი ასვლა',
+    'top rope' => 'ზედა დაცვა',
+    'tred' => 'Tred Gear',
+
     // only 1 word
     'message form' => 'მიგვწერეთ',
 ];

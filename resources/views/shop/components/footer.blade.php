@@ -4,7 +4,7 @@
     <div class="container"> 
         <div class="row">
 
-            <div class="col-md-4">
+            <div class="col-md-4 display-none-720px">
                 <div class="f-about" style='color: #fff;'>
                    
                    <h4>About as</h4>
@@ -15,7 +15,7 @@
                </div>
            </div>
 
-           <div class="col-md-4">
+           <div class="col-md-4 display-none-720px">
                <div class="f-links">
                    <h4>Links</h4>
                    <ul>
@@ -29,6 +29,7 @@
            <div class="col-md-4">
                <div class="flick">
                    <h4>Share</h4>
+                   <share_component></share_component>
                </div>
            </div>
             

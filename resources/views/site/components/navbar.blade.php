@@ -49,9 +49,9 @@
                     </ul> --}}
                     
                     <ul class="dropdown-menu shadows" role="menu" >
-                        <li><a href="{{ url('') }}"><img style="width: 20%;  margin-left: 40%;" src="{{ asset('images/site_img/leng/en.png')}}" alt=""></a></li>
-                        <li><a href="{{ url('ka') }}"><img style="width: 20%;  margin-left: 40%;" src="{{ asset('images/site_img/leng/ka.webp')}}" alt=""></a></li>
-                        <li><a href="{{ url('ru') }}"><img style="width: 20%;  margin-left: 40%;" src="{{ asset('images/site_img/leng/ru.png')}}" alt=""></a></li>
+                        <li><a href="{{ url('/'.$url_afret_locale) }}"><img style="width: 20%;  margin-left: 40%;" src="{{ asset('images/site_img/leng/en.png')}}" alt=""></a></li>
+                        <li><a href="{{ url('ka/'.$url_afret_locale) }}"><img style="width: 20%;  margin-left: 40%;" src="{{ asset('images/site_img/leng/ka.webp')}}" alt=""></a></li>
+                        <li><a href="{{ url('ru/'.$url_afret_locale) }}"><img style="width: 20%;  margin-left: 40%;" src="{{ asset('images/site_img/leng/ru.png')}}" alt=""></a></li>
                     </ul>
                 </div>
                 <div class="collapse navbar-collapse mobile_nav_menu" id="bs-example-navbar-collapse-1">
@@ -103,9 +103,9 @@
                             </a>
 
                             <ul class="dropdown-menu shadows" role="menu">
-                                <li><a href="{{ url('') }}"><img style="width: 50%; margin-left: 25%;" src="{{ asset('images/site_img/leng/en.png')}}" alt=""></a></li>
-                                <li><a href="{{ url('ka') }}"><img style="width: 50%; margin-left: 25%;" src="{{ asset('images/site_img/leng/ka.webp')}}" alt=""></a></li>
-                                <li><a href="{{ url('ru') }}"><img style="width: 50%; margin-left: 25%;" src="{{ asset('images/site_img/leng/ru.png')}}" alt=""></a></li>
+                                <li><a href="{{ url('/'.$url_afret_locale) }}"><img style="width: 50%; margin-left: 25%;" src="{{ asset('images/site_img/leng/en.png')}}" alt=""></a></li>
+                                <li><a href="{{ url('ka/'.$url_afret_locale) }}"><img style="width: 50%; margin-left: 25%;" src="{{ asset('images/site_img/leng/ka.webp')}}" alt=""></a></li>
+                                <li><a href="{{ url('ru/'.$url_afret_locale) }}"><img style="width: 50%; margin-left: 25%;" src="{{ asset('images/site_img/leng/ru.png')}}" alt=""></a></li>
                             </ul>
                         </li>
                         

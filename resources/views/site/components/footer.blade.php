@@ -3,7 +3,7 @@
     <div class="container"> 
         <div class="row">
 
-            <div class="col-md-4">
+            <div class="col-md-4 display-none-720px">
                  <div class="f-about" style='color: #fff;'>
                     
                     <h4>About as</h4>
@@ -14,7 +14,7 @@
                 </div>
             </div>
 
-            <div class="col-md-4">
+            <div class="col-md-4 display-none-720px">
                 <div class="f-links">
                     <h4>Links</h4>
                     <ul>
@@ -32,30 +32,31 @@
             <div class="col-md-4">
                 <div class="flick">
                     <h4>Share</h4>
+                    <share-component route={{ URL::current() }}></share-component>
                 </div>
             </div>
             
         </div>
     </div>
 </div>
-{{-- <!-- <script type="text/javascript">
-    // beck to top
-    // $('body').append('<div id="backToTop" class="btn btn-lg"><span class="glyphicon glyphicon-chevron-up"></span></div>');
-    //     $(window).scroll(function () {
-    //         if ($(this).scrollTop() <= 200) {
-    //             $('#backToTop').fadeOut();
-    //         } else {
-    //             $('#backToTop').fadeIn();
-    //         }
-    //     }); 
-    // $('#backToTop').click(function(){
-    //     $("html, body").animate({ scrollTop: 0 }, 600);
-    //     return false;
-    // });
-    // and back to top
-</script>     --> --}}
+{{-- <script type="text/javascript">
+    beck to top
+    $('body').append('<div id="backToTop" class="btn btn-lg"><span class="glyphicon glyphicon-chevron-up"></span></div>');
+        $(window).scroll(function () {
+            if ($(this).scrollTop() <= 200) {
+                $('#backToTop').fadeOut();
+            } else {
+                $('#backToTop').fadeIn();
+            }
+        }); 
+    $('#backToTop').click(function(){
+        $("html, body").animate({ scrollTop: 0 }, 600);
+        return false;
+    });
+    and back to top
+</script> --}}
     
 {{-- analytics.google.com --}}
 
-<script async src="https://www.googletagmanager.com/gtag/js?id=UA-101870435-1"></script>
-<script src="{{ asset('assets/js/analitic/climbing.ge_analitic.js') }}"></script>
+{{-- <script async src="https://www.googletagmanager.com/gtag/js?id=UA-101870435-1"></script>
+<script src="{{ asset('assets/js/analitic/climbing.ge_analitic.js') }}"></script> --}}

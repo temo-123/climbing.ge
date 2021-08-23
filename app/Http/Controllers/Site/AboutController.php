@@ -20,7 +20,7 @@ class AboutController extends Controller
     
             $global_partners = Article::latest('id')->limit(5)->where('category', '=', 'partner')->where('published','=','1')->get();
             $partners = GetArticlesService::get_locale_article($global_partners);
-            $partners_count = Article::latest('id')->where('category', '=', 'partner')->where('published','=','1')->limit(5)->count();
+            $partners_count = Article::latest('id')->where('category', '=', 'partner')->where('published','=','1')->limit(4)->count();
 
             // $gallery_images = Gallery::where('published', '=', 1)->where('category', '=', 1)->inRandomOrder()->limit(1)->get();
             

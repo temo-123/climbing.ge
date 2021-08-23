@@ -109,7 +109,7 @@ class CategoryController extends Controller
         }
     }
 
-    public function get_product_category_data()
+    public function get_product_category_data(Request $request)
     {
         $this->parmision($request);
         return Product_category::latest('id')->get();

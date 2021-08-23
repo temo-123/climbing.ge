@@ -1,5 +1,5 @@
 <template>
-  <div class="col_md_12">
+  <div class="col-md-12">
     <div class="row">
         <div class="form-group">  
             <button type="submit" class="btn btn-primary" v-on:click="save_all()" >Save</button>
@@ -8,7 +8,7 @@
     <div class="wrapper container-fluid container">
       <form action="">
         
-        <div class="form-group clearfix">
+        <div class="form-group clearfix row">
           <label for="name" class='col-xs-2 control-label'> Region </label>
           <div class="col-xs-4">
             <select class="form-control"  v-model="sellected_region">
@@ -24,7 +24,7 @@
           </div>
         </div>
 
-        <div class="form-group clearfix">
+        <div class="form-group clearfix row">
           <label for="name" class='col-xs-2 control-label'> Multy-pitch </label>
           <div class="col-xs-8">
             <select class="form-control" v-model="mtp_id">
@@ -36,7 +36,7 @@
           </div>
         </div>
 
-        <div class="form-group clearfix">
+        <div class="form-group clearfix row">
           <label for="name" class='col-xs-2 control-label'> grade </label>
           <div class="col-xs-4">
             <select class="form-control" v-model="grade">
@@ -53,7 +53,7 @@
           </div>
         </div>
         
-        <div class="form-group clearfix" v-if="errors.grade">
+        <div class="form-group clearfix row" v-if="errors.grade">
             <div class="col-xs-12">
               <div class="alert alert-danger" role="alert">
                 {{ errors.grade[0] }}
@@ -61,7 +61,7 @@
             </div>
         </div>
 
-        <div class="form-group clearfix">
+        <div class="form-group clearfix row">
           <label for="name" class='col-xs-2 control-label'> Route name </label>
           <div class="col-xs-8">
             <input type="text" name="name" v-model="name" class="form-control" placeholder="Route name.."> 
@@ -71,14 +71,14 @@
           </div>
         </div>
 
-        <div class="form-group clearfix">
+        <div class="form-group clearfix row">
           <label for="name" class='col-xs-2 control-label'> text </label>
           <div class="col-xs-8">
             <ckeditor v-model="text" :config="editorConfig"></ckeditor>
           </div>
         </div>
 
-        <div class="form-group clearfix">
+        <div class="form-group clearfix row">
           <label for="name" class='col-xs-2 control-label'> Bolts & height </label>
           <div class="col-xs-4">
               <input type="text" name="title" v-model="bolts" class="form-control" placeholder="Bolts"> 
@@ -89,7 +89,7 @@
           <label for="name" class='col-xs-1 control-label'> M </label>
         </div>
 
-        <div class="form-group clearfix">
+        <div class="form-group clearfix row">
           <label for="name" class='col-xs-2 control-label'> Bolter & Firs Ascent </label>
           <div class="col-xs-4">
             <input type="text" name="title" class="form-control" v-model="bolter" placeholder="Bolter"> 

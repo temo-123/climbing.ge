@@ -20,9 +20,12 @@ class RoutesController extends Controller
             
             $sector_route_count = Route::where('sector_id',strip_tags($request->sector_id))->count();
             $new_route_num = $sector_route_count+1;
-            // dd($new_route_num);
+
             $article = new Route();
 
+            $category = $this->get_route_category($request);
+
+            $article['category']=$category;
             $article['sector_id']=$request->sector_id;
             $article['num']=$new_route_num;
             $article['grade']=$request->grade;
@@ -70,6 +73,9 @@ class RoutesController extends Controller
 
             $route = route::find($request->id);
 
+            $category = $this->get_route_category($request);
+
+            $route->category = $category;
             $route->sector_id = $request->sector_id;
             $route->grade = $request->grade;
             $route->or_grade = $request->or_grade; 
@@ -138,7 +144,15 @@ class RoutesController extends Controller
             $route['num'] = $route_num;
             $route->update();
         }
-        // dd($request->routes_sequence);
+        
+        $mtp_num=0;
+        foreach ($request->mtp_sequence as $mtp) {
+            $mtp_id = $mtp['id'];
+            $mtp = mtp::where('id',strip_tags($mtp_id))->first();
+            $mtp_num++;
+            $mtp['num'] = $mtp_num;
+            $mtp->update();
+        }
     }
 
     private function route_validate($request)
@@ -148,5 +162,25 @@ class RoutesController extends Controller
             'grade' => 'required',
             'sector_id' => 'required',
         ]);
+    }
+
+    public function get_route_category($request)
+    {
+        $category = 0;
+
+        if ($request->route_type == 'bouldering') {
+            $category = 4;
+        }
+        elseif ($request->route_type == 'top') {
+            $category = 2;
+        }
+        elseif ($request->route_type == 'tred') {
+            $category = 3;
+        }
+        else{
+            $category = 1;
+        }
+
+        return $category;
     }
 }

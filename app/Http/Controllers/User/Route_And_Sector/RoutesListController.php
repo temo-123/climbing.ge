@@ -133,4 +133,16 @@ class RoutesListController extends Controller
         return( $routes );
     }
 
+	public function get_mtp_for_model(Request $request)
+    {
+        $mtps = Mtp::where('sector_id',strip_tags($request->sector_id))->orderBy('num')->get();
+        return( $mtps );
+    }
+
+	public function get_mtp_pitchs_for_model(Request $request)
+    {
+        $mtp_pitchs = Mtp_pitch::where('mtp_id',strip_tags($request->mtp_id))->orderBy('num')->get();
+        return( $mtp_pitchs );
+    }
+
 }

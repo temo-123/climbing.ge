@@ -1,0 +1,31 @@
+<?php
+return [
+    'site name' => 'climbng.ge',
+
+    'menu my favorite products' => 'My favorite products',
+    'menu my page' => 'My page',
+    'menu interested events' => 'Interested events',
+    'menu products & category' => 'Products & Category',
+    'menu services' => 'Services',
+    'menu comments' => 'Comments',
+    'menu users' => 'Users',
+    'menu options' => 'Options',
+    'menu indoor climbing' => 'Indoor climbing',
+    'menu outdoor climbing' => 'Outdoor climbing',
+    'menu ice climbing' => 'Ice & Mix',
+    'menu mountaineering' => 'Mountaineering',
+    'menu other' => 'Other',
+    'menu security' => 'Security',
+    'menu partners' => 'Partners',
+    'menu events' => 'Events',
+    'menu news' => 'News',
+    'menu gallery' => 'Gallery',
+    'menu about' => 'About us',
+    'menu login'=>'Login',
+    'menu logout' => 'Logout',
+    'menu sectors & routes' => 'Sectors & Routes',
+
+    'Munu' => '',
+    'Dashboard' => '',
+    'Sites index pages' => '',
+];

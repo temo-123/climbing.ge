@@ -1,5 +1,5 @@
 <template>
-  <div class="col_md_12">
+  <div class="col-md-12">
     <div class="row">
         <div class="form-group">  
             <button type="submit" class="btn btn-primary" v-on:click="save_all()" >Save</button>
@@ -8,15 +8,15 @@
     <div class="wrapper container-fluid container">
       <form action="">
         
-        <div class="form-group clearfix">
-          <label for="name" class='col-xs-2 control-label'> Region / Sector </label>
-          <div class="col-xs-4">
+        <div class="form-group clearfix row">
+          <label for="name" class='col-md-2 control-label'> Region / Sector </label>
+          <div class="col-md-4">
             <select class="form-control"  v-model="sellected_region">
               <option v-for="region in regions" :key="region.id" v-bind:value="region.id">{{ region.url_title  }}</option>
             </select>
           </div>
-          <div class="col-xs-4">
-            <div class="col-xs-12">
+          <div class="col-md-4">
+            <div class="col-md-12">
               <select class="form-control" v-if="sellected_region != ''" v-model="sector_id">
                 <option v-for="sector in sectors" :key="sector.id" v-if="sellected_region == sector.article_id" v-bind:value="sector.id">{{ sector.name }}</option>
               </select>
@@ -24,17 +24,17 @@
           </div>
         </div>
         
-        <div class="form-group clearfix" v-if="errors.sector_id">
-            <div class="col-xs-12">
+        <div class="form-group clearfix row" v-if="errors.sector_id">
+            <div class="col-md-12">
               <div class="alert alert-danger" role="alert">
                 {{ errors.sector_id[0] }}
               </div>
             </div>
         </div>
 
-        <div class="form-group clearfix">
-          <label for="name" class='col-xs-2 control-label'> Route name </label>
-          <div class="col-xs-8">
+        <div class="form-group clearfix row">
+          <label for="name" class='col-md-2 control-label'> Route name </label>
+          <div class="col-md-8">
             <input type="text" name="name" v-model="name" class="form-control" placeholder="Route name.."> 
               <div class="alert alert-danger" role="alert" v-if="errors.name">
                 {{ errors.name[0] }}
@@ -42,9 +42,9 @@
           </div>
         </div>
 
-        <div class="form-group clearfix">
-          <label for="name" class='col-xs-2 control-label'> text </label>
-          <div class="col-xs-8">
+        <div class="form-group clearfix row">
+          <label for="name" class='col-md-2 control-label'> text </label>
+          <div class="col-md-8">
             <!-- <textarea type="text"  name="text" rows="15" class="form-cotrol md-textarea form-control"></textarea> -->
             <ckeditor v-model="text" :config="editorConfig"></ckeditor>
           </div>

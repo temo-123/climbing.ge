@@ -45,7 +45,7 @@ class imageControllService
         } 
     }
 
-    public static function image_update($image_dir, $model, $request, $form_value_id, $resize)
+    public static function image_update($image_dir, $model, $request, $form_value_id, $resize, $db_value)
     {
         /*
         *
@@ -54,13 +54,14 @@ class imageControllService
         * $image_dir            - image wai in derectory from '/public/' derectory
         * $model                - updated model in copntroller
         * $request              - HTTP request
+        * $db_value             - Database value name
         *
         */
 
         if ($request->hasFile($form_value_id)){ 
             // delete old image
-            ImageControllService::image_delete($image_dir, $model);
-            ImageControllService::image_delete($image_dir, $model);
+            ImageControllService::image_delete($image_dir, $model, $db_value);
+            // ImageControllService::image_delete($image_dir, $model, $db_value);
 
             // rename file
             $extension = $request->file($form_value_id)->getClientOriginalExtension();
@@ -78,29 +79,42 @@ class imageControllService
         }
     }
 
-    public static function image_delete($image_dir, $model)
+    public static function image_delete($image_dir, $model, $db_value)
     {
         /*
         *
         * function get 3 parameters
         *
-        * $image_dir            - image wai in derectory from '/public/' derectory
+        * $image_dir            - image derectory from '/public/'
         * $model                - updated model in copntroller
+        * $db_value             - Database value name
         *
         */
         
         // delete product file
-        $fileName = $model->image;
+        $fileName = $model->$db_value;
         $file = public_path($image_dir.$fileName);
         $demo_file = public_path($image_dir.'origin_img/'.$fileName);
+
         
         if(file_exists($file) && file_exists($demo_file)){
             File::delete($file);
             File::delete($demo_file);
-        }else{
-            echo ('<p> File does not exists.</p>');
+        } 
+        elseif(file_exists($demo_file) == FALSE || file_exists($file) == FALSE){
+            echo ('<p> Files does not exists.</p>');
+            echo ('<p>'.$demo_file.'</p>');
             echo ('<p>'.$file.'</p>');
         }
+        elseif(file_exists($file) == FALSE){
+            echo ('<p> origin file does not exists.</p>');
+            echo ('<p>'.$file.'</p>');
+        }
+        elseif(file_exists($demo_file) == FALSE){
+            echo ('<p> Demo file does not exists.</p>');
+            echo ('<p>'.$demo_file.'</p>');
+        }
+        
     }
 
     public static function rename_image($request, $form_value_id)
@@ -110,7 +124,6 @@ class imageControllService
         $filename  = $file->getClientOriginalName();
         $extension = $file->getClientOriginalExtension();
         $pieces = explode( '.', $filename );
-        // $file_new_name = $pieces[0].'_('.date('Y-m-d-H-m-s').').'.$extension;
         $file_new_name = date('Y-m-d-H-m-s');
 
         return $file_new_name;

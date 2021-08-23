@@ -79,6 +79,7 @@ class GlobalProductController extends Controller
             $product['price'] = $request->price;
             $product['currency'] = $request->currency;
             $product['category_id'] = $request->category_id;
+            $article['weight']=$request->weight;
 
             $product['material'] = $request->material;
             $product['color'] = $request->color;
@@ -114,6 +115,7 @@ class GlobalProductController extends Controller
             $product['currency']=$request->currency;
             $product['category_id']=$request->category_id;
             $product['published'] = $request->published;
+            $product['weight'] = $request->weight;
             // $product['user_id']=Auth::user()->id;
 
             $product['material'] = $request->material;

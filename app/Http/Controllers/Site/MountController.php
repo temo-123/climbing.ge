@@ -59,19 +59,19 @@ class MountController extends Controller
             abort(404);
         }
         if (view()->exists('site.mount_page')) {
-            $global_mount_routes = Article::where('category', '=', 'mount_route')->where('url_title',strip_tags($name))->first();
-
-            $mount_route_id = $global_mount_routes->mount_id;
-
+            $global_mount_routes = Article::latest('id')->where('category', '=', 'mount_route')->where('url_title',strip_tags($name))->first();
+            // dd($global_mount_routes->us_article_id);
+            $mount_route_id = $global_mount_routes->id;
+            $mount_id = $global_mount_routes->mount_id;
             $mount_routes = GetArticlesService::get_locale_article_in_page($global_mount_routes);
 
-            $mounts_system = Mount::all();
-        
-            $mounts_system = Mount::where('id','=',$mount_route_id)->get();
-            $comments = Comment::where('article_id',strip_tags($mount_route_id))->get();
+            // $mounts_system = Mount::all();
+            $mounts_system = Mount::where('id','=',$mount_id)->get();
 
-            $global_other_list = Article::inRandomOrder()->where('category', '=', 'mount_route')->where('published','=','1')->limit(6)->get();
+            $global_other_list = Article::latest('id')->where('category', '=', 'outdoor')->inRandomOrder()->where('published','=','1')->limit(6)->get();
             $other_list = GetArticlesService::get_locale_article($global_other_list);
+
+            $comments = Comment::where('article_id',strip_tags($mount_route_id))->get();
 
             $data = [
                 'title'=>$mount_routes[0],

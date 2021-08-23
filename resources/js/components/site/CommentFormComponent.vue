@@ -162,8 +162,8 @@
                 .get('/get_comments/' + this.article_id)
                 .then(response => {
                     article_id: this.article_id,
-                    console.log("updating")
-                    console.log(response.data)
+                    // console.log("updating")
+                    // console.log(response.data)
                     this.comments = response.data
                     this.is_refresh = false
                     this.id++ 

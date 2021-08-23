@@ -69,7 +69,7 @@
                     </div>
 
 
-                    <div class="form-group clearfix row"  v-if="this.category == 'outdoor' || this.category == 'ice' || this.category != 'mount_route'">
+                    <div class="form-group clearfix row"  v-if="this.category == 'outdoor' || this.category == 'ice' || this.category == 'mount_route'">
                         <label for="name" class='col-md-2 control-label'> Weather </label>
                         <div class="col-md-8">
                             <input type="text" v-model="weather" name="weather" class="form-control"> 
@@ -819,7 +819,7 @@
             },
             
             back: function(temporary_article_id) {
-                confirm('Are you sure, you want go back?')
+                confirm('Added information will be deleted!!! Are you sure, you want go back?')
                 this.del_temporary_article(temporary_article_id)
                 window.location.href = this.back_url;
             },

@@ -10,13 +10,13 @@
                     (Auth::user()->hasRole('manager'))
                 )
                 <li class="list-group-item text-muted @if($page_name == 'Home') menu_active @endif">
-                    <a href="{{route('user_index')}}">My page </a>
+                    <a href="{{route('user_index')}}">@lang('admin.menu my page') </a>
                 </li>
                 <li class="list-group-item text-muted @if($page_name == 'favorite_products') menu_active @endif">
-                    <a href="{{Route('favorite')}}">My favorite products</a>
+                    <a href="{{Route('favorite')}}">@lang('admin.menu my favorite products')</a>
                 </li>
                 <li class="list-group-item text-muted @if($page_name == 'interested_events') menu_active @endif">
-                    <a href="{{Route('interested')}}">Interested events</a>
+                    <a href="{{Route('interested')}}">@lang('admin.menu interested events')</a>
                 </li>
                 @endif
 
@@ -31,10 +31,10 @@
                 <li class="list-group-item text-muted"></li>
 
                 <li class="list-group-item text-muted @if($page_name == 'Products') menu_active @endif">
-                    <a href="{{Route('products_list')}}">Products & Category</a>
+                    <a href="{{Route('products_list')}}">@lang('admin.menu products & category')</a>
                 </li>
                 <li class="list-group-item text-muted @if($page_name == 'Services') menu_active @endif">
-                    <a href="{{Route('services_list')}}">Services</a>
+                    <a href="{{Route('services_list')}}">@lang('admin.menu services')</a>
                 </li>
                 @endif
 
@@ -48,40 +48,40 @@
                 <li class="list-group-item text-muted"></li>
 
                 <li class="list-group-item text-muted @if($page_name == 'Outdoor') menu_active @endif">
-                    <a href="{{route('article_list', array('article_category'=>'outdoor'))}}">Outdoor climbing</a>
+                    <a href="{{route('article_list', array('article_category'=>'outdoor'))}}">@lang('admin.menu outdoor climbing')</a>
                 </li>
                 <li class="list-group-item text-muted @if($page_name == 'Climbing Secrots And Routes') menu_active @endif">
-                    <a href="{{ Route('routes_and_sectors') }}">Routs & Sectors</a>
+                    <a href="{{ Route('routes_and_sectors') }}">@lang('admin.menu sectors & routes')</a>
                 </li>
                 <li class="list-group-item text-muted @if($page_name == 'Mount And Mount Route') menu_active @endif">
-                    <a href="{{route('mountaineering')}}">Mount & Mount Route</a>
+                    <a href="{{route('mountaineering')}}">@lang('admin.menu mountaineering')</a>
                 </li>
                 <li class="list-group-item text-muted @if($page_name == 'Indoor') menu_active @endif">
-                    <a href="{{route('article_list', array('article_category'=>'indoor'))}}">Indoor climbing</a>
+                    <a href="{{route('article_list', array('article_category'=>'indoor'))}}">@lang('admin.menu indoor climbing')</a>
                 </li>
                 <li class="list-group-item text-muted @if($page_name == 'Ice & Mixed') menu_active @endif">
-                    <a href="{{route('article_list', array('article_category'=>'ice'))}}">Ice and mixed</a>
+                    <a href="{{route('article_list', array('article_category'=>'ice'))}}">@lang('admin.menu ice climbing')</a>
                 </li>
                 <li class="list-group-item text-muted @if($page_name == 'News') menu_active @endif">
-                    <a href="{{route('article_list', array('article_category'=>'news'))}}">News</a>
+                    <a href="{{route('article_list', array('article_category'=>'news'))}}">@lang('admin.menu news')</a>
                 </li>
                 <li class="list-group-item text-muted @if($page_name == 'Other') menu_active @endif" >
-                    <a href="{{route('article_list', array('article_category'=>'other'))}}" >Other</a>
+                    <a href="{{route('article_list', array('article_category'=>'other'))}}" >@lang('admin.menu other')</a>
                 </li>
                 <li class="list-group-item text-muted @if($page_name == 'Security') menu_active @endif">
-                    <a href="{{route('article_list', array('article_category'=>'security'))}}">Security</a>
+                    <a href="{{route('article_list', array('article_category'=>'security'))}}">@lang('admin.menu security')</a>
                 </li>
                 <li class="list-group-item text-muted @if($page_name == 'Partners') menu_active @endif">
-                    <a href="{{route('article_list', array('article_category'=>'partner'))}}">Partners</a>
+                    <a href="{{route('article_list', array('article_category'=>'partner'))}}">@lang('admin.menu partners')</a>
                 </li>
                 <li class="list-group-item text-muted @if($page_name == 'Events') menu_active @endif">
-                    <a href="{{route('article_list', array('article_category'=>'event'))}}">Events</a>
+                    <a href="{{route('article_list', array('article_category'=>'event'))}}">@lang('admin.menu events')</a>
                 </li>
                 <li class="list-group-item text-muted @if($page_name == 'Gallery') menu_active @endif">
-                    <a href="{{ Route('gallery_list') }}">Gallery</a>
+                    <a href="{{ Route('gallery_list') }}">@lang('admin.menu gallery')</a>
                 </li>
                 <li class="list-group-item text-muted @if($page_name == 'site info') menu_active @endif">
-                    <a href="{{ Route('about') }}">About us</a>
+                    <a href="{{ Route('about') }}">@lang('admin.menu about')</a>
                 </li>
                 @endif
 
@@ -89,20 +89,22 @@
 
                 @if(Auth::user()->hasRole('admin'))
                 <li class="list-group-item text-muted @if($page_name == 'Comments') menu_active @endif">
-                    <a href="{{ Route('comments_list')}}">Comments</a>
+                    <a href="{{ Route('comments_list')}}">@lang('admin.menu comments')</a>
                 </li>
 
                 <li class="list-group-item text-muted @if($page_name == 'Users and Roles') menu_active @endif">
-                    <a href="{{ Route('users') }}">Users</a>
+                    <a href="{{ Route('users') }}">@lang('admin.menu users')</a>
                 </li>
                 @endif
 
+                <li class="list-group-item text-muted"></li>
+
                 <li class="list-group-item text-muted @if($page_name == 'Options') menu_active @endif">
-                    <a href="{{ Route('options') }}">Options</a>
+                    <a href="{{ Route('options') }}">@lang('admin.menu options')</a>
                 </li>
 
                 <li class="list-group-item text-muted">
-                    <a href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">Logout</a>
+                    <a href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">@lang('admin.menu logout')</a>
                     <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
                         {{ csrf_field() }}
                     </form>

@@ -210,8 +210,7 @@ class ProductController extends Controller
             $product_images_count = Product_image::where('product_id',strip_tags($global_id))->count();
             if ($product_images_count > 0) {
                 foreach ($product_images as $product_image) {
-                    // dd($product_image);
-                    imageControllService::image_delete('images/product_img/', $product_image, $request);
+                    imageControllService::image_delete('images/product_img/', $product_image, $request, 'image');
                     $product_image ->delete();
                 }
             }
@@ -274,7 +273,7 @@ class ProductController extends Controller
         
         $product_image = new Product_image();
 
-        $file_new_name = ImageControllService::image_upload('images/product_img/', $request, 'profile_pic', 1);
+        $file_new_name = ImageControllService::image_upload('images/product_img/', $request, 'profile_pic', 1, 'image');
 
         $product_image['image'] = $file_new_name;
         $product_image['product_id'] = $request->product_id;
@@ -289,7 +288,7 @@ class ProductController extends Controller
         if ($request->isMethod('post')) {
             $product_image = Product_image::where('id',strip_tags($request->image_id))->first();
 
-            ImageControllService::image_delete('images/product_img/', $product_image);
+            ImageControllService::image_delete('images/product_img/', $product_image, 'image');
 
             $product_image -> delete();
         }
@@ -298,7 +297,7 @@ class ProductController extends Controller
 
 
 
-    public function favorite()
+    public function favorite(Request $request)
     {
         $this->parmision($request);
         if (view()->exists('user.favorite_products')) {

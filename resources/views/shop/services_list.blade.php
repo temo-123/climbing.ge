@@ -15,30 +15,34 @@
 
 <div class="container top_menu_margin h-recent-work">
 
-    <h1 class="page_title">Services</h1>
+    <h1 class="page_title">@lang('shop.services title')</h1>
 
     @if($site->services_description != null)
-    <div class="bar"><i class="fa fa-exclamation-triangle"></i></div>
-    <h6>{!! $site->services_description !!}</h6>
+        <div class="bar"><i class="fa fa-exclamation-triangle"></i></div>
+        @if($page_locale == "ru")
+            <h6>{!! $site -> services_description_ru !!}</h6>
+        @elseif($page_locale == "ka")
+            <h6>{!! $site -> services_description_ka !!}</h6>
+        @else
+            <h6>{!! $site -> services_description !!}</h6>
+        @endif
     @endif
 
     <div class="row">
 
         @if(isset($services))
         @foreach ($services as $service)
-        {{-- {{ dd($service['image']) }} --}}
         <div class="col-md-3 col-sm-6">
             <div class="service-box ">
-                <div class="service-icon red" style="background-image: url({{ asset('images/service_img/'.$service['image']) }}); background-size: contain; ">
+                <div class="service-icon red services_bacground_image" style="background-image: url({{ asset('images/service_img/'.$service['image']) }});">
                     <div class="front-content">
-                        <i class="fa fa-trophy"></i>
-                        <h3>{{$service[0][0] -> title}}</h3>
+                        {{-- <i class="fa fa-trophy"></i> --}}
+                        <h3 class='services-title'>{{$service[0][0] -> title}}</h3>
                     </div>
                 </div>
                 <div class="service-content">
-                    <h3><a href="{{route('service_page', array('id'=>$service['id']))}}">{{$service[0][0] -> title}}</a></h3>
+                    <h3><a href="{{route('service_page', array('url_title'=>$service['url_title']))}}">{{$service[0][0] -> title}}</a></h3>
                     {!! $service[0][0] -> short_description  !!} 
-                    {{-- {{ asset('images/service_img/'.$service['image']) }} --}}
                 </div>
             </div>
         </div>

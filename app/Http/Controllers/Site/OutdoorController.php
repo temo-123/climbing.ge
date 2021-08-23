@@ -93,29 +93,26 @@ class OutdoorController extends Controller
         if (view()->exists('site.outdoor_page')) {
             $global_outdoors = Article::latest('id')->where('category', '=', 'outdoor')->where('url_title',strip_tags($name))->first();
             $id = $global_outdoors->id;
-
             $outdoors = GetArticlesService::get_locale_article_in_page($global_outdoors);
 
             $comments = Comment::where('article_id',strip_tags($id))->get();
-            $article_gallery = gallery::where('article_id',strip_tags($id))->where('published','=','1')->where('category','=','article_image')->limit(8)->get();
-            $article_gallery_count = gallery::where('article_id',strip_tags($id))->where('published','=','1')->where('category','=','article_image')->count();
+            // $article_gallery = gallery::where('article_id',strip_tags($id))->where('published','=','1')->where('category','=','article_image')->limit(8)->get();
+            // $article_gallery_count = gallery::where('article_id',strip_tags($id))->where('published','=','1')->where('category','=','article_image')->count();
 
             $global_other_list = Article::latest('id')->where('category', '=', 'outdoor')->inRandomOrder()->where('published','=','1')->limit(6)->get();
             $other_list = GetArticlesService::get_locale_article($global_other_list);
-
-            $area_info = $this->sectors_and_routes_array($id);
             
             $data  = [
                 'outdoor_climbing' => 0,
                 'title'=>$outdoors[0][0]['title'],
                 'article'=>$outdoors[0],
 
-                'area_info'=>$area_info,
+                // 'area_info'=>$area_info,
                 'mtp_rope_index'=>0,
                 'mtp_index'=>0,
 
-                'articles_gallery'=>$article_gallery,
-                'article_gallery_count'=>$article_gallery_count,
+                // 'articles_gallery'=>$article_gallery,
+                // 'article_gallery_count'=>$article_gallery_count,
                 'slider_link'=>'../../assets/img/outdoor_img/slider_img/',
                 'all_article_but'=>'outdoor_list',
                 'article_map'=>'Outdoor',
@@ -139,7 +136,7 @@ class OutdoorController extends Controller
         else abort(404);
     }
 
-    public function sectors_and_routes_array($id)
+    public function get_sectors_and_routes(Request $request)
     {
         $pitch_num_in_array = 0;
         $mtp_num_in_array = 0;
@@ -151,6 +148,8 @@ class OutdoorController extends Controller
 
         $route_num = 0;
         $mtp_pitch_num = 0;
+
+        $id = $request->region_id;
 
         $sector_count = Sector::where('article_id', '=', $id)->count();
         if ($sector_count > 0) {
@@ -209,6 +208,7 @@ class OutdoorController extends Controller
                                 "last_carabin"=>$route['last_carabin'], 
                                 "first_ascent"=>$route['first_ascent'], 
                                 "bolter"=>$route['bolter'], 
+                                "category"=>$route['category'], 
                                 "dolting_data"=>$route['dolting_data'], 
                                 "stars"=>$route['stars'],
                             )
@@ -238,17 +238,17 @@ class OutdoorController extends Controller
                                 $mtp_pitch_num++;
                                 array_push($mtp_pitch_info,
                                     [
-                                        'pitch id'=>$mtp_pitch['id'],
-                                        'pitch num'=>$mtp_pitch_num,
-                                        'pitch name'=>$mtp_pitch['name'],
-                                        "pitch text"=>$mtp_pitch['text'], 
-                                        "pitch height"=>$mtp_pitch['height'], 
-                                        "pitch bolts"=>$mtp_pitch['bolts'], 
-                                        "pitch grade fr"=>$mtp_pitch['grade'],
-                                        "pitch grade yds"=>$pitch_grade_yds,
-                                        "pitch first_ascent"=>$mtp_pitch['first_ascent'], 
-                                        "pitch bolter"=>$mtp_pitch['bolter'], 
-                                        "pitch dolting_data"=>$mtp_pitch['dolting_data'],
+                                        'pitch_id'=>$mtp_pitch['id'],
+                                        'pitch_num'=>$mtp_pitch_num,
+                                        'pitch_name'=>$mtp_pitch['name'],
+                                        "pitch_text"=>$mtp_pitch['text'], 
+                                        "pitch_height"=>$mtp_pitch['height'], 
+                                        "pitch_bolts"=>$mtp_pitch['bolts'], 
+                                        "pitch_grade_fr"=>$mtp_pitch['grade'],
+                                        "pitch_grade_yds"=>$pitch_grade_yds,
+                                        "pitch_first_ascent"=>$mtp_pitch['first_ascent'], 
+                                        "pitch_bolter"=>$mtp_pitch['bolter'], 
+                                        "pitch_dolting_data"=>$mtp_pitch['dolting_data'],
                                     ]
                                 );
                             }
@@ -256,10 +256,11 @@ class OutdoorController extends Controller
                         }
                         array_push($mtp_info, 
                             [
-                                "mtp id"=>$mtp['id'],
-                                "mtp name"=>$mtp['name'],
-                                "mtp text"=>$mtp['text'],
-                                "mtp pitchs"=>$mtp_pitch_info
+                                "mtp_id"=>$mtp['id'],
+                                "mtp_num"=>$mtp['num'],
+                                "mtp_name"=>$mtp['name'],
+                                "mtp_text"=>$mtp['text'],
+                                "mtp_pitchs"=>$mtp_pitch_info
                             ]
                         );
                     }
@@ -270,6 +271,7 @@ class OutdoorController extends Controller
                     "id"=>$sector->id, 
                     "name"=>$sector->name, 
                     "text"=>$sector->text, 
+                    'sectors_img_ouent'=>$sectors_img_ouent,
 
                     "all_day_in_shade"=>$sector->all_day_in_shade,
                     "all_day_in_sun"=>$sector->all_day_in_sun,
@@ -295,6 +297,12 @@ class OutdoorController extends Controller
             }
         }
         return $area_info;
+    }
+
+
+    public static function get_region_image(Request $request){
+        $region_image = Article::where('id',strip_tags($request->region_id))->get('climbing_area_image');
+        return $region_image;
     }
 
 

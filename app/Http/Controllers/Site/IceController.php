@@ -53,7 +53,9 @@ class IceController extends Controller
             // $locale = request()->segment(1, '');
 
             $global_ice = Article::where('category', '=', 'ice')->where('url_title',strip_tags($name))->first();
-            $ice_id = $global_ice->id;
+            // if (isset($ice_id)) {
+                $ice_id = $global_ice->id;
+            // }
             
             $locale_ice = GetArticlesService::get_locale_article_in_page($global_ice);
 

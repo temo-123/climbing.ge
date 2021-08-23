@@ -260,7 +260,11 @@
                 <p class="product_p"><strong>@lang('shop.material')</strong> - {{$global_product->material}}</p>
                 @endif
 
-                <p class="product_p"><strong>@lang('shop.seller')</strong> - {{$product_seller->name}} {{$product_seller->surname}}</p>
+                @if($global_product->weight != null)
+                <p class="product_p"><strong>@lang('shop.weight')</strong> - {{$global_product->weight}}</p>
+                @endif
+
+                <p class="product_p"><strong>@lang('shop.seller') </strong> - {{--@if($product_seller->name != NULL){{$product_seller->name}}@endif @if($product_seller->surname != NULL){{$product_seller->surname}}@endif --}}</p>
                 <hr>
                 {!!$product -> text!!}
               </div>

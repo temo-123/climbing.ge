@@ -1483,6 +1483,17 @@ a.socialIcon:hover, .socialHoverClass {
     transition: all .5s ease;
 }
 
+.services_bacground_image{
+    background-size: contain; 
+}
+
+.services-title{
+    font-size: 165% !important;
+    font: 2em Arial, sans-serif;
+    text-shadow: black 2px 2px 0px, rgb(146 0 0) -1px -1px 0px, rgb(193 0 0) -1px 1px 0px, rgb(245 72 5) 1px -1px 0px;
+    color: #b3e8b5;
+}
+
 .service-content{
     position: absolute;
     top: 0;
@@ -1573,7 +1584,32 @@ a.socialIcon:hover, .socialHoverClass {
 
 /*
 *
-* indoor page style
+* service page styles
+*
+*/
+.service_page_image{
+    width: 75%;
+    // height: 25em;
+    position: relative;
+    margin-bottom: 4%;
+    margin-left: auto;
+    margin-right: auto;
+    display: block;
+    border-radius: 1em;
+}
+.service_page_text{
+    text-align: center;
+}
+.other_servces{
+    text-align: center;
+}
+
+
+
+
+/*
+*
+* indoor page styles
 *
 */
 
@@ -2045,6 +2081,51 @@ border: 1px solid;}
 
 
 
+
+
+
+
+/*
+*
+*	Gallery style
+*   index & article gallery
+*
+*/
+.index_gallery_image{
+    float: left;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center center;
+    border: 1.5px solid #cccaca;
+    border-radius: 5%;
+    margin-top: 1.8%;
+    cursor: zoom-in;
+}
+
+
+
+
+
+
+
+
+/*
+*
+*	mount route page style
+*
+*/
+
+.mountain_masive_description{
+    background-color: #e4e4e4;
+    border-radius: 2%;
+}
+
+
+
+
+
+
+
 /*
 *
 *	Page 404
@@ -2091,11 +2172,8 @@ border: 1px solid;}
 *	Vue.js modal
 *   https://innologica.github.io/vue-stackable-modal/#sample-css#
 *
-*/
-/*
-*
 * 
-* Vue mobal style
+*   Vue mobal style
 *
 */
 $modal-xl: 900px;
@@ -4742,9 +4820,9 @@ $modal-90per: 90%;
       box-shadow: none !important;
   }
   
-  #image-gallery .modal-footer{
-      display: block;
-  }
+//   #image-gallery .modal-footer{
+//       display: block;
+//   }
   
   .thumb{
       margin-top: 15px;
@@ -6098,9 +6176,9 @@ $modal-90per: 90%;
         opacity: 0;
     }
   
-    .product-detail .left-col .big #banner-gallery {
-        display: none;
-    }
+    // .product-detail .left-col .big #banner-gallery {
+    //     display: none;
+    // }
   
     .product-detail .right-col {
         width: 48.27586%;
@@ -7744,38 +7822,38 @@ $modal-90per: 90%;
             display: none;
         }
   
-        .product-detail .left-col .big #banner-gallery {
-            display: block;
-            position: relative;
-            max-width: 1024px;
-            margin: 0 auto;
-            border-top: 1px solid #c6c6c6;
-            border-bottom: 1px solid #c6c6c6;
-            overflow: hidden;
-        }
+        // .product-detail .left-col .big #banner-gallery {
+        //     display: block;
+        //     position: relative;
+        //     max-width: 1024px;
+        //     margin: 0 auto;
+        //     border-top: 1px solid #c6c6c6;
+        //     border-bottom: 1px solid #c6c6c6;
+        //     overflow: hidden;
+        // }
   
-        .product-detail .left-col .big #banner-gallery .swipe {
-            overflow: hidden;
-            visibility: hidden;
-            position: relative;
-        }
+        // .product-detail .left-col .big #banner-gallery .swipe {
+        //     overflow: hidden;
+        //     visibility: hidden;
+        //     position: relative;
+        // }
   
-        .product-detail .left-col .big #banner-gallery .swipe-wrap {
-            overflow: hidden;
-            position: relative;
-        }
+        // .product-detail .left-col .big #banner-gallery .swipe-wrap {
+        //     overflow: hidden;
+        //     position: relative;
+        // }
   
-        .product-detail .left-col .big #banner-gallery .swipe-wrap > div {
-            background: transparent no-repeat center center;
-            -moz-background-size: cover;
-            -o-background-size: cover;
-            -webkit-background-size: cover;
-            background-size: cover;
-            float: left;
-            padding-bottom: 33%;
-            width: 100%;
-            position: relative;
-        }
+        // .product-detail .left-col .big #banner-gallery .swipe-wrap > div {
+        //     background: transparent no-repeat center center;
+        //     -moz-background-size: cover;
+        //     -o-background-size: cover;
+        //     -webkit-background-size: cover;
+        //     background-size: cover;
+        //     float: left;
+        //     padding-bottom: 33%;
+        //     width: 100%;
+        //     position: relative;
+        // }
   
         .product-detail .left-col .big .navigation-module {
             width: 100%;
@@ -8336,6 +8414,111 @@ $modal-90per: 90%;
     }
     /* --------------- */
   
+    // /* xZoom Styles below */
+    // .xzoom-container { 
+    //     display: inline-block;
+    // }
+  
+    // .xzoom-thumbs {
+    //     text-align: center;
+    //     margin-bottom: 10px;
+    // }
+  
+    // .xzoom { 
+    //     -webkit-box-shadow: 0px 0px 5px 0px rgba(0,0,0,0.5);
+    //     -moz-box-shadow: 0px 0px 5px 0px rgba(0,0,0,0.5);
+    //     box-shadow: 0px 0px 5px 0px rgba(0,0,0,0.5);  
+    // }
+    // .xzoom2, .xzoom3, .xzoom4, .xzoom5 {
+    //     -webkit-box-shadow: 0px 0px 5px 0px rgba(0,0,0,0.5);
+    //     -moz-box-shadow: 0px 0px 5px 0px rgba(0,0,0,0.5);
+    //     box-shadow: 0px 0px 5px 0px rgba(0,0,0,0.5);
+    // }
+  
+    // /* Thumbs */
+    // .xzoom-gallery, .xzoom-gallery2, .xzoom-gallery3, .xzoom-gallery4, .xzoom-gallery5 {
+    //     border: 1px solid #cecece;
+    //     margin-left: 5px;
+    //     margin-bottom: 10px;
+    // }
+  
+    // .xzoom-source, .xzoom-hidden {
+    //     display: block;
+    //     position: static;
+    //     float: none;
+    //     clear: both;
+    // }
+  
+    // /* Everything out of border is hidden */
+    // .xzoom-hidden {
+    //     overflow: hidden;
+    // }
+  
+    // /* Preview */
+    // .xzoom-preview {
+    //     border: 1px solid #888;
+    //     background: #2f4f4f;
+    //     box-shadow: -0px -0px 10px rgba(0,0,0,0.50);
+    // }
+  
+    // /* Lens */
+    // .xzoom-lens {
+    //     border: 1px solid #555;
+    //     box-shadow: -0px -0px 10px rgba(0,0,0,0.50);
+    //     cursor: crosshair;
+    // }
+  
+    // /* Loading */
+    // .xzoom-loading {
+    //     background-position: center center;
+    //     background-repeat: no-repeat;
+    //     border-radius: 100%;
+    //     opacity: .7;
+    //     // background: url(../images/);
+    //     width: 48px;
+    //     height: 48px;
+    // }
+  
+    // /* Additional class that applied to thumb when it is active */
+    // .xactive {
+    //     -webkit-box-shadow: 0px 0px 3px 0px rgba(74,169,210,1);
+    //     -moz-box-shadow: 0px 0px 3px 0px rgba(74,169,210,1);
+    //     box-shadow: 0px 0px 3px 0px rgba(74,169,210,1); 
+    //     border: 1px solid #4aaad2;
+    // }
+  
+    // /* Caption */
+    // .xzoom-caption {
+    //     position: absolute;
+    //     bottom: -43px;
+    //     left: 0;
+    //     background: #000;
+    //     width: 100%;
+    //     text-align: left;
+    // }
+  
+    // .xzoom-caption span {
+    //     color: #fff;
+    //     font-family: Arial, sans-serif;
+    //     display: block;
+    //     font-size: 0.75em;
+    //     font-weight: bold;
+    //     padding: 10px;
+    // }
+  
+  
+    // /* Compatibility styles for frameworks like bootstrap, foundation e.t.c */
+    // .xzoom-source img, .xzoom-preview img, .xzoom-lens img {
+    //     display: block;
+    //     max-width: none;
+    //     max-height: none;
+    //     -webkit-transition: none;
+    //     -moz-transition: none;
+    //     -o-transition: none;
+    //     transition: none;
+    // }
+    // /* --------------- */
+  
     /* xZoom Styles below */
     .xzoom-container { 
         display: inline-block;
@@ -8355,112 +8538,7 @@ $modal-90per: 90%;
         -webkit-box-shadow: 0px 0px 5px 0px rgba(0,0,0,0.5);
         -moz-box-shadow: 0px 0px 5px 0px rgba(0,0,0,0.5);
         box-shadow: 0px 0px 5px 0px rgba(0,0,0,0.5);
-    }
-  
-    /* Thumbs */
-    .xzoom-gallery, .xzoom-gallery2, .xzoom-gallery3, .xzoom-gallery4, .xzoom-gallery5 {
-        border: 1px solid #cecece;
-        margin-left: 5px;
-        margin-bottom: 10px;
-    }
-  
-    .xzoom-source, .xzoom-hidden {
-        display: block;
-        position: static;
-        float: none;
-        clear: both;
-    }
-  
-    /* Everything out of border is hidden */
-    .xzoom-hidden {
-        overflow: hidden;
-    }
-  
-    /* Preview */
-    .xzoom-preview {
-        border: 1px solid #888;
-        background: #2f4f4f;
-        box-shadow: -0px -0px 10px rgba(0,0,0,0.50);
-    }
-  
-    /* Lens */
-    .xzoom-lens {
-        border: 1px solid #555;
-        box-shadow: -0px -0px 10px rgba(0,0,0,0.50);
-        cursor: crosshair;
-    }
-  
-    /* Loading */
-    .xzoom-loading {
-        background-position: center center;
-        background-repeat: no-repeat;
-        border-radius: 100%;
-        opacity: .7;
-        // background: url(../images/);
-        width: 48px;
-        height: 48px;
-    }
-  
-    /* Additional class that applied to thumb when it is active */
-    .xactive {
-        -webkit-box-shadow: 0px 0px 3px 0px rgba(74,169,210,1);
-        -moz-box-shadow: 0px 0px 3px 0px rgba(74,169,210,1);
-        box-shadow: 0px 0px 3px 0px rgba(74,169,210,1); 
-        border: 1px solid #4aaad2;
-    }
-  
-    /* Caption */
-    .xzoom-caption {
-        position: absolute;
-        bottom: -43px;
-        left: 0;
-        background: #000;
-        width: 100%;
-        text-align: left;
-    }
-  
-    .xzoom-caption span {
-        color: #fff;
-        font-family: Arial, sans-serif;
-        display: block;
-        font-size: 0.75em;
-        font-weight: bold;
-        padding: 10px;
-    }
-  
-  
-    /* Compatibility styles for frameworks like bootstrap, foundation e.t.c */
-    .xzoom-source img, .xzoom-preview img, .xzoom-lens img {
-        display: block;
-        max-width: none;
-        max-height: none;
-        -webkit-transition: none;
-        -moz-transition: none;
-        -o-transition: none;
-        transition: none;
-    }
-    /* --------------- */
-  
-    /* xZoom Styles below */
-    .xzoom-container { 
-        display: inline-block;
-    }
-  
-    .xzoom-thumbs {
-        text-align: center;
-        margin-bottom: 10px;
-    }
-  
-    .xzoom { 
-        -webkit-box-shadow: 0px 0px 5px 0px rgba(0,0,0,0.5);
-        -moz-box-shadow: 0px 0px 5px 0px rgba(0,0,0,0.5);
-        box-shadow: 0px 0px 5px 0px rgba(0,0,0,0.5);  
-    }
-    .xzoom2, .xzoom3, .xzoom4, .xzoom5 {
-        -webkit-box-shadow: 0px 0px 5px 0px rgba(0,0,0,0.5);
-        -moz-box-shadow: 0px 0px 5px 0px rgba(0,0,0,0.5);
-        box-shadow: 0px 0px 5px 0px rgba(0,0,0,0.5);
-    }
+    }       
   
     /* Thumbs */
     .xzoom-gallery, .xzoom-gallery2, .xzoom-gallery3, .xzoom-gallery4, .xzoom-gallery5 {

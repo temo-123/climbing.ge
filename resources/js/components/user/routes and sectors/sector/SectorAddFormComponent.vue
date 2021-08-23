@@ -32,7 +32,7 @@
     </div>
   </div>
   	<form @submit.prevent="add_sector" id="js_form" class="contact-form" method="POST" enctype="multipart/form-data">
-			<div class="form-group clearfix">
+			<div class="form-group clearfix row">
 				<label for="name" class='col-md-2 control-label'> Sector name </label>
 				<div class="col-md-8">
 						<input type="text" v-model="name" name="name" placeholder="Name" class="form-control textarea">
@@ -42,7 +42,7 @@
 				</div>
 			</div>
 	
-			<div class="form-group clearfix">
+			<div class="form-group clearfix row">
 				<label class='col-md-2 control-label'> Region </label>
 				<div class="col-md-8">
 					<select class="form-control" name="article_id" v-model="article_id"> 
@@ -54,7 +54,7 @@
 				</div>
 			</div>
 	
-			<div class="form-group clearfix">
+			<div class="form-group clearfix row">
 				<label class='col-md-2 control-label'> Text </label>
 				<div class="col-md-8">
           <ckeditor v-model="text" :config="editorConfig"></ckeditor>
@@ -63,53 +63,64 @@
 
       <hr>
 
-			<div class="form-group clearfix">
+			<div class="form-group clearfix row">
 				<label class='col-md-2 control-label'> Shadow time: </label>
 				<div class="col-md-8">
-					<div class="col-md-4">
-							<label for="vehicle1" class="sector_checbox_title"> all_day_in_shade</label><br>
-							<input type="checkbox" v-model="all_day_in_shade" name="all_day" value="1" class="largerCheckbox">
-					</div>
-					<div class="col-md-4">
-							<label for="vehicle1"> all_day_in_sun</label><br>
-							<input type="checkbox" v-model="all_day_in_sun" name="no_sun" value="1"  class="largerCheckbox">
-					</div>
-					<div class="col-md-4">
-							<label for="vehicle1"> in_the_shade_afternoon</label><br>
-							<input type="checkbox" v-model="in_the_shade_afternoon" name="afternoon" value="1"  class="largerCheckbox">
-					</div>
-        </div>
-				<div class="col-md-8  offset-md-2">
-					<div class="col-md-4">
-							<label for="vehicle1"> in_the_shade_befornoon</label><br>
-							<input type="checkbox" v-model="in_the_shade_befornoon" name="beforenoon" value="1"  class="largerCheckbox">
-					</div>
-					<div class="col-md-4">
-							<label for="vehicle1"> in_shade_after_10</label><br>
-							<input type="checkbox" v-model="in_shade_after_10" name="beforenoon" value="1"  class="largerCheckbox">
-					</div>
-					<div class="col-md-4">
-							<label for="vehicle1"> in_shade_after_15</label><br>
-							<input type="checkbox" v-model="in_shade_after_15" name="beforenoon" value="1"  class="largerCheckbox">
+          <div class="row">
+            <div class="col-md-4">
+                <label for="vehicle1" class="sector_checbox_title"> all_day_in_shade</label><br>
+                <img class="sun_svg" :src="'../../images/svg/in the shade whole day.svg'" alt="In the shade whole day" title="In the shade whole day">
+                <input type="checkbox" v-model="all_day_in_shade" name="all_day" value="1" class="largerCheckbox">
+            </div>
+            <div class="col-md-4">
+                <label for="vehicle1"> all_day_in_sun</label><br>
+                <img class="sun_svg" :src="'../../images/svg/in the sun the whole day.svg'" alt="In the sun the whole day" title="In the sun the whole day">
+                <input type="checkbox" v-model="all_day_in_sun" name="no_sun" value="1"  class="largerCheckbox">
+            </div>
+            <div class="col-md-4">
+                <label for="vehicle1"> in_the_shade_afternoon</label><br>
+                <img class="sun_svg" :src="'../../images/svg/in shade in the afternoon.svg'" alt="In shade in the afternoon" title="In shade in the afternoon">
+                <input type="checkbox" v-model="in_the_shade_afternoon" name="afternoon" value="1"  class="largerCheckbox">
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-4">
+                <label for="vehicle1"> in_the_shade_befornoon</label><br>
+                <img class="sun_svg" :src="'../../images/svg/in shade befor noon.svg'" alt="In shade befor noon" title="In shade befor noon">
+                <input type="checkbox" v-model="in_the_shade_befornoon" name="beforenoon" value="1"  class="largerCheckbox">
+            </div>
+            <div class="col-md-4">
+                <label for="vehicle1"> in_shade_after_10</label><br>
+                <img class="sun_svg" :src="'../../images/svg/in shade after 10.00 am.svg'" alt="In shade after 10.00 am" title="In shade after 10.00 am">
+                <input type="checkbox" v-model="in_shade_after_10" name="beforenoon" value="1"  class="largerCheckbox">
+            </div>
+            <div class="col-md-4">
+                <label for="vehicle1"> in_shade_after_15</label><br>
+                <img class="sun_svg" :src="'../../images/svg/in shade after 15.00 pm.svg'" alt="In shade after 15.00 pm" title="In shade after 15.00 pm">
+                <input type="checkbox" v-model="in_shade_after_15" name="beforenoon" value="1"  class="largerCheckbox">
+            </div>
 					</div>
 				</div>
 			</div>
 
       <hr>
 
-			<div class="form-group clearfix">
+			<div class="form-group clearfix row">
 				<label class='col-md-2 control-label'> Sector relief: </label>
-				<div class="col-md-8">
+				<div class="col-md-8 row">
 					<div class="col-md-4">
 							<label for="vehicle1"> slabby</label><br>
+              <img class="sun_svg" :src="'../../images/svg/slabby.svg'" alt="Slabby" title="Slabby">
 							<input type="checkbox" v-model="slabby" name="no_sun" value="1"  class="largerCheckbox">
 					</div>
 					<div class="col-md-4">
 							<label for="vehicle1"> vertical</label><br>
+              <img class="sun_svg" :src="'../../images/svg/vertical.svg'" alt="Vertical" title="Vertical">
 							<input type="checkbox" v-model="vertical" name="afternoon" value="1"  class="largerCheckbox">
 					</div>
 					<div class="col-md-4">
 							<label for="vehicle1"> overhang</label><br>
+              <img class="sun_svg" :src="'../../images/svg/overhang.svg'" alt="Overhang" title="Overhang">
 							<input type="checkbox" v-model="overhang" name="beforenoon" value="1"  class="largerCheckbox">
 					</div>
 				</div>
@@ -145,27 +156,32 @@
             </div>
         </div>
 
-        <div class="row">
-          <div class="form-groupe">
-            <button class="btn btn-primary" @click="showModal()">My modal</button>
+        <div class="container">
+          <div class="row">
+            <div class="form-groupe">
+              <button class="btn btn-primary mb-4" @click="showModal()">Add image</button>
+            </div>
+            <div class="form-groupe">
+              <button @click="get_sector_image(temporary_sector_id)" class="btn main-btn pull-right" v-if="!image_is_refresh">Refresh ({{image_reset_id}})</button>
+              <span class="badge badge-primare mb-1 pull-right" v-if="image_is_refresh">Updating...</span>
+            </div>
           </div>
-          <div class="form-groupe">
-            <button @click="get_sector_image(temporary_sector_id)" class="btn main-btn pull-right" v-if="!image_is_refresh">Refresh ({{image_reset_id}})</button>
-            <span class="badge badge-primare mb-1 pull-right" v-if="image_is_refresh">Updating...</span>
+          <div class="row">
+            <button class="btn btn-secondary pull-left" @click="save_sector_images_sequence()">Save sector images sequence</button>
           </div>
         </div>
         
     </div>
 
     <div class="container">
-        <div class="col-md-3">
+        <!-- <div class="col-md-3">
           <div class="row">
             <div class="col-md-12">
               <img alt="300x200" @click="showModal()" src="/public/images/site_img/image.png">
             </div>
           </div>
-        </div>
-        <div class="col-md-3" v-for="image in images" :key="image.id">
+        </div> -->
+        <!-- <div class="col-md-3" v-for="image in images" :key="image.id">
           <div class="row">
             <div class="col-md-12">
               <img :alt="'sector image - (' + image.image + ')'" class="sector_img" :src="'/public/images/sector_img/' + image.image">
@@ -179,16 +195,36 @@
               <button class="btn btn-danger pull-right" @click="del_sector_image(image.id)">Del</button>
             </div>
           </div>
+        </div> -->
+        <div class="root">
+          <SlickList lockAxis="y" v-model="images" tag="table" style="width: 100%">
+              <tr>
+                  <td>ID</td>
+                  <td>Number</td>
+                  <td>Image</td>
+                  <td>Delete</td>
+              </tr>
+              <SlickItem v-for="(image, index) in images" :index='index' :key="index" tag="tr">
+                  <td>{{ image.id }}</td>
+                  <td v-if="image.num == NULL">0</td>
+                  <td v-else>{{ image.num }}</td>
+                  <td><img :alt="'sector image - (' + image.image + ')'" class="sector_image_in_table" :src="'/public/images/sector_img/' + image.image"></td>
+                  <td><button class="btn btn-danger" @click="del_sector_image(image.id)">Del</button></td>
+              </SlickItem>
+          </SlickList>
         </div>
     </div>
   </div>
 </template>
 <script>
   import Uploader from "vux-uploader-component";
+  import { SlickList, SlickItem } from 'vue-slicksort';
 
   export default {
     components: {
       Uploader,
+      SlickItem,
+      SlickList,
     },
     data() {
       return {
@@ -366,7 +402,31 @@
       },
       save_all: function () {
         this.add_sector()
-      }
+      },
+      save_sector_images_sequence() {
+        axios
+        .post('/routes_and_sectors/save_sector_images_sequence/', {
+            sector_images_sequence: this.images,
+        })
+        .then(function (response) {
+        })
+        .catch(error =>{
+            if (error.response.status == 422) {
+              alert(error.response.data.errors)
+            }
+        })
+      },
     }
   };
 </script>
+
+
+<style scoped>
+.sector_img{
+  border-radius: 5%;
+  border: 3px solid #a7a7a7;
+}
+.sector_image_in_table{
+  height: 10em;
+}
+</style>

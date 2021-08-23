@@ -22,7 +22,11 @@ class MtpController extends Controller
             
             $article = new Mtp();
 
+            $sector_mtp_count = Mtp::where('sector_id',strip_tags($request->sector_id))->count();
+            $new_mtp_num = $sector_mtp_count+1;
+
             $article['sector_id']=$request->sector_id;
+            $article['num']=$new_mtp_num;
             $article['name']=$request->name;
             $article['text']=$request->text; 
             $article['height']=$request->height;
@@ -101,7 +105,11 @@ class MtpController extends Controller
             
             $article = new mtp_pitch();
 
+            $sector_mtp_pitch_count = Mtp_pitch::where('mtp_id',strip_tags($request->mtp_id))->count();
+            $new_pitch_num = $sector_mtp_pitch_count+1;
+
             $article['mtp_id']=$request->mtp_id;
+            $article['num']=$new_pitch_num;
             $article['grade']=$request->grade;
             $article['or_grade']=$request->or_grade; 
             $article['name']=$request->name;

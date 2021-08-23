@@ -16,6 +16,7 @@ return [
 
     'category' => 'Категория',
     'material' => 'Материал',
+    'weight' => 'Вес',
     'seller' => 'Продавец',
     'email' => 'Адрес электронной почты',
     'phone number' => 'Телефонный номер',
@@ -24,4 +25,7 @@ return [
     'all products' => 'Все продукты',
 
     'shop login' => 'Авторизоваться',
+
+    'services title' => 'Услуги',
+    'service page other services' => 'Другие услуги'
 ];

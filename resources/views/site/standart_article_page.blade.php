@@ -142,13 +142,15 @@
                     @endif
                 </ul>     
 
-                @if(isset($article_gallery_count))
+                {{-- @if(isset($article_gallery_count))
                 @if($article_gallery_count > 0)
                 @include('site.components.article_gallery')
                 @endif
-                @endif
+                @endif --}}
                 
                 {{-- @include('site.components.article_gallery') --}}
+                
+                <gallery-component :article_id="{{$article['id']}}" image_url={{ env('APP_URL').'/images/gallery_img/'}}></gallery-component>
             </div>
             @include('site.components.right_block')
             

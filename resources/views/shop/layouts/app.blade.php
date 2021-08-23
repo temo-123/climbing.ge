@@ -49,32 +49,13 @@
     @endif
 
 
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.7.0/animate.min.css"><!--animate style-->
-
-    <!-- font femyly in style.css (line 6.12.17.23.30) || style1.css (line 6) -->
-     <link href="http://netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
-
-    <!-- <link rel="stylesheet" href="{{ asset('assets/css/my_css/style.css') }}" > -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.7.0/animate.min.css">
+    <link href="http://netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
     <link rel="stylesheet" href="{{ asset('assets/css/app.css') }}">
-
-    <!-- fonts -->
-    <link rel="stylesheet" href="{{ asset('assets/css/animate-custom.css') }}">
-    <link rel="stylesheet" href="{{ asset('assets/css/font-awesome.min.css') }}">
-
-    <!--For article slider-->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
-
-    <!--For gallry -->
-    <!-- <script src="//code.jquery.com/jquery-1.11.1.min.js"></script> -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.2.5/jquery.fancybox.min.css"/>
-    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
-
-    <!--For about us-->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-    <link rel="stylesheet" href="http://cdnjs.cloudflare.com/ajax/libs/jquery.bootstrapvalidator/0.5.2/css/bootstrapValidator.min.css"/>
-    <script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/jquery.bootstrapvalidator/0.5.2/js/bootstrapValidator.min.js"></script> 
-
-    {{-- And analytics.google.com (Global site tag (gtag.js) - Google Analytics) --}}
+    
+    {{-- analytics.google.com (Global site tag (gtag.js) - Google Analytics) --}}
     <script async src="https://www.googletagmanager.com/gtag/js?id=UA-101870435-2"></script>
     <script src="{{ asset('assets/js/analitic/shop.climbing.ge_analitic.js') }}"></script>
 
@@ -97,8 +78,45 @@
 
         @yield('content')
         
-        @include('shop.components.footer')
+        {{-- @include('shop.components.footer') --}}
+        <div class="footer__graphic" style="background-image: url({{ asset('images/svg/mountains.svg') }})"></div>
 
+        <div class="footer"> 
+            <div class="container"> 
+                <div class="row">
+        
+                    <div class="col-md-4 display-none-720px">
+                        <div class="f-about" style='color: #fff;'>
+                           
+                           <h4>About as</h4>
+                           
+                           {!!$site -> short_description!!}
+                           <a href="{{route('about_us_page')}}">More</a>
+                           
+                       </div>
+                   </div>
+        
+                   <div class="col-md-4 display-none-720px">
+                       <div class="f-links">
+                           <h4>Links</h4>
+                           <ul> 
+                             <li> <a href="{{route('shop_index')}}">@lang('shop.shop menu products')</a> </li>
+                             <li> <a href="{{route('about_shop')}}">@lang('shop.shop menu about us')</a> </li>
+                             <li> <a href="{{route('login')}}">@lang('shop.shop login')</a> </li>
+                           </ul>
+                       </div>
+                   </div>
+        
+                   <div class="col-md-4">
+                       <div class="flick">
+                           <h4>Share</h4>
+                            <share-component route={{ URL::current() }}></share-component>
+                       </div>
+                   </div>
+                    
+                </div>
+            </div>
+        </div>
         {{-- @if (session('status'))
             <div id="modalOnLoad" class="modal fade">
                 <div class="modal-dialog">
@@ -125,29 +143,10 @@
             </script> -->
         {{-- @endif --}}
     </div>
-    <!-- status script -->
-    <!-- <script src="http://code.jquery.com/jquery-1.11.1.min.js"></script> -->
-    <script src="http://netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script> <!-- conflict to site menu -->
-
-    <!--Security system on index-->
-    {{-- <script src='https://cdnjs.cloudflare.com/ajax/libs/vue/2.1.7/vue.js'></script> --}}
-    {{-- <script src='https://rawgit.com/Wlada/vue-carousel-3d/master/dist/vue-carousel-3d.min.js'></script> --}}
-
-    <!-- For gallery -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.2.5/jquery.fancybox.min.js"></script>
     
-    <!-- Comment text form color control -->
-    <!-- <script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/jquery.bootstrapvalidator/0.5.2/js/bootstrapValidator.min.js"></script> -->
-
-    <script src="https://www.google.com/recaptcha/api.js" async defer></script><!-- Google recaptcha -->
-
+    <script src="http://netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>
     <script src="{{ asset('assets/js/app.js') }}"></script>
-
-
-    <!-- My JS -->
     <script src="{{ asset('assets/js/my_js/my_scripts.js') }}" type="text/javascript" ></script>
-    <script src="{{ asset('assets/js/my_js/galery_image_open.js') }}" type="text/javascript" ></script><!--For index gallery-->
-    {{-- <!-- <script src="{{ asset('assets/js/my_js/indoor_stars.js') }}" type="text/javascript"></script>For indoor stars block --> --}}
     
 </body>
 </html>

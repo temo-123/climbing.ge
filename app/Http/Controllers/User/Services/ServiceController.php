@@ -236,7 +236,7 @@ class ServiceController extends Controller
         
         $service_image = new service_image();
 
-        $file_new_name = ImageControllService::image_upload('images/service_img/', $request, 'profile_pic', 1);
+        $file_new_name = ImageControllService::image_upload('images/service_img/', $request, 'profile_pic', 1, 'image');
 
         $service_image['image'] = $file_new_name;
         $service_image['service_id'] = $request->service_id;
@@ -250,7 +250,7 @@ class ServiceController extends Controller
         if ($request->isMethod('post')) {
             $service_image = service_image::where('id',strip_tags($request->image_id))->first();
 
-            ImageControllService::image_delete('images/service_img/', $service_image);
+            ImageControllService::image_delete('images/service_img/', $service_image, 'image');
 
             $service_image -> delete();
         }

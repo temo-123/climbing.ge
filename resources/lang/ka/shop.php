@@ -16,6 +16,7 @@ return [
 
     'category' => 'კატეგორია',
     'material' => 'მატერიალი',
+    'weight' => 'წონა',
     'seller' => 'გამყიდველი',
     'email' => 'მეილი',
     'phone number' => 'ტელეფონის ნომერი',
@@ -24,4 +25,7 @@ return [
     'all products' => 'ყველა პროდუკტი',
 
     'shop login' => 'ავტორიზაცია',
+
+    'services title' => 'სერვისები',
+    'service page other services' => 'სხვა სერვისები'
 ];

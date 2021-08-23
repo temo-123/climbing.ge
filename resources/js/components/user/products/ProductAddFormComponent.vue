@@ -73,6 +73,13 @@
                     </div>
 
                     <div class="form-group clearfix">
+                        <label for="name" class='col-xs-2 control-label'> Weight</label>
+                        <div class="col-xs-8">
+                            <input type="text" v-model="weight" name="weight" class="form-control"> 
+                        </div>
+                    </div>
+
+                    <div class="form-group clearfix">
                         <label for="name" class='col-xs-2 control-label'> quantity </label>
                         <div class="col-xs-8">
                             <input type="text" v-model="quantity" name="quantity" class="form-control"> 
@@ -391,6 +398,7 @@
                 color: "",
                 discount: "",
                 quantity: "",
+                weight: "",
 
 
 
@@ -528,6 +536,7 @@
                     discount: this.discount,
                     quantity: this.quantity,
                     size: this.size,
+                    weight: this.weight,
 
                     us_title_for_url_title: this.us_title,
                 })

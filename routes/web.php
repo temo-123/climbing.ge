@@ -7,6 +7,7 @@ Route::group(['prefix' => LocalisationService::locale(),'middleware' => 'setLoca
         Route::group(['namespace'=>'Site'], function() {
             
             Route::get('/', 'IndexController@index')->name('index');
+            Route::get('/get_index_gallery_image', 'IndexController@get_index_gallery_image')->name('get_index_gallery_image');
             Route::get('/about_us', 'AboutController@index')->name('about_us_page');
 
             Route::get('/news/{title}', ['uses'=>'NewsController@news_page', 'as'=>'news_page']);
@@ -17,6 +18,8 @@ Route::group(['prefix' => LocalisationService::locale(),'middleware' => 'setLoca
 
             Route::get('/outdoor', 'OutdoorController@outdoor_list')->name('outdoor_list');
             Route::get('/outdoor/{title}', ['uses'=>'OutdoorController@outdoor_page', 'as'=>'outdoor_page']);
+            Route::get('/get_sectors_and_routes/{region_id}', 'OutdoorController@get_sectors_and_routes')->name('get_sectors_and_routes');
+            Route::get('/get_region_image/{region_id}', 'OutdoorController@get_region_image')->name('get_region_image');
 
             Route::get('/indoor', 'IndoorController@indoor_list')->name('indoor_list');
             Route::get('/indoor/{title}', ['uses'=>'IndoorController@indoor_page', 'as'=>'indoor_page']);
@@ -31,8 +34,8 @@ Route::group(['prefix' => LocalisationService::locale(),'middleware' => 'setLoca
             Route::get('/other/{title}', ['uses'=>'OtherActivityController@other_page', 'as'=>'other_page']);
 
             Route::get('/partniors/{title}', ['uses'=>'PartnersController@partners_page', 'as'=>'partners_page']);
-        
             Route::group(['namespace'=>'App'], function() {
+                Route::match(['get', 'post'], '/get_article_image/{id}', ['uses' => 'GalleryController@get_article_image', 'as'=>'getArticleImage']);
 
                 Route::get('/events_interes/{events_id}/{actions}', ['uses'=>'InterestedEventController@events_interes', 'as'=>'events_interes']);
                 
@@ -61,7 +64,7 @@ Route::group(['prefix' => LocalisationService::locale(),'middleware' => 'setLoca
             Route::get('/favorite_product/{product_id}/{actions}', ['uses'=>'App\PrioritiesController@favorite_product', 'as'=>'favorite_product']);
 
             Route::get('/services', 'ServiceController@services_list')->name('services');
-            Route::get('/service/{id}', 'ServiceController@service_page')->name('service_page');
+            Route::get('/service/{url_title}', 'ServiceController@service_page')->name('service_page');
 
             Route::group(['namespace'=>'App'], function() {
                 Route::get('/sitemap.xml', 'SitemapController@sitemap_xml');
@@ -77,7 +80,6 @@ Route::group(['prefix' => LocalisationService::locale(),'middleware' => 'setLoca
     Route::domain('user.' . config('app.url'))/*->middleware('verified')*/->group(function () {
         Route::group(['middleware'=>'auth'], function() {
             Route::group(['namespace'=>'User'], function() {
-        
                 Route::get('/', 'IndexController@index')->name('user_index');
 
                     Route::group(['prefix'=>'mountaineering', 'namespace'=>'Mountaineering'], function() {
@@ -100,13 +102,17 @@ Route::group(['prefix' => LocalisationService::locale(),'middleware' => 'setLoca
                         Route::match(['post'],'/routesNumEdit', ['uses'=>'RoutesListController@store', 'as'=>'routesNumEdit']);
                         Route::any('/get_region_data', 'RoutesListController@get_region_data');
                         Route::any('/get_route_data', 'RoutesListController@get_route_data');
+
                         Route::any('/get_routes_for_model/{sector_id}', 'RoutesListController@get_routes_for_model');
+                        Route::any('/get_mtp_for_model/{sector_id}', 'RoutesListController@get_mtp_for_model');
+                        Route::any('/get_mtp_pitchs_for_model/{mtp_id}', 'RoutesListController@get_mtp_pitchs_for_model');
                         
                         Route::match(['get','post'], '/sector_add_form', ['uses'=>'SectorController@add_form','as'=>'sectorAddForm']);
                         Route::match(['get','post'], '/sector_add', ['uses'=>'SectorController@add','as'=>'sectorAdd']);
                         Route::match(['get', 'post', 'delete'], '/sector_edit_form/{id}', ['uses' => 'SectorController@edit_form', 'as'=>'sectorEditForm']);
                         Route::match(['get', 'post', 'delete'], '/sector_edit/{id}', ['uses' => 'SectorController@edit', 'as'=>'sectorEdit']);
                         Route::match(['get', 'post', 'delete'], '/sector_delete/{id}', ['uses' => 'SectorController@delete', 'as'=>'sectorDel']);
+                        Route::any( '/save_sector_images_sequence', 'SectorController@save_sector_images_sequence');
                         
                         Route::any('/get_sector_editing_data/{id}', 'SectorController@get_sector_editing_data');
                         Route::any('/get_sector_image/{sector_id}', 'SectorController@get_sector_image');
@@ -146,7 +152,7 @@ Route::group(['prefix' => LocalisationService::locale(),'middleware' => 'setLoca
                     }); 
             
 
-                    Route::group(['prefix'=>'articles', 'namespace'=>'Article'], function() {
+                    Route::group(['prefix'=>'/articles', 'namespace'=>'Article'], function() {
                         Route::any('/create_temporary_article/{category}', 'ArticleController@create_temporary_article');
                         Route::any('/del_temporary_article/{id}', 'ArticleController@delete');
                         Route::any('/get_temporary_article_editing_data', 'ArticleController@get_temporary_article_editing_data');
@@ -311,13 +317,16 @@ Route::group(['prefix' => LocalisationService::locale(),'middleware' => 'setLoca
                     Route::group(['prefix'=>'events'], function() {
                         Route::get('/interested', ['uses'=>'InteestedEventCntroller@interested', 'as'=>'interested']);
                     });
+                });
             });
         });
-    });
 });
 
-Route::get('login/{provider}/callback','Auth\SocialController@Callback');
-Route::get('login/{provider}', 'Auth\SocialController@redirect');
+// Route::get('login/{provider}/callback','Auth\SocialController@Callback');
+// Route::get('login/{provider}', 'Auth\SocialController@redirect');
+
+Route::get('/redirect', 'Auth\SocialAuthFacebookController@redirectFacebook');
+Route::get('/callback', 'Auth\SocialAuthFacebookController@facebookCallback');
 
 
 Route::get('/check_permission', 'PermissionController@permission');

@@ -247,7 +247,9 @@
             </div>
         </div>
 
-    @endif
+    @endif 
+    
+    {{-- <share-component route={{ URL::current() }}></share-component> --}}
 </div>
 
 @endsection       

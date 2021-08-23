@@ -41,13 +41,16 @@ window.Vue = require('vue');
 // files.keys().map(key => Vue.component(key.split('/').pop().split('.')[0], files(key).default))
 
 Vue.component('comment-form-component',         require('./components/site/CommentFormComponent.vue').default);
-// Vue.component('comment-component',  :src="'../../public/images/site_img/demo/user.png'"            require('./components/site/CommentsComponent.vue').default);
 Vue.component('message-component',              require('./components/site/MessageComponent.vue').default);
 Vue.component('search-component',               require('./components/site/SearchComponent.vue').default);
-Vue.component('trchtips_component',             require('./components/site/TrchtipsComponent.vue').default);
+Vue.component('trchtips-component',             require('./components/site/TrchtipsComponent.vue').default);
+Vue.component('share-component',                require('./components/site/ShareComponent.vue').default);
+Vue.component('gallery-component',              require('./components/site/GalleryComponent.vue').default);
+Vue.component('index-gallery-component',        require('./components/site/IndexGalleryComponent.vue').default);
+Vue.component('region-routes-component',        require('./components/site/RegionRouteComponent.vue').default);
 
 
-// Vue.component('mobal',             require('./components/MobalComponent.vue').default);
+// Vue.component('product-list-component',        require('./components/shop/ProductListComponent.vue').default); //do't work
 
 
 

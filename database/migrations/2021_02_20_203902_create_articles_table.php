@@ -41,6 +41,7 @@ class CreateArticlesTable extends Migration
             $table->text('map')->nullable();
             $table->string('image')->nullable();
             $table->string('climbing_area_image')->nullable();
+            $table->string('mount_route_image')->nullable();
 
             $table->integer('mount_id')->nullable();
 

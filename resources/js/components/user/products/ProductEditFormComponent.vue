@@ -74,6 +74,13 @@
                     </div>
 
                     <div class="form-group clearfix">
+                        <label for="name" class='col-xs-2 control-label'> Weight</label>
+                        <div class="col-xs-8">
+                            <input type="text" v-model="weight" name="weight" class="form-control"> 
+                        </div>
+                    </div>
+
+                    <div class="form-group clearfix">
                         <label for="name" class='col-xs-2 control-label'> quantity </label>
                         <div class="col-xs-8">
                             <input type="text" v-model="quantity" name="quantity" class="form-control"> 
@@ -459,6 +466,7 @@
                     this.discount = this.editing_product.editing_product['discount'],
                     this.quantity = this.editing_product.editing_product['quantity'],
                     this.size = this.editing_product.editing_product['size'],
+                    this.weight = this.editing_product.editing_product['weight'],
 
                     this.us_product_id = this.editing_product.editing_product['us_product_id'],
                     this.ru_product_id = this.editing_product.editing_product['ru_product_id'],
@@ -557,6 +565,7 @@
                     discount: this.discount,
                     quantity: this.quantity,
                     size: this.size,
+                    weight: this.weight,
                 })
                 .then((response)=>  { 
                     this.is_global_article_error = false

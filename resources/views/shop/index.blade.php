@@ -69,7 +69,6 @@
                             <ul class="grid">
                                 @if(isset($products))
                                 @forelse($products as $product)
-                                {{-- {{ dd($products) }} --}}
                                 <li class="grid-tile">
                                     <div class="item">
                                         <a href="{{route('shop_page', array('title'=>$product['url_title']))}}">
