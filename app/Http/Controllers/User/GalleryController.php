@@ -126,7 +126,7 @@ class GalleryController extends Controller
             
             $file_new_name = '';
             if ($request->hasFile('image')){ 
-                $file_new_name = ImageControllService::image_update('images/gallery_img/', $gallery, $request, 'image', 1);
+                $file_new_name = ImageControllService::image_update('images/gallery_img/', $gallery, $request, 'image', 1, 'image');
             }
             else{
                 $file_new_name = $gallery['image'];
