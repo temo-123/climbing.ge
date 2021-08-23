@@ -59,7 +59,7 @@ class IndexController extends Controller
         $image = '';
 
         $gallery_images = Gallery::limit(8)->get();
-        $image_url = 'http://climbing.loc/images/gallery_img/';
+        $image_url = config('app.url').'/images/gallery_img/';
 
         foreach ($gallery_images as $gallery_img) {
             $image = $gallery_img->image;
