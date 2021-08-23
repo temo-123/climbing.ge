@@ -16,7 +16,7 @@ class GalleryController extends Controller
         $image = '';
 
         $gallery_images = Gallery::where('article_id',strip_tags($request->id))->limit(8)->get();
-        $image_url = 'http://climbing.loc/images/gallery_img/';
+        $image_url = config('app.url').'/images/gallery_img/';
 
         foreach ($gallery_images as $gallery_img) {
             $image = $gallery_img->image;
