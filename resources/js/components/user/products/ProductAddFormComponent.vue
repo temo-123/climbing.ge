@@ -557,9 +557,8 @@
                 .get("/products/get_temporary_product_editing_data/")
                 .then(response => {
                     this.editing_data = response.data
-                    this.get_product_image(this.editing_data.last_temporary_product_id)
-                    // console.log(this.editing_data.last_temporary_product_id);
                     this.temporary_product_id = this.editing_data.last_temporary_product_id
+                    this.get_product_image(this.temporary_product_id)
                 })
                 .catch(
                 error => console.log(error)
@@ -581,7 +580,7 @@
             get_product_image: function (temporary_product_id) {
                 this.image_is_refresh = true
                 axios
-                .get("../../products/get_product_image/" + temporary_product_id )
+                .get("/products/get_product_image/" + temporary_product_id )
                 .then(response => {
                     this.product_images = response.data
                     this.images = this.product_images.product_images

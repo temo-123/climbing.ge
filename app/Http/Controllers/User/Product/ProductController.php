@@ -85,7 +85,7 @@ class ProductController extends Controller
         return $products;	
     }
 
-    public function create_temporary_product()
+    public function create_temporary_product(Request $request)
     {
         $this->parmision($request);
         $product_ka = new Ka_product();
@@ -222,7 +222,7 @@ class ProductController extends Controller
             $ka_product ->delete();
         }
     }
-    public function get_temporary_product_editing_data()
+    public function get_temporary_product_editing_data(Request $request)
     {
         $this->parmision($request);
         $temporary_product = Product::where("url_title","=","temporary_product")->get();

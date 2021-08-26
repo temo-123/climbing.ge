@@ -8051,11 +8051,9 @@ __webpack_require__.r(__webpack_exports__);
 
       axios.get("/products/get_temporary_product_editing_data/").then(function (response) {
         _this6.editing_data = response.data;
-
-        _this6.get_product_image(_this6.editing_data.last_temporary_product_id); // console.log(this.editing_data.last_temporary_product_id);
-
-
         _this6.temporary_product_id = _this6.editing_data.last_temporary_product_id;
+
+        _this6.get_product_image(_this6.temporary_product_id);
       })["catch"](function (error) {
         return console.log(error);
       });
@@ -8074,7 +8072,7 @@ __webpack_require__.r(__webpack_exports__);
       var _this8 = this;
 
       this.image_is_refresh = true;
-      axios.get("../../products/get_product_image/" + temporary_product_id).then(function (response) {
+      axios.get("/products/get_product_image/" + temporary_product_id).then(function (response) {
         _this8.product_images = response.data;
         _this8.images = _this8.product_images.product_images;
         _this8.image_is_refresh = false;
