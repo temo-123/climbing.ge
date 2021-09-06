@@ -51,8 +51,8 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
     {{-- And analytics.google.com --}}
-    {{-- <script async src="https://www.googletagmanager.com/gtag/js?id=G-YSKGLXMWGF"></script>
-    <script src="{{ asset('assets/js/analitic/climbing.ge_analitic.js') }}"></script> --}}
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-YSKGLXMWGF"></script>
+    <script src="{{ asset('assets/js/analitic/climbing.ge_analitic.js') }}"></script>
 
     {{-- Google recaptcha --}}
     <script src="https://www.google.com/recaptcha/api.js" async defer></script>

@@ -12,15 +12,12 @@
     <title>@yield('title')</title>
     <link href="{{ asset('images/site_img/site_logo/'.$site->image) }}" rel="shortcut icon">
 
-    {{-- <link href="http://netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css"> --}}
-    
-
     <link rel="stylesheet" href="{{ asset('assets/css/app.css') }}">
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
 
     {{-- Google analitics (Global site tag (gtag.js) - Google Analytics) --}}
-    {{-- <script async src="https://www.googletagmanager.com/gtag/js?id=UA-101870435-3"></script>
-    <script src="{{ asset('assets/js/analitic/user.climbing.ge_analitic.js') }}"></script> --}}
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-101870435-3"></script>
+    <script src="{{ asset('assets/js/analitic/user.climbing.ge_analitic.js') }}"></script>
 
 </head>
 <body>

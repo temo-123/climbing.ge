@@ -56,8 +56,8 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     
     {{-- analytics.google.com (Global site tag (gtag.js) - Google Analytics) --}}
-    {{-- <script async src="https://www.googletagmanager.com/gtag/js?id=UA-101870435-2"></script>
-    <script src="{{ asset('assets/js/analitic/shop.climbing.ge_analitic.js') }}"></script> --}}
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-101870435-2"></script>
+    <script src="{{ asset('assets/js/analitic/shop.climbing.ge_analitic.js') }}"></script>
 
 </head>
 <body>
