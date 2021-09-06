@@ -1,35 +1,31 @@
 <template>
-  <div>
-    <input type="text" placeholder="Search" v-model="query" />
-    <ul v-if="results.length > 0 && query">
-      <li v-for="result in results.slice(0,10)" :key="result.id">
-        <a :href="result.url">
-          <div v-text="result.title"></div>
-        </a>
-      </li>
-    </ul>
-  </div>
+  <vue-search 
+    @itemselected="itemselected(this.results)" 
+    :source-field="'name'" 
+    :show-new-botton="false"
+    :search-by-field="false"
+    :api-source="'http://climbing.loc'"
+    placeholder='Search'
+    :DataDefault="results"
+    :dataFiltered="results"
+    ></vue-search>
 </template>
 
 <script>
+import 'vue-input-search/dist/vue-search.css' //https://github.com/teclaelvis01/vue-search#readme
+import VueSearch from 'vue-input-search/dist/vue-search.common' //https://www.npmjs.com/package/vue-input-search
 export default {
   data() {
     return {
-      query: null,
-      results: [],
+      results: ['eeeee', 'rrrrr'] ,
     };
   },
-  watch: {
-    query(after, before) {
-      this.searchMembers();
-    },
+  components:{
+      'vue-search':VueSearch
   },
   methods: {
     searchMembers() {
-      axios
-        .get("members/search", { params: { query: this.query } })
-        .then((response) => (this.results = response.data))
-        .catch((error) => {});
+      
     },
   },
 };

@@ -71,7 +71,12 @@
                         <div class="row">
                             <div class="col-md-12">
                                 <div class="form-group form_left">
-                                    <div class="g-recaptcha" data-sitekey="6LfV980UAAAAAFSMmbkzVw1J_-Q2cDroTJoBD9k1"></div>
+                                    <vue-recaptcha 
+                                        :sitekey="'6LfDFkMcAAAAAFh9-1TUlmGPx83715KTD79j0iwF'" 
+                                        :loadRecaptchaScript="true"
+                                        @verify="verifyMethod"
+                                    >
+                                    </vue-recaptcha>
                                 </div>
                             </div>
                         </div>
@@ -99,7 +104,11 @@
 </template>
 
 <script>
+    import VueRecaptcha from 'vue-recaptcha'; //https://www.npmjs.com/package/vue-recaptcha
     export default {
+        components: { 
+            VueRecaptcha 
+        },
         props: [
             'form_title'
         ],
@@ -111,6 +120,8 @@
                 num: "",
                 country: "",
                 msg: "",
+
+                is_verify_isset: false,
 
                 errors: []
             }

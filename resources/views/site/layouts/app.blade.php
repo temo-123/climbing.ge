@@ -45,17 +45,17 @@
     <meta property="og:locale:alternate" content="ka_KA" />
     <meta property="og:locale:alternate" content="ru_RU" />
 
-
     <link href="http://netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
     <link rel="stylesheet" href="{{ asset('assets/css/app.css') }}">
-    <link rel="stylesheet" href="{{ asset('assets/css/animate-custom.css') }}">
-    <link rel="stylesheet" href="{{ asset('assets/css/font-awesome.min.css') }}">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
     {{-- And analytics.google.com --}}
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-YSKGLXMWGF"></script>
-    <script src="{{ asset('assets/js/analitic/climbing.ge_analitic.js') }}"></script>
+    {{-- <script async src="https://www.googletagmanager.com/gtag/js?id=G-YSKGLXMWGF"></script>
+    <script src="{{ asset('assets/js/analitic/climbing.ge_analitic.js') }}"></script> --}}
+
+    {{-- Google recaptcha --}}
+    <script src="https://www.google.com/recaptcha/api.js" async defer></script>
 </head>
 <body>
 
@@ -74,5 +74,7 @@
     <script src="http://netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script> <!-- conflict to site menu -->
     <script src="{{ asset('assets/js/my_js/my_scripts.js') }}" type="text/javascript" ></script>
     <script src="{{ asset('assets/js/app.js') }}"></script> 
+
+    <script data-ad-client="ca-pub-6892953928713179" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
 </body>
 </html>

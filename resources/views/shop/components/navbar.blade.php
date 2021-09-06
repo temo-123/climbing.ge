@@ -11,14 +11,20 @@
                     
                     <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
                         <i class="fa fa-angle-down"></i>
-                    </button>                  
+                    </button> 
+                    
+                    <button type="button" class="navbar-toggle margin_right">
+                        <a style="margin-top: -5%; color: #333333;" href="#">
+                            <i class="fa fa-shopping-cart"></i>
+                        </a>
+                    </button>                 
                     
                     <button type="button" class="navbar-toggle margin_right" data-toggle="dropdown">
                         <i class="fa fa-language" aria-hidden="true"></i>
                     </button>
                     
                     <button type="button" class="navbar-toggle margin_right">
-                        <a style="margin-top: -5%; font-size: 120%; color: #333333;" href="{{route('user_index')}}">
+                        <a style="margin-top: -5%; color: #333333;" href="{{route('user_index')}}">
                             <i class="fa fa-user" ></i>
                         </a>
                     </button>
@@ -35,6 +41,12 @@
                         <li><a @if(isset($products) || isset($product)) id='actyve' @endif href="{{route('shop_index')}}">@lang('shop.shop menu products')</a></li>
                         <li><a @if(isset($services)) id='actyve' @endif href="{{route('services')}}">@lang('shop.shop menu services')</a></li>
                         <li><a @if(isset($about_us)) id='actyve' @endif href="{{route('about_shop')}}">@lang('shop.shop menu about us')</a></li>
+
+                        <li class="display-none-720px">
+                            <a style="margin-top: -5%;" href="#">
+                                <i class="fa fa-shopping-cart"></i>
+                            </a>
+                        </li>
 
                         <li class="dropdown">
                             <a href="#" class="margin_right admin_menu_for_desctop" data-toggle="dropdown">
@@ -59,8 +71,9 @@
                                 </li>
                             </ul>
                         </li>
-                        
+
                         <li class="dropdown display-none-720px">
+
                             <a href="#" data-toggle="dropdown">
                                 <i class="fa fa-language" aria-hidden="true"></i>
                             </a>

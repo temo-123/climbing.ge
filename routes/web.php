@@ -44,7 +44,10 @@ Route::group(['prefix' => LocalisationService::locale(),'middleware' => 'setLoca
 
                 Route::post('/send_message', 'MessageController@send');
 
+                Route::any('/get_user_info', 'UserInfoController@get_user_info');
+
                 Route::any('/add_comment', 'CommentController@add_comment');
+                Route::any('/del_comment/{id}', 'CommentController@del_comment');
                 Route::get('/get_comments/{article_id}', "CommentController@get_comments");
 
                 Route::get('/sitemap.xml', 'SitemapController@sitemap_xml');

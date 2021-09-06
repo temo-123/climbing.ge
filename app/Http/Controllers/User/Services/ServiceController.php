@@ -88,7 +88,7 @@ class ServiceController extends Controller
         abort(404);
     }
 
-    public function create_temporary_service()
+    public function create_temporary_service(Request $request)
     {
         $this->parmision($request);
         $service_ka = new Ka_service();
@@ -186,7 +186,7 @@ class ServiceController extends Controller
             $ka_service ->delete();
         }
     }
-    public function get_temporary_service_editing_data()
+    public function get_temporary_service_editing_data(Request $request)
     {
         $this->parmision($request);
         $temporary_service = service::where("url_title","=","temporary_service")->get();

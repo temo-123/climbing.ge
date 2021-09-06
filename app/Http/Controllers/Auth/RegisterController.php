@@ -76,20 +76,27 @@ class RegisterController extends Controller
      */
     protected function create(array $data)
     {
-        $user = User::create([
-            'name'     => $data['name'],
-            'surname'    => $data['surname'],
+        $token = $data['g-recaptcha-response'];
 
-            'country'    => $data['country'],
-            'city'    => $data['city'],
+        if($token){
+            $user = User::create([
+                'name'     => $data['name'],
+                'surname'    => $data['surname'],
 
-            'phone_number'    => $data['phone_number'],
-            'email'    => $data['email'],
+                'country'    => $data['country'],
+                'city'    => $data['city'],
 
-            'password' => bcrypt($data['password']),
-        ]);
-        $user->roles()->attach(Role::where('name', 'user')->first());
-        $user->notify(new WelcomeEmailNotification());
-        return $user;
+                'phone_number'    => $data['phone_number'],
+                'email'    => $data['email'],
+
+                'password' => bcrypt($data['password']),
+            ]);
+            $user->roles()->attach(Role::where('name', 'user')->first());
+            $user->notify(new WelcomeEmailNotification());
+            return $user;
+        }
+        else{
+            dd('test');
+        }
     }
 }

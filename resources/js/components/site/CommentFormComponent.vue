@@ -10,13 +10,13 @@
                         </div>
                     </div>
                     
-                    <div style='display: none;' v-if="this.is_login == true">
+                    <div style='display: none;' v-if="user.user_status == 'user'">
                         <input type="name" :value="name" name="name" autocomplete="off" id="name" placeholder="Name">
                         <input type="surname" :value="surname" name="surname" autocomplete="off" id="surname" placeholder="Surname">
                         <input type="email" :value="email" name="email" autocomplete="off" id="email" placeholder="E-mail">
                     </div>
 
-                    <div v-else>
+                    <div v-if="user.user_status == 'gest'">
                         <div class="row" >
                             <div class="col-md-4">
                                 <div class="form-group">
@@ -60,28 +60,52 @@
                     </div>
 
                     <div class="row">
-                        <div class="col-md-7">
+                        <div class="col-md-6">
                             <div class="form-group">
                                 <div class="form-group form_left">
-                                    <div class="g-recaptcha" data-sitekey="6LfV980UAAAAAFSMmbkzVw1J_-Q2cDroTJoBD9k1"></div>
+                                    <!-- <div class="g-recaptcha" :data-sitekey="'6LfDFkMcAAAAAFh9-1TUlmGPx83715KTD79j0iwF'"></div> -->
+                                    <!-- <vue-recaptcha 
+                                        :sitekey="'6LfDFkMcAAAAAFh9-1TUlmGPx83715KTD79j0iwF'" 
+                                        :loadRecaptchaScript="true"
+                                        :size="'100%'"
+                                        @verify="verifyMethod"
+                                    >
+                                    </vue-recaptcha> -->
+
+                                    <vue-recaptcha
+                                            :sitekey="'6LfDFkMcAAAAAFh9-1TUlmGPx83715KTD79j0iwF'"
+                                            :loadRecaptchaScript="true"
+                                            ref="recaptcha"
+                                            type="invisible"
+                                            @verify="onCaptchaVerified"
+                                            @expired="onCaptchaExpired"
+                                        >
+                                    </vue-recaptcha>
+                                    <!-- <div class="alert alert-danger" role="alert" v-if="errors.is_verify_isset">
+                                        {{ errors.is_verify_isset[0] }}
+                                    </div> -->
                                 </div>
                             </div>
                         </div>
-                        <div class="col-md-3">
-                            <div class="form-groupe">
-                                <button @click="update" class="btn main-btn pull-right" v-if="!is_refresh">Refresh ({{id}})</button>
-                                <span class="badge badge-primare mb-1" v-if="is_refresh">Updating...</span>
-                            </div>
-                        </div>
-                        <div class="col-md-2">
-                            <div class="form-group">
-                                <button class="btn main-btn pull-right">Send</button>
+                        <div class="col-md-6">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <button @click="update" class="btn main-btn pull-right" v-if="!is_refresh">Refresh ({{id}})</button>
+                                    <span class="badge badge-primare mb-1" v-if="is_refresh">Updating...</span>
+                                </div>
+                                <div class="col-md-6" v-if="is_verify_isset == false">
+                                    <button class="btn main-btn pull-right" disabled>Add comment</button>
+                                </div>
+                                <div class="col-md-6" v-else>
+                                    <button class="btn main-btn pull-right" >Add comment</button>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </form>
             </div>
         </div>
+
         <div class="row">
             <div class="col-md-8">
                 <div class="wrap">
@@ -89,12 +113,17 @@
                         <li v-for="comment in this.comments" :key="comment.id">
                             <div class="row">
                                 <hr>
-                                <div class="col-md-2"><img :src="'/public/images/user_img/user_demo_img/user_demo_img.gif'" /></div>
+                                <div class="col-md-2">
+                                    <img :src="'/public/images/user_img/user_demo_img/user_demo_img.gif'" />
+                                </div>
                                 <div class="col-md-10">
-                                    <h2><strong>{{comment.name}} {{comment.surname}}</strong> [ {{comment.email}} ]</h2>
-                                    <div>
+                                    <h4><strong>{{comment.name}} {{comment.surname}}</strong> [ {{comment.email}} ]</h4>
+                                    <div class="row">
                                         <p>{{comment.text}}</p>
                                     </div>
+                                    <button @click="del_comment(comment.id)" v-if="comment.user_id == user.user_id" onclick="return confirm('Are you sure? Do you want to delete this comment?')" class="btn btn-danger pull-right">
+                                        del
+                                    </button>
                                 </div>
                             </div>
                         </li>
@@ -107,13 +136,14 @@
 </template>
 
 <script>
+    import VueRecaptcha from 'vue-recaptcha'; //https://www.npmjs.com/package/vue-recaptcha
+    //http://www.blog.tonyswierz.com/javascript/add-and-use-google-recaptcha-in-a-vuejs-laravel-project/
     export default {
+        components: { 
+            VueRecaptcha 
+        },
         props: [
             "article_id",
-            "user_name",
-            "user_surname",
-            "user_email",
-            "is_login",
         ],
         data() {
             return {
@@ -122,38 +152,82 @@
                 email: "",
                 text: "",
 
-                test:"test",
+                is_verify_isset: false,
 
                 comments: [],
                 is_refresh: false,
                 id: 0,
+                loadRecaptchaScript: false,
 
-                errors: []
+                errors: [],
+                user: [],
+
+                captcha_site_key: process.env.APP_URL // problem
             }
         },
         mounted() {
             this.update()
+            this.get_user_info()
         },
         methods: {
+            onCaptchaVerified() {
+                this.is_verify_isset = true
+            },
+            onCaptchaExpired(){
+                this.is_verify_isset = false
+            },
+
             add_comment() {
                 axios
                 .post('/add_comment', {
                     name: this.name,
+                    is_verify_isset: this.is_verify_isset,
                     surname: this.surname,
                     email: this.email,
                     text: this.text,
                     article_id: this.article_id
                 })
-                .then(Response => {
-                    alert("Tenk you for your coment " + this.name + ".")
-                    // this.update()
-                    // console.log(response)
+                .then(response => {
+                    this.update()
+                    alert(response.data['message'])
+                    this.errors = []
                 })
                 .catch(error =>{
                     if (error.response.status == 422) {
                         this.errors = error.response.data.errors
                     }
+                    else{
+                        if (response.data.message) {
+                            alert(response.data.message)
+                        }
+                    }
                 })
+            },
+
+            get_user_info() {
+                axios
+                .get('/get_user_info/')
+                .then(response => {
+                    this.user = response.data
+
+                    if(this.user.user_status == 'user'){
+                        this.name = this.user.user_name
+                        this.surname = this.user.surname
+                        this.email = this.user.email
+                    }
+                })
+                .catch()
+            },
+
+            del_comment(id) {
+                axios
+                .post('/del_comment/' + id, {
+                    id: id,
+                })
+                .then(Response => {
+                    this.update()
+                })
+                .catch()
             },
 
             update: function(){
@@ -161,20 +235,12 @@
                 axios
                 .get('/get_comments/' + this.article_id)
                 .then(response => {
-                    article_id: this.article_id,
-                    // console.log("updating")
-                    // console.log(response.data)
                     this.comments = response.data
                     this.is_refresh = false
                     this.id++ 
                 })
-                .then(Response => {
-                    // console.log(response)
-                })
                 .catch(
-                    // error => console.log(error)
                 );
-                    
             },
         }
     }

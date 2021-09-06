@@ -12,7 +12,7 @@
                 <div class="card">
                     <div class="card-header text-center"><h1>{{ __('Login') }}</h1></div>
 
-                    <form>
+                    {{-- <form>
                         <div class="form-group row">
                             <div class="col-md-2">
                                 <a href="{{ url('/login/facebook') }}" class="btn btn-facebook btn btn-primary"> Facebook</a>
@@ -27,7 +27,7 @@
                                 
                             </div>
                         </div>
-                    </form>
+                    </form> --}}
 
                     <div class="card-body">
                         <form method="POST" action="{{ route('login') }}">
@@ -40,9 +40,9 @@
                                     <input id="email" type="email" class="form-control @error('email') is-invalid @enderror" name="email" value="{{ old('email') }}" required autocomplete="email" autofocus>
 
                                     @error('email')
-                                        <span class="invalid-feedback" role="alert">
+                                        <div class="col-md-12 alert alert-danger">
                                             <strong>{{ $message }}</strong>
-                                        </span>
+                                        </div>
                                     @enderror
                                 </div>
                             </div>
@@ -56,10 +56,11 @@
                                     <a href="{{ route('password.request') }}">
                                         {{ __('Forgot Your Password?') }}
                                     </a>
+
                                     @error('password')
-                                        <span class="invalid-feedback" role="alert">
+                                        <div class="col-md-12 alert alert-danger">
                                             <strong>{{ $message }}</strong>
-                                        </span>
+                                        </div>
                                     @enderror
                                 </div>
                             </div>

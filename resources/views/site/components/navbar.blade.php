@@ -5,18 +5,14 @@
                 <a href="{{ route('index') }}" class="site_title">@lang('site.site name')</a>
             </div>
         </div>
-        {{-- <a href="{{ route('index') }}" class="site_title">@lang('site.site name')</a> --}}
+        
         <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
             <nav class="navbar navbar-default float-top" role="navigation">
                 <div class="container-fluid">
 
                     <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
                         <i class="fa fa-angle-down"></i>
-                    </button>                  
-                    
-                    {{-- <button type="button" class="navbar-toggle margin_right" data-toggle="dropdown">
-                        <i class="fa fa-search" aria-hidden="true"></i>
-                    </button>   --}}
+                    </button>
                     
                     <button type="button" class="navbar-toggle margin_right" data-toggle="dropdown">
                         <i class="fa fa-language" aria-hidden="true"></i>
@@ -24,29 +20,10 @@
                     
                     <button type="button" class="navbar-toggle margin_right">
                         
-                        <a style="margin-top: -5%; font-size: 120%; color: #333333;" href="{{route('user_index')}}">
+                        <a style="margin-top: -5%; color: #333333;" href="{{route('user_index')}}">
                             <i class="fa fa-user" ></i>
                         </a>
                     </button>
-                    
-                    {{-- <ul class="dropdown-menu shadows" role="menu" >
-                        <li>
-                            <form action="eeeee" method="POST" role="search" class="navbar-form">
-                                {{csrf_field ()}} 
-                                <div class="form-group" >
-                                <div class="input-group" >
-                                    <input class="form-control" name="q" placeholder="Search Here" autocomplete="off" autofocus="autofocus" type="text">
-                                    
-                                    <span class="input-group-btn"> 
-                                        <button type="submit" class="input-group-addon"> 
-                                            <span class="glyphicon glyphicon-search"></span>
-                                        </button>
-                                    </span>
-                                </div>
-                                </div>
-                            </form>
-                        </li>
-                    </ul> --}}
                     
                     <ul class="dropdown-menu shadows" role="menu" >
                         <li><a href="{{ url('/'.$url_afret_locale) }}"><img style="width: 20%;  margin-left: 40%;" src="{{ asset('images/site_img/leng/en.png')}}" alt=""></a></li>

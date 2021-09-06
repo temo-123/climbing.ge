@@ -27,6 +27,7 @@ class CreateProductsTable extends Migration
             $table->string('quantity')->nullable();
             $table->string('material')->nullable();
             $table->string('size')->nullable();
+            $table->string('weight')->nullable();
 
             $table->integer('category_id')->nullable();
             $table->integer('user_id')->nullable();
