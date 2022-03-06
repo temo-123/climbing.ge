@@ -3,7 +3,11 @@ return [
     'site name' => 'climbng.ge',
 
     'menu my favorite products' => 'My favorite products',
-    'menu my page' => 'My page',
+    'menu home' => 'My page',
+    'menu cart' => 'My cart',
+    'menu orders' => 'My Orders',
+    'menu total orders' => 'All orders',
+    'menu films' => 'Films list',
     'menu interested events' => 'Interested events',
     'menu products & category' => 'Products & Category',
     'menu services' => 'Services',

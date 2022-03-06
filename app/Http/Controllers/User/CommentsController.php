@@ -45,6 +45,7 @@ class CommentsController extends Controller
 	
 	public function get_my_comments_data(Request $request)
 	{
+		// dd(Auth::user()->id);
 		return Comment::where('user_id', '=', Auth::user()->id)->get();
 	}
 	

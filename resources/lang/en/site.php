@@ -3,13 +3,14 @@ return [
     'site name' => 'climbng.ge',
 
     'menu climbing' => 'Climbing',
-    'menu indoor climbing' => 'indoor climbing',
-    'menu outdoor climbing' => 'outdoor climbing',
-    'menu ice climbing' => 'ice & mix',
-    'menu mountaineering' => 'mountaineering',
-    'menu other' => 'other',
-    'menu about us' => 'about us',
-    'menu login'=>'login',
+    'menu indoor climbing' => 'Indoor climbing',
+    'menu outdoor climbing' => 'Outdoor climbing',
+    'menu ice climbing' => 'Ice & mix',
+    'menu mountaineering' => 'Mountaineering',
+    'menu other' => 'Other',
+    'menu about us' => 'About us',
+    'menu login'=>'Login',
+    'menu sitemap' => 'Sitemap',
 
     'title news' => 'News',
     'title topo' => 'Topo',
@@ -51,4 +52,38 @@ return [
 
     // only 1 word
     'message form' => 'Message',
+
+    // Article page titles
+    'mount massive' => 'Mountain Massive',
+    'best time' => 'Best time to climb',
+    'how get' => 'How to get there',
+    'what need' => 'What you need',
+    'comments' => 'Comments',
+    'gallery' => 'Gallery',
+    'info' => 'Info',
+    'similar articles' => 'Similar Articles',
+    'sector name' => 'Sector name',
+    'address' => 'Address',
+    'price' => 'Prices',
+    'route' => 'Route',
+    'back' => 'Go Back',
+    'all articles' => 'All Articles',
+
+    // indoor article list
+    'prices from' => 'Prices from',
+    'working time' => 'Working hours',
+    'closed' => 'Temporarily closed',
+
+    // breadcrumb
+    'breadcrumb home' => 'Home',
+
+    // Right navigation menu 
+    'nav menu' => 'Navigation Menu',
+    'other' => 'Other',
+
+    // footer 
+    'links' => 'Links',
+    'share' => 'Share',
+    'more' => 'More',
+    'about us' => 'About us',
 ];

@@ -39,7 +39,7 @@
     <div id="app">
         @yield('content')
 
-        @include('site.components.footer')
+        {{-- @include('errors.components.footer') --}}
     </div>
     
     <script src="{{ asset('assets/js/my_js/my_scripts.js') }}" type="text/javascript" ></script>

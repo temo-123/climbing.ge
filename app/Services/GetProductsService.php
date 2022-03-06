@@ -5,6 +5,7 @@ namespace App\Services;
 use App\Models\Us_product;
 use App\Models\Ru_product;
 use App\Models\Ka_product;
+use App\Models\Product;
 
 use App\Models\Product_image;
 
@@ -17,6 +18,7 @@ class GetProductsService
         $locale = request()->segment(1, '');
 
         $products = array();
+        $price_array = array();
 
         if($locale == "ru"){
             foreach ($global_product as $product) {
@@ -29,18 +31,33 @@ class GetProductsService
                 $ru_products = Ru_product::where('id', '=', $product->ru_product_id,)->get();
                 foreach ($ru_products as $ru_product) {
                     if ($ru_product->id == $product->ru_product_id) {
-                        array_push($products, [$ru_products,    
-                                                                "id"=>$product->id,
-                                                                "url_title"=>$product->url_title, 
-                                                                "price"=>$product->price, 
-                                                                "size"=>$product->size, 
-                                                                "color"=>$product->color, 
-                                                                "currency"=>$product->currency, 
-                                                                "discount"=>$product->discount, 
-                                                                "category_id"=>$product->category_id, 
-                                                                "user_id"=>$product->user_id,
-                                                                "image"=>$image
-                                                                ]);
+                        
+                        $sale_product = Product::where('id', '=', $product->id)->get();
+                        if ($sale_product[0]->discount != null) {
+                            $old_price = $sale_product[0]->price;
+                            $sale = $sale_product[0]->discount;
+                            $price_x_sale = $sale * $old_price;
+                            $var_1 = $price_x_sale/100;
+                            $new_price = $old_price - $var_1;
+                            array_push($price_array, ['product_id'=>$sale_product[0]->id, 'old_price'=>$old_price, 'sale'=>$sale, 'price'=>$new_price ]);
+                        }
+                        else{
+                            array_push($price_array, ['product_id'=>$sale_product[0]->id, 'price'=>$sale_product[0]->price ]);
+                        }
+
+                        array_push($products, [
+                            $ru_products,    
+                            "id"=>$product->id,
+                            "url_title"=>$product->url_title, 
+                            "price"=>$product->price, 
+                            "size"=>$product->size, 
+                            "color"=>$product->color, 
+                            "currency"=>$product->currency, 
+                            "discount"=>$product->discount, 
+                            "category_id"=>$product->category_id, 
+                            "user_id"=>$product->user_id,
+                            "image"=>$image
+                        ]);
                                                                 
                     }
                 }
@@ -58,18 +75,33 @@ class GetProductsService
                 $ka_products = Ka_product::where('id', '=', $product->ka_product_id,)->get();
                 foreach ($ka_products as $ka_product) {
                     if ($ka_product->id == $product->ka_product_id) {
-                        array_push($products, [$ka_products,    
-                                                                "id"=>$product->id,
-                                                                "url_title"=>$product->url_title, 
-                                                                "price"=>$product->price, 
-                                                                "size"=>$product->size, 
-                                                                "color"=>$product->color, 
-                                                                "currency"=>$product->currency, 
-                                                                "discount"=>$product->discount, 
-                                                                "category_id"=>$product->category_id, 
-                                                                "user_id"=>$product->user_id,
-                                                                "image"=>$image
-                                                                ]);
+
+                        $sale_product = Product::where('id', '=', $product->id)->get();
+                        if ($sale_product[0]->discount != null) {
+                            $old_price = $sale_product[0]->price;
+                            $sale = $sale_product[0]->discount;
+                            $price_x_sale = $sale * $old_price;
+                            $var_1 = $price_x_sale/100;
+                            $new_price = $old_price - $var_1;
+                            array_push($price_array, ['product_id'=>$sale_product[0]->id, 'old_price'=>$old_price, 'sale'=>$sale, 'price'=>$new_price ]);
+                        }
+                        else{
+                            array_push($price_array, ['product_id'=>$sale_product[0]->id, 'price'=>$sale_product[0]->price ]);
+                        }
+
+                        array_push($products, [
+                            $ka_products,    
+                            "id"=>$product->id,
+                            "url_title"=>$product->url_title, 
+                            "price"=>$product->price, 
+                            "size"=>$product->size, 
+                            "color"=>$product->color, 
+                            "currency"=>$product->currency, 
+                            "discount"=>$product->discount, 
+                            "category_id"=>$product->category_id, 
+                            "user_id"=>$product->user_id,
+                            "image"=>$image
+                        ]);
                                                                 
                     }
                 }
@@ -87,18 +119,35 @@ class GetProductsService
                 $us_products = Us_product::where('id', '=', $product->us_product_id,)->get();
                 foreach ($us_products as $us_product) {
                     if ($us_product->id == $product->us_product_id) {
-                        array_push($products, [$us_products,    
-                                                                "id"=>$product->id,
-                                                                "url_title"=>$product->url_title, 
-                                                                "price"=>$product->price, 
-                                                                "size"=>$product->size, 
-                                                                "color"=>$product->color, 
-                                                                "currency"=>$product->currency, 
-                                                                "discount"=>$product->discount, 
-                                                                "category_id"=>$product->category_id, 
-                                                                "user_id"=>$product->user_id,
-                                                                "image"=>$image
-                                                                ]);
+
+                        $sale_product = Product::where('id', '=', $product->id)->get();
+                        if ($sale_product[0]->discount != null) {
+                            $old_price = $sale_product[0]->price;
+                            $sale = $sale_product[0]->discount;
+                            $price_x_sale = $sale * $old_price;
+                            $var_1 = $price_x_sale/100;
+                            $new_price = $old_price - $var_1;
+                            array_push($price_array, ['product_id'=>$sale_product[0]->id, 'old_price'=>$old_price, 'sale'=>$sale, 'price'=>$new_price ]);
+                        }
+                        else{
+                            array_push($price_array, ['product_id'=>$sale_product[0]->id, 'price'=>$sale_product[0]->price ]);
+                        }
+
+                        array_push($products, [
+                            "locale_article"=>$us_products[0],  
+                            "price"=>$price_array[0],  
+                            "id"=>$product->id,
+                            "url_title"=>$product->url_title, 
+                            "size"=>$product->size, 
+                            "color"=>$product->color, 
+                            "currency"=>$product->currency, 
+                            "discount"=>$product->discount, 
+                            "category_id"=>$product->category_id, 
+                            "user_id"=>$product->user_id,
+                            "image"=>$image,
+                        ]);
+
+                        $price_array = array();
                                                                 
                     }
                 }
@@ -147,5 +196,10 @@ class GetProductsService
         }
         
         return $time_array;
+    }
+
+    public static function colculate_product_discount($sale_product)
+    {
+        // ******
     }
 }

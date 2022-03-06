@@ -18,9 +18,9 @@ class Article extends Model
 		'weather',
 
 		'start_data_day',
-		'and_data_day',
+		'end_data_day',
 		'start_data_month',
-		'and_data_month',
+		'end_data_month',
 
 		'fb_link',
 		'twit_link',

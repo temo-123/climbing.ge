@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="{{ app()->getLocale() }}">
 <head>
-    <meta charset="utf-8">
+    {{-- <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
@@ -39,11 +39,16 @@
     <meta property="article:author" content="Temo Samsonadze" />
     <meta property="article:section" content="Climbing" />
     <meta property="article:tag" content="@yield('meta_keyword')" />
-    {{-- <meta property="fb:admins" content="Facebook numberic ID" /> --}}
+    <meta property="fb:admins" content="Facebook numberic ID" />
 
     <meta property="og:locale" content="en_GB" />
     <meta property="og:locale:alternate" content="ka_KA" />
-    <meta property="og:locale:alternate" content="ru_RU" />
+    <meta property="og:locale:alternate" content="ru_RU" /> --}}
+    {{-- <meta name='locale' content='{{app()->getLocale()}}' /> --}}
+
+    <!-- Rendered HTML tags in your page -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
 
     <link href="http://netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
     <link rel="stylesheet" href="{{ asset('assets/css/app.css') }}">
@@ -56,25 +61,36 @@
 
     {{-- Google recaptcha --}}
     <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+
+    <style> 
+        .unselectable { 
+            -webkit-user-select: none; 
+            -webkit-touch-callout: none; 
+            -moz-user-select: none; 
+            -ms-user-select: none; 
+            user-select: none;
+        } 
+    </style>
 </head>
 <body>
-
+{{-- {{ dd(App::currentLocale()) }} --}}
     <div id="page-preloader" class="preloader">
         <div class="loader"></div>
     </div>
 
+    {{-- <div id="app" oncontextmenu="return false;" class="unselectable"> --}}
     <div id="app">
-        @include('site.components.navbar')
+        {{-- @include('site.components.navbar') --}}
 
         @yield('content')
         
-        @include('site.components.footer')
+        {{-- @include('site.components.footer') --}}
     </div>
 
     <script src="http://netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script> <!-- conflict to site menu -->
     <script src="{{ asset('assets/js/my_js/my_scripts.js') }}" type="text/javascript" ></script>
     <script src="{{ asset('assets/js/app.js') }}"></script> 
 
-    <script data-ad-client="ca-pub-6892953928713179" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+    {{-- <script data-ad-client="ca-pub-6892953928713179" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script> --}}
 </body>
 </html>

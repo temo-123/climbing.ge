@@ -2,7 +2,7 @@
 
 @section('content')
 
-@section('title', $title)
+{{-- @section('title', $title)
 
 @if($site->shop_description != null)
 @section('meta_keyword', $site->shop_description)
@@ -11,12 +11,12 @@
 @endif
 
 @section('meta_description', $site->shop_description)
-@section('meta_img', (asset('images/meta_img/shop.jpg')))
+@section('meta_img', (asset('images/meta_img/shop.jpg'))) --}}
 
 
-<div class="container top_menu_margin h-recent-work">
+{{-- <div class="container top_menu_margin h-recent-work"> --}}
 
-    <h1 class="page_title">@lang('shop.products')</h1>
+    {{-- <h1 class="page_title">@lang('shop.products')</h1>
 
     @if($site->shop_description != null)
         <div class="bar"><i class="fa fa-exclamation-triangle"></i></div>
@@ -27,7 +27,7 @@
         @else
             <h6>{!! $site -> shop_description !!}</h6>
         @endif
-    @endif
+    @endif --}}
 
     {{-- <div class="col-sm-3">
         <!--left col-->
@@ -59,7 +59,7 @@
         </div>
     </div> --}}
 
-    <div class="col-sm-12">
+    {{-- <div class="col-sm-12">
         <section class="inner">
             <section class="portfolio" id="portfolio">
                 <!-- <div class="container-fluid"> -->
@@ -153,7 +153,10 @@
                 <!-- </div> -->
             </section>
         </section>
-    </div>
-</div>
+    </div> --}}
+
+    <main-wrapper-component></main-wrapper-component>
+
+{{-- </div> --}}
         
 @endsection

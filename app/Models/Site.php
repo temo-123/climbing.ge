@@ -7,9 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class Site extends Model
 {
     protected $fillable = [
-        "name",
-        'published',
-        'title:',
+        'title',
         'title_ru', 
         'title_ka',
         'text_ru', 
@@ -42,9 +40,15 @@ class Site extends Model
         'shop_description', 
         'shop_description_ru', 
         'shop_description_ka', 
-        'meta_description',
-        'meta_description_ru',
-        'meta_description_ka',
+        'shop_short_description', 
+        'shop_short_description_ka', 
+        'shop_short_description_ru', 
+        'services_description', 
+        'services_description_ka', 
+        'services_description_ru', 
+        // 'meta_description',
+        // 'meta_description_ru',
+        // 'meta_description_ka',
 
         'email',
         'fb_link', 
@@ -52,5 +56,6 @@ class Site extends Model
         'twit_link', 
         'inst_link', 
         'map',     
+        'number',     
     ];
 }

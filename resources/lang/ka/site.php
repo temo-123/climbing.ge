@@ -10,9 +10,10 @@ return [
     'menu other' => 'სხვა',
     'menu about us' => 'ჩვენ შესახებ',
     'menu login'=>'ავტორიზაცია',
+    'menu sitemap' => 'საიტის რუკა',
 
     'title news' => 'ახალი ამბები',
-    'title topo' => 'რუქა',
+    'title topo' => 'რუკა',
     'title what we do' => 'მთავარი აკტიობები',
     'title gallery'=>'გალერეა',
     'title tech tips'=>'ტექნიკა და უსაფრთხოება',
@@ -40,5 +41,39 @@ return [
     'tred' => 'Tred Gear',
 
     // only 1 word
-    'message form' => 'მიგვწერეთ',
+    'message form' => 'მოგვწერეთ',
+
+    // Article page titles
+    'mount massive' => 'მთის მასივი',
+    'best time' => 'საუკეთესო პერიოდი',
+    'how get' => 'როგორ მივიდეთ რეგიონში',
+    'what need' => 'რა დაგჭირდებათ',
+    'comments' => 'კომენტარები',
+    'gallery' => 'გალერეა',
+    'info' => 'კონტაქტი',
+    'similar articles' => 'მსგავსი სტატიები',
+    'sector name' => 'სექტორის სახელი',
+    'address' => 'მისამართი',
+    'price' => 'ფასი',
+    'route' => 'მარშრუტიები',
+    'back' => 'უკან დაბრუნება',
+    'all articles' => 'ყველა სტატია',
+
+    // indoor article list
+    'prices from' => 'ფასი (მინიმუმი)',
+    'working time' => 'სამუშაო საათები',
+    'closed' => 'დროებით დაკეტილია',
+
+    // breadcrumb
+    'breadcrumb home' => 'მთავარი',
+
+    // Right navigation menu 
+    'nav menu' => 'ნავიგაცია',
+    'other' => 'სხვა',
+
+    // footer 
+    'links' => 'გვერდები',
+    'share' => 'გააზიარე',
+    'more' => 'მეტის ნახვა',
+    'about us' => 'ჩვენ შესახებ',
 ];

@@ -3,7 +3,11 @@ return [
     'site name' => 'climbing.ge',
 
     'menu my favorite products' => 'ჩემი საყვარელი პროდუქტები',
-    'menu my page' => 'ჩემი გვერდი',
+    'menu home' => 'ჩემი გვერდი',
+    'menu cart' => 'ჩემი კალათა',
+    'menu orders' => 'ჩემი შეკვეთები',
+    'menu films' => 'ფილმები',
+    'menu total orders' => 'ყველა შეკვეთა',
     'menu interested events' => 'საინტერესო ღონისძიებები',
     'menu products & category' => 'პროდუკტები & კატეგორიები',
     'menu services' => 'სერვისები',

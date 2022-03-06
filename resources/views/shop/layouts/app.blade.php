@@ -1,7 +1,8 @@
 <!DOCTYPE html>
 <html lang="{{ app()->getLocale() }}">
+{{-- {{ str_replace('_', '-', app()->getLocale()) }} --}}
 <head>
-    <meta charset="utf-8">
+    {{-- <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
@@ -46,7 +47,9 @@
 
     <meta property="og:price:amount"    content="@yield('price')" />
     <meta property="og:price:currency"  content="USD" />
-    @endif
+    @endif --}}
+
+    <meta name='locale' content='{{app()->getLocale()}}' />
 
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.7.0/animate.min.css">
@@ -74,12 +77,12 @@
     </div>
 
     <div id="app">
-        @include('shop.components.navbar')
+        {{-- @include('shop.components.navbar') --}}
 
         @yield('content')
         
         {{-- @include('shop.components.footer') --}}
-        <div class="footer__graphic" style="background-image: url({{ asset('images/svg/mountains.svg') }})"></div>
+        {{-- <div class="footer__graphic" style="background-image: url({{ asset('images/svg/mountains.svg') }})"></div>
 
         <div class="footer"> 
             <div class="container"> 
@@ -91,7 +94,6 @@
                            <h4>About as</h4>
                            
                            {!!$site -> short_description!!}
-                           <a href="{{route('about_us_page')}}">More</a>
                            
                        </div>
                    </div>
@@ -100,9 +102,9 @@
                        <div class="f-links">
                            <h4>Links</h4>
                            <ul> 
-                             <li> <a href="{{route('shop_index')}}">@lang('shop.shop menu products')</a> </li>
-                             <li> <a href="{{route('about_shop')}}">@lang('shop.shop menu about us')</a> </li>
-                             <li> <a href="{{route('login')}}">@lang('shop.shop login')</a> </li>
+                             <li> <a href="#">@lang('shop.shop menu products')</a> </li>
+                             <li> <a href="#">@lang('shop.shop menu about us')</a> </li>
+                             <li> <a href="#">@lang('shop.shop login')</a> </li>
                            </ul>
                        </div>
                    </div>
@@ -116,7 +118,7 @@
                     
                 </div>
             </div>
-        </div>
+        </div> --}}
         {{-- @if (session('status'))
             <div id="modalOnLoad" class="modal fade">
                 <div class="modal-dialog">
@@ -143,6 +145,11 @@
             </script> -->
         {{-- @endif --}}
     </div>
+
+    {{-- <script>
+        window.default_locale = “{{ config(‘app.locale’) }}”;
+        window.fallback_locale = “{{ config(‘app.fallback_locale’) }}”;
+    </script> --}}
     
     <script src="http://netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>
     <script src="{{ asset('assets/js/app.js') }}"></script>

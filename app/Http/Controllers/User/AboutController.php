@@ -47,16 +47,22 @@ class AboutController extends Controller
             $site_info = site::where('id','=',$request->id)->first();
             $site_info -> fill($input);
             $site_info -> update();
-
-            // $site = site::where('id','=',$request->id)->first();
-            // $site['email'] = $request->email;
-            // $site -> update();
         }
     }
 
     public function get_site_editing_data(Request $request)
     {
         $site_info = site::where('id',strip_tags($request->id))->first();
+        return(
+            $data = [
+                "site_info" => $site_info,
+            ]
+        );
+    }
+
+    public function get_site_data(Request $request)
+    {
+        $site_info = site::get();
         return(
             $data = [
                 "site_info" => $site_info,

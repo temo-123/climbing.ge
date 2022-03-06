@@ -22,9 +22,9 @@ class CreateArticlesTable extends Migration
             $table->integer('completed')->nullable();
 
             $table->string('start_data_day')->nullable();
-            $table->string('and_data_day')->nullable();
+            $table->string('end_data_day')->nullable();
             $table->string('start_data_month')->nullable();
-            $table->string('and_data_month')->nullable();
+            $table->string('end_data_month')->nullable();
 
             $table->string('fb_link')->nullable();
             $table->string('inst_link')->nullable();

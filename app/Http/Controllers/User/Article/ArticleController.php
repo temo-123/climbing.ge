@@ -22,7 +22,6 @@ class ArticleController extends Controller
 {
     public function index(Request $request)
     {
-        
         $request->user()->authorizeRoles(['manager', 'admin']);
         
     	if (view()->exists('user.data_table')) {
@@ -135,7 +134,6 @@ class ArticleController extends Controller
 
     public function get_article_data(Article $article, Request $request)
     {
-        return Article::latest('id')->where('category', '=', $request->article_category)->get();
     }
 
 

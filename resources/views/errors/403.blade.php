@@ -5,9 +5,9 @@
             <div class="row navbar-fixed-top top_menu">
                 <div class="col-xs-12 col-sm-2 col-md-3 col-lg-3 ">
                     <div class="site_title">
-                        <a href="{{ route('user_index') }}" class="site_title">
-                            403
-                        </a>
+                        {{-- <a href="{{ route('user_index') }}" class="site_title"> --}}
+                            <p class="site_title">403</p>
+                        {{-- </a> --}}
                     </div>
                 </div>
                 <div class="col-xs-12 col-sm-10 col-md-9 col-lg-9">

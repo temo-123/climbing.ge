@@ -196,6 +196,8 @@ return [
 
         App\Services\Localisation\LocalisationServiceProvider::class,
 
+
+        // KgBot\LaravelLocalization\LaravelLocalizationServiceProvider::class
     ],
 
     /*
@@ -240,6 +242,7 @@ return [
         'Request' => Illuminate\Support\Facades\Request::class,
         'Response' => Illuminate\Support\Facades\Response::class,
         'Route' => Illuminate\Support\Facades\Route::class,
+        // 'Route'  => AntonioRibeiro\Facades\ExtendedRouteFacade::class,
         'Schema' => Illuminate\Support\Facades\Schema::class,
         'Session' => Illuminate\Support\Facades\Session::class,
         'Storage' => Illuminate\Support\Facades\Storage::class,
@@ -252,14 +255,20 @@ return [
         'Socialite' => Laravel\Socialite\Facades\Socialite::class, // Laravel Socialite
         'LocalisationService' => App\Services\Localisation\LocalisationService::class, // Language localisation
         'GetArticlesService' => App\Services\GetArticlesService::class, // Get articles
-        'GetProductsService' => App\Services\GetProductsService::class, // Get products
+        'GetMountSystemService' => App\Services\GetMountSystemService::class, // Get MountSystem
         'GetServicesService' => App\Services\GetServicesService::class, // Get Services
         'ImageControllService' => App\Services\ImageControllService::class, // image upload, update & delite
         'get_url_title' => App\Services\get_url_title::class, // create url_title, from us_title
 
+        'GetProductService' => App\Services\GetProductService::class, // Get products
+        // 'GetProductsService' => App\Services\GetProductsService::class,
+
+        'GetOrderService' => App\Services\GetOrderService::class,
 
         'Image' => Intervention\Image\Facades\Image::class,
 
+        
+        // 'ExportLocalization' => KgBot\LaravelLocalization\Facades\ExportLocalizations
     ],
 
 ];

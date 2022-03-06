@@ -59,8 +59,8 @@ class GlobalArticleController extends Controller
             $article['weather']=$request->weather; 
 
             $article['start_data_day']=$request->start_data_day;
-            $article['and_data_day']=$request->and_data_day;
-            $article['and_data_month']=$request->and_data_month;
+            $article['end_data_day']=$request->end_data_day;
+            $article['end_data_month']=$request->end_data_month;
             $article['start_data_month']=$request->start_data_month;
 
             $article['working_time'] = $request->working_time;
@@ -112,9 +112,9 @@ class GlobalArticleController extends Controller
             $global_article->weather = $request->weather;
 
             $global_article->start_data_day = $request->start_data_day; 
-            $global_article->and_data_day = $request->and_data_day;
+            $global_article->end_data_day = $request->end_data_day;
             $global_article->start_data_month = $request->start_data_month;
-            $global_article->and_data_month = $request->and_data_month;
+            $global_article->end_data_month = $request->end_data_month;
 
             $global_article->working_time = $request->working_time;
             $global_article->price_from = $request->price_from;
@@ -186,6 +186,27 @@ class GlobalArticleController extends Controller
         }
     }
 
+    public function mount_route_image_upload(Request $request)
+    { 
+        if ($request->hasFile('mount_route_img')){ 
+
+            $last_global_article_id = 0;
+            $last_global_article_category = '';
+
+            $global_article = Article::get();
+            foreach ($global_article as $global) {
+                $last_global_article_id = $global->id;
+                $last_global_article_category = $global->category;
+            }
+            $article = Article::where('id',strip_tags($last_global_article_id))->first();
+            
+            $file_new_name = ImageControllService::image_upload('images/mount_route_description_img/', $request, 'mount_route_img', 1);
+
+            $article['climbing_area_image'] = $file_new_name;
+            $article -> save();
+        }
+    }
+
     public function region_sectors_image_update(Request $request)
     {
         if ($request->hasFile('region_sectors_img')){
@@ -193,6 +214,19 @@ class GlobalArticleController extends Controller
             $file_new_name = ImageControllService::image_update('images/region_sectors_img/', $article, $request, 'region_sectors_img', 1, 'climbing_area_image');
 
             $article['climbing_area_image'] = $file_new_name;
+            $article -> save();
+        }
+    }
+
+    public function mount_route_image_update(Request $request)
+    {
+        // dd('test');
+        if ($request->hasFile('mount_route_img')){
+            // dd('test2');
+            $article = Article::where('id',strip_tags($request->id))->first();
+            $file_new_name = ImageControllService::image_update('images/mount_route_description_img/', $article, $request, 'mount_route_img', 1, 'mount_route_image');
+
+            $article['mount_route_image'] = $file_new_name;
             $article -> save();
         }
     }

@@ -22,12 +22,18 @@ class GetArticlesService
                 foreach ($ru_articles as $us_article) {
                     if ($us_article->id == $article->ru_article_id) {
                         array_push($articles, [$ru_articles,    "url_title"=>$article->url_title, 
+                                                                "id" => $article->id,
+                                                                "mount_id" => $article->mount_id,
+                                                                "category" => $article->category,
                                                                 "climbing_area_image" => $article->climbing_area_image,
                                                                 "image" => $article->image,
+                                                                "closed" => $article->closed,
+                                                                "price_from" => $article->price_from,
+                                                                "working_time" => $article->working_time,
                                                                 "start_data_day" => $article->start_data_day,
-                                                                "and_data_day" => $article->and_data_day,
+                                                                "end_data_day" => $article->end_data_day,
                                                                 "start_data_month" => $article->start_data_month,
-                                                                "and_data_month" => $article->and_data_month,
+                                                                "end_data_month" => $article->end_data_month,
                                                                 ]);
                     }
                 }
@@ -39,12 +45,18 @@ class GetArticlesService
                 foreach ($ka_articles as $us_article) {
                     if ($us_article->id == $article->ka_article_id) {
                         array_push($articles, [$ka_articles,    "url_title"=>$article->url_title, 
+                                                                "id" => $article->id,
+                                                                "mount_id" => $article->mount_id,
+                                                                "category" => $article->category,
                                                                 "climbing_area_image" => $article->climbing_area_image,
                                                                 "image" => $article->image,
+                                                                "closed" => $article->closed,
+                                                                "price_from" => $article->price_from,
+                                                                "working_time" => $article->working_time,
                                                                 "start_data_day" => $article->start_data_day,
-                                                                "and_data_day" => $article->and_data_day,
+                                                                "end_data_day" => $article->end_data_day,
                                                                 "start_data_month" => $article->start_data_month,
-                                                                "and_data_month" => $article->and_data_month,
+                                                                "end_data_month" => $article->end_data_month,
                                                                 ]);
                     }
                 }
@@ -55,12 +67,18 @@ class GetArticlesService
                 foreach ($us_articles as $us_article) {
                     if ($us_article->id == $article->us_article_id) {
                         array_push($articles, [$us_articles,    "url_title"=>$article->url_title, 
+                                                                "id" => $article->id,
+                                                                "mount_id" => $article->mount_id,
+                                                                "category" => $article->category,
                                                                 "climbing_area_image" => $article->climbing_area_image,
                                                                 "image" => $article->image,
+                                                                "closed" => $article->closed,
+                                                                "price_from" => $article->price_from,
+                                                                "working_time" => $article->working_time,
                                                                 "start_data_day" => $article->start_data_day,
-                                                                "and_data_day" => $article->and_data_day,
+                                                                "end_data_day" => $article->end_data_day,
                                                                 "start_data_month" => $article->start_data_month,
-                                                                "and_data_month" => $article->and_data_month,
+                                                                "end_data_month" => $article->end_data_month,
                                                                 ]);
                     }
                 }
@@ -122,10 +140,12 @@ class GetArticlesService
             $loc_article = Ru_article::where('id', '=', $ru_article_id,)->get();$locale_article = array();
             array_push($locale_article, [$loc_article[0], 
                                                 "id"=>$article->id, 
+                                                "mount_id" => $article->mount_id,
+                                                "category" => $article->category,
                                                 "start_data_day"=>$article->start_data_day, 
-                                                "and_data_day"=>$article->and_data_day, 
+                                                "end_data_day"=>$article->end_data_day, 
                                                 "start_data_month"=>$article->start_data_month, 
-                                                "and_data_month"=>$article->and_data_month, 
+                                                "end_data_month"=>$article->end_data_month, 
                                                 "fb_link"=>$article->fb_link, 
                                                 "inst_link"=>$article->inst_link, 
                                                 "google_link"=>$article->google_link, 
@@ -137,6 +157,7 @@ class GetArticlesService
                                                 "working_time"=>$article->working_time, 
                                                 "map"=>$article->map,
                                                 "climbing_area_image"=>$article->climbing_area_image,
+                                                "mount_route_image"=>$article->mount_route_image,
                                                 "image"=>$article->image, 
                                                 ]);
         }
@@ -145,10 +166,12 @@ class GetArticlesService
             $loc_article = Ka_article::where('id', '=', $ka_article_id,)->get();$locale_article = array();
             array_push($locale_article, [$loc_article[0], 
                                                 "id"=>$article->id, 
+                                                "mount_id" => $article->mount_id,
+                                                "category" => $article->category,
                                                 "start_data_day"=>$article->start_data_day, 
-                                                "and_data_day"=>$article->and_data_day, 
+                                                "end_data_day"=>$article->end_data_day, 
                                                 "start_data_month"=>$article->start_data_month, 
-                                                "and_data_month"=>$article->and_data_month, 
+                                                "end_data_month"=>$article->end_data_month, 
                                                 "fb_link"=>$article->fb_link, 
                                                 "inst_link"=>$article->inst_link, 
                                                 "google_link"=>$article->google_link, 
@@ -160,6 +183,7 @@ class GetArticlesService
                                                 "working_time"=>$article->working_time, 
                                                 "map"=>$article->map,
                                                 "climbing_area_image"=>$article->climbing_area_image,
+                                                "mount_route_image"=>$article->mount_route_image,
                                                 "image"=>$article->image, 
                                                 ]);
                 
@@ -169,10 +193,12 @@ class GetArticlesService
             $locale_article = array();
             array_push($locale_article, [$loc_article[0], 
                                                 "id"=>$article->id, 
+                                                "mount_id" => $article->mount_id,
+                                                "category" => $article->category,
                                                 "start_data_day"=>$article->start_data_day, 
-                                                "and_data_day"=>$article->and_data_day, 
+                                                "end_data_day"=>$article->end_data_day, 
                                                 "start_data_month"=>$article->start_data_month, 
-                                                "and_data_month"=>$article->and_data_month, 
+                                                "end_data_month"=>$article->end_data_month, 
                                                 "fb_link"=>$article->fb_link, 
                                                 "inst_link"=>$article->inst_link, 
                                                 "google_link"=>$article->google_link, 
@@ -184,6 +210,7 @@ class GetArticlesService
                                                 "working_time"=>$article->working_time, 
                                                 "map"=>$article->map,
                                                 "climbing_area_image"=>$article->climbing_area_image,
+                                                "mount_route_image"=>$article->mount_route_image,
                                                 "image"=>$article->image, 
                                                 ]);
             // dd($locale_article[0][0]['title']);

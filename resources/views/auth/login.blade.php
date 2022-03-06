@@ -12,22 +12,18 @@
                 <div class="card">
                     <div class="card-header text-center"><h1>{{ __('Login') }}</h1></div>
 
-                    {{-- <form>
+                    {{-- <form> --}}
                         <div class="form-group row">
-                            <div class="col-md-2">
-                                <a href="{{ url('/login/facebook') }}" class="btn btn-facebook btn btn-primary"> Facebook</a>
-                                
+                            <div class="col-md-2 pull-left">
+                                <a href="{{ url('/login/facebook') }}" class="btn btn-facebook btn btn-primary">Login with Facebook</a>
                             </div>
-
-                            <a class="ml-1 btn btn-primary" href="{{ url('redirect') }}" style="margin-top: 0px !important;background: #4c6ef5;color: #ffffff;padding: 5px;border-radius:7px;" id="btn-fblogin">
-                                <i class="fa fa-facebook-square" aria-hidden="true"></i> Login with Facebook
-                            </a>
                             <div class="col-md-2 pull-right">
-                                <a href="{{ url('/login/google') }}" class="btn btn-facebook btn btn-primary"> Google</a>
-                                
+                                <a href="{{ url('/login/google') }}" class="btn btn-facebook btn btn-primary">Login with Google</a>
                             </div>
                         </div>
-                    </form> --}}
+                    {{-- </form> --}}
+
+                    <hr>
 
                     <div class="card-body">
                         <form method="POST" action="{{ route('login') }}">
