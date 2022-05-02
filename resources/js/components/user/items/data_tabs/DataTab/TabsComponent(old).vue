@@ -677,7 +677,7 @@
             </div>
         </div>
         
-        <stack-modal
+        <!-- <stack-modal
             :show="show_sector_modal"
             title="Sector"
             @close="show_sector_modal=false"
@@ -708,7 +708,7 @@
                                     <td>{{ route.id }}</td>
                                     <td>{{ route.num }}</td>
                                     <td>{{ route.name }}</td>
-                                    <!-- <td>{{ route.grade }}</td> -->
+                                    <td>{{ route.grade }}</td>
                                     <td v-if="route.or_grade != NULL">{{route.grade}} / {{ route.or_grade }}</td>
                                     <td v-if="route.or_grade == NULL">{{route.grade}}</td>
                                     <td>{{ route.height }}</td>
@@ -819,7 +819,6 @@
                         <option value="seller">Seller</option>  
                         <option value="admin">Admin</option> 
                     </select>
-                    <!-- <div class="alert alert-danger" role="alert" v-if="is_parmision_error"> -->
                     <p class="alert alert-danger" role="alert" v-if="is_parmision_error">
                         {{ parmision_error.parmission[0] }}
                     </p>
@@ -989,7 +988,7 @@
             </pre>
             <div slot="modal-footer">
             </div>
-        </stack-modal>
+        </stack-modal> -->
 
     </div>
 </template>
@@ -1096,7 +1095,6 @@
                 mount_routes: "",
                 mounts: "",
 
-                modal_order: "",
 
                 value_route_id: "",
                 value_mtp_id: "",
@@ -1106,6 +1104,7 @@
                 value_product_category_id: "",
                 value_mount_id: "",
 
+                modal_order: "",
                 show_sector_modal: false,
                 show_mtp_modal: false,
                 order_detals_modal: false,
@@ -1154,24 +1153,24 @@
             this.get_data_in_table_3();
             this.get_data_in_table_4();
 
-            if (this.table_1_name == 'Sector') {
-                this.get_sectors_data();
-                this.get_region_data();
-                this.get_routes_data();
-                this.get_MTP_data()
-                this.get_MTP_pitch_data()
-            }
-            if (this.table_1_name == 'Products') {
-                this.get_product_category_data();
-                this.get_product_data();
-            }
-            if (this.table_1_name == 'Mount routes') {
-                this.get_mount_route_data();
-                this.get_mount_data();
-            }
-            if(this.table_1_name == 'Users'){
-                this.get_user_role()
-            }
+            // if (this.table_1_name == 'Sector') {
+            //     this.get_sectors_data();
+            //     this.get_region_data();
+            //     this.get_routes_data();
+            //     this.get_MTP_data()
+            //     this.get_MTP_pitch_data()
+            // }
+            // if (this.table_1_name == 'Products') {
+            //     this.get_product_category_data();
+            //     this.get_product_data();
+            // }
+            // if (this.table_1_name == 'Mount routes') {
+            //     this.get_mount_route_data();
+            //     this.get_mount_data();
+            // }
+            // if(this.table_1_name == 'Users'){
+            //     this.get_user_role()
+            // }
         },
          
         methods: {
@@ -1326,105 +1325,105 @@
 
 
 
-            show_parmission_edit_madel(user_id){
-                this.roles_modal=true;
-                this.user_id_for_rditing_parmission = user_id
-            },
-            edit_permission(id) {
-                axios
-                .post('users/edit_user_permission/' + id, {
-                    parmission: this.user_new_parmission,
-                })
-                .then((response)=> { 
-                    this.roles_modal = false
-                })
-                .catch(error =>{
-                    if (error.response.status == 422) {
-                        this.parmision_error = error.response.data.errors
-                    }
-                    this.is_parmision_error = true
-                })
-            },
-            get_user_role: function(user_id){
-                axios
-                .get('users/get_role/', {
+            // show_parmission_edit_madel(user_id){
+            //     this.roles_modal=true;
+            //     this.user_id_for_rditing_parmission = user_id
+            // },
+            // edit_permission(id) {
+            //     axios
+            //     .post('users/edit_user_permission/' + id, {
+            //         parmission: this.user_new_parmission,
+            //     })
+            //     .then((response)=> { 
+            //         this.roles_modal = false
+            //     })
+            //     .catch(error =>{
+            //         if (error.response.status == 422) {
+            //             this.parmision_error = error.response.data.errors
+            //         }
+            //         this.is_parmision_error = true
+            //     })
+            // },
+            // get_user_role: function(user_id){
+            //     axios
+            //     .get('users/get_role/', {
 
-                })
-                .then(Response => {
-                    console.log(Response.data);
-                    this.user_roles = Response.data
-                })
-                .catch(error => {
-                    // this.user_role = "error"
-                })
-            },
+            //     })
+            //     .then(Response => {
+            //         console.log(Response.data);
+            //         this.user_roles = Response.data
+            //     })
+            //     .catch(error => {
+            //         // this.user_role = "error"
+            //     })
+            // },
 
 
 
-            show_order_status_edit_madel(order_id){
-                this.edit_order_modal = true
-                this.get_orders_data(order_id)
-            },
-            show_order_detals_madel(order_id){
-                this.order_detals_modal = true
-                this.get_orders_data(order_id)
-            },
+            // show_order_status_edit_madel(order_id){
+            //     this.edit_order_modal = true
+            //     this.get_orders_data(order_id)
+            // },
+            // show_order_detals_madel(order_id){
+            //     this.order_detals_modal = true
+            //     this.get_orders_data(order_id)
+            // },
 
-            show_sector_model(sector_id){
-                this.show_sector_modal=true
+            // show_sector_model(sector_id){
+            //     this.show_sector_modal=true
 
-                if (this.show_sector_modal==true) {
-                    axios
-                    .get('/routes_and_sectors/get_routes_for_model/'+ sector_id)
-                    .then(response => {
-                        this.sector_routes = response.data
-                    })
-                    .catch(
-                        error => console.log(error)
-                    );
+            //     if (this.show_sector_modal==true) {
+            //         axios
+            //         .get('/routes_and_sectors/get_routes_for_model/'+ sector_id)
+            //         .then(response => {
+            //             this.sector_routes = response.data
+            //         })
+            //         .catch(
+            //             error => console.log(error)
+            //         );
 
-                    axios
-                    .get('/routes_and_sectors/get_sector_image/'+ sector_id)
-                    .then(response => {
-                        this.sector_images = response.data.sector_images
-                        this.sector_images_size = response.data.sector_images_size
-                    })
-                    .catch(
-                        error => console.log(error)
-                    );
+            //         axios
+            //         .get('/routes_and_sectors/get_sector_image/'+ sector_id)
+            //         .then(response => {
+            //             this.sector_images = response.data.sector_images
+            //             this.sector_images_size = response.data.sector_images_size
+            //         })
+            //         .catch(
+            //             error => console.log(error)
+            //         );
 
-                    axios
-                    .get('/routes_and_sectors/get_mtp_for_model/'+ sector_id)
-                    .then(response => {
-                        this.sector_mtps = response.data
-                    })
-                    .catch(
-                        error => console.log(error)
-                    );
-                }
-                else{
-                    this.sector_routes = ""
-                    this.sector_images = ""
-                    this.sector_mtp = ""
-                }
-            },
-            show_mtp_model(mtp_id){
-                this.show_mtp_modal=true
+            //         axios
+            //         .get('/routes_and_sectors/get_mtp_for_model/'+ sector_id)
+            //         .then(response => {
+            //             this.sector_mtps = response.data
+            //         })
+            //         .catch(
+            //             error => console.log(error)
+            //         );
+            //     }
+            //     else{
+            //         this.sector_routes = ""
+            //         this.sector_images = ""
+            //         this.sector_mtp = ""
+            //     }
+            // },
+            // show_mtp_model(mtp_id){
+            //     this.show_mtp_modal=true
 
-                if (this.show_mtp_modal==true) {
-                    axios
-                    .get('/routes_and_sectors/get_mtp_pitchs_for_model/'+ mtp_id)
-                    .then(response => {
-                        this.sector_mtp_pitchs_for_modal = response.data
-                    })
-                    .catch(
-                        error => console.log(error)
-                    );
-                }
-                else{
-                    this.sector_mtp_pitchs_for_modal = ""
-                }
-            },
+            //     if (this.show_mtp_modal==true) {
+            //         axios
+            //         .get('/routes_and_sectors/get_mtp_pitchs_for_model/'+ mtp_id)
+            //         .then(response => {
+            //             this.sector_mtp_pitchs_for_modal = response.data
+            //         })
+            //         .catch(
+            //             error => console.log(error)
+            //         );
+            //     }
+            //     else{
+            //         this.sector_mtp_pitchs_for_modal = ""
+            //     }
+            // },
 
             get_orders_data: function(id) {
                 axios
@@ -1530,29 +1529,29 @@
                 );
             },
 
-            save_pitchs_sequence(){
-                axios
-                .post('../routes_and_sectors/pitchs_sequence/', {
-                    pitchs_sequence: this.sector_mtp_pitchs_for_modal,
-                })
-                .then((response)=> { 
-                    this.show_mtp_modal = false
-                })
-                .catch(error =>{
-                })
-            },
-            save_routes_sequence(){
-                axios
-                .post('../routes_and_sectors/routes_sequence/', {
-                    routes_sequence: this.sector_routes,
-                    mtp_sequence: this.sector_mtps,
-                })
-                .then((response)=> { 
-                    this.show_sector_modal = false
-                })
-                .catch(error =>{
-                })
-            },
+            // save_pitchs_sequence(){
+            //     axios
+            //     .post('../routes_and_sectors/pitchs_sequence/', {
+            //         pitchs_sequence: this.sector_mtp_pitchs_for_modal,
+            //     })
+            //     .then((response)=> { 
+            //         this.show_mtp_modal = false
+            //     })
+            //     .catch(error =>{
+            //     })
+            // },
+            // save_routes_sequence(){
+            //     axios
+            //     .post('../routes_and_sectors/routes_sequence/', {
+            //         routes_sequence: this.sector_routes,
+            //         mtp_sequence: this.sector_mtps,
+            //     })
+            //     .then((response)=> { 
+            //         this.show_sector_modal = false
+            //     })
+            //     .catch(error =>{
+            //     })
+            // },
         }
     }
 </script>

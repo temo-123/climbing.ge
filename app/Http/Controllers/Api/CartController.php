@@ -21,8 +21,6 @@ class CartController extends Controller
      */
     public function index()
     {
-        // $request->user()->authorizeRoles(['user', 'manager', 'admin','ka_manager','ru_manager','us_manager','seller']);
-dd(Auth::guest());
         if (Auth::user()) {
             $user = Auth::user();
             $cart_items = Cart::where('user_id', '=', $user->id)->get();
@@ -59,9 +57,6 @@ dd(Auth::guest());
             }
             return $products;
         }
-        // else {
-        //     return 'ples login';
-        // }
     }
 
     /**

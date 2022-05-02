@@ -5,6 +5,15 @@
         <div class="bar"><i class="fa fa-exclamation-triangle"></i></div>
         <h6> <span v-html="this.$siteData.shop_short_description"></span> </h6>
 
+        <p>{{ $n(10000, 'currency') }}</p>
+        <p>{{ $n(10000, 'currency', 'en-US') }}</p>
+        <p>{{ $n(10000, 'currency', 'en-US', { useGrouping: false }) }}</p>
+        <p>{{ $n(987654321, 'currency', { notation: 'compact' }) }}</p>
+        <p>{{ $n(0.99123, 'percent') }}</p>
+        <p>{{ $n(0.99123, 'percent', { minimumFractionDigits: 2 }) }}</p>
+        <p>{{ $n(12.11612345, 'decimal') }}</p>
+        <p>{{ $n(12145281111, 'decimal', 'en-US') }}</p>
+
         <div class="col-md-12">
             <!-- <div class="bar"></div> -->
             <div class="row">

@@ -24,9 +24,21 @@
                 </div>
                 <div class='col-sm-12 col-xs-6 col-md-6 col-lg-6 col-xl-6'>
                     <b style="font-size: 120%;">{{__ ('working time')}}</b>
-                    <p style="font-size: 100%;"> {{ indoor.working_time }}</p>
+                    <span v-if="indoor.open_time != NULL && indoor.closed_time != NULL">
+                        <span v-if="!indoor.closed">
+                            <p style="font-size: 100%;"> {{ indoor.open_time }} - {{indoor.closed_time}}</p>
+                            <p>{{ open() }}</p>
+                            <!-- <p class="deanger_text" >closes soon</p>
+                            <p class="deanger_text" >closes in less than an hour</p>
+                            <p class="deanger_text" >closes in less than 30 minutes</p>
+                            <p class="deanger_text" >now closed</p> -->
+                        </span>
 
-                    <b style="font-size: 120%; color: red;">{{__ ('closed')}}</b>
+                        <p class="deanger_text" v-if="indoor.closed">{{__ ('closed')}}</p>
+                    </span>
+                    <span v-else>
+                        <p class="deanger_text">There is no information about the work of the gym!</p>
+                    </span>
                 </div>
             </div>
             <!-- -- <div class='row'>
@@ -44,13 +56,32 @@
 </template>
 
 <script>
-export default {
-    props: [
-        'indoor',
-    ],
-}
+    import moment from "moment"; // https://www.npmjs.com/package/vue-moment
+    export default {
+        components: {
+            moment
+        },
+        props: [
+            'indoor',
+        ],
+        mounted() {
+            // alert(moment( "2013-2-1 14:00:00" ).format( "dddd h:mma D MMM YYYY"));
+
+        },
+        methods: {
+            open(){
+                return moment( "2013-2-1 14:00:00" ).format( "H:MM:mma")
+            },
+            close(){
+                return moment( "2013-2-1 14:00:00" ).format( "dddd h:mma D MMM YYYY")
+            }
+        }
+    }
 </script>
 
 <style>
-
+    .deanger_text{
+        font-size: 120%; 
+        color: red;
+    }
 </style>

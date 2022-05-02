@@ -76,9 +76,10 @@ class RegisterController extends Controller
      */
     protected function create(array $data)
     {
-        $token = $data['g-recaptcha-response'];
+        // $token = $data['g-recaptcha-response'];
+        $capcha = true;
 
-        if($token){
+        if($capcha){
             $user = User::create([
                 'name'     => $data['name'],
                 'surname'    => $data['surname'],
@@ -91,12 +92,16 @@ class RegisterController extends Controller
 
                 'password' => bcrypt($data['password']),
             ]);
+
+            // $token = $user->createToken($data['name'].' '.$data['surname'])->plainTextToken;
+            // dd($token);
+
             $user->roles()->attach(Role::where('name', 'user')->first());
             $user->notify(new WelcomeEmailNotification());
             return $user;
         }
         else{
-            dd('test');
+            return ('Captcha is feild');
         }
     }
 }

@@ -31,11 +31,11 @@
 
                 <!-- Best time for climbing block -->
                 <div v-if="this.article[0].weather == NULL && this.article[0].best_time != NULL">
-                    <h2 id="best_time_to_climb">{{__ ('site.best time')}}</h2>
+                    <h2 id="best_time_to_climb">{{ $t('site.best time')}}</h2>
                     <span v-html="this.article[0].best_time"></span>
                 </div>  
                 <div v-else-if="this.article[0].weather != NULL && this.article[0].best_time != NULL">
-                    <h2 id="best_time_to_climb">{{__ ('site.best time')}}</h2>
+                    <h2 id="best_time_to_climb">{{ $t('site.best time')}}</h2>
 
                     <div class="row">
                         <div class="col-md-6" style="margin-top: 5%;">
@@ -49,7 +49,7 @@
 
                 <!-- how get -->
                 <div v-if="this.article[0].how_get != NUll">
-                    <h2 id="how_to_get_there">{{__ ('site.how get')}}</h2>
+                    <h2 id="how_to_get_there">{{ $t('site.how get')}}</h2>
                     <span v-html="this.article[0].how_get"></span>
                 </div>
 
@@ -62,19 +62,22 @@
 
                 <!-- what need -->
                 <div v-if="this.article[0].what_need != NUll">
-                    <h2 id="what_you_need">{{__ ('site.what need')}}</h2>
+                    <h2 id="what_you_need">{{ $t('site.what need')}}</h2>
                     <span v-html="this.article[0].what_need"></span>
                 </div>
 
                 <!-- info -->
                 <div v-if="this.article[0].info != NUll">
-                    <h2 id="how_to_get_there">{{__ ('site.info')}}</h2>
+                    <h2 id="how_to_get_there">{{ $t('site.info')}}</h2>
                     <span v-html="this.article[0].info"></span>
                 </div>
 
                 <!-- routes -->
                 <div v-if="this.article[0].route">
-                    <h2 id="routes">{{__ ('site.route')}}</h2>
+                    <h2 id="routes">{{ $t('site.route')}}</h2>
+
+                    <routesQuan />
+
                     <span v-html="this.article[0].route"></span>
                 </div>
 
@@ -101,6 +104,8 @@
     import articleRightMenu from './RightMenuComponent'
     import otherArticleBlock from './OtherArticleBlockComponent'
 
+    import routesQuan from '../items/RoutesQuantityComponent.vue'
+
     export default {
         props: [
             'article',
@@ -114,7 +119,8 @@
             galleryComponent,
             articleRightMenu,
             otherArticleBlock,
-            routesTab
+            routesTab,
+            routesQuan
         },
         mounted() {
         },

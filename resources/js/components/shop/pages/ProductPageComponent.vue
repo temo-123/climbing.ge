@@ -98,11 +98,11 @@
 
 <script>
     import analogProduct from '../items/AnalogProductComponent.vue'
-    import Lingallery from 'lingallery'; // https://github.com/ChristophAnastasiades/Lingallery
+    import lingallery from 'lingallery'; // https://github.com/ChristophAnastasiades/Lingallery
     import VueMeta from 'vue-meta'
     export default {
         components: {
-            Lingallery,
+            lingallery,
             VueMeta,
             analogProduct
         },

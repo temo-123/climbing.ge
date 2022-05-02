@@ -21,6 +21,12 @@ class CommentController extends Controller
         return Comment::get();
     }
 
+    public function get_my_comments()
+    {
+        $user_id = auth()->user()->id;
+        return Comment::where("user_id", "=", $user_id)->get();
+    }
+
     /**
      * Show the form for creating a new resource.
      *

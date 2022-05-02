@@ -3,7 +3,10 @@
         <div class="portfolio-img view view-first product-image">
             <div class="discount-percent-badge discount-badge-fourty">NEW</div>
 
-            <img :src="image_dir+article.area.image" class="img-responsive" :alt='article.area[0][0].title' />
+            <!-- <img :src="image_dir+article.area.image" class="img-responsive" :alt='article.area[0][0].title' /> -->
+
+            <img v-if="article.area[0][0].image" :src="image_dir+article.area.image" class="img-responsive" :alt='article.area[0][0].title' />
+            <img v-else :src="'../../../../public/images/site_img/image.png'" class="img-responsive" :alt='article.area[0][0].title+"fffffffff"'>
 
             <div class="mask">
                 <!-- <a href="#" class="info"> -->

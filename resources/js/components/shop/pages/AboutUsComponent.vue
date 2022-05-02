@@ -13,6 +13,8 @@
                 </div>
             </div>
         </div>
+
+        <servicesListComponent />
         
         <messageComponent />
 
@@ -20,7 +22,8 @@
 </template>
 
 <script>
-    import messageComponent from '../../site/items/MessageComponent.vue'
+    import servicesListComponent from '../../global_components/ServicesListComponent.vue'
+    import messageComponent from '../../global_components/MessageComponent.vue'
     export default {
         data: function () {
             return {
@@ -30,6 +33,7 @@
         },
         components: {
             messageComponent,
+            servicesListComponent,
         },
         mounted() {
             // this.get_site_data()

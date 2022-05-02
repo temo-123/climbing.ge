@@ -6,8 +6,6 @@ use App\Http\Controllers\Controller;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Foundation\Auth\VerifiesEmails;
 
-use Illuminate\Http\Request;
-
 class VerificationController extends Controller
 {
     /*
@@ -35,6 +33,7 @@ class VerificationController extends Controller
      *
      * @return void
      */
+    // public function __construct()
     public function __construct(Request $request)
     {
         $this->middleware('auth');

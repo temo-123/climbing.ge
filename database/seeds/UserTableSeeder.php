@@ -19,7 +19,7 @@ class UserTableSeeder extends Seeder
       $admin = new User();
       $admin->name = 'admin';
       $admin->email = 'admin@'.config('app.url');
-      $admin->password = bcrypt('secret');
+      $admin->password = bcrypt('secret'); //https://bcrypt-generator.com/
       $admin->save();
 
       $admin->roles()->attach($role_admin);

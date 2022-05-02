@@ -1,306 +1,402 @@
 <template>
-    <div class="tabs">
-        <div class="row">
-            
-            <input type="radio" name="tabs" id="1" checked="checked">
-            <label for="1">Global Data</label>
-            <div class="tab">
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Value name</th>
-                            <th>#</th>
-                            <th>Data</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <!-- <tr>
-                            <td>ID</td>
-                            <td>|</td>
-                            <td>{{site_info.id}}</td>
-                        </tr> -->
-                        <tr>
-                            <td>Email</td>
-                            <td>|</td>
-                            <td>{{this.$siteData.email}}</td>
-                        </tr>
-                        <tr>
-                            <td>Phone</td>
-                            <td>|</td>
-                            <td>{{site_info.number}}</td>
-                        </tr>
+    <div class="row">
+        <div class="col-sm-3">
+            <left-menu />
+        </div>
+        <div class="col-sm-9">
+            <div class="tabs">
+                <div class="row">
+                    
+                    <input type="radio" name="tabs" id="1" checked="checked">
+                    <label for="1">Global Data</label>
+                    <div class="tab">
+                        <div class="row edit_buttom">
+                            <div class="col-md-6">
+                                <button class="btn btn-primary" >Edit all data</button>
+                            </div>
+                            <div class="col-md-6">
+                                <button class="btn btn-primary" >Global data</button>
+                            </div>
+                        </div>
+                        <table class="table table-hover" id="dev-table" >
+                            <thead>
+                                <tr>
+                                    <th>Value name</th>
+                                    <th>#</th>
+                                    <th>Data</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <!-- <tr>
+                                    <td>ID</td>
+                                    <td>|</td>
+                                    <td>{{site_info.id}}</td>
+                                </tr> -->
+                                <tr>
+                                    <td>Email</td>
+                                    <td>|</td>
+                                    <td>{{this.$siteData.email}}</td>
+                                </tr>
+                                <tr>
+                                    <td>Phone</td>
+                                    <td>|</td>
+                                    <td>{{site_info.number}}</td>
+                                </tr>
 
-                        <tr>
-                            <td>Map</td>
-                            <td>|</td>
-                            <td>{{site_info.map}}</td>
-                        </tr>
+                                <tr>
+                                    <td>Map</td>
+                                    <td>|</td>
+                                    <td>{{site_info.map}}</td>
+                                </tr>
 
-                        <tr>
-                            <td>Facebook</td>
-                            <td>|</td>
-                            <td>{{site_info.fb_link}}</td>
-                        </tr>
-                        <tr>
-                            <td>Instagram</td>
-                            <td>|</td>
-                            <td>{{site_info.inst_link}}</td>
-                        </tr>
-                        <tr>
-                            <td>Goolge</td>
-                            <td>|</td>
-                            <td>{{site_info.google_link}}</td>
-                        </tr>
-                        <tr>
-                            <td>Twitter</td>
-                            <td>|</td>
-                            <td>{{site_info.twit_link}}</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
+                                <tr>
+                                    <td>Facebook</td>
+                                    <td>|</td>
+                                    <td>{{site_info.fb_link}}</td>
+                                </tr>
+                                <tr>
+                                    <td>Instagram</td>
+                                    <td>|</td>
+                                    <td>{{site_info.inst_link}}</td>
+                                </tr>
+                                <tr>
+                                    <td>Goolge</td>
+                                    <td>|</td>
+                                    <td>{{site_info.google_link}}</td>
+                                </tr>
+                                <tr>
+                                    <td>Twitter</td>
+                                    <td>|</td>
+                                    <td>{{site_info.twit_link}}</td>
+                                </tr>
+                                <tr>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                </tr>
+                                <tr>
+                                    <td>article_ad_block</td>
+                                    <td>|</td>
+                                    <td>{{site_info.article_ad_block}}</td>
+                                </tr>
+                                <tr>
+                                    <td>footer_ad_block</td>
+                                    <td>|</td>
+                                    <td>{{site_info.pages_ad_block}}</td>
+                                </tr>
+                                <tr>
+                                    <td>pages_ad_block</td>
+                                    <td>|</td>
+                                    <td>{{site_info.pages_ad_block}}</td>
+                                </tr>
+                                <tr>
+                                    <td>free_ad_block</td>
+                                    <td>|</td>
+                                    <td>{{site_info.free_ad_block}}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
 
-            <input type="radio" name="tabs" id="2">
-            <label for="2">English Data</label>
-            <div class="tab">
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Value name</th>
-                            <th>#</th>
-                            <th>Data</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>Title</td>
-                            <td>|</td>
-                            <td>{{site_info.title}}</td>
-                        </tr>
-                        <tr>
-                            <td>Short description</td>
-                            <td>|</td>
-                            <td>{{ site_info.short_description }}</td>
-                        </tr>
-                        <tr>
-                            <td>Description</td>
-                            <td>|</td>
-                            <td>{{site_info.text}}</td>
-                        </tr>
-                        <tr>
-                            <td>other_activity_description</td>
-                            <td>|</td>
-                            <td>{{site_info.other_activity_description}}</td>
-                        </tr>
-                        <tr>
-                            <td>mount_description</td>
-                            <td>|</td>
-                            <td>{{site_info.mount_description}}</td>
-                        </tr>
-                        <tr>
-                            <td>outdoor_description</td>
-                            <td>|</td>
-                            <td>{{site_info.outdoor_description}}</td>
-                        </tr>
-                        <tr>
-                            <td>ice_description</td>
-                            <td>|</td>
-                            <td>{{site_info.ice_description}}</td>
-                        </tr>
-                        <tr>
-                            <td>topo_description</td>
-                            <td>|</td>
-                            <td>{{site_info.topo_description}}</td>
-                        </tr>
-                        <tr>
-                            <td>what_we_do_description</td>
-                            <td>|</td>
-                            <td>{{site_info.what_we_do_description}}</td>
-                        </tr>
-                        <tr>
-                            <td>shop_short_description</td>
-                            <td>|</td>
-                            <td>{{site_info.shop_short_description}}</td>
-                        </tr>
-                        <tr>
-                            <td>shop_description</td>
-                            <td>|</td>
-                            <td>{{site_info.shop_description}}</td>
-                        </tr>
-                        <tr>
-                            <td>services_description</td>
-                            <td>|</td>
-                            <td>{{site_info.services_description}}</td>
-                        </tr>
-                        <!-- <tr>
-                            <td>meta_description</td>
-                            <td>|</td>
-                            <td>{{site_info.meta_description}}</td>
-                        </tr> -->
-                    </tbody>
-                </table>
-            </div>
+                    <input type="radio" name="tabs" id="2">
+                    <label for="2">English Data</label>
+                    <div class="tab">
+                        <div class="row edit_buttom">
+                            <div class="col-md-6">
+                                <button class="btn btn-primary" >Edit English data</button>
+                            </div>
+                        </div>
+                        <table class="table table-hover" id="dev-table" >
+                            <thead>
+                                <tr>
+                                    <th>Value name</th>
+                                    <th>#</th>
+                                    <th>Data</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>Title</td>
+                                    <td>|</td>
+                                    <td>{{site_info.title}}</td>
+                                </tr>
+                                <tr>
+                                    <td>Short description</td>
+                                    <td>|</td>
+                                    <td>{{ site_info.short_description }}</td>
+                                </tr>
+                                <tr>
+                                    <td>Description</td>
+                                    <td>|</td>
+                                    <td>{{site_info.text}}</td>
+                                </tr>
+                                <tr>
+                                    <td>other_activity_description</td>
+                                    <td>|</td>
+                                    <td>{{site_info.other_activity_description}}</td>
+                                </tr>
+                                <tr>
+                                    <td>mount_description</td>
+                                    <td>|</td>
+                                    <td>{{site_info.mount_description}}</td>
+                                </tr>
+                                <tr>
+                                    <td>outdoor_description</td>
+                                    <td>|</td>
+                                    <td>{{site_info.outdoor_description}}</td>
+                                </tr>
+                                <tr>
+                                    <td>ice_description</td>
+                                    <td>|</td>
+                                    <td>{{site_info.ice_description}}</td>
+                                </tr>
+                                <tr>
+                                    <td>topo_description</td>
+                                    <td>|</td>
+                                    <td>{{site_info.topo_description}}</td>
+                                </tr>
+                                <tr>
+                                    <td>what_we_do_description</td>
+                                    <td>|</td>
+                                    <td>{{site_info.what_we_do_description}}</td>
+                                </tr>
+                                <tr>
+                                    <td>shop_short_description</td>
+                                    <td>|</td>
+                                    <td>{{site_info.shop_short_description}}</td>
+                                </tr>
+                                <tr>
+                                    <td>shop_description</td>
+                                    <td>|</td>
+                                    <td>{{site_info.shop_description}}</td>
+                                </tr>
+                                <tr>
+                                    <td>services_description</td>
+                                    <td>|</td>
+                                    <td>{{site_info.services_description}}</td>
+                                </tr>
+                                <!-- <tr>
+                                    <td>meta_description</td>
+                                    <td>|</td>
+                                    <td>{{site_info.meta_description}}</td>
+                                </tr> -->
+                            </tbody>
+                        </table>
+                    </div>
 
-            <input type="radio" name="tabs" id="3">
-            <label for="3">Russion Data</label>
-            <div class="tab">
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Value name</th>
-                            <th>#</th>
-                            <th>Data</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>Title</td>
-                            <td>|</td>
-                            <td>{{site_info.title_ru}}</td>
-                        </tr>
-                        <tr>
-                            <td>Short description</td>
-                            <td>|</td>
-                            <td>{{ site_info.short_description_ru}}</td>
-                        </tr>
-                        <tr>
-                            <td>Description</td>
-                            <td>|</td>
-                            <td>{{site_info.text_ru}}</td>
-                        </tr>
-                        <tr>
-                            <td>other_activity_description</td>
-                            <td>|</td>
-                            <td>{{site_info.other_activity_description_ru}}</td>
-                        </tr>
-                        <tr>
-                            <td>mount_description</td>
-                            <td>|</td>
-                            <td>{{site_info.mount_description_ru}}</td>
-                        </tr>
-                        <tr>
-                            <td>outdoor_description</td>
-                            <td>|</td>
-                            <td>{{site_info.outdoor_description_ru}}</td>
-                        </tr>
-                        <tr>
-                            <td>ice_description</td>
-                            <td>|</td>
-                            <td>{{site_info.ice_description_ru}}</td>
-                        </tr>
-                        <tr>
-                            <td>topo_description</td>
-                            <td>|</td>
-                            <td>{{site_info.topo_description_ru}}</td>
-                        </tr>
-                        <tr>
-                            <td>what_we_do_description</td>
-                            <td>|</td>
-                            <td>{{site_info.what_we_do_description_ru}}</td>
-                        </tr>
-                        <tr>
-                            <td>shop_short_description</td>
-                            <td>|</td>
-                            <td>{{site_info.shop_short_description_ru}}</td>
-                        </tr>
-                        <tr>
-                            <td>shop_description</td>
-                            <td>|</td>
-                            <td>{{site_info.shop_description_ru}}</td>
-                        </tr>
-                        <tr>
-                            <td>services_description</td>
-                            <td>|</td>
-                            <td>{{site_info.services_description_ru}}</td>
-                        </tr>
-                        <!-- <tr>
-                            <td>meta_description</td>
-                            <td>|</td>
-                            <td>{{site_info.meta_description_ru}}</td>
-                        </tr> -->
-                    </tbody>
-                </table>
-            </div>
+                    <input type="radio" name="tabs" id="3">
+                    <label for="3">Russion Data</label>
+                    <div class="tab">
+                        <div class="row edit_buttom">
+                            <div class="col-md-6">
+                                <button class="btn btn-primary" >Russion data</button>
+                            </div>
+                        </div>
+                        <table class="table table-hover" id="dev-table" >
+                            <thead>
+                                <tr>
+                                    <th>Value name</th>
+                                    <th>#</th>
+                                    <th>Data</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>Title</td>
+                                    <td>|</td>
+                                    <td>{{site_info.title_ru}}</td>
+                                </tr>
+                                <tr>
+                                    <td>Short description</td>
+                                    <td>|</td>
+                                    <td>{{ site_info.short_description_ru}}</td>
+                                </tr>
+                                <tr>
+                                    <td>Description</td>
+                                    <td>|</td>
+                                    <td>{{site_info.text_ru}}</td>
+                                </tr>
+                                <tr>
+                                    <td>other_activity_description</td>
+                                    <td>|</td>
+                                    <td>{{site_info.other_activity_description_ru}}</td>
+                                </tr>
+                                <tr>
+                                    <td>mount_description</td>
+                                    <td>|</td>
+                                    <td>{{site_info.mount_description_ru}}</td>
+                                </tr>
+                                <tr>
+                                    <td>outdoor_description</td>
+                                    <td>|</td>
+                                    <td>{{site_info.outdoor_description_ru}}</td>
+                                </tr>
+                                <tr>
+                                    <td>ice_description</td>
+                                    <td>|</td>
+                                    <td>{{site_info.ice_description_ru}}</td>
+                                </tr>
+                                <tr>
+                                    <td>topo_description</td>
+                                    <td>|</td>
+                                    <td>{{site_info.topo_description_ru}}</td>
+                                </tr>
+                                <tr>
+                                    <td>what_we_do_description</td>
+                                    <td>|</td>
+                                    <td>{{site_info.what_we_do_description_ru}}</td>
+                                </tr>
+                                <tr>
+                                    <td>shop_short_description</td>
+                                    <td>|</td>
+                                    <td>{{site_info.shop_short_description_ru}}</td>
+                                </tr>
+                                <tr>
+                                    <td>shop_description</td>
+                                    <td>|</td>
+                                    <td>{{site_info.shop_description_ru}}</td>
+                                </tr>
+                                <tr>
+                                    <td>services_description</td>
+                                    <td>|</td>
+                                    <td>{{site_info.services_description_ru}}</td>
+                                </tr>
+                                <!-- <tr>
+                                    <td>meta_description</td>
+                                    <td>|</td>
+                                    <td>{{site_info.meta_description_ru}}</td>
+                                </tr> -->
+                            </tbody>
+                        </table>
+                    </div>
 
-            <input type="radio" name="tabs" id="4">
-            <label for="4">Georgian Data</label>
-            <div class="tab">
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Value name</th>
-                            <th>#</th>
-                            <th>Data</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>Title</td>
-                            <td>|</td>
-                            <td>{{site_info.title_ka}}</td>
-                        </tr>
-                        <tr>
-                            <td>Short description</td>
-                            <td>|</td>
-                            <td>{{ site_info.short_description_ka}}</td>
-                        </tr>
-                        <tr>
-                            <td>Description</td>
-                            <td>|</td>
-                            <td>{{site_info.text_ka}}</td>
-                        </tr>
-                        <tr>
-                            <td>other_activity_description</td>
-                            <td>|</td>
-                            <td>{{site_info.other_activity_description_ka}}</td>
-                        </tr>
-                        <tr>
-                            <td>mount_description</td>
-                            <td>|</td>
-                            <td>{{site_info.mount_description_ka}}</td>
-                        </tr>
-                        <tr>
-                            <td>outdoor_description</td>
-                            <td>|</td>
-                            <td>{{site_info.outdoor_description_ka}}</td>
-                        </tr>
-                        <tr>
-                            <td>ice_description</td>
-                            <td>|</td>
-                            <td>{{site_info.ice_description_ka}}</td>
-                        </tr>
-                        <tr>
-                            <td>topo_description</td>
-                            <td>|</td>
-                            <td>{{site_info.topo_description_ka}}</td>
-                        </tr>
-                        <tr>
-                            <td>what_we_do_description</td>
-                            <td>|</td>
-                            <td>{{site_info.what_we_do_description_ka}}</td>
-                        </tr>
-                        <tr>
-                            <td>shop_short_description</td>
-                            <td>|</td>
-                            <td>{{site_info.shop_short_description_ka}}</td>
-                        </tr>
-                        <tr>
-                            <td>shop_description</td>
-                            <td>|</td>
-                            <td>{{site_info.shop_description_ka}}</td>
-                        </tr>
-                        <tr>
-                            <td>services_description</td>
-                            <td>|</td>
-                            <td>{{site_info.services_description_ka}}</td>
-                        </tr>
-                        <!-- <tr>
-                            <td>meta_description</td>
-                            <td>|</td>
-                            <td>{{site_info.meta_description_ka}}</td>
-                        </tr> -->
-                    </tbody>
-                </table>
+                    <input type="radio" name="tabs" id="4">
+                    <label for="4">Georgian Data</label>
+                    <div class="tab">
+                        <div class="row edit_buttom">
+                            <div class="col-md-6">
+                                <button class="btn btn-primary" >Georgian data</button>
+                            </div>
+                        </div>
+                        <table class="table table-hover" id="dev-table" >
+                            <thead>
+                                <tr>
+                                    <th>Value name</th>
+                                    <th>#</th>
+                                    <th>Data</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>Title</td>
+                                    <td>|</td>
+                                    <td>{{site_info.title_ka}}</td>
+                                </tr>
+                                <tr>
+                                    <td>Short description</td>
+                                    <td>|</td>
+                                    <td>{{ site_info.short_description_ka}}</td>
+                                </tr>
+                                <tr>
+                                    <td>Description</td>
+                                    <td>|</td>
+                                    <td>{{site_info.text_ka}}</td>
+                                </tr>
+                                <tr>
+                                    <td>other_activity_description</td>
+                                    <td>|</td>
+                                    <td>{{site_info.other_activity_description_ka}}</td>
+                                </tr>
+                                <tr>
+                                    <td>mount_description</td>
+                                    <td>|</td>
+                                    <td>{{site_info.mount_description_ka}}</td>
+                                </tr>
+                                <tr>
+                                    <td>outdoor_description</td>
+                                    <td>|</td>
+                                    <td>{{site_info.outdoor_description_ka}}</td>
+                                </tr>
+                                <tr>
+                                    <td>ice_description</td>
+                                    <td>|</td>
+                                    <td>{{site_info.ice_description_ka}}</td>
+                                </tr>
+                                <tr>
+                                    <td>topo_description</td>
+                                    <td>|</td>
+                                    <td>{{site_info.topo_description_ka}}</td>
+                                </tr>
+                                <tr>
+                                    <td>what_we_do_description</td>
+                                    <td>|</td>
+                                    <td>{{site_info.what_we_do_description_ka}}</td>
+                                </tr>
+                                <tr>
+                                    <td>shop_short_description</td>
+                                    <td>|</td>
+                                    <td>{{site_info.shop_short_description_ka}}</td>
+                                </tr>
+                                <tr>
+                                    <td>shop_description</td>
+                                    <td>|</td>
+                                    <td>{{site_info.shop_description_ka}}</td>
+                                </tr>
+                                <tr>
+                                    <td>services_description</td>
+                                    <td>|</td>
+                                    <td>{{site_info.services_description_ka}}</td>
+                                </tr>
+                                <!-- <tr>
+                                    <td>meta_description</td>
+                                    <td>|</td>
+                                    <td>{{site_info.meta_description_ka}}</td>
+                                </tr> -->
+                            </tbody>
+                        </table>
+                    </div>
+
+
+                    <input type="radio" name="tabs" id="5">
+                    <label for="5">General info</label>
+                    <div class="tab">
+                        <div class="row edit_buttom">
+                            <div class="col-md-6">
+                                <button class="btn btn-primary" >Add General data</button>
+                            </div>
+                        </div>
+                        <table  class="table table-hover" id="dev-table" >
+                            <thead>
+                                <tr>
+                                    <th>Id</th>
+
+                                    <th>|</th>
+                                    <th>Us name</th>
+
+                                    <th>|</th>
+                                    <th>edit</th>
+
+                                    <th>|</th>
+                                    <th>del</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr v-for="general_info in general_infos" :key="general_info.id">
+                                    <th>{{general_info.id}}</th>
+
+                                    <th>|</th>
+                                    <td>{{general_info.title_us}}</td>
+
+                                    <th>|</th>
+                                    <th>edit</th>
+
+                                    <th>|</th>
+                                    <th>del</th>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -314,12 +410,14 @@
         data() {
             return {
                 site_info: [],
+                general_infos: []
             }
         },
         components: {
         },
         mounted() {
             this.get_site_data()
+            this.get_general_info()
         },
         methods: {
             get_site_data: function(){
@@ -333,7 +431,23 @@
                 .catch(
                     error => console.log(error)
                 );
+            },
+            get_general_info: function(){
+                axios
+                .get('/api/general_info')
+                .then(response => {
+                    this.general_infos = response.data
+                })
+                .catch(
+                    error => console.log(error)
+                );
             }
         }
     }
 </script>
+
+<style scoped>
+    .edit_buttom{
+        margin-bottom: 2%;
+    }
+</style>

@@ -6,7 +6,18 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
 use App\Models\Article;
+use App\Models\Ka_article;
+use App\Models\Us_article;
+use App\Models\Ru_article;
 use App\Services\GetArticlesService;
+use App\Models\Comment;
+use App\Services\ImageEditService;
+use App\Services\ImageControllService;
+
+use App\Services\URLTitleService;
+
+use File;
+use Validator;
 
 class ArticleController extends Controller
 {
@@ -27,10 +38,7 @@ class ArticleController extends Controller
      */
     public function create()
     {
-        $this->addGlobamArticle();
-        $this->add_ka_article();
-        $this->add_ru_article();
-        $this->add_us_article();
+        dd('$request');
     }
 
     /**
@@ -67,7 +75,13 @@ class ArticleController extends Controller
      */
     public function edit($id)
     {
-        //
+        dd($id);
+        if ($request -> isMethod('post')) {
+            dd('post');
+        } else {
+            dd('get');
+        }
+        
     }
 
     /**
@@ -79,16 +93,19 @@ class ArticleController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $activ_article = Article::where('id', '=', $id)->first();
-        $global_other_articles = Article::limit(6)->
-                                        latest('id')->
-                                        where('category', '=', $activ_article->category)->
-                                        where('id', '!=', $activ_article->id)->
-                                        where('published', '=', 1)->
-                                        get();
-        $other_articles = GetArticlesService::get_locale_article($global_other_articles);
+        $globa_validate = $this->addGlobamArticle($request->data['global_data']);
+        $ka_validate = $this->add_ka_article($request->data['ka_data']);
+        $ru_validate = $this->add_ru_article($request->data['ru_data']);
+        $us_validate = $this->add_us_article($request->data['us_data']);
 
-        return $other_articles;
+        if ($globa_validate || $ka_validate || $ru_validate || $us_validate) {
+            $errors = [ 'global_data' => $globa_validate, 
+                        'ka_data' => $ka_validate, 
+                        'ru_data' => $ru_validate, 
+                        'us_data' => $us_validate
+                    ];
+            return response()->json($errors, 422);
+        }
     }
 
     /**
@@ -99,7 +116,26 @@ class ArticleController extends Controller
      */
     public function destroy($id)
     {
-        //
+        // dd($id);
+
+		// if ($request->isMethod('post')) {
+
+            $global_id=$id;
+
+            $global_article = Article::where('id',strip_tags($global_id))->first();
+            $us_article = Us_article::where('id',strip_tags($global_article->us_article_id))->first();
+            $ru_article = Ru_article::where('id',strip_tags($global_article->ru_article_id))->first();
+            $ka_article = Ka_article::where('id',strip_tags($global_article->ka_article_id))->first();
+            
+            // delete article file
+            ImageControllService::image_delete('images/'.$global_article->category.'_img/', $global_article, 'image');
+            ImageControllService::image_delete('images/region_sectors_img/', $global_article, 'climbing_area_image');
+
+            // delete article from db
+            $global_article ->delete();
+            $us_article ->delete();
+            $ru_article ->delete();
+            $ka_article ->delete();
     }
 
 
@@ -109,13 +145,14 @@ class ArticleController extends Controller
 
 
 
-    public function addGlobamArticle()
+    public function addGlobamArticle($global_data)
     {
-        // $request->user()->authorizeRoles(['manager', 'admin']);
-        
-        if ($request -> isMethod('post')) {
+        // if ($request -> isMethod('post')) {
             // $input = $request -> except('_token');
-            $this->global_article_validate($request);
+            $validate = $this->global_article_validate($global_data);
+            if ($validate != null) {
+                return $validate;
+            }
 
             $global_article = Article::get();
             foreach ($global_article as $global) {
@@ -123,41 +160,44 @@ class ArticleController extends Controller
             }
 
             // make url_title from us_title value
-            $url_title = URLTitleService::get_url_title($request->us_title_for_url_title);
+            $url_title = URLTitleService::get_url_title($global_data["us_title_for_url_title"]);
 
             $article = Article::find($last_globale_id);
             
             $article['url_title'] = $url_title;
 
-            $article['category']=$request->category;
-            $article['mount_id']=$request->mount_id;
-            $article['published']=$request->published;
-            $article['completed']=$request->completed; 
-            $article['map']=$request->map;
-            $article['weather']=$request->weather; 
+            $article['category']=$global_data["category"];
+            // $article['mount_id']=$global_data["mount_id"];
+            $article['published']=$global_data["published"];
+            $article['completed']=$global_data["completed"];
+            $article['map']=$global_data["map"];
+            $article['weather']=$global_data["weather"];
 
-            $article['start_data_day']=$request->start_data_day;
-            $article['end_data_day']=$request->end_data_day;
-            $article['end_data_month']=$request->end_data_month;
-            $article['start_data_month']=$request->start_data_month;
+            $article['start_data']=$global_data["start_data"];
+            $article['end_data']=$global_data["end_data"];
 
-            $article['working_time'] = $request->working_time;
-            $article['price_from'] = $request->price_from;
+            $article['open_timen'] = $global_data["open_timen"];
+            $article['closed_time'] = $global_data["closed_time"];
 
-            $article['fb_link']=$request->fb_link;
-            $article['twit_link']=$request->twit_link; 
-            $article['google_link']=$request->google_link;
-            $article['inst_link']=$request->inst_link;
-            $article['web_link']=$request->web_link;
+            $article['price_from'] = $global_data["price_from"];
+
+            $article['fb_link']=$global_data["fb_link"];
+            $article['twit_link']=$global_data["twit_link"];
+            $article['google_link']=$global_data["google_link"];
+            $article['inst_link']=$global_data["inst_link"];
+            $article['web_link']=$global_data["web_link"];
             
             $article -> update();
-        }
+        // }
     }
-    public function add_ka_article(Request $request)
+    public function add_ka_article($ka_data)
     {
         // $request->user()->authorizeRoles(['manager', 'admin']);
-        if ($request -> isMethod('post')) {
-            $this->ka_sector_validate($request);
+        // if ($request -> isMethod('post')) {
+            $validate = $this->ka_sector_validate($ka_data);
+            if ($validate != null) {
+                return( $validate);
+            }
 
             $ka_articl = Ka_article::get();
             foreach ($ka_articl as $ka) {
@@ -166,52 +206,56 @@ class ArticleController extends Controller
 
             $article = Ka_article::find($last_ka_article_id);
             
-            $article['title']=$request->ka_title;
-            $article['short_description']=$request->ka_short_description;
-            $article['text']=$request->ka_text;
-            $article['route']=$request->ka_route;
-            $article['how_get']=$request->ka_how_get;
-            $article['best_time']=$request->ka_best_time;
-            $article['what_need']=$request->ka_what_need;
-            $article['info']=$request->ka_info;
-            $article['meta_keyword']=$request->ka_meta_keyword;
+            $article['title']=$ka_data["ka_title"];
+            $article['short_description']=$ka_data["ka_short_description"];
+            $article['text']=$ka_data["ka_text"];
+            $article['route']=$ka_data["ka_route"];
+            $article['how_get']=$ka_data["ka_how_get"];
+            $article['best_time']=$ka_data["ka_best_time"];
+            $article['what_need']=$ka_data["ka_what_need"];
+            $article['info']=$ka_data["ka_info"];
+            $article['meta_keyword']=$ka_data["ka_meta_keyword"];
 
             $article -> update();
-        }
+        // }
     }
-    public function add_ru_article(Request $request)
+    public function add_ru_article($ru_data)
     {
         // $request->user()->authorizeRoles(['manager', 'admin']);
-        if ($request -> isMethod('post')) {
-            $this->ru_sector_validate($request);
+        // if ($request -> isMethod('post')) {
+            $validate = $this->ru_sector_validate($ru_data);
+            if ($validate != null) {
+                return $validate;
+            }
 
             $ru_articl = Ru_article::get();
             foreach ($ru_articl as $ru) {
                 $last_ru_article_id = $ru->id;
             }
 
-
             $article = Ru_article::find($last_ru_article_id);
-            // $article = new Ru_article();
 
-            $article['title']=$request->ru_title;
-            $article['short_description']=$request->ru_short_description;
-            $article['text']=$request->ru_text;
-            $article['route']=$request->ru_route;
-            $article['how_get']=$request->ru_how_get;
-            $article['best_time']=$request->ru_best_time;
-            $article['what_need']=$request->ru_what_need;
-            $article['info']=$request->ru_info;
-            $article['meta_keyword']=$request->ru_meta_keyword;
+            $article['title']=$ru_data["ru_title"];
+            $article['short_description']=$ru_data["ru_short_description"];
+            $article['text']=$ru_data["ru_text"];
+            $article['route']=$ru_data["ru_route"];
+            $article['how_get']=$ru_data["ru_how_get"];
+            $article['best_time']=$ru_data["ru_best_time"];
+            $article['what_need']=$ru_data["ru_what_need"];
+            $article['info']=$ru_data["ru_info"];
+            $article['meta_keyword']=$ru_data["ru_meta_keyword"];
             
             $article -> update();
-        }
+        // }
     }
-    public function add_us_article(Request $request)
+    public function add_us_article($us_data)
     {
         // $request->user()->authorizeRoles(['manager', 'admin']);
-        if ($request -> isMethod('post')) {
-            $this->us_sector_validate($request);
+        // if ($request -> isMethod('post')) {
+            $validate = $this->us_sector_validate($us_data);
+            if ($validate != null) {
+                return $validate;
+            }
 
             $us_articl = Us_article::get();
             foreach ($us_articl as $us) {
@@ -221,17 +265,68 @@ class ArticleController extends Controller
             $article = Us_article::find($last_us_article_id);
             // $article = new Us_article();
 
-            $article['title']=$request->us_title;
-            $article['short_description']=$request->us_short_description;
-            $article['text']=$request->us_text;
-            $article['route']=$request->us_route;
-            $article['how_get']=$request->us_how_get;
-            $article['best_time']=$request->us_best_time;
-            $article['what_need']=$request->us_what_need;
-            $article['info']=$request->us_info;
-            $article['meta_keyword']=$request->us_meta_keyword;
+            $article['title']=$us_data["us_title"];
+            $article['short_description']=$us_data["us_short_description"];
+            $article['text']=$us_data["us_text"];
+            $article['route']=$us_data["us_route"];
+            $article['how_get']=$us_data["us_how_get"];
+            $article['best_time']=$us_data["us_best_time"];
+            $article['what_need']=$us_data["us_what_need"];
+            $article['info']=$us_data["us_info"];
+            $article['meta_keyword']=$us_data["us_meta_keyword"];
 
             $article -> update();
+        // }
+    }
+
+
+    public function global_article_validate($global_data)
+    {
+        $validator = Validator::make($global_data, [
+            'published' => 'required',
+        ]);
+        if ($validator->fails()) {
+            return $validator->messages();
+        }
+    }
+
+    public function ka_sector_validate($ka_data)
+    {
+        $validator = Validator::make($ka_data, [
+            'ka_title' => 'required',
+            'ka_short_description' => 'required',
+            'ka_text' => 'required',
+            'ka_info' => 'required',
+        ]);
+        if ($validator->fails()) {
+            return $validator->messages();
+        }
+        // dd($validator->messages());
+    }
+
+    public function ru_sector_validate($ru_data)
+    {
+        $validator = Validator::make($ru_data, [
+            'ru_title' => 'required',
+            'ru_short_description' => 'required',
+            'ru_text' => 'required',
+            'ru_info' => 'required',
+        ]);
+        if ($validator->fails()) {
+            return $validator->messages();
+        }
+    }
+
+    public function us_sector_validate($us_data)
+    {
+        $validator = Validator::make($us_data, [
+            'us_title' => 'required',
+            'us_short_description' => 'required',
+            'us_text' => 'required',
+            'us_info' => 'required',
+        ]);
+        if ($validator->fails()) {
+            return $validator->messages();
         }
     }
 }

@@ -1,8 +1,10 @@
 <template>
     <div class="food col-md-4">
         <div class="portfolio-img view view-first">
+            <div class="discount-percent-badge discount-badge-fourty">NEW</div>
 
-            <img :src="image_dir+article.image" class="img-responsive" :alt='article[0][0].title' />
+            <img v-if="article[0][0].title != null" :src="image_dir+article.image" class="img-responsive" :alt='article[0][0].title' />
+            <img v-else :src="'../../../../public/images/site_img/image.png'" class="img-responsive" :alt='article[0][0].title+"fffffffff"'>
 
             <div class="mask">
                 <!-- <a href="#" class="info"><i class="fa fa-arrow-right"></i></a> -->

@@ -2,12 +2,12 @@
     <div class="h-recent-work" id="other">
         <div class="container">
 
-            <h2 class='index_h2'>{{__ ('title mountaineering')}}</h2>
+            <h2 class='index_h2'>{{ $t('title mountaineering')}}</h2>
 
             <div class="bar"><i class="fa fa-dribbble"></i></div>
             <h6> <span v-html="this.$siteData.mount_description"></span></h6>
 
-            <div class="row">
+            <div class="row" v-if="this.mounts.length > 0">
                 <div class="container mount_filters">
                     <div class="col-md-4">
                         Select mount System and filtred routes

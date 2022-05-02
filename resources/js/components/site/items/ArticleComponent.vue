@@ -165,7 +165,7 @@
         },
         mounted() {
             // this.meta_title = this.article[0].title
-            console.log(this.article)
+            // console.log(this.article)
             // console.log(this.meta_title)
             // console.log(this.meta_title)
             // console.log(this.meta_title)

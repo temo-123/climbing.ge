@@ -17,10 +17,8 @@ class Article extends Model
 		'map',
 		'weather',
 
-		'start_data_day',
-		'end_data_day',
-		'start_data_month',
-		'end_data_month',
+		'start_data',
+		'end_data',
 
 		'fb_link',
 		'twit_link',
@@ -33,6 +31,8 @@ class Article extends Model
 		'mount_route',
 
 		'price_from',
-		'working_time'
+		
+		'open_timen',
+		'closed_time'
 	];
 }

@@ -36,7 +36,7 @@ class Message extends Mailable
     {
         $subject = 'User message from the site '.$this->from_site;
         
-        return $this->markdown('site/emails/message')->with([
+        return $this->markdown('emails/message')->with([
             'name'=>$this->name,
             'surname'=>$this->surname,
             'email'=>$this->email,

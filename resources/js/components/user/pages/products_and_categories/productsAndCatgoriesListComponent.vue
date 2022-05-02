@@ -1,8 +1,16 @@
 <template>
-    <div class="col-sm-12">
-        <tabsComponent 
-            :table_data="this.data_for_tab"
-        />
+<div class="row">
+        <div class="col-sm-3">
+            <left-menu />
+        </div>
+        <div class="col-sm-9">
+            <div class="col-sm-12">
+                <tabsComponent 
+                    :table_data="this.data_for_tab"
+                    @update-data="callback"
+                />
+            </div>
+        </div>
     </div>
 </template>
 
@@ -30,7 +38,7 @@
                 .then(response => {
                     this.data_for_tab.push({'id': 1,
                                             'data': response.data, 
-                                            'table_name': 'products', 
+                                            'table_name': 'Products', 
                                             // 'table_category': this.$route.params.article_category, 
                                             'table_del_url': 'del_url', 
                                             'table_edit_url': 'edit_url'
@@ -48,7 +56,7 @@
                 .then(response => {
                     this.data_for_tab.push({'id': 2,
                                             'data': response.data, 
-                                            'table_name': 'categories', 
+                                            'table_name': 'Categories', 
                                             // 'table_category': this.$route.params.article_category, 
                                             'table_del_url': 'del_url', 
                                             'table_edit_url': 'edit_url'
@@ -71,6 +79,12 @@
                 })
                 .catch(error => console.log(error))
             },
+
+            callback(id){
+                if(id == 1){
+                    this.get_articles()
+                }
+            }
         }
     }
 </script>

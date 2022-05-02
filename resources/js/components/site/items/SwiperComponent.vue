@@ -1,29 +1,31 @@
 <template>
-  <div class="thumb-example">
-    <!-- swiper1 -->
-    <swiper class="swiper gallery-top" :options="swiperOptionTop" ref="swiperTop">
-      <swiper-slide v-for="slide in slides" :key="slide['id']" :style="{ backgroundImage: 'url(' + slide['image'] + ')',}"></swiper-slide>
-      <div class="swiper-button-next swiper-button-white" slot="button-next"></div>
-      <div class="swiper-button-prev swiper-button-white" slot="button-prev"></div>
-    </swiper>
-    <!-- swiper2 Thumbs -->
-    <swiper class="swiper gallery-thumbs" :options="swiperOptionThumbs" ref="swiperThumbs">
-      <swiper-slide v-for="slide in slides" :key="slide['id']" :style="{ backgroundImage: 'url(' + slide['image'] + ')',}"></swiper-slide>
-    </swiper>
+  <div>
+    <div class="thumb-example" v-if="this.slides.length > 0">
+      <!-- swiper1 -->
+      <swiper class="swiper gallery-top" :options="swiperOptionTop" ref="swiperTop">
+        <swiper-slide v-for="slide in slides" :key="slide['id']" :style="{ backgroundImage: 'url(' + slide['image'] + ')',}"></swiper-slide>
+        <div class="swiper-button-next swiper-button-white" slot="button-next"></div>
+        <div class="swiper-button-prev swiper-button-white" slot="button-prev"></div>
+      </swiper>
+      <!-- swiper2 Thumbs -->
+      <swiper class="swiper gallery-thumbs" :options="swiperOptionThumbs" ref="swiperThumbs">
+        <swiper-slide v-for="slide in slides" :key="slide['id']" :style="{ backgroundImage: 'url(' + slide['image'] + ')',}"></swiper-slide>
+      </swiper>
+    </div>
   </div>
 </template>
 
 <script>
-  import { Swiper, SwiperSlide } from 'vue-awesome-swiper'
-  import 'swiper/css/swiper.css'
+  // import { Swiper, SwiperSlide } from 'vue-awesome-swiper'
+  // import 'swiper/css/swiper.css'
   // https://github.surmon.me/vue-awesome-swiper/
 
   export default {
     name: 'swiper-example-thumbs-gallery',
     title: 'Thumbs gallery with Two-way control',
     components: {
-      Swiper,
-      SwiperSlide
+      // Swiper,
+      // SwiperSlide
     },
     data() {
       return {
@@ -56,6 +58,7 @@
         swiperThumbs.controller.control = swiperTop
       })
       this.get_slides()
+      // alert(this.slides.length)
     },
     methods: {
       get_slides(){

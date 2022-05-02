@@ -5,6 +5,10 @@ namespace App\Providers;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\Schema;
 
+// use App\Models\Passport\PersonalAccessToken;
+use App\Models\Sanctum\PersonalAccessToken;
+use Laravel\Sanctum\Sanctum;
+
 use View;
 use URL;
 use App\User;
@@ -29,33 +33,36 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        $registrar = new \App\Routing\ResourceRegistrar($this->app['router']);
+        // $registrar = new \App\Routing\ResourceRegistrar($this->app['router']);
 
-        $this->app->bind('Illuminate\Routing\ResourceRegistrar', function () use ($registrar) {
-            return $registrar;
-        });
+        // $this->app->bind('Illuminate\Routing\ResourceRegistrar', function () use ($registrar) {
+        //     return $registrar;
+        // });
 
         Schema::defaultStringLength(191);
+        Sanctum::usePersonalAccessTokenModel(PersonalAccessToken::class);
 
-        $users = User::all();
-        View::share('users_roles', $users);
+        // $users = User::all();
+        // View::share('users_roles', $users);
 
-        $about_us = Site::get();
-        $about_us_array = array();
+        // $about_us = Site::get();
+        // $about_us_array = array();
         
-        foreach ($about_us as $about) {
-            array_push($about_us_array, $about);
-        }
+        // foreach ($about_us as $about) {
+        //     array_push($about_us_array, $about);
+        // }
 
-        $about = $about_us_array[0];
-        View::share('site', $about);
+        // $about = $about_us_array[0];
+        // View::share('site', $about);
 
-        $this->get_page_locale();
-        $url_afret_locale = $this->url_after_locale();
-        // dd($url_afret_locale);
-        View::share('url_afret_locale', $url_afret_locale);
 
-        $url_curent = $this->get_locale_url();
+
+
+        // $this->get_page_locale();
+        // $url_afret_locale = $this->url_after_locale();
+        // View::share('url_afret_locale', $url_afret_locale);
+
+        // $url_curent = $this->get_locale_url();
         
     }
 

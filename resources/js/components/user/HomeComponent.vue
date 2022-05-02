@@ -4,18 +4,16 @@
 
         <div class="container top_menu_margin">
             <div class="container bootstrap snippet mt-5 ">
-                <div class="row">
-                    <div class="col-sm-3">
+                <!-- <div class="row"> -->
 
+                    <!-- <div class="col-sm-3">
                         <leftMenu />
+                    </div>
+                    <div class="col-sm-9"> -->
+                        <router-view />
+                    <!-- </div> -->
 
-                    </div>
-                    <div class="col-sm-9">
-                        <!-- <div class="container top_menu_margin h-recent-work"> -->
-                            <router-view />
-                        <!-- </div> -->
-                    </div>
-                </div>
+                <!-- </div> -->
             </div>
         </div>
 
@@ -26,7 +24,7 @@
 
 <script>
     import navbar from './items/NavbarComponent'
-    import leftMenu from './items/LeftMenuComponent'
+    // import leftMenu from './items/LeftMenuComponent'
     // import footter from './items/FooterComponent'
 
     export default {
@@ -39,10 +37,15 @@
         },
         components: {
             navbar,
-            leftMenu,
+            // leftMenu,
             // footter,
         },
         mounted() {
-        }
+        },
+        watch: {
+            '$route' (to, from) {
+                window.scrollTo(0,0)
+            }
+        },
     }
 </script>

@@ -20,7 +20,7 @@ class SwiperController extends Controller
         $full_image = '';
         $image = '';
 
-        $gallery_images = Gallery::where('category', '=', 1)->get();
+        $gallery_images = Gallery::where('category', '=', 1)->where('published', '=', 1)->get();
         $image_url = config('app.url').'/images/gallery_img/';
 
         foreach ($gallery_images as $gallery_img) {

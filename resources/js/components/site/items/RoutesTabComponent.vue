@@ -50,18 +50,22 @@
                         <td>{{__ ('route_tab bolts')}}</td>
                         <td>{{__ ('route_tab grade fr')}}</td>
                         <td class="display-none-720px">{{__ ('route_tab grade yds')}}</td> 
+                        <td>Info</td> 
                     </tr>
                 </tbody>
                     <tbody>
                         <tr v-for="route in area.routes" :key="route.id"> 
                             <td>{{ route.num }}</td>
-                            <td>{{ route.name }}</td>
+                            <td @click="show_route_model()">{{ route.name }}</td>
                             <td>{{ route.height }}</td>
                             <td>{{ route.bolts }}</td>
                             <td v-if="route.or_grade_fr != NULL">{{ route.grade_fr }}/{{ route.or_grade_fr }}</td>
                             <td v-else>{{ route.grade_fr }}</td>
                             <td class="display-none-720px" v-if="route.or_grade_yds != NULL">{{ route.grade_yds }}/{{route.or_grade_yds}}</td>
                             <td class="display-none-720px" v-else>{{ route.grade_yds }}</td>
+                            <td  @click="show_route_model()">
+                                <a style="margin-top: -5%; font-size: 120%;"><i class="fa fa-info" aria-hidden="true"></i></a>
+                            </td>
                         </tr>
                     </tbody>
             </table>
@@ -73,7 +77,7 @@
                 </div>
                 
                 <div class='col-md-4'>
-                    <a href="#" data-toggle="modal" data-target="#squarespaceModal_mtp_info_">
+                    <a @click='show_mtp_madel()' data-toggle="modal" data-target="#squarespaceModal_mtp_info_">
                     <h4><strong>More information</strong></h4>
                     </a>
                 </div>
@@ -104,30 +108,96 @@
                 </table>
             </div>
         </div>
+
+
+        <!-- <stack-modal
+            :show="show_route_modal"
+            title="Route"
+            @close="show_route_modal=false"
+            :modal-class="{ [ModalClass]: true }"
+            :saveButton="{ visible: true }"
+            :cancelButton="{ title: 'Close', btnClass: { 'btn btn-primary': true } }">
+            <div class="model-body">
+                <div class="container">
+                    <div class="row">
+                        it is your route model
+                    </div>
+                    <div class="row">
+                        <h2 class="text-center">Posts</h2>
+                    </div>
+                </div>
+            </div>
+            <div slot="modal-footer">
+                <div class="modal-footer">
+                    footer
+                </div>
+            </div>
+        </stack-modal>
+
+        <stack-modal
+                :show="show_mtp_modal"
+                title="Molty pitch"
+                @close="show_mtp_modal=false"
+                :modal-class="{ [modalClass]: true }"
+                :saveButton="{ visible: true, title: 'Save', btnClass: { 'btn btn-primary': true } }"
+                :cancelButton="{ visible: false, title: 'Close', btnClass: { 'btn btn-danger': true } }"
+            >
+            <div class="model-body">
+                <div class="container">
+                    <div class="row">
+                        it is your mtp model
+                    </div>
+                    <div class="row">
+                        <h2 class="text-center">Posts</h2>
+                    </div>
+                </div>
+            </div>
+            <div slot="modal-footer">
+                <div class="modal-footer">
+                    footer
+                </div>
+            </div>
+        </stack-modal> -->
+
+
     </div>
 </template>
 
 <script>
-    import StackModal from '@innologica/vue-stackable-modal'  //https://innologica.github.io/vue-stackable-modal/#sample-css
     import VueExpandableImage from 'vue-expandable-image' //https://github.com/TahaSh/vue-expandable-image
+    // import { SlickList, SlickItem } from 'vue-slicksort'; //https://github.com/Jexordexan/vue-slicksort
+    // import StackModal from '@innologica/vue-stackable-modal'  //https://innologica.github.io/vue-stackable-modal/#sample-css
+    // import StackModal from '../../../src/components/StackModal'
 
     export default {
+        components: {
+            // SlickItem,
+            // SlickList,
+            // StackModal,
+            VueExpandableImage
+        },
         props: [
             'article_id',
         ],
         data: function () {
             return {
-                climbing_area: []
+                climbing_area: [],
+
+                show_route_modal: false,
+                show_mtp_modal: false,
+                modalClass: '',
             };
-        },
-        components: {
-            StackModal,
-            VueExpandableImage
         },
         mounted() {
             this.get_outdoor_routes()
         },
         methods: {
+            show_route_model(id){
+                this.show_route_modal=true
+            },
+            show_mtp_madel(route_id){
+                this.show_mtp_modal=true
+            },
             get_outdoor_routes(){
                 axios
                 .get('../api/sector/' + this.article_id)
@@ -140,16 +210,33 @@
         }
     }
 </script>
+<style>
+    /* @import "https://stackpath.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"; */
+</style>
 
-<style scoped>
-    .modal-dialog {
-        /* right: auto; */
-        /* left: 50%; */
-        /* width: 600px; */
-        /* padding-top: 30px; */
-        /* padding-bottom: 30px; */
-        margin-top: 50%;
+<style lang="scss">
+    .fade {
+        opacity: 1;
+        background: #000000a3 !important;
     }
+    body.modal-open{
+        margin-right: 0;
+    }
+    .modal-dialog {
+        margin-top: 15em;
+    }
+    @media screen and (min-width: 768px){
+        .modal-dialog {
+            width: 75% !important;
+        }
+    }
+    .modal-footer {
+        text-align: left;
+    }
+
+
+
+
     .sector_images{
         float: left;
         margin: 0.25%;

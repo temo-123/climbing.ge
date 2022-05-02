@@ -38,4 +38,30 @@ class LoginController extends Controller
     {
         $this->middleware('guest')->except('logout');
     }
+
+    // public function login(Request $request){
+    //     $fields = $request->validate([
+    //         'email'=>'required|string|email',
+    //         'password' =>'required|confirmed'
+    //     ]);
+    //     //check email
+    //     $user = User::where('email',$fields['email'])->first();
+    //     //check password
+    //     if(!$user || !Hash::check($fields['password'],$user->password)){
+    //         return response(['status'=>false,'message'=>'invalid email or password'],401);
+    //     }
+
+    //     //create token
+    //     $token = $user->createToken('myapptoken')->plainTextToken;
+
+    //     $response = [
+    //         'status'=>true,
+    //         'message'=>'Login successful!',
+    //         'data' =>[
+    //             'user'=>$user,
+    //             'token'=>$token
+    //         ]
+    //     ];
+    //     return response($response,201);
+    // }
 }

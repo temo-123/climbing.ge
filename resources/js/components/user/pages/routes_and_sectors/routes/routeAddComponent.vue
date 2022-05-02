@@ -205,7 +205,7 @@ export default {
   methods: {
     get_region_data: function(){
       axios
-      .get("../routes_and_sectors/get_region_data")
+      .get("../api/article/")
       .then(response => {
         this.regions = response.data
       })
@@ -215,7 +215,7 @@ export default {
     },
     get_sectors_data: function(){
       axios
-      .get("../routes_and_sectors/get_sector_data")
+      .get("../api/sector/")
       .then(response => {
         this.sectors = response.data
       })

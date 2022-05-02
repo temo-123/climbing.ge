@@ -235,15 +235,7 @@
                         </div>
                     </div>
 
-                    <hr>
-
-                    <div class="form-group clearfix">
-                        <label for="name" class='col-xs-2 control-label'> Meta keyword </label>
-                        <div class="col-xs-8">
-                            <!-- <input type="text" name="value name" value="old data" class="form-control"> -->
-                            <input type="text" name="meta_keyword" value="meta_keyword" v-model="us_meta_keyword"  class="form-control"> 
-                        </div>
-                    </div>
+                    
 
                 </form>
             </div>
@@ -293,17 +285,6 @@
                     </div>
 
 
-                    <hr>
-
-
-                    <div class="form-group clearfix">
-                        <label for="name" class='col-xs-2 control-label'> Meta keyword </label>
-                        <div class="col-xs-8">
-                            <!-- <input type="text" name="value name" value="old data" class="form-control"> -->
-                            <input type="text" name="meta_keyword" value="meta_keyword"  v-model="ru_meta_keyword" class="form-control"> 
-                        </div>
-                    </div>
-
                 </form>
             </div>
 
@@ -348,16 +329,6 @@
                             <div class="alert alert-danger" role="alert" v-if="ka_article_error.ka_text">
                                 {{ ka_article_error.ka_text[0] }}
                             </div>
-                        </div>
-                    </div>
-
-                    <hr>
-
-                    <div class="form-group clearfix">
-                        <label for="name" class='col-xs-2 control-label'> Meta keyword </label>
-                        <div class="col-xs-8">
-                            <!-- <input type="text" name="value name" value="old data" class="form-control"> -->
-                            <input type="text" name="meta_keyword"  v-model="ka_meta_keyword" class="form-control"> 
                         </div>
                     </div>
 

@@ -5,7 +5,7 @@
                     <div class="site_title">
                         <!-- <a :href="MIX_APP_SSH + 'shop.' + MIX_SITE_URL+'/catalog'" class="site_title">name</a> -->
                         <!-- <router-link :class="'site_title'" :to="{name: 'home'}"> name </router-link> -->
-                        <router-link style="font-size: 1.5em;" :to="{name: 'catalog'}" exact class="site_title">{{__ ('shop name')}}</router-link>
+                        <router-link style="font-size: 1.5em;" :to="{name: 'catalog'}" exact class="site_title">{{ $t('shop name')}}</router-link>
                     </div>
                 </div>
                 <div class="col-xs-12 col-sm-10 col-md-9 col-lg-9">
@@ -41,6 +41,9 @@
                         <div class="collapse navbar-collapse mobile_nav_menu" id="bs-example-navbar-collapse-1">
                             <ul class="nav navbar-nav pull-right top_menu_buttons">
                                 
+                                <!-- <li><span> {{ $n(100, 'currency') }} </span> </li>
+                                <li><span> {{ $n(100, 'currency') }} </span> </li> -->
+
                                 <li><router-link :to="{name: 'catalog'}" exact> <span> products </span> </router-link></li>
                                 
                                 <!-- <li><a href="#">services</a></li> -->
@@ -81,6 +84,19 @@
                                 <li class="dropdown display-none-720px">
 
                                     <a data-toggle="dropdown">
+                                        <i class="fa fa-usd" aria-hidden="true"></i>
+                                    </a>
+
+                                    <ul class="dropdown-menu shadows" role="menu">
+                                        <li><a @click="currency('USD')"><i class="fa fa-usd" aria-hidden="true"></i></a></li>
+                                        <li><a @click="currency('EUR')"><i class="fa fa-eur" aria-hidden="true"></i></a></li>
+                                        <li><a @click="currency('GEL')"><font-awesome-icon icon="fa-solid fa-lari-sign" />lari</a></li>
+                                    </ul>
+                                </li>
+
+                                <!-- <li class="dropdown display-none-720px">
+
+                                    <a data-toggle="dropdown">
                                         <i class="fa fa-language" aria-hidden="true"></i>
                                     </a>
 
@@ -89,7 +105,9 @@
                                         <li><a  @click="localization('ka')"><img style="width: 50%; margin-left: 25%;" :src="'images/site_img/leng/ka.webp'" alt="ka"></a></li>
                                         <li><a  @click="localization('ru')"><img style="width: 50%; margin-left: 25%;" :src="'images/site_img/leng/ru.png'" alt="ru"></a></li>
                                     </ul>
-                                </li>
+                                </li> -->
+
+                                <locale />
                                 
                                 <li class="display-none-720px">
                                     <a style="margin-top: -5%; font-size: 120%;" @click="goTo('/')">
@@ -106,7 +124,7 @@
 </template>
 
 <script>
-
+    import locale from '../../global_components/LocaleChangeComponent.vue'
     export default {
         data: function () {
             return {
@@ -117,6 +135,7 @@
             };
         },
         components: {
+            locale,
         },
         mounted() {
         },
@@ -129,7 +148,10 @@
             },
             goTo(page){
                 window.location.href = this.MIX_APP_SSH + 'user.' + this.MIX_SITE_URL + page ;
-            }
+            },
+            currency(cur){
+                localStorage.setItem('currency', cur)
+            },
         }
     }
 </script>

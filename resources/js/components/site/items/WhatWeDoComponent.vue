@@ -5,8 +5,8 @@
                 <li>
                     <h4>
                         <a href=" route('outdoor_list') }}">
-                            <strong>{{__ ('title outdoor climbing')}}</strong>
-                            <img alt='outdoor climbing image' class="index_category_right" src="images/site_img/logo/outdoor.png">
+                            <strong>{{ $t('title outdoor climbing')}}</strong>
+                            <img alt='outdoor climbing image' class="index_category_right" src="images/site_img/logo/outdoor.png" height="auto">
                         </a>
                     </h4>
 
@@ -18,7 +18,7 @@
                 <li>
                     <h4>
                         <a href=" route('indoor_list') }}">
-                            <strong>{{__ ('title indoor climbing')}}</strong>
+                            <strong>{{ $t('title indoor climbing')}}</strong>
                             <img alt='indoor climbing image' class="index_category_right" src="images/site_img/logo/indoor.png">
                         </a>
                     </h4>
@@ -34,8 +34,8 @@
                 <li>
                     <h4>
                         <a href=" route('ice_list') }}">
-                            <strong>{{__ ('title ice climbing')}}</strong>
-                            <img alt='indoor climbing image' class="index_category_left" src="images/site_img/logo/indoor.png">
+                            <strong>{{ $t('title ice climbing')}}</strong>
+                            <img alt='indoor climbing image' class="index_category_left" src="images/site_img/logo/ice.png">
                         </a>
                     </h4>
 
@@ -47,7 +47,7 @@
                 <li>
                     <h4>
                         <a href=" route('mount_list') }}">
-                            <strong>{{__ ('title mountaineering')}}</strong>
+                            <strong>{{ $t('title mountaineering')}}</strong>
                             <img alt='mountaineering image' class="index_category_left" src="images/site_img/logo/mount.png">
                         </a>
                     </h4>

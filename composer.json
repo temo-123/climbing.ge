@@ -1,29 +1,33 @@
 {
-    "name": "laravel/laravel",
-    "type": "project",
-    "description": "The Laravel Framework.",
+    "name": "climbing.ge",
+    "type": "web app",
+    "description": "Service climbing.ge",
     "keywords": [
-        "framework",
-        "laravel"
+        "climbing.ge",
+        "laravel",
+        "vue"
     ],
     "license": "MIT",
     "require": {
-        "php": "^7.2.5|^8.0",
-        "fideloper/proxy": "^4.2",
-        "fruitcake/laravel-cors": "^1.0",
-        "guzzlehttp/guzzle": "^6.3",
-        "intervention/image": "^2.5",
-        "laravel/framework": "^7.0",
-        "laravel/socialite": "^5.0",
-        "laravel/tinker": "^2.0",
-        "laravel/ui": "^2.1"
+        "php": "^8.0",
+        "fideloper/proxy": "^4.4",
+        "fruitcake/laravel-cors": "^2.0",
+        "guzzlehttp/guzzle": "^7.0.1",
+        "intervention/image": "^2.7",
+        "laravel/framework": "^8.0",
+        "laravel/horizon": "^5.9",
+        "laravel/sanctum": "^2.15",
+        "laravel/socialite": "^5.5",
+        "laravel/tinker": "^2.5",
+        "laravel/ui": "^3.4",
+        "predis/predis": "^1.1"
     },
     "require-dev": {
-        "facade/ignition": "^2.0",
-        "fzaninotto/faker": "^1.9.1",
+        "facade/ignition": "^2.3.6",
+        "fakerphp/faker": "^1.9.1",
         "mockery/mockery": "^1.3.1",
-        "nunomaduro/collision": "^4.1",
-        "phpunit/phpunit": "^8.5"
+        "nunomaduro/collision": "^5.0",
+        "phpunit/phpunit": "^9.0"
     },
     "config": {
         "optimize-autoloader": true,

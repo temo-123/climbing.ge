@@ -79,7 +79,16 @@ class OtherController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $activ_article = Article::where('id', '=', $id)->first();
+        $global_other_articles = Article::limit(6)->
+                                        latest('id')->
+                                        where('category', '=', $activ_article->category)->
+                                        where('id', '!=', $activ_article->id)->
+                                        where('published', '=', 1)->
+                                        get();
+        $other_articles = GetArticlesService::get_locale_article($global_other_articles);
+
+        return $other_articles;
     }
 
     /**

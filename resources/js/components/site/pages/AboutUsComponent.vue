@@ -20,7 +20,7 @@
                         </div>
                     </div>
 
-                    <div class="row">
+                    <!-- <div class="row">
                         <div class="col-md-12 col-sm-12 col-xs-12">
                             <hr>
                             <div class="about_us_page_shop_section">
@@ -34,15 +34,12 @@
                                 <span v-html="this.$siteData.shop_description"></span>
                             </div>
                         </div>
-                    </div>
+                    </div> -->
                 </div>
-                        
-                <!-- {{-- <div class="clearfix"></div> --}} -->
-                    
             </div>
         </div>
         
-        <!--Message-->
+        <servicesListComponent />
         
         <messageComponent />
 
@@ -50,14 +47,16 @@
 </template>
 
 <script>
-    import messageComponent from '../items/MessageComponent'
+    import servicesListComponent from '../../global_components/ServicesListComponent.vue'
+    import messageComponent from '../../global_components/MessageComponent'
     export default {
         data: function () {
             return {
             };
         },
         components: {
-            messageComponent
+            messageComponent,
+            servicesListComponent
         },
         mounted() {
         },

@@ -195,11 +195,11 @@
                         <div class="form-group clearfix row">
                             <div class="col-md-12 image_add_modal_form">
                                 <select class="form-control" name="filter" v-model="filter">
-                                        <option value="climbing">climbing</option> 
-                                        <option value="sleckline">sleckline</option> 
-                                        <option value="zipline">zipline</option> 
-                                        <option value="mountaineering">mountaineering</option> 
-                                        <option value="sky">sky</option> 
+                                    <option value="climbing">climbing</option> 
+                                    <option value="sleckline">sleckline</option> 
+                                    <option value="zipline">zipline</option> 
+                                    <option value="mountaineering">mountaineering</option> 
+                                    <option value="sky">sky</option> 
                                 </select> 
                             </div>
                         </div>
@@ -336,7 +336,7 @@
             },
 
             filtr_images(){
-                alert('test')
+                // alert('test')
             },
 
             add_image(){
