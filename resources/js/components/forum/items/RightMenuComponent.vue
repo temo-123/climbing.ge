@@ -1,8 +1,19 @@
 <template>
     <aside class="col-md-4 blog-sidebar">
-        <div class="p-3 mb-3 bg-light rounded">
-            <h4 class="font-italic">About</h4>
-            <p class="mb-0">Etiam porta <em>sem malesuada magna</em> mollis euismod. Cras mattis consectetur purus sit amet fermentum. Aenean lacinia bibendum nulla sed consectetur.</p>
+
+        <div class="p-3">
+            <h4 class="font-italic">Filters</h4>
+            <ol class="list-unstyled mb-0" >
+                <li v-for="topic in topics" :key="topic.id"><a href="#">{{ topic.name_us }}</a></li>
+            </ol>
+            <ol class="list-unstyled mb-0">
+                <li><a href="#">All users</a></li>
+                <li><a href="#">Only folowing users</a></li>
+            </ol>
+            <ol class="list-unstyled mb-0">
+                <li><a href="#">All users</a></li>
+                <li><a href="#">Only folowing users</a></li>
+            </ol>
         </div>
 
         <div class="p-3">
@@ -30,13 +41,50 @@
                 <li><a href="#">Login</a></li>
             </ol>
         </div>
+
+        <!-- <div class="p-3">
+            <ol class="list-unstyled">
+                <li>
+                    <img :src="'images/site_img/place-your-ads-here.jpg'" alt="place-your-ads-here" style="width: 60%">
+                </li>
+                <li v-else>
+                    {{this.$siteData.title}}
+                </li>
+            </ol>
+        </div> -->
+
+        <rightAd />
+
     </aside>
 </template>
 
 <script>
-export default {
-
-}
+    export default {
+        components: {
+            // tabsComponent ,
+            // leftMenu,
+        },
+        data(){
+            return {
+                topics: [],
+            }
+        },
+        mounted() {
+            this.get_topics()
+        },
+        methods: {
+            get_topics(){
+                axios
+                .get("../api/posts_topic/")
+                .then(response => {
+                    this.topics = response.data
+                })
+                .catch(
+                    error => console.log(error)
+                );
+            },
+        }
+    }
 </script>
 
 <style>

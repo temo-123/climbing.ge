@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
 use App\Models\Post;
+use App\User;
 
 class PostController extends Controller
 {
@@ -16,7 +17,13 @@ class PostController extends Controller
      */
     public function index()
     {
-        return Post::get();
+        $posts = Post::get();
+        $resp = [];
+        foreach ($posts as $post) {
+            $user = User::where('id','=',$post->user_id)->get();
+            array_push($resp, ["post"=>$post, "user"=>$user[0]]);
+        }
+        return $resp;
     }
 
     /**

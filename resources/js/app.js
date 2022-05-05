@@ -1,6 +1,10 @@
 import Vue from 'vue';
 require('./bootstrap');
 
+
+/*
+*   Using pakets
+*/
 import Carousel3d from 'vue-carousel-3d';
 import CKEditor from 'ckeditor4-vue';
 import Router from 'vue-router'
@@ -9,10 +13,6 @@ import VueExpandableImage from 'vue-expandable-image'
 import Vuex from 'vuex';
 import axios from 'axios';
 
-import leftmenu from './components/user/items/LeftMenuComponent.vue'
-
-Vue.component('left-menu', leftmenu)
-
 Vue.use(Vuex);
 Vue.use(axios)
 Vue.use(VueExpandableImage)
@@ -20,6 +20,21 @@ Vue.use(VueMeta)
 Vue.use(Carousel3d);
 Vue.use(CKEditor);
 Vue.use(Router)
+
+
+/*
+*   My components
+*/
+
+import leftmenu from './components/user/items/LeftMenuComponent.vue'
+import goTo from './components/global_components/GoToComponrnt.vue'
+import footerAd from './components/global_components/ad/FooterAdBlockComponent.vue'
+import rightAd from './components/global_components/ad/RightAdBlockComponent.vue'
+
+Vue.component('left-menu', leftmenu)
+Vue.component('goTo', goTo)
+Vue.component('footerAd', footerAd)
+Vue.component('rightAd', rightAd)
 
 // import {Lang} from 'laravel-vue-lang'; // https://www.npmjs.com/package/laravel-vue-lang
 
@@ -91,6 +106,7 @@ else if (window.location.hostname == 'forum.climbing.loc') {
 
 
 Vue.prototype.$siteData = [];
+
 const app = new Vue({
     el: '#app',
     i18n,

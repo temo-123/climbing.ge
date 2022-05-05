@@ -31,7 +31,6 @@ class UsersController extends Controller
 
     public function follow(Request $request)
     {
-        // dd($request);
         Validator::make($request, [
             'email' => 'required', 'string', 'email', 'max:255', 'unique:users',
         ]);

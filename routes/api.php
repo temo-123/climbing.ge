@@ -22,6 +22,10 @@ use Illuminate\Support\Facades\Route;
 //     return $request->user();
 // });
 
+Route::get('login/{provider}/callback','Auth\SocialController@Callback');
+Route::get('login/{provider}', 'Auth\SocialController@redirect');
+
+
 Route::middleware('auth:sanctum')->get('token', function () {
     return auth()->user()->createToken('authToken')->plainTextToken;
 });
@@ -68,6 +72,7 @@ Route::group(['namespace'=>'Api'], function() {
     Route::apiResource('/MTPPitch', 'MTPPitchController');
 
     Route::apiResource('/users', 'UsersController');
+    Route::get('/post_user/{user_id}', 'UsersController@get_post_user');
     Route::get('/following_users_list', 'UsersController@get_following_users_list');
     Route::post('/follow/{service_id}', 'UsersController@follow');
 
@@ -80,7 +85,7 @@ Route::group(['namespace'=>'Api'], function() {
     Route::apiResource('/post', 'PostController');
     Route::apiResource('/posts_topic', 'PostsTopicController');
 
-    Route::apiResource('/temporary_article', 'TemporaryArticleController');
+    // Route::apiResource('/temporary_article', 'TemporaryArticleController');
 
     Route::apiResource('/productSearch', 'ProductsSearchController');
     Route::apiResource('/articleSearch', 'ArticlesSearchController');

@@ -5,8 +5,9 @@
                 <div class="row">
                     <div class="col-md-12 col-sm-12 col-xs-12">
                         <div class="aboutus">
+                            <h1 class="text-center">Georgian climbing forum</h1>
 
-                            <span v-html="this.$siteData.shop_description"></span>
+                            <span v-html="this.$siteData.forum_description_us"></span>
                             
                         </div>
                     </div>

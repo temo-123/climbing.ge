@@ -1,6 +1,7 @@
 <template>
     <div class="footer"> 
         <div class="container"> 
+            <footerAd />
             <div class="row">
 
                 <div class="col-md-4 display-none-720px">

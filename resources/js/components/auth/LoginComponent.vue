@@ -6,17 +6,17 @@
       </div>
       <div class="row mt-2">
         <div class="col-md-4 text-center">
-          <button type="button" class="btn btn-danger">
+          <button type="button" class="btn btn-danger" @click="social_login('google')">
             <i class="fa fa-google-plus" aria-hidden="true"></i>
           </button>
         </div>
         <div class="col-md-4 text-center">
-          <button type="button" class="btn btn-primary">
+          <button type="button" class="btn btn-primary" @click="social_login('facebook')">
             <i class="fa fa-facebook" aria-hidden="true"></i>
           </button>
         </div>
         <div class="col-md-4 text-center">
-          <button type="button" class="btn btn-info">
+          <button type="button" class="btn btn-info" @click="social_login('twitter')">
             <i class="fa fa-twitter" aria-hidden="true"></i>
           </button>
         </div>
@@ -75,7 +75,10 @@
         email: null,
         password: null,
         errors: [],
-        email_errors: null
+        email_errors: null,
+
+        MIX_USER_PAGE_URL: process.env.MIX_USER_PAGE_URL,
+        MIX_APP_SSH: process.env.MIX_APP_SSH
       };
     },
     mounted() {
@@ -84,6 +87,9 @@
     //     this.csrfToken = document.querySelector('meta[name="csrf-token"]').content;
     // },
     methods: {
+      social_login(service){
+        window.location.href = `api/login/${service}`
+      },
       login(){
         axios
           .get('/sanctum/csrf-cookie')

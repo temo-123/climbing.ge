@@ -4,9 +4,6 @@ use Illuminate\Support\Facades\Route;
 
 Route::group(['prefix' => LocalisationService::locale(),'middleware' => 'setLocale'], function() {
 
-    // Route::get('login/{provider}/callback','Auth\SocialController@Callback');
-    // Route::get('login/{provider}', 'Auth\SocialController@redirect');
-    
     // Route::get('/redirect', 'Auth\SocialAuthFacebookController@redirectFacebook');
     // Route::get('/callback', 'Auth\SocialAuthFacebookController@facebookCallback');
 

@@ -109,11 +109,7 @@
 
                                 <locale />
                                 
-                                <li class="display-none-720px">
-                                    <a style="margin-top: -5%; font-size: 120%;" @click="goTo('/')">
-                                        <i class="fa fa-user-circle"></i>
-                                    </a>
-                                </li>
+                                <goTo :go_to_page="'/productsList'" />
                                 
                             </ul>
                         </div>
@@ -129,9 +125,9 @@
         data: function () {
             return {
                 search_query: '',
-                MIX_SITE_URL: process.env.MIX_SITE_URL,
-                MIX_APP_SSH: process.env.MIX_APP_SSH,
-                MIX_SHOP_URL: process.env.MIX_SHOP_URL
+                // MIX_SITE_URL: process.env.MIX_SITE_URL,
+                // MIX_APP_SSH: process.env.MIX_APP_SSH,
+                // MIX_SHOP_URL: process.env.MIX_SHOP_URL
             };
         },
         components: {
@@ -146,9 +142,9 @@
             localization(leng){
                 window.location.href = leng;
             },
-            goTo(page){
-                window.location.href = this.MIX_APP_SSH + 'user.' + this.MIX_SITE_URL + page ;
-            },
+            // goTo(page){
+            //     window.location.href = this.MIX_APP_SSH + 'user.' + this.MIX_SITE_URL + page ;
+            // },
             currency(cur){
                 localStorage.setItem('currency', cur)
             },

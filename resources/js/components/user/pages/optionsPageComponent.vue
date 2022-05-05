@@ -26,8 +26,8 @@
                                     <div class="col-xs-12">
                                         <div class="row">
                                             <div class="col-md-6 col-sm-12 img">
-                                                <img v-if="this.user.image == null" :src="'/public/images/user_img/user_demo_img/user_demo_img.gif'" class="rounded mx-auto d-block user_demo_img"  alt="user image">
-                                                <img v-else :src="'/public/images/user_img/user_demo_img/' + this.user.image" class="rounded mx-auto d-block user_demo_img"  alt="user image">
+                                                <img v-if="this.user.image == null" :src="'/public/images/user_img/user_demo_img.gif'" class="rounded mx-auto d-block user_demo_img"  alt="user image">
+                                                <img v-else :src="'/public/images/user_img/' + this.user.image" class="rounded mx-auto d-block user_demo_img"  alt="user image">
                                             </div>
                                             <div class="col-md-6 col-sm-12 details">
                                                 <p>Name - {{this.user.name}}</p>

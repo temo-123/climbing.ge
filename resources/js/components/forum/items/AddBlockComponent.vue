@@ -1,6 +1,6 @@
 <template>
     <div class="col-md-12">
-        <div class="row">
+        <div class="row" v-if="localStorage.getItem('user') == 'are login'">
             <div class="col-md-4 col-md-offset-1 text-center add_button">
                 <div class="row service_icon" @click="open_image_modal()">
                     <i class="fa fa-camera" aria-hidden="true"></i>
@@ -16,6 +16,16 @@
                 </div>
             </div>
         </div>
+
+        <div class="row" v-else>
+            <div class="col-md-4 col-md-offset-2 text-center">
+                <button class="btn btn-primary">Login</button>
+            </div>
+            <div class="col-md-4 text-center">
+                <button class="btn btn-primary">Register</button>
+            </div>
+        </div>
+
         <hr style="margin-top: 5%">
 
         <stack-modal
@@ -58,6 +68,11 @@
                 add_image_modal: false,
                 add_post_modal: false,
                 modalClass: '',
+            }
+        },
+        mounted() {
+            if (process.browser){
+                localStorage.getItem("user")
             }
         },
         methods: {

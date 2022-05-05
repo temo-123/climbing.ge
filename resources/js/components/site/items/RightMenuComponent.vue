@@ -31,6 +31,8 @@
                 </li>
             </ul>
         </nav>
+
+        <rightAd />
       
         <!-- <div class="container clearfix">
             <vue-sticky-sidebar class="sidebar" containerSelector=".container" innerWrapperSelector='.sidebar__inner'>

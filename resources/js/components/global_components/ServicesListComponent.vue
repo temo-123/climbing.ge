@@ -7,7 +7,7 @@
             </div>
         </div>
         <div class="col-md-12">
-            <div class="col-md-3 text-center">
+            <div class="col-md-4 text-center">
                 <div class="row service_icon">
                     <i class="fa fa fa-map" aria-hidden="true"></i>
                 </div>
@@ -16,7 +16,7 @@
                     <p>text</p>
                 </div>
             </div>
-            <div class="col-md-3 text-center">
+            <div class="col-md-4 text-center">
                 <div class="row service_icon">
                     <i class="fa fa-shopping-bag" aria-hidden="true"></i>
                 </div>
@@ -25,7 +25,7 @@
                     <p>text</p>
                 </div>
             </div>
-            <div class="col-md-3 text-center">
+            <div class="col-md-4 text-center">
                 <div class="row service_icon">
                     <i class="fa fa-handshake-o" aria-hidden="true"></i>
                 </div>
@@ -34,7 +34,7 @@
                     <p>text</p>
                 </div>
             </div>
-            <div class="col-md-3 text-center">
+            <!-- <div class="col-md-3 text-center">
                 <div class="row service_icon">
                     <i class="fa fa-video-camera" aria-hidden="true"></i>
                 </div>
@@ -42,7 +42,7 @@
                     <h2>Climbing Films</h2>
                     <p>text</p>
                 </div>
-            </div>
+            </div> -->
         </div>
     </div>
 </template>

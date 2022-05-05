@@ -1,74 +1,92 @@
 <template>
-  <!-- <div class="col-lg-8 offset-lg-3"> -->
   <div class="col-lg-8 col-md-offset-2 ">
-                        <div class="cardbox shadow-lg bg-white">
-                        
-                        <div class="cardbox-heading">
-                        <!-- START dropdown-->
-                        <div class="dropdown float-right">
-                        <!-- <button class="btn btn-flat btn-flat-icon" type="button" data-toggle="dropdown" aria-expanded="false">
-                            <em class="fa fa-ellipsis-h"></em>
-                        </button> -->
-                        <div class="dropdown-menu dropdown-scale dropdown-menu-right" role="menu" style="position: absolute; transform: translate3d(-136px, 28px, 0px); top: 0px; left: 0px; will-change: transform;">
-                            <a class="dropdown-item" href="#">Hide post</a>
-                            <a class="dropdown-item" href="#">Stop following</a>
-                            <a class="dropdown-item" href="#">Report</a>
-                        </div>
-                        </div><!--/ dropdown -->
-                        <div class="media m-0">
-                        <div class="d-flex mr-3">
-                            <a href=""><img class="img-fluid rounded-circle" src="http://www.themashabrand.com/templates/bootsnipp/post/assets/img/users/4.jpg" alt="User"></a>
-                        </div>
-                        <div class="media-body">
-                            <p class="m-0">Benjamin Robinson</p>
-                            <small><span><i class="icon ion-md-pin"></i> Nairobi, Kenya</span></small>
-                            <small><span><i class="icon ion-md-time"></i> 10 hours ago</span></small>
-                        </div>
-                        </div><!--/ media -->
-                        </div><!--/ cardbox-heading -->
-                        
-                        <div class="cardbox-item">
-                        <img class="img-fluid" src="http://www.themashabrand.com/templates/bootsnipp/post/assets/img/1.jpg" alt="Image">
-                        </div><!--/ cardbox-item -->
-                        <div class="cardbox-base">
-                        <!-- <ul class="float-right">
-                        <li><a><i class="fa fa-comments"></i></a></li>
-                        <li><a><em class="mr-5">12</em></a></li>
-                        <li><a><i class="fa fa-share-alt"></i></a></li>
-                        <li><a><em class="mr-3">03</em></a></li>
-                        </ul> -->
-                        <ul class="m-0">
-                            <li><a class="like_button"><i class="fa fa-thumbs-up"></i></a></li>
-                            <!-- <li><a href="#"><img src="http://www.themashabrand.com/templates/bootsnipp/post/assets/img/users/3.jpeg" class="img-fluid rounded-circle" alt="User"></a></li>
-                            <li><a href="#"><img src="http://www.themashabrand.com/templates/bootsnipp/post/assets/img/users/1.jpg" class="img-fluid rounded-circle" alt="User"></a></li>
-                            <li><a href="#"><img src="http://www.themashabrand.com/templates/bootsnipp/post/assets/img/users/5.jpg" class="img-fluid rounded-circle" alt="User"></a></li>
-                            <li><a href="#"><img src="http://www.themashabrand.com/templates/bootsnipp/post/assets/img/users/2.jpg" class="img-fluid rounded-circle" alt="User"></a></li> -->
-                            <li><a><span>242 Likes</span></a></li>
-                        </ul>			   
-                        </div>
-                        <div class="cardbox-comments">
-                        <span class="comment-avatar float-left">
-                        <a href=""><img class="rounded-circle" src="http://www.themashabrand.com/templates/bootsnipp/post/assets/img/users/6.jpg" alt="..."></a>                            
-                        </span>
-                        <div class="search">
-                        <input placeholder="Write a comment" type="text">
-                        <!-- <button><i class="fa fa-camera"></i></button> -->
-                        </div>
-                        </div>			  
-                                
-                        </div>
+    <div class="cardbox shadow-lg bg-white" v-for="post in posts" :key="post.id">
+      <div class="cardbox-heading">
+        <!-- <div class="dropdown float-right">
+          <div class="dropdown-menu dropdown-scale dropdown-menu-right" role="menu" style="position: absolute; transform: translate3d(-136px, 28px, 0px); top: 0px; left: 0px; will-change: transform;">
+            <a class="dropdown-item" href="#">Hide post</a>
+            <a class="dropdown-item" href="#">Stop following</a>
+            <a class="dropdown-item" href="#">Report</a>
+          </div>
+        </div> -->
+        <div class="media m-0">
+          <div class="d-flex mr-3">
+            <a href="">
+              <img class="img-fluid rounded-circle" v-if="post['user'].image" :src="'/public/images/user_img/user_demo_img.gif'" :alt="post['user'].name + ' ' + post['user'].surname">
+              <img class="img-fluid rounded-circle" v-else :src="'/public/images/site_img/user_demo_img.gif'" :alt="post['user'].name + ' ' + post['user'].surname">
+            </a>
+          </div>
+          <div class="media-body">
+            <p class="m-0">{{post['user'].name + ' ' + post['user'].surname}}</p>
+            <small><span v-if="post['user'].city || post['user'].country">{{post['user'].city + ', ' + post['user'].country}}</span></small>
+            <small><span v-if="post.created_at" >{{ post['post'].created_at }}</span></small>
+          </div>
+        </div>
+      </div>
 
-                    </div>
+      <div class="cardbox-item"  v-if="post['post'].text">
+        <p style="background-color: #eee;text-align: center;font-size: 1.5em;">{{ post['post'].text }}</p>
+      </div>
+        
+      <div class="cardbox-item" v-if="post['post'].image">
+        <img class="img-fluid" src="http://www.themashabrand.com/templates/bootsnipp/post/assets/img/1.jpg" alt="Image">
+      </div>
+
+      <div class="cardbox-base">
+        <ul class="m-0">
+          <li><a class="like_button"><i class="fa fa-thumbs-up"></i></a></li>
+          <li><a><span>242 Likes</span></a></li>
+        </ul>			   
+      </div>
+
+      <div class="cardbox-comments">
+        <span class="comment-avatar float-left">
+          <a href="">
+            <img class="rounded-circle" src="http://www.themashabrand.com/templates/bootsnipp/post/assets/img/users/6.jpg" alt="...">
+          </a>                            
+        </span>
+        <!-- {{ this.$authUser }} -->
+        <!-- {{this.$siteData.title}} -->
+        <div class="search">
+          <input placeholder="Write a comment" type="text">
+        </div>
+      </div>
+    </div>
+
+  </div>
 </template>
 
 <script>
-export default {
-
-}
+    export default {
+        components: {
+            // 
+        },
+        data(){
+            return {
+                posts: [],
+                post_user_name: '',
+            }
+        },
+        mounted() {
+            this.get_postss()
+        },
+        methods: {
+            get_postss(){
+                axios
+                .get("../api/post/")
+                .then(response => {
+                    this.posts = response.data
+                })
+                .catch(
+                    error => console.log(error)
+                );
+            },
+        }
+    }
 </script>
 
 <style>
-   /*
+/*
 *
 * ===========================================================
 *     HERO SECTION  https://bootsnipp.com/snippets/VgkqV
@@ -265,24 +283,32 @@ text-align: center;
   text-align: center;
   width: 40px;
   height: 40px;
-  float: left;
+  /* float: left; */
 }
 .cardbox-comments .comment-body {
   overflow: auto;
 }
 .search {
- position: relative;
+ /* position: relative;
  right: -60px;
  top: -40px;
  margin-bottom: -40px;
  border: 2px solid #f4f4f4;	
  width: 100%;
- overflow: hidden;
+ overflow: hidden; */
+    position: relative;
+    right: -45px;
+    top: -40px;
+    margin-bottom: -34px;
+    border: 4px solid #f4f4f4;
+    width: 100%;
+    overflow: hidden;
+    margin-right: 68px;
 }
 .search input[type="text"] {
  background-color: #fff;
  line-height: 10px;
- padding: 15px 60px 20px 10px;
+ padding: 10px 60px 8px 10px;
  border: none;
  border-radius: 4px;
  width: 350px;

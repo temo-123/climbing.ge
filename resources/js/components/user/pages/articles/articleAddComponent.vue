@@ -208,15 +208,6 @@
                                 </div>
                             </form>
 
-                            <!-- <form @submit="upload_region_image" ref="sectorRegionImage" v-if="this.category == 'outdoor'">
-                                <div class="form-group clearfix row">
-                                    <label for="email" class='col-md-5 control-label'>Upload outdoor climbing area sector image:</label>
-                                    <div class="col-md-6">
-                                        <input type="file" name="region_sectors_img" id="region_sectors_img">
-                                    </div>
-                                </div>
-                            </form> -->
-
                             <form @submit="upload_mount_route_image" ref="mountRouteImage" v-if="this.category == 'mount_route'">
                                 <div class="form-group clearfix row">
                                     <label for="email" class='col-md-5 control-label'>Upload mount route image:</label>
@@ -240,32 +231,6 @@
                     <div class="row">
                         <div class="container">
                             <label for="email" class='col-md-12 control-label'>Upload outdoor climbing area sector image:</label>
-                            <!-- <div class="row">
-                                <div class="alert alert-danger" role="alert" v-if="image_errors.image">
-                                    {{ image_errors.image[0] }}
-                                </div>
-                                <div class="card"  v-if='myModal'>
-                                    <div class="card-header">
-                                        Add image
-                                    </div>
-                                    <div class="card-body">
-                                    <div class="row">
-                                        <div class="col-md-6">
-                                            <div class="form-group clearfix">
-                                            <button class="btn btn-primary" @click="add_spost_sectors_image(temporary_spost_sectors_id)">seve image</button>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6">    
-                                            <form @submit="add_spost_sectors_image(temporary_spost_sectors_id)"  ref="myForm">
-                                            <div class="form-group clearfix">
-                                                <input type="file" name="profile_pic" id="profile_pic" >
-                                            </div>
-                                            </form>
-                                        </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div> -->
 
                             <div class="container">
                                 <div class="alert alert-danger" role="alert" v-if="image_errors.image">
@@ -1077,7 +1042,9 @@
 
                 tab_num: 1,
                 category: this.$route.params.article_category,
-                editorConfig: null,
+                editorConfig: {
+                    // toolbar: [ [ 'Bold' ] ]
+                },
                 error: {
                     global_article_error: [],
                     ka_article_error: [],
@@ -1414,7 +1381,7 @@
     }
 </script>
 <style scoped>
-.tabs {
+    .tabs {
         /* display: flex; */
         flex-wrap: wrap;
     }
