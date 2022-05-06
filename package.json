@@ -89,7 +89,7 @@
     },
     "name": "climbing.loc",
     "description": "<p align=\"center\"><img src=\"/public/images/site_img/site_logo/climibng,ge(becground).jpg\" width=\"400\"></p>",
-    "version": "3.2.1",
+    "version": "3.5.1",
     "main": "tailwind.config.js",
     "directories": {
         "test": "tests"

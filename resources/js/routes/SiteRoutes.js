@@ -144,7 +144,7 @@ const router = new VueRouter({
 //     mode: 'history',
 // });
 
-router.beforeEach((to, from, next) => {
+// router.beforeEach((to, from, next) => {
 //     const locale = getLocale(to.params.locale);
 //     console.log(locale);
 //     store.dispatch('setLocale', locale);
@@ -159,10 +159,7 @@ router.beforeEach((to, from, next) => {
 //             i18n.locale = locale.code;
 //             next();
 //         });
-});
-
-
-
+// });
 
 
 export default router

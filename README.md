@@ -1,5 +1,6 @@
 <p align="center"><img src="/public/images/site_img/site_logo/climibng,ge(becground).jpg" width="400"></p>
 <h1 align="center">Welcome to climbing.ge opensource project</h1>
+<h5>Progect version 3.5.1</5>
 
 <p>Sercice climbing.ge is georgian rock climbing and mountaineering areas description and social netvork for your climbing ascent sheering. Alse ouer product onlain shop. in services we have 5 subdomain: climibng.ge, forum.climbing.ge, shop.climbing,ge, films.climbing.ge, user.climbing.ge. (All descriptions see down)</p>
 
@@ -57,7 +58,7 @@ For text editor use CkEdior4
 
 ## About Laravel
 
-For php backand use laravel 8 (updated from 7. 7 -> 8)
+For php backand use laravel 9 (Updated from 7 -> 8. Update from 8 -> 9)
     https://laravel.com/docs/8.x/releases (laravel documntation)
     https://laravel.com/docs/8.x/sanctum#api-token-authentication (Sanctum for SPA login)
 
