@@ -15,6 +15,15 @@ class CreateKaMountsTable extends Migration
     {
         Schema::create('ka_mounts', function (Blueprint $table) {
             $table->id();
+
+            $table->string('title')->nullable();
+            $table->string('short_description')->nullable();
+            $table->text('text')->nullable();
+            $table->text('how_get')->nullable();
+            $table->text('best_time')->nullable();
+            $table->text('what_need')->nullable();
+            $table->text('info')->nullable();
+            
             $table->timestamps();
         });
     }

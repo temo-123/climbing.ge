@@ -176,23 +176,23 @@ const router = new VueRouter({
 
 router.beforeEach((to, from, next)=>{
     // const token = localStorage.getItem('x_xsrf_token')
-    var token = '';
+    // var token = '';
 
-    axios
-    .get('/api/auth_user')
-    .then((response)=>{
+    // axios
+    // .get('/api/auth_user')
+    // .then((response)=>{
 
-    })
-    .catch(function (error) {
-        if (error.request.status === 401) {
-            if (localStorage.getItem("x_xsrf_token") !== null) {
-                localStorage.removeItem('x_xsrf_token');
-                location.reload();
-            }
-        }
-    });
+    // })
+    // .catch(function (error) {
+    //     // if (error.request.status === 401) {
+    //     //     if (localStorage.getItem("x_xsrf_token") !== null) {
+    //     //         localStorage.removeItem('x_xsrf_token');
+    //     //         location.reload();
+    //     //     }
+    //     // }
+    // });
 
-    token = localStorage.getItem('x_xsrf_token')
+    var token = localStorage.getItem('x_xsrf_token')
 
     if (!token) {
         if (to.name === 'login' || to.name === 'register') {

@@ -4,7 +4,7 @@
             <div class="discount-percent-badge discount-badge-fourty">NEW</div>
 
             <img v-if="article[0][0].title != null" :src="image_dir+article.image" class="img-responsive" :alt='article[0][0].title' />
-            <img v-else :src="'../../../../public/images/site_img/image.png'" class="img-responsive" :alt='article[0][0].title+"fffffffff"'>
+            <img v-else :src="'../../../../public/images/site_img/image.png'" class="img-responsive" :alt='article[0][0].title'>
 
             <div class="mask">
                 <!-- <a href="#" class="info"><i class="fa fa-arrow-right"></i></a> -->

@@ -7,10 +7,10 @@ import VueI18n from 'vue-i18n';
 Vue.use(VueI18n)
 
 
-const locale = localStorage.getItem('leng') || 'en'
+// const locale = localStorage.getItem('lang') || 'en'
 const currency = localStorage.getItem('currency') || 'USD'
 
-console.log(currency);
+// console.log(currency);
 const numberFormats = {
     'en-US': {
         currency: {
@@ -70,9 +70,9 @@ export default new VueI18n({
     fallbeckLocale: 'ka',
     numberFormats,
     messages: {
-        en: en,
-        ka: ka,
-        ru: ru
+        en,
+        ka,
+        ru
     }
 })
 

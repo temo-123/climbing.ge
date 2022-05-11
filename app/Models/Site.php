@@ -45,10 +45,7 @@ class Site extends Model
         'shop_short_description_ru', 
         'services_description', 
         'services_description_ka', 
-        'services_description_ru', 
-        // 'meta_description',
-        // 'meta_description_ru',
-        // 'meta_description_ka',
+        'services_description_ru',
 
         'email',
         'fb_link', 

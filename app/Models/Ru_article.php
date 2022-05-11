@@ -19,4 +19,9 @@ class Ru_article extends Model
 		'info',
 		'meta_keyword',
 	];
+
+	public function global_article()
+	{
+		return $this->hasOne(Article::class, 'ru_article_id');
+	}
 }

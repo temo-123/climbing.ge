@@ -36,7 +36,8 @@
                     <div class="row f-links">
                         <div class="flick">
                             <h4>{{ $t('site.share')}}</h4>
-                            <!-- <share-component route={{ URL::current() }}></share-component> -->
+                            
+                            <share />
                         </div>
                     </div>
                     <followComponent />
@@ -49,6 +50,7 @@
 
 <script>
     import followComponent from '../../global_components/FollowComponent.vue'
+    import share from '../../global_components/ShareComponent.vue'
     export default {
         data: function () {
             return {
@@ -57,6 +59,7 @@
         },
         components: {
             followComponent,
+            share
         },
         mounted() {
             // this.num = Math.floor(Math.random() * 11);

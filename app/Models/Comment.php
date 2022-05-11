@@ -16,4 +16,9 @@ class Comment extends Model
         'text',
         'article_id'
     ];
+
+    public function articles()
+    {
+		return $this->hasMany(Article::class, 'id');
+    }
 }

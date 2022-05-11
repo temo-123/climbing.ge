@@ -47,37 +47,34 @@
                         </li> -->
                         
                         <button type="button" class="navbar-toggle margin_right">
-                            <a style="margin-top: -5%; color: #333333;" href="3">
+                            <a style="margin-top: -5%; color: #333333;">
                                 <i class="fa fa-user" ></i>
                             </a>
                         </button>
                         
                         <ul class="dropdown-menu shadows" role="menu" >
-                            <li :if="!lang == us"><a  @click="localization('us')"><country-flag country='usa' size='big'/></a></li>
-                            <li :if="!lang == ka"><a  @click="localization('ka')"><country-flag country='geo' size='big'/></a></li>
-                            <li :if="!lang == ru"><a  @click="localization('ru')"><country-flag country='rus' size='big'/></a></li>
+                            <li><a  @click="localization('us')"><country-flag country='usa' size='big'/></a></li>
+                            <li><a  @click="localization('ka')"><country-flag country='geo' size='big'/></a></li>
+                            <li><a  @click="localization('ru')"><country-flag country='rus' size='big'/></a></li>
                         </ul>
 
 
                         <button type="button" class="navbar-toggle margin_right">
-                            <a style="margin-top: -5%; color: #333333;" href="3">
+                            <a style="margin-top: -5%; color: #333333;">
                                 <i class="fa fa-heartbeat" aria-hidden="true"></i>
                             </a>
                         </button>
                         
-                        <ul class="dropdown-menu shadows" role="menu" >
-                            <!-- <li :if="!lang == us"><a  @click="localization('us')"><country-flag country='usa' size='big'/></a></li>
-                            <li :if="!lang == ka"><a  @click="localization('ka')"><country-flag country='geo' size='big'/></a></li>
-                            <li :if="!lang == ru"><a  @click="localization('ru')"><country-flag country='rus' size='big'/></a></li> -->
+                        <!-- <ul class="dropdown-menu shadows" role="menu" >
                             <li>YDS</li>
                             <li>YDS 2</li>
-                        </ul>
+                        </ul> -->
                     </div>
 
                     <div class="collapse navbar-collapse mobile_nav_menu" id="bs-example-navbar-collapse-1">
                         <ul class="nav navbar-nav pull-right top_menu_buttons">
                             <li class="dropdown">
-                                <a href="#" data-toggle="dropdown"> 
+                                <a data-toggle="dropdown"> 
                                     {{ $t('menu climbing') }}
                                 </a>
 
@@ -118,15 +115,15 @@
                             <locale />
 
                             <li class="dropdown display-none-720px">
-                                <a href="#" data-toggle="dropdown">
+                                <a data-toggle="dropdown">
                                     <i class="fa fa-heartbeat" aria-hidden="true"></i>
                                 </a>
 
                                 <ul class="dropdown-menu shadows" role="menu">
-                                    <li :if="!lang == us"><a style="width: 50%; margin-left: 25%;"  @click="grade_charts('yds')"><li>YDS (USA)</li></a></li>
-                                    <li :if="!lang == ka"><a style="width: 50%; margin-left: 25%;"  @click="grade_charts('german')"><li>German</li></a></li>
-                                    <li :if="!lang == ka"><a style="width: 50%; margin-left: 25%;"  @click="grade_charts('UIAA')"><li>UIAA</li></a></li>
-                                    <li :if="!lang == ka"><a style="width: 50%; margin-left: 25%;"  @click="grade_charts('UK')"><li>UK</li></a></li>
+                                    <li><a style="width: 50%; margin-left: 25%;"  @click="grade_charts('yds')"><li>YDS</li></a></li>
+                                    <li><a style="width: 50%; margin-left: 25%;"  @click="grade_charts('german')"><li>German</li></a></li>
+                                    <li><a style="width: 50%; margin-left: 25%;"  @click="grade_charts('UIAA')"><li>UIAA</li></a></li>
+                                    <li><a style="width: 50%; margin-left: 25%;"  @click="grade_charts('UK')"><li>UK</li></a></li>
                                 </ul>
                             </li>
 
@@ -148,11 +145,7 @@
     export default {
         data: function () {
             return {
-                // locale_lang: localStorage.getItem('lang'),
-                // lang: localStorage.getItem('lang') || 'en',
-                // search_query: null,
-                // MIX_SITE_URL: process.env.MIX_SITE_URL,
-                // MIX_APP_SSH: process.env.MIX_APP_SSH,
+                search_query: null,
             };
         },
         components: {
@@ -173,8 +166,8 @@
             //     this.$i18n.locale = locale;
             // },
 
-            grade_charts(chart){
-                localStorage.setItem('grade_charts', this.chart)
+            grade_charts(grade){
+                localStorage.setItem('grade', grade)
             },
             // goTo(page){
             //     window.location.href = this.MIX_APP_SSH + 'user.' + this.MIX_SITE_URL + page ;

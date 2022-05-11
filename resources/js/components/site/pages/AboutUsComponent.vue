@@ -43,6 +43,13 @@
         
         <messageComponent />
 
+
+        <vue-glide>
+            <vue-glide-slide>test 1</vue-glide-slide>
+            <vue-glide-slide>test 2</vue-glide-slide>
+            <vue-glide-slide>test 3</vue-glide-slide>
+        </vue-glide>
+
     </div>
 </template>
 

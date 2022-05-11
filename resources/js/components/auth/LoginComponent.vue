@@ -2,24 +2,19 @@
   <div class="login mt-5">
     <div class="card">
       <div class="card-header">
-        Login
+        <h1>Login</h1>
       </div>
       <div class="row mt-2">
-        <div class="col-md-4 text-center">
-          <button type="button" class="btn btn-danger" @click="social_login('google')">
-            <i class="fa fa-google-plus" aria-hidden="true"></i>
-          </button>
-        </div>
-        <div class="col-md-4 text-center">
-          <button type="button" class="btn btn-primary" @click="social_login('facebook')">
-            <i class="fa fa-facebook" aria-hidden="true"></i>
-          </button>
-        </div>
-        <div class="col-md-4 text-center">
-          <button type="button" class="btn btn-info" @click="social_login('twitter')">
-            <i class="fa fa-twitter" aria-hidden="true"></i>
-          </button>
-        </div>
+          <div class="col-md-6 text-center">
+            <button type="button" class="btn btn-danger" @click="social_login('google')">
+              Google
+            </button>
+          </div>
+          <div class="col-md-6 text-center">
+            <button type="button" class="btn btn-primary" @click="social_login('facebook')">
+              Facebook
+            </button>
+          </div>
       </div>
       <div class="card-body">
         <div class="alert alert-danger" role="alert" v-if="this.errors.message">

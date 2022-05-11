@@ -26,6 +26,7 @@
     import navbar from './items/NavbarComponent'
     // import leftMenu from './items/LeftMenuComponent'
     // import footter from './items/FooterComponent'
+    import { mapActions, mapGetters } from 'vuex'
 
     export default {
         data: function () {
@@ -41,7 +42,12 @@
             // footter,
         },
         mounted() {
+            // console.log( this.authing_user());
         },
+
+        // computed: mapGetters(["get_auth_user"]),
+        // methods: mapActions(['authing_user']),
+
         watch: {
             '$route' (to, from) {
                 window.scrollTo(0,0)

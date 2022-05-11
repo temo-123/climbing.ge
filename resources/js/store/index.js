@@ -1,27 +1,13 @@
 import Vue from "vue";
 import Vuex from "vuex";
-// import auth from "./auth";
+import axios from "axios"
 
 Vue.use(Vuex);
 
+import * as auth_user from "./moduls/auth_user"
+
 export default new Vuex.Store({
-  state: {
-    errors: []
-  },
-
-  getters: {
-    errors: state => state.errors
-  },
-
-  mutations: {
-    setErrors(state, errors) {
-      state.errors = errors;
-    }
-  },
-
-  actions: {},
-
-  // modules: {
-  //   auth
-  // }
+  modules:{
+    auth_user
+  }
 });

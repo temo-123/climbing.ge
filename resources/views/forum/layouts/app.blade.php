@@ -1,8 +1,7 @@
 <!DOCTYPE html>
-<html lang="{{ app()->getLocale() }}">
+<html>
 {{-- {{ str_replace('_', '-', app()->getLocale()) }} --}}
 <head>
-    <meta name='locale' content='{{app()->getLocale()}}' />
 
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.7.0/animate.min.css">

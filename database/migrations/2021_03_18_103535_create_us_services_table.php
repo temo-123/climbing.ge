@@ -19,7 +19,6 @@ class CreateUsServicesTable extends Migration
             $table->string('title')->nullable();
             $table->string('short_description')->nullable();
             $table->text('text')->nullable();
-            $table->string('meta_keyword')->nullable();
 
             $table->timestamps();
         });

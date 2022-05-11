@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="{{ app()->getLocale() }}">
+<html>
 <head>
     {{-- <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -47,8 +47,8 @@
     {{-- <meta name='locale' content='{{app()->getLocale()}}' /> --}}
 
     <!-- Rendered HTML tags in your page -->
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    {{-- <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1"> --}}
 
     <link href="http://netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
     <link rel="stylesheet" href="{{ asset('assets/css/app.css') }}">
@@ -56,8 +56,8 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
     {{-- And analytics.google.com --}}
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-YSKGLXMWGF"></script>
-    <script src="{{ asset('assets/js/analitic/climbing.ge_analitic.js') }}"></script>
+    {{-- <script async src="https://www.googletagmanager.com/gtag/js?id=G-YSKGLXMWGF"></script>
+    <script src="{{ asset('assets/js/analitic/climbing.ge_analitic.js') }}"></script> --}}
 
     {{-- Google recaptcha --}}
     <script src="https://www.google.com/recaptcha/api.js" async defer></script>

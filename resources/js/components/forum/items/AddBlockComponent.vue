@@ -1,6 +1,6 @@
 <template>
     <div class="col-md-12">
-        <div class="row" v-if="localStorage.getItem('user') == 'are login'">
+        <div class="row" >
             <div class="col-md-4 col-md-offset-1 text-center add_button">
                 <div class="row service_icon" @click="open_image_modal()">
                     <i class="fa fa-camera" aria-hidden="true"></i>
@@ -17,7 +17,9 @@
             </div>
         </div>
 
-        <div class="row" v-else>
+        {{ get_auth_user }}
+
+        <div class="row" >
             <div class="col-md-4 col-md-offset-2 text-center">
                 <button class="btn btn-primary">Login</button>
             </div>
@@ -59,6 +61,7 @@
 
 <script>
     import StackModal from '@innologica/vue-stackable-modal'  //https://innologica.github.io/vue-stackable-modal/#sample-css
+    import { mapActions, mapGetters } from 'vuex'
     export default {
         components: {
             StackModal,
@@ -71,11 +74,19 @@
             }
         },
         mounted() {
-            if (process.browser){
-                localStorage.getItem("user")
-            }
+            // if (process.browser){
+            //     localStorage.getItem("user")
+            // }
+            // console.log( this.authing_user());
+           
         },
+        computed: mapGetters(["get_auth_user"]),
+        // methods: mapActions(['authing_user']),
         methods: {
+            ...mapActions(['authing_user']),
+            // auth_user(){
+            //     this.update_user_data()
+            // },
             open_image_modal(){
                 this.add_image_modal=true
             },

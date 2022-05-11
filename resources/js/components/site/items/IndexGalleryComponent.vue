@@ -3,6 +3,9 @@
     <span v-if="db_images.length > 0">
       <h2 class='index_h2'>{{ $t('title gallery') }}</h2>
       <div class="bar" style="margin-bottom: 5%;"><i class="fa fa-picture-o" aria-hidden="true"></i></div>
+
+      <h6> <span v-html="this.$siteData.index_gallery_description"></span></h6>
+
       <div class="container-fluid">
           <gallery :images="db_images" :index="db_gallery_index" @close="db_gallery_index = null"></gallery>
           <div

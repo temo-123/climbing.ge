@@ -4,27 +4,27 @@
             <ul class="right-text">
                 <li>
                     <h4>
-                        <a href=" route('outdoor_list') }}">
+                        <router-link style="font-size: 1.5em;" :to="{name: 'outdoors'}" exact>
                             <strong>{{ $t('title outdoor climbing')}}</strong>
-                            <img alt='outdoor climbing image' class="index_category_right" src="images/site_img/logo/outdoor.png" height="auto">
-                        </a>
+                            <img alt='Outdoor climbing in Georgia' class="index_category_right" src="images/site_img/outdoor.png" height="auto">
+                        </router-link>
                     </h4>
 
                     <div class="content-text">
-                            $site -> outdoor_description!!}
+                        <span v-html="this.$siteData.indoor_description"></span>
                     </div>
                 </li>
                 <div class="clearfix"></div>
                 <li>
                     <h4>
-                        <a href=" route('indoor_list') }}">
+                        <router-link style="font-size: 1.5em;" :to="{name: 'indoors'}" exact> 
                             <strong>{{ $t('title indoor climbing')}}</strong>
-                            <img alt='indoor climbing image' class="index_category_right" src="images/site_img/logo/indoor.png">
-                        </a>
+                            <img alt='Indoor climbing' class="index_category_right" src="images/site_img/indoor.png">
+                        </router-link>
                     </h4>
 
                     <div class="content-text">
-                            $site -> indoor_description!!}
+                        <span v-html="this.$siteData.indoor_description"></span>
                     </div>
                 </li>
             </ul>
@@ -33,27 +33,27 @@
             <ul class="left-text">
                 <li>
                     <h4>
-                        <a href=" route('ice_list') }}">
+                        <router-link :to="{name: 'mountaineerings'}" exact>
                             <strong>{{ $t('title ice climbing')}}</strong>
-                            <img alt='indoor climbing image' class="index_category_left" src="images/site_img/logo/ice.png">
-                        </a>
+                            <img alt='Mountaineering in Georgia' class="index_category_left" src="images/site_img/ice.png">
+                        </router-link>
                     </h4>
 
                     <div class="content-text">
-                            $site -> ice_description!!}
+                        <span v-html="this.$siteData.ice_description"></span>
                     </div>
                 </li>
                 <div class="clearfix"></div>
                 <li>
                     <h4>
-                        <a href=" route('mount_list') }}">
+                        <router-link :to="{name: 'ices'}" exact>
                             <strong>{{ $t('title mountaineering')}}</strong>
-                            <img alt='mountaineering image' class="index_category_left" src="images/site_img/logo/mount.png">
-                        </a>
+                            <img alt='Ice climbing in Georgia' class="index_category_left" src="images/site_img/mount.png">
+                        </router-link>
                     </h4>
 
                     <div class="content-text">
-                            $site -> mount_description!!}
+                        <span v-html="this.$siteData.mount_description"></span>
                     </div>
                 </li>
             </ul>

@@ -12,4 +12,9 @@ class Favorite_product extends Model
         "user_id",
         "product_id"
     ];
+
+    public function products()
+    {
+		return $this->hasMany(Product::class, 'id');
+    }
 }

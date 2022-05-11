@@ -15,6 +15,7 @@ class CreateUsArticlesTable extends Migration
     {
         Schema::create('us_articles', function (Blueprint $table) {
             $table->id();
+
             $table->string('title')->nullable();
             $table->string('short_description')->nullable();
             $table->text('text')->nullable();
@@ -25,7 +26,7 @@ class CreateUsArticlesTable extends Migration
             $table->text('info')->nullable();
             $table->text('price_text')->nullable();
             $table->string('address')->nullable();
-            $table->string('meta_keyword')->nullable();
+            
             $table->timestamps();
         });
     }

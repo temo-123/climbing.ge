@@ -32,4 +32,19 @@ class Mount extends Model
 		"weather",
 		"map",
     ];
+
+	public function us_mount()
+	{
+		return $this->hasOhe(Us_mount::class);
+	}
+
+	public function ka_mount()
+	{
+		return $this->hasOhe(Ka_mount::class);
+	}
+
+	public function ru_mount()
+	{
+		return $this->hasOhe(Ru_mount::class);
+	}
 }

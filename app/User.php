@@ -14,10 +14,12 @@ use Laravel\Sanctum\HasApiTokens;
 
 use App\Models\Role;
 
+use App\Traits\HasRolesAndPermissions;
+
 class User extends Authenticatable implements MustVerifyEmail
 {
     // use Notifiable, HasApiTokens;
-    use HasApiTokens, HasFactory, Notifiable;
+    use HasApiTokens, HasFactory, Notifiable, HasRolesAndPermissions;
     // use HasFactory, Notifiable;
 
     /**

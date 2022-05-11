@@ -19,4 +19,9 @@ class Us_article extends Model
 		'info',
 		'meta_keyword',
 	];
+
+	public function global_article()
+	{
+		return $this->hasOne(Article::class, 'us_article_id');
+	}
 }

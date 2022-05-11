@@ -27,8 +27,6 @@ class CreateRuArticlesTable extends Migration
             $table->text('price_text')->nullable();
             $table->string('address')->nullable();
             
-            $table->string('meta_keyword')->nullable();
-
             $table->timestamps();
         });
     }

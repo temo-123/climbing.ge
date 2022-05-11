@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="{{ app()->getLocale() }}">
+<html>
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -7,7 +7,7 @@
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 
     {{-- CSRF Token --}}
-    <meta name="csrf-token" content="{{ csrf_token() }}">
+    {{-- <meta name="csrf-token" content="{{ csrf_token() }}"> --}}
 
     <title>@yield('title')</title>
     {{-- <link href="{{ asset('images/site_img/site_logo/'.$site->image) }}" rel="shortcut icon"> --}}
@@ -18,8 +18,8 @@
     <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
 
     {{-- Google analitics (Global site tag (gtag.js) - Google Analytics) --}}
-    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-101870435-3"></script>
-    <script src="{{ asset('assets/js/analitic/user.climbing.ge_analitic.js') }}"></script>
+    {{-- <script async src="https://www.googletagmanager.com/gtag/js?id=UA-101870435-3"></script>
+    <script src="{{ asset('assets/js/analitic/user.climbing.ge_analitic.js') }}"></script> --}}
 
 </head>
 <body>

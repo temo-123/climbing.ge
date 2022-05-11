@@ -10,7 +10,12 @@
             </div>
             <div class="panel-body nopadding">
                 <router-link :to="'event/'+event.url_title">
-                    <img :src="'images/event_img/'+event.image" class="img-responsive" :alt='event[0][0].title' />
+
+                    <site-img v-if="event.image != null" :src="'images/event_img/'+event.image" :img_class="'img-responsive'" :alt='event[0][0].title'/>
+                    <site-img v-else :src="'../../../public/images/site_img/image.png'" :img_class="'img-responsive'" :alt='event[0][0].title'/>
+                    <!-- <img v-if="event[0][0].image != null" :src="'images/event_img/'+event.image" v-watermark='config = option' class="img-responsive" :alt='event[0][0].title' />
+                    <img v-else :src="'../../../public/images/site_img/image.png'" v-watermark='config = option' class="img-responsive" :alt='event[0][0].title'> -->
+
                 </router-link>
                 <div class="row nopadding">
                     <div class="col-sm-6 col-xs-6 nopadding">
@@ -62,6 +67,15 @@
                 end_month: 0,
                 start_time: 0,
                 end_time: 0,
+                option: {
+                    // "bottomleft", "bottomright", "topleft", "topright", "center", "fill"
+                    mode: "bottomright",
+                    textBaseline: "middle",
+                    font: "20px Arial",
+                    fillStyle: "crimson",
+                    content: "CLIMBING.GE",
+                    rotate: 30
+                }
             };
         },
         mounted() {
@@ -79,7 +93,7 @@
 </script>
 
 <style>
-    .time{
+    /* .time{
         
-    }
+    } */
 </style>

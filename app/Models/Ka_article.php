@@ -19,4 +19,9 @@ class Ka_article extends Model
 		'info',
 		'meta_keyword',
 	];
+
+	public function global_article()
+	{
+		return $this->hasOne(Article::class, 'ka_article_id');
+	}
 }

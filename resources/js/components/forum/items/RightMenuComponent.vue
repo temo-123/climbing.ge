@@ -29,10 +29,10 @@
         <div class="p-3">
             <h4 class="font-italic">Elsewhere</h4>
             <ol class="list-unstyled">
-                <li><a href="#">Users</a></li>
-                <li><a href="#">Events</a></li>
-                <li><a href="#">Instagram Posts</a></li>
-                <li><a href="#">About Us</a></li>
+                <li><router-link :to="{name: 'users_list'}" exact>>Users</router-link></li>
+                <li><router-link :to="{name: 'events_list'}" exact>>Events</router-link></li>
+                <li><router-link :to="{name: 'insta_posts'}" exact>>Instagram Posts</router-link></li>
+                <li><router-link :to="{name: 'about_forum'}" exact>>About Us</router-link></li>
             </ol>
         </div>
 

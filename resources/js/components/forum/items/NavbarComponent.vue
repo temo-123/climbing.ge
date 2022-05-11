@@ -29,6 +29,8 @@
 
                     <div class="collapse navbar-collapse mobile_nav_menu" id="bs-example-navbar-collapse-1">
                         <ul class="nav navbar-nav pull-right top_menu_buttons">
+                            <li><router-link :to="{name: 'users_list'}" exact>        <span> users           </span> </router-link></li>
+                            <li><router-link :to="{name: 'events_list'}" exact>        <span> events            </span> </router-link></li>
                             <li><router-link :to="{name: 'about_forum'}" exact>        <span> {{ $t('menu about us') }}            </span> </router-link></li>
 
                             <goTo :go_to_page="'/my_posts'" />

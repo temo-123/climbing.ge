@@ -15,6 +15,23 @@ class CreateUserAdresesTable extends Migration
     {
         Schema::create('user_adreses', function (Blueprint $table) {
             $table->id();
+
+            $table->string('home_category')->nullable();
+
+            $table->string('country')->nullable();
+            $table->string('city')->nullable();
+            
+            $table->string('strit')->nullable();
+            $table->string('number')->nullable();
+            $table->string('floor')->nullable();
+            $table->string('flat')->nullable();
+            $table->string('entrance')->nullable();
+
+            $table->string('zip_code')->nullable();
+
+            // $table->integer('user_id')->nullable();
+            $table->foreignId('user_id')->constrained()->onDelete('cascade'); // to
+
             $table->timestamps();
         });
     }

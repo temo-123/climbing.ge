@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="{{ app()->getLocale() }}">
+<html>
 {{-- {{ str_replace('_', '-', app()->getLocale()) }} --}}
 <head>
     {{-- <meta charset="utf-8">
@@ -49,7 +49,7 @@
     <meta property="og:price:currency"  content="USD" />
     @endif --}}
 
-    <meta name='locale' content='{{app()->getLocale()}}' />
+    {{-- <meta name='locale' content='{{app()->getLocale()}}' /> --}}
 
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.7.0/animate.min.css">
@@ -59,8 +59,8 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     
     {{-- analytics.google.com (Global site tag (gtag.js) - Google Analytics) --}}
-    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-101870435-2"></script>
-    <script src="{{ asset('assets/js/analitic/shop.climbing.ge_analitic.js') }}"></script>
+    {{-- <script async src="https://www.googletagmanager.com/gtag/js?id=UA-101870435-2"></script>
+    <script src="{{ asset('assets/js/analitic/shop.climbing.ge_analitic.js') }}"></script> --}}
 
 </head>
 <body>

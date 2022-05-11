@@ -1,13 +1,13 @@
 <template>
     <li class="dropdown display-none-720px">
-        <a href="#" data-toggle="dropdown">
+        <a data-toggle="dropdown">
             <i class="fa fa-language" aria-hidden="true"></i>
         </a>
 
         <ul class="dropdown-menu shadows" role="menu">
-            <li :if="!lang == us"><a style="width: 50%; margin-left: 25%;"  @click="localization('us')"><country-flag country='usa' size='big'/></a></li>
-            <li :if="!lang == ka"><a style="width: 50%; margin-left: 25%;"  @click="localization('ka')"><country-flag country='geo' size='big'/></a></li>
-            <li :if="!lang == ru"><a style="width: 50%; margin-left: 25%;"  @click="localization('ru')"><country-flag country='rus' size='big'/></a></li>
+            <li><a style="width: 50%; margin-left: 25%;"  @click="localization('us')"><CountryFlag country='usa' size='big'/></a></li>
+            <li><a style="width: 50%; margin-left: 25%;"  @click="localization('ka')"><CountryFlag country='geo' size='big'/></a></li>
+            <li><a style="width: 50%; margin-left: 25%;"  @click="localization('ru')"><CountryFlag country='rus' size='big'/></a></li>
         </ul>
     </li>
 </template>
@@ -18,7 +18,7 @@
     export default {
         data: function () {
             return {
-                // 
+                lang: localStorage.getItem('lang')
             };
         },
         components: {
@@ -29,8 +29,8 @@
         },
         methods: {
             localization(locale){
-                this.lang = locale
-                localStorage.setItem('lang', this.lang)
+                // this.lang = locale
+                localStorage.setItem('lang', locale)
                 this.$i18n.locale = locale;
             },
         }

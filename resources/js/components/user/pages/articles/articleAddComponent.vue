@@ -72,7 +72,7 @@
                     </div>
                 </div>
             </div>
-            <div class="row" v-if="tab_num == 1">
+            <div class="row" v-show="tab_num == 1">
                 <div class="col-md-12" >
                     <div class="row">
                         <div class="col-md-12">
@@ -274,7 +274,7 @@
                     </div>
                 </div>
             </div>
-            <div class="row" v-if="tab_num == 2">
+            <div class="row" v-show="tab_num == 2">
                 <div class="col-md-12" >
                     <div class="row">
                         <div class="col-md-12">
@@ -509,7 +509,7 @@
                     </div>
                 </div>
             </div>
-            <div class="row" v-if="tab_num == 3">
+            <div class="row" v-show="tab_num == 3">
                 <div class="col-md-12" >
                     <div class="row">
                         <div class="col-md-12">
@@ -746,7 +746,7 @@
                     </div>
                 </div>
             </div>
-            <div class="row" v-if="tab_num == 4">
+            <div class="row" v-show="tab_num == 4">
                 <div class="col-md-12" >
                     <div class="row">
                         <div class="col-md-12">

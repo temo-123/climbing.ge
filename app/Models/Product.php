@@ -31,4 +31,24 @@ class Product extends Model
 
         'general_image'
 	];
+
+	public function us_product()
+	{
+		return $this->hasOhe(Us_product::class, 'id');
+	}
+
+	public function ka_product()
+	{
+		return $this->hasOhe(Ka_product::class, 'id');
+	}
+
+	public function ru_product()
+	{
+		return $this->hasOhe(Ru_product::class, 'id');
+	}
+
+    public function products()
+    {
+		return $this->hasMany(Product::class, 'id');
+    }
 }

@@ -28,7 +28,12 @@
 
 
 
+## Outdoor climbing region structur
+
+
+
 <h2>Down you can see used plagins sources links</h2>
+
 
 ## Vue.js
 
@@ -39,8 +44,9 @@ For foront use Vue.js(2) laravel templite
     https://github.com/Jexordexan/vue-slicksort -
     https://github.com/P3trur0/vue-country-flag - vue-country-flag
     https://github.com/devstark-com/vue-google-charts - vue-google-charts
-
     https://www.npmjs.com/package/vue-analytics - (vue-analytics) Vue plugin for Google Analytics
+    https://www.vuescript.com/custom-watermarks/ - (vue-img-watermark) (text on image)
+    https://antonreshetov.github.io/vue-glide/install/ - (vue-glide-js)
 
 
 ## CkEditor4
@@ -74,10 +80,11 @@ For route mark use canva(paper.js) librery (don`t working right now)
 
 Site meta tegs plagin - (vue-meta)
     https://www.digitalocean.com/community/tutorials/vuejs-vue-seo-tips
+    https://www.youtube.com/watch?v=xmA_Ca0UW_c
 
-Sitemap - () - 
+<!-- Sitemap - () -  -->
 
 
 
-<h1 align="center">Best *** from climbing.ge</h1>
-<p align="center"><img src="/public/images/site_img/site_logo/header logo.png" width="400"></p>
+<h1 align="center">Best wishes from climbing.ge</h1>
+<p align="center"><img src="/public/images/site_img/site_logo/header logo(bacground).png" width="400"></p>

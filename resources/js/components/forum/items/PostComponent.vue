@@ -29,7 +29,8 @@
       </div>
         
       <div class="cardbox-item" v-if="post['post'].image">
-        <img class="img-fluid" src="http://www.themashabrand.com/templates/bootsnipp/post/assets/img/1.jpg" alt="Image">
+        <!-- <img class="img-fluid" src="http://www.themashabrand.com/templates/bootsnipp/post/assets/img/1.jpg" alt="Image"> -->
+        <forum-img :img_class="'img-fluid'" :src="'images/forum_post_img/'+post['post'].image" :alt="'Image'" />
       </div>
 
       <div class="cardbox-base">

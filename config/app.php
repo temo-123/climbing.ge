@@ -195,7 +195,7 @@ return [
          * Language localisation
          */
 
-        App\Services\Localisation\LocalisationServiceProvider::class,
+        // App\Services\Localisation\LocalisationServiceProvider::class,
 
 
         // KgBot\LaravelLocalization\LaravelLocalizationServiceProvider::class
@@ -256,7 +256,7 @@ return [
 
 
         'Socialite' => Laravel\Socialite\Facades\Socialite::class, // Laravel Socialite
-        'LocalisationService' => App\Services\Localisation\LocalisationService::class, // Language localisation
+        // 'LocalisationService' => App\Services\Localisation\LocalisationService::class, // Language localisation
         'GetArticlesService' => App\Services\GetArticlesService::class, // Get articles
         'GetMountSystemService' => App\Services\GetMountSystemService::class, // Get MountSystem
         'GetServicesService' => App\Services\GetServicesService::class, // Get Services

@@ -35,4 +35,31 @@ class Article extends Model
 		'open_timen',
 		'closed_time'
 	];
+
+
+	public function us_article()
+	{
+		return $this->hasOne(Us_article::class, 'id');
+	}
+
+	public function ka_article()
+	{
+		return $this->hasOne(Ka_article::class, 'id');
+	}
+
+	public function ru_article()
+	{
+		return $this->hasOne(Ru_article::class, 'id');
+	}
+
+
+	public function sectors()
+	{
+		return $this->hasMany(Sector::class, 'article_id');
+	}
+
+	public function spot_rock_images()
+	{
+		return $this->hasMany(Spots_rocks_image::class, 'article_id');
+	}
 }

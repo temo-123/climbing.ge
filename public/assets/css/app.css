@@ -101,6 +101,15 @@ hr {
 
 /*
 *
+*   Google my maps styles
+*
+*/
+.i4ewOd-pzNkMb-haAclf {
+  background-color: #279fbb !important;
+}
+
+/*
+*
 *   Navbar styles
 *
 */
@@ -954,7 +963,6 @@ tr td:last-child {
 *
 */
 h3 {
-  display: inline-block;
   padding: 5px;
   /*background: #B9121B;*/
   border-top-left-radius: 10px;
@@ -4254,7 +4262,7 @@ a:hover, a:active {
   margin-left: -850%;
 }
 
-.h-recent-work h6 {
+.h-recent-work h3 {
   font-size: 22px;
   color: #666;
   text-align: center;
@@ -4282,7 +4290,7 @@ a:hover, a:active {
   font-family: "Average Sans", sans-serif;
 }
 
-.container-1 h6 {
+.container-1 h3 {
   font-size: 18px;
   color: #999999;
   text-align: center;

@@ -14,7 +14,10 @@ class Mtp extends Model
         "text",
         "last_carabin",
         "height",
-        "bolter",
-        "first_ascent",
     ];
+
+    public function mtp_pitchs()
+    {
+        return $this->hasMany(Mtp_pitch::class);
+    }
 }
