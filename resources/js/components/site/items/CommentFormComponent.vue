@@ -6,7 +6,7 @@
                                     
                     <div class="row">
                         <div class="col-md-12">
-                            <h2 id='comments'>{{__ ('comments')}}</h2>
+                            <h2 id='comments'>{{ $t('comments')}}</h2>
                         </div>
                     </div>
                     
@@ -198,17 +198,34 @@
                     this.text = "",
 
                     this.is_verify_isset = false
-                    })
-                .catch(error =>{
-                    if (error.response.status == 422) {
-                        this.errors = error.response.data.errors
-                    }
-                    else{
-                        if (response.data.message) {
-                            alert(response.data.message)
-                        }
-                    }
                 })
+                .catch(function(error) {
+                    console.log(error);
+                })
+
+    //  .catch(e => {
+    //       alert(e);
+    //     })
+                // .catch(function (error) {
+                //     alert(error);
+                //     // when you throw error this will also fetch error.
+                //     throw error;
+                // });
+                // .catch((error) => console.log(error))
+                // .catch(error => {
+                //     alert(error)
+                //     console.log(error.errors)
+
+                //     if (error.response.status == 422) {
+                //         this.errors = error.response.data.errors
+                //     }
+                //     else{
+                //         if (response.data.message) {
+                //             alert(response.data.message)
+                //         }
+                //     }
+                // })
+                // .finally(() => this.loading = false)
             },
 
             // get_user_info() {

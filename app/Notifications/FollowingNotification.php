@@ -1,13 +1,16 @@
 <?php
 
-namespace App\Notification;
+namespace App\Notifications;
 
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
 
-class FollowingNotification extends Notification
+use Illuminate\Notifications\Messages\MailMessage;
+use Illuminate\Notifications\Notification;
+
+class FollowingNotification extends Mailable
 {
     use Queueable, SerializesModels;
 

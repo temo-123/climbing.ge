@@ -21,7 +21,8 @@
         methods: {
             get_news(){
                 axios
-                .get('../api/article/'+this.$route.params.url_title)
+                // .get('../api/get_article/news/'+this.$route.params.url_title)
+                .get('../api/article/news/'+localStorage.getItem('lang')+'/'+this.$route.params.url_title)
                 .then(response => {
                     this.news = response.data
                 })

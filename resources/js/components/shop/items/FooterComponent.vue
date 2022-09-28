@@ -7,7 +7,7 @@
                 <div class="col-md-4 display-none-720px">
                     <div class="f-about" style='color: #fff;'>
                     
-                    <h4>{{__ ('about us')}}</h4>
+                    <h4>{{ $t('about us')}}</h4>
                     
                     <!-- {!!$site -> short_description!!}
                     <a href="{{route('about_us_page')}}">More</a> -->
@@ -17,11 +17,11 @@
 
                 <div class="col-md-4 display-none-720px">
                     <div class="f-links">
-                        <h4>{{__ ('site.links')}}</h4>
+                        <h4>{{ $t('site.links')}}</h4>
                         <ul>
-                            <li> <a href="">{{__ ('site.shop menu products')}}</a> </li>
-                            <li> <a href="">{{__ ('site.shop menu about us')}}</a> </li>
-                            <li> <a href="">{{__ ('site.shop login')}}</a> </li>
+                            <li> <a href="">{{ $t('site.shop menu products')}}</a> </li>
+                            <li> <a href="">{{ $t('site.shop menu about us')}}</a> </li>
+                            <li> <a href="">{{ $t('site.shop login')}}</a> </li>
                         </ul>
                     </div>
                 </div>
@@ -29,7 +29,7 @@
                 <div class="col-md-4">
                     <div class="row f-links">
                         <div class="flick">
-                            <h4>{{__ ('site.share')}}</h4>
+                            <h4>{{ $t('site.share')}}</h4>
                             
                             <share />
                         </div>

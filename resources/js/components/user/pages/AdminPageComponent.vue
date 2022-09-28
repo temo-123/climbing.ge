@@ -4,170 +4,252 @@
             <left-menu />
         </div>
         <div class="col-sm-9">
-            <div class="col-md-12">
-                <div class="row">
-                    <div class="col" >
-                        <input type="radio" id="1" :value="1" v-model="tab_num">
+
+            <breadcrumb />
+
+            <div class="tabs"> 
+                <div class="col-md-12">
+                    <div class="row">
+                        <div class="col" >
+                            <input type="radio" id="1" :value="1" v-model="tab_num">
+                            
+                            <label for="1" >Notifications</label>
+                        </div>
+                        <div class="col" >
+                            <input type="radio" id="2" :value="2" v-model="tab_num">
+                            
+                            <label for="2" >Content counts</label>
+                        </div>
+                        <div class="col" >
+                            <input type="radio" id="3" :value="3" v-model="tab_num">
+                            
+                            <label for="3" >Meils</label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row" v-if="tab_num == 1">
+                    <div class="col-md-12" >
+                        <div class="justify-content-center">
+                            <div class="card" v-if="
+                                    !this.$siteData['text'] ||
+                                    !this.$siteData['text_ru'] ||
+                                    !this.$siteData['text_ka'] ||
+                                    !this.$siteData['short_description_ru'] ||
+                                    !this.$siteData['short_description_ka'] ||
+                                    !this.$siteData['short_description']
+                                ">
+                                <div class="card-body">
+                                    <div class="alert alert-danger" role="alert">
+                                        <strong>Danger!</strong> 
+                                        Your web-site information is not fool. check page "
+                                        <router-link :to="{name: 'siteInfo'}" exact> 
+                                            About us
+                                        </router-link>
+                                        ", and add missing information.
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card" v-if="this.counts['global_articles_count_us_error']">
+                                <div class="card-body">
+                                    <div class="alert alert-danger" role="alert">
+                                        <strong>Danger!</strong> {{ this.counts['global_articles_count_us_error'] }} articles have empty "us_article_id" vallue. It is wery bad for site localization.
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card" v-if="this.counts['global_articles_count_ka_error']">
+                                <div class="card-body">
+                                    <div class="alert alert-danger" role="alert">
+                                        <strong>Danger!</strong> {{ this.counts['global_articles_count_ka_error'] }} articles have empty "ka_article_id" vallue. It is wery bad for site localization.
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card" v-if="this.counts['global_articles_count_ru_error']">
+                                <div class="card-body">
+                                    <div class="alert alert-danger" role="alert">
+                                        <strong>Danger!</strong> {{ this.counts['global_articles_count_ru_error'] }} articles have empty "ru_article_id" vallue. It is wery bad for site localization.
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row" v-if="tab_num == 2">
+                    <div class="col-md-12" >
+                        <div class="card">
+                            <div class="card-body" v-if="this.counts['us_articles_errors_count'] || this.counts['ru_articles_errors_count'] || this.counts['ka_articles_errors_count']">
+                                <div class="alert alert-danger" role="alert">
+                                    <div class="col" v-if="this.counts['us_articles_errors_count']">us_articles error_count - {{this.counts['us_articles_errors_count']}}</div>
+                                    <div class="col" v-if="this.counts['ru_articles_errors_count']">ru_articles error_count - {{this.counts['ru_articles_errors_count']}}</div>
+                                    <div class="col" v-if="this.counts['ka_articles_errors_count']">ka_articles error_count - {{this.counts['ka_articles_errors_count']}}</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="col">global_articles_count - {{this.counts['global_articles_count']}}</div>
+                                <div class="col">ka_articles_count - {{this.counts['ka_articles_count']}}</div>
+                                <div class="col">ru_articles_count - {{this.counts['ru_articles_count']}}</div>
+                                <div class="col">us_articles_count - {{this.counts['us_articles_count']}}</div>
+                            </div>
+                        </div>
+
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="col">outdoor climbing - {{this.counts['outdoor_climbing']}}</div>
+                                <div class="col">spots regions - {{this.counts['region']}}</div>
+                            </div>
+                        </div>
+
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="col">all images - {{this.counts['gallery_images']}}</div>
+                                <div class="col">index header images - {{this.counts['index_header_images']}}</div>
+                                <div class="col">article gallery images - {{this.counts['article_gallery_images']}}</div>
+                            </div>
+                        </div>
+
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="col">mountaineering climbing routes - {{this.counts['mountaineering_route']}}</div>
+                                <div class="col">mount masiv - {{this.counts['mount_masives']}}</div>
+                            </div>
+                        </div>
+
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="col">indoor gyms - {{this.counts['indoor_gyms']}}</div>
+                                <div class="col">ice climbing - {{this.counts['ice_climbing']}}</div>
+                                <div class="col">other_antyvity - {{this.counts['other_antyvity']}}</div>
+                                <div class="col">event - {{this.counts['event']}}</div>
+                                <div class="col">news - {{this.counts['news']}}</div>
+                                <div class="col">techtip - {{this.counts['techtip']}}</div>
+                            </div>
+                        </div>
+
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="col">sport climbing routes - {{this.counts['sport_climbing_routes_count']}}</div>
+                                <div class="col">top rope - {{this.counts['top_rope_routes_count']}}</div>
+                                <div class="col">boulder - {{this.counts['bouldering_routes_count']}}</div>
+                                <div class="col">tred climbing - {{this.counts['tred_routes_count']}}</div>
+                                <div class="col">aid - {{this.counts['aid_routes_count']}}</div>
+                            </div>
+                        </div>
+
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="col">sectors_count - {{this.counts['sectors_count']}}</div>
+                                <div class="col">routes_count - {{this.counts['routes_count']}}</div>
+                                <div class="col">mtp_count - {{this.counts['mtp_count']}}</div>
+                                <div class="col">mtp_pitch_count - {{this.counts['mtp_pitch_count']}}</div>
+                            </div>
+                        </div>
+
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="col">products - {{this.counts['products']}}</div>
+                                <div class="col">product_categories - {{this.counts['product_categories']}}</div>
+                            </div>
+                        </div>
+
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="col">users - {{this.counts['users']}}</div>
+                                <div class="col">following_users - {{this.counts['following_users']}}</div>
+                            </div>
+                        </div>
                         
-                        <label for="1" >Notifications</label>
-                    </div>
-                    <div class="col" >
-                        <input type="radio" id="2" :value="2" v-model="tab_num">
-                        
-                        <label for="2" >Content counts</label>
-                    </div>
-                    <div class="col" >
-                        <input type="radio" id="3" :value="3" v-model="tab_num">
-                        
-                        <label for="3" >Meils</label>
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="col">roles - {{this.counts['roles']}}</div>
+                                <div class="col">permissions - {{this.counts['permissions']}}</div>
+                            </div>
+                        </div>
                     </div>
                 </div>
-            </div>
 
-            <div class="row" v-if="tab_num == 1">
-                <div class="col-md-12" >
-                    <div class="justify-content-center">
-                        <div class="card" v-if="
-                                !this.$siteData['text'] ||
-                                !this.$siteData['text_ru'] ||
-                                !this.$siteData['text_ka'] ||
-                                !this.$siteData['short_description_ru'] ||
-                                !this.$siteData['short_description_ka'] ||
-                                !this.$siteData['short_description']
-                            ">
-                            <div class="card-body">
-                                <div class="alert alert-danger" role="alert">
-                                    <strong>Danger!</strong> Your web-site information is not fool. check page "About us", and add missing information.
-                                </div>
-                            </div>
-                        </div>
-                        <div class="card" v-if="this.counts['global_articles_count_us_error']">
-                            <div class="card-body">
-                                <div class="alert alert-danger" role="alert">
-                                    <strong>Danger!</strong> {{ this.counts['global_articles_count_us_error'] }} articles have empty "us_article_id" vallue. It is wery bad for site localization.
-                                </div>
-                            </div>
-                        </div>
-                        <div class="card" v-if="this.counts['global_articles_count_ka_error']">
-                            <div class="card-body">
-                                <div class="alert alert-danger" role="alert">
-                                    <strong>Danger!</strong> {{ this.counts['global_articles_count_ka_error'] }} articles have empty "ka_article_id" vallue. It is wery bad for site localization.
-                                </div>
-                            </div>
-                        </div>
-                        <div class="card" v-if="this.counts['global_articles_count_ru_error']">
-                            <div class="card-body">
-                                <div class="alert alert-danger" role="alert">
-                                    <strong>Danger!</strong> {{ this.counts['global_articles_count_ru_error'] }} articles have empty "ru_article_id" vallue. It is wery bad for site localization.
-                                </div>
+                <div class="row" v-if="tab_num == 3">
+                    <div class="col-md-12" >
+                        <div class="card">
+                            <div class="card-body" @click="open_notifay_modal()">
+                                Make mail notification
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <div class="row" v-if="tab_num == 2">
-                <div class="col-md-12" >
-                    <div class="card">
-                        <div class="card-body">
-                            <div class="col">global_articles_count - {{this.counts['global_articles_count']}}</div>
-                            <div class="col">ka_articles_count - {{this.counts['ka_articles_count']}}</div>
-                            <div class="col">ru_articles_count - {{this.counts['ru_articles_count']}}</div>
-                            <div class="col">us_articles_count - {{this.counts['us_articles_count']}}</div>
-                        </div>
-                    </div>
+            <stack-modal
+                :show="is_notifay_modal"
+                title="Send mail notification"
+                @close="is_notifay_modal=false"
+                :saveButton="{ visible: true, title: 'Sand', btnClass: { 'btn btn-primary': true } }"
+                :cancelButton="{ visible: false, title: 'Close', btnClass: { 'btn btn-danger': true } }"
+            >
+                <pre class="language-vue">
+                    <form ref="editingForm">
+                        <div class="container">
 
-                    <div class="card">
-                        <div class="card-body">
-                            <div class="col">outdoor climbing - {{this.counts['outdoor_climbing']}}</div>
-                            <div class="col">spots regions - xxxx{{this.counts['outdoor_climbing']}}</div>
-                        </div>
-                    </div>
+                            <div class="form-group clearfix row">
+                                <div class="col-md-12 image_add_modal_form">
+                                    <select class="form-control" name="published" id="published" v-model="sending_type">
+                                        <option value="1" disabled>Select sending type</option> 
+                                        <option value="one_user">Sand to one user</option> 
+                                        <option value="one_follower">Sand to one followers</option>
+                                        <option value="all_users">Sand to all users</option> 
+                                        <option value="all_followers">Sand to all folowers</option> 
+                                        <option value="all_users_all_followers">Sand to all followers and all users</option> 
+                                    </select> 
+                                </div>
+                            </div>
 
-                    <div class="card">
-                        <div class="card-body">
-                            <div class="col">all images - {{this.counts['gallery_images']}}</div>
-                            <div class="col">index header images - {{this.counts['index_header_images']}}</div>
-                            <div class="col">article gallery images - {{this.counts['article_gallery_images']}}</div>
-                        </div>
-                    </div>
+                            <div class="form-group clearfix row">
+                                <div class="col-md-12 image_add_modal_form">
+                                    <select class="form-control" name="filter" v-model="notification_type">
+                                        <option value="1" disabled>Select notification type</option> 
+                                        <option value="article">Article notification</option> 
+                                        <option value="text">New mail</option> 
+                                        <option value="article_and_text">Article and alse new text</option> 
+                                    </select> 
+                                </div>
+                            </div>
 
-                    <div class="card">
-                        <div class="card-body">
-                            <div class="col">mountaineering climbing routes - {{this.counts['mountaineering_route']}}</div>
-                            <div class="col">mount masiv - {{this.counts['mount_masives']}}</div>
                         </div>
-                    </div>
-
-                    <div class="card">
-                        <div class="card-body">
-                            <div class="col">indoor gyms - {{this.counts['indoor_gyms']}}</div>
-                            <div class="col">ice climbing - {{this.counts['ice_climbing']}}</div>
-                            <div class="col">other_antyvity - {{this.counts['other_antyvity']}}</div>
-                            <div class="col">event - {{this.counts['event']}}</div>
-                            <div class="col">news - {{this.counts['news']}}</div>
-                            <div class="col">techtip - {{this.counts['techtip']}}</div>
-                        </div>
-                    </div>
-
-                    <div class="card">
-                        <div class="card-body">
-                            <div class="col">sport climbing routes - {{this.counts['sport_climbing_routes_count']}}</div>
-                            <div class="col">top rope - {{this.counts['top_rope_routes_count']}}</div>
-                            <div class="col">boulder - {{this.counts['bouldering_routes_count']}}</div>
-                            <div class="col">tred climbing - {{this.counts['tred_routes_count']}}</div>
-                            <div class="col">aid - {{this.counts['aid_routes_count']}}</div>
-                        </div>
-                    </div>
-
-                    <div class="card">
-                        <div class="card-body">
-                            <div class="col">sectors_count - {{this.counts['sectors_count']}}</div>
-                            <div class="col">routes_count - {{this.counts['routes_count']}}</div>
-                            <div class="col">mtp_count - {{this.counts['mtp_count']}}</div>
-                            <div class="col">mtp_pitch_count - {{this.counts['mtp_pitch_count']}}</div>
-                        </div>
-                    </div>
-
-                    <div class="card">
-                        <div class="card-body">
-                            <div class="col">products - {{this.counts['products']}}</div>
-                            <div class="col">product_categories - {{this.counts['product_categories']}}</div>
-                        </div>
-                    </div>
-
-                    <div class="card">
-                        <div class="card-body">
-                            <div class="col">users - {{this.counts['users']}}</div>
-                            <div class="col">following_users - {{this.counts['following_users']}}</div>
-                        </div>
-                    </div>
-                    
-                    <div class="card">
-                        <div class="card-body">
-                            <div class="col">roles - {{this.counts['roles']}}</div>
-                            <div class="col">parmisions - {{this.counts['parmisions']}}</div>
-                        </div>
+                    </form>
+                </pre>
+                <div slot="modal-footer">
+                    <div class="modal-footer">
+                        <button
+                            type="button"
+                            :class="{'btn btn-primary': true}"
+                            @click="send_mail()"
+                        >
+                        Send
+                        </button>
                     </div>
                 </div>
-            </div>
+            </stack-modal>
 
-            <div class="row" v-if="tab_num == 3">
-                <div class="col-md-12" >
-                    <div class="card">
-                        <div class="card-body">
-                            mails block
-                        </div>
-                    </div>
-                </div>
-            </div>
         </div>
     </div>
 </template>
 
 <script>
     // import Editor from '../items/canvas/EditorComponent.vue'
+    import { SlickList, SlickItem } from 'vue-slicksort'; //https://github.com/Jexordexan/vue-slicksort
+    import StackModal from '@innologica/vue-stackable-modal'  //https://innologica.github.io/vue-stackable-modal/#sample-css
+    import breadcrumb from '../items/BreadcrumbComponent.vue'
+
     export default {
+        components: {
+            StackModal,
+            SlickItem,
+            SlickList,
+            breadcrumb,
+        },
         // components: {
         //     Editor,
         // },
@@ -175,6 +257,10 @@
             return{
                 counts: null,
                 tab_num: 1,
+                is_notifay_modal: false,
+
+                sending_type: '1',
+                notification_type: '1',
             }
         },
         mounted(){
@@ -183,13 +269,21 @@
         methods: {
             get_site_counts(){
                 axios
-                .get('/api/site_data_counts')
+                .get('../api/site_data_counts')
                 .then(response => {
                     this.counts = response.data
                 })
                 .catch(
                     error => console.log(error)
                 );
+            },
+
+            open_notifay_modal(){
+                this.is_notifay_modal = true
+            },
+
+            send_mail(){
+                alert('send')
             }
         }
     }

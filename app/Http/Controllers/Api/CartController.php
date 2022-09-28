@@ -6,6 +6,10 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
 use App\Models\Cart;
+use App\Models\Product;
+use App\Models\Product_image;
+use App\Models\Product_option;
+use App\Models\Favorite_product;
 use auth;
 
 class CartController extends Controller
@@ -28,34 +32,91 @@ class CartController extends Controller
             $product_image = '';
             foreach ($cart_items as $cart_item) {
 
-                $prod = Product::where('id', strip_tags($cart_item->product_id))->first();
-                // echo $prod;
-                $images = Product_image::where('product_id', strip_tags($prod->id))->get();
-                $image_count = Product_image::where('product_id', strip_tags($prod->id))->count();
+                $option = Product_option::where('id', strip_tags($cart_item->option_id))->get();
 
-                foreach($images as $image){
-                    if ($image_count == 1) {
-                        $product_image = $image->image;
-                    }
-                    if ($image_count == 1 && $image->general_image == NULL) {
-                        # code...
-                    } 
-                    else {
-                        # code...
-                    }
-                }
+                foreach ($option as $opt) {
+                    $product = Product::where('id', strip_tags($opt->product_id))->get();
+                    // dd($product);
                 
-                // echo $product_image;
+                    $images = Product_image::where('option_id', strip_tags($opt->id))->get();
+                    $image_count = Product_image::where('option_id', strip_tags($opt->id))->count();
+    
+                    foreach($images as $image){
+                        if ($image_count == 1) {
+                            $product_image = $image->image;
+                        }
+                        if ($image_count == 1 && $image->general_image == NULL) {
+                            # code...
+                        } 
+                        else {
+                            # code...
+                        }
+                    }
 
-                array_push($products, [
-                    "id"=>$cart_item->id,
-                    "quantity"=>$cart_item->quantity,
-                    "product_image" => $product_image,
-
-                    Product::where('id', '=', $cart_item->product_id)->get()
-                ]);
+                    array_push($products, [
+                        "id"=>$cart_item->id,
+                        "user_id"=>$cart_item->user_id,
+                        "product"=>$product[0],
+                        "option"=>$option[0],
+                        "quantity"=>$cart_item->quantity,
+                        "product_image" => $product_image,
+                    ]);
+                
+                    // dd($products);
+                    // echo $product_image;
+                }
             }
+            
             return $products;
+        }
+    }
+
+    public function update_quantity(Request $request)
+    {
+        $cart_item = Cart::where('id', '=', $request->item_id)->first();
+        
+        $cart_item['quantity'] = $request->quantity;
+        
+        $cart_item -> save();
+    }
+
+    public function add_to_favorite(Request $request)
+    {
+        if (Auth::user()) {
+            
+            if(Favorite_product::where('user_id', '=', Auth::user()->id)->where('product_id', '=', $request->product_id)->count() > 0){
+                $editing_faworit = Favorite_product::where('user_id', '=', Auth::user()->id)->where('product_id', '=', $request->product_id)->first();
+
+                $editing_faworit['user_id'] = Auth::user()->id;
+                $editing_faworit['product_id'] = $request->product_id;
+                
+                $editing_faworit -> save();
+            }
+            else{
+                $faworit = new Favorite_product();
+            
+                $faworit['user_id'] = Auth::user()->id;
+                $faworit['product_id'] = $request->product_id;
+                
+                $faworit -> save();
+            }
+        }
+        else{
+            dd('Gaajvi');
+        }
+    }
+
+    public function del_from_favorite(Request $request)
+    {
+        if (Auth::user()) {
+            $product = Favorite_product::where('user_id', '=', Auth::user()->id)->where('product_id', '=', $request->product_id)->first();
+
+            if ($product) {
+                $product -> delete();
+            }
+            else {
+                dd('err');
+            }
         }
     }
 
@@ -152,15 +213,24 @@ class CartController extends Controller
      */
     public function update(Request $request, $id)
     {
-        dd(Auth::user());
-        $cart = new Cart;
-            
-        $cart['option_id'] = $request->modification_id;
-        $cart['quantity'] = $request->quantity;
-        $cart['user_id'] = Auth::user()->id;
-        // $cart['user_id'] = 1;
+        $cart_item = Cart::where('user_id', '=', Auth::user()->id)->where('option_id', '=', $request->modification_id)->first();
+        if($cart_item){
+            $item_quantyty = $cart_item->quantity;
+            $new_quantity = $item_quantyty + $request->quantity;
+         
+            $cart_item['quantity'] = $new_quantity;
 
-        $cart -> save();
+            $cart_item -> save();   
+        }
+        else{
+            $cart = new Cart;
+                
+            $cart['option_id'] = $request->modification_id;
+            $cart['quantity'] = $request->quantity;
+            $cart['user_id'] = Auth::user()->id;
+    
+            $cart -> save();
+        }
     }
 
     /**
@@ -169,10 +239,10 @@ class CartController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy($id, Request $request)
     {
-        if ($request->isMethod('delete') || $request->isMethod('post')) {
-            $item = cart::where('id',strip_tags($request->id))->first();
+        if ($request->isMethod('delete')) {
+            $item = cart::where('id', '=', $id)->first();
             $item -> delete();
         }
     }

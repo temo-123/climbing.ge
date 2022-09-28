@@ -1,10 +1,14 @@
 <template>
-    <div>
-        <h3>Filter MTP By Sector</h3> 
-        <select v-model="value_sector_id">
-            <option v-bind:value="'all'">All</option>
-            <option v-for="sector in sectors" :key="sector" v-bind:value="sector.id">{{ sector.name }}</option>
-        </select>
+   <div class="row cms_filters">
+        <div class="col-md-8">
+            <h3>Filter multy-pitch By sectors</h3>
+        </div>
+        <div class="col-md-4 ">
+            <select v-model="value_sector_id" @click="return_data(value_sector_id)">
+                <option :value="'all'">All</option>
+                <option v-for="sector in sectors" :key="sector" :value="sector.id">{{ sector.name }}</option>
+            </select>
+        </div>
     </div>
 </template>
 
@@ -16,6 +20,7 @@ export default {
         data(){
             return {
                 sectors: [],
+                value_sector_id: 'all'
             }
         },
         methods: {
@@ -29,6 +34,10 @@ export default {
                     error => console.log(error)
                 );
             },
+
+            return_data(filtr_id){
+                this.$emit('filtred_id', filtr_id)
+            }
         }
     }
 </script>

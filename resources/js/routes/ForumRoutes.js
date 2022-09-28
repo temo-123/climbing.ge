@@ -5,7 +5,7 @@ import forum_index from '../components/forum/pages/ForumListPageComponent.vue'
 import about_us from '../components/forum/pages/AboutUsComponent.vue'
 
 import users_list from '../components/forum/pages/UsersListComponent.vue'
-import users_page from '../components/forum/pages/UserPageComponent.vue'
+import user_page from '../components/forum/pages/UserPageComponent.vue'
 
 import event_list from '../components/forum/pages/EventsListComponent.vue'
 import event_page from '../components/forum/pages/EventPageComponent.vue'
@@ -25,7 +25,7 @@ const router = new VueRouter({
         { path: '/', name: 'forum_index', component: forum_index },
 
         { path: '/users_list', name: 'users_list', component: users_list },
-        { path: '/user/{user_id}', name: 'user_page', component: users_page },
+        { path: '/user/{user_id}', name: 'user_page', component: user_page },
 
         { path: '/events_list', name: 'events_list', component: event_list },
         { path: '/event/{utl_title}', name: 'event_page', component: event_page },
@@ -45,6 +45,7 @@ const router = new VueRouter({
 
 // Vue.prototype.$siteData = [];
 router.beforeEach((to, from, next)=>{
+    localStorage.setItem('lang', 'en')
     // axios
     // .get('/api/auth_user')
     // .then((response)=>{

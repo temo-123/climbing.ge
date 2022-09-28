@@ -11,6 +11,7 @@ use App\Models\Favorite_product;
 use App\Services\GetProductsService;
 use App\Services\GetProductService;
 use App\Models\Cart;
+use App\Models\Product_colors;
 
 class ProductController extends Controller
 {
@@ -21,9 +22,42 @@ class ProductController extends Controller
      */
     public function index()
     {
-        $global_products = product::latest('id')->where('published', '=', 1)->get();
-        return $products = GetProductService::get_locale_product($global_products);
+        //
     }
+
+
+    public function get_local_products(Request $request)
+    {
+        $global_products = product::latest('id')->where('published', '=', 1)->get();
+        return $products = GetProductService::get_locale_product_use_locale($global_products, $request->lang);
+    }
+
+    public function get_local_product_in_page(Request $request)
+    {
+        $global_product = Product::latest('id')->where('published', '=', 1)->where('url_title',strip_tags($request->url_title))->first();
+        return $product = GetProductService::get_locale_product_in_page_use_locale($global_product, $request->lang);
+    }
+
+    public function get_user_favorite_products()
+    {
+        if (Auth::user()) {
+            $fav_products = Favorite_product::where('user_id', '=', Auth::user()->id)->get();
+            $products = array();
+            foreach ($fav_products as $fav_product) {
+                $global_product = Product::where('id', '=', $fav_product->product_id)->get();
+                $product = GetProductService::get_locale_product_use_locale($global_product, 'en');
+                array_push($products, $product[0]);
+            }
+            return $products;
+        }
+    }
+
+    public function get_quick_product(Request $request)
+    {
+        $global_product = Product::where('id', '=', $request->product_id)->get();
+        return GetProductService::get_locale_product_use_locale($global_product, $request->lang);
+    }
+
 
     /**
      * Show the form for creating a new resource.
@@ -59,9 +93,7 @@ class ProductController extends Controller
      */
     public function show($url_title)
     {
-        // dd($url_title);
-        $global_product = Product::latest('id')->where('published', '=', 1)->where('url_title',strip_tags($url_title))->first();
-        return $product = GetProductService::get_locale_product_in_page($global_product);
+
     }
 
     // public function get_similar_product(Request $request)
@@ -71,7 +103,7 @@ class ProductController extends Controller
 
     public function get_product_price_interval()
     {
-        $options = product_options::get();
+        $options = Product_colors::get();
 
         $option_price = [];
         foreach($options as $option){

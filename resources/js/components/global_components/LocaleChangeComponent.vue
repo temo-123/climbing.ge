@@ -5,15 +5,15 @@
         </a>
 
         <ul class="dropdown-menu shadows" role="menu">
-            <li><a style="width: 50%; margin-left: 25%;"  @click="localization('us')"><CountryFlag country='usa' size='big'/></a></li>
-            <li><a style="width: 50%; margin-left: 25%;"  @click="localization('ka')"><CountryFlag country='geo' size='big'/></a></li>
-            <li><a style="width: 50%; margin-left: 25%;"  @click="localization('ru')"><CountryFlag country='rus' size='big'/></a></li>
+            <li><a style="width: 50%; margin-left: 25%;"  @click="localization('en')"><countryFlag country='usa' size='big'/></a></li>
+            <li><a style="width: 50%; margin-left: 25%;"  @click="localization('ka')"><countryFlag country='geo' size='big'/></a></li>
+            <li><a style="width: 50%; margin-left: 25%;"  @click="localization('ru')"><countryFlag country='rus' size='big'/></a></li>
         </ul>
     </li>
 </template>
 
 <script>
-    import CountryFlag from 'vue-country-flag'
+    import countryFlag from 'vue-country-flag' // https://www.npmjs.com/package/vue-country-flag
 
     export default {
         data: function () {
@@ -22,16 +22,20 @@
             };
         },
         components: {
-            CountryFlag,
+            countryFlag,
         },
         mounted() {
-            //
+            // console.log(this.$route.params.locale || 'en');
         },
         methods: {
             localization(locale){
-                // this.lang = locale
-                localStorage.setItem('lang', locale)
-                this.$i18n.locale = locale;
+                if(this.$i18n.locale !== locale){
+                    localStorage.setItem('lang', locale)
+                    this.$i18n.locale = locale;
+
+                    const to = this.$router.resolve({params: {locale}})
+                    this.$router.push(to.location)
+                }
             },
         }
     }

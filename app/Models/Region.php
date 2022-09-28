@@ -9,8 +9,20 @@ class Region extends Model
 {
     use HasFactory;
 
-	public function spot_rock_images()
+    protected $fillable = [
+		'us_name',
+		'ru_name',
+		'ka_name',
+
+		'us_text',
+		'ru_text',
+		'ka_text',
+
+		'map',
+	];
+
+	public function articles()
 	{
-		return $this->hasMany(Region::class);
+		return $this->belongsToMany(Article::class,);
 	}
 }

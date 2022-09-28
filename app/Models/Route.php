@@ -10,15 +10,21 @@ class Route extends Model
 
     protected $fillable = [
         "sector_id",
+
         "grade",
         "or_grade",
+
         "title",
         "text",
-        "last_carabin",
+
+        // "last_carabin",
         "height",
         "bolts",
-        "bolter",
-        "bolting_data",
+        "anchor_type",
+        
+        "author",
+        "creation_data",
+
         "first_ascent",
     ];
 }

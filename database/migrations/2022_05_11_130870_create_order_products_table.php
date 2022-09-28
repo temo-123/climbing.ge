@@ -23,7 +23,7 @@ class CreateOrderProductsTable extends Migration
 
             $table->foreignId('product_id')->constrained();
             $table->foreignId('order_id')->constrained()->onDelete('cascade');
-            $table->foreignId('product_color_id')->constrained();
+            $table->foreignId('product_option_id')->constrained();
 
             $table->timestamps();
         });

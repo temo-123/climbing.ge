@@ -33,12 +33,12 @@
             footter,
         },
         mounted(){
-            axios
-            .get('/api/user')
-            .then((response)=>{
-                this.user = response.data
-                console.log(this.user);
-            })
+            // axios
+            // .get('/api/user')
+            // .then((response)=>{
+            //     this.user = response.data
+            //     console.log(this.user);
+            // })
         },
         methods: {
             

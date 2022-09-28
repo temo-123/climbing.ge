@@ -9,25 +9,21 @@
                     @slot('article') {{ event[0].title }} @endslot
                 @endcomponent -->
                 <p class="calendar">
-                    {{ event .start_data_day }}<em>{{event.start_data_month}}</em>
+                    1<em>mar</em>
                 </p>
                 
-                <h1>{{ event[0].title }}</h1>
+                <h1>{{ event[0].title }} <span @click="add_to_interestid_event(event.id)"> <i class="fa fa-heart-o favorite_icon add_to_favorite" ></i> </span></h1>
+                                            
 
-                <span v-html="event[0].text"></span>
+                <span v-html="event[0].text" v-if="this.event[0].text != null"></span>
 
-
-                <div class="row">
-                    <div style="text-align: center; margin: 4% 0 4% 0;">
-                        <a href="#" type="button" class="btn btn-success" style="width: 100%;">Interested</a>
-                    </div>
-                </div>
             </div>
             
             <div class="col-md-6">
 
-                <div class="row">
-                    <h2>Map</h2>
+                <div class="row" v-if="this.event.map != null">
+                    <!-- <h2>Map</h2> -->
+                    <h2 id="map">{{ $t('map')}}</h2>
                     <span v-html="event.map"></span>
                 </div>
 
@@ -57,10 +53,30 @@
                     @endif
                     @endauth
                 @endif -->
-                <div class="row">
-                    <h2>Contact Information</h2>
-                    <span v-html="event[0].info"></span>
-                </div>
+                <!-- <div class="row"> -->
+                    <!-- <h2>Contact Information</h2>
+                    <span v-html="event[0].info"></span> -->
+
+                    <div class="row" v-if="this.event[0].info || this.event.global_info.info_block != []">
+                        <h2 id="how_to_get_there">{{ $t('info')}}</h2>
+                        <span v-if="this.event.global_info.info_block.length == 0">
+                            <span v-html="this.event[0].info"></span>
+                        </span>
+                        <span v-else>
+                            <span v-if="this.event.global_info.info_block.block_action == 'befor'">
+                                <span v-html="this.event.global_info.info_block.text"></span>
+                                <span v-html="this.event[0].info"></span>
+                            </span>
+                            <span v-if="this.event.global_info.info_block.block_action == 'after'">
+                                <span v-html="this.event[0].info"></span>
+                                <span v-html="this.event.global_info.info_block.text"></span>
+                            </span>
+                            <span v-if="this.event.global_info.info_block.block_action == 'instead'">
+                                <span v-html="this.event.global_info.info_block.text"></span>
+                            </span>
+                        </span>
+                    </div>
+                <!-- </div> -->
 
                 <div class="col-md-12"> 
                     <ul class="social-network social-circle" style="text-align: center;">
@@ -93,6 +109,15 @@
             </div>
         </div>
         <div class="row">
+            <div class="col-md-12"> 
+                <div class="row">
+                    <div style="text-align: center; margin: 4% 30%;">
+                        <a @click="add_to_interestid_event(event.id)" type="button" class="btn btn-success" style="width: 100%;">{{ $t('interested event') }}</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
             <commentForm :article_id="event.id" />
         </div>
     </div>
@@ -119,13 +144,24 @@
         methods: {
             get_event(){
                 axios
-                .get('../api/article/'+this.$route.params.url_title)
+                .get('../api/article/event/'+localStorage.getItem('lang')+'/'+this.$route.params.url_title)
                 .then(response => {
                     this.event = response.data
                 })
                 .catch(error =>{
                 })
             },
+
+            add_to_interestid_event(article_id){
+                alert('add to interested event. ID = ' + article_id)
+            }
         }
     }
 </script>
+
+<style scoped>
+    .add_to_favorite{
+        float: right; 
+        cursor: pointer;
+    }
+</style>

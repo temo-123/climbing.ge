@@ -58,6 +58,12 @@
                                     </a>
                                 </li>
 
+                                <li class="display-none-720px">
+                                    <a style="margin-top: -5%;" @click="goTo('/favorite_products')">
+                                        <i class="fa fa-heart" aria-hidden="true"></i>
+                                    </a>
+                                </li>
+
                                 <li class="dropdown">
                                     <a class="margin_right admin_menu_for_desctop" data-toggle="dropdown">
                                         <i class="fa fa-search"  aria-hidden="true"></i>
@@ -90,7 +96,7 @@
                                     <ul class="dropdown-menu shadows" role="menu">
                                         <li><a @click="currency('USD')"><i class="fa fa-usd" aria-hidden="true"></i></a></li>
                                         <li><a @click="currency('EUR')"><i class="fa fa-eur" aria-hidden="true"></i></a></li>
-                                        <li><a @click="currency('GEL')"><font-awesome-icon icon="fa-solid fa-lari-sign" />lari</a></li>
+                                        <li><a @click="currency('GEL')"><!-- <font-awesome-icon icon="fa-solid fa-lari-sign" /> -->lari</a></li>
                                     </ul>
                                 </li>
 
@@ -125,8 +131,8 @@
         data: function () {
             return {
                 search_query: '',
-                // MIX_SITE_URL: process.env.MIX_SITE_URL,
-                // MIX_APP_SSH: process.env.MIX_APP_SSH,
+                MIX_SITE_URL: process.env.MIX_SITE_URL,
+                MIX_APP_SSH: process.env.MIX_APP_SSH,
                 // MIX_SHOP_URL: process.env.MIX_SHOP_URL
             };
         },
@@ -142,9 +148,9 @@
             localization(leng){
                 window.location.href = leng;
             },
-            // goTo(page){
-            //     window.location.href = this.MIX_APP_SSH + 'user.' + this.MIX_SITE_URL + page ;
-            // },
+            goTo(page){
+                window.open(this.MIX_APP_SSH + 'user.' + this.MIX_SITE_URL + page)
+            },
             currency(cur){
                 localStorage.setItem('currency', cur)
             },

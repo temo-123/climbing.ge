@@ -33,7 +33,7 @@
         methods: {
             get_services_data: function(){
                 axios
-                .get("../api/services/")
+                .get("../api/service/")
                 .then(response => {
                     this.data_for_tab.push({'id': 1,
                                             'data': response.data, 

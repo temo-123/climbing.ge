@@ -1,7 +1,7 @@
 <template>
-    <div class="row f-links">
+    <div class="row f-links container">
         <div class="flick">
-            <h4>Follow us</h4>
+            <h4  class="footer_title">Follow us</h4>
         </div>
         <div class="form-group row">
             <div class="col-md-10">
@@ -45,13 +45,14 @@
                 }
 
                 axios
-                .get('./api/follow/' + this.service, {
+                .post('./api/follow/' + this.service, {
                     email: this.email,
 
-                    _method: 'post'
+                    // _method: 'post'
                 })
                 .then(Response => {
-                    alert ("Tenk you for following! :) Plis check your emeil!")
+                    alert(Response.data)
+                    this.email = ''
                 })
                 .catch(error =>{
                     if (error.response.status == 422) {

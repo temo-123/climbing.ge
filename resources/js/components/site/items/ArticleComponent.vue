@@ -9,16 +9,7 @@
         </div>
         <div class="row">
             <div class="col-sm-8 blog-header">
-                <!-- @component('site.components.breadcrumb')
-                @slot('parent') Home @endslot
-                @slot('link') route($all_article_but)}} @endslot
-                @slot('active') $article_map}} @endslot
-                @if($article [0]['title'])
-                @slot('article') $article [0]['title']}} @endslot
-                @else
-                @slot('article') $article [0]['name']}} @endslot
-                @endif
-                @endcomponent -->
+                <breadcrumb />
 
                 <p class="blog-post-meta"> {{ this.article[0].created_at  }}</p>
             </div>
@@ -26,69 +17,8 @@
 
         <div class="row">
             <div class="col-sm-8 blog-main">
-
-                <span v-html="this.article[0].text"></span>
-
-                <!-- Best time for climbing block -->
-                <div v-if="this.article[0].weather == NULL && this.article[0].best_time != NULL">
-                    <h2 id="best_time_to_climb">{{__ ('site.best time')}}</h2>
-                    <span v-html="this.article[0].best_time"></span>
-                </div>  
-                <div v-else-if="this.article[0].weather != NULL && this.article[0].best_time != NULL">
-                    <h2 id="best_time_to_climb">{{__ ('site.best time')}}</h2>
-
-                    <div class="row">
-                        <div class="col-md-6" style="margin-top: 5%;">
-                            <span v-html="this.article[0].best_time"></span>
-                        </div>
-                        <div class="col-md-6" style="text-align: center;">
-                            <span v-html="this.article.weather"></span>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- addres -->
-                <div v-if="this.article[0].address != NUll">
-                    <h2 id="how_to_get_there">{{__ ('site.address')}}</h2>
-                    <span v-html="this.article[0].address"></span>
-                </div>
-
-                <!-- how get -->
-                <div v-if="this.article[0].how_get != NUll">
-                    <h2 id="how_to_get_there">{{__ ('site.how get')}}</h2>
-                    <span v-html="this.article[0].how_get"></span>
-                </div>
-
-                <!-- map -->
-                <div v-if="this.article.map != NULL">
-                    <div class="article_map">
-                        <span v-html="this.article.map"></span>
-                    </div>
-                </div>
-
-                <!-- price -->
-                <div v-if="this.article[0].prices_text != NUll">
-                    <h2 id="how_to_get_there">{{__ ('site.price')}}</h2>
-                    <span v-html="this.article[0].prices_text"></span>
-                </div>
-
-                <!-- info -->
-                <div v-if="this.article[0].info != NUll">
-                    <h2 id="how_to_get_there">{{__ ('site.info')}}</h2>
-                    <span v-html="this.article[0].info"></span>
-                </div>
-
-                <!-- what need -->
-                <div v-if="this.article[0].what_need != NUll">
-                    <h2 id="what_you_need">{{__ ('site.what need')}}</h2>
-                    <span v-html="this.article[0].what_need"></span>
-                </div>
-
-                <!-- news -->
-                <div v-if="this.article[0].route">
-                    <h2 id="routes">{{__ ('site.route')}}</h2>
-                    <span v-html="this.article[0].route"></span>
-                </div>             
+           
+                <articleTextBlocks :article="this.article"/>
 
                 <ul class="social-network social-circle" style="text-align: center;"> 
                     <li v-if="this.article['fb_link'] != NULL">
@@ -131,7 +61,13 @@
 
         <commentForm :article_id="this.article.id" />
 
-        <otherArticleBlock :article_id="this.article.id" :article_category="this.article.category"/>
+
+        <SimilarArticles 
+            :article_id="this.article.id" 
+            :article_category="this.article.category" 
+            :route="'outdoor/'"
+            :img_dir="'outdoor'"
+        />
 
     </div> 
 </template>
@@ -140,45 +76,40 @@
     import commentForm from './CommentFormComponent'
     import galleryComponent from './GalleryComponent'
     import articleRightMenu from './RightMenuComponent'
-    import otherArticleBlock from './OtherArticleBlockComponent'
+    import SimilarArticles from './SimilarArticlesComponent'
+    import breadcrumb from './BreadcrumbComponent.vue'
+    import articleTextBlocks from './ArticleTextBlocksComponent'
 
     export default {
         props: [
             'article',
         ],
-        data: function () {
-            return {
-                meta_title: 'meta_title'
-            };
-        },
-        // computed: {
-        //     normalizedSize: function () {
-        //         this.test = this.article
-        //         // return this.test
-        //     }
-        // },
         components: {
             commentForm,
             galleryComponent,
             articleRightMenu,
-            otherArticleBlock,
+            SimilarArticles,
+            breadcrumb,
+            articleTextBlocks,
         },
-        mounted() {
-            // this.meta_title = this.article[0].title
-            // console.log(this.article)
-            // console.log(this.meta_title)
-            // console.log(this.meta_title)
-            // console.log(this.meta_title)
-            // console.log(this.meta_title)
-        },
-        methods: {
-            // 
-        },
-
-        metaInfo() {
+        data: function () {
             return {
-                title: this.meta_title,
+                // article_global_data: [],
             }
         },
+        mounted() {
+            // this.get_article_global_data()
+        },
+        methods: {
+            // get_article_global_data(){
+            //     axios
+            //     .get('../../api/get_article_global_data/'+localStorage.getItem('lang')+'/'+this.article.id)
+            //     .then(response => {
+            //         this.article_global_data = response.data
+            //     })
+            //     .catch(error =>{
+            //     })
+            // },
+        }
     }
 </script>

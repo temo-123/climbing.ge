@@ -19,6 +19,34 @@ class PostsTopicController extends Controller
         return PostsTopics::get();
     }
 
+    public function get_local_topics(Request $request)
+    {
+        $data = [];
+        if($request -> lang == 'ru'){
+            $regions = PostsTopics::select('id', 'ru_name')->get();
+
+            foreach ($regions as $region) {
+                array_push($data, ['id'=>$region->id,'name'=>$region->ru_name]);
+            }
+        }
+        else if($request -> lang == 'ka'){
+            $regions = PostsTopics::select('id', 'ka_name')->get();
+
+            foreach ($regions as $region) {
+                array_push($data, ['id'=>$region->id,'name'=>$region->ka_name]);
+            }
+        }
+        else{
+            $regions = PostsTopics::select('id', 'us_name')->get();
+
+            foreach ($regions as $region) {
+                array_push($data, ['id'=>$region->id,'name'=>$region->us_name]);
+            }
+        }
+
+        return $data;
+    }
+
     /**
      * Show the form for creating a new resource.
      *

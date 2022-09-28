@@ -40,4 +40,9 @@ class Sector extends Model
     {
         return $this->hasMany(Mtp::class);
     }
+
+	public function sector_rocks_images()
+	{
+		return $this->hasOhe(Spot_rocks_image_sector::class, 'sector_id');
+	}
 }

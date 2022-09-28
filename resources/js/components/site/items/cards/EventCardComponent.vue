@@ -37,7 +37,7 @@
                 </div>
             </div>
             <div class="panel-footer panel-primary">
-                <div class="event_size">
+                <div class="event_size" v-if="event[0][0].short_description != null">
                     <span v-html="event[0][0].short_description"></span>
                 </div>
                 
@@ -67,15 +67,15 @@
                 end_month: 0,
                 start_time: 0,
                 end_time: 0,
-                option: {
-                    // "bottomleft", "bottomright", "topleft", "topright", "center", "fill"
-                    mode: "bottomright",
-                    textBaseline: "middle",
-                    font: "20px Arial",
-                    fillStyle: "crimson",
-                    content: "CLIMBING.GE",
-                    rotate: 30
-                }
+                // option: {
+                //     // "bottomleft", "bottomright", "topleft", "topright", "center", "fill"
+                //     mode: "bottomright",
+                //     textBaseline: "middle",
+                //     font: "20px Arial",
+                //     fillStyle: "crimson",
+                //     content: "CLIMBING.GE",
+                //     rotate: 30
+                // }
             };
         },
         mounted() {
@@ -93,7 +93,7 @@
 </script>
 
 <style>
-    /* .time{
-        
-    } */
+    .img-responsive{
+        width: 100%;
+    }
 </style>

@@ -25,79 +25,199 @@ use Illuminate\Support\Facades\Route;
 Route::get('login/{provider}/callback','Auth\SocialController@Callback');
 Route::get('login/{provider}', 'Auth\SocialController@redirect');
 
-
 Route::middleware('auth:sanctum')->get('token', function () {
     return auth()->user()->createToken('authToken')->plainTextToken;
 });
 
 Route::group(['namespace'=>'Api'], function() {
-    Route::apiResource('/services', 'ServicesController');
+    /*
+    *   Article routes
+    */
+    Route::apiResource('/article', 'ArticleController');
+    Route::get('/articles/get_editing_data/{id}', 'ArticleController@get_editing_data');
+    Route::get('/articles/{category}/{lang}', 'ArticleController@get_locale_articles');
+    Route::get('/article/{category}/{lang}/{url_title}', 'ArticleController@get_locale_article_on_page');
+    Route::post('/similar_article/{lang}', 'ArticleController@get_similar_locale_article');
+    Route::post('/articles/upload_spot_rock_images', 'ArticleController@upload_spot_rock_images');
+    Route::post('/articles/upload_image', 'ArticleController@image_upload');
+    Route::post('/get_article_global_data/{leng}/{article_id}', 'ArticleController@get_article_global_data');
+    Route::get('/get_articles_for_forum/{category}/{lang}', 'ArticleController@get_articles_for_forum');
+    Route::get('/last_news/{lang}', 'ArticleController@get_last_news');
 
-    Route::get('get_similar_product', 'ProductController@get_similar_product');
-    Route::get('get_product_price_interval', 'ProductController@get_product_price_interval');
-    Route::apiResource('/products', 'ProductController');
+    /*
+    *   Outdoor regions
+    */
+    Route::get('/outdoor/get_filtred_outdoor_spots_for_admin/{filter_id}', 'OutdoorController@get_filtred_outdoor_spots_for_admin');
+    Route::get('/outdoor/get_filtred_outdoor_spots_for_gest/{lang}/{filter_id}', 'OutdoorController@get_filtred_outdoor_spots_for_gest');
 
-    Route::apiResource('/categories', 'CategoriesController');
+    /*
+    *   Mountain (mount routes) regions
+    */
+    Route::get('/mount_route/get_filtred_mount_route_for_admin/{filter_id}', 'MountRouteController@get_filtred_mount_route_for_admin');
+    Route::get('/mount_route/get_filtred_mount_route_for_user/{lang}/{filter_id}', 'MountRouteController@get_filtred_mount_route_for_user');
+
+    /*
+    *   Mount (mountain system) routes
+    */
+    Route::apiResource('/mount', 'MountController');
+    Route::get('/mounts/{lang}', 'MountController@get_locale_mounts');
+    Route::get('/mount/{lang}/{mount_id}', 'MountController@get_locale_mount');
+    
+    /*
+    *   Product and product categories routes
+    */
+    Route::apiResource('/product', 'ProductController');
+    Route::get('/products/{land}', 'ProductController@get_local_products');
+    Route::get('/product/{land}/{url_title}', 'ProductController@get_local_product_in_page');
+    Route::get('similar_product/{land}/{url_title}', 'ProductController@get_similar_product');
+    Route::get('product_price_interval', 'ProductController@get_product_price_interval');
+    Route::get('/get_user_favorite_products', 'ProductController@get_user_favorite_products');
+    Route::get('/get_quick_product/{lang}/{product_id}', 'ProductController@get_quick_product');
+
+    Route::apiResource('/product_category', 'CategoriesController');
+    
+    /*
+    *   Services routes
+    */
+    Route::apiResource('/service', 'ServicesController');
+    Route::get('/services/{lang}', 'ServicesController@get_local_services');
+    Route::get('/service/{land}/{url_title}', 'ServicesController@get_local_service_in_page');
+    Route::get('/similar_services/{land}/{id}', 'ServicesController@get_similar_service');
+
+    /*
+    *   Cart and orders routes
+    */
     Route::apiResource('/cart', 'CartController');
+    Route::post('/cart/update_quantity/{item_id}', 'CartController@update_quantity');
     Route::apiResource('/order', 'OrderController');
     Route::get('/my_order', 'OrderController@get_my_orders');
 
+    Route::post('/add_to_favorite/{product_id}', 'CartController@add_to_favorite');
+    Route::post('/del_from_favorite/{product_id}', 'CartController@del_from_favorite');
+
+    /*
+    *   Guid gallery images routes
+    */
     Route::apiResource('/gallery_image', 'GalleryController');
+    Route::get('/swiper', 'GalleryController@get_swiper_images');
+    Route::get('/get_image/{image_id}', 'GalleryController@get_image');
     Route::apiResource('/gallery_image_category', 'GalleryImagesCategoryController');
 
-    Route::apiResource('/ice', 'IceController');
-    Route::apiResource('/indoor', 'IndoorController');
-    Route::apiResource('/mount', 'MountController');
-    Route::apiResource('/mount_route', 'MountRouteController');
-    Route::apiResource('/other', 'OtherController');
-    Route::apiResource('/outdoor', 'OutdoorController');
-    Route::apiResource('/event', 'EventController');
-    Route::apiResource('/news', 'NewsController');
-    Route::apiResource('/techtip', 'TechtipController');
-    Route::apiResource('/swiper', 'SwiperController');
-
-    Route::apiResource('/general_info', 'GeneralInfoController');
-
+    /*
+    *   Site data routes
+    */
     Route::apiResource('/siteData', 'SiteDataController');
     Route::get('/site_data_counts', 'SiteDataController@site_data_counts');
 
+    Route::apiResource('/general_info', 'GeneralInfoController');
+
+    /*
+    *   Guid Coments routes
+    */
     Route::apiResource('/comment', 'CommentController');
     Route::get('/my_comment', 'CommentController@get_my_comments');
 
+    /*
+    *   Films routes
+    */
     Route::apiResource('/films', 'FilmsController');
 
-    Route::apiResource('/route', 'RouteController');
+    /*
+    *   Guid sport sectors routes
+    */
     Route::apiResource('/sector', 'SectorController');
+    Route::get('/get_sectors_for_forum/{article_id}', 'SectorController@get_sectors_for_forum');
+    Route::get('/sectors_and_routes_quantity', 'SectorController@get_sectors_and_routes_quantity');
+    Route::get('/get_spot_rocks_images/{article_id}', 'SectorController@get_spot_rocks_images');
+
+    Route::apiResource('/route', 'RouteController');
+    Route::get('/get_routes_for_forum/{sector_id}', 'RouteController@get_routes_for_forum');
+    Route::get('/get_routes_quantity/{article_id}', 'RouteController@get_routes_quantity');
+    Route::post('/add_route', 'RouteController@add_route');
+
     Route::apiResource('/MTP', 'MTPController');
+    Route::get('/get_mtps_for_forum/{sector_id}', 'MTPController@get_mtps_for_forum');
+    
     Route::apiResource('/MTPPitch', 'MTPPitchController');
 
+    /*
+    *   Users routes
+    */
     Route::apiResource('/users', 'UsersController');
     Route::get('/post_user/{user_id}', 'UsersController@get_post_user');
+    
+    Route::get('/followers_list', 'UsersController@get_followers_list');
     Route::get('/following_users_list', 'UsersController@get_following_users_list');
     Route::post('/follow/{service_id}', 'UsersController@follow');
 
+    Route::get('/options/get_user_data', 'UsersController@get_user_data');
+
+    /*
+    *   User roles and pormisions routes
+    */
     Route::apiResource('/role', 'RolesController');
     Route::get('/parmisions_list', 'RolesController@get_parmisions_list');
 
+    /*
+    *   Climbing regions routes
+    */
     Route::apiResource('/region', 'RegionController');
-    Route::apiResource('/article', 'ArticleController');
+    Route::get('/regions/{lang}', 'RegionController@locale_regions');
+    Route::get('/region/{lang}/{region_id}', 'RegionController@locale_region');
 
+    /*
+    *   Forum posts routes
+    */
     Route::apiResource('/post', 'PostController');
+    Route::post('/posts/add_post', 'PostController@add_post');
+    Route::get('/posts/get_likes/{post_id}', 'PostController@get_likes');
+    Route::get('/posts/get_route_posts/{route_id}', 'PostController@get_route_posts');
+    Route::get('/posts/get_mtp_posts/{mtp_id}', 'PostController@get_mtp_posts');
+    Route::post('/posts/get_posts_for_outdoor_region/{article_id}', 'PostController@get_posts_for_outdoor_region');
+    
     Route::apiResource('/posts_topic', 'PostsTopicController');
+    Route::get('/posts_topic/list/{lang}', 'PostsTopicController@get_local_topics');
 
-    // Route::apiResource('/temporary_article', 'TemporaryArticleController');
-
+    /*
+    *   Guidbook and Ploducts Search routes
+    */
     Route::apiResource('/productSearch', 'ProductsSearchController');
     Route::apiResource('/articleSearch', 'ArticlesSearchController');
 
+    /*
+    *   Mails routes
+    */
     Route::group(['namespace'=>'Meil'], function() {
         Route::apiResource('/message', 'MessageController');
         Route::post('/FollowingNotification', 'FollowingNotificationController@send_notification');
     });
 
+    /*
+    *   Login verify routes
+    */
     Route::group(['middleware'=>'auth:sanctum'], function() {
         Route::get('email/verify/{hash}', 'VerificationController@verify')->name('verification.verify');
         Route::get('email/resend', 'VerificationController@resend')->name('verification.resend');
         Route::get('auth_user', 'AuthenticationController@user')->name('auth_user');
     });
+
+    // Route::get('/mount_route/{lang}', 'MountRouteController@locale_data');
+    // Route::get('/other/{lang}', 'OtherController@locale_data');
+    // Route::get('/event/{lang}', 'EventController@locale_data');
+    // Route::get('/news/{lang}', 'NewsController@locale_data');
+    // Route::get('/techtip/{lang}', 'TechtipController@locale_data');
+    // Route::get('/ice/{lang}', 'IceController@locale_data');
+    // Route::get('/indoor/{lang}', 'IndoorController@locale_data');
+    // Route::get('/outdoor/{lang}', 'OutdoorController@locale_data');
+    // Route::get('/outdoor/{lang}/{url_title}', 'OutdoorController@page_locale_data');
+
+    // Route::apiResource('/ice', 'IceController');
+    // Route::apiResource('/indoor', 'IndoorController');
+    // Route::apiResource('/mount', 'MountController');
+    // Route::apiResource('/mount_route', 'MountRouteController');
+    // Route::apiResource('/other', 'OtherController');
+    // Route::apiResource('/outdoor', 'OutdoorController');
+    // Route::apiResource('/event', 'EventController');
+    // Route::apiResource('/news', 'NewsController');
+    // Route::apiResource('/techtip', 'TechtipController');
 });

@@ -5,37 +5,36 @@
             <div class="row">
 
                 <div class="col-md-4 display-none-720px">
-                    <div class="f-about" style='color: #fff;'>
+                    <div class="f-about container">
                         
-                        <h4>{{ $t('about us')}}</h4>
+                        <h4 class="footer_title">{{ $t('about us')}}</h4>
                         
                         <!-- {!!$site -> short_description!!} -->
+                        {{this.$siteData.guid_short_description}}
 
-                        <a href="route('about_us_page')}}">{{ $t('site.more')}}</a>
+                        <li><router-link :to="{name: 'about_us', params: {lang: this.$i18n.locale}}"> {{ $t('more') }} </router-link></li>
                         
                     </div>
                 </div>
 
-                <div class="col-md-4 display-none-720px">
+                <div class="col-md-4">
                     <div class="f-links">
-                        <h4>{{ $t('site.links')}}</h4>
+                        <h4 class="footer_title">{{ $t('links')}}</h4>
                         <ul>
-                        <li> <a href="'indoor_list')}}">{{ $t('menu indoor climbing')}}</a> </li>
-                        <li> <a href="'outdoor_list')}}">{{ $t('menu outdoor climbing')}}</a> </li>
-                        <li> <a href="'mount_list')}}">{{ $t('menu mountaineering')}}</a> </li>
-                        <li> <a href="'ice_list')}}">{{ $t('menu ice climbing')}}</a> </li>
-                        <li> <a href="'other_list')}}">{{ $t('menu other')}}</a> </li>
-                        <li> <a href="'about_us_page')}}">{{ $t('menu about us')}}</a> </li>
-                        <li> <a href="'login')}}">{{ $t('menu login')}}</a> </li>
-                        <li> <a href="url('/sitemap')}}">{{ $t('menu sitemap')}}</a> </li>
+                            <li><router-link :to="{name: 'indoors', params: {lang: this.$i18n.locale}}"> {{ $t('menu indoor climbing') }} </router-link></li>
+                            <li><router-link :to="{name: 'outdoors', params: {lang: this.$i18n.locale}}"> {{ $t('menu outdoor climbing') }} </router-link></li>
+                            <li><router-link :to="{name: 'mountaineerings', params: {lang: this.$i18n.locale}}"> {{ $t('menu mountaineering') }} </router-link></li>
+                            <li><router-link :to="{name: 'ices', params: {lang: this.$i18n.locale}}"> {{ $t('menu ice climbing') }} </router-link></li>
+                            <li><router-link :to="{name: 'others', params: {lang: this.$i18n.locale}}"> {{ $t('menu other') }} </router-link></li>
+                            <li><router-link :to="{name: 'about_us', params: {lang: this.$i18n.locale}}"> {{ $t('menu about us') }} </router-link></li>
                         </ul>
                     </div>
                 </div>
 
                 <div class="col-md-4">
-                    <div class="row f-links">
+                    <div class="row f-links container">
                         <div class="flick">
-                            <h4>{{ $t('site.share')}}</h4>
+                            <h4 class="footer_title">{{ $t('share')}}</h4>
                             
                             <share />
                         </div>

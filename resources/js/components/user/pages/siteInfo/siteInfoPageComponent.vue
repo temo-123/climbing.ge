@@ -12,10 +12,12 @@
                     <div class="tab">
                         <div class="row edit_buttom">
                             <div class="col-md-6">
-                                <button class="btn btn-primary" >Edit all data</button>
+                                <!-- <button class="btn btn-primary" >Edit all data</button> -->
+                                <router-link class="btn btn-primary pull-left" :to="{ name: 'siteInfoEdit' }">Edit all sites data</router-link>
                             </div>
                             <div class="col-md-6">
-                                <button class="btn btn-primary" >Global data</button>
+                                <!-- <button class="btn btn-primary" >Global data</button> -->
+                                <router-link class="btn btn-primary pull-left" :to="{ name: 'siteGlobalDataEdit' }">Edit Global data</router-link>
                             </div>
                         </div>
                         <table class="table table-hover" id="dev-table" >
@@ -103,7 +105,8 @@
                     <div class="tab">
                         <div class="row edit_buttom">
                             <div class="col-md-6">
-                                <button class="btn btn-primary" >Edit English data</button>
+                                <!-- <button class="btn btn-primary" >Edit English data</button> -->
+                                <router-link class="btn btn-primary pull-left" :to="{ name: 'siteUsDataEdit' }">Edit English data</router-link>
                             </div>
                         </div>
                         <table class="table table-hover" id="dev-table" >
@@ -189,7 +192,8 @@
                     <div class="tab">
                         <div class="row edit_buttom">
                             <div class="col-md-6">
-                                <button class="btn btn-primary" >Russion data</button>
+                                <!-- <button class="btn btn-primary" >Russion data</button> -->
+                                <router-link class="btn btn-primary pull-left" :to="{ name: 'siteRuDataEdit' }">Edit Russion data</router-link>
                             </div>
                         </div>
                         <table class="table table-hover" id="dev-table" >
@@ -275,7 +279,8 @@
                     <div class="tab">
                         <div class="row edit_buttom">
                             <div class="col-md-6">
-                                <button class="btn btn-primary" >Georgian data</button>
+                                <!-- <button class="btn btn-primary" >Georgian data</button> -->
+                                <router-link class="btn btn-primary pull-left" :to="{ name: 'siteKaDataEdit' }">Edit Georgian data</router-link>
                             </div>
                         </div>
                         <table class="table table-hover" id="dev-table" >
@@ -362,7 +367,9 @@
                     <div class="tab">
                         <div class="row edit_buttom">
                             <div class="col-md-6">
-                                <button class="btn btn-primary" >Add General data</button>
+                                <!-- <button class="btn btn-primary" >Add General data</button> -->
+
+                                <router-link class="btn btn-primary pull-left" :to="{ name: 'GlobalInfoAdd' }">Add General info</router-link>
                             </div>
                         </div>
                         <table  class="table table-hover" id="dev-table" >
@@ -371,7 +378,7 @@
                                     <th>Id</th>
 
                                     <th>|</th>
-                                    <th>Us name</th>
+                                    <th>Demo title</th>
 
                                     <th>|</th>
                                     <th>edit</th>
@@ -385,13 +392,19 @@
                                     <th>{{general_info.id}}</th>
 
                                     <th>|</th>
-                                    <td>{{general_info.title_us}}</td>
+                                    <td>{{general_info.title}}</td>
 
                                     <th>|</th>
-                                    <th>edit</th>
-
-                                    <th>|</th>
-                                    <th>del</th>
+                                    <td>
+                                        <router-link class="btn btn-primary" :to="{ name: 'GlobalInfoEdit', params: { id: general_info.id } }" >Edit</router-link>
+                                        <!-- <a  class="btn btn-primary" type="submit">Edit</a> -->
+                                        <!-- <a :href="table_1_edit_url+table_info.id" class="btn btn-primary" type="submit">Edit</a> -->
+                                    </td>
+                                    
+                                    <td>|</td>
+                                    <td>
+                                        <button type="submit" class="btn btn-danger" @click="del_general_info(general_info.id)">Delete</button>
+                                    </td>
                                 </tr>
                             </tbody>
                         </table>
@@ -441,6 +454,9 @@
                 .catch(
                     error => console.log(error)
                 );
+            },
+            del_general_info(){
+                alert('deliting test')
             }
         }
     }

@@ -12,19 +12,38 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     
     {{-- analytics.google.com (Global site tag (gtag.js) - Google Analytics) --}}
-    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-101870435-2"></script>
-    <script src="{{ asset('assets/js/analitic/shop.climbing.ge_analitic.js') }}"></script>
+    {{-- <script async src="https://www.googletagmanager.com/gtag/js?id=UA-101870435-2"></script>
+    <script src="{{ asset('assets/js/analitic/shop.climbing.ge_analitic.js') }}"></script> --}}
 
+    <style>
+        /* Firefox scrollbar color*/
+        html {
+            scrollbar-color: #27bb7d white;
+            scrollbar-width: thin;
+            border-radius: 0%
+        }
+        /* Other brouser scrollbar color*/
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+            background-color: white;
+            border-radius: 0%
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #27bb7d;
+            border-radius: 5px;
+            border-radius: 0%
+        }
+        /* Navbar collor */
+        .top_menu {
+            background-color: #777777;
+        }
+        .preloader {
+            background: #777777;
+        }
+    </style>
 </head>
 <body>
-    <style>
-    .top_menu {
-        background-color: #777777;
-    }
-    .preloader {
-        background: #777777;
-    }
-    </style>
     <div id="page-preloader" class="preloader">
         <div class="loader"></div>
     </div>

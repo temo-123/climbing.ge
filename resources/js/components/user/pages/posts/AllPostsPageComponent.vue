@@ -61,7 +61,7 @@
                 .then(response => {
                     this.data_for_tab.push({'id': 2,
                                             'data': response.data, 
-                                            'table_name': 'Topics', 
+                                            'table_name': 'Post topics', 
                                             'table_category': '', 
                                             'table_edit': '',
                                             'table_del': ''

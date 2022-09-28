@@ -4,9 +4,6 @@
             <left-menu />
         </div>
         <div class="col-sm-9">
-            <!-- <div class="row">
-                <Editor />
-            </div> -->
             <div class="col-sm-12">
                 <tabsComponent 
                     :table_data="this.data_for_tab"
@@ -18,11 +15,9 @@
 </template>
 
 <script>
-    import Editor from '../../items/canvas/EditorComponent.vue'
     import tabsComponent  from '../../items/data_tabs/DataTab/TabsComponent'
     export default {
         components: {
-            Editor,
             tabsComponent ,
         },
         // props: [

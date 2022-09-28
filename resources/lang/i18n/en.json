@@ -1,60 +1,69 @@
 {
-    "site name": "climbing.ge",
+        "site name": "Climbing.ge",
+    
+        "menu climbing": "Rock climbing",
+        "menu indoor climbing": "Indoor climbing",
+        "menu outdoor climbing": "Outdoor climbing",
+        "menu ice climbing": "Ice & mix",
+        "menu mountaineering": "Mountaineering",
+        "menu other": "Other",
+        "menu about us": "About us",
+        "menu login" :"Login",
+        "menu sitemap": "Sitemap",
+    
+        
+    
+        "title news": "Newss",
+        "title topo": "Topo",
+        "title what we do": "what we do",
+        "title gallery" :"Gallery",
+        "title tech tips" :"Tech tips",
+        "title events" :"Events",
+        "title climbing": "Climbing",
+        "title indoor climbing": "Indoor climbing",
+        "title outdoor climbing": "Outdoor climbing",
+        "title ice climbing": "Ice & mix",
+        "title mountaineering": "Mountaineering",
+        "title other": "Other",
+        "title about us": "About us",
+        "title partner": "Partners",
 
-    "menu climbing": "Rock climbing",
-    "menu indoor climbing": "Indoor climbing",
-    "menu outdoor climbing": "Outdoor climbing",
-    "menu ice climbing": "Ice & mix",
-    "menu mountaineering": "Mountaineering",
-    "menu other": "Other",
-    "menu about us": "About us",
-    "menu login" :"Login",
-    "menu sitemap": "Sitemap",
-
-    "title news": "Newss",
-    "title topo": "Topo",
-    "title what we do": "what we do",
-    "title gallery" :"Gallery",
-    "title tech tips" :"Tech tips",
-    "title events" :"Events",
-    "title climbing": "Climbing",
-    "title indoor climbing": "Indoor climbing",
-    "title outdoor climbing": "Outdoor climbing",
-    "title ice climbing": "Ice & mix",
-    "title mountaineering": "Mountaineering",
-    "title other": "Other",
-    "title about us": "About us",
-    "title partner": "Partners",
-
-    "name": "Name",
-    "height": "Height",
-    "bolts": "Bolts",
-    "grade FR": "grade FR",
-    "grade YDS": "grade UDS",
-    "sector-name": "Sector name",
-    "mtp name": "Multy-pitch name",
-    "bolter": "Bolter",
-    "bolting data": "Bolting data",
-    "first ascent": "First ascent",
-    "top rope": "Top Rope",
-    "tred": "Tred Gear",
-
-    "message form": "Message",
-
-    "mount massive": "Mountain Massive",
-    "best time": "Best time to climb",
-    "how get": "How to get there",
-    "what need": "What you need",
-    "comments": "Comments",
-    "gallery": "Gallery",
-    "info": "Info",
-    "similar articles": "Similar Articles",
-    "sector name": "Sector name",
-    "address": "Address",
-    "price": "Prices",
-    "route": "Route",
-    "back": "Go Back",
-    "all articles": "All Articles",
+        "title service list": "Ouer services",
+        "title message": "Send message",
+    
+        "name": "Name",
+        "height": "Height",
+        "bolts": "Bolts",
+        "grade FR": "grade FR",
+        "grade YDS": "grade UDS",
+        "sector-name": "Sector name",
+        "mtp name": "Multy-pitch name",
+        "bolter": "Bolter",
+        "bolting data": "Bolting data",
+        "first ascent": "First ascent",
+        "top rope": "Top Rope",
+        "tred": "Tred Gear",
+    
+        "message form": "Message",
+    
+        "mount massive": "Mountain Massive",
+        "best time": "Best time to climb",
+        "how get": "How to get there",
+        "what need": "What you need",
+        "comments": "Comments",
+        "gallery": "Gallery",
+        "info": "Info",
+        "map": "Map",
+        "interested event": "Interested",
+        "similar articles": "Similar Articles",
+        "sector name": "Sector name",
+        "address": "Address",
+        "price": "Price",
+        "route": "Routes",
+        "back": "Go Back",
+        "all articles": "All Articles",
+    
+    
 
     "prices from": "Prices from",
     "working time": "Working hours",
@@ -62,8 +71,12 @@
 
     "breadcrumb home": "Home",
 
-    "nav menu": "Navigation Menu",
-    "other": "Other",
+    "article navigation menu": "Navigation Menu",
+    "nav similar articles": "Similar Articles",
+    "nav gallery": "Gallery",
+    "nav comments": "Comments",
+    "nav description": "Description",
+    "nav sectors": "Climbing sectors & routes",
 
     "route_tab name": "Name",
     "route_tab height": "Height",
@@ -86,8 +99,8 @@
     "more": "More",
     "about us": "About us",
 
-
     "user menu favorite products": "My favorite products",
+    "user menu favorite films": "My favorite films",
     "user menu admin page": "Admin page",
     "user menu home": "My page",
     "user menu cart": "My cart",
@@ -95,21 +108,22 @@
     "user menu my orders": "My Orders",
     "user menu total orders": "All orders",
     "user menu films": "Films list",
-    "user menu interested events": "Interested events",
+    "user menu my interested events": "Interested events",
+    "user menu followers": "Followers & following",
     "user menu products & category": "Products & Category",
     "user menu services": "Services",
     "user menu all comments": "All comments",
     "user menu my comments": "My comments",
     "user menu my posts": "My posts",
     "user menu all posts": "All posts",
-    "user menu users": "Users",
+    "user menu users": "Users & Parmissions",
     "user menu options": "Options",
     "user menu indoor climbing": "Indoor climbing",
     "user menu outdoor climbing": "Outdoor climbing",
     "user menu ice climbing": "Ice & Mix",
     "user menu mountaineering": "Mountaineering",
     "user menu other": "Other",
-    "user menu security": "Security",
+    "user menu security": "Security (Tech tips)",
     "user menu partners": "Partners",
     "user menu events": "Events",
     "user menu news": "News",
@@ -118,6 +132,26 @@
     "user menu login" :"Login",
     "user menu logout": "Logout",
     "user menu sectors & routes": "Sectors & Routes",
+    "user menu local bisnes" : "Suport local bisnes",
+    "user menu my favorite outdoor area": "My favorite outdoor areas",
+
+
+    "user add en article title": "article English version",
+    "user add ru article title": "article Russion version",
+    "user add ka article title": "article Georgian version",
+
+    "user add en article description": "Article English version for site localisation.",
+    "user add ru article description": "Article Russion version for site localisation.",
+    "user add ka article description": "Article Georgian version for site localisation.",
+
+
+    "user edit en article title": "article English version",
+    "user edit ru article title": "article Russion version",
+    "user edit ka article title": "article Georgian version",
+
+    "user edit en article description": "Article English version for site localisation.",
+    "user edit ru article description": "Article Russion version for site localisation.",
+    "user edit ka article description": "Article Georgian version for site localisation.",
 
     "Munu": "",
     "Dashboard": "",
@@ -153,15 +187,5 @@
     "shop login": "Login",
 
     "services title": "Services",
-    "service page other services": "Other services",
-
-
-
-    "app": {
-        "title": "قهوة الذواقة الدولية"
-    },
-    "nav": {
-        "home": "الرئيسية",
-        "about": "نبذة عنا"
-    }
+    "service page other services": "Other services"
 }

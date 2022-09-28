@@ -14,17 +14,36 @@
     <link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
     <script src="http://netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>
 
+    <style>
+        /* Firefox scrollbar color*/
+        html {
+            scrollbar-color: #005f43 white;
+            scrollbar-width: thin;
+            border-radius: 0%
+        }
+        /* Other brouser scrollbar color*/
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+            background-color: white;
+            border-radius: 0%
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #005f43;
+            border-radius: 5px;
+            border-radius: 0%
+        }
+        /* Navbar collor */
+        .top_menu {
+            background-color: #005f43;
+        }
+        .preloader {
+            background: #005f43;
+        }
+    </style>
 
 </head>
 <body>
-    <style>
-    .top_menu {
-        background-color: #005f43;
-    }
-    .preloader {
-        background: #005f43;
-    }
-    </style>
     <div id="page-preloader" class="preloader">
         <div class="loader"></div>
     </div>

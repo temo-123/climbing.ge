@@ -24,7 +24,7 @@
     methods: {
         get_selected_data() {
             axios
-            .get('get_selected_data/')
+            .get('api/get_selected_data/')
             .then(response => {
                 this.options = response.data
             })

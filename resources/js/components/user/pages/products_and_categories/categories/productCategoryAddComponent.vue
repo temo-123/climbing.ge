@@ -2,7 +2,7 @@
 <div class="col_md_12">
     <div class="row">
         <div class="form-group">  
-            <button type="submit" class="btn btn-primary" v-on:click="save_all()" >Save</button>
+            <button type="submit" class="btn btn-primary" v-on:click="add_category()" >Save</button>
         </div>
     </div>
     <div class="row">
@@ -18,11 +18,11 @@
                     </div>
                 </div>
 
-                <form name="contact-form" method="POST" id="global_form" ref="myForm" @submit.prevent="add_category"  style="margin-top: 5%;" enctyp ="multipart/form-data">
+                <form>
                     <div class="form-group clearfix">
                         <label for="name" class='col-xs-2 control-label'> us name </label>
                         <div class="col-xs-8">
-                            <input type="text" v-model="us_name" name="us_name" class="form-control"> 
+                            <input type="text" v-model="data.us_name" name="us_name" class="form-control"> 
                             <div class="alert alert-danger" role="alert" v-if="errors.us_name">
                                 {{ errors.us_name[0] }}
                             </div>
@@ -31,7 +31,7 @@
                     <div class="form-group clearfix">
                         <label for="name" class='col-xs-2 control-label'> ru name </label>
                         <div class="col-xs-8">
-                            <input type="text" v-model="ru_name" name="ru_name" class="form-control"> 
+                            <input type="text" v-model="data.ru_name" name="ru_name" class="form-control"> 
                             <div class="alert alert-danger" role="alert" v-if="errors.ru_name">
                                 {{ errors.ru_name[0] }}
                             </div>
@@ -40,7 +40,7 @@
                     <div class="form-group clearfix">
                         <label for="name" class='col-xs-2 control-label'> ka name </label>
                         <div class="col-xs-8">
-                            <input type="text" v-model="ka_name" name="ka_name" class="form-control"> 
+                            <input type="text" v-model="data.ka_name" name="ka_name" class="form-control"> 
                             <div class="alert alert-danger" role="alert" v-if="errors.ka_name">
                                 {{ errors.ka_name[0] }}
                             </div>
@@ -61,9 +61,11 @@
         ],
         data(){
             return {
-                us_name: '',
-                ru_name: '',
-                ka_name: '',
+                data: {
+                    us_name: '',
+                    ru_name: '',
+                    ka_name: '',
+                },
 
                 errors: [],
             }
@@ -74,10 +76,14 @@
 
             add_category() {
                 axios
-                .post('/products/category/add/', {        
-                    us_name: this.us_name,
-                    ru_name: this.ru_name,
-                    ka_name: this.ka_name,
+                // .post('/products/category/add/', {        
+                //     us_name: this.us_name,
+                //     ru_name: this.ru_name,
+                //     ka_name: this.ka_name,
+                // })
+                .get('../api/product_category/create/', {        
+                    data: this.data,
+                    _method: 'GET'
                 })
                 .then((response)=> { 
                     window.location.href = this.back_url;
@@ -89,9 +95,9 @@
                 })
             },
 
-            save_all() {
-                this.add_category()
-            }
+            // save_all() {
+            //     this.add_category()
+            // }
         }
     }
 </script>

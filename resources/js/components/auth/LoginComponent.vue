@@ -37,6 +37,7 @@
           </div>
           <div class="form-group">
             <label for="password">Password</label>
+              (<a href="#">Return password</a>)
             <input
               type="password"
               class="form-control"
@@ -46,7 +47,7 @@
               autocomplete="on"
             />
             <div class="invalid-feedback" v-if="errors.password">
-              {{ errors.password[0] }}
+              {{ errors.password[0] }} 
             </div>
           </div>
           <button type="button" @click.prevent="login" class="btn btn-primary">
@@ -89,31 +90,42 @@
         axios
           .get('/sanctum/csrf-cookie')
           .then(response => {
-            axios
-              .post('login', {
-                email: this.email, 
-                password: this.password
-              })
-              .then(res => {
-                this.email_errors = null
-                this.errors = []
-                localStorage.setItem('x_xsrf_token', res.config.headers['X-XSRF-TOKEN'])
-                this.$router.push({ path: "/" });
-
-              })
-              .catch(err => {
-                this.email_errors = null
-                this.errors = []
-
-                if (err.response.data) {
-                  this.errors = err.response.data
-                }
-                
-                if(err.response.data.errors.email[0]){
-                  this.email_errors = err.response.data.errors.email[0];
-                }
-              })
+            this.login_action()
           }); 
+      },
+
+      login_action(){
+          axios
+            .post('login', {
+              email: this.email, 
+              password: this.password
+            })
+            .then((res) => {
+              // console.log(res);
+              if (this.email_errors) {
+                this.email_errors = null
+                this.errors = []
+              }
+
+              localStorage.setItem('x_xsrf_token', res.config.headers['X-XSRF-TOKEN'])
+              this.$router.push({ path: "/" });
+            })
+            // .catch((error) => {
+            //   console.log(error);
+              
+            //   // if(error.response.status === 422) {
+            //   //   this.email_errors = null
+            //   //   this.errors = []
+
+            //   //   if (error.response.data) {
+            //   //     this.errors = error.response.data
+            //   //   }
+                
+            //   //   if(error.response.data.errors.email[0]){
+            //   //     this.email_errors = error.response.data.errors.email[0];
+            //   //   }
+            //   // }
+            // })
       }
     }
   };

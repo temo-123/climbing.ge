@@ -3,7 +3,6 @@
 namespace App\Services;
 
 use App\Models\Mount;
-
 use Carbon\Carbon;
 
 class GetMountSystemService
@@ -42,7 +41,8 @@ class GetMountSystemService
                                         "map"=>$loc_mount[0]->map, 
                                         ]);
                 
-        } else {
+        } 
+        else {
             $us_mount_id = $mount->id;
             $loc_mount = Mount::where('id', '=', $us_mount_id,)->get();
             $locale_mount = array();
@@ -62,20 +62,63 @@ class GetMountSystemService
     }
 
 
-    public static function get_new_mount_pin($global_mount)
+    public static function get_local_mounts_use_locale($global_mount, $locale)
     {
-        $time_array = array();
+        $mounts = array();
 
-        foreach ($global_mount as $mount) {
-            if ($mount[0][0]->created_at->lt(Carbon::now()->subDays(30))){
-                $time = 0;
-                array_push($time_array, ['id'=>$mount[0][0]->id, 'name'=>$mount['url_title'], 'time'=>$time]);
-            } else {
-                $time = 1;
-                array_push($time_array, ['id'=>$mount[0][0]->id, 'name'=>$mount['url_title'], 'time'=>$time]);
+        if($locale == "ru"){
+            foreach ($global_mount as $mount) {
+                array_push($mounts, [
+                    "global_mount"=>$mount,
+                    "locale_mount"=>mount::find($mount->id)->ru_mount,
+                ]);
             }
         }
-        
-        return $time_array;
+        elseif ($locale == "ka") {
+            foreach ($global_mount as $mount) {
+                array_push($mounts, [
+                    "global_mount"=>$mount,
+                    "locale_mount"=>mount::find($mount->id)->ka_mount,
+                ]);
+            }
+        } 
+        else {
+            foreach ($global_mount as $mount) {
+                array_push($mounts, [
+                    "global_mount"=>$mount,
+                    "locale_mount"=>mount::find($mount->id)->us_mount,
+                ]);
+            }
+        }
+        // dd($mount);
+        return $mounts;
+    }
+
+
+    public static function get_local_mount_use_locale($mount_id, $locale)
+    {
+        // dd($mount_id);
+        $mounts = [];
+
+        if($locale == "ru"){
+            array_push($mounts, [
+                "global_mount"=>mount::where('id', '=', $mount_id,)->get(),
+                "locale_mount"=>mount::find($mount_id)->ru_mount
+            ]);
+        }
+        elseif ($locale == "ka") {
+            array_push($mounts, [
+                "global_mount"=>mount::where('id', '=', $mount_id,)->get(),
+                "locale_mount"=>mount::find($mount_id)->ka_mount
+            ]);
+        } 
+        else {
+            array_push($mounts, [
+                "global_mount"=>mount::where('id', '=', $mount_id,)->get(),
+                "locale_mount"=>mount::find($mount_id)->us_mount
+            ]);
+        }
+        // dd($mount);
+        return $mounts;
     }
 }

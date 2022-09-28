@@ -1,105 +1,132 @@
 <template>
-    <div id="carousel3d">
-      <carousel-3d :perspective="0" :space="200" :display="5" :controls-visible="true" :controls-prev-html="'❬'" :controls-next-html="'❭'" :controls-width="30" :controls-height="60" :clickable="true" :autoplay="true" :autoplay-timeout="5000">
-        <!-- <slide :index="0">
-          <span class="title">Web Development</span>
-        <a href="https://www.youtube.com/channel/UCXTfDJ60DBmA932Du6B1ydg">Click Here</a>
-        </slide>
-        <slide :index="1">
-          <span class="title">Web Design</span>
-          <a href="https://www.youtube.com/channel/UCXTfDJ60DBmA932Du6B1ydg">Click Here</a>
-        </slide>
-        <slide :index="2">
-          <span class="title">You know</span>
-          <a href="https://www.youtube.com/channel/UCXTfDJ60DBmA932Du6B1ydg">Click Here</a>
-        </slide>
-        <slide :index="3">
-          <span class="title">You know</span>
-          <a href="https://www.youtube.com/channel/UCXTfDJ60DBmA932Du6B1ydg">Click Here</a>
-        </slide>
-        <slide :index="4">
-          <span class="title">You know</span>
-          <a href="https://www.youtube.com/channel/UCXTfDJ60DBmA932Du6B1ydg">Click Here</a>
-        </slide>
-        <slide :index="5">
-          <span class="title">You know</span>
-          <a href="https://www.youtube.com/channel/UCXTfDJ60DBmA932Du6B1ydg">Click Here</a>
-        </slide>
-        <slide :index="6">
-          <span class="title">You know</span>
-          <a href="https://www.youtube.com/channel/UCXTfDJ60DBmA932Du6B1ydg">Click Here</a>
-        </slide> -->
-        <slide :index="0">
-          <span class="title">You know my tesyt</span>
-          <a href="https://www.youtube.com/channel/UCXTfDJ60DBmA932Du6B1ydg">Click Here</a>
-        </slide>
-        <slide :index="1" v-for="techtip in techtips" :key="techtip.id">
-          <span class="title">{{ techtip[0][0].title }}</span>
-          <a href="https://www.youtube.com/channel/UCXTfDJ60DBmA932Du6B1ydg">Click Here</a>
-        </slide>
-      </carousel-3d> 
+    <div class="h-recent-work services" id="services">
+        <div class="container" v-if="techtips.length > 0">
+
+            <h2 class='index_h2'>{{ $t('title tech tips') }}</h2>
+
+            <div class="bar"><i class="fa fa-exclamation-triangle"></i></div>
+            <h3> <span v-html="this.$siteData.tech_tips_description"></span> </h3>
+                    
+            <div class="container">
+                <div class="row">
+                    
+                    <!-- <div class="tips_list">
+                        <div class="tips"> -->
+
+                            <div class="col-xs-6 col-sm-6 col-md-3" v-for="tip in techtips" :key="tip.id">
+                                <!-- {{ tip_num+=1 }} -->
+                                <div class="thumbnail">
+                                    <!-- <site-img :src="'../../../public/images/site_img/image.png'" :img_class="'img-responsive'" :alt='tip[0][0].title'/> -->
+                                    <router-link :to="'tech_tip/'+tip.url_title" class="info">
+                                        <site-img v-if="tip.image != null" :src="this.image_dir+tip.image" :img_class="'img-responsive'" :alt='tip[0][0].title'/>
+                                        <site-img v-else :src="'../../../public/images/site_img/image.png'" :img_class="'img-responsive'" :alt='tip[0][0].title'/>
+                                    </router-link>
+                                    <div class="caption">
+                                        <router-link :to="'tech_tip/'+tip.url_title" class="info">
+                                            <h3>{{ tip[0][0].title }}</h3>
+                                        </router-link>
+                                        <p>{{ tip[0][0].short_description }}</p>
+                                    </div>
+                                </div>
+                                
+                                <!-- <div v-if="tip_num % 2 == 0" class="clearfix visible-xs-block"></div> -->
+                            </div>
+
+
+                        <!-- </div>
+                    </div> -->
+
+                    <!-- <div class="previes_tip_bottom" v-if="techtips.length > 4">
+                        <i class="fa fa-chevron-left" aria-hidden="true"></i>
+                    </div>
+
+                    <div class="next_tip_bottom" v-if="techtips.length > 4">
+                        <i class="fa fa-chevron-right" aria-hidden="true"></i> -->
+                    <!-- </div> -->
+
+                </div>
+            </div>
+        </div>
     </div>
 </template>
 
 <script>
-    import { Carousel3d, Slide } from 'vue-carousel-3d';
-
-export default {
-  components: {
-    Carousel3d,
-    Slide,
-  },
-  data() {
-      return {
-          techtips: [],
-          slider_index: 0,
-      }
-  },
-  mounted() { 
-      this.get_techtips()
-  },
-  methods: {
-    get_techtips(){
-        axios
-        .get('../api/techtip')
-        .then(response => {
-            this.techtips = response.data
-        })
-        .catch(error =>{
-        })
-    }
-  }
-
-};
+    export default {
+        data() {
+            return {
+                techtips: [],
+                slider_index: 0,
+                // tip_num: 0
+            }
+        },
+        mounted() { 
+            this.get_techtips()
+        },
+        methods: {
+            get_techtips(){
+                axios
+                .get('../api/articles/tech_tip/'+localStorage.getItem('lang'))
+                .then(response => {
+                    this.techtips = response.data
+                })
+                .catch(error =>{
+                })
+            }
+        }
+    };
 </script>
 
 <style scoped>
-    #carousel3d .carousel-3d-slide {
-        display: -webkit-box;
-        display: -ms-flexbox;
-        display: flex;
-        -webkit-box-flex: 1;
-        -ms-flex: 1;
-        flex: 1;
-        -webkit-box-orient: vertical;
-        -webkit-box-direction: normal;
-        -ms-flex-direction: column;
-        flex-direction: column;
-        -webkit-box-pack: center;
-        -ms-flex-pack: center;
-        justify-content: center;
-        text-align: center;
-        background-color: #fff;
-        padding: 10px;
-        -webkit-transition: all .4s;
-        transition: all .4s;
+
+
+@media (max-width: 990px){
+    .thumbnail{
+        height: 18em;
+        max-height: 22em;
+        margin-top: 20px;
     }
-    #carousel3d .carousel-3d-slide.current {
-        background-color: #333;
-        color: #fff;
+    .thumbnail p{
+        font-size: 80%;
     }
-    #carousel3d .carousel-3d-slide.current span {
-        font-size: 20px;
-        font-weight: 500;
+}
+
+@media (max-width: 375px){
+    .thumbnail{
+        height: 9em;
+        max-height: 22em;
+        margin-top: 16px;
     }
+    .thumbnail p{
+        font-size: 80%;
+    }
+}
+.tip{
+    width: 25%;
+    height: auto;
+    margin: 2%;
+}
+.caption h3{
+    margin: 0;
+}
+.caption p{
+    text-align: center;
+}
+/* .tips_list{
+    max-height: 100%; 
+    overflow: hidden;
+}
+.tips{
+    display: flex;
+} */
+.previes_tip_bottom{
+    float: left;
+}
+.next_tip_bottom{
+    float: right;
+}
+.next_tip_bottom, .previes_tip_bottom{
+    margin-top: -12%;
+    font-size: 150%;
+    cursor: pointer;
+}
 </style>

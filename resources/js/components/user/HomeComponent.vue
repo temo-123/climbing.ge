@@ -23,10 +23,10 @@
 </template>
 
 <script>
-    import navbar from './items/NavbarComponent'
+    import navbar from './items/NavbarComponent.vue'
     // import leftMenu from './items/LeftMenuComponent'
     // import footter from './items/FooterComponent'
-    import { mapActions, mapGetters } from 'vuex'
+    // import { mapActions, mapGetters } from 'vuex'
 
     export default {
         data: function () {
@@ -38,7 +38,6 @@
         },
         components: {
             navbar,
-            // leftMenu,
             // footter,
         },
         mounted() {

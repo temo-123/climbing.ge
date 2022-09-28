@@ -24,6 +24,10 @@
           </div>
         </div>
 
+            <div class="row">
+                <Editor />
+            </div>
+            
         <div class="form-group clearfix row" v-if="errors.sector_id">
             <div class="col-md-12">
               <div class="alert alert-danger" role="alert">
@@ -147,7 +151,11 @@
 </template>
 
 <script>
-  export default {
+    import Editor from '../../../items/canvas/EditorComponent.vue'
+export default {
+        components: {
+            Editor,
+        },
     props: [
         "editing_roure_id",
     ],

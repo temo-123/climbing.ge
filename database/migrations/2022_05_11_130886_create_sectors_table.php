@@ -36,6 +36,8 @@ class CreateSectorsTable extends Migration
 
             $table->foreignId('article_id')->constrained()->onDelete('cascade');
             
+            $table->integer('published')->nullable();
+            
             $table->timestamps();
         });
     }

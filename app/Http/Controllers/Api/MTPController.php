@@ -22,6 +22,11 @@ class MTPController extends Controller
         return MTP::get();
     }
 
+    public function get_mtps_for_forum($sector_id)
+    {
+        return MTP::where('sector_id','=', $sector_id)->get();
+    }
+
     /**
      * Show the form for creating a new resource.
      *
@@ -51,7 +56,7 @@ class MTPController extends Controller
      */
     public function show($id)
     {
-        //
+        return Mtp::where('id',strip_tags($id))->get();
     }
 
     /**

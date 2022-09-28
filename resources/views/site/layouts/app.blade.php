@@ -60,20 +60,39 @@
     <script src="{{ asset('assets/js/analitic/climbing.ge_analitic.js') }}"></script> --}}
 
     {{-- Google recaptcha --}}
-    <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+    {{-- <script src="https://www.google.com/recaptcha/api.js" async defer></script> --}}
 
     <style> 
+        /* Text copy block*/
         .unselectable { 
             -webkit-user-select: none; 
             -webkit-touch-callout: none; 
             -moz-user-select: none; 
             -ms-user-select: none; 
             user-select: none;
-        } 
+        }
+        /* Firefox scrollbar color*/
+        html {
+            scrollbar-color: #279fbb white;
+            scrollbar-width: thin;
+            border-radius: 0%
+        }
+        /* Other brouser scrollbar color*/
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+            background-color: white;
+            border-radius: 0%
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #279fbb;
+            border-radius: 5px;
+            border-radius: 0%
+        }
     </style>
 </head>
 <body>
-{{-- {{ dd(App::currentLocale()) }} --}}
+    {{-- {{ dd(App::currentLocale()) }} --}}
     <div id="page-preloader" class="preloader">
         <div class="loader"></div>
     </div>

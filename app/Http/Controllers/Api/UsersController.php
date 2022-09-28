@@ -10,7 +10,9 @@ use App\User;
 use App\Models\Following_users;
 use App\Models\Role;
 
+use Mail;
 use App\Notifications\FollowingNotification;
+// use App\Mail\Message;
 
 class UsersController extends Controller
 {
@@ -29,27 +31,42 @@ class UsersController extends Controller
         return following_users::all();
     }
 
+    public function get_followers_list()
+    {
+        return following_users::all();
+    }
+
     public function follow(Request $request)
     {
-        Validator::make($request, [
-            'email' => 'required', 'string', 'email', 'max:255', 'unique:users',
-        ]);
-
         if ($request -> isMethod('post')) {
-            if (auth()->user() && $request->email == auth()->user()->email) {
-                $follow = new Following_users();
-                $follow['email']=$request->email;
-                $follow['service']=$request->service_id;
-                $follow['user_id']=auth()->user();
-                $follow -> save();
+            if(Following_users::where('email','=',$request->email)->count()){
+                return("You are already subscribed");
             }
-            else {
-                $follow = new Following_users();
-                $follow['email']=$request->email;
-                $follow['service']=$request->service_id;
-                $follow -> save();
+            else{
+                if (auth()->user() && $request->email == auth()->user()->email) {
+                    $follow = new Following_users();
+                    $follow['email']=$request->email;
+                    $follow['service']=$request->service_id;
+                    $follow['user_id']=auth()->user();
+                    $follow -> save();
+                }
+                else {
+                    $follow = new Following_users();
+                    $follow['email']=$request->email;
+                    $follow['service']=$request->service_id;
+                    $follow -> save();
+                }
+
+                $EmailArray = array(
+                    'email' => "rrrr@ggg.ggg",
+                    'message' => 'test',
+                    'from_site' => $request->service_id,
+                );
+
+                Mail::to($request->email)->send(new FollowingNotification($EmailArray));
+
+                return("Tenk you for following! :) Plis check your emeil!");
             }
-            $user->notify(new FollowingNotification());
         }
     }
 
@@ -119,5 +136,10 @@ class UsersController extends Controller
         $deleted_user = User::where('id','=',$request->user_id)->first();
         DB::table('role_user')->where('user_id','=',$deleted_user->id)->delete();
         $deleted_user -> delete();
+    }
+
+    public function get_user_data()
+    {
+        return auth()->user();
     }
 }

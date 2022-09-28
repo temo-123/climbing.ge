@@ -39,17 +39,17 @@ class Article extends Model
 
 	public function us_article()
 	{
-		return $this->hasOne(Us_article::class, 'id');
+		return $this->hasOne(Locale_article::class, 'id');
 	}
 
 	public function ka_article()
 	{
-		return $this->hasOne(Ka_article::class, 'id');
+		return $this->hasOne(Locale_article::class, 'id');
 	}
 
 	public function ru_article()
 	{
-		return $this->hasOne(Ru_article::class, 'id');
+		return $this->hasOne(Locale_article::class, 'id');
 	}
 
 
@@ -61,5 +61,11 @@ class Article extends Model
 	public function spot_rock_images()
 	{
 		return $this->hasMany(Spots_rocks_image::class, 'article_id');
+	}
+
+
+	public function general_info()
+	{
+		return $this->hasMany(General_info_article::class, 'article_id');
 	}
 }

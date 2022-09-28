@@ -1,15 +1,7 @@
 <template>
     <div>
         <div class="row ">
-            <div class="col-md-10">
-                <Canvas 
-                    :canvas-id="'canvas-one'" 
-                    :action="action"
-
-                    ref="childCanvas" 
-                />
-                    <!-- style="background-image: url(http://user.climbing.loc/images/gallery_img/2021-11-27-19-11-56.jpg);"  -->
-            </div>
+            
             <div class="col-md-2">
                 <button class="btn btn-danger btn-block" @click.prevent="reset">
                     <i class="fa fa-times" aria-hidden="true"></i>
@@ -46,6 +38,17 @@
                     <i class="fa fa-floppy-o" aria-hidden="true"></i>
                 </button>
             </div>
+
+            <div class="col-md-10">
+                <Canvas 
+                    :canvas-id="'canvas-one'" 
+                    :action="action"
+
+                    ref="childCanvas"
+                />
+                    <!-- style="background-image: url(http://user.climbing.loc/images/gallery_img/2021-11-27-19-11-56.jpg);"  -->
+            </div>
+
         </div>
     </div>
 </template>

@@ -6,12 +6,12 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
 use App\Notifications\FollowingNotification;
+// use Mail;
 
 class FollowingNotificationController extends Controller
 {
     public function send_notification(Request $request)
     {
-        dd($request);
         $this->message_validate($request);
 
         if($request->email != null)     $email = $request->email;         else $email = null;

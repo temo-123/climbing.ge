@@ -24,9 +24,18 @@ return new class extends Migration
             // $table->integer('ru_service_id')->nullable();
             // $table->integer('ka_service_id')->nullable();
             
-            $table->foreignId('us_service_id')->constrained()->onDelete('cascade');
-            $table->foreignId('ru_service_id')->constrained()->onDelete('cascade');
-            $table->foreignId('ka_service_id')->constrained()->onDelete('cascade');
+            // $table->foreignId('locale_service_id')->constrained()->onDelete('cascade');
+            // $table->foreignId('locale_service_id')->constrained()->onDelete('cascade');
+            // $table->foreignId('locale_service_id')->constrained()->onDelete('cascade');
+
+            $table->unsignedBigInteger('us_service_id');
+            $table->foreign('us_service_id')->references('id')->on('locale_services')->onDelete('cascade');
+
+            $table->unsignedBigInteger('ka_service_id');
+            $table->foreign('ka_service_id')->references('id')->on('locale_services')->onDelete('cascade');
+
+            $table->unsignedBigInteger('ru_service_id');
+            $table->foreign('ru_service_id')->references('id')->on('locale_services')->onDelete('cascade');
 
             $table->timestamps();
         });

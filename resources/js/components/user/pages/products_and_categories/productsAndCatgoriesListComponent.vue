@@ -34,14 +34,14 @@
         methods: {
             get_products_data: function(){
                 axios
-                .get("../api/products/")
+                .get("../api/products/en/")
                 .then(response => {
                     this.data_for_tab.push({'id': 1,
                                             'data': response.data, 
                                             'table_name': 'Products', 
-                                            // 'table_category': this.$route.params.article_category, 
+                                            'table_add_url': 'productAdd', 
+                                            'table_edit_url': 'productEdit',
                                             'table_del_url': 'del_url', 
-                                            'table_edit_url': 'edit_url'
                                         });
                     this.get_categories_data()
                 })
@@ -52,14 +52,14 @@
             },
             get_categories_data: function(){
                 axios
-                .get("../api/categories/")
+                .get("../api/product_category")
                 .then(response => {
                     this.data_for_tab.push({'id': 2,
                                             'data': response.data, 
                                             'table_name': 'Categories', 
-                                            // 'table_category': this.$route.params.article_category, 
+                                            'table_add_url': 'productAdd', 
+                                            'table_edit_url': 'productEdit',
                                             'table_del_url': 'del_url', 
-                                            'table_edit_url': 'edit_url'
                                         });
                 })
                 .catch(

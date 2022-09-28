@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
-use App\Models\global_infos;
+use App\Models\General_info;
 
 class GeneralInfoController extends Controller
 {
@@ -16,7 +16,7 @@ class GeneralInfoController extends Controller
      */
     public function index()
     {
-        return global_infos::get();
+        return General_info::get();
     }
 
     /**

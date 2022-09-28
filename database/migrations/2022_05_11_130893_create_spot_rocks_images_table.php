@@ -22,7 +22,7 @@ return new class extends Migration
             $table->integer('num')->nullable();
             // $table->integer('article_id')->nullable();
             
-            $table->foreignId('article_id')->constrained()->onDelete('cascade');
+            // $table->foreignId('article_id')->constrained()->onDelete('cascade');
             
             $table->timestamps();
         });

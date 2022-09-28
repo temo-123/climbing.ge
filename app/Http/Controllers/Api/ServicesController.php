@@ -17,8 +17,20 @@ class ServicesController extends Controller
      */
     public function index()
     {
+        return $global_services = Service::get();
+        // return $services = GetServicesService::get_locale_services_use_locale($global_services, $request->lang);
+    }
+
+    public function get_local_services(Request $request)
+    {
         $global_services = Service::where('published', '=', 1)->get();
-        return $services = GetServicesService::get_locale_services($global_services);
+        return $services = GetServicesService::get_locale_services_use_locale($global_services, $request->lang);
+    }
+
+    public function get_similar_service(Request $request)
+    {
+        $global_services = Service::where('published', '=', 1)->where('id', '!=', $request->id)->get();
+        return $services = GetServicesService::get_locale_services_use_locale($global_services, $request->lang);
     }
 
     /**
@@ -50,8 +62,15 @@ class ServicesController extends Controller
      */
     public function show($url_title)
     {
-        $global_service = Service::where('published', '=', 1)->where('url_title',strip_tags($url_title))->first();
-        return $service = GetServicesService::get_locale_service_in_page($global_service);
+        // dd($url_title);
+        // $global_service = Service::where('published', '=', 1)->where('url_title',strip_tags($url_title))->first();
+        // return $service = GetServicesService::get_locale_service_in_page($global_service);
+    }
+
+    public function get_local_service_in_page(Request $request)
+    {  
+        $global_service = Service::where('published', '=', 1)->where('url_title',strip_tags($request->url_title))->first();
+        return $service = GetServicesService::get_locale_service_in_page_use_locale($global_service, $request->lang);
     }
 
     /**

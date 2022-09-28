@@ -11,7 +11,7 @@ use Intervention\Image\ImageManagerStatic as Image;
 
 class imageControllService
 {
-    public static function image_upload($image_dir, $request, $form_value_id, $resize)
+    public static function image_upload($image_dir, $request, $form_value_id, $resize = 0)
     {
         /*
         *
@@ -25,7 +25,7 @@ class imageControllService
 
         // https://therichpost.com/vue-laravel-image-upload/
 
-        if ($request->hasFile($form_value_id)){   
+        // if ($request->hasFile($form_value_id)){   
 
             // rename file->;
             $extension = $request->file($form_value_id)->getClientOriginalExtension();
@@ -42,7 +42,7 @@ class imageControllService
 
             // return new filie name
             return $file_new_name;
-        } 
+        // } 
     }
 
     public static function image_update($image_dir, $model, $request, $form_value_id, $resize, $db_value)
@@ -134,6 +134,7 @@ class imageControllService
         // open an image file
         $resize_filename = public_path($image_dir.'origin_img/'.$file_new_name);
         $demo_img = Image::make($resize_filename);
+        // dd($demo_img);
 
         // now you are able to resize the instance
         if($resize == 1){

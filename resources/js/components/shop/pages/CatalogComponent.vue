@@ -3,18 +3,18 @@
 
         <h1 class="page_title">products list</h1>
         <div class="bar"><i class="fa fa-exclamation-triangle"></i></div>
-        <h6> <span v-html="this.$siteData.shop_short_description"></span> </h6>
+        <h3> <span v-html="this.$siteData.shop_short_description"></span> </h3>
 
-        <p>{{ $n(10000, 'currency') }}</p>
+        <!-- <p>{{ $n(10000, 'currency') }}</p>
         <p>{{ $n(10000, 'currency', 'en-US') }}</p>
         <p>{{ $n(10000, 'currency', 'en-US', { useGrouping: false }) }}</p>
         <p>{{ $n(987654321, 'currency', { notation: 'compact' }) }}</p>
         <p>{{ $n(0.99123, 'percent') }}</p>
         <p>{{ $n(0.99123, 'percent', { minimumFractionDigits: 2 }) }}</p>
         <p>{{ $n(12.11612345, 'decimal') }}</p>
-        <p>{{ $n(12145281111, 'decimal', 'en-US') }}</p>
+        <p>{{ $n(12145281111, 'decimal', 'en-US') }}</p> -->
 
-        <div class="col-md-12">
+        <div class="col-md-12"  v-if="products.length > 0">
             <!-- <div class="bar"></div> -->
             <div class="row">
                 <div class="col-md-4">
@@ -23,18 +23,26 @@
                         <option v-for="category in categories" :key='category.id' :value="category.id">{{ category.us_name }}</option> 
                     </select>
                 </div>
-                <!-- <div class="col-md-6">
+
+                <div class="col-md-4">
                     <div class="row">
                         <div class="range-slider">
-                            <input class='price_range' type="range" min="0" :max="max_price" step="5">
-                        
-                            <input class='price_range' type="range" min="0" :max="max_price" step="5">
+                            <input class='min_price_range price_range' type="range" min="0" :max="max_price" step="5">
                         </div>
                     </div>
                     <div class="row price_range_text text-center">
-                        <p>Price - {{min_price}} - {{max_price}}</p>
+                        <p>Minimal price - {{min_price}}</p>
                     </div>
-                </div> -->
+                </div>
+
+                <div class="col-md-4">
+                    <div class="range-slider">
+                        <input class="max_price_range price_range" type="range" min="0" :max='max_price' value="500" step="5" >
+                    </div>
+                    <div class="row price_range_text text-center">
+                        <p>Maximal price - {{max_price}}</p>
+                    </div>
+                </div>
                 <!-- <div class="col-md-2 col-md-offset-6 text-right">
                     <div class="btn-group list_btn" id="status" data-toggle="buttons" style="border: 1px; border-style: solid;">
                         <label class="btn btn-default btn-on btn-xs active">
@@ -51,9 +59,19 @@
             <!-- <div class="bar"></div> -->
         </div>
 
-        <div class="col-sm-12">
+        <div class="col-md-12" v-if="products_loading">
+            <content-loader
+                viewBox="0 0"
+                primaryColor="#f3f3f3"
+                secondaryColor="#27bb7d8c"
+            >
+
+            </content-loader>
+        </div>
+        <div class="col-sm-12" v-else>
             <!-- <section class="inner"> -->
-                <section class="portfolio inner" id="portfolio">
+                <section class="portfolio inner" id="portfolio" v-if="filtred_products.length > 0">
+
 
                         <div class="layout">
                             <!-- <section class="inner"> -->
@@ -64,21 +82,87 @@
                                         :key='product.id'
                                         :product_data="product"
 
-                                        @add_to_cart = "addToCart"
+                                        @quick_view="quick_view_model"
                                     />
 
                                 </ul>
                             <!-- </section> -->
                         </div>
                 </section>
+
+                <div v-else>
+                    <emptyPageComponent />
+                </div>
             <!-- </section> -->
         </div>
+
+        <stack-modal
+            :show="product_modal"
+            title="Product"
+            @close="product_modal=false"
+            :modal-class="{ [modalClass]: true }"
+            :saveButton="{ visible: true, title: 'Save', btnClass: { 'btn btn-primary': true } }"
+            :cancelButton="{ visible: false, title: 'Close', btnClass: { 'btn btn-danger': true } }"
+        >
+            <pre class="language-vue">
+                <div v-for="q_product in quick_product" :key='q_product.id'>
+                    <!-- {{ q_product }} -->
+
+                    <h1>{{ q_product.locale_product.title }}</h1>
+
+                    <site-img :src="'../../../public/images/product_img/'+q_product.product_images[0]" :img_class="''" :alt='q_product.locale_product.title'/>
+
+                    <div class="row">
+                        <div class="col-md-6">
+                            <select class="form-control" v-model="product_modification_for_cart" name="product_modification_for_cart" @click="select_option()">
+                                <option>All</option>
+                            </select> 
+                        </div>
+                        <div class="col-md-4">
+                            <input type="number" class="form-control" min="1" max='10' v-model="products_quantity" />
+                        </div>
+                        <div class="col-md-2">
+                            <a @click="add_to_cart()" class='text-center'> 
+                                <i class="fa fa-cart-plus" aria-hidden="true" style="font-size: 250%;"></i>
+                            </a>
+                        </div>
+                    </div>
+
+
+                    {{ q_product.locale_product.text }}
+                </div>
+            </pre>
+            <div slot="modal-footer">
+                <div class="modal-footer">
+                    
+                </div>
+            </div>
+        </stack-modal>
+
     </div>
 </template>
 
 <script>
     import catalogItem from '../items/CatalogItemComponent'
+
+    import emptyPageComponent from '../../global_components/EmptyPageComponent'
+    import { ContentLoader } from 'vue-content-loader'
+
+    import { SlickList, SlickItem } from 'vue-slicksort'; //https://github.com/Jexordexan/vue-slicksort
+    import StackModal from '@innologica/vue-stackable-modal'  //https://innologica.github.io/vue-stackable-modal/#sample-css
+
+    import lingallery from 'lingallery'; // https://github.com/ChristophAnastasiades/Lingallery
+
     export default {
+        components: {
+            lingallery,
+            StackModal,
+            SlickItem,
+            SlickList,
+            catalogItem,
+            emptyPageComponent,
+            ContentLoader
+        },
         // props:[
         //     'site_data',
         // ],
@@ -92,10 +176,11 @@
                 filter_category: 'All',
                 sortid_products: [],
                 categories: [],
+                products_loading: true,
+                product_modal: false,
+
+                quick_product: [],
             };
-        },
-        components: {
-            catalogItem,
         },
         mounted() {
             this.get_products()
@@ -107,7 +192,7 @@
         methods: {
             get_products(){
                 axios
-                .get('../api/products')
+                .get('../api/products/'+localStorage.getItem('lang'))
                 .then(response => {
                     this.products = response.data
 
@@ -115,6 +200,7 @@
                 })
                 .catch(error =>{
                 })
+                .finally(() => this.products_loading = false);
             },
 
             sortByCategories(){
@@ -122,8 +208,47 @@
                 if (vm.filter_category == 'All') {
                     this.filtred_products = this.products
                 }else{
-                    this.filtred_products = this.products.filter(function (item){
-                        return item.category_id == vm.filter_category
+                    this.filtred_products = 
+                    this.products.filter(function (item){
+                        return item.global_product.category_id == vm.filter_category
+                    })
+                }
+            },
+
+            quick_view_model(event){
+                // alert(event)
+
+                this.quick_product = []
+
+                axios
+                .get('../api/get_quick_product/'+localStorage.getItem('lang')+'/'+event)
+                .then(response => {
+                    this.quick_product = response.data
+                    this.product_modal = true
+                })
+                .catch(error =>{
+                })
+            },
+
+
+            select_option(){
+                alert('test')
+            },
+            add_to_cart(){
+                if(this.product_modification_for_cart == "All"){
+                    alert('plis select option')
+                }
+                else{
+                    // this.cart_options = {"modification_id": this.product_modification_for_cart, "quantity": this.products_quantity}
+                    axios
+                    .put('../api/cart/'+this.product_modification_for_cart, {
+                        modification_id: this.product_modification_for_cart,
+                        quantity: this.products_quantity
+                    })
+                    .then(response => {
+                        this.add_to_cart_message = "Product added in your cart"
+                    })
+                    .catch(error =>{
                     })
                 }
             },
@@ -138,35 +263,35 @@
             //     this.sortByCategories()
             // },
 
-            addToCart(data){
-                axios
-                .get('../add_to_cart/'+ data.id)
-                .then(response => {
-                    console.log(response.data);
-                    if (response.data == 'login') {
-                        window.location.href = 'login';
-                    }
-                    else{
-                        this.cart_products = response.data
-                    }
-                })
-                .catch(error =>{
-                })
-            },
+            // addToCart(data){
+            //     axios
+            //     .get('../api/add_to_cart/'+ data.id)
+            //     .then(response => {
+            //         console.log(response.data);
+            //         if (response.data == 'login') {
+            //             window.location.href = 'login';
+            //         }
+            //         else{
+            //             this.cart_products = response.data
+            //         }
+            //     })
+            //     .catch(error =>{
+            //     })
+            // },
 
-            get_site_data() {
-                axios
-                .get('../get_site_data')
-                .then(response => {
-                    this.site_data = response.data[0]
-                })
-                .catch(error =>{
-                })
-            },
+            // get_site_data() {
+            //     axios
+            //     .get('../get_site_data')
+            //     .then(response => {
+            //         this.site_data = response.data[0]
+            //     })
+            //     .catch(error =>{
+            //     })
+            // },
 
             get_categories(){
                 axios
-                .get('../api/categories')
+                .get('../api/product_category')
                 .then(response => {
                     this.categories = response.data
                 })
@@ -223,7 +348,13 @@
         margin-bottom: 0% !important;
     }
 
-
+    /* .max_price_range{
+        -webkit-transform: rotateY(180deg);
+        -moz-transform: rotateY(180deg);
+        -ms-transform: rotateY(180deg);
+        -o-transform: rotateY(180deg);
+        transform: rotateY(180deg);
+    } */
 
     /* Switch button */
     .btn-default.btn-on.active{

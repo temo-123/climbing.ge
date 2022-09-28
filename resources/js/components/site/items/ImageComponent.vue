@@ -3,6 +3,7 @@
 </template>
 
 <script>
+    //https://www.vuescript.com/custom-watermarks/
     export default {
         props:[
             'src',

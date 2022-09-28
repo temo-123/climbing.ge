@@ -1,7 +1,10 @@
 <template>
     <div class="container">
     	    
-        	<h2 class="block_title">Message</h2>
+        	<h2 class="block_title">{{ $t('title message') }}</h2>
+            <div class="bar"><i class="fa fa-envelope" aria-hidden="true"></i></div>
+            <h3> <span v-html="this.$siteData.message"></span> </h3>
+
         	<!-- <p>You do not need to provide a phone number, but if you specify this, it will help us to meet you. Other parameters are required.</p> -->
         	
             <!-- @if (count($errors) > 0)

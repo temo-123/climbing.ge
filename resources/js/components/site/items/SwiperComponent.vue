@@ -1,109 +1,113 @@
 <template>
-  <div>
-    <div class="thumb-example" v-if="this.slides.length > 0">
-      <!-- swiper1 -->
-      <swiper class="swiper gallery-top" :options="swiperOptionTop" ref="swiperTop">
-        <swiper-slide v-for="slide in slides" :key="slide['id']" :style="{ backgroundImage: 'url(' + slide['image'] + ')',}"></swiper-slide>
-        <div class="swiper-button-next swiper-button-white" slot="button-next"></div>
-        <div class="swiper-button-prev swiper-button-white" slot="button-prev"></div>
-      </swiper>
-      <!-- swiper2 Thumbs -->
-      <swiper class="swiper gallery-thumbs" :options="swiperOptionThumbs" ref="swiperThumbs">
-        <swiper-slide v-for="slide in slides" :key="slide['id']" :style="{ backgroundImage: 'url(' + slide['image'] + ')',}"></swiper-slide>
-      </swiper>
+  <div class="swiper">
+    <div class="swiper_sizing"  :style="'margin-left:' + '-' + (-100*carrent_slider_index) + '%;'">
+      <div  v-for="slide in slides" :key="slide.id" class="head_slider">
+
+          <!-- <div class="slider_text text_position_left_top" v-if="slide.slide_text_position == 1">
+            <p class="slide_title">{{slide.title}}</p>
+            <p>{{slide.text}}</p>
+          </div>
+          <div class="slider_text text_position_right_top" v-if="slide.slide_text_position == 2">
+            <p class="slide_title">{{slide.title}}</p>
+            <p>{{slide.text}}</p>
+          </div>
+          <div class="slider_text text_position_left_botom"  v-if="slide.slide_text_position == 3">
+            <p class="slide_title">{{slide.title}}</p>
+            <p>{{slide.text}}</p>
+          </div>
+          <div class="slider_text text_position_right_botom"  v-if="slide.slide_text_position == 4">
+            <p class="slide_title">{{slide.title}}</p>
+            <p>{{slide.text}}</p>
+          </div> -->
+
+          <site-img :src="slide.image" :alt="slide.title" :class="'slider_img'" />
+
+      </div>
     </div>
+
+    <!-- <div class="previes_slide_bottom" @click="previes_image">
+        <i class="fa fa-chevron-left" aria-hidden="true"></i>
+    </div>
+
+    <div class="next_slide_bottom" @click="next_image">
+        <i class="fa fa-chevron-right" aria-hidden="true"></i>
+    </div> -->
+
   </div>
 </template>
 
 <script>
-  // import { Swiper, SwiperSlide } from 'vue-awesome-swiper'
-  // import 'swiper/css/swiper.css'
-  // https://github.surmon.me/vue-awesome-swiper/
-
   export default {
-    name: 'swiper-example-thumbs-gallery',
-    title: 'Thumbs gallery with Two-way control',
-    components: {
-      // Swiper,
-      // SwiperSlide
-    },
-    data() {
-      return {
-        slides: [],
-        swiperOptionTop: {
-          loop: true,
-          loopedSlides: 5, // looped slides should be the same
-          spaceBetween: 10,
-          navigation: {
-            nextEl: '.swiper-button-next',
-            prevEl: '.swiper-button-prev'
-          }
-        },
-        swiperOptionThumbs: {
-          loop: true,
-          loopedSlides: 5, // looped slides should be the same
-          spaceBetween: 10,
-          centeredSlides: true,
-          slidesPerView: 'auto',
-          touchRatio: 0.2,
-          slideToClickedSlide: true
-        }
-      }
-    },
-    mounted() {
-      this.$nextTick(() => {
-        const swiperTop = this.$refs.swiperTop.$swiper
-        const swiperThumbs = this.$refs.swiperThumbs.$swiper
-        swiperTop.controller.control = swiperThumbs
-        swiperThumbs.controller.control = swiperTop
-      })
-      this.get_slides()
-      // alert(this.slides.length)
-    },
-    methods: {
-      get_slides(){
-          axios
-          .get('../api/swiper')
-          .then(response => {
-              this.slides = response.data
-              // console.log(this.slides[0]['image']);
-          })
-          .catch(error =>{
-          })
+      data() {
+          return {
+              slides:[
+                  {   
+                      id: '1',
+                      title: 'Slide #1',
+                      text: 'Slide text 1',
+                      content: 'Slide 1 content.',
+                      image: '../images/gallery_img/2021-11-26-20-11-02.jpg',
+                      slide_text_position: 1
+                  },
+                  // {   
+                  //     id: '2',
+                  //     title: 'Slide #2',
+                  //     text: 'Slide text 2',
+                  //     content: 'Slide 2 content.',
+                  //     image: '../images/gallery_img/IMG_20220209_182522.jpg',
+                  //     slide_text_position: 4
+                  // }
+              ],
+
+              carrent_slider_index: 0,
+          };
       },
+      methods: {
+          next_image(){
+              this.carrent_slider_index++
+          },
+          previes_image(){
+            if(this.carrent_slider_index > 0){
+              this.carrent_slider_index--
+            }
+          },
+      }
     }
-  }
 </script>
 
-<style lang="scss" scoped>
-    // $black: #000;
-  .thumb-example {
-    height: 480px;
-    background-color: rgb(59, 104, 129);
-  }
+<style scoped>
+.head_slider{
+  /* white-space: normal;
+  background-size: cover;
+  flex-shrink: 0;
+  display: block;
+  width: 100%;
+  position: relative; */
+}
+.head_slide{
 
-  .swiper {
-    .swiper-slide {
-      background-size: cover;
-      background-position: center;
-    }
-
-    &.gallery-top {
-      height: 80%;
-      width: 100%;
-    }
-    &.gallery-thumbs {
-      height: 20%;
-      box-sizing: border-box;
-    //   padding: $gap 0;
-    }
-    &.gallery-thumbs .swiper-slide {
-      width: 25%;
-      height: 100%;
-      opacity: 0.4;
-    }
-    &.gallery-thumbs .swiper-slide-active {
-      opacity: 1;
-    }
-  }
+}
+.swiper{
+  max-width: 100%; 
+  overflow: hidden;
+}
+.swiper_sizing{
+  /* display: flex; */
+}
+.previes_slide_bottom{
+    left: 1%;
+}
+.next_slide_bottom{
+    right: 1%;
+}
+.next_slide_bottom, .previes_slide_bottom{
+    margin-top: -18%;
+    font-size: 300%;
+    cursor: pointer;
+    text-shadow: #d0d0d0 1px 1px 1px;
+    position: absolute;
+}
+.slider_img{
+  width: 100%
+}
 </style>

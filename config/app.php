@@ -15,6 +15,9 @@ return [
 
     'name' => env('APP_NAME', 'climbing.ge'),
 
+    'name' => env('BASE_URL', 'climbing.loc'),
+    'name' => env('BASE_URL_SSH', 'http://climbing.loc'),
+
     /*
     |--------------------------------------------------------------------------
     | Application Environment

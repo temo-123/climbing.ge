@@ -1,11 +1,11 @@
 <template>
     <div class="container top_menu_margin h-recent-work">
-        <h1 class="page_title">{{ active_service.title }}</h1>
-        <div class="row" v-if="active_service.image">
-            <img class="service_page_image" :src="'../../images/service_img/'+active_service.image" :alt="active_service.title">
+        <h1 class="page_title">{{ setvice.local_service.title }}</h1>
+        <div class="row" v-if="setvice.service_images">
+            <img class="service_page_image" :src="'../../images/service_img/'+setvice.service_images[0].image" :alt="setvice.local_service.title">
         </div>
         <div class="row service_page_text">
-            {{ active_service.text }}
+            {{ setvice.local_service.text }}
         </div>
 
         <div class="row" v-if="this.services.length > 0">
@@ -31,7 +31,7 @@
         data: function () {
             return {
                 services: [],
-                active_service: [],
+                setvice: [],
             };
         },
         components: {
@@ -48,9 +48,9 @@
             this.get_service()
         },
         methods: {
-            get_services(serv_id){
+            get_services(activ_service_id){
                 axios
-                .put('../api/services/'+serv_id)
+                .get('../api/similar_services/'+localStorage.getItem('lang')+'/'+activ_service_id)
                 .then(response => {
                     this.services = response.data
                 })
@@ -59,10 +59,10 @@
             },
             get_service(){
                 axios
-                .get('../api/services/'+this.$route.params.url_title)
+                .get('../api/service/'+localStorage.getItem('lang')+'/'+this.$route.params.url_title)
                 .then(response => {
-                    this.active_service = response.data[0]
-                    this.get_services(this.active_service.id)
+                    this.setvice = response.data[0]
+                    this.get_services(this.setvice.global_service.id)
                 })
                 .catch(error =>{
                 })

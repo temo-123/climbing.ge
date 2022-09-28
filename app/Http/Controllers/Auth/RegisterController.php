@@ -9,7 +9,8 @@ use App\User;
 use Illuminate\Foundation\Auth\RegistersUsers;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
-use App\Notifications\WelcomeEmailNotification;
+
+// use App\Notifications\WelcomeEmailNotification;
 
 use App\Models\Role;
 
@@ -97,7 +98,9 @@ class RegisterController extends Controller
             // dd($token);
 
             $user->roles()->attach(Role::where('name', 'user')->first());
-            $user->notify(new WelcomeEmailNotification());
+            
+            // $user->notify(new WelcomeEmailNotification());
+
             return $user;
         }
         else{

@@ -17,7 +17,7 @@ class CreateOrdersTable extends Migration
             $table->id();
 
             // $table->integer('user_id')->nullable();
-            // $table->integer('adres_id')->nullable();
+            $table->integer('confirm')->nullable();
             
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
             // $table->foreignId('adres_id')->constrained();

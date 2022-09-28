@@ -16,9 +16,14 @@ return new class extends Migration
         Schema::create('general_info_articles', function (Blueprint $table) {
             $table->id();
 
-            $table->integer('info_id')->nullable();
-            $table->integer('article_id')->nullable();
-            $table->integer('after_block')->nullable();
+            // $table->integer('info_id')->nullable();
+            // $table->integer('article_id')->nullable();
+
+            $table->foreign('info_id')->references('id')->on('general_infos')->onDelete('cascade'); // froom
+            $table->foreign('article_id')->references('id')->on('general_infos')->onDelete('cascade'); // froom
+
+            $table->string('block')->nullable();
+            $table->string('block_action')->nullable();
             
             $table->timestamps();
         });

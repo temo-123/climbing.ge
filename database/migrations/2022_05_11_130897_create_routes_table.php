@@ -19,15 +19,15 @@ class CreateRoutesTable extends Migration
             $table->string('name')->nullable();
             $table->text('text')->nullable();
 
-            $table->string('gread')->nullable();
-            $table->string('or_gread')->nullable();
+            $table->string('grade')->nullable();
+            $table->string('or_grade')->nullable();
 
             $table->string('bolts')->nullable();
-            $table->string('bolter')->nullable();
-            $table->string('bolting_data')->nullable();
+            $table->string('author')->nullable();
+            $table->string('creation_data')->nullable();
             $table->string('height')->nullable();
             $table->string('first_ascent')->nullable();
-            $table->string('top_anchor_category')->nullable();
+            $table->string('anchor_type')->nullable();
             $table->string('category')->nullable();
             $table->string('stars')->nullable();
 

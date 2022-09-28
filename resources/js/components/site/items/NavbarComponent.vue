@@ -5,10 +5,10 @@
             <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
                 <div class="col-xs-12 col-sm-2 col-md-3 col-lg-3 display-none-720px" style="z-index: 1001;">
                     <div class="site_title">
-                        <router-link style="font-size: 1.5em;" :to="{name: 'index'}" exact class="site_title">
+                        <!-- <router-link style="font-size: 1.5em;" :to="{name: 'index', params: {lang: this.$i18n.locale}}" exact class="site_title">
                             <img :src="'../../../images/site_img/site_logo/header logo.png'" alt="climbing.ge" style="height: 6em;">
-                        </router-link>
-                        <!-- <router-link style="font-size: 1.5em;" :to="{name: 'index'}" exact class="site_title">{{ $t('site name')}}</router-link> -->
+                        </router-link> -->
+                        <router-link style="font-size: 1.5em;" :to="{name: 'index'}" exact class="site_title">{{ $t('site name')}}</router-link>
                     </div>
                 </div>
 
@@ -23,29 +23,14 @@
                         <button type="button" class="navbar-toggle margin_right" data-toggle="dropdown">
                             <i class="fa fa-language" aria-hidden="true"></i>
                         </button>
-
-                        <!-- <li class="dropdown">
-                            <a class="margin_right admin_menu_for_desctop" data-toggle="dropdown">
-                                <i class="fa fa-search"  aria-hidden="true"></i>
-                            </a>
-                            <ul class="dropdown-menu shadows menu_margin_left_850" role="menu" style="width: 1000%;">
-                                <li>
-                                    <form action="/search" method="POST" role="search" class="navbar-form"  @submit.prevent="search">
-                                        <div class="form-group" style="display:inline;">
-                                            <div class="input-group" style="display:table;">
-                                            <span class="input-group"> 
-                                                <input class="form-control" name="request" v-model="search_query" placeholder="Search Here" autocomplete="off" autofocus="autofocus" type="text">
-                                                <button type="submit" class="input-group-addon"> 
-                                                    <span class="glyphicon glyphicon-search"></span>
-                                                </button>
-                                            </span>
-                                            </div>
-                                        </div>
-                                    </form>
-                                </li>
-                            </ul>
-                        </li> -->
                         
+                        <button type="button" class="navbar-toggle margin_right">
+                            <a class="margin_right admin_menu_for_desctop" data-toggle="dropdown">
+                                <!-- <i class="fa fa-search"  aria-hidden="true"></i> -->
+                                search
+                            </a>
+                        </button>
+
                         <button type="button" class="navbar-toggle margin_right">
                             <a style="margin-top: -5%; color: #333333;">
                                 <i class="fa fa-user" ></i>
@@ -53,22 +38,16 @@
                         </button>
                         
                         <ul class="dropdown-menu shadows" role="menu" >
-                            <li><a  @click="localization('us')"><country-flag country='usa' size='big'/></a></li>
-                            <li><a  @click="localization('ka')"><country-flag country='geo' size='big'/></a></li>
-                            <li><a  @click="localization('ru')"><country-flag country='rus' size='big'/></a></li>
+                            <li><a  @click="localization('us')">usa</a></li>
+                            <li><a  @click="localization('ka')">geo</a></li>
+                            <li><a  @click="localization('ru')">rus</a></li>
                         </ul>
-
 
                         <button type="button" class="navbar-toggle margin_right">
                             <a style="margin-top: -5%; color: #333333;">
                                 <i class="fa fa-heartbeat" aria-hidden="true"></i>
                             </a>
                         </button>
-                        
-                        <!-- <ul class="dropdown-menu shadows" role="menu" >
-                            <li>YDS</li>
-                            <li>YDS 2</li>
-                        </ul> -->
                     </div>
 
                     <div class="collapse navbar-collapse mobile_nav_menu" id="bs-example-navbar-collapse-1">
@@ -79,16 +58,15 @@
                                 </a>
 
                                 <ul class="dropdown-menu " role="menu" style="background: #1994b1; position: absolute;">
-                                    <li><router-link style="font-size: 1.5em;" :to="{name: 'indoors'}" exact>  <span> {{ $t('menu indoor climbing') }}  </span> </router-link></li>
-                                    <li><router-link style="font-size: 1.5em;" :to="{name: 'outdoors'}" exact> <span> {{ $t('menu outdoor climbing') }} </span> </router-link></li>
+                                    <li><router-link style="font-size: 1.5em;" :to="{name: 'indoors', params: {lang: this.$i18n.locale}}" exact>  <span> {{ $t('menu indoor climbing') }}  </span> </router-link></li>
+                                    <li><router-link style="font-size: 1.5em;" :to="{name: 'outdoors', params: {lang: this.$i18n.locale}}" exact> <span> {{ $t('menu outdoor climbing') }} </span> </router-link></li>
                                 </ul>
                             </li>
 
-
-                            <li><router-link :to="{name: 'mountaineerings'}" exact> <span> {{ $t('menu mountaineering') }}      </span> </router-link></li>
-                            <li><router-link :to="{name: 'ices'}" exact>            <span> {{ $t('menu ice climbing') }}        </span> </router-link></li>
-                            <li><router-link :to="{name: 'others'}" exact>          <span> {{ $t('menu other') }}               </span> </router-link></li>
-                            <li><router-link :to="{name: 'about_us'}" exact>        <span> {{ $t('menu about us') }}            </span> </router-link></li>
+                            <li><router-link :to="{name: 'mountaineerings', params: {lang: this.$i18n.locale}}" exact> <span> {{ $t('menu mountaineering') }}      </span> </router-link></li>
+                            <li><router-link :to="{name: 'ices', params: {lang: this.$i18n.locale}}" exact>            <span> {{ $t('menu ice climbing') }}        </span> </router-link></li>
+                            <li><router-link :to="{name: 'others', params: {lang: this.$i18n.locale}}" exact>          <span> {{ $t('menu other') }}               </span> </router-link></li>
+                            <li><router-link :to="{name: 'about_us', params: {lang: this.$i18n.locale}}" exact>        <span> {{ $t('menu about us') }}            </span> </router-link></li>
                             
                             <li class="dropdown">
                                 <a class="margin_right admin_menu_for_desctop" data-toggle="dropdown">
@@ -112,7 +90,7 @@
                                 </ul>
                             </li>
 
-                            <locale />
+                            <localeSwitcher />
 
                             <li class="dropdown display-none-720px">
                                 <a data-toggle="dropdown">
@@ -121,9 +99,7 @@
 
                                 <ul class="dropdown-menu shadows" role="menu">
                                     <li><a style="width: 50%; margin-left: 25%;"  @click="grade_charts('yds')"><li>YDS</li></a></li>
-                                    <li><a style="width: 50%; margin-left: 25%;"  @click="grade_charts('german')"><li>German</li></a></li>
                                     <li><a style="width: 50%; margin-left: 25%;"  @click="grade_charts('UIAA')"><li>UIAA</li></a></li>
-                                    <li><a style="width: 50%; margin-left: 25%;"  @click="grade_charts('UK')"><li>UK</li></a></li>
                                 </ul>
                             </li>
 
@@ -139,40 +115,46 @@
 
 <script>
     import search from './SearchComponent'
-    import locale from '../../global_components/LocaleChangeComponent.vue'
-    // import CountryFlag from 'vue-country-flag'
+    import localeSwitcher from '../../global_components/LocaleChangeComponent.vue'
 
     export default {
         data: function () {
             return {
                 search_query: null,
+                // i18n.locale: '',
             };
         },
         components: {
             search,
-            // CountryFlag,
-            locale,
+            localeSwitcher,
         },
         mounted() {
-            // this.$i18n.locale = this.lang
+            // if(localStorage.getItem('lang') != 'en'){
+            //     this.i18n.locale = localStorage.getItem('lang')
+            // } else{this.i18n.locale = ''}
         },
+        // watch: {
+        //     $route(to) {
+        //         if(localStorage.getItem('lang') != 'en'){
+        //             this.i18n.locale = localStorage.getItem('lang')
+        //         } else{this.i18n.locale = ''}
+        //     }
+        // },
+
+        // watch: {
+        //     '$route' (to, from) {
+        //     }
+        // },
         methods: {
             search(){
                 this.$router.push({name: 'search_articles', query: { 'query': this.search_query} });
             },
-            // localization(locale){
-            //     this.lang = locale
-            //     localStorage.setItem('lang', this.lang)
-            //     this.$i18n.locale = locale;
-            // },
 
             grade_charts(grade){
                 localStorage.setItem('grade', grade)
+
+                this.$router.push(to)
             },
-            // goTo(page){
-            //     window.location.href = this.MIX_APP_SSH + 'user.' + this.MIX_SITE_URL + page ;
-            // },
-            
         }
     }
 </script>

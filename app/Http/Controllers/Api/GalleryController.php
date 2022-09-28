@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
-use App\Models\Gallery;
+use App\Models\Gallery_image;
 use App\Services\ImageControllService;
 
 class GalleryController extends Controller
@@ -17,18 +17,38 @@ class GalleryController extends Controller
      */
     public function index()
     {
+        // $gallery = array();
+        // $full_image = '';
+        // $image = '';
+
+        // $gallery_images = Gallery_image::limit(8)->get();
+        // $image_url = config('app.url').'/images/gallery_img/';
+
+        // foreach ($gallery_images as $gallery_img) {
+        //     $image = $gallery_img->image;
+        //     $image = strval($image);
+        //     $full_image = $image_url . $image;
+        //     array_push($gallery, $full_image);
+        // }
+        // return response()->json($gallery);
+
+        return Gallery_image::limit(8)->where('image_type', '=', 1)->where('published', '=', 1)->get();
+    }
+
+    public function get_swiper_images()
+    {
         $gallery = array();
         $full_image = '';
         $image = '';
 
-        $gallery_images = Gallery::limit(8)->get();
+        $gallery_images = Gallery_image::where('image_type', '=', 1)->where('published', '=', 1)->get();
         $image_url = config('app.url').'/images/gallery_img/';
 
         foreach ($gallery_images as $gallery_img) {
             $image = $gallery_img->image;
             $image = strval($image);
             $full_image = $image_url . $image;
-            array_push($gallery, $full_image);
+            array_push($gallery, ['id'=> $gallery_img->id, 'image'=> $full_image]);
         }
         return response()->json($gallery);
     }
@@ -46,7 +66,7 @@ class GalleryController extends Controller
 
             // $this->gallery_validate($request);
             
-            $gallery = new gallery();
+            $gallery = new Gallery_image();
 
             $gallery['category']=$request->category;
             $gallery['title']=$request->title;
@@ -74,7 +94,7 @@ class GalleryController extends Controller
      */
     public function store(Request $request)
     {
-        return Gallery::get();
+        return Gallery_image::get();
 
         // $articles = Gallery::get();
         // $title = 'Gallery';
@@ -114,21 +134,24 @@ class GalleryController extends Controller
     {
         // dd($id);
 
-        $gallery = array();
-        $full_image = '';
-        $image = '';
+    //     $gallery = array();
+    //     $full_image = '';
+    //     $image = '';
 
-        $gallery_images = Gallery::where('article_id',strip_tags($id))->limit(8)->get();
-        $image_url = config('app.url').'/images/gallery_img/';
+    //     $gallery_images = Gallery_image::where('article_id',strip_tags($id))->limit(8)->get();
+    //     $image_url = config('app.url').'/images/gallery_img/';
 
-        foreach ($gallery_images as $gallery_img) {
-            $image = $gallery_img->image;
-            $image = strval($image);
-            $full_image = $image_url . $image;
-            array_push($gallery, $full_image);
-        }
+    //     foreach ($gallery_images as $gallery_img) {
+    //         $image = $gallery_img->image;
+    //         $image = strval($image);
+    //         $full_image = $image_url . $image;
+    //         array_push($gallery, $full_image);
+    //     }
 
-        return $gallery;
+    //     return $gallery;
+
+
+        return Gallery_image::limit(8)->where('article_id', '=', $id)->where('published', '=', 1)->get();
     }
 
     /**
@@ -145,7 +168,7 @@ class GalleryController extends Controller
             
             // $this->gallery_validate_for_editing($request);
 
-            $gallery = Gallery::where('id',strip_tags($request->id))->first();
+            $gallery = Gallery_image::where('id',strip_tags($request->id))->first();
 
             $gallery['category']=$request->category;
             $gallery['title']=$request->title;
@@ -178,6 +201,11 @@ class GalleryController extends Controller
     public function update(Request $request, $id)
     {
         //
+    }
+
+    public function get_image(Request $request)
+    {
+        dd('test');
     }
 
     /**

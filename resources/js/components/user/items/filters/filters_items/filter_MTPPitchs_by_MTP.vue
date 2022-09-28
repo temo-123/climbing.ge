@@ -1,10 +1,14 @@
 <template>
-    <div>
-        <h3>Filter Pitchs By MTP</h3> 
-        <select v-model="value_MTP_id">
-            <option v-bind:value="'all'">All</option>
-            <option v-for="MTP in MTPs" :key="MTP" v-bind:value="MTP.id">{{ MTP.name }}</option>
-        </select>
+   <div class="row cms_filters">
+        <div class="col-md-8">
+            <h3>Filter multy-pitch pitch By multy-pitch</h3>
+        </div>
+        <div class="col-md-4 ">
+            <select v-model="value_mtp_id" @click="return_data(value_mtp_id)">
+                <option :value="'all'">All</option>
+                <option v-for="mtp in MTPs" :key="mtp" :value="mtp.id">{{ mtp.name }}</option>
+            </select>
+        </div>
     </div>
 </template>
 
@@ -16,6 +20,7 @@
         data(){
             return {
                 MTPs: [],
+                value_mtp_id: 'all'
             }
         },
         methods: {
@@ -29,6 +34,9 @@
                     error => console.log(error)
                 );
             },
+            return_data(filtr_id){
+                this.$emit('filtred_id', filtr_id)
+            }
         }
     }
 </script>

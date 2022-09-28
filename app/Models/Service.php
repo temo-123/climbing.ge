@@ -26,4 +26,9 @@ class Service extends Model
 	{
 		return $this->hasOhe(Ru_service::class);
 	}
+
+	public function service_images()
+	{
+		return $this->hasMany(Service_image::class);
+	}
 }

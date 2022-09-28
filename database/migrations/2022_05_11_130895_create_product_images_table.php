@@ -21,8 +21,8 @@ class CreateProductImagesTable extends Migration
             // $table->integer('color_id')->nullable();
             // $table->foreignId('color_id')->constrained()->onDelete('cascade');
 
-            $table->unsignedBigInteger('color_id');
-            $table->foreign('color_id')->references('id')->on('product_colors')->onDelete('cascade');
+            $table->unsignedBigInteger('option_id');
+            $table->foreign('option_id')->references('id')->on('product_options')->onDelete('cascade');
 
             $table->timestamps();
         });

@@ -17,10 +17,7 @@ return new class extends Migration
             $table->id();
             
             $table->string('category')->nullable();
-            $table->string('url_title')->unique()();
-
-            $table->integer('published')->nullable();
-            $table->integer('completed')->nullable();
+            $table->string('url_title')->unique();
 
             $table->timestamp('start_data')->nullable();
             $table->timestamp('end_data')->nullable();
@@ -42,6 +39,8 @@ return new class extends Migration
             $table->text('map')->nullable();
             $table->string('image')->nullable();
 
+            // $table->string('region_id')->nullable();
+
             // $table->integer('mount_id')->nullable();
             // $table->foreignId('mount_id')->constrained();
             // $table->integer('region_id')->nullable();
@@ -59,9 +58,21 @@ return new class extends Migration
             // $table->foreignId('ru_article_id')->references()->on('id')->onDelete('cascade');
             // $table->foreignId('ka_article_id')->references()->on('id')->onDelete('cascade');
 
-            $table->foreignId('us_article_id')->constrained()->onDelete('cascade');
-            $table->foreignId('ru_article_id')->constrained()->onDelete('cascade');
-            $table->foreignId('ka_article_id')->constrained()->onDelete('cascade');
+            // $table->foreignId('locale_article_id')->constrained()->onDelete('cascade');
+            // $table->foreignId('locale_article_id')->constrained()->onDelete('cascade');
+            // $table->foreignId('locale_article_id')->constrained()->onDelete('cascade');
+
+            $table->unsignedBigInteger('us_article_id');
+            $table->foreign('us_article_id')->references('id')->on('locale_articles')->onDelete('cascade');
+
+            $table->unsignedBigInteger('ka_article_id');
+            $table->foreign('ka_article_id')->references('id')->on('locale_articles')->onDelete('cascade');
+
+            $table->unsignedBigInteger('ru_article_id');
+            $table->foreign('ru_article_id')->references('id')->on('locale_articles')->onDelete('cascade');
+
+            $table->integer('published')->nullable();
+            $table->integer('completed')->nullable();
 
             $table->timestamps();
         });

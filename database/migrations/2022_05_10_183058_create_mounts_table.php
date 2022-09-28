@@ -22,12 +22,22 @@ return new class extends Migration
             // $table->integer('ru_mount_id')->nullable();
             // $table->integer('ka_mount_id')->nullable();
 
-            $table->foreignId('us_mount_id')->constrained()->onDelete('cascade');
-            $table->foreignId('ru_mount_id')->constrained()->onDelete('cascade');
-            $table->foreignId('ka_mount_id')->constrained()->onDelete('cascade');
+            // $table->foreignId('us_mount_id')->constrained()->onDelete('cascade');
+            // $table->foreignId('ru_mount_id')->constrained()->onDelete('cascade');
+            // $table->foreignId('ka_mount_id')->constrained()->onDelete('cascade');
+
+            $table->unsignedBigInteger('us_mount_id');
+            $table->foreign('us_mount_id')->references('id')->on('locale_mounts')->onDelete('cascade');
+
+            $table->unsignedBigInteger('ka_mount_id');
+            $table->foreign('ka_mount_id')->references('id')->on('locale_mounts')->onDelete('cascade');
+
+            $table->unsignedBigInteger('ru_mount_id');
+            $table->foreign('ru_mount_id')->references('id')->on('locale_mounts')->onDelete('cascade');
 
             $table->text('map')->nullable();
             $table->text('weather')->nullable();
+            $table->string('image')->nullable();
             
             $table->timestamps();
         });

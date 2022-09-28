@@ -10,6 +10,11 @@ class Service_image extends Model
 
     protected $fillable = [
         'image',
-        "product_id"
+        "service_id"
     ];
+
+    public function service()
+    {
+		return $this->hasMany(Service::class,);
+    }
 }

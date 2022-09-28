@@ -62,16 +62,34 @@
     {{-- <script async src="https://www.googletagmanager.com/gtag/js?id=UA-101870435-2"></script>
     <script src="{{ asset('assets/js/analitic/shop.climbing.ge_analitic.js') }}"></script> --}}
 
+    <style>
+        /* Firefox scrollbar color*/
+        html {
+            scrollbar-color: #27bb7d white;
+            scrollbar-width: thin;
+        }
+        /* Other brouser scrollbar color*/
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+            background-color: white;
+            border-radius: 0%
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #27bb7d;
+            border-radius: 5px;
+            border-radius: 0%
+        }
+        /* Navbar collor */
+        .top_menu {
+            background-color: #27bb7d;
+        }
+        .preloader {
+            background: #27bb7d;
+        }
+    </style>
 </head>
 <body>
-    <style>
-    .top_menu {
-        background-color: #27bb7d;
-    }
-    .preloader {
-        background: #27bb7d;
-    }
-    </style>
     <div id="page-preloader" class="preloader">
         <div class="loader"></div>
     </div>

@@ -2,7 +2,10 @@
     <div class="food col-md-4">
         <div class="portfolio-img view view-first">
 
-            <img :src="image_dir+article.image" class="img-responsive" :alt='article[0][0].title' />
+            <!-- <img :src="image_dir+article.image" class="img-responsive" :alt='article[0][0].title' /> -->
+
+            <site-img v-if="article.area.image != NULL" :src="image_dir+article.image" :img_class="'img-responsive'" :alt='article[0][0].title'/>
+            <site-img v-else :src="'../../../public/images/site_img/image.png'" :img_class="'img-responsive'" :alt='article[0][0].title'/>
 
             <div class="mask">
                 <a :href="catedory + '/' + article.url_title" class="info"><i class="fa fa-arrow-right"></i></a>

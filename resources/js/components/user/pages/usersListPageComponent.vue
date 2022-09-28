@@ -27,13 +27,11 @@
         },
         mounted() {
             this.get_users()
-            this.get_folowers()
         },
         watch: {
             '$route' (to, from) {
                 this.data_for_tab = [],
                 this.get_users()
-                this.get_folowers()
                 window.scrollTo(0,0)
             }
         },
@@ -51,6 +49,7 @@
                                         });
                     
                     this.get_roles()
+                    this.get_parmisions()
                 })
                 .catch(
                     error => console.log(error)
@@ -60,14 +59,13 @@
                 axios
                 .get("../api/role/")
                 .then(response => {
-                    this.data_for_tab.push({'id': 3,
+                    this.data_for_tab.push({'id': 2,
                                             'data': response.data, 
                                             'table_name': 'Roles', 
                                             'table_category': '', 
                                             'table_del_url': 'del_url', 
                                             'table_edit_url': 'edit_url'
                                         });
-                    this.get_parmisions()
                 })
                 .catch(
                     error => console.log(error)
@@ -77,25 +75,9 @@
                 axios
                 .get("../api/parmisions_list/")
                 .then(response => {
-                    this.data_for_tab.push({'id': 4,
+                    this.data_for_tab.push({'id': 3,
                                             'data': response.data, 
-                                            'table_name': 'Parmisions',
-                                        });
-                })
-                .catch(
-                    error => console.log(error)
-                );
-            },
-            get_folowers(){
-                axios
-                .get("../api/following_users_list/")
-                .then(response => {
-                    this.data_for_tab.push({'id': 2,
-                                            'data': response.data, 
-                                            'table_name': 'Folowing users', 
-                                            'table_category': '', 
-                                            'table_del_url': 'del_url', 
-                                            'table_edit_url': 'edit_url'
+                                            'table_name': 'Parmissions',
                                         });
                 })
                 .catch(

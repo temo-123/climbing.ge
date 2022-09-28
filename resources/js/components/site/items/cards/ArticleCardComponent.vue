@@ -1,15 +1,21 @@
 <template>
     <div class="food col-md-4">
         <div class="portfolio-img view view-first">
-            <div class="discount-percent-badge discount-badge-fourty">NEW</div>
+            <div class="product-image">
+                <div class="discount-percent-badge discount-badge-fourty">NEW</div>
+            </div>
 
-            <img v-if="article[0][0].title != null" :src="image_dir+article.image" class="img-responsive" :alt='article[0][0].title' />
-            <img v-else :src="'../../../../public/images/site_img/image.png'" class="img-responsive" :alt='article[0][0].title'>
+            <!-- <img v-if="article[0][0].img != null" :src="image_dir+article.image" class="img-responsive" :alt='article[0][0].title' />
+            <img v-else :src="'../../../../public/images/site_img/image.png'" class="img-responsive" :alt='article[0][0].title'> -->
+
+            <site-img v-if="article.image != null" :src="this.image_dir+article.image" :img_class="'img-responsive'" :alt='article[0][0].title'/>
+            <site-img v-else :src="'../../../public/images/site_img/image.png'" :img_class="'img-responsive'" :alt='article[0][0].title'/>
 
             <div class="mask">
                 <!-- <a href="#" class="info"><i class="fa fa-arrow-right"></i></a> -->
                 <router-link :to="this.route" class="info">
                     <i class="fa fa-arrow-right"></i>
+                    <p style="display: none">{{article[0][0].title}}</p>
                 </router-link>
             </div>
             
@@ -20,7 +26,6 @@
                 </div>
             </div>
         </div>
-        
     </div>  
 </template>
 
@@ -38,6 +43,9 @@
         components: {
         },
         mounted() {
+            // console.log(this.article);
+            // console.log(this.image_dir);
+            // console.log(this.route);
         },
         methods: {
         }

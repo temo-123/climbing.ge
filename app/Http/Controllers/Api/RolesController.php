@@ -6,7 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
 use App\Models\Role;
-use App\Models\Parmisions;
+use App\Models\Permission;
 
 class RolesController extends Controller
 {
@@ -22,7 +22,7 @@ class RolesController extends Controller
 
     public function get_parmisions_list()
     {
-        return Parmisions::all();
+        return Permission::all();
     }
 
     /**

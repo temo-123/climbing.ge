@@ -17,10 +17,18 @@ class MountController extends Controller
      */
     public function index()
     {
-        $global_mounts = Mount::latest('id')->get();
-        // $mounts = GetMountSystemService::get_locale_article($global_mounts);
+        return GetMountSystemService::get_local_mounts_use_locale(Mount::latest('id')->get(), 'us');
+    }
 
-        return $global_mounts;
+    public function get_locale_mounts(Request $request)
+    {
+        // $mounts_system = Mount::latest('id')->get();
+        return GetMountSystemService::get_local_mounts_use_locale(Mount::latest('id')->get(), $request->lang);
+    }
+
+    public function get_locale_mount(Request $request)
+    {
+        return GetMountSystemService::get_local_mount_use_locale($request->mount_id, $request->lang);
     }
 
     /**

@@ -21,9 +21,33 @@
     {{-- <script async src="https://www.googletagmanager.com/gtag/js?id=UA-101870435-3"></script>
     <script src="{{ asset('assets/js/analitic/user.climbing.ge_analitic.js') }}"></script> --}}
 
-</head>
-<body>
-    <style>
+    <style> 
+        /* Text copy block*/
+        .unselectable { 
+            -webkit-user-select: none; 
+            -webkit-touch-callout: none; 
+            -moz-user-select: none; 
+            -ms-user-select: none; 
+            user-select: none;
+        }
+        /* Firefox scrollbar color*/
+        html {
+            scrollbar-color: #7427bb white;
+            scrollbar-width: thin;
+            border-radius: 0%
+        }
+        /* Other brouser scrollbar color*/
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+            background-color: white;
+            border-radius: 0%
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #7427bb;
+            border-radius: 5px;
+            border-radius: 0%
+        }
         .top_menu {
             background-color: #7427bb;
         }
@@ -31,9 +55,11 @@
             background: #7427bb;
         }
     </style>
-    {{-- <div id="page-preloader" class="preloader">
+</head>
+<body>
+    <div id="page-preloader" class="preloader">
         <div class="loader"></div>
-    </div> --}}
+    </div>
 
     <div id="app">
         {{-- @include('user.components.navbar') --}}

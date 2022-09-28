@@ -4,16 +4,15 @@
 
 <p>Sercice climbing.ge is georgian rock climbing and mountaineering areas description and social netvork for your climbing ascent sheering. Alse ouer product onlain shop. in services we have 5 subdomain: climibng.ge, forum.climbing.ge, shop.climbing,ge, films.climbing.ge, user.climbing.ge. (All descriptions see down)</p>
 
-<p><strong>climibng.ge</strong> is a georgian rock climibng guidbook</p>
+[climibng.ge](/docs/GUIDBOOK.md) is a georgian rock climibng guidbook
 
-<p><strong>forum.climbing.ge</strong> plarform for sheering your expiriec ascent and queshens</p>
+[forum.climbing.ge](/docs/FORUM.md) plarform for sheering your expiriec ascent and queshens
 
-<p><strong>shop.climbing,ge</strong> ouer products stor</p>
+[shop.climbing,ge](/docs/SHOP.md) ouer products stor
 
-<p><strong>films.climbing.ge</strong> comming soon</p>
+[films.climbing.ge](/docs/FILMS.md) comming soon
 
-<p><strong>user.climbing.ge</strong> your privat room</p>
-
+[user.climbing.ge](/docs/USER_PAGE.md) your privat room
 
 
 ## Databace
@@ -44,9 +43,11 @@ For foront use Vue.js(2) laravel templite
     https://github.com/Jexordexan/vue-slicksort -
     https://github.com/P3trur0/vue-country-flag - vue-country-flag
     https://github.com/devstark-com/vue-google-charts - vue-google-charts
-    https://www.npmjs.com/package/vue-analytics - (vue-analytics) Vue plugin for Google Analytics
     https://www.vuescript.com/custom-watermarks/ - (vue-img-watermark) (text on image)
     https://antonreshetov.github.io/vue-glide/install/ - (vue-glide-js)
+    npmjs.com/package/vue-ui-preloader - (vue-ui-preloader)
+    https://wlada.github.io/vue-carousel-3d/?ref=madewithvuejs.com - (vue-carousel-3d)
+    https://www.npmjs.com/package/vue-content-loader/v/0.2.1 (https://codesandbox.io/s/vue-content-loader-igfyf?file=/src/App.vue:744-783) - (content loader)
 
 
 ## CkEditor4
@@ -81,8 +82,9 @@ For route mark use canva(paper.js) librery (don`t working right now)
 Site meta tegs plagin - (vue-meta)
     https://www.digitalocean.com/community/tutorials/vuejs-vue-seo-tips
     https://www.youtube.com/watch?v=xmA_Ca0UW_c
+    https://www.npmjs.com/package/vue-analytics - (vue-analytics) Vue plugin for Google Analytics
 
-<!-- Sitemap - () -  -->
+<!-- Ctrl+Shift+V - for demo test  -->
 
 
 

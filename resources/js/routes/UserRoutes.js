@@ -5,10 +5,16 @@ import adminPage from '../components/user/pages/AdminPageComponent.vue'
 
 import myOrderPage from '../components/user/pages/orders/myOrderComponent.vue'
 import allOrderPage from '../components/user/pages/orders/allOrderPageComponent.vue'
-import decorationeOrder from '../components/user/pages/orders/decorationeOrderPageComponent.vue'
+import orderDecloration from '../components/user/pages/orders/decloration/orderDeclorationPageComponent.vue'
+import confirmOrder from '../components/user/pages/orders/decloration/confirmOrderPageComponent.vue'
+import confirmOrderData from '../components/user/pages/orders/decloration/confirmOrderPageComponent.vue'
 
 import myPostPage from '../components/user/pages/posts/MyPostsPageCompoents.vue'
 import allPostPage from '../components/user/pages/posts/AllPostsPageComponent.vue'
+
+import followersPage from '../components/user/pages/FollowersPageComponent.vue'
+import favoriteFilmsPage from '../components/user/pages/favoriteFilmsPageComponent.vue'
+import favoriteOutdoorArea from '../components/user/pages/favoriteOutdoorAreaPageComponent.vue'
 
 import cartPage from '../components/user/pages/cartPageComponent.vue'
 import favoriteProductsPage from '../components/user/pages/favoriteProductsPageComponent.vue'
@@ -21,11 +27,23 @@ import commentsPage from '../components/user/pages/comments/CommentsPageComponen
 import myCommentsPage from '../components/user/pages/comments/MyCommentsPageComponent.vue'
 
 import siteInfoPage from '../components/user/pages/siteInfo/siteInfoPageComponent.vue'
-import siteInfoEdit from '../components/user/pages/siteInfo/siteInfoEditComponent.vue'
+import siteInfoEdit from '../components/user/pages/siteInfo/forms/SiteInfo/SiteInfoEditComponent.vue'
+
+import siteGlobalDataEdit from '../components/user/pages/siteInfo/forms/SiteInfo/SiteGlobalDataEditComponent.vue'
+import siteKaDataEdit from '../components/user/pages/siteInfo/forms/SiteInfo/SiteKaDataEditComponent.vue'
+import siteRuDataEdit from '../components/user/pages/siteInfo/forms/SiteInfo/SiteRuDataEditComponent.vue'
+import siteUsDataEdit from '../components/user/pages/siteInfo/forms/SiteInfo/SiteUsDataEditComponent.vue'
+
+import GlobalInfoAdd from '../components/user/pages/siteInfo/forms/GeneralInfo/GlobalInfoAddFormComponent.vue'
+import GlobalInfoEdit from '../components/user/pages/siteInfo/forms/GeneralInfo/GlobalInfoEditFormComponent.vue'
 
 import filmsList from '../components/user/pages/films/filmsListComponent.vue'
 import filmsAdd from '../components/user/pages/films/filmsAddComponent.vue'
 import filmsEdit from '../components/user/pages/films/filmsEditComponent.vue'
+
+import bisnesList from '../components/user/pages/bisnes/bisnesListComponent.vue'
+import bisnesAdd from '../components/user/pages/bisnes/bisnesAddComponent.vue'
+import bisnesEdit from '../components/user/pages/bisnes/bisnesEditComponent.vue'
 
 import mountRouteEdit from '../components/user/pages/mountRoutes/mountRouteEditComponent.vue'
 import mountRouteAdd from '../components/user/pages/mountRoutes/mountRouteAddComponent.vue'
@@ -68,14 +86,23 @@ import NotFound from '../components/errors/404Component.vue'
 import login from '../components/auth/LoginComponent.vue'
 import register from '../components/auth/RegisterComponent.vue'
 
+
+// function load(component) {
+//     return () => import(`../components/site/pages/${component}.vue`)
+// }
+
 const router = new VueRouter({
     routes: [
+        // { path: '', name: 'index', component: load('IndexPageComponent') },
         { path: '/', name: 'home', component: homePage },
         { path: '/admin_page', name: 'adminPage', component: adminPage },
 
-        { path: '/my_orders', name: 'myOrders', component: myOrderPage },
-        { path: '/all_orders', name: 'allOrders', component: allOrderPage },
-        { path: '/decoratione_order', name: 'decorationeOrder', component: decorationeOrder },
+        { path: '/order/my_orders', name: 'myOrders', component: myOrderPage },
+        { path: '/order/all_orders', name: 'allOrders', component: allOrderPage },
+
+        { path: '/order/decloration/order_decloration/:user_id', name: 'orderDecloration', component: orderDecloration },
+        { path: '/order/decloration/confirm_order/', name: 'confirmOrder', component: confirmOrder },
+        { path: '/order/decloration/order_complited_data/', name: 'confirmOrderData', component: confirmOrderData },
 
         { path: '/my_posts', name: 'myPosts', component: myPostPage },
         { path: '/all_posts', name: 'allPosts', component: allPostPage },
@@ -90,49 +117,36 @@ const router = new VueRouter({
         { path: '/comments', name: 'comentsList', component: commentsPage },
         { path: '/myComments', name: 'myComentsList', component: myCommentsPage },
 
+        { path: '/followers_page', name: 'followersPage', component: followersPage },
+        { path: '/favorite_films', name: 'favoriteFilmsPage', component: favoriteFilmsPage },
+        { path: '/my_favorite_outdoor_area', name: 'favoriteOutdoorArea', component: favoriteOutdoorArea },
+
         { path: '/site_info', name: 'siteInfo', component: siteInfoPage },
-        { path: '/site_info_edit', name: 'siteInfoEdit', component: siteInfoEdit },
+        { path: '/site_info/site_info_edit', name: 'siteInfoEdit', component: siteInfoEdit },
+        
+        { path: '/site_info/site_global_data_edit', name: 'siteGlobalDataEdit', component: siteGlobalDataEdit },
+        { path: '/site_info/site_global_ka_edit', name: 'siteKaDataEdit', component: siteKaDataEdit },
+        { path: '/site_info/site_global_ru_edit', name: 'siteRuDataEdit', component: siteRuDataEdit },
+        { path: '/site_info/site_global_us_edit', name: 'siteUsDataEdit', component: siteUsDataEdit },
 
-        // {
-        //     path: `/films`,
-        //     component: filmsList,
-        //     name: 'filmsList',
+        { path: '/site_info/add_general_info', name: 'GlobalInfoAdd', component: GlobalInfoAdd },
+        { path: '/site_info/edit_general_info/:id', name: 'GlobalInfoEdit', component: GlobalInfoEdit },
 
-        //     children: [
-        //         { path: '/add', name: 'filmsAdd', component: filmsAdd },
-        //         { path: '/edit/:id', name: 'filmsEdit', component: filmsEdit },
-        //     ]
-        // },
 
         { path: '/films', name: 'filmsList', component: filmsList },
         { path: '/films/add', name: 'filmsAdd', component: filmsAdd },
         { path: '/films/edit/:id', name: 'filmsEdit', component: filmsEdit },
 
-        // {
-        //     path: `/mount_routes`,
-        //     component: mountList,
-        //     name: 'mountlist',
 
-        //     children: [
-        //         { path: '/edit/:id', name: 'mountRoute/Edit', component: mountRouteEdit },
-        //         { path: '/add', name: 'mountRoute/add', component: mountRouteAdd },
-        //     ]
-        // },
+        { path: '/bisnes', name: 'bisnesList', component: bisnesList },
+        { path: '/bisnes/add', name: 'bisnesAdd', component: bisnesAdd },
+        { path: '/bisnes/edit/:id', name: 'bisnesEdit', component: bisnesEdit },
+
 
         { path: '/mount_routes/mount_routes_list', name: 'mountlist', component: mountList },
         { path: '/mount_routes/edit/:id', name: 'mountRoute/Edit', component: mountRouteEdit },
         { path: '/mount_routes/add', name: 'mountRoute/add', component: mountRouteAdd },
 
-        // {
-        //     path: `/article/:article_category`,
-        //     component: articleList,
-        //     name: 'articlelist',
-
-        //     children: [
-        //         { path: '/edit/:id', name: 'articleEdit', component: articleEdit },
-        //         { path: '/add/:article_category', name: 'articleAdd', component: articleAdd },
-        //     ]
-        // },
 
         { path: '/article/:article_category', name: 'articlelist', component: articleList },
         { path: '/article/edit/:id', name: 'articleEdit', component: articleEdit },
@@ -140,6 +154,7 @@ const router = new VueRouter({
 
         { path: '/spot_category/edit/:id', name: 'spot_category_edit', component: spotCategoryEdit },
         { path: '/spot_category/add/', name: 'spot_category_add', component: spotCategoryAdd },
+
 
         { path: '/routes_and_sectors', name: 'routeAndSectorList', component: routeAndSectorList },
 
@@ -154,6 +169,7 @@ const router = new VueRouter({
 
         { path: '/MTPPitch/add', name: 'MTPPitchAdd', component: MTPPitchAdd },
         { path: '/MTPPitch/edit/:id', name: 'MTPPitchEdit', component: MTPPitchEdit },
+        
 
         { path: '/products_and_categories', name: 'productsList', component: productsList },
         { path: '/product/edit/:id', name: 'productEdit', component: productEdit },

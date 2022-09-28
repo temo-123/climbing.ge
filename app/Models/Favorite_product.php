@@ -13,7 +13,7 @@ class Favorite_product extends Model
         "product_id"
     ];
 
-    public function products()
+    public function product()
     {
 		return $this->hasMany(Product::class, 'id');
     }

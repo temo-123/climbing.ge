@@ -12,4 +12,10 @@ class Product_image extends Model
         'image',
         "product_id"
     ];
+
+
+    public function option()
+    {
+        return $this->hasMany(Product_option::class, 'id');
+    }
 }

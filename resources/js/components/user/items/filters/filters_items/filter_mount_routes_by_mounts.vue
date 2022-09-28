@@ -1,10 +1,15 @@
 <template>
-   <div>
-        <h3>Filter Mount routes By Mounts</h3>
-        <select v-model="value_mount_id">
-            <option v-bind:value="'all'">All</option>
-            <option v-for="mount in mounts" :key="mount" v-bind:value="mount.id">{{ mount.name }}</option>
-        </select> 
+   <div class="row cms_filters">
+        <div class="col-md-8">
+            <h3>Filter Mountaineering routes areas By mount</h3>
+            {{ mounts[0].global_mount.id }}
+        </div>
+        <div class="col-md-4 ">
+            <select v-model="value_mount_id" @click="return_data(value_mount_id)">
+                <option :value="'all'">All</option>
+                <option v-for="mount in mounts" :key="mount" :value="mount.global_mount.id">{{ mount.locale_mount.title }}</option>
+            </select>
+        </div>
     </div>
 </template>
 
@@ -16,6 +21,7 @@
         data(){
             return {
                 mounts: [],
+                value_mount_id: 'all'
             }
         },
         methods: {
@@ -29,6 +35,9 @@
                     error => console.log(error)
                 );
             },
+            return_data(filtr_id){
+                this.$emit('filtred_id', filtr_id)
+            }
         }
     }
 </script>
