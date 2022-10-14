@@ -7,21 +7,21 @@
                 <div class="col-md-4 display-none-720px">
                     <div class="f-about" style='color: #fff;'>
                     
-                    <h4 class="footer_title">{{ $t('about us')}}</h4>
+                        <h4 class="footer_title">{{ $t('about us')}}</h4>
 
-                    <div class="footer_description_block">
-                        <span v-html="this.$siteData.shop_short_description"></span>
-                    </div>
+                        <div class="footer_description_block">
+                            <span v-html="this.$siteData.shop_short_description"></span>
+
+                            <router-link :to="{name: 'about_store'}" exact>{{ $t("more") }}</router-link>
+                        </div>
                     
-                    <router-link :to="{name: 'about_store'}" exact>More</router-link>
-                        
                     </div>
                 </div>
 
                 <div class="col-md-4 display-none-720px">
                     <div class="f-links">
                         <h4 class="footer_title">{{ $t('links')}}</h4>
-                        <ul>
+                        <ul class="footer_links">
                             <!-- <li> <a href="">{{ $t('shop menu products')}}</a> </li>
                             <li> <a href="">{{ $t('shop menu about us')}}</a> </li>
                             <li> <a href="">{{ $t('shop login')}}</a> </li> -->

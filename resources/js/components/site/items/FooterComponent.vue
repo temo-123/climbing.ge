@@ -3,33 +3,29 @@
         <div class="container">
             <footerAd />
             <div class="row">
+
                 <div class="col-md-4 display-none-720px">
                     <div class="f-about container">
                         <h4 class="footer_title">{{ $t("about us") }}</h4>
 
-                        <!-- {!!$site -> short_description!!} -->
-                        <!-- {{ this.$siteData.guid_short_description }} -->
                         <div class="footer_description_block">
                             <span v-html="this.$siteData.guid_short_description"></span>
-                        </div>
-
-                        <li>
                             <router-link
                                 :to="{
                                     name: 'about_us',
                                     params: { lang: this.$i18n.locale },
                                 }"
                             >
-                                {{ $t("more") }}
+                            {{ $t("more") }}
                             </router-link>
-                        </li>
+                        </div>
                     </div>
                 </div>
 
                 <div class="col-md-4">
                     <div class="f-links">
                         <h4 class="footer_title">{{ $t("links") }}</h4>
-                        <ul>
+                        <ul class="footer_links">
                             <li>
                                 <router-link
                                     :to="{
@@ -100,14 +96,19 @@
                             <h4 class="footer_title">{{ $t("share") }}</h4>
 
                             <share />
-
-                            <div class="row footer_qr">
-                                <QRCanvas :width="200" :height="200" :options="options"></QRCanvas>
+                        </div>
+                    </div>
+                    <div class="row f-links container">
+                        <div class="flick">
+                            <h4 class="footer_title">QR code</h4>
+                            <div class="row">
+                                <QRCanvas :options="options" class="foo_qr"></QRCanvas>
                             </div>
                         </div>
                     </div>
                     <followComponent />
                 </div>
+
             </div>
         </div>
     </div>
@@ -164,8 +165,12 @@ export default {
 </script>
 
 <style scoped>
-.footer_qr{
+/* .footer_qr{
     width: 80%;
     margin-left: 10%;
+} */
+.foo_qr{
+    width: 50%;
+    margin-left: 25%;
 }
 </style>

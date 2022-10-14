@@ -9,19 +9,17 @@
                         
                         <div class="footer_description_block">
                             <span v-html="this.$siteData.shop_short_description"></span>
+                            <router-link :to="{name: 'about_films'}">More</router-link>
                         </div>
-                            
-                        <router-link :to="{name: 'about_store'}" exact>More</router-link>
-                        
                     </div>
                 </div>
 
                 <div class="col-md-4">
                     <div class="f-links">
                         <h4 class="footer_title">{{ $t("links") }}</h4>
-                        <ul>
-                            <li> <a href="">{{ $t('shop menu products')}}</a> </li>
-                            <li> <a href="">{{ $t('shop menu about us')}}</a> </li>
+                        <ul class="footer_links">
+                            <!-- <li><router-link :to="{name: 'services'}" exact> {{ $t('forum menu services') }} </router-link></li> -->
+                            <li><router-link :to="{name: 'about_films'}" exact> {{ $t('forum menu about us')}} </router-link></li>
                         </ul>
                     </div>
                 </div>

@@ -6,17 +6,19 @@
         <div class="form-group row">
             <div class="col-md-10">
                 <form name="contact-form" method="POST" id="global_form" ref="myForm" @submit.prevent="follow" enctyp="multipart/form-data">
-                    <input type="text" v-model="email" name="email" class="form-control"> 
+                    <input type="text" v-model="email" name="email" class="form-control footer_input"> 
 
-                    <vue-recaptcha 
-                        :sitekey="MIX_GOOGLE_CAPTCHA_SITE_KEY" 
-                        :loadRecaptchaScript="true"
-                        ref="recaptcha"
-                        type="invisible"
-                        @verify="onCaptchaVerified"
-                        @expired="onCaptchaExpired"
-                    >
-                    </vue-recaptcha>
+                    <div class="footer_re_capcha">
+                        <vue-recaptcha 
+                            :sitekey="MIX_GOOGLE_CAPTCHA_SITE_KEY" 
+                            :loadRecaptchaScript="true"
+                            ref="recaptcha"
+                            type="invisible"
+                            @verify="onCaptchaVerified"
+                            @expired="onCaptchaExpired"
+                        >
+                        </vue-recaptcha>
+                    </div>
 
                     <div v-if="loading == false">
                         <div class="form-group"  v-if="is_verify_isset == false">
@@ -101,5 +103,7 @@
 </script>
 
 <style>
-
+.footer_input, .footer_re_capcha{
+    margin-bottom: 1.5%;
+}
 </style>

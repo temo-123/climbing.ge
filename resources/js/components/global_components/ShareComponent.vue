@@ -1,6 +1,6 @@
 <template>
     <div class="row">
-        <div class="col-md-3 share_icons_col">
+        <div class="col-md-3 col-sm-3 col-xs-3 share_icons_col">
             <ShareNetwork
                 network="facebook"
                 :url="url"
@@ -12,7 +12,7 @@
                 <i class="share_icons fa fa-facebook-square" aria-hidden="true"></i>
             </ShareNetwork>
         </div>
-        <div class="col-md-3 share_icons_col">
+        <div class="col-md-3 col-sm-3 col-xs-3 share_icons_col">
             <ShareNetwork
                 network="Email"
                 :url="url"
@@ -24,7 +24,7 @@
                 <i class="share_icons fa fa-envelope" aria-hidden="true"></i>
             </ShareNetwork>
         </div>
-        <div class="col-md-3 share_icons_col">
+        <div class="col-md-3 col-sm-3 col-xs-3 share_icons_col">
             <ShareNetwork
                 network="Twitter"
                 :url="url"
@@ -36,7 +36,7 @@
                 <i class="share_icons fa fa-twitter-square" aria-hidden="true"></i>
             </ShareNetwork>
         </div>
-        <div class="col-md-3 share_icons_col">
+        <div class="col-md-3 col-sm-3 col-xs-3 share_icons_col">
             <ShareNetwork
                 network="WhatsApp"
                 :url="url"
