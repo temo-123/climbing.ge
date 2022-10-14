@@ -31,6 +31,11 @@ use App\Models\General_info;
 use App\Models\Region;
 use App\Models\Region_article;
 
+use App\Models\Interested_event;
+use App\Models\Favorite_outdoor_area;
+
+use Auth;
+
 use File;
 use Validator;
 
@@ -356,96 +361,66 @@ class ArticleController extends Controller
         }
     }
 
-    // public function add_ka_article($ka_data)
-    // {
-    //     // $request->user()->authorizeRoles(['manager', 'admin']);
-    //     // if ($request -> isMethod('post')) {
-    //         // $validate = $this->ka_article_validate($ka_data);
-
-    //         // if ($validate != null) {
-    //         //     return($validate);
-    //         // }
-
-    //         $ka_articl = Locale_article::get();
-    //         foreach ($ka_articl as $ka) {
-    //             $last_ka_article_id = $ka->id;
-    //         }
-
-    //         $article = Locale_article::find($last_ka_article_id);
+    public function add_to_interested_events(Request $request)
+    {
+        // dd(Auth::user());
+        if (Auth::user()) {
             
-    //         $article['title']=$ka_data["title"];
-    //         $article['short_description']=$ka_data["short_description"];
-    //         $article['text']=$ka_data["text"];
-    //         $article['route']=$ka_data["route"];
-    //         $article['how_get']=$ka_data["how_get"];
-    //         $article['best_time']=$ka_data["best_time"];
-    //         $article['what_need']=$ka_data["what_need"];
-    //         $article['info']=$ka_data["info"];
-    //         // $article['meta_keyword']=$ka_data["meta_keyword"];
+            if(Interested_event::where('user_id', '=', Auth::user()->id)->where('article_id', '=', $request->event_id)->count() > 0){
+                // $editing_faworit = Interested_event::where('user_id', '=', Auth::user()->id)->where('article_id', '=', $request->event_id)->first();
 
-    //         $article -> update();
-    //     // }
-    // }
-    // public function add_ru_article($ru_data)
-    // {
-    //     // $request->user()->authorizeRoles(['manager', 'admin']);
-    //     // if ($request -> isMethod('post')) {
-    //         // $validate = $this->ru_article_validate($ru_data);
-    //         // if ($validate != null) {
-    //         //     return $validate;
-    //         // }
+                // $editing_faworit['user_id'] = Auth::user()->id;
+                // $editing_faworit['article_id'] = $request->event_id;
+                
+                // $editing_faworit -> save();
 
-    //         $ru_articl = Locale_article::get();
-    //         foreach ($ru_articl as $ru) {
-    //             $last_ru_article_id = $ru->id;
-    //         }
-
-    //         $article = Locale_article::find($last_ru_article_id);
-
-    //         $article['title']=$ru_data["title"];
-    //         $article['short_description']=$ru_data["short_description"];
-    //         $article['text']=$ru_data["text"];
-    //         $article['route']=$ru_data["route"];
-    //         $article['how_get']=$ru_data["how_get"];
-    //         $article['best_time']=$ru_data["best_time"];
-    //         $article['what_need']=$ru_data["what_need"];
-    //         $article['info']=$ru_data["info"];
-    //         // $article['meta_keyword']=$ru_data["ru_meta_keyword"];
+                return 'this event are in faworite';
+            }
+            else{
+                $faworit = new Interested_event();
             
-    //         $article -> update();
-    //     // }
-    // }
-    // public function add_us_article($us_data)
-    // {
-    //     // $request->user()->authorizeRoles(['manager', 'admin']);
-    //     // if ($request -> isMethod('post')) {
-    //         // $validate = $this->us_article_validate($us_data);
-    //         // if ($validate != null) {
-    //         //     return $validate;
-    //         // }
+                $faworit['user_id'] = Auth::user()->id;
+                $faworit['article_id'] = $request->event_id;
+                
+                $faworit -> save();
 
-    //         $us_articl = Locale_article::get();
-    //         foreach ($us_articl as $us) {
-    //             $last_us_article_id = $us->id;
-    //         }
+                return 'event eded socsesful';
+            }
+        }
+        else{
+            return 'ples login';
+        }
+    }
 
-    //         $article = Locale_article::find($last_us_article_id);
-    //         // $article = new Us_article();
+    public function add_to_favorite_outdoor_area(Request $request)
+    {
+        if (Auth::user()) {
+            
+            if(Favorite_outdoor_area::where('user_id', '=', Auth::user()->id)->where('article_id', '=', $request->article_id)->count() > 0){
+                // $editing_faworit = Favorite_outdoor_area::where('user_id', '=', Auth::user()->id)->where('article_id', '=', $request->article_id)->first();
 
-    //         $article['title']=$us_data["title"];
-    //         $article['short_description']=$us_data["short_description"];
-    //         $article['text']=$us_data["text"];
-    //         $article['route']=$us_data["route"];
-    //         $article['how_get']=$us_data["how_get"];
-    //         $article['best_time']=$us_data["best_time"];
-    //         $article['what_need']=$us_data["what_need"];
-    //         $article['info']=$us_data["info"];
-    //         // $article['meta_keyword']=$us_data["us_meta_keyword"];
+                // $editing_faworit['user_id'] = Auth::user()->id;
+                // $editing_faworit['article_id'] = $request->article_id;
+                
+                // $editing_faworit -> save();
 
-    //         $article -> update();
-    //     // }
-    // }
+                return 'this area are in faworite';
+            }
+            else{
+                $faworit = new Favorite_outdoor_area();
+            
+                $faworit['user_id'] = Auth::user()->id;
+                $faworit['article_id'] = $request->article_id;
+                
+                $faworit -> save();
 
+                return 'area eded socsesful';
+            }
+        }
+        else{
+            return 'ples login';
+        }
+    }
 
     public function global_article_validate($global_data)
     {

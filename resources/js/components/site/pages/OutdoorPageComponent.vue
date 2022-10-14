@@ -1,11 +1,19 @@
 <template>
     <div class="container">
         <outdoor :article="outdoor" />
+
+        <metaData 
+            :title = "outdoor[0].title"
+            :description = "outdoor[0].description"
+            :image = "'../../../../public/images/outdoor_img/'+outdoor.image"
+        />
     </div>
 </template>
 
 <script>
     import outdoor from '../items/OutdoorComponent'
+    import metaData from '../items/MetaDataComponent'
+
     export default {
         data: function () {
             return {
@@ -14,6 +22,7 @@
         },
         components: {
             outdoor,
+            metaData
         },
         mounted() {
             this.get_outdoor()

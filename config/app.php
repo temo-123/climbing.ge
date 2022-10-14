@@ -184,6 +184,7 @@ return [
         App\Providers\EventServiceProvider::class,
         App\Providers\HorizonServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
+        // App\Providers\GetFilmService::class,
 
 
         /*
@@ -270,6 +271,7 @@ return [
         // 'GetProductsService' => App\Services\GetProductsService::class,
 
         'GetOrderService' => App\Services\GetOrderService::class,
+        'GetFilmService' => App\Services\GetFilmService::class,
 
         'Image' => Intervention\Image\Facades\Image::class,
 

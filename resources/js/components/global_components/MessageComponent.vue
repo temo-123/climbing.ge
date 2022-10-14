@@ -4,18 +4,6 @@
         	<h2 class="block_title">{{ $t('title message') }}</h2>
             <div class="bar"><i class="fa fa-envelope" aria-hidden="true"></i></div>
             <h3> <span v-html="this.$siteData.message"></span> </h3>
-
-        	<!-- <p>You do not need to provide a phone number, but if you specify this, it will help us to meet you. Other parameters are required.</p> -->
-        	
-            <!-- @if (count($errors) > 0)
-              <div class="alert alert-danger">
-                <ul>
-                  @foreach ($errors->all() as $error)
-                    <li>{{ $error }}</li>
-                  @endforeach
-                </ul>
-              </div>
-            @endif -->
             
             <form method="POST"  @submit.prevent="send_message"  id="js_form">
             <!-- <form method="POST" id="js_form"> -->
@@ -103,20 +91,9 @@
                     <div class="col-md-12">
                         <div class="form-group"  v-if="is_verify_isset == false">
                             <button type="submit" class="btn btn-default btn-send main-btn" disabled>Send</button>
-                            <!-- <VueLoadingButton 
-                                    type="submit" 
-                                    class="btn btn-default btn-send main-btn"
-                                    :loading="isLoading"
-                                    disabled
-                            /> -->
                         </div>
                         <div class="form-group"  v-else>
                             <button type="submit" class="btn btn-default btn-send main-btn">Send</button>
-                            <!-- <VueLoadingButton 
-                                    type="submit" 
-                                    class="btn btn-default btn-send main-btn" 
-                                    :loading="isLoading"
-                            >send</VueLoadingButton> -->
                         </div>
                     </div>
                 </div>
@@ -198,11 +175,9 @@
             },
             onCaptchaVerified() {
                 this.is_verify_isset = true
-                // console.log('test');
             },
             onCaptchaExpired(){
                 this.is_verify_isset = false
-                // console.log('test');
             },
         }
     }

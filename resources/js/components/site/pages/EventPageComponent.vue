@@ -120,11 +120,20 @@
         <div class="row">
             <commentForm :article_id="event.id" />
         </div>
+
+        
+        <metaData 
+            :title = "event[0].title"
+            :description = "event[0].description"
+            :image = "'../../../../public/images/event_img/'+event.image"
+        />
+
     </div>
 </template>
 
 <script>
     import commentForm from '../items/CommentFormComponent'
+    import metaData from '../items/MetaDataComponent'
 
     export default {
         props: [
@@ -136,6 +145,7 @@
             };
         },
         components: {
+            metaData,
             commentForm,
         },
         mounted() {
@@ -144,7 +154,7 @@
         methods: {
             get_event(){
                 axios
-                .get('../api/article/event/'+localStorage.getItem('lang')+'/'+this.$route.params.url_title)
+                .get('../../api/article/event/'+localStorage.getItem('lang')+'/'+this.$route.params.url_title)
                 .then(response => {
                     this.event = response.data
                 })
@@ -153,7 +163,15 @@
             },
 
             add_to_interestid_event(article_id){
-                alert('add to interested event. ID = ' + article_id)
+                axios
+                .post('../../api/articles/add_to_interested_events/', {
+                    event_id: article_id,
+                })
+                .then(response => {
+                    alert(response.data)
+                })
+                .catch(error =>{
+                })
             }
         }
     }

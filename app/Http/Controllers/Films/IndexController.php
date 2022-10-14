@@ -15,14 +15,7 @@ class IndexController extends Controller
     public function index()
     {
         if (view()->exists('films.index')) {
-    		$data = [
-    			'title'=>'Climbing store',
-                
-                'articles_link' => 'other_page',
-                'image_dir' => 'films_img',
-    		];
-    		return view('films.index',$data);
-            // return view('shop.index');
+            return view('films.index');
     	}
     	abort(404);
     }

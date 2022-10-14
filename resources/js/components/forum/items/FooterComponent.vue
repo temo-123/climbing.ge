@@ -6,22 +6,25 @@
 
                 <div class="col-md-4 display-none-720px">
                     <div class="f-about" style='color: #fff;'>
-                    
-                    <h4>{{ $t('about us')}}</h4>
-                    
-                    <!-- {!!$site -> short_description!!}
-                    <a href="{{route('about_us_page')}}">More</a> -->
+                        <h4 class="footer_title">{{ $t('about us')}}</h4>
                         
+                        <div class="footer_description_block">
+                            <span v-html="this.$siteData.shop_short_description"></span>
+                        </div>
+                            
+                        <router-link :to="{name: 'about_store'}" exact>More</router-link>
                     </div>
                 </div>
 
                 <div class="col-md-4 display-none-720px">
                     <div class="f-links">
-                        <h4>{{ $t('site.links')}}</h4>
+                        <h4 class="footer_title">{{ $t('links')}}</h4>
                         <ul>
-                            <!-- <li> <a href="">{{ $t('site.shop menu products')}}</a> </li>
-                            <li> <a href="">{{ $t('site.shop menu about us')}}</a> </li>
-                            <li> <a href="">{{ $t('site.shop login')}}</a> </li> -->
+                            <!-- <li> <a href="">{{ $t('shop menu products')}}</a> </li>
+                            <li> <a href="">{{ $t('shop menu about us')}}</a> </li>
+                            <li> <a href="">{{ $t('shop login')}}</a> </li> -->
+
+                            
                         </ul>
                     </div>
                 </div>
@@ -29,12 +32,10 @@
                 <div class="col-md-4">
                     <div class="row f-links">
                         <div class="flick">
-                            <h4>{{ $t('site.share')}}</h4>
+                            <h4 class="footer_title">{{ $t('share')}}</h4>
                             <share />
                         </div>
                     </div>
-
-                    <followComponent />
                 </div>
             </div>
         </div>
@@ -43,7 +44,6 @@
 
 
 <script>
-    import followComponent from '../../global_components/FollowComponent.vue'
     import share from '../../global_components/ShareComponent.vue'
     export default {
         data: function () {
@@ -52,7 +52,6 @@
             };
         },
         components: {
-            followComponent,
             share
         },
         mounted() {

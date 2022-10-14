@@ -151,6 +151,13 @@
             @include('components.other_article')}}
             
         </div>
+
+        
+        <metaData 
+            :title = "indoors[0].title"
+            :description = "indoors[0].description"
+            :image = "'../../../../public/images/indoor_img/'+indoors.image"
+        />
     </div> 
 </template>
 
@@ -158,6 +165,7 @@
     import commentForm from '../items/CommentFormComponent'
     import galleryComponent from '../items/GalleryComponent'
     import articleRightMenu from '../items/RightMenuComponent'
+    import metaData from '../items/MetaDataComponent'
 
     export default {
         props: [
@@ -174,6 +182,7 @@
             commentForm,
             galleryComponent,
             articleRightMenu,
+            metaData,
         },
         
         mounted() {

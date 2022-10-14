@@ -293,36 +293,36 @@ class GetProductService
         return $product_options;
     }
 
-    public function get_all_products_min_and_max_price()
-    {
-        $options = Product_option::get('price');
-        $min = 0;
-        $max = 0;
-        $prices = [];
-        foreach ($options as $value) {
-            array_push($prices, $value->price);
-        }
+    // public function get_all_products_min_and_max_price()
+    // {
+    //     $options = Product_option::get('price');
+    //     $min = 0;
+    //     $max = 0;
+    //     $prices = [];
+    //     foreach ($options as $value) {
+    //         array_push($prices, $value->price);
+    //     }
 
-        $min = min($prices);
-        $max = max($prices);
+    //     $min = min($prices);
+    //     $max = max($prices);
 
-        return ['min_price'=>$min, 'max_price'=>$max];
-    }
+    //     return ['min_price'=>$min, 'max_price'=>$max];
+    // }
 
-    public function get_product_min_and_max_price($product_id)
-    {
-        $options = Product_option::where('product_id', '=', $product_id)->get('price');
+    // public function get_product_min_and_max_price($product_id)
+    // {
+    //     $options = Product_option::where('product_id', '=', $product_id)->get('price');
 
-        $min = 0;
-        $max = 0;
-        $prices = [];
-        foreach ($options as $value) {
-            array_push($prices, $value->price);
-        }
+    //     $min = 0;
+    //     $max = 0;
+    //     $prices = [];
+    //     foreach ($options as $value) {
+    //         array_push($prices, $value->price);
+    //     }
 
-        $min = min($prices);
-        $max = max($prices);
+    //     $min = min($prices);
+    //     $max = max($prices);
 
-        return ['min_price'=>$min, 'max_price'=>$max];
-    }
+    //     return ['min_price'=>$min, 'max_price'=>$max];
+    // }
 }

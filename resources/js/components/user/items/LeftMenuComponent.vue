@@ -30,6 +30,19 @@
 
             <li class="list-group-item text-muted admin_menu_static_block"></li>
 
+            <router-link :to="{name: 'myComentsList'}" exact> 
+                <li class="list-group-item text-muted ">
+                    <span class="admin_menu">{{ $t('user menu my comments') }}</span>
+                </li>
+            </router-link>
+            <!-- <router-link :to="{name: 'myPosts'}" exact> 
+                <li class="list-group-item text-muted ">
+                    <span class="admin_menu">{{ $t('user menu my posts') }}</span>
+                </li>
+            </router-link> -->
+
+            <li class="list-group-item text-muted admin_menu_static_block"></li>
+
             <router-link :to="{name: 'favoriteProducts'}" exact> 
                 <li class="list-group-item text-muted">
                     <span class="admin_menu">{{ $t('user menu favorite products') }}</span>
@@ -41,20 +54,11 @@
                 </li>
             </router-link>
 
-            <li class="list-group-item text-muted admin_menu_static_block"></li>
-
-            <router-link :to="{name: 'myComentsList'}" exact> 
+            <router-link :to="{name: 'favoriteOutdoorArea'}" exact> 
                 <li class="list-group-item text-muted ">
-                    <span class="admin_menu">{{ $t('user menu my comments') }}</span>
+                    <span class="admin_menu">{{ $t('user menu my favorite outdoor area') }}</span>
                 </li>
             </router-link>
-            <router-link :to="{name: 'myPosts'}" exact> 
-                <li class="list-group-item text-muted ">
-                    <span class="admin_menu">{{ $t('user menu my posts') }}</span>
-                </li>
-            </router-link>
-
-            <li class="list-group-item text-muted admin_menu_static_block"></li>
 
             <router-link :to="{name: 'interestedEvents'}" exact> 
                 <li class="list-group-item text-muted ">
@@ -62,19 +66,13 @@
                 </li>
             </router-link>
 
-            <router-link :to="{name: 'favoriteOutdoorArea'}" exact> 
-                <li class="list-group-item text-muted ">
-                    <span class="admin_menu">{{ $t('user menu my favorite outdoor area') }}</span>
-                </li>
-            </router-link>
-
-            <li class="list-group-item text-muted admin_menu_static_block"></li>
+            <!-- <li class="list-group-item text-muted admin_menu_static_block"></li>
 
             <router-link :to="{name: 'followersPage'}" exact> 
                 <li class="list-group-item text-muted ">
                     <span class="admin_menu">{{ $t('user menu followers') }}</span>
                 </li>
-            </router-link>
+            </router-link> -->
 
             <li class="list-group-item text-muted admin_menu_static_block"></li>
 
@@ -186,11 +184,11 @@
                     <span class="admin_menu">{{ $t('user menu total orders') }}</span>
                 </li>
             </router-link>
-            <router-link :to="{name: 'allPosts'}" exact> 
+            <!-- <router-link :to="{name: 'allPosts'}" exact> 
                 <li class="list-group-item text-muted">
                     <span class="admin_menu">{{ $t('user menu all posts') }}</span>
                 </li>
-            </router-link>
+            </router-link> -->
 
             <li class="list-group-item text-muted admin_menu_static_block"></li>
 

@@ -14,6 +14,7 @@ class Comment extends Model
         'surname',
         'email',
         'text',
+        'user_id',
         'article_id'
     ];
 

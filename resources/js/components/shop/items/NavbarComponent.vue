@@ -5,7 +5,7 @@
                     <div class="site_title">
                         <!-- <a :href="MIX_APP_SSH + 'shop.' + MIX_SITE_URL+'/catalog'" class="site_title">name</a> -->
                         <!-- <router-link :class="'site_title'" :to="{name: 'home'}"> name </router-link> -->
-                        <router-link style="font-size: 1.5em;" :to="{name: 'catalog'}" exact class="site_title">{{ $t('shop name')}}</router-link>
+                        <router-link style="font-size: 1.5em;" :to="{name: 'catalog'}" exact class="site_title">Climbing Shop</router-link>
                     </div>
                 </div>
                 <div class="col-xs-12 col-sm-10 col-md-9 col-lg-9">
@@ -44,13 +44,13 @@
                                 <!-- <li><span> {{ $n(100, 'currency') }} </span> </li>
                                 <li><span> {{ $n(100, 'currency') }} </span> </li> -->
 
-                                <li><router-link :to="{name: 'catalog'}" exact> <span> products </span> </router-link></li>
+                                <li><router-link :to="{name: 'catalog'}" exact> <span> {{ $t('shop menu products') }}  </span> </router-link></li>
                                 
                                 <!-- <li><a href="#">services</a></li> -->
                                 <!-- <li><a id='actyve' href="#">about us</a></li> -->
                                 <!-- <li><router-link :to="{name: 'services'}"> services </router-link></li> -->
-                                <li><router-link :to="{name: 'services'}" exact> <span> services </span> </router-link></li>
-                                <li><router-link :to="{name: 'about_store'}" exact> <span> about us </span> </router-link></li>
+                                <li><router-link :to="{name: 'services'}" exact> <span> {{ $t('shop menu services') }} </span> </router-link></li>
+                                <li><router-link :to="{name: 'about_store'}" exact> <span> {{ $t('shop menu about us') }} </span> </router-link></li>
 
                                 <li class="display-none-720px">
                                     <a style="margin-top: -5%;" @click="goTo('/cart/my_cart')">

@@ -32,7 +32,13 @@
                     <emptyPageComponent />
                 </div>
             </div>
-        </div>  
+        </div> 
+
+        <metaData 
+            :title = "'Other outdoor activity in Georgia'"
+            :description = "'Other outdoor activity in Georgia'"
+            :image = "'../../../../public/images/meta_images/other.jpg'"
+        />
     </div>
 </template>
 
@@ -40,7 +46,7 @@
     import articleComponent from '../items/cards/ArticleCardComponent'
     // import emptyPageComponent from '../items/EmptyPageComponent'
     import emptyPageComponent from '../../global_components/EmptyPageComponent'
-
+    import metaData from '../items/MetaDataComponent'
     import { ContentLoader } from 'vue-content-loader'
     export default {
         data: function () {
@@ -52,7 +58,8 @@
         components: {
             articleComponent,
             emptyPageComponent,
-            ContentLoader
+            ContentLoader,
+            metaData
         },
         mounted() {
             this.get_other_articles()

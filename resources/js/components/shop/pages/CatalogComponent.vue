@@ -18,30 +18,54 @@
             <!-- <div class="bar"></div> -->
             <div class="row">
                 <div class="col-md-4">
-                    <select class="form-control" v-model="filter_category" name="product_modification_for_cart"  @click="sortByCategories()">
+                    <select class="form-control" v-model="filter_category" name="product_modification_for_cart" @click="sortByCategories()">
                         <option>All</option>
                         <option v-for="category in categories" :key='category.id' :value="category.id">{{ category.us_name }}</option> 
                     </select>
                 </div>
 
-                <div class="col-md-4">
+                <div class="col-md-3">
                     <div class="row">
-                        <div class="range-slider">
-                            <input class='min_price_range price_range' type="range" min="0" :max="max_price" step="5">
-                        </div>
+                        <!-- <div class="range-slider"> -->
+                            <input class='min_price_range price_range' type="range" min="0" max="1000" v-model="min_price" step="10">
+                        <!-- </div> -->
                     </div>
                     <div class="row price_range_text text-center">
-                        <p>Minimal price - {{min_price}}</p>
+                        <!-- <p>Minimal price - {{min_price}}</p> -->
+                        <p>
+                            Minimal price -
+                            <input
+                                type="text"
+                                v-model="min_price"
+                                maxlength ="6"
+                                :style="'border: 0; width: 60%;'"
+                            /> 
+                        </p>
                     </div>
                 </div>
 
-                <div class="col-md-4">
-                    <div class="range-slider">
-                        <input class="max_price_range price_range" type="range" min="0" :max='max_price' value="500" step="5" >
-                    </div>
+                <div class="col-md-3">
+                    <!-- <div class="range-slider"> -->
+                        <input class="max_price_range price_range" type="range" min="0" max="1000" v-model='max_price' value="1000" step="10">
+                    <!-- </div> -->
                     <div class="row price_range_text text-center">
-                        <p>Maximal price - {{max_price}}</p>
+                        <!-- <p>Maximal price - {{max_price}}</p> -->
+                        <p>
+                            Maximal price -
+                            <input
+                                type="text"
+                                v-model="max_price"
+                                maxlength ="6"
+                                :style="'border: 0; width: 60%;'"
+                            /> 
+                        </p>
                     </div>
+                </div>
+
+                <div class="col-md-2">
+                    <!-- <div class="row"> -->
+                        <button class="btn btn-primary" @click="serReangSlider()">Filtr prices</button>
+                    <!-- </div> -->
                 </div>
                 <!-- <div class="col-md-2 col-md-offset-6 text-right">
                     <div class="btn-group list_btn" id="status" data-toggle="buttons" style="border: 1px; border-style: solid;">
@@ -64,9 +88,7 @@
                 viewBox="0 0"
                 primaryColor="#f3f3f3"
                 secondaryColor="#27bb7d8c"
-            >
-
-            </content-loader>
+            />
         </div>
         <div class="col-sm-12" v-else>
             <!-- <section class="inner"> -->
@@ -174,7 +196,7 @@
                 min_price: 0,
                 max_price: 1000,
                 filter_category: 'All',
-                sortid_products: [],
+                // sortid_products: [],
                 categories: [],
                 products_loading: true,
                 product_modal: false,
@@ -205,12 +227,25 @@
 
             sortByCategories(){
                 let vm = this;
+
                 if (vm.filter_category == 'All') {
-                    this.filtred_products = this.products
-                }else{
-                    this.filtred_products = 
-                    this.products.filter(function (item){
+                    // this.filtred_products = this.products
+                    let f_products = this.products
+                    this.filtred_products = f_products.filter(function (item){
+                        return item.max_price >= vm.min_price && item.max_price <= vm.max_price
+                    })
+                }
+                else{
+                    // this.filtred_products = this.products.filter(function (item){
+                    //     return item.global_product.category_id == vm.filter_category
+                    // })
+
+                    let f_products = this.products.filter(function (item){
                         return item.global_product.category_id == vm.filter_category
+                    })
+
+                    this.filtred_products = f_products.filter(function (item){
+                        return item.max_price >= vm.min_price && item.max_price <= vm.max_price
                     })
                 }
             },
@@ -251,6 +286,20 @@
                     .catch(error =>{
                     })
                 }
+            },
+
+            serReangSlider(){
+                if(this.min_price == 0 && this.max_price == 0){
+                    this.min_price = 0
+                    this.max_price = 1000
+                }
+                else if(this.min_price > this.max_price){
+                    let temp = this.max_price
+                    this.max_price = this.min_price
+                    this.min_price = temp
+                }
+
+                this.sortByCategories()
             },
 
             // setRangeSlider(){
@@ -299,15 +348,15 @@
                 })
             },
 
-            // get_product_price_interval(){
-            //     axios
-            //     .get('../api/products')
-            //     .then(response => {
-            //         this.max_price = response.data
-            //     })
-            //     .catch(error =>{
-            //     })
-            // }
+            get_product_price_interval(){
+                axios
+                .get('../api/products/get_products_price_interval')
+                .then(response => {
+                    // this.max_price = response.data
+                })
+                .catch(error =>{
+                })
+            }
         }
     }
 </script>
@@ -321,9 +370,9 @@
 
     .range-slider{
         width: 100%;
-        margin: auto 16px;
+        /* margin: auto 16px;
         text-align: center;
-        position: relative;
+        position: relative; */
     }
 
     .range-slider svg, .range-slider input[type = range]{

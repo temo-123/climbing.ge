@@ -1,26 +1,59 @@
 <template>
-
-    <div class="col_md_12">
-
+    <div class="tabs"> 
         <div class="row">
             <div class="form-group">
                 <button type="submit" class="btn btn-primary" @click="go_back()">Beck</button>
             </div>
         </div>
-
         <div class="row">
             <div class="form-group">  
-                <button type="submit" class="btn btn-primary" v-on:click="add_region()" >Save</button>
+                <button type="submit" class="btn btn-primary" v-on:click="add_spot_region()" >Save</button>
             </div>
         </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="alert alert-danger" role="alert" v-if="error.global_article_error.published">
+                    {{ error.global_article_error.published[0] }}
+                </div>
 
+                <div class="alert alert-danger" role="alert" v-if="error.us_article_error.us_short_description">
+                    {{ error.us_article_error.us_short_description[0] }}
+                </div>
+                <div class="alert alert-danger" role="alert" v-if="error.us_article_error.us_short_description">
+                    {{ error.us_article_error.us_short_description[0] }}
+                </div>
+                <div class="alert alert-danger" role="alert" v-if="error.us_article_error.us_text">
+                    {{ error.us_article_error.us_text[0] }}
+                </div>
+
+                <div class="alert alert-danger" role="alert" v-if="error.ka_article_error.ka_short_description">
+                    {{ error.ka_article_error.ka_short_description[0] }}
+                </div>
+                <div class="alert alert-danger" role="alert" v-if="error.ka_article_error.ka_short_description">
+                    {{ error.ka_article_error.ka_short_description[0] }}
+                </div>
+                <div class="alert alert-danger" role="alert" v-if="error.ka_article_error.ka_text">
+                    {{ error.ka_article_error.ka_text[0] }}
+                </div>
+
+                <div class="alert alert-danger" role="alert" v-if="error.ru_article_error.ru_short_description">
+                    {{ error.ru_article_error.ru_short_description[0] }}
+                </div>
+                <div class="alert alert-danger" role="alert" v-if="error.ru_article_error.ru_short_description">
+                    {{ error.ru_article_error.ru_short_description[0] }}
+                </div>
+                <div class="alert alert-danger" role="alert" v-if="error.ru_article_error.ru_text">
+                    {{ error.ru_article_error.ru_text[0] }}
+                </div>
+            </div>
+        </div>
         <div class="row">
             <div class="col-md-12">
                 <div class="row">
                     <div class="col" >
                         <input type="radio" id="1" :value="1" v-model="tab_num">
                         
-                        <label for="1" >Global</label>
+                        <label for="1" >Global info</label>
                     </div>
                     <div class="col" >
                         <input type="radio" id="2" :value="2" v-model="tab_num">
@@ -48,8 +81,8 @@
                 </div>
                 <form >
                     <div class="form-group clearfix row" >
-                        <label for="name" class='col-md-2 control-label'> Map </label>
-                        <div class="col-md-9">
+                        <label for="name" class='col-xs-2 control-label'> Map </label>
+                        <div class="col-xs-8">
                             <input type="text" v-model="data.map" name="map" class="form-control"> 
                         </div>
                     </div>
@@ -67,9 +100,6 @@
                         <label for="name" class='col-xs-2 control-label'> English name </label>
                         <div class="col-xs-8">
                             <input type="text" v-model="data.us_name" name="us_name" class="form-control"> 
-                            <!-- <div class="alert alert-danger" role="alert" v-if="errors.us_name">
-                                {{ errors.us_name[0] }}
-                            </div> -->
                         </div>
                     </div>
 
@@ -92,9 +122,6 @@
                         <label for="name" class='col-xs-2 control-label'> Georgian name </label>
                         <div class="col-xs-8">
                             <input type="text" v-model="data.ka_name" name="ru_name" class="form-control"> 
-                            <!-- <div class="alert alert-danger" role="alert" v-if="errors.ru_name">
-                                {{ errors.ru_name[0] }}
-                            </div> -->
                         </div>
                     </div>
 
@@ -117,9 +144,6 @@
                         <label for="name" class='col-xs-2 control-label'> Russion name </label>
                         <div class="col-xs-8">
                             <input type="text" v-model="data.ru_name" name="ka_name" class="form-control"> 
-                            <!-- <div class="alert alert-danger" role="alert" v-if="errors.ka_name">
-                                {{ errors.ka_name[0] }}
-                            </div> -->
                         </div>
                     </div>
 
@@ -131,119 +155,142 @@
                 </form>
             </div>
         </div>
+
     </div>
-
-<!-- <div class="col_md_12">
-    <div class="row">
-        <div class="form-group">  
-            <button type="submit" class="btn btn-primary" v-on:click="save_all()" >Save</button>
-        </div>
-    </div>
-    <div class="row">
-        <div class="tabs">
-
-            <input type="radio" name="tabs" id="1" checked="checked">
-            <label for="1" >global info</label>
-            <div class="tab" >
-                <div class="jumbotron jumbotron-fluid">
-                    <div class="container">
-                        <h2 class="display-4">{{this.category}} article global information</h2>
-                        <p class="lead">Article global information.</p>
-                    </div>
-                </div>
-
-                <form name="contact-form" method="POST" id="global_form" ref="myForm" @submit.prevent="edit_category"  style="margin-top: 5%;" enctyp ="multipart/form-data">
-                    <div class="form-group clearfix">
-                        <label for="name" class='col-xs-2 control-label'> us name </label>
-                        <div class="col-xs-8">
-                            <input type="text" v-model="us_name" name="us_name" class="form-control"> 
-                            <div class="alert alert-danger" role="alert" v-if="errors.us_name">
-                                {{ errors.us_name[0] }}
-                            </div>
-                        </div>
-                    </div>
-                    <div class="form-group clearfix">
-                        <label for="name" class='col-xs-2 control-label'> ru name </label>
-                        <div class="col-xs-8">
-                            <input type="text" v-model="ru_name" name="ru_name" class="form-control"> 
-                            <div class="alert alert-danger" role="alert" v-if="errors.ru_name">
-                                {{ errors.ru_name[0] }}
-                            </div>
-                        </div>
-                    </div>
-                    <div class="form-group clearfix">
-                        <label for="name" class='col-xs-2 control-label'> ka name </label>
-                        <div class="col-xs-8">
-                            <input type="text" v-model="ka_name" name="ka_name" class="form-control"> 
-                            <div class="alert alert-danger" role="alert" v-if="errors.ka_name">
-                                {{ errors.ka_name[0] }}
-                            </div>
-                        </div>
-                    </div>
-                </form>
-
-            </div>
-        </div>
-    </div>
-</div> -->
 </template>
 
 <script>
+
     export default {
+        components: {
+            // StackModal,
+        },
         props: [
-            'back_url',
-            'editing_category_id'
+            // 'back_url',
+            // 'category'
         ],
         data(){
             return {
-                us_name: '',
-                ru_name: '',
-                ka_name: '',
+                data: {
+                    us_name: '',
+                    ru_name: '',
+                    ka_name: '',
 
-                editing_data: '',
+                    us_text: '',
+                    ru_text: '',
+                    ka_text: '',
 
-                errors: [],
+                    map: '',
+                },
+
+                tab_num: 1,
+
+                error: {
+                    global_article_error: [],
+                    ka_article_error: [],
+                    ru_article_error: [],
+                    us_article_error: [],
+                },
+
+                is_back_action: false,
+
             }
         },
         mounted() {
-            this.get_editing_category_data()
+
+        },
+        beforeRouteLeave (to, from, next) {
+            if(this.is_back_action = true){
+                if (window.confirm('Added information will be deleted!!! Are you sure, you want go back?')) {
+                    this.is_back_action = false;
+                    next()
+                } else {
+                    next(false)
+                }
+            }
         },
         methods: {
-            get_editing_category_data() {
-                axios
-                .get('/products/get_editing_category_data/' + this.editing_category_id)
-                .then(response => { 
-                    this.editing_data = response.data
-                    this.us_name = this.editing_data.product_category['us_name'],
-                    this.ru_name = this.editing_data.product_category['ru_name'],
-                    this.ka_name = this.editing_data.product_category['ka_name']
-                })
-                .catch(error => console.log(error))
-            },
-            edit_category() {
-                axios
-                .post('/products/category/edit/' + this.editing_category_id, {        
-                    us_name: this.us_name,
-                    ru_name: this.ru_name,
-                    ka_name: this.ka_name,
-
-
-                    inst_link: this.inst_link,
-                    web_link: this.web_link,
-                })
-                .then((response)=> { 
-                    window.location.href = this.back_url;
-                })
-                .catch(error =>{
-                    if (error.response.status == 422) {
-                        this.errors = error.response.data.errors
-                    }
-                })
+            global_blocks_action(event){
+                this.global_blocks = event
             },
 
-            save_all() {
-                this.edit_category()
-            }
+            add_spot_region() {
+                // this.article_data.global_data.us_title_for_url_title = this.article_data.en_data.title,
+
+                // this.is_us_article_error = []
+                // this.error.global_article_error = [],
+                // this.error.ka_article_error = [],
+                // this.error.ru_article_error = [],
+                // this.error.us_article_error = [],
+
+                axios
+                .post('../api/outdoor/add_spot/', {        
+                    data: this.data,
+
+                    _method: 'post'
+                })
+                .then(response => {
+                    this.$router.go(-1)
+                })
+                .catch(err => {
+                    console.log(err);
+                })
+            },
+            
+            go_back: function() {
+                this.is_back_action = true
+
+                this.$router.go(-1)
+            },
+
         }
     }
 </script>
+
+<style scoped>
+    .tabs {
+        /* display: flex; */
+        flex-wrap: wrap;
+    }
+    .tabs label {
+        order: 1;
+        display: block;
+        padding: 1rem 2rem;
+        margin-right: 0.2rem;
+        cursor: pointer;
+        background: #ccced0;
+        font-weight: bold;
+        transition: background ease 0.2s;
+    }
+    .tabs .tab {
+        order: 99;
+        flex-grow: 1;
+        width: 100%;
+        display: none;
+        padding: 1rem;
+        background: #fff;
+        /* border: 1px solid #ccc!important; */
+    }
+    .tabs input[type="radio"] {
+        display: none;
+    }
+    .tabs input[type="radio"]:checked + label {
+        background: #fff;
+        border: 1px solid #ccc !important;
+    }
+    .tabs input[type="radio"]:checked + label + .tab {
+        display: block;
+    }
+
+    @media (max-width: 45em) {
+        .tabs .tab,
+        .tabs label {
+            order: initial;
+        }
+        .tabs label {
+            width: 100%;
+            margin-right: 0;
+            margin-top: 0.2rem;
+        }
+    }
+</style>

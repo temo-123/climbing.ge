@@ -4,8 +4,9 @@
             <div class="col-xs-12 col-sm-2 col-md-3 col-lg-3" style="z-index: 1001;">
                 <div class="site_title">
                     <!-- <a :href="MIX_APP_SSH + MIX_SITE_URL" class="site_title">{{__ ('site name')}}</a> -->
-                    <router-link style="font-size: 1.5em;" :to="{name: 'index'}" exact class="site_title">
-                        {{ $t('site name')}}
+                    <router-link style="font-size: 1.5em;" :to="{name: 'studia'}" exact class="site_title">
+                        <!-- {{ $t('site name')}} -->
+                        Climbing Films
                     </router-link>
                 </div>
             </div>
@@ -36,35 +37,24 @@
                     </div>
                     <div class="collapse navbar-collapse mobile_nav_menu" id="bs-example-navbar-collapse-1">
                         <ul class="nav navbar-nav pull-right top_menu_buttons">
-                
+
                             <li class="dropdown display-none-720px serch_block">
-                                <form class="navbar-form navbar-left" role="search">
+                                <!-- <form class="navbar-form navbar-left" role="search"> -->
+                                <form action="/search" method="POST" role="search" class="navbar-form"  @submit.prevent="search">
                                     <div class="form-group">
-                                    <input type="text" class="form-control" placeholder="Search">
+                                        <input type="text" class="form-control" placeholder="Search" v-model="search_query" >
                                     </div>
                                     <button type="submit" class="btn btn-primary" style='color:#FFFFFF;'>
                                         <i class="fa fa-search" aria-hidden="true"></i>
                                     </button>
                                 </form>
                             </li>
+                
+                            <li><router-link :to="{name: 'about_films',}" exact>        <span> {{ $t('menu about us') }}            </span> </router-link></li>
 
-                            <li class="dropdown display-none-720px">
-                                <a href="#" data-toggle="dropdown">
-                                    <i class="fa fa-language" aria-hidden="true"></i>
-                                </a>
-
-                                <ul class="dropdown-menu shadows" role="menu">
-                                    <li><a  @click="localization('us')"><img style="width: 50%; margin-left: 25%;" :src="'images/site_img/leng/en.png'" alt="us"></a></li>
-                                    <li><a  @click="localization('ka')"><img style="width: 50%; margin-left: 25%;" :src="'images/site_img/leng/ka.webp'" alt="ka"></a></li>
-                                    <li><a  @click="localization('ru')"><img style="width: 50%; margin-left: 25%;" :src="'images/site_img/leng/ru.png'" alt="ru"></a></li>
-                                </ul>
-                            </li>
+                            <localeSwitcher />
                             
-                            <li class="display-none-720px">
-                                <a style="margin-top: -5%; font-size: 120%;" @click="goTo('/')">
-                                    <i class="fa fa-user-circle"></i>
-                                </a>
-                            </li>
+                            <goTo :go_to_page="'/'" />
                         </ul>
                     </div>
                 </nav>
@@ -75,6 +65,7 @@
 
 <script>
     // import search from './SearchComponent'
+    import localeSwitcher from '../../global_components/LocaleChangeComponent.vue'
 
     export default {
         data: function () {
@@ -85,14 +76,15 @@
             };
         },
         components: {
-            // search
+            localeSwitcher
         },
         mounted() {
         },
         methods: {
-            // search(){
-            //     this.$router.push({name: 'search_articles', query: { 'query': this.search_query} });
-            // },
+            search(){
+                this.$router.push({name: 'search_films', query: { 'query': this.search_query} });
+                this.search_query = ''
+            },
             // localization(leng){
             //     window.location.href = leng;
             // },

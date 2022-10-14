@@ -11,7 +11,7 @@ import VueMeta from "vue-meta"; // https://www.epiloge.com/how-to-add-dynamic-me
 import VueExpandableImage from "vue-expandable-image";
 import Vuex from "vuex";
 import axios from "axios";
-import VueAnalytics from "vue-analytics";
+// import VueAnalytics from "vue-analytics";
 import i18n from "./i18n";
 import VueSocialSharing from "vue-social-sharing";
 import plugin from "@serializedowen/vue-img-watermark";
@@ -116,14 +116,14 @@ if (window.location.hostname == process.env.MIX_SITE_URL) {
     window.location.href = "/404";
 }
 
-Vue.use(VueAnalytics, {
-    id: "G-B7KZEJ6CLW",
+// Vue.use(VueAnalytics, {
+//     id: "G-B7KZEJ6CLW",
     // serviceRoutes,
     // autoTracking: {
     //   skipSamePath: true,
     //   screenview: true
     // }
-});
+// });
 
 // Vue.use(VueGtag, {
 //   config: { id: "UA-1234567-1" }
@@ -145,10 +145,11 @@ const app = new Vue({
     },
     router: serviceRoutes,
 
+
     mounted() {
         this.get_site_data();
         // i18n.messages.en
-        console.log("🚀 ~ file: app.js ~ line 151 ~ mounted ~ i18n.messages.en", i18n.messages.en)
+        // console.log("🚀 ~ file: app.js ~ line 151 ~ mounted ~ i18n.messages.en", i18n.messages.en)
     },
     methods: {
         get_site_data() {

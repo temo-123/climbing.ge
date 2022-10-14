@@ -1,16 +1,16 @@
 <p align="center"><img src="/public/images/site_img/site_logo/climibng,ge(becground).jpg" width="400"></p>
 <h1 align="center">Welcome to climbing.ge opensource project</h1>
-<h5>Progect version 3.5.1</5>
+<h5>Progect version 3.5.3</5>
 
 <p>Sercice climbing.ge is georgian rock climbing and mountaineering areas description and social netvork for your climbing ascent sheering. Alse ouer product onlain shop. in services we have 5 subdomain: climibng.ge, forum.climbing.ge, shop.climbing,ge, films.climbing.ge, user.climbing.ge. (All descriptions see down)</p>
 
-[climibng.ge](/docs/GUIDBOOK.md) is a georgian rock climibng guidbook
+[climibng.ge](/docs/GUIDBOOK.md) is a Georgian rock climibng guidbook
 
-[forum.climbing.ge](/docs/FORUM.md) plarform for sheering your expiriec ascent and queshens
+[forum.climbing.ge](/docs/FORUM.md) comming soon
 
-[shop.climbing,ge](/docs/SHOP.md) ouer products stor
+[shop.climbing,ge](/docs/SHOP.md) ouer products store
 
-[films.climbing.ge](/docs/FILMS.md) comming soon
+[films.climbing.ge](/docs/FILMS.md) this is a climbing films portal
 
 [user.climbing.ge](/docs/USER_PAGE.md) your privat room
 
@@ -48,6 +48,7 @@ For foront use Vue.js(2) laravel templite
     npmjs.com/package/vue-ui-preloader - (vue-ui-preloader)
     https://wlada.github.io/vue-carousel-3d/?ref=madewithvuejs.com - (vue-carousel-3d)
     https://www.npmjs.com/package/vue-content-loader/v/0.2.1 (https://codesandbox.io/s/vue-content-loader-igfyf?file=/src/App.vue:744-783) - (content loader)
+    https://gera2ld.github.io/qrcanvas-vue/v2/#logo -   (vue QRCode generator)
 
 
 ## CkEditor4

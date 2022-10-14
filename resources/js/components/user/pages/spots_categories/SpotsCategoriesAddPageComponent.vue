@@ -1,25 +1,59 @@
 <template>
-    <div class="col_md_12">
-
+    <div class="tabs"> 
         <div class="row">
             <div class="form-group">
                 <button type="submit" class="btn btn-primary" @click="go_back()">Beck</button>
             </div>
         </div>
-
         <div class="row">
             <div class="form-group">  
-                <button type="submit" class="btn btn-primary" v-on:click="add_region()" >Save</button>
+                <button type="submit" class="btn btn-primary" v-on:click="add_spot_region()" >Save</button>
             </div>
         </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="alert alert-danger" role="alert" v-if="error.global_article_error.published">
+                    {{ error.global_article_error.published[0] }}
+                </div>
 
+                <div class="alert alert-danger" role="alert" v-if="error.us_article_error.us_short_description">
+                    {{ error.us_article_error.us_short_description[0] }}
+                </div>
+                <div class="alert alert-danger" role="alert" v-if="error.us_article_error.us_short_description">
+                    {{ error.us_article_error.us_short_description[0] }}
+                </div>
+                <div class="alert alert-danger" role="alert" v-if="error.us_article_error.us_text">
+                    {{ error.us_article_error.us_text[0] }}
+                </div>
+
+                <div class="alert alert-danger" role="alert" v-if="error.ka_article_error.ka_short_description">
+                    {{ error.ka_article_error.ka_short_description[0] }}
+                </div>
+                <div class="alert alert-danger" role="alert" v-if="error.ka_article_error.ka_short_description">
+                    {{ error.ka_article_error.ka_short_description[0] }}
+                </div>
+                <div class="alert alert-danger" role="alert" v-if="error.ka_article_error.ka_text">
+                    {{ error.ka_article_error.ka_text[0] }}
+                </div>
+
+                <div class="alert alert-danger" role="alert" v-if="error.ru_article_error.ru_short_description">
+                    {{ error.ru_article_error.ru_short_description[0] }}
+                </div>
+                <div class="alert alert-danger" role="alert" v-if="error.ru_article_error.ru_short_description">
+                    {{ error.ru_article_error.ru_short_description[0] }}
+                </div>
+                <div class="alert alert-danger" role="alert" v-if="error.ru_article_error.ru_text">
+                    {{ error.ru_article_error.ru_text[0] }}
+                </div>
+            </div>
+        </div>
         <div class="row">
             <div class="col-md-12">
                 <div class="row">
                     <div class="col" >
                         <input type="radio" id="1" :value="1" v-model="tab_num">
                         
-                        <label for="1" >Global</label>
+                        <label for="1" >Global info</label>
                     </div>
                     <div class="col" >
                         <input type="radio" id="2" :value="2" v-model="tab_num">
@@ -47,8 +81,8 @@
                 </div>
                 <form >
                     <div class="form-group clearfix row" >
-                        <label for="name" class='col-md-2 control-label'> Map </label>
-                        <div class="col-md-9">
+                        <label for="name" class='col-xs-2 control-label'> Map </label>
+                        <div class="col-xs-8">
                             <input type="text" v-model="data.map" name="map" class="form-control"> 
                         </div>
                     </div>
@@ -66,9 +100,6 @@
                         <label for="name" class='col-xs-2 control-label'> English name </label>
                         <div class="col-xs-8">
                             <input type="text" v-model="data.us_name" name="us_name" class="form-control"> 
-                            <!-- <div class="alert alert-danger" role="alert" v-if="errors.us_name">
-                                {{ errors.us_name[0] }}
-                            </div> -->
                         </div>
                     </div>
 
@@ -91,9 +122,6 @@
                         <label for="name" class='col-xs-2 control-label'> Georgian name </label>
                         <div class="col-xs-8">
                             <input type="text" v-model="data.ka_name" name="ru_name" class="form-control"> 
-                            <!-- <div class="alert alert-danger" role="alert" v-if="errors.ru_name">
-                                {{ errors.ru_name[0] }}
-                            </div> -->
                         </div>
                     </div>
 
@@ -116,9 +144,6 @@
                         <label for="name" class='col-xs-2 control-label'> Russion name </label>
                         <div class="col-xs-8">
                             <input type="text" v-model="data.ru_name" name="ka_name" class="form-control"> 
-                            <!-- <div class="alert alert-danger" role="alert" v-if="errors.ka_name">
-                                {{ errors.ka_name[0] }}
-                            </div> -->
                         </div>
                     </div>
 
@@ -130,13 +155,19 @@
                 </form>
             </div>
         </div>
+
     </div>
 </template>
 
 <script>
+
     export default {
+        components: {
+            // StackModal,
+        },
         props: [
-            'back_url',
+            // 'back_url',
+            // 'category'
         ],
         data(){
             return {
@@ -151,14 +182,23 @@
 
                     map: '',
                 },
-                is_back_action: false,
-                errors: [],
+
                 tab_num: 1,
+
+                error: {
+                    global_article_error: [],
+                    ka_article_error: [],
+                    ru_article_error: [],
+                    us_article_error: [],
+                },
+
+                is_back_action: false,
+
             }
         },
         mounted() {
-        },
 
+        },
         beforeRouteLeave (to, from, next) {
             if(this.is_back_action = true){
                 if (window.confirm('Added information will be deleted!!! Are you sure, you want go back?')) {
@@ -169,28 +209,40 @@
                 }
             }
         },
-
         methods: {
-            add_region() {
+            global_blocks_action(event){
+                this.global_blocks = event
+            },
+
+            add_spot_region() {
+                // this.article_data.global_data.us_title_for_url_title = this.article_data.en_data.title,
+
+                // this.is_us_article_error = []
+                // this.error.global_article_error = [],
+                // this.error.ka_article_error = [],
+                // this.error.ru_article_error = [],
+                // this.error.us_article_error = [],
+
                 axios
-                .post('../api/region/create', {        
+                .post('../api/outdoor/add_spot/', {        
                     data: this.data,
-                    _method: 'PUT'
+
+                    _method: 'post'
                 })
-                .then((response)=> { 
+                .then(response => {
                     this.$router.go(-1)
                 })
-                .catch(error =>{
-                    if (error.response.status == 422) {
-                        this.errors = error.response.data.errors
-                    }
+                .catch(err => {
+                    console.log(err);
                 })
             },
-            go_back(){
+            
+            go_back: function() {
                 this.is_back_action = true
 
                 this.$router.go(-1)
-            }
+            },
+
         }
     }
 </script>

@@ -10,7 +10,7 @@
                 <span v-html="this.$siteData.indoor_description"></span>
             </h2>
 
-            <div class="row featurette" style='margin-bottom: 7%;' v-if="this.indoors.length > 0">
+            <div class="row featurette" style='margin-bottom: 7%' v-if="this.indoors.length > 0">
                 <div v-if="indoor_article_loading">
                     <content-loader
                         viewBox="0 0"
@@ -32,6 +32,12 @@
                 <emptyPageComponent />
             </div>
         </div>
+        
+        <metaData 
+            :title = "'Indoor climbing in Georgia'"
+            :description = "'Indoor climbing gyms in Georgia'"
+            :image = "'../../../../public/images/meta_images/indoor.jpg'"
+        />
     </div>
 </template>
 
@@ -41,6 +47,7 @@
     import emptyPageComponent from '../../global_components/EmptyPageComponent'
     
     import { ContentLoader } from 'vue-content-loader'
+    import metaData from '../items/MetaDataComponent'
     export default {
         data: function () {
             return {
@@ -51,7 +58,8 @@
         components: {
             indoorCard,
             emptyPageComponent,
-            ContentLoader
+            ContentLoader,
+            metaData
         },
         mounted() {
             this.get_indoors()

@@ -55,32 +55,8 @@
             
         </div>
 
-        <div class="row">
-            <div class="col-sm-8 blog-main">
-                <div class="tabs"> 
-                    <!-- <div class="col-md-12"> -->
-                        <div class="row">
-                            <div class="col-md-6" >
-                                <input type="radio" id="1" :value="1" v-model="tab_num">
-                                
-                                <label for="1" >Comments</label>
-                            </div>
-                            <div class="col-md-6" >
-                                <input type="radio" id="2" :value="2" v-model="tab_num">
-                                
-                                <label for="2" >Forum Posts</label>
-                            </div>
-                        </div>
-                    <!-- </div> -->
-                </div>
-
-                <div class="row" v-if="tab_num == 1">
-                    <commentForm :article_id="this.article.id" />
-                </div>
-                <div class="row" v-if="tab_num == 2">
-                    <postsList :article_id="this.article.id" />
-                </div>
-            </div>
+        <div class="row"> 
+            <commentForm :article_id="this.article.id" />
         </div>
 
         <SimilarArticles 
@@ -96,7 +72,7 @@
 <script>
     import routesTab from './RoutesTabComponent'
     import commentForm from './CommentFormComponent'
-    import postsList from './PostsListComponent'
+    // import postsList from './PostsListComponent'
     import galleryComponent from './GalleryComponent'
     import articleRightMenu from './RightMenuComponent'
     import SimilarArticles from './SimilarArticlesComponent'
@@ -118,11 +94,11 @@
             breadcrumb,
             routeQuanDiogram,
             articleTextBlocks,
-            postsList
+            // postsList
         },
         data: function () {
             return {
-                tab_num: 1,
+                // tab_num: 1,
                 posts: [],
             }
         },
@@ -142,7 +118,17 @@
             },
 
             add_to_favorite_outdoor_area(article_id){
-                alert('add to interested event. ID = ' + article_id)
+                // alert('add to interested event. ID = ' + article_id)
+
+                axios
+                .post('../../api/articles/add_to_favorite_outdoor_area/', {
+                    article_id: article_id,
+                })
+                .then(response => {
+                    alert(response.data)
+                })
+                .catch(error =>{
+                })
             }
         }
     }

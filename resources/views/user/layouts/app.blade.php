@@ -6,10 +6,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 
+    <link href="{{ asset('images/site_img/x.png') }}" rel="shortcut icon">
+
     {{-- CSRF Token --}}
     {{-- <meta name="csrf-token" content="{{ csrf_token() }}"> --}}
 
-    <title>@yield('title')</title>
+    <title>climbing.ge user</title>
+    {{-- <title>@yield('title')</title> --}}
     {{-- <link href="{{ asset('images/site_img/site_logo/'.$site->image) }}" rel="shortcut icon"> --}}
     {{-- <script src="https://sasensi.github.io/paperjs-layers-panel/build/paperjs-layers-panel.js"></script> --}}
 

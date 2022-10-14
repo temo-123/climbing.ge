@@ -90,7 +90,7 @@
                                                 'table_name': "Regions",
                                                 'table_add_url': 'spot_category_add', 
                                                 'table_edit_url': 'spot_category_edit',
-                                                'table_del_url': 'del_region', 
+                                                // 'table_del_url': '/outdoor/del_spot/', 
                                             });
                     })
                     .catch(
@@ -116,7 +116,7 @@
                                             'table_category': this.$route.params.article_category, 
                                             'table_add_url': 'articleAdd', 
                                             'table_edit_url': 'articleEdit',
-                                            'table_del_url': 'del_url', 
+                                            // 'table_del_url': 'del_url', 
                                         });
 
 

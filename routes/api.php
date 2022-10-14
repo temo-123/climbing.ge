@@ -43,12 +43,18 @@ Route::group(['namespace'=>'Api'], function() {
     Route::post('/get_article_global_data/{leng}/{article_id}', 'ArticleController@get_article_global_data');
     Route::get('/get_articles_for_forum/{category}/{lang}', 'ArticleController@get_articles_for_forum');
     Route::get('/last_news/{lang}', 'ArticleController@get_last_news');
+    Route::post('/articles/add_to_interested_events/', 'ArticleController@add_to_interested_events');
+    Route::post('/articles/add_to_favorite_outdoor_area/', 'ArticleController@add_to_favorite_outdoor_area');
 
     /*
     *   Outdoor regions
     */
     Route::get('/outdoor/get_filtred_outdoor_spots_for_admin/{filter_id}', 'OutdoorController@get_filtred_outdoor_spots_for_admin');
     Route::get('/outdoor/get_filtred_outdoor_spots_for_gest/{lang}/{filter_id}', 'OutdoorController@get_filtred_outdoor_spots_for_gest');
+
+    Route::post('/outdoor/add_spot', 'OutdoorController@add_spot');
+    Route::post('/outdoor/edit_spot/{id}', 'OutdoorController@edit_spot');
+    Route::delete('/outdoor/del_spot/{id}', 'OutdoorController@del_spot');
 
     /*
     *   Mountain (mount routes) regions
@@ -115,12 +121,19 @@ Route::group(['namespace'=>'Api'], function() {
     *   Guid Coments routes
     */
     Route::apiResource('/comment', 'CommentController');
-    Route::get('/my_comment', 'CommentController@get_my_comments');
+    Route::get('/get_my_comment', 'CommentController@get_my_comments');
 
     /*
     *   Films routes
     */
     Route::apiResource('/films', 'FilmsController');
+    Route::get('/film/get_films/{locale}', 'FilmsController@get_films');
+    Route::get('/film/get_same_films/{category_id}/{film_id}/{locale}', 'FilmsController@get_same_films');
+    Route::get('/film/get_film/{locale}/{url_title}', 'FilmsController@get_film');
+    Route::get('/film/get_films_categories/{locale}', 'FilmsController@get_films_categories');
+    Route::get('/film/films_search/{locale}', 'FilmsController@films_search');
+    Route::get('/film/top_films/{top_film_type}/{locale}', 'FilmsController@get_films_top');
+    Route::post('/film/add_to_faworite', 'FilmsController@add_to_faworite');
 
     /*
     *   Guid sport sectors routes
@@ -177,6 +190,11 @@ Route::group(['namespace'=>'Api'], function() {
     
     Route::apiResource('/posts_topic', 'PostsTopicController');
     Route::get('/posts_topic/list/{lang}', 'PostsTopicController@get_local_topics');
+
+    Route::get('/post_comment/get_post_comment/{post_id}', 'PostCommentsController@get_post_comment');
+    Route::post('/post_comment/add_post_comment/{post_id}', 'PostCommentsController@add_post_comment');
+    Route::post('/post_comment/edit_post_comment/{comment_id}', 'PostCommentsController@edit_post_comment');
+    Route::delete('/post_comment/edit_post_comment/{comment_id}', 'PostCommentsController@edit_post_comment');
 
     /*
     *   Guidbook and Ploducts Search routes

@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
 use App\Models\Post;
+use App\Models\Post_comment;
 use App\Models\PostsTopics;
 use App\Models\Post_like;
 use App\User;
@@ -26,6 +27,37 @@ class PostController extends Controller
             array_push($resp, ["post"=>$post, "user"=>$user[0]]);
         }
         return $resp;
+    }
+
+    public function add_post_comment(Request $request)
+    {
+        dd($request);
+        if (Auth::user()) {
+            $new_post_comment = new Post_comment;
+            $new_post_comment->user_id = Auth::user();
+            $new_post_comment->post_id = $request->post_id;
+            $new_post_comment->text = $request->text;
+            dd($new_post_comment);
+            // $is_verify_isset = $request->input('is_verify_isset');
+            // if($is_verify_isset){
+            //     $request['topic_id'] = $request->topic;
+            //     $request['user_id'] = auth()->user()->id;
+
+            //     $this->post_validate($request);
+
+            //     Post::create($request->all());
+            //     return (['message' => "Tenk you for post ".$request->name]);
+            // }
+            // elseif($is_verify_isset == false){
+            //     return (['message' => "Varificate reCaptcha"]);
+            // }
+            // else{
+            //     return (['message' => "Please update page and add post after pdating!"]);
+            // }
+        }
+        else{
+            return (['message' => "Please login!"]);
+        }
     }
 
     /**
@@ -78,7 +110,7 @@ class PostController extends Controller
     public function get_likes($post_id)
     {
         // return Post_like::where("post_id", "=", $post_id)->count();
-        return response()->json(Post_like::where("post_id", "=", $post_id)->count());
+        return Post_like::where("post_id", "=", $post_id)->count();
         // dd($likes_count);
         //  ;
     }

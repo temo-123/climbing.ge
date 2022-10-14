@@ -1,29 +1,38 @@
 <template>
     <div class="container">
-        <articlPage :article="news" />
+        <articlPage :article="partner" />
+
+        <metaData 
+            :title = "partner[0].title"
+            :description = "partner[0].description"
+            :image = "'../../../../public/images/partner_img/'+partner.image"
+        />
     </div>
 </template>
 
 <script>
     import articlPage from '../items/ArticleComponent'
+    import metaData from '../items/MetaDataComponent'
+
     export default {
         data: function () {
             return {
-                news: [],
+                partner: [],
             }
         },
         components: {
             articlPage,
+            metaData
         },
         mounted() {
-            this.get_news()
+            this.get_partner()
         },
         methods: {
-            get_news(){
+            get_partner(){
                 axios
                 .get('../api/article/tech_tip/'+localStorage.getItem('lang')+'/'+this.$route.params.url_title)
                 .then(response => {
-                    this.news = response.data
+                    this.partner = response.data
                 })
                 .catch(error =>{
                 })

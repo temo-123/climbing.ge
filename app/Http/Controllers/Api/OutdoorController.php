@@ -87,4 +87,34 @@ class OutdoorController extends Controller
 
         return $area_data;
     }
+
+    public function add_spot(Request $request)
+    {
+        // dd( $request->data['us_name']);
+
+        $spot = new Region;
+
+        $spot['us_name'] = $request->data['us_name'];
+        $spot['ru_name'] = $request->data['ru_name'];
+        $spot['ka_name'] = $request->data['ka_name'];
+
+        $spot['us_text'] = $request->data['us_text'];
+        $spot['ru_text'] = $request->data['ru_text'];
+        $spot['ka_text'] = $request->data['ka_text'];
+
+        $spot['map'] = $request->data['map'];
+
+        $spot -> save();
+    }
+
+    public function edit_spot(Request $request)
+    {
+        # code...
+    }
+
+    public function del_spot(Request $request)
+    {
+        $region = Region::where('id',strip_tags($request->id))->first();
+        $region -> delete();
+    }
 }

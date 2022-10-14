@@ -24,22 +24,9 @@ class IndexController extends Controller
      */
     public function index(Request $request)
     {
-        // $request->user()->authorizeRoles(
-        //     [
-        //         'admin', 
-        //         'manager', 
-        //         'ka_manager', 
-        //         'ru_manager', 
-        //         'us_manager', 
-        //         'seller', 
-        //         'user'
-        //     ]);
-
-        // $data = [
-        //     "page_name" => "Home"
-        // ];
-        // return view('user.home', $data);
-        return view('user.home');
+        if (view()->exists('user.home')) {
+            return view('user.home');
+    	}
+    	abort(404);
     }
-  
 }

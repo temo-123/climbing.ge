@@ -57,7 +57,13 @@
                 </div>
             </div>
 
-        </div>  
+        </div>
+        
+        <metaData 
+            :title = "'Mountaineering in Georgia'"
+            :description = "'Mountaineering climbing routes and mount masiv in Georgia'"
+            :image = "'../../../../public/images/meta_images/mount.jpg'"
+        />
     </div>
 </template>
 
@@ -66,6 +72,7 @@
     import emptyPageComponent from '../../global_components/EmptyPageComponent'
 
     import { ContentLoader } from 'vue-content-loader'
+    import metaData from '../items/MetaDataComponent'
     export default {
         data: function () {
             return {
@@ -81,7 +88,8 @@
         components: {
             mountCard,
             emptyPageComponent,
-            ContentLoader
+            ContentLoader,
+            metaData
         },
         mounted() {
             this.get_mounts(),

@@ -13,7 +13,7 @@
         <img v-else class="article_404" :src="'./images/404/empty_page/10.jpg'">
         <!-- <p v-else>page is empty</p> -->
 
-        <p style="text-align: center; ">empty page text</p>
+        <p style="text-align: center; ">Page is empty</p>
     </div>
 </template>
 

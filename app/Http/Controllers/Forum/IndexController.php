@@ -10,11 +10,12 @@ class IndexController extends Controller
     public function index ()
     {
     	if (view()->exists('forum.index')) {
-    		$data = [
-    			'title'=>'Climbing store',
-    		];
-    		return view('forum.index',$data);
+    		// $data = [
+    		// 	'title'=>'Climbing store',
+    		// ];
+    		// return view('forum.index',$data);
+    		return view('forum.index');
     	}
-    	// abort(404);
+    	abort(404);
     }
 }

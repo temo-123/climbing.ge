@@ -1,11 +1,19 @@
 <template>
     <div class="container">
         <articlPage :article="tech_tips" />
+
+        <metaData 
+            :title = "tech_tips[0].title"
+            :description = "tech_tips[0].description"
+            :image = "'../../../../public/images/security_img/'+tech_tips.image"
+        />
     </div>
 </template>
 
 <script>
     import articlPage from '../items/ArticleComponent'
+    import metaData from '../items/MetaDataComponent'
+
     export default {
         data: function () {
             return {
@@ -14,6 +22,7 @@
         },
         components: {
             articlPage,
+            metaData
         },
         mounted() {
             this.get_tech_tips()

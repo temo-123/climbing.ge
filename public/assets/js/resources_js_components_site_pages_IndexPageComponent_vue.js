@@ -3156,9 +3156,9 @@ var render = function () {
       _vm._v(" "),
       _c("metaData", {
         attrs: {
-          title: "teeest",
+          title: "Climbing in Georgia",
           description:
-            "Rock climbing, mountaineering and other outdoor actyvity in georgia in Georgia",
+            "Rock climbing, mountaineering and other outdoor actyvity in Georgia",
           image: "../../../../public/images./meta_images/outdoor.jpg",
         },
       }),

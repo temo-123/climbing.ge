@@ -8,28 +8,39 @@
             <span v-html="this.$siteData.services_description"></span>
         </h2>
 
-        <div class="row">
+        <div class="row" v-if="services_loading">
+            <content-loader
+                viewBox="0 0"
+                primaryColor="#f3f3f3"
+                secondaryColor="#27bb7d8c"
+            />
+        </div>
+        <div class="row" v-else>
             <ServiceItem
                 v-for="service in services"
                 :key='service.id'
                 :service_data="service">
             </ServiceItem>
         </div>
+
     </div>
 </template>
 
 <script>
     import ServiceItem from '../items/ServiceItemComponent'
+    import { ContentLoader } from 'vue-content-loader'
 
     export default {
         data: function () {
             return {
                 services: [],
                 site_data: [],
+                services_loading: true,
             };
         },
         components: {
             ServiceItem,
+            ContentLoader
         },
         mounted() {
             this.get_services()
@@ -43,6 +54,7 @@
                 })
                 .catch(error =>{
                 })
+                .finally(() => this.services_loading = false);
             },
         }
     }

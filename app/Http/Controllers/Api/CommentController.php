@@ -24,6 +24,7 @@ class CommentController extends Controller
     public function get_my_comments()
     {
         $user_id = auth()->user()->id;
+        // dd($user_id);
         return Comment::where("user_id", "=", $user_id)->get();
     }
 
@@ -85,13 +86,23 @@ class CommentController extends Controller
         $user_id = 0;
 
         if($is_verify_isset){
-            if (Auth::user()) {
-                Auth::user() -> id = $user_id;
-                // var_dump($user_id);
+            if (auth()->user()) {
+                $user_id = auth()->user() -> id;
             }
-            // var_dump($user_id);
-            // dd($user_id);
-            Comment::create($request->all());
+
+            // Comment::create($request->all());
+
+            $comment = new Comment;
+
+            $comment->user_id = $user_id;
+            $comment->name = $request->name;
+            $comment->surname = $request->surname;
+            $comment->email = $request->email;
+            $comment->text = $request->text;
+            $comment->article_id = $request->article_id;
+            
+            $comment->save();
+
             return (['message' => "Tenk you for comment ".$request->name]);
         }
         elseif($is_verify_isset == false){

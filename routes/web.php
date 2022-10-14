@@ -25,20 +25,16 @@ use Illuminate\Support\Facades\Route;
         });
     });
 
-    Route::domain('forum.' . config('app.url'))->group(function () {
-        Route::group(['namespace'=>'Forum'], function() {
-            Route::get('/{any}', 'IndexController@index')->where('any', '(.*)')->name('forum_index');
-        });
-    });
+    // Route::domain('forum.' . config('app.url'))->group(function () {
+    //     Route::group(['namespace'=>'Forum'], function() {
+    //         Route::get('/{any}', 'IndexController@index')->where('any', '(.*)')->name('forum_index');
+    //     });
+    // });
 
     Route::domain('user.' . config('app.url'))->group(function () {
-        // Route::group(['middleware'=>'auth:sanctum'], function() {
-            // Route::group(['middleware'=>['web']], function() {
-                Route::group(['namespace'=>'User'], function() {
-                    Route::get('/{any}', 'IndexController@index')->where('any', '(.*)')->name('user_index');
-                });
-            // });
-        // });
+        Route::group(['namespace'=>'User'], function() {
+            Route::get('/{any}', 'IndexController@index')->where('any', '(.*)')->name('user_index');
+        });
     });
 
 // });

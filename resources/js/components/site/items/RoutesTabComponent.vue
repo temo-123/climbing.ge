@@ -239,7 +239,7 @@
                     </a>
                 </div>
 
-                <table class="table col-md-12 table table-hover" id="dev-table">
+                <table class="table col-md-12 table table-hover">
                     <tbody>
                         <tr>
                             <td>N</td>

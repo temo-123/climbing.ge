@@ -1127,6 +1127,10 @@ tr td:last-child {
   color: #fff;
 }
 
+.footer_description_block {
+  color: #a7a7a7;
+}
+
 /*
 *
 *   Preloader style

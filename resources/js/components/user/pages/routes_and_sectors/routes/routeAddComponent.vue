@@ -17,15 +17,15 @@
 
     <div class="row">
         <div class="form-group">  
-            <button type="submit" class="btn btn-primary" @click="save_and_go_beck()" >Save</button>
+            <button type="submit" class="btn btn-primary" @click="save_and_go_beck()" >Save and go back</button>
             <p>Save and go to table page</p>
         </div>
     </div>
 
     <div class="row">
         <div class="form-group">  
-            <button type="submit" class="btn btn-primary" @click="save_and_add_more_route()" >Save and add mode</button>
-            <p>Save and add more route in this sector</p>
+            <button type="submit" class="btn btn-primary" @click="save_and_add_more()" >Save and add more reoute</button>
+            <p>Save and go to table page</p>
         </div>
     </div>
 

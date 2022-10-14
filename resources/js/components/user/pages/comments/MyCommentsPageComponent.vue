@@ -30,7 +30,7 @@
         methods: {
             get_my_comments_data: function(){
                 axios
-                .get("../api/my_comment/")
+                .get("../api/get_my_comment/")
                 .then(response => {
                     this.data_for_tab.push({'id': 1,
                                             'data': response.data, 

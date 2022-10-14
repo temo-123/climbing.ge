@@ -8,7 +8,8 @@
                         <!-- <router-link style="font-size: 1.5em;" :to="{name: 'index', params: {lang: this.$i18n.locale}}" exact class="site_title">
                             <img :src="'../../../images/site_img/site_logo/header logo.png'" alt="climbing.ge" style="height: 6em;">
                         </router-link> -->
-                        <router-link style="font-size: 1.5em;" :to="{name: 'index'}" exact class="site_title">{{ $t('site name')}}</router-link>
+                        <!-- <router-link style="font-size: 1.5em;" :to="{name: 'index'}" exact class="site_title">{{ $t('site name')}}</router-link> -->
+                        <router-link style="font-size: 1.5em;" :to="{name: 'index'}" exact class="site_title">Climbing Guid</router-link>
                     </div>
                 </div>
 
@@ -90,8 +91,6 @@
                                 </ul>
                             </li>
 
-                            <localeSwitcher />
-
                             <li class="dropdown display-none-720px">
                                 <a data-toggle="dropdown">
                                     <i class="fa fa-heartbeat" aria-hidden="true"></i>
@@ -102,6 +101,8 @@
                                     <li><a style="width: 50%; margin-left: 25%;"  @click="grade_charts('UIAA')"><li>UIAA</li></a></li>
                                 </ul>
                             </li>
+
+                            <localeSwitcher />
 
                             <goTo :go_to_page="'/'" />
 
@@ -148,6 +149,7 @@
         methods: {
             search(){
                 this.$router.push({name: 'search_articles', query: { 'query': this.search_query} });
+                this.search_query = ''
             },
 
             grade_charts(grade){

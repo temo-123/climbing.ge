@@ -14,6 +14,7 @@ use App\Models\Sector_image;
 use App\Models\Spot_rocks_image;
 // use App\Models\Comment;
 // use App\Models\Gallery;
+use Validator;
 
 class SectorController extends Controller
 {
@@ -50,12 +51,38 @@ class SectorController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $validate = $this->sector_validate($request->data);
+
+        if ($validate != null) {
+            return response()->json($validate, 422);
+        }
+        else{
+            $sectors = sector::get();
+            foreach ($sectors as $sectors) {
+                $last_sector_id = $sectors->id;
+            }
+
+            $sector = new sector();
+
+            $sector['article_id'] = $request->data['article_id'];
+            $sector['name'] = $request->data['name'];
+            $sector['text'] = $request->data['text'];
+            $sector['all_day_in_shade'] = $request->data['all_day_in_shade'];
+            $sector['all_day_in_sun'] = $request->data['all_day_in_sun'];
+            $sector['in_the_shade_afternoon'] = $request->data['in_the_shade_afternoon'];
+            $sector['in_the_shade_befornoon'] = $request->data['in_the_shade_befornoon'];
+            $sector['in_shade_after_10'] = $request->data['in_shade_after_10'];
+            $sector['in_shade_after_15'] = $request->data['in_shade_after_15'];
+            $sector['slabby'] = $request->data['slabby'];
+            $sector['vertical'] = $request->data['vertical'];
+            $sector['overhang'] = $request->data['overhang'];
+
+            $sector -> save();
+        }
     }
 
     public function get_Spot_rocks_images(Request $request)
     {
-        // dd($request->article_id);
         return (Spot_rocks_image::where('article_id','=', $request->article_id)->get());
     }
 
@@ -65,7 +92,7 @@ class SectorController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Request $request, $id)
     {
         $pitch_num_in_array = 0;
         $mtp_num_in_array = 0;
@@ -256,9 +283,10 @@ class SectorController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $input = $request -> except('_token');
+        dd('update');
+        // $input = $request -> except('_token');
 
-            $this->sector_validate($request);
+        //     $this->sector_validate($request);
             // dd($request);
 
             // $sectors = sector::where("article_id","=",$input["article_id"])->get("num");
@@ -277,28 +305,31 @@ class SectorController extends Controller
             // }
             // $sector = new sector();
             // $sector -> fill($input);
-            $sectors = sector::where("name","=","temporary_sector")->get();
-            foreach ($sectors as $sectors) {
-                $last_sector_id = $sectors->id;
-            }
 
-            $sector = sector::find($last_sector_id);
-            // $sector = new sector();
 
-            $sector['article_id'] = $request->article_id;
-            $sector['name'] = $request->name;
-            $sector['text'] = $request->text;
-            $sector['all_day_in_shade'] = $request->all_day_in_shade;
-            $sector['all_day_in_sun'] = $request->all_day_in_sun;
-            $sector['in_the_shade_afternoon'] = $request->in_the_shade_afternoon;
-            $sector['in_the_shade_befornoon'] = $request->in_the_shade_befornoon;
-            $sector['in_shade_after_10'] = $request->in_shade_after_10;
-            $sector['in_shade_after_15'] = $request->in_shade_after_15;
-            $sector['slabby'] = $request->slabby;
-            $sector['vertical'] = $request->vertical;
-            $sector['overhang'] = $request->overhang;
 
-            $sector -> save();
+            // $sectors = sector::where("name","=","temporary_sector")->get();
+            // foreach ($sectors as $sectors) {
+            //     $last_sector_id = $sectors->id;
+            // }
+
+            // $sector = sector::find($last_sector_id);
+            // // $sector = new sector();
+
+            // $sector['article_id'] = $request->article_id;
+            // $sector['name'] = $request->name;
+            // $sector['text'] = $request->text;
+            // $sector['all_day_in_shade'] = $request->all_day_in_shade;
+            // $sector['all_day_in_sun'] = $request->all_day_in_sun;
+            // $sector['in_the_shade_afternoon'] = $request->in_the_shade_afternoon;
+            // $sector['in_the_shade_befornoon'] = $request->in_the_shade_befornoon;
+            // $sector['in_shade_after_10'] = $request->in_shade_after_10;
+            // $sector['in_shade_after_15'] = $request->in_shade_after_15;
+            // $sector['slabby'] = $request->slabby;
+            // $sector['vertical'] = $request->vertical;
+            // $sector['overhang'] = $request->overhang;
+
+            // $sector -> save();
     }
 
     /**
@@ -340,12 +371,17 @@ class SectorController extends Controller
         ]);
     }
 
-    private function sector_validate($request)
+    private function sector_validate($sector_data)
     {
-        $request->validate([
+        $validator = Validator::make($sector_data, [
             'name' => 'required|max:190',
-            'article_id' => 'required'
+            'article_id' => 'required',
         ]);
+        // dd($validator->messages());
+
+        if ($validator->fails()) {
+            return $validator->messages();
+        }
     }
 
     // public static function get_yds_grade($route)

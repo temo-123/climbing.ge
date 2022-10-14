@@ -79,6 +79,11 @@
             </div>
         </div>
         
+        <metaData 
+            :title = "'About limbing in Georgia'"
+            :description = "'Rock climbing, mountaineering and other outdoor actyvity in Georgia'"
+            :image = "'../../../../public/images./meta_images/outdoor.jpg'"
+        />
 
     </div>
 </template>
@@ -86,8 +91,10 @@
 <script>
     import servicesListComponent from '../../global_components/ServicesListComponent.vue'
     import messageComponent from '../../global_components/MessageComponent'
+    import metaData from '../items/MetaDataComponent'
     export default {
         components: {
+            metaData,
             messageComponent,
             servicesListComponent
         },

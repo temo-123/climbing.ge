@@ -107,6 +107,12 @@
                 </div>
             </stack-modal>
         </div>
+
+        <metaData 
+            :title = "'Outdoor climbing in Georgia'"
+            :description = "'Outdoor climbing in Georgia'"
+            :image = "'../../../../public/images/meta_images/outdoor.jpg'"
+        />
     </div>
 </template>
 
@@ -116,7 +122,7 @@
     import emptyPageComponent from '../../global_components/EmptyPageComponent'
     import sectorQuantyt from '../items/SectorsQuantytyComponent'
     import StackModal from '@innologica/vue-stackable-modal'  //https://innologica.github.io/vue-stackable-modal/#sample-css
-
+    import metaData from '../items/MetaDataComponent'
     import { ContentLoader } from 'vue-content-loader'
 
     export default {
@@ -140,7 +146,7 @@
             emptyPageComponent,
             sectorQuantyt,
             StackModal,
-
+            metaData,
             ContentLoader
         },
         mounted() {

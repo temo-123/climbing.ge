@@ -14,7 +14,7 @@
             
             <h3> {{this.$siteData.topo_description}} </h3>
 
-            <div style='margin-bottom:7%;'>
+            <div style='margin-bottom: 7%'>
                 <span v-html="this.$siteData.map"></span>
             </div>
         </div>
@@ -59,8 +59,8 @@
         <indexGalleryComponent />
         
         <metaData 
-            :title = "'teeest'"
-            :description = "'Rock climbing, mountaineering and other outdoor actyvity in georgia in Georgia'"
+            :title = "'Climbing in Georgia'"
+            :description = "'Rock climbing, mountaineering and other outdoor actyvity in Georgia'"
             :image = "'../../../../public/images./meta_images/outdoor.jpg'"
         />
     </div>  

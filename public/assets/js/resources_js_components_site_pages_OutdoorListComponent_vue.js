@@ -1,6 +1,116 @@
 "use strict";
 (self["webpackChunkclimbing_loc"] = self["webpackChunkclimbing_loc"] || []).push([["resources_js_components_site_pages_OutdoorListComponent_vue"],{
 
+/***/ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/site/items/MetaDataComponent.vue?vue&type=script&lang=js&":
+/*!***********************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/site/items/MetaDataComponent.vue?vue&type=script&lang=js& ***!
+  \***********************************************************************************************************************************************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+//
+//
+//
+//
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
+  props: ['title', 'description', 'image'],
+  data: function data() {
+    return {
+      locale: localStorage.getItem('lang'),
+      mix_site_url: "climbing.loc",
+      mix_app_ssh: "http://",
+      mix_site_name: "climbing.ge"
+    };
+  },
+  metaInfo: function metaInfo() {
+    return {
+      title: this.title + ' - ' + this.mix_site_url,
+      // title: 'test title',
+      htmlAttrs: {
+        lang: this.locale
+      },
+      link: [// { rel: 'stylesheet', href: '/css/index.css' },
+      {
+        rel: 'canonical',
+        href: '/'
+      }],
+      meta: [{
+        name: 'viewport',
+        content: 'width=device-width, initial-scale=1'
+      }, {
+        charset: 'utf-8'
+      }, {
+        name: 'description',
+        content: this.description
+      }, {
+        title: 'Default App Title',
+        titleTemplate: '%s | ' + this.title + ' - ' + this.mix_site_url
+      }, {
+        canonical: 'Default App Title',
+        content: '%s | ' + this.title + ' - ' + this.mix_site_url
+      }, // https://www.digitalocean.com/community/tutorials/vuejs-vue-seo-tips
+      // OpenGraph data (Most widely used)
+      {
+        property: 'og:title',
+        content: this.title + ' - ' + this.mix_site_url
+      }, {
+        property: 'og:site_name',
+        content: this.mix_site_name
+      }, // The list of types is available here: http://ogp.me/#types
+      {
+        property: 'og:type',
+        content: 'website'
+      }, // Should the the same as your canonical link, see below.
+      {
+        property: 'og:url',
+        content: this.mix_app_ssh + this.mix_site_url
+      }, {
+        property: 'og:image',
+        content: this.image
+      }, // Often the same as your meta description, but not always.
+      {
+        property: 'og:description',
+        content: this.description
+      }, // Twitter card
+      {
+        name: 'twitter:card',
+        content: 'summary'
+      }, {
+        name: 'twitter:site',
+        content: this.mix_app_ssh + this.mix_site_url
+      }, {
+        name: 'twitter:title',
+        content: this.title + ' - ' + this.mix_site_url
+      }, {
+        name: 'twitter:description',
+        content: this.description
+      }, // Your twitter handle, if you have one.
+      {
+        name: 'twitter:creator',
+        content: '@alligatorio'
+      }, {
+        name: 'twitter:image:src',
+        content: this.image
+      }, // Google / Schema.org markup:
+      {
+        itemprop: 'name',
+        content: this.title + ' - ' + this.mix_site_url
+      }, {
+        itemprop: 'description',
+        content: this.description
+      }, {
+        itemprop: 'image',
+        content: this.image
+      }]
+    };
+  }
+});
+
+/***/ }),
+
 /***/ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/site/items/SectorsQuantytyComponent.vue?vue&type=script&lang=js&":
 /*!******************************************************************************************************************************************************************************************************************************************!*\
   !*** ./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/site/items/SectorsQuantytyComponent.vue?vue&type=script&lang=js& ***!
@@ -155,7 +265,14 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _items_SectorsQuantytyComponent__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../items/SectorsQuantytyComponent */ "./resources/js/components/site/items/SectorsQuantytyComponent.vue");
 /* harmony import */ var _innologica_vue_stackable_modal__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @innologica/vue-stackable-modal */ "./node_modules/@innologica/vue-stackable-modal/dist/vue-stackable-modal.umd.min.js");
 /* harmony import */ var _innologica_vue_stackable_modal__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(_innologica_vue_stackable_modal__WEBPACK_IMPORTED_MODULE_3__);
-/* harmony import */ var vue_content_loader__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! vue-content-loader */ "./node_modules/vue-content-loader/dist/vue-content-loader.es.js");
+/* harmony import */ var _items_MetaDataComponent__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../items/MetaDataComponent */ "./resources/js/components/site/items/MetaDataComponent.vue");
+/* harmony import */ var vue_content_loader__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! vue-content-loader */ "./node_modules/vue-content-loader/dist/vue-content-loader.es.js");
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -275,6 +392,7 @@ __webpack_require__.r(__webpack_exports__);
  //https://innologica.github.io/vue-stackable-modal/#sample-css
 
 
+
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
     return {
@@ -294,7 +412,8 @@ __webpack_require__.r(__webpack_exports__);
     emptyPageComponent: _global_components_EmptyPageComponent__WEBPACK_IMPORTED_MODULE_1__["default"],
     sectorQuantyt: _items_SectorsQuantytyComponent__WEBPACK_IMPORTED_MODULE_2__["default"],
     StackModal: (_innologica_vue_stackable_modal__WEBPACK_IMPORTED_MODULE_3___default()),
-    ContentLoader: vue_content_loader__WEBPACK_IMPORTED_MODULE_4__.ContentLoader
+    metaData: _items_MetaDataComponent__WEBPACK_IMPORTED_MODULE_4__["default"],
+    ContentLoader: vue_content_loader__WEBPACK_IMPORTED_MODULE_5__.ContentLoader
   },
   mounted: function mounted() {
     this.get_outdoor_articles();
@@ -439,6 +558,44 @@ var update = _node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js
 
 /***/ }),
 
+/***/ "./resources/js/components/site/items/MetaDataComponent.vue":
+/*!******************************************************************!*\
+  !*** ./resources/js/components/site/items/MetaDataComponent.vue ***!
+  \******************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _MetaDataComponent_vue_vue_type_template_id_765add42___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./MetaDataComponent.vue?vue&type=template&id=765add42& */ "./resources/js/components/site/items/MetaDataComponent.vue?vue&type=template&id=765add42&");
+/* harmony import */ var _MetaDataComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./MetaDataComponent.vue?vue&type=script&lang=js& */ "./resources/js/components/site/items/MetaDataComponent.vue?vue&type=script&lang=js&");
+/* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! !../../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+/* normalize component */
+;
+var component = (0,_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+  _MetaDataComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _MetaDataComponent_vue_vue_type_template_id_765add42___WEBPACK_IMPORTED_MODULE_0__.render,
+  _MetaDataComponent_vue_vue_type_template_id_765add42___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns,
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/components/site/items/MetaDataComponent.vue"
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (component.exports);
+
+/***/ }),
+
 /***/ "./resources/js/components/site/items/SectorsQuantytyComponent.vue":
 /*!*************************************************************************!*\
   !*** ./resources/js/components/site/items/SectorsQuantytyComponent.vue ***!
@@ -555,6 +712,21 @@ component.options.__file = "resources/js/components/site/pages/OutdoorListCompon
 
 /***/ }),
 
+/***/ "./resources/js/components/site/items/MetaDataComponent.vue?vue&type=script&lang=js&":
+/*!*******************************************************************************************!*\
+  !*** ./resources/js/components/site/items/MetaDataComponent.vue?vue&type=script&lang=js& ***!
+  \*******************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_0_rules_0_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_MetaDataComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!../../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./MetaDataComponent.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/site/items/MetaDataComponent.vue?vue&type=script&lang=js&");
+ /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (_node_modules_babel_loader_lib_index_js_clonedRuleSet_5_0_rules_0_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_MetaDataComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
 /***/ "./resources/js/components/site/items/SectorsQuantytyComponent.vue?vue&type=script&lang=js&":
 /*!**************************************************************************************************!*\
   !*** ./resources/js/components/site/items/SectorsQuantytyComponent.vue?vue&type=script&lang=js& ***!
@@ -612,6 +784,22 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
+/***/ "./resources/js/components/site/items/MetaDataComponent.vue?vue&type=template&id=765add42&":
+/*!*************************************************************************************************!*\
+  !*** ./resources/js/components/site/items/MetaDataComponent.vue?vue&type=template&id=765add42& ***!
+  \*************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "render": () => (/* reexport safe */ _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_MetaDataComponent_vue_vue_type_template_id_765add42___WEBPACK_IMPORTED_MODULE_0__.render),
+/* harmony export */   "staticRenderFns": () => (/* reexport safe */ _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_MetaDataComponent_vue_vue_type_template_id_765add42___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns)
+/* harmony export */ });
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_MetaDataComponent_vue_vue_type_template_id_765add42___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./MetaDataComponent.vue?vue&type=template&id=765add42& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/site/items/MetaDataComponent.vue?vue&type=template&id=765add42&");
+
+
+/***/ }),
+
 /***/ "./resources/js/components/site/items/SectorsQuantytyComponent.vue?vue&type=template&id=1ace21b1&":
 /*!********************************************************************************************************!*\
   !*** ./resources/js/components/site/items/SectorsQuantytyComponent.vue?vue&type=template&id=1ace21b1& ***!
@@ -656,6 +844,30 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "staticRenderFns": () => (/* reexport safe */ _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_OutdoorListComponent_vue_vue_type_template_id_663b643b_scoped_true___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns)
 /* harmony export */ });
 /* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_OutdoorListComponent_vue_vue_type_template_id_663b643b_scoped_true___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./OutdoorListComponent.vue?vue&type=template&id=663b643b&scoped=true& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/site/pages/OutdoorListComponent.vue?vue&type=template&id=663b643b&scoped=true&");
+
+
+/***/ }),
+
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/site/items/MetaDataComponent.vue?vue&type=template&id=765add42&":
+/*!****************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/site/items/MetaDataComponent.vue?vue&type=template&id=765add42& ***!
+  \****************************************************************************************************************************************************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "render": () => (/* binding */ render),
+/* harmony export */   "staticRenderFns": () => (/* binding */ staticRenderFns)
+/* harmony export */ });
+var render = function () {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("div")
+}
+var staticRenderFns = []
+render._withStripped = true
+
 
 
 /***/ }),
@@ -870,266 +1082,285 @@ var render = function () {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", { staticClass: "h-recent-work" }, [
-    _c(
-      "div",
-      { staticClass: "container" },
-      [
-        _c("h1", { staticClass: "page_title index_h2" }, [
-          _vm._v(_vm._s(_vm.$t("title outdoor climbing"))),
-        ]),
-        _vm._v(" "),
-        _vm._m(0),
-        _vm._v(" "),
-        _c("h2", { staticStyle: { "text-align": "center" } }, [
-          _c("span", {
-            domProps: { innerHTML: _vm._s(this.$siteData.outdoor_description) },
-          }),
-        ]),
-        _vm._v(" "),
-        _c("sectorQuantyt"),
-        _vm._v(" "),
-        _vm.region_loading
-          ? _c(
-              "div",
-              [
-                _c(
-                  "content-loader",
-                  {
-                    attrs: {
-                      width: 100,
-                      height: 5,
-                      primaryColor: "#f3f3f3",
-                      secondaryColor: "#279fbbb0",
+  return _c(
+    "div",
+    { staticClass: "h-recent-work" },
+    [
+      _c(
+        "div",
+        { staticClass: "container" },
+        [
+          _c("h1", { staticClass: "page_title index_h2" }, [
+            _vm._v(_vm._s(_vm.$t("title outdoor climbing"))),
+          ]),
+          _vm._v(" "),
+          _vm._m(0),
+          _vm._v(" "),
+          _c("h2", { staticStyle: { "text-align": "center" } }, [
+            _c("span", {
+              domProps: {
+                innerHTML: _vm._s(this.$siteData.outdoor_description),
+              },
+            }),
+          ]),
+          _vm._v(" "),
+          _c("sectorQuantyt"),
+          _vm._v(" "),
+          _vm.region_loading
+            ? _c(
+                "div",
+                [
+                  _c(
+                    "content-loader",
+                    {
+                      attrs: {
+                        width: 100,
+                        height: 5,
+                        primaryColor: "#f3f3f3",
+                        secondaryColor: "#279fbbb0",
+                      },
                     },
+                    [
+                      _c("rect", {
+                        attrs: {
+                          x: "0",
+                          y: "0",
+                          rx: "2",
+                          ry: "2",
+                          width: "100%",
+                          height: "3",
+                        },
+                      }),
+                    ]
+                  ),
+                ],
+                1
+              )
+            : _c("div", [
+                this.regions.length > 0
+                  ? _c("div", { staticClass: "row" }, [
+                      _c(
+                        "div",
+                        { staticClass: "container articles_filter_bar" },
+                        [
+                          _c("div", { staticClass: "col-md-6 col-sm-6" }, [
+                            _vm._v(
+                              "\n                        Select region and filtred spots by region\n                    "
+                            ),
+                          ]),
+                          _vm._v(" "),
+                          this.regions.length > 0
+                            ? _c("div", { staticClass: "col-md-6 col-sm-6" }, [
+                                _c(
+                                  "select",
+                                  {
+                                    directives: [
+                                      {
+                                        name: "model",
+                                        rawName: "v-model",
+                                        value: _vm.filter_spot,
+                                        expression: "filter_spot",
+                                      },
+                                    ],
+                                    staticClass: "form-control",
+                                    on: {
+                                      click: function ($event) {
+                                        return _vm.get_outdoor_articles()
+                                      },
+                                      change: function ($event) {
+                                        var $$selectedVal =
+                                          Array.prototype.filter
+                                            .call(
+                                              $event.target.options,
+                                              function (o) {
+                                                return o.selected
+                                              }
+                                            )
+                                            .map(function (o) {
+                                              var val =
+                                                "_value" in o
+                                                  ? o._value
+                                                  : o.value
+                                              return val
+                                            })
+                                        _vm.filter_spot = $event.target.multiple
+                                          ? $$selectedVal
+                                          : $$selectedVal[0]
+                                      },
+                                    },
+                                  },
+                                  [
+                                    _c("option", [_vm._v("All")]),
+                                    _vm._v(" "),
+                                    _vm._l(_vm.regions, function (region) {
+                                      return _c(
+                                        "option",
+                                        {
+                                          key: region.id,
+                                          domProps: { value: region.id },
+                                        },
+                                        [_vm._v(_vm._s(region.name))]
+                                      )
+                                    }),
+                                  ],
+                                  2
+                                ),
+                              ])
+                            : _vm._e(),
+                        ]
+                      ),
+                    ])
+                  : _vm._e(),
+              ]),
+          _vm._v(" "),
+          _vm.filter_spot != "All"
+            ? _c("div", { staticClass: "row articles_filter_bar" }, [
+                _c(
+                  "div",
+                  {
+                    staticClass: "col-md-12",
+                    staticStyle: { "text-align": "center" },
                   },
                   [
-                    _c("rect", {
-                      attrs: {
-                        x: "0",
-                        y: "0",
-                        rx: "2",
-                        ry: "2",
-                        width: "100%",
-                        height: "3",
+                    _c("h4", [_vm._v(_vm._s(_vm.selected_region_data.name))]),
+                    _vm._v(" "),
+                    _c("span", {
+                      domProps: {
+                        innerHTML: _vm._s(_vm.selected_region_data.text),
                       },
                     }),
                   ]
                 ),
-              ],
-              1
-            )
-          : _c("div", [
-              this.regions.length > 0
-                ? _c("div", { staticClass: "row" }, [
-                    _c(
+                _vm._v(" "),
+                _vm.selected_region_data.map != null
+                  ? _c(
                       "div",
-                      { staticClass: "container articles_filter_bar" },
+                      {
+                        staticClass: "col-md-12",
+                        staticStyle: { "text-align": "center" },
+                      },
                       [
-                        _c("div", { staticClass: "col-md-6 col-sm-6" }, [
-                          _vm._v(
-                            "\n                        Select region and filtred spots by region\n                    "
-                          ),
-                        ]),
-                        _vm._v(" "),
-                        this.regions.length > 0
-                          ? _c("div", { staticClass: "col-md-6 col-sm-6" }, [
-                              _c(
-                                "select",
-                                {
-                                  directives: [
-                                    {
-                                      name: "model",
-                                      rawName: "v-model",
-                                      value: _vm.filter_spot,
-                                      expression: "filter_spot",
-                                    },
-                                  ],
-                                  staticClass: "form-control",
-                                  on: {
-                                    click: function ($event) {
-                                      return _vm.get_outdoor_articles()
-                                    },
-                                    change: function ($event) {
-                                      var $$selectedVal = Array.prototype.filter
-                                        .call(
-                                          $event.target.options,
-                                          function (o) {
-                                            return o.selected
-                                          }
-                                        )
-                                        .map(function (o) {
-                                          var val =
-                                            "_value" in o ? o._value : o.value
-                                          return val
-                                        })
-                                      _vm.filter_spot = $event.target.multiple
-                                        ? $$selectedVal
-                                        : $$selectedVal[0]
-                                    },
-                                  },
-                                },
-                                [
-                                  _c("option", [_vm._v("All")]),
-                                  _vm._v(" "),
-                                  _vm._l(_vm.regions, function (region) {
-                                    return _c(
-                                      "option",
-                                      {
-                                        key: region.id,
-                                        domProps: { value: region.id },
-                                      },
-                                      [_vm._v(_vm._s(region.name))]
-                                    )
-                                  }),
-                                ],
-                                2
-                              ),
-                            ])
-                          : _vm._e(),
-                      ]
-                    ),
-                  ])
-                : _vm._e(),
-            ]),
-        _vm._v(" "),
-        _vm.filter_spot != "All"
-          ? _c("div", { staticClass: "row articles_filter_bar" }, [
-              _c(
-                "div",
-                {
-                  staticClass: "col-md-12",
-                  staticStyle: { "text-align": "center" },
-                },
-                [
-                  _c("h4", [_vm._v(_vm._s(_vm.selected_region_data.name))]),
-                  _vm._v(" "),
-                  _c("span", {
-                    domProps: {
-                      innerHTML: _vm._s(_vm.selected_region_data.text),
-                    },
-                  }),
-                ]
-              ),
-              _vm._v(" "),
-              _vm.selected_region_data.map != null
-                ? _c(
-                    "div",
-                    {
-                      staticClass: "col-md-12",
-                      staticStyle: { "text-align": "center" },
-                    },
-                    [
-                      _c(
-                        "button",
-                        {
-                          staticClass: "btn btn-default btn-send main-btn",
-                          on: {
-                            click: function ($event) {
-                              return _vm.map_modal()
+                        _c(
+                          "button",
+                          {
+                            staticClass: "btn btn-default btn-send main-btn",
+                            on: {
+                              click: function ($event) {
+                                return _vm.map_modal()
+                              },
                             },
                           },
-                        },
-                        [_vm._v("Show map")]
-                      ),
-                    ]
-                  )
-                : _vm._e(),
-            ])
-          : _vm._e(),
-        _vm._v(" "),
-        _c(
-          "section",
-          { staticClass: "portfolio", attrs: { id: "portfolio" } },
-          [
-            _c("div", { staticClass: "container-fluid" }, [
-              _c("div", { staticClass: "row" }, [
-                _c("div", { staticClass: "gallery_product filter " }, [
-                  _vm.oudoor_loading
-                    ? _c(
-                        "div",
-                        [
-                          _c("content-loader", {
-                            attrs: {
-                              viewBox: "0 0",
-                              primaryColor: "#f3f3f3",
-                              secondaryColor: "#279fbbb0",
-                            },
-                          }),
-                        ],
-                        1
-                      )
-                    : _c("div", [
-                        this.outdoors.length > 0
-                          ? _c(
-                              "div",
-                              _vm._l(_vm.outdoors, function (outdoor) {
-                                return _c("outdoorCard", {
-                                  key: outdoor.id,
-                                  attrs: {
-                                    image_dir: "images/outdoor_img/",
-                                    article: outdoor,
-                                  },
-                                })
-                              }),
-                              1
-                            )
-                          : _c("div", [_c("emptyPageComponent")], 1),
-                      ]),
-                ]),
-              ]),
-            ]),
-          ]
-        ),
-        _vm._v(" "),
-        _c(
-          "stack-modal",
-          {
-            attrs: {
-              show: _vm.show_map_modal,
-              title: _vm.selected_region_data.name + "map",
-              "modal-class": ((_obj = {}), (_obj[_vm.modalClass] = true), _obj),
-              saveButton: {
-                visible: true,
-                title: "Save",
-                btnClass: { "btn btn-primary": true },
-              },
-              cancelButton: {
-                visible: false,
-                title: "Close",
-                btnClass: { "btn btn-danger": true },
-              },
-            },
-            on: {
-              close: function ($event) {
-                _vm.show_map_modal = false
-              },
-            },
-          },
-          [
-            _c("div", { staticClass: "model-body" }, [
-              _c("div", { staticClass: "container" }, [
+                          [_vm._v("Show map")]
+                        ),
+                      ]
+                    )
+                  : _vm._e(),
+              ])
+            : _vm._e(),
+          _vm._v(" "),
+          _c(
+            "section",
+            { staticClass: "portfolio", attrs: { id: "portfolio" } },
+            [
+              _c("div", { staticClass: "container-fluid" }, [
                 _c("div", { staticClass: "row" }, [
-                  _c("span", {
-                    domProps: {
-                      innerHTML: _vm._s(_vm.selected_region_data.map),
-                    },
-                  }),
+                  _c("div", { staticClass: "gallery_product filter " }, [
+                    _vm.oudoor_loading
+                      ? _c(
+                          "div",
+                          [
+                            _c("content-loader", {
+                              attrs: {
+                                viewBox: "0 0",
+                                primaryColor: "#f3f3f3",
+                                secondaryColor: "#279fbbb0",
+                              },
+                            }),
+                          ],
+                          1
+                        )
+                      : _c("div", [
+                          this.outdoors.length > 0
+                            ? _c(
+                                "div",
+                                _vm._l(_vm.outdoors, function (outdoor) {
+                                  return _c("outdoorCard", {
+                                    key: outdoor.id,
+                                    attrs: {
+                                      image_dir: "images/outdoor_img/",
+                                      article: outdoor,
+                                    },
+                                  })
+                                }),
+                                1
+                              )
+                            : _c("div", [_c("emptyPageComponent")], 1),
+                        ]),
+                  ]),
                 ]),
               ]),
-            ]),
-            _vm._v(" "),
-            _c(
-              "div",
-              { attrs: { slot: "modal-footer" }, slot: "modal-footer" },
-              [_c("div", { staticClass: "modal-footer" })]
-            ),
-          ]
-        ),
-      ],
-      1
-    ),
-  ])
+            ]
+          ),
+          _vm._v(" "),
+          _c(
+            "stack-modal",
+            {
+              attrs: {
+                show: _vm.show_map_modal,
+                title: _vm.selected_region_data.name + "map",
+                "modal-class":
+                  ((_obj = {}), (_obj[_vm.modalClass] = true), _obj),
+                saveButton: {
+                  visible: true,
+                  title: "Save",
+                  btnClass: { "btn btn-primary": true },
+                },
+                cancelButton: {
+                  visible: false,
+                  title: "Close",
+                  btnClass: { "btn btn-danger": true },
+                },
+              },
+              on: {
+                close: function ($event) {
+                  _vm.show_map_modal = false
+                },
+              },
+            },
+            [
+              _c("div", { staticClass: "model-body" }, [
+                _c("div", { staticClass: "container" }, [
+                  _c("div", { staticClass: "row" }, [
+                    _c("span", {
+                      domProps: {
+                        innerHTML: _vm._s(_vm.selected_region_data.map),
+                      },
+                    }),
+                  ]),
+                ]),
+              ]),
+              _vm._v(" "),
+              _c(
+                "div",
+                { attrs: { slot: "modal-footer" }, slot: "modal-footer" },
+                [_c("div", { staticClass: "modal-footer" })]
+              ),
+            ]
+          ),
+        ],
+        1
+      ),
+      _vm._v(" "),
+      _c("metaData", {
+        attrs: {
+          title: "Outdoor climbing in Georgia",
+          description: "Outdoor climbing in Georgia",
+          image: "../../../../public/images/meta_images/outdoor.jpg",
+        },
+      }),
+    ],
+    1
+  )
 }
 var staticRenderFns = [
   function () {

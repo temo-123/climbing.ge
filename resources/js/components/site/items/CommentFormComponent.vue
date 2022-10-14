@@ -114,16 +114,18 @@
                             <div class="row">
                                 <hr>
                                 <div class="col-md-2">
-                                    <img :src="'/public/images/user_img/user_demo_img/user_demo_img.gif'" />
+                                    <img :src="'/public/images/site_img/user_demo_img.gif'" />
                                 </div>
                                 <div class="col-md-10">
-                                    <h4><strong>{{comment.name}} {{comment.surname}}</strong> [ {{comment.email}} ]</h4>
+                                    <h4><strong>{{comment.name}} {{comment.surname}}</strong> <!-- [ {{comment.email}} ] --> </h4>
                                     <div class="row">
                                         <p>{{comment.text}}</p>
                                     </div>
-                                    <button @click="del_comment(comment.id)" v-if="comment.user_id == user.user_id" onclick="return confirm('Are you sure? Do you want to delete this comment?')" class="btn btn-danger pull-right">
-                                        del
-                                    </button>
+                                    <div v-if="user.length != []">
+                                        <button @click="del_comment(comment.id)" v-if="comment.user_id == user.id" onclick="return confirm('Are you sure? Do you want to delete this comment?')" class="btn btn-danger pull-right">
+                                            del
+                                        </button>
+                                    </div>
                                 </div>
                             </div>
                         </li>
@@ -161,13 +163,14 @@
 
                 errors: [],
                 user: [],
+                user_id: 0,
 
                 MIX_GOOGLE_CAPTCHA_SITE_KEY: process.env.MIX_GOOGLE_CAPTCHA_SITE_KEY,
             }
         },
         mounted() {
             this.update()
-            // this.get_user_info()
+            this.get_user_info()
         },
         methods: {
             onCaptchaVerified() {
@@ -228,20 +231,14 @@
                 // .finally(() => this.loading = false)
             },
 
-            // get_user_info() {
-            //     axios
-            //     .get('../api/comment/')
-            //     .then(response => {
-            //         this.user = response.data
-
-            //         if(this.user.user_status == 'user'){
-            //             this.name = this.user.user_name
-            //             this.surname = this.user.surname
-            //             this.email = this.user.email
-            //         }
-            //     })
-            //     .catch()
-            // },
+            get_user_info() {
+                axios
+                .get('../api/auth_user/')
+                .then(response => {
+                    this.user = response.data
+                })
+                .catch()
+            },
 
             del_comment(id) {
                 axios
