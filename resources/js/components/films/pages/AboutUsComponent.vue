@@ -18,22 +18,29 @@
         
         <messageComponent />
 
+        <metaData 
+            :title = "'Climbing films'"
+            :description = "'Rock climbing, mountaineering and other outdoor actyvity films'"
+            :image = "'../../../../public/images/meta_img/films.jpg'"
+        />
     </div>
 </template>
 
 <script>
     import servicesListComponent from '../../global_components/ServicesListComponent.vue'
     import messageComponent from '../../global_components/MessageComponent.vue'
+    import metaData from '../items/MetaDataComponent'
     export default {
+        components: {
+            metaData,
+            messageComponent,
+            servicesListComponent,
+        },
         data: function () {
             return {
                 cart_products: [],
                 site_data: [],
             };
-        },
-        components: {
-            messageComponent,
-            servicesListComponent,
         },
         mounted() {
         },

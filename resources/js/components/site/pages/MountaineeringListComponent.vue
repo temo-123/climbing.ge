@@ -62,7 +62,7 @@
         <metaData 
             :title = "'Mountaineering in Georgia'"
             :description = "'Mountaineering climbing routes and mount masiv in Georgia'"
-            :image = "'../../../../public/images/meta_images/mount.jpg'"
+            :image = "'../../../../public/images/meta_img/mount.jpg'"
         />
     </div>
 </template>

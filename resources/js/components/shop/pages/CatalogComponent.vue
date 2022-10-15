@@ -160,7 +160,12 @@
                 </div>
             </div>
         </stack-modal>
-
+        
+        <metaData 
+            :title = "'Climbing shop'"
+            :description = "'Climbing products. All products made in Georgia.'"
+            :image = "'../../../../public/images/meta_img/shop.jpg'"
+        />
     </div>
 </template>
 
@@ -175,8 +180,10 @@
 
     import lingallery from 'lingallery'; // https://github.com/ChristophAnastasiades/Lingallery
 
+    import metaData from '../items/MetaDataComponent'
     export default {
         components: {
+            metaData,
             lingallery,
             StackModal,
             SlickItem,

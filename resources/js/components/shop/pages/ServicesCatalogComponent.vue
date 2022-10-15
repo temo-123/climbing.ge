@@ -23,6 +23,12 @@
             </ServiceItem>
         </div>
 
+
+        <metaData 
+            :title = "'Services'"
+            :description = "'Service climbing & mountaineering.'"
+            :image = "'../../../../public/images/meta_img/services.jpg'"
+        />
     </div>
 </template>
 
@@ -30,17 +36,19 @@
     import ServiceItem from '../items/ServiceItemComponent'
     import { ContentLoader } from 'vue-content-loader'
 
+    import metaData from '../items/MetaDataComponent'
     export default {
+        components: {
+            metaData,
+            ServiceItem,
+            ContentLoader
+        },
         data: function () {
             return {
                 services: [],
                 site_data: [],
                 services_loading: true,
             };
-        },
-        components: {
-            ServiceItem,
-            ContentLoader
         },
         mounted() {
             this.get_services()

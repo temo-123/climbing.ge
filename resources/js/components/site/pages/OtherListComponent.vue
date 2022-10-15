@@ -37,7 +37,7 @@
         <metaData 
             :title = "'Other outdoor activity in Georgia'"
             :description = "'Other outdoor activity in Georgia'"
-            :image = "'../../../../public/images/meta_images/other.jpg'"
+            :image = "'../../../../public/images/meta_img/other.jpg'"
         />
     </div>
 </template>

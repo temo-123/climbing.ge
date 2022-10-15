@@ -654,7 +654,7 @@ var render = function () {
         attrs: {
           title: "Ice climbing in Georgia",
           description: "Ice climbing spots in Georgia",
-          image: "../../../../public/images/meta_images/ice.jpg",
+          image: "../../../../public/images/meta_img/ice.jpg",
         },
       }),
     ],

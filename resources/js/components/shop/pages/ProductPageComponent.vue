@@ -108,6 +108,12 @@
                 </div>
             </div>
         </div>
+
+        <metaData 
+            :title = "product.local_product[0].title"
+            :description = "product.local_product[0].short_description"
+            :image = "'../../../../public/images/meta_img/shop.jpg'"
+        />
     </div>
 </template>
 
@@ -115,8 +121,10 @@
     import analogProduct from '../items/AnalogProductComponent.vue'
     import lingallery from 'lingallery'; // https://github.com/ChristophAnastasiades/Lingallery
     import VueMeta from 'vue-meta'
+    import metaData from '../items/MetaDataComponent'
     export default {
         components: {
+            metaData,
             lingallery,
             VueMeta,
             analogProduct

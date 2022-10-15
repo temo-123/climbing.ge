@@ -12,14 +12,21 @@
                 </div>
             </div>
         </div>
+
+        <metaData 
+            :title = "'Climbing films'"
+            :description = "'Rock climbing, mountaineering and other outdoor actyvity films'"
+            :image = "'../../../../public/images/meta_img/films.jpg'"
+        />
     </div>
 </template>
 
 <script>
     // import articleSerchingCard from '../items/cards/ArticleSerchingCardComponent'
+    import metaData from '../items/MetaDataComponent'
     export default {
         components: {
-            // articleSerchingCard,
+            metaData,
         },
         data: function () {
             return {

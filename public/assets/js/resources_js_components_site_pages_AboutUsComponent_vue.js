@@ -631,7 +631,7 @@ var render = function () {
           title: "About limbing in Georgia",
           description:
             "Rock climbing, mountaineering and other outdoor actyvity in Georgia",
-          image: "../../../../public/images./meta_images/outdoor.jpg",
+          image: "../../../../public/images/meta_img/outdoor.jpg",
         },
       }),
     ],

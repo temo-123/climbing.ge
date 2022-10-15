@@ -30,13 +30,21 @@
                 </div>
             </div>
         </div>
+
+        <metaData 
+            :title = "'Climbing shop'"
+            :description = "'Climbing products. All products made in Georgia.'"
+            :image = "'../../../../public/images/meta_img/shop.jpg'"
+        />
     </div>
 </template>
 
 <script>
     import catalogItem from '../items/CatalogItemComponent'
+    import metaData from '../items/MetaDataComponent'
     export default {
         components: {
+            metaData,
             catalogItem,
         },
         data: function () {

@@ -181,7 +181,7 @@
             <div v-else>
 
                 <!-- <div class="col-md-4 mb-5" > -->
-        <div class="row">
+            <div class="row">
                 <filmCard v-for="film in films" :key='film.global_film.id' :film='film' :col='"4"'/>
 
                 </div>
@@ -189,138 +189,146 @@
             </div>
         </div>
 
+        <metaData 
+            :title = "'Climbing films'"
+            :description = "'Rock climbing, mountaineering and other outdoor actyvity films'"
+            :image = "'../../../../public/images/meta_img/films.jpg'"
+        />
     </div>
 </template>
 
 <script>
 import { ContentLoader } from "vue-content-loader";
 import  filmCard  from "../items/card/filmsListCardComponent.vue";
-export default {
-    data: function () {
-        return {
-            films: [],
-            not_filtred_films: [],
-            films_loader: true,
-            most_liked_film_loader: true,
 
-            day_films: [],
-            week_films: [],
-            monse_films: [],
-            all_time_films: [],
-            most_liked_film: [],
-
-            films_categories: [],
-
-            best_film: 1,
-
-            filter_category: 'All',
-        };
-    },
-    components: {
-        ContentLoader,
-        filmCard
-    },
-    mounted() {
-        this.get_films();
-        this.get_films_categories();
-        this.get_most_liked_film()
-    },
-    methods: {
-        get_films() {
-            axios
-                // .get('../api/film/get_films/'+localStorage.getItem('lang'))
-                .get("../api/film/get_films/us")
-                .then((response) => {
-                    this.not_filtred_films = response.data;
-                    this.sort_film_by_category()
-                })
-                .catch((error) => {})
-                .finally(() => (this.films_loader = false));
+import metaData from '../items/MetaDataComponent'
+    export default {
+        components: {
+            metaData,
+            ContentLoader,
+            filmCard
         },
-        get_films_categories() {
-            axios
-                .get("../api/film/get_films_categories/us")
-                .then((response) => {
-                    this.films_categories = response.data;
-                })
-                .catch((error) => {})
+        data: function () {
+            return {
+                films: [],
+                not_filtred_films: [],
+                films_loader: true,
+                most_liked_film_loader: true,
+
+                day_films: [],
+                week_films: [],
+                monse_films: [],
+                all_time_films: [],
+                most_liked_film: [],
+
+                films_categories: [],
+
+                best_film: 1,
+
+                filter_category: 'All',
+            };
         },
+        mounted() {
+            this.get_films();
+            this.get_films_categories();
+            this.get_most_liked_film()
+        },
+        methods: {
+            get_films() {
+                axios
+                    // .get('../api/film/get_films/'+localStorage.getItem('lang'))
+                    .get("../api/film/get_films/us")
+                    .then((response) => {
+                        this.not_filtred_films = response.data;
+                        this.sort_film_by_category()
+                    })
+                    .catch((error) => {})
+                    .finally(() => (this.films_loader = false));
+            },
+            get_films_categories() {
+                axios
+                    .get("../api/film/get_films_categories/us")
+                    .then((response) => {
+                        this.films_categories = response.data;
+                    })
+                    .catch((error) => {})
+            },
 
-        sort_film_by_category(){
-            let vm = this;
+            sort_film_by_category(){
+                let vm = this;
 
-            if (vm.filter_category == 'All') {
-                this.films = this.not_filtred_films
+                if (vm.filter_category == 'All') {
+                    this.films = this.not_filtred_films
+                }
+                else{
+                    this.films = this.not_filtred_films.filter(function (item){
+                        return item.global_film.category_id == vm.filter_category
+                    })
+                }
+            },
+
+            previes_film(){
+                if(this.best_film > 1){
+                    this.best_film --
+                }
+            },
+            next_film(){
+                if(this.best_film < 5){
+                    this.best_film ++
+                }
+            },
+
+            // get_best_films_for_day(){
+            //     axios
+            //         // .get('../api/film/get_films/'+localStorage.getItem('lang'))
+            //         .get("../api/film/get_films/us")
+            //         .then((response) => {
+            //             this.day_films = response.data;
+            //         })
+            //         .catch((error) => {})
+            //         .finally(() => (this.films_loading = false));
+            // },
+            // get_best_films_for_week(){
+            //     axios
+            //         // .get('../api/film/get_films/'+localStorage.getItem('lang'))
+            //         .get("../api/film/get_films/us")
+            //         .then((response) => {
+            //             this.week_films = response.data;
+            //         })
+            //         .catch((error) => {})
+            //         .finally(() => (this.films_loading = false));
+            // },
+            // get_best_films_for_manse(){
+            //     axios
+            //         // .get('../api/film/get_films/'+localStorage.getItem('lang'))
+            //         .get("../api/film/get_films/us")
+            //         .then((response) => {
+            //             this.monse_films = response.data;
+            //         })
+            //         .catch((error) => {})
+            //         .finally(() => (this.films_loading = false));
+            // },
+            // get_best_films_for_all_time(){
+            //     axios
+            //         // .get('../api/film/get_films/'+localStorage.getItem('lang'))
+            //         .get("../api/film/get_films/us")
+            //         .then((response) => {
+            //             this.all_time_films = response.data;
+            //         })
+            //         .catch((error) => {})
+            //         .finally(() => (this.films_loading = false));
+            // },
+            get_most_liked_film(){
+                axios
+                    .get("../api/film/top_films/get_most_liked_films/us")
+                    .then((response) => {
+                        this.most_liked_film = response.data[0];
+                    })
+                    .catch((error) => {})
+                    .finally(() => (this.most_liked_film_loader = false));
             }
-            else{
-                this.films = this.not_filtred_films.filter(function (item){
-                    return item.global_film.category_id == vm.filter_category
-                })
-            }
         },
-
-        previes_film(){
-            if(this.best_film > 1){
-                this.best_film --
-            }
-        },
-        next_film(){
-            if(this.best_film < 5){
-                this.best_film ++
-            }
-        },
-
-        // get_best_films_for_day(){
-        //     axios
-        //         // .get('../api/film/get_films/'+localStorage.getItem('lang'))
-        //         .get("../api/film/get_films/us")
-        //         .then((response) => {
-        //             this.day_films = response.data;
-        //         })
-        //         .catch((error) => {})
-        //         .finally(() => (this.films_loading = false));
-        // },
-        // get_best_films_for_week(){
-        //     axios
-        //         // .get('../api/film/get_films/'+localStorage.getItem('lang'))
-        //         .get("../api/film/get_films/us")
-        //         .then((response) => {
-        //             this.week_films = response.data;
-        //         })
-        //         .catch((error) => {})
-        //         .finally(() => (this.films_loading = false));
-        // },
-        // get_best_films_for_manse(){
-        //     axios
-        //         // .get('../api/film/get_films/'+localStorage.getItem('lang'))
-        //         .get("../api/film/get_films/us")
-        //         .then((response) => {
-        //             this.monse_films = response.data;
-        //         })
-        //         .catch((error) => {})
-        //         .finally(() => (this.films_loading = false));
-        // },
-        // get_best_films_for_all_time(){
-        //     axios
-        //         // .get('../api/film/get_films/'+localStorage.getItem('lang'))
-        //         .get("../api/film/get_films/us")
-        //         .then((response) => {
-        //             this.all_time_films = response.data;
-        //         })
-        //         .catch((error) => {})
-        //         .finally(() => (this.films_loading = false));
-        // },
-        get_most_liked_film(){
-            axios
-                .get("../api/film/top_films/get_most_liked_films/us")
-                .then((response) => {
-                    this.most_liked_film = response.data[0];
-                })
-                .catch((error) => {})
-                .finally(() => (this.most_liked_film_loader = false));
-        }
-    },
-};
+    };
 </script>
 
 <style>

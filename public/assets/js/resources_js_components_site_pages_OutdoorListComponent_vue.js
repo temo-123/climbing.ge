@@ -1355,7 +1355,7 @@ var render = function () {
         attrs: {
           title: "Outdoor climbing in Georgia",
           description: "Outdoor climbing in Georgia",
-          image: "../../../../public/images/meta_images/outdoor.jpg",
+          image: "../../../../public/images/meta_img/outdoor.jpg",
         },
       }),
     ],

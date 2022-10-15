@@ -18,13 +18,22 @@
             </ServiceItem>
         </div>
 
+        <metaData 
+            :title = "setvice.local_service.title"
+            :description = "setvice.local_service.short_description"
+            :image = "'../../images/service_img/'+setvice.service_images[0].image"
+        />
     </div>
 </template>
 
 <script>
-
     import ServiceItem from '../items/ServiceItemComponent'
+    import metaData from '../items/MetaDataComponent'
     export default {
+        components: {
+            metaData,
+            ServiceItem,
+        },
         props:[
             'data'
         ],
@@ -33,9 +42,6 @@
                 services: [],
                 setvice: [],
             };
-        },
-        components: {
-            ServiceItem,
         },
         watch: {
             '$route' (to, from) {

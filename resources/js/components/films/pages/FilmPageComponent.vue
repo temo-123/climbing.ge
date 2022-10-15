@@ -66,13 +66,25 @@
         <div class="row text-center">
             <li><router-link :to="{name: 'studia'}" exact> All films</router-link></li>
         </div>
+
+        <metaData 
+            :title = "film.local_film.name"
+            :description = "film.local_film.text"
+            :image = "'../../../public/images/film_img/' + film.global_film.image"
+        />
     </div>
 </template>
 
 <script>
     import { ContentLoader } from "vue-content-loader";
     import  filmCard  from "../items/card/filmsListCardComponent.vue";
+    import metaData from '../items/MetaDataComponent'
     export default {
+        components: {
+            metaData,
+            ContentLoader,
+            filmCard
+        },
         data: function () {
             return {
                 masiv_desc: false,
@@ -83,10 +95,6 @@
         },
         mounted() {
             this.get_film();
-        },
-        components: {
-            ContentLoader,
-            filmCard
         },
         methods: {
             get_same_films(category_id, id) {
@@ -119,8 +127,6 @@
                     })
                     .catch((error) => {})
             }
-
-            
         }
     }
 </script>
