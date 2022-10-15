@@ -1,27 +1,30 @@
 <h1>Down you can see used plagins sources links</h1>
 
-
 ## Vue.js
 
-For foront use Vue.js(2) laravel templite
-    https://vuejs.org/
-    https://therichpost.com/vue-laravel-image-upload/ - image uploading in vue
-    https://github.com/Innologica/vue-stackable-modal - Vue mobal
-    https://github.com/Jexordexan/vue-slicksort -
-    https://github.com/P3trur0/vue-country-flag - vue-country-flag
-    https://github.com/devstark-com/vue-google-charts - vue-google-charts
-    https://www.vuescript.com/custom-watermarks/ - (vue-img-watermark) (text on image)
-    https://antonreshetov.github.io/vue-glide/install/ - (vue-glide-js)
-    npmjs.com/package/vue-ui-preloader - (vue-ui-preloader)
-    
-    vue-carousel-3d    -   https://wlada.github.io/vue-carousel-3d/?ref=madewithvuejs.com
+For foront use Vue.js(2) templite
+    <!-- vue-carousel-3d    -   https://wlada.github.io/vue-carousel-3d/?ref=madewithvuejs.com -->
 
-    content loader    -   https://www.npmjs.com/package/vue-content-loader/v/0.2.1 (https://codesandbox.io/s/vue-content-loader-igfyf?file=/src/App.vue:744-783)
-
+    vue.js documentation    -   https://vuejs.org/
+    image uploading in vue   -   https://therichpost.com/vue-laravel-image-upload/
+    Vue mobal    -   https://github.com/Innologica/vue-stackable-modal
+    Vue Slicksort   -   https://github.com/Jexordexan/vue-slicksort
+    vue-country-flag    -   https://github.com/P3trur0/vue-country-flag
+    vue-google-charts    -   https://github.com/devstark-com/vue-google-charts
+    vue-img-watermark (text on image)   -   https://www.vuescript.com/custom-watermarks/
+    vue-glide-js   -   https://antonreshetov.github.io/vue-glide/install/
+    vue-ui-preloader   -   npmjs.com/package/vue-ui-preloader
     vue QRCode generator  -   https://gera2ld.github.io/qrcanvas-vue/v2/#logo
-
     vue-gtag    -   https://www.npmjs.com/package/vue-gtag
                     https://www.google.com/search?q=vue-gtag+use+in++vue2&biw=1864&bih=948&sxsrf=ALiCzsaZa0Sr4PkcmWkDAD5mElNk-x0AyQ%3A1665749595764&ei=W1JJY-yTLpKExc8P84G_4Ao&ved=0ahUKEwisrcLn2N_6AhUSQvEDHfPAD6wQ4dUDCA4&uact=5&oq=vue-gtag+use+in++vue2&gs_lcp=Cgxnd3Mtd2l6LXNlcnAQAzIKCAAQRxDWBBCwAzIKCAAQRxDWBBCwAzIKCAAQRxDWBBCwAzIKCAAQRxDWBBCwAzIKCAAQRxDWBBCwAzIKCAAQRxDWBBCwAzIKCAAQRxDWBBCwAzIKCAAQRxDWBBCwAzINCAAQ5AIQ1gQQsAMYATINCAAQ5AIQ1gQQsAMYATINCAAQ5AIQ1gQQsAMYATINCAAQ5AIQ1gQQsAMYATINCAAQ5AIQ1gQQsAMYAUoECE0YAUoECEEYAEoECEYYAVDSBFjSBGDdBWgBcAF4AIABAIgBAJIBAJgBAKABAcgBDcABAdoBBggBEAEYCQ&sclient=gws-wiz-serp
+
+    vue-content-loader  -   https://www.npmjs.com/package/vue-content-loader/v/0.2.1 
+                            https://codesandbox.io/s/vue-content-loader-igfyf?file=/src/App.vue:744-783
+                            (use 0.2.1 version for vue 2. local block content loader)
+
+    vue-gtag    -   For vue 2 need use vue-gtag@1 (Instaling comand - npm add vue-gtag@1) 
+                    Guid for update from vue-gtag@1 to vue-gtag@2   -   https://matteo-gabriele.gitbook.io/vue-gtag/migration-v1-to-v2
+                    V1 documentation   -   https://matteo-gabriele.gitbook.io/vue-gtag/v/master/
 
 
 ## CkEditor4

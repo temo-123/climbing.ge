@@ -4,28 +4,20 @@ require("./bootstrap");
 /*
  *   Using pakets
  */
-import Carousel3d from "vue-carousel-3d";
+// import Carousel3d from "vue-carousel-3d";
 import CKEditor from "ckeditor4-vue";
 import Router from "vue-router";
 import VueMeta from "vue-meta"; // https://www.epiloge.com/how-to-add-dynamic-meta-tags-to-your-vuejs-app-for-google-seo-0fa058
 import VueExpandableImage from "vue-expandable-image";
 import Vuex from "vuex";
 import axios from "axios";
-// import VueAnalytics from "vue-analytics";
 import i18n from "./i18n";
 import VueSocialSharing from "vue-social-sharing";
 import plugin from "@serializedowen/vue-img-watermark";
 import VueGlide from "vue-glide-js";
 import "vue-glide-js/dist/vue-glide.css";
-// import VueGtag from "vue-gtag";
-// import loader from "vue-ui-preloader"; // https://vue-preloader.netlify.app/ (global loader after update pagfe)
-// import ContentLoader from 'vue-content-loader' //https://www.npmjs.com/package/vue-content-loader/v/0.2.1 (use 0.2.1 version for vue 2. local block content loader)
-import { ContentLoader } from "vue-content-loader";
-// import { BootstrapVue } from 'bootstrap-vue'
+import VueGtag from "vue-gtag";
 
-// Vue.use(BootstrapVue)
-Vue.use(ContentLoader);
-// Vue.use(loader);
 Vue.use(VueGlide);
 Vue.use(plugin);
 Vue.use(VueSocialSharing);
@@ -34,7 +26,7 @@ Vue.use(Vuex);
 Vue.use(axios);
 Vue.use(VueExpandableImage);
 Vue.use(VueMeta);
-Vue.use(Carousel3d);
+// Vue.use(Carousel3d);
 Vue.use(CKEditor);
 Vue.use(Router);
 
@@ -99,35 +91,31 @@ var analytic_id = "";
 if (window.location.hostname == process.env.MIX_SITE_URL) {
     homeComponent = Index;
     serviceRoutes = site_routes;
-    analytic_id = "G-B7KZEJ6CLW";
+    analytic_id = process.env.MIX_CLIMBING_GUIDBOOK_ANALITICS_ID;
 } else if (window.location.hostname == process.env.MIX_SHOP_URL) {
     homeComponent = MainWrapper;
     serviceRoutes = shop_routes;
+    analytic_id = process.env.MIX_SHOP_ANALITICS_ID;
 } else if (window.location.hostname == process.env.MIX_USER_PAGE_URL) {
     homeComponent = Home;
     serviceRoutes = user_routes;
+    analytic_id = process.env.MIX_USER_ANALITICS_ID;
 } else if (window.location.hostname == process.env.MIX_FILMS_URL) {
     homeComponent = Films;
     serviceRoutes = films_routes;
+    analytic_id = process.env.MIX_FILMS_ANALITICS_ID;
 } else if (window.location.hostname == process.env.MIX_FORUM_URL) {
     homeComponent = Forum;
     serviceRoutes = forum_routes;
+    analytic_id = "";
 } else {
     window.location.href = "/404";
 }
 
-// Vue.use(VueAnalytics, {
-//     id: "G-B7KZEJ6CLW",
-    // serviceRoutes,
-    // autoTracking: {
-    //   skipSamePath: true,
-    //   screenview: true
-    // }
-// });
+Vue.use(VueGtag, {
+    config: { id: analytic_id }
+});
 
-// Vue.use(VueGtag, {
-//   config: { id: "UA-1234567-1" }
-// });
 
 // Vue.runtimeCompiler = true;
 Vue.config.productionTip = false;
@@ -137,19 +125,15 @@ const app = new Vue({
     el: "#app",
     i18n,
     store,
+
     // option,
     components: {
         homeComponent,
-        // loader,
-        // ContentLoader
     },
     router: serviceRoutes,
 
-
     mounted() {
         this.get_site_data();
-        // i18n.messages.en
-        // console.log("🚀 ~ file: app.js ~ line 151 ~ mounted ~ i18n.messages.en", i18n.messages.en)
     },
     methods: {
         get_site_data() {
