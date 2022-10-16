@@ -7,8 +7,8 @@
                     </div> -->
                     <!-- <div class="i second" style="background-image: url('https://picsum.photos/64/64/?image=0')">
                     </div> -->
-                    <div class="i" :style="'background-image: url(../images/product_img/' + product.image + ')'">
-                    </div>
+                    <div v-if="product.image != null" :style="'background-image: url(../images/product_img/' + product.image + ')'"></div>
+                    <div v-else :style="'background-image: url(../../../public/images/site_img/shop_demo.jpg)'"></div>
                 </div>
                 <div class="text">
                     <strong>{{product.locale_article.title}}</strong>

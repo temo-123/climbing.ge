@@ -43,14 +43,20 @@ Route::group(['namespace'=>'Api'], function() {
     Route::post('/get_article_global_data/{leng}/{article_id}', 'ArticleController@get_article_global_data');
     Route::get('/get_articles_for_forum/{category}/{lang}', 'ArticleController@get_articles_for_forum');
     Route::get('/last_news/{lang}', 'ArticleController@get_last_news');
+
     Route::post('/articles/add_to_interested_events/', 'ArticleController@add_to_interested_events');
-    Route::post('/articles/add_to_favorite_outdoor_area/', 'ArticleController@add_to_favorite_outdoor_area');
+    Route::get('/articles/get_interested_events/', 'ArticleController@get_interested_events');
+    Route::delete('/articles/del_interested_event/{article_id}', 'ArticleController@del_interested_event');
 
     /*
     *   Outdoor regions
     */
     Route::get('/outdoor/get_filtred_outdoor_spots_for_admin/{filter_id}', 'OutdoorController@get_filtred_outdoor_spots_for_admin');
     Route::get('/outdoor/get_filtred_outdoor_spots_for_gest/{lang}/{filter_id}', 'OutdoorController@get_filtred_outdoor_spots_for_gest');
+
+    Route::post('/articles/add_to_favorite_outdoor_area/', 'ArticleController@add_to_favorite_outdoor_area');
+    Route::get('/outdoor/get_faworite_outdoor_region', 'OutdoorController@get_faworite_outdoor_region');
+    Route::delete('/outdoor/del_faworite_outdoor_region/{article_id}', 'OutdoorController@del_faworite_outdoor_region');
 
     Route::post('/outdoor/add_spot', 'OutdoorController@add_spot');
     Route::post('/outdoor/edit_spot/{id}', 'OutdoorController@edit_spot');
@@ -133,7 +139,10 @@ Route::group(['namespace'=>'Api'], function() {
     Route::get('/film/get_films_categories/{locale}', 'FilmsController@get_films_categories');
     Route::get('/film/films_search/{locale}', 'FilmsController@films_search');
     Route::get('/film/top_films/{top_film_type}/{locale}', 'FilmsController@get_films_top');
+
     Route::post('/film/add_to_faworite', 'FilmsController@add_to_faworite');
+    Route::get('/film/get_faworite_film_list', 'FilmsController@get_faworite_film_list');
+    Route::delete('/film/del_from_faworite/{film_id}', 'FilmsController@del_from_faworite');
 
     /*
     *   Guid sport sectors routes

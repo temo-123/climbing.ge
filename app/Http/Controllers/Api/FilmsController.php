@@ -85,15 +85,7 @@ class FilmsController extends Controller
     {
         // dd(Auth::user());
         if (Auth::user()) {
-            
             if(Favorite_film::where('user_id', '=', Auth::user()->id)->where('film_id', '=', $request->film_id)->count() > 0){
-                // $editing_faworit = Favorite_film::where('user_id', '=', Auth::user()->id)->where('film_id', '=', $request->film_id)->first();
-
-                // $editing_faworit['user_id'] = Auth::user()->id;
-                // $editing_faworit['film_id'] = $request->film_id;
-                
-                // $editing_faworit -> save();
-
                 return 'this film are in faworite';
             }
             else{
@@ -108,7 +100,35 @@ class FilmsController extends Controller
             }
         }
         else{
-            return 'ples login';
+            return 'Plees login!';
+        }
+    }
+
+    public function get_faworite_film_list(Request $request)
+    {
+        if (Auth::user()) {
+            $fav_film = Favorite_film::where('user_id', '=', Auth::user()->id)->get();
+            $films = [];
+            foreach ($fav_film as $film) {
+                $global_films = Film::where('id', '=', $film->film_id)->get();
+                $f_film = GetFilmService::get_films_list_use_locale($global_films, $request->lang);
+                array_push($films, $f_film[0]);
+            }
+            return $films;
+        }
+        else{
+            return 'Plees login!';
+        }
+    }
+
+    public function del_from_faworite(Request $request)
+    {
+        if (Auth::user()) {
+            $fav_film = Favorite_film::where('user_id', '=', Auth::user()->id)->where('film_id', '=', $request->film_id)->first();
+            $fav_film ->delete();
+        }
+        else{
+            return 'Plees login!';
         }
     }
 

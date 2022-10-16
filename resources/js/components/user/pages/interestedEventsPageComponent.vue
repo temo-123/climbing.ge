@@ -6,109 +6,61 @@
             </div>
             
             <div class="col-sm-9">
+                <div class="row font-italic">
+                    <div class="col-md-6">
+                        <h3 class="mt-3 pb-3 mb-4 ">
+                            Interestid ivents
+                        </h3>
+                    </div>
+                    <div class="col-md-6">
+                        <button class="btn btn-success float-right" @click="get_interestid_events()">
+                            Refresh
+                        </button>
+                    </div>
+                </div>
+                <!-- <div class="row">
+                    <div class="col-md-12">
+                        <button class="btn btn-success float-right" @click="get_interestid_events()">
+                            Refresh
+                        </button>
+                    </div>
+                </div> -->
                 
                 <div class="container">
-                    <div class="row">
-                        <div class="[ col-xs-12 col-sm-12 ]">
+                    <div class="row" v-if="events.length">
+                        <div class="col-xs-12 col-sm-12">
                             <ul class="event-list">
-                                <li>
+
+                                <li v-for="event in events" :key="event.id">
                                     <time datetime="2014-07-20">
                                         <span class="day">4</span>
                                         <span class="month">Jul</span>
                                         <span class="year">2014</span>
                                         <!-- <span class="time">ALL DAY</span> -->
                                     </time>
-                                    <img alt="Independence Day" src="https://farm4.staticflickr.com/3100/2693171833_3545fb852c_q.jpg" />
-                                    <div class="info">
-                                        <h2 class="title">Independence Day</h2>
-                                        <p class="desc">United States Holiday</p>
-                                    </div>
-                                    <!-- <div class="social">
-                                        <ul>
-                                            <li class="facebook" style="width:33%;"><a href="#facebook"><span class="fa fa-facebook"></span></a></li>
-                                            <li class="twitter" style="width:34%;"><a href="#twitter"><span class="fa fa-twitter"></span></a></li>
-                                            <li class="google-plus" style="width:33%;"><a href="#google-plus"><span class="fa fa-google-plus"></span></a></li>
-                                        </ul>
-                                    </div> -->
-                                </li>
 
-                                <!-- <li>
-                                    <time datetime="2014-07-20 0000">
-                                        <span class="day">8</span>
-                                        <span class="month">Jul</span>
-                                        <span class="year">2014</span>
-                                        <span class="time">12:00 AM</span>
-                                    </time>
-                                    <div class="info">
-                                        <h2 class="title">One Piece Unlimited World Red</h2>
-                                        <p class="desc">PS Vita</p>
-                                        <ul>
-                                            <li style="width:50%;"><a href="#website"><span class="fa fa-globe"></span> Website</a></li>
-                                            <li style="width:50%;"><span class="fa fa-money"></span> $39.99</li>
-                                        </ul>
-                                    </div>
-                                    <div class="social">
-                                        <ul>
-                                            <li class="facebook" style="width:33%;"><a href="#facebook"><span class="fa fa-facebook"></span></a></li>
-                                            <li class="twitter" style="width:34%;"><a href="#twitter"><span class="fa fa-twitter"></span></a></li>
-                                            <li class="google-plus" style="width:33%;"><a href="#google-plus"><span class="fa fa-google-plus"></span></a></li>
-                                        </ul>
-                                    </div>
-                                </li> -->
+									<!-- <span @click="go_to_events_list('/event/'+event.url_title)" > -->
+										<site-img v-if="event.image != NULL" :src="'../../../public/images/event_img/'+event.image" :alt='event[0][0].title'/>
+										<site-img v-else :src="'../../../public/images/site_img/image.png'" :alt='event[0][0].title'/>
+									<!-- </span> -->
 
-                                <!-- <li>
-                                    <time datetime="2014-07-20 2000">
-                                        <span class="day">20</span>
-                                        <span class="month">Jan</span>
-                                        <span class="year">2014</span>
-                                        <span class="time">8:00 PM</span>
-                                    </time>
-                                    <img alt="My 24th Birthday!" src="https://farm5.staticflickr.com/4150/5045502202_1d867c8a41_q.jpg" />
+                                    <!-- <img alt="Independence Day" src="https://farm4.staticflickr.com/3100/2693171833_3545fb852c_q.jpg" /> -->
                                     <div class="info">
-                                        <h2 class="title">Mouse0270's 24th Birthday!</h2>
-                                        <p class="desc">Bar Hopping in Erie, Pa.</p>
-                                        <ul>
-                                            <li style="width:33%;">1 <span class="glyphicon glyphicon-ok"></span></li>
-                                            <li style="width:34%;">3 <span class="fa fa-question"></span></li>
-                                            <li style="width:33%;">103 <span class="fa fa-envelope"></span></li>
-                                        </ul>
-                                    </div>
-                                    <div class="social">
-                                        <ul>
-                                            <li class="facebook" style="width:33%;"><a href="#facebook"><span class="fa fa-facebook"></span></a></li>
-                                            <li class="twitter" style="width:34%;"><a href="#twitter"><span class="fa fa-twitter"></span></a></li>
-                                            <li class="google-plus" style="width:33%;"><a href="#google-plus"><span class="fa fa-google-plus"></span></a></li>
-                                        </ul>
+                                        <h2 class="title">
+											<a @click="go_to_events_list('/event/'+event.url_title)">{{ event[0][0].title }}</a>
+											<span @click="del_interested_event(event.id)" class="float-right">X</span>
+										</h2>
+                                        <!-- <p class="desc">United States Holiday</p> -->
                                     </div>
                                 </li>
 
-                                <li>
-                                    <time datetime="2014-07-31 1600">
-                                        <span class="day">31</span>
-                                        <span class="month">Jan</span>
-                                        <span class="year">2014</span>
-                                        <span class="time">4:00 PM</span>
-                                    </time>
-                                    <img alt="Disney Junior Live On Tour!" src="http://www.thechaifetzarena.com/images/main/DL13_PiratePrincess_thumb.jpg" />
-                                    <div class="info">
-                                        <h2 class="title">Disney Junior Live On Tour!</h2>
-                                        <p class="desc"> Pirate and Princess Adventure</p>
-                                        <ul>
-                                            <li style="width:33%;">$49.99 <span class="fa fa-male"></span></li>
-                                            <li style="width:34%;">$29.99 <span class="fa fa-child"></span></li>
-                                        </ul>
-                                    </div>
-                                    <div class="social">
-                                        <ul>
-                                            <li class="facebook" style="width:33%;"><a href="#facebook"><span class="fa fa-facebook"></span></a></li>
-                                            <li class="twitter" style="width:34%;"><a href="#twitter"><span class="fa fa-twitter"></span></a></li>
-                                            <li class="google-plus" style="width:33%;"><a href="#google-plus"><span class="fa fa-google-plus"></span></a></li>
-                                        </ul>
-                                    </div>
-                                </li> -->
+
                             </ul>
                         </div>
                     </div>
+					<div class="row" v-else>
+						<h2>You dont have interestid event</h2>
+					</div>
                 </div>
             </div>
         </div>
@@ -116,7 +68,53 @@
 </template>
 
 <script>
-    
+    export default {
+        components: {
+            // catalogItem,
+        },
+        data: function () {
+            return {
+                events: [],
+                MIX_SITE_URL: process.env.MIX_SITE_URL,
+                MIX_APP_SSH: process.env.MIX_APP_SSH,
+            };
+        },
+        mounted() {
+            this.get_interestid_events()
+        },
+        methods: {
+            get_interestid_events(){
+                axios
+                .get('../api/articles/get_interested_events')
+                .then(response => {
+                    this.events = response.data
+                })
+                .catch(error =>{
+                })
+            },
+
+            go_to_events_list(page){
+                window.open(this.MIX_APP_SSH + '' + this.MIX_SITE_URL + page)
+            },
+
+            del_interested_event(id){
+                if(confirm('Are you sure, you want delite this event from your faworites?')){
+                    axios
+                    .post('../api/articles/del_interested_event/'+id, {
+                        article_id: id,
+                        _method: 'DELETE'
+                    })
+                    .then(Response => {
+                        this.get_interestid_events()
+                        // alert("Ewnt delited from your favorite list!");
+                    })
+                    .catch(error => {
+                        alert("Error");
+                    })
+                }
+            }
+        }
+	}
 </script>
 
 <style scoped>
@@ -215,31 +213,6 @@
 		color: rgb(30, 30, 30);
 		background-color: rgb(200, 200, 200);
 	}
-	/* .facebook a,
-	.twitter a,
-	.google-plus a {
-		display: block;
-		width: 100%;
-		color: rgb(75, 110, 168) !important;
-	}
-	.twitter a {
-		color: rgb(79, 213, 248) !important;
-	}
-	.google-plus a {
-		color: rgb(221, 75, 57) !important;
-	}
-	.facebook:hover a {
-		color: rgb(255, 255, 255) !important;
-		background-color: rgb(75, 110, 168) !important;
-	}
-	.twitter:hover a {
-		color: rgb(255, 255, 255) !important;
-		background-color: rgb(79, 213, 248) !important;
-	}
-	.google-plus:hover a {
-		color: rgb(255, 255, 255) !important;
-		background-color: rgb(221, 75, 57) !important;
-	} */
 
 	@media (min-width: 768px) {
 		.event-list > li {
@@ -253,9 +226,11 @@
 		.event-list > li > img  {
 			display: inline-block;
 		}
+
 		.event-list > li > time,
 		.event-list > li > img {
-			width: 120px;
+			/* width: 120px; */
+			height: 100%;
 			float: left;
 		}
 		.event-list > li > .info {
@@ -264,10 +239,16 @@
 		}
 		.event-list > li > time,
 		.event-list > li > img {
-			width: 120px;
-			height: 120px;
+			/* width: 120px;
+			height: 120px; */
+			height: 100%;
+			width: auto;
 			padding: 0px;
 			margin: 0px;
+		}
+		.event-list > li > time {
+			width: 120px;
+			height: 120px;
 		}
 		.event-list > li > .info {
 			position: relative;

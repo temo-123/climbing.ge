@@ -7,45 +7,54 @@
             
             <div class="col-sm-9">
 
-                    <div class="row">
-                        <div class="col-md-6">
-                            <button class="btn btn-primary pull-left" @click="go_to_product_page('/')">
-                                Go to product list
-                            </button>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="form-groupe float-right">
-                                <button
-                                    class="btn btn-success"
-                                    @click="get_products()"
-                                >
-                                    refresh
-                                </button>
-                            </div>
+                <div class="row font-italic">
+                    <div class="col-md-6">
+                        <h3 class="mt-3 pb-3 mb-4 ">
+                            Faworite products
+                        </h3>
+                    </div>
+                    <div class="col-md-6">
+                        <button class="btn btn-primary float-right" @click="go_to_product_page('/')">
+                            Go to product list
+                        </button>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <button
+                            class="btn btn-success float-right"
+                            @click="get_products()"
+                        >
+                            refresh
+                        </button>
+                    </div>
+                </div>
+
+                <div class="row d-flex g-1"  v-if="products.length">
+
+                    <div class="col-md-4 favorite_cart" v-for="product in products" :key='product.id'>
+                        <!-- {{ product.global_product.url_title }} -->
+                        <div class="product text-center"> 
+
+                            <span class="favorite_cart_del_bottom" @click="del_from_faworites(product.global_product.id)">X</span>
+
+                            <div @click="go_to_product_page('/product/'+product.global_product.url_title)">
+                                <site-img v-if="product.product_images[0] != null" :src="'../images/product_img/'+product.product_images[0]" :alt="product.locale_product.title" />
+                                <site-img v-else :src="'../../../public/images/site_img/shop_demo.jpg'" :img_class="'img-responsive'" :alt='product.locale_product.title'/>
+                            </div >
+
+                            <div class="text-left px-3 favorite_cart_text" >
+                                <h4 @click="go_to_product_page('/product/'+product.global_product.url_title)">{{ product.locale_product.title }}</h4> 
+                            </div> 
+                            <i class="fa fa-close"></i>
                         </div>
                     </div>
 
-                    <div class="row d-flex g-1">
+                </div>
 
-                        <div class="col-md-4 favorite_cart" v-for="product in products" :key='product.id'>
-                            <!-- {{ product.global_product.url_title }} -->
-                            <div class="product text-center"> 
-
-                                <span class="favorite_cart_del_bottom" @click="del_from_faworites(product.global_product.id)">X</span>
-
-                                <div @click="go_to_product_page('/product/'+product.global_product.url_title)">
-                                    <site-img v-if="product.product_images[0] != null" :src="'../images/product_img/'+product.product_images[0]" :alt="product.locale_product.title" />
-                                    <site-img v-else :src="'../../../public/images/site_img/image.png'" :img_class="'img-responsive'" :alt='product.locale_product.title'/>
-                                </div >
-
-                                <div class="text-left px-3 favorite_cart_text" >
-                                    <h4 @click="go_to_product_page('/product/'+product.global_product.url_title)">{{ product.locale_product.title }}</h4> 
-                                </div> 
-                                <i class="fa fa-close"></i>
-                            </div>
-                        </div>
-
-                    </div>
+                <div class="row" v-else>
+                    <h2>You dont have faworite products</h2>
+                </div>
             </div>
         </div>
     </div>
@@ -83,30 +92,26 @@
                 .get('../api/get_user_favorite_products')
                 .then(response => {
                     this.products = response.data
-
-                    // this.sortByCategories()
                 })
                 .catch(error =>{
                 })
-                .finally(() => this.products_loading = false);
             },
             go_to_product_page(page){
                 window.open(this.MIX_APP_SSH + 'shop.' + this.MIX_SITE_URL + page)
             },
             del_from_faworites(product_id){
-                axios
-                .post('../api/del_from_favorite/'+ product_id)
-                .then(response => {
-                    alert("Product delited from your favorite list!");
-                    this.get_products()
-                })
-                .catch(error =>{
-                    alert("Error");
-                })
+                if(confirm('Are you sure, you want delite this product from your faworites list?')){
+                    axios
+                    .post('../api/del_from_favorite/'+ product_id)
+                    .then(response => {
+                        // alert("Product delited from your favorite list!");
+                        this.get_products()
+                    })
+                    .catch(error =>{
+                        alert("Error");
+                    })
+                }
             },
-            // go_product_list(){
-            //     window.open(this.MIX_APP_SSH + 'user.' + this.MIX_SITE_URL)
-            // },
         }
     }
 </script>

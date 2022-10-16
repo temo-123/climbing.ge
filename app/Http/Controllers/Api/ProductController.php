@@ -50,6 +50,9 @@ class ProductController extends Controller
             }
             return $products;
         }
+        else{
+            return 'Plees login!';
+        }
     }
 
     public function get_quick_product(Request $request)

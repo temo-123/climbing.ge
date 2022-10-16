@@ -232,6 +232,8 @@ import metaData from '../items/MetaDataComponent'
             this.get_films();
             this.get_films_categories();
             this.get_most_liked_film()
+
+            this.get_user()
         },
         methods: {
             get_films() {
@@ -278,6 +280,16 @@ import metaData from '../items/MetaDataComponent'
                 }
             },
 
+            get_user(){
+                axios
+                .get('/api/auth_user')
+                .then((response)=>{
+                    this.user = response.data['name']
+                })
+                .catch(
+                    this.user = 'Boss'
+                );
+            },
             // get_best_films_for_day(){
             //     axios
             //         // .get('../api/film/get_films/'+localStorage.getItem('lang'))

@@ -27,7 +27,7 @@ __webpack_require__.r(__webpack_exports__);
   },
   metaInfo: function metaInfo() {
     return {
-      title: this.title + ' - ' + this.mix_site_url,
+      title: this.title + ' - ' + 'films.' + this.mix_site_url,
       // title: 'test title',
       htmlAttrs: {
         lang: this.locale
@@ -47,15 +47,15 @@ __webpack_require__.r(__webpack_exports__);
         content: this.description
       }, {
         title: 'Default App Title',
-        titleTemplate: '%s | ' + this.title + ' - ' + this.mix_site_url
+        titleTemplate: '%s | ' + this.title + ' - ' + 'films.' + this.mix_site_url
       }, {
         canonical: 'Default App Title',
-        content: '%s | ' + this.title + ' - ' + this.mix_site_url
+        content: '%s | ' + this.title + ' - ' + 'films.' + this.mix_site_url
       }, // https://www.digitalocean.com/community/tutorials/vuejs-vue-seo-tips
       // OpenGraph data (Most widely used)
       {
         property: 'og:title',
-        content: this.title + ' - ' + this.mix_site_url
+        content: this.title + ' - ' + 'films.' + this.mix_site_url
       }, {
         property: 'og:site_name',
         content: this.mix_site_name
@@ -66,7 +66,7 @@ __webpack_require__.r(__webpack_exports__);
       }, // Should the the same as your canonical link, see below.
       {
         property: 'og:url',
-        content: this.mix_app_ssh + this.mix_site_url
+        content: this.mix_app_ssh + 'films.' + this.mix_site_url
       }, {
         property: 'og:image',
         content: this.image
@@ -80,10 +80,10 @@ __webpack_require__.r(__webpack_exports__);
         content: 'summary'
       }, {
         name: 'twitter:site',
-        content: this.mix_app_ssh + this.mix_site_url
+        content: this.mix_app_ssh + 'films.' + this.mix_site_url
       }, {
         name: 'twitter:title',
-        content: this.title + ' - ' + this.mix_site_url
+        content: this.title + ' - ' + 'films.' + this.mix_site_url
       }, {
         name: 'twitter:description',
         content: this.description
@@ -97,7 +97,7 @@ __webpack_require__.r(__webpack_exports__);
       }, // Google / Schema.org markup:
       {
         itemprop: 'name',
-        content: this.title + ' - ' + this.mix_site_url
+        content: this.title + ' - ' + 'films.' + this.mix_site_url
       }, {
         itemprop: 'description',
         content: this.description
@@ -412,6 +412,7 @@ __webpack_require__.r(__webpack_exports__);
     this.get_films();
     this.get_films_categories();
     this.get_most_liked_film();
+    this.get_user();
   },
   methods: {
     get_films: function get_films() {
@@ -454,6 +455,13 @@ __webpack_require__.r(__webpack_exports__);
         this.best_film++;
       }
     },
+    get_user: function get_user() {
+      var _this3 = this;
+
+      axios.get('/api/auth_user').then(function (response) {
+        _this3.user = response.data['name'];
+      })["catch"](this.user = 'Boss');
+    },
     // get_best_films_for_day(){
     //     axios
     //         // .get('../api/film/get_films/'+localStorage.getItem('lang'))
@@ -495,12 +503,12 @@ __webpack_require__.r(__webpack_exports__);
     //         .finally(() => (this.films_loading = false));
     // },
     get_most_liked_film: function get_most_liked_film() {
-      var _this3 = this;
+      var _this4 = this;
 
       axios.get("../api/film/top_films/get_most_liked_films/us").then(function (response) {
-        _this3.most_liked_film = response.data[0];
+        _this4.most_liked_film = response.data[0];
       })["catch"](function (error) {})["finally"](function () {
-        return _this3.most_liked_film_loader = false;
+        return _this4.most_liked_film_loader = false;
       });
     }
   }

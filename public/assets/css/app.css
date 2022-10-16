@@ -4430,8 +4430,7 @@ ul.portfolioFilter a.current {
   border-top: none;
 }
 
-.isotope-item-dtls h3,
-.isotope-item-dtls p {
+.isotope-item-dtls h3, .i .isotope-item-dtls p {
   color: #333;
   font-family: "Average Sans", sans-serif;
 }

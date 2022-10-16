@@ -363,17 +363,9 @@ class ArticleController extends Controller
 
     public function add_to_interested_events(Request $request)
     {
-        // dd(Auth::user());
         if (Auth::user()) {
             
             if(Interested_event::where('user_id', '=', Auth::user()->id)->where('article_id', '=', $request->event_id)->count() > 0){
-                // $editing_faworit = Interested_event::where('user_id', '=', Auth::user()->id)->where('article_id', '=', $request->event_id)->first();
-
-                // $editing_faworit['user_id'] = Auth::user()->id;
-                // $editing_faworit['article_id'] = $request->event_id;
-                
-                // $editing_faworit -> save();
-
                 return 'this event are in faworite';
             }
             else{
@@ -389,6 +381,35 @@ class ArticleController extends Controller
         }
         else{
             return 'ples login';
+        }
+    }
+
+    public function get_interested_events(Request $request)
+    {
+        if (Auth::user()) {
+            $fav_area = Interested_event::where('user_id', '=', Auth::user()->id)->get();
+            $articles = [];
+            foreach ($fav_area as $area) {
+                $global_articles = Article::where('id', '=', $area->article_id)->get();
+                $outdoors = GetArticlesService::get_locale_article_use_locale($global_articles, $request->lang);
+                array_push($articles, $outdoors[0]);
+            }
+            
+            return $articles;
+        }
+        else{
+            return 'Plees login!';
+        }
+    }
+
+    public function del_interested_event(Request $request)
+    {
+        if (Auth::user()) {
+            $fav_area = Interested_event::where('user_id', '=', Auth::user()->id)->where('article_id', '=', $request->article_id)->first();
+            $fav_area ->delete();
+        }
+        else{
+            return 'Plees login!';
         }
     }
 
