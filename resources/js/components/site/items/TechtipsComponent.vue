@@ -14,6 +14,9 @@
                         <div class="tips"> -->
 
                             <div class="col-xs-6 col-sm-6 col-md-3" v-for="tip in techtips" :key="tip.id">
+                                <div class="product-image" v-if="tip.new_flag">
+                                    <div class="discount-percent-badge discount-badge-fourty">NEW</div>
+                                </div>
                                 <!-- {{ tip_num+=1 }} -->
                                 <div class="thumbnail">
                                     <!-- <site-img :src="'../../../public/images/site_img/image.png'" :img_class="'img-responsive'" :alt='tip[0][0].title'/> -->

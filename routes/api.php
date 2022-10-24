@@ -74,6 +74,7 @@ Route::group(['namespace'=>'Api'], function() {
     Route::apiResource('/mount', 'MountController');
     Route::get('/mounts/{lang}', 'MountController@get_locale_mounts');
     Route::get('/mount/{lang}/{mount_id}', 'MountController@get_locale_mount');
+    Route::get('/mount/on_page/{lang}/{mount_route_id}', 'MountController@get_locale_mount_on_route_page');
     
     /*
     *   Product and product categories routes
@@ -81,7 +82,7 @@ Route::group(['namespace'=>'Api'], function() {
     Route::apiResource('/product', 'ProductController');
     Route::get('/products/{land}', 'ProductController@get_local_products');
     Route::get('/product/{land}/{url_title}', 'ProductController@get_local_product_in_page');
-    Route::get('similar_product/{land}/{url_title}', 'ProductController@get_similar_product');
+    Route::get('similar_product/{land}/{product_id}', 'ProductController@get_similar_product');
     Route::get('product_price_interval', 'ProductController@get_product_price_interval');
     Route::get('/get_user_favorite_products', 'ProductController@get_user_favorite_products');
     Route::get('/get_quick_product/{lang}/{product_id}', 'ProductController@get_quick_product');

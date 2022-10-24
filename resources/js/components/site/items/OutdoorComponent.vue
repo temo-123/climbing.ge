@@ -64,6 +64,8 @@
             :article_category="this.article.category" 
             :route="'outdoor/'"
             :img_dir="'outdoor_img/'"
+
+            ref="SArticles"
         />
 
     </div> 
@@ -104,6 +106,12 @@
         },
         mounted() {
             this.get_posts()
+        },
+        watch: {
+            '$route' (to, from) {
+                this.$refs.SArticles.test();
+                // this.$refs.SimilarArticles.get_same_articles();
+            }
         },
         methods: {
             get_posts(){

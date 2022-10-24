@@ -1,7 +1,7 @@
 <template>
     <div class="food col-md-4">
         <div class="portfolio-img view view-first">
-            <div class="product-image">
+            <div class="product-image" v-if="article.area.new_flag">
                 <div class="discount-percent-badge discount-badge-fourty">NEW</div>
             </div>
 
@@ -34,6 +34,15 @@
                         <div class="row" v-if="article.route_quantyty.mtps > 0">
                             {{ article.route_quantyty.mtps }} Multy pitch
                         </div>
+
+                        <hr class="region_likes_line" v-if="!true">
+
+                        <div class="row" v-if="!true">
+                            <span > 
+                                <i class="fa fa-heart-o " ></i> - 0
+                            </span>
+                        </div>
+
                     </div>
                 </div>
             </div>
@@ -61,5 +70,8 @@
 </script>
 
 <style>
-
+.region_likes_line{
+    margin: 2%;
+    border-color: #eee;
+}
 </style>

@@ -320,6 +320,14 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
 
  // https://github.com/ChristophAnastasiades/Lingallery
 
@@ -372,10 +380,10 @@ __webpack_require__.r(__webpack_exports__);
     this.get_product(); // this.get_analog_products()
   },
   methods: {
-    get_analog_products: function get_analog_products(url_title) {
+    get_analog_products: function get_analog_products(product_id) {
       var _this = this;
 
-      axios.put('../api/similar_product/' + localStorage.getItem('lang') + '/' + url_title).then(function (response) {
+      axios.get('../api/similar_product/' + localStorage.getItem('lang') + '/' + product_id).then(function (response) {
         _this.samilar_products = response.data;
       })["catch"](function (error) {});
     },
@@ -391,14 +399,20 @@ __webpack_require__.r(__webpack_exports__);
         _this2.product.product_option.forEach(function (option) {
           _this2.prices.push(option.option.price);
 
-          option.images.forEach(function (image) {
-            _this2.items.push({
-              src: '../images/product_img/' + image.image,
-              thumbnail: '../images/product_img/' + image.image,
-              caption: option.option.title,
-              id: option.option.id
+          console.log("🚀 ~ file: ProductPageComponent.vue ~ line 206 ~ get_product ~ option.images", option.images);
+
+          if (option.images.length) {
+            option.images.forEach(function (image) {
+              _this2.items.push({
+                src: '../images/product_img/' + image.image,
+                thumbnail: '../images/product_img/' + image.image,
+                caption: option.option.title,
+                id: option.option.id
+              });
             });
-          });
+          } else {
+            _this2.items = [];
+          }
         }); // this.array2 = Math.max.apply(null, this.array1);
         // if(this.prices.length <= 1){
         //     this.price = this.prices[0]
@@ -408,7 +422,7 @@ __webpack_require__.r(__webpack_exports__);
         // }
 
 
-        _this2.get_analog_products(_this2.product.global_product.url_title);
+        _this2.get_analog_products(_this2.product.global_product.id);
       })["catch"](function (error) {});
     },
     select_option: function select_option() {
@@ -448,6 +462,13 @@ __webpack_require__.r(__webpack_exports__);
           _this4.add_to_cart_message = "Product added in your cart";
         })["catch"](function (error) {});
       }
+    },
+    add_to_faworite: function add_to_faworite(product_id) {
+      axios.post('../api/add_to_favorite/' + product_id).then(function (response) {
+        alert("Product addid in your favorite list!");
+      })["catch"](function (error) {
+        alert("Error");
+      });
     }
   }
 });
@@ -471,7 +492,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_laravel_mix_node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, "\n.lingalleryContainer[data-v-40681078] .lingallery figure {\n    height: 100% !important;\n}\n.mead_in_geo_img{\n    width: 20%;\n    height: auto;\n    margin-left: 40%;\n}\n", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, "\n.lingalleryContainer[data-v-40681078] .lingallery figure {\n    height: 100% !important;\n}\n.mead_in_geo_img{\n    width: 20%;\n    height: auto;\n    margin-left: 40%;\n}\n.favorites_icon{\n    cursor: pointer;\n}\n", ""]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
@@ -9625,12 +9646,26 @@ var render = function () {
             _c("div", { staticClass: "cols" }, [
               _c("div", { staticClass: "col-md-6" }, [
                 _c("div", { staticClass: "big" }, [
-                  _c(
-                    "div",
-                    { staticClass: "container" },
-                    [_c("lingallery", { attrs: { items: _vm.items } })],
-                    1
-                  ),
+                  _vm.items.length
+                    ? _c(
+                        "div",
+                        { staticClass: "container" },
+                        [_c("lingallery", { attrs: { items: _vm.items } })],
+                        1
+                      )
+                    : _c(
+                        "div",
+                        { staticClass: "container" },
+                        [
+                          _c("site-img", {
+                            attrs: {
+                              src: "../../../public/images/site_img/shop_demo.jpg",
+                              alt: _vm.product.local_product[0].title,
+                            },
+                          }),
+                        ],
+                        1
+                      ),
                 ]),
               ]),
               _vm._v(" "),
@@ -9642,7 +9677,26 @@ var render = function () {
                     ]),
                   ]),
                   _vm._v(" "),
-                  _vm._m(0),
+                  _c(
+                    "div",
+                    {
+                      staticClass: "col-md-2 favorites_icon",
+                      on: {
+                        click: function ($event) {
+                          return _vm.add_to_faworite(
+                            _vm.product.global_product.id
+                          )
+                        },
+                      },
+                    },
+                    [
+                      _c("i", {
+                        staticClass: "fa fa-heart-o",
+                        staticStyle: { "font-size": "250%" },
+                        attrs: { "aria-hidden": "true" },
+                      }),
+                    ]
+                  ),
                 ]),
                 _vm._v(" "),
                 _c("div", { staticClass: "row" }, [
@@ -9802,7 +9856,7 @@ var render = function () {
                   : _vm._e(),
                 _vm._v(" "),
                 _vm.product.global_product.sale_category == "custom production"
-                  ? _c("div", { staticClass: "row" }, [_vm._m(1)])
+                  ? _c("div", { staticClass: "row" }, [_vm._m(0)])
                   : _vm._e(),
               ]),
             ]),
@@ -9900,20 +9954,6 @@ var render = function () {
   )
 }
 var staticRenderFns = [
-  function () {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "col-md-2" }, [
-      _c("a", { staticClass: "text-center", attrs: { href: "" } }, [
-        _c("i", {
-          staticClass: "fa fa-heart-o",
-          staticStyle: { "font-size": "250%" },
-          attrs: { "aria-hidden": "true" },
-        }),
-      ]),
-    ])
-  },
   function () {
     var _vm = this
     var _h = _vm.$createElement

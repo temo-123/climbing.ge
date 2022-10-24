@@ -26,25 +26,6 @@
         components: {
             SimilarArticleCardComponent
         },
-        // mounted() {
-        //     this.get_similar_articles()
-        // },
-        // methods: {
-        //     get_similar_articles(){
-        //         axios
-        //         .put('../api/article/' + this.article_id, {})
-        //         .then(response => {
-        //             this.other_articles = response.data
-
-        //             if (this.article_category == 'news') {
-        //                 this.image_dir = 'news_img/',
-        //                 this.route_url = 'news/'
-        //             }
-        //         })
-        //         .catch(error =>{
-        //         })
-        //     }
-        // }
         data(){
             return {
                 image_dir: '',
@@ -53,7 +34,18 @@
             }
         },
         mounted() {
-            axios
+            this.get_same_articles()
+        },
+        watch: {
+            '$route' (to, from) {
+                this.get_same_articles()
+
+                window.scrollTo(0,0)
+            }
+        },
+        methods: {
+            get_same_articles() {
+                axios
                 .post('../api/similar_article/'+localStorage.getItem('lang'), {
                     article_id: this.article_id,
                     article_category: this.article_category,
@@ -64,6 +56,11 @@
                 .catch(error =>{
 
                 })
+            },
+
+            test(){
+                console.log('test')
+            }
         }
     }
 </script>

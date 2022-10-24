@@ -68,4 +68,10 @@ class Article extends Model
 	{
 		return $this->hasMany(General_info_article::class, 'article_id');
 	}
+
+
+	public function mount_masiv()
+	{
+		return $this->hasMany(Article_mount::class, 'article_id');
+	}
 }

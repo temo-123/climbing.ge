@@ -9,6 +9,8 @@ class Article_mount extends Model
 {
     use HasFactory;
 
+    public $table = 'article_mount';
+
     protected $fillable = [
         'mount_id',
         'article_id',

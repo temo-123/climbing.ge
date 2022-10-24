@@ -64,6 +64,12 @@
         mounted() {
             this.get_ices()
         },
+        watch: {
+            '$route' (to, from) {
+                this.get_ices(),
+                window.scrollTo(0,0)
+            }
+        },
         methods: {
             get_ices(){
                 axios

@@ -1,6 +1,9 @@
 <template>
   <div class="food col-md-4">
         <div class="portfolio-img view view-first">
+            <div class="product-image" v-if="mount.new_flag">
+                <div class="discount-percent-badge discount-badge-fourty">NEW</div>
+            </div>
 
             <!-- <img :src="image_dir+mount.image" class="img-responsive" :alt='mount[0][0].title' /> -->
                                 
@@ -19,9 +22,9 @@
                     <!-- <p>{{ mount[0][0].short_description }}</p> -->
                     <span v-html="mount.short_description"></span>
 
-                    <div class="col text-center">
+                    <div class="col text-center" v-if="mount.mount_system">
                         <div class="row">
-                            Mount system - 
+                            Mount system - {{ mount.mount_system }}
                         </div>
                     </div>
                 </div>

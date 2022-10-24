@@ -27,6 +27,12 @@
         mounted() {
             this.get_tech_tips()
         },
+        watch: {
+            '$route' (to, from) {
+                this.get_tech_tips(),
+                window.scrollTo(0,0)
+            }
+        },
         methods: {
             get_tech_tips(){
                 axios

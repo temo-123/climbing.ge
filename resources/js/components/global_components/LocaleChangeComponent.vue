@@ -5,10 +5,18 @@
         </a>
 
         <ul class="dropdown-menu shadows" role="menu">
-            <li><a style="width: 50%; margin-left: 25%;"  @click="localization('en')"><countryFlag country='usa' size='big'/></a></li>
-            <li><a style="width: 50%; margin-left: 25%;"  @click="localization('ka')"><countryFlag country='geo' size='big'/></a></li>
-            <li><a style="width: 50%; margin-left: 25%;"  @click="localization('ru')"><countryFlag country='rus' size='big'/></a></li>
+            <!-- <li v-if="activ_lang == 'ka' || activ_lang == 'ru'"><a style="width: 50%; margin-left: 25%;"  @click="localization('en')"><countryFlag country='usa' size='big'/></a></li>
+            <li v-if="activ_lang == 'en' || activ_lang == 'ru'"><a style="width: 50%; margin-left: 25%;"  @click="localization('ka')"><countryFlag country='geo' size='big'/></a></li>
+            <li v-if="activ_lang == 'ka' || activ_lang == 'en'"><a style="width: 50%; margin-left: 25%;"  @click="localization('ru')"><countryFlag country='rus' size='big'/></a></li> -->
+
+
+            <li v-if="activ_lang == 'ka' || activ_lang == 'ru'"><a style="width: 50%; margin-left: 25%;"  @click="activ_lang = 'en', localization('en')"><countryFlag country='usa' size='big'/></a></li>
+            <li v-if="activ_lang == 'en' || activ_lang == 'ru'"><a style="width: 50%; margin-left: 25%;"  @click="activ_lang = 'ka', localization('ka')"><countryFlag country='geo' size='big'/></a></li>
+            <li v-if="activ_lang == 'ka' || activ_lang == 'en'"><a style="width: 50%; margin-left: 25%;"  @click="activ_lang = 'ru', localization('ru')"><countryFlag country='rus' size='big'/></a></li>
         </ul>
+
+        <!-- - {{token}} -
+        <button @click="token++"> + </button> -->
     </li>
 </template>
 
@@ -18,7 +26,21 @@
     export default {
         data: function () {
             return {
-                lang: localStorage.getItem('lang')
+                // activ_lang: localStorage.getItem('lang'),
+
+                get activ_lang() {
+                    return localStorage.getItem('lang') || 'en';
+                },
+                set activ_lang(value) {
+                    localStorage.setItem('lang', value);
+                },
+
+                // get token() {
+                //     return localStorage.getItem('token') || 0;
+                // },
+                // set token(value) {
+                //     localStorage.setItem('token', value);
+                // }
             };
         },
         components: {

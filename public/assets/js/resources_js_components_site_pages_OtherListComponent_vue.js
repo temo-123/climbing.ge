@@ -196,6 +196,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   props: ['article', 'image_dir', 'route'],
   data: function data() {
@@ -289,6 +290,11 @@ __webpack_require__.r(__webpack_exports__);
   },
   mounted: function mounted() {
     this.get_other_articles();
+  },
+  watch: {
+    '$route': function $route(to, from) {
+      this.get_other_articles(), window.scrollTo(0, 0);
+    }
   },
   methods: {
     get_other_articles: function get_other_articles() {
@@ -708,7 +714,15 @@ var render = function () {
       "div",
       { staticClass: "portfolio-img view view-first" },
       [
-        _vm._m(0),
+        _vm.article.new_flag
+          ? _c("div", { staticClass: "product-image" }, [
+              _c(
+                "div",
+                { staticClass: "discount-percent-badge discount-badge-fourty" },
+                [_vm._v("NEW")]
+              ),
+            ])
+          : _vm._e(),
         _vm._v(" "),
         _vm.article.image != null
           ? _c("site-img", {
@@ -761,20 +775,7 @@ var render = function () {
     ),
   ])
 }
-var staticRenderFns = [
-  function () {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "product-image" }, [
-      _c(
-        "div",
-        { staticClass: "discount-percent-badge discount-badge-fourty" },
-        [_vm._v("NEW")]
-      ),
-    ])
-  },
-]
+var staticRenderFns = []
 render._withStripped = true
 
 

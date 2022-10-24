@@ -61,7 +61,6 @@
 
         <commentForm :article_id="this.article.id" />
 
-
         <SimilarArticles 
             :article_id="this.article.id" 
             :article_category="this.article.category" 

@@ -36,7 +36,7 @@
                     <p>{{ forum_short_description }}</p>
                 </div>
             </div> -->
-            <div class="col-md-4 text-center">
+            <div class="col-md-4 text-center" @click="go_to_service('films')">
                 <div class="row service_icon">
                     <i class="fa fa-video-camera" aria-hidden="true"></i>
                 </div>
@@ -99,5 +99,7 @@
 <style>
     .service_icon i {
         font-size: 200%;
+
+        cursor: pointer;
     }
 </style>

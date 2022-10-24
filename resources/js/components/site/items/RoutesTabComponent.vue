@@ -156,10 +156,10 @@
                         <td v-else>{{ route.grade_fr }}</td>
 
                         <td v-if="route.or_grade_fr != NULL">
-                            {{ grade_chart(route.grade_fr) }} /
-                            {{ grade_chart(route.or_grade_fr) }}
+                            {{ lead_grade_chart(route.grade_fr) }} /
+                            {{ lead_grade_chart(route.or_grade_fr) }}
                         </td>
-                        <td v-else>{{ grade_chart(route.grade_fr) }}</td>
+                        <td v-else>{{ lead_grade_chart(route.grade_fr) }}</td>
 
                         <td
                             @click="
@@ -185,23 +185,26 @@
                         <td>{{ $t("route_tab name") }}</td>
                         <td>{{ $t("route_tab height") }}</td>
                         <td>{{ $t("route_tab grade fr") }}</td>
-                        <!-- <td>{{ $t('route_tab grade yds')}}</td>  -->
+                        <td>{{ $t("route_tab grade yds") }}</td> 
                         <td>Info</td>
                     </tr>
                 </tbody>
                 <tbody>
                     <tr v-for="route in area.boulder_route" :key="route.id">
                         <td>{{ route.num }}</td>
-                        <td @click="show_route_model()">{{ route.name }}</td>
+                        <td @click="show_route_model(route.id)">{{ route.name }}</td>
                         <td>{{ route.height }}</td>
+
+                        <td v-if="route.or_grade_fr != NULL">
+                            {{ boulder_grade_chart(route.grade_fr) }} /
+                            {{ boulder_grade_chart(route.or_grade_fr) }}
+                        </td>
+                        <td v-else>{{ boulder_grade_chart(route.grade_fr) }}</td>
 
                         <td v-if="route.or_grade_fr != NULL">
                             {{ route.grade_fr }} / {{ route.or_grade_fr }}
                         </td>
                         <td v-else>{{ route.grade_fr }}</td>
-
-                        <!-- <td v-if="route.or_grade_fr != NULL">{{ grade_chart(route.grade_fr) }} / {{ grade_chart(route.or_grade_fr) }}</td>
-                        <td v-else>{{ grade_chart(route.grade_fr) }}</td> -->
 
                         <td @click="show_route_model(route.id)">
                             <a style="margin-top: -5%; font-size: 120%"
@@ -269,11 +272,11 @@
                             <td v-else>{{ pitch.pitch_grade_fr }}</td>
 
                             <td v-if="pitch.pitch_or_grade_fr != NULL">
-                                {{ grade_chart(pitch.pitch_grade_fr) }} /
-                                {{ grade_chart(pitch.pitch_or_grade_fr) }}
+                                {{ lead_grade_chart(pitch.pitch_grade_fr) }} /
+                                {{ lead_grade_chart(pitch.pitch_or_grade_fr) }}
                             </td>
                             <td v-else>
-                                {{ grade_chart(pitch.pitch_grade_fr) }}
+                                {{ lead_grade_chart(pitch.pitch_grade_fr) }}
                             </td>
                         </tr>
                     </tbody>
@@ -457,7 +460,7 @@
                             <p class="route_detal">Height - {{ mtp.height }}</p>
                         </span>
                     </div>
-                    <div class="row" v-if="this.mtp_posts.length > 0">
+                    <!-- <div class="row" v-if="this.mtp_posts.length > 0">
                         <div class="row">
                             <div class="col-md-6">
                                 <h2 @click="mtp_post_list = !mtp_post_list">
@@ -564,7 +567,7 @@
                                 For more posts visit forum site
                             </div>
                         </div>
-                    </div>
+                    </div> -->
                 </div>
             </div>
             <div slot="modal-footer">
@@ -643,6 +646,7 @@ export default {
     mounted() {
         this.get_outdoor_routes();
         this.get_spot_rocks_images();
+
     },
 
     watch: {
@@ -651,11 +655,11 @@ export default {
             this.get_spot_rocks_images();
         },
     },
-    beforeDestroy() {
-        document.removeEventListener("grade", "this.storageListener");
-    },
+    // beforeDestroy() {
+    //     document.removeEventListener("grade", "this.storageListener");
+    // },
     methods: {
-        grade_chart(grade_fr) {
+        lead_grade_chart(grade_fr) {
             var grad = "";
             if (localStorage.getItem("grade") == "yds") {
                 if (grade_fr == "4") grad = "5.6";
@@ -687,8 +691,13 @@ export default {
                 else if (grade_fr == "9c") grad = "5.15d";
                 else if (grade_fr == "9c+") grad = "5.16a";
                 else grad = "?";
-            } else if (localStorage.getItem("grade") == "UIAA") {
-                if (grade_fr == "4") grad = "5.6";
+            } 
+            else if (localStorage.getItem("grade") == "UIAA") {
+                // console.log(localStorage.getItem("grade"))
+                if (grade_fr == "4") grad = "IV";
+                else if (grade_fr == "5a" || grade_fr == "5a+") grad = "V+";
+                else if (grade_fr == "5b" || grade_fr == "5b+") grad = "VI-";
+                else if (grade_fr == "5c" || grade_fr == "5c+") grad = "VI";
                 else if (grade_fr == "6a") grad = "VI+";
                 else if (grade_fr == "6a+") grad = "VII-";
                 else if (grade_fr == "6b") grad = "VII";
@@ -710,9 +719,70 @@ export default {
                 else if (grade_fr == "9a") grad = "XI+";
                 else if (grade_fr == "9a+") grad = "XII-";
                 else if (grade_fr == "9b") grad = "XII";
+                else if (grade_fr == "9b+") grad = "XII+";
+                else if (grade_fr == "9c") grad = "XIII";
                 else grad = "?";
             }
+            else {
+                grad = 'Error'
+            }
             return grad;
+        },
+
+        boulder_grade_chart(grade_fr) {
+            var grade = "";
+            if (localStorage.getItem("grade") == "yds") {
+                if (grade_fr == "VB") grade = "4-";
+                else if (grade_fr == "V0-") grade = "4";
+                else if (grade_fr == "V0") grade = "4+";
+                else if (grade_fr == "V0+") grade = "5a";
+                else if (grade_fr == "V1") grade = "5b";
+                else if (grade_fr == "V2") grade = "5c";
+                else if (grade_fr == "V3") grade = "6a";
+                else if (grade_fr == "V4") grade = "6b";
+                else if (grade_fr == "V5") grade = "6c+";
+                else if (grade_fr == "V6") grade = "7a";
+                else if (grade_fr == "V7") grade = "7a+";
+                else if (grade_fr == "V8") grade = "7b";
+                else if (grade_fr == "V9") grade = "7c";
+                else if (grade_fr == "V10") grade = "7c+";
+                else if (grade_fr == "V11") grade = "8a";
+                else if (grade_fr == "V12") grade = "8a+";
+                else if (grade_fr == "V13") grade = "8b";
+                else if (grade_fr == "V14") grade = "8b+";
+                else if (grade_fr == "V15") grade = "8c";
+                else if (grade_fr == "V16") grade = "8c+";
+                else if (grade_fr == "V17") grade = "9a";
+                else grade = "?";
+            } 
+            else if (localStorage.getItem("grade") == "UIAA") {
+                if (grade_fr == "VB") grade = "4-";
+                else if (grade_fr == "V0-") grade = "VI+";
+                else if (grade_fr == "V0") grade = "VII-";
+                else if (grade_fr == "V0+") grade = "VII";
+                else if (grade_fr == "V1") grade = "VII+";
+                else if (grade_fr == "V2") grade = "VII+/VII-";
+                else if (grade_fr == "V3") grade = "VIII-";
+                else if (grade_fr == "V4") grade = "VIII";
+                else if (grade_fr == "V5") grade = "VIII/VIII+";
+                else if (grade_fr == "V6") grade = "VIII+";
+                else if (grade_fr == "V7") grade = "IX-";
+                else if (grade_fr == "V8") grade = "IX";
+                else if (grade_fr == "V9") grade = "IX/IX+";
+                else if (grade_fr == "V10") grade = "IX+";
+                else if (grade_fr == "V11") grade = "X-";
+                else if (grade_fr == "V12") grade = "X";
+                else if (grade_fr == "V13") grade = "X+";
+                else if (grade_fr == "V14") grade = "XI-";
+                else if (grade_fr == "V15") grade = "XI";
+                else if (grade_fr == "V16") grade = "XI+";
+                else if (grade_fr == "V17") grade = "XII-";
+                else grade = "?";
+            }
+            else {
+                grad = 'Error'
+            }
+            return grade;
         },
         get_spot_rocks_images() {
             axios
@@ -734,15 +804,15 @@ export default {
                 })
                 .catch((error) => {});
         },
-        get_route_posts(route_id) {
-            this.route_posts = [];
-            axios
-                .get("../api/posts/get_route_posts/" + route_id)
-                .then((response) => {
-                    this.route_posts = response.data;
-                })
-                .catch((error) => console.log(error));
-        },
+        // get_route_posts(route_id) {
+        //     this.route_posts = [];
+        //     axios
+        //         .get("../api/posts/get_route_posts/" + route_id)
+        //         .then((response) => {
+        //             this.route_posts = response.data;
+        //         })
+        //         .catch((error) => console.log(error));
+        // },
         show_mtp_madel(id) {
             this.show_mtp_modal = true;
             this.mtp_detals = [];
@@ -755,15 +825,15 @@ export default {
                 })
                 .catch((error) => {});
         },
-        get_mtp_posts(mtp_id) {
-            this.mtp_posts = [];
-            axios
-                .get("../api/posts/get_mtp_posts/" + mtp_id)
-                .then((response) => {
-                    this.mtp_posts = response.data;
-                })
-                .catch((error) => console.log(error));
-        },
+        // get_mtp_posts(mtp_id) {
+        //     this.mtp_posts = [];
+        //     axios
+        //         .get("../api/posts/get_mtp_posts/" + mtp_id)
+        //         .then((response) => {
+        //             this.mtp_posts = response.data;
+        //         })
+        //         .catch((error) => console.log(error));
+        // },
         get_outdoor_routes() {
             axios
                 .get("../api/sector/" + this.article_id)

@@ -198,6 +198,9 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   props: ['mount', 'image_dir', 'route'],
   data: function data() {
@@ -801,6 +804,16 @@ var render = function () {
       "div",
       { staticClass: "portfolio-img view view-first" },
       [
+        _vm.mount.new_flag
+          ? _c("div", { staticClass: "product-image" }, [
+              _c(
+                "div",
+                { staticClass: "discount-percent-badge discount-badge-fourty" },
+                [_vm._v("NEW")]
+              ),
+            ])
+          : _vm._e(),
+        _vm._v(" "),
         _vm.mount.image != _vm.NULL
           ? _c("site-img", {
               attrs: {
@@ -838,7 +851,17 @@ var render = function () {
               domProps: { innerHTML: _vm._s(_vm.mount.short_description) },
             }),
             _vm._v(" "),
-            _vm._m(0),
+            _vm.mount.mount_system
+              ? _c("div", { staticClass: "col text-center" }, [
+                  _c("div", { staticClass: "row" }, [
+                    _vm._v(
+                      "\n                          Mount system - " +
+                        _vm._s(_vm.mount.mount_system) +
+                        "\n                      "
+                    ),
+                  ]),
+                ])
+              : _vm._e(),
           ]),
         ]),
       ],
@@ -846,20 +869,7 @@ var render = function () {
     ),
   ])
 }
-var staticRenderFns = [
-  function () {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "col text-center" }, [
-      _c("div", { staticClass: "row" }, [
-        _vm._v(
-          "\n                          Mount system - \n                      "
-        ),
-      ]),
-    ])
-  },
-]
+var staticRenderFns = []
 render._withStripped = true
 
 

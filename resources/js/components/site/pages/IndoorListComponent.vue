@@ -61,6 +61,12 @@
             ContentLoader,
             metaData
         },
+        watch: {
+            '$route' (to, from) {
+                this.get_indoors(),
+                window.scrollTo(0,0)
+            }
+        },
         mounted() {
             this.get_indoors()
         },

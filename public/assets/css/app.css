@@ -2431,6 +2431,15 @@ input:focus, select:focus {
 *   Vue mobal style
 *
 */
+.modal-content {
+  margin-top: 20% !important;
+}
+
+@media screen and (max-width: 704px) {
+  .modal-content {
+    margin-top: 50% !important;
+  }
+}
 .modal-dialog {
   width: 60% !important;
   max-width: 100% !important;

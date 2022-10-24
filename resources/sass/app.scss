@@ -2423,9 +2423,15 @@ border: 1px solid;}
 //     padding: 0;
 //   }
 
-//   .modal-content {
-//     height: 100%;
-//   }
+  .modal-content {
+    margin-top: 20% !important;
+  }
+
+  @media screen and (max-width: 704px){
+  .modal-content {
+    margin-top: 50% !important;
+  }
+}
 
 //   &.aside .modal-content {
 //     height: auto;

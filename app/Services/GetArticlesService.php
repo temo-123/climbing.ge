@@ -5,7 +5,7 @@ namespace App\Services;
 use App\Models\Locale_article;
 use App\Models\General_info;
 // use App\Models\Ru_article;
-// use App\Models\Ka_article;
+use App\Models\Mount;
 
 use Carbon\Carbon;
 
@@ -37,6 +37,7 @@ class GetArticlesService
                                                                 "start_data" => $article->start_data,
                                                                 "region_id"=>$article->region_id,
                                                                 "end_data" => $article->end_data,
+                                                                "mount_system" => $mount_system,
                                                                 ]);
                     }
                 }
@@ -60,6 +61,7 @@ class GetArticlesService
                                                                 "start_data" => $article->start_data,
                                                                 "region_id"=>$article->region_id,
                                                                 "end_data" => $article->end_data,
+                                                                "mount_system" => $mount_system,
                                                                 ]);
                     }
                 }
@@ -70,9 +72,28 @@ class GetArticlesService
                 $us_articles = Locale_article::where('id', '=', $article->us_article_id)->get();
                 foreach ($us_articles as $us_article) {
                     if ($us_article->id == $article->us_article_id) {
+                        $new_article = false;
+
+                        $new_flag = (new static)->get_new_article_pin($article);
+
+                        $mount_system = '';
+    
+                        if(count($article->mount_masiv) > 0){
+                            $masiv_id = $article->mount_masiv[0]->mount_id;
+                            $m_system = Mount::where('id', '=', $masiv_id)->first();
+                            $m = $m_system->us_mount;
+
+                            $mount_system = $m->title;
+                        }
+                        else{
+                            $mount_system = '';
+                        }
+
+                        // dd($article);
+                        // array_push($articles, [$us_articles,  $article[0]]);
                         array_push($articles, [$us_articles,    "url_title"=>$article->url_title, 
                                                                 "id" => $article->id,
-                                                                // "mount_id" => $article->mount_id,
+                                                                "mount_id" => $article->mount_id,
                                                                 "category" => $article->category,
                                                                 "climbing_area_image" => $article->climbing_area_image,
                                                                 "image" => $article->image,
@@ -83,6 +104,10 @@ class GetArticlesService
                                                                 "start_data" => $article->start_data,
                                                                 "region_id"=>$article->region_id,
                                                                 "end_data" => $article->end_data,
+
+                                                                "new_flag"=>$new_flag,
+
+                                                                "mount_system" => $mount_system,
                                                                 ]);
                     }
                 }
@@ -92,22 +117,78 @@ class GetArticlesService
         return $articles;
     }
 
-
-    public static function get_new_article_pin($global_article)
+    public function get_list_array($global_article, $local_article)
     {
-        $time_array = array();
+        $new_article = false;
 
-        foreach ($global_article as $article) {
-            if ($article[0][0]->created_at->lt(Carbon::now()->subDays(30))){
-                $time = 0;
-                array_push($time_array, ['id'=>$article[0][0]->id, 'name'=>$article['url_title'], 'time'=>$time]);
-            } else {
-                $time = 1;
-                array_push($time_array, ['id'=>$article[0][0]->id, 'name'=>$article['url_title'], 'time'=>$time]);
-            }
+        $new_flag = (new static)->get_new_article_pin($article);
+
+        $mount_system = '';
+
+        if(count($article->mount_masiv) > 0){
+            $masiv_id = $article->mount_masiv[0]->mount_id;
+            $m_system = Mount::where('id', '=', $masiv_id)->first();
+            $m = $m_system->us_mount;
+
+            $mount_system = $m->title;
         }
+        else{
+            $mount_system = '';
+        }
+
+        // dd($article);
+        // array_push($articles, [$us_articles,  $article[0]]);
+        $articles = [$us_articles,    "url_title"=>$article->url_title, 
+                                                "id" => $article->id,
+                                                "mount_id" => $article->mount_id,
+                                                "category" => $article->category,
+                                                "climbing_area_image" => $article->climbing_area_image,
+                                                "image" => $article->image,
+                                                "closed" => $article->closed,
+                                                "price_from" => $article->price_from,
+                                                "open_time" => $article->open_time,
+                                                "closed_time"=>$article->closed_time,
+                                                "start_data" => $article->start_data,
+                                                "region_id"=>$article->region_id,
+                                                "end_data" => $article->end_data,
+
+                                                "new_flag"=>$new_flag,
+
+                                                "mount_system" => $mount_system,
+                                                ];
+        return $articles;
+    }
+
+
+    // public static function get_new_article_pin($global_article)
+    // {
+    //     $time_array = array();
+
+    //     foreach ($global_article as $article) {
+    //         if ($article[0][0]->created_at->lt(Carbon::now()->subDays(30))){
+    //             $time = 0;
+    //             array_push($time_array, ['id'=>$article[0][0]->id, 'name'=>$article['url_title'], 'time'=>$time]);
+    //         } else {
+    //             $time = 1;
+    //             array_push($time_array, ['id'=>$article[0][0]->id, 'name'=>$article['url_title'], 'time'=>$time]);
+    //         }
+    //     }
         
-        return $time_array;
+    //     return $time_array;
+    // }
+
+
+    public static function get_new_article_pin($article){
+        // dd($article);
+        $time = false;
+        if($article->created_at){
+            if ($article->created_at->lt(Carbon::now()->subDays(30))){
+                $time = false;
+            } else {
+                $time = true;
+            }
+            return $time;
+        }
     }
 
 

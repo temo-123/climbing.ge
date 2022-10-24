@@ -27,6 +27,12 @@
         mounted() {
             this.get_partner()
         },
+        watch: {
+            '$route' (to, from) {
+                this.get_partner(),
+                window.scrollTo(0,0)
+            }
+        },
         methods: {
             get_partner(){
                 axios

@@ -27,6 +27,12 @@
         mounted() {
             this.get_other()
         },
+        watch: {
+            '$route' (to, from) {
+                this.get_other(),
+                window.scrollTo(0,0)
+            }
+        },
         methods: {
             get_other(){
                 axios

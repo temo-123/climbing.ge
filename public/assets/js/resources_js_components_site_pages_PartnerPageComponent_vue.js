@@ -90,7 +90,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
 
 
 
@@ -815,8 +814,18 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
-  name: "Article Right Navigation Menu"
+  name: "Article Right Navigation Menu",
+  mounted: function mounted() {// console.log(window.screenX)
+    // window.scroll(0, 0);
+  },
+  methods: {
+    test: function test() {
+      console.log(Math.random());
+    }
+  }
 });
 
 /***/ }),
@@ -853,24 +862,6 @@ __webpack_require__.r(__webpack_exports__);
   components: {
     SimilarArticleCardComponent: _cards_SimilarArticleCardComponent_vue__WEBPACK_IMPORTED_MODULE_0__["default"]
   },
-  // mounted() {
-  //     this.get_similar_articles()
-  // },
-  // methods: {
-  //     get_similar_articles(){
-  //         axios
-  //         .put('../api/article/' + this.article_id, {})
-  //         .then(response => {
-  //             this.other_articles = response.data
-  //             if (this.article_category == 'news') {
-  //                 this.image_dir = 'news_img/',
-  //                 this.route_url = 'news/'
-  //             }
-  //         })
-  //         .catch(error =>{
-  //         })
-  //     }
-  // }
   data: function data() {
     return {
       image_dir: '',
@@ -879,14 +870,28 @@ __webpack_require__.r(__webpack_exports__);
     };
   },
   mounted: function mounted() {
-    var _this = this;
+    this.get_same_articles();
+  },
+  watch: {
+    '$route': function $route(to, from) {
+      this.get_same_articles();
+      window.scrollTo(0, 0);
+    }
+  },
+  methods: {
+    get_same_articles: function get_same_articles() {
+      var _this = this;
 
-    axios.post('../api/similar_article/' + localStorage.getItem('lang'), {
-      article_id: this.article_id,
-      article_category: this.article_category
-    }).then(function (response) {
-      _this.similar_article = response.data;
-    })["catch"](function (error) {});
+      axios.post('../api/similar_article/' + localStorage.getItem('lang'), {
+        article_id: this.article_id,
+        article_category: this.article_category
+      }).then(function (response) {
+        _this.similar_article = response.data;
+      })["catch"](function (error) {});
+    },
+    test: function test() {
+      console.log('test');
+    }
   }
 });
 
@@ -929,9 +934,14 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   props: ['article', 'image_dir', 'route'],
-  mounted: function mounted() {}
+  mounted: function mounted() {// console.log( 'article.area[0].url_title' );
+    // console.log( article );
+    // console.log( 'article.area[0].url_title' );
+  }
 });
 
 /***/ }),
@@ -974,6 +984,11 @@ __webpack_require__.r(__webpack_exports__);
   },
   mounted: function mounted() {
     this.get_partner();
+  },
+  watch: {
+    '$route': function $route(to, from) {
+      this.get_partner(), window.scrollTo(0, 0);
+    }
   },
   methods: {
     get_partner: function get_partner() {
@@ -3066,65 +3081,71 @@ var render = function () {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c(
-    "div",
-    {
-      staticClass:
-        "col-sm-3 col-sm-offset-1 blog-sidebar display-none-720px right_navigarion_menu",
-    },
-    [
-      _c("nav", { staticClass: "navbar fading-side-menu" }, [
-        _c("ul", { staticClass: "list-unstyled" }, [
-          _c("li", [
-            _c("h4", [_vm._v(_vm._s(_vm.$t("article navigation menu")))]),
-          ]),
-          _vm._v(" "),
-          _c("li", [
-            _c("a", { attrs: { href: "#description" } }, [
-              _c("span", { staticClass: "text-primary" }, [
-                _vm._v(_vm._s(_vm.$t("nav description"))),
+  return _c("div", [
+    _c(
+      "div",
+      {
+        staticClass:
+          "col-sm-3 col-sm-offset-1 blog-sidebar display-none-720px right_navigarion_menu",
+      },
+      [
+        Math.random() > 0.5
+          ? _c("div", [_vm._v("\n  Now you see me\n")])
+          : _c("div", [_vm._v("\n  Now you don't\n")]),
+        _vm._v(" "),
+        _c("nav", { staticClass: "navbar fading-side-menu" }, [
+          _c("ul", { staticClass: "list-unstyled" }, [
+            _c("li", [
+              _c("h4", [_vm._v(_vm._s(_vm.$t("article navigation menu")))]),
+            ]),
+            _vm._v(" "),
+            _c("li", [
+              _c("a", { attrs: { href: "#description" } }, [
+                _c("span", { staticClass: "text-primary" }, [
+                  _vm._v(_vm._s(_vm.$t("nav description"))),
+                ]),
               ]),
             ]),
-          ]),
-          _vm._v(" "),
-          _c("li", [
-            _c("a", { attrs: { href: "#sectors" } }, [
-              _c("span", { staticClass: "text-primary" }, [
-                _vm._v(_vm._s(_vm.$t("nav sectors"))),
+            _vm._v(" "),
+            _c("li", [
+              _c("a", { attrs: { href: "#sectors" } }, [
+                _c("span", { staticClass: "text-primary" }, [
+                  _vm._v(_vm._s(_vm.$t("nav sectors"))),
+                ]),
               ]),
             ]),
-          ]),
-          _vm._v(" "),
-          _c("li", [
-            _c("a", { attrs: { href: "#gallery" } }, [
-              _c("span", { staticClass: "text-primary" }, [
-                _vm._v(_vm._s(_vm.$t("nav gallery"))),
+            _vm._v(" "),
+            _c("li", [
+              _c("a", { attrs: { href: "#gallery" } }, [
+                _c("span", { staticClass: "text-primary" }, [
+                  _vm._v(_vm._s(_vm.$t("nav gallery"))),
+                ]),
               ]),
             ]),
-          ]),
-          _vm._v(" "),
-          _c("li", [
-            _c("a", { attrs: { href: "#comments" } }, [
-              _c("span", { staticClass: "text-primary" }, [
-                _vm._v(_vm._s(_vm.$t("nav comments"))),
+            _vm._v(" "),
+            _c("li", [
+              _c("a", { attrs: { href: "#comments" } }, [
+                _c("span", { staticClass: "text-primary" }, [
+                  _vm._v(_vm._s(_vm.$t("nav comments"))),
+                ]),
               ]),
             ]),
-          ]),
-          _vm._v(" "),
-          _c("li", [
-            _c("a", { attrs: { href: "#other" } }, [
-              _c("span", { staticClass: "text-primary" }, [
-                _vm._v(_vm._s(_vm.$t("nav similar articles"))),
+            _vm._v(" "),
+            _c("li", [
+              _c("a", { attrs: { href: "#other" } }, [
+                _c("span", { staticClass: "text-primary" }, [
+                  _vm._v(_vm._s(_vm.$t("nav similar articles"))),
+                ]),
               ]),
             ]),
           ]),
         ]),
-      ]),
-      _vm._v(" "),
-      _c("rightAd"),
-    ],
-    1
-  )
+        _vm._v(" "),
+        _c("rightAd"),
+      ],
+      1
+    ),
+  ])
 }
 var staticRenderFns = []
 render._withStripped = true
@@ -3205,7 +3226,14 @@ var render = function () {
       [
         _c(
           "router-link",
-          { attrs: { to: { name: "outdoor" } } },
+          {
+            attrs: {
+              to: {
+                name: "outdoor",
+                params: { url_title: _vm.article.area.url_title },
+              },
+            },
+          },
           [
             _vm.article.area.image != null
               ? _c("site-img", {
@@ -3234,9 +3262,18 @@ var render = function () {
         "div",
         { staticClass: "similar_articles_title" },
         [
-          _c("router-link", { attrs: { to: "../" + this.route } }, [
-            _c("h3", [_vm._v(_vm._s(_vm.article.area[0][0].title))]),
-          ]),
+          _c(
+            "router-link",
+            {
+              attrs: {
+                to: {
+                  name: "outdoor",
+                  params: { url_title: _vm.article.area.url_title },
+                },
+              },
+            },
+            [_c("h3", [_vm._v(_vm._s(_vm.article.area[0][0].title))])]
+          ),
         ],
         1
       ),

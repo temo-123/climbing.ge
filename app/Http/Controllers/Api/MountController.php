@@ -8,6 +8,9 @@ use Illuminate\Http\Request;
 use App\Models\Mount;
 use App\Services\GetMountSystemService;
 
+use App\Models\Article_mount;
+use App\Models\Article;
+
 class MountController extends Controller
 {
     /**
@@ -29,6 +32,22 @@ class MountController extends Controller
     public function get_locale_mount(Request $request)
     {
         return GetMountSystemService::get_local_mount_use_locale($request->mount_id, $request->lang);
+    }
+
+    public function get_locale_mount_on_route_page(Request $request)
+    {
+        $m_system = Article::where('id', '=', $request->mount_route_id)->first();
+        
+        $mount_sys = $m_system->mount_masiv;
+
+        if(count($mount_sys) > 0){
+            // dd();
+            $mounts_system = Mount::where('id', '=', $mount_sys[0]->mount_id)->first();
+
+            $system = GetMountSystemService::get_local_mount_use_locale($mounts_system->id, $request->lang);
+
+            return $system[0];
+        }
     }
 
     /**

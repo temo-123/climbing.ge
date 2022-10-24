@@ -27,7 +27,7 @@
                 <div class="col-md-3">
                     <div class="row">
                         <!-- <div class="range-slider"> -->
-                            <input class='min_price_range price_range' type="range" min="0" max="1000" v-model="min_price" step="10">
+                            <input class='min_price_range price_range' type="range" min="0" max="999" v-model="min_price" step="10">
                         <!-- </div> -->
                     </div>
                     <div class="row price_range_text text-center">
@@ -46,7 +46,7 @@
 
                 <div class="col-md-3">
                     <!-- <div class="range-slider"> -->
-                        <input class="max_price_range price_range" type="range" min="0" max="1000" v-model='max_price' value="1000" step="10">
+                        <input class="max_price_range price_range" type="range" min="0" max="999" v-model='max_price' value="1000" step="10">
                     <!-- </div> -->
                     <div class="row price_range_text text-center">
                         <!-- <p>Maximal price - {{max_price}}</p> -->
@@ -132,23 +132,10 @@
 
                     <h1>{{ q_product.locale_product.title }}</h1>
 
-                    <site-img :src="'../../../public/images/product_img/'+q_product.product_images[0]" :img_class="''" :alt='q_product.locale_product.title'/>
+                    <!-- <site-img :src="'../../../public/images/product_img/'+q_product.product_images[0]" :img_class="''" :alt='q_product.locale_product.title'/> -->
 
-                    <div class="row">
-                        <div class="col-md-6">
-                            <select class="form-control" v-model="product_modification_for_cart" name="product_modification_for_cart" @click="select_option()">
-                                <option>All</option>
-                            </select> 
-                        </div>
-                        <div class="col-md-4">
-                            <input type="number" class="form-control" min="1" max='10' v-model="products_quantity" />
-                        </div>
-                        <div class="col-md-2">
-                            <a @click="add_to_cart()" class='text-center'> 
-                                <i class="fa fa-cart-plus" aria-hidden="true" style="font-size: 250%;"></i>
-                            </a>
-                        </div>
-                    </div>
+                    <site-img v-if="q_product.product_images.length > 0" :src="'../../../public/images/product_img/'+q_product.product_images[0]" :alt='q_product.locale_product.title'/>
+                    <site-img v-if="q_product.product_images.length == 0" :src="'../../../public/images/site_img/shop_demo.jpg'" :alt="q_product.locale_product.title" />
 
 
                     {{ q_product.locale_product.text }}
@@ -201,7 +188,7 @@
                 filtred_products: [],
                 // site_data: [],
                 min_price: 0,
-                max_price: 1000,
+                max_price: 999,
                 filter_category: 'All',
                 // sortid_products: [],
                 categories: [],
@@ -273,27 +260,27 @@
             },
 
 
-            select_option(){
-                alert('test')
-            },
-            add_to_cart(){
-                if(this.product_modification_for_cart == "All"){
-                    alert('plis select option')
-                }
-                else{
-                    // this.cart_options = {"modification_id": this.product_modification_for_cart, "quantity": this.products_quantity}
-                    axios
-                    .put('../api/cart/'+this.product_modification_for_cart, {
-                        modification_id: this.product_modification_for_cart,
-                        quantity: this.products_quantity
-                    })
-                    .then(response => {
-                        this.add_to_cart_message = "Product added in your cart"
-                    })
-                    .catch(error =>{
-                    })
-                }
-            },
+            // select_option(){
+            //     alert('test')
+            // },
+            // add_to_cart(){
+            //     if(this.product_modification_for_cart == "All"){
+            //         alert('plis select option')
+            //     }
+            //     else{
+            //         // this.cart_options = {"modification_id": this.product_modification_for_cart, "quantity": this.products_quantity}
+            //         axios
+            //         .put('../api/cart/'+this.product_modification_for_cart, {
+            //             modification_id: this.product_modification_for_cart,
+            //             quantity: this.products_quantity
+            //         })
+            //         .then(response => {
+            //             this.add_to_cart_message = "Product added in your cart"
+            //         })
+            //         .catch(error =>{
+            //         })
+            //     }
+            // },
 
             serReangSlider(){
                 if(this.min_price == 0 && this.max_price == 0){
@@ -422,5 +409,11 @@
 
     .product_style_but_icon{
         font-size: 180%;
+    }
+
+
+
+    .modal-content {
+        margin-top: 50% !important;
     }
 </style>

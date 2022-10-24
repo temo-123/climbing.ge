@@ -4,6 +4,8 @@
 
 <p>Sercice climbing.ge is georgian rock climbing and mountaineering areas description and social netvork for your climbing ascent sheering. Alse ouer product onlain shop. in services we have 5 subdomain: climibng.ge, forum.climbing.ge, shop.climbing,ge, films.climbing.ge, user.climbing.ge. (All descriptions see down)</p>
 
+<p>General sites is:</p>
+
 [climibng.ge](/docs/GUIDBOOK.md) - Is a Georgian rock climibng guidbook
 
 [forum.climbing.ge](/docs/FORUM.md) - Comming soon
@@ -11,6 +13,8 @@
 [shop.climbing,ge](/docs/SHOP.md) - Ouer products store
 
 [films.climbing.ge](/docs/FILMS.md) - This is a climbing films portal
+
+<p>Admin & user dashboard, also CMS system, paseble to us in:</p>
 
 [user.climbing.ge](/docs/USER_PAGE.md) - Your privat room
 

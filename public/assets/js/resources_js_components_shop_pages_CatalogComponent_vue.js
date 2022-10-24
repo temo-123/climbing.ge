@@ -454,19 +454,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
 
 
 
@@ -497,7 +484,7 @@ __webpack_require__.r(__webpack_exports__);
       filtred_products: [],
       // site_data: [],
       min_price: 0,
-      max_price: 1000,
+      max_price: 999,
       filter_category: 'All',
       // sortid_products: [],
       categories: [],
@@ -555,24 +542,27 @@ __webpack_require__.r(__webpack_exports__);
         _this2.product_modal = true;
       })["catch"](function (error) {});
     },
-    select_option: function select_option() {
-      alert('test');
-    },
-    add_to_cart: function add_to_cart() {
-      var _this3 = this;
-
-      if (this.product_modification_for_cart == "All") {
-        alert('plis select option');
-      } else {
-        // this.cart_options = {"modification_id": this.product_modification_for_cart, "quantity": this.products_quantity}
-        axios.put('../api/cart/' + this.product_modification_for_cart, {
-          modification_id: this.product_modification_for_cart,
-          quantity: this.products_quantity
-        }).then(function (response) {
-          _this3.add_to_cart_message = "Product added in your cart";
-        })["catch"](function (error) {});
-      }
-    },
+    // select_option(){
+    //     alert('test')
+    // },
+    // add_to_cart(){
+    //     if(this.product_modification_for_cart == "All"){
+    //         alert('plis select option')
+    //     }
+    //     else{
+    //         // this.cart_options = {"modification_id": this.product_modification_for_cart, "quantity": this.products_quantity}
+    //         axios
+    //         .put('../api/cart/'+this.product_modification_for_cart, {
+    //             modification_id: this.product_modification_for_cart,
+    //             quantity: this.products_quantity
+    //         })
+    //         .then(response => {
+    //             this.add_to_cart_message = "Product added in your cart"
+    //         })
+    //         .catch(error =>{
+    //         })
+    //     }
+    // },
     serReangSlider: function serReangSlider() {
       if (this.min_price == 0 && this.max_price == 0) {
         this.min_price = 0;
@@ -618,10 +608,10 @@ __webpack_require__.r(__webpack_exports__);
     //     })
     // },
     get_categories: function get_categories() {
-      var _this4 = this;
+      var _this3 = this;
 
       axios.get('../api/product_category').then(function (response) {
-        _this4.categories = response.data;
+        _this3.categories = response.data;
       })["catch"](function (error) {});
     },
     get_product_price_interval: function get_product_price_interval() {
@@ -674,7 +664,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_laravel_mix_node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, "\n.list_btn[data-v-4148482d]{\n    border: 1px solid !important;\n    border-radius: 3.5px !important;\n    border-color: #b3b3b3 !important;\n}\n.range-slider[data-v-4148482d]{\n    width: 100%;\n    /* margin: auto 16px;\n    text-align: center;\n    position: relative; */\n}\n.range-slider svg[data-v-4148482d], .range-slider input[type = range][data-v-4148482d]{\n    position: absolute;\n    left: 0;\n    right: 0;\n}\ninput[type=range][data-v-4148482d]::-webkit-slider-thumb{\n    z-index: 2;\n    position: relative;\n    top: 2px;\n    margin-top: -7px;\n}\n.price_range[data-v-4148482d]{\n    width: 100%\n}\n.price_range_text p[data-v-4148482d]{\n    margin-top: 5%;\n    margin-bottom: 0% !important;\n}\n\n/* .max_price_range{\n    -webkit-transform: rotateY(180deg);\n    -moz-transform: rotateY(180deg);\n    -ms-transform: rotateY(180deg);\n    -o-transform: rotateY(180deg);\n    transform: rotateY(180deg);\n} */\n\n/* Switch button */\n.btn-default.btn-on.active[data-v-4148482d]{\n    background-color: #8ee48e;\n}\n.btn-default.btn-off.active[data-v-4148482d]{\n    background-color: #fc8480;\n}\n.product_style_but_icon[data-v-4148482d]{\n    font-size: 180%;\n}\n", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, "\n.list_btn[data-v-4148482d]{\n    border: 1px solid !important;\n    border-radius: 3.5px !important;\n    border-color: #b3b3b3 !important;\n}\n.range-slider[data-v-4148482d]{\n    width: 100%;\n    /* margin: auto 16px;\n    text-align: center;\n    position: relative; */\n}\n.range-slider svg[data-v-4148482d], .range-slider input[type = range][data-v-4148482d]{\n    position: absolute;\n    left: 0;\n    right: 0;\n}\ninput[type=range][data-v-4148482d]::-webkit-slider-thumb{\n    z-index: 2;\n    position: relative;\n    top: 2px;\n    margin-top: -7px;\n}\n.price_range[data-v-4148482d]{\n    width: 100%\n}\n.price_range_text p[data-v-4148482d]{\n    margin-top: 5%;\n    margin-bottom: 0% !important;\n}\n\n/* .max_price_range{\n    -webkit-transform: rotateY(180deg);\n    -moz-transform: rotateY(180deg);\n    -ms-transform: rotateY(180deg);\n    -o-transform: rotateY(180deg);\n    transform: rotateY(180deg);\n} */\n\n/* Switch button */\n.btn-default.btn-on.active[data-v-4148482d]{\n    background-color: #8ee48e;\n}\n.btn-default.btn-off.active[data-v-4148482d]{\n    background-color: #fc8480;\n}\n.product_style_but_icon[data-v-4148482d]{\n    font-size: 180%;\n}\n.modal-content[data-v-4148482d] {\n    margin-top: 50% !important;\n}\n", ""]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
@@ -10158,7 +10148,7 @@ var render = function () {
                       },
                     ],
                     staticClass: "min_price_range price_range",
-                    attrs: { type: "range", min: "0", max: "1000", step: "10" },
+                    attrs: { type: "range", min: "0", max: "999", step: "10" },
                     domProps: { value: _vm.min_price },
                     on: {
                       __r: function ($event) {
@@ -10212,7 +10202,7 @@ var render = function () {
                   attrs: {
                     type: "range",
                     min: "0",
-                    max: "1000",
+                    max: "999",
                     value: "1000",
                     step: "10",
                   },
@@ -10354,114 +10344,26 @@ var render = function () {
                     _vm._v("\n\n                "),
                     _c("h1", [_vm._v(_vm._s(q_product.locale_product.title))]),
                     _vm._v("\n\n                "),
-                    _c("site-img", {
-                      attrs: {
-                        src:
-                          "../../../public/images/product_img/" +
-                          q_product.product_images[0],
-                        img_class: "",
-                        alt: q_product.locale_product.title,
-                      },
-                    }),
                     _vm._v("\n\n                "),
-                    _c("div", { staticClass: "row" }, [
-                      _vm._v("\n                    "),
-                      _c("div", { staticClass: "col-md-6" }, [
-                        _vm._v("\n                        "),
-                        _c(
-                          "select",
-                          {
-                            directives: [
-                              {
-                                name: "model",
-                                rawName: "v-model",
-                                value: _vm.product_modification_for_cart,
-                                expression: "product_modification_for_cart",
-                              },
-                            ],
-                            staticClass: "form-control",
-                            attrs: { name: "product_modification_for_cart" },
-                            on: {
-                              click: function ($event) {
-                                return _vm.select_option()
-                              },
-                              change: function ($event) {
-                                var $$selectedVal = Array.prototype.filter
-                                  .call($event.target.options, function (o) {
-                                    return o.selected
-                                  })
-                                  .map(function (o) {
-                                    var val = "_value" in o ? o._value : o.value
-                                    return val
-                                  })
-                                _vm.product_modification_for_cart = $event
-                                  .target.multiple
-                                  ? $$selectedVal
-                                  : $$selectedVal[0]
-                              },
-                            },
+                    q_product.product_images.length > 0
+                      ? _c("site-img", {
+                          attrs: {
+                            src:
+                              "../../../public/images/product_img/" +
+                              q_product.product_images[0],
+                            alt: q_product.locale_product.title,
                           },
-                          [
-                            _vm._v("\n                            "),
-                            _c("option", [_vm._v("All")]),
-                            _vm._v("\n                        "),
-                          ]
-                        ),
-                        _vm._v(" \n                    "),
-                      ]),
-                      _vm._v("\n                    "),
-                      _c("div", { staticClass: "col-md-4" }, [
-                        _vm._v("\n                        "),
-                        _c("input", {
-                          directives: [
-                            {
-                              name: "model",
-                              rawName: "v-model",
-                              value: _vm.products_quantity,
-                              expression: "products_quantity",
-                            },
-                          ],
-                          staticClass: "form-control",
-                          attrs: { type: "number", min: "1", max: "10" },
-                          domProps: { value: _vm.products_quantity },
-                          on: {
-                            input: function ($event) {
-                              if ($event.target.composing) {
-                                return
-                              }
-                              _vm.products_quantity = $event.target.value
-                            },
+                        })
+                      : _vm._e(),
+                    _vm._v("\n                "),
+                    q_product.product_images.length == 0
+                      ? _c("site-img", {
+                          attrs: {
+                            src: "../../../public/images/site_img/shop_demo.jpg",
+                            alt: q_product.locale_product.title,
                           },
-                        }),
-                        _vm._v("\n                    "),
-                      ]),
-                      _vm._v("\n                    "),
-                      _c("div", { staticClass: "col-md-2" }, [
-                        _vm._v("\n                        "),
-                        _c(
-                          "a",
-                          {
-                            staticClass: "text-center",
-                            on: {
-                              click: function ($event) {
-                                return _vm.add_to_cart()
-                              },
-                            },
-                          },
-                          [
-                            _vm._v(" \n                            "),
-                            _c("i", {
-                              staticClass: "fa fa-cart-plus",
-                              staticStyle: { "font-size": "250%" },
-                              attrs: { "aria-hidden": "true" },
-                            }),
-                            _vm._v("\n                        "),
-                          ]
-                        ),
-                        _vm._v("\n                    "),
-                      ]),
-                      _vm._v("\n                "),
-                    ]),
+                        })
+                      : _vm._e(),
                     _vm._v(
                       "\n\n\n                " +
                         _vm._s(q_product.locale_product.text) +

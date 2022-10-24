@@ -27,6 +27,12 @@
         mounted() {
             this.get_news()
         },
+        watch: {
+            '$route' (to, from) {
+                this.get_news(),
+                window.scrollTo(0,0)
+            }
+        },
         methods: {
             get_news(){
                 axios

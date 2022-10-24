@@ -525,6 +525,9 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
     return {
@@ -647,6 +650,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
+//
 //
 //
 //
@@ -2383,6 +2387,19 @@ var render = function () {
                     "div",
                     { key: tip.id, staticClass: "col-xs-6 col-sm-6 col-md-3" },
                     [
+                      tip.new_flag
+                        ? _c("div", { staticClass: "product-image" }, [
+                            _c(
+                              "div",
+                              {
+                                staticClass:
+                                  "discount-percent-badge discount-badge-fourty",
+                              },
+                              [_vm._v("NEW")]
+                            ),
+                          ])
+                        : _vm._e(),
+                      _vm._v(" "),
                       _c(
                         "div",
                         { staticClass: "thumbnail" },
@@ -2688,7 +2705,15 @@ var render = function () {
       "div",
       { staticClass: "portfolio-img view view-first" },
       [
-        _vm._m(0),
+        _vm.article.new_flag
+          ? _c("div", { staticClass: "product-image" }, [
+              _c(
+                "div",
+                { staticClass: "discount-percent-badge discount-badge-fourty" },
+                [_vm._v("NEW")]
+              ),
+            ])
+          : _vm._e(),
         _vm._v(" "),
         _vm.article.image != null
           ? _c("site-img", {
@@ -2741,20 +2766,7 @@ var render = function () {
     ),
   ])
 }
-var staticRenderFns = [
-  function () {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "product-image" }, [
-      _c(
-        "div",
-        { staticClass: "discount-percent-badge discount-badge-fourty" },
-        [_vm._v("NEW")]
-      ),
-    ])
-  },
-]
+var staticRenderFns = []
 render._withStripped = true
 
 

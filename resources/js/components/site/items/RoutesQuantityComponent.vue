@@ -68,6 +68,7 @@
             // console.log(this.outdoor_region_article_id);
             this.get_routes_quantiti()
         },
+        
         methods: {
             get_routes_quantiti(){
                 axios

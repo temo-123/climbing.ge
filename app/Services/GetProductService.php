@@ -229,26 +229,25 @@ class GetProductService
 
     public function get_product_price($product_id, $interval)
     {
+        $options_count = Product_option::where('product_id', '=', $product_id)->count();
 
-        $options = Product_option::where('product_id', '=', $product_id)->get('price');
+        if($options_count){
+            $options = Product_option::where('product_id', '=', $product_id)->get('price');
+            $prices = [];
 
-        $prices = [];
+            foreach ($options as $option) {
+                array_push($prices, $option->price);
+            }
 
-        foreach ($options as $option) {
-            
-            array_push($prices, $option->price);
-        }
-        
-        // dd(max($prices));
-
-        if ($interval == 'max') {
-            return max($prices);
-        }
-        elseif ($interval == 'min') {
-            return min($prices);
-        }
-        else {
-            return 'error';
+            if ($interval == 'max') {
+                return max($prices);
+            }
+            elseif ($interval == 'min') {
+                return min($prices);
+            }
+            else {
+                return 'error';
+            }
         }
     }
 

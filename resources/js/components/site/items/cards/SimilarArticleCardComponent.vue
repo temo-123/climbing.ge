@@ -1,14 +1,16 @@
 <template>
     <div class="col-md-3">
         <div class="similar_articles_img">
-            <router-link :to="{name: 'outdoor',}">
+            <!-- <router-link :to="'../outdoor/'+article.area.url_title" > -->
+            <router-link :to="{name: 'outdoor', params: {url_title: article.area.url_title}}">
                 <site-img v-if="article.area.image != null" :src="this.image_dir+article.area.image" :img_class="'img-responsive'" :alt='article.area[0][0].title'/>
                 <site-img v-else :src="'../../../public/images/site_img/image.png'" :img_class="'img-responsive'" :alt='article.area[0][0].title'/>
             </router-link>
         </div>
         <div class="similar_article_data">
             <div class="similar_articles_title">
-                <router-link :to="'../'+this.route">
+                <router-link :to="{name: 'outdoor', params: {url_title: article.area.url_title}}">
+                <!-- <router-link :to="'../outdoor/'+article.area.url_title" > -->
                     <h3>{{ article.area[0][0].title }}</h3>
                 </router-link>
             </div>
@@ -33,6 +35,9 @@
             'route',
         ],
         mounted() {
+            // console.log( 'article.area[0].url_title' );
+            // console.log( article );
+            // console.log( 'article.area[0].url_title' );
         },
     }
 </script>

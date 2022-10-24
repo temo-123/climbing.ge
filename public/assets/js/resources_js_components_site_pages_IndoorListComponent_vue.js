@@ -224,7 +224,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
  // https://www.npmjs.com/package/vue-moment
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
@@ -235,11 +234,32 @@ __webpack_require__.r(__webpack_exports__);
   mounted: function mounted() {// alert(moment( "2013-2-1 14:00:00" ).format( "dddd h:mma D MMM YYYY"));
   },
   methods: {
-    open: function open() {
-      return moment__WEBPACK_IMPORTED_MODULE_0___default()("2013-2-1 14:00:00").format("H:MM:mma");
-    },
-    close: function close() {
-      return moment__WEBPACK_IMPORTED_MODULE_0___default()("2013-2-1 14:00:00").format("dddd h:mma D MMM YYYY");
+    // open(){
+    //     return moment( "2013-2-1 14:00:00" ).format( "H:MM:mma")
+    // },
+    // close(){
+    //     return moment( "2013-2-1 14:00:00" ).format( "dddd h:mma D MMM YYYY")
+    // }
+    status: function status(open, close) {
+      var open_hourse = moment__WEBPACK_IMPORTED_MODULE_0___default()(open, 'HH:mm').format("HH");
+      var open_minits = moment__WEBPACK_IMPORTED_MODULE_0___default()(open, 'HH:mm').format("mm");
+      var close_hourse = moment__WEBPACK_IMPORTED_MODULE_0___default()(close, 'HH:mm').format("HH");
+      var close_minits = moment__WEBPACK_IMPORTED_MODULE_0___default()(close, 'HH:mm').format("mm");
+      var today = new Date(); // var realy_time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds()
+
+      if (open_hourse < today.getHours() && close_hourse > today.getHours()) {
+        return 'Open at this moment';
+      } else if (open_hourse > today.getHours() && close_hourse < today.getHours()) {
+        return 'Closed at this moment';
+      } else if (open_hourse + 1 == today.getHours()) {
+        return 'Open in less than in hour';
+      } else if (close_hourse - 1 == today.getHours()) {
+        return 'Closes in less than in hour';
+      } // <p class="deanger_text" >closes soon</p>
+      // <p class="deanger_text" >closes in less than an hour</p>
+      // <p class="deanger_text" >closes in less than 30 minutes</p>
+      // <p class="deanger_text" >now closed</p>
+
     }
   }
 });
@@ -320,6 +340,11 @@ __webpack_require__.r(__webpack_exports__);
     emptyPageComponent: _global_components_EmptyPageComponent__WEBPACK_IMPORTED_MODULE_1__["default"],
     ContentLoader: vue_content_loader__WEBPACK_IMPORTED_MODULE_3__.ContentLoader,
     metaData: _items_MetaDataComponent__WEBPACK_IMPORTED_MODULE_2__["default"]
+  },
+  watch: {
+    '$route': function $route(to, from) {
+      this.get_indoors(), window.scrollTo(0, 0);
+    }
   },
   mounted: function mounted() {
     this.get_indoors();
@@ -836,6 +861,16 @@ var render = function () {
     _vm._v(" "),
     _c("div", { staticClass: "col-md-6 indoor_text indoot_text_for_mobile" }, [
       _c("div", { staticClass: "container" }, [
+        _vm.indoor.new_flag
+          ? _c("div", { staticClass: "product-image" }, [
+              _c(
+                "div",
+                { staticClass: "discount-percent-badge discount-badge-fourty" },
+                [_vm._v("NEW")]
+              ),
+            ])
+          : _vm._e(),
+        _vm._v(" "),
         _c(
           "div",
           { staticClass: "row" },
@@ -844,11 +879,9 @@ var render = function () {
               "router-link",
               { attrs: { to: "indoor/" + _vm.indoor.url_title } },
               [
-                _c(
-                  "h2",
-                  { staticStyle: { margin: "2em", "text-aline": "center" } },
-                  [_vm._v(" " + _vm._s(_vm.indoor[0][0].title))]
-                ),
+                _c("h2", { staticStyle: { margin: "1.5em 0" } }, [
+                  _vm._v(" " + _vm._s(_vm.indoor[0][0].title)),
+                ]),
               ]
             ),
             _vm._v(" "),
@@ -862,30 +895,35 @@ var render = function () {
         ),
         _vm._v(" "),
         _c("div", { staticClass: "row" }, [
-          _c(
-            "div",
-            { staticClass: "col-sm-12 col-xs-6 col-md-6 col-lg-6 col-xl-6" },
-            [
-              _c("b", { staticStyle: { "font-size": "120%" } }, [
-                _vm._v(_vm._s(_vm.__("prices from"))),
-              ]),
-              _vm._v(" "),
-              _c("p", { staticStyle: { "font-size": "100%" } }, [
-                _c("strong", [_vm._v(_vm._s(_vm.indoor.price_from) + " GEL ")]),
-              ]),
-            ]
-          ),
+          _vm.indoor.price_from
+            ? _c(
+                "div",
+                {
+                  staticClass: "col-sm-12 col-xs-6 col-md-6 col-lg-6 col-xl-6",
+                },
+                [
+                  _c("b", { staticStyle: { "font-size": "120%" } }, [
+                    _vm._v(_vm._s(_vm.$t("prices from"))),
+                  ]),
+                  _vm._v(" "),
+                  _c("p", { staticStyle: { "font-size": "100%" } }, [
+                    _c("strong", [
+                      _vm._v(_vm._s(_vm.indoor.price_from) + " GEL "),
+                    ]),
+                  ]),
+                ]
+              )
+            : _vm._e(),
           _vm._v(" "),
           _c(
             "div",
             { staticClass: "col-sm-12 col-xs-6 col-md-6 col-lg-6 col-xl-6" },
             [
               _c("b", { staticStyle: { "font-size": "120%" } }, [
-                _vm._v(_vm._s(_vm.__("working time"))),
+                _vm._v(_vm._s(_vm.$t("working time"))),
               ]),
               _vm._v(" "),
-              _vm.indoor.open_time != _vm.NULL &&
-              _vm.indoor.closed_time != _vm.NULL
+              _vm.indoor.open_time && _vm.indoor.closed_time
                 ? _c("span", [
                     !_vm.indoor.closed
                       ? _c("span", [
@@ -898,13 +936,22 @@ var render = function () {
                             ),
                           ]),
                           _vm._v(" "),
-                          _c("p", [_vm._v(_vm._s(_vm.open()))]),
+                          _c("p", { staticClass: "deanger_text" }, [
+                            _vm._v(
+                              _vm._s(
+                                _vm.status(
+                                  _vm.indoor.open_time,
+                                  _vm.indoor.closed_time
+                                )
+                              )
+                            ),
+                          ]),
                         ])
                       : _vm._e(),
                     _vm._v(" "),
                     _vm.indoor.closed
                       ? _c("p", { staticClass: "deanger_text" }, [
-                          _vm._v(_vm._s(_vm.__("closed"))),
+                          _vm._v(_vm._s(_vm.$t("closed"))),
                         ])
                       : _vm._e(),
                   ])

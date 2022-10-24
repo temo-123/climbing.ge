@@ -48,6 +48,9 @@
                     strokeJoin: 'round',
                 });
             },
+            add_layer(){
+                var layer = new Layer();
+            },
             mouseDown() {
                 // in order to access functions in nested tool
                 let self = this;
@@ -99,6 +102,7 @@
             text.fillColor = 'black';
             text.content = 'The contents of the point text';
 
+            var layer = new Layer();
             // var layer = new paper.Layer({name: 'circles layer'});
             // layer.sendToBack();
             // layer.activate();

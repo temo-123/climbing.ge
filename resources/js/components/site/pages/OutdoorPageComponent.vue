@@ -27,12 +27,19 @@
         mounted() {
             this.get_outdoor()
         },
+        watch: {
+            '$route' (to, from) {
+                this.get_outdoor(),
+                window.scrollTo(0,0)
+            }
+        },
         methods: {
             get_outdoor(){
                 axios
                 .get('../api/article/outdoor/'+localStorage.getItem('lang')+'/'+this.$route.params.url_title)
                 .then(response => {
                     this.outdoor = response.data
+                    
                 })
                 .catch(error =>{
                 })

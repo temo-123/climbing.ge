@@ -11,7 +11,8 @@
 </template>
 
 <script>
-    import articlPage from '../items/cards/ArticleCardComponent'
+    // import articlPage from '../items/cards/ArticleCardComponent'
+    import articlPage from '../items/ArticleComponent'
     import metaData from '../items/MetaDataComponent'
 
     export default {
@@ -27,10 +28,16 @@
         mounted() {
             this.get_indoors()
         },
+        watch: {
+            '$route' (to, from) {
+                this.get_indoors(),
+                window.scrollTo(0,0)
+            }
+        },
         methods: {
             get_indoors(){
                 axios
-                .get('../api/article/'+localStorage.getItem('lang')+'/'+this.$route.params.url_title)
+                .get('../api/article/indoor/'+localStorage.getItem('lang')+'/'+this.$route.params.url_title)
                 .then(response => {
                     this.indoors = response.data
                 })

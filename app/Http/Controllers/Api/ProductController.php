@@ -99,10 +99,16 @@ class ProductController extends Controller
 
     }
 
-    // public function get_similar_product(Request $request)
-    // {
-        
-    // }
+    public function get_similar_product(Request $request)
+    {
+        $this_product = product::latest('id')->where('published', '=', 1)->where('id', '=', $request->product_id)->first();
+        $this_category = $this_product->product_category;
+        dd($this_category);
+        $global_products = product::latest('id')->where('published', '=', 1)->where('id', '!=', $request->product_id)->where('category_id', '=', $this_category[0]->id)->get();
+        // return $products = GetProductService::get_locale_product_use_locale($global_products, $request->lang);
+        // dd('test');
+        // dd($products);
+    }
 
     public function get_product_price_interval()
     {

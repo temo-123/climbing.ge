@@ -14,6 +14,7 @@
                 </div>
 
                 <nav class="navbar navbar-default float-top" role="navigation">
+
                     <div class="container-fluid">
                         <!-- <router-link style="font-size: 1.5em;" :to="{name: 'index'}" exact class="site_title">{{ $t('site name')}}</router-link> -->
 
@@ -97,8 +98,16 @@
                                 </a>
 
                                 <ul class="dropdown-menu shadows" role="menu">
-                                    <li><a style="width: 50%; margin-left: 25%;"  @click="grade_charts('yds')"><li>YDS</li></a></li>
-                                    <li><a style="width: 50%; margin-left: 25%;"  @click="grade_charts('UIAA')"><li>UIAA</li></a></li>
+                                    <li v-if="activ_grade == 'UIAA'">
+                                        <a style="width: 50%; margin-left: 25%;"  @click=" activ_grade = 'yds', grade_charts('yds')">
+                                            YDS
+                                        </a>
+                                    </li>
+                                    <li v-if="activ_grade == 'yds'">
+                                        <a style="width: 50%; margin-left: 25%;" @click="activ_grade = 'UIAA', grade_charts('UIAA')">
+                                            UIAA
+                                        </a>
+                                    </li>
                                 </ul>
                             </li>
 
@@ -123,6 +132,15 @@
             return {
                 search_query: null,
                 // i18n.locale: '',
+
+                // activ_grade: localStorage.getItem('grade')
+
+                get activ_grade() {
+                    return localStorage.getItem('grade') || 'yds';
+                },
+                set activ_grade(value) {
+                    localStorage.setItem('grade', value);
+                },
             };
         },
         components: {
@@ -133,6 +151,7 @@
             // if(localStorage.getItem('lang') != 'en'){
             //     this.i18n.locale = localStorage.getItem('lang')
             // } else{this.i18n.locale = ''}
+                // console.log("🚀 ~ file: NavbarComponent.vue ~ line 180 ~ return_data ~ g")
         },
         // watch: {
         //     $route(to) {
@@ -155,8 +174,12 @@
             grade_charts(grade){
                 localStorage.setItem('grade', grade)
 
-                this.$router.push(to)
+                this.return_data(grade)
+                // this.$router.push(to)
             },
+            return_data(g){
+                this.$emit('grade', g)
+            }
         }
     }
 </script>

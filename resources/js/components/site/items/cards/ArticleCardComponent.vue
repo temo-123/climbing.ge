@@ -1,7 +1,8 @@
 <template>
     <div class="food col-md-4">
         <div class="portfolio-img view view-first">
-            <div class="product-image">
+            
+            <div class="product-image" v-if="article.new_flag">
                 <div class="discount-percent-badge discount-badge-fourty">NEW</div>
             </div>
 

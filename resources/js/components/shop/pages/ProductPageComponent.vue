@@ -6,8 +6,11 @@
                     <div class="cols">
                         <div class="col-md-6">
                             <div class="big">
-                                <div class="container">
+                                <div class="container" v-if="items.length">
                                     <lingallery :items="items"/>
+                                </div>
+                                <div class="container" v-else>
+                                    <site-img :src="'../../../public/images/site_img/shop_demo.jpg'" :alt="product.local_product[0].title" />
                                 </div>
                             </div>
                         </div>
@@ -16,10 +19,8 @@
                                 <div class="col-md-10 product_page_title">
                                     <h1>{{ product.local_product[0].title }}</h1>
                                 </div>
-                                <div class="col-md-2">
-                                    <a href="" class='text-center'> 
-                                        <i class="fa fa-heart-o" aria-hidden="true" style="font-size: 250%;"></i>
-                                    </a>
+                                <div class="col-md-2 favorites_icon" @click="add_to_faworite(product.global_product.id)">
+                                    <i class="fa fa-heart-o" aria-hidden="true" style="font-size: 250%;"></i>
                                 </div>
                             </div>
                             <div class="row">
@@ -108,6 +109,13 @@
                 </div>
             </div>
         </div>
+        <!-- <div class="container">
+            <div class="row">
+                <div class="more-products" id="more-products-wrap">
+                    <li><router-link :to="{name: 'catalog'}" exact> <span> All products </span> </router-link></li>
+                </div>
+            </div>
+        </div> -->
 
         <metaData 
             :title = "product.local_product[0].title"
@@ -175,9 +183,9 @@
             // this.get_analog_products()
         },
         methods: {
-            get_analog_products(url_title){
+            get_analog_products(product_id){
                 axios
-                .put('../api/similar_product/'+localStorage.getItem('lang')+'/'+url_title)
+                .get('../api/similar_product/'+localStorage.getItem('lang')+'/'+product_id)
                 .then(response => {
                     this.samilar_products = response.data
                 })
@@ -199,14 +207,20 @@
                     
                     this.product.product_option.forEach(option => {
                         this.prices.push(option.option.price)
-                        option.images.forEach(image => {
-                            this.items.push({
-                                src: '../images/product_img/'+image.image,
-                                thumbnail: '../images/product_img/'+image.image,
-                                caption: option.option.title,
-                                id:  option.option.id
-                            })
-                        });
+                        console.log("🚀 ~ file: ProductPageComponent.vue ~ line 206 ~ get_product ~ option.images", option.images)
+                        if(option.images.length){
+                            option.images.forEach(image => {
+                                this.items.push({
+                                    src: '../images/product_img/'+image.image,
+                                    thumbnail: '../images/product_img/'+image.image,
+                                    caption: option.option.title,
+                                    id:  option.option.id
+                                })
+                            });
+                        }
+                        else{
+                            this.items = []
+                        }
                     });
 
                     // this.array2 = Math.max.apply(null, this.array1);
@@ -217,7 +231,7 @@
                     //     this.price = Math.min.apply(null, this.prices) + '-' + Math.max.apply(null, this.prices)
                     // }
 
-                    this.get_analog_products(this.product.global_product.url_title)
+                    this.get_analog_products(this.product.global_product.id)
                 })
                 .catch(error =>{
                 })
@@ -262,6 +276,17 @@
                     .catch(error =>{
                     })
                 }
+            },
+
+            add_to_faworite(product_id){
+                axios
+                .post('../api/add_to_favorite/'+ product_id)
+                .then(response => {
+                    alert("Product addid in your favorite list!");
+                })
+                .catch(error =>{
+                    alert("Error");
+                })
             }
         }
     }
@@ -276,5 +301,9 @@
         width: 20%;
         height: auto;
         margin-left: 40%;
+    }
+
+    .favorites_icon{
+        cursor: pointer;
     }
 </style>

@@ -67,7 +67,7 @@ const router = new VueRouter({
                 { path: 'indoor/:url_title', name: 'indoor', component: load('IndoorPageComponent') },
 
                 { path: 'outdoor', name: 'outdoors', component: load('OutdoorListComponent') },
-                { path: 'outdoor/:url_title', name: 'outdoor', component: load('OutdoorPageComponent') },
+                { path: 'outdoor/:url_title', name: 'outdoor', component: load('OutdoorPageComponent'), meta: { title: "FOO" } },
 
                 { path: 'search_articles', name: 'search_articles', component: load('SerchPageComponent') },
             

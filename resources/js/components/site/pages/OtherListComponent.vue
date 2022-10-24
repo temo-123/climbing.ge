@@ -64,6 +64,12 @@
         mounted() {
             this.get_other_articles()
         },
+        watch: {
+            '$route' (to, from) {
+                this.get_other_articles(),
+                window.scrollTo(0,0)
+            }
+        },
         methods: {
             get_other_articles(){
                 axios

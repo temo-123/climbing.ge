@@ -772,6 +772,8 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
 
  // import postsList from './PostsListComponent'
 
@@ -802,6 +804,11 @@ __webpack_require__.r(__webpack_exports__);
   },
   mounted: function mounted() {
     this.get_posts();
+  },
+  watch: {
+    '$route': function $route(to, from) {
+      this.$refs.SArticles.test(); // this.$refs.SimilarArticles.get_same_articles();
+    }
   },
   methods: {
     get_posts: function get_posts() {
@@ -890,8 +897,18 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
-  name: "Article Right Navigation Menu"
+  name: "Article Right Navigation Menu",
+  mounted: function mounted() {// console.log(window.screenX)
+    // window.scroll(0, 0);
+  },
+  methods: {
+    test: function test() {
+      console.log(Math.random());
+    }
+  }
 });
 
 /***/ }),
@@ -1581,6 +1598,9 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
 // import VueExpandableImage from 'vue-expandable-image' //https://github.com/TahaSh/vue-expandable-image
 // import { SlickList, SlickItem } from 'vue-slicksort'; //https://github.com/Jexordexan/vue-slicksort
  //https://innologica.github.io/vue-stackable-modal/#sample-css
@@ -1645,20 +1665,36 @@ __webpack_require__.r(__webpack_exports__);
       this.get_spot_rocks_images();
     }
   },
-  beforeDestroy: function beforeDestroy() {
-    document.removeEventListener("grade", "this.storageListener");
-  },
+  // beforeDestroy() {
+  //     document.removeEventListener("grade", "this.storageListener");
+  // },
   methods: {
-    grade_chart: function grade_chart(grade_fr) {
+    lead_grade_chart: function lead_grade_chart(grade_fr) {
       var grad = "";
 
       if (localStorage.getItem("grade") == "yds") {
         if (grade_fr == "4") grad = "5.6";else if (grade_fr == "5a" || grade_fr == "5a+") grad = "5.7";else if (grade_fr == "5b" || grade_fr == "5b+") grad = "5.8";else if (grade_fr == "5c" || grade_fr == "5c+") grad = "5.9";else if (grade_fr == "6a") grad = "5.10a";else if (grade_fr == "6a+") grad = "5.10b";else if (grade_fr == "6b") grad = "5.10c";else if (grade_fr == "6b+") grad = "5.10d";else if (grade_fr == "6c") grad = "5.11a/5.11b";else if (grade_fr == "6c+") grad = "5.11c";else if (grade_fr == "7a") grad = "5.11d";else if (grade_fr == "7a+") grad = "5.12a";else if (grade_fr == "7b") grad = "5.12b";else if (grade_fr == "7b+") grad = "5.12c";else if (grade_fr == "7c") grad = "5.12d";else if (grade_fr == "7c+") grad = "5.13a";else if (grade_fr == "8a") grad = "5.13b";else if (grade_fr == "8a+") grad = "5.13c";else if (grade_fr == "8b") grad = "5.13d";else if (grade_fr == "8b+") grad = "5.14a";else if (grade_fr == "8c") grad = "5.14b";else if (grade_fr == "8c+") grad = "5.14c";else if (grade_fr == "9a") grad = "5.14d";else if (grade_fr == "9a+") grad = "5.15a";else if (grade_fr == "9b") grad = "5.15b";else if (grade_fr == "9b+") grad = "5.15c";else if (grade_fr == "9c") grad = "5.15d";else if (grade_fr == "9c+") grad = "5.16a";else grad = "?";
       } else if (localStorage.getItem("grade") == "UIAA") {
-        if (grade_fr == "4") grad = "5.6";else if (grade_fr == "6a") grad = "VI+";else if (grade_fr == "6a+") grad = "VII-";else if (grade_fr == "6b") grad = "VII";else if (grade_fr == "6b+") grad = "VII+";else if (grade_fr == "6c") grad = "VII+/VIII-";else if (grade_fr == "6c+") grad = "VIII-";else if (grade_fr == "7a") grad = "VIII";else if (grade_fr == "7a+") grad = "VIII+";else if (grade_fr == "7b") grad = "VIII+/IX-";else if (grade_fr == "7b+") grad = "IX-";else if (grade_fr == "7c") grad = "IX";else if (grade_fr == "7c+") grad = "IX+";else if (grade_fr == "8a") grad = "IX+/X-";else if (grade_fr == "8a+") grad = "X-";else if (grade_fr == "8b") grad = "X";else if (grade_fr == "8b+") grad = "X+";else if (grade_fr == "8c") grad = "XI-";else if (grade_fr == "8c+") grad = "XI";else if (grade_fr == "9a") grad = "XI+";else if (grade_fr == "9a+") grad = "XII-";else if (grade_fr == "9b") grad = "XII";else grad = "?";
+        // console.log(localStorage.getItem("grade"))
+        if (grade_fr == "4") grad = "IV";else if (grade_fr == "5a" || grade_fr == "5a+") grad = "V+";else if (grade_fr == "5b" || grade_fr == "5b+") grad = "VI-";else if (grade_fr == "5c" || grade_fr == "5c+") grad = "VI";else if (grade_fr == "6a") grad = "VI+";else if (grade_fr == "6a+") grad = "VII-";else if (grade_fr == "6b") grad = "VII";else if (grade_fr == "6b+") grad = "VII+";else if (grade_fr == "6c") grad = "VII+/VIII-";else if (grade_fr == "6c+") grad = "VIII-";else if (grade_fr == "7a") grad = "VIII";else if (grade_fr == "7a+") grad = "VIII+";else if (grade_fr == "7b") grad = "VIII+/IX-";else if (grade_fr == "7b+") grad = "IX-";else if (grade_fr == "7c") grad = "IX";else if (grade_fr == "7c+") grad = "IX+";else if (grade_fr == "8a") grad = "IX+/X-";else if (grade_fr == "8a+") grad = "X-";else if (grade_fr == "8b") grad = "X";else if (grade_fr == "8b+") grad = "X+";else if (grade_fr == "8c") grad = "XI-";else if (grade_fr == "8c+") grad = "XI";else if (grade_fr == "9a") grad = "XI+";else if (grade_fr == "9a+") grad = "XII-";else if (grade_fr == "9b") grad = "XII";else if (grade_fr == "9b+") grad = "XII+";else if (grade_fr == "9c") grad = "XIII";else grad = "?";
+      } else {
+        grad = 'Error';
       }
 
       return grad;
+    },
+    boulder_grade_chart: function boulder_grade_chart(grade_fr) {
+      var grade = "";
+
+      if (localStorage.getItem("grade") == "yds") {
+        if (grade_fr == "VB") grade = "4-";else if (grade_fr == "V0-") grade = "4";else if (grade_fr == "V0") grade = "4+";else if (grade_fr == "V0+") grade = "5a";else if (grade_fr == "V1") grade = "5b";else if (grade_fr == "V2") grade = "5c";else if (grade_fr == "V3") grade = "6a";else if (grade_fr == "V4") grade = "6b";else if (grade_fr == "V5") grade = "6c+";else if (grade_fr == "V6") grade = "7a";else if (grade_fr == "V7") grade = "7a+";else if (grade_fr == "V8") grade = "7b";else if (grade_fr == "V9") grade = "7c";else if (grade_fr == "V10") grade = "7c+";else if (grade_fr == "V11") grade = "8a";else if (grade_fr == "V12") grade = "8a+";else if (grade_fr == "V13") grade = "8b";else if (grade_fr == "V14") grade = "8b+";else if (grade_fr == "V15") grade = "8c";else if (grade_fr == "V16") grade = "8c+";else if (grade_fr == "V17") grade = "9a";else grade = "?";
+      } else if (localStorage.getItem("grade") == "UIAA") {
+        if (grade_fr == "VB") grade = "4-";else if (grade_fr == "V0-") grade = "VI+";else if (grade_fr == "V0") grade = "VII-";else if (grade_fr == "V0+") grade = "VII";else if (grade_fr == "V1") grade = "VII+";else if (grade_fr == "V2") grade = "VII+/VII-";else if (grade_fr == "V3") grade = "VIII-";else if (grade_fr == "V4") grade = "VIII";else if (grade_fr == "V5") grade = "VIII/VIII+";else if (grade_fr == "V6") grade = "VIII+";else if (grade_fr == "V7") grade = "IX-";else if (grade_fr == "V8") grade = "IX";else if (grade_fr == "V9") grade = "IX/IX+";else if (grade_fr == "V10") grade = "IX+";else if (grade_fr == "V11") grade = "X-";else if (grade_fr == "V12") grade = "X";else if (grade_fr == "V13") grade = "X+";else if (grade_fr == "V14") grade = "XI-";else if (grade_fr == "V15") grade = "XI";else if (grade_fr == "V16") grade = "XI+";else if (grade_fr == "V17") grade = "XII-";else grade = "?";
+      } else {
+        grad = 'Error';
+      }
+
+      return grade;
     },
     get_spot_rocks_images: function get_spot_rocks_images() {
       var _this = this;
@@ -1677,41 +1713,39 @@ __webpack_require__.r(__webpack_exports__);
         _this2.route_post_list = true;
       })["catch"](function (error) {});
     },
-    get_route_posts: function get_route_posts(route_id) {
-      var _this3 = this;
-
-      this.route_posts = [];
-      axios.get("../api/posts/get_route_posts/" + route_id).then(function (response) {
-        _this3.route_posts = response.data;
-      })["catch"](function (error) {
-        return console.log(error);
-      });
-    },
+    // get_route_posts(route_id) {
+    //     this.route_posts = [];
+    //     axios
+    //         .get("../api/posts/get_route_posts/" + route_id)
+    //         .then((response) => {
+    //             this.route_posts = response.data;
+    //         })
+    //         .catch((error) => console.log(error));
+    // },
     show_mtp_madel: function show_mtp_madel(id) {
-      var _this4 = this;
+      var _this3 = this;
 
       this.show_mtp_modal = true;
       this.mtp_detals = [];
       axios.get("/api/MTP/" + id).then(function (response) {
-        _this4.mtp_detals = response.data;
-        _this4.mtp_post_list = true;
+        _this3.mtp_detals = response.data;
+        _this3.mtp_post_list = true;
       })["catch"](function (error) {});
     },
-    get_mtp_posts: function get_mtp_posts(mtp_id) {
-      var _this5 = this;
-
-      this.mtp_posts = [];
-      axios.get("../api/posts/get_mtp_posts/" + mtp_id).then(function (response) {
-        _this5.mtp_posts = response.data;
-      })["catch"](function (error) {
-        return console.log(error);
-      });
-    },
+    // get_mtp_posts(mtp_id) {
+    //     this.mtp_posts = [];
+    //     axios
+    //         .get("../api/posts/get_mtp_posts/" + mtp_id)
+    //         .then((response) => {
+    //             this.mtp_posts = response.data;
+    //         })
+    //         .catch((error) => console.log(error));
+    // },
     get_outdoor_routes: function get_outdoor_routes() {
-      var _this6 = this;
+      var _this4 = this;
 
       axios.get("../api/sector/" + this.article_id).then(function (response) {
-        _this6.climbing_area = response.data;
+        _this4.climbing_area = response.data;
       })["catch"](function (error) {});
     } // get_spot_rocks_images(){
     // }
@@ -1754,24 +1788,6 @@ __webpack_require__.r(__webpack_exports__);
   components: {
     SimilarArticleCardComponent: _cards_SimilarArticleCardComponent_vue__WEBPACK_IMPORTED_MODULE_0__["default"]
   },
-  // mounted() {
-  //     this.get_similar_articles()
-  // },
-  // methods: {
-  //     get_similar_articles(){
-  //         axios
-  //         .put('../api/article/' + this.article_id, {})
-  //         .then(response => {
-  //             this.other_articles = response.data
-  //             if (this.article_category == 'news') {
-  //                 this.image_dir = 'news_img/',
-  //                 this.route_url = 'news/'
-  //             }
-  //         })
-  //         .catch(error =>{
-  //         })
-  //     }
-  // }
   data: function data() {
     return {
       image_dir: '',
@@ -1780,14 +1796,28 @@ __webpack_require__.r(__webpack_exports__);
     };
   },
   mounted: function mounted() {
-    var _this = this;
+    this.get_same_articles();
+  },
+  watch: {
+    '$route': function $route(to, from) {
+      this.get_same_articles();
+      window.scrollTo(0, 0);
+    }
+  },
+  methods: {
+    get_same_articles: function get_same_articles() {
+      var _this = this;
 
-    axios.post('../api/similar_article/' + localStorage.getItem('lang'), {
-      article_id: this.article_id,
-      article_category: this.article_category
-    }).then(function (response) {
-      _this.similar_article = response.data;
-    })["catch"](function (error) {});
+      axios.post('../api/similar_article/' + localStorage.getItem('lang'), {
+        article_id: this.article_id,
+        article_category: this.article_category
+      }).then(function (response) {
+        _this.similar_article = response.data;
+      })["catch"](function (error) {});
+    },
+    test: function test() {
+      console.log('test');
+    }
   }
 });
 
@@ -1831,9 +1861,14 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   props: ['article', 'image_dir', 'route'],
-  mounted: function mounted() {}
+  mounted: function mounted() {// console.log( 'article.area[0].url_title' );
+    // console.log( article );
+    // console.log( 'article.area[0].url_title' );
+  }
 });
 
 /***/ }),
@@ -1877,6 +1912,11 @@ __webpack_require__.r(__webpack_exports__);
   },
   mounted: function mounted() {
     this.get_outdoor();
+  },
+  watch: {
+    '$route': function $route(to, from) {
+      this.get_outdoor(), window.scrollTo(0, 0);
+    }
   },
   methods: {
     get_outdoor: function get_outdoor() {
@@ -4506,6 +4546,7 @@ var render = function () {
       ),
       _vm._v(" "),
       _c("SimilarArticles", {
+        ref: "SArticles",
         attrs: {
           article_id: this.article.id,
           article_category: this.article.category,
@@ -4540,65 +4581,71 @@ var render = function () {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c(
-    "div",
-    {
-      staticClass:
-        "col-sm-3 col-sm-offset-1 blog-sidebar display-none-720px right_navigarion_menu",
-    },
-    [
-      _c("nav", { staticClass: "navbar fading-side-menu" }, [
-        _c("ul", { staticClass: "list-unstyled" }, [
-          _c("li", [
-            _c("h4", [_vm._v(_vm._s(_vm.$t("article navigation menu")))]),
-          ]),
-          _vm._v(" "),
-          _c("li", [
-            _c("a", { attrs: { href: "#description" } }, [
-              _c("span", { staticClass: "text-primary" }, [
-                _vm._v(_vm._s(_vm.$t("nav description"))),
+  return _c("div", [
+    _c(
+      "div",
+      {
+        staticClass:
+          "col-sm-3 col-sm-offset-1 blog-sidebar display-none-720px right_navigarion_menu",
+      },
+      [
+        Math.random() > 0.5
+          ? _c("div", [_vm._v("\n  Now you see me\n")])
+          : _c("div", [_vm._v("\n  Now you don't\n")]),
+        _vm._v(" "),
+        _c("nav", { staticClass: "navbar fading-side-menu" }, [
+          _c("ul", { staticClass: "list-unstyled" }, [
+            _c("li", [
+              _c("h4", [_vm._v(_vm._s(_vm.$t("article navigation menu")))]),
+            ]),
+            _vm._v(" "),
+            _c("li", [
+              _c("a", { attrs: { href: "#description" } }, [
+                _c("span", { staticClass: "text-primary" }, [
+                  _vm._v(_vm._s(_vm.$t("nav description"))),
+                ]),
               ]),
             ]),
-          ]),
-          _vm._v(" "),
-          _c("li", [
-            _c("a", { attrs: { href: "#sectors" } }, [
-              _c("span", { staticClass: "text-primary" }, [
-                _vm._v(_vm._s(_vm.$t("nav sectors"))),
+            _vm._v(" "),
+            _c("li", [
+              _c("a", { attrs: { href: "#sectors" } }, [
+                _c("span", { staticClass: "text-primary" }, [
+                  _vm._v(_vm._s(_vm.$t("nav sectors"))),
+                ]),
               ]),
             ]),
-          ]),
-          _vm._v(" "),
-          _c("li", [
-            _c("a", { attrs: { href: "#gallery" } }, [
-              _c("span", { staticClass: "text-primary" }, [
-                _vm._v(_vm._s(_vm.$t("nav gallery"))),
+            _vm._v(" "),
+            _c("li", [
+              _c("a", { attrs: { href: "#gallery" } }, [
+                _c("span", { staticClass: "text-primary" }, [
+                  _vm._v(_vm._s(_vm.$t("nav gallery"))),
+                ]),
               ]),
             ]),
-          ]),
-          _vm._v(" "),
-          _c("li", [
-            _c("a", { attrs: { href: "#comments" } }, [
-              _c("span", { staticClass: "text-primary" }, [
-                _vm._v(_vm._s(_vm.$t("nav comments"))),
+            _vm._v(" "),
+            _c("li", [
+              _c("a", { attrs: { href: "#comments" } }, [
+                _c("span", { staticClass: "text-primary" }, [
+                  _vm._v(_vm._s(_vm.$t("nav comments"))),
+                ]),
               ]),
             ]),
-          ]),
-          _vm._v(" "),
-          _c("li", [
-            _c("a", { attrs: { href: "#other" } }, [
-              _c("span", { staticClass: "text-primary" }, [
-                _vm._v(_vm._s(_vm.$t("nav similar articles"))),
+            _vm._v(" "),
+            _c("li", [
+              _c("a", { attrs: { href: "#other" } }, [
+                _c("span", { staticClass: "text-primary" }, [
+                  _vm._v(_vm._s(_vm.$t("nav similar articles"))),
+                ]),
               ]),
             ]),
           ]),
         ]),
-      ]),
-      _vm._v(" "),
-      _c("rightAd"),
-    ],
-    1
-  )
+        _vm._v(" "),
+        _c("rightAd"),
+      ],
+      1
+    ),
+  ])
 }
 var staticRenderFns = []
 render._withStripped = true
@@ -4928,14 +4975,20 @@ var render = function () {
                             ? _c("td", [
                                 _vm._v(
                                   "\n                        " +
-                                    _vm._s(_vm.grade_chart(route.grade_fr)) +
+                                    _vm._s(
+                                      _vm.lead_grade_chart(route.grade_fr)
+                                    ) +
                                     " /\n                        " +
-                                    _vm._s(_vm.grade_chart(route.or_grade_fr)) +
+                                    _vm._s(
+                                      _vm.lead_grade_chart(route.or_grade_fr)
+                                    ) +
                                     "\n                    "
                                 ),
                               ])
                             : _c("td", [
-                                _vm._v(_vm._s(_vm.grade_chart(route.grade_fr))),
+                                _vm._v(
+                                  _vm._s(_vm.lead_grade_chart(route.grade_fr))
+                                ),
                               ]),
                           _vm._v(" "),
                           _c(
@@ -4975,6 +5028,10 @@ var render = function () {
                           _vm._v(_vm._s(_vm.$t("route_tab grade fr"))),
                         ]),
                         _vm._v(" "),
+                        _c("td", [
+                          _vm._v(_vm._s(_vm.$t("route_tab grade yds"))),
+                        ]),
+                        _vm._v(" "),
                         _c("td", [_vm._v("Info")]),
                       ]),
                     ]),
@@ -4990,7 +5047,7 @@ var render = function () {
                             {
                               on: {
                                 click: function ($event) {
-                                  return _vm.show_route_model()
+                                  return _vm.show_route_model(route.id)
                                 },
                               },
                             },
@@ -4998,6 +5055,28 @@ var render = function () {
                           ),
                           _vm._v(" "),
                           _c("td", [_vm._v(_vm._s(route.height))]),
+                          _vm._v(" "),
+                          route.or_grade_fr != _vm.NULL
+                            ? _c("td", [
+                                _vm._v(
+                                  "\n                        " +
+                                    _vm._s(
+                                      _vm.boulder_grade_chart(route.grade_fr)
+                                    ) +
+                                    " /\n                        " +
+                                    _vm._s(
+                                      _vm.boulder_grade_chart(route.or_grade_fr)
+                                    ) +
+                                    "\n                    "
+                                ),
+                              ])
+                            : _c("td", [
+                                _vm._v(
+                                  _vm._s(
+                                    _vm.boulder_grade_chart(route.grade_fr)
+                                  )
+                                ),
+                              ]),
                           _vm._v(" "),
                           route.or_grade_fr != _vm.NULL
                             ? _c("td", [
@@ -5128,11 +5207,15 @@ var render = function () {
                                   _vm._v(
                                     "\n                            " +
                                       _vm._s(
-                                        _vm.grade_chart(pitch.pitch_grade_fr)
+                                        _vm.lead_grade_chart(
+                                          pitch.pitch_grade_fr
+                                        )
                                       ) +
                                       " /\n                            " +
                                       _vm._s(
-                                        _vm.grade_chart(pitch.pitch_or_grade_fr)
+                                        _vm.lead_grade_chart(
+                                          pitch.pitch_or_grade_fr
+                                        )
                                       ) +
                                       "\n                        "
                                   ),
@@ -5141,7 +5224,9 @@ var render = function () {
                                   _vm._v(
                                     "\n                            " +
                                       _vm._s(
-                                        _vm.grade_chart(pitch.pitch_grade_fr)
+                                        _vm.lead_grade_chart(
+                                          pitch.pitch_grade_fr
+                                        )
                                       ) +
                                       "\n                        "
                                   ),
@@ -5480,193 +5565,6 @@ var render = function () {
                 ],
                 2
               ),
-              _vm._v(" "),
-              this.mtp_posts.length > 0
-                ? _c("div", { staticClass: "row" }, [
-                    _c("div", { staticClass: "row" }, [
-                      _c("div", { staticClass: "col-md-6" }, [
-                        _c(
-                          "h2",
-                          {
-                            on: {
-                              click: function ($event) {
-                                _vm.mtp_post_list = !_vm.mtp_post_list
-                              },
-                            },
-                          },
-                          [
-                            _vm._v(
-                              "\n                                User posts and rewies\n                            "
-                            ),
-                          ]
-                        ),
-                      ]),
-                      _vm._v(" "),
-                      _c("div", { staticClass: "col-md-6" }, [
-                        _vm.mtp_post_list
-                          ? _c(
-                              "p",
-                              {
-                                staticStyle: { float: "right" },
-                                on: {
-                                  click: function ($event) {
-                                    _vm.mtp_post_list = !_vm.mtp_post_list
-                                  },
-                                },
-                              },
-                              [
-                                _vm._v(
-                                  "\n                                Close\n                            "
-                                ),
-                              ]
-                            )
-                          : _vm._e(),
-                        _vm._v(" "),
-                        !_vm.mtp_post_list
-                          ? _c(
-                              "p",
-                              {
-                                staticStyle: { float: "right" },
-                                on: {
-                                  click: function ($event) {
-                                    _vm.mtp_post_list = !_vm.mtp_post_list
-                                  },
-                                },
-                              },
-                              [
-                                _vm._v(
-                                  "\n                                Open\n                            "
-                                ),
-                              ]
-                            )
-                          : _vm._e(),
-                      ]),
-                    ]),
-                    _vm._v(" "),
-                    _c(
-                      "div",
-                      {
-                        directives: [
-                          {
-                            name: "show",
-                            rawName: "v-show",
-                            value: _vm.mtp_post_list,
-                            expression: "mtp_post_list",
-                          },
-                        ],
-                      },
-                      [
-                        _c(
-                          "div",
-                          { staticClass: "row" },
-                          _vm._l(_vm.mtp_posts, function (mtp_post) {
-                            return _c(
-                              "div",
-                              {
-                                key: mtp_post.id,
-                                staticClass: "cardbox shadow-lg bg-white",
-                              },
-                              [
-                                _c("div", { staticClass: "cardbox-heading" }, [
-                                  _c("div", { staticClass: "media m-0" }, [
-                                    _c("div", { staticClass: "d-flex mr-3" }, [
-                                      mtp_post["user"].image
-                                        ? _c("img", {
-                                            staticClass:
-                                              "img-fluid rounded-circle",
-                                            attrs: {
-                                              src: "/public/images/user_img/user_demo_img.gif",
-                                              alt:
-                                                mtp_post["user"].name +
-                                                " " +
-                                                mtp_post["user"].surname,
-                                            },
-                                          })
-                                        : _c("img", {
-                                            staticClass:
-                                              "img-fluid rounded-circle",
-                                            attrs: {
-                                              src: "/public/images/site_img/user_demo_img.gif",
-                                              alt:
-                                                mtp_post["user"].name +
-                                                " " +
-                                                mtp_post["user"].surname,
-                                            },
-                                          }),
-                                    ]),
-                                    _vm._v(" "),
-                                    _c("div", { staticClass: "media-body" }, [
-                                      _c("div", { staticClass: "row m-0" }, [
-                                        _c("p", { staticClass: "m-0" }, [
-                                          _vm._v(
-                                            "\n                                                    " +
-                                              _vm._s(
-                                                mtp_post["user"].name +
-                                                  " " +
-                                                  mtp_post["user"].surname
-                                              ) +
-                                              "\n                                                "
-                                          ),
-                                        ]),
-                                      ]),
-                                      _vm._v(" "),
-                                      _c("div", { staticClass: "row m-0" }, [
-                                        _c("small", [
-                                          mtp_post["post"].created_at
-                                            ? _c("span", [
-                                                _vm._v(
-                                                  _vm._s(
-                                                    mtp_post["post"].created_at
-                                                  )
-                                                ),
-                                              ])
-                                            : _vm._e(),
-                                        ]),
-                                      ]),
-                                    ]),
-                                  ]),
-                                ]),
-                                _vm._v(" "),
-                                mtp_post["post"].text
-                                  ? _c(
-                                      "div",
-                                      { staticClass: "cardbox-item container" },
-                                      [
-                                        _c(
-                                          "p",
-                                          {
-                                            staticStyle: {
-                                              "background-color": "#eee",
-                                              "text-align": "center",
-                                              "font-size": "1.5em",
-                                            },
-                                          },
-                                          [
-                                            _vm._v(
-                                              "\n                                        " +
-                                                _vm._s(mtp_post["post"].text) +
-                                                "\n                                    "
-                                            ),
-                                          ]
-                                        ),
-                                      ]
-                                    )
-                                  : _vm._e(),
-                              ]
-                            )
-                          }),
-                          0
-                        ),
-                        _vm._v(" "),
-                        _c("div", { staticClass: "row" }, [
-                          _vm._v(
-                            "\n                            For more posts visit forum site\n                        "
-                          ),
-                        ]),
-                      ]
-                    ),
-                  ])
-                : _vm._e(),
             ]),
           ]),
           _vm._v(" "),
@@ -5787,7 +5685,14 @@ var render = function () {
       [
         _c(
           "router-link",
-          { attrs: { to: { name: "outdoor" } } },
+          {
+            attrs: {
+              to: {
+                name: "outdoor",
+                params: { url_title: _vm.article.area.url_title },
+              },
+            },
+          },
           [
             _vm.article.area.image != null
               ? _c("site-img", {
@@ -5816,9 +5721,18 @@ var render = function () {
         "div",
         { staticClass: "similar_articles_title" },
         [
-          _c("router-link", { attrs: { to: "../" + this.route } }, [
-            _c("h3", [_vm._v(_vm._s(_vm.article.area[0][0].title))]),
-          ]),
+          _c(
+            "router-link",
+            {
+              attrs: {
+                to: {
+                  name: "outdoor",
+                  params: { url_title: _vm.article.area.url_title },
+                },
+              },
+            },
+            [_c("h3", [_vm._v(_vm._s(_vm.article.area[0][0].title))])]
+          ),
         ],
         1
       ),

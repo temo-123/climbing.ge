@@ -1,6 +1,6 @@
 <template>
     <div>
-        <navbar />
+        <navbar @grade="grade_action"/>
         <div class="container top_menu_margin h-recent-work">
             <router-view />
         </div>
@@ -25,8 +25,14 @@ export default {
         navbar,
         footter,
     },
-    mounted() {},
+    mounted() {
+        
+    },
 
-    methods: {},
+    methods: {
+        grade_action(event){
+            this.$emit('grade', event)
+        }
+    },
 };
 </script>

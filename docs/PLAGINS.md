@@ -26,7 +26,6 @@ For foront use Vue.js(2) templite
                     Guid for update from vue-gtag@1 to vue-gtag@2   -   https://matteo-gabriele.gitbook.io/vue-gtag/migration-v1-to-v2
                     V1 documentation   -   https://matteo-gabriele.gitbook.io/vue-gtag/v/master/
 
-
 ## CkEditor4
 
 For text editor use CkEdior4

@@ -531,6 +531,11 @@ __webpack_require__.r(__webpack_exports__);
   mounted: function mounted() {
     this.get_event();
   },
+  watch: {
+    '$route': function $route(to, from) {
+      this.get_event(), window.scrollTo(0, 0);
+    }
+  },
   methods: {
     get_event: function get_event() {
       var _this = this;

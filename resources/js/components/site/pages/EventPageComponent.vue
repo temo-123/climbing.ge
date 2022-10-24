@@ -151,6 +151,12 @@
         mounted() {
             this.get_event()
         },
+        watch: {
+            '$route' (to, from) {
+                this.get_event(),
+                window.scrollTo(0,0)
+            }
+        },
         methods: {
             get_event(){
                 axios
