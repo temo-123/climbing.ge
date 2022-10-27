@@ -8,7 +8,7 @@
             <form method="POST"  @submit.prevent="send_message"  id="js_form">
             <!-- <form method="POST" id="js_form"> -->
                 <div class='row'>
-                    <div class="col-xs-6">
+                    <div class="col-md-6">
                         <div class="row">
                             <div class="col-md-12">
                                 <div class="form-group">
@@ -59,31 +59,34 @@
                                 </div>
                             </div>
                         </div>
+                    </div>
 
+                    <div class="col-md-6">
                         <div class="row">
-                            <div class="col-md-12">
-                                <div class="form-group form_left">
-                                    <vue-recaptcha 
-                                        :sitekey="MIX_GOOGLE_CAPTCHA_SITE_KEY" 
-                                        :loadRecaptchaScript="true"
-                                        ref="recaptcha"
-                                        type="invisible"
-                                        @verify="onCaptchaVerified"
-                                        @expired="onCaptchaExpired"
-                                    >
-                                    </vue-recaptcha>
+                            <div class="col-xs-12">
+                                <div class="form-group">
+                                    <textarea rows="10" name="msg" id="msg" v-model="msg" placeholder="Your message" class="form-control textarea"></textarea>
+                                    <div class="alert alert-danger" role="alert" v-if="errors.msg">
+                                        {{ errors.msg[0] }}
+                                    </div>
                                 </div>
                             </div>
                         </div>
-
                     </div>
-                    
-                    <div class="col-xs-6">
-                        <div class="form-group">
-                            <textarea rows="15" name="msg" id="msg" v-model="msg" placeholder="Your message" class="form-control textarea"></textarea>
-                            <div class="alert alert-danger" role="alert" v-if="errors.msg">
-                                {{ errors.msg[0] }}
-                            </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="form-group form_left">
+                            <vue-recaptcha 
+                                :sitekey="MIX_GOOGLE_CAPTCHA_SITE_KEY" 
+                                :loadRecaptchaScript="true"
+                                ref="recaptcha"
+                                type="invisible"
+                                @verify="onCaptchaVerified"
+                                @expired="onCaptchaExpired"
+                            >
+                            </vue-recaptcha>
                         </div>
                     </div>
                 </div>

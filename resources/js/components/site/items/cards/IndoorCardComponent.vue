@@ -11,7 +11,7 @@
         <div class='col-md-6 indoor_text indoot_text_for_mobile'>
         <div class="container">
             <div class="product-image" v-if="indoor.new_flag">
-                <div class="discount-percent-badge discount-badge-fourty">NEW</div>
+                <div class="discount-percent-badge discount_percent_badge_for_indoor discount-badge-fourty">NEW</div>
             </div>
             <div class='row'>
                 <router-link :to="'indoor/'+indoor.url_title">
@@ -111,5 +111,8 @@
     .deanger_text{
         font-size: 120%; 
         color: red;
+    }
+    .discount_percent_badge_for_indoor {
+        margin: 5px 18px 0 0;
     }
 </style>

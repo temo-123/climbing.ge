@@ -1,63 +1,65 @@
 <template>
     <div class="row">
-        <div class="col-md-3 col-sm-3 col-xs-3 share_icons_col">
-            <ShareNetwork
-                network="facebook"
+        <div class="container">
+            <div class="col-md-3 col-sm-3 col-xs-3 share_icons_col">
+                <ShareNetwork
+                    network="facebook"
+                    :url="url"
+                    :title="title"
+                    :description="description"
+                    :quote="quote"
+                    :hashtags="hashtags"
+                >
+                    <i class="share_icons fa fa-facebook-square" aria-hidden="true"></i>
+                </ShareNetwork>
+            </div>
+            <div class="col-md-3 col-sm-3 col-xs-3 share_icons_col">
+                <ShareNetwork
+                    network="Email"
+                    :url="url"
+                    :title="title"
+                    :description="description"
+                    :quote="quote"
+                    :hashtags="hashtags"
+                >
+                    <i class="share_icons fa fa-envelope" aria-hidden="true"></i>
+                </ShareNetwork>
+            </div>
+            <div class="col-md-3 col-sm-3 col-xs-3 share_icons_col">
+                <ShareNetwork
+                    network="Twitter"
+                    :url="url"
+                    :title="title"
+                    :description="description"
+                    :quote="quote"
+                    :hashtags="hashtags"
+                >
+                    <i class="share_icons fa fa-twitter-square" aria-hidden="true"></i>
+                </ShareNetwork>
+            </div>
+            <div class="col-md-3 col-sm-3 col-xs-3 share_icons_col">
+                <ShareNetwork
+                    network="WhatsApp"
+                    :url="url"
+                    :title="title"
+                    :description="description"
+                    :quote="quote"
+                    :hashtags="hashtags"
+                >
+                    <i class="share_icons fa fa-whatsapp" aria-hidden="true"></i>
+                </ShareNetwork>
+            </div>
+            <!-- <ShareNetwork
+                network="Messenger"
                 :url="url"
                 :title="title"
                 :description="description"
                 :quote="quote"
                 :hashtags="hashtags"
             >
-                <i class="share_icons fa fa-facebook-square" aria-hidden="true"></i>
-            </ShareNetwork>
+                Share on Messenger
+            </ShareNetwork> -->
         </div>
-        <div class="col-md-3 col-sm-3 col-xs-3 share_icons_col">
-            <ShareNetwork
-                network="Email"
-                :url="url"
-                :title="title"
-                :description="description"
-                :quote="quote"
-                :hashtags="hashtags"
-            >
-                <i class="share_icons fa fa-envelope" aria-hidden="true"></i>
-            </ShareNetwork>
-        </div>
-        <div class="col-md-3 col-sm-3 col-xs-3 share_icons_col">
-            <ShareNetwork
-                network="Twitter"
-                :url="url"
-                :title="title"
-                :description="description"
-                :quote="quote"
-                :hashtags="hashtags"
-            >
-                <i class="share_icons fa fa-twitter-square" aria-hidden="true"></i>
-            </ShareNetwork>
-        </div>
-        <div class="col-md-3 col-sm-3 col-xs-3 share_icons_col">
-            <ShareNetwork
-                network="WhatsApp"
-                :url="url"
-                :title="title"
-                :description="description"
-                :quote="quote"
-                :hashtags="hashtags"
-            >
-                <i class="share_icons fa fa-whatsapp" aria-hidden="true"></i>
-            </ShareNetwork>
-        </div>
-        <!-- <ShareNetwork
-            network="Messenger"
-            :url="url"
-            :title="title"
-            :description="description"
-            :quote="quote"
-            :hashtags="hashtags"
-        >
-            Share on Messenger
-        </ShareNetwork> -->
     </div>
 </template>
 

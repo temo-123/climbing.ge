@@ -100,47 +100,49 @@
             </div> -->
             
             <!-- {{ most_liked_film }} -->
-            <div class="row">
-                <div v-if="most_liked_film_loader">
+            <div class="container">
+                <div class="row" v-if="most_liked_film_loader">
                     <content-loader
                         viewBox="0 0"
                         primaryColor="#f3f3f3"
                         secondaryColor="#279fbbb0"
                     />
                 </div>
-                <div v-else>
+                <div class="row" v-else>
                     <h2 class="text-center">Most liked film</h2>
-                    <div class="col-lg-5">
-                        <site-img
-                            v-if="!most_liked_film.global_film.image"
-                            :src="'../../../public/images/site_img/film poster demo.jpg'"
-                            :img_class="'img-fluid rounded mb-4 mb-lg-0 float-right'"
-                            :alt="most_liked_film.local_film.name"
-                        />
-                        <site-img
-                            v-else
-                            :src="'../../../public/images/film_img/' + most_liked_film.global_film.image"
-                            :img_class="'img-fluid rounded mb-4 mb-lg-0 float-right'"
-                            :alt="most_liked_film.local_film.name"
-                        />
-                    </div>
-                    <div class="col-lg-5">
-                        <div class="row">
-                            <router-link :to="'film/'+most_liked_film.global_film.url_title">
-                                <h1 class="font-weight-light">{{ most_liked_film.local_film.name }}</h1>
-                            </router-link>
+                    <div class="row">
+                        <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
+                            <site-img
+                                v-if="!most_liked_film.global_film.image"
+                                :src="'../../../public/images/site_img/film poster demo.jpg'"
+                                :img_class="'img-fluid rounded mb-4 mb-lg-0 float-right'"
+                                :alt="most_liked_film.local_film.name"
+                            />
+                            <site-img
+                                v-else
+                                :src="'../../../public/images/film_img/' + most_liked_film.global_film.image"
+                                :img_class="'img-fluid rounded mb-4 mb-lg-0 float-right'"
+                                :alt="most_liked_film.local_film.name"
+                            />
                         </div>
-                        <div class="row">
-                            <p v-if=" most_liked_film.local_film.coutry">Coutry - {{ most_liked_film.local_film.coutry }}</p>
-                            <p v-if="most_liked_film.local_film.issue_year">Year of issue - {{ most_liked_film.local_film.issue_year }}</p>
-                        </div>
-                        <div class="row">
-                            {{ most_liked_film.local_film.short_description }}
-                        </div>
-                        <div class="row">
-                            <router-link :to="'film/'+most_liked_film.global_film.url_title">
-                                <button class="btn btn-primary">Open</button>
-                            </router-link>
+                        <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
+                            <div class="row">
+                                <router-link :to="'film/'+most_liked_film.global_film.url_title">
+                                    <h1 class="font-weight-light">{{ most_liked_film.local_film.name }}</h1>
+                                </router-link>
+                            </div>
+                            <div class="row" v-if=" most_liked_film.local_film.coutry || most_liked_film.local_film.issue_year">
+                                <p v-if=" most_liked_film.local_film.coutry">Coutry - {{ most_liked_film.local_film.coutry }}</p>
+                                <p v-if="most_liked_film.local_film.issue_year">Year of issue - {{ most_liked_film.local_film.issue_year }}</p>
+                            </div>
+                            <div class="row">
+                                {{ most_liked_film.local_film.short_description }}
+                            </div>
+                            <div class="row">
+                                <router-link :to="'film/'+most_liked_film.global_film.url_title">
+                                    <button class="btn btn-primary">Open</button>
+                                </router-link>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -179,13 +181,9 @@
                 />
             </div>
             <div v-else>
-
-                <!-- <div class="col-md-4 mb-5" > -->
-            <div class="row">
-                <filmCard v-for="film in films" :key='film.global_film.id' :film='film' :col='"4"'/>
-
+                <div class="row">
+                    <filmCard v-for="film in films" :key='film.global_film.id' :film='film' />
                 </div>
-                <!-- </div> -->
             </div>
         </div>
 

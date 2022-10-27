@@ -459,8 +459,10 @@ __webpack_require__.r(__webpack_exports__);
           modification_id: this.product_modification_for_cart,
           quantity: this.products_quantity
         }).then(function (response) {
-          _this4.add_to_cart_message = "Product added in your cart";
-        })["catch"](function (error) {});
+          _this4.add_to_cart_message = response; // this.add_to_cart_message = "Product added in your cart"
+        })["catch"](function (error) {
+          _this4.add_to_cart_message = 'Something went wrong. Try login.';
+        });
       }
     },
     add_to_faworite: function add_to_faworite(product_id) {
@@ -9866,19 +9868,21 @@ var render = function () {
       _vm._v(" "),
       _vm.product.local_product[0]
         ? _c("div", { staticClass: "container" }, [
-            _c("div", { staticClass: "row" }, [
-              _c("div", { staticClass: "col-md-12" }, [
-                _c("h2", { staticClass: "text-center" }, [
-                  _vm._v("Description"),
-                ]),
-                _vm._v(" "),
-                _c("span", {
-                  domProps: {
-                    innerHTML: _vm._s(_vm.product.local_product[0].text),
-                  },
-                }),
-              ]),
-            ]),
+            _vm.product.local_product[0].text
+              ? _c("div", { staticClass: "row" }, [
+                  _c("div", { staticClass: "col-md-12" }, [
+                    _c("h2", { staticClass: "text-center" }, [
+                      _vm._v("Description"),
+                    ]),
+                    _vm._v(" "),
+                    _c("span", {
+                      domProps: {
+                        innerHTML: _vm._s(_vm.product.local_product[0].text),
+                      },
+                    }),
+                  ]),
+                ])
+              : _vm._e(),
             _vm._v(" "),
             _vm.product.global_product.mead_in_georgia
               ? _c("div", { staticClass: "row" }, [
@@ -9899,9 +9903,9 @@ var render = function () {
           ])
         : _vm._e(),
       _vm._v(" "),
-      this.products.length > 0
-        ? _c("div", { staticClass: "container" }, [
-            _c(
+      _c("div", { staticClass: "container" }, [
+        this.products.length > 0
+          ? _c(
               "div",
               { staticClass: "row related" },
               [
@@ -9915,32 +9919,32 @@ var render = function () {
                 }),
               ],
               2
-            ),
-            _vm._v(" "),
-            _c("div", { staticClass: "row" }, [
+            )
+          : _vm._e(),
+        _vm._v(" "),
+        _c("div", { staticClass: "row" }, [
+          _c(
+            "div",
+            {
+              staticClass: "more-products",
+              attrs: { id: "more-products-wrap" },
+            },
+            [
               _c(
-                "div",
-                {
-                  staticClass: "more-products",
-                  attrs: { id: "more-products-wrap" },
-                },
+                "li",
                 [
                   _c(
-                    "li",
-                    [
-                      _c(
-                        "router-link",
-                        { attrs: { to: { name: "catalog" }, exact: "" } },
-                        [_c("span", [_vm._v(" All products ")])]
-                      ),
-                    ],
-                    1
+                    "router-link",
+                    { attrs: { to: { name: "catalog" }, exact: "" } },
+                    [_c("span", [_vm._v(" All products ")])]
                   ),
-                ]
+                ],
+                1
               ),
-            ]),
-          ])
-        : _vm._e(),
+            ]
+          ),
+        ]),
+      ]),
       _vm._v(" "),
       _c("metaData", {
         attrs: {

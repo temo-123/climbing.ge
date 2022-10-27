@@ -953,13 +953,11 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     whatWeDoComponent: _items_WhatWeDoComponent__WEBPACK_IMPORTED_MODULE_6__["default"]
   },
   mounted: function mounted() {
-    this.get_news();
-    this.get_last_news();
+    this.get_news(); // this.get_last_news()
   },
   watch: {
     '$route': function $route(to, from) {
-      this.get_news();
-      this.get_last_news();
+      this.get_news(); // this.get_last_news()
     }
   },
   methods: {
@@ -973,7 +971,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
               case 0:
                 axios.get('../api/articles/news/' + localStorage.getItem('lang')).then(function (response) {
                   _this.newses = response.data;
-                  _this.lastNews = response.data[0];
+                  _this.lastNews = response.data[0]; // this.get_news()
                 })["catch"](function (error) {});
 
               case 1:
@@ -983,27 +981,16 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
           }
         }, _callee);
       }))();
-    },
-    get_last_news: function get_last_news() {
-      var _this2 = this;
+    } // async get_last_news(){
+    //     axios
+    //     .get('../api/last_news/'+localStorage.getItem('lang'))
+    //     .then(response => {
+    //         this.lastNews = response.data
+    //     })
+    //     .catch(error =>{
+    //     })
+    // }
 
-      return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee2() {
-        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee2$(_context2) {
-          while (1) {
-            switch (_context2.prev = _context2.next) {
-              case 0:
-                axios.get('../api/last_news/' + localStorage.getItem('lang')).then(function (response) {
-                  _this2.lastNews = response.data;
-                })["catch"](function (error) {});
-
-              case 1:
-              case "end":
-                return _context2.stop();
-            }
-          }
-        }, _callee2);
-      }))();
-    }
   }
 });
 
@@ -1071,7 +1058,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_laravel_mix_node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, "\n@media (max-width: 990px){\n.thumbnail[data-v-2cc95823]{\n        height: 18em;\n        max-height: 22em;\n        margin-top: 20px;\n}\n.thumbnail p[data-v-2cc95823]{\n        font-size: 80%;\n}\n}\n@media (max-width: 375px){\n.thumbnail[data-v-2cc95823]{\n        height: 9em;\n        max-height: 22em;\n        margin-top: 16px;\n}\n.thumbnail p[data-v-2cc95823]{\n        font-size: 80%;\n}\n}\n.tip[data-v-2cc95823]{\n    width: 25%;\n    height: auto;\n    margin: 2%;\n}\n.caption h3[data-v-2cc95823]{\n    margin: 0;\n}\n.caption p[data-v-2cc95823]{\n    text-align: center;\n}\n/* .tips_list{\n    max-height: 100%; \n    overflow: hidden;\n}\n.tips{\n    display: flex;\n} */\n.previes_tip_bottom[data-v-2cc95823]{\n    float: left;\n}\n.next_tip_bottom[data-v-2cc95823]{\n    float: right;\n}\n.next_tip_bottom[data-v-2cc95823], .previes_tip_bottom[data-v-2cc95823]{\n    margin-top: -12%;\n    font-size: 150%;\n    cursor: pointer;\n}\n", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, "\n@media (max-width: 990px){\n.thumbnail[data-v-2cc95823]{\n        height: 18em;\n        max-height: 22em;\n        margin-top: 20px;\n}\n.thumbnail p[data-v-2cc95823]{\n        font-size: 80%;\n}\n}\n@media (max-width: 375px){\n.thumbnail[data-v-2cc95823]{\n        height: 9em;\n        max-height: 22em;\n        margin-top: 16px;\n}\n.thumbnail p[data-v-2cc95823]{\n        font-size: 80%;\n}\n}\n.tip[data-v-2cc95823]{\n    width: 25%;\n    height: auto;\n    margin: 2%;\n}\n.caption h3[data-v-2cc95823]{\n    margin: 0;\n}\n.caption p[data-v-2cc95823]{\n    text-align: center;\n}\n/* .tips_list{\n    max-height: 100%; \n    overflow: hidden;\n}\n.tips{\n    display: flex;\n} */\n.previes_tip_bottom[data-v-2cc95823]{\n    float: left;\n}\n.next_tip_bottom[data-v-2cc95823]{\n    float: right;\n}\n.next_tip_bottom[data-v-2cc95823], .previes_tip_bottom[data-v-2cc95823]{\n    margin-top: -12%;\n    font-size: 150%;\n    cursor: pointer;\n}\n.discount_percent_badge_for_techtip[data-v-2cc95823] {\n    margin: 5px 20px 0 0;\n}\n", ""]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
@@ -2393,7 +2380,7 @@ var render = function () {
                               "div",
                               {
                                 staticClass:
-                                  "discount-percent-badge discount-badge-fourty",
+                                  "discount-percent-badge discount_percent_badge_for_techtip discount-badge-fourty",
                               },
                               [_vm._v("NEW")]
                             ),
@@ -2508,7 +2495,7 @@ var render = function () {
           ]),
           _vm._v(" "),
           _c("div", { staticClass: "row" }, [
-            _c("div", { staticClass: "col-xs-12 col-sm-6 col-md-6 col-lg-6" }, [
+            _c("div", { staticClass: "col-xs-6 col-sm-6 col-md-6 col-lg-6" }, [
               _c("ul", { staticClass: "right-text" }, [
                 _c("li", [
                   _c(
@@ -2589,7 +2576,7 @@ var render = function () {
               ]),
             ]),
             _vm._v(" "),
-            _c("div", { staticClass: "col-xs-12 col-sm-6 col-md-6 col-lg-6" }, [
+            _c("div", { staticClass: "col-xs-6 col-sm-6 col-md-6 col-lg-6" }, [
               _c("ul", { staticClass: "left-text" }, [
                 _c("li", [
                   _c(
@@ -2796,106 +2783,98 @@ var render = function () {
         "div",
         { staticClass: "m-image-hero mm-image-hero--ssr" },
         [
-          _c(
-            "router-link",
-            { attrs: { to: "news/" + _vm.news[0][0].url_title } },
-            [
-              _c("div", { staticClass: "m-image-hero--media" }, [
-                _c("div", [
-                  _c(
-                    "div",
-                    { staticClass: "is-loaded" },
-                    [
-                      _vm.news[0][0].image
-                        ? _c("site-img", {
-                            attrs: {
-                              src: "images/news_img/" + _vm.news[0][0].image,
-                              img_class: "m-image-hero--image",
-                              alt: _vm.news[0][0][0][0].title,
+          _c("router-link", { attrs: { to: "news/" + _vm.news.url_title } }, [
+            _c("div", { staticClass: "m-image-hero--media" }, [
+              _c("div", [
+                _c(
+                  "div",
+                  { staticClass: "is-loaded" },
+                  [
+                    _vm.news.image
+                      ? _c("site-img", {
+                          attrs: {
+                            src: "images/news_img/" + _vm.news.image,
+                            img_class: "m-image-hero--image",
+                            alt: _vm.news[0][0].title,
+                          },
+                        })
+                      : _c("site-img", {
+                          attrs: {
+                            src: "../../../public/images/site_img/image.png",
+                            img_class: "m-image-hero--image",
+                            alt: _vm.news[0][0].title,
+                          },
+                        }),
+                  ],
+                  1
+                ),
+                _vm._v(" "),
+                _c(
+                  "div",
+                  { staticClass: "m-image-hero--aspect-ratio-wrapper" },
+                  [
+                    _c("div", {
+                      staticClass: "m-image-hero--aspect-ratio-pusher",
+                    }),
+                  ]
+                ),
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "m-image-hero--container" }, [
+                _c(
+                  "div",
+                  {
+                    staticClass:
+                      "m-image-hero--label mm-image-hero--no-background",
+                  },
+                  [
+                    _c("div", { staticClass: "m-image-hero--metadata-label" }, [
+                      _c("div", [_vm._v("News")]),
+                    ]),
+                  ]
+                ),
+                _vm._v(" "),
+                _c(
+                  "div",
+                  { staticClass: "m-image-hero--text-panel" },
+                  [
+                    _c(
+                      "router-link",
+                      { attrs: { to: "news/" + _vm.news.url_title } },
+                      [
+                        _c("div", [
+                          _c(
+                            "h2",
+                            {
+                              staticClass:
+                                "m-ellipsis m-image-hero--header-text mm-image-hero--no-background",
                             },
-                          })
-                        : _c("site-img", {
-                            attrs: {
-                              src: "../../../public/images/site_img/image.png",
-                              img_class: "m-image-hero--image",
-                              alt: _vm.news[0][0][0][0].title,
+                            [
+                              _c("span", { staticClass: "m-ellipsis--text" }, [
+                                _vm._v(_vm._s(_vm.news[0][0].title)),
+                              ]),
+                            ]
+                          ),
+                          _vm._v(" "),
+                          _c("span", {
+                            staticStyle: {
+                              "text-shadow": "#abababb5 1px 1px 0",
+                            },
+                            domProps: {
+                              innerHTML: _vm._s(
+                                _vm.news[0][0].short_description
+                              ),
                             },
                           }),
-                    ],
-                    1
-                  ),
-                  _vm._v(" "),
-                  _c(
-                    "div",
-                    { staticClass: "m-image-hero--aspect-ratio-wrapper" },
-                    [
-                      _c("div", {
-                        staticClass: "m-image-hero--aspect-ratio-pusher",
-                      }),
-                    ]
-                  ),
-                ]),
-                _vm._v(" "),
-                _c("div", { staticClass: "m-image-hero--container" }, [
-                  _c(
-                    "div",
-                    {
-                      staticClass:
-                        "m-image-hero--label mm-image-hero--no-background",
-                    },
-                    [
-                      _c(
-                        "div",
-                        { staticClass: "m-image-hero--metadata-label" },
-                        [_c("div", [_vm._v("News")])]
-                      ),
-                    ]
-                  ),
-                  _vm._v(" "),
-                  _c(
-                    "div",
-                    { staticClass: "m-image-hero--text-panel" },
-                    [
-                      _c(
-                        "router-link",
-                        { attrs: { to: "news/" + _vm.news[0][0].url_title } },
-                        [
-                          _c("div", [
-                            _c(
-                              "h2",
-                              {
-                                staticClass:
-                                  "m-ellipsis m-image-hero--header-text mm-image-hero--no-background",
-                              },
-                              [
-                                _c(
-                                  "span",
-                                  { staticClass: "m-ellipsis--text" },
-                                  [_vm._v(_vm._s(_vm.news[0][0][0][0].title))]
-                                ),
-                              ]
-                            ),
-                            _vm._v(" "),
-                            _c("span", {
-                              staticStyle: {
-                                "text-shadow": "#abababb5 1px 1px 0",
-                              },
-                              domProps: {
-                                innerHTML: _vm._s(
-                                  _vm.news[0][0][0][0].short_description
-                                ),
-                              },
-                            }),
-                          ]),
-                        ]
-                      ),
-                    ],
-                    1
-                  ),
-                ]),
+                        ]),
+                      ]
+                    ),
+                  ],
+                  1
+                ),
               ]),
-            ]
-          ),
+            ]),
+          ]),
         ],
         1
       ),
@@ -3072,7 +3051,7 @@ var render = function () {
               _vm._v(" " + _vm._s(this.$siteData.topo_description) + " "),
             ]),
             _vm._v(" "),
-            _c("div", { staticStyle: { "margin-bottom": "7%" } }, [
+            _c("div", { style: "margin-bottom: 7%" }, [
               _c("span", {
                 domProps: { innerHTML: _vm._s(this.$siteData.map) },
               }),
@@ -3080,7 +3059,7 @@ var render = function () {
           ])
         : _vm._e(),
       _vm._v(" "),
-      this.lastNews
+      _vm.lastNews
         ? _c("div", { staticClass: "h-recent-work" }, [
             _c("div", { staticClass: "container" }, [
               _c("h2", { staticClass: "index_h2", attrs: { id: "news" } }, [
@@ -3097,7 +3076,7 @@ var render = function () {
                 }),
               ]),
               _vm._v(" "),
-              this.lastNews.length > 0
+              _vm.lastNews
                 ? _c(
                     "span",
                     [_c("bigNewsCard", { attrs: { news: _vm.lastNews } })],
@@ -3105,7 +3084,7 @@ var render = function () {
                   )
                 : _vm._e(),
               _vm._v(" "),
-              this.newses.length > 6
+              _vm.newses.length > 6
                 ? _c(
                     "section",
                     {

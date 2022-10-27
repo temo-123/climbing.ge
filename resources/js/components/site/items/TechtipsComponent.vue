@@ -15,7 +15,7 @@
 
                             <div class="col-xs-6 col-sm-6 col-md-3" v-for="tip in techtips" :key="tip.id">
                                 <div class="product-image" v-if="tip.new_flag">
-                                    <div class="discount-percent-badge discount-badge-fourty">NEW</div>
+                                    <div class="discount-percent-badge discount_percent_badge_for_techtip discount-badge-fourty">NEW</div>
                                 </div>
                                 <!-- {{ tip_num+=1 }} -->
                                 <div class="thumbnail">
@@ -131,5 +131,9 @@
     margin-top: -12%;
     font-size: 150%;
     cursor: pointer;
+}
+
+.discount_percent_badge_for_techtip {
+    margin: 5px 20px 0 0;
 }
 </style>

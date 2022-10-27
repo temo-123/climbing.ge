@@ -166,7 +166,8 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
-  props: ['film', 'col']
+  props: ['film' // 'col'
+  ]
 });
 
 /***/ }),
@@ -184,8 +185,6 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var vue_content_loader__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! vue-content-loader */ "./node_modules/vue-content-loader/dist/vue-content-loader.es.js");
 /* harmony import */ var _items_card_filmsListCardComponent_vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../items/card/filmsListCardComponent.vue */ "./resources/js/components/films/items/card/filmsListCardComponent.vue");
 /* harmony import */ var _items_MetaDataComponent__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../items/MetaDataComponent */ "./resources/js/components/films/items/MetaDataComponent.vue");
-//
-//
 //
 //
 //
@@ -894,7 +893,7 @@ var render = function () {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", { class: "mb-5 col-md-" + _vm.col }, [
+  return _c("div", { class: "mb-5 col-xs-6 col-sm-6 col-md-4" }, [
     _c("div", { staticClass: "card h-100" }, [
       _c("div", { staticClass: "card-body" }, [
         _c("div", { staticClass: "row" }, [
@@ -986,10 +985,11 @@ var render = function () {
     { staticClass: "container px-4 px-lg-5" },
     [
       _c("div", { staticClass: "row gx-4 gx-lg-5 align-items-center my-5" }, [
-        _c("div", { staticClass: "row" }, [
+        _c("div", { staticClass: "container" }, [
           _vm.most_liked_film_loader
             ? _c(
                 "div",
+                { staticClass: "row" },
                 [
                   _c("content-loader", {
                     attrs: {
@@ -1001,113 +1001,129 @@ var render = function () {
                 ],
                 1
               )
-            : _c("div", [
+            : _c("div", { staticClass: "row" }, [
                 _c("h2", { staticClass: "text-center" }, [
                   _vm._v("Most liked film"),
                 ]),
                 _vm._v(" "),
-                _c(
-                  "div",
-                  { staticClass: "col-lg-5" },
-                  [
-                    !_vm.most_liked_film.global_film.image
-                      ? _c("site-img", {
-                          attrs: {
-                            src: "../../../public/images/site_img/film poster demo.jpg",
-                            img_class:
-                              "img-fluid rounded mb-4 mb-lg-0 float-right",
-                            alt: _vm.most_liked_film.local_film.name,
-                          },
-                        })
-                      : _c("site-img", {
-                          attrs: {
-                            src:
-                              "../../../public/images/film_img/" +
-                              _vm.most_liked_film.global_film.image,
-                            img_class:
-                              "img-fluid rounded mb-4 mb-lg-0 float-right",
-                            alt: _vm.most_liked_film.local_film.name,
-                          },
-                        }),
-                  ],
-                  1
-                ),
-                _vm._v(" "),
-                _c("div", { staticClass: "col-lg-5" }, [
+                _c("div", { staticClass: "row" }, [
                   _c(
                     "div",
-                    { staticClass: "row" },
+                    { staticClass: "col-xs-12 col-sm-12 col-md-6 col-lg-6" },
                     [
-                      _c(
-                        "router-link",
-                        {
-                          attrs: {
-                            to:
-                              "film/" +
-                              _vm.most_liked_film.global_film.url_title,
-                          },
-                        },
-                        [
-                          _c("h1", { staticClass: "font-weight-light" }, [
-                            _vm._v(_vm._s(_vm.most_liked_film.local_film.name)),
-                          ]),
-                        ]
-                      ),
+                      !_vm.most_liked_film.global_film.image
+                        ? _c("site-img", {
+                            attrs: {
+                              src: "../../../public/images/site_img/film poster demo.jpg",
+                              img_class:
+                                "img-fluid rounded mb-4 mb-lg-0 float-right",
+                              alt: _vm.most_liked_film.local_film.name,
+                            },
+                          })
+                        : _c("site-img", {
+                            attrs: {
+                              src:
+                                "../../../public/images/film_img/" +
+                                _vm.most_liked_film.global_film.image,
+                              img_class:
+                                "img-fluid rounded mb-4 mb-lg-0 float-right",
+                              alt: _vm.most_liked_film.local_film.name,
+                            },
+                          }),
                     ],
                     1
                   ),
                   _vm._v(" "),
-                  _c("div", { staticClass: "row" }, [
-                    _vm.most_liked_film.local_film.coutry
-                      ? _c("p", [
-                          _vm._v(
-                            "Coutry - " +
-                              _vm._s(_vm.most_liked_film.local_film.coutry)
-                          ),
-                        ])
-                      : _vm._e(),
-                    _vm._v(" "),
-                    _vm.most_liked_film.local_film.issue_year
-                      ? _c("p", [
-                          _vm._v(
-                            "Year of issue - " +
-                              _vm._s(_vm.most_liked_film.local_film.issue_year)
-                          ),
-                        ])
-                      : _vm._e(),
-                  ]),
-                  _vm._v(" "),
-                  _c("div", { staticClass: "row" }, [
-                    _vm._v(
-                      "\n                        " +
-                        _vm._s(
-                          _vm.most_liked_film.local_film.short_description
-                        ) +
-                        "\n                    "
-                    ),
-                  ]),
-                  _vm._v(" "),
                   _c(
                     "div",
-                    { staticClass: "row" },
+                    { staticClass: "col-xs-12 col-sm-12 col-md-6 col-lg-6" },
                     [
                       _c(
-                        "router-link",
-                        {
-                          attrs: {
-                            to:
-                              "film/" +
-                              _vm.most_liked_film.global_film.url_title,
-                          },
-                        },
+                        "div",
+                        { staticClass: "row" },
                         [
-                          _c("button", { staticClass: "btn btn-primary" }, [
-                            _vm._v("Open"),
-                          ]),
-                        ]
+                          _c(
+                            "router-link",
+                            {
+                              attrs: {
+                                to:
+                                  "film/" +
+                                  _vm.most_liked_film.global_film.url_title,
+                              },
+                            },
+                            [
+                              _c("h1", { staticClass: "font-weight-light" }, [
+                                _vm._v(
+                                  _vm._s(_vm.most_liked_film.local_film.name)
+                                ),
+                              ]),
+                            ]
+                          ),
+                        ],
+                        1
                       ),
-                    ],
-                    1
+                      _vm._v(" "),
+                      _vm.most_liked_film.local_film.coutry ||
+                      _vm.most_liked_film.local_film.issue_year
+                        ? _c("div", { staticClass: "row" }, [
+                            _vm.most_liked_film.local_film.coutry
+                              ? _c("p", [
+                                  _vm._v(
+                                    "Coutry - " +
+                                      _vm._s(
+                                        _vm.most_liked_film.local_film.coutry
+                                      )
+                                  ),
+                                ])
+                              : _vm._e(),
+                            _vm._v(" "),
+                            _vm.most_liked_film.local_film.issue_year
+                              ? _c("p", [
+                                  _vm._v(
+                                    "Year of issue - " +
+                                      _vm._s(
+                                        _vm.most_liked_film.local_film
+                                          .issue_year
+                                      )
+                                  ),
+                                ])
+                              : _vm._e(),
+                          ])
+                        : _vm._e(),
+                      _vm._v(" "),
+                      _c("div", { staticClass: "row" }, [
+                        _vm._v(
+                          "\n                            " +
+                            _vm._s(
+                              _vm.most_liked_film.local_film.short_description
+                            ) +
+                            "\n                        "
+                        ),
+                      ]),
+                      _vm._v(" "),
+                      _c(
+                        "div",
+                        { staticClass: "row" },
+                        [
+                          _c(
+                            "router-link",
+                            {
+                              attrs: {
+                                to:
+                                  "film/" +
+                                  _vm.most_liked_film.global_film.url_title,
+                              },
+                            },
+                            [
+                              _c("button", { staticClass: "btn btn-primary" }, [
+                                _vm._v("Open"),
+                              ]),
+                            ]
+                          ),
+                        ],
+                        1
+                      ),
+                    ]
                   ),
                 ]),
               ]),
@@ -1195,7 +1211,7 @@ var render = function () {
                 _vm._l(_vm.films, function (film) {
                   return _c("filmCard", {
                     key: film.global_film.id,
-                    attrs: { film: film, col: "4" },
+                    attrs: { film: film },
                   })
                 }),
                 1

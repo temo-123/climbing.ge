@@ -14,24 +14,24 @@
             
             <h3> {{this.$siteData.topo_description}} </h3>
 
-            <div style='margin-bottom: 7%'>
+            <div :style='"margin-bottom: 7%"'>
                 <span v-html="this.$siteData.map"></span>
             </div>
         </div>
 
-        <div class="h-recent-work" v-if="this.lastNews">
+        <div class="h-recent-work" v-if="lastNews">
             <div class="container">
                 <h2 class='index_h2' id="news">{{ $t('title news') }}</h2>
                 <div class="bar"><i class="fa fa-newspaper-o"></i></div>
                 <h3> <span v-html="this.$siteData.news_description"></span> </h3>
 
-                <span v-if="this.lastNews.length > 0" >
+                <span v-if="lastNews" >
                     <bigNewsCard 
                         :news="lastNews"
                     />
                 </span>
                 
-                <section v-if="this.newses.length > 6" class="m-collection-strip mm-collection-strip--is-stretched m-component-stack mm-component-stack--is-stacked mm-component-stack--has-header">
+                <section v-if="newses.length > 6" class="m-collection-strip mm-collection-strip--is-stretched m-component-stack mm-component-stack--is-stacked mm-component-stack--has-header">
                     <div class="m-collection-strip--carousel">
                         <div class="m-collection-strip--carousel-wrapper">
                             <div class="m-collection-strip--carousel-container">
@@ -99,12 +99,12 @@
         },
         mounted() {
             this.get_news()
-            this.get_last_news()
+            // this.get_last_news()
         },
         watch: {
             '$route' (to, from) {
                 this.get_news()
-                this.get_last_news()
+                // this.get_last_news()
             }
         },
         methods: {
@@ -114,19 +114,20 @@
                 .then(response => {
                     this.newses = response.data
                     this.lastNews = response.data[0]
+                    // this.get_news()
                 })
                 .catch(error =>{
                 })
             },
-            async get_last_news(){
-                axios
-                .get('../api/last_news/'+localStorage.getItem('lang'))
-                .then(response => {
-                    this.lastNews = response.data
-                })
-                .catch(error =>{
-                })
-            }
+            // async get_last_news(){
+            //     axios
+            //     .get('../api/last_news/'+localStorage.getItem('lang'))
+            //     .then(response => {
+            //         this.lastNews = response.data
+            //     })
+            //     .catch(error =>{
+            //     })
+            // }
         }
     }
 </script>

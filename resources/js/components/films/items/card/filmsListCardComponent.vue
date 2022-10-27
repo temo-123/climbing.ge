@@ -1,6 +1,6 @@
 <template>
     <!-- <div class=""> -->
-        <div :class="'mb-5 col-md-'+col" >
+        <div :class="'mb-5 col-xs-6 col-sm-6 col-md-4'" >
             <div class="card h-100">
                 <div class="card-body">
                     <div class="row">
@@ -46,7 +46,7 @@
 export default {
     props: [
         'film',
-        'col'
+        // 'col'
     ],
 }
 </script>

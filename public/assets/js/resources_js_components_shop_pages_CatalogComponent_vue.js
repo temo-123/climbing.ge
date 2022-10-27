@@ -490,6 +490,7 @@ __webpack_require__.r(__webpack_exports__);
       categories: [],
       products_loading: true,
       product_modal: false,
+      modalClass: '',
       quick_product: []
     };
   },
@@ -514,20 +515,20 @@ __webpack_require__.r(__webpack_exports__);
       var vm = this;
 
       if (vm.filter_category == 'All') {
+        // alert(vm.filter_category);
         // this.filtred_products = this.products
-        var f_products = this.products;
-        this.filtred_products = f_products.filter(function (item) {
+        // let f_products = this.products
+        this.filtred_products = this.products.filter(function (item) {
           return item.max_price >= vm.min_price && item.max_price <= vm.max_price;
         });
       } else {
         // this.filtred_products = this.products.filter(function (item){
         //     return item.global_product.category_id == vm.filter_category
         // })
-        var _f_products = this.products.filter(function (item) {
+        var f_products = this.products.filter(function (item) {
           return item.global_product.category_id == vm.filter_category;
         });
-
-        this.filtred_products = _f_products.filter(function (item) {
+        this.filtred_products = f_products.filter(function (item) {
           return item.max_price >= vm.min_price && item.max_price <= vm.max_price;
         });
       }

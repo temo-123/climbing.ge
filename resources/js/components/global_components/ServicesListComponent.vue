@@ -83,12 +83,12 @@
                         window.open(this.MIX_APP_SSH  + this.MIX_SITE_URL + '/')
                     }
                 }
-                else if(service == "film"){
-                    if(window.location.href == this.MIX_APP_SSH + 'film.' + this.MIX_SITE_URL + '/about_us'){
-                        this.$router.push({name: 'index'});
+                else if(service == "films"){
+                    if(window.location.href == this.MIX_APP_SSH + 'films.' + this.MIX_SITE_URL + '/about_us'){
+                        this.$router.push({name: 'studia'});
                     }
                     else{
-                        window.open(this.MIX_APP_SSH  + this.MIX_SITE_URL + '/')
+                        window.open(this.MIX_APP_SSH  + 'films.' + this.MIX_SITE_URL + '/')
                     }
                 }
             },

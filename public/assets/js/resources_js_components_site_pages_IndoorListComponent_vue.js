@@ -380,7 +380,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_laravel_mix_node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, "\n.deanger_text{\n    font-size: 120%; \n    color: red;\n}\n", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, "\n.deanger_text{\n    font-size: 120%; \n    color: red;\n}\n.discount_percent_badge_for_indoor {\n    margin: 5px 18px 0 0;\n}\n", ""]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
@@ -865,7 +865,10 @@ var render = function () {
           ? _c("div", { staticClass: "product-image" }, [
               _c(
                 "div",
-                { staticClass: "discount-percent-badge discount-badge-fourty" },
+                {
+                  staticClass:
+                    "discount-percent-badge discount_percent_badge_for_indoor discount-badge-fourty",
+                },
                 [_vm._v("NEW")]
               ),
             ])

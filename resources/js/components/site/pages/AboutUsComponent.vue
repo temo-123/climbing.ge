@@ -80,7 +80,7 @@
         </div>
         
         <metaData 
-            :title = "'About limbing in Georgia'"
+            :title = "'About climbing in Georgia'"
             :description = "'Rock climbing, mountaineering and other outdoor actyvity in Georgia'"
             :image = "'../../../../public/images/meta_img/outdoor.jpg'"
         />

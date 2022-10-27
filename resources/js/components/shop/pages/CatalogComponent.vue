@@ -194,6 +194,7 @@
                 categories: [],
                 products_loading: true,
                 product_modal: false,
+                modalClass: '',
 
                 quick_product: [],
             };
@@ -221,11 +222,11 @@
 
             sortByCategories(){
                 let vm = this;
-
                 if (vm.filter_category == 'All') {
+// alert(vm.filter_category);
                     // this.filtred_products = this.products
-                    let f_products = this.products
-                    this.filtred_products = f_products.filter(function (item){
+                    // let f_products = this.products
+                    this.filtred_products = this.products.filter(function (item){
                         return item.max_price >= vm.min_price && item.max_price <= vm.max_price
                     })
                 }

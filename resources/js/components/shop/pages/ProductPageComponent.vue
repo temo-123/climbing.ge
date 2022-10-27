@@ -82,7 +82,7 @@
             </div>
         </div>
         <div class="container" v-if="product.local_product[0]">
-            <div class="row">
+            <div class="row" v-if="product.local_product[0].text">
                 <div class="col-md-12">
                     <h2 class='text-center'>Description</h2>
                     <span v-html="product.local_product[0].text"></span>
@@ -94,8 +94,8 @@
                 </div>
             </div>
         </div>
-        <div class="container" v-if="this.products.length > 0">
-            <div class="row related">
+        <div class="container">
+            <div class="row related" v-if="this.products.length > 0">
                 <h2>you might also like</h2>
                 <analogProduct
                     v-for="product in products"
@@ -271,9 +271,11 @@
                         quantity: this.products_quantity
                     })
                     .then(response => {
-                        this.add_to_cart_message = "Product added in your cart"
+                        this.add_to_cart_message = response
+                        // this.add_to_cart_message = "Product added in your cart"
                     })
                     .catch(error =>{
+                        this.add_to_cart_message = 'Something went wrong. Try login.'
                     })
                 }
             },

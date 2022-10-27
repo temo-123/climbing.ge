@@ -166,7 +166,8 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
-  props: ['film', 'col']
+  props: ['film' // 'col'
+  ]
 });
 
 /***/ }),
@@ -625,7 +626,7 @@ var render = function () {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", { class: "mb-5 col-md-" + _vm.col }, [
+  return _c("div", { class: "mb-5 col-xs-6 col-sm-6 col-md-4" }, [
     _c("div", { staticClass: "card h-100" }, [
       _c("div", { staticClass: "card-body" }, [
         _c("div", { staticClass: "row" }, [
