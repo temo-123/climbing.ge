@@ -2,12 +2,9 @@
     <div class="container">
         <div class='row'>
             <div class="col-md-6">
-                <!-- @component('site.components.breadcrumb')
-                    @slot('parent') Home @endslot
-                    @slot('link') {{route('index')}} @endslot
-                    @slot('active') article @endslot
-                    @slot('article') {{ event[0].title }} @endslot
-                @endcomponent -->
+                
+                <breadcrumb />
+
                 <p class="calendar">
                     1<em>mar</em>
                 </p>
@@ -134,6 +131,7 @@
 <script>
     import commentForm from '../items/CommentFormComponent'
     import metaData from '../items/MetaDataComponent'
+    import breadcrumb from '../items/BreadcrumbComponent.vue'
 
     export default {
         props: [
@@ -147,6 +145,7 @@
         components: {
             metaData,
             commentForm,
+            breadcrumb,
         },
         mounted() {
             this.get_event()

@@ -1,6 +1,9 @@
 <template>
     <div class="container top_menu_margin h-recent-work">
         <h1 class="page_title">{{ setvice.local_service.title }}</h1>
+
+        <breadcrumb />
+
         <div class="row" v-if="setvice.service_images">
             <img class="service_page_image" :src="'../../images/service_img/'+setvice.service_images[0].image" :alt="setvice.local_service.title">
         </div>
@@ -29,10 +32,12 @@
 <script>
     import ServiceItem from '../items/ServiceItemComponent'
     import metaData from '../items/MetaDataComponent'
+    import breadcrumb from '../items/BreadcrumbComponent.vue'
     export default {
         components: {
             metaData,
             ServiceItem,
+            breadcrumb,
         },
         props:[
             'data'

@@ -9,16 +9,7 @@
         </div>
         <div class="row">
             <div class="col-sm-8 blog-header">
-                <!-- @component('components.breadcrumb')
-                @slot('parent') Home @endslot
-                @slot('link') route($all_article_but) @endslot
-                @slot('active') $article_map}} @endslot
-                @if($article [0]['title'])
-                @slot('article') $article [0]['title']}} @endslot
-                @else
-                @slot('article') $article [0]['name']}} @endslot
-                @endif
-                @endcomponent -->
+                <breadcrumb />
 
                 <p class="blog-post-meta"> {{ this.mount_route.created_at  }}</p>
             </div>
@@ -161,6 +152,7 @@
     import articleRightMenu from '../items/RightMenuComponent'
     import metaData from '../items/MetaDataComponent'
     import SimilarArticles from '../items/SimilarArticlesComponent'
+    import breadcrumb from '../items/BreadcrumbComponent.vue'
 
     export default {
         props: [
@@ -178,6 +170,7 @@
             galleryComponent,
             articleRightMenu,
             metaData,
+            breadcrumb,
             SimilarArticles,
         },
         

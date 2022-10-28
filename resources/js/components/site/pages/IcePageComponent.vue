@@ -30,7 +30,7 @@
         methods: {
             get_ice(){
                 axios
-                .get('../api/article/'+localStorage.getItem('lang')+'/'+this.$route.params.url_title)
+                .get('../api/article/ice/'+localStorage.getItem('lang')+'/'+this.$route.params.url_title)
                 .then(response => {
                     this.ice = response.data
                 })

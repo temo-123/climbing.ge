@@ -165,8 +165,27 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({});
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
+  data: function data() {
+    return {
+      general_pathname: window.location.pathname,
+      path: '',
+      page: '',
+      path_url: ''
+    };
+  },
+  mounted: function mounted() {
+    this.page = this.general_pathname.split("/").pop();
+    var path = this.general_pathname.split("/")[1];
+    this.path = path;
+
+    if (this.path == 'news' || this.path == 'event' || this.path == 'tech_tip' || this.path == 'partner') {
+      this.path_url = 'index';
+    } else {
+      this.path_url = path + 's';
+    }
+  }
+});
 
 /***/ }),
 
@@ -3707,29 +3726,38 @@ var render = function () {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _vm._m(0)
+  return _c(
+    "ol",
+    {
+      staticClass: "breadcrumb",
+      staticStyle: { padding: "0", "font-size": "75%" },
+    },
+    [
+      _c(
+        "li",
+        [
+          _c("router-link", { attrs: { to: { name: "index" } } }, [
+            _vm._v("Home"),
+          ]),
+        ],
+        1
+      ),
+      _vm._v(" "),
+      _c(
+        "li",
+        [
+          _c("router-link", { attrs: { to: { name: _vm.path_url } } }, [
+            _vm._v(_vm._s(_vm.path)),
+          ]),
+        ],
+        1
+      ),
+      _vm._v(" "),
+      _c("li", { staticClass: "active" }, [_vm._v(_vm._s(_vm.page))]),
+    ]
+  )
 }
-var staticRenderFns = [
-  function () {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c(
-      "ol",
-      {
-        staticClass: "breadcrumb",
-        staticStyle: { padding: "0", "font-size": "75%" },
-      },
-      [
-        _c("li", [_c("a", { attrs: { href: "#" } }, [_vm._v("index")])]),
-        _vm._v(" "),
-        _c("li", [_c("a", { attrs: { href: "#" } }, [_vm._v("next page")])]),
-        _vm._v(" "),
-        _c("li", { staticClass: "active" }, [_vm._v("article")]),
-      ]
-    )
-  },
-]
+var staticRenderFns = []
 render._withStripped = true
 
 

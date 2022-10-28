@@ -5,13 +5,13 @@
                 <site-img
                     v-if="!film.global_film.image"
                     :src="'../../../public/images/site_img/film poster demo.jpg'"
-                    :img_class="'img-fluid rounded mb-4 mb-lg-0 float-right'"
+                    :img_class="'img-fluid rounded mb-4 mb-lg-0 float-right portal_film_poster_img'"
                     :alt="film.local_film.name"
                 />
                 <site-img
                     v-else
                     :src="'../../../public/images/film_img/' + film.global_film.image"
-                    :img_class="'img-fluid rounded mb-4 mb-lg-0 float-right'"
+                    :img_class="'img-fluid rounded mb-4 mb-lg-0 float-right portal_film_poster_img'"
                     :alt="film.local_film.name"
                 />
             </div>
@@ -22,6 +22,13 @@
                             
                         <span @click="add_in_favorite_film(film.global_film.id)" style="float: right;"> <i class="fa fa-heart-o favorite_icon add_to_favorite" ></i> </span>
                     </h1>
+                </div>
+                <div class="row">
+                    <breadcrumb />
+                </div>
+                <div class="row" v-if=" film.local_film.coutry || film.local_film.issue_year">
+                    <p v-if=" film.local_film.coutry">Coutry - {{ film.local_film.coutry }}</p>
+                    <p v-if="film.local_film.issue_year">Year of issue - {{ film.local_film.issue_year }}</p>
                 </div>
                 <div class="row">
                     {{ film.local_film.text }}
@@ -79,11 +86,13 @@
     import { ContentLoader } from "vue-content-loader";
     import  filmCard  from "../items/cards/filmsListCardComponent.vue";
     import metaData from '../items/MetaDataComponent'
+    import breadcrumb from '../items/BreadcrumbComponent.vue'
     export default {
         components: {
             metaData,
             ContentLoader,
-            filmCard
+            filmCard,
+            breadcrumb
         },
         data: function () {
             return {
@@ -132,5 +141,7 @@
 </script>
 
 <style>
-
+.portal_film_poster_img{
+    width: 100%;
+}
 </style>

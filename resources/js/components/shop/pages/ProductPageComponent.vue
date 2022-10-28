@@ -18,6 +18,7 @@
                             <div class="row">
                                 <div class="col-md-10 product_page_title">
                                     <h1>{{ product.local_product[0].title }}</h1>
+                                    <breadcrumb />
                                 </div>
                                 <div class="col-md-2 favorites_icon" @click="add_to_faworite(product.global_product.id)">
                                     <i class="fa fa-heart-o" aria-hidden="true" style="font-size: 250%;"></i>
@@ -104,7 +105,7 @@
                 ></analogProduct>
             </div>
             <div class="row">
-                <div class="more-products" id="more-products-wrap">
+                <div class="more-products text-center" id="more-products-wrap">
                     <li><router-link :to="{name: 'catalog'}" exact> <span> All products </span> </router-link></li>
                 </div>
             </div>
@@ -130,12 +131,14 @@
     import lingallery from 'lingallery'; // https://github.com/ChristophAnastasiades/Lingallery
     import VueMeta from 'vue-meta'
     import metaData from '../items/MetaDataComponent'
+    import breadcrumb from '../items/BreadcrumbComponent.vue'
     export default {
         components: {
             metaData,
             lingallery,
             VueMeta,
-            analogProduct
+            analogProduct,
+            breadcrumb
         },
         data () {
             return {

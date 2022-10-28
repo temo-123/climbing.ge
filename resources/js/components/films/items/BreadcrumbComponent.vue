@@ -1,6 +1,6 @@
 <template>
     <ol class="breadcrumb" style="padding: 0; font-size: 75%;">
-        <li><router-link :to="{name: 'index'}">Home</router-link></li>
+        <li><router-link :to="{name: 'studia'}">Home</router-link></li>
         <li><router-link :to="{name: path_url}">{{ path }}</router-link></li>
         <li class="active">{{ page }}</li>
     </ol>
@@ -24,8 +24,8 @@
             
             this.path = path
 
-            if(this.path == 'news' || this.path == 'event' || this.path == 'tech_tip' || this.path == 'partner'){
-                this.path_url = 'index'
+            if(this.path == 'film'){
+                this.path_url = 'studia'
             }
             else{
                 this.path_url = path+'s'
