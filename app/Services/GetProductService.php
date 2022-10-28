@@ -216,7 +216,7 @@ class GetProductService
         return $time_array;
     }
 
-    public function colculate_product_discount($old_price, $discount)
+    public static function colculate_product_discount($old_price, $discount)
     {
         // $old_price = $price->price;
         // $sale = $price->discount;
@@ -227,7 +227,7 @@ class GetProductService
         // return $new_price;
     }
 
-    public function get_product_price($product_id, $interval)
+    public static function get_product_price($product_id, $interval)
     {
         $options_count = Product_option::where('product_id', '=', $product_id)->count();
 
@@ -251,7 +251,7 @@ class GetProductService
         }
     }
 
-    public function get_product_images($product_id)
+    public static function get_product_images($product_id)
     {
         $product_images = [];
 
@@ -267,13 +267,13 @@ class GetProductService
         return $product_images;
     }
 
-    public function get_product_images_on_page($option_id)
+    public static function get_product_images_on_page($option_id)
     {
         $images = Product_image::where('option_id', '=', $option_id)->get();
         return $images;
     }
 
-    public function get_product_options_on_page($product_id)
+    public static function get_product_options_on_page($product_id)
     {
         $product_options = [];
         $product_images = [];
@@ -292,7 +292,7 @@ class GetProductService
         return $product_options;
     }
 
-    // public function get_all_products_min_and_max_price()
+    // public static function get_all_products_min_and_max_price()
     // {
     //     $options = Product_option::get('price');
     //     $min = 0;
@@ -308,7 +308,7 @@ class GetProductService
     //     return ['min_price'=>$min, 'max_price'=>$max];
     // }
 
-    // public function get_product_min_and_max_price($product_id)
+    // public static function get_product_min_and_max_price($product_id)
     // {
     //     $options = Product_option::where('product_id', '=', $product_id)->get('price');
 

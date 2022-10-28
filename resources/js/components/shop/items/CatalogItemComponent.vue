@@ -49,11 +49,11 @@
 </template>
 
 <script>
-    import lingallery from 'lingallery'; // https://github.com/ChristophAnastasiades/Lingallery
+    // import lingallery from 'lingallery'; // https://github.com/ChristophAnastasiades/Lingallery
 
     export default {
         components: {
-            lingallery,
+            // lingallery,
         },
         props:[
             'product_data',

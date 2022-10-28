@@ -77,7 +77,7 @@
 
 <script>
     import { ContentLoader } from "vue-content-loader";
-    import  filmCard  from "../items/card/filmsListCardComponent.vue";
+    import  filmCard  from "../items/cards/filmsListCardComponent.vue";
     import metaData from '../items/MetaDataComponent'
     export default {
         components: {

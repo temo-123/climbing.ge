@@ -1,6 +1,7 @@
 <template>
         <div class="header navbar-expand-lg navbar-right bg-light">
             <div class="row navbar-fixed-top top_menu">
+
                 <div class="col-xs-12 col-sm-2 col-md-3 col-lg-3 navbar_title">
                     <div class="site_title">
                         <router-link style="font-size: 1.5em;" :to="{name: 'catalog'}" exact class="site_title">Climbing Shop</router-link>
@@ -68,10 +69,10 @@
                                     <i class="fa fa-search" aria-hidden="true"></i>
                                 </button>
                                 <ul class="dropdown-menu shadows mobail_dropdown" aria-labelledby="dropdown">
-                                    <form action="/search" method="POST" role="search" @submit.prevent="search" class="monail_navbar_form">
-                                        <input class="form-control" name="request" v-model="search_query" placeholder="Search Here" autocomplete="off" autofocus="autofocus" type="text">
+                                    <form action="/search" id="searchForm" method="POST" role="search" @submit.prevent="search" class="monail_navbar_form">
+                                        <input class="form-control" name="request" v-model="search_query" placeholder="Search Here" autocomplete="off" autofocus="autofocus" type="text" lang="en">
                                     </form>
-                                    <button type="submit" class="monail_navbar_form_button"> 
+                                    <button type="submit" form="searchForm" class="monail_navbar_form_button"> 
                                         <span class="glyphicon glyphicon-search"></span>
                                     </button>
                                 </ul>
@@ -124,7 +125,7 @@
                                     <a class="margin_right admin_menu_for_desctop" data-toggle="dropdown">
                                         <i class="fa fa-search"  aria-hidden="true"></i>
                                     </a>
-                                    <ul class="dropdown-menu shadows menu_margin_left_850" role="menu" style="width: 1000%;">
+                                    <!-- <ul class="dropdown-menu shadows menu_margin_left_850" role="menu" style="width: 1000%;">
                                         <li>
                                             <form action="/search" method="POST" role="search" class="navbar-form"  @submit.prevent="search">
                                                 <div class="form-group" style="display:inline;">
@@ -139,6 +140,18 @@
                                                 </div>
                                             </form>
                                             
+                                        </li>
+                                    </ul> -->
+
+
+                                    <ul class="dropdown-menu shadows menu_margin_left_850" role="menu" style="width: 1000%;">
+                                        <li>
+                                            <form action="/search" id="searchForm" method="POST" role="search" @submit.prevent="search" class="monail_navbar_form">
+                                                <input class="form-control" name="request" v-model="search_query" placeholder="Search Here" autocomplete="off" autofocus="autofocus" type="text" lang="en">
+                                            </form>
+                                            <button type="submit" form="searchForm" class="monail_navbar_form_button"> 
+                                                <span class="glyphicon glyphicon-search"></span>
+                                            </button>
                                         </li>
                                     </ul>
                                 </li>
@@ -218,7 +231,7 @@
         },
         methods: {
             search(){
-                this.$router.push({name: 'search_films', query: { 'query': this.search_query} });
+                this.$router.push({name: 'search_products', query: { 'query': this.search_query} });
                 this.search_query = ''
             },
             // localization(leng){
@@ -246,50 +259,3 @@
         }
     }
 </script>
-<style scoped>
-     /* .mobail_dropdown{
-        width: 80%;
-        margin-left: 10%;
-        margin-top: 9%;
-        border: 1px solid #ccc;
-        border-radius: 20px;
-    } */
-    /*.flag {
-        border: 1px solid #ccc;}
-    .mobail_flag span{
-        margin-left: 50%;
-        margin-right: 50%;
-    }
-    .monail_navbar_form{
-        width: 80%;
-        margin-left: 10%;
-        margin-right: 10%;
-        margin-top: 4%;
-        margin-bottom: 4%;
-    }
-    .monail_navbar_form_button{
-        width: 20%;
-        margin-left: 40%;
-        margin-right: 40%;
-        margin-bottom: 4%;
-
-        padding: 6px 12px;
-        font-size: 14px;
-        font-weight: normal;
-        line-height: 1;
-        text-align: center;
-        background-color: #eee;
-        border: 1px solid #ccc;
-        border-radius: 4px;
-    }
-    .dropdawn_grade{
-        color:black !important;
-        text-align: center;
-        margin-right: 10%;
-        margin-left: 10%;
-    }
-    .navbar_title{
-        z-index: 1001; 
-        width: 50%;
-    } */
-</style>

@@ -4,17 +4,21 @@
 
             <!-- <img :src="image_dir+article.image" class="img-responsive" :alt='article[0][0].title' /> -->
 
-            <site-img v-if="article.area.image != NULL" :src="image_dir+article.image" :img_class="'img-responsive'" :alt='article[0][0].title'/>
-            <site-img v-else :src="'../../../public/images/site_img/image.png'" :img_class="'img-responsive'" :alt='article[0][0].title'/>
+            <site-img v-if="article.global_article.image" :src="image_dir+article.global_article.image" :img_class="'img-responsive'" :alt='article.us_article.title'/>
+            <site-img v-else :src="'../../../public/images/site_img/image.png'" :img_class="'img-responsive'" :alt='article.us_article.title'/>
 
             <div class="mask">
-                <a :href="catedory + '/' + article.url_title" class="info"><i class="fa fa-arrow-right"></i></a>
+
+                <router-link :to="category + '/' + article.global_article.url_title" class="info">
+                    <i class="fa fa-arrow-right"></i>
+                </router-link>
+                <!-- <a :href="category + '/' + article.global_article.url_title" class="info"><i class="fa fa-arrow-right"></i></a> -->
             </div>
             
             <div class="isotope-item-dtls">
-                <h3>{{ article[0][0].title }}</h3>
+                <h3>{{ article.us_article.title }}</h3>
                 <div class="article_size">
-                    <span v-html="article[0][0].short_description"></span>
+                    <span v-html="article.us_article.short_description"></span>
                 </div>
             </div>
         </div>
@@ -36,25 +40,25 @@
         components: {
         },
         mounted() {
-            if (this.article.category === 'indoor') {
+            if (this.article.global_article.category === 'indoor') {
                 this.image_dir = '../images/indoor_img/'
-                this.catedory = 'indoor'
+                this.category = 'indoor'
             }
-            if (this.article.category === 'outdoor') {
+            else if (this.article.global_article.category === 'outdoor') {
                 this.image_dir = '../images/outdoor_img/'
-                this.catedory = 'outdoor'
+                this.category = 'outdoor'
             }
-            if (this.article.category === 'mount_route') {
+            else if (this.article.global_article.category === 'mount_route') {
                 this.image_dir = '../images/mount_route_img/'
-                this.catedory = 'mount_route'
+                this.category = 'mount_route'
             }
-            if (this.article.category === 'other') {
-                this.image_dir = '../images/other_img/'
-                this.catedory = 'other'
-            }
-            if (this.article.category === 'ice') {
+            // else if (this.article.global_article.category === 'other') {
+            //     this.image_dir = '../images/other_img/'
+            //     this.category = 'other'
+            // }
+            else if (this.article.global_article.category === 'ice') {
                 this.image_dir = '../images/ice_img/'
-                this.catedory = 'ice'
+                this.category = 'ice'
             }
         },
         methods: {

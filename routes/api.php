@@ -209,8 +209,9 @@ Route::group(['namespace'=>'Api'], function() {
     /*
     *   Guidbook and Ploducts Search routes
     */
-    Route::apiResource('/productSearch', 'ProductsSearchController');
-    Route::apiResource('/articleSearch', 'ArticlesSearchController');
+    Route::post('/productSearch/{query_request}', 'SearchController@productSearch');
+    Route::post('/articleSearch/{query_request}', 'SearchController@articleSearch');
+    Route::post('/filmSearch/{query_request}', 'SearchController@filmSearch');
 
     /*
     *   Mails routes

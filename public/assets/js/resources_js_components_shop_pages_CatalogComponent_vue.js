@@ -56,8 +56,6 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
-/* harmony import */ var lingallery__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! lingallery */ "./node_modules/lingallery/dist/lingallery.umd.js");
-/* harmony import */ var lingallery__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(lingallery__WEBPACK_IMPORTED_MODULE_0__);
 //
 //
 //
@@ -108,11 +106,9 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
- // https://github.com/ChristophAnastasiades/Lingallery
-
+// import lingallery from 'lingallery'; // https://github.com/ChristophAnastasiades/Lingallery
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
-  components: {
-    lingallery: (lingallery__WEBPACK_IMPORTED_MODULE_0___default())
+  components: {// lingallery,
   },
   props: ['product_data'],
   data: function data() {

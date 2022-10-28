@@ -13,7 +13,7 @@ const router = new VueRouter({
 
         { path: '/about_us', name: 'about_films', component: load('AboutUsComponent'),},
 
-        { path: 'search_films', name: 'search_films', component: load('SerchPageComponent') },
+        { path: '/search_films', name: 'search_films', component: load('SerchPageComponent') },
 
         { path: '*', name: 'NotFound', component: NotFound }
     ],

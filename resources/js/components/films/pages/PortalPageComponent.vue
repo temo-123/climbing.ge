@@ -105,7 +105,7 @@
                     <content-loader
                         viewBox="0 0"
                         primaryColor="#f3f3f3"
-                        secondaryColor="#279fbbb0"
+                        secondaryColor="#777777"
                     />
                 </div>
                 <div class="row" v-else>
@@ -177,7 +177,7 @@
                 <content-loader
                     viewBox="0 0"
                     primaryColor="#f3f3f3"
-                    secondaryColor="#279fbbb0"
+                    secondaryColor="#777777"
                 />
             </div>
             <div v-else>
@@ -197,7 +197,7 @@
 
 <script>
 import { ContentLoader } from "vue-content-loader";
-import  filmCard  from "../items/card/filmsListCardComponent.vue";
+import  filmCard  from "../items/cards/filmsListCardComponent.vue";
 
 import metaData from '../items/MetaDataComponent'
     export default {
