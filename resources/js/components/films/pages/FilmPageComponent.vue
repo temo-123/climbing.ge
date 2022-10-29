@@ -105,6 +105,12 @@
         mounted() {
             this.get_film();
         },
+        watch: {
+            '$route' (to, from) {
+                this.get_film(),
+                window.scrollTo(0,0)
+            }
+        },
         methods: {
             get_same_films(category_id, id) {
                 axios

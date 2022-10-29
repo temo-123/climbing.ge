@@ -825,20 +825,21 @@ __webpack_require__.r(__webpack_exports__);
     this.get_posts();
   },
   watch: {
-    '$route': function $route(to, from) {
-      this.$refs.SArticles.test(); // this.$refs.SimilarArticles.get_same_articles();
+    '$route': function $route(to, from) {// this.$refs.SArticles.test();
+      // this.$refs.SimilarArticles.get_same_articles();
     }
   },
   methods: {
-    get_posts: function get_posts() {
-      var _this = this;
-
-      axios.get("../api/posts/get_posts_for_outdoor_region/" + this.article.id).then(function (response) {
-        _this.posts = response.data;
-      })["catch"](function (error) {
-        return console.log(error);
-      });
-    },
+    // get_posts(){
+    //     axios
+    //     .get("../api/posts/get_posts_for_outdoor_region/"+this.article.id)
+    //     .then(response => {
+    //         this.posts = response.data
+    //     })
+    //     .catch(
+    //         error => console.log(error)
+    //     );
+    // },
     add_to_favorite_outdoor_area: function add_to_favorite_outdoor_area(article_id) {
       // alert('add to interested event. ID = ' + article_id)
       axios.post('../../api/articles/add_to_favorite_outdoor_area/', {
@@ -911,22 +912,47 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   name: "Article Right Navigation Menu",
-  mounted: function mounted() {// console.log(window.screenX)
-    // window.scroll(0, 0);
+  data: function data() {
+    return {
+      right_navbar_class: ''
+    };
   },
-  methods: {
-    test: function test() {
-      console.log(Math.random());
+  mounted: function mounted() {
+    this.margin_bottom_position = document.body.offsetHeight - window.scrollY;
+
+    if (this.margin_bottom_position <= 1900) {
+      this.right_navbar_class = '';
+    } else {
+      this.right_navbar_class = 'right_navigarion_menu_fixed_on_scrine';
     }
+  },
+  // watch: {
+  //     '$route' (to, from) {
+  //         // this.$refs.SArticles.test();
+  //         // this.$refs.SimilarArticles.get_same_articles();
+  //     }
+  // },
+  methods: {
+    // test(){
+    //     console.log(Math.random())
+    // },
+    handleScroll: function handleScroll(event) {
+      this.margin_bottom_position = document.body.offsetHeight - window.scrollY;
+
+      if (this.margin_bottom_position <= 1900) {
+        this.right_navbar_class = '';
+      } else {
+        this.right_navbar_class = 'right_navigarion_menu_fixed_on_scrine';
+      }
+    }
+  },
+  created: function created() {
+    window.addEventListener('scroll', this.handleScroll);
+  },
+  destroyed: function destroyed() {
+    window.removeEventListener('scroll', this.handleScroll);
   }
 });
 
@@ -1618,8 +1644,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
 // import VueExpandableImage from 'vue-expandable-image' //https://github.com/TahaSh/vue-expandable-image
 // import { SlickList, SlickItem } from 'vue-slicksort'; //https://github.com/Jexordexan/vue-slicksort
  //https://innologica.github.io/vue-stackable-modal/#sample-css
@@ -1667,11 +1691,11 @@ __webpack_require__.r(__webpack_exports__);
       show_mtp_modal: false,
       modalClass: [],
       route_detals: [],
-      route_posts: [],
-      mtp_detals: [],
-      mtp_posts: [],
-      route_post_list: false,
-      mtp_post_list: false
+      // route_posts: [],
+      mtp_detals: [] // mtp_posts: [],
+      // route_post_list: false,
+      // mtp_post_list: false,
+
     };
   },
   mounted: function mounted() {
@@ -1728,8 +1752,7 @@ __webpack_require__.r(__webpack_exports__);
       this.show_route_modal = true;
       this.route_detals = [];
       axios.get("/api/route/" + id).then(function (response) {
-        _this2.route_detals = response.data;
-        _this2.route_post_list = true;
+        _this2.route_detals = response.data; // this.route_post_list = true;
       })["catch"](function (error) {});
     },
     // get_route_posts(route_id) {
@@ -1747,8 +1770,7 @@ __webpack_require__.r(__webpack_exports__);
       this.show_mtp_modal = true;
       this.mtp_detals = [];
       axios.get("/api/MTP/" + id).then(function (response) {
-        _this3.mtp_detals = response.data;
-        _this3.mtp_post_list = true;
+        _this3.mtp_detals = response.data; // this.mtp_post_list = true;
       })["catch"](function (error) {});
     },
     // get_mtp_posts(mtp_id) {
@@ -2063,7 +2085,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_laravel_mix_node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, "\n.right_navigarion_menu[data-v-b1040904]{\n    position: fixed;\n    right: 0;\n}\n", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, "\n.right_navigarion_menu_fixed_on_scrine[data-v-b1040904]{\n    position: fixed;\n    right: 0;\n}\n.right_navigarion_menu_fixed_on_top[data-v-b1040904]{\n    /* position: fixed; */\n    right: 0;\n}\n.right_navigarion_menu_fixed_on_bottom[data-v-b1040904]{\n    /* position: fixed; */\n    right: 0;\n}\n", ""]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
@@ -4609,71 +4631,66 @@ var render = function () {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", [
-    _c(
-      "div",
-      {
-        staticClass:
-          "col-sm-3 col-sm-offset-1 blog-sidebar display-none-720px right_navigarion_menu",
-      },
-      [
-        Math.random() > 0.5
-          ? _c("div", [_vm._v("\n  Now you see me\n")])
-          : _c("div", [_vm._v("\n  Now you don't\n")]),
-        _vm._v(" "),
-        _c("nav", { staticClass: "navbar fading-side-menu" }, [
-          _c("ul", { staticClass: "list-unstyled" }, [
-            _c("li", [
-              _c("h4", [_vm._v(_vm._s(_vm.$t("article navigation menu")))]),
-            ]),
-            _vm._v(" "),
-            _c("li", [
-              _c("a", { attrs: { href: "#description" } }, [
-                _c("span", { staticClass: "text-primary" }, [
-                  _vm._v(_vm._s(_vm.$t("nav description"))),
-                ]),
+  return _c(
+    "div",
+    {
+      class:
+        "col-sm-3 col-sm-offset-1 blog-sidebar display-none-720px " +
+        [_vm.right_navbar_class],
+    },
+    [
+      _c("nav", { staticClass: "navbar fading-side-menu" }, [
+        _c("ul", { staticClass: "list-unstyled" }, [
+          _c("li", [
+            _c("h4", [_vm._v(_vm._s(_vm.$t("article navigation menu")))]),
+          ]),
+          _vm._v(" "),
+          _c("li", [
+            _c("a", { attrs: { href: "#description" } }, [
+              _c("span", { staticClass: "text-primary" }, [
+                _vm._v(_vm._s(_vm.$t("nav description"))),
               ]),
             ]),
-            _vm._v(" "),
-            _c("li", [
-              _c("a", { attrs: { href: "#sectors" } }, [
-                _c("span", { staticClass: "text-primary" }, [
-                  _vm._v(_vm._s(_vm.$t("nav sectors"))),
-                ]),
+          ]),
+          _vm._v(" "),
+          _c("li", [
+            _c("a", { attrs: { href: "#sectors" } }, [
+              _c("span", { staticClass: "text-primary" }, [
+                _vm._v(_vm._s(_vm.$t("nav sectors"))),
               ]),
             ]),
-            _vm._v(" "),
-            _c("li", [
-              _c("a", { attrs: { href: "#gallery" } }, [
-                _c("span", { staticClass: "text-primary" }, [
-                  _vm._v(_vm._s(_vm.$t("nav gallery"))),
-                ]),
+          ]),
+          _vm._v(" "),
+          _c("li", [
+            _c("a", { attrs: { href: "#gallery" } }, [
+              _c("span", { staticClass: "text-primary" }, [
+                _vm._v(_vm._s(_vm.$t("nav gallery"))),
               ]),
             ]),
-            _vm._v(" "),
-            _c("li", [
-              _c("a", { attrs: { href: "#comments" } }, [
-                _c("span", { staticClass: "text-primary" }, [
-                  _vm._v(_vm._s(_vm.$t("nav comments"))),
-                ]),
+          ]),
+          _vm._v(" "),
+          _c("li", [
+            _c("a", { attrs: { href: "#comments" } }, [
+              _c("span", { staticClass: "text-primary" }, [
+                _vm._v(_vm._s(_vm.$t("nav comments"))),
               ]),
             ]),
-            _vm._v(" "),
-            _c("li", [
-              _c("a", { attrs: { href: "#other" } }, [
-                _c("span", { staticClass: "text-primary" }, [
-                  _vm._v(_vm._s(_vm.$t("nav similar articles"))),
-                ]),
+          ]),
+          _vm._v(" "),
+          _c("li", [
+            _c("a", { attrs: { href: "#other" } }, [
+              _c("span", { staticClass: "text-primary" }, [
+                _vm._v(_vm._s(_vm.$t("nav similar articles"))),
               ]),
             ]),
           ]),
         ]),
-        _vm._v(" "),
-        _c("rightAd"),
-      ],
-      1
-    ),
-  ])
+      ]),
+      _vm._v(" "),
+      _c("rightAd"),
+    ],
+    1
+  )
 }
 var staticRenderFns = []
 render._withStripped = true
@@ -5024,8 +5041,7 @@ var render = function () {
                             {
                               on: {
                                 click: function ($event) {
-                                  _vm.show_route_model(route.id),
-                                    _vm.get_route_posts(route.id)
+                                  return _vm.show_route_model(route.id)
                                 },
                               },
                             },
@@ -5165,8 +5181,7 @@ var render = function () {
                         },
                         on: {
                           click: function ($event) {
-                            _vm.show_mtp_madel(mtp.mtp_id),
-                              _vm.get_mtp_posts(mtp.mtp_id)
+                            return _vm.show_mtp_madel(mtp.mtp_id)
                           },
                         },
                       },
@@ -5345,193 +5360,6 @@ var render = function () {
                 ],
                 2
               ),
-              _vm._v(" "),
-              this.route_posts.length > 0
-                ? _c("div", { staticClass: "row" }, [
-                    _c("div", { staticClass: "row" }, [
-                      _c("div", { staticClass: "col-md-6" }, [
-                        _c(
-                          "h2",
-                          {
-                            on: {
-                              click: function ($event) {
-                                _vm.route_post_list = !_vm.route_post_list
-                              },
-                            },
-                          },
-                          [
-                            _vm._v(
-                              "\n                                User posts and rewies\n                            "
-                            ),
-                          ]
-                        ),
-                      ]),
-                      _vm._v(" "),
-                      _c("div", { staticClass: "col-md-6" }, [
-                        _vm.route_post_list
-                          ? _c(
-                              "p",
-                              {
-                                staticStyle: { float: "right" },
-                                on: {
-                                  click: function ($event) {
-                                    _vm.route_post_list = !_vm.route_post_list
-                                  },
-                                },
-                              },
-                              [
-                                _vm._v(
-                                  "\n                                Close\n                            "
-                                ),
-                              ]
-                            )
-                          : _vm._e(),
-                        _vm._v(" "),
-                        !_vm.route_post_list
-                          ? _c(
-                              "p",
-                              {
-                                staticStyle: { float: "right" },
-                                on: {
-                                  click: function ($event) {
-                                    _vm.route_post_list = !_vm.route_post_list
-                                  },
-                                },
-                              },
-                              [
-                                _vm._v(
-                                  "\n                                Open\n                            "
-                                ),
-                              ]
-                            )
-                          : _vm._e(),
-                      ]),
-                    ]),
-                    _vm._v(" "),
-                    _c(
-                      "div",
-                      {
-                        directives: [
-                          {
-                            name: "show",
-                            rawName: "v-show",
-                            value: _vm.route_post_list,
-                            expression: "route_post_list",
-                          },
-                        ],
-                      },
-                      [
-                        _c(
-                          "div",
-                          { staticClass: "row" },
-                          _vm._l(_vm.route_posts, function (post) {
-                            return _c(
-                              "div",
-                              {
-                                key: post.id,
-                                staticClass: "cardbox shadow-lg bg-white",
-                              },
-                              [
-                                _c("div", { staticClass: "cardbox-heading" }, [
-                                  _c("div", { staticClass: "media m-0" }, [
-                                    _c("div", { staticClass: "d-flex mr-3" }, [
-                                      post["user"].image
-                                        ? _c("img", {
-                                            staticClass:
-                                              "img-fluid rounded-circle",
-                                            attrs: {
-                                              src: "/public/images/user_img/user_demo_img.gif",
-                                              alt:
-                                                post["user"].name +
-                                                " " +
-                                                post["user"].surname,
-                                            },
-                                          })
-                                        : _c("img", {
-                                            staticClass:
-                                              "img-fluid rounded-circle",
-                                            attrs: {
-                                              src: "/public/images/site_img/user_demo_img.gif",
-                                              alt:
-                                                post["user"].name +
-                                                " " +
-                                                post["user"].surname,
-                                            },
-                                          }),
-                                    ]),
-                                    _vm._v(" "),
-                                    _c("div", { staticClass: "media-body" }, [
-                                      _c("div", { staticClass: "row m-0" }, [
-                                        _c("p", { staticClass: "m-0" }, [
-                                          _vm._v(
-                                            "\n                                                    " +
-                                              _vm._s(
-                                                post["user"].name +
-                                                  " " +
-                                                  post["user"].surname
-                                              ) +
-                                              "\n                                                "
-                                          ),
-                                        ]),
-                                      ]),
-                                      _vm._v(" "),
-                                      _c("div", { staticClass: "row m-0" }, [
-                                        _c("small", [
-                                          post["post"].created_at
-                                            ? _c("span", [
-                                                _vm._v(
-                                                  _vm._s(
-                                                    post["post"].created_at
-                                                  )
-                                                ),
-                                              ])
-                                            : _vm._e(),
-                                        ]),
-                                      ]),
-                                    ]),
-                                  ]),
-                                ]),
-                                _vm._v(" "),
-                                post["post"].text
-                                  ? _c(
-                                      "div",
-                                      { staticClass: "cardbox-item container" },
-                                      [
-                                        _c(
-                                          "p",
-                                          {
-                                            staticStyle: {
-                                              "background-color": "#eee",
-                                              "text-align": "center",
-                                              "font-size": "1.5em",
-                                            },
-                                          },
-                                          [
-                                            _vm._v(
-                                              "\n                                        " +
-                                                _vm._s(post["post"].text) +
-                                                "\n                                    "
-                                            ),
-                                          ]
-                                        ),
-                                      ]
-                                    )
-                                  : _vm._e(),
-                              ]
-                            )
-                          }),
-                          0
-                        ),
-                        _vm._v(" "),
-                        _c("div", { staticClass: "row" }, [
-                          _vm._v(
-                            "\n                            For more posts visit forum site\n                        "
-                          ),
-                        ]),
-                      ]
-                    ),
-                  ])
-                : _vm._e(),
             ]),
           ]),
           _vm._v(" "),

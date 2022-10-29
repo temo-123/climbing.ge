@@ -109,21 +109,21 @@
         },
         watch: {
             '$route' (to, from) {
-                this.$refs.SArticles.test();
+                // this.$refs.SArticles.test();
                 // this.$refs.SimilarArticles.get_same_articles();
             }
         },
         methods: {
-            get_posts(){
-                axios
-                .get("../api/posts/get_posts_for_outdoor_region/"+this.article.id)
-                .then(response => {
-                    this.posts = response.data
-                })
-                .catch(
-                    error => console.log(error)
-                );
-            },
+            // get_posts(){
+            //     axios
+            //     .get("../api/posts/get_posts_for_outdoor_region/"+this.article.id)
+            //     .then(response => {
+            //         this.posts = response.data
+            //     })
+            //     .catch(
+            //         error => console.log(error)
+            //     );
+            // },
 
             add_to_favorite_outdoor_area(article_id){
                 // alert('add to interested event. ID = ' + article_id)

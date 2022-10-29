@@ -558,22 +558,47 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   name: "Article Right Navigation Menu",
-  mounted: function mounted() {// console.log(window.screenX)
-    // window.scroll(0, 0);
+  data: function data() {
+    return {
+      right_navbar_class: ''
+    };
   },
-  methods: {
-    test: function test() {
-      console.log(Math.random());
+  mounted: function mounted() {
+    this.margin_bottom_position = document.body.offsetHeight - window.scrollY;
+
+    if (this.margin_bottom_position <= 1900) {
+      this.right_navbar_class = '';
+    } else {
+      this.right_navbar_class = 'right_navigarion_menu_fixed_on_scrine';
     }
+  },
+  // watch: {
+  //     '$route' (to, from) {
+  //         // this.$refs.SArticles.test();
+  //         // this.$refs.SimilarArticles.get_same_articles();
+  //     }
+  // },
+  methods: {
+    // test(){
+    //     console.log(Math.random())
+    // },
+    handleScroll: function handleScroll(event) {
+      this.margin_bottom_position = document.body.offsetHeight - window.scrollY;
+
+      if (this.margin_bottom_position <= 1900) {
+        this.right_navbar_class = '';
+      } else {
+        this.right_navbar_class = 'right_navigarion_menu_fixed_on_scrine';
+      }
+    }
+  },
+  created: function created() {
+    window.addEventListener('scroll', this.handleScroll);
+  },
+  destroyed: function destroyed() {
+    window.removeEventListener('scroll', this.handleScroll);
   }
 });
 
@@ -952,7 +977,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_laravel_mix_node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, "\n.right_navigarion_menu[data-v-b1040904]{\n    position: fixed;\n    right: 0;\n}\n", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, "\n.right_navigarion_menu_fixed_on_scrine[data-v-b1040904]{\n    position: fixed;\n    right: 0;\n}\n.right_navigarion_menu_fixed_on_top[data-v-b1040904]{\n    /* position: fixed; */\n    right: 0;\n}\n.right_navigarion_menu_fixed_on_bottom[data-v-b1040904]{\n    /* position: fixed; */\n    right: 0;\n}\n", ""]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
@@ -2283,71 +2308,66 @@ var render = function () {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", [
-    _c(
-      "div",
-      {
-        staticClass:
-          "col-sm-3 col-sm-offset-1 blog-sidebar display-none-720px right_navigarion_menu",
-      },
-      [
-        Math.random() > 0.5
-          ? _c("div", [_vm._v("\n  Now you see me\n")])
-          : _c("div", [_vm._v("\n  Now you don't\n")]),
-        _vm._v(" "),
-        _c("nav", { staticClass: "navbar fading-side-menu" }, [
-          _c("ul", { staticClass: "list-unstyled" }, [
-            _c("li", [
-              _c("h4", [_vm._v(_vm._s(_vm.$t("article navigation menu")))]),
-            ]),
-            _vm._v(" "),
-            _c("li", [
-              _c("a", { attrs: { href: "#description" } }, [
-                _c("span", { staticClass: "text-primary" }, [
-                  _vm._v(_vm._s(_vm.$t("nav description"))),
-                ]),
+  return _c(
+    "div",
+    {
+      class:
+        "col-sm-3 col-sm-offset-1 blog-sidebar display-none-720px " +
+        [_vm.right_navbar_class],
+    },
+    [
+      _c("nav", { staticClass: "navbar fading-side-menu" }, [
+        _c("ul", { staticClass: "list-unstyled" }, [
+          _c("li", [
+            _c("h4", [_vm._v(_vm._s(_vm.$t("article navigation menu")))]),
+          ]),
+          _vm._v(" "),
+          _c("li", [
+            _c("a", { attrs: { href: "#description" } }, [
+              _c("span", { staticClass: "text-primary" }, [
+                _vm._v(_vm._s(_vm.$t("nav description"))),
               ]),
             ]),
-            _vm._v(" "),
-            _c("li", [
-              _c("a", { attrs: { href: "#sectors" } }, [
-                _c("span", { staticClass: "text-primary" }, [
-                  _vm._v(_vm._s(_vm.$t("nav sectors"))),
-                ]),
+          ]),
+          _vm._v(" "),
+          _c("li", [
+            _c("a", { attrs: { href: "#sectors" } }, [
+              _c("span", { staticClass: "text-primary" }, [
+                _vm._v(_vm._s(_vm.$t("nav sectors"))),
               ]),
             ]),
-            _vm._v(" "),
-            _c("li", [
-              _c("a", { attrs: { href: "#gallery" } }, [
-                _c("span", { staticClass: "text-primary" }, [
-                  _vm._v(_vm._s(_vm.$t("nav gallery"))),
-                ]),
+          ]),
+          _vm._v(" "),
+          _c("li", [
+            _c("a", { attrs: { href: "#gallery" } }, [
+              _c("span", { staticClass: "text-primary" }, [
+                _vm._v(_vm._s(_vm.$t("nav gallery"))),
               ]),
             ]),
-            _vm._v(" "),
-            _c("li", [
-              _c("a", { attrs: { href: "#comments" } }, [
-                _c("span", { staticClass: "text-primary" }, [
-                  _vm._v(_vm._s(_vm.$t("nav comments"))),
-                ]),
+          ]),
+          _vm._v(" "),
+          _c("li", [
+            _c("a", { attrs: { href: "#comments" } }, [
+              _c("span", { staticClass: "text-primary" }, [
+                _vm._v(_vm._s(_vm.$t("nav comments"))),
               ]),
             ]),
-            _vm._v(" "),
-            _c("li", [
-              _c("a", { attrs: { href: "#other" } }, [
-                _c("span", { staticClass: "text-primary" }, [
-                  _vm._v(_vm._s(_vm.$t("nav similar articles"))),
-                ]),
+          ]),
+          _vm._v(" "),
+          _c("li", [
+            _c("a", { attrs: { href: "#other" } }, [
+              _c("span", { staticClass: "text-primary" }, [
+                _vm._v(_vm._s(_vm.$t("nav similar articles"))),
               ]),
             ]),
           ]),
         ]),
-        _vm._v(" "),
-        _c("rightAd"),
-      ],
-      1
-    ),
-  ])
+      ]),
+      _vm._v(" "),
+      _c("rightAd"),
+    ],
+    1
+  )
 }
 var staticRenderFns = []
 render._withStripped = true

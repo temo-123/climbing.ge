@@ -8,10 +8,12 @@ use Illuminate\Http\Request;
 use Auth;
 use App\Models\Product;
 use App\Models\Favorite_product;
-use App\Services\GetProductsService;
-use App\Services\GetProductService;
 use App\Models\Cart;
 use App\Models\Product_colors;
+use App\Models\Product_category;
+
+use App\Services\GetProductsService;
+use App\Services\GetProductService;
 
 class ProductController extends Controller
 {
@@ -101,13 +103,10 @@ class ProductController extends Controller
 
     public function get_similar_product(Request $request)
     {
-        $this_product = product::latest('id')->where('published', '=', 1)->where('id', '=', $request->product_id)->first();
-        $this_category = $this_product->product_category;
-        dd($this_category);
-        $global_products = product::latest('id')->where('published', '=', 1)->where('id', '!=', $request->product_id)->where('category_id', '=', $this_category[0]->id)->get();
-        // return $products = GetProductService::get_locale_product_use_locale($global_products, $request->lang);
-        // dd('test');
-        // dd($products);
+        $this_product = product::where('published', '=', 1)->where('id', '=', $request->product_id)->first();
+        $this_category = Product_category::where('id', '=', $this_product->category_id)->first();
+        $global_products = product::latest('id')->where('published', '=', 1)->where('id', '!=', $request->product_id)->where('category_id', '=', $this_category->id)->get();
+        return $products = GetProductService::get_locale_product_use_locale($global_products, $request->lang);
     }
 
     public function get_product_price_interval()

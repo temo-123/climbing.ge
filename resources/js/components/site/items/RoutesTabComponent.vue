@@ -163,8 +163,7 @@
 
                         <td
                             @click="
-                                show_route_model(route.id),
-                                    get_route_posts(route.id)
+                                show_route_model(route.id)
                             "
                         >
                             <a style="margin-top: -5%; font-size: 120%"
@@ -232,8 +231,7 @@
                 <div class="col-md-4">
                     <a
                         @click="
-                            show_mtp_madel(mtp.mtp_id),
-                                get_mtp_posts(mtp.mtp_id)
+                            show_mtp_madel(mtp.mtp_id)
                         "
                         data-toggle="modal"
                         data-target="#squarespaceModal_mtp_info_"
@@ -318,7 +316,7 @@
                             </p>
                         </span>
                     </div>
-                    <div class="row" v-if="this.route_posts.length > 0">
+                    <!-- <div class="row" v-if="this.route_posts.length > 0">
                         <div class="row">
                             <div class="col-md-6">
                                 <h2 @click="route_post_list = !route_post_list">
@@ -421,7 +419,7 @@
                                 For more posts visit forum site
                             </div>
                         </div>
-                    </div>
+                    </div> -->
                 </div>
             </div>
             <div slot="modal-footer">
@@ -634,13 +632,13 @@ export default {
             modalClass: [],
 
             route_detals: [],
-            route_posts: [],
+            // route_posts: [],
 
             mtp_detals: [],
-            mtp_posts: [],
+            // mtp_posts: [],
 
-            route_post_list: false,
-            mtp_post_list: false,
+            // route_post_list: false,
+            // mtp_post_list: false,
         };
     },
     mounted() {
@@ -800,7 +798,7 @@ export default {
                 .get("/api/route/" + id)
                 .then((response) => {
                     this.route_detals = response.data;
-                    this.route_post_list = true;
+                    // this.route_post_list = true;
                 })
                 .catch((error) => {});
         },
@@ -821,7 +819,7 @@ export default {
                 .get("/api/MTP/" + id)
                 .then((response) => {
                     this.mtp_detals = response.data;
-                    this.mtp_post_list = true;
+                    // this.mtp_post_list = true;
                 })
                 .catch((error) => {});
         },

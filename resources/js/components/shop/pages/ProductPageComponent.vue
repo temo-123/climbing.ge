@@ -29,7 +29,7 @@
                                     <div class="price-shipping">
                                         <div class="price" id="price-preview">
 
-                                                <div class="old_price_page">
+                                                <!-- <div class="old_price_page">
                                                     <p :title="old_price">
                                                         ₾ {{ prices[0] }} - {{ prices[1] }}
                                                     </p>
@@ -38,7 +38,7 @@
                                                     <p :title="price">
                                                         ₾ {{ prices[0] }} - {{ prices[1] }}
                                                     </p>
-                                                </div>
+                                                </div> -->
 
                                         </div>
                                     </div>
@@ -95,28 +95,37 @@
                 </div>
             </div>
         </div>
-        <div class="container">
-            <div class="row related" v-if="this.products.length > 0">
+
+        <!-- <div class="container">
+            <div class="row related text-center" v-if="this.samilar_products.length > 0">
                 <h2>you might also like</h2>
                 <analogProduct
-                    v-for="product in products"
+                    v-for="product in samilar_products"
                     :key='product.id'
                     :product="product"
                 ></analogProduct>
+            </div>
+            <div class="row">
+                <hr style="margin: 5.5%;">
             </div>
             <div class="row">
                 <div class="more-products text-center" id="more-products-wrap">
                     <li><router-link :to="{name: 'catalog'}" exact> <span> All products </span> </router-link></li>
                 </div>
             </div>
+        </div> -->
+
+        <div class="container">
+            <similarProduct :activ_product_id=product.global_product.id />
         </div>
-        <!-- <div class="container">
+        
+        <div class="container">
             <div class="row">
                 <div class="more-products" id="more-products-wrap">
                     <li><router-link :to="{name: 'catalog'}" exact> <span> All products </span> </router-link></li>
                 </div>
             </div>
-        </div> -->
+        </div>
 
         <metaData 
             :title = "product.local_product[0].title"
@@ -127,18 +136,20 @@
 </template>
 
 <script>
-    import analogProduct from '../items/AnalogProductComponent.vue'
+    // import analogProduct from '../items/AnalogProductComponent.vue'
     import lingallery from 'lingallery'; // https://github.com/ChristophAnastasiades/Lingallery
     import VueMeta from 'vue-meta'
     import metaData from '../items/MetaDataComponent'
     import breadcrumb from '../items/BreadcrumbComponent.vue'
+    import similarProduct from '../items/SimilarProductComponent.vue'
     export default {
         components: {
             metaData,
             lingallery,
             VueMeta,
-            analogProduct,
-            breadcrumb
+            // analogProduct,
+            breadcrumb,
+            similarProduct
         },
         data () {
             return {
@@ -157,7 +168,7 @@
                 prices: [],
 
                 product: [],
-                products: [],
+                // products: [],
 
                 samilar_products: [],
             }
@@ -186,15 +197,15 @@
             // this.get_analog_products()
         },
         methods: {
-            get_analog_products(product_id){
-                axios
-                .get('../api/similar_product/'+localStorage.getItem('lang')+'/'+product_id)
-                .then(response => {
-                    this.samilar_products = response.data
-                })
-                .catch(error =>{
-                })
-            },
+            // get_analog_products(product_id){
+            //     axios
+            //     .get('../api/similar_product/'+localStorage.getItem('lang')+'/'+product_id)
+            //     .then(response => {
+            //         this.samilar_products = response.data
+            //     })
+            //     .catch(error =>{
+            //     })
+            // },
 
             get_product(){
                 this.product = []
@@ -210,7 +221,7 @@
                     
                     this.product.product_option.forEach(option => {
                         this.prices.push(option.option.price)
-                        console.log("🚀 ~ file: ProductPageComponent.vue ~ line 206 ~ get_product ~ option.images", option.images)
+                        // console.log("🚀 ~ file: ProductPageComponent.vue ~ line 206 ~ get_product ~ option.images", option.images)
                         if(option.images.length){
                             option.images.forEach(image => {
                                 this.items.push({

@@ -334,6 +334,11 @@ __webpack_require__.r(__webpack_exports__);
   mounted: function mounted() {
     this.get_film();
   },
+  watch: {
+    '$route': function $route(to, from) {
+      this.get_film(), window.scrollTo(0, 0);
+    }
+  },
   methods: {
     get_same_films: function get_same_films(category_id, id) {
       var _this = this;

@@ -1,79 +1,5 @@
 (self["webpackChunkclimbing_loc"] = self["webpackChunkclimbing_loc"] || []).push([["resources_js_components_shop_pages_ProductPageComponent_vue"],{
 
-/***/ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/shop/items/AnalogProductComponent.vue?vue&type=script&lang=js&":
-/*!****************************************************************************************************************************************************************************************************************************************!*\
-  !*** ./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/shop/items/AnalogProductComponent.vue?vue&type=script&lang=js& ***!
-  \****************************************************************************************************************************************************************************************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
-/* harmony export */ });
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
-  props: ['product'],
-  data: function data() {
-    return {};
-  },
-  components: {},
-  mounted: function mounted() {},
-  methods: {}
-});
-
-/***/ }),
-
 /***/ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/shop/items/BreadcrumbComponent.vue?vue&type=script&lang=js&":
 /*!*************************************************************************************************************************************************************************************************************************************!*\
   !*** ./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/shop/items/BreadcrumbComponent.vue?vue&type=script&lang=js& ***!
@@ -228,6 +154,157 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
+/***/ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/shop/items/SimilarProductComponent.vue?vue&type=script&lang=js&":
+/*!*****************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/shop/items/SimilarProductComponent.vue?vue&type=script&lang=js& ***!
+  \*****************************************************************************************************************************************************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _cards_AnalogProductCardComponent_vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./cards/AnalogProductCardComponent.vue */ "./resources/js/components/shop/items/cards/AnalogProductCardComponent.vue");
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
+  props: ['activ_product_id'],
+  components: {
+    // metaData,
+    analogProduct: _cards_AnalogProductCardComponent_vue__WEBPACK_IMPORTED_MODULE_0__["default"]
+  },
+  data: function data() {
+    return {
+      samilar_products: []
+    };
+  },
+  watch: {
+    '$route': function $route(to, from) {
+      this.get_analog_products(this.activ_product_id);
+      window.scrollTo(0, 0);
+    }
+  },
+  mounted: function mounted() {
+    this.get_analog_products(this.activ_product_id);
+  },
+  methods: {
+    get_analog_products: function get_analog_products(product_id) {
+      var _this = this;
+
+      axios.get('../api/similar_product/' + localStorage.getItem('lang') + '/' + product_id).then(function (response) {
+        _this.samilar_products = response.data;
+      })["catch"](function (error) {});
+    }
+  }
+});
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/shop/items/cards/AnalogProductCardComponent.vue?vue&type=script&lang=js&":
+/*!**************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/shop/items/cards/AnalogProductCardComponent.vue?vue&type=script&lang=js& ***!
+  \**************************************************************************************************************************************************************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
+  props: ['product'],
+  data: function data() {
+    return {};
+  },
+  components: {},
+  mounted: function mounted() {},
+  methods: {}
+});
+
+/***/ }),
+
 /***/ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/shop/pages/ProductPageComponent.vue?vue&type=script&lang=js&":
 /*!**************************************************************************************************************************************************************************************************************************************!*\
   !*** ./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/shop/pages/ProductPageComponent.vue?vue&type=script&lang=js& ***!
@@ -239,12 +316,12 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
-/* harmony import */ var _items_AnalogProductComponent_vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../items/AnalogProductComponent.vue */ "./resources/js/components/shop/items/AnalogProductComponent.vue");
-/* harmony import */ var lingallery__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! lingallery */ "./node_modules/lingallery/dist/lingallery.umd.js");
-/* harmony import */ var lingallery__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(lingallery__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var vue_meta__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! vue-meta */ "./node_modules/vue-meta/dist/vue-meta.esm.js");
-/* harmony import */ var _items_MetaDataComponent__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../items/MetaDataComponent */ "./resources/js/components/shop/items/MetaDataComponent.vue");
-/* harmony import */ var _items_BreadcrumbComponent_vue__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../items/BreadcrumbComponent.vue */ "./resources/js/components/shop/items/BreadcrumbComponent.vue");
+/* harmony import */ var lingallery__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! lingallery */ "./node_modules/lingallery/dist/lingallery.umd.js");
+/* harmony import */ var lingallery__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(lingallery__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var vue_meta__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! vue-meta */ "./node_modules/vue-meta/dist/vue-meta.esm.js");
+/* harmony import */ var _items_MetaDataComponent__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../items/MetaDataComponent */ "./resources/js/components/shop/items/MetaDataComponent.vue");
+/* harmony import */ var _items_BreadcrumbComponent_vue__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../items/BreadcrumbComponent.vue */ "./resources/js/components/shop/items/BreadcrumbComponent.vue");
+/* harmony import */ var _items_SimilarProductComponent_vue__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../items/SimilarProductComponent.vue */ "./resources/js/components/shop/items/SimilarProductComponent.vue");
 //
 //
 //
@@ -373,19 +450,30 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-
+//
+//
+//
+//
+//
+//
+//
+//
+//
+// import analogProduct from '../items/AnalogProductComponent.vue'
  // https://github.com/ChristophAnastasiades/Lingallery
+
 
 
 
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   components: {
-    metaData: _items_MetaDataComponent__WEBPACK_IMPORTED_MODULE_3__["default"],
-    lingallery: (lingallery__WEBPACK_IMPORTED_MODULE_1___default()),
-    VueMeta: vue_meta__WEBPACK_IMPORTED_MODULE_2__["default"],
-    analogProduct: _items_AnalogProductComponent_vue__WEBPACK_IMPORTED_MODULE_0__["default"],
-    breadcrumb: _items_BreadcrumbComponent_vue__WEBPACK_IMPORTED_MODULE_4__["default"]
+    metaData: _items_MetaDataComponent__WEBPACK_IMPORTED_MODULE_2__["default"],
+    lingallery: (lingallery__WEBPACK_IMPORTED_MODULE_0___default()),
+    VueMeta: vue_meta__WEBPACK_IMPORTED_MODULE_1__["default"],
+    // analogProduct,
+    breadcrumb: _items_BreadcrumbComponent_vue__WEBPACK_IMPORTED_MODULE_3__["default"],
+    similarProduct: _items_SimilarProductComponent_vue__WEBPACK_IMPORTED_MODULE_4__["default"]
   },
   data: function data() {
     return {
@@ -403,7 +491,7 @@ __webpack_require__.r(__webpack_exports__);
       // old_price: '',
       prices: [],
       product: [],
-      products: [],
+      // products: [],
       samilar_products: []
     };
   },
@@ -427,30 +515,31 @@ __webpack_require__.r(__webpack_exports__);
     this.get_product(); // this.get_analog_products()
   },
   methods: {
-    get_analog_products: function get_analog_products(product_id) {
-      var _this = this;
-
-      axios.get('../api/similar_product/' + localStorage.getItem('lang') + '/' + product_id).then(function (response) {
-        _this.samilar_products = response.data;
-      })["catch"](function (error) {});
-    },
+    // get_analog_products(product_id){
+    //     axios
+    //     .get('../api/similar_product/'+localStorage.getItem('lang')+'/'+product_id)
+    //     .then(response => {
+    //         this.samilar_products = response.data
+    //     })
+    //     .catch(error =>{
+    //     })
+    // },
     get_product: function get_product() {
-      var _this2 = this;
+      var _this = this;
 
       this.product = [];
       axios.get('../api/product/' + localStorage.getItem('lang') + '/' + this.$route.params.url_title).then(function (response) {
-        _this2.product = response.data[0]; // this.local_product = response.data[0]['local_product'][0];
+        _this.product = response.data[0]; // this.local_product = response.data[0]['local_product'][0];
         // this.global_product = response.data[0]['global_product'];
         // this.options = response.data[0]['product_options'];
 
-        _this2.product.product_option.forEach(function (option) {
-          _this2.prices.push(option.option.price);
+        _this.product.product_option.forEach(function (option) {
+          _this.prices.push(option.option.price); // console.log("🚀 ~ file: ProductPageComponent.vue ~ line 206 ~ get_product ~ option.images", option.images)
 
-          console.log("🚀 ~ file: ProductPageComponent.vue ~ line 206 ~ get_product ~ option.images", option.images);
 
           if (option.images.length) {
             option.images.forEach(function (image) {
-              _this2.items.push({
+              _this.items.push({
                 src: '../images/product_img/' + image.image,
                 thumbnail: '../images/product_img/' + image.image,
                 caption: option.option.title,
@@ -458,7 +547,7 @@ __webpack_require__.r(__webpack_exports__);
               });
             });
           } else {
-            _this2.items = [];
+            _this.items = [];
           }
         }); // this.array2 = Math.max.apply(null, this.array1);
         // if(this.prices.length <= 1){
@@ -469,11 +558,11 @@ __webpack_require__.r(__webpack_exports__);
         // }
 
 
-        _this2.get_analog_products(_this2.product.global_product.id);
+        _this.get_analog_products(_this.product.global_product.id);
       })["catch"](function (error) {});
     },
     select_option: function select_option() {
-      var _this3 = this;
+      var _this2 = this;
 
       this.items = [];
 
@@ -481,10 +570,10 @@ __webpack_require__.r(__webpack_exports__);
         this.get_product();
       } else {
         this.options.forEach(function (option) {
-          if (_this3.product_modification_for_cart == option.option.id) {
-            _this3.price = option.option.price;
+          if (_this2.product_modification_for_cart == option.option.id) {
+            _this2.price = option.option.price;
             option.images.forEach(function (image) {
-              _this3.items.push({
+              _this2.items.push({
                 src: '../images/product_img/' + image.image,
                 thumbnail: '../images/product_img/' + image.image,
                 caption: option.option.title,
@@ -496,7 +585,7 @@ __webpack_require__.r(__webpack_exports__);
       }
     },
     add_to_cart: function add_to_cart() {
-      var _this4 = this;
+      var _this3 = this;
 
       if (this.product_modification_for_cart == "All") {
         alert('plis select option');
@@ -506,9 +595,9 @@ __webpack_require__.r(__webpack_exports__);
           modification_id: this.product_modification_for_cart,
           quantity: this.products_quantity
         }).then(function (response) {
-          _this4.add_to_cart_message = response; // this.add_to_cart_message = "Product added in your cart"
+          _this3.add_to_cart_message = response; // this.add_to_cart_message = "Product added in your cart"
         })["catch"](function (error) {
-          _this4.add_to_cart_message = 'Something went wrong. Try login.';
+          _this3.add_to_cart_message = 'Something went wrong. Try login.';
         });
       }
     },
@@ -521,6 +610,30 @@ __webpack_require__.r(__webpack_exports__);
     }
   }
 });
+
+/***/ }),
+
+/***/ "./node_modules/laravel-mix/node_modules/css-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[1]!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/shop/items/SimilarProductComponent.vue?vue&type=style&index=0&lang=css&":
+/*!**************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/laravel-mix/node_modules/css-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[1]!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/shop/items/SimilarProductComponent.vue?vue&type=style&index=0&lang=css& ***!
+  \**************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************/
+/***/ ((module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _node_modules_laravel_mix_node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../../../../node_modules/laravel-mix/node_modules/css-loader/dist/runtime/api.js */ "./node_modules/laravel-mix/node_modules/css-loader/dist/runtime/api.js");
+/* harmony import */ var _node_modules_laravel_mix_node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_node_modules_laravel_mix_node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0__);
+// Imports
+
+var ___CSS_LOADER_EXPORT___ = _node_modules_laravel_mix_node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
+// Module
+___CSS_LOADER_EXPORT___.push([module.id, "\n.related {\n        background-color: #f7f7fa;\n        padding: 40px 0 85px;\n}\n.related h2 {\n        font-size: 184.61538%;\n        line-height: 150%;\n        font-family: \"montserratregular\", sans-serif;\n        text-align: center;\n}\n.related .collection-list {\n        margin-top: 26px;\n}\n.fadeDown {\n        opacity: 0;\n        position: relative;\n        -webkit-animation: fadeDown 400ms ease-in-out;\n        animation: fadeDown 400ms ease-in-out;\n}\n.fadeUp {\n        opacity: 1 !important;\n        position: relative;\n        -webkit-animation: fadeUp 400ms ease-in-out;\n        animation: fadeUp 400ms ease-in-out;\n}\n.animateOut {\n        position: absolute !important;\n        top: 0;\n        left: 0;\n        -webkit-animation: quick_cart_pay_hide 200ms ease-in forwards;\n        animation: quick_cart_pay_hide 200ms ease-in forwards;\n}\n.quick-cart-product .hide {\n        opacity: 0;\n}\n#quick-cart {\n        bottom: 20px;\n        padding-bottom: 60px;\n        position: fixed;\n        right: 10px;\n        top: auto !important;\n        z-index: 1000;\n}\n#quick-cart-pay {\n        font-size: 100%;\n        line-height: 123.07692%;\n        font-family: \"robotobold\", sans-serif;\n        border-radius: 50%;\n        transform: rotate(70deg);\n        border: 2px solid #086fcf;\n        bottom: 0;\n        cursor: pointer;\n        display: block;\n        position: absolute;\n        text-decoration: none;\n        right: -100px;\n}\n#quick-cart-pay > span {\n        border-radius: 50%;\n        transition: all 0.3s ease-in-out;\n        background-color: #086fcf;\n        border: 2px solid #fff;\n        color: #fff;\n        display: block;\n        height: 56px;\n        padding-top: 15px;\n        position: relative;\n        text-align: center;\n        text-transform: uppercase;\n        width: 56px;\n}\n#quick-cart-pay.open {\n        -webkit-animation: quick_cart_pay_show 1s ease-in-out forwards;\n        animation: quick_cart_pay_show 1s ease-in-out forwards;\n}\n#quick-cart-pay.cart-ico strong {\n        display: none;\n}\n  \n    /* // #quick-cart-pay.cart-ico > span {\n    //     background: #086fcf url(\"data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiIHN0YW5kYWxvbmU9Im5vIj8+Cjxzdmcgd2lkdGg9IjE5cHgiIGhlaWdodD0iMThweCIgdmlld0JveD0iMCAwIDE5IDE4IiB2ZXJzaW9uPSIxLjEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiIHhtbG5zOnNrZXRjaD0iaHR0cDovL3d3dy5ib2hlbWlhbmNvZGluZy5jb20vc2tldGNoL25zIj4KICAgIDxnIHN0cm9rZT0ibm9uZSIgc3Ryb2tlLXdpZHRoPSIxIiBmaWxsPSJub25lIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiPgogICAgICAgIDxnIHRyYW5zZm9ybT0idHJhbnNsYXRlKC02ODYuMDAwMDAwLCAtNDUwLjAwMDAwMCkiIGZpbGw9IiNGRkZGRkYiPgogICAgICAgICAgICA8ZyB0cmFuc2Zvcm09InRyYW5zbGF0ZSg2NjAuMDAwMDAwLCAxNjUuMDAwMDAwKSI+CiAgICAgICAgICAgICAgICA8ZyB0cmFuc2Zvcm09InRyYW5zbGF0ZSgwLjAwMDAwMCwgMjY5LjAwMDAwMCkiPgogICAgICAgICAgICAgICAgICAgIDxnIHRyYW5zZm9ybT0idHJhbnNsYXRlKDI2LjAwMDAwMCwgMTYuMDAwMDAwKSI+CiAgICAgICAgICAgICAgICAgICAgICAgIDxwYXRoIGQ9Ik0xNi43NjU0Nzg0LDQuMjc1IEwxNS44NzU4NzQ5LDguNTkzMzYwNzEgTDQuNjk5ODQwNTksOS43MjQwOTgyMSBMMy40NzM5MDMwNCw0LjI3NSBMMTYuNzY1NDc4NCw0LjI3NSBaIE0xNi44MDQ1NDYzLDkuNzI4MDY3ODYgTDE4LjY3MzcyNTEsMy4wNTM1NzE0MyBMMy4xOTkxNTIwNywzLjA1MzU3MTQzIEwyLjUxMjI3NDYzLDAgTDMuMjYzMDc1NzJlLTA1LDAgTDMuMjYzMDc1NzJlLTA1LDEuMjIxNDI4NTcgTDEuNDUzMDgwMjUsMS4yMjE0Mjg1NyBMNC4wNjM1NDA4MywxMi44MjUgTDE2Ljk2ODAyNjQsMTIuODI1IEwxNi45NjgwMjY0LDExLjYwMzU3MTQgTDUuMTIyNzM1MjEsMTEuNjAzNTcxNCBMNC45NzAwMjMyNiwxMC45MjUzNzMyIEwxNi44MDQ1NDYzLDkuNzI4MDY3ODYgWiI+PC9wYXRoPgogICAgICAgICAgICAgICAgICAgICAgICA8cGF0aCBkPSJNNy44MzEzODE3MywxNS4yNjc4NTcxIEM3LjgzMTM4MTczLDE2LjI3OTgxMDcgNi45NTQ5MTk1OSwxNy4xIDUuODczNTM2MywxNy4xIEM0Ljc5MjE1MzAxLDE3LjEgMy45MTU2OTA4NywxNi4yNzk4MTA3IDMuOTE1NjkwODcsMTUuMjY3ODU3MSBDMy45MTU2OTA4NywxNC4yNTU5MDM2IDQuNzkyMTUzMDEsMTMuNDM1NzE0MyA1Ljg3MzUzNjMsMTMuNDM1NzE0MyBDNi45NTQ5MTk1OSwxMy40MzU3MTQzIDcuODMxMzgxNzMsMTQuMjU1OTAzNiA3LjgzMTM4MTczLDE1LjI2Nzg1NzEiPjwvcGF0aD4KICAgICAgICAgICAgICAgICAgICAgICAgPHBhdGggZD0iTTE1LjY2Mjc2MzUsMTUuMjY3ODU3MSBDMTUuNjYyNzYzNSwxNi4yNzk4MTA3IDE0Ljc4NjMwMTMsMTcuMSAxMy43MDQ5MTgsMTcuMSBDMTIuNjIzNTM0NywxNy4xIDExLjc0NzA3MjYsMTYuMjc5ODEwNyAxMS43NDcwNzI2LDE1LjI2Nzg1NzEgQzExLjc0NzA3MjYsMTQuMjU1OTAzNiAxMi42MjM1MzQ3LDEzLjQzNTcxNDMgMTMuNzA0OTE4LDEzLjQzNTcxNDMgQzE0Ljc4NjMwMTMsMTMuNDM1NzE0MyAxNS42NjI3NjM1LDE0LjI1NTkwMzYgMTUuNjYyNzYzNSwxNS4yNjc4NTcxIj48L3BhdGg+CiAgICAgICAgICAgICAgICAgICAgPC9nPgogICAgICAgICAgICAgICAgPC9nPgogICAgICAgICAgICA8L2c+CiAgICAgICAgPC9nPgogICAgPC9nPgo8L3N2Zz4=\") no-repeat center 9px;\n    // } */\n#quick-cart-pay:hover {\n        border-color: #303030;\n}\n#quick-cart-pay:hover > span {\n        background-color: #303030;\n}\n#quick-cart-pay #quick-cart-price {\n        transform: translateX(-50%);\n        font-family: \"robotobold\", sans-serif;\n        border-radius: 11px;\n        background-color: #16161a;\n        bottom: -4px;\n        display: block;\n        height: 21px;\n        left: 50%;\n        padding: 2px 8px 0;\n        position: absolute;\n}\n#quick-cart-pay #quick-cart-pay-total-count {\n        display: none;\n}\n.quick-cart-product {\n        margin-bottom: 6px;\n}\n.quick-cart-product > div,\n    #quick-cart-pay {\n        box-shadow: rgba(0, 0, 0, 0.23) 0 6px 13px 0;\n}\n.quick-cart-animated-product > div {\n        box-shadow: transparent 0 6px 13px 0;\n}\n.quick-cart-product {\n        position: relative;\n}\n.quick-cart-product > div {\n        transition: all 1s ease-in-out 0s;\n        overflow: hidden;\n        position: relative;\n}\n.quick-cart-product > div .s1,\n    .quick-cart-product > div .s2 {\n        font-family: \"robotobold\", sans-serif;\n        font-size: 100%;\n        line-height: 107.69231%;\n        background-color: rgba(22, 22, 26, 0.5);\n        bottom: 0;\n        color: #fff;\n        cursor: default;\n        display: none;\n        height: 100%;\n        left: 0;\n        padding-top: 23px;\n        position: absolute;\n        text-align: center;\n        top: 0;\n        width: 100%;\n}\n.quick-cart-product > div del {\n        display: none;\n}\n#quick-cart .quick-cart-product > div,\n    .quick-cart-product.run > div {\n        border-radius: 50%;\n        height: 60px !important;\n        width: 60px !important;\n}\n#quick-cart .quick-cart-product > div .s1,\n    .quick-cart-product.run > div .s1 {\n        display: block;\n}\n#quick-cart .quick-cart-product > div img,\n    .quick-cart-product.run > div img {\n        width: 100%;\n}\n#quick-cart .quick-cart-product > div:hover span.s1,\n    .quick-cart-product.run > div:hover span.s1 {\n        display: none;\n}\n#quick-cart .quick-cart-product > div:hover span.s2,\n    .quick-cart-product.run > div:hover span.s2 {\n        display: block;\n}\n.quick-cart-product.run > div {\n        border-radius: 50%;\n        height: 58px !important;\n        width: 58px !important;\n}\n#quick-cart .quick-cart-product > div .s1,\n    #quick-cart .quick-cart-product > div .s2 {\n        border-radius: 50%;\n}\n.quick-cart-product.animated {\n        left: 0;\n        position: absolute;\n        top: 0;\n        z-index: 2000;\n}\n.quick-cart-product.animated img {\n        border-radius: 1px;\n        display: block;\n        position: relative;\n}\n.quick-cart-product .remove,\n    .quick-cart-product .removeall:before,\n    .quick-cart-product .count {\n        border-radius: 10px;\n        font-family: \"robotobold\", sans-serif;\n        font-size: 76.92308%;\n        line-height: 110.0%;\n        background-color: #16161a;\n        color: #fff;\n        display: block;\n        height: 20px;\n        overflow: hidden;\n        padding-top: 4px;\n        position: absolute;\n        right: 0;\n        top: 0;\n        text-align: center;\n        width: 20px;\n        z-index: 10;\n}\n.quick-cart-product .removeall {\n        width: 20px;\n        height: 20px;\n        content: \"Delete all\";\n}\n.quick-cart-product .removeall:before {\n        content: \"Delete all\";\n}\n.quick-cart-product .removeall:before {\n        transition: all 0.3s ease-in-out;\n        cursor: pointer;\n        display: none;\n        left: -62px;\n        padding: 4px 7px 0;\n        right: auto;\n        width: auto;\n        height: 16px;\n}\n.quick-cart-product .removeall:hover {\n        background-color: #086fcf;\n}\n.quick-cart-product.show-remove-all:hover .removeall:before {\n        display: block;\n}\n.quick-cart-product .remove {\n        background: #16161a url(\"data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiIHN0YW5kYWxvbmU9Im5vIj8+Cjxzdmcgd2lkdGg9IjhweCIgaGVpZ2h0PSI4cHgiIHZpZXdCb3g9IjAgMCA4IDgiIHZlcnNpb249IjEuMSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB4bWxuczp4bGluaz0iaHR0cDovL3d3dy53My5vcmcvMTk5OS94bGluayIgeG1sbnM6c2tldGNoPSJodHRwOi8vd3d3LmJvaGVtaWFuY29kaW5nLmNvbS9za2V0Y2gvbnMiPgogICAgPGcgc3Ryb2tlPSJub25lIiBzdHJva2Utd2lkdGg9IjEiIGZpbGw9Im5vbmUiIGZpbGwtcnVsZT0iZXZlbm9kZCI+CiAgICAgICAgPGcgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoLTEyMTYuMDAwMDAwLCAtMTg5MS4wMDAwMDApIiBmaWxsPSIjRkZGRkZGIj4KICAgICAgICAgICAgPGcgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoMTE0OC4wMDAwMDAsIDE4ODUuMDAwMDAwKSI+CiAgICAgICAgICAgICAgICA8ZyB0cmFuc2Zvcm09InRyYW5zbGF0ZSg2Mi4wMDAwMDAsIDAuMDAwMDAwKSI+CiAgICAgICAgICAgICAgICAgICAgPHBhdGggZD0iTTcuMTQyNjgzOTcsNiBMNiw3LjE0MjY4Mzk3IEw4Ljg1NzExNCw5Ljk5OTc5Nzk3IEw2LDEyLjg1NzMxNiBMNy4xNDI2ODM5NywxNCBMOS45OTk3OTc5NywxMS4xNDI4ODYgTDEyLjg1NzMxNiwxNCBMMTQsMTIuODU3MzE2IEwxMS4xNDI0ODE5LDkuOTk5Nzk3OTcgTDE0LDcuMTQyNjgzOTcgTDEyLjg1NzMxNiw2IEw5Ljk5OTc5Nzk3LDguODU3MTE0IEw3LjE0MjY4Mzk3LDYgTDcuMTQyNjgzOTcsNiBaIj48L3BhdGg+CiAgICAgICAgICAgICAgICA8L2c+CiAgICAgICAgICAgIDwvZz4KICAgICAgICA8L2c+CiAgICA8L2c+Cjwvc3ZnPg==\") no-repeat center center;\n        cursor: pointer;\n        display: none;\n        left: 0;\n        right: auto;\n}\n.quick-cart-product .remove:hover {\n        background-color: #086fcf;\n}\n.quick-cart-product:hover .remove {\n        display: block;\n}\n.quick-cart-product.remove-product {\n        -webkit-animation: quick_cart_pay_hide 200ms ease-in-out forwards;\n        animation: quick_cart_pay_hide 200ms ease-in-out forwards;\n}\n.cubic-btn {\n        width: 10px;\n        height: 10px;\n        position: absolute;\n}\n.quick-cart-product-wrap {\n        position: relative;\n}\n.img.animate {\n        transition: all 0ms ease-out 0s;\n        transform: translateY(-30px);\n        opacity: 0;\n}\n.img {\n        transition: all 600ms ease-out 0s;\n        transform: translateY(0px);\n        border-radius: 1px;\n        background: transparent no-repeat center center;\n        background-size: cover;\n        /*border: 1px solid #e2e2e3;*/\n        display: block;\n        height: 0;\n        opacity: 1;\n}\n.breadcrumb {\n        margin-top: 15px;\n}\n.breadcrumb li {\n        display: inline-block;\n}\n.breadcrumb a {\n        color: #b5b6bd;\n        display: inline-block;\n        margin-right: 5px;\n        padding-right: 14px;\n        position: relative;\n}\n.breadcrumb a:hover {\n        color: #086fcf;\n}\n.breadcrumb a:after {\n        color: #b5b6bd;\n        /* // content: \">\"; */\n        position: absolute;\n        right: 0;\n}\n.text {\n        margin: 0 auto;\n        padding: 90px 0 165px;\n        width: 700px;\n}\n.text h1 {\n        font-family: \"montserratbold\", sans-serif;\n        font-size: 369.23077%;\n        line-height: 125%;\n        margin-bottom: 60px;\n}\n.text h2 {\n        font-family: \"montserratregular\", sans-serif;\n        font-size: 184.61538%;\n        line-height: 133.33333%;\n        margin: 55px 0 17px;\n}\n.text p {\n        font-size: 138.46154%;\n        line-height: 177.77778%;\n        margin: 17px 0 28px;\n}\n.text strong {\n        font-family: \"montserratbold\", sans-serif;\n}\n.text em {\n        font-style: italic;\n}\n.text *:last-child {\n        margin-bottom: 0;\n}\n.text ul {\n        font-size: 115.38462%;\n        line-height: 173.33333%;\n        margin: 17px 0 28px 40px;\n}\n.text ul li {\n        list-style-type: disc;\n        padding: 7px 0 7px 7px;\n}\n.text ol {\n        font-size: 115.38462%;\n        line-height: 173.33333%;\n        margin: 17px 0 28px 40px;\n}\n.text ol li {\n        list-style-type: decimal;\n        padding: 7px 0 7px 7px;\n}\n.collection {\n        padding-top: 15px;\n}\n.collection.search {\n        padding-top: 0;\n}\n.collection h1 {\n        font-family: \"montserratbold\", sans-serif;\n        font-size: 369.23077%;\n        line-height: 116.66667%;\n        color: #086fcf;\n        padding-bottom: 13px;\n        text-align: center;\n}\n.collection .description {\n        font-size: 107.69231%;\n        line-height: 171.42857%;\n        margin: 0 auto;\n        max-width: 700px;\n        padding-bottom: 13px;\n        text-align: center;\n}\n.collection .head {\n        box-shadow: rgba(17, 17, 18, 0.04) 0 2px 4px, rgba(19, 20, 20, 0.06) 0 1px 1px;\n        padding-bottom: 30px;\n        position: relative;\n        z-index: 100;\n}\n.collection .products {\n        background-color: #f7f7fa;\n        padding: 28px 0 110px;\n}\n.collection .settings {\n        font-size: 107.69231%;\n        line-height: 121.42857%;\n        color: #b5b6bd;\n        position: relative;\n}\n.collection .settings .sort {\n        float: right;\n}\n.collection .settings .sort .sorter {\n        margin-left: 5px;\n}\n.collection .settings .count {\n        float: left;\n}\n.collection .no-products {\n        font-size: 115.38462%;\n        line-height: 120%;\n        font-family: \"montserratregular\", sans-serif;\n        padding-top: 70px;\n        text-align: center;\n}\n.more-products {\n        padding-top: 40px;\n        text-align: center;\n}\n.more-products span {\n        transition: all 0.3s ease-in-out;\n        font-size: 107.69231%;\n        line-height: 121.42857%;\n        font-family: \"montserratbold\", sans-serif;\n        border-radius: 26px;\n        box-shadow: rgba(17, 17, 18, 0.1) 0 2px 4px, rgba(19, 20, 20, 0.07) 0 1px 1px;\n        background-color: #086fcf;\n        color: #fff;\n        cursor: pointer;\n        display: inline-block;\n        padding: 16px 26px;\n}\n.more-products span:hover {\n        background-color: #0084ff;\n}\n.more-products.hidden {\n        display: none;\n}\n.sorter {\n        display: inline-block;\n        position: relative;\n}\n.sorter:after {\n        /* // -webkit-transition-delay: 0s; */\n        transition: opacity 0.3s ease-in-out 0s;\n        background: transparent url(\"data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiIHN0YW5kYWxvbmU9Im5vIj8+Cjxzdmcgd2lkdGg9IjEycHgiIGhlaWdodD0iN3B4IiB2aWV3Qm94PSIwIDAgMTIgNyIgdmVyc2lvbj0iMS4xIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHhtbG5zOnhsaW5rPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5L3hsaW5rIiB4bWxuczpza2V0Y2g9Imh0dHA6Ly93d3cuYm9oZW1pYW5jb2RpbmcuY29tL3NrZXRjaC9ucyI+CiAgICA8ZyBzdHJva2U9Im5vbmUiIHN0cm9rZS13aWR0aD0iMSIgZmlsbD0ibm9uZSIgZmlsbC1ydWxlPSJldmVub2RkIj4KICAgICAgICA8ZyB0cmFuc2Zvcm09InRyYW5zbGF0ZSgtMTE3NS4wMDAwMDAsIC0xMzAzLjAwMDAwMCkiIGZpbGw9IiMwQzBDMTkiIG9wYWNpdHk9IjAuOTM5OTk5OTk4Ij4KICAgICAgICAgICAgPGcgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoLTMuMDAwMDAwLCAxMjQ2LjAwMDAwMCkiPgogICAgICAgICAgICAgICAgPHBhdGggZD0iTTExNzgsNjMuNDg1MjgxNCBMMTE4My42NTY4NSw1Ny44Mjg0MjcxIEwxMTg5LjMxMzcxLDYzLjQ4NTI4MTQgTDExNzgsNjMuNDg1MjgxNCBaIiBpZD0iU2lwa2EtbWVudSI+PC9wYXRoPgogICAgICAgICAgICA8L2c+CiAgICAgICAgPC9nPgogICAgPC9nPgo8L3N2Zz4=\") no-repeat left top;\n        /* // content: \"\"; */\n        display: block;\n        height: 7px;\n        opacity: 0;\n        position: absolute;\n        right: 38px;\n        top: 20px;\n        width: 12px;\n}\n.sorter .sorter-value {\n        transition: all 0.3s ease-in-out;\n        background-position: right 8px;\n        color: #16161a;\n        cursor: pointer;\n        display: inline-block;\n        padding-right: 14px;\n        position: relative;\n}\n.sorter .sorter-value:before,\n    .sorter .sorter-value:after {\n        transition: all 0.3s ease-in-out;\n        /* // content: \"\"; */\n        height: 10px;\n        margin-top: -5px;\n        opacity: 1;\n        position: absolute;\n        right: 0;\n        top: 50%;\n        width: 10px;\n}\n.sorter .sorter-value:before {\n        opacity: 0;\n}\n.sorter .sorter-value:hover {\n        color: #086fcf;\n}\n.sorter .sorter-value:hover:before {\n        opacity: 1;\n}\n.sorter .sorter-value:hover:after {\n        opacity: 0;\n}\n.sorter .sorter-options {\n        /* // -webkit-transition-delay: 0s, 0.3s; */\n        transition: opacity 0.3s ease-in-out 0s, max-height 0s ease-in-out 0.3s;\n        border-radius: 2px;\n        background-color: rgba(13, 13, 26, 0.93);\n        color: #fff;\n        max-height: 0;\n        opacity: 0;\n        overflow: hidden;\n        padding: 0 12px;\n        position: absolute;\n        right: 0;\n        top: 26px;\n        z-index: 100;\n}\n.sorter .sorter-options > div {\n        transition: all 0.3s ease-in-out;\n        border-bottom: 1px solid #2e2e38;\n        cursor: pointer;\n        padding: 11px 0;\n        white-space: nowrap;\n}\n.sorter .sorter-options > div:first-child {\n        padding-top: 12px;\n}\n.sorter .sorter-options > div:last-child {\n        border-bottom: 0 none;\n        padding-bottom: 14px;\n}\n.sorter .sorter-options > div:hover {\n        opacity: 0.65;\n}\n.sorter .sorter-options > div.active {\n        color: #5d5e66;\n}\n.sorter .sorter-options > div.active:hover {\n        opacity: 1;\n}\n.sorter.open .sorter-value:before,\n    .sorter.open .sorter-value:after {\n        transform: rotate(-180deg);\n}\n.sorter.open .sorter-options {\n        /* // -webkit-transition-delay: 0s, 0s; */\n        transition: opacity 0.3s ease-in-out 0s, max-height 0s ease-in-out 0s;\n        max-height: 1000px;\n        opacity: 1;\n}\n.sorter.open:after {\n        opacity: 0.93;\n}\n.collection-list {\n        max-width: 100%;\n        margin-left: auto;\n        margin-right: auto;\n        margin-top: 18px;\n}\n.collection-list:after {\n        /* // content: \" \"; */\n        display: block;\n        clear: both;\n}\n.collection-list.cols-4 a {\n        width: 23.72881%;\n        float: left;\n        margin-right: 1.69492%;\n}\n.collection-list.cols-4 a:nth-child(4n) {\n        float: right;\n        margin-right: 0;\n}\n.collection-list.cols-4 a:nth-child(4n+1) {\n        clear: both;\n}\n.collection-list.cols-3 a {\n        width: 32.20339%;\n        float: left;\n        margin-right: 1.69492%;\n}\n.collection-list.cols-3 a:nth-child(3n) {\n        float: right;\n        margin-right: 0;\n}\n.collection-list.cols-3 a:nth-child(3n+1) {\n        clear: both;\n}\n.collection-list.cols-2 a {\n        width: 49.15254%;\n        float: left;\n        margin-right: 1.69492%;\n}\n.collection-list.cols-2 a:nth-child(2n) {\n        float: right;\n        margin-right: 0;\n}\n.collection-list.cols-2 a:nth-child(2n+1) {\n        clear: both;\n}\n.collection-list a {\n        font-size: 100%;\n        line-height: 123.07692%;\n        transition: all 0.3s ease-in-out;\n        cursor: pointer;\n        display: block;\n        margin-bottom: 3.44828%;\n        position: relative;\n}\n.collection-list a .img {\n        border-radius: 2px;\n        box-shadow: rgba(17, 17, 18, 0.04) 0 2px 4px, rgba(19, 20, 20, 0.06) 0 1px 1px;\n        background-color: rgba(64, 64, 82, 0.1) !important;\n        border: 1px solid rgba(64, 64, 82, 0.1);\n        display: block;\n        height: 0;\n        overflow: hidden;\n        /* // padding-bottom: 133%; */\n        padding-bottom: 75%;\n        position: relative;\n}\n.collection-list a .img .i {\n        transition: all 0.3s ease-in-out;\n        background: transparent no-repeat center center;\n        background-size: cover;\n        display: block;\n        height: 100%;\n        left: 0;\n        opacity: 1;\n        position: absolute;\n        top: 0;\n        width: 100%;\n}\n.collection-list a .img .second,\n    .collection-list a .img .hide {\n        opacity: 0;\n}\n.collection-list a .img .show {\n        opacity: 1;\n}\n.collection-list a .text {\n        transition: all 0.3s ease-in-out;\n        border-radius: 2px;\n        background-color: rgba(13, 13, 26, 0.93);\n        bottom: -29px;\n        color: #fff;\n        display: block;\n        left: 3%;\n        max-width: 94%;\n        padding: 6px 10px 3px;\n        position: absolute;\n}\n.collection-list a .text strong {\n        font-family: \"robotoregular\", sans-serif;\n        display: block;\n}\n.collection-list a .text > span {\n        font-family: \"robotoblack\", sans-serif;\n        display: block;\n        margin-bottom: 2px;\n}\n.collection-list a .text > span > span {\n        font-family: \"robotoregular\", sans-serif;\n        opacity: 0.5;\n}\n.collection-list a:hover > span {\n        background-color: #0d0d1a;\n}\n.collection-list a:hover .variants {\n        height: 27px;\n}\n.collection-list a .variants {\n        /* // -webkit-transition-delay: 0s; */\n        transition: all 200ms cubic-bezier(0.64, 0.57, 0.67, 1.53) 0s;\n        font-family: \"robotoregular\", sans-serif;\n        height: 0;\n        overflow: hidden;\n}\n.collection-list a .variants .variant {\n        float: left;\n        margin: 5px 0 2px;\n        width: 50%;\n}\n.collection-list a .variants .variant:nth-child(even) {\n        text-align: right;\n}\n.collection-list a .variants .var {\n        display: inline-block;\n}\n.collection-list a .variants .var.color {\n        border-radius: 2px;\n        border: 1px solid #5d5e66;\n        height: 16px;\n        padding: 3px;\n        width: 16px;\n}\n.collection-list a .variants .var.blue .c {\n        background-color: #086fcf !important;\n}\n.collection-list a .variants .var.yellow .c {\n        background-color: #f5c81f !important;\n}\n.collection-list a .variants .var.red .c {\n        background-color: #d9332e !important;\n}\n.collection-list a .variants .var .c {\n        height: 100%;\n        width: 100%;\n}\n.collection-list a .variants .var:not(:last-child) .t:after {\n        content: \", \";\n}\n.collection-list a.hidden {\n        display: none;\n}\n.homepage-banners {\n        background-color: #f7f7fa;\n}\n.homepage-banners a .text {\n        display: inline-block;\n        padding: 6px 10px;\n        width: auto;\n}\n.homepage-banners a .text > strong {\n        font-family: \"robotoblack\", sans-serif;\n}\n.homepage-banners a .text > span {\n        font-family: \"robotoregular\", sans-serif;\n        margin: 6px 0 0;\n}\n.homepage-banners a .img {\n        padding-bottom: 45%;\n}\n.homepage-banners a .descr {\n        /* // -webkit-transition-delay: 0s; */\n        transition: all 200ms cubic-bezier(0.64, 0.57, 0.67, 1.53) 0s;\n        font-family: \"robotoregular\", sans-serif;\n        max-height: 0;\n        max-width: 0;\n        overflow: hidden;\n}\n.homepage-banners a .descr > span {\n        display: block;\n        padding-top: 5px;\n}\n.homepage-banners a:hover .descr {\n        max-height: 100px;\n        max-width: 600px;\n}\n  \n  /*.product-detail {\n    padding-top: 15px;\n    }*/\n.product-detail .shadow {\n        box-shadow: rgba(17, 17, 18, 0.04) 0 2px 4px, rgba(19, 20, 20, 0.06) 0 1px 1px;\n        margin-bottom: 2px;\n}\n.product-detail .cols {\n        max-width: 100%;\n        margin-left: auto;\n        margin-right: auto;\n        padding: 35px 0 58px;\n}\n.product-detail .cols:after {\n        /* // content: \" \"; */\n        display: block;\n        clear: both;\n}\n.product-detail .left-col {\n        /* // width: 48.27586%; */\n        float: left;\n        margin-right: 3.44828%;\n        max-width: 100%;\n        margin-left: auto;\n        margin-right: auto;\n}\n.product-detail .left-col:after {\n        /* // content: \" \"; */\n        display: block;\n        clear: both;\n}\n.product-detail .left-col .thumbs {\n        width: 15.25424%;\n        float: left;\n        margin-right: 1.69492%;\n}\n.product-detail .left-col .thumbs a {\n        transition: all 0.3s ease-in-out;\n        border-radius: 1px;\n        border: 1px solid #e2e2e3;\n        display: block;\n        margin-bottom: 8px;\n        position: relative;\n        width: 100%;\n}\n.product-detail .left-col .thumbs a.active {\n        border-color: #086fcf;\n}\n.product-detail .left-col .thumbs a.active:hover {\n        border-color: #086fcf;\n}\n.product-detail .left-col .thumbs a:hover {\n        border-color: #b5b6bd;\n}\n.product-detail .left-col .thumbs img {\n        display: block;\n        width: 100%;\n}\n.product-detail .left-col .big {\n        width: 83.05085%;\n        float: right;\n        margin-right: 0;\n}\n.product-detail .left-col .big .img {\n        /* // -webkit-transition-delay: 0s; */\n        transition: all 600ms ease-out 0s;\n        transform: translateY(0px);\n        border-radius: 1px;\n        background: transparent no-repeat center center;\n        background-size: cover;\n        border: 1px solid #e2e2e3;\n        display: block;\n        height: 0;\n        opacity: 1;\n        padding-bottom: 133%;\n}\n.product-detail .left-col .big .img.animate {\n        /* // -webkit-transition-delay: 0s; */\n        transition: all 0ms ease-out 0s;\n        transform: translateY(-30px);\n        opacity: 0;\n}\n.product-detail a {\n        font-size: 100%;\n        line-height: 123.07692%;\n        color: #b5b6bd;\n        text-decoration: underline;\n}\n.product-detail a:hover {\n        color: #086fcf;\n}\n.product-detail .price-shipping a {\n        display: block;\n        float: left;\n        margin: 19px 0 0 25px;\n}\n.product-detail .price {\n        font-size: 369.23077%;\n        line-height: 108.33333%;\n        font-family: \"montserratbold\", sans-serif;\n        color: #086fcf;\n        float: left;\n        letter-spacing: -2px;\n}\n.product-detail .price del {\n        font-size: 54.16667%;\n        line-height: 200%;\n        font-family: \"montserratregular\", sans-serif;\n        color: #b5b6bd;\n}\n.product-detail #AddToCartForm {\n        margin-top: 40px;\n}\n.product-detail .btn-and-quantity {\n        float: left;\n}\n.product-detail #AddToCart {\n        font-family: \"montserratbold\", sans-serif;\n        border-radius: 25px;\n        transition: all 0.3s ease-in-out;\n        font-size: 107.69231%;\n        line-height: 128.57143%;\n        /*background: #086fcf url(\"data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiIHN0YW5kYWxvbmU9Im5vIj8+Cjxzdmcgd2lkdGg9IjE5cHgiIGhlaWdodD0iMThweCIgdmlld0JveD0iMCAwIDE5IDE4IiB2ZXJzaW9uPSIxLjEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiIHhtbG5zOnNrZXRjaD0iaHR0cDovL3d3dy5ib2hlbWlhbmNvZGluZy5jb20vc2tldGNoL25zIj4KICAgIDxnIHN0cm9rZT0ibm9uZSIgc3Ryb2tlLXdpZHRoPSIxIiBmaWxsPSJub25lIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiPgogICAgICAgIDxnIHRyYW5zZm9ybT0idHJhbnNsYXRlKC02ODYuMDAwMDAwLCAtNDUwLjAwMDAwMCkiIGZpbGw9IiNGRkZGRkYiPgogICAgICAgICAgICA8ZyB0cmFuc2Zvcm09InRyYW5zbGF0ZSg2NjAuMDAwMDAwLCAxNjUuMDAwMDAwKSI+CiAgICAgICAgICAgICAgICA8ZyB0cmFuc2Zvcm09InRyYW5zbGF0ZSgwLjAwMDAwMCwgMjY5LjAwMDAwMCkiPgogICAgICAgICAgICAgICAgICAgIDxnIHRyYW5zZm9ybT0idHJhbnNsYXRlKDI2LjAwMDAwMCwgMTYuMDAwMDAwKSI+CiAgICAgICAgICAgICAgICAgICAgICAgIDxwYXRoIGQ9Ik0xNi43NjU0Nzg0LDQuMjc1IEwxNS44NzU4NzQ5LDguNTkzMzYwNzEgTDQuNjk5ODQwNTksOS43MjQwOTgyMSBMMy40NzM5MDMwNCw0LjI3NSBMMTYuNzY1NDc4NCw0LjI3NSBaIE0xNi44MDQ1NDYzLDkuNzI4MDY3ODYgTDE4LjY3MzcyNTEsMy4wNTM1NzE0MyBMMy4xOTkxNTIwNywzLjA1MzU3MTQzIEwyLjUxMjI3NDYzLDAgTDMuMjYzMDc1NzJlLTA1LDAgTDMuMjYzMDc1NzJlLTA1LDEuMjIxNDI4NTcgTDEuNDUzMDgwMjUsMS4yMjE0Mjg1NyBMNC4wNjM1NDA4MywxMi44MjUgTDE2Ljk2ODAyNjQsMTIuODI1IEwxNi45NjgwMjY0LDExLjYwMzU3MTQgTDUuMTIyNzM1MjEsMTEuNjAzNTcxNCBMNC45NzAwMjMyNiwxMC45MjUzNzMyIEwxNi44MDQ1NDYzLDkuNzI4MDY3ODYgWiI+PC9wYXRoPgogICAgICAgICAgICAgICAgICAgICAgICA8cGF0aCBkPSJNNy44MzEzODE3MywxNS4yNjc4NTcxIEM3LjgzMTM4MTczLDE2LjI3OTgxMDcgNi45NTQ5MTk1OSwxNy4xIDUuODczNTM2MywxNy4xIEM0Ljc5MjE1MzAxLDE3LjEgMy45MTU2OTA4NywxNi4yNzk4MTA3IDMuOTE1NjkwODcsMTUuMjY3ODU3MSBDMy45MTU2OTA4NywxNC4yNTU5MDM2IDQuNzkyMTUzMDEsMTMuNDM1NzE0MyA1Ljg3MzUzNjMsMTMuNDM1NzE0MyBDNi45NTQ5MTk1OSwxMy40MzU3MTQzIDcuODMxMzgxNzMsMTQuMjU1OTAzNiA3LjgzMTM4MTczLDE1LjI2Nzg1NzEiPjwvcGF0aD4KICAgICAgICAgICAgICAgICAgICAgICAgPHBhdGggZD0iTTE1LjY2Mjc2MzUsMTUuMjY3ODU3MSBDMTUuNjYyNzYzNSwxNi4yNzk4MTA3IDE0Ljc4NjMwMTMsMTcuMSAxMy43MDQ5MTgsMTcuMSBDMTIuNjIzNTM0NywxNy4xIDExLjc0NzA3MjYsMTYuMjc5ODEwNyAxMS43NDcwNzI2LDE1LjI2Nzg1NzEgQzExLjc0NzA3MjYsMTQuMjU1OTAzNiAxMi42MjM1MzQ3LDEzLjQzNTcxNDMgMTMuNzA0OTE4LDEzLjQzNTcxNDMgQzE0Ljc4NjMwMTMsMTMuNDM1NzE0MyAxNS42NjI3NjM1LDE0LjI1NTkwMzYgMTUuNjYyNzYzNSwxNS4yNjc4NTcxIj48L3BhdGg+CiAgICAgICAgICAgICAgICAgICAgPC9nPgogICAgICAgICAgICAgICAgPC9nPgogICAgICAgICAgICA8L2c+CiAgICAgICAgPC9nPgogICAgPC9nPgo8L3N2Zz4=\") no-repeat 26px center;*/\n        background: #086fcf;\n        border: 0 none;\n        color: #fff;\n        float: right;\n        height: 50px;\n        padding: 14px 26px 14px 26px;\n}\n.product-detail #AddToCart:hover {\n        background-color: #0084ff;\n}\n.product-detail .spinner {\n        float: right;\n}\n.product-detail .spinner:before {\n        /* // background: transparent url(\"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAyCAIAAADqed0qAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAACsSURBVDhP7ZNbEsIgDAC9/2HVSnkUWnAVZhwlBA/Q/QqzhKaQXIrKqUU0ndI+1DmX27IO9Wq980HWx5FJJZC1dcH5jUDQOZNq+DYI2oeN7BoL+mEsv1RjQV/vpkW9jjGZ1bVFr431IcS2+NFUtBj7Lrnx0b2DpkUHLz1y8IcG7fCKVlql3/GlQbsWmFwqaE8CkwedtMOkmYDsYSvCpJFBGwOYDBFoI1g5tUApTxJ40LZNFr4gAAAAAElFTkSuQmCC\") no-repeat left top; */\n        content: \"\";\n        display: block;\n        height: 50px;\n        left: -6px;\n        position: absolute;\n        top: 0;\n        width: 10px;\n}\n.related {\n        background-color: #f7f7fa;\n        padding: 40px 0 85px;\n}\n.related h2 {\n        font-size: 184.61538%;\n        line-height: 150%;\n        font-family: \"montserratregular\", sans-serif;\n        text-align: center;\n}\n.related .collection-list {\n        margin-top: 26px;\n}\n.swatches .guide {\n        float: left;\n        margin: 36px 0 0 20px;\n}\n.spinner {\n        border-radius: 25px;\n        border: 1px solid #edeff2;\n        height: 50px;\n        margin-left: 10px;\n        padding: 15px 16px 0;\n        position: relative;\n}\n.spinner.is-hidden {\n        display: none;\n}\n.spinner .btn {\n        cursor: pointer;\n        display: block;\n        float: left;\n        height: 10px;\n        margin-top: 4px;\n        position: relative;\n        width: 10px;\n}\n.spinner .btn:before {\n        transition: all 0.3s ease-in-out;\n        background-color: #086fcf;\n        content: \"\";\n        display: block;\n        height: 2px;\n        left: 0;\n        margin-top: -1px;\n        position: absolute;\n        top: 50%;\n        width: 100%;\n}\n.spinner .btn.plus:after {\n        transition: all 0.3s ease-in-out;\n        background-color: #086fcf;\n        bottom: 0;\n        /* // content: \"\"; */\n        display: block;\n        height: 100%;\n        left: 50%;\n        margin-left: -1px;\n        position: absolute;\n        top: 0;\n        width: 2px;\n}\n.spinner .btn:hover:before,\n    .spinner .btn:hover:after {\n        background-color: #0084ff;\n}\n.spinner input {\n        font-family: \"montserratlight\", sans-serif;\n        border: 0 none;\n        color: #16161a;\n        display: block;\n        float: left;\n        /* // font-size: 14px; */\n        height: 17px !important;\n        line-height: 17px !important;\n        margin-left: 1px;\n        padding-bottom: 0;\n        padding-top: 0;\n        text-align: right;\n        width: 30px;\n}\n.spinner .q {\n        font-size: 107.69231%;\n        line-height: 121.42857%;\n        display: block;\n        float: left;\n        margin: 1px 20px 0 3px;\n}\n.tabs {\n        margin: 30px 0;\n}\n.tabs .tab-labels {\n        position: relative;\n        top: 1px;\n        /*z-index: 100;*/\n}\n.tabs .tab-labels span {\n        font-family: \"montserratbold\", sans-serif;\n        font-size: 100%;\n        line-height: 123.07692%;\n        border-radius: 1px;\n        border: 1px solid #fff;\n        border-bottom: 0 none;\n        color: #086fcf;\n        cursor: pointer;\n        display: block;\n        float: left;\n        padding: 7px 15px 9px;\n        text-transform: uppercase;\n}\n.tabs .tab-labels span.active {\n        background-color: #fff;\n        border-color: #edeff2;\n        color: #16161a;\n}\n.tabs .tab-slides {\n        font-size: 100%;\n        line-height: 184.61538%;\n        border-top: 1px solid #edeff2;\n        padding-top: 10px;\n        position: relative;\n}\n.tabs .tab-slides > div {\n        display: none;\n}\n.tabs .tab-slides > div.active {\n        display: block;\n}\n.social-sharing-btn-wrapper {\n        display: none;\n}\n.detail-socials .social-sharing {\n        float: right;\n        margin: 12px 0;\n}\n.detail-socials a {\n        border-radius: 50%;\n        background: transparent no-repeat center center;\n        border: 1px solid #edeff2;\n        display: block;\n        float: left;\n        height: 26px;\n        margin-right: 7px;\n        width: 26px;\n}\n.detail-socials a:hover {\n        border-color: #b5b6bd;\n}\n.detail-socials a:last-child {\n        margin-right: 0;\n}\n.detail-socials .icon,\n    .detail-socials .share-title,\n    .detail-socials .share-count {\n        display: none;\n}\n.detail-socials .share-facebook {\n        background-image: url(\"data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiIHN0YW5kYWxvbmU9Im5vIj8+Cjxzdmcgd2lkdGg9IjI3cHgiIGhlaWdodD0iMjZweCIgdmlld0JveD0iMCAwIDI3IDI2IiB2ZXJzaW9uPSIxLjEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiIHhtbG5zOnNrZXRjaD0iaHR0cDovL3d3dy5ib2hlbWlhbmNvZGluZy5jb20vc2tldGNoL25zIj4KICAgIDxnIHN0cm9rZT0ibm9uZSIgc3Ryb2tlLXdpZHRoPSIxIiBmaWxsPSJub25lIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiPgogICAgICAgIDxnIHRyYW5zZm9ybT0idHJhbnNsYXRlKC01NjEuMDAwMDAwLCAtNzY5LjAwMDAwMCkiPgogICAgICAgICAgICA8ZyB0cmFuc2Zvcm09InRyYW5zbGF0ZSg4My4wMDAwMDAsIDE1Ny4wMDAwMDApIj4KICAgICAgICAgICAgICAgIDxnIHRyYW5zZm9ybT0idHJhbnNsYXRlKDQ0NS4wMDAwMDAsIDYxMi4wMDAwMDApIj4KICAgICAgICAgICAgICAgICAgICA8ZyB0cmFuc2Zvcm09InRyYW5zbGF0ZSgzMy40Mjg1NzEsIDAuMDAwMDAwKSI+CiAgICAgICAgICAgICAgICAgICAgICAgIDxwYXRoIGQ9Ik0xMS4yMTE3OTE2LDE5LjQyNzY0NzUgTDExLjIxMTc5MTYsMTMuMjcyMTY2OCBMOS45NDExNzY0NywxMy4yNzIxNjY4IEw5Ljk0MTE3NjQ3LDExLjE1MDg3MTMgTDExLjIxMTc5MTYsMTEuMTUwODcxMyBMMTEuMjExNzkxNiw5Ljg3NzI1MzEzIEMxMS4yMTE3OTE2LDguMTQ2NzAzNjEgMTEuOTI5MjYwNCw3LjExNzY0NzA2IDEzLjk2NzY3NCw3LjExNzY0NzA2IEwxNS42NjQ3MTA1LDcuMTE3NjQ3MDYgTDE1LjY2NDcxMDUsOS4yMzkxODI4MiBMMTQuNjAzOTQyNiw5LjIzOTE4MjgyIEMxMy44MTA0Mzg3LDkuMjM5MTgyODIgMTMuNzU3OTQ2OSw5LjUzNTYzNTY3IDEzLjc1Nzk0NjksMTAuMDg4OTAyMiBMMTMuNzU1MDY0LDExLjE1MDYzMSBMMTUuNjc2NzIyMywxMS4xNTA2MzEgTDE1LjQ1MTg2MDIsMTMuMjcxOTI2NiBMMTMuNzU1MDY0LDEzLjI3MTkyNjYgTDEzLjc1NTA2NCwxOS40Mjc2NDc1IEwxMS4yMTE3OTE2LDE5LjQyNzY0NzUgWiIgZmlsbD0iI0I1QjdCRCI+PC9wYXRoPgogICAgICAgICAgICAgICAgICAgIDwvZz4KICAgICAgICAgICAgICAgIDwvZz4KICAgICAgICAgICAgPC9nPgogICAgICAgIDwvZz4KICAgIDwvZz4KPC9zdmc+\");\n}\n.detail-socials .share-twitter {\n        background-image: url(\"data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiIHN0YW5kYWxvbmU9Im5vIj8+Cjxzdmcgd2lkdGg9IjI2cHgiIGhlaWdodD0iMjZweCIgdmlld0JveD0iMCAwIDI2IDI2IiB2ZXJzaW9uPSIxLjEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiIHhtbG5zOnNrZXRjaD0iaHR0cDovL3d3dy5ib2hlbWlhbmNvZGluZy5jb20vc2tldGNoL25zIj4KICAgIDxnIHN0cm9rZT0ibm9uZSIgc3Ryb2tlLXdpZHRoPSIxIiBmaWxsPSJub25lIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiPgogICAgICAgIDxnIHRyYW5zZm9ybT0idHJhbnNsYXRlKC01MjguMDAwMDAwLCAtNzY5LjAwMDAwMCkiPgogICAgICAgICAgICA8ZyB0cmFuc2Zvcm09InRyYW5zbGF0ZSg4My4wMDAwMDAsIDE1Ny4wMDAwMDApIj4KICAgICAgICAgICAgICAgIDxnIHRyYW5zZm9ybT0idHJhbnNsYXRlKDQ0NS4wMDAwMDAsIDYxMi4wMDAwMDApIj4KICAgICAgICAgICAgICAgICAgICA8cGF0aCBkPSJNMTUuMDU2NDI4NCw4LjUyNzIxNjk1IEMxMy45ODgxODAyLDguOTE2MDI1MDEgMTMuMzEzMDQ3Myw5LjkxODI4NTggMTMuMzg5OTYxMiwxMS4wMTU1ODg2IEwxMy40MTU1OTkxLDExLjQzODk1NzMgTDEyLjk4ODI5OTgsMTEuMzg3MTE2MyBDMTEuNDMyOTMwNSwxMS4xODgzOTIxIDEwLjA3NDExODcsMTAuNTE0NDU4MiA4LjkyMDQxMDY4LDkuMzgyNTk0NjkgTDguMzU2Mzc1NjMsOC44MjA5ODMwNCBMOC4yMTEwOTM4OCw5LjIzNTcxMTY0IEM3LjkwMzQzODM5LDEwLjE2MDIxMDggOC4wOTk5OTYwNiwxMS4xMzY1NTExIDguNzQwOTQ0OTgsMTEuNzkzMjA0NyBDOS4wODI3ODQ0MSwxMi4xNTYwOTIyIDkuMDA1ODcwNTQsMTIuMjA3OTMzMyA4LjQxNjE5NzUzLDExLjk5MTkyODggQzguMjExMDkzODgsMTEuOTIyODA3NCA4LjAzMTYyODE4LDExLjg3MDk2NjMgOC4wMTQ1MzYyMSwxMS44OTY4ODY4IEM3Ljk1NDcxNDMxLDExLjk1NzM2ODEgOC4xNTk4MTc5NiwxMi43NDM2MjQ0IDguMzIyMTkxNjksMTMuMDU0NjcwOCBDOC41NDQzODczMiwxMy40ODY2Nzk4IDguOTk3MzI0NTUsMTMuOTEwMDQ4NiA5LjQ5Mjk5MTcyLDE0LjE2MDYxMzggTDkuOTExNzQ1MDIsMTQuMzU5MzM3OSBMOS40MTYwNzc4NSwxNC4zNjc5NzgxIEM4LjkzNzUwMjY1LDE0LjM2Nzk3ODEgOC45MjA0MTA2OCwxNC4zNzY2MTgzIDguOTcxNjg2NiwxNC41NTgwNjIgQzkuMTQyNjA2MzEsMTUuMTE5NjczNyA5LjgxNzczOTE3LDE1LjcxNTg0NiAxMC41Njk3ODU5LDE1Ljk3NTA1MTQgTDExLjA5OTYzNywxNi4xNTY0OTUyIEwxMC42MzgxNTM4LDE2LjQzMjk4MDkgQzkuOTU0NDc0OTQsMTYuODMwNDI5MSA5LjE1MTE1MjMsMTcuMDU1MDczOCA4LjM0NzgyOTY1LDE3LjA3MjM1NDIgQzcuOTYzMjYwMjksMTcuMDgwOTk0MyA3LjY0NzA1ODgyLDE3LjExNTU1NTEgNy42NDcwNTg4MiwxNy4xNDE0NzU2IEM3LjY0NzA1ODgyLDE3LjIyNzg3NzQgOC42ODk2NjkwNywxNy43MTE3Mjc0IDkuMjk2NDM0MDUsMTcuOTAxODExNCBDMTEuMTE2NzI5LDE4LjQ2MzQyMyAxMy4yNzg4NjM0LDE4LjIyMTQ5OCAxNC45MDI2MDA2LDE3LjI2MjQzODEgQzE2LjA1NjMwODcsMTYuNTc5ODYzOSAxNy4yMTAwMTY3LDE1LjIyMzM1NTggMTcuNzQ4NDEzOCwxMy45MTAwNDg2IEMxOC4wMzg5Nzc0LDEzLjIxMDE5NDEgMTguMzI5NTQwOSwxMS45MzE0NDc1IDE4LjMyOTU0MDksMTEuMzE3OTk0OCBDMTguMzI5NTQwOSwxMC45MjA1NDY2IDE4LjM1NTE3ODgsMTAuODY4NzA1NSAxOC44MzM3NTQsMTAuMzkzNDk1NyBDMTkuMTE1NzcxNSwxMC4xMTcwMDk5IDE5LjM4MDY5NzEsOS44MTQ2MDM2NSAxOS40MzE5NzMsOS43MjgyMDE4NiBDMTkuNTE3NDMyOSw5LjU2NDAzODQ1IDE5LjUwODg4NjksOS41NjQwMzg0NSAxOS4wNzMwNDE2LDkuNzEwOTIxNSBDMTguMzQ2NjMyOCw5Ljk3MDEyNjg3IDE4LjI0NDA4MSw5LjkzNTU2NjE2IDE4LjYwMzAxMjQsOS41NDY3NTgwOSBDMTguODY3OTM4LDkuMjcwMjcyMzYgMTkuMTg0MTM5NCw4Ljc2OTE0MTk3IDE5LjE4NDEzOTQsOC42MjIyNTg5MiBDMTkuMTg0MTM5NCw4LjU5NjMzODM4IDE5LjA1NTk0OTYsOC42Mzk1MzkyOCAxOC45MTA2Njc5LDguNzE3MzAwODkgQzE4Ljc1Njg0MDEsOC44MDM3MDI2OCAxOC40MTUwMDA3LDguOTMzMzA1MzcgMTguMTU4NjIxMiw5LjAxMTA2Njk4IEwxNy42OTcxMzc5LDkuMTU3OTUwMDMgTDE3LjI3ODM4NDYsOC44NzI4MjQxMiBDMTcuMDQ3NjQzLDguNzE3MzAwODkgMTYuNzIyODk1Niw4LjU0NDQ5NzMxIDE2LjU1MTk3NTksOC40OTI2NTYyMyBDMTYuMTE2MTMwNiw4LjM3MTY5MzczIDE1LjQ0OTU0MzcsOC4zODg5NzQwOCAxNS4wNTY0Mjg0LDguNTI3MjE2OTUgTDE1LjA1NjQyODQsOC41MjcyMTY5NSBaIiBmaWxsPSIjQjVCN0JEIj48L3BhdGg+CiAgICAgICAgICAgICAgICA8L2c+CiAgICAgICAgICAgIDwvZz4KICAgICAgICA8L2c+CiAgICA8L2c+Cjwvc3ZnPg==\");\n}\n.detail-socials .share-pinterest {\n        background-image: url(\"data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiIHN0YW5kYWxvbmU9Im5vIj8+Cjxzdmcgd2lkdGg9IjI2cHgiIGhlaWdodD0iMjZweCIgdmlld0JveD0iMCAwIDI2IDI2IiB2ZXJzaW9uPSIxLjEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiIHhtbG5zOnNrZXRjaD0iaHR0cDovL3d3dy5ib2hlbWlhbmNvZGluZy5jb20vc2tldGNoL25zIj4KICAgIDxnIHN0cm9rZT0ibm9uZSIgc3Ryb2tlLXdpZHRoPSIxIiBmaWxsPSJub25lIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiPgogICAgICAgIDxnIHRyYW5zZm9ybT0idHJhbnNsYXRlKC01OTQuMDAwMDAwLCAtNzY5LjAwMDAwMCkiPgogICAgICAgICAgICA8ZyB0cmFuc2Zvcm09InRyYW5zbGF0ZSg4My4wMDAwMDAsIDE1Ny4wMDAwMDApIj4KICAgICAgICAgICAgICAgIDxnIHRyYW5zZm9ybT0idHJhbnNsYXRlKDQ0NS4wMDAwMDAsIDYxMi4wMDAwMDApIj4KICAgICAgICAgICAgICAgICAgICA8ZyB0cmFuc2Zvcm09InRyYW5zbGF0ZSg2Ni4wMDAwMDAsIDAuMDAwMDAwKSI+CiAgICAgICAgICAgICAgICAgICAgICAgIDxwYXRoIGQ9Ik0xMy40MzcwNjg3LDYuMTE3NjQ3MDYgQzkuNzE2MzUwOTQsNi4xMTc2NDcwNiA3Ljg0MDMzNjEzLDguNzg1MjQyODcgNy44NDAzMzYxMywxMS4wMDk3NzYgQzcuODQwMzM2MTMsMTIuMzU2NzA3NSA4LjM1MDI4NDQzLDEzLjU1NDk5NDYgOS40NDQwMjQ4MSwxNC4wMDE1MzY0IEM5LjYyMzM3MjE0LDE0LjA3NDg1ODQgOS43ODQwMTkzMywxNC4wMDQwNTg4IDkuODM2MDMxOCwxMy44MDU0ODk1IEM5Ljg3MjIxNDM4LDEzLjY2ODA2NTIgOS45NTc4MDAxMSwxMy4zMjEzNzM0IDkuOTk1OTgzMTcsMTMuMTc2OTkxIEMxMC4wNDg0MzA1LDEyLjk4MDU5NjEgMTAuMDI4MDc3OCwxMi45MTE3MTAxIDkuODgzMzQ3NDgsMTIuNzQwNTM4NiBDOS41Njc5Njc1NiwxMi4zNjg1MzY0IDkuMzY2NDQxLDExLjg4Njk0MjcgOS4zNjY0NDEsMTEuMjA0Nzc5MiBDOS4zNjY0NDEsOS4yMjU2OTYyNiAxMC44NDcxNDM3LDcuNDUzOTY3MzEgMTMuMjIyMTQ3Niw3LjQ1Mzk2NzMxIEMxNS4zMjUxNzM0LDcuNDUzOTY3MzEgMTYuNDgwNTgwNyw4LjczODk3MDkyIDE2LjQ4MDU4MDcsMTAuNDU1MTIxMyBDMTYuNDgwNTgwNywxMi43MTMxNDA3IDE1LjQ4MTI5NzcsMTQuNjE4OTAxOCAxMy45OTc4MTE4LDE0LjYxODkwMTggQzEzLjE3ODU3MiwxNC42MTg5MDE4IDEyLjU2NTI5NDYsMTMuOTQxMzQ4MSAxMi43NjE4NjM0LDEzLjExMDM2NjQgQzEyLjk5NzIyNDIsMTIuMTE4MzAyNSAxMy40NTMxNTk1LDExLjA0NzYxMTEgMTMuNDUzMTU5NSwxMC4zMzE1MjY1IEMxMy40NTMxNTk1LDkuNjkwNTAzMyAxMy4xMDkwNzcxLDkuMTU1ODUzNDMgMTIuMzk2OTkzNCw5LjE1NTg1MzQzIEMxMS41NTk0ODgzLDkuMTU1ODUzNDMgMTAuODg2NzE4NCwxMC4wMjIyMzUgMTAuODg2NzE4NCwxMS4xODI4NjA5IEMxMC44ODY3MTg0LDExLjkyMjA4MTYgMTEuMTM2NTE3NCwxMi40MjIwMjc1IDExLjEzNjUxNzQsMTIuNDIyMDI3NSBDMTEuMTM2NTE3NCwxMi40MjIwMjc1IDEwLjI3OTQ0MjQsMTYuMDUzNDE5NSAxMC4xMjkyMzI1LDE2LjY4OTM5OCBDOS44MzAwMzAzNiwxNy45NTU5NjI0IDEwLjA4NDI2NTIsMTkuNTA4NTk1NCAxMC4xMDU3NDg2LDE5LjY2NTQxNTUgQzEwLjExODM2MDMsMTkuNzU4MzA3NCAxMC4yMzc3ODAzLDE5Ljc4MDM5OTYgMTAuMjkxODgwMiwxOS43MTAyMDg5IEMxMC4zNjkxMTYxLDE5LjYwOTQwMjEgMTEuMzY2NTcyNSwxOC4zNzc5NzY2IDExLjcwNTY5NzMsMTcuMTQ3NTA3OCBDMTEuODAxNjMzMywxNi43OTkwNzY0IDEyLjI1NjUyNDksMTQuOTk0OTA0OSAxMi4yNTY1MjQ5LDE0Ljk5NDkwNDkgQzEyLjUyODU5MDEsMTUuNTEzODk4OSAxMy4zMjM4MjQyLDE1Ljk3MTA1MTkgMTQuMTY5NTA1MSwxNS45NzEwNTE5IEMxNi42ODY5NzgsMTUuOTcxMDUxOSAxOC4zOTQ5NTI1LDEzLjY3NTk4MDIgMTguMzk0OTUyNSwxMC42MDM5Mzk2IEMxOC4zOTQ5NTI1LDguMjgxMDM1MDggMTYuNDI3NDM3NSw2LjExNzY0NzA2IDEzLjQzNzA2ODcsNi4xMTc2NDcwNiBMMTMuNDM3MDY4Nyw2LjExNzY0NzA2IFoiIGZpbGw9IiNCNUI3QkQiPjwvcGF0aD4KICAgICAgICAgICAgICAgICAgICA8L2c+CiAgICAgICAgICAgICAgICA8L2c+CiAgICAgICAgICAgIDwvZz4KICAgICAgICA8L2c+CiAgICA8L2c+Cjwvc3ZnPg==\");\n}\n@-webkit-keyframes quick_cart_pay_show {\n0% {\n            transform: rotate(70deg);\n            right: -100px;\n}\n50% {\n            transform: rotate(-20deg);\n            right: 20px;\n}\n100% {\n            transform: rotate(0deg);\n            right: 0;\n}\n}\n@keyframes quick_cart_pay_show {\n0% {\n            transform: rotate(70deg);\n            right: -100px;\n}\n50% {\n            transform: rotate(-20deg);\n            right: 20px;\n}\n100% {\n            transform: rotate(0deg);\n            right: 0;\n}\n}\n@-webkit-keyframes quick_cart_pay_hide {\n0% {\n            transform: rotate(0deg);\n            right: 0;\n}\n100% {\n            transform: rotate(70deg);\n            right: -100px;\n}\n}\n@keyframes quick_cart_pay_hide {\n0% {\n            transform: rotate(0deg);\n            right: 0;\n}\n100% {\n            transform: rotate(70deg);\n            right: -100px;\n}\n}\n.homepage .bg {\n        background-color: #f7f7fa;\n        background-repeat: no-repeat;\n        background-position: center -130px;\n}\n.homepage .collection-list {\n        margin-top: 0;\n        padding: 310px 0 40px;\n}\n.homepage .homepage-banners {\n        padding: 40px 0 0;\n}\n.homepage .more-products {\n        padding-top: 0;\n        position: relative;\n        top: 24px;\n}\n.homepage .main-services {\n        padding: 74px 0 44px;\n}\n.homepage .main-services li {\n        display: block;\n        float: left;\n        width: 33.33333%;\n}\n.homepage .main-services li:nth-child(2) {\n        text-align: center;\n}\n.homepage .main-services li:nth-child(3) {\n        text-align: right;\n}\n.homepage .main-services span {\n        font-family: \"montserratregular\", sans-serif;\n        font-size: 138.46154%;\n        line-height: 144.44444%;\n        background: transparent no-repeat left center;\n        color: #086fcf;\n        display: inline-block;\n}\n.homepage .main-services .shipping {\n        background-image: url(\"data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiIHN0YW5kYWxvbmU9Im5vIj8+Cjxzdmcgd2lkdGg9IjMycHgiIGhlaWdodD0iMjJweCIgdmlld0JveD0iMCAwIDMyIDIyIiB2ZXJzaW9uPSIxLjEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiIHhtbG5zOnNrZXRjaD0iaHR0cDovL3d3dy5ib2hlbWlhbmNvZGluZy5jb20vc2tldGNoL25zIj4KICAgIDxnIHN0cm9rZT0ibm9uZSIgc3Ryb2tlLXdpZHRoPSIxIiBmaWxsPSJub25lIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiPgogICAgICAgIDxnIHRyYW5zZm9ybT0idHJhbnNsYXRlKC01ODcuMDAwMDAwLCAtMTI5NC4wMDAwMDApIiBzdHJva2U9IiMwODZGQ0YiIHN0cm9rZS13aWR0aD0iMiI+CiAgICAgICAgICAgIDxnIHRyYW5zZm9ybT0idHJhbnNsYXRlKC0zLjAwMDAwMCwgMTI0Ni4wMDAwMDApIj4KICAgICAgICAgICAgICAgIDxnIHRyYW5zZm9ybT0idHJhbnNsYXRlKDU5MS4wMDAwMDAsIDQ5LjAwMDAwMCkiPgogICAgICAgICAgICAgICAgICAgIDxwYXRoIGQ9Ik0yNywxNyBMMzAsMTcgTDMwLDEwIEwyOCw0IEwxOSw0IEwxOSwxNyBMMjEsMTciPjwvcGF0aD4KICAgICAgICAgICAgICAgICAgICA8cGF0aCBkPSJNMjcsMTcgQzI3LDE4LjY1NyAyNS42NTcsMjAgMjQsMjAgQzIyLjM0MywyMCAyMSwxOC42NTcgMjEsMTcgQzIxLDE1LjM0MyAyMi4zNDMsMTQgMjQsMTQgQzI1LjY1NywxNCAyNywxNS4zNDMgMjcsMTcgTDI3LDE3IFoiPjwvcGF0aD4KICAgICAgICAgICAgICAgICAgICA8cGF0aCBkPSJNMTAsMTcgTDE5LDE3IEwxOSwwIEwwLDAgTDAsMTcgTDQsMTciPjwvcGF0aD4KICAgICAgICAgICAgICAgICAgICA8cGF0aCBkPSJNMTAsMTcgQzEwLDE4LjY1NyA4LjY1NywyMCA3LDIwIEM1LjM0MywyMCA0LDE4LjY1NyA0LDE3IEM0LDE1LjM0MyA1LjM0MywxNCA3LDE0IEM4LjY1NywxNCAxMCwxNS4zNDMgMTAsMTcgTDEwLDE3IFoiPjwvcGF0aD4KICAgICAgICAgICAgICAgICAgICA8cGF0aCBkPSJNMTUsNCBMOSwxMCBMNSw2Ij48L3BhdGg+CiAgICAgICAgICAgICAgICA8L2c+CiAgICAgICAgICAgIDwvZz4KICAgICAgICA8L2c+CiAgICA8L2c+Cjwvc3ZnPg==\");\n        padding-left: 40px;\n}\n.homepage .main-services .brands {\n        background-image: url(\"data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiIHN0YW5kYWxvbmU9Im5vIj8+Cjxzdmcgd2lkdGg9IjI2cHgiIGhlaWdodD0iMjdweCIgdmlld0JveD0iMCAwIDI2IDI3IiB2ZXJzaW9uPSIxLjEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiIHhtbG5zOnNrZXRjaD0iaHR0cDovL3d3dy5ib2hlbWlhbmNvZGluZy5jb20vc2tldGNoL25zIj4KICAgIDxnIHN0cm9rZT0ibm9uZSIgc3Ryb2tlLXdpZHRoPSIxIiBmaWxsPSJub25lIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiPgogICAgICAgIDxnIHRyYW5zZm9ybT0idHJhbnNsYXRlKC02NTIuMDAwMDAwLCAtMTI5Mi4wMDAwMDApIiBzdHJva2U9IiMwODZGQ0YiIHN0cm9rZS13aWR0aD0iMiI+CiAgICAgICAgICAgIDxnIHRyYW5zZm9ybT0idHJhbnNsYXRlKC0zLjAwMDAwMCwgMTI0Ni4wMDAwMDApIj4KICAgICAgICAgICAgICAgIDxnIHRyYW5zZm9ybT0idHJhbnNsYXRlKDY1Ny4wMDAwMDAsIDQ3LjAwMDAwMCkiPgogICAgICAgICAgICAgICAgICAgIDxwYXRoIGQ9Ik0xMi4zNTQ5LDE3LjExNDIgTDE2LjI3NTksMjMuMDAwMiBMMTcuNjYzOSwxOS42NzIyIEwyMS4yNjg5LDE5LjY3MzIgTDE3LjU3NzksMTQuMTMyMiI+PC9wYXRoPgogICAgICAgICAgICAgICAgICAgIDxwYXRoIGQ9Ik05LjY0NTEsMTcuMTE0MiBMNS43MjQxLDIzLjAwMDIgTDQuMzM2MSwxOS42NzIyIEwwLjczMTEsMTkuNjczMiBMNC40MjIxLDE0LjEzMjIiPjwvcGF0aD4KICAgICAgICAgICAgICAgICAgICA8cGF0aCBkPSJNMTIuMjM0MiwwLjQ5MDYgTDE0LjAyNzIsMS43ODQ2IEwxNi4yMDkyLDIuMTM3NiBDMTcuMTA2MiwyLjI4MjYgMTcuODA5MiwyLjk4NTYgMTcuOTU0MiwzLjg4MjYgTDE4LjMwNzIsNi4wNjQ2IEwxOS42MDEyLDcuODU3NiBDMjAuMTMzMiw4LjU5NDYgMjAuMTMzMiw5LjU4OTYgMTkuNjAxMiwxMC4zMjU2IEwxOC4zMDcyLDEyLjExODYgTDE3Ljk1NDIsMTQuMzAxNiBDMTcuODA5MiwxNS4xOTg2IDE3LjEwNjIsMTUuOTAxNiAxNi4yMDkyLDE2LjA0NjYgTDE0LjAyNzIsMTYuMzk5NiBMMTIuMjM0MiwxNy42OTI2IEMxMS40OTcyLDE4LjIyNDYgMTAuNTAzMiwxOC4yMjQ2IDkuNzY2MiwxNy42OTI2IEw3Ljk3MzIsMTYuMzk5NiBMNS43OTEyLDE2LjA0NjYgQzQuODkzMiwxNS45MDE2IDQuMTkwMiwxNS4xOTg2IDQuMDQ1MiwxNC4zMDE2IEwzLjY5MjIsMTIuMTE4NiBMMi4zOTkyLDEwLjMyNTYgQzEuODY3Miw5LjU4OTYgMS44NjcyLDguNTk0NiAyLjM5OTIsNy44NTc2IEwzLjY5MjIsNi4wNjQ2IEw0LjA0NTIsMy44ODI2IEM0LjE5MDIsMi45ODU2IDQuODkzMiwyLjI4MjYgNS43OTEyLDIuMTM3NiBMNy45NzMyLDEuNzg0NiBMOS43NjYyLDAuNDkwNiBDMTAuNTAzMiwtMC4wNDE0IDExLjQ5NzIsLTAuMDQxNCAxMi4yMzQyLDAuNDkwNiBMMTIuMjM0MiwwLjQ5MDYgWiI+PC9wYXRoPgogICAgICAgICAgICAgICAgPC9nPgogICAgICAgICAgICA8L2c+CiAgICAgICAgPC9nPgogICAgPC9nPgo8L3N2Zz4=\");\n        padding-left: 32px;\n}\n.homepage .main-services .support {\n        background-image: url(\"data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiIHN0YW5kYWxvbmU9Im5vIj8+Cjxzdmcgd2lkdGg9IjI1cHgiIGhlaWdodD0iMjdweCIgdmlld0JveD0iMCAwIDI1IDI3IiB2ZXJzaW9uPSIxLjEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiIHhtbG5zOnNrZXRjaD0iaHR0cDovL3d3dy5ib2hlbWlhbmNvZGluZy5jb20vc2tldGNoL25zIj4KICAgIDxnIHN0cm9rZT0ibm9uZSIgc3Ryb2tlLXdpZHRoPSIxIiBmaWxsPSJub25lIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiPgogICAgICAgIDxnIHRyYW5zZm9ybT0idHJhbnNsYXRlKC03MTUuMDAwMDAwLCAtMTI5MS4wMDAwMDApIj4KICAgICAgICAgICAgPGcgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoLTMuMDAwMDAwLCAxMjQ2LjAwMDAwMCkiPgogICAgICAgICAgICAgICAgPGcgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoNzE5LjAwMDAwMCwgNDYuMDAwMDAwKSI+CiAgICAgICAgICAgICAgICAgICAgPHBhdGggZD0iTTEwLDkuMzI3IEMxMS42NTcsOS4zMjcgMTMsMTAuNjcgMTMsMTIuMzI3IEMxMywxMy45ODQgMTEuNjU3LDE1LjMyNyAxMCwxNS4zMjcgQzguMzQzLDE1LjMyNyA3LDEzLjk4NCA3LDEyLjMyNyBDNywxMC42NyA4LjM0Myw5LjMyNyAxMCw5LjMyNyBMMTAsOS4zMjcgWiIgc3Ryb2tlPSIjMDg2RkNGIiBzdHJva2Utd2lkdGg9IjIiPjwvcGF0aD4KICAgICAgICAgICAgICAgICAgICA8cGF0aCBkPSJNMTUuNSwxNS4zMjcgQzE2LjMyOCwxNS4zMjcgMTcsMTUuOTk5IDE3LDE2LjgyNyBDMTcsMTcuNjU1IDE2LjMyOCwxOC4zMjcgMTUuNSwxOC4zMjcgQzE0LjY3MiwxOC4zMjcgMTQsMTcuNjU1IDE0LDE2LjgyNyBDMTQsMTUuOTk5IDE0LjY3MiwxNS4zMjcgMTUuNSwxNS4zMjciIGZpbGw9IiMwODZGQ0YiPjwvcGF0aD4KICAgICAgICAgICAgICAgICAgICA8cGF0aCBkPSJNMTAsOS4zMjcgTDEwLDAiIHN0cm9rZT0iIzA4NkZDRiIgc3Ryb2tlLXdpZHRoPSIyIj48L3BhdGg+CiAgICAgICAgICAgICAgICAgICAgPHBhdGggZD0iTTEyLjI0NDksMTQuNTMxMSBMMTUuNDI4OSwxNi43MzUxIiBzdHJva2U9IiMwODZGQ0YiIHN0cm9rZS13aWR0aD0iMiI+PC9wYXRoPgogICAgICAgICAgICAgICAgICAgIDxwYXRoIGQ9Ik0xNSwyNS4zMjcgTDE1LDIxLjMyNyBMMTYsMjEuMzI3IEMxOCwyMS4zMjcgMjAsMTkuMzA5IDIwLDE3LjMyNyBMMjAsMTUuMDc3IEMyMCwxNS4wNzcgMjEuMTA0LDE0Ljc4NiAyMS42OTQsMTQuNjE3IEMyMi40NTYsMTQuNCAyMi42MywxMy41NzIgMjIuMjgxLDEyLjg4OSBDMjEuOTcsMTIuMjggMTkuNTksNy41MDcgMTkuNTksNy41MDcgQzE5LjU5LDcuNTA3IDE4LjE5OSwwLjMyNyAxMCwwLjMyNyBDNC40NzcsMC4zMjcgMCw0LjgwNCAwLDEwLjMyNyBDMCwxNC4xMTIgMywxNi45MDEgMywyMC40NjMgTDMsMjUuMzI3IiBzdHJva2U9IiMwODZGQ0YiIHN0cm9rZS13aWR0aD0iMiI+PC9wYXRoPgogICAgICAgICAgICAgICAgPC9nPgogICAgICAgICAgICA8L2c+CiAgICAgICAgPC9nPgogICAgPC9nPgo8L3N2Zz4=\");\n        padding-left: 33px;\n}\n.homepage .main-text {\n        box-shadow: rgba(17, 17, 18, 0.04) 0 4px 4px -2px, rgba(19, 20, 20, 0.06) 0 3px 1px -2px;\n        border-top: 1px solid #f7f7fa;\n        padding-top: 56px;\n        position: relative;\n        text-align: center;\n        z-index: 2;\n}\n.homepage .main-text h1 {\n        font-family: \"montserratbold\", sans-serif;\n        font-size: 492.30769%;\n        line-height: 106.25%;\n        letter-spacing: 14px;\n        margin-bottom: 34px;\n}\n.homepage .main-text p {\n        font-size: 107.69231%;\n        line-height: 171.42857%;\n}\n.homepage .main-text .links {\n        padding: 44px 0 128px;\n}\n.homepage .main-text .links .about {\n        font-family: \"montserratbold\", sans-serif;\n        font-size: 107.69231%;\n        line-height: 128.57143%;\n        background: transparent url(\"data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiIHN0YW5kYWxvbmU9Im5vIj8+Cjxzdmcgd2lkdGg9IjE2cHgiIGhlaWdodD0iMTBweCIgdmlld0JveD0iMCAwIDE2IDEwIiB2ZXJzaW9uPSIxLjEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiIHhtbG5zOnNrZXRjaD0iaHR0cDovL3d3dy5ib2hlbWlhbmNvZGluZy5jb20vc2tldGNoL25zIj4KICAgIDxnIHN0cm9rZT0ibm9uZSIgc3Ryb2tlLXdpZHRoPSIxIiBmaWxsPSJub25lIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiPgogICAgICAgIDxnIHRyYW5zZm9ybT0idHJhbnNsYXRlKC00ODUuMDAwMDAwLCAtMTM5MC4wMDAwMDApIiBmaWxsPSIjMDg2RkNGIj4KICAgICAgICAgICAgPGcgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoMC4wMDAwMDAsIDk1Mi4wMDAwMDApIj4KICAgICAgICAgICAgICAgIDxnIHRyYW5zZm9ybT0idHJhbnNsYXRlKDI4NS4wMDAwMDAsIDc2LjAwMDAwMCkiPgogICAgICAgICAgICAgICAgICAgIDxnIHRyYW5zZm9ybT0idHJhbnNsYXRlKDAuMDAwMDAwLCAzNTguMDAwMDAwKSI+CiAgICAgICAgICAgICAgICAgICAgICAgIDxwYXRoIGQ9Ik0yMTIuMzY0Njk0LDkuNzQ1NDg5NzkgTDIwOS4xNjQzMDYsMTIuOTQ1ODc3NCBMMjEwLjIxODgwMSwxNCBMMjE1LjIxODgwMSw5IEwyMTAuMjE4ODAxLDQgTDIwOS4xNjQzMDYsNS4wNTQxMjI1NiBMMjEyLjM2NDY5NCw4LjI1NDUxMDIxIEwyMDAsOC4yNTQ1MTAyMSBMMjAwLDkuNzQ1NDg5NzkgTDIxMi4zNjQ2OTQsOS43NDU0ODk3OSBMMjEyLjM2NDY5NCw5Ljc0NTQ4OTc5IFoiPjwvcGF0aD4KICAgICAgICAgICAgICAgICAgICA8L2c+CiAgICAgICAgICAgICAgICA8L2c+CiAgICAgICAgICAgIDwvZz4KICAgICAgICA8L2c+CiAgICA8L2c+Cjwvc3ZnPg==\") no-repeat right center;\n        color: #086fcf;\n        display: inline-block;\n        /* // float: left; */\n        letter-spacing: 1px;\n        margin-top: 10px;\n        padding-right: 21px;\n        text-transform: uppercase;\n}\n.homepage .main-text .links .about:hover {\n        text-decoration: underline;\n}\n.homepage .main-text .links .socials {\n        display: block;\n        float: right;\n}\n.socials {\n        color: #edeff2;\n}\n.socials strong {\n        opacity: 0.4;\n}\n.socials ul {\n        display: inline-block;\n}\n.socials li {\n        float: left;\n        margin-left: 28px;\n}\n.socials a {\n        background: transparent no-repeat left top;\n        display: inline-block;\n        opacity: 0.65;\n        overflow: hidden;\n        position: relative;\n        text-indent: 100px;\n        top: 12px;\n}\n.socials a:hover {\n        opacity: 1;\n}\n.socials .tw {\n        background-image: url(\"data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiIHN0YW5kYWxvbmU9Im5vIj8+Cjxzdmcgd2lkdGg9IjE2cHgiIGhlaWdodD0iMTRweCIgdmlld0JveD0iMCAwIDE2IDE0IiB2ZXJzaW9uPSIxLjEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiIHhtbG5zOnNrZXRjaD0iaHR0cDovL3d3dy5ib2hlbWlhbmNvZGluZy5jb20vc2tldGNoL25zIj4KICAgIDxnIHN0cm9rZT0ibm9uZSIgc3Ryb2tlLXdpZHRoPSIxIiBmaWxsPSJub25lIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiPgogICAgICAgIDxnIHRyYW5zZm9ybT0idHJhbnNsYXRlKC0xMDQ1LjAwMDAwMCwgLTE1OTEuMDAwMDAwKSIgZmlsbD0iI0ZGRkZGRiI+CiAgICAgICAgICAgIDxnIHRyYW5zZm9ybT0idHJhbnNsYXRlKC0zLjAwMDAwMCwgMTI0Ni4wMDAwMDApIj4KICAgICAgICAgICAgICAgIDxnIHRyYW5zZm9ybT0idHJhbnNsYXRlKDAuMDAwMDAwLCAxNDYuMDAwMDAwKSI+CiAgICAgICAgICAgICAgICAgICAgPGcgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoMTA0MC4wMDAwMDAsIDE5MC4wMDAwMDApIj4KICAgICAgICAgICAgICAgICAgICAgICAgPGc+CiAgICAgICAgICAgICAgICAgICAgICAgICAgICA8cGF0aCBkPSJNMTguMjIyNTA4OSw5Ljc1MDk3NjAxIEMxNi44MjU1Njg5LDEwLjI1OTQxNzMgMTUuOTQyNzAyOSwxMS41NzAwNjYgMTYuMDQzMjgyNiwxMy4wMDUwMDA0IEwxNi4wNzY4MDkxLDEzLjU1ODYzNjUgTDE1LjUxODAzMzEsMTMuNDkwODQ0MyBDMTMuNDg0MDg4NSwxMy4yMzA5NzQzIDExLjcwNzE4MDksMTIuMzQ5Njc2MSAxMC4xOTg0ODU4LDEwLjg2OTU0NjkgTDkuNDYwOTAxNDcsMTAuMTM1MTMxNyBMOS4yNzA5MTc2MywxMC42Nzc0NjkxIEM4Ljg2ODU5ODkyLDExLjg4NjQyOTUgOS4xMjU2MzU4OCwxMy4xNjMxODIyIDkuOTYzNzk5ODUsMTQuMDIxODgzIEMxMC40MTA4MjA2LDE0LjQ5NjQyODMgMTAuMzEwMjQxLDE0LjU2NDIyMDQgOS41MzkxMzAxLDE0LjI4MTc1MyBDOS4yNzA5MTc2MywxNC4xOTEzNjM1IDkuMDM2MjMxNzIsMTQuMTIzNTcxMyA5LjAxMzg4MDY4LDE0LjE1NzQ2NzQgQzguOTM1NjUyMDQsMTQuMjM2NTU4MyA5LjIwMzg2NDUxLDE1LjI2NDczOTYgOS40MTYxOTkzOSwxNS42NzE0OTI2IEM5LjcwNjc2MjksMTYuMjM2NDI3NCAxMC4yOTkwNjU0LDE2Ljc5MDA2MzUgMTAuOTQ3MjQ1NiwxNy4xMTc3MjU3IEwxMS40OTQ4NDYsMTcuMzc3NTk1NyBMMTAuODQ2NjY1OSwxNy4zODg4OTQ0IEMxMC4yMjA4MzY4LDE3LjM4ODg5NDQgMTAuMTk4NDg1OCwxNy40MDAxOTMxIDEwLjI2NTUzODksMTcuNjM3NDY1NyBDMTAuNDg5MDQ5MywxOC4zNzE4ODA5IDExLjM3MTkxNTMsMTkuMTUxNDkxIDEyLjM1NTM2MTEsMTkuNDkwNDUxOCBMMTMuMDQ4MjQzMywxOS43Mjc3MjQ0IEwxMi40NDQ3NjUyLDIwLjA4OTI4MjcgQzExLjU1MDcyMzYsMjAuNjA5MDIyNyAxMC41MDAyMjQ4LDIwLjkwMjc4ODggOS40NDk3MjU5NSwyMC45MjUzODYyIEM4Ljk0NjgyNzU2LDIwLjkzNjY4NDkgOC41MzMzMzMzMywyMC45ODE4Nzk3IDguNTMzMzMzMzMsMjEuMDE1Nzc1OCBDOC41MzMzMzMzMywyMS4xMjg3NjI3IDkuODk2NzQ2NzMsMjEuNzYxNDg5NyAxMC42OTAyMDg2LDIyLjAxMDA2MSBDMTMuMDcwNTk0MywyMi43NDQ0NzYyIDE1Ljg5ODAwMDgsMjIuNDI4MTEyOCAxOC4wMjEzNDk1LDIxLjE3Mzk1NzUgQzE5LjUzMDA0NDcsMjAuMjgxMzYwNSAyMS4wMzg3Mzk4LDE4LjUwNzQ2NTMgMjEuNzQyNzk3NiwxNi43OTAwNjM1IEMyMi4xMjI3NjUzLDE1Ljg3NDg2OTIgMjIuNTAyNzMyOSwxNC4yMDI2NjIyIDIyLjUwMjczMjksMTMuNDAwNDU0OCBDMjIuNTAyNzMyOSwxMi44ODA3MTQ4IDIyLjUzNjI1OTUsMTIuODEyOTIyNiAyMy4xNjIwODg2LDEyLjE5MTQ5NDMgQzIzLjUzMDg4MDcsMTEuODI5OTM2IDIzLjg3NzMyMTgsMTEuNDM0NDgxNyAyMy45NDQzNzUsMTEuMzIxNDk0NyBDMjQuMDU2MTMwMiwxMS4xMDY4MTk1IDI0LjA0NDk1NDYsMTEuMTA2ODE5NSAyMy40NzUwMDMxLDExLjI5ODg5NzMgQzIyLjUyNTA4NCwxMS42Mzc4NTgyIDIyLjM5MDk3NzcsMTEuNTkyNjYzNCAyMi44NjAzNDk2LDExLjA4NDIyMjEgQzIzLjIwNjc5MDcsMTAuNzIyNjYzOSAyMy42MjAyODQ5LDEwLjA2NzMzOTUgMjMuNjIwMjg0OSw5Ljg3NTI2MTY3IEMyMy42MjAyODQ5LDkuODQxMzY1NTggMjMuNDUyNjUyMSw5Ljg5Nzg1OTA2IDIzLjI2MjY2ODMsOS45OTk1NDczMiBDMjMuMDYxNTA4OSwxMC4xMTI1MzQzIDIyLjYxNDQ4ODEsMTAuMjgyMDE0NyAyMi4yNzkyMjI1LDEwLjM4MzcwMyBMMjEuNjc1NzQ0NSwxMC41NzU3ODA4IEwyMS4xMjgxNDQsMTAuMjAyOTIzOCBDMjAuODI2NDA1LDkuOTk5NTQ3MzIgMjAuNDAxNzM1Miw5Ljc3MzU3MzQgMjAuMTc4MjI0OCw5LjcwNTc4MTIzIEMxOS42MDgyNzMzLDkuNTQ3NTk5NDkgMTguNzM2NTgyOCw5LjU3MDE5Njg4IDE4LjIyMjUwODksOS43NTA5NzYwMSBMMTguMjIyNTA4OSw5Ljc1MDk3NjAxIFoiPjwvcGF0aD4KICAgICAgICAgICAgICAgICAgICAgICAgPC9nPgogICAgICAgICAgICAgICAgICAgIDwvZz4KICAgICAgICAgICAgICAgIDwvZz4KICAgICAgICAgICAgPC9nPgogICAgICAgIDwvZz4KICAgIDwvZz4KPC9zdmc+\");\n        height: 14px;\n        top: 10px;\n        width: 16px;\n}\n.socials .fb {\n        background-image: url(\"data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiIHN0YW5kYWxvbmU9Im5vIj8+Cjxzdmcgd2lkdGg9IjlweCIgaGVpZ2h0PSIxOHB4IiB2aWV3Qm94PSIwIDAgOSAxOCIgdmVyc2lvbj0iMS4xIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHhtbG5zOnhsaW5rPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5L3hsaW5rIiB4bWxuczpza2V0Y2g9Imh0dHA6Ly93d3cuYm9oZW1pYW5jb2RpbmcuY29tL3NrZXRjaC9ucyI+CiAgICA8ZyBzdHJva2U9Im5vbmUiIHN0cm9rZS13aWR0aD0iMSIgZmlsbD0ibm9uZSIgZmlsbC1ydWxlPSJldmVub2RkIj4KICAgICAgICA8ZyB0cmFuc2Zvcm09InRyYW5zbGF0ZSgtMTA5My4wMDAwMDAsIC0xNTg5LjAwMDAwMCkiIGZpbGw9IiNGRkZGRkYiPgogICAgICAgICAgICA8ZyB0cmFuc2Zvcm09InRyYW5zbGF0ZSgtMy4wMDAwMDAsIDEyNDYuMDAwMDAwKSI+CiAgICAgICAgICAgICAgICA8ZyB0cmFuc2Zvcm09InRyYW5zbGF0ZSgwLjAwMDAwMCwgMTQ2LjAwMDAwMCkiPgogICAgICAgICAgICAgICAgICAgIDxnIHRyYW5zZm9ybT0idHJhbnNsYXRlKDEwNDAuMDAwMDAwLCAxOTAuMDAwMDAwKSI+CiAgICAgICAgICAgICAgICAgICAgICAgIDxnIHRyYW5zZm9ybT0idHJhbnNsYXRlKDQ0LjMwNzY5MiwgMC4wMDAwMDApIj4KICAgICAgICAgICAgICAgICAgICAgICAgICAgIDxwYXRoIGQ9Ik0xMy43NDE0NDg5LDI0LjcwMzgyNTYgTDEzLjc0MTQ0ODksMTUuOTk5MzIwNiBMMTEuOTQ0NjYzOCwxNS45OTkzMjA2IEwxMS45NDQ2NjM4LDEyLjk5OTU4MjkgTDEzLjc0MTQ0ODksMTIuOTk5NTgyOSBMMTMuNzQxNDQ4OSwxMS4xOTg1NTEyIEMxMy43NDE0NDg5LDguNzUxMzY5OTUgMTQuNzU2MDI2MSw3LjI5NjE3NDQzIDE3LjYzODU2LDcuMjk2MTc0NDMgTDIwLjAzODM1MDIsNy4yOTYxNzQ0MyBMMjAuMDM4MzUwMiwxMC4yOTYyNTE5IEwxOC41MzgzMTE1LDEwLjI5NjI1MTkgQzE3LjQxNjIxMjUsMTAuMjk2MjUxOSAxNy4zNDE5ODM0LDEwLjcxNTQ2NzcgMTcuMzQxOTgzNCwxMS40OTc4NDU1IEwxNy4zMzc5MDY4LDEyLjk5OTI0MzEgTDIwLjA1NTMzNjIsMTIuOTk5MjQzMSBMMTkuNzM3MzU3MiwxNS45OTg5ODA4IEwxNy4zMzc5MDY4LDE1Ljk5ODk4MDggTDE3LjMzNzkwNjgsMjQuNzAzODI1NiBMMTMuNzQxNDQ4OSwyNC43MDM4MjU2IFoiPjwvcGF0aD4KICAgICAgICAgICAgICAgICAgICAgICAgPC9nPgogICAgICAgICAgICAgICAgICAgIDwvZz4KICAgICAgICAgICAgICAgIDwvZz4KICAgICAgICAgICAgPC9nPgogICAgICAgIDwvZz4KICAgIDwvZz4KPC9zdmc+\");\n        height: 18px;\n        width: 9px;\n        top: 11px;\n}\n.socials .in {\n        background-image: url(\"data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiIHN0YW5kYWxvbmU9Im5vIj8+Cjxzdmcgd2lkdGg9IjE3cHgiIGhlaWdodD0iMThweCIgdmlld0JveD0iMCAwIDE3IDE4IiB2ZXJzaW9uPSIxLjEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiIHhtbG5zOnNrZXRjaD0iaHR0cDovL3d3dy5ib2hlbWlhbmNvZGluZy5jb20vc2tldGNoL25zIj4KICAgIDxnIHN0cm9rZT0ibm9uZSIgc3Ryb2tlLXdpZHRoPSIxIiBmaWxsPSJub25lIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiPgogICAgICAgIDxnIHRyYW5zZm9ybT0idHJhbnNsYXRlKC0xMTMzLjAwMDAwMCwgLTE1ODkuMDAwMDAwKSIgZmlsbD0iI0ZGRkZGRiI+CiAgICAgICAgICAgIDxnIHRyYW5zZm9ybT0idHJhbnNsYXRlKC0zLjAwMDAwMCwgMTI0Ni4wMDAwMDApIj4KICAgICAgICAgICAgICAgIDxnIHRyYW5zZm9ybT0idHJhbnNsYXRlKDAuMDAwMDAwLCAxNDYuMDAwMDAwKSI+CiAgICAgICAgICAgICAgICAgICAgPGcgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoMTA0MC4wMDAwMDAsIDE5MC4wMDAwMDApIj4KICAgICAgICAgICAgICAgICAgICAgICAgPGcgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoODguNjE1Mzg1LCAwLjAwMDAwMCkiPgogICAgICAgICAgICAgICAgICAgICAgICAgICAgPGcgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoNy4zODQ2MTUsIDcuMzg0NjE1KSI+CiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgPHBhdGggZD0iTTE1LjEyNDk5NDcsMTYuNzUxMzgwOCBMMi4xMDU3NzQ1MywxNi43NTEzODA4IEMyLjA3MTE1ODIxLDE2Ljc0NTgwNSAyLjAzNjMwOTU3LDE2LjczOTA2NzYgMi4wMDE2OTMyNSwxNi43MzQ4ODU4IEMxLjI4NTkwMjE1LDE2LjY0Mjg4NTQgMC42ODQxODIyNzMsMTYuMDk2NDU4NyAwLjUyNDgwNzgxOSwxNS4zOTE1ODY4IEMwLjUwNjIyMTg3NywxNS4zMDkzNDQgMC40OTQzNzMzMzksMTUuMjI1OTM5NiAwLjQ3OTUwNDU4NSwxNS4xNDMyMzIyIEwwLjQ3OTUwNDU4NSwyLjA4ODIzNDA0IEMwLjQ4NDg0ODA0MywyLjA1Nzc5OTU2IDAuNDkxMTIwNzk5LDIuMDI3NTk3NDEgMC40OTUzMDI2MzYsMS45OTcxNjI5MyBDMC41OTc5ODk5NjYsMS4yNjY3MzU0IDEuMTMxNDA2NTEsMC42ODYxNTcwMyAxLjg1MjMwODc0LDAuNTIxOTAzNzY2IEMxLjkyOTkwNTA1LDAuNTA0MjQ3MTIgMi4wMDkxMjc2MywwLjQ5MzU2MDIwNCAyLjA4Nzg4NTU2LDAuNDc5Mzg4NDIzIEwxNS4xNDI4ODM3LDAuNDc5Mzg4NDIzIEMxNS4xNzMwODU4LDAuNDg0NzMxODgxIDE1LjIwMzA1NTcsMC40OTE0NjkyODUgMTUuMjMzNzIyNSwwLjQ5NTQxODc5OCBDMTUuOTcyMjgxMywwLjU5NjQ3OTg1OSAxNi41NzM3Njg5LDEuMTYyNDIxOCAxNi43MTYxODM3LDEuODkxNjg3NyBDMTYuNzMwMTIzMSwxLjk2Mjc3ODkzIDE2LjczOTg4MDgsMi4wMzQzMzQ4MSAxNi43NTEyNjQ2LDIuMTA1NjU4MzYgTDE2Ljc1MTI2NDYsMTUuMTI1MTEwOSBDMTYuNzM5NDE2MSwxNS4xOTc1OTYgMTYuNzI5MTkzOCwxNS4yNzEwMTA1IDE2LjcxNTI1NDQsMTUuMzQzMjYzNCBDMTYuNTg1Mzg1MSwxNi4wMTE2NjAzIDE2LjA0MjQ0MzMsMTYuNTY1OTg2IDE1LjM3Nzk5NTgsMTYuNzA3MDA2OSBDMTUuMjk0MzU5MSwxNi43MjUxMjgyIDE1LjIwOTU2MDcsMTYuNzM2OTc2NyAxNS4xMjQ5OTQ3LDE2Ljc1MTM4MDggWiBNMi4yMzk4MjU2Myw3LjA3NzE2NTU4IEwyLjIzOTgyNTYzLDcuMTIxMDc0ODYgQzIuMjM5ODI1NjMsOS41MjkxMTYgMi4yMzk1OTMzMSwxMS45MzcxNTcxIDIuMjQwMDU3OTYsMTQuMzQ1MTk4MyBDMi4yNDAwNTc5NiwxNC42OTE1OTM4IDIuNTM5OTg4NiwxNC45ODk0MzM1IDIuODg2Mzg0MSwxNC45ODk0MzM1IEM2LjcwNDg2NTkyLDE0Ljk4OTY2NTggMTAuNTIzMTE1NCwxNC45ODk2NjU4IDE0LjM0MTU5NzIsMTQuOTg5NDMzNSBDMTQuNjkxMjQ1MywxNC45ODk0MzM1IDE0Ljk4OTU0OTcsMTQuNjkyMDU4NCAxNC45ODk1NDk3LDE0LjM0MzEwNzMgQzE0Ljk4OTc4MiwxMS45Mzc4NTQxIDE0Ljk4OTU0OTcsOS41MzI4MzMxOSAxNC45ODk1NDk3LDcuMTI3ODEyMjcgTDE0Ljk4OTU0OTcsNy4wNzc4NjI1NSBMMTMuNDM2MjI5NSw3LjA3Nzg2MjU1IEMxMy42NTU1NDM3LDcuNzc4Nzg0ODkgMTMuNzIyOTE3Nyw4LjQ5MTc4ODEgMTMuNjM2OTU3Nyw5LjIxODQ5ODQ0IEMxMy41NTA1MzMxLDkuOTQ1NDQxMSAxMy4zMTYzNTAyLDEwLjYyMTk2OTQgMTIuOTM0ODczNywxMS4yNDY2ODk0IEMxMi41NTMxNjUsMTEuODcyMTA2MyAxMi4wNTgzMTQyLDEyLjM5MDE4OTUgMTEuNDUyNDEyNSwxMi44MDI1NjUxIEM5Ljg4MTkwMDQxLDEzLjg3MjE4NiA3LjgxNDIxNDM0LDEzLjk2NjI3NzQgNi4xNDc3NTIzLDEzLjAzMDkzOTggQzUuMzA1MzQ0NDcsMTIuNTU4NjI0NiA0LjY0MzkxNzI2LDExLjg5OTk4NTIgNC4xODI3NTM1NywxMS4wNTEzMDQ3IEMzLjQ5NDg0MTM4LDkuNzg0OTA1MDMgMy4zODQ5NTIsOC40NTU3Nzc4NCAzLjc4ODQ5OTI3LDcuMDc2NzAwOTMgQzMuMjczMjA0MDIsNy4wNzcxNjU1OCAyLjc1OTk5OTY5LDcuMDc3MTY1NTggMi4yMzk4MjU2Myw3LjA3NzE2NTU4IFogTTguNjE1NTAwNzgsNS4zMTgwMDYxNSBDNi44MTA4MDU3OSw1LjMxNjg0NDUzIDUuMzQzNjc3OTgsNi43Njg4NzEyNiA1LjMxODM1NDYzLDguNTY1NDM0OSBDNS4yOTIzMzQzMSwxMC40MTAzMjIgNi43NjkyMTk3NSwxMS44NzI4MDMzIDguNTM5NzYzMDYsMTEuOTEwOTA0NSBDMTAuMzgyMDk0NiwxMS45NTAzOTk2IDExLjg3MjIyMjUsMTAuNDc4MzkzIDExLjkxMTAyMDcsOC42ODgxMDIxMSBDMTEuOTUwNzQ4MSw2Ljg0MTgyMTA4IDEwLjQ2MTU0OTUsNS4zMTY4NDQ1MyA4LjYxNTUwMDc4LDUuMzE4MDA2MTUgWiBNMTMuNTYwMDU4NCw0LjY1NzA0MzU4IEwxMy41NjAwNTg0LDQuNjU0MDIzMzYgQzEzLjgyNzY5NTksNC42NTQwMjMzNiAxNC4wOTYyNjI4LDQuNjU5MTM0NSAxNC4zNjQxMzI3LDQuNjUyNjI5NDIgQzE0LjcwODY2OTYsNC42NDQwMzM0MiAxNC45ODkzMTczLDQuMzQ4NzQ5MjYgMTQuOTg5MzE3Myw0LjAwMzc0NzcxIEMxNC45ODk1NDk3LDMuNDkwMDc4NzMgMTQuOTg5NTQ5NywyLjk3NjE3NzQzIDE0Ljk4OTMxNzMsMi40NjI1MDg0NSBDMTQuOTg5MzE3MywyLjA5NDA0MjE1IDE0LjY5Nzc1MDQsMS44MDA4NDg5MSAxNC4zMjk3NDg3LDEuODAwNjE2NTkgQzEzLjgxNzQ3MzcsMS44MDAzODQyNiAxMy4zMDUxOTg2LDEuODAwMTUxOTQgMTIuNzkyNjkxMywxLjgwMDYxNjU5IEMxMi40MjU2MTg5LDEuODAxMDgxMjQgMTIuMTMzMTIyNywyLjA5NDk3MTQ1IDEyLjEzMjg5MDMsMi40NjM0Mzc3NSBDMTIuMTMyNjU4LDIuOTcyNjkyNTcgMTIuMTMxMjY0MSwzLjQ4MTk0NzM4IDEyLjEzNDc0ODksMy45OTE0MzQ1MiBDMTIuMTM1MjEzNiw0LjA2NzQwNDU2IDEyLjE0OTYxNzcsNC4xNDYzOTQ4MiAxMi4xNzM3Nzk0LDQuMjE4NDE1MzQgQzEyLjI2NTc3OTgsNC40ODk1Mzc3NyAxMi41MTQxMzQ1LDQuNjU1ODgxOTYgMTIuODE4MjQ3LDQuNjU3Mjc1OSBDMTMuMDY1NDQsNC42NTc3NDA1NSAxMy4zMTI2MzMsNC42NTcwNDM1OCAxMy41NjAwNTg0LDQuNjU3MDQzNTggWiI+PC9wYXRoPgogICAgICAgICAgICAgICAgICAgICAgICAgICAgPC9nPgogICAgICAgICAgICAgICAgICAgICAgICA8L2c+CiAgICAgICAgICAgICAgICAgICAgPC9nPgogICAgICAgICAgICAgICAgPC9nPgogICAgICAgICAgICA8L2c+CiAgICAgICAgPC9nPgogICAgPC9nPgo8L3N2Zz4=\");\n        height: 18px;\n        width: 17px;\n}\n.socials .pi {\n        background-image: url(\"data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiIHN0YW5kYWxvbmU9Im5vIj8+Cjxzdmcgd2lkdGg9IjE0cHgiIGhlaWdodD0iMThweCIgdmlld0JveD0iMCAwIDE0IDE4IiB2ZXJzaW9uPSIxLjEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiIHhtbG5zOnNrZXRjaD0iaHR0cDovL3d3dy5ib2hlbWlhbmNvZGluZy5jb20vc2tldGNoL25zIj4KICAgIDxnIHN0cm9rZT0ibm9uZSIgc3Ryb2tlLXdpZHRoPSIxIiBmaWxsPSJub25lIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiPgogICAgICAgIDxnIHRyYW5zZm9ybT0idHJhbnNsYXRlKC0xMTc5LjAwMDAwMCwgLTE1ODkuMDAwMDAwKSIgZmlsbD0iI0ZGRkZGRiI+CiAgICAgICAgICAgIDxnIHRyYW5zZm9ybT0idHJhbnNsYXRlKC0zLjAwMDAwMCwgMTI0Ni4wMDAwMDApIj4KICAgICAgICAgICAgICAgIDxnIHRyYW5zZm9ybT0idHJhbnNsYXRlKDAuMDAwMDAwLCAxNDYuMDAwMDAwKSI+CiAgICAgICAgICAgICAgICAgICAgPGcgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoMTA0MC4wMDAwMDAsIDE5MC4wMDAwMDApIj4KICAgICAgICAgICAgICAgICAgICAgICAgPGcgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoMTMyLjkyMzA3NywgMC4wMDAwMDApIj4KICAgICAgICAgICAgICAgICAgICAgICAgICAgIDxwYXRoIGQ9Ik0xNi40MTc3MDg4LDcuMDg1NTQ2NDMgQzExLjU1MjE1NDgsNy4wODU1NDY0MyA5LjA5ODkwNDY3LDEwLjU3Mzk0MSA5LjA5ODkwNDY3LDEzLjQ4Mjk0NTggQzkuMDk4OTA0NjcsMTUuMjQ0MzE3NyA5Ljc2NTc2MDEzLDE2LjgxMTMwODcgMTEuMTk2MDM2LDE3LjM5NTI0NzkgQzExLjQzMDU2NzEsMTcuNDkxMTMwNCAxMS42NDA2NDQyLDE3LjM5ODU0NjQgMTEuNzA4NjYwNSwxNy4xMzg4Nzg4IEMxMS43NTU5NzYyLDE2Ljk1OTE3MDIgMTEuODY3ODk2LDE2LjUwNTgwNCAxMS45MTc4Mjc3LDE2LjMxNjk5NjIgQzExLjk4NjQxMjcsMTYuMDYwMTcyMSAxMS45NTk3OTc2LDE1Ljk3MDA5MDMgMTEuNzcwNTM0OSwxNS43NDYyNTA3IEMxMS4zNTgxMTUsMTUuMjU5Nzg2MyAxMS4wOTQ1ODAzLDE0LjYzMDAxIDExLjA5NDU4MDMsMTMuNzM3OTUwMSBDMTEuMDk0NTgwMywxMS4xNDk5MTg1IDEzLjAzMDg4MzgsOC44MzMwNDIxNCAxNi4xMzY2NTgyLDguODMzMDQyMTQgQzE4Ljg4Njc2ODcsOC44MzMwNDIxNCAyMC4zOTc2ODYsMTAuNTEzNDMxNSAyMC4zOTc2ODYsMTIuNzU3NjI4MiBDMjAuMzk3Njg2LDE1LjcxMDQyMjggMTkuMDkwOTMxNCwxOC4yMDI1NzE4IDE3LjE1MDk4ODIsMTguMjAyNTcxOCBDMTYuMDc5Njc0NiwxOC4yMDI1NzE4IDE1LjI3NzY5NjUsMTcuMzE2NTQwMSAxNS41MzQ3NDgsMTYuMjI5ODcxNyBDMTUuODQyNTI3NSwxNC45MzI1NTc0IDE2LjQzODc1MDYsMTMuNTMyNDIyNSAxNi40Mzg3NTA2LDEyLjU5NjAwNDEgQzE2LjQzODc1MDYsMTEuNzU3NzQzMSAxNS45ODg3OTY2LDExLjA1ODU4NTUgMTUuMDU3NjEwMywxMS4wNTg1ODU1IEMxMy45NjI0MTE0LDExLjA1ODU4NTUgMTMuMDgyNjM1MywxMi4xOTE1NDYgMTMuMDgyNjM1MywxMy43MDkyODc3IEMxMy4wODI2MzUzLDE0LjY3NTk2MDggMTMuNDA5Mjk1NSwxNS4zMjk3MzYyIDEzLjQwOTI5NTUsMTUuMzI5NzM2MiBDMTMuNDA5Mjk1NSwxNS4zMjk3MzYyIDEyLjI4ODUwNTIsMjAuMDc4NDc5NiAxMi4wOTIwNzY4LDIwLjkxMDE0MzggQzExLjcwMDgxMjUsMjIuNTY2NDIwMyAxMi4wMzMyNzM0LDI0LjU5Njc4NjUgMTIuMDYxMzY3MSwyNC44MDE4NTkxIEMxMi4wNzc4NTk0LDI0LjkyMzMzMyAxMi4yMzQwMjM5LDI0Ljk1MjIyMjkgMTIuMzA0NzcsMjQuODYwNDM1IEMxMi40MDU3NzA3LDI0LjcyODYxMDcgMTMuNzEwMTM2OCwyMy4xMTgyODUgMTQuMTUzNjA3NywyMS41MDkyMTA0IEMxNC4yNzkwNjI1LDIxLjA1MzU2OTUgMTQuODczOTIwOCwxOC42OTQyNjgzIDE0Ljg3MzkyMDgsMTguNjk0MjY4MyBDMTUuMjI5Njk4MywxOS4zNzI5NTI3IDE2LjI2OTYxOTgsMTkuOTcwNzY4MiAxNy4zNzU1MTAyLDE5Ljk3MDc2ODIgQzIwLjY2NzU5MDIsMTkuOTcwNzY4MiAyMi45MDEwOTUzLDE2Ljk2OTUyMDUgMjIuOTAxMDk1MywxMi45NTIyMzY3IEMyMi45MDEwOTUzLDkuOTE0NTkyMzEgMjAuMzI4MTkxMSw3LjA4NTU0NjQzIDE2LjQxNzcwODgsNy4wODU1NDY0MyBMMTYuNDE3NzA4OCw3LjA4NTU0NjQzIFoiPjwvcGF0aD4KICAgICAgICAgICAgICAgICAgICAgICAgPC9nPgogICAgICAgICAgICAgICAgICAgIDwvZz4KICAgICAgICAgICAgICAgIDwvZz4KICAgICAgICAgICAgPC9nPgogICAgICAgIDwvZz4KICAgIDwvZz4KPC9zdmc+\");\n        height: 18px;\n        width: 14px;\n}\n.socials.dark {\n        color: #b5b6bd;\n}\n.socials.dark strong {\n        opacity: 1;\n}\n.socials.dark a {\n        opacity: 1;\n}\n.cart {\n        padding: 80px 0 58px;\n}\n.cart h1 {\n        font-size: 107.69231%;\n        line-height: 128.57143%;\n        font-family: \"montserratregular\", sans-serif;\n        box-shadow: rgba(17, 17, 18, 0.04) 0 4px 4px -2px, rgba(19, 20, 20, 0.06) 0 3px 1px -2px;\n        color: #086fcf;\n        margin-bottom: 18px;\n        padding-bottom: 15px;\n        text-align: center;\n}\n.cart h1 span {\n        background: transparent url(\"data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiIHN0YW5kYWxvbmU9Im5vIj8+Cjxzdmcgd2lkdGg9IjE5cHgiIGhlaWdodD0iMThweCIgdmlld0JveD0iMCAwIDE5IDE4IiB2ZXJzaW9uPSIxLjEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiIHhtbG5zOnNrZXRjaD0iaHR0cDovL3d3dy5ib2hlbWlhbmNvZGluZy5jb20vc2tldGNoL25zIj4KICAgIDxnIHN0cm9rZT0ibm9uZSIgc3Ryb2tlLXdpZHRoPSIxIiBmaWxsPSJub25lIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiPgogICAgICAgIDxnIHRyYW5zZm9ybT0idHJhbnNsYXRlKC02ODYuMDAwMDAwLCAtNDUwLjAwMDAwMCkiIGZpbGw9IiMwODZmY2YiPgogICAgICAgICAgICA8ZyB0cmFuc2Zvcm09InRyYW5zbGF0ZSg2NjAuMDAwMDAwLCAxNjUuMDAwMDAwKSI+CiAgICAgICAgICAgICAgICA8ZyB0cmFuc2Zvcm09InRyYW5zbGF0ZSgwLjAwMDAwMCwgMjY5LjAwMDAwMCkiPgogICAgICAgICAgICAgICAgICAgIDxnIHRyYW5zZm9ybT0idHJhbnNsYXRlKDI2LjAwMDAwMCwgMTYuMDAwMDAwKSI+CiAgICAgICAgICAgICAgICAgICAgICAgIDxwYXRoIGQ9Ik0xNi43NjU0Nzg0LDQuMjc1IEwxNS44NzU4NzQ5LDguNTkzMzYwNzEgTDQuNjk5ODQwNTksOS43MjQwOTgyMSBMMy40NzM5MDMwNCw0LjI3NSBMMTYuNzY1NDc4NCw0LjI3NSBaIE0xNi44MDQ1NDYzLDkuNzI4MDY3ODYgTDE4LjY3MzcyNTEsMy4wNTM1NzE0MyBMMy4xOTkxNTIwNywzLjA1MzU3MTQzIEwyLjUxMjI3NDYzLDAgTDMuMjYzMDc1NzJlLTA1LDAgTDMuMjYzMDc1NzJlLTA1LDEuMjIxNDI4NTcgTDEuNDUzMDgwMjUsMS4yMjE0Mjg1NyBMNC4wNjM1NDA4MywxMi44MjUgTDE2Ljk2ODAyNjQsMTIuODI1IEwxNi45NjgwMjY0LDExLjYwMzU3MTQgTDUuMTIyNzM1MjEsMTEuNjAzNTcxNCBMNC45NzAwMjMyNiwxMC45MjUzNzMyIEwxNi44MDQ1NDYzLDkuNzI4MDY3ODYgWiI+PC9wYXRoPgogICAgICAgICAgICAgICAgICAgICAgICA8cGF0aCBkPSJNNy44MzEzODE3MywxNS4yNjc4NTcxIEM3LjgzMTM4MTczLDE2LjI3OTgxMDcgNi45NTQ5MTk1OSwxNy4xIDUuODczNTM2MywxNy4xIEM0Ljc5MjE1MzAxLDE3LjEgMy45MTU2OTA4NywxNi4yNzk4MTA3IDMuOTE1NjkwODcsMTUuMjY3ODU3MSBDMy45MTU2OTA4NywxNC4yNTU5MDM2IDQuNzkyMTUzMDEsMTMuNDM1NzE0MyA1Ljg3MzUzNjMsMTMuNDM1NzE0MyBDNi45NTQ5MTk1OSwxMy40MzU3MTQzIDcuODMxMzgxNzMsMTQuMjU1OTAzNiA3LjgzMTM4MTczLDE1LjI2Nzg1NzEiPjwvcGF0aD4KICAgICAgICAgICAgICAgICAgICAgICAgPHBhdGggZD0iTTE1LjY2Mjc2MzUsMTUuMjY3ODU3MSBDMTUuNjYyNzYzNSwxNi4yNzk4MTA3IDE0Ljc4NjMwMTMsMTcuMSAxMy43MDQ5MTgsMTcuMSBDMTIuNjIzNTM0NywxNy4xIDExLjc0NzA3MjYsMTYuMjc5ODEwNyAxMS43NDcwNzI2LDE1LjI2Nzg1NzEgQzExLjc0NzA3MjYsMTQuMjU1OTAzNiAxMi42MjM1MzQ3LDEzLjQzNTcxNDMgMTMuNzA0OTE4LDEzLjQzNTcxNDMgQzE0Ljc4NjMwMTMsMTMuNDM1NzE0MyAxNS42NjI3NjM1LDE0LjI1NTkwMzYgMTUuNjYyNzYzNSwxNS4yNjc4NTcxIj48L3BhdGg+CiAgICAgICAgICAgICAgICAgICAgPC9nPgogICAgICAgICAgICAgICAgPC9nPgogICAgICAgICAgICA8L2c+CiAgICAgICAgPC9nPgogICAgPC9nPgo8L3N2Zz4=\") no-repeat left center;\n        display: inline-block;\n        padding-left: 22px;\n}\n.cart .cart-products .product {\n        border-bottom: 1px solid #edeff2;\n        margin-bottom: 15px;\n        padding-bottom: 15px;\n}\n.cart .cart-products .product:last-child {\n        border-bottom: 0 none;\n        margin-bottom: 0;\n        padding-bottom: 0;\n}\n.cart .cart-products .p-ico {\n        float: left;\n        width: 20%;\n}\n.cart .cart-products .p-ico img {\n        border-radius: 2px;\n        border: 1px solid #d8d7d7;\n        display: block;\n        width: 100%;\n}\n.cart .cart-products .p-text {\n        font-size: 92.30769%;\n        line-height: 133.33333%;\n        font-family: \"montserratregular\", sans-serif;\n        float: left;\n        margin-left: 2%;\n        width: 78%;\n}\n.cart .cart-products .p-text small {\n        font-family: \"montserratlight\", sans-serif;\n        color: #b5b6bd;\n}\n.cart .cart-products .p-text a:hover {\n        color: #086fcf;\n}\n.cart .cart-products small {\n        display: block;\n}\n.cart .cart-products .p-count {\n        float: left;\n        margin-right: 2%;\n        width: 65%;\n}\n.cart .cart-products .p-price {\n        font-size: 116.66667%;\n        line-height: 114.28571%;\n        font-family: \"montserratbold\", sans-serif;\n        color: #086fcf;\n        float: left;\n        text-align: right;\n        width: 33%;\n}\n.cart .price-total {\n        font-size: 107.69231%;\n        line-height: 128.57143%;\n        border-top: 2px solid #b5b6bd;\n        margin-top: 15px;\n        padding-top: 10px;\n        text-align: right;\n}\n.cart .price-total strong {\n        font-family: \"montserratbold\", sans-serif;\n        color: #086fcf;\n}\n.cart .spinner {\n        display: inline-block;\n        height: 34px;\n        margin-left: 0;\n        margin-top: 6px;\n        padding: 7px 10px 0;\n}\n.cart .inputs {\n        margin-top: 20px;\n}\n.cart .inputs input {\n        transition: all 0.3s ease-in-out;\n        border-radius: 25px;\n        /* // font-size: 107.69231%; */\n        /* // line-height: 128.57143%; */\n        font-family: \"montserratbold\", sans-serif;\n        box-shadow: rgba(17, 17, 18, 0.1) 0 2px 4px, rgba(19, 20, 20, 0.07) 0 1px 1px;\n        background-color: #086fcf;\n        border: 0 none;\n        color: #fff;\n        cursor: pointer;\n        float: right;\n        height: 50px;\n        padding: 0 44px;\n        /* -webkit-appearance: none; */\n}\n.cart .inputs input:hover {\n        background-color: #0084ff;\n}\n.cart .inputs input.checkout {\n        background: #086fcf url(\"data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgiPz4NCjwhRE9DVFlQRSBzdmcgUFVCTElDICItLy9XM0MvL0RURCBTVkcgMS4xLy9FTiIgImh0dHA6Ly93d3cudzMub3JnL0dyYXBoaWNzL1NWRy8xLjEvRFREL3N2ZzExLmR0ZCI+DQo8c3ZnIHZlcnNpb249IjEuMSIgaWQ9IlZyc3R2YV8xIiB4bWxuczpza2V0Y2g9Imh0dHA6Ly93d3cuYm9oZW1pYW5jb2RpbmcuY29tL3NrZXRjaC9ucyINCgkgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB4bWxuczp4bGluaz0iaHR0cDovL3d3dy53My5vcmcvMTk5OS94bGluayIgeD0iMHB4IiB5PSIwcHgiIHdpZHRoPSI3cHgiIGhlaWdodD0iOHB4Ig0KCSB2aWV3Qm94PSIzIC0yIDcgOCIgZW5hYmxlLWJhY2tncm91bmQ9Im5ldyAzIC0yIDcgOCIgeG1sOnNwYWNlPSJwcmVzZXJ2ZSI+DQo8Zz4NCgk8ZyB0cmFuc2Zvcm09InRyYW5zbGF0ZSgtMTQ3LjAwMDAwMCwgLTU2NS4wMDAwMDApIj4NCgkJPGcgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoMTAwLjAwMDAwMCwgMzQwLjAwMDAwMCkiPg0KCQkJPGcgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoOS4wMDAwMDAsIDIxOC4wMDAwMDApIj4NCgkJCQk8Zz4NCgkJCQkJPHBhdGggaWQ9IlBhdGgtNjctQ29weSIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjRkZGRkZGIiBkPSJNNDEsMTNsNC00bC00LTQiLz4NCgkJCQk8L2c+DQoJCQk8L2c+DQoJCTwvZz4NCgk8L2c+DQo8L2c+DQo8L3N2Zz4NCg==\") no-repeat 86% 22px;\n        background-position: right 42px top 22px;\n        padding-right: 62px;\n}\n.cart .inputs input.update-cart {\n        background-color: #b5b6bd;\n        float: left;\n}\n.cart .inputs input.update-cart:hover {\n        background-color: #5d5e66;\n}\n.cart .note {\n        font-size: 92.30769%;\n        line-height: 133.33333%;\n        color: #b5b6bd;\n        margin-top: 16px;\n        text-align: center;\n}\n.flash-message {\n        /* // -webkit-transition-delay: 0s; */\n        transition: all 0.3s ease-in-out 0s;\n        display: block;\n        left: 0;\n        position: fixed;\n        text-align: center;\n        top: 92px;\n        width: 100%;\n}\n.flash-message.remove {\n        opacity: 0.5;\n        top: -50px;\n}\n.flash-message div {\n        font-size: 92.30769%;\n        line-height: 125%;\n        background-color: #16161a;\n        color: #fff;\n        display: inline-block;\n        padding: 10px 12px;\n}\n.flash-message span {\n        transition: all 0.3s ease-in-out;\n        background: transparent url(\"data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiIHN0YW5kYWxvbmU9Im5vIj8+Cjxzdmcgd2lkdGg9IjEycHgiIGhlaWdodD0iMTNweCIgdmlld0JveD0iMCAwIDEyIDEzIiB2ZXJzaW9uPSIxLjEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiIHhtbG5zOnNrZXRjaD0iaHR0cDovL3d3dy5ib2hlbWlhbmNvZGluZy5jb20vc2tldGNoL25zIj4KICAgIDxnIHN0cm9rZT0ibm9uZSIgc3Ryb2tlLXdpZHRoPSIxIiBmaWxsPSJub25lIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiPgogICAgICAgIDxnIHRyYW5zZm9ybT0idHJhbnNsYXRlKC04MjcuMDAwMDAwLCAtMTc4LjAwMDAwMCkiIGZpbGw9IiNmZmZmZmYiPgogICAgICAgICAgICA8ZyB0cmFuc2Zvcm09InRyYW5zbGF0ZSg0MzAuMDAwMDAwLCAxNjguMDAwMDAwKSI+CiAgICAgICAgICAgICAgICA8ZyB0cmFuc2Zvcm09InRyYW5zbGF0ZSgzOTYuMDAwMDAwLCAxMC4wMDAwMDApIj4KICAgICAgICAgICAgICAgICAgICA8cmVjdCB0cmFuc2Zvcm09InRyYW5zbGF0ZSg3LjAwMDAwMCwgNi41MDAwMDApIHJvdGF0ZSgtMzE1LjAwMDAwMCkgdHJhbnNsYXRlKC03LjAwMDAwMCwgLTYuNTAwMDAwKSAiIHg9Ii0xIiB5PSI2IiB3aWR0aD0iMTYiIGhlaWdodD0iMSIgcng9IjEiPjwvcmVjdD4KICAgICAgICAgICAgICAgICAgICA8cmVjdCB0cmFuc2Zvcm09InRyYW5zbGF0ZSg3LjAwMDAwMCwgNi41MDAwMDApIHNjYWxlKC0xLCAxKSByb3RhdGUoLTMxNS4wMDAwMDApIHRyYW5zbGF0ZSgtNy4wMDAwMDAsIC02LjUwMDAwMCkgIiB4PSItMSIgeT0iNiIgd2lkdGg9IjE2IiBoZWlnaHQ9IjEiIHJ4PSIxIj48L3JlY3Q+CiAgICAgICAgICAgICAgICA8L2c+CiAgICAgICAgICAgIDwvZz4KICAgICAgICA8L2c+CiAgICA8L2c+Cjwvc3ZnPg==\") no-repeat left top;\n        content: \"\";\n        cursor: pointer;\n        display: inline-block;\n        height: 14px;\n        margin-left: 28px;\n        position: relative;\n        top: 2px;\n        width: 14px;\n}\n.flash-message span:hover {\n        opacity: 0.7;\n}\n@media only screen and (min-width: 1200px) {\ndiv.grid_info:after {\n            content: \"> 1200px\";\n}\n}\n@media only screen and (min-width: 1600px) {\ndiv.grid_info:after {\n            content: \"> 1600px\";\n}\n}\n@media only screen and (max-width: 1200px) {\ndiv.grid_info:after {\n            content: \"< 1200px\";\n}\n._cont {\n            width: 89%;\n}\n}\n@media only screen and (max-width: 1170px) {\ndiv.grid_info:after {\n            content: \"< 1170px\";\n}\n.menu_margin_left_250{\n            margin-left: -250%;\n}\n.menu_margin_left_850{\n            margin-left: -850%;\n}\nfooter .top .left {\n            font-size: 107.69231%;\n            line-height: 242.85714%;\n}\nfooter .top .left .phone {\n            margin-right: 45px;\n}\nfooter .top form input {\n            width: 280px;\n}\n}\n@media only screen and (max-width: 850px) {\ndiv.grid_info:after {\n            content: \"< 850px\";\n}\nheader .logo {\n            letter-spacing: 2px;\n}\n._cont,\n        .text {\n            width: 90%;\n}\n.text {\n            padding: 160px 0 120px;\n}\n.text h1 {\n            font-size: 276.92308%;\n            line-height: 116.66667%;\n            margin-bottom: 40px;\n}\n.text h2 {\n            font-size: 161.53846%;\n            line-height: 133.33333%;\n}\n.text p {\n            font-size: 130.76923%;\n            line-height: 164.70588%;\n}\n.text ul {\n            font-size: 107.69231%;\n            line-height: 171.42857%;\n}\n.text ul li:before {\n            top: 17px;\n}\n.text ol {\n            font-size: 107.69231%;\n            line-height: 171.42857%;\n}\n.collection .settings {\n            font-size: 100%;\n            line-height: 123.07692%;\n}\n.collection-list a {\n            font-size: 92.30769%;\n            line-height: 125%;\n}\n.homepage .collection-list.featured {\n            padding-top: 200px;\n}\nfooter {\n            padding: 21px 0 26px;\n}\nfooter .left,\n        footer .right {\n            float: none;\n            text-align: center;\n            width: 100%;\n}\nfooter .top .left {\n            font-size: 92.30769%;\n            line-height: 283.33333%;\n}\nfooter .top .left .phone {\n            background-size: auto 12px;\n            background-position: left 12px;\n            margin-right: 25px;\n            padding-left: 16px;\n}\nfooter .top .left a.mail {\n            padding-left: 19px;\n}\nfooter .top .left a.mail:before {\n            background-size: 100%;\n            height: 12px;\n            top: 12px;\n            width: 15px;\n}\nfooter .top .right {\n            margin-bottom: 7px;\n}\nfooter .top form input {\n            font-size: 92.30769%;\n            line-height: 141.66667%;\n            padding: 12px;\n            width: 224px;\n}\nfooter .top form button {\n            font-size: 92.30769%;\n            line-height: 141.66667%;\n            margin-right: 4px;\n}\nfooter .bottom {\n            font-size: 92.30769%;\n            line-height: 150%;\n            padding-top: 55px;\n}\nfooter .bottom .left nav li {\n            display: inline-block;\n            float: none;\n            margin-right: 36px;\n}\nfooter .socials {\n            font-size: 92.30769%;\n            line-height: 141.66667%;\n            bottom: auto;\n            margin-bottom: 24px;\n            position: static;\n            right: auto;\n            text-align: center;\n}\nfooter .socials li {\n            margin: 0 23px;\n}\nfooter .socials strong {\n            display: block;\n            margin-bottom: 12px;\n}\nfooter .socials .tw {\n            top: 14px;\n}\n}\n@media only screen and (max-width: 760px) {\ndiv.grid_info:after {\n            content: \"< 760px\";\n}\n.text,\n        ._cont2 {\n            width: 90%;\n}\nheader nav > ul > li ul {\n            left: 0;\n            margin: 0 5%;\n            width: 90%;\n}\n.spinner .q {\n            margin-right: 10px;\n}\n.product-detail #AddToCart {\n            background-position: -1000px center;\n            /*padding: 14px 16px;*/\n}\n.homepage .main-services {\n            padding: 54px 0 24px;\n}\n.homepage .main-services li {\n            float: none;\n            padding: 10px 0;\n            text-align: center;\n            width: 100%;\n}\n.homepage .main-services li:nth-child(3) {\n            text-align: center;\n}\n.homepage .main-text {\n            padding-top: 35px;\n}\n.homepage .main-text h1 {\n            font-size: 276.92308%;\n            line-height: 108.33333%;\n            margin-bottom: 22px;\n}\n.homepage .main-text .links {\n            padding: 14px 0 30px;\n            text-align: center;\n}\n.homepage .main-text .links .about {\n            float: none;\n}\n.homepage .main-text .links .socials {\n            float: none;\n}\n.homepage .main-text .links .socials strong {\n            display: block;\n            margin: 35px 0 5px;\n}\n.homepage .main-text .links .socials li {\n            margin: 0 22px;\n}\n.homepage .main-text .links .socials li a {\n            transform: scale(1.22);\n}\n.homepage .collection-list.featured {\n            padding-top: 160px;\n}\n.homepage .homepage-banners.collection-list a {\n            float: none;\n            margin-bottom: 25px;\n            width: 100%;\n}\n}\n@media only screen and (max-width: 600px) {\ndiv.grid_info:after {\n            content: \"< 600px\";\n}\nheader .header #customer_login_link:after,\n        header .header nav > ul > li a:after {\n            /* // background: transparent url(\"data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgiPz4NCjwhRE9DVFlQRSBzdmcgUFVCTElDICItLy9XM0MvL0RURCBTVkcgMS4xLy9FTiIgImh0dHA6Ly93d3cudzMub3JnL0dyYXBoaWNzL1NWRy8xLjEvRFREL3N2ZzExLmR0ZCI+DQo8c3ZnIHZlcnNpb249IjEuMSIgaWQ9IlZyc3R2YV8xIiB4bWxuczpza2V0Y2g9Imh0dHA6Ly93d3cuYm9oZW1pYW5jb2RpbmcuY29tL3NrZXRjaC9ucyINCgkgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB4bWxuczp4bGluaz0iaHR0cDovL3d3dy53My5vcmcvMTk5OS94bGluayIgeD0iMHB4IiB5PSIwcHgiIHdpZHRoPSI3cHgiIGhlaWdodD0iOHB4Ig0KCSB2aWV3Qm94PSIzIC0yIDcgOCIgZW5hYmxlLWJhY2tncm91bmQ9Im5ldyAzIC0yIDcgOCIgeG1sOnNwYWNlPSJwcmVzZXJ2ZSI+DQo8Zz4NCgk8ZyB0cmFuc2Zvcm09InRyYW5zbGF0ZSgtMTQ3LjAwMDAwMCwgLTU2NS4wMDAwMDApIj4NCgkJPGcgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoMTAwLjAwMDAwMCwgMzQwLjAwMDAwMCkiPg0KCQkJPGcgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoOS4wMDAwMDAsIDIxOC4wMDAwMDApIj4NCgkJCQk8Zz4NCgkJCQkJPHBhdGggaWQ9IlBhdGgtNjctQ29weSIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjRkZGRkZGIiBkPSJNNDEsMTNsNC00bC00LTQiLz4NCgkJCQk8L2c+DQoJCQk8L2c+DQoJCTwvZz4NCgk8L2c+DQo8L2c+DQo8L3N2Zz4NCg==\") no-repeat center center; */\n            /* // content: \"\"; */\n            display: block;\n            height: 100%;\n            margin-top: 0;\n            position: absolute;\n            right: 26px;\n            top: 0;\n            width: 7px;\n}\nheader ._cont {\n            width: 100%;\n}\nheader form,\n        header #customer_login_link,\n        header nav {\n            display: none;\n}\nheader .header {\n            box-shadow: none;\n            height: auto;\n}\nheader .header form {\n            border-radius: 0;\n            background-color: #16161a;\n            border: 0 none;\n            border-bottom: 1px solid #2e2e38;\n            display: block;\n            float: none;\n            height: 54px;\n            left: 0;\n            margin-top: 0;\n            padding: 8px 5% 0;\n            width: 100%;\n}\nheader .header form .find-input {\n            font-size: 92.30769%;\n            line-height: 141.66667%;\n            background-color: #16161a;\n            color: #fff;\n            padding-left: 0;\n            width: 91%;\n            width: calc(100% - 27px);\n}\nheader .header form .find-input:-moz-placeholder {\n            color: #b5b6bd;\n}\nheader .header form .find-input::-moz-placeholder {\n            color: #b5b6bd;\n}\nheader .header form .find-input:-ms-input-placeholder {\n            color: #b5b6bd;\n}\nheader .header form .find-input::-webkit-input-placeholder {\n            color: #b5b6bd;\n}\nheader .header form button {\n            background-image: url(\"data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiIHN0YW5kYWxvbmU9Im5vIj8+Cjxzdmcgd2lkdGg9IjE0cHgiIGhlaWdodD0iMTRweCIgdmlld0JveD0iMCAwIDE0IDE0IiB2ZXJzaW9uPSIxLjEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiIHhtbG5zOnNrZXRjaD0iaHR0cDovL3d3dy5ib2hlbWlhbmNvZGluZy5jb20vc2tldGNoL25zIj4KICAgIDxnIHN0cm9rZT0ibm9uZSIgc3Ryb2tlLXdpZHRoPSIxIiBmaWxsPSJub25lIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiPgogICAgICAgIDxnIHRyYW5zZm9ybT0idHJhbnNsYXRlKC00OTQuMDAwMDAwLCAtMTI5Ny4wMDAwMDApIiBmaWxsPSIjRkZGRkZGIj4KICAgICAgICAgICAgPGcgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoLTMuMDAwMDAwLCAxMjQ2LjAwMDAwMCkiPgogICAgICAgICAgICAgICAgPHBhdGggZD0iTTUwNS43NTAwNDQsNTEgQzUwMi44NTA3MzEsNTEgNTAwLjUsNTMuMzUwNjQzNyA1MDAuNSw1Ni4yNDk5NTYzIEM1MDAuNSw1Ny40NjI5Njg4IDUwMC45MTUzMTksNTguNTc2NzU2MyA1MDEuNjA2NjEyLDU5LjQ2NTQwNjMgTDQ5Ny4xOTIzMjUsNjMuODc5NzM3NSBDNDk3LjA2NDEzOCw2NC4wMDc5MjUgNDk3LDY0LjE3NTM1NjIgNDk3LDY0LjM0MzcwNjMgQzQ5Nyw2NC41MTE2NjI1IDQ5Ny4wNjQxMzgsNjQuNjc5NTMxMyA0OTcuMTkyMzI1LDY0LjgwNzcxODggQzQ5Ny4zMjA0NjksNjQuOTM1OTA2MiA0OTcuNDg4MzgxLDY1IDQ5Ny42NTYyOTQsNjUgQzQ5Ny44MjQxNjIsNjUgNDk3Ljk5MjA3NSw2NC45MzU5MDYyIDQ5OC4xMjAyNjMsNjQuODA3NzE4OCBMNTAyLjUzNDU1LDYwLjM5MzQzMTIgQzUwMy40MjMyNDQsNjEuMDg0NzI1IDUwNC41MzcwMzEsNjEuNDk5OTU2MyA1MDUuNzUwMDQ0LDYxLjQ5OTk1NjMgQzUwOC42NDkzMTIsNjEuNDk5OTU2MyA1MTEuMDAwMDQ0LDU5LjE0OTI2ODcgNTExLjAwMDA0NCw1Ni4yNDk5NTYzIEM1MTEuMDAwMDQ0LDUzLjM1MDY0MzcgNTA4LjY0OTMxMiw1MSA1MDUuNzUwMDQ0LDUxIEw1MDUuNzUwMDQ0LDUxIFogTTUwNS43NTAwNDQsNjAuMTg3NSBDNTAzLjU3ODczMSw2MC4xODc1IDUwMS44MTI1NDQsNTguNDIxMjI1IDUwMS44MTI1NDQsNTYuMjQ5OTU2MyBDNTAxLjgxMjU0NCw1NC4wNzg2ODc1IDUwMy41Nzg3MzEsNTIuMzEyNDU2MyA1MDUuNzUwMDQ0LDUyLjMxMjQ1NjMgQzUwNy45MjEyNjksNTIuMzEyNDU2MyA1MDkuNjg3NSw1NC4wNzg2ODc1IDUwOS42ODc1LDU2LjI0OTk1NjMgQzUwOS42ODc1LDU4LjQyMTIyNSA1MDcuOTIxMjY5LDYwLjE4NzUgNTA1Ljc1MDA0NCw2MC4xODc1IEw1MDUuNzUwMDQ0LDYwLjE4NzUgWiI+PC9wYXRoPgogICAgICAgICAgICA8L2c+CiAgICAgICAgPC9nPgogICAgPC9nPgo8L3N2Zz4=\");\n            margin-right: 0;\n}\nheader .header #customer_login_link {\n            font-size: 92.30769%;\n            line-height: 141.66667%;\n            background-color: #16161a;\n            border-bottom: 1px solid #2e2e38;\n            color: #fff;\n            display: block;\n            float: none;\n            height: 54px;\n            left: 0;\n            margin: 0;\n            opacity: 1;\n            padding: 18px 5% 0;\n            width: 100%;\n            z-index: 1000;\n}\nheader .header #customer_login_link:hover {\n            color: #fff;\n}\nheader .header nav {\n            font-family: \"montserratlight\", sans-serif;\n            font-size: 92.30769%;\n            line-height: 141.66667%;\n            background-color: #16161a;\n            display: block;\n            position: static;\n            text-transform: none;\n            z-index: 1000;\n}\nheader .header nav > ul > li {\n            display: block;\n            margin: 0;\n}\nheader .header nav > ul > li a {\n            border-bottom: 1px solid #2e2e38;\n            color: #fff;\n            display: block;\n            height: 54px;\n            opacity: 1;\n            padding: 18px 5% 0;\n            text-align: left;\n}\nheader .header nav > ul > li a:hover {\n            color: #fff;\n}\nheader .header nav > ul > li a:hover:before {\n            opacity: 0;\n}\nheader .header nav > ul > li a:hover:after {\n            opacity: 1;\n}\nheader .header nav > ul > li a:after {\n            transform: rotate(90deg);\n            right: 28px;\n}\nheader .header nav > ul > li ul {\n            transition: 0.1s;\n            -moz-column-count: 1;\n            column-count: 1;\n            -moz-column-gap: 0;\n            column-gap: 0;\n            border-radius: 0;\n            background-color: transparent;\n            left: auto;\n            margin: 0;\n            max-height: 0;\n            overflow: hidden;\n            padding: 0;\n            position: static;\n            top: auto;\n            width: 100%;\n}\nheader .header nav > ul > li ul li {\n            background: transparent url(\"data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgiPz4KPCFET0NUWVBFIHN2ZyBQVUJMSUMgIi0vL1czQy8vRFREIFNWRyAxLjEvL0VOIiAiaHR0cDovL3d3dy53My5vcmcvR3JhcGhpY3MvU1ZHLzEuMS9EVEQvc3ZnMTEuZHRkIj4KPHN2ZyB2ZXJzaW9uPSIxLjEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiIHg9IjBweCIgeT0iMHB4IgoJIHZpZXdCb3g9IjAgMCAxNSAxMDAiIHdpZHRoPSIxNSIgaGVpZ2h0PSIxMDAiIGVuYWJsZS1iYWNrZ3JvdW5kPSJuZXcgMCAwIDE1IDEwMCIgeG1sOnNwYWNlPSJwcmVzZXJ2ZSI+CiAgICA8bGluZSB4MT0iMCIgeTE9IjAiIHgyPSIwIiB5Mj0iMTAwIiBzdHJva2U9IiMyZTJlMzgiIHN0cm9rZS13aWR0aD0iMSIgLz4KICAgIDxsaW5lIHgxPSIwIiB5MT0iNTAiIHgyPSIxNSIgeTI9IjUwIiBzdHJva2U9IiMyZTJlMzgiIHN0cm9rZS13aWR0aD0iMSIgLz4KPC9zdmc+\") no-repeat 27px center;\n            border-bottom: 0 none;\n            padding-left: 50px;\n            position: relative;\n}\nheader .header nav > ul > li ul li:first-child:after {\n            background-color: #16161a;\n            /* // content: \"\"; */\n            display: block;\n            height: 8px;\n            left: 0;\n            position: absolute;\n            top: 0;\n            width: 100%;\n}\nheader .header nav > ul > li ul li:last-child {\n            background-image: url(\"data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgiPz4KPCFET0NUWVBFIHN2ZyBQVUJMSUMgIi0vL1czQy8vRFREIFNWRyAxLjEvL0VOIiAiaHR0cDovL3d3dy53My5vcmcvR3JhcGhpY3MvU1ZHLzEuMS9EVEQvc3ZnMTEuZHRkIj4KPHN2ZyB2ZXJzaW9uPSIxLjEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiIHg9IjBweCIgeT0iMHB4IgoJIHZpZXdCb3g9IjAgMCAxNSAxMDAiIHdpZHRoPSIxNSIgaGVpZ2h0PSIxMDAiIGVuYWJsZS1iYWNrZ3JvdW5kPSJuZXcgMCAwIDE1IDEwMCIgeG1sOnNwYWNlPSJwcmVzZXJ2ZSI+CiAgICA8bGluZSB4MT0iMCIgeTE9IjAiIHgyPSIwIiB5Mj0iNTAiIHN0cm9rZT0iIzJlMmUzOCIgc3Ryb2tlLXdpZHRoPSIxIiAvPgogICAgPGxpbmUgeDE9IjAiIHkxPSI1MCIgeDI9IjE1IiB5Mj0iNTAiIHN0cm9rZT0iIzJlMmUzOCIgc3Ryb2tlLXdpZHRoPSIxIiAvPgo8L3N2Zz4=\");\n}\nheader .header nav > ul > li ul a {\n            padding-left: 0;\n}\nheader .header nav > ul > li ul a:hover {\n            opacity: 1;\n}\nheader .header nav > ul > li.categories-open a:after {\n            transform: rotate(-90deg);\n}\nheader .header nav > ul > li.categories-open a:hover:after {\n            transform: rotate(-90deg);\n}\nheader .header nav > ul > li.categories-open ul {\n            transition: all 0.3s ease-in-out;\n            max-height: 2000px;\n}\nheader .header nav > ul > li.categories-open ul:after {\n            display: none;\n}\nheader .header nav > ul > li.categories-open ul a:after {\n            transform: rotate(0deg);\n}\nheader .header nav > ul > li.categories-open ul a:hover:after {\n            transform: rotate(0deg);\n}\nheader .shadow {\n            box-shadow: rgba(17, 17, 18, 0.04) 0 2px 4px, rgba(19, 20, 20, 0.06) 0 1px 1px;\n            height: 52px;\n            position: relative;\n}\nheader .logo {\n            letter-spacing: 1px;\n            margin-left: 4.5%;\n            margin-top: 18px;\n}\nheader #nav-icon {\n            transition: all 0.3s ease-in-out;\n            cursor: pointer;\n            display: inline-block;\n            height: 15px;\n            position: relative;\n            width: 16px;\n            transform: rotate(0deg);\n}\nheader #nav-icon span {\n            transition: all 0.3s ease-in-out;\n            background-color: #16161a;\n            display: block;\n            height: 1px;\n            left: 0;\n            opacity: 1;\n            position: absolute;\n            width: 100%;\n            transform: rotate(0deg);\n}\nheader #nav-icon span:nth-child(1) {\n            top: 2px;\n}\nheader #nav-icon span:nth-child(2),\n        header #nav-icon span:nth-child(3) {\n            top: 7px;\n}\nheader #nav-icon span:nth-child(4) {\n            top: 12px;\n}\nheader #nav-icon:hover span:nth-child(1) {\n            top: 0;\n}\nheader #nav-icon:hover span:nth-child(4) {\n            top: 14px;\n}\n.show-menu #nav-icon span:nth-child(1) {\n            top: 18px;\n            width: 0%;\n            left: 50%;\n}\n.show-menu #nav-icon span:nth-child(2) {\n            transform: rotate(45deg);\n}\n.show-menu #nav-icon span:nth-child(3) {\n            transform: rotate(-45deg);\n}\n.show-menu #nav-icon span:nth-child(4) {\n            top: 18px;\n            width: 0%;\n            left: 50%;\n}\nheader #nav-icon {\n            position: absolute;\n            right: 4.5%;\n            top: 20px;\n}\nheader #nav-icon:before {\n            font-size: 107.69231%;\n            line-height: 128.57143%;\n            content: \"Menu\";\n            right: 0;\n            padding-right: 24px;\n            position: absolute;\n            top: -2px;\n}\nheader .mobile-menu {\n            transition: 0.1s;\n            max-height: 0;\n            overflow: hidden;\n}\n.show-menu header #nav-icon:before {\n            font-size: 107.69231%;\n            line-height: 128.57143%;\n            content: \"Close\";\n}\n.show-menu header .shadow:after {\n            background: transparent url(\"data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiIHN0YW5kYWxvbmU9Im5vIj8+Cjxzdmcgd2lkdGg9IjEycHgiIGhlaWdodD0iN3B4IiB2aWV3Qm94PSIwIDAgMTIgNyIgdmVyc2lvbj0iMS4xIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHhtbG5zOnhsaW5rPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5L3hsaW5rIiB4bWxuczpza2V0Y2g9Imh0dHA6Ly93d3cuYm9oZW1pYW5jb2RpbmcuY29tL3NrZXRjaC9ucyI+CiAgICA8ZyBzdHJva2U9Im5vbmUiIHN0cm9rZS13aWR0aD0iMSIgZmlsbD0ibm9uZSIgZmlsbC1ydWxlPSJldmVub2RkIj4KICAgICAgICA8ZyB0cmFuc2Zvcm09InRyYW5zbGF0ZSgtMTE3NS4wMDAwMDAsIC0xMzAzLjAwMDAwMCkiIGZpbGw9IiMwQzBDMTkiIG9wYWNpdHk9IjAuOTM5OTk5OTk4Ij4KICAgICAgICAgICAgPGcgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoLTMuMDAwMDAwLCAxMjQ2LjAwMDAwMCkiPgogICAgICAgICAgICAgICAgPHBhdGggZD0iTTExNzgsNjMuNDg1MjgxNCBMMTE4My42NTY4NSw1Ny44Mjg0MjcxIEwxMTg5LjMxMzcxLDYzLjQ4NTI4MTQgTDExNzgsNjMuNDg1MjgxNCBaIiBpZD0iU2lwa2EtbWVudSI+PC9wYXRoPgogICAgICAgICAgICA8L2c+CiAgICAgICAgPC9nPgogICAgPC9nPgo8L3N2Zz4=\") no-repeat left top;\n            bottom: -1px;\n            /* // content: \"\"; */\n            display: block;\n            height: 7px;\n            position: absolute;\n            right: 38px;\n            width: 12px;\n}\n.show-menu header .mobile-menu {\n            transition: 2s;\n            max-height: 5000px;\n}\n.breadcrumb {\n            display: none;\n}\n.text {\n            padding: 20px 0 96px;\n}\n.text h1 {\n            font-size: 184.61538%;\n            line-height: 133.33333%;\n            margin-bottom: 25px;\n}\n.text h2 {\n            font-size: 138.46154%;\n            line-height: 133.33333%;\n            margin: 35px 0 17px;\n}\n.text p {\n            font-size: 107.69231%;\n            line-height: 171.42857%;\n            margin: 17px 0 23px;\n}\n.text ul {\n            font-size: 100%;\n            line-height: 169.23077%;\n            margin-left: 15px;\n}\n.text ul li:before {\n            top: 16px;\n}\n.text ol {\n            font-size: 100%;\n            line-height: 169.23077%;\n            margin-left: 15px;\n}\n.collection {\n            padding-top: 30px;\n}\n.collection h1 {\n            font-size: 276.92308%;\n            line-height: 116.66667%;\n}\n.collection .description {\n            font-size: 92.30769%;\n            line-height: 200%;\n            text-align: justify;\n            -ms-text-align-last: center;\n            -moz-text-align-last: center;\n            -webkit-text-align-last: center;\n            text-align-last: center;\n}\n.collection .head {\n            padding-bottom: 15px;\n}\n.collection .settings .count {\n            float: left;\n            left: auto;\n            position: relative;\n            width: auto;\n}\n.collection .settings .view {\n            display: none;\n}\n.collection .products {\n            padding: 16px 0 60px;\n}\n.collection .more-products {\n            padding-top: 20px;\n}\n.collection-list {\n            margin-top: 26px;\n}\n.collection-list.cols-4 a,\n        .collection-list.cols-3 a {\n            width: 48.27586%;\n            float: left;\n            margin-right: 3.44828%;\n            margin-bottom: 5.26316%;\n}\n.collection-list.cols-4 a:nth-child(3n),\n        .collection-list.cols-3 a:nth-child(3n) {\n            width: 48.27586%;\n            float: left;\n            margin-right: 3.44828%;\n}\n.collection-list.cols-4 a:nth-child(3n+1),\n        .collection-list.cols-3 a:nth-child(3n+1) {\n            clear: none;\n}\n.collection-list.cols-4 a:nth-child(2n),\n        .collection-list.cols-3 a:nth-child(2n) {\n            float: right;\n            margin-right: 0;\n}\n.collection-list.cols-4 a:nth-child(2n+1),\n        .collection-list.cols-3 a:nth-child(2n+1) {\n            clear: both;\n}\n.collection-list a > span {\n            left: 0;\n            max-width: 100%;\n}\n.collection-list a > span strong {\n            font-family: \"robotolight\", sans-serif;\n}\n.collection-list a .variants .variant {\n            float: none;\n            width: auto;\n}\n.collection-list a .variants .variant:nth-child(2n) {\n            text-align: left;\n}\n.product-detail {\n            padding-top: 0;\n}\n.product-detail .detail-top {\n            width: 100%;\n}\n.product-detail .left-col {\n            float: none;\n            position: relative;\n            width: 100%;\n}\n.product-detail .left-col .thumbs {\n            bottom: -30px;\n            float: none;\n            left: 0;\n            position: absolute;\n            text-align: center;\n            width: 100%;\n            z-index: 100;\n}\n.product-detail .left-col .thumbs a {\n            border: 2px solid #e2e2e3;\n            display: inline-block;\n            height: 43px;\n            margin: 0 8px 8px 0;\n            width: 38px;\n}\n.product-detail .left-col .thumbs a span {\n            background-color: #fff;\n            border: 2px solid #fff;\n            display: block;\n            height: 39px;\n            overflow: hidden;\n            width: 34px;\n}\n.product-detail .left-col .big {\n            float: none;\n            width: 100%;\n}\n.product-detail .left-col .big #big-image {\n            display: none;\n}\n.product-detail .left-col .big .navigation-module {\n            width: 100%;\n            padding: 12px 0;\n            text-align: center;\n}\n.product-detail .left-col .big .navigation-module .navigation-module__item {\n            width: 12px;\n            height: 12px;\n            display: inline-block;\n            vertical-align: middle;\n            margin: 0 6px;\n            background-color: #cacaca;\n            border: 1px solid transparent;\n            border-radius: 50%;\n            text-indent: -999px;\n            overflow: hidden;\n}\n.product-detail .left-col .big .navigation-module .navigation-module__item.is-active {\n            background-color: #b25c62;\n}\n.product-detail .cols {\n            padding: 0 0 20px;\n}\n.product-detail .price-shipping {\n            padding-bottom: 10px;\n            text-align: center;\n}\n.product-detail .price-shipping a {\n            display: inline;\n            float: none;\n            margin: 0;\n}\n.product-detail .price {\n            font-size: 276.92308%;\n            line-height: 111.11111%;\n            display: block;\n            float: none;\n            text-align: center;\n}\n.product-detail .swatches {\n            margin: 10px 0 30px;\n}\n.product-detail .swatches .guide {\n            float: none;\n            margin: -25px 0 0;\n            text-align: center;\n}\n.product-detail .swatch {\n            float: none;\n            margin-right: 0;\n            text-align: center;\n}\n.product-detail .swatch .swatch-element {\n            display: inline-block;\n            float: none;\n            margin: 7px 8px 25px 0;\n}\n.product-detail .btn-and-quantity {\n            float: none;\n            text-align: center;\n}\n.product-detail .spinner {\n            float: none;\n            margin: 0 auto 10px;\n            width: 200px;\n}\n.product-detail .spinner input {\n            width: 60px;\n}\n.product-detail .spinner .q {\n            margin-right: 20px;\n            width: 61px;\n}\n.product-detail .spinner:before {\n            bottom: -5px;\n            height: 10px;\n            left: 0;\n            top: auto;\n            width: 100%;\n}\n.product-detail #AddToCart {\n            background-position: 47px center;\n            float: none;\n            padding: 14px 26px 14px 53px;\n            width: 200px;\n}\n.related {\n            padding: 28px 0 58px;\n}\n.related h2 {\n            font-size: 107.69231%;\n            line-height: 171.42857%;\n}\n.detail-socials .social-sharing {\n            transition: all 0.3s ease-in-out;\n            box-shadow: rgba(17, 17, 18, 0.08) 0 -2px 10px;\n            background-color: #fff;\n            bottom: -60px;\n            float: none;\n            height: 50px;\n            left: 0;\n            margin: 0;\n            padding: 12px 5% 0;\n            position: fixed;\n            top: auto !important;\n            width: 100%;\n            z-index: 1000;\n}\n.detail-socials .social-sharing a {\n            margin-right: 20px;\n}\n.detail-socials.open .social-sharing {\n            bottom: 0;\n}\n.social-sharing-btn-wrapper {\n            font-family: \"montserratregular\", sans-serif;\n            font-size: 92.30769%;\n            line-height: 133.33333%;\n            display: block;\n}\n.social-sharing-btn-wrapper span {\n            background: transparent url(\"data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiIHN0YW5kYWxvbmU9Im5vIj8+Cjxzdmcgd2lkdGg9IjE1cHgiIGhlaWdodD0iMTdweCIgdmlld0JveD0iMCAwIDE1IDE3IiB2ZXJzaW9uPSIxLjEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiIHhtbG5zOnNrZXRjaD0iaHR0cDovL3d3dy5ib2hlbWlhbmNvZGluZy5jb20vc2tldGNoL25zIj4KICAgIDxnIHN0cm9rZT0ibm9uZSIgc3Ryb2tlLXdpZHRoPSIxIiBmaWxsPSJub25lIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiPgogICAgICAgIDxnIHRyYW5zZm9ybT0idHJhbnNsYXRlKC0yMC4wMDAwMDAsIC0xMjI5LjAwMDAwMCkiIGZpbGw9IiMwODZGQ0YiPgogICAgICAgICAgICA8ZyB0cmFuc2Zvcm09InRyYW5zbGF0ZSgyMC4wMDAwMDAsIDEyMjkuMDAwMDAwKSI+CiAgICAgICAgICAgICAgICA8cGF0aCBkPSJNMTMuMjgxMjQ0NywxNyBMMS4wNjI0Nzg3NSwxNyBDMC40NzY1MjU5MzcsMTcgMCwxNi41MjM0Njg4IDAsMTUuOTM3NSBMMCw2LjM3NSBDMCw1Ljc4OTU2MjUgMC40NzY1MjU5MzcsNS4zMTI1IDEuMDYyNDc4NzUsNS4zMTI1IEwzLjk4NDM2OTY5LDUuMzEyNSBDNC40MjQ1NjM0NCw1LjMxMjUgNC43ODEyNDQ2OSw1LjY2OTUgNC43ODEyNDQ2OSw2LjEwOTM3NSBDNC43ODEyNDQ2OSw2LjU0OTI1IDQuNDI0NTYzNDQsNi45MDYyNSAzLjk4NDM2OTY5LDYuOTA2MjUgTDEuNTkzNzUsNi45MDYyNSBMMS41OTM3NSwxNS40MDYyNSBMMTIuNzQ5OTk0NywxNS40MDYyNSBMMTIuNzQ5OTk0Nyw2LjkwNjI1IEwxMC4zNTkzNjk3LDYuOTA2MjUgQzkuOTE5MTc1OTQsNi45MDYyNSA5LjU2MjQ5NDY5LDYuNTQ5MjUgOS41NjI0OTQ2OSw2LjEwOTM3NSBDOS41NjI0OTQ2OSw1LjY2OTUgOS45MTkxNzU5NCw1LjMxMjUgMTAuMzU5MzY5Nyw1LjMxMjUgTDEzLjI4MTI0NDcsNS4zMTI1IEMxMy44NjcyMTM0LDUuMzEyNSAxNC4zNDM3NDQ3LDUuNzg5NTYyNSAxNC4zNDM3NDQ3LDYuMzc1IEwxNC4zNDM3NDQ3LDE1LjkzNzUgQzE0LjM0Mzc0NDcsMTYuNTIzNDY4OCAxMy44NjcyMTM0LDE3IDEzLjI4MTI0NDcsMTcgTDEzLjI4MTI0NDcsMTcgWiBNOS44MjgxMTk2OSw0LjI1IEM5LjYwODEyOTA2LDQuMjUgOS40MDg5MTAzMSw0LjE2MDc1IDkuMjY0NzI5MDYsNC4wMTY3ODEyNSBMNy45Njg3NDQ2OSwyLjcyMDUzMTI1IEw3Ljk2ODc0NDY5LDExLjQyMTg3NSBDNy45Njg3NDQ2OSwxMS44NjE3NSA3LjYxMjA2MzQ0LDEyLjIxODc1IDcuMTcxODY5NjksMTIuMjE4NzUgQzYuNzMxNjc1OTQsMTIuMjE4NzUgNi4zNzQ5OTQ2OSwxMS44NjE3NSA2LjM3NDk5NDY5LDExLjQyMTg3NSBMNi4zNzQ5OTQ2OSwyLjcyMDUzMTI1IEw1LjA3OTAxMDMxLDQuMDE2NzgxMjUgQzQuOTM0ODI5MDYsNC4xNjA3NSA0LjczNTYxMDMxLDQuMjUgNC41MTU2MTk2OSw0LjI1IEM0LjA3NTQyNTk0LDQuMjUgMy43MTg3NDQ2OSwzLjg5MyAzLjcxODc0NDY5LDMuNDUzMTI1IEMzLjcxODc0NDY5LDMuMjMzMTg3NSAzLjgwNzk5NDY5LDMuMDMzOTY4NzUgMy45NTIyMjkwNiwyLjg5IEw2LjYwODQ3OTA2LDAuMjMzNzUgQzYuNzUyNjYwMzEsMC4wODkyNSA2Ljk1MTg3OTA2LDAgNy4xNzE4Njk2OSwwIEM3LjM5MTg2MDMxLDAgNy41OTEwNzkwNiwwLjA4OTI1IDcuNzM1MjYwMzEsMC4yMzM3NSBMMTAuMzkxNTEwMywyLjg5IEMxMC41MzU3NDQ3LDMuMDMzOTY4NzUgMTAuNjI0OTk0NywzLjIzMzE4NzUgMTAuNjI0OTk0NywzLjQ1MzEyNSBDMTAuNjI0OTk0NywzLjg5MyAxMC4yNjgzMTM0LDQuMjUgOS44MjgxMTk2OSw0LjI1IEw5LjgyODExOTY5LDQuMjUgWiI+PC9wYXRoPgogICAgICAgICAgICA8L2c+CiAgICAgICAgPC9nPgogICAgPC9nPgo8L3N2Zz4=\") no-repeat left top;\n            color: #086fcf;\n            cursor: pointer;\n            display: inline-block;\n            padding: 3px 0 0 21px;\n}\n.social-sharing-btn-wrapper span:hover {\n            color: #0084ff;\n}\n#quick-cart .quick-cart-product {\n            display: none;\n}\n#quick-cart #quick-cart-pay #quick-cart-pay-total-count {\n            border-radius: 50%;\n            font-family: \"robotobold\", sans-serif;\n            font-size: 76.92308%;\n            line-height: 110.0%;\n            background-color: #16161a;\n            color: #fff;\n            display: block;\n            height: 20px;\n            overflow: hidden;\n            padding-top: 4px;\n            position: absolute;\n            right: -4px;\n            top: -4px;\n            text-align: center;\n            width: 20px;\n            z-index: 100;\n}\n.cart {\n            padding-top: 30px;\n}\n.cart .inputs {\n            text-align: center;\n}\n.cart .inputs input {\n            float: none;\n            margin-bottom: 15px;\n}\n.cart .inputs input.update-cart {\n            float: none;\n            margin-bottom: 0;\n}\n#sign-in-popup .box {\n            margin-top: 0;\n}\n.homepage .collection-list.featured {\n            padding: 120px 0 0 0;\n}\n.homepage .collection-list.featured a:nth-child(3) {\n            display: none;\n}\n}\n@media only screen and (max-width: 450px) {\ndiv.grid_info:after {\n            content: \"< 450px\";\n}\n.collection-list.cols-4 a,\n        .collection-list.cols-3 a {\n            margin-bottom: 7.14286%;\n}\n#sign-in-popup form .btn {\n            font-size: 100%;\n            line-height: 138.46154%;\n}\n.homepage .collection-list.featured {\n            padding-top: 80px;\n}\nfooter .top form input {\n            width: 218px;\n}\n}\n@media only screen and (max-width: 320px) {\ndiv.grid_info:after {\n            content: \"< 320px\";\n}\n}\n.homepage .bg {\n        background-size: 1920px auto;\n}\n@media only screen and (max-width: 1600px) {\n.homepage .bg {\n            background-size: 100% auto;\n}\n}\n@media only screen and (max-width: 1200px) {\n.homepage .bg {\n            background-position: center -50px;\n}\n}\n@media only screen and (max-width: 850px) {\n.homepage .bg {\n            background-position: center -50px;\n}\n}\n@media only screen and (max-width: 600px) {\n.homepage .bg {\n            background-position: center -80px;\n}\n}\n@media only screen and (max-width: 320px) {\n.homepage .bg {\n            background-position: center -70px;\n}\n}\n  /*.swatches {\n    margin: 17px 0 80px;\n    }*/\n.selector-wrapper,\n    #productSelect {\n        display: none;\n}\n.swatch {\n        float: left;\n        margin-right: 40px;\n}\n.swatch:nth-last-child(2) {\n        margin-right: 0;\n}\n.swatch .header {\n        font-family: \"montserratbold\", sans-serif;\n        text-transform: uppercase;\n}\n.swatch input {\n        display: none;\n}\n.swatch .swatch-element {\n        float: left;\n        margin: 5px 8px 0 0;\n        position: relative;\n}\n.swatch .color label {\n        transition: all 0.3s ease-in-out;\n        border-radius: 50%;\n        border: 1px solid;\n        cursor: pointer;\n        display: block;\n        height: 42px;\n        padding: 7px 0 0 7px;\n        width: 42px;\n}\n.swatch .color label span {\n        border-radius: 50%;\n        display: block;\n        height: 26px;\n        position: relative;\n        width: 26px;\n}\n.swatch .color label span:after {\n        transition: all 0.3s ease-in-out;\n        background: transparent url(\"data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiIHN0YW5kYWxvbmU9Im5vIj8+Cjxzdmcgd2lkdGg9IjEycHgiIGhlaWdodD0iOXB4IiB2aWV3Qm94PSIwIDAgMTIgOSIgdmVyc2lvbj0iMS4xIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHhtbG5zOnhsaW5rPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5L3hsaW5rIiB4bWxuczpza2V0Y2g9Imh0dHA6Ly93d3cuYm9oZW1pYW5jb2RpbmcuY29tL3NrZXRjaC9ucyI+CiAgICA8ZyBzdHJva2U9Im5vbmUiIHN0cm9rZS13aWR0aD0iMSIgZmlsbD0ibm9uZSIgZmlsbC1ydWxlPSJldmVub2RkIj4KICAgICAgICA8ZyB0cmFuc2Zvcm09InRyYW5zbGF0ZSgtMTIzMS4wMDAwMDAsIC0xMzAyLjAwMDAwMCkiIGZpbGw9IiNGRkZGRkYiPgogICAgICAgICAgICA8ZyB0cmFuc2Zvcm09InRyYW5zbGF0ZSgtMy4wMDAwMDAsIDEyNDYuMDAwMDAwKSI+CiAgICAgICAgICAgICAgICA8cGF0aCBkPSJNMTIzNS45MzgzNyw1OC40NTA1ODYxIEwxMjM0LjUyMTE2LDU5LjM5NTUzMDcgTDEyMzcuNTQ4NDgsNjMuOTM2NzE1OCBMMTI0NS45MjIyNSw1OC4zNTM5MTk4IEwxMjQ0Ljk3NzczLDU2LjkzNjcxNTggTDEyMzguMDIxMTYsNjEuNTc0NTY3MSBMMTIzNS45MzgzNyw1OC40NTA1ODYxIEwxMjM1LjkzODM3LDU4LjQ1MDU4NjEgWiIgaWQ9ImZhamZrYSIgc2tldGNoOnR5cGU9Ik1TU2hhcGVHcm91cCIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoMTI0MC4yMjE3MDYsIDYwLjQzNjcxNikgcm90YXRlKC0xMC4wMDAwMDApIHRyYW5zbGF0ZSgtMTI0MC4yMjE3MDYsIC02MC40MzY3MTYpIj48L3BhdGg+CiAgICAgICAgICAgIDwvZz4KICAgICAgICA8L2c+CiAgICA8L2c+Cjwvc3ZnPg==\") no-repeat center center;\n        bottom: 0;\n        content: \"\";\n        display: block;\n        height: 100%;\n        left: 0;\n        opacity: 0;\n        position: absolute;\n        top: 0;\n        width: 100%;\n}\n.swatch .plain label {\n        transition: all 0.3s ease-in-out;\n        border-radius: 50%;\n        font-family: \"montserratbold\", sans-serif;\n        border: 1px solid #086fcf;\n        color: #086fcf;\n        cursor: pointer;\n        display: block;\n        height: 42px;\n        padding-top: 8px;\n        text-align: center;\n        width: 42px;\n}\n.swatch .color input:checked + label span:after {\n        opacity: 1;\n}\n.swatch input:not(:checked) + label {\n        border-color: #edeff2 !important;\n}\n.swatch input:not(:checked) + label:hover {\n        border-color: #b5b6bd !important;\n}\n.swatch .plain input:not(:checked) + label {\n        color: #16161a !important;\n}\n.swatch .blue input:checked + label {\n        border-color: #086fcf !important;\n}\n.swatch .yellow input:checked + label {\n        border-color: #f5c81f !important;\n}\n.swatch .red input:checked + label {\n        border-color: #d9332e !important;\n}\n.swatch .blue label span {\n        background-color: #086fcf !important;\n}\n.swatch .yellow label span {\n        background-color: #f5c81f !important;\n}\n.swatch .red label span {\n        background-color: #d9332e !important;\n}\n.crossed-out {\n        position: absolute;\n        width: 100%;\n        height: 100%;\n        left: 0;\n        top: 0;\n}\n.swatch .swatch-element .crossed-out {\n        display: none;\n}\n.swatch .swatch-element.soldout .crossed-out {\n        display: block;\n}\n.swatch .swatch-element.soldout label {\n        filter: alpha(opacity=60);\n        -khtml-opacity: 0.6;\n        -moz-opacity: 0.6;\n        opacity: 0.6;\n}\n.swatch .tooltip {\n        border-radius: 2px;\n        text-align: center;\n        background-color: rgba(22, 22, 26, 0.93);\n        color: #fff;\n        bottom: 100%;\n        padding: 10px;\n        display: block;\n        position: absolute;\n        width: 100px;\n        left: -23px;\n        margin-bottom: 15px;\n        filter: alpha(opacity=0);\n        -khtml-opacity: 0;\n        -moz-opacity: 0;\n        opacity: 0;\n        visibility: hidden;\n        transform: translateY(10px);\n        transition: all .25s ease-out;\n        -ms-box-shadow: 2px 2px 6px rgba(0, 0, 0, 0.28);\n        -o-box-shadow: 2px 2px 6px rgba(0, 0, 0, 0.28);\n        box-shadow: 2px 2px 6px rgba(0, 0, 0, 0.28);\n        z-index: 10000;\n        box-sizing: border-box;\n}\n.swatch .tooltip:before {\n        bottom: -20px;\n        content: \" \";\n        display: block;\n        height: 20px;\n        left: 0;\n        position: absolute;\n        width: 100%;\n}\n.swatch .tooltip:after {\n        border-left: solid transparent 10px;\n        border-right: solid transparent 10px;\n        border-top: solid rgba(22, 22, 26, 0.93) 10px;\n        bottom: -10px;\n        height: 0;\n        left: 50%;\n        margin-left: -13px;\n        position: absolute;\n        width: 0;\n}\n.swatch .swatch-element:hover .tooltip {\n        filter: alpha(opacity=100);\n        -khtml-opacity: 1;\n        -moz-opacity: 1;\n        opacity: 1;\n        visibility: visible;\n        transform: translateY(0px);\n}\n.swatch.error {\n        background-color: #E8D2D2 !important;\n        color: #333 !important;\n        padding: 1em;\n        border-radius: 5px;\n}\n.swatch.error p {\n        margin: 0.7em 0;\n}\n.swatch.error p:first-child {\n        margin-top: 0;\n}\n.swatch.error p:last-child {\n        margin-bottom: 0;\n}\n.swatch.error code {\n        font-family: monospace;\n}\n  \n  \n  \n  \n    /* Compatibility styles for frameworks like bootstrap, foundation e.t.c */\n.xzoom-source img, .xzoom-preview img, .xzoom-lens img {\n        display: block;\n        max-width: none;\n        max-height: none;\n        transition: none;\n}\n", ""]);
+// Exports
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
+
 
 /***/ }),
 
@@ -9262,6 +9375,36 @@ module.exports = NATIVE_SYMBOL
 
 /***/ }),
 
+/***/ "./node_modules/style-loader/dist/cjs.js!./node_modules/laravel-mix/node_modules/css-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[1]!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/shop/items/SimilarProductComponent.vue?vue&type=style&index=0&lang=css&":
+/*!******************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/style-loader/dist/cjs.js!./node_modules/laravel-mix/node_modules/css-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[1]!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/shop/items/SimilarProductComponent.vue?vue&type=style&index=0&lang=css& ***!
+  \******************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! !../../../../../node_modules/style-loader/dist/runtime/injectStylesIntoStyleTag.js */ "./node_modules/style-loader/dist/runtime/injectStylesIntoStyleTag.js");
+/* harmony import */ var _node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _node_modules_laravel_mix_node_modules_css_loader_dist_cjs_js_clonedRuleSet_9_0_rules_0_use_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_dist_cjs_js_clonedRuleSet_9_0_rules_0_use_2_node_modules_vue_loader_lib_index_js_vue_loader_options_SimilarProductComponent_vue_vue_type_style_index_0_lang_css___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! !!../../../../../node_modules/laravel-mix/node_modules/css-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[1]!../../../../../node_modules/vue-loader/lib/loaders/stylePostLoader.js!../../../../../node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[2]!../../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./SimilarProductComponent.vue?vue&type=style&index=0&lang=css& */ "./node_modules/laravel-mix/node_modules/css-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[1]!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/shop/items/SimilarProductComponent.vue?vue&type=style&index=0&lang=css&");
+
+            
+
+var options = {};
+
+options.insert = "head";
+options.singleton = false;
+
+var update = _node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0___default()(_node_modules_laravel_mix_node_modules_css_loader_dist_cjs_js_clonedRuleSet_9_0_rules_0_use_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_dist_cjs_js_clonedRuleSet_9_0_rules_0_use_2_node_modules_vue_loader_lib_index_js_vue_loader_options_SimilarProductComponent_vue_vue_type_style_index_0_lang_css___WEBPACK_IMPORTED_MODULE_1__["default"], options);
+
+
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (_node_modules_laravel_mix_node_modules_css_loader_dist_cjs_js_clonedRuleSet_9_0_rules_0_use_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_dist_cjs_js_clonedRuleSet_9_0_rules_0_use_2_node_modules_vue_loader_lib_index_js_vue_loader_options_SimilarProductComponent_vue_vue_type_style_index_0_lang_css___WEBPACK_IMPORTED_MODULE_1__["default"].locals || {});
+
+/***/ }),
+
 /***/ "./node_modules/style-loader/dist/cjs.js!./node_modules/laravel-mix/node_modules/css-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[1]!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/shop/pages/ProductPageComponent.vue?vue&type=style&index=0&lang=css&":
 /*!***************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
   !*** ./node_modules/style-loader/dist/cjs.js!./node_modules/laravel-mix/node_modules/css-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[1]!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/shop/pages/ProductPageComponent.vue?vue&type=style&index=0&lang=css& ***!
@@ -9289,45 +9432,6 @@ var update = _node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js
 
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (_node_modules_laravel_mix_node_modules_css_loader_dist_cjs_js_clonedRuleSet_9_0_rules_0_use_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_dist_cjs_js_clonedRuleSet_9_0_rules_0_use_2_node_modules_vue_loader_lib_index_js_vue_loader_options_ProductPageComponent_vue_vue_type_style_index_0_lang_css___WEBPACK_IMPORTED_MODULE_1__["default"].locals || {});
-
-/***/ }),
-
-/***/ "./resources/js/components/shop/items/AnalogProductComponent.vue":
-/*!***********************************************************************!*\
-  !*** ./resources/js/components/shop/items/AnalogProductComponent.vue ***!
-  \***********************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
-/* harmony export */ });
-/* harmony import */ var _AnalogProductComponent_vue_vue_type_template_id_6cbc8deb_scoped_true___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./AnalogProductComponent.vue?vue&type=template&id=6cbc8deb&scoped=true& */ "./resources/js/components/shop/items/AnalogProductComponent.vue?vue&type=template&id=6cbc8deb&scoped=true&");
-/* harmony import */ var _AnalogProductComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./AnalogProductComponent.vue?vue&type=script&lang=js& */ "./resources/js/components/shop/items/AnalogProductComponent.vue?vue&type=script&lang=js&");
-/* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! !../../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
-
-
-
-
-
-/* normalize component */
-;
-var component = (0,_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
-  _AnalogProductComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
-  _AnalogProductComponent_vue_vue_type_template_id_6cbc8deb_scoped_true___WEBPACK_IMPORTED_MODULE_0__.render,
-  _AnalogProductComponent_vue_vue_type_template_id_6cbc8deb_scoped_true___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns,
-  false,
-  null,
-  "6cbc8deb",
-  null
-  
-)
-
-/* hot reload */
-if (false) { var api; }
-component.options.__file = "resources/js/components/shop/items/AnalogProductComponent.vue"
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (component.exports);
 
 /***/ }),
 
@@ -9409,6 +9513,86 @@ component.options.__file = "resources/js/components/shop/items/MetaDataComponent
 
 /***/ }),
 
+/***/ "./resources/js/components/shop/items/SimilarProductComponent.vue":
+/*!************************************************************************!*\
+  !*** ./resources/js/components/shop/items/SimilarProductComponent.vue ***!
+  \************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _SimilarProductComponent_vue_vue_type_template_id_ec6005c8___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./SimilarProductComponent.vue?vue&type=template&id=ec6005c8& */ "./resources/js/components/shop/items/SimilarProductComponent.vue?vue&type=template&id=ec6005c8&");
+/* harmony import */ var _SimilarProductComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./SimilarProductComponent.vue?vue&type=script&lang=js& */ "./resources/js/components/shop/items/SimilarProductComponent.vue?vue&type=script&lang=js&");
+/* harmony import */ var _SimilarProductComponent_vue_vue_type_style_index_0_lang_css___WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./SimilarProductComponent.vue?vue&type=style&index=0&lang=css& */ "./resources/js/components/shop/items/SimilarProductComponent.vue?vue&type=style&index=0&lang=css&");
+/* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! !../../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+;
+
+
+/* normalize component */
+
+var component = (0,_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_3__["default"])(
+  _SimilarProductComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _SimilarProductComponent_vue_vue_type_template_id_ec6005c8___WEBPACK_IMPORTED_MODULE_0__.render,
+  _SimilarProductComponent_vue_vue_type_template_id_ec6005c8___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns,
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/components/shop/items/SimilarProductComponent.vue"
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (component.exports);
+
+/***/ }),
+
+/***/ "./resources/js/components/shop/items/cards/AnalogProductCardComponent.vue":
+/*!*********************************************************************************!*\
+  !*** ./resources/js/components/shop/items/cards/AnalogProductCardComponent.vue ***!
+  \*********************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _AnalogProductCardComponent_vue_vue_type_template_id_d674c3b2___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./AnalogProductCardComponent.vue?vue&type=template&id=d674c3b2& */ "./resources/js/components/shop/items/cards/AnalogProductCardComponent.vue?vue&type=template&id=d674c3b2&");
+/* harmony import */ var _AnalogProductCardComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./AnalogProductCardComponent.vue?vue&type=script&lang=js& */ "./resources/js/components/shop/items/cards/AnalogProductCardComponent.vue?vue&type=script&lang=js&");
+/* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! !../../../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+/* normalize component */
+;
+var component = (0,_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+  _AnalogProductCardComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _AnalogProductCardComponent_vue_vue_type_template_id_d674c3b2___WEBPACK_IMPORTED_MODULE_0__.render,
+  _AnalogProductCardComponent_vue_vue_type_template_id_d674c3b2___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns,
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/components/shop/items/cards/AnalogProductCardComponent.vue"
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (component.exports);
+
+/***/ }),
+
 /***/ "./resources/js/components/shop/pages/ProductPageComponent.vue":
 /*!*********************************************************************!*\
   !*** ./resources/js/components/shop/pages/ProductPageComponent.vue ***!
@@ -9450,22 +9634,6 @@ component.options.__file = "resources/js/components/shop/pages/ProductPageCompon
 
 /***/ }),
 
-/***/ "./resources/js/components/shop/items/AnalogProductComponent.vue?vue&type=script&lang=js&":
-/*!************************************************************************************************!*\
-  !*** ./resources/js/components/shop/items/AnalogProductComponent.vue?vue&type=script&lang=js& ***!
-  \************************************************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
-/* harmony export */ });
-/* harmony import */ var _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_0_rules_0_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_AnalogProductComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!../../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./AnalogProductComponent.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/shop/items/AnalogProductComponent.vue?vue&type=script&lang=js&");
- /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (_node_modules_babel_loader_lib_index_js_clonedRuleSet_5_0_rules_0_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_AnalogProductComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
-
-/***/ }),
-
 /***/ "./resources/js/components/shop/items/BreadcrumbComponent.vue?vue&type=script&lang=js&":
 /*!*********************************************************************************************!*\
   !*** ./resources/js/components/shop/items/BreadcrumbComponent.vue?vue&type=script&lang=js& ***!
@@ -9498,6 +9666,38 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
+/***/ "./resources/js/components/shop/items/SimilarProductComponent.vue?vue&type=script&lang=js&":
+/*!*************************************************************************************************!*\
+  !*** ./resources/js/components/shop/items/SimilarProductComponent.vue?vue&type=script&lang=js& ***!
+  \*************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_0_rules_0_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_SimilarProductComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!../../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./SimilarProductComponent.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/shop/items/SimilarProductComponent.vue?vue&type=script&lang=js&");
+ /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (_node_modules_babel_loader_lib_index_js_clonedRuleSet_5_0_rules_0_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_SimilarProductComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./resources/js/components/shop/items/cards/AnalogProductCardComponent.vue?vue&type=script&lang=js&":
+/*!**********************************************************************************************************!*\
+  !*** ./resources/js/components/shop/items/cards/AnalogProductCardComponent.vue?vue&type=script&lang=js& ***!
+  \**********************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_0_rules_0_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_AnalogProductCardComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../../node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!../../../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./AnalogProductCardComponent.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/shop/items/cards/AnalogProductCardComponent.vue?vue&type=script&lang=js&");
+ /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (_node_modules_babel_loader_lib_index_js_clonedRuleSet_5_0_rules_0_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_AnalogProductCardComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
 /***/ "./resources/js/components/shop/pages/ProductPageComponent.vue?vue&type=script&lang=js&":
 /*!**********************************************************************************************!*\
   !*** ./resources/js/components/shop/pages/ProductPageComponent.vue?vue&type=script&lang=js& ***!
@@ -9514,6 +9714,19 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
+/***/ "./resources/js/components/shop/items/SimilarProductComponent.vue?vue&type=style&index=0&lang=css&":
+/*!*********************************************************************************************************!*\
+  !*** ./resources/js/components/shop/items/SimilarProductComponent.vue?vue&type=style&index=0&lang=css& ***!
+  \*********************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_style_loader_dist_cjs_js_node_modules_laravel_mix_node_modules_css_loader_dist_cjs_js_clonedRuleSet_9_0_rules_0_use_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_dist_cjs_js_clonedRuleSet_9_0_rules_0_use_2_node_modules_vue_loader_lib_index_js_vue_loader_options_SimilarProductComponent_vue_vue_type_style_index_0_lang_css___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../node_modules/style-loader/dist/cjs.js!../../../../../node_modules/laravel-mix/node_modules/css-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[1]!../../../../../node_modules/vue-loader/lib/loaders/stylePostLoader.js!../../../../../node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[2]!../../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./SimilarProductComponent.vue?vue&type=style&index=0&lang=css& */ "./node_modules/style-loader/dist/cjs.js!./node_modules/laravel-mix/node_modules/css-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[1]!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/shop/items/SimilarProductComponent.vue?vue&type=style&index=0&lang=css&");
+
+
+/***/ }),
+
 /***/ "./resources/js/components/shop/pages/ProductPageComponent.vue?vue&type=style&index=0&lang=css&":
 /*!******************************************************************************************************!*\
   !*** ./resources/js/components/shop/pages/ProductPageComponent.vue?vue&type=style&index=0&lang=css& ***!
@@ -9523,23 +9736,6 @@ __webpack_require__.r(__webpack_exports__);
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _node_modules_style_loader_dist_cjs_js_node_modules_laravel_mix_node_modules_css_loader_dist_cjs_js_clonedRuleSet_9_0_rules_0_use_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_dist_cjs_js_clonedRuleSet_9_0_rules_0_use_2_node_modules_vue_loader_lib_index_js_vue_loader_options_ProductPageComponent_vue_vue_type_style_index_0_lang_css___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../node_modules/style-loader/dist/cjs.js!../../../../../node_modules/laravel-mix/node_modules/css-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[1]!../../../../../node_modules/vue-loader/lib/loaders/stylePostLoader.js!../../../../../node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[2]!../../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./ProductPageComponent.vue?vue&type=style&index=0&lang=css& */ "./node_modules/style-loader/dist/cjs.js!./node_modules/laravel-mix/node_modules/css-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[1]!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/shop/pages/ProductPageComponent.vue?vue&type=style&index=0&lang=css&");
-
-
-/***/ }),
-
-/***/ "./resources/js/components/shop/items/AnalogProductComponent.vue?vue&type=template&id=6cbc8deb&scoped=true&":
-/*!******************************************************************************************************************!*\
-  !*** ./resources/js/components/shop/items/AnalogProductComponent.vue?vue&type=template&id=6cbc8deb&scoped=true& ***!
-  \******************************************************************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "render": () => (/* reexport safe */ _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_AnalogProductComponent_vue_vue_type_template_id_6cbc8deb_scoped_true___WEBPACK_IMPORTED_MODULE_0__.render),
-/* harmony export */   "staticRenderFns": () => (/* reexport safe */ _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_AnalogProductComponent_vue_vue_type_template_id_6cbc8deb_scoped_true___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns)
-/* harmony export */ });
-/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_AnalogProductComponent_vue_vue_type_template_id_6cbc8deb_scoped_true___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./AnalogProductComponent.vue?vue&type=template&id=6cbc8deb&scoped=true& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/shop/items/AnalogProductComponent.vue?vue&type=template&id=6cbc8deb&scoped=true&");
 
 
 /***/ }),
@@ -9578,6 +9774,40 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
+/***/ "./resources/js/components/shop/items/SimilarProductComponent.vue?vue&type=template&id=ec6005c8&":
+/*!*******************************************************************************************************!*\
+  !*** ./resources/js/components/shop/items/SimilarProductComponent.vue?vue&type=template&id=ec6005c8& ***!
+  \*******************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "render": () => (/* reexport safe */ _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_SimilarProductComponent_vue_vue_type_template_id_ec6005c8___WEBPACK_IMPORTED_MODULE_0__.render),
+/* harmony export */   "staticRenderFns": () => (/* reexport safe */ _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_SimilarProductComponent_vue_vue_type_template_id_ec6005c8___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns)
+/* harmony export */ });
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_SimilarProductComponent_vue_vue_type_template_id_ec6005c8___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./SimilarProductComponent.vue?vue&type=template&id=ec6005c8& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/shop/items/SimilarProductComponent.vue?vue&type=template&id=ec6005c8&");
+
+
+/***/ }),
+
+/***/ "./resources/js/components/shop/items/cards/AnalogProductCardComponent.vue?vue&type=template&id=d674c3b2&":
+/*!****************************************************************************************************************!*\
+  !*** ./resources/js/components/shop/items/cards/AnalogProductCardComponent.vue?vue&type=template&id=d674c3b2& ***!
+  \****************************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "render": () => (/* reexport safe */ _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_AnalogProductCardComponent_vue_vue_type_template_id_d674c3b2___WEBPACK_IMPORTED_MODULE_0__.render),
+/* harmony export */   "staticRenderFns": () => (/* reexport safe */ _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_AnalogProductCardComponent_vue_vue_type_template_id_d674c3b2___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns)
+/* harmony export */ });
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_AnalogProductCardComponent_vue_vue_type_template_id_d674c3b2___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./AnalogProductCardComponent.vue?vue&type=template&id=d674c3b2& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/shop/items/cards/AnalogProductCardComponent.vue?vue&type=template&id=d674c3b2&");
+
+
+/***/ }),
+
 /***/ "./resources/js/components/shop/pages/ProductPageComponent.vue?vue&type=template&id=218ac3c8&":
 /*!****************************************************************************************************!*\
   !*** ./resources/js/components/shop/pages/ProductPageComponent.vue?vue&type=template&id=218ac3c8& ***!
@@ -9591,128 +9821,6 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "staticRenderFns": () => (/* reexport safe */ _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_ProductPageComponent_vue_vue_type_template_id_218ac3c8___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns)
 /* harmony export */ });
 /* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_ProductPageComponent_vue_vue_type_template_id_218ac3c8___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./ProductPageComponent.vue?vue&type=template&id=218ac3c8& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/shop/pages/ProductPageComponent.vue?vue&type=template&id=218ac3c8&");
-
-
-/***/ }),
-
-/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/shop/items/AnalogProductComponent.vue?vue&type=template&id=6cbc8deb&scoped=true&":
-/*!*********************************************************************************************************************************************************************************************************************************************************!*\
-  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/shop/items/AnalogProductComponent.vue?vue&type=template&id=6cbc8deb&scoped=true& ***!
-  \*********************************************************************************************************************************************************************************************************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "render": () => (/* binding */ render),
-/* harmony export */   "staticRenderFns": () => (/* binding */ staticRenderFns)
-/* harmony export */ });
-var render = function () {
-  var _vm = this
-  var _h = _vm.$createElement
-  var _c = _vm._self._c || _h
-  return _c("div", [
-    _c(
-      "div",
-      { staticClass: "collection-list col-lg-4 col-md-4 col-sm-4" },
-      [
-        _c(
-          "router-link",
-          { attrs: { to: "../product/" + _vm.product.url_title } },
-          [
-            _c("div", { staticClass: "img" }, [
-              _vm.product.image != null
-                ? _c("div", {
-                    style:
-                      "background-image: url(../images/product_img/" +
-                      _vm.product.image +
-                      ")",
-                  })
-                : _c("div", {
-                    style:
-                      "background-image: url(../../../public/images/site_img/shop_demo.jpg)",
-                  }),
-            ]),
-            _vm._v(" "),
-            _c("div", { staticClass: "text" }, [
-              _c("strong", [_vm._v(_vm._s(_vm.product.locale_article.title))]),
-              _vm._v(" "),
-              _c("div", { staticClass: "variants" }, [
-                _c("div", { staticClass: "variant" }, [
-                  _c("div", { staticClass: "var m available" }, [
-                    _c("div", [_vm._v("price")]),
-                  ]),
-                ]),
-                _vm._v(" "),
-                _c("div", { staticClass: "variant" }, [
-                  _vm.product.discount
-                    ? _c("div", { staticClass: "old_price" }, [
-                        _c("div", { staticClass: "pnl-price " }, [
-                          _vm.product.min_price == _vm.product.max_price
-                            ? _c("div", { staticClass: "pnl-price price" }, [
-                                _vm._v("₾ " + _vm._s(_vm.product.min_price)),
-                              ])
-                            : _c("div", { staticClass: "pnl-price price" }, [
-                                _vm._v(
-                                  "₾ " +
-                                    _vm._s(_vm.product.min_price) +
-                                    " - " +
-                                    _vm._s(_vm.product.max_price)
-                                ),
-                              ]),
-                        ]),
-                      ])
-                    : _vm._e(),
-                  _vm._v(" "),
-                  _vm.product.discount
-                    ? _c("div", { staticClass: "price" }, [
-                        _c("div", { staticClass: "pnl-price price" }, [
-                          _vm.product.discount_min_price ==
-                          _vm.product.discount_max_price
-                            ? _c("div", { staticClass: "pnl-price price" }, [
-                                _vm._v(
-                                  "₾ " + _vm._s(_vm.product.discount_min_price)
-                                ),
-                              ])
-                            : _c("div", { staticClass: "pnl-price price" }, [
-                                _vm._v(
-                                  "₾ " +
-                                    _vm._s(_vm.product.discount_min_price) +
-                                    " - " +
-                                    _vm._s(_vm.product.discount_max_price)
-                                ),
-                              ]),
-                        ]),
-                      ])
-                    : _c("div", { staticClass: "price" }, [
-                        _c("div", { staticClass: "pnl-price price" }, [
-                          _vm.product.min_price == _vm.product.max_price
-                            ? _c("div", { staticClass: "pnl-price price" }, [
-                                _vm._v("₾ " + _vm._s(_vm.product.min_price)),
-                              ])
-                            : _c("div", { staticClass: "pnl-price price" }, [
-                                _vm._v(
-                                  "₾ " +
-                                    _vm._s(_vm.product.min_price) +
-                                    " - " +
-                                    _vm._s(_vm.product.max_price)
-                                ),
-                              ]),
-                        ]),
-                      ]),
-                ]),
-              ]),
-            ]),
-          ]
-        ),
-      ],
-      1
-    ),
-  ])
-}
-var staticRenderFns = []
-render._withStripped = true
-
 
 
 /***/ }),
@@ -9788,6 +9896,116 @@ var render = function () {
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
   return _c("div")
+}
+var staticRenderFns = []
+render._withStripped = true
+
+
+
+/***/ }),
+
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/shop/items/SimilarProductComponent.vue?vue&type=template&id=ec6005c8&":
+/*!**********************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/shop/items/SimilarProductComponent.vue?vue&type=template&id=ec6005c8& ***!
+  \**********************************************************************************************************************************************************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "render": () => (/* binding */ render),
+/* harmony export */   "staticRenderFns": () => (/* binding */ staticRenderFns)
+/* harmony export */ });
+var render = function () {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(
+    "div",
+    { staticClass: "row related" },
+    [
+      _c("h2", [_vm._v("You might also like")]),
+      _vm._v(" "),
+      _vm._l(_vm.samilar_products, function (product) {
+        return _c("analogProduct", {
+          key: product.id,
+          attrs: { product: product },
+        })
+      }),
+    ],
+    2
+  )
+}
+var staticRenderFns = []
+render._withStripped = true
+
+
+
+/***/ }),
+
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/shop/items/cards/AnalogProductCardComponent.vue?vue&type=template&id=d674c3b2&":
+/*!*******************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/shop/items/cards/AnalogProductCardComponent.vue?vue&type=template&id=d674c3b2& ***!
+  \*******************************************************************************************************************************************************************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "render": () => (/* binding */ render),
+/* harmony export */   "staticRenderFns": () => (/* binding */ staticRenderFns)
+/* harmony export */ });
+var render = function () {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(
+    "div",
+    { staticClass: "collection-list col-lg-4 col-md-4 col-sm-4" },
+    [
+      _c(
+        "router-link",
+        { attrs: { to: "../product/" + _vm.product.global_product.url_title } },
+        [
+          _c("div", { staticClass: "img" }, [
+            _vm.product.product_images[0]
+              ? _c("div", {
+                  staticClass: "i first",
+                  style:
+                    "background-image: url(../images/product_img/" +
+                    _vm.product.product_images[0] +
+                    ")",
+                })
+              : _c("div", {
+                  staticClass: "i first",
+                  style:
+                    "background-image: url(../../../public/images/site_img/shop_demo.jpg)",
+                }),
+          ]),
+          _vm._v(" "),
+          _c("div", { staticClass: "text" }, [
+            _c("strong", [_vm._v(_vm._s(_vm.product.locale_product.title))]),
+            _vm._v(" "),
+            _c("div", { staticClass: "variants" }, [
+              _c("div", { staticClass: "variant" }, [
+                _c("div", { staticClass: "var m available" }, [
+                  _c("div", [_vm._v("price")]),
+                ]),
+              ]),
+              _vm._v(
+                "\n\n                " +
+                  _vm._s(_vm.product.min_price) +
+                  " - " +
+                  _vm._s(_vm.product.max_price) +
+                  "\n\n                "
+              ),
+            ]),
+          ]),
+        ]
+      ),
+    ],
+    1
+  )
 }
 var staticRenderFns = []
 render._withStripped = true
@@ -9881,44 +10099,7 @@ var render = function () {
                   ),
                 ]),
                 _vm._v(" "),
-                _c("div", { staticClass: "row" }, [
-                  _c("div", { staticClass: "col-md-12" }, [
-                    _c("div", { staticClass: "price-shipping" }, [
-                      _c(
-                        "div",
-                        {
-                          staticClass: "price",
-                          attrs: { id: "price-preview" },
-                        },
-                        [
-                          _c("div", { staticClass: "old_price_page" }, [
-                            _c("p", { attrs: { title: _vm.old_price } }, [
-                              _vm._v(
-                                "\n                                                    ₾ " +
-                                  _vm._s(_vm.prices[0]) +
-                                  " - " +
-                                  _vm._s(_vm.prices[1]) +
-                                  "\n                                                "
-                              ),
-                            ]),
-                          ]),
-                          _vm._v(" "),
-                          _c("div", { staticClass: "price_pege" }, [
-                            _c("p", { attrs: { title: _vm.price } }, [
-                              _vm._v(
-                                "\n                                                    ₾ " +
-                                  _vm._s(_vm.prices[0]) +
-                                  " - " +
-                                  _vm._s(_vm.prices[1]) +
-                                  "\n                                                "
-                              ),
-                            ]),
-                          ]),
-                        ]
-                      ),
-                    ]),
-                  ]),
-                ]),
+                _vm._m(0),
                 _vm._v(" "),
                 _vm.product.global_product.sale_category == "online order"
                   ? _c("div", { staticClass: "row" }, [
@@ -10038,7 +10219,7 @@ var render = function () {
                   : _vm._e(),
                 _vm._v(" "),
                 _vm.product.global_product.sale_category == "custom production"
-                  ? _c("div", { staticClass: "row" }, [_vm._m(0)])
+                  ? _c("div", { staticClass: "row" }, [_vm._m(1)])
                   : _vm._e(),
               ]),
             ]),
@@ -10083,30 +10264,23 @@ var render = function () {
           ])
         : _vm._e(),
       _vm._v(" "),
+      _c(
+        "div",
+        { staticClass: "container" },
+        [
+          _c("similarProduct", {
+            attrs: { activ_product_id: _vm.product.global_product.id },
+          }),
+        ],
+        1
+      ),
+      _vm._v(" "),
       _c("div", { staticClass: "container" }, [
-        this.products.length > 0
-          ? _c(
-              "div",
-              { staticClass: "row related" },
-              [
-                _c("h2", [_vm._v("you might also like")]),
-                _vm._v(" "),
-                _vm._l(_vm.products, function (product) {
-                  return _c("analogProduct", {
-                    key: product.id,
-                    attrs: { product: product },
-                  })
-                }),
-              ],
-              2
-            )
-          : _vm._e(),
-        _vm._v(" "),
         _c("div", { staticClass: "row" }, [
           _c(
             "div",
             {
-              staticClass: "more-products text-center",
+              staticClass: "more-products",
               attrs: { id: "more-products-wrap" },
             },
             [
@@ -10138,6 +10312,18 @@ var render = function () {
   )
 }
 var staticRenderFns = [
+  function () {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "row" }, [
+      _c("div", { staticClass: "col-md-12" }, [
+        _c("div", { staticClass: "price-shipping" }, [
+          _c("div", { staticClass: "price", attrs: { id: "price-preview" } }),
+        ]),
+      ]),
+    ])
+  },
   function () {
     var _vm = this
     var _h = _vm.$createElement
