@@ -15,6 +15,19 @@ class CreateFilmsTable extends Migration
     {
         Schema::create('films', function (Blueprint $table) {
             $table->id();
+
+            $table->integer('published')->nullable();
+            $table->string('image')->nullable();
+
+            $table->unsignedBigInteger('us_film_id');
+            $table->foreign('us_film_id')->references('id')->on('locale_films')->onDelete('cascade');
+
+            $table->unsignedBigInteger('ka_film_id');
+            $table->foreign('ka_film_id')->references('id')->on('locale_films')->onDelete('cascade');
+
+            $table->unsignedBigInteger('ru_film_id');
+            $table->foreign('ru_film_id')->references('id')->on('locale_films')->onDelete('cascade');
+
             $table->timestamps();
         });
     }

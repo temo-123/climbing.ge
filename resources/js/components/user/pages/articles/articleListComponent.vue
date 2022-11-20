@@ -4,27 +4,34 @@
             <left-menu />
         </div>
         <div class="col-sm-9"> 
-            <div class="col-md-12" v-if="article_loading">
-                <content-loader
-                    viewBox="0 0 500 150"
-                    primaryColor="#f3f3f3"
-                    secondaryColor="#7427bb75"
-                >
-                    <rect x="0" y="0" rx="2" ry="2" width="100%" height="25" />
-
-                    <rect x="0" y="45" rx="3" ry="3" width="100%" height="10" />
-                    <rect x="0" y="60" rx="3" ry="3" width="100%" height="10" />
-                    <rect x="0" y="75" rx="3" ry="3" width="100%" height="10" />
-                    <rect x="0" y="90" rx="3" ry="3" width="100%" height="10" />
-                    <rect x="0" y="105" rx="3" ry="3" width="100%" height="10" />
-                </content-loader>
+            <div class="row">
+                <div class="col-md-12">
+                    <breadcrumb />
+                </div>
             </div>
-            <div class="col-sm-12" v-else>
-                <tabsComponent 
-                    :table_data="this.data_for_tab"
-                    @update-data="update"
-                    @filtr="filtr"
-                />
+            <div class="row">
+                <div class="col-md-12" v-if="article_loading">
+                    <content-loader
+                        viewBox="0 0 500 150"
+                        primaryColor="#f3f3f3"
+                        secondaryColor="#7427bb75"
+                    >
+                        <rect x="0" y="0" rx="2" ry="2" width="100%" height="25" />
+
+                        <rect x="0" y="45" rx="3" ry="3" width="100%" height="10" />
+                        <rect x="0" y="60" rx="3" ry="3" width="100%" height="10" />
+                        <rect x="0" y="75" rx="3" ry="3" width="100%" height="10" />
+                        <rect x="0" y="90" rx="3" ry="3" width="100%" height="10" />
+                        <rect x="0" y="105" rx="3" ry="3" width="100%" height="10" />
+                    </content-loader>
+                </div>
+                <div class="col-sm-12" v-else>
+                    <tabsComponent 
+                        :table_data="this.data_for_tab"
+                        @update-data="update"
+                        @filtr="filtr"
+                    />
+                </div>
             </div>
          </div>
     </div>
@@ -33,8 +40,10 @@
 <script>
     import tabsComponent  from '../../items/data_tabs/DataTab/TabsComponent'
     import { ContentLoader } from 'vue-content-loader'
+    import breadcrumb from '../../items/BreadcrumbComponent.vue'
     export default {
         components: {
+            breadcrumb,
             tabsComponent,
             ContentLoader
         },
@@ -143,7 +152,7 @@
                                             'table_category': this.$route.params.article_category, 
                                             'table_add_url': 'articleAdd', 
                                             'table_edit_url': 'articleEdit',
-                                            'table_del_url': 'del_url', 
+                                            // 'table_del_url': 'del_url', 
                                         });
 
 

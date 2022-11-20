@@ -147,6 +147,9 @@ hr {
     border-bottom: 2px solid #a1a1a1;
 }
 
+
+
+
 /*
 *
 *   Google my maps styles
@@ -155,6 +158,25 @@ hr {
 
 .i4ewOd-pzNkMb-haAclf {
     background-color: #279fbb !important;
+}
+
+
+
+/*
+*
+*   Admin page styles
+*
+*/
+
+.cursor_pointre {
+    cursor: pointer;
+}
+.cursor_zoom_in{
+    cursor: zoom-in;
+}
+
+.width_100{
+    width: 100%
 }
 
 
@@ -210,7 +232,7 @@ hr {
     }
     .navbar_title{
         z-index: 1001; 
-        width: 50%;
+        // width: 50%;
     }
 .top_menu_margin {
     margin-top: 9%;

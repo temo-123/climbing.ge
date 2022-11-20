@@ -7,46 +7,16 @@
         </div>
         <div class="row">
             <div class="form-group">  
-                <button type="submit" class="btn btn-primary" v-on:click="add_spot_region()" >Save</button>
+                <button type="submit" class="btn btn-primary" v-on:click="edit_spot_region()" >Save</button>
             </div>
         </div>
-        <div class="row">
+        <!-- <div class="row">
             <div class="col-md-12">
                 <div class="alert alert-danger" role="alert" v-if="error.global_article_error.published">
                     {{ error.global_article_error.published[0] }}
                 </div>
-
-                <div class="alert alert-danger" role="alert" v-if="error.us_article_error.us_short_description">
-                    {{ error.us_article_error.us_short_description[0] }}
-                </div>
-                <div class="alert alert-danger" role="alert" v-if="error.us_article_error.us_short_description">
-                    {{ error.us_article_error.us_short_description[0] }}
-                </div>
-                <div class="alert alert-danger" role="alert" v-if="error.us_article_error.us_text">
-                    {{ error.us_article_error.us_text[0] }}
-                </div>
-
-                <div class="alert alert-danger" role="alert" v-if="error.ka_article_error.ka_short_description">
-                    {{ error.ka_article_error.ka_short_description[0] }}
-                </div>
-                <div class="alert alert-danger" role="alert" v-if="error.ka_article_error.ka_short_description">
-                    {{ error.ka_article_error.ka_short_description[0] }}
-                </div>
-                <div class="alert alert-danger" role="alert" v-if="error.ka_article_error.ka_text">
-                    {{ error.ka_article_error.ka_text[0] }}
-                </div>
-
-                <div class="alert alert-danger" role="alert" v-if="error.ru_article_error.ru_short_description">
-                    {{ error.ru_article_error.ru_short_description[0] }}
-                </div>
-                <div class="alert alert-danger" role="alert" v-if="error.ru_article_error.ru_short_description">
-                    {{ error.ru_article_error.ru_short_description[0] }}
-                </div>
-                <div class="alert alert-danger" role="alert" v-if="error.ru_article_error.ru_text">
-                    {{ error.ru_article_error.ru_text[0] }}
-                </div>
             </div>
-        </div>
+        </div> -->
         <div class="row">
             <div class="col-md-12">
                 <div class="row">
@@ -73,7 +43,7 @@
                 </div>
             </div>
             <div class="row" v-show="tab_num == 1">
-                <div class="jumbotron jumbotron-fluid">
+                <div class="jumbotron width_100">
                     <div class="container">
                         <h2 class="display-4"><span style="text-transform: capitalize">Region global information</span></h2>
                         <p class="lead">Region global information.</p>
@@ -89,7 +59,7 @@
                 </form>
             </div>
             <div class="row" v-show="tab_num == 2">
-                <div class="jumbotron jumbotron-fluid">
+                <div class="jumbotron width_100">
                     <div class="container">
                         <h2 class="display-4"><span style="text-transform: capitalize">Region English information</span></h2>
                         <p class="lead">Region English information.</p>
@@ -111,7 +81,7 @@
                 </form>
             </div>
             <div class="row" v-show="tab_num == 3">
-                <div class="jumbotron jumbotron-fluid">
+                <div class="jumbotron width_100">
                     <div class="container">
                         <h2 class="display-4"><span style="text-transform: capitalize">Region Georgian information</span></h2>
                         <p class="lead">Region Georgian information.</p>
@@ -133,7 +103,7 @@
                 </form>
             </div>
             <div class="row" v-show="tab_num == 4">
-                <div class="jumbotron jumbotron-fluid">
+                <div class="jumbotron width_100">
                     <div class="container">
                         <h2 class="display-4"><span style="text-transform: capitalize">Region Russion information</span></h2>
                         <p class="lead">Region Russion information.</p>
@@ -197,43 +167,44 @@
             }
         },
         mounted() {
-
+            this.get_editing_spot_data()
         },
-        beforeRouteLeave (to, from, next) {
-            if(this.is_back_action = true){
-                if (window.confirm('Added information will be deleted!!! Are you sure, you want go back?')) {
-                    this.is_back_action = false;
-                    next()
-                } else {
-                    next(false)
-                }
-            }
-        },
+        // beforeRouteLeave (to, from, next) {
+        //     if(this.is_back_action = true){
+        //         if (window.confirm('Added information will be deleted!!! Are you sure, you want go back?')) {
+        //             this.is_back_action = false;
+        //             next()
+        //         } else {
+        //             next(false)
+        //         }
+        //     }
+        // },
         methods: {
-            global_blocks_action(event){
-                this.global_blocks = event
+            get_editing_spot_data(){
+                axios
+                .get('../../../api/outdoor/get_editing_spot_data/'+this.$route.params.id, {
+                    _method: 'GET'
+                })
+                .then(response => {
+                    this.data = response.data
+                })
+                .catch(err => {
+                    //
+                })
             },
 
-            add_spot_region() {
-                // this.article_data.global_data.us_title_for_url_title = this.article_data.en_data.title,
-
-                // this.is_us_article_error = []
-                // this.error.global_article_error = [],
-                // this.error.ka_article_error = [],
-                // this.error.ru_article_error = [],
-                // this.error.us_article_error = [],
-
+            edit_spot_region() {
                 axios
-                .post('../api/outdoor/add_spot/', {        
+                .post('../../../api/outdoor/edit_spot/'+this.$route.params.id, {        
                     data: this.data,
 
-                    _method: 'post'
+                    _method: 'POST'
                 })
                 .then(response => {
                     this.$router.go(-1)
                 })
                 .catch(err => {
-                    console.log(err);
+                    //
                 })
             },
             

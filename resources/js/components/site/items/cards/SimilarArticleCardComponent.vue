@@ -1,5 +1,5 @@
 <template>
-    <div class="col-md-3">
+    <div class="col-md-3 col-xs-6">
         <div class="similar_articles_img">
             <!-- <router-link :to="'../outdoor/'+article.area.url_title" > -->
             <router-link :to="{name: 'outdoor', params: {url_title: article.area.url_title}}">

@@ -49,9 +49,17 @@
                                 <div class="row">
                                     <div class="col-md-12">
                                         <h3 style="margin-bottom: 0;">Add to cart</h3>
-                                        <p>{{ add_to_cart_message }}</p>
                                     </div>
-                                    
+                                    <span v-if="products_quantity == select_product_max_quantyty">
+                                        <div class="alert alert-danger" role="alert">
+                                            This is maximal quantyty for this product!!!
+                                        </div>
+                                    </span>
+                                    <span v-if="is_adding_in_cart_socsesful">
+                                        <div class="alert alert-success" role="alert">
+                                            Product add successful!!!
+                                        </div>
+                                    </span>
                                 </div>
                                 <div class="row">
                                     <div class="col-md-6">
@@ -60,10 +68,10 @@
                                             <option v-for="option in product.product_option" :key='option.option.id' :value="option.option.id" >{{ option.option.name }}</option> 
                                         </select> 
                                     </div>
-                                    <div class="col-md-4">
-                                        <input type="number" class="form-control" min="1" max='10' v-model="products_quantity" />
+                                    <div class="col-md-4" v-if="product_modification_for_cart != 'All'">
+                                        <input type="number" class="form-control" min="1" :max="select_product_max_quantyty" v-model="products_quantity" />
                                     </div>
-                                    <div class="col-md-2">
+                                    <div class="col-md-2" v-if="product_modification_for_cart != 'All'">
                                         <a @click="add_to_cart()" class='text-center'> 
                                             <i class="fa fa-cart-plus" aria-hidden="true" style="font-size: 250%;"></i>
                                         </a>
@@ -153,12 +161,12 @@
         },
         data () {
             return {
-                // images: [],
+                is_adding_in_cart_socsesful: false,
                 // products: [],
                 // local_product: [],
                 // global_product: [],
                 // options: [],
-                // cart_options: [],
+                select_product_max_quantyty: 0,
                 product_modification_for_cart: 'All',
                 products_quantity: 1,
                 add_to_cart_message: '',
@@ -253,11 +261,15 @@
 
             select_option(){
                 this.items = [];
+                this.is_adding_in_cart_socsesful = false
                 if (this.product_modification_for_cart == "All") {
                     this.get_product()
                 }
                 else{
-                    this.options.forEach(option => {
+                    this.product.product_option.forEach(option => {
+
+                        this.select_product_max_quantyty = option.option.quantity
+
                         if (this.product_modification_for_cart == option.option.id) {
                             this.price = option.option.price
                             option.images.forEach(image => {
@@ -278,6 +290,7 @@
                     alert('plis select option')
                 }
                 else{
+                    this.is_adding_in_cart_socsesful = false
                     // this.cart_options = {"modification_id": this.product_modification_for_cart, "quantity": this.products_quantity}
                     axios
                     .put('../api/cart/'+this.product_modification_for_cart, {
@@ -286,6 +299,7 @@
                     })
                     .then(response => {
                         this.add_to_cart_message = response
+                        this.is_adding_in_cart_socsesful = true
                         // this.add_to_cart_message = "Product added in your cart"
                     })
                     .catch(error =>{

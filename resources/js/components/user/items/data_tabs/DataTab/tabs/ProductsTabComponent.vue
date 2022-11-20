@@ -4,11 +4,15 @@
             <input type="checkbox">
         </td>
         <td>|</td>
-        <td>{{table_info.id}}</td>
+        <td>{{table_info.global_product.id}}</td>
         <td>|</td>
-        <td>{{table_info.url_title}} </td>
+        <td>{{table_info.locale_product.title}} </td>
         <td>|</td>
-        <td style='text-align: center;'>{{table_info.published}}</td>
+        <td style='text-align: center;'>{{table_info.global_product.published}}</td>
+        <td>|</td>
+        <td>
+            <a :href="'#'" class="btn btn-primary" type="submit">+</a>
+        </td>
         <td>|</td>
         <td>
             <a :href="table_1_edit_url+table_info.id" class="btn btn-primary" type="submit">Edit</a>
@@ -16,7 +20,7 @@
         
         <td>|</td>
         <td>
-            <button type="submit" class="btn btn-danger" @click="del_products(table_info.id)">Delete</button>
+            <button type="submit" class="btn btn-danger" @click="del_products(table_info.global_product.id)">Delete</button>
         </td>
     </tr>
 </template>

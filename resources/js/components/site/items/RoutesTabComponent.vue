@@ -105,6 +105,34 @@
                     />
                 </div>
             </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <img
+                        v-if="area.sectors.for_family"
+                        class="sun_svg"
+                        :src="'../images/svg/for family.svg'"
+                        alt="In this sector recomendidi family climbing. It`s seifty for kids"
+                        title="In this sector recomendidi family climbing. It`s seifty for kids"
+                    />
+                    <img
+                        v-if="area.sectors.for_kids"
+                        class="sun_svg"
+                        :src="'../images/svg/for kids.svg'"
+                        alt="In this sector recomendidi for kids. It`a seifty for kids and poseble to kid climbing"
+                        title="In this sector recomendidi for kids. It`a seifty for kids and poseble to kid climbing"
+                    />
+                </div>
+                <div class="col-md-6">
+                    <img
+                        v-if="area.sectors.wolking_time"
+                        class="relief_svg"
+                        :src="'../images/svg/walking.svg'"
+                        alt="Wolging time from car stoping to climbin sector."
+                        title="Wolging time from car stoping to climbin sector."
+                    />
+                    <span> 30+ min. </span>
+                </div>
+            </div>
 
             <span v-html="area.sectors.text"></span>
 
@@ -161,11 +189,7 @@
                         </td>
                         <td v-else>{{ lead_grade_chart(route.grade_fr) }}</td>
 
-                        <td
-                            @click="
-                                show_route_model(route.id)
-                            "
-                        >
+                        <td @click="show_route_model(route.id)">
                             <a style="margin-top: -5%; font-size: 120%"
                                 ><i class="fa fa-info" aria-hidden="true"></i
                             ></a>
@@ -184,21 +208,25 @@
                         <td>{{ $t("route_tab name") }}</td>
                         <td>{{ $t("route_tab height") }}</td>
                         <td>{{ $t("route_tab grade fr") }}</td>
-                        <td>{{ $t("route_tab grade yds") }}</td> 
+                        <td>{{ $t("route_tab grade yds") }}</td>
                         <td>Info</td>
                     </tr>
                 </tbody>
                 <tbody>
                     <tr v-for="route in area.boulder_route" :key="route.id">
                         <td>{{ route.num }}</td>
-                        <td @click="show_route_model(route.id)">{{ route.name }}</td>
+                        <td @click="show_route_model(route.id)">
+                            {{ route.name }}
+                        </td>
                         <td>{{ route.height }}</td>
 
                         <td v-if="route.or_grade_fr != NULL">
                             {{ boulder_grade_chart(route.grade_fr) }} /
                             {{ boulder_grade_chart(route.or_grade_fr) }}
                         </td>
-                        <td v-else>{{ boulder_grade_chart(route.grade_fr) }}</td>
+                        <td v-else>
+                            {{ boulder_grade_chart(route.grade_fr) }}
+                        </td>
 
                         <td v-if="route.or_grade_fr != NULL">
                             {{ route.grade_fr }} / {{ route.or_grade_fr }}
@@ -230,9 +258,7 @@
 
                 <div class="col-md-4">
                     <a
-                        @click="
-                            show_mtp_madel(mtp.mtp_id)
-                        "
+                        @click="show_mtp_madel(mtp.mtp_id)"
                         data-toggle="modal"
                         data-target="#squarespaceModal_mtp_info_"
                     >
@@ -644,7 +670,6 @@ export default {
     mounted() {
         this.get_outdoor_routes();
         this.get_spot_rocks_images();
-
     },
 
     watch: {
@@ -689,8 +714,7 @@ export default {
                 else if (grade_fr == "9c") grad = "5.15d";
                 else if (grade_fr == "9c+") grad = "5.16a";
                 else grad = "?";
-            } 
-            else if (localStorage.getItem("grade") == "UIAA") {
+            } else if (localStorage.getItem("grade") == "UIAA") {
                 // console.log(localStorage.getItem("grade"))
                 if (grade_fr == "4") grad = "IV";
                 else if (grade_fr == "5a" || grade_fr == "5a+") grad = "V+";
@@ -720,9 +744,8 @@ export default {
                 else if (grade_fr == "9b+") grad = "XII+";
                 else if (grade_fr == "9c") grad = "XIII";
                 else grad = "?";
-            }
-            else {
-                grad = 'Error'
+            } else {
+                grad = "Error";
             }
             return grad;
         },
@@ -752,8 +775,7 @@ export default {
                 else if (grade_fr == "V16") grade = "8c+";
                 else if (grade_fr == "V17") grade = "9a";
                 else grade = "?";
-            } 
-            else if (localStorage.getItem("grade") == "UIAA") {
+            } else if (localStorage.getItem("grade") == "UIAA") {
                 if (grade_fr == "VB") grade = "4-";
                 else if (grade_fr == "V0-") grade = "VI+";
                 else if (grade_fr == "V0") grade = "VII-";
@@ -776,9 +798,8 @@ export default {
                 else if (grade_fr == "V16") grade = "XI+";
                 else if (grade_fr == "V17") grade = "XII-";
                 else grade = "?";
-            }
-            else {
-                grad = 'Error'
+            } else {
+                grad = "Error";
             }
             return grade;
         },
@@ -883,31 +904,31 @@ body.modal-open {
     float: left;
     margin: 0.25%;
 }
-.sector_images_1{
+.sector_images_1 {
     width: 99%;
 }
-.sector_images_2{
+.sector_images_2 {
     width: 49%;
 }
-.sector_images_3{
+.sector_images_3 {
     width: 32.6%;
 }
-.sector_images_4{
+.sector_images_4 {
     width: 24.1%;
 }
-.sector_images_5{
+.sector_images_5 {
     width: 19.5%;
 }
-.sector_images_6{
+.sector_images_6 {
     width: 16%;
 }
-.sector_images_7{
+.sector_images_7 {
     width: 14, 0%;
 }
-.sector_images_8{
+.sector_images_8 {
     width: 12%;
 }
-.sector_images_9{
+.sector_images_9 {
     width: 10.5%;
 }
 // .sector_images_1 {

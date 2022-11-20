@@ -34,9 +34,11 @@ class Message extends Mailable
      */
     public function build()
     {
-        $subject = 'User message from the site '.$this->from_site;
+        $subject = 'User message from the site - '.$this->from_site;
         
-        return $this->markdown('emails/message')->with([
+        return $this
+        ->markdown('emails/message')
+        ->with([
             'name'=>$this->name,
             'surname'=>$this->surname,
             'email'=>$this->email,
@@ -44,6 +46,7 @@ class Message extends Mailable
             'country'=>$this->country,
             'msg'=>$this->msg,
             'from_site'=>$this->from_site,
-        ])->subject($subject);
+        ])
+        ->subject($subject);
     }
 }

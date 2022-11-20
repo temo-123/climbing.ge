@@ -59,6 +59,7 @@ Route::group(['namespace'=>'Api'], function() {
     Route::delete('/outdoor/del_faworite_outdoor_region/{article_id}', 'OutdoorController@del_faworite_outdoor_region');
 
     Route::post('/outdoor/add_spot', 'OutdoorController@add_spot');
+    Route::get('/outdoor/get_editing_spot_data/{id}', 'OutdoorController@get_editing_spot_data');
     Route::post('/outdoor/edit_spot/{id}', 'OutdoorController@edit_spot');
     Route::delete('/outdoor/del_spot/{id}', 'OutdoorController@del_spot');
 
@@ -87,7 +88,7 @@ Route::group(['namespace'=>'Api'], function() {
     Route::get('/get_user_favorite_products', 'ProductController@get_user_favorite_products');
     Route::get('/get_quick_product/{lang}/{product_id}', 'ProductController@get_quick_product');
 
-    Route::apiResource('/product_category', 'CategoriesController');
+    Route::apiResource('/product_category', 'ProductCategoryController');
     
     /*
     *   Services routes
@@ -102,11 +103,31 @@ Route::group(['namespace'=>'Api'], function() {
     */
     Route::apiResource('/cart', 'CartController');
     Route::post('/cart/update_quantity/{item_id}', 'CartController@update_quantity');
-    Route::apiResource('/order', 'OrderController');
-    Route::get('/my_order', 'OrderController@get_my_orders');
 
     Route::post('/add_to_favorite/{product_id}', 'CartController@add_to_favorite');
     Route::post('/del_from_favorite/{product_id}', 'CartController@del_from_favorite');
+
+    Route::apiResource('/order', 'OrderController');
+    Route::get('/my_order', 'OrderController@get_my_orders');
+    Route::get('/get_activ_order/{order_id}', 'OrderController@get_activ_order');
+    Route::post('/edit_order_status/{order_id}', 'OrderController@edit_order_status');
+    Route::get('/get_order_detals/{order_id}', 'OrderController@get_order_detals');
+    Route::get('/get_order_products/{order_id}', 'OrderController@get_order_products');
+
+    Route::post('/order_is_confirm/{order_id}', 'OrderController@order_is_confirm');
+    Route::get('/is_order_confirm/{order_id}', 'OrderController@is_order_confirm');
+
+    Route::apiResource('/sale_code', 'SaleCodeController');
+    Route::post('/check_sale_code', 'OrderController@check_sale_code');
+
+    /*
+    *   Cart and orders routes
+    */
+    Route::get('/get_countries', 'ShipedCountryController@get_countries');
+    Route::get('/get_activ_country/{country_id}', 'ShipedCountryController@get_activ_country');
+    Route::post('/add_country', 'ShipedCountryController@add_country');
+    Route::post('/edit_country/{country_id}', 'ShipedCountryController@edit_country');
+    Route::delete('/del_country/{country_id}', 'ShipedCountryController@del_country');
 
     /*
     *   Guid gallery images routes
@@ -129,6 +150,16 @@ Route::group(['namespace'=>'Api'], function() {
     */
     Route::apiResource('/comment', 'CommentController');
     Route::get('/get_my_comment', 'CommentController@get_my_comments');
+    Route::delete('/del_my_comment/{comment_id}', 'CommentController@del_my_comment');
+    Route::post('/del_user_comment/{comment_id}', 'CommentController@del_user_comment');
+    Route::get('/get_quick_comment/{comment_id}', 'CommentController@get_quick_comment');
+
+    Route::get('/get_comments_complaints', 'CommentController@get_comments_complaints');
+    Route::get('/get_user_queries/{user_id}', 'CommentController@get_user_queries');
+    Route::post('/query_response', 'CommentController@query_response');
+
+    Route::post('/add_comment_complaint', 'CommentController@add_comment_complaint');
+    Route::post('/make_decision', 'CommentController@make_decision');
 
     /*
     *   Films routes
@@ -144,6 +175,9 @@ Route::group(['namespace'=>'Api'], function() {
     Route::post('/film/add_to_faworite', 'FilmsController@add_to_faworite');
     Route::get('/film/get_faworite_film_list', 'FilmsController@get_faworite_film_list');
     Route::delete('/film/del_from_faworite/{film_id}', 'FilmsController@del_from_faworite');
+
+    Route::apiResource('film_tags', 'FilmTagsController');
+    // Route::apiResource('film_categories', 'FilmCategoryController');
 
     /*
     *   Guid sport sectors routes
@@ -174,6 +208,25 @@ Route::group(['namespace'=>'Api'], function() {
     Route::post('/follow/{service_id}', 'UsersController@follow');
 
     Route::get('/options/get_user_data', 'UsersController@get_user_data');
+    Route::post('/options/user_info_update/{user_id}', 'UsersController@user_info_update');
+
+    Route::get('/options/get_user_notification_data', 'UsersController@get_user_notification_data');
+    Route::post('/options/update_user_notification_data/{notification_id}', 'UsersController@update_user_notification_data');
+    
+    /*
+    *   Users routes
+    */
+    Route::apiResource('/user_site', 'UserSiteController');
+
+    /*
+    *   User adresses
+    */
+    Route::get('/get_user_adreses', 'CartController@get_user_adreses');
+    Route::post('/add_user_adreses', 'CartController@add_user_adreses');
+    Route::post('/edit_adres/{adres_id}', 'CartController@edit_adres');
+    Route::post('/get_editing_adres/{adres_id}', 'CartController@get_editing_adres');
+    Route::get('/get_activ_adres/{adres_id}', 'CartController@get_activ_adres');
+    Route::delete('/del_user_adreses/{adres_id}', 'CartController@del_user_adreses');
 
     /*
     *   User roles and pormisions routes

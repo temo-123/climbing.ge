@@ -367,9 +367,13 @@
                     <div class="tab">
                         <div class="row edit_buttom">
                             <div class="col-md-6">
-                                <!-- <button class="btn btn-primary" >Add General data</button> -->
-
                                 <router-link class="btn btn-primary pull-left" :to="{ name: 'GlobalInfoAdd' }">Add General info</router-link>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-groupe">
+                                    <button @click="get_general_info()" class="btn btn-success float-right" v-if="!is_general_info_refresh">Refresh ({{general_info_reset_id}})</button>
+                                    <span class="badge badge-primare mb-1 float-right" v-if="is_general_info_refresh">Updating...</span>
+                                </div>
                             </div>
                         </div>
                         <table  class="table table-hover" id="dev-table" >
@@ -423,7 +427,9 @@
         data() {
             return {
                 site_info: [],
-                general_infos: []
+                general_infos: [],
+                is_general_info_refresh: false,
+                general_info_reset_id: 0
             }
         },
         components: {
@@ -435,11 +441,9 @@
         methods: {
             get_site_data: function(){
                 axios
-                .get('about/get_site_data/')
+                .get('./about/get_site_data/')
                 .then(response => {
                     this.site_info = response.data.site_info[0]
-                    // console.log('1');
-                    // console.log(this.site_info);
                 })
                 .catch(
                     error => console.log(error)
@@ -447,16 +451,26 @@
             },
             get_general_info: function(){
                 axios
-                .get('/api/general_info')
+                .get('./api/general_info')
                 .then(response => {
                     this.general_infos = response.data
+                    this.general_info_reset_id++
                 })
                 .catch(
                     error => console.log(error)
                 );
             },
-            del_general_info(){
-                alert('deliting test')
+            del_general_info(id){
+                if(confirm('Are you sure, you want delite it?')){
+                    axios
+                    .post('../api/general_info/'+id, {
+                        _method: 'DELETE'
+                    })
+                    .then(Response => {
+                        this.get_general_info()
+                    })
+                    .catch(error => console.log(error))
+                }
             }
         }
     }
@@ -466,4 +480,49 @@
     .edit_buttom{
         margin-bottom: 2%;
     }
+.tabs {
+    /* display: flex; */
+    flex-wrap: wrap;
+}
+.tabs label {
+    order: 1;
+    display: block;
+    padding: 1rem 2rem;
+    margin-right: 0.2rem;
+    cursor: pointer;
+    background: #ccced0;
+    font-weight: bold;
+    transition: background ease 0.2s;
+}
+.tabs .tab {
+    order: 99;
+    flex-grow: 1;
+    width: 100%;
+    display: none;
+    padding: 1rem;
+    background: #fff;
+    /* border: 1px solid #ccc!important; */
+}
+.tabs input[type="radio"] {
+    display: none;
+}
+.tabs input[type="radio"]:checked + label {
+    background: #fff;
+    border: 1px solid #ccc !important;
+}
+.tabs input[type="radio"]:checked + label + .tab {
+    display: block;
+}
+
+@media (max-width: 45em) {
+    .tabs .tab,
+    .tabs label {
+        order: initial;
+    }
+    .tabs label {
+        width: 100%;
+        margin-right: 0;
+        margin-top: 0.2rem;
+    }
+}
 </style>

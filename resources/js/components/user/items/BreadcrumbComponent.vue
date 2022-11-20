@@ -1,37 +1,56 @@
 <template>
-    <div>
-        <ol class="breadcrumb" style="padding: 0; font-size: 75%;">
-        <li><a href="#">index</a></li>
-        <li><a href="#">next page</a></li>
-        <!-- <li class="active">{{$active}}</li> -->
-        <li class="active">article</li>
-    </ol>
-    </div>
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb user_breadcrumb">
+            <li class="breadcrumb-item">
+                <router-link :to="{name: 'home'}">Home</router-link>
+            </li>
+            <li class="breadcrumb-item" v-if="path != page">
+                <a href="#">{{ path }}</a>
+            </li>
+            <li class="breadcrumb-item active" aria-current="page">{{ page }}</li>
+        </ol>
+    </nav>
 </template>
 
 <script>
     export default {
         props: [
-            // "securities",
+            // 
         ],
-        data: {
-            // slides: 7,
-            // slide_num: 1
-        },
         components: {
-            // 'carousel-3d': Carousel3d.Carousel3d,
-            // 'slide': Carousel3d.Slide
-        },
-        mounted() {
-            // console.log(this.slide_num);
+            //
         },
         methods: {
-            // slide_num: function(){
-            //     for (let securities = 0; securities < array.length; securities++) {
-            //         const element = array[securities];
-            //         return element;
-            //     }
+            //
+        },
+        data(){
+            return{
+                general_pathname: window.location.pathname,
+
+                path: '',
+                page: '',
+
+                path_url: '',
+            }
+        },
+        mounted() {
+            this.page = this.general_pathname.split("/").pop();
+
+            var path = this.general_pathname.split("/")[1]
+            this.path = path
+
+            // if(this.path == 'news' || this.path == 'event' || this.path == 'tech_tip' || this.path == 'partner'){
+            //     this.path_url = 'index'
             // }
-        }
+            // else{
+            //     this.path_url = path+'s'
+            // }
+        },
     }
 </script>
+
+<style>
+.user_breadcrumb {
+    background-color: #e9ecef !important;
+}
+</style>

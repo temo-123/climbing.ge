@@ -15,6 +15,16 @@ return new class extends Migration
     {
         Schema::create('locale_films', function (Blueprint $table) {
             $table->id();
+
+            $table->string('locale')->nullable();
+            $table->string('name')->nullable();
+            $table->string('short_description')->nullable();
+
+            $table->text('text')->nullable();
+
+            $table->string('coutry')->nullable();
+            $table->string('issue_year')->nullable();
+
             $table->timestamps();
         });
     }

@@ -34,12 +34,12 @@
                 .then(response => {
                     this.data_for_tab.push({'id': 1,
                                             'data': response.data, 
-                                            'table_name': 'comments', 
+                                            'table_name': 'Comments', 
                                             // 'table_category': this.$route.params.article_category, 
                                             'table_del_url': 'del_url', 
                                             'table_edit_url': 'edit_url'
                                         });
-                    this.get_categories_data()
+                    // this.get_categories_data()
                 })
                 .catch(
                     error => console.log(error)
@@ -47,19 +47,19 @@
 
             },
 
-            del_comment(itemId) {
-                axios
-                .post('/reviews_and_comments/delete_comment/' + itemId, {
-                    comment_id: itemId,
-                })
-                .then(Response => {
-                    console.log(response)
-                    this.get_all_comments_data()
-                })
-                .catch(
-                    error => console.log(error)
-                )
-            },
+            // del_comment(itemId) {
+            //     axios
+            //     .post('/reviews_and_comments/delete_comment/' + itemId, {
+            //         comment_id: itemId,
+            //     })
+            //     .then(Response => {
+            //         console.log(response)
+            //         this.get_all_comments_data()
+            //     })
+            //     .catch(
+            //         error => console.log(error)
+            //     )
+            // },
         }
     }
 </script>

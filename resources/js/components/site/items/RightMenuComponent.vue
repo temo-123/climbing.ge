@@ -1,6 +1,6 @@
 <template>
     <!-- <div> -->
-        <div :class='"col-sm-3 col-sm-offset-1 blog-sidebar display-none-720px "+[right_navbar_class]'>
+        <div :class='"col-xs-3 col-xs-offset-1 blog-sidebar display-none-720px "+[right_navbar_class]'>
             <nav class="navbar fading-side-menu">
                 <ul class="list-unstyled">
                     <li>
@@ -40,7 +40,18 @@
                 </ul>
             </nav>
 
-            <rightAd />
+            <!-- <rightAd /> -->
+
+            <div class="row">
+                <div class="col-sm-10 col-md-10">
+                    <div class="thumbnail">
+                        <img :src="'../../../images/site_img/place-your-ads-here.jpg'" alt="...">
+                        <div class="caption">
+                            <h3>Sveri camp</h3>
+                        </div>
+                    </div>
+                </div>
+            </div>
 
         </div>
     <!-- </div> -->
@@ -57,11 +68,16 @@
         mounted() {
             this.margin_bottom_position = document.body.offsetHeight - window.scrollY
 
-            if(this.margin_bottom_position <= 1900){
-                this.right_navbar_class = ''
+            if(document.body.offsetHeight > 2000){
+                if(this.margin_bottom_position <= 1900){
+                    this.right_navbar_class = ''
+                }
+                else{
+                    this.right_navbar_class = 'right_navigarion_menu_fixed_on_scrine'
+                }
             }
             else{
-                this.right_navbar_class = 'right_navigarion_menu_fixed_on_scrine'
+                this.right_navbar_class = ''
             }
         },
         // watch: {
@@ -76,12 +92,17 @@
             // },
             handleScroll (event) {
                 this.margin_bottom_position = document.body.offsetHeight - window.scrollY
-
-                if(this.margin_bottom_position <= 1900){
-                    this.right_navbar_class = ''
+                
+                if(document.body.offsetHeight > 2000){
+                    if(this.margin_bottom_position <= 1900){
+                        this.right_navbar_class = ''
+                    }
+                    else{
+                        this.right_navbar_class = 'right_navigarion_menu_fixed_on_scrine'
+                    }
                 }
                 else{
-                    this.right_navbar_class = 'right_navigarion_menu_fixed_on_scrine'
+                    this.right_navbar_class = ''
                 }
             }
         },
@@ -106,5 +127,8 @@
 .right_navigarion_menu_fixed_on_bottom{
     /* position: fixed; */
     right: 0;
+}
+.caption h3{
+margin: 0;
 }
 </style>

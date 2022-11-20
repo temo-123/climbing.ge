@@ -9,6 +9,8 @@ class General_info_article extends Model
 {
     use HasFactory;
 
+    public $table = 'article_general_infos';
+
     protected $fillable = [
         'info_id',
         'article_id',

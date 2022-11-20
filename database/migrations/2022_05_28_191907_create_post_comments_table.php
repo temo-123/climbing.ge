@@ -18,11 +18,7 @@ return new class extends Migration
 
             $table->text('text')->nullable();
 
-            // $table->integer('user_id')->nullable();
-            // $table->integer('post_id')->nullable();
-
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
-            // $table->foreignId('post_id')->constrained()->onDelete('cascade');
 
             $table->unsignedBigInteger('post_id');
             $table->foreign('post_id')->references('id')->on('forum_posts')->onDelete('cascade');

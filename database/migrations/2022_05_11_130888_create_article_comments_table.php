@@ -25,7 +25,10 @@ return new class extends Migration
             // $table->integer('article_id')->nullable();
 
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
-            $table->foreignId('article_id')->constrained()->onDelete('cascade');
+            // $table->foreignId('article_id')->constrained()->onDelete('cascade');
+
+            $table->string('deleted_reason')->nullable();
+            $table->timestamp('deleted_at')->nullable();
             
             $table->timestamps();
         });

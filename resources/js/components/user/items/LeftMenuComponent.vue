@@ -208,7 +208,7 @@
 
             <li class="list-group-item text-muted admin_menu_static_block"></li>
 
-            <li class="list-group-item text-muted" @click="logout()">
+            <li class="list-group-item text-muted" @click="logout()" :style="'cursor: pointer'">
                 <span class="admin_menu">{{ $t('user menu logout') }}</span>
             </li>
         </div>
@@ -242,7 +242,7 @@
                 .post('/logout')
                 .then(()=>{
                     // window.location.href = "http://climibng.loc";
-                    localStorage.removeItem('x_xsrf_token')
+                    localStorage.removeItem('x_xsrf_token');
                     this.$router.push({ name: "login" });
                 })
                 

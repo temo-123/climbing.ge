@@ -39,6 +39,9 @@ return new class extends Migration
             $table->text('map')->nullable();
             $table->string('image')->nullable();
 
+            $table->integer('published')->nullable();
+            $table->integer('completed')->nullable();
+
             // $table->string('region_id')->nullable();
 
             // $table->integer('mount_id')->nullable();
@@ -70,9 +73,6 @@ return new class extends Migration
 
             $table->unsignedBigInteger('ru_article_id');
             $table->foreign('ru_article_id')->references('id')->on('locale_articles')->onDelete('cascade');
-
-            $table->integer('published')->nullable();
-            $table->integer('completed')->nullable();
 
             $table->timestamps();
         });

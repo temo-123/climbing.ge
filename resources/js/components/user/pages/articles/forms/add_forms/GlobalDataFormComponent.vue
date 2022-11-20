@@ -2,7 +2,7 @@
     <div class="col-md-12" >
         <div class="row">
             <div class="col-md-12">
-                <div class="jumbotron jumbotron-fluid">
+                <div class="jumbotron width_100">
                     <div class="container">
                         <h2 class="display-4"><span style="text-transform: capitalize">{{this.category}}</span> article global information</h2>
                         <p class="lead">Article global information.</p>

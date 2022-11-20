@@ -80,4 +80,48 @@ class User extends Model
     {
         return null !== $this->roles()->where('name', $role)->first();
     }
+
+
+
+    public function comments()
+    {
+		// return $this->hasMany(Comment::class, 'id');
+		// return $this->hasMany(Comment::class, 'user_id');
+        return $this->belongsToMany(Comment::class, 'article_comment_user', 'user_id', 'comment_id');
+    }
+
+    public function favorite_products()
+    {
+		return $this->hasMany(Favorite_product::class, 'user_id');
+    }
+
+    public function favorite_outdoors()
+    {
+		return $this->hasMany(Favorite_outdoor_area::class, 'user_id');
+    }
+
+    public function favorite_films()
+    {
+		return $this->hasMany(Favorite_film::class, 'user_id');
+    }
+
+    public function interested_evenst()
+    {
+		return $this->hasMany(Interested_event::class, 'user_id');
+    }
+
+    public function adreses()
+    {
+		return $this->hasMany(User_adreses::class, 'user_id');
+    }
+
+    public function orders()
+    {
+		return $this->hasMany(Order::class, 'user_id');
+    }
+
+    public function notification_list()
+    {
+		return $this->hasOne(user_notification::class, 'user_id');
+    }
 }

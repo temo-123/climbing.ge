@@ -4,11 +4,18 @@
             <left-menu />
         </div>
         <div class="col-sm-9">
-            <div class="col-sm-12">
-                <tabsComponent 
-                    :table_data="this.data_for_tab"
-                    @filtr="filtr"
-                />
+            <div class="row">
+                <div class="col-md-12">
+                    <breadcrumb />
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-12">
+                    <tabsComponent 
+                        :table_data="this.data_for_tab"
+                        @filtr="filtr"
+                    />
+                </div>
             </div>
          </div>
     </div>
@@ -16,8 +23,10 @@
 
 <script>
     import tabsComponent  from '../../items/data_tabs/DataTab/TabsComponent'
-    export default {
-        components: {
+	import breadcrumb from '../../items/BreadcrumbComponent.vue'
+	export default {
+		components: {
+			breadcrumb,
             tabsComponent ,
         },
         // props: [

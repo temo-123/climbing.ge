@@ -3,9 +3,12 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Notifications\Notifiable;
 
 class Comment extends Model
 {
+  use Notifiable;
+
     public $table = 'article_comments';
 
     protected $fillable = [
@@ -14,12 +17,21 @@ class Comment extends Model
         'surname',
         'email',
         'text',
+
         'user_id',
-        'article_id'
+        'article_id',
+
+        'comment_deleted_reason'
     ];
 
-    public function articles()
+    public function article()
     {
-		return $this->hasMany(Article::class, 'id');
+		  return $this->hasOne(Article::class, 'id');
+    }
+
+    public function user()
+    {
+      return $this->hasOne(Article_comment_user::class, 'coment_id');
+      // return $this->belongsTo(Article_comment_user::class, 'coment_id');
     }
 }

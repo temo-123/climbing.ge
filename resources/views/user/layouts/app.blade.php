@@ -24,6 +24,12 @@
     {{-- <script async src="https://www.googletagmanager.com/gtag/js?id=UA-101870435-3"></script>
     <script src="{{ asset('assets/js/analitic/user.climbing.ge_analitic.js') }}"></script> --}}
 
+    <meta http-equiv="cache-control" content="max-age=0" />
+    <meta http-equiv="cache-control" content="no-cache" />
+    <meta http-equiv="expires" content="0" />
+    <meta http-equiv="expires" content="Tue, 01 Jan 1980 1:00:00 GMT" />
+    <meta http-equiv="pragma" content="no-cache" />
+
     <style> 
         /* Text copy block*/
         .unselectable { 

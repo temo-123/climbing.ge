@@ -107,7 +107,7 @@ if (window.location.hostname == process.env.MIX_SITE_URL) {
 } else if (window.location.hostname == process.env.MIX_FORUM_URL) {
     homeComponent = Forum;
     serviceRoutes = forum_routes;
-    analytic_id = "";
+    analytic_id = process.env.MIX_FORUM_ANALITICS_ID;
 } else {
     window.location.href = "/404";
 }
@@ -120,6 +120,7 @@ Vue.use(VueGtag, {
 // Vue.runtimeCompiler = true;
 Vue.config.productionTip = false;
 Vue.prototype.$siteData = [];
+Vue.prototype.$authUserData = [];
 
 const app = new Vue({
     el: "#app",
@@ -134,6 +135,7 @@ const app = new Vue({
 
     mounted() {
         this.get_site_data();
+        // this.get_auth_user_data()
     },
     methods: {
         get_site_data() {
@@ -141,10 +143,17 @@ const app = new Vue({
                 .get("../api/siteData")
                 .then((response) => (Vue.prototype.$siteData = response.data));
         },
+        // get_auth_user_data() {
+        //     axios
+        //     .get('../api/auth_user')
+        //     .then((response) => Vue.prototype.$authUserData = response.data)
+        // },
     },
     watch: {
         $route(to, from) {
             this.get_site_data();
+            // this.get_auth_user_data()
+
             window.scrollTo(0, 0);
         },
     },

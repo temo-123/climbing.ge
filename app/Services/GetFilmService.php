@@ -3,7 +3,7 @@
 namespace App\Services;
 
 use App\Models\Film;
-use App\Models\Film_files;
+use App\Models\Film_file;
 use App\Models\Locale_film;
 
 class GetFilmService

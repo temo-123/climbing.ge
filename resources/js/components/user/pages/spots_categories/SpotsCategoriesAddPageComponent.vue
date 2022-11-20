@@ -10,43 +10,13 @@
                 <button type="submit" class="btn btn-primary" v-on:click="add_spot_region()" >Save</button>
             </div>
         </div>
-        <div class="row">
+        <!-- <div class="row">
             <div class="col-md-12">
-                <div class="alert alert-danger" role="alert" v-if="error.global_article_error.published">
-                    {{ error.global_article_error.published[0] }}
-                </div>
-
-                <div class="alert alert-danger" role="alert" v-if="error.us_article_error.us_short_description">
-                    {{ error.us_article_error.us_short_description[0] }}
-                </div>
-                <div class="alert alert-danger" role="alert" v-if="error.us_article_error.us_short_description">
-                    {{ error.us_article_error.us_short_description[0] }}
-                </div>
-                <div class="alert alert-danger" role="alert" v-if="error.us_article_error.us_text">
-                    {{ error.us_article_error.us_text[0] }}
-                </div>
-
-                <div class="alert alert-danger" role="alert" v-if="error.ka_article_error.ka_short_description">
-                    {{ error.ka_article_error.ka_short_description[0] }}
-                </div>
-                <div class="alert alert-danger" role="alert" v-if="error.ka_article_error.ka_short_description">
-                    {{ error.ka_article_error.ka_short_description[0] }}
-                </div>
-                <div class="alert alert-danger" role="alert" v-if="error.ka_article_error.ka_text">
-                    {{ error.ka_article_error.ka_text[0] }}
-                </div>
-
-                <div class="alert alert-danger" role="alert" v-if="error.ru_article_error.ru_short_description">
-                    {{ error.ru_article_error.ru_short_description[0] }}
-                </div>
-                <div class="alert alert-danger" role="alert" v-if="error.ru_article_error.ru_short_description">
-                    {{ error.ru_article_error.ru_short_description[0] }}
-                </div>
-                <div class="alert alert-danger" role="alert" v-if="error.ru_article_error.ru_text">
-                    {{ error.ru_article_error.ru_text[0] }}
+                <div class="alert alert-danger" role="alert" v-if="error.spot_error.map">
+                    {{ error.spot_error.map[0] }}
                 </div>
             </div>
-        </div>
+        </div> -->
         <div class="row">
             <div class="col-md-12">
                 <div class="row">
@@ -72,87 +42,92 @@
                     </div>
                 </div>
             </div>
-            <div class="row" v-show="tab_num == 1">
-                <div class="jumbotron jumbotron-fluid">
-                    <div class="container">
-                        <h2 class="display-4"><span style="text-transform: capitalize">Region global information</span></h2>
-                        <p class="lead">Region global information.</p>
-                    </div>
-                </div>
-                <form >
-                    <div class="form-group clearfix row" >
-                        <label for="name" class='col-xs-2 control-label'> Map </label>
-                        <div class="col-xs-8">
-                            <input type="text" v-model="data.map" name="map" class="form-control"> 
+            <div class="col-md-12">
+                <div class="row width_100" v-show="tab_num == 1">
+                    <div class="jumbotron width_100">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <h2 class="display-4"><span>Region global information</span></h2>
+                                <p class="lead">Region global information.</p>
+                            </div>
                         </div>
                     </div>
-                </form>
-            </div>
-            <div class="row" v-show="tab_num == 2">
-                <div class="jumbotron jumbotron-fluid">
-                    <div class="container">
-                        <h2 class="display-4"><span style="text-transform: capitalize">Region English information</span></h2>
-                        <p class="lead">Region English information.</p>
-                    </div>
-                </div>
-                <form >
-                    <div class="form-group clearfix">
-                        <label for="name" class='col-xs-2 control-label'> English name </label>
-                        <div class="col-xs-8">
-                            <input type="text" v-model="data.us_name" name="us_name" class="form-control"> 
+                    <form >
+                        <div class="form-group clearfix row" >
+                            <label for="name" class='col-xs-2 control-label'> Map </label>
+                            <div class="col-xs-9">
+                                <input type="text" v-model="data.map" name="map" class="form-control"> 
+                            </div>
                         </div>
-                    </div>
+                    </form>
 
-                    <div class="form-group clearfix row">
-                        <label for="region" class='col-md-2 control-label '> English text </label>
-                        
-                        <ckeditor v-model="data.us_text"></ckeditor>
-                    </div>
-                </form>
-            </div>
-            <div class="row" v-show="tab_num == 3">
-                <div class="jumbotron jumbotron-fluid">
-                    <div class="container">
-                        <h2 class="display-4"><span style="text-transform: capitalize">Region Georgian information</span></h2>
-                        <p class="lead">Region Georgian information.</p>
-                    </div>
                 </div>
-                <form >
-                    <div class="form-group clearfix">
-                        <label for="name" class='col-xs-2 control-label'> Georgian name </label>
-                        <div class="col-xs-8">
-                            <input type="text" v-model="data.ka_name" name="ru_name" class="form-control"> 
+                <div class="row" v-show="tab_num == 2">
+                    <div class="jumbotron width_100">
+                        <div class="container">
+                            <h2 class="display-4"><span>Region English information</span></h2>
+                            <p class="lead">Region English information.</p>
                         </div>
                     </div>
+                    <form >
+                        <div class="form-group clearfix">
+                            <label for="name" class='col-xs-2 control-label'> English name </label>
+                            <div class="col-xs-10">
+                                <input type="text" v-model="data.us_name" name="us_name" class="form-control"> 
+                            </div>
+                        </div>
 
-                    <div class="form-group clearfix row">
-                        <label for="region" class='col-md-2 control-label '> Georgian text </label>
-                        
-                        <ckeditor v-model="data.ka_text"></ckeditor>
-                    </div>
-                </form>
-            </div>
-            <div class="row" v-show="tab_num == 4">
-                <div class="jumbotron jumbotron-fluid">
-                    <div class="container">
-                        <h2 class="display-4"><span style="text-transform: capitalize">Region Russion information</span></h2>
-                        <p class="lead">Region Russion information.</p>
-                    </div>
+                        <div class="form-group clearfix row">
+                            <label for="region" class='col-md-2 control-label '> English text </label>
+                            
+                            <ckeditor v-model="data.us_text"></ckeditor>
+                        </div>
+                    </form>
                 </div>
-                <form>
-                    <div class="form-group clearfix">
-                        <label for="name" class='col-xs-2 control-label'> Russion name </label>
-                        <div class="col-xs-8">
-                            <input type="text" v-model="data.ru_name" name="ka_name" class="form-control"> 
+                <div class="row" v-show="tab_num == 3">
+                    <div class="jumbotron width_100">
+                        <div class="container">
+                            <h2 class="display-4"><span>Region Georgian information</span></h2>
+                            <p class="lead">Region Georgian information.</p>
                         </div>
                     </div>
+                    <form >
+                        <div class="form-group clearfix">
+                            <label for="name" class='col-xs-2 control-label'> Georgian name </label>
+                            <div class="col-xs-10">
+                                <input type="text" v-model="data.ka_name" name="ru_name" class="form-control"> 
+                            </div>
+                        </div>
 
-                    <div class="form-group clearfix row">
-                        <label for="region" class='col-md-2 control-label '> Russion text </label>
-                        
-                        <ckeditor v-model="data.ru_text"></ckeditor>
+                        <div class="form-group clearfix row">
+                            <label for="region" class='col-md-2 control-label '> Georgian text </label>
+                            
+                            <ckeditor v-model="data.ka_text"></ckeditor>
+                        </div>
+                    </form>
+                </div>
+                <div class="row" v-show="tab_num == 4">
+                    <div class="jumbotron width_100">
+                        <div class="container">
+                            <h2 class="display-4"><span>Region Russion information</span></h2>
+                            <p class="lead">Region Russion information.</p>
+                        </div>
                     </div>
-                </form>
+                    <form>
+                        <div class="form-group clearfix">
+                            <label for="name" class='col-xs-2 control-label'> Russion name </label>
+                            <div class="col-xs-10">
+                                <input type="text" v-model="data.ru_name" name="ka_name" class="form-control"> 
+                            </div>
+                        </div>
+
+                        <div class="form-group clearfix row">
+                            <label for="region" class='col-md-2 control-label '> Russion text </label>
+                            
+                            <ckeditor v-model="data.ru_text"></ckeditor>
+                        </div>
+                    </form>
+                </div>
             </div>
         </div>
 
@@ -186,10 +161,7 @@
                 tab_num: 1,
 
                 error: {
-                    global_article_error: [],
-                    ka_article_error: [],
-                    ru_article_error: [],
-                    us_article_error: [],
+                    spot_error: [],
                 },
 
                 is_back_action: false,
@@ -215,14 +187,6 @@
             },
 
             add_spot_region() {
-                // this.article_data.global_data.us_title_for_url_title = this.article_data.en_data.title,
-
-                // this.is_us_article_error = []
-                // this.error.global_article_error = [],
-                // this.error.ka_article_error = [],
-                // this.error.ru_article_error = [],
-                // this.error.us_article_error = [],
-
                 axios
                 .post('../api/outdoor/add_spot/', {        
                     data: this.data,

@@ -1,15 +1,15 @@
 <template>
-    <div class="container">
+    <!-- <div class="container"> -->
         <div class="row">
             <div class="col-sm-3">
                 <left-menu />
             </div>
             <div class="col-sm-9">
-                <!-- <div class="row">
+                <div class="row">
                     <div class="col-md-12">
-                        <button class="btn btn-primary pull-left" >Go to product page</button>
+                        <breadcrumb />
                     </div>
-                </div> -->
+                </div>
                 <div class="row">
                     <div class="col-md-12">
                         <div class="card shopping-cart">
@@ -25,7 +25,8 @@
                                     <div v-for="product in cart_items" :key="product.id">
                                         <div class="row">
                                             <div class="col-sm-12 col-md-3 text-center">
-                                                <img class="img-responsive" :src="'../images/product_img/'+product.product_image" :alt="product.product.url_title">
+                                                <img v-if="product.product_image" class="img-responsive" :src="'../images/product_img/'+product.product_image" :alt="product.product.url_title">
+                                                <img v-else class="img-responsive" :src="'../../../public/images/site_img/shop_demo.jpg'" :alt="product.product.url_title">
                                             </div>
                                             <div class="text-sm-center col-sm-12 text-md-left col-md-4">
                                                 <h4 class="product-name"><strong>{{product.product.url_title}}</strong></h4>
@@ -39,8 +40,8 @@
                                                         <div class="row">
                                                             <div class="quantity text-right">
                                                                 <!-- Quantity -->
-                                                                <input type="number" @click="update_quantity(product.id, product.quantity)" v-model="product.quantity" step="1" max="99" min="1" title="Qty" class="qty"
-                                                                    size="4">
+                                                                <input type="number" v-if="!is_quantity_updating" @click="update_quantity(product.id, product.quantity)" v-model="product.quantity" step="1" :max="product.option.quantity" min="1" title="Quantity" class="Quantity" size="4">
+                                                                <span class="" v-else-if="is_quantity_updating">Updating...</span>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -68,28 +69,33 @@
                                         </div>
                                         <div class="col-6">
                                             <button type="button" class="btn btn-primary">Primary</button>
-                                        </div>
+                                        </div>'/order/order_decloration/'
                                     </div>
                                 </div> -->
-                                <div class="pull-right" style="margin: 10px">
-                                    <router-link :to="'/order/order_decloration/'+user_id">
+                                <div class="pull-right" style="margin: 10px" v-if="cart_items.length">
+                                    <router-link :to="{name: 'orderPayment', params: {user_id: user_id}}">
                                         <button type="button" class="btn btn-success pull-right">Continue shopping</button>
                                     </router-link>
                                     <div class="pull-right" style="margin: 5px">
-                                        Total price: <b>{{ total_price }}</b>
+                                        Total price: <b>{{ total_price }} ₾</b>
                                     </div>
                                 </div>
+
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
+    <!-- </div> -->
 </template>
 
 <script>
+    import breadcrumb from '../items/BreadcrumbComponent.vue'
     export default {
+        components: {
+            breadcrumb,
+        },
         props: [
         ],
         data(){
@@ -106,6 +112,7 @@
 
                 MIX_SHOP_URL: process.env.MIX_SHOP_URL,
                 MIX_APP_SSH: process.env.MIX_APP_SSH,
+                is_quantity_updating: false,
             }
         },
         mounted() {
@@ -123,7 +130,7 @@
                     this.cart_items = response.data
                     this.user_id = response.data[0]['user_id']
                     // this.is_products_refresh = false
-                    // this.products_reset_id++
+                    this.products_reset_id++
                     this.colculat_total_price()
                 })
                 .catch(
@@ -148,6 +155,7 @@
                 return colculated_price
             },
             update_quantity(item_id, quantity){
+                this.is_quantity_updating = true
                 axios
                 .post("./api/cart/update_quantity/" + item_id, {
                     quantity: quantity,
@@ -157,7 +165,8 @@
                 })
                 .catch(
                     error => console.log(error)
-                );
+                )
+                .finally(() => this.is_quantity_updating = false);
             },
             del_from_cart(item_id){
                 if(confirm('Are you sure, you want delite it?')){

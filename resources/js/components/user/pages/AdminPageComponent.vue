@@ -8,39 +8,41 @@
             <breadcrumb />
 
             <div class="tabs"> 
-                <div class="col-md-12">
-                    <div class="row">
-                        <div class="col" >
-                            <input type="radio" id="1" :value="1" v-model="tab_num">
-                            
-                            <label for="1" >Notifications</label>
-                        </div>
-                        <div class="col" >
-                            <input type="radio" id="2" :value="2" v-model="tab_num">
-                            
-                            <label for="2" >Content counts</label>
-                        </div>
-                        <div class="col" >
-                            <input type="radio" id="3" :value="3" v-model="tab_num">
-                            
-                            <label for="3" >Meils</label>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="row">
+                            <div class="col" >
+                                <input type="radio" id="1" :value="1" v-model="tab_num">
+                                
+                                <label for="1" >Notifications</label>
+                            </div>
+                            <div class="col" >
+                                <input type="radio" id="2" :value="2" v-model="tab_num">
+                                
+                                <label for="2" >Content counts</label>
+                            </div>
+                            <div class="col" >
+                                <input type="radio" id="3" :value="3" v-model="tab_num">
+                                
+                                <label for="3" >Meils</label>
+                            </div>
                         </div>
                     </div>
                 </div>
 
                 <div class="row" v-if="tab_num == 1">
                     <div class="col-md-12" >
-                        <div class="justify-content-center">
-                            <div class="card" v-if="
-                                    !this.$siteData['text'] ||
-                                    !this.$siteData['text_ru'] ||
-                                    !this.$siteData['text_ka'] ||
-                                    !this.$siteData['short_description_ru'] ||
-                                    !this.$siteData['short_description_ka'] ||
-                                    !this.$siteData['short_description']
-                                ">
-                                <div class="card-body">
-                                    <div class="alert alert-danger" role="alert">
+                        <!-- <div class="justify-content-center"> -->
+                            <!-- <div class="card">
+                                <div class="card-body"> -->
+                                    <div class="alert alert-danger" role="alert" v-if="
+                                            !this.$siteData['text'] ||
+                                            !this.$siteData['text_ru'] ||
+                                            !this.$siteData['text_ka'] ||
+                                            !this.$siteData['short_description_ru'] ||
+                                            !this.$siteData['short_description_ka'] ||
+                                            !this.$siteData['short_description']
+                                        ">
                                         <strong>Danger!</strong> 
                                         Your web-site information is not fool. check page "
                                         <router-link :to="{name: 'siteInfo'}" exact> 
@@ -48,44 +50,44 @@
                                         </router-link>
                                         ", and add missing information.
                                     </div>
-                                </div>
-                            </div>
-                            <div class="card" v-if="this.counts['global_articles_count_us_error']">
-                                <div class="card-body">
-                                    <div class="alert alert-danger" role="alert">
+                                <!-- </div>
+                            </div> -->
+                            <!-- <div class="card" >
+                                <div class="card-body"> -->
+                                    <div class="alert alert-danger" role="alert" v-if="this.counts['global_articles_count_us_error']">
                                         <strong>Danger!</strong> {{ this.counts['global_articles_count_us_error'] }} articles have empty "us_article_id" vallue. It is wery bad for site localization.
                                     </div>
-                                </div>
+                                <!-- </div>
                             </div>
-                            <div class="card" v-if="this.counts['global_articles_count_ka_error']">
-                                <div class="card-body">
-                                    <div class="alert alert-danger" role="alert">
+                            <div class="card">
+                                <div class="card-body"> -->
+                                    <div class="alert alert-danger" role="alert" v-if="this.counts['global_articles_count_ka_error']">
                                         <strong>Danger!</strong> {{ this.counts['global_articles_count_ka_error'] }} articles have empty "ka_article_id" vallue. It is wery bad for site localization.
                                     </div>
-                                </div>
+                                <!-- </div>
                             </div>
-                            <div class="card" v-if="this.counts['global_articles_count_ru_error']">
-                                <div class="card-body">
-                                    <div class="alert alert-danger" role="alert">
+                            <div class="card">
+                                <div class="card-body"> -->
+                                    <div class="alert alert-danger" role="alert" v-if="this.counts['global_articles_count_ru_error']">
                                         <strong>Danger!</strong> {{ this.counts['global_articles_count_ru_error'] }} articles have empty "ru_article_id" vallue. It is wery bad for site localization.
                                     </div>
-                                </div>
-                            </div>
-                        </div>
+                                <!-- </div>
+                            </div> -->
+                        <!-- </div> -->
                     </div>
                 </div>
 
                 <div class="row" v-if="tab_num == 2">
                     <div class="col-md-12" >
-                        <div class="card">
-                            <div class="card-body" v-if="this.counts['us_articles_errors_count'] || this.counts['ru_articles_errors_count'] || this.counts['ka_articles_errors_count']">
-                                <div class="alert alert-danger" role="alert">
+                        <!-- <div class="card">
+                            <div class="card-body" > -->
+                                <div class="alert alert-danger" role="alert" v-if="this.counts['us_articles_errors_count'] || this.counts['ru_articles_errors_count'] || this.counts['ka_articles_errors_count']">
                                     <div class="col" v-if="this.counts['us_articles_errors_count']">us_articles error_count - {{this.counts['us_articles_errors_count']}}</div>
                                     <div class="col" v-if="this.counts['ru_articles_errors_count']">ru_articles error_count - {{this.counts['ru_articles_errors_count']}}</div>
                                     <div class="col" v-if="this.counts['ka_articles_errors_count']">ka_articles error_count - {{this.counts['ka_articles_errors_count']}}</div>
                                 </div>
-                            </div>
-                        </div>
+                            <!-- </div>
+                        </div> -->
 
                         <div class="card">
                             <div class="card-body">

@@ -110,7 +110,7 @@
                                 <li><router-link :to="{name: 'about_store'}" exact> <span> {{ $t('shop menu about us') }} </span> </router-link></li>
 
                                 <li class="display-none-720px">
-                                    <a style="margin-top: -5%;" @click="goTo('/cart/my_cart')">
+                                    <a style="margin-top: -5%;" @click="goTo('/cart')">
                                         <i class="fa fa-shopping-cart"></i>
                                     </a>
                                 </li>

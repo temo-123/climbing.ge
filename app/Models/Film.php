@@ -12,12 +12,12 @@ class Film extends Model
 
     public function files()
 	{
-		return $this->hasMany(Film_files::class, 'film_id');
+		return $this->hasMany(Film_file::class, 'film_id');
 	}
 
-    public function category()
+    public function tags()
     {
-        return $this->hasOne(Film_category::class, 'film_id');
+        return $this->hasMany(Film_tag::class, 'film_id');
     }
 
     

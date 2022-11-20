@@ -3,25 +3,26 @@
     <div class="row">
         <div class="form-group">  
             <button type="submit" class="btn btn-primary" v-on:click="add_category()" >Save</button>
+            <button type="submit" class="btn btn-primary" v-on:click="go_back()" >Go back</button>
         </div>
     </div>
     <div class="row">
         <div class="tabs">
 
             <input type="radio" name="tabs" id="1" checked="checked">
-            <label for="1" >global info</label>
+            <label for="1" >Global info</label>
             <div class="tab" >
                 <div class="jumbotron jumbotron-fluid">
                     <div class="container">
-                        <h2 class="display-4">{{this.category}} article global information</h2>
-                        <p class="lead">Article global information.</p>
+                        <h2 class="display-4">Add Product Category</h2>
+                        <!-- <p class="lead">Article global information.</p> -->
                     </div>
                 </div>
 
                 <form>
                     <div class="form-group clearfix">
                         <label for="name" class='col-xs-2 control-label'> us name </label>
-                        <div class="col-xs-8">
+                        <div class="col-xs-10">
                             <input type="text" v-model="data.us_name" name="us_name" class="form-control"> 
                             <div class="alert alert-danger" role="alert" v-if="errors.us_name">
                                 {{ errors.us_name[0] }}
@@ -30,7 +31,7 @@
                     </div>
                     <div class="form-group clearfix">
                         <label for="name" class='col-xs-2 control-label'> ru name </label>
-                        <div class="col-xs-8">
+                        <div class="col-xs-10">
                             <input type="text" v-model="data.ru_name" name="ru_name" class="form-control"> 
                             <div class="alert alert-danger" role="alert" v-if="errors.ru_name">
                                 {{ errors.ru_name[0] }}
@@ -39,7 +40,7 @@
                     </div>
                     <div class="form-group clearfix">
                         <label for="name" class='col-xs-2 control-label'> ka name </label>
-                        <div class="col-xs-8">
+                        <div class="col-xs-10">
                             <input type="text" v-model="data.ka_name" name="ka_name" class="form-control"> 
                             <div class="alert alert-danger" role="alert" v-if="errors.ka_name">
                                 {{ errors.ka_name[0] }}
@@ -76,17 +77,12 @@
 
             add_category() {
                 axios
-                // .post('/products/category/add/', {        
-                //     us_name: this.us_name,
-                //     ru_name: this.ru_name,
-                //     ka_name: this.ka_name,
-                // })
-                .get('../api/product_category/create/', {        
+                .post('../../api/product_category/', {
                     data: this.data,
-                    _method: 'GET'
+                    _method: 'POST'
                 })
                 .then((response)=> { 
-                    window.location.href = this.back_url;
+                    this.go_back()
                 })
                 .catch(error =>{
                     if (error.response.status == 422) {
@@ -95,9 +91,9 @@
                 })
             },
 
-            // save_all() {
-            //     this.add_category()
-            // }
+            go_back() {
+                this.$router.go(-1)
+            }
         }
     }
 </script>

@@ -322,7 +322,7 @@
                 this.error.us_article_error = [],
 
                 axios
-                .post('/api/article/' + this.category, {        
+                .post('/api/article/' + this.category, {
                     data: this.article_data,
 
                     global_blocks: this.global_blocks,

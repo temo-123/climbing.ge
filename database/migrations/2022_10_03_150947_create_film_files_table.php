@@ -15,6 +15,19 @@ return new class extends Migration
     {
         Schema::create('film_files', function (Blueprint $table) {
             $table->id();
+
+            $table->string('us_name')->nullable();
+            $table->string('ka_name')->nullable();
+            $table->string('ru_name')->nullable();
+
+            $table->text('us_description')->nullable();
+            $table->text('ka_description')->nullable();
+            $table->text('ru_description')->nullable();
+
+            $table->string('file')->nullable();
+
+            $table->foreignId('film_id')->constrained()->onDelete('cascade');
+
             $table->timestamps();
         });
     }
