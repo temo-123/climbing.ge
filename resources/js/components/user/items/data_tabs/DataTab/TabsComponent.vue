@@ -126,6 +126,14 @@
                                     >
                                         <button class="btn btn-primary pull-left" @click="sale_code_modal('add')">New sale code</button>
                                     </span>
+                                    <!-- <span
+                                        v-else-if="
+                                            filtr_data.table_name == 'Sectors local images' &&
+                                            filtr_data.table_category !== null
+                                        "
+                                    >
+                                        <button class="btn btn-primary pull-left">New local image</button>
+                                    </span> -->
                                     <span v-else>
                                         <span v-if="filtr_data.table_add_url">
                                             <router-link
@@ -179,24 +187,28 @@
 
                             v-if="tab_num == data.id"
                         >
+
+                        
                             <thead v-if="data.table_name == 'Orders' || data.table_name == 'My orders' ">
                                 <orderTabHeader 
                                     :table_name="data.table_name"
                                 />
                             </thead>
-                        
                             <thead v-if="data.table_name == 'Films tags' || data.table_name == 'Film categories'">
                                 <filmTagsTabHeader 
                                     :table_name="data.table_name"
                                 />
                             </thead>
-                        
                             <thead v-if="data.table_name == 'Products'">
                                 <productTagsTabHeader 
                                     :table_name="data.table_name"
                                 />
                             </thead>
-                        
+                            <thead v-if="data.table_name == 'Sectors local images'">
+                                <sectorLocalImageTabHeader 
+                                    :table_name="data.table_name"
+                                />
+                            </thead>
                             <thead v-else-if="
                                         data.table_name == 'outdoor' || 
                                         data.table_name == 'indoor'  || 
@@ -213,7 +225,6 @@
                                     :table_name="data.table_name"
                                 />
                             </thead>
-
                             <thead v-else>
                                 <tabHeader :data="data"/>
                             </thead>
@@ -229,6 +240,13 @@
                             </tbody>
                             <tbody v-else-if="data.table_name == 'Products'">
                                 <productsTab
+                                    v-for="table_info in data.data"
+                                    :key="table_info.id"
+                                    :table_info="table_info"
+                                />
+                            </tbody>
+                            <tbody v-else-if="data.table_name == 'Sectors local images'">
+                                <sectorLocalImageTab
                                     v-for="table_info in data.data"
                                     :key="table_info.id"
                                     :table_info="table_info"
@@ -404,7 +422,9 @@ import orderTabHeader from "./tab_header/OrderTabHeaderComponent.vue"
 import articleTabHeader from "./tab_header/ArticleTabHeaderComponent.vue"
 import filmTagsTabHeader from "./tab_header/FilmTagsTabHeaderComponenr.vue"
 import productTagsTabHeader from "./tab_header/ProductTabHeaderComponent.vue"
+import sectorLocalImageTabHeader from "./tab_header/SectorLocalImageTabHeaderComponent.vue"
 
+import sectorLocalImageTab from "./tabs/SectorLocalImageTabComponent.vue";
 import routeTab from "./tabs/RouteTabComponent.vue";
 import sectorTab from "./tabs/SectorTabComponent.vue";
 import articlesTab from "./tabs/ArticlesTabComponent.vue";
@@ -444,7 +464,9 @@ export default {
         articleTabHeader,
         filmTagsTabHeader,
         productTagsTabHeader,
+        sectorLocalImageTabHeader,
 
+        sectorLocalImageTab,
         routeTab,
         sectorTab,
         articlesTab,

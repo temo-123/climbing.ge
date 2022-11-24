@@ -77,10 +77,18 @@
                     @global_form_data="article_data.global_data = $event" 
                 />
 
-                <ArticleImage ref="ArticleImage"/>
+                <div class="row">
+                    <div class="col-md-12">
+                        <ArticleImage ref="ArticleImage"/>
+                    </div>
+                </div>
 
-                <!-- <SectorsImagesForm      v-if="this.category == 'outdoor'"       :category="this.category"/>
-                <MountRouteImagesForm   v-if="this.category == 'mount_route'"   :category="this.category"/> -->
+                <div class="row">
+                    <div class="col-md-12">
+                        <SectorsImagesForm      v-if="this.category == 'outdoor'"       :category="this.category"/>
+                        <MountRouteImagesForm   v-if="this.category == 'mount_route'"   :category="this.category"/>
+                    </div>
+                </div>
             </div>
             <div class="row" v-show="tab_num == 2">
                 <LocaleDataForm 

@@ -114,6 +114,10 @@
               placeholder="Confirm password"
             />
           </div>
+          <div class="form-group">
+            <input type="checkbox" v-model="terms_of_use" name="One time code" value="One time code">
+            I agree with the <a href="" >terms of use</a>
+          </div>
           <div class="row">
               <div class="col-md-12">
                   <div class="form-group form_left">
@@ -134,11 +138,11 @@
           </button> -->
           <div class="row">
             <div class="col-md-12">
-                <div class="form-group"  v-if="is_verify_isset == false">
-                    <button type="submit" @click="register" class="btn btn-default btn-send main-btn" disabled>Send</button>
+                <div class="form-group"  v-if="is_verify_isset != false && terms_of_use != false">
+                    <button type="submit" @click="register" class="btn btn-default btn-send main-btn">Send</button>
                 </div>
                 <div class="form-group"  v-else>
-                    <button type="submit" @click="register" class="btn btn-default btn-send main-btn">Send</button>
+                    <button type="submit" @click="register" class="btn btn-default btn-send main-btn" disabled>Send</button>
                 </div>
             </div>
           </div>
@@ -158,7 +162,7 @@ export default {
     components: { 
         VueRecaptcha,
     },
-  name: "Home",
+  name: "Register page",
   data: function() {
     return {
       name: null,
@@ -173,6 +177,7 @@ export default {
       errors: [],
 
       is_verify_isset: false,
+      terms_of_use: false,
 
       errors: [],
 

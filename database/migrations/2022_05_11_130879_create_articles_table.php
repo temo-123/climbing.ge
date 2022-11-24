@@ -19,8 +19,8 @@ return new class extends Migration
             $table->string('category')->nullable();
             $table->string('url_title')->unique();
 
-            $table->timestamp('start_data')->nullable();
-            $table->timestamp('end_data')->nullable();
+            // $table->timestamp('start_data')->nullable();
+            // $table->timestamp('end_data')->nullable();
 
             $table->string('fb_link')->nullable();
             $table->string('inst_link')->nullable();
@@ -40,7 +40,7 @@ return new class extends Migration
             $table->string('image')->nullable();
 
             $table->integer('published')->nullable();
-            $table->integer('completed')->nullable();
+            // $table->integer('completed')->nullable();
 
             // $table->string('region_id')->nullable();
 

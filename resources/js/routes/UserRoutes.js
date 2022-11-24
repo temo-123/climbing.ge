@@ -180,6 +180,10 @@ const router = new VueRouter({
 
         { path: '/MTPPitch/add', name: 'MTPPitchAdd', component: MTPPitchAdd },
         { path: '/MTPPitch/edit/:id', name: 'MTPPitchEdit', component: MTPPitchEdit },
+
+        { path: '/sector_local_images', name: 'sectorLocalImagesList', component: load('sector_local_images/sectorLocalImagesListComponent') },
+        { path: '/sector_local_images/add', name: 'sectorLocalImagesListAdd', component: load('sector_local_images/sectorLocalImageAddComponent') },
+        { path: '/sector_local_images/edit/:id', name: 'sectorLocalImagesListEdit', component: load('sector_local_images/sectorLocalImageEditComponent') },
         
 
         { path: '/products_and_categories', name: 'productsList', component: productsList },

@@ -20,6 +20,7 @@ class imageControllService
         * $image_dir            - image wai in derectory from '/public/' derectory
         * $request              - HTTP request
         * $form_value_id        - image value name in your form
+        * $resize               - Image resize action (defolt it null)
         *
         */
 
@@ -45,7 +46,7 @@ class imageControllService
         // } 
     }
 
-    public static function image_update($image_dir, $model, $request, $form_value_id, $resize, $db_value)
+    public static function image_update($image_dir, $model, $request, $form_value_id, $db_value, $resize = 0,)
     {
         /*
         *
@@ -54,7 +55,9 @@ class imageControllService
         * $image_dir            - image wai in derectory from '/public/' derectory
         * $model                - updated model in copntroller
         * $request              - HTTP request
+        * $form_value_id        - image value name in your form
         * $db_value             - Database value name
+        * $resize               - Image resize action (defolt it null)
         *
         */
 

@@ -248,14 +248,14 @@ class ArticleController extends Controller
 
                 $article['category']=$global_data["category"];
                 $article['published']=$global_data["published"];
-                $article['completed']=$global_data["completed"];
+                // $article['completed']=$global_data["completed"];
                 $article['map']=$global_data["map"];
                 $article['weather']=$global_data["weather"];
 
-                $article['start_data']=$global_data["start_data"];
-                $article['end_data']=$global_data["end_data"];
+                // $article['start_data']=$global_data["start_data"];
+                // $article['end_data']=$global_data["end_data"];
 
-                $article['open_timen'] = $global_data["open_timen"];
+                $article['open_time'] = $global_data["open_timen"];
                 $article['closed_time'] = $global_data["closed_time"];
 
                 $article['price_from'] = $global_data["price_from"];

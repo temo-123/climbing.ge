@@ -1,7 +1,7 @@
 <template>
     <form @submit="checkForm" ref="myForm">
         <div class="form-group clearfix row">
-            <label for="email" class='col-md-5 control-label'>Upload article image:</label>
+            <label for="email" class='col-md-6 control-label'>Upload article image:</label>
             <div class="col-md-6">
                 <input type="file" name="image" id="image">
             </div>

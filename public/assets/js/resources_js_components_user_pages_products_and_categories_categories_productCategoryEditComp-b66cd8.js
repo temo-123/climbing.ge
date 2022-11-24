@@ -80,16 +80,13 @@ __webpack_require__.r(__webpack_exports__);
     };
   },
   mounted: function mounted() {
-    this.get_editing_category_data(); // this.editing_category_id = this.$route.params.id
-    // console.log("🚀 ~ file: productCategoryEditComponent.vue ~ line 76 ~ mounted ~ this.$route.params.id", this.$route.params.id)
+    this.get_editing_category_data();
   },
   methods: {
     get_editing_category_data: function get_editing_category_data() {
       var _this = this;
 
       axios.get('../../../api/product_category/' + this.editing_category_id).then(function (response) {
-        // this.editing_data = response.data
-        // console.log("🚀 ~ file: productCategoryEditComponent.vue ~ line 84 ~ get_editing_category_data ~ response.data", response.data['us_name'])
         _this.editing_data.us_name = response.data['us_name'], _this.editing_data.ru_name = response.data['ru_name'], _this.editing_data.ka_name = response.data['ka_name'];
       })["catch"](function (error) {
         return console.log(error);

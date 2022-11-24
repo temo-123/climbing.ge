@@ -45,4 +45,9 @@ class Sector extends Model
 	{
 		return $this->hasOhe(Spot_rocks_image_sector::class, 'sector_id');
 	}
+
+	public function sector_local_image()
+	{
+		return $this->hasOhe(Spot_rocks_image_sector::class, 'sector_id');
+	}
 }

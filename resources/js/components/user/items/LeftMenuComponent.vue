@@ -115,11 +115,23 @@
                     <span class="admin_menu">{{ $t('user menu sectors & routes') }}</span>
                 </li>
             </router-link>
+
+            <router-link :to="{name: 'sectorLocalImagesList'}" exact>
+                <li class="list-group-item text-muted mbing Secrots And Route">
+                    <span class="admin_menu">{{ $t('Sector local images') }}</span>
+                </li>
+            </router-link>
+
+            <li class="list-group-item text-muted admin_menu_static_block"></li>
+
             <router-link :to="{ name: 'mountlist' }">
                 <li class="list-group-item text-muted">
                     <span class="admin_menu">{{ $t('user menu mountaineering') }}</span>
                 </li>
             </router-link>
+
+            <li class="list-group-item text-muted admin_menu_static_block"></li>
+
             <router-link :to="{ name: 'articlelist', params: { article_category: 'indoor' } }">
                 <li class="list-group-item text-muted">
                     <span class="admin_menu">{{ $t('user menu indoor climbing') }}</span>
@@ -150,6 +162,9 @@
                     <span class="admin_menu">{{ $t('user menu partners') }}</span>
                 </li>
             </router-link>
+
+            <li class="list-group-item text-muted admin_menu_static_block"></li>
+
             <router-link :to="{ name: 'articlelist', params: { article_category: 'events' } }">
                 <li class="list-group-item text-muted ">
                     <span class="admin_menu">{{ $t('user menu events') }}</span>
@@ -197,8 +212,6 @@
                     <span class="admin_menu">{{ $t('user menu users') }}</span>
                 </li>
             </router-link>
-
-            <li class="list-group-item text-muted admin_menu_static_block"></li>
 
             <router-link :to="{name: 'options'}" exact>
                 <li class="list-group-item text-muted ">

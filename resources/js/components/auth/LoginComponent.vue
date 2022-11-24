@@ -50,6 +50,10 @@
               {{ errors.password[0] }} 
             </div>
           </div>
+          <div class="form-group">
+            <input type="checkbox" v-model="remember_me" name="One time code" value="One time code">
+            Remember me
+          </div>
           <button type="button" @click.prevent="login" class="btn btn-primary">
             Login
           </button>
@@ -72,6 +76,7 @@
         password: null,
         errors: [],
         email_errors: null,
+        remember_me: null,
 
         MIX_USER_PAGE_URL: process.env.MIX_USER_PAGE_URL,
         MIX_APP_SSH: process.env.MIX_APP_SSH

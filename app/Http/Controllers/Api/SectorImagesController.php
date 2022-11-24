@@ -5,6 +5,8 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
+use App\Models\Sector_image;
+
 class SectorImagesController extends Controller
 {
     /**
@@ -14,7 +16,7 @@ class SectorImagesController extends Controller
      */
     public function index()
     {
-        //
+        return Sector_image::latest('id')->get();
     }
 
     /**
@@ -35,7 +37,14 @@ class SectorImagesController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $new_sale_adres = new Sector_image;
+
+        $new_sale_adres['discount'] = $request->data['discount'];
+        $new_sale_adres['code'] = $request->data['sale_code'];
+        $new_sale_adres['action_data'] = $request->data['validity_date'];
+        $new_sale_adres['one_time_code'] = $request->data['one_time_code'];
+
+        $new_sale_adres -> save();
     }
 
     /**
@@ -46,7 +55,7 @@ class SectorImagesController extends Controller
      */
     public function show($id)
     {
-        //
+        return Sector_image::where("id", "=", $id)->first();
     }
 
     /**
@@ -69,7 +78,15 @@ class SectorImagesController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        // dd($request->editing_data['discount']);
+        $editing_product_category = Sector_image::where("id", "=", $id)->first();
+
+        $editing_product_category['discount'] = $request->editing_data['discount'];
+        $editing_product_category['code'] = $request->editing_data['sale_code'];
+        $editing_product_category['action_data'] = $request->editing_data['validity_date'];
+        $editing_product_category['one_time_code'] = $request->editing_data['one_time_code'];
+
+        $editing_product_category -> save();
     }
 
     /**
@@ -80,7 +97,8 @@ class SectorImagesController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $deleted_product_category = Sector_image::where("id", "=", $id)->first();
+        $deleted_product_category -> delete();
     }
 
 

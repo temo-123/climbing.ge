@@ -360,7 +360,10 @@ class SectorController extends Controller
     }
 
 
-
+    public function get_region_sectors(Request $request)
+    {
+        return Sector::where('article_id', '=', $request->region_id)->get();
+    }
 
 
 

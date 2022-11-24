@@ -186,6 +186,7 @@ Route::group(['namespace'=>'Api'], function() {
     Route::get('/get_sectors_for_forum/{article_id}', 'SectorController@get_sectors_for_forum');
     Route::get('/sectors_and_routes_quantity', 'SectorController@get_sectors_and_routes_quantity');
     Route::get('/get_spot_rocks_images/{article_id}', 'SectorController@get_spot_rocks_images');
+    // Route::get('/get_region_sectors/{region_id}', 'SectorController@get_region_sectors');
 
     Route::apiResource('/route', 'RouteController');
     Route::get('/get_routes_for_forum/{sector_id}', 'RouteController@get_routes_for_forum');
@@ -196,6 +197,11 @@ Route::group(['namespace'=>'Api'], function() {
     Route::get('/get_mtps_for_forum/{sector_id}', 'MTPController@get_mtps_for_forum');
     
     Route::apiResource('/MTPPitch', 'MTPPitchController');
+
+    Route::apiResource('/sector_local_images', 'SectorLocalImagesController');
+    Route::post('/sector_local_images/update_image/{image_id}', 'SectorLocalImagesController@update_image');
+    Route::get('/get_editing_sectors/{image_id}', 'SectorLocalImagesController@get_editing_sectors');
+    Route::delete('/del_image_sector_from_db/{image_id}/{sector_id}', 'SectorLocalImagesController@del_image_sector_from_db');
 
     /*
     *   Users routes

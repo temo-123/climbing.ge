@@ -71,17 +71,12 @@
         },
         mounted() {
             this.get_editing_category_data()
-
-            // this.editing_category_id = this.$route.params.id
-            // console.log("🚀 ~ file: productCategoryEditComponent.vue ~ line 76 ~ mounted ~ this.$route.params.id", this.$route.params.id)
         },
         methods: {
             get_editing_category_data() {
                 axios
                 .get('../../../api/product_category/' + this.editing_category_id)
-                .then(response => { 
-                    // this.editing_data = response.data
-                    // console.log("🚀 ~ file: productCategoryEditComponent.vue ~ line 84 ~ get_editing_category_data ~ response.data", response.data['us_name'])
+                .then(response => {
                     this.editing_data.us_name = response.data['us_name'],
                     this.editing_data.ru_name = response.data['ru_name'],
                     this.editing_data.ka_name = response.data['ka_name']
