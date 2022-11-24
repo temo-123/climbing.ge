@@ -7,10 +7,13 @@ use Illuminate\Http\Request;
 
 use Validator;
 use Auth;
+
 use App\User;
 use App\Models\Following_users;
 use App\Models\Role;
 use App\Models\user_notification;
+
+use App\Services\ImageControllService;
 
 use Mail;
 use App\Notifications\FollowingNotification;
@@ -99,10 +102,26 @@ class UsersController extends Controller
     public function user_image_update(Request $request)
     {
         if (Auth::user()) {
-            dd('update image');
+            $user = user::where('id', '=', $request->user_id)->first();
+            if($user->image != null){
+                if($request->hasFile('image')){
+                    $file_new_name = ImageControllService::image_update('images/user_profil_img/', $user, $request, 'image', 'image');
+                    $user['image'] = $file_new_name;
+                }
+        
+                $user -> save();
+            }
+            else{
+                if($request->hasFile('image')){
+                    $file_new_name = ImageControllService::image_upload('images/user_profil_img/', $request, 'image');
+                    $user['image'] = $file_new_name;
+                }
+        
+                $user -> save();
+            }
         }
         else{
-            dd('Plees login');
+            return 'Plees login';
         }
     }
 

@@ -4,7 +4,7 @@
             <div class="row">
                 <div class="col-md-6 col-sm-12 img">
                     <img v-if="this.user.image == null" :src="'/public/images/site_img/user_demo_img.gif'" class="rounded mx-auto d-block user_demo_img"  :alt="this.user.name">
-                    <img v-else :src="'/public/images/user_img/' + this.user.image" class="rounded mx-auto d-block user_demo_img"  :alt="this.user.name">
+                    <img v-else :src="'/public/images/user_profil_img/' + this.user.image" class="rounded mx-auto d-block"  :alt="this.user.name">
                     <p class="user_image_update_bot" @click="open_edit_image_modal()">Edit image</p>
                 </div>
                 <div class="col-md-6 col-sm-12 details">
@@ -19,18 +19,18 @@
 
                     <!-- <p>Your Status = {{this.status}}</p> -->
 
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-md-6">
-                    <div class="form-groupe">
-                        <button @click="open_edit_modal()" class="btn btn-primary">Edit my data</button>
-                    </div>
-                </div>
-                <div class="col-md-6">
-                    <div class="form-groupe">
-                        <button @click="get_user_data" class="btn btn-success float-right" v-if="!user_is_refresh">Refresh ({{user_reset_id}})</button>
-                        <span class="badge badge-primare mb-1 float-right" v-if="user_is_refresh">Updating...</span>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-groupe">
+                                <button @click="open_edit_modal()" class="btn btn-primary">Edit my data</button>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-groupe">
+                                <button @click="get_user_data" class="btn btn-success float-right" v-if="!user_is_refresh">Refresh ({{user_reset_id}})</button>
+                                <span class="badge badge-primare mb-1 float-right" v-if="user_is_refresh">Updating...</span>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -194,13 +194,9 @@
             <pre class="language-vue">
 
                 <img v-if="user.image == null" :src="'/public/images/site_img/user_demo_img.gif'" class="rounded mx-auto d-block user_demo_img"  :alt="this.user.name">
-                <img v-if="user.image"  :src="'/public/images/user_img/' + this.user.image" class="rounded mx-auto d-block user_demo_img"  :alt="this.user.name">
+                <img v-if="user.image"  :src="'/public/images/user_profil_img/' + this.user.image" class="rounded mx-auto d-block"  :alt="this.user.name">
 
-                <!-- <form class="form" method="POST" @submit.prevent="user_data_update" id="registrationForm">
-                    <input type="file" id="img" name="img" accept="image/*">
-                </form> -->
-
-                <form ref="myForm">
+                <form ref="myForm" v-on:submit.prevent="edit_image" id="profil_image_form">
                     <div class="container">
                         <div class="form-group clearfix row">
                             <input type="file" name="image" id="image" value="image">
@@ -211,9 +207,9 @@
             <div slot="modal-footer">
                 <div class="modal-footer">
                     <button
-                        type="button"
+                        type="submit"
                         :class="{'btn btn-primary': true}"
-                        @click="edit_image(editing_image.id)"
+                        form="profil_image_form"
                     >
                     Save
                     </button>
@@ -253,15 +249,15 @@
 </template>
 
 <script>
-import { SlickList, SlickItem } from 'vue-slicksort'; //https://github.com/Jexordexan/vue-slicksort
-import StackModal from '@innologica/vue-stackable-modal'  //https://innologica.github.io/vue-stackable-modal/#sample-css
-export default {
-    components: {
-        StackModal,
-        SlickItem,
-        SlickList,
-    },
-    data(){
+    import { SlickList, SlickItem } from 'vue-slicksort'; //https://github.com/Jexordexan/vue-slicksort
+    import StackModal from '@innologica/vue-stackable-modal'  //https://innologica.github.io/vue-stackable-modal/#sample-css
+    export default {
+        components: {
+            StackModal,
+            SlickItem,
+            SlickList,
+        },
+        data(){
             return {
                 tab_num: 1,
 
@@ -351,21 +347,21 @@ export default {
 
             edit_image(){
                 this.is_change_image = false
-                alert('update image')
+                // alert('update image')
 
-                // var myFormData = new FormData(this.$refs.myForm)
-                // axios({
-                //     method: 'post',
-                //     url: '/gallery/add/',
-                //     data: myFormData,
-                //     config: { 
-                //         headers: {'Content-Type': 'multipart/form-data' },
-                //     },
-                // })
-                // .then((response)=>  {
-                //     this.is_add_image = false
-                //     this.get_gallery_data()
-                // });
+                var myFormData = new FormData(this.$refs.myForm)
+                axios({
+                    method: 'post',
+                    url: './api/user_image_update/'+this.user.id,
+                    data: myFormData,
+                    config: { 
+                        headers: {'Content-Type': 'multipart/form-data' },
+                    },
+                })
+                .then((response)=>  {
+                    // this.is_add_image = false
+                    this.get_user_data()
+                });
             },
 
             open_edit_modal() {

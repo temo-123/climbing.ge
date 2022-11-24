@@ -208,6 +208,7 @@ Route::group(['namespace'=>'Api'], function() {
     */
     Route::apiResource('/users', 'UsersController');
     Route::get('/post_user/{user_id}', 'UsersController@get_post_user');
+    Route::post('user_image_update/{user_id}', 'UsersController@user_image_update');
     
     Route::get('/followers_list', 'UsersController@get_followers_list');
     Route::get('/following_users_list', 'UsersController@get_following_users_list');
