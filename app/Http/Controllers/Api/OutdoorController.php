@@ -139,32 +139,4 @@ class OutdoorController extends Controller
         $region -> delete();
     }
 
-    public function get_faworite_outdoor_region(Request $request)
-    {
-        if (Auth::user()) {
-            $fav_area = Favorite_outdoor_area::where('user_id', '=', Auth::user()->id)->get();
-            $articles = [];
-            foreach ($fav_area as $area) {
-                $global_articles = Article::where('id', '=', $area->article_id)->get();
-                $outdoors = GetArticlesService::get_locale_article_use_locale($global_articles, $request->lang);
-                array_push($articles, $outdoors[0]);
-            }
-            
-            return $articles;
-        }
-        else{
-            return 'Plees login!';
-        }
-    }
-
-    public function del_faworite_outdoor_region(Request $request)
-    {
-        if (Auth::user()) {
-            $fav_area = Favorite_outdoor_area::where('user_id', '=', Auth::user()->id)->where('article_id', '=', $request->article_id)->first();
-            $fav_area ->delete();
-        }
-        else{
-            return 'Plees login!';
-        }
-    }
 }

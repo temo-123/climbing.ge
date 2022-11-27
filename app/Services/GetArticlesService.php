@@ -77,22 +77,13 @@ class GetArticlesService
                         $new_flag = (new static)->get_new_article_pin($article);
 
                         $mount_system = '';
-    // dd(($article->mount_masiv));
                         if(count($article->mount_masiv) > 0){
-                            // $masiv_id = $article->mount_masiv[0]->mount_id;
-                            // $m_system = Mount::where('id', '=', $masiv_id)->first();
-                            // $m = $m_system->us_mount;
-
-                            // $mount_system = $m->title;
-
                             $m_system = $article->mount_masiv;
                         }
                         else{
                             $mount_system = '';
                         }
 
-                        // dd($article);
-                        // array_push($articles, [$us_articles,  $article[0]]);
                         array_push($articles, [$us_articles,    "url_title"=>$article->url_title, 
                                                                 "id" => $article->id,
                                                                 "mount_id" => $article->mount_id,
@@ -106,6 +97,7 @@ class GetArticlesService
                                                                 "start_data" => $article->start_data,
                                                                 "region_id"=>$article->region_id,
                                                                 "end_data" => $article->end_data,
+                                                                "published" => $article->published,
 
                                                                 "new_flag"=>$new_flag,
 

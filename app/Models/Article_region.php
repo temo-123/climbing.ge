@@ -9,6 +9,8 @@ class Article_region extends Model
 {
     use HasFactory;
 
+    public $table = 'article_region';
+
     protected $fillable = [
         'region_id',
         'article_id',

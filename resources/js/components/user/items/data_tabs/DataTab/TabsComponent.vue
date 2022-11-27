@@ -152,9 +152,9 @@
                                 <div class="form-groupe float-right">
                                     <button
                                         class="btn btn-success"
-                                        @click="update(filtr_data.id)"
+                                        @click="update()"
                                     >
-                                        refresh
+                                        Refresh
                                     </button>
 
                                     <!-- <button class="btn main-btn" >Refresh ({{2}})</button>
@@ -194,18 +194,23 @@
                                     :table_name="data.table_name"
                                 />
                             </thead>
-                            <thead v-if="data.table_name == 'Films tags' || data.table_name == 'Film categories'">
+                            <thead  v-else-if="data.table_name == 'Films tags' || data.table_name == 'Film categories'">
                                 <filmTagsTabHeader 
                                     :table_name="data.table_name"
                                 />
                             </thead>
-                            <thead v-if="data.table_name == 'Products'">
+                            <thead  v-else-if="data.table_name == 'Products'">
                                 <productTagsTabHeader 
                                     :table_name="data.table_name"
                                 />
                             </thead>
-                            <thead v-if="data.table_name == 'Sectors local images'">
+                            <thead  v-else-if="data.table_name == 'Sectors local images'">
                                 <sectorLocalImageTabHeader 
+                                    :table_name="data.table_name"
+                                />
+                            </thead>
+                            <thead  v-else-if="data.table_name == 'Mount vasives'">
+                                <mountMassiveTabHeader 
                                     :table_name="data.table_name"
                                 />
                             </thead>
@@ -218,7 +223,8 @@
                                         data.table_name == 'tech_tip'  || 
                                         data.table_name == 'partners'  || 
                                         data.table_name == 'events' || 
-                                        data.table_name == 'Films' || 
+                                        data.table_name == 'Films' ||
+                                        data.table_name == 'Mountaineering routes' || 
                                         data.table_name == 'services' 
                                     ">
                                 <articleTabHeader
@@ -231,15 +237,22 @@
 
 
 
-                            <tbody v-if="data.table_name == 'Mounts'">
+                            <!-- <tbody v-if="data.table_name == 'Mounts'">
                                 <mountTab
                                     v-for="table_info in data.data"
                                     :key="table_info.id"
                                     :table_info="table_info"
                                 />
-                            </tbody>
-                            <tbody v-else-if="data.table_name == 'Products'">
+                            </tbody> -->
+                            <tbody v-if="data.table_name == 'Products'">
                                 <productsTab
+                                    v-for="table_info in data.data"
+                                    :key="table_info.id"
+                                    :table_info="table_info"
+                                />
+                            </tbody>
+                            <tbody v-else-if="data.table_name == 'Mount vasives'">
+                                <mountMassiveTab
                                     v-for="table_info in data.data"
                                     :key="table_info.id"
                                     :table_info="table_info"
@@ -421,6 +434,7 @@ import tableFilter from "../../filters/FiltersComponent.vue";
 import orderTabHeader from "./tab_header/OrderTabHeaderComponent.vue"
 import articleTabHeader from "./tab_header/ArticleTabHeaderComponent.vue"
 import filmTagsTabHeader from "./tab_header/FilmTagsTabHeaderComponenr.vue"
+import mountMassiveTabHeader from "./tab_header/MountMassiveTabHeaderComponent.vue"
 import productTagsTabHeader from "./tab_header/ProductTabHeaderComponent.vue"
 import sectorLocalImageTabHeader from "./tab_header/SectorLocalImageTabHeaderComponent.vue"
 
@@ -428,8 +442,8 @@ import sectorLocalImageTab from "./tabs/SectorLocalImageTabComponent.vue";
 import routeTab from "./tabs/RouteTabComponent.vue";
 import sectorTab from "./tabs/SectorTabComponent.vue";
 import articlesTab from "./tabs/ArticlesTabComponent.vue";
-import categoriesTab from "./tabs/CategoriesTabComponent.vue";
-import mountTab from "./tabs/MountTabComponent.vue";
+// import categoriesTab from "./tabs/CategoriesTabComponent.vue";
+import mountMassiveTab from "./tabs/MountMassiveTabComponent.vue";
 import mtpTab from "./tabs/MTPTabComponent.vue";
 import pitchsTab from "./tabs/PitchsTabComponents.vue";
 import rolesTab from "./tabs/RolesTabComponent.vue";
@@ -464,14 +478,15 @@ export default {
         articleTabHeader,
         filmTagsTabHeader,
         productTagsTabHeader,
+        mountMassiveTabHeader,
         sectorLocalImageTabHeader,
 
         sectorLocalImageTab,
         routeTab,
         sectorTab,
         articlesTab,
-        categoriesTab,
-        mountTab,
+        // categoriesTab,
+        mountMassiveTab,
         mtpTab,
         pitchsTab,
         rolesTab,
@@ -525,8 +540,11 @@ export default {
         filtr(event) {
             this.$emit("filtr", event);
         },
-        update(id) {
-            this.$emit("update-data", [id]);
+        // update(id) {
+        //     this.$emit("update-data", [id]);
+        // },
+        update() {
+            this.$emit("update-data");
         },
 
         // sector_modal(event) {

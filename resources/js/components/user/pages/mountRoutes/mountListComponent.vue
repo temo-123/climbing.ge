@@ -14,6 +14,8 @@
                     <tabsComponent 
                         :table_data="this.data_for_tab"
                         @filtr="filtr"
+
+                        @update-data="get_articles"
                     />
                 </div>
             </div>
@@ -39,13 +41,11 @@
         },
         mounted() {
             this.get_articles()
-            // this.get_mounts()
         },
         watch: {
             '$route' (to, from) {
                 this.data_for_tab = [],
                 this.get_articles()
-                // this.get_mounts()
                 window.scrollTo(0,0)
             }
         },
@@ -54,8 +54,6 @@
                 axios
                 .get("../api/mount_route/get_filtred_mount_route_for_admin/" + id)
                 .then(response => {
-                    // this.mount_routes = response.data
-
                     this.data_for_tab = []
                     this.data_for_tab.push({'id': 1,
                                             'data': response.data, 
@@ -76,7 +74,8 @@
 
             get_unfilted_articles(){
                 axios
-                .get('../api/articles/mount_route/'+localStorage.getItem('lang'))
+                // .get('../api/articles/mount_route/'+localStorage.getItem('lang'))
+                .get('../api/articles/mount_route/us')
                 .then(response => {
                     // this.mount_routes = response.data
                     // this.filter_mount_routes()
@@ -110,98 +109,23 @@
                 this.get_articles(event)
             },
 
-
-            // get_articles(){
-            //     axios
-            //     .post("../api/article/", {
-            //         category: 'mount_route',
-            //     })
-            //     .then(response => {
-            //         this.data_for_tab.push({'id': 1,
-            //                                 'data': response.data, 
-            //                                 'table_name': 'Mountaineering routes', 
-            //                                 'table_category': 'Mountaineering routes', 
-            //                                 'table_add_url': 'add_url', 
-            //                                 'table_edit_url': 'edit_url',
-            //                                 'table_del_url': 'del_url', 
-            //                             });
-            //     })
-            //     .catch(
-            //         error => console.log(error)
-            //     );
-            // },
-
             get_mounts(){
                 axios
                 .get("../api/mount/")
                 .then(response => {
                     this.data_for_tab.push({'id': 2,
                                             'data': response.data, 
-                                            'table_name': 'Mounts', 
-                                            'table_category': 'Mounts', 
-                                            'table_add_url': 'add_url', 
-                                            'table_edit_url': 'edit_url',
-                                            'table_del_url': 'del_url', 
+                                            'table_name': 'Mount vasives', 
+                                            'table_category': 'Mount vasives', 
+                                            'table_add_url': 'mount_massive_add', 
+                                            // 'table_edit_url': 'edit_url',
+                                            // 'table_del_url': 'del_url', 
                                         });
                 })
                 .catch(
                     error => console.log(error)
                 );
             },
-
-            // table_1_del(itemId) {
-            //     axios
-            //     .post(this.table_1_del_url + itemId, {
-            //         id: itemId,
-            //     })
-            //     .then(Response => {
-            //         if (this.table_1_name == 'Sector') {
-            //             this.get_sectors_data();
-            //         }
-            //         if (this.table_1_name == 'Products') {
-            //             this.get_product_data();
-            //         }
-            //         if (this.table_1_name == 'Mount routes') {
-            //             this.get_mount_route_data();
-            //         }
-
-            //         this.get_data_in_table_1()
-            //     })
-            //     .catch(error => console.log(error))
-            // },
-
-            // show_parmission_edit_madel(user_id){
-            //     this.roles_modal=true;
-            //     this.user_id_for_rditing_parmission = user_id
-            // },
-            // edit_permission(id) {
-            //     axios
-            //     .post('users/edit_user_permission/' + id, {
-            //         parmission: this.user_new_parmission,
-            //     })
-            //     .then((response)=> { 
-            //         this.roles_modal = false
-            //     })
-            //     .catch(error =>{
-            //         if (error.response.status == 422) {
-            //             this.parmision_error = error.response.data.errors
-            //         }
-            //         this.is_parmision_error = true
-            //     })
-            // },
-            // get_user_role: function(user_id){
-            //     axios
-            //     .get('users/get_role/', {
-
-            //     })
-            //     .then(Response => {
-            //         console.log(Response.data);
-            //         this.user_roles = Response.data
-            //     })
-            //     .catch(error => {
-            //         // this.user_role = "error"
-            //     })
-            // },
         }
     }
 </script>

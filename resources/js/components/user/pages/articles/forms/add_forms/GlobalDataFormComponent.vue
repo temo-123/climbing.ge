@@ -136,27 +136,6 @@
                         </div>
                     </div>
                 </form>
-
-                <!-- <form @submit="upload_mount_route_image" ref="mountRouteImage" v-if="this.category == 'mount_route'">
-                    <div class="form-group clearfix row">
-                        <label for="email" class='col-md-5 control-label'>Upload mount route image:</label>
-                        <div class="col-md-6">
-                            <input type="file" name="mount_route_img" id="mount_route_img">
-                        </div>
-                    </div>
-                </form> -->
-
-                <!-- <form @submit="checkForm" ref="myForm">
-                    <div class="form-group clearfix row">
-                        <label for="email" class='col-md-5 control-label'>Upload article image:</label>
-                        <div class="col-md-6">
-                            <input type="file" name="image" id="image">
-                        </div>
-                    </div>
-                </form> -->
-
-                
-
             </div>
         </div>
     </div>
@@ -245,36 +224,6 @@
                     );
                 }
             },
-
-            // checkForm: function () {
-            //     var myFormData = new FormData(this.$refs.myForm)
-            //     axios({
-            //         method: 'post',
-            //         url: '../../api/articles/upload_image/',
-            //         data: myFormData,
-            //         config: { 
-            //             headers: {'Content-Type': 'multipart/form-data' },
-            //         },
-            //     })
-            //     .then((response)=>  {
-                    
-            //     });
-            // },
-
-            // upload_mount_route_image: function () {
-            //     var myMountRouteImageData = new FormData(this.$refs.mountRouteImage)
-            //     axios({
-            //         method: 'post',
-            //         url: '/articles/mount_route_image_upload/',
-            //         data: myMountRouteImageData,
-            //         config: { 
-            //             headers: {'Content-Type': 'multipart/form-data' },
-            //         },
-            //     })
-            //     .then((response)=>  {
-                    
-            //     });
-            // },
         }
     }
 </script>

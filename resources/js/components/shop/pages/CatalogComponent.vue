@@ -17,14 +17,21 @@
         <div class="col-md-12"  v-if="products.length > 0">
             <!-- <div class="bar"></div> -->
             <div class="row">
-                <div class="col-md-4">
+                <div class="col-md-4 col-sm-6">
                     <select class="form-control" v-model="filter_category" name="product_modification_for_cart" @click="sortByCategories()">
                         <option>All</option>
                         <option v-for="category in categories" :key='category.id' :value="category.id">{{ category.us_name }}</option> 
                     </select>
                 </div>
+                <div class="col-md-3 col-sm-6">
+                    <select class="form-control" name="product_modification_for_cart">
+                        <option>All</option>
+                        <option :value="'Custom production'">Custom production</option> 
+                        <option :value="'Online sale'">Online sale</option> 
+                    </select>
+                </div>
 
-                <div class="col-md-3">
+                <div class="col-md-2 col-sm-6">
                     <div class="row">
                         <!-- <div class="range-slider"> -->
                             <input class='min_price_range price_range' type="range" min="0" max="999" v-model="min_price" step="10">
@@ -33,7 +40,7 @@
                     <div class="row price_range_text text-center">
                         <!-- <p>Minimal price - {{min_price}}</p> -->
                         <p>
-                            Minimal price -
+                            Min price -
                             <input
                                 type="text"
                                 v-model="min_price"
@@ -44,14 +51,14 @@
                     </div>
                 </div>
 
-                <div class="col-md-3">
+                <div class="col-md-2 col-sm-6">
                     <!-- <div class="range-slider"> -->
                         <input class="max_price_range price_range" type="range" min="0" max="999" v-model='max_price' value="1000" step="10">
                     <!-- </div> -->
                     <div class="row price_range_text text-center">
                         <!-- <p>Maximal price - {{max_price}}</p> -->
                         <p>
-                            Maximal price -
+                            Max price -
                             <input
                                 type="text"
                                 v-model="max_price"
@@ -62,9 +69,9 @@
                     </div>
                 </div>
 
-                <div class="col-md-2">
+                <div class="col-md-1 col-sm-6">
                     <!-- <div class="row"> -->
-                        <button class="btn btn-primary" @click="serReangSlider()">Filtr prices</button>
+                        <button class="btn btn-primary" @click="serReangSlider()">Filtr</button>
                     <!-- </div> -->
                 </div>
                 <!-- <div class="col-md-2 col-md-offset-6 text-right">
@@ -223,18 +230,11 @@
             sortByCategories(){
                 let vm = this;
                 if (vm.filter_category == 'All') {
-// alert(vm.filter_category);
-                    // this.filtred_products = this.products
-                    // let f_products = this.products
                     this.filtred_products = this.products.filter(function (item){
                         return item.max_price >= vm.min_price && item.max_price <= vm.max_price
                     })
                 }
                 else{
-                    // this.filtred_products = this.products.filter(function (item){
-                    //     return item.global_product.category_id == vm.filter_category
-                    // })
-
                     let f_products = this.products.filter(function (item){
                         return item.global_product.category_id == vm.filter_category
                     })
@@ -259,29 +259,6 @@
                 .catch(error =>{
                 })
             },
-
-
-            // select_option(){
-            //     alert('test')
-            // },
-            // add_to_cart(){
-            //     if(this.product_modification_for_cart == "All"){
-            //         alert('plis select option')
-            //     }
-            //     else{
-            //         // this.cart_options = {"modification_id": this.product_modification_for_cart, "quantity": this.products_quantity}
-            //         axios
-            //         .put('../api/cart/'+this.product_modification_for_cart, {
-            //             modification_id: this.product_modification_for_cart,
-            //             quantity: this.products_quantity
-            //         })
-            //         .then(response => {
-            //             this.add_to_cart_message = "Product added in your cart"
-            //         })
-            //         .catch(error =>{
-            //         })
-            //     }
-            // },
 
             serReangSlider(){
                 if(this.min_price == 0 && this.max_price == 0){
@@ -388,7 +365,7 @@
     }
 
     .price_range_text p{
-        margin-top: 5%;
+        /* margin-top: 5%; */
         margin-bottom: 0% !important;
     }
 

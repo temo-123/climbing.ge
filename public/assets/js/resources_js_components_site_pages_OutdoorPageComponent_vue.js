@@ -5253,7 +5253,7 @@ var render = function () {
                 [
                   _c("openImg", {
                     attrs: {
-                      img: "/images/sector_img/" + spot_image.image,
+                      img: "/images/spot_rocks_img/" + spot_image.image,
                       img_alt: spot_image.title,
                     },
                   }),

@@ -450,6 +450,13 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
 
 
 
@@ -511,16 +518,10 @@ __webpack_require__.r(__webpack_exports__);
       var vm = this;
 
       if (vm.filter_category == 'All') {
-        // alert(vm.filter_category);
-        // this.filtred_products = this.products
-        // let f_products = this.products
         this.filtred_products = this.products.filter(function (item) {
           return item.max_price >= vm.min_price && item.max_price <= vm.max_price;
         });
       } else {
-        // this.filtred_products = this.products.filter(function (item){
-        //     return item.global_product.category_id == vm.filter_category
-        // })
         var f_products = this.products.filter(function (item) {
           return item.global_product.category_id == vm.filter_category;
         });
@@ -539,27 +540,6 @@ __webpack_require__.r(__webpack_exports__);
         _this2.product_modal = true;
       })["catch"](function (error) {});
     },
-    // select_option(){
-    //     alert('test')
-    // },
-    // add_to_cart(){
-    //     if(this.product_modification_for_cart == "All"){
-    //         alert('plis select option')
-    //     }
-    //     else{
-    //         // this.cart_options = {"modification_id": this.product_modification_for_cart, "quantity": this.products_quantity}
-    //         axios
-    //         .put('../api/cart/'+this.product_modification_for_cart, {
-    //             modification_id: this.product_modification_for_cart,
-    //             quantity: this.products_quantity
-    //         })
-    //         .then(response => {
-    //             this.add_to_cart_message = "Product added in your cart"
-    //         })
-    //         .catch(error =>{
-    //         })
-    //     }
-    // },
     serReangSlider: function serReangSlider() {
       if (this.min_price == 0 && this.max_price == 0) {
         this.min_price = 0;
@@ -661,7 +641,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_laravel_mix_node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, "\n.list_btn[data-v-4148482d]{\n    border: 1px solid !important;\n    border-radius: 3.5px !important;\n    border-color: #b3b3b3 !important;\n}\n.range-slider[data-v-4148482d]{\n    width: 100%;\n    /* margin: auto 16px;\n    text-align: center;\n    position: relative; */\n}\n.range-slider svg[data-v-4148482d], .range-slider input[type = range][data-v-4148482d]{\n    position: absolute;\n    left: 0;\n    right: 0;\n}\ninput[type=range][data-v-4148482d]::-webkit-slider-thumb{\n    z-index: 2;\n    position: relative;\n    top: 2px;\n    margin-top: -7px;\n}\n.price_range[data-v-4148482d]{\n    width: 100%\n}\n.price_range_text p[data-v-4148482d]{\n    margin-top: 5%;\n    margin-bottom: 0% !important;\n}\n\n/* .max_price_range{\n    -webkit-transform: rotateY(180deg);\n    -moz-transform: rotateY(180deg);\n    -ms-transform: rotateY(180deg);\n    -o-transform: rotateY(180deg);\n    transform: rotateY(180deg);\n} */\n\n/* Switch button */\n.btn-default.btn-on.active[data-v-4148482d]{\n    background-color: #8ee48e;\n}\n.btn-default.btn-off.active[data-v-4148482d]{\n    background-color: #fc8480;\n}\n.product_style_but_icon[data-v-4148482d]{\n    font-size: 180%;\n}\n.modal-content[data-v-4148482d] {\n    margin-top: 50% !important;\n}\n", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, "\n.list_btn[data-v-4148482d]{\n    border: 1px solid !important;\n    border-radius: 3.5px !important;\n    border-color: #b3b3b3 !important;\n}\n.range-slider[data-v-4148482d]{\n    width: 100%;\n    /* margin: auto 16px;\n    text-align: center;\n    position: relative; */\n}\n.range-slider svg[data-v-4148482d], .range-slider input[type = range][data-v-4148482d]{\n    position: absolute;\n    left: 0;\n    right: 0;\n}\ninput[type=range][data-v-4148482d]::-webkit-slider-thumb{\n    z-index: 2;\n    position: relative;\n    top: 2px;\n    margin-top: -7px;\n}\n.price_range[data-v-4148482d]{\n    width: 100%\n}\n.price_range_text p[data-v-4148482d]{\n    /* margin-top: 5%; */\n    margin-bottom: 0% !important;\n}\n\n/* .max_price_range{\n    -webkit-transform: rotateY(180deg);\n    -moz-transform: rotateY(180deg);\n    -ms-transform: rotateY(180deg);\n    -o-transform: rotateY(180deg);\n    transform: rotateY(180deg);\n} */\n\n/* Switch button */\n.btn-default.btn-on.active[data-v-4148482d]{\n    background-color: #8ee48e;\n}\n.btn-default.btn-off.active[data-v-4148482d]{\n    background-color: #fc8480;\n}\n.product_style_but_icon[data-v-4148482d]{\n    font-size: 180%;\n}\n.modal-content[data-v-4148482d] {\n    margin-top: 50% !important;\n}\n", ""]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
@@ -10085,7 +10065,7 @@ var render = function () {
       _vm.products.length > 0
         ? _c("div", { staticClass: "col-md-12" }, [
             _c("div", { staticClass: "row" }, [
-              _c("div", { staticClass: "col-md-4" }, [
+              _c("div", { staticClass: "col-md-4 col-sm-6" }, [
                 _c(
                   "select",
                   {
@@ -10133,7 +10113,28 @@ var render = function () {
                 ),
               ]),
               _vm._v(" "),
-              _c("div", { staticClass: "col-md-3" }, [
+              _c("div", { staticClass: "col-md-3 col-sm-6" }, [
+                _c(
+                  "select",
+                  {
+                    staticClass: "form-control",
+                    attrs: { name: "product_modification_for_cart" },
+                  },
+                  [
+                    _c("option", [_vm._v("All")]),
+                    _vm._v(" "),
+                    _c("option", { domProps: { value: "Custom production" } }, [
+                      _vm._v("Custom production"),
+                    ]),
+                    _vm._v(" "),
+                    _c("option", { domProps: { value: "Online sale" } }, [
+                      _vm._v("Online sale"),
+                    ]),
+                  ]
+                ),
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "col-md-2 col-sm-6" }, [
                 _c("div", { staticClass: "row" }, [
                   _c("input", {
                     directives: [
@@ -10158,7 +10159,7 @@ var render = function () {
                 _c("div", { staticClass: "row price_range_text text-center" }, [
                   _c("p", [
                     _vm._v(
-                      "\n                        Minimal price -\n                        "
+                      "\n                        Min price -\n                        "
                     ),
                     _c("input", {
                       directives: [
@@ -10185,7 +10186,7 @@ var render = function () {
                 ]),
               ]),
               _vm._v(" "),
-              _c("div", { staticClass: "col-md-3" }, [
+              _c("div", { staticClass: "col-md-2 col-sm-6" }, [
                 _c("input", {
                   directives: [
                     {
@@ -10214,7 +10215,7 @@ var render = function () {
                 _c("div", { staticClass: "row price_range_text text-center" }, [
                   _c("p", [
                     _vm._v(
-                      "\n                        Maximal price -\n                        "
+                      "\n                        Max price -\n                        "
                     ),
                     _c("input", {
                       directives: [
@@ -10241,7 +10242,7 @@ var render = function () {
                 ]),
               ]),
               _vm._v(" "),
-              _c("div", { staticClass: "col-md-2" }, [
+              _c("div", { staticClass: "col-md-1 col-sm-6" }, [
                 _c(
                   "button",
                   {
@@ -10252,7 +10253,7 @@ var render = function () {
                       },
                     },
                   },
-                  [_vm._v("Filtr prices")]
+                  [_vm._v("Filtr")]
                 ),
               ]),
             ]),

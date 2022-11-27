@@ -2,7 +2,7 @@
    <div class="row cms_filters">
         <div class="col-md-8">
             <h3>Filter Mountaineering routes areas By mount</h3>
-            {{ mounts[0].global_mount.id }}
+            <!-- {{ mounts[0].global_mount.id }} -->
         </div>
         <div class="col-md-4 ">
             <select v-model="value_mount_id" @click="return_data(value_mount_id)">

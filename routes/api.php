@@ -34,6 +34,7 @@ Route::group(['namespace'=>'Api'], function() {
     *   Article routes
     */
     Route::apiResource('/article', 'ArticleController');
+    Route::post('/article/add_article/{category}', 'ArticleController@add_article');
     Route::get('/articles/get_editing_data/{id}', 'ArticleController@get_editing_data');
     Route::get('/articles/{category}/{lang}', 'ArticleController@get_locale_articles');
     Route::get('/article/{category}/{lang}/{url_title}', 'ArticleController@get_locale_article_on_page');
@@ -44,19 +45,12 @@ Route::group(['namespace'=>'Api'], function() {
     Route::get('/get_articles_for_forum/{category}/{lang}', 'ArticleController@get_articles_for_forum');
     Route::get('/last_news/{lang}', 'ArticleController@get_last_news');
 
-    Route::post('/articles/add_to_interested_events/', 'ArticleController@add_to_interested_events');
-    Route::get('/articles/get_interested_events/', 'ArticleController@get_interested_events');
-    Route::delete('/articles/del_interested_event/{article_id}', 'ArticleController@del_interested_event');
 
     /*
     *   Outdoor regions
     */
     Route::get('/outdoor/get_filtred_outdoor_spots_for_admin/{filter_id}', 'OutdoorController@get_filtred_outdoor_spots_for_admin');
     Route::get('/outdoor/get_filtred_outdoor_spots_for_gest/{lang}/{filter_id}', 'OutdoorController@get_filtred_outdoor_spots_for_gest');
-
-    Route::post('/articles/add_to_favorite_outdoor_area/', 'ArticleController@add_to_favorite_outdoor_area');
-    Route::get('/outdoor/get_faworite_outdoor_region', 'OutdoorController@get_faworite_outdoor_region');
-    Route::delete('/outdoor/del_faworite_outdoor_region/{article_id}', 'OutdoorController@del_faworite_outdoor_region');
 
     Route::post('/outdoor/add_spot', 'OutdoorController@add_spot');
     Route::get('/outdoor/get_editing_spot_data/{id}', 'OutdoorController@get_editing_spot_data');
@@ -104,9 +98,6 @@ Route::group(['namespace'=>'Api'], function() {
     Route::apiResource('/cart', 'CartController');
     Route::post('/cart/update_quantity/{item_id}', 'CartController@update_quantity');
 
-    Route::post('/add_to_favorite/{product_id}', 'CartController@add_to_favorite');
-    Route::post('/del_from_favorite/{product_id}', 'CartController@del_from_favorite');
-
     Route::apiResource('/order', 'OrderController');
     Route::get('/my_order', 'OrderController@get_my_orders');
     Route::get('/get_activ_order/{order_id}', 'OrderController@get_activ_order');
@@ -119,6 +110,24 @@ Route::group(['namespace'=>'Api'], function() {
 
     Route::apiResource('/sale_code', 'SaleCodeController');
     Route::post('/check_sale_code', 'OrderController@check_sale_code');
+
+    /*
+    *   Faforites control
+    */
+    Route::post('/add_to_favorite/{product_id}', 'CartController@add_to_favorite');
+    Route::post('/del_from_favorite/{product_id}', 'CartController@del_from_favorite');
+
+    Route::post('/film/add_to_faworite', 'FilmsController@add_to_faworite');
+    Route::get('/film/get_faworite_film_list', 'FilmsController@get_faworite_film_list');
+    Route::delete('/film/del_from_faworite/{film_id}', 'FilmsController@del_from_faworite');
+
+    Route::post('/articles/add_to_favorite_outdoor_area/', 'FaworitesController@add_to_favorite_outdoor_area');
+    Route::get('/outdoor/get_faworite_outdoor_region', 'FaworitesController@get_faworite_outdoor_region');
+    Route::delete('/outdoor/del_faworite_outdoor_region/{article_id}', 'FaworitesController@del_faworite_outdoor_region');
+
+    Route::post('/articles/add_to_interested_events/', 'FaworitesController@add_to_interested_events');
+    Route::get('/articles/get_interested_events/', 'FaworitesController@get_interested_events');
+    Route::delete('/articles/del_interested_event/{article_id}', 'FaworitesController@del_interested_event');
 
     /*
     *   Cart and orders routes
@@ -172,9 +181,6 @@ Route::group(['namespace'=>'Api'], function() {
     Route::get('/film/films_search/{locale}', 'FilmsController@films_search');
     Route::get('/film/top_films/{top_film_type}/{locale}', 'FilmsController@get_films_top');
 
-    Route::post('/film/add_to_faworite', 'FilmsController@add_to_faworite');
-    Route::get('/film/get_faworite_film_list', 'FilmsController@get_faworite_film_list');
-    Route::delete('/film/del_from_faworite/{film_id}', 'FilmsController@del_from_faworite');
 
     Route::apiResource('film_tags', 'FilmTagsController');
     // Route::apiResource('film_categories', 'FilmCategoryController');

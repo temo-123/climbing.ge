@@ -1,78 +1,97 @@
 <template>
-    <form @submit="checkForm" ref="myForm">
-        <div class="form-group clearfix row">
-            <label for="email" class='col-md-6 control-label'>Upload sector view image:</label>
-            <div class="col-md-6">
-                <input type="file" name="image" id="image">
+    <div class="col-md-12">
+        <div class="row">
+            <div class="col-md-2">
+                <div class="form-groupe">
+                    <button class="btn btn-primary float-right" @click="add_new_sector_image_value()">Add new image</button>
+                </div>
+            </div>
+            <!-- <div class="col-md-6">
+                <div class="form-groupe">
+                    <button @click="get_adres" class="btn btn-success float-right" v-if="!sectors_refresh">Refresh ({{adres_reset_id}})</button>
+                    <span class="badge badge-primare mb-1 float-right" v-if="sectors_refresh">Updating...</span>
+                </div>
+            </div> -->
+        </div>
+
+        <div class="row">
+            <div class="col-md-12">
+                <table class="table table-hover" id="dev-table">
+                    <thead>
+                        <tr>
+                            <th>Image</th>
+                            <th>|</th>
+                            <th>Delite</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        <tr v-for="sector_image in sector_images" :key="sector_image.id">
+                            <td>
+                                <form ref="myForm">
+                                    <!-- <input type="hidden" name="MAX_FILE_SIZE" value="2097152" /> -->
+                                    <input type="file" name="image" id="image" v-on:change="onFileChange($event, sector_image.id)">
+                                </form> 
+                            </td>
+                            <td>|</td>
+                            <td>
+                                <button class="btn btn-danger" @click="del_sector_image(sector_image.id)">Delete</button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
             </div>
         </div>
-    </form>
+    </div>
 </template>
 
 <script>
-    import { SlickList, SlickItem } from 'vue-slicksort';
-    import StackModal from '@innologica/vue-stackable-modal'  //https://innologica.github.io/vue-stackable-modal/#sample-css
+    // import { SlickList, SlickItem } from 'vue-slicksort';
+    // import StackModal from '@innologica/vue-stackable-modal'  //https://innologica.github.io/vue-stackable-modal/#sample-css
 
     export default {
         props: [
-            'category'
+            // 'category'
         ],
         components: {
-            StackModal,
-            SlickItem,
-            SlickList,
+            // StackModal,
+            // SlickItem,
+            // SlickList,
         },
         data(){
             return {
-                myModal: false,
-                // errors: [],
-                image_errors: [],
-                without_info: false,
-
-                is_add_image: false,
-
-                category: this.$route.params.article_category,
-
-                image_is_refresh: false,
-                image_reset_id: 0,
+                sector_images: [],
             }
         },
         mounted() {
         },
         methods: {
-            add_image_modal(){
-                this.is_add_image = true
+            onFileChange(event, item_id){
+                let image = event.target.files[0]
+                let id = item_id - 1 
+                this.sector_images[id]['image'] = image
+                this.upload_img()
             },
+            upload_img(event){
+                this.$emit("upload_img", this.sector_images);
+            },
+            add_new_sector_image_value(){
+                var new_item_id = this.sector_images.length+1
+                this.sector_images.push(
+                    {
+                        id: new_item_id,
+                        image: '',
+                    }
+                );
+            },
+            del_sector_image(id){
+                this.removeObjectWithId(this.sector_images, id);
+            },
+            removeObjectWithId(arr, id) {
+                const objWithIdIndex = arr.findIndex((obj) => obj.id === id);
+                arr.splice(objWithIdIndex, 1);
 
-            // add_image(){
-            //     var myFormData = new FormData(this.$refs.myForm)
-            //     axios({
-            //         method: 'post',
-            //         url: '/gallery/add/',
-            //         data: myFormData,
-            //         config: { 
-            //             headers: {'Content-Type': 'multipart/form-data' },
-            //         },
-            //     })
-            //     .then((response)=>  {
-            //         this.is_add_image = false
-            //         // this.get_gallery_data()
-            //     });
-            // },
-
-            add_spot_rock_image: function () {
-                var myFormData = new FormData(this.$refs.myForm)
-                axios({
-                    method: 'post',
-                    url: '../../api/articles/upload_image/',
-                    data: myFormData,
-                    config: { 
-                        headers: {'Content-Type': 'multipart/form-data' },
-                    },
-                })
-                .then((response)=>  {
-                    
-                });
+                return arr;
             },
         }
     }

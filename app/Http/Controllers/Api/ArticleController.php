@@ -5,17 +5,18 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
-use App\Models\Article;
-use App\Models\Locale_article;
-use App\Services\GetArticlesService;
-use App\Models\Comment;
-
-use App\Models\Spot_rocks_image;
 
 use App\Services\ImageEditService;
 use App\Services\ImageControllService;
-
 use App\Services\URLTitleService;
+use App\Services\GetArticlesService;
+
+use App\Models\Article;
+use App\Models\Locale_article;
+use App\Models\Comment;
+
+use App\Models\Spot_rocks_image;
+use App\Models\Mount_route_image;
 
 use App\Models\Sector;
 use App\Models\Route;
@@ -29,10 +30,12 @@ use App\Models\General_info_article;
 use App\Models\General_info;
 
 use App\Models\Region;
-use App\Models\Region_article;
 
-use App\Models\Interested_event;
-use App\Models\Favorite_outdoor_area;
+use App\Models\Article_mount;
+use App\Models\Article_region;
+
+// use App\Models\Interested_event;
+// use App\Models\Favorite_outdoor_area;
 
 use Auth;
 
@@ -112,44 +115,6 @@ class ArticleController extends Controller
         }
         
     }
-
-    public function upload_spot_rock_images(Request $request)
-    {   
-        // dd($request->image);
-        // https://therichpost.com/vue-laravel-image-upload/ 
-        // if ($request->hasFile('profile_pic')){ 
-
-            $spot_sectors_rock = new Spot_rocks_image;
-            $file_new_name = ImageControllService::image_upload('images/spot_rocks_img/', $request, 'image');
-
-            $spot_sectors_rock['image'] = $file_new_name;
-            $spot_sectors_rock -> save();
-        // }
-    }
-
-    public function image_upload(Request $request)
-    {   
-        // https://therichpost.com/vue-laravel-image-upload/ 
-        // if ($request->hasFile('profile_pic')){ 
-            // $last_global_article_id = 0;
-            // $last_global_article_category = '';
-
-            $last_article = Article::latest('id')->first();
-            // foreach ($global_article as $global) {
-            //     $last_global_article_id = $global->id;
-            //     $last_global_article_category = $global->category;
-            // }
-            // $article = Article::where('id',strip_tags($last_global_article_id))->first();
-
-            // dd($request->image);
-            
-            $file_new_name = ImageControllService::image_upload('images/article_img/', $request, 'image', 1);
-
-            $last_article['image'] = $file_new_name;
-            $last_article -> save();
-            // return response()->json(["message" => "Image Uploaded Succesfully"]);
-        // }
-    }
     
     public function get_article_global_data(Request $request)
     {
@@ -165,126 +130,239 @@ class ArticleController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $ka_validate = $this->add_locale_article($request->data['ka_data'], 'ka');
-        $ru_validate = $this->add_locale_article($request->data['ru_data'], 'ru');
-        $us_validate = $this->add_locale_article($request->data['en_data'], 'us');
+        // dd($request);
+    }
 
-        $globa_validate = $this->addGlobalArticle(
-            $request->data['global_data'], 
-            $request->global_blocks,
-        );
+    public function add_article(Request $request)
+    {
+        $validation_issets = [];
 
-        if ($globa_validate || $ka_validate || $ru_validate || $us_validate) {
-            $errors = [ 'global_data' => $globa_validate, 
-                        'ka_data' => $ka_validate, 
-                        'ru_data' => $ru_validate, 
-                        'us_data' => $us_validate
-                    ];
-            return response()->json($errors, 422);
-            // return $errors;
+        $data = json_decode($request->data, true );
+        $global_blocks = json_decode($request->global_blocks, true );
+
+        $ka_validate = $this->local_article_validate($data['ka_data']);
+        if ($ka_validate != null) {
+            $validation_issets['ka_info_validation'] = $ka_validate;
+        }
+        else{
+            $validation_issets['ka_info_validation'] = false;
+        }
+
+        $us_validate = $this->local_article_validate($data['en_data']);
+        if ($us_validate != null) {
+            $validation_issets['us_info_validation'] = $us_validate;
+        }
+        else{
+            $validation_issets['us_info_validation'] = false;
+        }
+
+        $ru_validate = $this->local_article_validate($data['ru_data']);
+        if ($ru_validate != null) {
+            $validation_issets['ru_info_validation'] = $ru_validate;
+        }
+        else{
+            $validation_issets['ru_info_validation'] = false;
+        }
+
+        $global_validate = $this->global_article_validate($data['global_data']);
+        if ($global_validate != null) {
+            $validation_issets['global_info_validation'] = $global_validate;
+        }
+        else{
+            $validation_issets['global_info_validation'] = false;
+        }
+
+        $image_validate = $this->image_validate($request);
+        if ($image_validate != null) {
+            $validation_issets['image_validation'] = $image_validate;
+        }
+        else{
+            $validation_issets['image_validation'] = false;
+        }
+
+        // if($data['global_data']["category"] == 'outdoor'){
+        //         $outdoor_area_images_validate = $this->images_array_validate($request);
+        //         if ($outdoor_area_images_validate != null) {
+        //             $validation_issets['outdoor_area_images_validation'] = $outdoor_area_images_validate;
+        //         }
+        //         else{
+        //             $validation_issets['outdoor_area_images_validation'] = false;
+        //         }
+        // }
+        // else if($data['global_data']["category"] == 'mount_route'){
+        //     if($request->hasFile('mountain_route_images')){
+
+        //     }
+        // }
+
+        if (
+            !$validation_issets['image_validation'] && 
+            !$validation_issets['global_info_validation'] && 
+            !$validation_issets['ru_info_validation'] && 
+            !$validation_issets['ka_info_validation'] && 
+            !$validation_issets['us_info_validation']
+        ) {
+            $saiving_issets['ka_info_status'] = $this->add_locale_article($data['ka_data'], 'ka');
+            $saiving_issets['ru_info_status'] = $this->add_locale_article($data['ru_data'], 'ru');
+            $saiving_issets['us_info_status'] = $this->add_locale_article($data['en_data'], 'us');
+
+            if (
+                $saiving_issets['ka_info_status'] != 'Error' &&
+                $saiving_issets['ru_info_status'] != 'Error' &&
+                $saiving_issets['us_info_status'] != 'Error'
+            ) {
+                $action_article_id = $this->addGlobalArticle(
+                    $data['global_data'], 
+                    $global_blocks,
+                    $request,
+
+                    $saiving_issets['ka_info_status'],
+                    $saiving_issets['ru_info_status'],
+                    $saiving_issets['us_info_status']                    
+                );
+
+                if($data['global_data']["category"] == 'outdoor'){
+                    if($request->hasFile('outdoor_area_images')){
+                        $this->add_outdoor_area_images($request->outdoor_area_images, $action_article_id);
+                    }
+                }
+                else if($data['global_data']["category"] == 'mount_route'){
+
+                }
+                // dd($data['global_data']["category"]);
+            }
+        }
+        else{            
+            return response()->json([
+                'Data validation' => $validation_issets
+            ], 422);
         }
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
+    public function images_array_validate($images)
     {
-
-            $global_id=$id;
-
-            $global_article = Article::where('id',strip_tags($global_id))->first();
-            $us_article = Locale_article::where('id',strip_tags($global_article->us_article_id))->first();
-            $ru_article = Locale_article::where('id',strip_tags($global_article->ru_article_id))->first();
-            $ka_article = Locale_article::where('id',strip_tags($global_article->ka_article_id))->first();
-            
-            // delete article file
-            ImageControllService::image_delete('images/'.$global_article->category.'_img/', $global_article, 'image');
-            ImageControllService::image_delete('images/region_sectors_img/', $global_article, 'climbing_area_image');
-
-            // delete article from db
-            $global_article ->delete();
-            $us_article ->delete();
-            $ru_article ->delete();
-            $ka_article ->delete();
+        // 
     }
 
-
-    
-
-
-    public function addGlobalArticle($global_data, $global_blocks)
+    public function add_outdoor_area_images($images, $article_id)
     {
-        // if ($request -> isMethod('post')) {
-            // $input = $request -> except('_token');
-            // $validate = $this->global_article_validate($global_data);
-            // if ($validate != null) {
-            //     return $validate;
-            // }
+        foreach ($images as $image) {
+            $extension = $image->getClientOriginalExtension();
+            $filename  = $image->getClientOriginalName();
+            $pieces = explode( '.', $filename );
+            $file_new_name = date('Y-m-d-H-m-s'); 
+            $file_new_name = $file_new_name.'.'.$extension;
 
-            // $global_article = Article::get();
-            // foreach ($global_article as $global) {
-            //     $last_globale_id = $global->id;
-            // }
+            $image -> move(public_path('images/spot_rocks_img/'), $file_new_name);
 
+            if(file_exists(public_path('images/spot_rocks_img/') . '/' . $file_new_name)){
+                return 'Upload socsesful';
 
-            // dd(Locale_article::latest('id')->where('locale', '=', 'us')->get()[0]->id);
-
-            $validate = $this->global_article_validate($global_data);
-
-            if ($validate != null) {
-                return($validate);
+                $article = new Spot_rocks_image;
+        
+                $article['image'] = $file_new_name;
+                $article['article_id'] = $article_id;
+        
+                $article -> save();
             }
             else{
-                // make url_title from us_title value
-                $url_title = URLTitleService::get_url_title($global_data["us_title_for_url_title"]);
-
-                $article = new Article;
-                
-                $article['url_title'] = $url_title;
-
-                $article['category']=$global_data["category"];
-                $article['published']=$global_data["published"];
-                // $article['completed']=$global_data["completed"];
-                $article['map']=$global_data["map"];
-                $article['weather']=$global_data["weather"];
-
-                // $article['start_data']=$global_data["start_data"];
-                // $article['end_data']=$global_data["end_data"];
-
-                $article['open_time'] = $global_data["open_timen"];
-                $article['closed_time'] = $global_data["closed_time"];
-
-                $article['price_from'] = $global_data["price_from"];
-
-                $article['fb_link']=$global_data["fb_link"];
-                $article['twit_link']=$global_data["twit_link"];
-                $article['google_link']=$global_data["google_link"];
-                $article['inst_link']=$global_data["inst_link"];
-                $article['web_link']=$global_data["web_link"];
-
-                $local_us = Locale_article::latest('id')->where('locale', '=', 'us')->get()[0]->id;
-                $local_ka = Locale_article::latest('id')->where('locale', '=', 'ka')->get()[0]->id;
-                $local_ru = Locale_article::latest('id')->where('locale', '=', 'ru')->get()[0]->id;
-
-
-                $article['us_article_id']=$local_us;
-                $article['ka_article_id']=$local_ka;
-                $article['ru_article_id']=$local_ru;
-                
-                $article -> save();
-
-                // if ($article->save())
-                // {
-                    // Article::letest('id')->first();
-                    $this->add_general_info_articles($global_blocks);
-                // }
-
+                return 'Upload error';
             }
-        // }
+        }
+    }
+
+    public function add_mount_route_images($images, $article_id)
+    {
+        foreach ($images as $image) {
+            $extension = $image->getClientOriginalExtension();
+            $filename  = $image->getClientOriginalName();
+            $pieces = explode( '.', $filename );
+            $file_new_name = date('Y-m-d-H-m-s'); 
+            $file_new_name = $file_new_name.'.'.$extension;
+
+            $image -> move(public_path('images/mount_route_img/'), $file_new_name);
+
+            if(file_exists(public_path('images/mount_route_img/') . '/' . $file_new_name)){
+                return 'Upload socsesful';
+
+                $article = new Mount_route_image;
+        
+                $article['image'] = $file_new_name;
+                $article['article_id'] = $article_id;
+        
+                $article -> save();
+            }
+            else{
+                return 'Upload error';
+            }
+        }
+    }
+
+    public function addGlobalArticle($global_data, $global_blocks, $request, $ka_info_id, $ru_info_id, $us_info_id)
+    {
+        $url_title = URLTitleService::get_url_title($global_data["us_title_for_url_title"]); // make url_title from us_title value
+
+        $article = new Article;
+        if($request->hasFile('image')){
+            $article['image'] =  ImageControllService::image_upload('images/'.$global_data["category"].'_img/', $request, 'image', 1);
+        }
+        
+        $article['url_title'] = $url_title;
+
+        $article['category']=$global_data["category"];
+        $article['published']=$global_data["published"];
+        $article['map']=$global_data["map"];
+        $article['weather']=$global_data["weather"];
+
+        $article['open_time'] = $global_data["open_timen"];
+        $article['closed_time'] = $global_data["closed_time"];
+
+        $article['price_from'] = $global_data["price_from"];
+
+        $article['fb_link']=$global_data["fb_link"];
+        $article['twit_link']=$global_data["twit_link"];
+        $article['google_link']=$global_data["google_link"];
+        $article['inst_link']=$global_data["inst_link"];
+        $article['web_link']=$global_data["web_link"];
+
+        $local_us = $us_info_id;
+        $local_ka = $ka_info_id;
+        $local_ru = $ru_info_id;
+
+        $article['us_article_id']=$local_us;
+        $article['ka_article_id']=$local_ka;
+        $article['ru_article_id']=$local_ru;
+        
+        $article -> save();
+        
+        $this->add_general_info_articles($global_blocks);
+
+        if($global_data["category"] == 'outdoor' && $global_data["region"] != 'select_region'){
+            $this->add_regioin_articles($global_data["region"], $article->id);
+        }
+        else if($global_data["category"] == 'mount_route' && $global_data["mount"] != 'select_mount'){
+            $this->add_mount_articles($global_data["mount"], $article->id);
+        }
+
+        return $article->id;
+    }
+
+    public function add_regioin_articles($region_id, $article_id){
+        $article = new Article_region;
+        
+        $article['region_id'] = $region_id;
+        $article['article_id'] = $article_id;
+
+        $article -> save();
+    }
+
+    public function add_mount_articles($mount_id, $article_id){
+        $article = new Article_mount;
+        
+        $article['mount_id'] = $mount_id;
+        $article['article_id'] = $article_id;
+
+        $article -> save();
     }
 
     public function add_general_info_articles($global_blocks)
@@ -336,117 +414,46 @@ class ArticleController extends Controller
 
     public function add_locale_article($data, $locale)
     {
-        // $article = Locale_article::find($last_article_id);
-        $validate = $this->local_article_validate($data);
+        $article = new Locale_article;
+        
+        $article['title']=$data["title"];
+        $article['locale']=$locale;
+        $article['short_description']=$data["short_description"];
+        $article['text']=$data["text"];
+        $article['route']=$data["route"];
+        $article['how_get']=$data["how_get"];
+        $article['best_time']=$data["best_time"];
+        $article['what_need']=$data["what_need"];
+        $article['info']=$data["info"];
 
-        if ($validate != null) {
-            return($validate);
+        $saved = $article->save();
+
+        if(!$saved){
+            App::abort(500, 'Error');
         }
         else{
-            $article = new Locale_article;
-            
-            $article['title']=$data["title"];
-            $article['locale']=$locale;
-            $article['short_description']=$data["short_description"];
-            $article['text']=$data["text"];
-            $article['route']=$data["route"];
-            $article['how_get']=$data["how_get"];
-            $article['best_time']=$data["best_time"];
-            $article['what_need']=$data["what_need"];
-            $article['info']=$data["info"];
-
-            // $article -> update();
-
-            $article->save();
+            return $article->id;
         }
     }
 
-    public function add_to_interested_events(Request $request)
-    {
-        if (Auth::user()) {
-            
-            if(Interested_event::where('user_id', '=', Auth::user()->id)->where('article_id', '=', $request->event_id)->count() > 0){
-                return 'this event are in faworite';
-            }
-            else{
-                $faworit = new Interested_event();
-            
-                $faworit['user_id'] = Auth::user()->id;
-                $faworit['article_id'] = $request->event_id;
-                
-                $faworit -> save();
+    
 
-                return 'event eded socsesful';
-            }
-        }
-        else{
-            return 'ples login';
-        }
-    }
-
-    public function get_interested_events(Request $request)
-    {
-        if (Auth::user()) {
-            $fav_area = Interested_event::where('user_id', '=', Auth::user()->id)->get();
-            $articles = [];
-            foreach ($fav_area as $area) {
-                $global_articles = Article::where('id', '=', $area->article_id)->get();
-                $outdoors = GetArticlesService::get_locale_article_use_locale($global_articles, $request->lang);
-                array_push($articles, $outdoors[0]);
-            }
-            
-            return $articles;
-        }
-        else{
-            return 'Plees login!';
-        }
-    }
-
-    public function del_interested_event(Request $request)
-    {
-        if (Auth::user()) {
-            $fav_area = Interested_event::where('user_id', '=', Auth::user()->id)->where('article_id', '=', $request->article_id)->first();
-            $fav_area ->delete();
-        }
-        else{
-            return 'Plees login!';
-        }
-    }
-
-    public function add_to_favorite_outdoor_area(Request $request)
-    {
-        if (Auth::user()) {
-            
-            if(Favorite_outdoor_area::where('user_id', '=', Auth::user()->id)->where('article_id', '=', $request->article_id)->count() > 0){
-                // $editing_faworit = Favorite_outdoor_area::where('user_id', '=', Auth::user()->id)->where('article_id', '=', $request->article_id)->first();
-
-                // $editing_faworit['user_id'] = Auth::user()->id;
-                // $editing_faworit['article_id'] = $request->article_id;
-                
-                // $editing_faworit -> save();
-
-                return 'this area are in faworite';
-            }
-            else{
-                $faworit = new Favorite_outdoor_area();
-            
-                $faworit['user_id'] = Auth::user()->id;
-                $faworit['article_id'] = $request->article_id;
-                
-                $faworit -> save();
-
-                return 'area eded socsesful';
-            }
-        }
-        else{
-            return 'ples login';
-        }
-    }
 
     public function global_article_validate($global_data)
     {
         $validator = Validator::make($global_data, [
             'published' => 'required',
+            'us_title_for_url_title' => 'required|unique:articles,url_title',
+        ]);
+        if ($validator->fails()) {
+            return $validator->messages();
+        }
+    }
+
+    public function image_validate($request)
+    {
+        $validator = Validator::make($request->all(), [
+            'image' => 'nullable | image | mimes:jpeg,png,jpg,gif,svg | max:2048',
         ]);
         if ($validator->fails()) {
             return $validator->messages();
@@ -455,6 +462,7 @@ class ArticleController extends Controller
 
     public function local_article_validate($data)
     {
+        // dd($data);
         $validator = Validator::make($data, [
             'title' => 'required',
             'short_description' => 'required',
@@ -463,7 +471,6 @@ class ArticleController extends Controller
         if ($validator->fails()) {
             return $validator->messages();
         }
-        // dd($validator->messages());
     }
 
 
@@ -580,19 +587,6 @@ class ArticleController extends Controller
         return $area_data;
     }
 
-    // public function similar_article_list($category, $lang)
-    // {
-    //     // dd($category, $lang);
-    //     $article_count = Article::where('category', '=', $category)->where('published', '=', 1)->count();
-    //     $articles = [];
-    //     if($article_count > 0){
-    //         $global_articles = Article::where('category', '=', $category)->where('published', '=', 1)->get();
-    //         $articles = GetArticlesService::get_locale_article_use_locale($global_articles, $lang);
-    //     }
-    //     // dd($articles);
-    //     return $articles;
-
-    // }
 
     /**
      * Next functions get locale articles list.
@@ -629,7 +623,8 @@ class ArticleController extends Controller
             $articles = $this->article_list($request->category, $request->lang);
         }
         elseif ($request->category == "mount_route") {
-            $articles = $this->mount_route_list($request->lang);
+            // $articles = $this->mount_route_list($request->lang);
+            $articles = $this->article_list($request->category, $request->lang);
         }
 
         return $articles;
@@ -703,7 +698,7 @@ class ArticleController extends Controller
         $article_count = Article::where('category', '=', $category)->where('published', '=', 1)->count();
         $articles = [];
         if($article_count > 0){
-            $global_articles = Article::where('category', '=', $category)->where('published', '=', 1)->get();
+            $global_articles = Article::latest('id')->where('category', '=', $category)->where('published', '=', 1)->get();
             $articles = GetArticlesService::get_locale_article_use_locale($global_articles, $lang);
         }
         // dd($articles);
@@ -711,27 +706,27 @@ class ArticleController extends Controller
 
     }
 
-    public function mount_route_list($lang)
-    {
-        $article_count = Article::where('category', '=', 'mount_route')->where('published', '=', 1)->count();
-        $articles = [];
-        if($article_count > 0){
-            $global_articles = Article::where('category', '=', 'mount_route')->where('published', '=', 1)->get();
-            $articles = GetArticlesService::get_locale_article_use_locale($global_articles, $lang);
-        }
-        return $articles;
-    }
+    // public function mount_route_list($lang)
+    // {
+    //     $article_count = Article::where('category', '=', 'mount_route')->where('published', '=', 1)->count();
+    //     $articles = [];
+    //     if($article_count > 0){
+    //         $global_articles = Article::latest('id')->where('category', '=', 'mount_route')->where('published', '=', 1)->get();
+    //         $articles = GetArticlesService::get_locale_article_use_locale($global_articles, $lang);
+    //     }
+    //     return $articles;
+    // }
 
-    public function get_last_news($lang)
-    {
-        $article_count = Article::where('category', '=', 'news')->where('published', '=', 1) -> latest()->count();
-        $articles = [];
-        if($article_count > 0){
-            $global_articles = Article::where('category', '=', 'news')->where('published', '=',1) -> latest()->get();
-            $articles = GetArticlesService::get_locale_article_use_locale($global_articles, $lang);
-        }
-        return [$articles];
-    }
+    // public function get_last_news($lang)
+    // {
+    //     $article_count = Article::where('category', '=', 'news')->where('published', '=', 1) -> latest()->count();
+    //     $articles = [];
+    //     if($article_count > 0){
+    //         $global_articles = Article::latest('id')->where('category', '=', 'news')->where('published', '=',1) -> latest()->get();
+    //         $articles = GetArticlesService::get_locale_article_use_locale($global_articles, $lang);
+    //     }
+    //     return [$articles];
+    // }
 
     
 
@@ -818,6 +813,33 @@ class ArticleController extends Controller
                 "ru_article" => $ru_article,
             ]
         );
+    }
+
+
+
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function destroy($id)
+    {
+        $global_id=$id;
+
+        $global_article = Article::where('id',strip_tags($global_id))->first();
+        $us_article = Locale_article::where('id',strip_tags($global_article->us_article_id))->first();
+        $ru_article = Locale_article::where('id',strip_tags($global_article->ru_article_id))->first();
+        $ka_article = Locale_article::where('id',strip_tags($global_article->ka_article_id))->first();
         
+        // delete article file
+        ImageControllService::image_delete('images/'.$global_article->category.'_img/', $global_article, 'image');
+        ImageControllService::image_delete('images/region_sectors_img/', $global_article, 'climbing_area_image');
+
+        // delete article from db
+        $global_article ->delete();
+        $us_article ->delete();
+        $ru_article ->delete();
+        $ka_article ->delete();
     }
 }

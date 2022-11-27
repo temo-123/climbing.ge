@@ -77,18 +77,12 @@
                     @global_form_data="article_data.global_data = $event" 
                 />
 
-                <div class="row">
-                    <div class="col-md-12">
-                        <ArticleImage ref="ArticleImage"/>
-                    </div>
+                <div class="col-md-12">
+                    <ArticleImage ref="ArticleImage" @upload_img="upload_adticle_image"/>
                 </div>
 
-                <div class="row">
-                    <div class="col-md-12">
-                        <SectorsImagesForm      v-if="this.category == 'outdoor'"       :category="this.category"/>
-                        <MountRouteImagesForm   v-if="this.category == 'mount_route'"   :category="this.category"/>
-                    </div>
-                </div>
+                <SectorsImagesForm      v-if="this.category == 'outdoor'"       :category="this.category" @upload_img="upload_area_images"/>
+                <MountRouteImagesForm   v-if="this.category == 'mount_route'"   :category="this.category" @upload_img="upload_mount_route_images"/>
             </div>
             <div class="row" v-show="tab_num == 2">
                 <LocaleDataForm 
@@ -129,9 +123,6 @@
 </template>
 
 <script>
-    // import { SlickList, SlickItem } from 'vue-slicksort';
-    // import StackModal from '@innologica/vue-stackable-modal'  //https://innologica.github.io/vue-stackable-modal/#sample-css
-
     import GlobalDataForm from './forms/add_forms/GlobalDataFormComponent.vue'
     import LocaleDataForm from './forms/add_forms/LocaleDataFormComponent.vue'
     import ArticleImage from './forms/add_forms/ArticleImageFormComponent.vue'
@@ -140,9 +131,6 @@
 
     export default {
         components: {
-            // StackModal,
-            // SlickItem,
-            // SlickList,
 
             GlobalDataForm,
             LocaleDataForm,
@@ -152,28 +140,11 @@
         },
         props: [
             // 'back_url',
-            // 'category'
         ],
         data(){
             return {
-                // myModal: false,
-                // errors: [],
-                // image_errors: [],
-                // without_info: false,
-
-                // is_add_image: false,
-
                 tab_num: 1,
                 category: this.$route.params.article_category,
-
-                // editorConfig: {
-                    // toolbar: [ [ 'Bold' ] ]
-                // },
-
-                // info_block: 'new_info',
-                // routes_info: "new_info",
-                // what_need_info: 'new_info',
-                // best_time: 'new_info',
 
                 error: {
                     global_article_error: [],
@@ -182,25 +153,7 @@
                     us_article_error: [],
                 },
 
-                // test: "",
-
-                // image_is_refresh: false,
-                // image_reset_id: 0,
-
-                // general_infos: [],
-                // regions: [],
-                // ru_article_error: [],
-                // us_article_error: [],
-
-                // name: '',
-                // images: [],
-                // success: '',
-
                 is_back_action: false,
-
-                // test_data: '',
-
-                // us_title: null,
 
                 article_data: {
                     global_data: [],
@@ -208,6 +161,7 @@
                     ka_data: [],
                     ru_data: [],
                 },
+                article_image: '',
 
                 global_blocks: {
                     info_block: 'new_info',
@@ -219,42 +173,23 @@
                     routes_info_id: 0,
                     what_need_info_id: 0,
                     best_time_id: 0,
-                }
+                },
 
-                // temporary_article_id: '',
+                area_images: [],
+                mount_route_images: []
             }
         },
         mounted() {
-
-            // if(this.article_data.global_data.us_title_for_url_title != ""){
-            //     this.article_data.global_data.us_title_for_url_title = this.article_data.en_data.title
-            // }
-
-            // this.create_temporary_article()
-            // this.check_permission()
-            // if (this.category == 'outdoor') {
-            //     this.get_regions()
-            // }
-            // this.get_general_info()
+            //
         },
-        // beforeDestroy () {
-        //     document.removeEventListener("backbutton", this.yourCallBackFunction());
-        // },
-        // watch:{
-        //     '$route' (to) {
-        //         if(to.currentRoute.meta.reload==true){
-        //             alert('test')
-        //         }
-        //     }
-        // },
         beforeRouteLeave (to, from, next) {
-            if(this.is_back_action = true){
-                if (window.confirm('Added information will be deleted!!! Are you sure, you want go back?')) {
-                    this.is_back_action = false;
-                    next()
-                } else {
-                    next(false)
-                }
+            if(this.is_back_action){
+                next()
+            }
+            else if (window.confirm('Added information will be deleted!!! Are you sure, you want go back?')) {
+                next()
+            } else {
+                next(false)
             }
         },
         methods: {
@@ -262,63 +197,17 @@
                 this.global_blocks = event
             },
 
+            upload_adticle_image(event){
+                this.article_image = event
+            },
 
-            // add_image_modal(){
-            //     this.is_add_image = true
-            // },
+            upload_area_images(event){
+                this.area_images = event
+            },
 
-            // add_image(){
-            //     var myFormData = new FormData(this.$refs.myForm)
-            //     axios({
-            //         method: 'post',
-            //         url: '/gallery/add/',
-            //         data: myFormData,
-            //         config: { 
-            //             headers: {'Content-Type': 'multipart/form-data' },
-            //         },
-            //     })
-            //     .then((response)=>  {
-            //         this.is_add_image = false
-            //         this.get_gallery_data()
-            //     });
-            // },
-
-
-            // get_mount_massive_data: function(){
-            //     axios
-            //     .get("/mountaineering/get_mount_data/")
-            //     .then(response => {
-            //         this.mount_data = response.data
-            //     })
-            //     .catch(
-            //     error => console.log(error)
-            //     );
-            // },
-
-            // get_regions(category){
-            //     if(this.category == 'outdoor'){
-            //         axios
-            //         .get("/api/regions/en/")
-            //         .then(response => {
-            //             this.regions = response.data
-            //         })
-            //         .catch(
-            //             error => console.log(error)
-            //         );
-            //     }
-            // },
-
-            // get_general_info(){
-            //     axios
-            //     .get('/api/general_info')
-            //     .then(response => {
-            //         this.general_infos = response.data
-            //     })
-            //     .catch(
-            //         error => console.log(error)
-            //     );
-            // },
-
+            upload_mount_route_images(event){
+                this.mount_route_images = event
+            },
 
             add_article() {
                 this.article_data.global_data.us_title_for_url_title = this.article_data.en_data.title,
@@ -327,19 +216,33 @@
                 this.error.global_article_error = [],
                 this.error.ka_article_error = [],
                 this.error.ru_article_error = [],
-                this.error.us_article_error = [],
+                this.error.us_article_error = []
+
+                let formData = new FormData();
+                formData.append('image', this.article_image);
+                formData.append('data', JSON.stringify(this.article_data))
+                formData.append('global_blocks', JSON.stringify(this.global_blocks))
+
+                if(this.category == 'outdoor'){
+                    var loop_num = 0
+                    this.area_images.forEach(area_image => {
+                        formData.append('outdoor_area_images['+loop_num+']', area_image.image)
+                        loop_num++
+                    });
+                    loop_num = 0
+                }
+                else if(this.category == 'mount_route'){
+                    formData.append('mountain_route_images', this.mount_route_images)
+                }
 
                 axios
-                .post('/api/article/' + this.category, {
-                    data: this.article_data,
-
-                    global_blocks: this.global_blocks,
-
-                    _method: 'PATCH'
-                })
+                .post('/api/article/add_article/' + this.category, 
+                    formData,
+                )
                 .then(response => {
-                    this.$refs.ArticleImage.checkForm()
-                    // this.if_isset_go_beck()
+                    this.is_back_action = true
+                    // this.$refs.ArticleImage.checkForm()
+                    this.go_back()
                 })
                 .catch(err => {
                     console.log(err);
@@ -352,78 +255,10 @@
                     // this.is_us_article_error = true
                 })
             },
-
-            // checkForm: function () {
-            //     var myFormData = new FormData(this.$refs.myForm)
-            //     axios({
-            //         method: 'post',
-            //         url: '/articles/upload_image/',
-            //         data: myFormData,
-            //         config: { 
-            //             headers: {'Content-Type': 'multipart/form-data' },
-            //         },
-            //     })
-            //     .then((response)=>  {
-                    
-            //     });
-            // },
-
-            // upload_region_image: function () {
-            //     // var mySectorRegionImageData = new Array(this.$refs.sectorRegionImage)
-            //     var mySectorRegionImageData = new FormData(this.$refs.sectorRegionImage)
-            //     axios({
-            //         method: 'post',
-            //         url: '/articles/region_sectors_image_upload/',
-            //         data: mySectorRegionImageData,
-            //         config: { 
-            //             headers: {'Content-Type': 'multipart/form-data' },
-            //         },
-            //     })
-            //     .then((response)=>  {
-                    
-            //     });
-            // },
-            // upload_mount_route_image: function () {
-            //     var myMountRouteImageData = new FormData(this.$refs.mountRouteImage)
-            //     axios({
-            //         method: 'post',
-            //         url: '/articles/mount_route_image_upload/',
-            //         data: myMountRouteImageData,
-            //         config: { 
-            //             headers: {'Content-Type': 'multipart/form-data' },
-            //         },
-            //     })
-            //     .then((response)=>  {
-                    
-            //     });
-            // },
             
             go_back: function() {
-                this.is_back_action = true
-
                 this.$router.go(-1)
             },
-
-            // save_all() {
-            //     this.add_article()
-            // },
-
-            if_isset_go_beck() {
-                // window.location.href = this.back_url;
-                // this.go_back()
-                alert('go back')
-            },
-
-            // check_permission() {
-            //     axios
-            //     .get('/users/get_user_parmisions/', { })
-            //     .then((response)=> { 
-                    
-            //     })
-            //     .catch(error =>{
-                    
-            //     })
-            // }
         }
     }
 </script>

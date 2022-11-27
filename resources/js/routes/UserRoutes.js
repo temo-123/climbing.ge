@@ -45,8 +45,8 @@ import bisnesList from '../components/user/pages/bisnes/bisnesListComponent.vue'
 import bisnesAdd from '../components/user/pages/bisnes/bisnesAddComponent.vue'
 import bisnesEdit from '../components/user/pages/bisnes/bisnesEditComponent.vue'
 
-import mountRouteEdit from '../components/user/pages/mountRoutes/mountRouteEditComponent.vue'
-import mountRouteAdd from '../components/user/pages/mountRoutes/mountRouteAddComponent.vue'
+// import mountRouteEdit from '../components/user/pages/mountRoutes/mountRouteEditComponent.vue'
+// import mountRouteAdd from '../components/user/pages/mountRoutes/mountRouteAddComponent.vue'
 import mountList from '../components/user/pages/mountRoutes/mountListComponent.vue'
 
 import articleList from '../components/user/pages/articles/articleListComponent.vue'
@@ -153,8 +153,8 @@ const router = new VueRouter({
 
 
         { path: '/mount_routes/mount_routes_list', name: 'mountlist', component: mountList },
-        { path: '/mount_routes/edit/:id', name: 'mountRoute/Edit', component: mountRouteEdit },
-        { path: '/mount_routes/add', name: 'mountRoute/add', component: mountRouteAdd },
+        // { path: '/mount_routes/edit/:id', name: 'mountRoute/Edit', component: mountRouteEdit },
+        // { path: '/mount_routes/add', name: 'mountRoute/add', component: mountRouteAdd },
 
 
         { path: '/article/:article_category', name: 'articlelist', component: articleList },
@@ -165,6 +165,9 @@ const router = new VueRouter({
         // { path: '/spot_category/add/', name: 'spot_category_add', component: spotCategoryAdd },        
         { path: '/spot_category/edit/:id', name: 'spot_category_edit', component: load('spots_categories/SpotsCategoriesEditPageComponent') },
         { path: '/spot_category/add/', name: 'spot_category_add', component: load('spots_categories/SpotsCategoriesAddPageComponent') },
+
+        { path: '/mount_massive/edit/:id', name: 'mount_massive_edit', component: load('mountRoutes/mountMassiveEditComponent') },
+        { path: '/mount_massive/add/', name: 'mount_massive_add', component: load('mountRoutes/mountMassiveAddComponent') },
 
 
         { path: '/routes_and_sectors', name: 'routeAndSectorList', component: routeAndSectorList },

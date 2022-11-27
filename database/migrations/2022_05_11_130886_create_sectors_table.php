@@ -38,7 +38,8 @@ class CreateSectorsTable extends Migration
 
             $table->integer('num')->nullable();
 
-            $table->foreignId('article_id')->constrained()->onDelete('cascade');
+            // $table->foreignId('article_id')->constrained()->onDelete('cascade');
+            $table->foreignId('article_id')->constrained();
             
             $table->integer('published')->nullable();
             

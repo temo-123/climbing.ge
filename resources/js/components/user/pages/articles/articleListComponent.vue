@@ -28,7 +28,7 @@
                 <div class="col-sm-12" v-else>
                     <tabsComponent 
                         :table_data="this.data_for_tab"
-                        @update-data="update"
+                        @update-data="get_articles"
                         @filtr="filtr"
                     />
                 </div>
@@ -55,37 +55,24 @@
                 data_for_tab: [],
                 articles: [],
                 article_loading: true,
-                // regions: []
-                // test: ''
             }
         },
         mounted() {
             this.get_articles()
-            // this.get_regions(this.$route.params.article_category)
         },
         watch: {
             '$route' (to, from) {
                 this.data_for_tab = [],
                 this.get_articles()
-                // this.get_regions(this.$route.params.article_category)
-                // this.filtr()
                 window.scrollTo(0,0)
             }
         },
         methods: {
             get_articles(filt_id = 'all'){
-                console.log(filt_id)
-                // var data = []
-                // let vm = this;
                 if (filt_id === 'all' || filt_id === 'All') {
                     this.get_unfilted_articles()
                 }else{
                     this.get_filtred_articles(filt_id)
-                    // this.data = this.response.filter(function (item){
-                    //     return item.area.region_id == vm.filter_spot
-                    // })
-                    // alert('filtred id '+filt_id+'(component articleListComponent.vue)')
-                    // get_filtred_articles()
                 }
             },
 
@@ -99,7 +86,6 @@
                                                 'table_name': "Regions",
                                                 'table_add_url': 'spot_category_add', 
                                                 'table_edit_url': 'spot_category_edit',
-                                                // 'table_del_url': '/outdoor/del_spot/', 
                                             });
                     })
                     .catch(
@@ -125,7 +111,6 @@
                                             'table_category': this.$route.params.article_category, 
                                             'table_add_url': 'articleAdd', 
                                             'table_edit_url': 'articleEdit',
-                                            // 'table_del_url': 'del_url', 
                                         });
 
 
@@ -152,7 +137,6 @@
                                             'table_category': this.$route.params.article_category, 
                                             'table_add_url': 'articleAdd', 
                                             'table_edit_url': 'articleEdit',
-                                            // 'table_del_url': 'del_url', 
                                         });
 
 
@@ -233,11 +217,11 @@
             //     })
             // },
 
-            update(id){
-                if(id == 1){
-                    this.get_articles()
-                }
-            }
+            // update(id){
+            //     if(id == 1){
+            //         this.get_articles()
+            //     }
+            // }
         }
     }
 </script>

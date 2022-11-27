@@ -1,9 +1,9 @@
 <template>
-    <form @submit="checkForm" ref="myForm">
+    <form>
         <div class="form-group clearfix row">
             <label for="email" class='col-md-6 control-label'>Upload article image:</label>
             <div class="col-md-6">
-                <input type="file" name="image" id="image">
+                <input type="file" name="image" id="image" required v-on:change="onFileChange">
             </div>
         </div>
     </form>
@@ -19,31 +19,20 @@
         ],
         data(){
             return {
-                // sucses_upload: true
+                image: ''
             }
         },
         mounted() {
             // 
         },
         methods: {
-            checkForm: function () {
-                console.log('test')
-                var myFormData = new FormData(this.$refs.myForm)
-                axios({
-                    method: 'post',
-                    url: '../../api/articles/upload_image/',
-                    data: myFormData,
-                    config: { 
-                        headers: {'Content-Type': 'multipart/form-data' },
-                    },
-                })
-                .then((response)=>  {
-                    this.upload_sucses()
-                });
+            onFileChange(e){
+                this.image = e.target.files[0];
+
+                this.upload_img()
             },
-            upload_sucses(){
-                // this.sucses_upload = true
-                this.$emit("sucses_upload", false);
+            upload_img(event){
+                this.$emit("upload_img", this.image);
             },
         }
     }
