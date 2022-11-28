@@ -227,14 +227,17 @@ class ArticleController extends Controller
                     }
                 }
                 else if($data['global_data']["category"] == 'mount_route'){
-
+                    if($request->hasFile('mount_route_images')){
+                        $this->add_mount_route_images($request->outdoor_area_images, $action_article_id);
+                    }
                 }
                 // dd($data['global_data']["category"]);
             }
         }
         else{            
             return response()->json([
-                'Data validation' => $validation_issets
+                $validation_issets
+                // 'Data validation' => $validation_issets
             ], 422);
         }
     }

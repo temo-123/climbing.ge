@@ -72,8 +72,12 @@ class Article extends Model
 
 	public function general_info()
 	{
-		// return $this->hasMany(General_info_article::class, 'article_id');
         return $this->belongsToMany(General_info::class, 'general_info_article', 'article_id', 'info_id');
+	}
+
+	public function gallery_images()
+	{
+        return $this->belongsToMany(Gallery_image::class, 'gallery_image_article', 'article_id', 'image_id');
 	}
 
 

@@ -18,14 +18,10 @@ return new class extends Migration
 
             $table->string('title')->nullable();
             $table->text('text')->nullable();
-
             $table->string('image')->nullable();
-
             $table->integer('published')->nullable();
-
-            $table->integer('image_type')->nullable();
-
-            $table->integer('link')->nullable();
+            $table->string('image_type')->nullable();
+            $table->string('link')->nullable();
 
             // $table->integer('category_id')->nullable();
             // $table->foreignId('category_id')->constrained()
@@ -34,7 +30,7 @@ return new class extends Migration
             $table->foreign('category_id')->references('id')->on('gallery_categories')->onDelete('cascade');
 
             // $table->integer('article_id')->nullable();
-            $table->foreignId('article_id')->constrained()->onDelete('cascade');
+            // $table->foreignId('article_id')->constrained()->onDelete('cascade');
 
             $table->timestamps();
         });

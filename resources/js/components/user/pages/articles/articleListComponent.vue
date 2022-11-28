@@ -85,7 +85,7 @@
                                                 'data': response.data, 
                                                 'table_name': "Regions",
                                                 'table_add_url': 'spot_category_add', 
-                                                'table_edit_url': 'spot_category_edit',
+                                                // 'table_edit_url': 'spot_category_edit',
                                             });
                     })
                     .catch(
@@ -110,7 +110,7 @@
                                             'table_name': this.$route.params.article_category, 
                                             'table_category': this.$route.params.article_category, 
                                             'table_add_url': 'articleAdd', 
-                                            'table_edit_url': 'articleEdit',
+                                            // 'table_edit_url': 'articleEdit',
                                         });
 
 

@@ -5,8 +5,13 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
-use App\Models\Gallery_image;
 use App\Services\ImageControllService;
+
+use App\Models\Gallery_image;
+use App\Models\Gallery_category;
+use App\Models\Gallery_image_article;
+
+use Validator;
 
 class GalleryController extends Controller
 {
@@ -58,32 +63,9 @@ class GalleryController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create($request)
     {
-        $request->user()->authorizeRoles(['manager', 'admin']);
-        
-        if ($request->hasFile('image')) {
-
-            // $this->gallery_validate($request);
-            
-            $gallery = new Gallery_image();
-
-            $gallery['category']=$request->category;
-            $gallery['title']=$request->title;
-            $gallery['text']=$request->text;
-            $gallery['link']=$request->link;
-            $gallery['filter']=$request->filter;
-            $gallery['published']=$request->published;
-            $gallery['article_id']=$request->article_id;
-    
-            $file_new_name = ImageControllService::image_upload('images/gallery_img/', $request, 'image', 1);
-    
-            $gallery['image'] = $file_new_name;
-
-            $gallery -> save();
-
-            // return redirect()->route('gallery_list');
-        }
+        //
     }
 
     /**
@@ -95,33 +77,6 @@ class GalleryController extends Controller
     public function store(Request $request)
     {
         return Gallery_image::get();
-
-        // $articles = Gallery::get();
-        // $title = 'Gallery';
-        // $page_name = $title;
-        // $table_1_name = $title;
-        // $articles_add_url = 'article_add';
-        // $article_add_category = 'event';
-        // $articles_edit_url = 'article_edit';
-        // $article_page_utl = 'index';   
-
-        // $data = [
-        //     'title'=>$title,
-        //     'table_1'=>$articles,
-
-        //     'table_1_add_url'=>$articles_add_url,
-        //     'table_1_add_category'=>$article_add_category,
-        //     'table_1_edit_url'=>$articles_edit_url,
-        //     'table_1_article_url'=>$article_page_utl,
-        //     'table_1_title'=>'gallery',
-        //     'table_1_pablic' => '',
-        //     'table_1_name'=> $table_1_name,
-            
-        //     'page_name' => $page_name,
-        //     'active' => 'galley',
-        //     'page_route' => 'outdoor_page',
-        // ];
-        // return view('user.gallery_list', $data);
     }
 
     /**
@@ -132,25 +87,11 @@ class GalleryController extends Controller
      */
     public function show($id)
     {
-        // dd($id);
+        return Gallery_image::limit(8)->where('article_id', '=', $id)->where('published', '=', 1)->get();
+    }
 
-    //     $gallery = array();
-    //     $full_image = '';
-    //     $image = '';
-
-    //     $gallery_images = Gallery_image::where('article_id',strip_tags($id))->limit(8)->get();
-    //     $image_url = config('app.url').'/images/gallery_img/';
-
-    //     foreach ($gallery_images as $gallery_img) {
-    //         $image = $gallery_img->image;
-    //         $image = strval($image);
-    //         $full_image = $image_url . $image;
-    //         array_push($gallery, $full_image);
-    //     }
-
-    //     return $gallery;
-
-
+    public function show_article_images($id)
+    {
         return Gallery_image::limit(8)->where('article_id', '=', $id)->where('published', '=', 1)->get();
     }
 
@@ -160,52 +101,71 @@ class GalleryController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function gallery_image_edit(Request $request, $id)
     {
-        echo $request->text;
         if ($request->isMethod('post')) {
-            // $input = $request -> except('_token');
-            
-            // $this->gallery_validate_for_editing($request);
+            $validation_issets;
 
-            $gallery = Gallery_image::where('id',strip_tags($request->id))->first();
-
-            $gallery['category']=$request->category;
-            $gallery['title']=$request->title;
-            $gallery['text']=$request->text;
-            $gallery['link']=$request->link;
-            $gallery['filter']=$request->filter;
-            $gallery['published']=$request->published;
-            $gallery['article_id']=$request->article_id;
+            $data = json_decode($request->data, true );
             
-            $file_new_name = '';
-            if ($request->hasFile('image')){ 
-                $file_new_name = ImageControllService::image_update('images/gallery_img/', $gallery, $request, 'image', 1, 'image');
+            $image_validate = $this->gallery_image_validate($data, $request);
+            if ($image_validate != null) {
+                $validation_issets['form_data_validation'] = $image_validate;
             }
             else{
-                $file_new_name = $gallery['image'];
+                $validation_issets['form_data_validation'] = false;
             }
-            $gallery['image']=$file_new_name;
 
-            $gallery->update();
+            if (!$validation_issets['form_data_validation'] ) {
+                $edit_gallery_image = Gallery_image::where('id', '=', $request->image_id)->first();
+            
+                $edit_gallery_image['title']=$data["title"];
+                $edit_gallery_image['text']=$data["text"];
+                $edit_gallery_image['published']=$data["published"];
+                $edit_gallery_image['image_type']=$data["image_type"];
+                $edit_gallery_image['category_id']=$data["category_id"];
+                $edit_gallery_image['link']=$data["link"];
+
+                if($request->hasFile('image')){
+                    $edit_gallery_image['image'] =  ImageControllService::image_update('images/gallery_img/', $edit_gallery_image, $request, 'image', 'image', 1);
+                }
+            
+                $edit_gallery_image->save();
+
+                if($data["article_id"] && $data["image_type"] == 'Article image'){
+                    $galery_image_article_count = Gallery_image_article::where('image_id', '=', $edit_gallery_image->id)->count();
+                    if ($galery_image_article_count > 0) {
+                        $edit_active_conaction = Gallery_image_article::where('image_id', '==', $edit_gallery_image->id)->first();
+                        $edit_active_conaction['article_id'] = $data["article_id"];
+                        $edit_active_conaction->save();
+                    }
+                    else {
+                        $new_image_article = new Gallery_image_article;
+                        $new_image_article['image_id']=$edit_gallery_image["id"];
+                        $new_image_article['article_id']=$data["article_id"];
+                        $new_image_article->save();
+                    }
+                }
+                else if($data["image_type"] != 'Article image') {
+                    if (Gallery_image_article::where('image_id', '=', $edit_gallery_image->id)->count() > 0) {
+                        $deliting_conection_item = Gallery_image_article::where('image_id', '=', $edit_gallery_image->id)->first();
+                        $deliting_conection_item -> delete();
+                    }
+                }
+            }
+            else{
+                return response()->json([
+                    $image_validate,
+                ], 422);
+            }
         }
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
+    public function get_editing_image(Request $request)
     {
-        //
-    }
-
-    public function get_image(Request $request)
-    {
-        dd('test');
+        $image = Gallery_image::where('id', '=', $request->image_id)->first();
+        $image_article = $image->article;
+        return $image;
     }
 
     /**
@@ -216,7 +176,7 @@ class GalleryController extends Controller
      */
     public function destroy($id)
     {
-        $gallery = Gallery::where('id',strip_tags($id))->first();
+        $gallery = Gallery_image::where('id',strip_tags($id))->first();
 
         // delete article file
         ImageControllService::image_delete('images/gallery_img/', $gallery, 'image');
@@ -225,23 +185,60 @@ class GalleryController extends Controller
         $gallery -> delete();
     }
 
-    public function gallery_validate($request)
+    public function gallery_image_add(Request $request)
     {
-        $request->validate([
-            'published' => 'required',
-            'category' => 'required',
-            'title' => 'required|max:25',
-            'text' => 'required|max:225',
-            'image' => 'required',
-        ]);
+        $validation_issets;
+
+        $data = json_decode($request->data, true );
+        
+        $image_validate = $this->gallery_image_validate($data, $request);
+        if ($image_validate != null) {
+            $validation_issets['form_data_validation'] = $image_validate;
+        }
+        else{
+            $validation_issets['form_data_validation'] = false;
+        }
+
+        if (!$validation_issets['form_data_validation'] ) {
+            $new_gallery_image = new Gallery_image;
+        
+            $new_gallery_image['title']=$data["title"];
+            $new_gallery_image['text']=$data["text"];
+            $new_gallery_image['published']=$data["published"];
+            $new_gallery_image['image_type']=$data["image_type"];
+            $new_gallery_image['category_id']=$data["category_id"];
+            $new_gallery_image['link']=$data["link"];
+
+            if($request->hasFile('image')){
+                $new_gallery_image['image'] =  ImageControllService::image_upload('images/gallery_img/', $request, 'image', 1);
+            }
+        
+            $new_gallery_image->save();
+
+            if($data["article_id"] && $data["image_type"] == 'Article image'){
+                $new_image_article = new Gallery_image_article;
+                $new_image_article['image_id']=$new_gallery_image["id"];
+                $new_image_article['article_id']=$data["article_id"];
+                $new_image_article->save();
+            }
+        }
+        else{
+            return response()->json([
+                $image_validate,
+            ], 422);
+        }
     }
-    public function gallery_validate_for_editing($request)
+
+    public function gallery_image_validate($data, $request)
     {
-        $request->validate([
+        $validator = Validator::make($data, [
             'published' => 'required',
-            'category' => 'required',
+            'category_id' => 'required',
             'title' => 'required|max:25',
             'text' => 'required|max:225',
         ]);
+        if ($validator->fails()) {
+            return $validator->messages();
+        }
     }
 }

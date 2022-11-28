@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
-use App\Models\galery_image_categoryes;
+use App\Models\Gallery_category;
 
 class GalleryImagesCategoryController extends Controller
 {
@@ -16,7 +16,7 @@ class GalleryImagesCategoryController extends Controller
      */
     public function index()
     {
-        return galery_image_categoryes::get();
+        return Gallery_category::get();
     }
 
     /**
@@ -37,7 +37,13 @@ class GalleryImagesCategoryController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $new_gallery_category = new Gallery_category;
+
+        $new_gallery_category['us_name'] = $request->data['us_name'];
+        $new_gallery_category['ka_name'] = $request->data['ka_name'];
+        $new_gallery_category['ru_name'] = $request->data['ru_name'];
+
+        $new_gallery_category -> save();
     }
 
     /**
@@ -48,7 +54,7 @@ class GalleryImagesCategoryController extends Controller
      */
     public function show($id)
     {
-        //
+        return Gallery_category::where("id", "=", $id)->first();
     }
 
     /**
@@ -71,7 +77,13 @@ class GalleryImagesCategoryController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $editing_gallery_category = Gallery_category::where("id", "=", $id)->first();
+
+        $editing_gallery_category['us_name'] = $request->editing_data['us_name'];
+        $editing_gallery_category['ka_name'] = $request->editing_data['ka_name'];
+        $editing_gallery_category['ru_name'] = $request->editing_data['ru_name'];
+
+        $editing_gallery_category -> save();
     }
 
     /**
@@ -82,6 +94,7 @@ class GalleryImagesCategoryController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $deleted_gallery_category = Gallery_category::where("id", "=", $id)->first();
+        $deleted_gallery_category -> delete();
     }
 }

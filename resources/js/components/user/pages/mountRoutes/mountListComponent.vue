@@ -58,10 +58,10 @@
                     this.data_for_tab.push({'id': 1,
                                             'data': response.data, 
                                             'table_name': 'Mountaineering routes', 
-                                            'table_category': 'Mountaineering routes', 
-                                            'table_add_url': 'add_url', 
-                                            'table_edit_url': 'edit_url',
-                                            'table_del_url': 'del_url', 
+                                            'table_category': 'mount_route', 
+                                            'table_add_url': 'articleAdd', 
+                                            // 'table_edit_url': 'edit_url',
+                                            // 'table_del_url': 'del_url', 
                                         });
 
                     this.get_mounts()
@@ -84,10 +84,10 @@
                     this.data_for_tab.push({'id': 1,
                                             'data': response.data, 
                                             'table_name': 'Mountaineering routes', 
-                                            'table_category': 'Mountaineering routes', 
-                                            'table_add_url': 'add_url', 
-                                            'table_edit_url': 'edit_url',
-                                            'table_del_url': 'del_url', 
+                                            'table_category': 'mount_route', 
+                                            'table_add_url': 'articleAdd', 
+                                            // 'table_edit_url': 'edit_url',
+                                            // 'table_del_url': 'del_url', 
                                         });
 
                     this.get_mounts()

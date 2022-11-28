@@ -77,33 +77,8 @@
                         >
                             <div class="col-md-12">
                                 <div class="add_buttom float-left">
-                                    <!-- <a :href="table_edit_url" class="btn btn-primary pull-left" type="submit">New</a> -->
-                                    <!-- <a class="btn btn-primary" type="submit">New {{filtr_table_name}}</a> -->
-                                    <!-- :href="table_1_add_url"  -->
-                                    <!-- <router-link class="btn btn-primary pull-left" :to="'../article/add/'+filtr_table_name" exact>New {{filtr_table_name}}</router-link> -->
-
                                     <span
                                         v-if="
-                                            filtr_data.table_name == 'My comments' &&
-                                            filtr_data.table_name == 'Comments' &&
-                                            filtr_data.table_category != null
-                                        "
-                                    >
-                                        <router-link
-                                            class="btn btn-primary pull-left"
-                                            :to="{
-                                                name: filtr_data.table_add_url,
-                                                params: {
-                                                    article_category:
-                                                        filtr_data.table_category,
-                                                },
-                                            }"
-                                            >New
-                                            {{ filtr_data.name }}</router-link
-                                        >
-                                    </span>
-                                    <span
-                                        v-else-if="
                                             filtr_data.table_name == 'Shiped countries' &&
                                             filtr_data.table_category !== null
                                         "
@@ -126,25 +101,19 @@
                                     >
                                         <button class="btn btn-primary pull-left" @click="sale_code_modal('add')">New sale code</button>
                                     </span>
-                                    <!-- <span
-                                        v-else-if="
-                                            filtr_data.table_name == 'Sectors local images' &&
-                                            filtr_data.table_category !== null
-                                        "
-                                    >
-                                        <button class="btn btn-primary pull-left">New local image</button>
-                                    </span> -->
                                     <span v-else>
                                         <span v-if="filtr_data.table_add_url">
                                             <router-link
                                                 class="btn btn-primary pull-left"
                                                 :to="{
                                                     name: filtr_data.table_add_url,
+                                                    params: {
+                                                        article_category:
+                                                            filtr_data.table_category,
+                                                    },
                                                 }"
                                                 >New
-                                                {{ filtr_data.name }}
-                                            </router-link
-                                            >
+                                            </router-link>
                                         </span>
                                     </span>
                                 </div>
@@ -156,9 +125,6 @@
                                     >
                                         Refresh
                                     </button>
-
-                                    <!-- <button class="btn main-btn" >Refresh ({{2}})</button>
-                                    <span class="badge badge-primare mb-1">Updating...</span> -->
                                 </div>
                             </div>
                         </div>
@@ -237,13 +203,6 @@
 
 
 
-                            <!-- <tbody v-if="data.table_name == 'Mounts'">
-                                <mountTab
-                                    v-for="table_info in data.data"
-                                    :key="table_info.id"
-                                    :table_info="table_info"
-                                />
-                            </tbody> -->
                             <tbody v-if="data.table_name == 'Products'">
                                 <productsTab
                                     v-for="table_info in data.data"

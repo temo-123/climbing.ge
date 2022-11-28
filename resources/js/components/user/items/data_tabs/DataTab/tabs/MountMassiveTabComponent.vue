@@ -15,7 +15,7 @@
         
         <td>|</td>
         <td>
-            <button type="submit" class="btn btn-danger" @click="del_region(table_info.id)">Delete</button>
+            <button type="submit" class="btn btn-danger" @click="del_mount( table_info.global_mount.id )">Delete</button>
         </td>
     </tr>
 </template>
@@ -36,12 +36,11 @@
             // console.log(this.table_info)
         },
         methods: {
-            del_region(id){
+            del_mount(id){
                 if(confirm('Are you sure, you want delite it?')){
                     axios
-                    .post('../../api/outdoor/del_spot/'+id, {
-                        id: id,
-                        _method: 'delete'
+                    .post('../../api/mount/'+id, {
+                        _method: 'DELETE'
                     })
                     .then(Response => {
                         this.update(this.tab_num)

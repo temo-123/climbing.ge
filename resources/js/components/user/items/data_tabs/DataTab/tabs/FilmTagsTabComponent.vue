@@ -29,7 +29,6 @@
             <pre class="language-vue">
                 <h1>{{ action_title }}</h1>
 
-
                 <input type="text" class="form-control" v-model="form_data.us_name" name="English name" id="English name" placeholder="Enter English name" title="Enter English name">
                 <input type="text" class="form-control" v-model="form_data.ka_name" name="Georgian name" id="Georgian name" placeholder="Enter Georgian name" title="Enter Georgian name">
                 <input type="text" class="form-control" v-model="form_data.ru_name" name="Russian name" id="Russian name" placeholder="Enter Russian name" title="Enter Russian name">                

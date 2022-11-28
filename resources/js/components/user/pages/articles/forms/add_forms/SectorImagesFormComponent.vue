@@ -1,9 +1,9 @@
 <template>
     <div class="col-md-12">
         <div class="row">
-            <div class="col-md-2">
+            <div class="col-md-12">
                 <div class="form-groupe">
-                    <button class="btn btn-primary float-right" @click="add_new_sector_image_value()">Add new image</button>
+                    <button class="btn btn-primary float-left" @click="add_new_sector_image_value()">Add new sector image</button>
                 </div>
             </div>
             <!-- <div class="col-md-6">

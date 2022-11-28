@@ -17,18 +17,16 @@ class Gallery_image extends Model
         'text',
         'link',
         'published',
-
         'category_id',
-        'article_id',
     ];
 
 	public function article()
 	{
-		return $this->hasOhe(Article::class);
+        return $this->belongsToMany(Article::class, 'gallery_image_article', 'image_id', 'article_id');
 	}
 
 	public function category()
 	{
-		return $this->hasOhe(galery_image_category::class);
+		return $this->belongsTo(Gallery_category::class, 'category_id', 'id');
 	}
 }

@@ -6,10 +6,14 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
 use App\Models\Mount;
+use App\Models\Locale_mount;
 use App\Services\GetMountSystemService;
 
 use App\Models\Article_mount;
 use App\Models\Article;
+
+use Auth;
+use Validator;
 
 class MountController extends Controller
 {
@@ -68,9 +72,110 @@ class MountController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        // dd($request['data']['global_data']);
+        $validation_issets = [];
+
+        $ka_validate = $this->local_mount_validate($request['data']['ka_data']);
+        if ($ka_validate != null) {
+            $validation_issets['ka_info_validation'] = $ka_validate;
+        }
+        else{
+            $validation_issets['ka_info_validation'] = false;
+        }
+
+        $us_validate = $this->local_mount_validate($request['data']['us_data']);
+        if ($us_validate != null) {
+            $validation_issets['us_info_validation'] = $us_validate;
+        }
+        else{
+            $validation_issets['us_info_validation'] = false;
+        }
+
+        $ru_validate = $this->local_mount_validate($request['data']['ru_data']);
+        if ($ru_validate != null) {
+            $validation_issets['ru_info_validation'] = $ru_validate;
+        }
+        else{
+            $validation_issets['ru_info_validation'] = false;
+        }
+
+        $global_validate = $this->global_mount_validate($request['data']['global_data']);
+        if ($global_validate != null) {
+            $validation_issets['global_info_validation'] = $global_validate;
+        }
+        else{
+            $validation_issets['global_info_validation'] = false;
+        }
+
+        if (
+            !$validation_issets['global_info_validation'] && 
+            !$validation_issets['ru_info_validation'] && 
+            !$validation_issets['ka_info_validation'] && 
+            !$validation_issets['us_info_validation']
+        ) {
+            
+            $saiving_issets['ka_info_status'] = $this->add_locale_mount($request['data']['ka_data'], 'ka');
+            $saiving_issets['ru_info_status'] = $this->add_locale_mount($request['data']['ru_data'], 'ru');
+            $saiving_issets['us_info_status'] = $this->add_locale_mount($request['data']['us_data'], 'us');
+
+            if (
+                $saiving_issets['ka_info_status'] != 'Error' &&
+                $saiving_issets['ru_info_status'] != 'Error' &&
+                $saiving_issets['us_info_status'] != 'Error'
+            ) {
+                $action_mount_id = $this->add_global_mount(
+                    $request['data']['global_data'], 
+
+                    $saiving_issets['ka_info_status'],
+                    $saiving_issets['ru_info_status'],
+                    $saiving_issets['us_info_status']                    
+                );
+            }
+        }
+        else{            
+            return response()->json([
+                'Data validation' => $validation_issets
+            ], 422);
+        }
     }
 
+    public function add_locale_mount($data, $locale)
+    {
+        $article = new Locale_mount;
+        
+        $article['title']=$data["name"];
+        $article['short_description']=$data["short_description"];
+        $article['text']=$data["text"];
+        $article['how_get']=$data["how_get"];
+        $article['best_time']=$data["best_time"];
+
+        $article['locale']=$locale;
+
+        $saved = $article->save();
+
+        if(!$saved){
+            App::abort(500, 'Error');
+        }
+        else{
+            return $article->id;
+        }
+    }
+
+    public function add_global_mount($global_data, $ka_info_id, $ru_info_id, $us_info_id)
+    {
+        $article = new Mount;
+
+        $article['map']=$global_data["map"];
+        $article['weather']=$global_data["weather"];
+
+        $article['demo_name'] = $global_data["demo_name"];
+
+        $article['us_mount_id'] = $us_info_id;
+        $article['ka_mount_id'] = $ka_info_id;
+        $article['ru_mount_id'] = $ru_info_id;
+        
+        $article -> save();
+    }
     /**
      * Display the specified resource.
      *
@@ -104,7 +209,11 @@ class MountController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $editing_product_category = Mount::where("id", "=", $id)->first();
+
+        $editing_product_category['map'] = $request->editing_data['map'];
+
+        $editing_product_category -> save();
     }
 
     /**
@@ -115,6 +224,29 @@ class MountController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $deleted_product_category = Mount::where("id", "=", $id)->first();
+        $deleted_product_category -> delete();
+    }
+
+    public function global_mount_validate($data)
+    {
+        $validator = Validator::make($data, [
+            'demo_name' => 'required',
+        ]);
+        if ($validator->fails()) {
+            return $validator->messages();
+        }
+    }
+
+    public function local_mount_validate($data)
+    {
+        $validator = Validator::make($data, [
+            'text' => 'required',
+            'name' => 'required',
+            'short_description' => 'required',
+        ]);
+        if ($validator->fails()) {
+            return $validator->messages();
+        }
     }
 }

@@ -143,7 +143,7 @@
                 :cancelButton="{ visible: false, title: 'Close', btnClass: { 'btn btn-danger': true } }"
             >
             <pre class="language-vue">
-                <form class="form" method="POST" id="registrationForm">
+                <form class="form" method="POST" >
 
                     <input type="text" class="form-control" v-model="edit_data.demo_name" name="name" placeholder="Enter adres demo name" title="Enter adres demo name">
                     <div class="alert alert-danger" role="alert" v-if="errors.demo_name">Enter adres demo name!!!</div>

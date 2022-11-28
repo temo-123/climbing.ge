@@ -144,6 +144,10 @@ Route::group(['namespace'=>'Api'], function() {
     Route::apiResource('/gallery_image', 'GalleryController');
     Route::get('/swiper', 'GalleryController@get_swiper_images');
     Route::get('/get_image/{image_id}', 'GalleryController@get_image');
+    Route::post('/gallery_image_add', 'GalleryController@gallery_image_add');
+    Route::post('/gallery_image_edit/{image_id}', 'GalleryController@gallery_image_edit');
+    Route::get('/get_editing_image/{image_id}', 'GalleryController@get_editing_image');
+
     Route::apiResource('/gallery_image_category', 'GalleryImagesCategoryController');
 
     /*
@@ -295,24 +299,4 @@ Route::group(['namespace'=>'Api'], function() {
         Route::get('email/resend', 'VerificationController@resend')->name('verification.resend');
         Route::get('auth_user', 'AuthenticationController@user')->name('auth_user');
     });
-
-    // Route::get('/mount_route/{lang}', 'MountRouteController@locale_data');
-    // Route::get('/other/{lang}', 'OtherController@locale_data');
-    // Route::get('/event/{lang}', 'EventController@locale_data');
-    // Route::get('/news/{lang}', 'NewsController@locale_data');
-    // Route::get('/techtip/{lang}', 'TechtipController@locale_data');
-    // Route::get('/ice/{lang}', 'IceController@locale_data');
-    // Route::get('/indoor/{lang}', 'IndoorController@locale_data');
-    // Route::get('/outdoor/{lang}', 'OutdoorController@locale_data');
-    // Route::get('/outdoor/{lang}/{url_title}', 'OutdoorController@page_locale_data');
-
-    // Route::apiResource('/ice', 'IceController');
-    // Route::apiResource('/indoor', 'IndoorController');
-    // Route::apiResource('/mount', 'MountController');
-    // Route::apiResource('/mount_route', 'MountRouteController');
-    // Route::apiResource('/other', 'OtherController');
-    // Route::apiResource('/outdoor', 'OutdoorController');
-    // Route::apiResource('/event', 'EventController');
-    // Route::apiResource('/news', 'NewsController');
-    // Route::apiResource('/techtip', 'TechtipController');
 });
