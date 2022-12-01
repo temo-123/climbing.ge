@@ -70,9 +70,9 @@ import MTPEdit from '../components/user/pages/routes_and_sectors/MTP/MTPEditComp
 import MTPPitchAdd from '../components/user/pages/routes_and_sectors/MTPPitch/MTPPitchAddComponent.vue'
 import MTPPitchEdit from '../components/user/pages/routes_and_sectors/MTPPitch/MTPPitchEditComponent.vue'
 
-import productsList from '../components/user/pages/products_and_categories/productsAndCatgoriesListComponent.vue'
-import productEdit from '../components/user/pages/products_and_categories/products/productEditComponent.vue'
-import productAdd from '../components/user/pages/products_and_categories/products/productAddComponent.vue'
+// import productsList from '../components/user/pages/products_and_categories/productsAndCatgoriesListComponent.vue'
+// import productEdit from '../components/user/pages/products_and_categories/products/productEditComponent.vue'
+// import productAdd from '../components/user/pages/products_and_categories/products/productAddComponent.vue'
 
 // import productCategoryEdit from '../components/user/pages/products_and_categories/categories/productCategoryEditComponent.vue'
 // import productCategoryAdd from '../components/user/pages/products_and_categories/categories/productCategoryAddComponent.vue'
@@ -188,15 +188,20 @@ const router = new VueRouter({
         { path: '/sector_local_images/add', name: 'sectorLocalImagesListAdd', component: load('sector_local_images/sectorLocalImageAddComponent') },
         { path: '/sector_local_images/edit/:id', name: 'sectorLocalImagesListEdit', component: load('sector_local_images/sectorLocalImageEditComponent') },
         
+        // { path: '/products_and_categories', name: 'productsList', component: productsList },
+        // { path: '/product/edit/:id', name: 'productEdit', component: productEdit },
+        // { path: '/product/add/', name: 'productAdd', component: productAdd },
+        { path: '/products_and_categories', name: 'productsList', component: load('products_and_categories/productsAndCatgoriesListComponent') },
+        { path: '/product/edit/:id', name: 'productEdit', component: load('products_and_categories/products/productEditComponent') },
+        { path: '/product/add', name: 'productAdd', component: load('products_and_categories/products/productAddComponent') },
 
-        { path: '/products_and_categories', name: 'productsList', component: productsList },
-        { path: '/product/edit/:id', name: 'productEdit', component: productEdit },
-        { path: '/product/add/', name: 'productAdd', component: productAdd },
+        { path: '/product_option_control/product_id/:product_id', name: 'productOptionsControl', component: load('products_and_categories/productOptionControlPageComponent') },
 
         // { path: '/productCategory/edit/:id', name: 'productCategoryEdit', component: productCategoryEdit },
         // { path: '/productCategory/add/', name: 'productCategoryAdd', component: productCategoryAdd },
         { path: '/productCategory/edit/:id', name: 'productCategoryEdit', component: load('products_and_categories/categories/productCategoryEditComponent'), },
         { path: '/productCategory/add/', name: 'productCategoryAdd', component: load('products_and_categories/categories/productCategoryAddComponent') },
+        
 
         { path: '/services_list', name: 'servicesList', component: servicesList },
         { path: '/service/edit/:id', name: 'serviceEdit', component: serviceEdit },
@@ -224,6 +229,9 @@ router.beforeEach((to, from, next)=>{
                     localStorage.removeItem('x_xsrf_token');
                     check(to, from, next, token)
                     return next ({name: 'login'})
+                }
+                else{
+                    check(to, from, next, token)
                 }
             // }
         });

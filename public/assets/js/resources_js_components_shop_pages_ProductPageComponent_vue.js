@@ -536,7 +536,7 @@ __webpack_require__.r(__webpack_exports__);
       var _this = this;
 
       this.product = [];
-      axios.get('../api/product/' + localStorage.getItem('lang') + '/' + this.$route.params.url_title).then(function (response) {
+      axios.get('../api/page_product/' + localStorage.getItem('lang') + '/' + this.$route.params.url_title).then(function (response) {
         _this.product = response.data[0]; // this.local_product = response.data[0]['local_product'][0];
         // this.global_product = response.data[0]['global_product'];
         // this.options = response.data[0]['product_options'];
@@ -548,8 +548,8 @@ __webpack_require__.r(__webpack_exports__);
           if (option.images.length) {
             option.images.forEach(function (image) {
               _this.items.push({
-                src: '../images/product_img/' + image.image,
-                thumbnail: '../images/product_img/' + image.image,
+                src: '../images/product_option_img/' + image.image,
+                thumbnail: '../images/product_option_img/' + image.image,
                 caption: option.option.title,
                 id: option.option.id
               });
@@ -585,8 +585,8 @@ __webpack_require__.r(__webpack_exports__);
             _this2.price = option.option.price;
             option.images.forEach(function (image) {
               _this2.items.push({
-                src: '../images/product_img/' + image.image,
-                thumbnail: '../images/product_img/' + image.image,
+                src: '../images/product_option_img/' + image.image,
+                thumbnail: '../images/product_option_img/' + image.image,
                 caption: option.option.title,
                 id: option.option.id
               });
@@ -9985,7 +9985,7 @@ var render = function () {
               ? _c("div", {
                   staticClass: "i first",
                   style:
-                    "background-image: url(../images/product_img/" +
+                    "background-image: url(../images/product_option_img/" +
                     _vm.product.product_images[0] +
                     ")",
                 })

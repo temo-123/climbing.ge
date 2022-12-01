@@ -9878,7 +9878,8 @@ var render = function () {
                     ? _c("site-img", {
                         attrs: {
                           src:
-                            "../images/product_img/" + _vm.get_product_image(),
+                            "../images/product_option_img/" +
+                            _vm.get_product_image(),
                           alt: _vm.product_data.locale_product.title,
                         },
                       })
@@ -10347,7 +10348,7 @@ var render = function () {
                       ? _c("site-img", {
                           attrs: {
                             src:
-                              "../../../public/images/product_img/" +
+                              "../../../public/images/product_option_img/" +
                               q_product.product_images[0],
                             alt: q_product.locale_product.title,
                           },

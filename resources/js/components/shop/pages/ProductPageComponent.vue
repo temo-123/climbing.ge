@@ -218,7 +218,7 @@
             get_product(){
                 this.product = []
                 axios
-                .get('../api/product/'+localStorage.getItem('lang')+'/'+this.$route.params.url_title)
+                .get('../api/page_product/'+localStorage.getItem('lang')+'/'+this.$route.params.url_title)
                 .then(response => {
 
                     this.product = response.data[0]
@@ -233,8 +233,8 @@
                         if(option.images.length){
                             option.images.forEach(image => {
                                 this.items.push({
-                                    src: '../images/product_img/'+image.image,
-                                    thumbnail: '../images/product_img/'+image.image,
+                                    src: '../images/product_option_img/'+image.image,
+                                    thumbnail: '../images/product_option_img/'+image.image,
                                     caption: option.option.title,
                                     id:  option.option.id
                                 })
@@ -274,8 +274,8 @@
                             this.price = option.option.price
                             option.images.forEach(image => {
                                 this.items.push({
-                                    src: '../images/product_img/'+image.image,
-                                    thumbnail: '../images/product_img/'+image.image,
+                                    src: '../images/product_option_img/'+image.image,
+                                    thumbnail: '../images/product_option_img/'+image.image,
                                     caption: option.option.title,
                                     id:  option.option.id
                                 })

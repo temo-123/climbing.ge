@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 
 use App\Models\Cart;
 use App\Models\Product;
-use App\Models\Product_image;
+use App\Models\Option_image;
 use App\Models\Product_option;
 use App\Models\Favorite_product;
 use App\Models\User_adreses;
@@ -39,8 +39,8 @@ class CartController extends Controller
                     $product = Product::where('id', strip_tags($opt->product_id))->get();
                     // dd($product);
                 
-                    $images = Product_image::where('option_id', strip_tags($opt->id))->get();
-                    $image_count = Product_image::where('option_id', strip_tags($opt->id))->count();
+                    $images = Option_image::where('option_id', strip_tags($opt->id))->get();
+                    $image_count = Option_image::where('option_id', strip_tags($opt->id))->count();
     
                     foreach($images as $image){
                         if ($image_count == 1) {

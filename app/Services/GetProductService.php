@@ -6,7 +6,7 @@ use App\Models\Locale_product;
 // use App\Models\Ru_product;
 // use App\Models\Ka_product;
 use App\Models\Product;
-use App\Models\Product_image;
+use App\Models\Option_image;
 use App\Models\Product_option;
 
 // use App\Models\Product_image;
@@ -177,7 +177,7 @@ class GetProductService
             
             foreach($options as $option){
                 // foreach($options as $option){
-                    $product_images = Product_image::where('option_id', '=', $option->id)->get();
+                    $product_images = Option_image::where('option_id', '=', $option->id)->get();
                     array_push($product_option, [ 
                         'option' => $option, 
                         'images' => $product_images
@@ -258,7 +258,7 @@ class GetProductService
         $options = Product_option::where('product_id', '=', $product_id)->get();
 
         foreach ($options as $option) {
-            $images = Product_image::where('option_id', '=', $option -> id)->get();
+            $images = Option_image::where('option_id', '=', $option -> id)->get();
             foreach ($images as $image) {
                 array_push($product_images, $image->image);
             }
@@ -269,7 +269,7 @@ class GetProductService
 
     public static function get_product_images_on_page($option_id)
     {
-        $images = Product_image::where('option_id', '=', $option_id)->get();
+        $images = Option_image::where('option_id', '=', $option_id)->get();
         return $images;
     }
 

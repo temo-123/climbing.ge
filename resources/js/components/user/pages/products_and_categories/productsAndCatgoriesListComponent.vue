@@ -7,7 +7,7 @@
             <div class="col-sm-12">
                 <tabsComponent 
                     :table_data="this.data_for_tab"
-                    @update-data="callback"
+                    @update-data="get_products_data"
                 />
             </div>
         </div>
@@ -33,6 +33,7 @@
          
         methods: {
             get_products_data: function(){
+                this.data_for_tab = []
                 axios
                 .get("../api/products/en/")
                 .then(response => {

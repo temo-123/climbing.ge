@@ -2,7 +2,7 @@
     <div class="collection-list col-lg-4 col-md-4 col-sm-4">
         <router-link :to="'../product/'+product.global_product.url_title">
             <div class="img">
-                <div v-if="product.product_images[0]" class="i first" :style="'background-image: url(../images/product_img/' + product.product_images[0] + ')'"></div>
+                <div v-if="product.product_images[0]" class="i first" :style="'background-image: url(../images/product_option_img/' + product.product_images[0] + ')'"></div>
                 <div v-else class="i first" :style="'background-image: url(../../../public/images/site_img/shop_demo.jpg)'"></div>
             </div>
             <div class="text">
@@ -48,9 +48,9 @@
     <!-- <div class="collection-list col-lg-4 col-md-4 col-sm-4">
         <a class="product-box" href="https://shop.climbing.ge/product/home_exercise_stand">
             <span class="img">
-                <span style="background-image: url('http://shop.climbing.ge/images/product_img/2022-03-01-20-03-43.png')" class="i first">
+                <span style="background-image: url('http://shop.climbing.ge/images/product_option_img/2022-03-01-20-03-43.png')" class="i first">
                 </span>
-                <span class="i second" style="background-image: url('http://shop.climbing.ge/images/product_img/2022-03-01-20-03-43.png')">
+                <span class="i second" style="background-image: url('http://shop.climbing.ge/images/product_option_img/2022-03-01-20-03-43.png')">
                 </span>
             </span>
             <span class="text">

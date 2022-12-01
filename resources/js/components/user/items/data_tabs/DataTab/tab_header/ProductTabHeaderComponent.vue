@@ -14,7 +14,7 @@
         <th>Public</th>
         <th>|</th>
 
-        <th>Add option</th>
+        <th>Options</th>
         <th>|</th>
 
         <th>Edit</th>

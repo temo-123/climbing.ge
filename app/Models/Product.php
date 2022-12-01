@@ -34,21 +34,26 @@ class Product extends Model
 
 	public function us_product()
 	{
-		return $this->hasOne(Locale_product::class, 'id');
+		return $this->hasOne(Locale_product::class, 'id', 'us_product_id');
 	}
 
 	public function ka_product()
 	{
-		return $this->hasOne(Locale_product::class, 'id');
+		return $this->hasOne(Locale_product::class, 'id', 'ka_product_id');
 	}
 
 	public function ru_product()
 	{
-		return $this->hasOne(Locale_product::class, 'id');
+		return $this->hasOne(Locale_product::class, 'id', 'ru_product_id');
 	}
 
   public function product_category()
   {
-    return $this->hasMany(Product_category::class, 'id');
+    return $this->hasOne(Product_category::class, 'id', 'category_id');
+  }
+
+  public function product_options()
+  {
+    return $this->hasMany(Product_option::class, 'product_id');
   }
 }

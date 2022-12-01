@@ -42,7 +42,7 @@
                         </div>
                     </div>
 
-                    <div class="form-group clearfix row" v-if="this.category == 'event'">
+                    <!-- <div class="form-group clearfix row" v-if="this.category == 'event'">
                         <label for="name" class='col-md-2 control-label'> Completed </label>
                         <div class="col-md-10">
                             <select class="form-control" v-model="data.completed" name="completed"> 
@@ -50,7 +50,7 @@
                                 <option value="1">Complited</option> 
                             </select> 
                         </div>
-                    </div>
+                    </div> -->
 
 
                     <div class="form-group clearfix row" v-if="this.category != 'mount_route'">

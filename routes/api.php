@@ -75,14 +75,22 @@ Route::group(['namespace'=>'Api'], function() {
     *   Product and product categories routes
     */
     Route::apiResource('/product', 'ProductController');
+    Route::post('/edit_product_data/{product_id}', 'ProductController@edit_product_data');
     Route::get('/products/{land}', 'ProductController@get_local_products');
-    Route::get('/product/{land}/{url_title}', 'ProductController@get_local_product_in_page');
+    Route::get('/page_product/{land}/{url_title}', 'ProductController@get_local_product_in_page');
     Route::get('similar_product/{land}/{product_id}', 'ProductController@get_similar_product');
     Route::get('product_price_interval', 'ProductController@get_product_price_interval');
     Route::get('/get_user_favorite_products', 'ProductController@get_user_favorite_products');
     Route::get('/get_quick_product/{lang}/{product_id}', 'ProductController@get_quick_product');
 
     Route::apiResource('/product_category', 'ProductCategoryController');
+
+    Route::get('/product_option/get_activ_product_options/{product_id}', 'ProductOptionController@get_activ_product_options');
+    Route::post('/product_option/add_option', 'ProductOptionController@add_option');
+    Route::post('/product_option/edit_option/{option_id}', 'ProductOptionController@edit_option');
+    Route::get('/product_option/get_editing_option/{option_id}', 'ProductOptionController@get_editing_option');
+    Route::delete('/product_option/del_option/{option_id}', 'ProductOptionController@del_option');
+    Route::delete('/product_option/del_option_image/{image_id}', 'ProductOptionController@del_option_image');
     
     /*
     *   Services routes

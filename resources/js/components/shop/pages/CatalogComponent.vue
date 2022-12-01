@@ -139,9 +139,9 @@
 
                     <h1>{{ q_product.locale_product.title }}</h1>
 
-                    <!-- <site-img :src="'../../../public/images/product_img/'+q_product.product_images[0]" :img_class="''" :alt='q_product.locale_product.title'/> -->
+                    <!-- <site-img :src="'../../../public/images/product_option_img/'+q_product.product_images[0]" :img_class="''" :alt='q_product.locale_product.title'/> -->
 
-                    <site-img v-if="q_product.product_images.length > 0" :src="'../../../public/images/product_img/'+q_product.product_images[0]" :alt='q_product.locale_product.title'/>
+                    <site-img v-if="q_product.product_images.length > 0" :src="'../../../public/images/product_option_img/'+q_product.product_images[0]" :alt='q_product.locale_product.title'/>
                     <site-img v-if="q_product.product_images.length == 0" :src="'../../../public/images/site_img/shop_demo.jpg'" :alt="q_product.locale_product.title" />
 
 

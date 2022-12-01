@@ -101,6 +101,20 @@
                                     >
                                         <button class="btn btn-primary pull-left" @click="sale_code_modal('add')">New sale code</button>
                                     </span>
+                                    <span
+                                        v-else-if="
+                                            filtr_data.table_name == 'Products' &&
+                                            filtr_data.table_category !== null
+                                        "
+                                    >
+                                        <router-link
+                                            class="btn btn-primary pull-left"
+                                            :to="{
+                                                name: filtr_data.table_add_url,
+                                            }"
+                                            >New
+                                        </router-link>
+                                    </span>
                                     <span v-else>
                                         <span v-if="filtr_data.table_add_url">
                                             <router-link

@@ -25,7 +25,7 @@
                                     <div v-for="product in cart_items" :key="product.id">
                                         <div class="row">
                                             <div class="col-sm-12 col-md-3 text-center">
-                                                <img v-if="product.product_image" class="img-responsive" :src="'../images/product_img/'+product.product_image" :alt="product.product.url_title">
+                                                <img v-if="product.product_image" class="img-responsive" :src="'../images/product_option_img/'+product.product_image" :alt="product.product.url_title">
                                                 <img v-else class="img-responsive" :src="'../../../public/images/site_img/shop_demo.jpg'" :alt="product.product.url_title">
                                             </div>
                                             <div class="text-sm-center col-sm-12 text-md-left col-md-4">

@@ -14,13 +14,13 @@ class Product_option extends Model
 	];
 
 
-	public function us_article()
+	public function images()
 	{
-		return $this->hasOne(Locale_article::class, 'id');
+		return $this->hasMany(Option_image::class, 'option_id');
 	}
 
-    public function global_product()
+    public function product()
     {
-        return $this->hasMany(Product::class, 'id');
+        return $this->belongsTo(Product::class, 'id');
     }
 }

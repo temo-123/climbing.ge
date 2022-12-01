@@ -184,7 +184,7 @@
 
                                 <localeSwitcher />
                                 
-                                <goTo :go_to_page="'/productsList'" />
+                                <goTo :go_to_page="'/'" />
                                 
                             </ul>
                         </div>

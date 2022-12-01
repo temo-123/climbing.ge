@@ -236,8 +236,8 @@ class ArticleController extends Controller
         }
         else{            
             return response()->json([
-                $validation_issets
-                // 'Data validation' => $validation_issets
+                // $validation_issets
+                'Data validation' => $validation_issets
             ], 422);
         }
     }
@@ -250,23 +250,27 @@ class ArticleController extends Controller
     public function add_outdoor_area_images($images, $article_id)
     {
         foreach ($images as $image) {
-            $extension = $image->getClientOriginalExtension();
-            $filename  = $image->getClientOriginalName();
-            $pieces = explode( '.', $filename );
-            $file_new_name = date('Y-m-d-H-m-s'); 
-            $file_new_name = $file_new_name.'.'.$extension;
+            // $extension = $image->getClientOriginalExtension();
+            // $filename  = $image->getClientOriginalName();
+            // $pieces = explode( '.', $filename );
+            // $file_new_name = date('Y-m-d-H-m-s'); 
+            // $file_new_name = $file_new_name.'.'.$extension;
 
-            $image -> move(public_path('images/spot_rocks_img/'), $file_new_name);
+            // $image -> move(public_path('images/spot_rocks_img/'), $file_new_name);
+
+            $file_new_name = ImageControllService::upload_loop_image('images/mount_route_img/', $image);
 
             if(file_exists(public_path('images/spot_rocks_img/') . '/' . $file_new_name)){
-                return 'Upload socsesful';
+                $add_outdoor_area_image = new Spot_rocks_image;
+        
+                $add_outdoor_area_image['image'] = $file_new_name;
+                $add_outdoor_area_image['article_id'] = $article_id;
+        
+                $saiving = $add_outdoor_area_image -> save();
 
-                $article = new Spot_rocks_image;
-        
-                $article['image'] = $file_new_name;
-                $article['article_id'] = $article_id;
-        
-                $article -> save();
+                if($saiving){
+                    return 'Upload socsesful';
+                }
             }
             else{
                 return 'Upload error';
@@ -277,23 +281,27 @@ class ArticleController extends Controller
     public function add_mount_route_images($images, $article_id)
     {
         foreach ($images as $image) {
-            $extension = $image->getClientOriginalExtension();
-            $filename  = $image->getClientOriginalName();
-            $pieces = explode( '.', $filename );
-            $file_new_name = date('Y-m-d-H-m-s'); 
-            $file_new_name = $file_new_name.'.'.$extension;
+            // $extension = $image->getClientOriginalExtension();
+            // $filename  = $image->getClientOriginalName();
+            // $pieces = explode( '.', $filename );
+            // $file_new_name = date('Y-m-d-H-m-s'); 
+            // $file_new_name = $file_new_name.'.'.$extension;
 
-            $image -> move(public_path('images/mount_route_img/'), $file_new_name);
+            // $image -> move(public_path('images/mount_route_img/'), $file_new_name);
+
+            $file_new_name = ImageControllService::upload_loop_image('images/mount_route_img/', $image);
 
             if(file_exists(public_path('images/mount_route_img/') . '/' . $file_new_name)){
-                return 'Upload socsesful';
+                $add_mount_image = new Mount_route_image;
+        
+                $add_mount_image['image'] = $file_new_name;
+                $add_mount_image['article_id'] = $article_id;
+        
+                $saiving = $add_mount_image -> save();
 
-                $article = new Mount_route_image;
-        
-                $article['image'] = $file_new_name;
-                $article['article_id'] = $article_id;
-        
-                $article -> save();
+                if($saiving){
+                    return 'Upload socsesful';
+                }
             }
             else{
                 return 'Upload error';
