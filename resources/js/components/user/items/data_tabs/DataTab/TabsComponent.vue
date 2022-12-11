@@ -238,6 +238,13 @@
                                     :table_info="table_info"
                                 />
                             </tbody>
+                            <tbody v-else-if="data.table_name == 'Local bisnes'">
+                                <localBisnesTab
+                                    v-for="table_info in data.data"
+                                    :key="table_info.id"
+                                    :table_info="table_info"
+                                />
+                            </tbody>
                             <tbody v-else-if="data.table_name == 'Comments' || data.table_name == 'My comments'">
                                 <commentsTab
                                     v-for="table_info in data.data"
@@ -267,6 +274,13 @@
                                     :key="table_info.id"
                                     :table_info="table_info"
                                     @show_sector_modal="sector_modal"
+                                />
+                            </tbody>
+                            <tbody v-else-if="data.table_name == 'services'">
+                                <serviceTab
+                                    v-for="table_info in data.data"
+                                    :key="table_info.id"
+                                    :table_info="table_info"
                                 />
                             </tbody>
                             <tbody v-else-if="data.table_name == 'Shiped countries'">
@@ -415,7 +429,8 @@ import sectorLocalImageTab from "./tabs/SectorLocalImageTabComponent.vue";
 import routeTab from "./tabs/RouteTabComponent.vue";
 import sectorTab from "./tabs/SectorTabComponent.vue";
 import articlesTab from "./tabs/ArticlesTabComponent.vue";
-// import categoriesTab from "./tabs/CategoriesTabComponent.vue";
+import serviceTab from "./tabs/ServiceTabComponent.vue";
+import localBisnesTab from "./tabs/LocalBisnesTabComponent.vue";
 import mountMassiveTab from "./tabs/MountMassiveTabComponent.vue";
 import mtpTab from "./tabs/MTPTabComponent.vue";
 import pitchsTab from "./tabs/PitchsTabComponents.vue";
@@ -457,8 +472,9 @@ export default {
         sectorLocalImageTab,
         routeTab,
         sectorTab,
+        localBisnesTab,
         articlesTab,
-        // categoriesTab,
+        serviceTab,
         mountMassiveTab,
         mtpTab,
         pitchsTab,

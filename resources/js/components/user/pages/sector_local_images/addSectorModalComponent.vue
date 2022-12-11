@@ -98,7 +98,6 @@ export default {
             );
         },
         get_region_sectors(){
-            
             if(this.selected_outdoor_area != 'Select outdoor area' && this.selected_outdoor_area != 'All sectors'){
                 const vm = this
                 this.filtred_sectors = this.sectors.filter(function (item){

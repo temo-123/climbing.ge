@@ -25,13 +25,13 @@
                         <div class="card-body">
                             <div class="row">
                                 <div class="col-sm-12 col-md-4">
-                                    <button class="btn btn-succcess" @click="go_to_service('guid')">Climbing Guidbook</button>
+                                    <button class="btn btn_service_guid" @click="go_to_service('guid')">Climbing Guidbook</button>
+                                </div>
+                                <div class="col-sm-12 col-md-4 text-center">
+                                    <button class="btn btn_service_shop" @click="go_to_service('shop')">Climbing Shop</button>
                                 </div>
                                 <div class="col-sm-12 col-md-4">
-                                    <button class="btn btn-succcess" @click="go_to_service('shop')">Climbing Shop</button>
-                                </div>
-                                <div class="col-sm-12 col-md-4">
-                                    <button class="btn btn-succcess" @click="go_to_service('films')">Climbing Films</button>
+                                    <button class="btn btn_service_films float-right" @click="go_to_service('films')">Climbing Films</button>
                                 </div>
                             </div>
                         </div>
@@ -422,5 +422,13 @@
 </script>
 
 <style>
-
+.btn_service_guid{
+    background-color: #279fbb;
+}
+.btn_service_shop{
+    background-color: #27bb7d;
+}
+.btn_service_films{
+    background-color: #777777;
+}
 </style>

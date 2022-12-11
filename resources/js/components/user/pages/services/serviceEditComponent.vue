@@ -1,532 +1,434 @@
 <template>
-<div class="col_md_12">
-    <div class="row">
-      <div class="form-group">
-        <button type="submit" class="btn btn-primary" v-on:click="back()">Beck</button>
-      </div>
-    </div>
-    <div class="row">
-        <div class="form-group">  
-            <button type="submit" class="btn btn-primary" v-on:click="save_all()" >Save</button>
+    <div class="tabs"> 
+        <div class="row">
+            <div class="form-group">
+                <button type="submit" class="btn btn-primary" @click="go_back()">Beck</button>
+            </div>
         </div>
-    </div>
-    <div class="row">
-        <div class="tabs">
-
-            <input type="radio" name="tabs" id="1" checked="checked">
-            <label for="1" >global info</label>
-            <div class="tab" >
-                <div class="jumbotron jumbotron-fluid">
-                    <div class="container">
-                        <h2 class="display-4">service global information</h2>
-                        <p class="lead">Article global information.</p>
-                    </div>
-                </div>
-
-                <form name="contact-form" method="POST" id="global_form" ref="myForm" @submit.prevent="edit_article"  style="margin-top: 5%;" enctyp ="multipart/form-data">
-                    <div class="form-group clearfix">
-                        <label for="name" class='col-xs-2 control-label'> Publish </label>
-                        <div class="col-xs-8">
-                            <select class="form-control" v-model="published" name="published" > 
-                                <option value="0">Not public</option> 
-                                <option value="1">Public</option> 
-                            </select> 
-                            <div class="alert alert-danger" role="alert" v-if="global_article_error.published">
-                                {{ global_article_error.published[0] }}
-                            </div>
-                        </div>
-                    </div>
-                </form>
-
-                <div class="container">
-                    <div class="row">
-                        <div class="card"  v-if='myModal'>
-                            <div class="card-header">
-                                edit image
-                            </div>
-                            <div class="card-body">
-                            <div class="row">
-                                <div class="col-md-6">
-                                    <div class="form-group clearfix">
-                                    <button class="btn btn-primary" @click="add_service_image()">seve image</button>
-                                    </div>
-                                </div>
-                                <div class="col-md-6">    
-                                    <form @submit="add_service_image()"  ref="myForm">
-                                    <div class="form-group clearfix">
-                                        <input type="file" name="profile_pic" id="profile_pic" >
-                                    </div>
-                                    </form>
-                                </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="row">
-                    <div class="form-groupe">
-                        <button class="btn btn-primary" @click="showModal()">My modal</button>
-                    </div>
-                    <div class="form-groupe">
-                        <button @click="get_service_image()" class="btn main-btn pull-right" v-if="!image_is_refresh">Refresh ({{image_reset_id}})</button>
-                        <span class="badge badge-primare mb-1 pull-right" v-if="image_is_refresh">Updating...</span>
-                    </div>
-                    </div>
-                    
-                </div>
-
-                <div class="container">
-                    <!-- <div class="col-md-3">
-                    <div class="row">
-                        <div class="col-md-12">
-                        <img alt="300x200" @click="showModal()" src="/public/images/site_img/image.png">
-                        </div>
-                    </div>
-                    </div> -->
-                    <div class="col-md-3" v-for="image in images" :key="image.id">
-                    <div class="row">
-                        <div class="col-md-12">
-                        <img :alt="'service image - (' + image.image + ')'" class="service_img" :src="'/public/images/service_img/' + image.image">
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-6">
-                        <button class="btn btn-secondary pull-left" @click="edit_image()">Edit</button>
-                        </div>
-                        <div class="col-md-6">
-                        <button class="btn btn-danger pull-right" @click="del_service_image(image.id)">Del</button>
-                        </div>
-                    </div>
-                    </div>
-                </div>
-
+        <div class="row">
+            <div class="form-group">  
+                <button type="submit" class="btn btn-primary" v-on:click="edit_service()" >Save update</button>
             </div>
-
-            <input type="radio" name="tabs" id="2">
-            <label for="2" >english article</label>
-            <div class="tab" >
-                <div class="jumbotron jumbotron-fluid">
-                    <div class="container">
-                        <h2 class="display-4">service english version</h2>
-                        <p class="lead">Article english version for site localisation.</p>
-                    </div>
-                </div>
-                <form name="contact-form" method="POST" @submit.prevent="edit_us_article" style="margin-top: 5%;" enctyp ="multipart/form-data">
-                    <div class="form-group clearfix">
-                        <label for="name" class='col-xs-2 control-label'> Title </label>
-                        <div class="col-xs-8">
-                            <input type="text" name="name" v-model="us_title"  class="form-control"> 
-                            <div class="alert alert-danger" role="alert" v-if="us_article_error.us_title">
-                                {{ us_article_error.us_title[0] }}
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="form-group clearfix">
-                        <label for="name" class='col-xs-2 control-label'> Short description </label>
-                        <div class="col-xs-8">
-                            <!-- <textarea type="text" name="short_description" v-model="us_short_description" rows="15" class="form-cotrol md-textarea form-control"></textarea> -->
-                            <ckeditor v-model="us_short_description" :config="editorConfig"></ckeditor>
-                            <div class="alert alert-danger" role="alert" v-if="us_article_error.us_short_description">
-                                {{ us_article_error.us_short_description[0] }}
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="form-group clearfix">
-                        <label for="name" class='col-xs-2 control-label'> text </label>
-                        <div class="col-xs-8">
-                            <!-- <textarea type="text"  name="text" rows="15" v-model="us_text" class="form-cotrol md-textarea form-control"></textarea> -->
-                            <ckeditor v-model="us_text" :config="editorConfig"></ckeditor>
-                            <div class="alert alert-danger" role="alert" v-if="us_article_error.us_text">
-                                {{ us_article_error.us_text[0] }}
-                            </div>
-                        </div>
-                    </div>
-
-                   
-
-                </form>
-            </div>
-
-            <input type="radio" name="tabs" id="3">
-            <label for="3" >rusian article</label>
-            <div class="tab">
-                <div class="jumbotron jumbotron-fluid">
-                    <div class="container">
-                        <h2 class="display-4">service rusion version</h2>
-                        <p class="lead">Article rusion version for site localisation.</p>
-                    </div>
-                </div>
-
-                <form name="contact-form" method="POST" @submit.prevent="edit_ru_article" style="margin-top: 5%;" enctyp ="multipart/form-data">
-                    <div class="form-group clearfix">
-                        <label for="name" class='col-xs-2 control-label'> Title </label>
-                        <div class="col-xs-8">
-                            <!-- <input type="text" name="value name" value="old data" class="form-control"> -->
-                            <input type="text" name="title" v-model="ru_title" class="form-control"> 
-                            <div class="alert alert-danger" role="alert" v-if="ru_article_error.ru_title">
-                                {{ ru_article_error.ru_title[0] }}
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="form-group clearfix">
-                        <label for="name" class='col-xs-2 control-label'> Short description </label>
-                        <div class="col-xs-8">
-                            <!-- <textarea type="text"  name="short_description" v-model="ru_short_description"  rows="15" class="form-cotrol md-textarea form-control"></textarea> -->
-                            <ckeditor v-model="ru_short_description" :config="editorConfig"></ckeditor>
-                            <div class="alert alert-danger" role="alert" v-if="ru_article_error.ru_short_description">
-                                {{ ru_article_error.ru_short_description[0] }}
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="form-group clearfix">
-                        <label for="name" class='col-xs-2 control-label'> text </label>
-                        <div class="col-xs-8">
-                            <!-- <textarea type="text"  name="text" rows="15"  v-model="ru_text" class="form-cotrol md-textarea form-control"></textarea> -->
-                            <ckeditor v-model="ru_text" :config="editorConfig"></ckeditor>
-                            <div class="alert alert-danger" role="alert" v-if="ru_article_error.ru_text">
-                                {{ ru_article_error.ru_text[0] }}
-                            </div>
-                        </div>
-                    </div>
-
-
-                    
-
-                </form>
-            </div>
-
-            <input type="radio" name="tabs" id="4">
-            <label for="4" >georgian article</label>
-            <div class="tab">
-                <div class="jumbotron jumbotron-fluid">
-                    <div class="container">
-                        <h2 class="display-4">service georgian version</h2>
-                        <p class="lead">Article georgian version for site localisation.</p>
-                    </div>
-                </div>
-
-                <form name="contact-form" method="POST" @submit.prevent="edit_ka_article" style="margin-top: 5%;" enctyp ="multipart/form-data">
-                    <div class="form-group clearfix">
-                        <label for="name" class='col-xs-2 control-label'> Title </label>
-                        <div class="col-xs-8">
-                            <!-- <input type="text" name="value name" value="old data" class="form-control"> -->
-                            <input type="text" name="value name"  v-model="ka_title" class="form-control"> 
-                            <div class="alert alert-danger" role="alert" v-if="ka_article_error.ka_title">
-                                {{ ka_article_error.ka_title[0] }}
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="form-group clearfix">
-                        <label for="name" class='col-xs-2 control-label'> Short description </label>
-                        <div class="col-xs-8">
-                            <!-- <textarea type="text"  name="short_description"  v-model="ka_short_description" rows="15" class="form-cotrol md-textarea form-control"></textarea> -->
-                            <ckeditor v-model="ka_short_description" :config="editorConfig"></ckeditor>
-                            <div class="alert alert-danger" role="alert" v-if="ka_article_error.ka_short_description">
-                                {{ ka_article_error.ka_short_description[0] }}
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="form-group clearfix">
-                        <label for="name" class='col-xs-2 control-label'> text </label>
-                        <div class="col-xs-8">
-                            <!-- <textarea type="text"  name="txt" rows="15"  v-model="ka_text" class="form-cotrol md-textarea form-control"></textarea> -->
-                            <ckeditor v-model="ka_text" :config="editorConfig"></ckeditor>
-                            <div class="alert alert-danger" role="alert" v-if="ka_article_error.ka_text">
-                                {{ ka_article_error.ka_text[0] }}
-                            </div>
-                        </div>
-                    </div>
-
-
-                </form>
-            </div>
-            
         </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="row">
+                    <div class="col" >
+                        <input type="radio" id="1" :value="1" v-model="tab_num">
+                        
+                        <label for="1" >Global info</label>
+                    </div>
+                    <div class="col" >
+                        <input type="radio" id="2" :value="2" v-model="tab_num">
+                        
+                        <label for="2" >English text</label>
+                    </div>
+                    <div class="col" >
+                        <input type="radio" id="3" :value="3" v-model="tab_num">
+                        
+                        <label for="3" >Georgian text</label>
+                    </div>
+                    <div class="col" >
+                        <input type="radio" id="4" :value="4" v-model="tab_num">
+                        
+                        <label for="4" >Russion text</label>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-12">
+                <div class="row width_100" v-show="tab_num == 1">
+                    <div class="jumbotron width_100">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <h2 class="display-4"><span>Service global information</span></h2>
+                                <p class="lead">Service global information.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <form class="width_100" name="contact-form" method="POST" id="global_form" ref="myForm" style="margin-top: 5%;" enctyp ="multipart/form-data">
+                        <div class="form-group clearfix">
+                            <label for="name" class='col-xs-2 control-label'> Publish </label>
+                            <div class="col-xs-8">
+                                <select class="form-control" v-model="data.global_data.published" name="published" > 
+                                    <option value="0">Not public</option> 
+                                    <option value="1">Public</option> 
+                                </select>
+                            </div>
+                        </div>
+                    </form>
+                    
+                    <div class="col-md-12">
+                        <div class="row">
+                            Olredy added
+                        </div>
+                    </div>
+
+                    <div class="col-md-12">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <table class="table table-hover" id="dev-table">
+                                    <thead>
+                                        <tr>
+                                            <th>Image</th>
+                                            <th>|</th>
+                                            <th>Delite</th>
+                                        </tr>
+                                    </thead>
+
+                                    <tbody>
+                                        <tr v-for="service_old_image in service_old_images" :key="service_old_image.id">
+                                            <td>
+                                                <!-- <form ref="myForm">
+                                                    <input type="file" name="image" id="image" v-on:change="onFileChange($event, service_old_image.id)">
+                                                </form>  -->
+
+                                                <img class="img-responsive" :src="'../../../../images/service_img/'+service_old_image.image" :alt="service_old_image.title">
+                                            </td>
+                                            <td>|</td>
+                                            <td>
+                                                <button class="btn btn-danger" @click="del_service_image_from_db(service_old_image.id)">Delete</button>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-12">
+                        <div class="row">
+                            New images
+                        </div>
+                    </div>
+
+                    <div class="col-md-12">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-groupe">
+                                    <button class="btn btn-primary float-left" @click="add_service_new_image_value()" >Add new service imagee</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-12">
+                                <table class="table table-hover" id="dev-table">
+                                    <thead>
+                                        <tr>
+                                            <th>Image</th>
+                                            <th>|</th>
+                                            <th>Delite</th>
+                                        </tr>
+                                    </thead>
+
+                                    <tbody>
+                                        <tr v-for="service_image in service_new_images" :key="service_image.id">
+                                            <td>
+                                                <form ref="myForm">
+                                                    <input type="file" name="image" id="image" v-on:change="onFileChange($event, service_image.id)">
+                                                </form> 
+                                            </td>
+                                            <td>|</td>
+                                            <td>
+                                                <button class="btn btn-danger" @click="del_service_image(service_image.id)">Delete</button>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-groupe">
+                                    <button class="btn btn-primary float-left" @click="add_service_new_image_value()">Add new service imagee</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="row" v-show="tab_num == 2">
+                    <div class="width_100 jumbotron jumbotron-fluid">
+                        <div class="container">
+                            <h2 class="display-4">Service english version</h2>
+                            <p class="lead">Service english version for site localisation.</p>
+                        </div>
+                    </div>
+                    <form class="width_100" name="contact-form" method="POST" style="margin-top: 5%;" enctyp ="multipart/form-data">
+                        <div class="form-group clearfix">
+                            <label for="name" class='col-xs-2 control-label'> Title </label>
+                            <div class="col-xs-8">
+                                <input type="text" name="name" v-model="data.us_data.title"  class="form-control"> 
+                            </div>
+                        </div>
+    
+                        <div class="form-group clearfix">
+                            <label for="name" class='col-xs-2 control-label'> Change URL title </label>
+                            <div class="col-xs-8">
+                                <input type="checkbox" id="scales" name="scales" @click="change_url_title_in_global_service()">
+                            </div>
+                        </div>
+    
+                        <div class="form-group clearfix">
+                            <label for="name" class='col-xs-2 control-label'> Short description </label>
+                            <div class="col-xs-8">
+                                <ckeditor v-model="data.us_data.short_description" :config="editorConfig"></ckeditor>
+                            </div>
+                        </div>
+    
+                        <div class="form-group clearfix">
+                            <label for="name" class='col-xs-2 control-label'> text </label>
+                            <div class="col-xs-8">
+                                <ckeditor v-model="data.us_data.text" :config="editorConfig"></ckeditor>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="row" v-show="tab_num == 3">
+                    <div class="width_100 jumbotron jumbotron-fluid">
+                        <div class="container">
+                            <h2 class="display-4">Service rusion version</h2>
+                            <p class="lead">Service rusion version for site localisation.</p>
+                        </div>
+                    </div>
+    
+                    <form class="width_100" name="contact-form" method="POST" style="margin-top: 5%;" enctyp ="multipart/form-data">
+                        <div class="form-group clearfix">
+                            <label for="name" class='col-xs-2 control-label'> Title </label>
+                            <div class="col-xs-8">
+                                <input type="text" name="title" v-model="data.ru_data.title" class="form-control"> 
+                            </div>
+                        </div>
+    
+                        <div class="form-group clearfix">
+                            <label for="name" class='col-xs-2 control-label'> Short description </label>
+                            <div class="col-xs-8">
+                                <!-- <textarea type="text"  name="short_description" v-model="data.ru_data.short_description"  rows="15" class="form-cotrol md-textarea form-control"></textarea> -->
+                                <ckeditor v-model="data.ru_data.short_description" :config="editorConfig"></ckeditor>
+                            </div>
+                        </div>
+    
+                        <div class="form-group clearfix">
+                            <label for="name" class='col-xs-2 control-label'> text </label>
+                            <div class="col-xs-8">
+                                <ckeditor v-model="data.ru_data.text" :config="editorConfig"></ckeditor>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="row" v-show="tab_num == 4">
+                    <div class="width_100 jumbotron jumbotron-fluid">
+                        <div class="container">
+                            <h2 class="display-4">Service georgian version</h2>
+                            <p class="lead">Service georgian version for site localisation.</p>
+                        </div>
+                    </div>
+    
+                    <form class="width_100" name="contact-form" method="POST" @submit.prevent="add_ka_article" style="margin-top: 5%;" enctyp ="multipart/form-data">
+                        <div class="form-group clearfix">
+                            <label for="name" class='col-xs-2 control-label'> Title </label>
+                            <div class="col-xs-8">
+                                <input type="text" name="value name"  v-model="data.ka_data.title" class="form-control"> 
+                            </div>
+                        </div>
+    
+                        <div class="form-group clearfix">
+                            <label for="name" class='col-xs-2 control-label'> Short description </label>
+                            <div class="col-xs-8">
+                                <!-- <textarea type="text"  name="short_description"  v-model="data.ka_data.short_description" rows="15" class="form-cotrol md-textarea form-control"></textarea> -->
+                                <ckeditor v-model="data.ka_data.short_description" :config="editorConfig"></ckeditor>
+                            </div>
+                        </div>
+    
+                        <div class="form-group clearfix">
+                            <label for="name" class='col-xs-2 control-label'> text </label>
+                            <div class="col-xs-8">
+                                <ckeditor v-model="data.ka_data.text" :config="editorConfig"></ckeditor>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
     </div>
-</div>
 </template>
 
 <script>
-    export default {
-        props: [
-            'back_url',
-            'editing_article_id'
-        ],
-        data(){
-            return {
-                global_article_error: [],
-                is_global_article_error: true,
-                ka_article_error: [],
-                is_ka_article_error: true,
-                ru_article_error: [],
-                is_ru_article_error: true,
-                us_article_error: [],
-                is_us_article_error: true,
+export default {
+    props: [
+        // 'back_url',
+    ],
+    data(){
+        return {
+            tab_num: 1,
 
-                image_is_refresh: false,
-                image_reset_id: 0,
+            service_new_images: [],
+            service_old_images: [],
+            regions: [],
 
-                categories: [],
+            editorConfig: {},
 
-                us_title_for_url_title: '',
+            data: {
+                global_data: {},
+                us_data: {},
+                ka_data: {},
+                ru_data: {}
+            },
 
-                published: "",
-                currency: "",
-                price: "",
-                category: "",
-                material: "",
-                color: "",
-                discount: "",
-                quantity: "",
+            // the_date: moment().format('YYYY-MM-DD'),
 
+            change_url_title: false
+        }
+    },
+    mounted() {
+        this.get_editing_service_data()
+        this.get_region_data()
+    },
+    methods: {
+        get_region_data: function () {
+            axios
+                .get("../../api/article/")
+                .then((response) => {
+                    this.regions = response.data;
+                })
+                .catch((error) => console.log(error));
+        },
+        onFileChange(event, item_id){
+            let image = event.target.files[0]
+            let id = item_id - 1 
+            this.service_new_images[id]['image'] = image
+        },
+        add_service_new_image_value(){
+            if(this.service_old_images){
+                if(this.service_new_images.length + this.service_old_images.length < 8){
+                    var new_item_id = this.service_new_images.length+1
 
-                // 
-                // 
-                // 
-                us_title: "",
-                us_short_description: "",
-                us_text: "",
-                us_meta_keyword: "",
+                    this.service_new_images.push(
+                        {
+                            id: new_item_id,
+                            image: '',
+                        }
+                    );
+                }
+            }
+            else{
+                if(this.service_new_images.length < 8){
+                    var new_item_id = this.service_new_images.length+1
 
-
-                // 
-                // 
-                // 
-                ka_title: "",
-                ka_short_description: "",
-                ka_text: "",
-                ka_meta_keyword: "",
-
-
-                // 
-                // 
-                // 
-                ru_title: "",
-                ru_short_description: "",
-                ru_text: "",
-                ru_meta_keyword: "",
-
-
-                // 
-                // 
-                // 
-                us_service_id: 0,
-                ru_service_id: 0,
-                ka_service_id: 0,
-
-                myModal: false,
-
-                // category_id: ""
+                    this.service_new_images.push(
+                        {
+                            id: new_item_id,
+                            image: '',
+                        }
+                    );
+                }
             }
         },
-        mounted() {
-            this.get_service_editing_data()
-            this.get_service_image()
+        get_editing_service_data(){
+            this.data_for_tab = []
+            axios
+            .get("../../api/service/get_editing_service/"+this.$route.params.id)
+            .then(response => {
+                this.editing_data = response.data
+
+                this.data = {
+                    global_data: response.data.global_service,
+
+                    us_data: response.data.us_service,
+                    ru_data: response.data.ru_service,
+                    ka_data: response.data.ka_service,
+                }
+
+                this.service_old_images = response.data.service_images
+
+                // if(this.data.global_data.published_data != null){
+                //     this.the_date = this.data.global_data.published_data
+                // }
+            })
+            .catch(
+                error => console.log(error)
+            );
+
         },
-        methods: {
-            get_service_editing_data() {
+        del_service_image_from_db(image_id){
+            if(confirm('Are you sure, you want delite this image?')){
                 axios
-                .post('/services/get_service_editing_data/' + this.editing_article_id, {
-                    published: this.published,
-                })
-                .then((response)=>  {
-                    this.editing_service = response.data,
-
-                    this.published = this.editing_service.editing_service['published'],
-                    this.price = this.editing_service.editing_service['price'],
-                    this.currency = this.editing_service.editing_service['currency'],
-                    this.category_id = this.editing_service.editing_service['category_id'],
-
-                    this.material = this.editing_service.editing_service['material'],
-                    this.color = this.editing_service.editing_service['color'],
-                    this.discount = this.editing_service.editing_service['discount'],
-                    this.quantity = this.editing_service.editing_service['quantity'],
-                    this.size = this.editing_service.editing_service['size'],
-
-                    this.us_service_id = this.editing_service.editing_service['us_service_id'],
-                    this.ru_service_id = this.editing_service.editing_service['ru_service_id'],
-                    this.ka_service_id = this.editing_service.editing_service['ka_service_id'],
-                    
-                    this.us_title = this.editing_service.editing_service_us['title'],
-                    this.us_short_description = this.editing_service.editing_service_us['short_description'],
-                    this.us_text = this.editing_service.editing_service_us['text'],
-                    this.us_meta_keyword = this.editing_service.editing_service_us['meta_keyword'],
-                    
-                    this.ru_title = this.editing_service.editing_service_ru['title'],
-                    this.ru_short_description = this.editing_service.editing_service_ru['short_description'],
-                    this.ru_text = this.editing_service.editing_service_ru['text'],
-                    this.ru_meta_keyword = this.editing_service.editing_service_ru['meta_keyword'],
-                    
-                    this.ka_title = this.editing_service.editing_service_ka['title'],
-                    this.ka_short_description = this.editing_service.editing_service_ka['short_description'],
-                    this.ka_text = this.editing_service.editing_service_ka['text'],
-                    this.ka_meta_keyword = this.editing_service.editing_service_ka['meta_keyword']
-                })
-                .catch(error => console.log(error))
-            },
-
-            showModal(){
-                this.myModal = !this.myModal
-            },
-
-            edit_us_service() {
-                axios
-                .post('/services/us/edit/' + this.us_service_id, {        
-                    us_title: this.us_title,
-                    us_short_description: this.us_short_description,
-                    us_text: this.us_text,
-                    us_meta_keyword: this.us_meta_keyword,
-                })
-                .then((response)=> { 
-                    this.is_us_article_error = false
-                    this.if_isset_go_beck(this.is_us_article_error)
-                })
-                .catch(error =>{
-                    if (error.response.status == 422) {
-                        this.us_article_error = error.response.data.errors
-                    }
-                    this.is_us_article_error = true
-                })
-            },
-            edit_ru_service() {
-                axios
-                .post('/services/ru/edit/' + this.ru_service_id, {
-                    ru_title: this.ru_title,
-                    ru_short_description: this.ru_short_description,
-                    ru_text: this.ru_text,
-                    ru_meta_keyword: this.ru_meta_keyword,
-                })
-                .then((response)=> { 
-                    this.is_ru_article_error = false
-                    this.if_isset_go_beck(this.is_ru_article_error)
-                })
-                .catch(error =>{
-                    if (error.response.status == 422) {
-                        this.ru_article_error = error.response.data.errors
-                    }
-                    this.is_ru_article_error = true
-                })
-            },
-            edit_ka_service() {
-                axios
-                .post('/services/ka/edit/' + this.ka_service_id, {
-                    ka_title: this.ka_title,
-                    ka_short_description: this.ka_short_description,
-                    ka_text: this.ka_text,
-                    ka_meta_keyword: this.ka_meta_keyword,
-                })
-                .then((response)=>  {
-                    this.is_ka_article_error = false
-                    this.if_isset_go_beck(this.is_ka_article_error)
-                })
-                .catch(error =>{
-                    if (error.response.status == 422) {
-                        this.ka_article_error = error.response.data.errors
-                    }
-                    this.is_ka_article_error = true
-                })
-            },
-            edit_global_service() {
-                axios
-                .post('/services/global/edit/'+ this.editing_article_id, {
-                    published: this.published,
-                    price: this.price,
-                    currency: this.currency,
-                    category_id: this.category_id,
-                    us_title_for_url_title: this.us_title,
-
-                    material: this.material,
-                    color: this.color,
-                    discount: this.discount,
-                    quantity: this.quantity,
-                    size: this.size,
-                })
-                .then((response)=>  { 
-                    this.is_global_article_error = false
-                    this.if_isset_go_beck(this.is_global_article_error)
-                })
-                .catch(error =>{
-                    if (error.response.status == 422) {
-                        this.global_article_error = error.response.data.errors
-                    }
-                    this.is_global_article_error = true
-                })
-            },
-
-
-            get_service_image: function () {
-                this.image_is_refresh = true
-                axios
-                .get("/services/get_service_image/" + this.editing_article_id )
+                .delete("../../../api/service/del_service_image/"+image_id)
                 .then(response => {
-                    this.service_images = response.data
-                    this.images = this.service_images.service_images
-
-                    this.image_is_refresh = false
-                    this.image_reset_id++
+                    this.get_editing_service_data()
                 })
                 .catch(
                     error => console.log(error)
                 );
-            },
-            add_service_image: function () {
-                var myFormData = new FormData(this.$refs.myForm)
-                axios({
-                    method: 'post',
-                    url: '/services/upload_service_image/' + this.editing_article_id,
-                    data: myFormData,
-                    config: { 
-                        headers: {'Content-Type': 'multipart/form-data' },
-                    },
-                })
-                .then((response)=>  {
-                    // this.is_image_succes = 1;
-                    // alert(response.data.message);
-                });
-                this.showModal()
-                // e.preventDefault();
+            }
+        },
+        del_service_image(id){
+            this.removeObjectWithId(this.service_new_images, id);
+        },
+        removeObjectWithId(arr, id) {
+            const objWithIdIndex = arr.findIndex((obj) => obj.id === id);
+            arr.splice(objWithIdIndex, 1);
 
-            },
-            del_service_image(imageId) {
-                axios
-                .post("/services/del_service_image/" + imageId, {
-                    image_id: imageId,
-                })
-                .then(Response => {
-                    console.log(response)
-                    this.get_data_in_table_1()
-                })
-                .catch(error => console.log(error))
-            },
+            return arr;
+        },
 
-
-            back: function() {
-                confirm('Are you sure, you want go back?')
-                window.location.href = this.back_url;
-            },
-            save_all() {
-                this.edit_us_service()
-                this.edit_ka_service()
-                this.edit_ru_service()
-                this.edit_global_service()
-            },
-            
-            if_isset_go_beck() {
-                if (
-                    this.is_global_article_error == false &&
-                    this.is_ka_article_error == false &&
-                    this.is_ru_article_error == false &&
-                    this.is_us_article_error == false
-                ) {
-                    window.location.href = this.back_url;
+        change_url_title_in_global_service(){
+            if(!this.change_url_title){
+                if(confirm('Are you sure, you want change URL title? It vhile bad for SEO potimization')){
+                    this.change_url_title = true
                 }
             }
-        }
+            else{
+                this.change_url_title = false 
+            }
+        },
+
+        edit_service() {
+            if (this.change_url_title) {
+                this.data.global_data.change_url_title = this.change_url_title
+                this.data.global_data.us_title_for_url_title = this.data.us_data.title
+            }
+            else{
+                this.data.global_data.change_url_title = false
+                this.data.global_data.us_title_for_url_title = false
+            }
+
+            let formData = new FormData();
+
+            var loop_num = 0
+            this.service_new_images.forEach(image => {
+                formData.append('service_new_images['+loop_num+']', image.image)
+                loop_num++
+            });
+            loop_num = 0
+
+            formData.append('data', JSON.stringify(this.data))
+
+            axios
+            .post('../../api/service/edit_service/'+this.$route.params.id, 
+                formData
+            )
+            .then(response => {
+                this.go_back(true)
+            })
+            .catch(
+                error => console.log(error)
+            );
+        },
+
+
+        go_back: function(back_action = false) {
+            if(back_action == false){
+                if(confirm('Are you sure, you want go back?')){
+                    this.$router.go(-1)
+                }
+            }
+            else{
+                this.$router.go(-1)
+            }
+        },
     }
+}
 </script>

@@ -70,14 +70,25 @@ class imageControllService
         $file_new_name = date('Y-m-d-H-m-s'); 
         $file_new_name = $file_new_name.'.'.$extension;
 
-        if($resize == 1){
-            Image::make($form_value_id)->resize(1024, 576)->save( public_path($image_dir . $file_new_name) );
-        }
-        else{
-            Image::make($form_value_id)->save( public_path($image_dir . $file_new_name) );
+        if (!file_exists(public_path($image_dir))) {
+            mkdir(public_path($image_dir));
         }
 
-        return $file_new_name;
+        $path = public_path($image_dir . $file_new_name);
+
+        if($resize == 1){
+            Image::make($form_value_id)->resize(1024, 576)->save( $path );
+        }
+        else{
+            Image::make($form_value_id)->save( $path );
+        }
+
+        if(!$form_value_id->isValid()){
+            App::abort(500, 'Image uploading error');
+        }
+        else{
+            return $file_new_name;
+        }
     }
 
     public static function image_update($image_dir, $model, $request, $form_value_id, $db_value, $resize = 0,)

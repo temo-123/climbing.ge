@@ -23,13 +23,14 @@
         data () {
             return {
                 samilar_products: [],
+                activ_product_id: this.activ_product_id
             }
         },
         watch: {
             '$route' (to, from) {
+                this.samilar_products = [],
+                this.activ_product_id = this.activ_product_id
                 this.get_analog_products(this.activ_product_id)
-
-                window.scrollTo(0,0)
             }
         },
         mounted() {

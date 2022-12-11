@@ -255,9 +255,7 @@
             return {
                 // category: this.$route.params.article_category,
 
-                editorConfig: {
-                    // toolbar: [ [ 'Bold' ] ]
-                },
+                editorConfig: [],
 
                 general_infos: [],
                 data: [],

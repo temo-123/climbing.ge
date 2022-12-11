@@ -70,7 +70,7 @@ class ProductOptionController extends Controller
         foreach ($images as $image) {
             $file_new_name = ImageControllService::upload_loop_image('images/product_option_img/', $image, 1);
 
-            if(file_exists(public_path('images/product_option_img/') . '/' . $file_new_name)){
+            if(file_exists(public_path('images/product_option_img/') . $file_new_name)){
                 $new_option_image = new Option_image;
         
                 $new_option_image['image'] = $file_new_name;
@@ -143,8 +143,10 @@ class ProductOptionController extends Controller
     public function del_option_image(Request $request)
     {
         $option_image = Option_image::where('id', '=', $request->image_id)->first();
-        ImageControllService::image_delete('images/product_option_img/', $option_image, 'image');
-        $option_image ->delete();
+        if($option_image){
+            ImageControllService::image_delete('images/product_option_img/', $option_image, 'image');
+            $option_image ->delete();
+        }
     }
 
     public function option_validation($data)

@@ -187,13 +187,14 @@ __webpack_require__.r(__webpack_exports__);
   },
   data: function data() {
     return {
-      samilar_products: []
+      samilar_products: [],
+      activ_product_id: this.activ_product_id
     };
   },
   watch: {
     '$route': function $route(to, from) {
+      this.samilar_products = [], this.activ_product_id = this.activ_product_id;
       this.get_analog_products(this.activ_product_id);
-      window.scrollTo(0, 0);
     }
   },
   mounted: function mounted() {
@@ -505,18 +506,10 @@ __webpack_require__.r(__webpack_exports__);
   },
   watch: {
     '$route': function $route(to, from) {
+      this.clear_product_data();
       this.get_product();
       this.get_analog_products();
-      window.scrollTo(0, 0); // this.images = [],
-      // this.products = [],
-      // this.local_product = [],
-      // this.global_product = [],
-      // this.options = [],
-      // this.product_modification_for_cart = '',
-      // this.items = [],
-      // this.price = '',
-      // this.old_price = '',
-      // this.prices = []
+      window.scrollTo(0, 0);
     }
   },
   mounted: function mounted() {
@@ -532,6 +525,9 @@ __webpack_require__.r(__webpack_exports__);
     //     .catch(error =>{
     //     })
     // },
+    clear_product_data: function clear_product_data() {
+      this.images = [], this.products = [], this.local_product = [], this.global_product = [], this.options = [], this.product_modification_for_cart = '', this.items = [], this.price = '', this.old_price = '', this.prices = [];
+    },
     get_product: function get_product() {
       var _this = this;
 

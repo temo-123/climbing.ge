@@ -15,6 +15,7 @@ use App\Models\Locale_article;
 use App\Models\Mount;
 
 use App\Models\Site;
+use App\Models\Locale_site;
 
 use App\Models\Sector;
 use App\Models\Route;
@@ -98,69 +99,58 @@ class SiteDataController extends Controller
         return $counts;
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
+    public function get_site_locale_data(Request $request)
     {
-        //
+        $data = [
+            'site_global_data' => Site::first()
+        ];
+        if($request->locale == 'ka') {
+            $data = [
+                'site_global_data' => Locale_site::where("locale", "=", 'ka')->first()
+            ];
+        }
+        if($request->locale == 'ru') {
+            $data = [
+                'site_global_data' => Locale_site::where("locale", "=", 'ru')->first()
+            ];
+        }
+        if($request->locale == 'us') {
+            $data = [
+                'site_global_data' => Locale_site::where("locale", "=", 'us')->first()
+            ];
+        }
+
+        return $data;
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        //
+    public function get_site_global_data(){
+        return Site::first();
+    }
+    public function get_site_ka_data(){
+        return Locale_site::where("locale", "=", 'ka')->first();
+    }
+    public function get_site_ru_data(){
+        return Locale_site::where("locale", "=", 'ru')->first();
+    }
+    public function get_site_us_data(){
+        return Locale_site::where("locale", "=", 'us')->first();
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
+    public function edit_all_site_data(Request $request)
     {
-        //
+        # code...
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
+    public function edit_site_global_data(Request $request){
         //
     }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
+    public function edit_site_ka_data(Request $request){
         //
     }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
+    public function edit_site_ru_data(Request $request){
+        //
+    }
+    public function edit_site_us_data(Request $request){
         //
     }
 }

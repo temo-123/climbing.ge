@@ -12,12 +12,10 @@
                     <div class="tab">
                         <div class="row edit_buttom">
                             <div class="col-md-6">
-                                <!-- <button class="btn btn-primary" >Edit all data</button> -->
-                                <router-link class="btn btn-primary pull-left" :to="{ name: 'siteInfoEdit' }">Edit all sites data</router-link>
+                                <router-link class="btn btn-primary" :to="{ name: 'siteGlobalDataEdit' }">Edit Global data</router-link>
                             </div>
                             <div class="col-md-6">
-                                <!-- <button class="btn btn-primary" >Global data</button> -->
-                                <router-link class="btn btn-primary pull-left" :to="{ name: 'siteGlobalDataEdit' }">Edit Global data</router-link>
+                                <router-link class="btn btn-success float-right" :to="{ name: 'siteDataEdit' }">Edit all sites data</router-link>
                             </div>
                         </div>
                         <table class="table table-hover" id="dev-table" >
@@ -29,11 +27,6 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <!-- <tr>
-                                    <td>ID</td>
-                                    <td>|</td>
-                                    <td>{{site_info.id}}</td>
-                                </tr> -->
                                 <tr>
                                     <td>Email</td>
                                     <td>|</td>
@@ -48,53 +41,50 @@
                                 <tr>
                                     <td>Map</td>
                                     <td>|</td>
-                                    <td>{{site_info.map}}</td>
+                                    <td>
+                                        {{site_info.map}}
+                                    </td>
                                 </tr>
 
                                 <tr>
-                                    <td>Facebook</td>
+                                    <td>Map</td>
                                     <td>|</td>
-                                    <td>{{site_info.fb_link}}</td>
+                                    <td>
+                                        <span v-html="this.$siteData.map"></span>
+                                    </td>
                                 </tr>
+                            </tbody>
+                        </table>
+
+                        <p>Social networks</p>
+
+                        <div class="row edit_buttom">
+                            <div class="col-md-6">
+                                <a class="btn btn-primary pull-left" @click="social_link_add_model()">Add Social link</a>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-groupe">
+                                    <button @click="get_social_links()" class="btn btn-success float-right" v-if="!is_social_links_refresh">Refresh</button>
+                                    <span class="badge badge-primare mb-1 float-right" v-if="is_social_links_refresh">Updating...</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <table class="table table-hover" id="dev-table">
+                            <thead>
                                 <tr>
-                                    <td>Instagram</td>
+                                    <th>Link</th>
+                                    <th>#</th>
+                                    <th>Delete</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr v-for="link in site_social_links" :key="link.id">
+                                    <td v-if="link.title"><a :href="link.url" target="_blank">{{ link.title }}</a></td>
+                                    <td v-else><a :href="link.url" target="_blank">{{ from_user_site_url_get_domen(link.url) }}</a></td>
                                     <td>|</td>
-                                    <td>{{site_info.inst_link}}</td>
-                                </tr>
-                                <tr>
-                                    <td>Goolge</td>
-                                    <td>|</td>
-                                    <td>{{site_info.google_link}}</td>
-                                </tr>
-                                <tr>
-                                    <td>Twitter</td>
-                                    <td>|</td>
-                                    <td>{{site_info.twit_link}}</td>
-                                </tr>
-                                <tr>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                </tr>
-                                <tr>
-                                    <td>article_ad_block</td>
-                                    <td>|</td>
-                                    <td>{{site_info.article_ad_block}}</td>
-                                </tr>
-                                <tr>
-                                    <td>footer_ad_block</td>
-                                    <td>|</td>
-                                    <td>{{site_info.pages_ad_block}}</td>
-                                </tr>
-                                <tr>
-                                    <td>pages_ad_block</td>
-                                    <td>|</td>
-                                    <td>{{site_info.pages_ad_block}}</td>
-                                </tr>
-                                <tr>
-                                    <td>free_ad_block</td>
-                                    <td>|</td>
-                                    <td>{{site_info.free_ad_block}}</td>
+                                    <td>
+                                    <button class="btn btn-danger" @click="del_social_link(link.id)">Delete</button></td>
                                 </tr>
                             </tbody>
                         </table>
@@ -109,82 +99,7 @@
                                 <router-link class="btn btn-primary pull-left" :to="{ name: 'siteUsDataEdit' }">Edit English data</router-link>
                             </div>
                         </div>
-                        <table class="table table-hover" id="dev-table" >
-                            <thead>
-                                <tr>
-                                    <th>Value name</th>
-                                    <th>#</th>
-                                    <th>Data</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td>Title</td>
-                                    <td>|</td>
-                                    <td>{{site_info.title}}</td>
-                                </tr>
-                                <tr>
-                                    <td>Short description</td>
-                                    <td>|</td>
-                                    <td>{{ site_info.short_description }}</td>
-                                </tr>
-                                <tr>
-                                    <td>Description</td>
-                                    <td>|</td>
-                                    <td>{{site_info.text}}</td>
-                                </tr>
-                                <tr>
-                                    <td>other_activity_description</td>
-                                    <td>|</td>
-                                    <td>{{site_info.other_activity_description}}</td>
-                                </tr>
-                                <tr>
-                                    <td>mount_description</td>
-                                    <td>|</td>
-                                    <td>{{site_info.mount_description}}</td>
-                                </tr>
-                                <tr>
-                                    <td>outdoor_description</td>
-                                    <td>|</td>
-                                    <td>{{site_info.outdoor_description}}</td>
-                                </tr>
-                                <tr>
-                                    <td>ice_description</td>
-                                    <td>|</td>
-                                    <td>{{site_info.ice_description}}</td>
-                                </tr>
-                                <tr>
-                                    <td>topo_description</td>
-                                    <td>|</td>
-                                    <td>{{site_info.topo_description}}</td>
-                                </tr>
-                                <tr>
-                                    <td>what_we_do_description</td>
-                                    <td>|</td>
-                                    <td>{{site_info.what_we_do_description}}</td>
-                                </tr>
-                                <tr>
-                                    <td>shop_short_description</td>
-                                    <td>|</td>
-                                    <td>{{site_info.shop_short_description}}</td>
-                                </tr>
-                                <tr>
-                                    <td>shop_description</td>
-                                    <td>|</td>
-                                    <td>{{site_info.shop_description}}</td>
-                                </tr>
-                                <tr>
-                                    <td>services_description</td>
-                                    <td>|</td>
-                                    <td>{{site_info.services_description}}</td>
-                                </tr>
-                                <!-- <tr>
-                                    <td>meta_description</td>
-                                    <td>|</td>
-                                    <td>{{site_info.meta_description}}</td>
-                                </tr> -->
-                            </tbody>
-                        </table>
+                        <localeInfoForm :info = site_us_info />
                     </div>
 
                     <input type="radio" name="tabs" id="3">
@@ -196,82 +111,7 @@
                                 <router-link class="btn btn-primary pull-left" :to="{ name: 'siteRuDataEdit' }">Edit Russion data</router-link>
                             </div>
                         </div>
-                        <table class="table table-hover" id="dev-table" >
-                            <thead>
-                                <tr>
-                                    <th>Value name</th>
-                                    <th>#</th>
-                                    <th>Data</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td>Title</td>
-                                    <td>|</td>
-                                    <td>{{site_info.title_ru}}</td>
-                                </tr>
-                                <tr>
-                                    <td>Short description</td>
-                                    <td>|</td>
-                                    <td>{{ site_info.short_description_ru}}</td>
-                                </tr>
-                                <tr>
-                                    <td>Description</td>
-                                    <td>|</td>
-                                    <td>{{site_info.text_ru}}</td>
-                                </tr>
-                                <tr>
-                                    <td>other_activity_description</td>
-                                    <td>|</td>
-                                    <td>{{site_info.other_activity_description_ru}}</td>
-                                </tr>
-                                <tr>
-                                    <td>mount_description</td>
-                                    <td>|</td>
-                                    <td>{{site_info.mount_description_ru}}</td>
-                                </tr>
-                                <tr>
-                                    <td>outdoor_description</td>
-                                    <td>|</td>
-                                    <td>{{site_info.outdoor_description_ru}}</td>
-                                </tr>
-                                <tr>
-                                    <td>ice_description</td>
-                                    <td>|</td>
-                                    <td>{{site_info.ice_description_ru}}</td>
-                                </tr>
-                                <tr>
-                                    <td>topo_description</td>
-                                    <td>|</td>
-                                    <td>{{site_info.topo_description_ru}}</td>
-                                </tr>
-                                <tr>
-                                    <td>what_we_do_description</td>
-                                    <td>|</td>
-                                    <td>{{site_info.what_we_do_description_ru}}</td>
-                                </tr>
-                                <tr>
-                                    <td>shop_short_description</td>
-                                    <td>|</td>
-                                    <td>{{site_info.shop_short_description_ru}}</td>
-                                </tr>
-                                <tr>
-                                    <td>shop_description</td>
-                                    <td>|</td>
-                                    <td>{{site_info.shop_description_ru}}</td>
-                                </tr>
-                                <tr>
-                                    <td>services_description</td>
-                                    <td>|</td>
-                                    <td>{{site_info.services_description_ru}}</td>
-                                </tr>
-                                <!-- <tr>
-                                    <td>meta_description</td>
-                                    <td>|</td>
-                                    <td>{{site_info.meta_description_ru}}</td>
-                                </tr> -->
-                            </tbody>
-                        </table>
+                        <localeInfoForm :info = site_ru_info />
                     </div>
 
                     <input type="radio" name="tabs" id="4">
@@ -283,82 +123,7 @@
                                 <router-link class="btn btn-primary pull-left" :to="{ name: 'siteKaDataEdit' }">Edit Georgian data</router-link>
                             </div>
                         </div>
-                        <table class="table table-hover" id="dev-table" >
-                            <thead>
-                                <tr>
-                                    <th>Value name</th>
-                                    <th>#</th>
-                                    <th>Data</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td>Title</td>
-                                    <td>|</td>
-                                    <td>{{site_info.title_ka}}</td>
-                                </tr>
-                                <tr>
-                                    <td>Short description</td>
-                                    <td>|</td>
-                                    <td>{{ site_info.short_description_ka}}</td>
-                                </tr>
-                                <tr>
-                                    <td>Description</td>
-                                    <td>|</td>
-                                    <td>{{site_info.text_ka}}</td>
-                                </tr>
-                                <tr>
-                                    <td>other_activity_description</td>
-                                    <td>|</td>
-                                    <td>{{site_info.other_activity_description_ka}}</td>
-                                </tr>
-                                <tr>
-                                    <td>mount_description</td>
-                                    <td>|</td>
-                                    <td>{{site_info.mount_description_ka}}</td>
-                                </tr>
-                                <tr>
-                                    <td>outdoor_description</td>
-                                    <td>|</td>
-                                    <td>{{site_info.outdoor_description_ka}}</td>
-                                </tr>
-                                <tr>
-                                    <td>ice_description</td>
-                                    <td>|</td>
-                                    <td>{{site_info.ice_description_ka}}</td>
-                                </tr>
-                                <tr>
-                                    <td>topo_description</td>
-                                    <td>|</td>
-                                    <td>{{site_info.topo_description_ka}}</td>
-                                </tr>
-                                <tr>
-                                    <td>what_we_do_description</td>
-                                    <td>|</td>
-                                    <td>{{site_info.what_we_do_description_ka}}</td>
-                                </tr>
-                                <tr>
-                                    <td>shop_short_description</td>
-                                    <td>|</td>
-                                    <td>{{site_info.shop_short_description_ka}}</td>
-                                </tr>
-                                <tr>
-                                    <td>shop_description</td>
-                                    <td>|</td>
-                                    <td>{{site_info.shop_description_ka}}</td>
-                                </tr>
-                                <tr>
-                                    <td>services_description</td>
-                                    <td>|</td>
-                                    <td>{{site_info.services_description_ka}}</td>
-                                </tr>
-                                <!-- <tr>
-                                    <td>meta_description</td>
-                                    <td>|</td>
-                                    <td>{{site_info.meta_description_ka}}</td>
-                                </tr> -->
-                            </tbody>
-                        </table>
+                        <localeInfoForm :info = site_ka_info />
                     </div>
 
 
@@ -407,7 +172,7 @@
                                     
                                     <td>|</td>
                                     <td>
-                                        <button type="submit" class="btn btn-danger" @click="del_general_info(general_info.id)">Delete</button>
+                                        <button type="submit" class="btn btn-danger" @click="del_social_link(general_info.id)">Delete</button>
                                     </td>
                                 </tr>
                             </tbody>
@@ -416,39 +181,179 @@
                 </div>
             </div>
         </div>
+
+        <stack-modal
+                :show="is_add_social_link_model"
+                title="Add site social link"
+                @close="close_social_link_add_model"
+                :saveButton="{ visible: true, title: 'Save', btnClass: { 'btn btn-primary': true } }"
+                :cancelButton="{ visible: false, title: 'Close', btnClass: { 'btn btn-danger': true } }"
+            >
+            <pre class="language-vue">
+                <form method="POST" id="add_social_link_form" v-on:submit.prevent="add_social_link">
+                    <input type="text" class="form-control" v-model="form_data.title" name="title" id="Title" placeholder="Title" title="Title">
+                    <input type="url" class="form-control" v-model="form_data.url" name="url" id="url" pattern="https://.*|http://.*" placeholder="URL" required>
+                </form>
+            </pre>
+            <div slot="modal-footer">
+                <div class="modal-footer">
+                    <button
+                        type="submit"
+                        :class="{'btn btn-primary': true}"
+                        form="add_social_link_form"
+                    >
+                    Save
+                    </button>
+                </div>
+            </div>
+        </stack-modal>
     </div>
 </template>
 
 <script>
+    import localeInfoForm from './SiteData/tabs/LocaleDataTabComponent.vue'
+
+    import { SlickList, SlickItem } from 'vue-slicksort'; //https://github.com/Jexordexan/vue-slicksort
+    import StackModal from '@innologica/vue-stackable-modal'  //https://innologica.github.io/vue-stackable-modal/#sample-css
+
     export default {
+        components: {
+            localeInfoForm,
+            StackModal,
+            SlickItem,
+            SlickList,
+        },
         inject:['siteData'],
         props: [
+            //
         ],
         data() {
             return {
                 site_info: [],
+                site_ka_info: [],
+                site_ru_info: [],
+                site_us_info: [],
+
                 general_infos: [],
                 is_general_info_refresh: false,
-                general_info_reset_id: 0
+                general_info_reset_id: 0,
+
+                site_social_links: [],
+                is_general_info_refresh: false,
+                is_social_links_refresh: false,
+
+                is_add_social_link_model: false,
+
+                form_data: {
+                    title: '',
+                    url: ''
+                }
             }
-        },
-        components: {
         },
         mounted() {
             this.get_site_data()
             this.get_general_info()
+            this.get_social_links()
         },
         methods: {
+            from_user_site_url_get_domen(url){
+                return new URL(url).hostname;
+            },
+
             get_site_data: function(){
+                this.get_site_global_data()
+                this.get_site_ka_data()
+                this.get_site_us_data()
+                this.get_site_ru_data()
+            },
+
+            get_site_global_data(){
                 axios
-                .get('./about/get_site_data/')
+                .get('../../api/siteData/get_site_global_data')
                 .then(response => {
-                    this.site_info = response.data.site_info[0]
+                    this.site_info = response.data
                 })
                 .catch(
                     error => console.log(error)
                 );
             },
+            get_site_ka_data(){
+                axios
+                .get('../../api/siteData/get_site_ka_data')
+                .then(response => {
+                    this.site_ka_info = response.data
+                })
+                .catch(
+                    error => console.log(error)
+                );
+            },
+            get_site_ru_data(){
+                axios
+                .get('../../api/siteData/get_site_ru_data')
+                .then(response => {
+                    this.site_ru_info = response.data
+                })
+                .catch(
+                    error => console.log(error)
+                );
+            },
+            get_site_us_data(){
+                axios
+                .get('../../api/siteData/get_site_us_data')
+                .then(response => {
+                    this.site_us_info = response.data
+                })
+                .catch(
+                    error => console.log(error)
+                );
+            },
+
+
+            get_social_links(){
+                axios
+                .get('./api/siteData/site_social_links')
+                .then(response => {
+                    this.site_social_links = response.data
+                })
+                .catch(
+                    error => console.log(error)
+                );
+            },
+            add_social_link(){
+                axios
+                .post('./api/siteData/site_social_links', {        
+                    data: this.form_data,
+
+                    _method: 'post'
+                })
+                .then(response => {
+                    this.get_social_links()
+                    this.close_social_link_add_model()
+                })
+                .catch(err => {
+                    console.log(err);
+                })
+            },
+            social_link_add_model(){
+                this.is_add_social_link_model = true
+            },
+            close_social_link_add_model(){
+                this.is_add_social_link_model = false
+                this.form_data = []
+            },
+            del_social_link(link_id){
+                if(confirm('Are you sure, you want delite it?')){
+                    axios
+                    .post('../api/siteData/site_social_links/'+link_id, {
+                        _method: 'DELETE'
+                    })
+                    .then(Response => {
+                        this.get_social_links()
+                    })
+                    .catch(error => console.log(error))
+                }
+            },
+
             get_general_info: function(){
                 axios
                 .get('./api/general_info')

@@ -1270,20 +1270,18 @@ var render = function () {
                               _vm._v("\n                        "),
                               _c("td", [
                                 _vm._v("\n                            "),
-                                _c("form", { ref: "myForm", refInFor: true }, [
-                                  _vm._v("\n                                "),
-                                  _c("img", {
-                                    staticClass: "img-responsive",
-                                    attrs: {
-                                      src:
-                                        "../../../../images/product_option_img/" +
-                                        option_image.image,
-                                      alt: option_image.title,
-                                    },
-                                  }),
-                                  _vm._v("\n                            "),
-                                ]),
-                                _vm._v(" \n                        "),
+                                _vm._v("\n                                "),
+                                _c("img", {
+                                  staticClass: "img-responsive",
+                                  attrs: {
+                                    src:
+                                      "../../../../images/product_option_img/" +
+                                      option_image.image,
+                                    alt: option_image.title,
+                                  },
+                                }),
+                                _vm._v("\n                            "),
+                                _vm._v("\n                        "),
                               ]),
                               _vm._v("\n                        "),
                               _c("td", [_vm._v("|")]),

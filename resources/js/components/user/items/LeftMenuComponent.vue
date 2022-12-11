@@ -97,9 +97,9 @@
 
             <li class="list-group-item text-muted admin_menu_static_block"></li>
 
-            <router-link :to="{name: 'bisnesList'}">
+            <router-link :to="{name: 'localBisnesList'}">
                 <li class="list-group-item text-muted m">
-                    <span class="admin_menu">{{ $t('user menu local bisnes') }}(Beta)</span>
+                    <span class="admin_menu">{{ $t('user menu local bisnes') }}</span>
                 </li>
             </router-link>
 
@@ -107,12 +107,12 @@
 
             <router-link :to="{ name: 'articlelist', params: { article_category: 'outdoor' } }">
                 <li class="list-group-item text-muted">
-                    <span class="admin_menu">{{ $t('user menu outdoor climbing') }}</span>
+                    <span class="admin_menu">{{ $t('user menu outdoor climbing') }}(Beta)</span>
                 </li>
             </router-link>
             <router-link :to="{name: 'routeAndSectorList'}" exact>
                 <li class="list-group-item text-muted mbing Secrots And Route">
-                    <span class="admin_menu">{{ $t('user menu sectors & routes') }}</span>
+                    <span class="admin_menu">{{ $t('user menu sectors & routes') }}(Beta)</span>
                 </li>
             </router-link>
 
@@ -167,7 +167,7 @@
 
             <router-link :to="{ name: 'articlelist', params: { article_category: 'events' } }">
                 <li class="list-group-item text-muted ">
-                    <span class="admin_menu">{{ $t('user menu events') }}</span>
+                    <span class="admin_menu">{{ $t('user menu events') }} (Beta)</span>
                 </li>
             </router-link>
 
@@ -175,7 +175,7 @@
             
             <router-link :to="{name: 'siteInfo'}" exact> 
                 <li class="list-group-item text-muted ">
-                    <span class="admin_menu">{{ $t('user menu about') }}</span>
+                    <span class="admin_menu">{{ $t('user menu about') }} (Beta)</span>
                 </li>
             </router-link>
 
@@ -209,7 +209,7 @@
 
             <router-link :to="{name: 'usersList'}" exact> 
                 <li class="list-group-item text-muted">
-                    <span class="admin_menu">{{ $t('user menu users') }}</span>
+                    <span class="admin_menu">{{ $t('user menu users') }} (Beta)</span>
                 </li>
             </router-link>
 

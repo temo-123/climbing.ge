@@ -49,13 +49,15 @@ Route::group(['namespace'=>'Api'], function() {
     /*
     *   Outdoor regions
     */
-    Route::get('/outdoor/get_filtred_outdoor_spots_for_admin/{filter_id}', 'OutdoorController@get_filtred_outdoor_spots_for_admin');
-    Route::get('/outdoor/get_filtred_outdoor_spots_for_gest/{lang}/{filter_id}', 'OutdoorController@get_filtred_outdoor_spots_for_gest');
+    Route::controller(OutdoorController::class)->prefix('outdoor')->group( function() {
+        Route::get('/get_filtred_outdoor_spots_for_admin/{filter_id}', 'get_filtred_outdoor_spots_for_admin');
+        Route::get('/get_filtred_outdoor_spots_for_gest/{lang}/{filter_id}', 'get_filtred_outdoor_spots_for_gest');
 
-    Route::post('/outdoor/add_spot', 'OutdoorController@add_spot');
-    Route::get('/outdoor/get_editing_spot_data/{id}', 'OutdoorController@get_editing_spot_data');
-    Route::post('/outdoor/edit_spot/{id}', 'OutdoorController@edit_spot');
-    Route::delete('/outdoor/del_spot/{id}', 'OutdoorController@del_spot');
+        Route::post('/add_spot', 'add_spot');
+        Route::get('/get_editing_spot_data/{id}', 'get_editing_spot_data');
+        Route::post('/edit_spot/{id}', 'edit_spot');
+        Route::delete('/del_spot/{id}', 'del_spot');
+    });
 
     /*
     *   Mountain (mount routes) regions
@@ -85,19 +87,45 @@ Route::group(['namespace'=>'Api'], function() {
 
     Route::apiResource('/product_category', 'ProductCategoryController');
 
-    Route::get('/product_option/get_activ_product_options/{product_id}', 'ProductOptionController@get_activ_product_options');
-    Route::post('/product_option/add_option', 'ProductOptionController@add_option');
-    Route::post('/product_option/edit_option/{option_id}', 'ProductOptionController@edit_option');
-    Route::get('/product_option/get_editing_option/{option_id}', 'ProductOptionController@get_editing_option');
-    Route::delete('/product_option/del_option/{option_id}', 'ProductOptionController@del_option');
-    Route::delete('/product_option/del_option_image/{image_id}', 'ProductOptionController@del_option_image');
+    Route::controller(ProductOptionController::class)->prefix('product_option')->group( function() {
+        Route::get('/get_activ_product_options/{product_id}', 'get_activ_product_options');
+        Route::post('/add_option', 'add_option');
+        Route::post('/edit_option/{option_id}', 'edit_option');
+        Route::get('/get_editing_option/{option_id}', 'get_editing_option');
+        Route::delete('/del_option/{option_id}', 'del_option');
+        Route::delete('/del_option_image/{image_id}', 'del_option_image');
+    });
+
+    /*
+    *   Local bisnes routes
+    */
+    Route::controller(LocalBisnesController::class)->prefix('bisnes')->group( function() {
+        Route::get('/get_local_bisneses', 'get_local_bisneses');
+        Route::post('/add_local_bisnes', 'add_local_bisnes');
+        Route::get('/get_editing_local_bisnes_info/{bisnes_id}', 'get_editing_local_bisnes_info');
+        Route::post('/edit_local_bisnes/{bisnes_id}', 'edit_local_bisnes');
+        Route::delete('/del_local_bisnes/{bisnes_id}', 'del_local_bisnes');
+        Route::delete('/del_local_bisnes_image/{image_id}', 'del_local_bisnes_image');
+
+        Route::get('/get_local_bisneses_images/{bisnes_id}', 'get_local_bisneses_images');
+        // Route::delete('/del_local_bisneses_images/{bisnes_id}', 'del_local_bisneses_images');
+    });
     
     /*
     *   Services routes
     */
-    Route::apiResource('/service', 'ServicesController');
+    Route::controller(ServicesController::class)->prefix('service')->group( function() {
+        Route::apiResource('/', 'ServicesController');
+        Route::post('/add_service', 'add_service');
+        Route::post('/edit_service/{service_id}', 'edit_service');
+        Route::get('/get_editing_service/{service_id}', 'get_editing_service');
+        Route::get('/get_service/{service_id}', 'get_service');
+        Route::delete('/del_service/{service_id}', 'del_service');
+        Route::delete('/del_service_image/{image_id}', 'del_service_image');
+        
+        Route::get('/{land}/{url_title}', 'get_local_service_in_page');
+    });
     Route::get('/services/{lang}', 'ServicesController@get_local_services');
-    Route::get('/service/{land}/{url_title}', 'ServicesController@get_local_service_in_page');
     Route::get('/similar_services/{land}/{id}', 'ServicesController@get_similar_service');
 
     /*
@@ -161,7 +189,22 @@ Route::group(['namespace'=>'Api'], function() {
     /*
     *   Site data routes
     */
-    Route::apiResource('/siteData', 'SiteDataController');
+    Route::controller(SiteDataController::class)->prefix('siteData')->group( function() {
+        Route::apiResource('/', 'SiteDataController');
+        Route::apiResource('/site_social_links', 'SocialLinkController');
+
+        Route::get('/get_site_locale_data/{locale}', 'get_site_locale_data');
+
+        Route::get('/get_site_global_data', 'get_site_global_data');
+        Route::get('/get_site_ka_data', 'get_site_ka_data');
+        Route::get('/get_site_ru_data', 'get_site_ru_data');
+        Route::get('/get_site_us_data', 'get_site_us_data');
+
+        Route::post('/edit_site_global_data', 'edit_site_global_data');
+        Route::post('/edit_site_ka_data', 'edit_site_ka_data');
+        Route::post('/edit_site_ru_data', 'edit_site_ru_data');
+        Route::post('/edit_site_us_data', 'edit_site_us_data');
+    });
     Route::get('/site_data_counts', 'SiteDataController@site_data_counts');
 
     Route::apiResource('/general_info', 'GeneralInfoController');
@@ -262,7 +305,7 @@ Route::group(['namespace'=>'Api'], function() {
     /*
     *   Climbing regions routes
     */
-    Route::apiResource('/region', 'RegionController');
+    Route::apiResource('/region', 'link.');
     Route::get('/regions/{lang}', 'RegionController@locale_regions');
     Route::get('/region/{lang}/{region_id}', 'RegionController@locale_region');
 

@@ -183,21 +183,12 @@
         },
         watch: {
             '$route' (to, from) {
+                this.clear_product_data()
+
                 this.get_product()
                 this.get_analog_products()
 
                 window.scrollTo(0,0)
-
-                // this.images = [],
-                // this.products = [],
-                // this.local_product = [],
-                // this.global_product = [],
-                // this.options = [],
-                // this.product_modification_for_cart = '',
-                // this.items = [],
-                // this.price = '',
-                // this.old_price = '',
-                // this.prices = []
             }
         },
         mounted() {
@@ -214,7 +205,18 @@
             //     .catch(error =>{
             //     })
             // },
-
+            clear_product_data(){
+                this.images = [],
+                this.products = [],
+                this.local_product = [],
+                this.global_product = [],
+                this.options = [],
+                this.product_modification_for_cart = '',
+                this.items = [],
+                this.price = '',
+                this.old_price = '',
+                this.prices = []
+            },
             get_product(){
                 this.product = []
                 axios

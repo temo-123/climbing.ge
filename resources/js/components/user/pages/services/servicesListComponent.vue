@@ -7,6 +7,7 @@
             <div class="col-sm-12">
                 <tabsComponent 
                     :table_data="this.data_for_tab"
+                    @update-data="get_services_data"
                 />
             </div>
         </div>
@@ -19,7 +20,7 @@
         components: {
             tabsComponent ,
         },
-        
+    
         data() {
             return {
                 data_for_tab:[],
@@ -32,34 +33,19 @@
          
         methods: {
             get_services_data: function(){
+                this.data_for_tab = []
                 axios
                 .get("../api/service/")
                 .then(response => {
                     this.data_for_tab.push({'id': 1,
                                             'data': response.data, 
                                             'table_name': 'services', 
-                                            // 'table_category': this.$route.params.article_category, 
-                                            'table_del_url': 'del_url', 
-                                            'table_edit_url': 'edit_url'
+                                            'table_add_url': 'serviceAdd', 
                                         });
-                    this.get_categories_data()
                 })
                 .catch(
                     error => console.log(error)
                 );
-
-            },
-
-            product_del(itemId) {
-                axios
-                .post('../api/services/del/' + itemId, {
-                    id: itemId,
-                })
-                .then(Response => {
-                    console.log(response)
-                    this.get_data_in_table_1()
-                })
-                .catch(error => console.log(error))
             },
         }
     }

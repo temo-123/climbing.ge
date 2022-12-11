@@ -181,9 +181,9 @@
                     <tbody >
                         <tr v-for="option_image in editing_option_images" :key="option_image.id">
                             <td>
-                                <form ref="myForm">
+                                <!-- <form ref="myForm"> -->
                                     <img class="img-responsive" :src="'../../../../images/product_option_img/'+option_image.image" :alt="option_image.title">
-                                </form> 
+                                <!-- </form>  -->
                             </td>
                             <td>|</td>
                             <td>

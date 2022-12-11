@@ -136,7 +136,7 @@
                 <form class="form" method="POST" id="edit_site" v-on:submit.prevent="edit_user_site">
                     <label for="url">Enter an https:// URL:</label>
 
-                    <input type="url" class="form-control" name="url" v-model="user_site_form_data.url" id="url" pattern="https://.*" required>
+                    <input type="url" class="form-control" name="url" v-model="user_site_form_data.url" id="url" pattern="https://.*|http://.*" placeholder="URL" required>
                 </form>
             </pre>
             <div slot="modal-footer">
