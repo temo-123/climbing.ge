@@ -103,6 +103,7 @@ Route::group(['namespace'=>'Api'], function() {
         Route::get('/get_local_bisneses', 'get_local_bisneses');
         Route::post('/add_local_bisnes', 'add_local_bisnes');
         Route::get('/get_editing_local_bisnes_info/{bisnes_id}', 'get_editing_local_bisnes_info');
+        Route::get('/get_bisnes_images/{bisnes_id}', 'get_bisnes_images');
         Route::post('/edit_local_bisnes/{bisnes_id}', 'edit_local_bisnes');
         Route::delete('/del_local_bisnes/{bisnes_id}', 'del_local_bisnes');
         Route::delete('/del_local_bisnes_image/{image_id}', 'del_local_bisnes_image');
@@ -119,6 +120,7 @@ Route::group(['namespace'=>'Api'], function() {
         Route::post('/add_service', 'add_service');
         Route::post('/edit_service/{service_id}', 'edit_service');
         Route::get('/get_editing_service/{service_id}', 'get_editing_service');
+        Route::get('/get_service_images/{service_id}', 'get_service_images');
         Route::get('/get_service/{service_id}', 'get_service');
         Route::delete('/del_service/{service_id}', 'del_service');
         Route::delete('/del_service_image/{image_id}', 'del_service_image');
@@ -243,21 +245,55 @@ Route::group(['namespace'=>'Api'], function() {
     /*
     *   Guid sport sectors routes
     */
-    Route::apiResource('/sector', 'SectorController');
+    Route::controller(SectorController::class)->prefix('sector')->group( function() {
+        Route::apiResource('/', 'SectorController');
+        Route::post('/add_sector', 'add_sector');
+        Route::post('/edit_sector/{sector_id}', 'edit_sector');
+        Route::delete('/del_sector_sector/{sector_id}', 'del_sector_sector');
+
+        Route::get('/get_sector_images/{sector_id}', 'get_sector_images');
+        Route::delete('/del_sector_image_from_db/{image_id}', 'del_sector_image_from_db');
+
+        Route::get('/get_sector_data_for_model/{sector_id}', 'get_sector_data_for_model');
+        Route::get('/get_sector_editing_data/{sector_id}', 'get_sector_editing_data');
+
+        Route::post('/routes_sequence', 'routes_sequence');
+    });
+
     Route::get('/get_sectors_for_forum/{article_id}', 'SectorController@get_sectors_for_forum');
     Route::get('/sectors_and_routes_quantity', 'SectorController@get_sectors_and_routes_quantity');
     Route::get('/get_spot_rocks_images/{article_id}', 'SectorController@get_spot_rocks_images');
-    // Route::get('/get_region_sectors/{region_id}', 'SectorController@get_region_sectors');
 
-    Route::apiResource('/route', 'RouteController');
+    Route::controller(RouteController::class)->prefix('route')->group( function() {
+        Route::apiResource('/', 'RouteController');
+        Route::post('/add_route', 'add_route');
+        Route::get('/get_route_editing_data/{route_id}', 'get_route_editing_data');
+        Route::post('/edit_route/{route_id}', 'edit_route');
+    });
     Route::get('/get_routes_for_forum/{sector_id}', 'RouteController@get_routes_for_forum');
     Route::get('/get_routes_quantity/{article_id}', 'RouteController@get_routes_quantity');
-    Route::post('/add_route', 'RouteController@add_route');
 
-    Route::apiResource('/MTP', 'MTPController');
-    Route::get('/get_mtps_for_forum/{sector_id}', 'MTPController@get_mtps_for_forum');
+    Route::controller(MTPController::class)->prefix('mtp')->group( function() {
+        Route::get('/', 'index');
+        Route::post('/mtp_add', 'mtp_add');
+        Route::post('/mtp_edit/{mtp_id}', 'mtp_edit');
+        Route::get('/get_editing_mtp/{mtp_id}', 'get_editing_mtp');
+        Route::delete('/del_mtp/{mtp_id}', 'del_mtp');
+
+        Route::get('/get_mtps_for_forum/{sector_id}', 'get_mtps_for_forum');
+
+        Route::controller(MTPPitchController::class)->prefix('mtp_pitch')->group( function() {
+            Route::get('/', 'index');
+            Route::post('/mtp_pitch_add', 'mtp_pitch_add');
+            Route::post('/mtp_pitch_edit/{pitch_id}', 'mtp_pitch_edit');
+            Route::get('/get_editin_pitch/{pitch_id}', 'get_editin_pitch');
+            Route::delete('/del_pitch/{pitch_id}', 'del_pitch');
+
+            Route::get('/get_mtp_pitchs_for_model/{mtp_id}', 'get_mtp_pitchs_for_model');
+            Route::post('/pitchs_sequence', 'pitchs_sequence');
+        });
+    });
     
-    Route::apiResource('/MTPPitch', 'MTPPitchController');
 
     Route::apiResource('/sector_local_images', 'SectorLocalImagesController');
     Route::post('/sector_local_images/update_image/{image_id}', 'SectorLocalImagesController@update_image');

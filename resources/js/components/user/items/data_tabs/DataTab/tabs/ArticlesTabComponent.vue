@@ -7,33 +7,13 @@
         <td>{{table_info.id}}</td>
         <td>|</td>
 
-        <!-- <div v-if="table_name != 'Orders'"> -->
-            <!-- <td v-if="table_name == 'Sector'" > -->
-            <!-- <a v-if="table_name != 'Orders' && table_name == 'Sector'" @click="show_sector_model(table_info.id)" href="#">{{table_info.name}}</a>
-            </td>
-            <td v-else-if="table_name != 'Orders' && table_name == 'Users'">{{table_info.name}} {{table_info.surname}}</td> -->
-            <!-- <td v-if="table_name == 'Users'">{{table_info.name}}</td> -->
-            <td @click="quick_wiev_action(table_info.id)" title="Click for quick wiev" style="cursor: zoom-in;">{{table_info.url_title}} <!-- <a @click="s" ><i class="fa fa-pencil" aria-hidden="true"></i></a> --></td>
-        <!-- </div> -->
+        <td @click="quick_wiev_action(table_info.id)" title="Click for quick wiev" style="cursor: zoom-in;">{{table_info.url_title}}</td>
 
         <td  v-if="table_name != 'Users' && table_name != 'Orders'">|</td>
-
-        <!-- <th style='text-align: center;' v-if="table_name == 'Sector'">
-            <div v-for="region in regions" :key="region.id" >
-                <div v-if="region.id == table_info.article_id">
-                    {{region.url_title}}
-                </div>
-            </div>
-        </th> -->
-
-        <!-- <td style='text-align: center;' v-if="table_name == 'Products' && table_name != 'Users'">{{table_info.category_id}}</td>
-        <td v-if="table_name == 'Products'">|</td> -->
         <td style='text-align: center;' v-if="table_name != 'Sector' && table_name != 'Users' && table_name != 'Orders'">{{table_info.published}}</td>
-        <!-- <td v-if="table_name == 'Orders'">{{table_info.status}}</td>
-        <td v-if="table_name == 'Users'">|</td> -->
 
         <th style='text-align: center;' v-if="table_name == 'Users'">
-            <div v-for="user_role in user_roles" :key="user_role.id" v-if='user_role.user_id == table_info.id'>
+            <!-- <div v-for="user_role in user_roles" :key="user_role.id" v-if='user_role.user_id == table_info.id'>
                 <div v-if="table_name == 'Roles'">
                     <div v-for="table_info in table_2" :key="table_info.id" v-if='user_role.role_id == table_info.id'>
                         {{ table_info.name }}
@@ -42,7 +22,7 @@
                 <div v-else>
                     {{ user_role.role_id }}
                 </div>
-            </div>
+            </div> -->
         </th>
         
         <td>|</td>
@@ -88,7 +68,7 @@
                         _method: 'DELETE'
                     })
                     .then(Response => {
-                        this.update(this.tab_num)
+                        this.$emit('restart')
                     })
                     .catch(error => console.log(error))
                 }

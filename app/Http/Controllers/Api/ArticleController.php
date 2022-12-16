@@ -38,7 +38,6 @@ use App\Models\Article_region;
 // use App\Models\Favorite_outdoor_area;
 
 use Auth;
-
 use File;
 use Validator;
 

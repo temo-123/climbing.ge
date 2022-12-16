@@ -338,19 +338,32 @@ __webpack_require__.r(__webpack_exports__);
           ru_data: response.data.ru_service,
           ka_data: response.data.ka_service
         };
-        _this2.service_old_images = response.data.service_images; // if(this.data.global_data.published_data != null){
+        _this2.service_old_images = response.data.service_images;
+
+        _this2.get_service_images(); // if(this.data.global_data.published_data != null){
         //     this.the_date = this.data.global_data.published_data
         // }
+
+      })["catch"](function (error) {
+        return console.log(error);
+      });
+    },
+    get_service_images: function get_service_images() {
+      var _this3 = this;
+
+      this.data_for_tab = [];
+      axios.get("../../api/service/get_service_images/" + this.$route.params.id).then(function (response) {
+        _this3.service_old_images = response.data;
       })["catch"](function (error) {
         return console.log(error);
       });
     },
     del_service_image_from_db: function del_service_image_from_db(image_id) {
-      var _this3 = this;
+      var _this4 = this;
 
       if (confirm('Are you sure, you want delite this image?')) {
         axios["delete"]("../../../api/service/del_service_image/" + image_id).then(function (response) {
-          _this3.get_editing_service_data();
+          _this4.get_service_images();
         })["catch"](function (error) {
           return console.log(error);
         });
@@ -376,7 +389,7 @@ __webpack_require__.r(__webpack_exports__);
       }
     },
     edit_service: function edit_service() {
-      var _this4 = this;
+      var _this5 = this;
 
       if (this.change_url_title) {
         this.data.global_data.change_url_title = this.change_url_title;
@@ -395,7 +408,7 @@ __webpack_require__.r(__webpack_exports__);
       loop_num = 0;
       formData.append('data', JSON.stringify(this.data));
       axios.post('../../api/service/edit_service/' + this.$route.params.id, formData).then(function (response) {
-        _this4.go_back(true);
+        _this5.go_back(true);
       })["catch"](function (error) {
         return console.log(error);
       });

@@ -1,26 +1,34 @@
 <template>
   <div class="col-md-12">
+
     <div class="row">
-        <div class="form-group">  
-            <button type="submit" class="btn btn-primary" v-on:click="save_all()" >Save</button>
+        <div class="form-group">
+            <button type="submit" class="btn btn-primary" @click="go_back()">Beck</button>
         </div>
     </div>
-    <div class="wrapper container-fluid container">
-      <form action="">
-        
+
+    <div class="row" v-if="!is_geting_data_isset">
+        <div class="form-group">  
+            <button form='route_edit_form' type="submit" class="btn btn-primary">Save and go back</button>
+            <p>Save and go to route tab page</p>
+        </div>
+    </div>
+
+    <div class="wrapper container-fluid container" v-if="!is_geting_data_isset">
+      <form id="route_edit_form" @submit.prevent="edit_mtp()">
         <div class="form-group clearfix row">
-          <label for="name" class='col-md-2 control-label'> Region / Sector </label>
-          <div class="col-md-4">
-            <select class="form-control"  v-model="sellected_region">
+          <label for="name" class='col-md-2 control-label'> Region </label>
+          <div class="col-md-5">
+            <select class="form-control" v-model="data.article_id" @click="filter_sectors()" required>
+              <option value="" disabled>Select outdoor article</option>
               <option v-for="region in regions" :key="region.id" v-bind:value="region.id">{{ region.url_title  }}</option>
             </select>
           </div>
-          <div class="col-md-4">
-            <div class="col-md-12">
-              <select class="form-control" v-if="sellected_region != ''" v-model="sector_id">
-                <option v-for="sector in sectors" :key="sector.id" v-if="sellected_region == sector.article_id" v-bind:value="sector.id">{{ sector.name }}</option>
-              </select>
-            </div>
+          <div class="col-md-5">
+            <select class="form-control" v-if="data.article_id != ''" v-model="data.sector_id" required>
+              <option value="" disabled>Select sector</option>
+              <option v-for="sector in sectors" :key="sector.id" v-bind:value="sector.id">{{ sector.name }}</option>
+            </select>
           </div>
         </div>
         
@@ -33,9 +41,9 @@
         </div>
 
         <div class="form-group clearfix row">
-          <label for="name" class='col-md-2 control-label'> Route name </label>
-          <div class="col-md-8">
-            <input type="text" name="name" v-model="name" class="form-control" placeholder="Route name.."> 
+          <label for="name" class='col-md-2 control-label'> Multy pitch name </label>
+          <div class="col-md-10">
+            <input type="text" name="name" v-model="data.name" class="form-control" placeholder="Name" required> 
               <div class="alert alert-danger" role="alert" v-if="errors.name">
                 {{ errors.name[0] }}
               </div>
@@ -44,111 +52,138 @@
 
         <div class="form-group clearfix row">
           <label for="name" class='col-md-2 control-label'> text </label>
-          <div class="col-md-8">
+          <div class="col-md-10">
             <!-- <textarea type="text"  name="text" rows="15" class="form-cotrol md-textarea form-control"></textarea> -->
-            <ckeditor v-model="text" :config="editorConfig"></ckeditor>
+            <ckeditor v-model="data.text"></ckeditor>
+          </div>
+        </div>
+
+        <div class="form-group clearfix row">
+          <label for="name" class='col-md-2 control-label'> Height </label>
+          <div class="col-md-9">
+            <input type="number" name="title" class="form-control" v-model="data.height" placeholder="Height"> 
+          </div>
+          <label for="name" class='col-md-1 control-label'> M </label>
+        </div>
+
+        <div class="form-group clearfix row">
+          <label for="name" class='col-md-2 control-label'>First ascent / Auther</label>
+          <div class="col-md-5">
+            <input type="text" name="first_ascent" v-model="data.first_ascent" class="form-control" placeholder="First ascent"> 
+          </div>
+          <div class="col-md-5">
+            <input type="text" name="author" v-model="data.author" class="form-control" placeholder="Auther"> 
           </div>
         </div>
 
       </form>
+    </div>
+
+    <div class="row justify-content-center" v-if="is_geting_data_isset">
+        <div class="col-md-4">
+            <img :src="'../../../../../../public/images/site_img/loading.gif'" alt="loading">
+        </div>
     </div>
   </div>
 </template>
 
 <script>
 export default {
-  props: [
-      "editing_mtp_id",
-  ],
   data() {
     return {
-      sellected_region: '',
-      route_type: '',
+      // editorConfig: {},
+      // route_type: '',
 
       regions: [],
       sectors: [],
 
       errors: [],
 
-      sector_id: "",
-      name: "",
-      text: "",
-      height: "",
+      // sector_id: "",
+      // title: "",
+      // text: "",
+      // height: "",
+      // height: "",
 
-        editing_url: '/routes_and_sectors/get_mtp_editing_data/',
-        url: '',
+      data: {
+        article_id: "",
+        sector_id: "",
+        name: "",
+        text: "",
+        height: "",
+        first_ascent: "",
+        author: '',
+      },
+
+      is_geting_data_isset: true,
+
+      go_back_action: false,
     }
   },
 
   mounted() {
     this.get_region_data()
-    this.get_sectors_data()
-    this.get_mtp_editing_data()
+    // this.get_sectors_data()
+
+    // this.get_mtp_editing_data()
   },
 
   methods: {
     get_region_data: function(){
       axios
-      .get("/routes_and_sectors/get_region_data")
+      .post("../../api/article/",{category: 'outdoor'})
       .then(response => {
         this.regions = response.data
+        this.get_sectors_data()
       })
       .catch(
         error => console.log(error)
       );
     },
+
     get_sectors_data: function(){
       axios
-      .get("/routes_and_sectors/get_sector_data")
+      .get("../../api/sector/")
       .then(response => {
-        this.sectors = response.data
+        this.all_sectors = response.data
+        this.get_mtp_editing_data()
       })
       .catch(
         error => console.log(error)
       );
     },
 
-    get_mtp_editing_data() {
-      this.url = this.editing_url + this.editing_mtp_id
+    get_mtp_editing_data: function(){
       axios
-      .get(this.url)
+      .get("../../api/mtp/get_editing_mtp/"+this.$route.params.id)
       .then(response => {
-          this.editing_data = response.data
+        this.data = response.data
+        let sector = this.all_sectors.find(item => item.id === this.data.sector_id);
+        let action_article = this.regions.find(item => item.id === sector.article_id);
+        this.data.article_id = action_article.id;
 
-        console.log(this.editing_data);
-          // send data in editing form value
-          this.sector_id = this.editing_data.mtp['sector_id'],
-          this.name = this.editing_data.mtp['name'],
-          this.text = this.editing_data.mtp['text'],
-          this.height = this.editing_data.mtp['height']
-
-          this.value_sector_region(this.editing_data)
+        this.filter_sectors()
       })
       .catch(
-          error => console.log(error)
-      );
+        error => console.log(error)
+      )
+      .finally(() => this.is_geting_data_isset = false);
     },
 
-    value_sector_region: function(editing_data){
-      if (editing_data.mtp['sector_id'] != "" || editing_data.mtp['sector_id'] != NULL) {
-        for (let index = 0; index < this.sectors.length; index++) {
-          if (this.sectors[index]['id'] == this.sector_id) {
-            this.sellected_region = this.sectors[index]['article_id']
-          }
-        }
-      }
-    },
-
-    edit_global_article: function () {
-      axios
-      .post('/routes_and_sectors/mtp_edit/' + this.editing_mtp_id, {
-          sector_id: this.sector_id,
-          name: this.name,
-          text: this.text,
-          height: this.height,
+    filter_sectors(){
+      let vm = this;
+      this.sectors = this.all_sectors.filter(function (item){
+          return item.article_id == vm.data.article_id
       })
-      .then(function (response) {
-          window.location.href = '/routes_and_sectors';
+    },
+
+    edit_mtp: function () {
+      axios
+      .post('../../api/mtp/mtp_edit/'+this.$route.params.id, {
+          data: this.data,
+      })
+      .then(response => {
+        this.go_back(true)
       })
       .catch(error =>{
           if (error.response.status == 422) {
@@ -157,9 +192,28 @@ export default {
       })
     },
 
-    save_all: function () {
-      this.edit_global_article()
-    }
+    // clear_form(){
+    //   this.data = {
+    //     article_id: this.data.article_id,
+    //     sector_id: this.data.sector_id,
+    //     name: "",
+    //     text: "",
+    //     height: "",
+    //     first_ascent: "",
+    //     author: '',
+    //   }
+    // },
+
+    go_back(back_action = false) {
+        if(back_action == false){
+            if(confirm('Are you sure, you want go back?')){
+                this.$router.push({ name: 'routeAndSectorList' })
+            }
+        }
+        else{
+            this.$router.push({ name: 'routeAndSectorList' })
+        }
+    },
 
   }
 }

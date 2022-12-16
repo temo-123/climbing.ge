@@ -67,7 +67,10 @@ class imageControllService
 
         $extension = $form_value_id->getClientOriginalExtension();
         $filename  = $form_value_id->getClientOriginalName();
-        $file_new_name = date('Y-m-d-H-m-s'); 
+
+        // $file_new_name = date('Y-m-d-H-m-s-U').'{'.rand(1,1000000).'}'; 
+        $file_new_name = ImageControllService::create_image_name(); 
+
         $file_new_name = $file_new_name.'.'.$extension;
 
         if (!file_exists(public_path($image_dir))) {
@@ -177,7 +180,9 @@ class imageControllService
         $filename  = $file->getClientOriginalName();
         $extension = $file->getClientOriginalExtension();
         $pieces = explode( '.', $filename );
-        $file_new_name = date('Y-m-d-H-m-s');
+        // $file_new_name = date('Y-m-d-H-m-s');
+
+        $file_new_name = ImageControllService::create_image_name(); 
 
         return $file_new_name;
     }
@@ -196,5 +201,10 @@ class imageControllService
 
         // finally we save the image as a new file
         $demo_img->save(public_path($image_dir.$file_new_name));
+    }
+
+    public static function create_image_name()
+    {
+        return date('Y-m-d-H-m-s-U').'{'.rand(1,1000000).'}'; 
     }
 }

@@ -120,6 +120,7 @@
                         _method: 'DELETE'
                     })
                     .then(Response => {
+                        this.$emit('restart')
                     })
                     .catch(error => console.log(error))
                 }

@@ -337,7 +337,7 @@ __webpack_require__.r(__webpack_exports__);
 
       if (confirm('Are you sure, you want delite this image?')) {
         axios["delete"]("../../../api/bisnes/del_local_bisnes_image/" + image_id).then(function (response) {
-          _this2.get_editing_bisnes_data();
+          _this2.get_bisnes_images();
         })["catch"](function (error) {
           return console.log(error);
         });
@@ -354,8 +354,16 @@ __webpack_require__.r(__webpack_exports__);
           us_data: response.data.us_bisnes,
           ru_data: response.data.ru_bisnes,
           ka_data: response.data.ka_bisnes
-        };
-        _this3.bisnes_old_images = response.data.bisnes_images;
+        }; // this.bisnes_old_images = response.data.bisnes_images
+      })["catch"](function (error) {
+        return console.log(error);
+      });
+    },
+    get_bisnes_images: function get_bisnes_images() {
+      var _this4 = this;
+
+      axios.get("../../api/bisnes/get_bisnes_images/" + this.$route.params.id).then(function (response) {
+        _this4.bisnes_old_images = response.data.bisnes_images;
       })["catch"](function (error) {
         return console.log(error);
       });
@@ -380,7 +388,7 @@ __webpack_require__.r(__webpack_exports__);
       }
     },
     edit_bisnes: function edit_bisnes() {
-      var _this4 = this;
+      var _this5 = this;
 
       if (this.change_url_title) {
         this.data.global_data.change_url_title = this.change_url_title;
@@ -399,7 +407,7 @@ __webpack_require__.r(__webpack_exports__);
       loop_num = 0;
       formData.append('data', JSON.stringify(this.data));
       axios.post('../../api/bisnes/edit_local_bisnes/' + this.$route.params.id, formData).then(function (response) {
-        _this4.go_back(true);
+        _this5.go_back(true);
       })["catch"](function (error) {
         return console.log(error);
       });

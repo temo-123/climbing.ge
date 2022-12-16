@@ -26,7 +26,7 @@
         methods: {
             get_MTPs(){
                 axios
-                .get("../api/MTP/")
+                .get("../api/mtp/")
                 .then(response => {
                     this.MTPs = response.data
                 })

@@ -112,7 +112,7 @@
             </router-link>
             <router-link :to="{name: 'routeAndSectorList'}" exact>
                 <li class="list-group-item text-muted mbing Secrots And Route">
-                    <span class="admin_menu">{{ $t('user menu sectors & routes') }}(Beta)</span>
+                    <span class="admin_menu">{{ $t('user menu sectors & routes') }}</span>
                 </li>
             </router-link>
 

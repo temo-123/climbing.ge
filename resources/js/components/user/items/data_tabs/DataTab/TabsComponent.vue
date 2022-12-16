@@ -26,6 +26,7 @@
                         class="col-md-12"
                         v-for="filtr_data in table_data"
                         :key="filtr_data.id"
+
                         v-if="tab_num == filtr_data.id"
                     >
                         <div class="row">
@@ -222,6 +223,8 @@
                                     v-for="table_info in data.data"
                                     :key="table_info.id"
                                     :table_info="table_info"
+
+                                    @restart="update"
                                 />
                             </tbody>
                             <tbody v-else-if="data.table_name == 'Mount vasives'">
@@ -229,6 +232,8 @@
                                     v-for="table_info in data.data"
                                     :key="table_info.id"
                                     :table_info="table_info"
+                                    
+                                    @restart="update"
                                 />
                             </tbody>
                             <tbody v-else-if="data.table_name == 'Sectors local images'">
@@ -236,6 +241,8 @@
                                     v-for="table_info in data.data"
                                     :key="table_info.id"
                                     :table_info="table_info"
+                                    
+                                    @restart="update"
                                 />
                             </tbody>
                             <tbody v-else-if="data.table_name == 'Local bisnes'">
@@ -243,6 +250,8 @@
                                     v-for="table_info in data.data"
                                     :key="table_info.id"
                                     :table_info="table_info"
+                                    
+                                    @restart="update"
                                 />
                             </tbody>
                             <tbody v-else-if="data.table_name == 'Comments' || data.table_name == 'My comments'">
@@ -252,6 +261,8 @@
                                     :table_info="table_info"
 
                                     :comments_tab_name="data.table_name"
+                                    
+                                    @restart="update"
                                 />
                             </tbody>
                             <tbody v-else-if="data.table_name == 'Regions'">
@@ -259,6 +270,8 @@
                                     v-for="table_info in data.data"
                                     :key="table_info.id"
                                     :table_info="table_info"
+                                    
+                                    @restart="update"
                                 />
                             </tbody>
                             <tbody v-else-if="data.table_name == 'Categories'">
@@ -266,6 +279,8 @@
                                     v-for="table_info in data.data"
                                     :key="table_info.id"
                                     :table_info="table_info"
+                                    
+                                    @restart="update"
                                 />
                             </tbody>
                             <tbody v-else-if="data.table_name == 'Sectors'">
@@ -274,6 +289,8 @@
                                     :key="table_info.id"
                                     :table_info="table_info"
                                     @show_sector_modal="sector_modal"
+                                    
+                                    @restart="update"
                                 />
                             </tbody>
                             <tbody v-else-if="data.table_name == 'services'">
@@ -281,6 +298,8 @@
                                     v-for="table_info in data.data"
                                     :key="table_info.id"
                                     :table_info="table_info"
+                                    
+                                    @restart="update"
                                 />
                             </tbody>
                             <tbody v-else-if="data.table_name == 'Shiped countries'">
@@ -290,6 +309,8 @@
                                     :table_info="table_info"
 
                                     ref="add_country"
+                                    
+                                    @restart="update"
                                 />
                             </tbody>
                             <tbody v-else-if="data.table_name == 'Films tags'">
@@ -299,6 +320,8 @@
                                     :table_info="table_info"
 
                                     ref="control_tag"
+                                    
+                                    @restart="update"
                                 />
                             </tbody>
                             <tbody v-else-if="data.table_name =='Sale codes'">
@@ -308,6 +331,8 @@
                                     :table_info="table_info"
 
                                     ref="control_sale_code"
+                                    
+                                    @restart="update"
                                 />
                             </tbody>
                             <tbody v-else-if="data.table_name === 'Routes'">
@@ -315,6 +340,8 @@
                                     v-for="table_info in data.data"
                                     :key="table_info.id"
                                     :table_info="table_info"
+
+                                    @restart="update"
                                 />
                             </tbody>
                             <tbody v-else-if="data.table_name == 'Multi-pitchs'">
@@ -322,13 +349,17 @@
                                     v-for="table_info in data.data"
                                     :key="table_info.id"
                                     :table_info="table_info"
+                                    
+                                    @restart="update"
                                 />
                             </tbody>
                             <tbody v-else-if="data.table_name == 'Pitches'">
-                                <pitchTab
+                                <pitchsTab
                                     v-for="table_info in data.data"
                                     :key="table_info.id"
                                     :table_info="table_info"
+                                    
+                                    @restart="update"
                                 />
                             </tbody>
                             <tbody v-else-if="data.table_name == 'Users'">
@@ -336,6 +367,8 @@
                                     v-for="table_info in data.data"
                                     :key="table_info.id"
                                     :table_info="table_info"
+                                    
+                                    @restart="update"
                                 />
                             </tbody>
                             <tbody v-else-if="data.table_name == 'Roles'">
@@ -343,6 +376,8 @@
                                     v-for="table_info in data.data"
                                     :key="table_info.id"
                                     :table_info="table_info"
+                                    
+                                    @restart="update"
                                 />
                             </tbody>
                             <tbody v-else-if="data.table_name == 'Parmissions'">
@@ -350,6 +385,8 @@
                                     v-for="table_info in data.data"
                                     :key="table_info.id"
                                     :table_info="table_info"
+                                    
+                                    @restart="update"
                                 />
                             </tbody>
                             <tbody v-else-if="data.table_name == 'Orders' || data.table_name == 'My orders' ">
@@ -357,6 +394,8 @@
                                     v-for="table_info in data.data"
                                     :key="table_info.id"
                                     :table_info="table_info"
+                                    
+                                    @restart="update"
                                 />
                             </tbody>
                             <tbody v-else-if="data.table_name == 'Posts'">
@@ -364,6 +403,8 @@
                                     v-for="table_info in data.data"
                                     :key="table_info.id"
                                     :table_info="table_info"
+                                    
+                                    @restart="update"
                                 />
                             </tbody>
                             <tbody v-else-if="data.table_name == 'Post topics'">
@@ -371,6 +412,8 @@
                                     v-for="table_info in data.data"
                                     :key="table_info.id"
                                     :table_info="table_info"
+                                    
+                                    @restart="update"
                                 />
                             </tbody>
                             <tbody v-else>
@@ -378,6 +421,8 @@
                                     v-for="table_info in data.data"
                                     :key="table_info.id"
                                     :table_info="table_info"
+                                    
+                                    @restart="update"
                                 />
                             </tbody>
 
@@ -387,10 +432,10 @@
             </div>
         </div>
 
-        <sectorModal
+        <!-- <sectorModal
             :show_sector_modal="show_sector_modal"
             v-if="table_data[tab_num - 1].table_name == 'Sectors'"
-        />
+        /> -->
         <mtpModel v-if="table_data[tab_num - 1].table_name == 'Multi-pitchs'" />
 
         <roleModal v-if="table_data[tab_num - 1].table_name == 'Roles'" />
@@ -448,7 +493,7 @@ import categoryTab from "./tabs/CategoriesTabComponent.vue";
 import postTopicTab from "./tabs/PostTopicTabComponent.vue";
 import postTab from "./tabs/PostTabComponent.vue";
 
-import sectorModal from "./tab_modals/SectorsModalComponent.vue";
+//import sectorModal from "./tab_modals/SectorsModalComponent.vue";
 // import editOrderStatusModal from "./tab_modals/EditOrderStatusსModalComponent.vue";
 import mtpModel from "./tab_modals/MTPModalComponent.vue";
 // import orderDetalModal from "./tab_modals/OrderDetalsModalComponent.vue";
@@ -492,7 +537,7 @@ export default {
         filmTagsTab,
         saleCodesTab,
 
-        sectorModal,
+        // sectorModal,
         // editOrderStatusModal,
         mtpModel,
         // orderDetalModal,

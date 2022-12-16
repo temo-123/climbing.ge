@@ -1,400 +1,628 @@
 <template>
-  <div class="col-md-12">
-    <div class="row">
-      <div class="form-group">
-        <button type="submit" class="btn btn-primary" v-on:click="save_all()">Save</button>
-      </div>
-    </div>
-  <!-- <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal">Open Modal</button> -->
-<!-- Modal -->
-  <div class="modal fade" id="myModal" role="dialog">
-    <div class="modal-dialog">
-    
-      <!-- Modal content-->
-      <div class="modal-content">
-        <div class="modal-header">
-          <button type="button" class="close" data-dismiss="modal">&times;</button>
-          <h4 class="modal-title">Modal Header</h4>
-        </div>
-        <div class="modal-body">
-          <p>Some text in the modal.</p>
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-        </div>
-      </div>
-      
-    </div>
-  </div>
-  	<form @submit.prevent="edit_sector" id="js_form" class="contact-form" method="POST" enctype="multipart/form-data">
-			<div class="form-group clearfix row">
-				<label for="name" class='col-md-2 control-label'> Sector name </label>
-				<div class="col-md-8">
-						<input type="text" v-model="name" name="name" placeholder="Name" class="form-control textarea">
-            <div class="alert alert-danger" role="alert" v-if="errors.name">
-                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
+    <div class="col-md-12">
+        <div class="row">
+            <div class="form-group">
+                <button
+                    type="submit"
+                    class="btn btn-primary"
+                    v-on:click="go_back()"
+                >
+                    Beck
                 </button>
-                {{ errors.name[0] }}
             </div>
-				</div>
-			</div>
-	
-			<div class="form-group clearfix row">
-				<label class='col-md-2 control-label'> Region </label>
-				<div class="col-md-8">
-					<select class="form-control" name="article_id" v-model="article_id"> 
-						<option v-for="region in regions" :key="region" v-bind:value="region.id">{{ region.url_title }}</option>
-					</select> 
-          <div class="alert alert-danger" role="alert" v-if="errors.article_id">
-              <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                  <span aria-hidden="true">&times;</span>
-              </button>
-              {{ errors.article_id[0] }}
-          </div>
-				</div>
-			</div>
-	
-			<div class="form-group clearfix row">
-				<label class='col-md-2 control-label'> Text </label>
-				<div class="col-md-8">
-          <ckeditor v-model="text" :config="editorConfig"></ckeditor>
-				</div>
-			</div>	
-
-      <hr>
-
-			<div class="form-group clearfix row">
-				<label class='col-md-2 control-label'> Shadow time: </label>
-				<div class="col-md-8">
-          <div class="row">
-            <div class="col-md-4">
-                <label for="vehicle1" class="sector_checbox_title"> all_day_in_shade</label><br>
-                <img class="sun_svg" :src="'../../images/svg/in the shade whole day.svg'" alt="In the shade whole day" title="In the shade whole day">
-                <input type="checkbox" v-model="all_day_in_shade" name="all_day" value="1" class="largerCheckbox">
-            </div>
-            <div class="col-md-4">
-                <label for="vehicle1"> all_day_in_sun</label><br>
-                <img class="sun_svg" :src="'../../images/svg/in the sun the whole day.svg'" alt="In the sun the whole day" title="In the sun the whole day">
-                <input type="checkbox" v-model="all_day_in_sun" name="no_sun" value="1"  class="largerCheckbox">
-            </div>
-            <div class="col-md-4">
-                <label for="vehicle1"> in_the_shade_afternoon</label><br>
-                <img class="sun_svg" :src="'../../images/svg/in shade in the afternoon.svg'" alt="In shade in the afternoon" title="In shade in the afternoon">
-                <input type="checkbox" v-model="in_the_shade_afternoon" name="afternoon" value="1"  class="largerCheckbox">
-            </div>
-					</div>
-          <div class="row">
-            <div class="col-md-4">
-                <label for="vehicle1"> in_the_shade_befornoon</label><br>
-                <img class="sun_svg" :src="'../../images/svg/in shade befor noon.svg'" alt="In shade befor noon" title="In shade befor noon">
-                <input type="checkbox" v-model="in_the_shade_befornoon" name="beforenoon" value="1"  class="largerCheckbox">
-            </div>
-            <div class="col-md-4">
-                <label for="vehicle1"> in_shade_after_10</label><br>
-                <img class="sun_svg" :src="'../../images/svg/in shade after 10.00 am.svg'" alt="In shade after 10.00 am" title="In shade after 10.00 am">
-                <input type="checkbox" v-model="in_shade_after_10" name="beforenoon" value="1"  class="largerCheckbox">
-            </div>
-            <div class="col-md-4">
-                <label for="vehicle1"> in_shade_after_15</label><br>
-                <img class="sun_svg" :src="'../../images/svg/in shade after 15.00 pm.svg'" alt="In shade after 15.00 pm" title="In shade after 15.00 pm">
-                <input type="checkbox" v-model="in_shade_after_15" name="beforenoon" value="1"  class="largerCheckbox">
-            </div>
-          </div>
         </div>
-			</div>
+        <div class="row" v-if="!is_geting_data_isset">
+            <div class="form-group">
+                <button
+                    type="submit"
+                    class="btn btn-primary"
+                    form="sector_editing_form"
+                >
+                    Save
+                </button>
+            </div>
+        </div>
+        <div v-if="!is_geting_data_isset">
+            <form
+                @submit.prevent="edit_sector"
+                id="sector_editing_form"
+                class="contact-form"
+                method="POST"
+                enctype="multipart/form-data"
+            >
 
-      <hr>
-
-			<div class="form-group clearfix row">
-				<label class='col-md-2 control-label'> Sector relief: </label>
-				<div class="col-md-8 row">
-					<div class="col-md-4">
-							<label for="vehicle1"> slabby</label><br>
-              <img class="sun_svg" :src="'../../images/svg/slabby.svg'" alt="Slabby" title="Slabby">
-							<input type="checkbox" v-model="slabby" name="no_sun" value="1"  class="largerCheckbox">
-					</div>
-					<div class="col-md-4">
-							<label for="vehicle1"> vertical</label><br>
-              <img class="sun_svg" :src="'../../images/svg/vertical.svg'" alt="Vertical" title="Vertical">
-							<input type="checkbox" v-model="vertical" name="afternoon" value="1"  class="largerCheckbox">
-					</div>
-					<div class="col-md-4">
-							<label for="vehicle1"> overhang</label><br>
-              <img class="sun_svg" :src="'../../images/svg/overhang.svg'" alt="Overhang" title="Overhang">
-							<input type="checkbox" v-model="overhang" name="beforenoon" value="1"  class="largerCheckbox">
-					</div>
-				</div>
-			</div>
-
-      <hr>
-		</form>
-    <div class="container">
-
-      <div class="row">
-        <div class="card"  v-if='myModal'>
-          <div class="card-header">
-              edit image
-          </div>
-          <div class="card-body">
-            <div class="row">
-                <div class="col-md-6">
-                  <div class="form-group clearfix row">
-                    <button class="btn btn-primary" @click="add_sector_image()">seve image</button>
-                  </div>
-                </div>
-                <div class="col-md-6">    
-                  <form @submit="edit_sector_image()"  ref="myForm">
-                    <div class="form-group clearfix row">
-                      <input type="file" name="profile_pic" id="profile_pic" >
+                <div class="form-group clearfix row">
+                    <label for="published" class='col-md-2 control-label '> Publish </label>
+                    <div class="col-md-10">
+                        <select class="form-control" v-model="data.published" name="published" required> 
+                            <option :value="0">Not public</option> 
+                            <option :value="1">Public</option> 
+                        </select> 
                     </div>
-                  </form>
                 </div>
-              </div>
-          </div>
-        </div>
-      </div>
+                <div class="form-group clearfix row">
+                    <label for="name" class="col-md-2 control-label">
+                        Sector name
+                    </label>
+                    <div class="col-md-10">
+                        <input
+                            type="text"
+                            v-model="data.name"
+                            name="name"
+                            placeholder="Name"
+                            class="form-control textarea"
+                            required
+                        />
+                        <div
+                            class="alert alert-danger"
+                            role="alert"
+                            v-if="errors.name"
+                        >
+                            {{ errors.name[0] }}
+                        </div>
+                    </div>
+                </div>
 
-        <div class="container">
-          <div class="row">
-            <div class="form-groupe">
-              <button class="btn btn-primary mb-4" @click="showModal()">Add image</button>
+                <div class="form-group clearfix row">
+                    <label class="col-md-2 control-label"> Region </label>
+                    <div class="col-md-10">
+                        <select
+                            class="form-control"
+                            name="article_id"
+                            v-model="data.article_id"
+
+                            required
+                        >
+                            <option
+                                v-bind:value="''"
+                                disabled
+                            >
+                                Select outdoor area
+                            </option>
+                            <option
+                                v-for="region in regions"
+                                :key="region"
+                                v-bind:value="region.area.id"
+                            >
+                                {{ region.area.url_title }}
+                            </option>
+                        </select>
+                        <div
+                            class="alert alert-danger"
+                            role="alert"
+                            v-if="errors.article_id"
+                        >
+                            {{ errors.article_id[0] }}
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group clearfix row">
+                    <label class="col-md-2 control-label"> Text </label>
+                    <div class="col-md-10">
+                        <ckeditor v-model="data.text" :config="editorConfig"></ckeditor>
+                    </div>
+                </div>
+
+                <hr />
+
+                <div class="form-group clearfix row">
+                    <label for="name" class="col-md-2 control-label">
+                        wolking_time
+                    </label>
+                    <div class="col-md-10">
+                        <input
+                            type="text"
+                            v-model="data.wolking_time"
+                            wolking_time="wolking_time"
+                            placeholder="Wolking time"
+                            class="form-control textarea"
+                        />
+                        <div
+                            class="alert alert-danger"
+                            role="alert"
+                            v-if="errors.wolking_time"
+                        >
+                            {{ errors.wolking_time[0] }}
+                        </div>
+                    </div>
+                </div>
+
+                <hr />
+
+                <div class="form-group clearfix row">
+                    <label class="col-md-2 control-label"> Shadow time: </label>
+                    <div class="col-md-10">
+                        <div class="row">
+                            <div class="col-md-4">
+                                <label for="vehicle1" class="sector_checbox_title">
+                                    all_day_in_shade</label
+                                ><br />
+                                <img
+                                    class="sun_svg"
+                                    :src="'../../images/svg/in the shade whole day.svg'"
+                                    alt="In the shade whole day"
+                                    title="In the shade whole day"
+                                />
+                                <input
+                                    type="checkbox"
+                                    v-model="data.all_day_in_shade"
+                                    name="all_day"
+                                    value="1"
+                                    class="largerCheckbox"
+                                />
+                            </div>
+                            <div class="col-md-4">
+                                <label for="vehicle1"> all_day_in_sun</label><br />
+                                <img
+                                    class="sun_svg"
+                                    :src="'../../images/svg/in the sun the whole day.svg'"
+                                    alt="In the sun the whole day"
+                                    title="In the sun the whole day"
+                                />
+                                <input
+                                    type="checkbox"
+                                    v-model="data.all_day_in_sun"
+                                    name="no_sun"
+                                    value="1"
+                                    class="largerCheckbox"
+                                />
+                            </div>
+                            <div class="col-md-4">
+                                <label for="vehicle1"> in_the_shade_afternoon</label
+                                ><br />
+                                <img
+                                    class="sun_svg"
+                                    :src="'../../images/svg/in shade in the afternoon.svg'"
+                                    alt="In shade in the afternoon"
+                                    title="In shade in the afternoon"
+                                />
+                                <input
+                                    type="checkbox"
+                                    v-model="data.in_the_shade_afternoon"
+                                    name="afternoon"
+                                    value="1"
+                                    class="largerCheckbox"
+                                />
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-4">
+                                <label for="vehicle1"> in_the_shade_befornoon</label
+                                ><br />
+                                <img
+                                    class="sun_svg"
+                                    :src="'../../images/svg/in shade befor noon.svg'"
+                                    alt="In shade befor noon"
+                                    title="In shade befor noon"
+                                />
+                                <input
+                                    type="checkbox"
+                                    v-model="data.in_the_shade_befornoon"
+                                    name="beforenoon"
+                                    value="1"
+                                    class="largerCheckbox"
+                                />
+                            </div>
+                            <div class="col-md-4">
+                                <label for="vehicle1"> in_shade_after_10</label
+                                ><br />
+                                <img
+                                    class="sun_svg"
+                                    :src="'../../images/svg/in shade after 10.00 am.svg'"
+                                    alt="In shade after 10.00 am"
+                                    title="In shade after 10.00 am"
+                                />
+                                <input
+                                    type="checkbox"
+                                    v-model="data.in_shade_after_10"
+                                    name="beforenoon"
+                                    value="1"
+                                    class="largerCheckbox"
+                                />
+                            </div>
+                            <div class="col-md-4">
+                                <label for="vehicle1"> in_shade_after_15</label
+                                ><br />
+                                <img
+                                    class="sun_svg"
+                                    :src="'../../images/svg/in shade after 15.00 pm.svg'"
+                                    alt="In shade after 15.00 pm"
+                                    title="In shade after 15.00 pm"
+                                />
+                                <input
+                                    type="checkbox"
+                                    v-model="data.in_shade_after_15"
+                                    name="beforenoon"
+                                    value="1"
+                                    class="largerCheckbox"
+                                />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <hr />
+
+                <div class="form-group clearfix row">
+                    <label class="col-md-2 control-label"> Sector relief: </label>
+                    <div class="col-md-10 row">
+                        <div class="col-md-3">
+                            <label for="vehicle1"> slabby</label><br />
+                            <img
+                                class="sun_svg"
+                                :src="'../../images/svg/slabby.svg'"
+                                alt="Slabby"
+                                title="Slabby"
+                            />
+                            <input
+                                type="checkbox"
+                                v-model="data.slabby"
+                                name="no_sun"
+                                value="1"
+                                class="largerCheckbox"
+                            />
+                        </div>
+                        <div class="col-md-3">
+                            <label for="vehicle1"> vertical</label><br />
+                            <img
+                                class="sun_svg"
+                                :src="'../../images/svg/vertical.svg'"
+                                alt="Vertical"
+                                title="Vertical"
+                            />
+                            <input
+                                type="checkbox"
+                                v-model="data.vertical"
+                                name="afternoon"
+                                value="1"
+                                class="largerCheckbox"
+                            />
+                        </div>
+                        <div class="col-md-3">
+                            <label for="vehicle1"> overhang</label><br />
+                            <img
+                                class="sun_svg"
+                                :src="'../../images/svg/overhang.svg'"
+                                alt="Overhang"
+                                title="Overhang"
+                            />
+                            <input
+                                type="checkbox"
+                                v-model="data.overhang"
+                                name="beforenoon"
+                                value="1"
+                                class="largerCheckbox"
+                            />
+                        </div>
+                        <div class="col-md-3">
+                            <label for="vehicle1"> roof</label><br />
+                            <img
+                                class="sun_svg"
+                                :src="'../../images/svg/roof.svg'"
+                                alt="Overhang"
+                                title="Overhang"
+                            />
+                            <input
+                                type="checkbox"
+                                v-model="data.roof"
+                                name="beforenoon"
+                                value="1"
+                                class="largerCheckbox"
+                            />
+                        </div>
+                    </div>
+                </div>
+
+                <hr />
+
+                <div class="form-group clearfix row">
+                    <label class="col-md-2 control-label"> Kids: </label>
+                    <div class="col-md-10 row">
+                        <div class="col-md-6">
+                            <label for="vehicle1"> for_family</label><br />
+                            <img
+                                class="sun_svg"
+                                :src="'../../images/svg/for family.svg'"
+                                alt="Slabby"
+                                title="Slabby"
+                            />
+                            <input
+                                type="checkbox"
+                                v-model="data.for_family"
+                                name="no_sun"
+                                value="1"
+                                class="largerCheckbox"
+                            />
+                        </div>
+                        <div class="col-md-6">
+                            <label for="vehicle1"> for_kids</label><br />
+                            <img
+                                class="sun_svg"
+                                :src="'../../images/svg/for kids.svg'"
+                                alt="Vertical"
+                                title="Vertical"
+                            />
+                            <input
+                                type="checkbox"
+                                v-model="data.for_kids"
+                                name="afternoon"
+                                value="1"
+                                class="largerCheckbox"
+                            />
+                        </div>
+                        
+                        
+                    </div>
+                </div>
+
+                <hr />
+            </form>
+                            
+            <div class="col-md-12">
+                <div class="row">
+                    Olredy added
+                </div>
             </div>
-            <div class="form-groupe">
-              <button @click="get_sector_image" class="btn main-btn pull-right" v-if="!image_is_refresh">Refresh ({{image_reset_id}})</button>
-              <span class="badge badge-primare mb-1 pull-right" v-if="image_is_refresh">Updating...</span>
+
+            <div class="col-md-12">
+                <div class="row">
+                    <div class="col-md-12">
+                        <table class="table table-hover" id="dev-table">
+                            <thead>
+                                <tr>
+                                    <th>Image</th>
+                                    <th>Delite</th>
+                                </tr>
+                            </thead>
+
+                            <tbody>
+                                <tr v-for="sector_old_image in sector_old_images" :key="sector_old_image.id">
+                                    <td>
+                                        <img class="img-responsive" :src="'../../../../images/sector_img/'+sector_old_image.image" :alt="sector_old_image.image">
+                                    </td>
+                                    <td>
+                                        <button class="btn btn-danger" @click="del_sector_image_from_db(sector_old_image.id)">Delete</button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
             </div>
-          </div>
-          <div class="row">
-            <button class="btn btn-secondary pull-left" @click="save_sector_images_sequence()">Save sector images sequence</button>
-          </div>
-        </div>
 
-    </div>
-
-    <div class="container">
-        <!-- <div class="row">
-            <div class="col-md-3" v-for="image in images" :key="image.id">
-              <div class="row">
+            <div class="row">
                 <div class="col-md-12">
-                  <img :alt="'sector image - (' + image.image + ')'" class="sector_img" :src="'/public/images/sector_img/' + image.image">
+                    <div class="form-groupe">
+                        <button class="btn btn-primary float-left" @click="add_sector_new_image_value()">Add new sector image</button>
+                    </div>
                 </div>
-              </div>
-              <div class="row">
-                <div class="col-md-6">
-                  <button class="btn btn-secondary pull-left" @click="edit_image()">Edit</button>
-                </div>
-                <div class="col-md-6">
-                  <button class="btn btn-danger pull-right" @click="del_sector_image(image.id)">Del</button>
-                </div>
-              </div>
             </div>
-        </div> -->
 
-        <div class="root">
-          <SlickList lockAxis="y" v-model="images" tag="table" style="width: 100%">
-              <tr>
-                  <td>ID</td>
-                  <td>Number</td>
-                  <td>Image</td>
-                  <td>Delete</td>
-              </tr>
-              <SlickItem v-for="(image, index) in images" :index='index' :key="index" tag="tr">
-                  <td>{{ image.id }}</td>
-                  <td v-if="image.num == NULL">0</td>
-                  <td v-else>{{ image.num }}</td>
-                  <td><img :alt="'sector image - (' + image.image + ')'" class="sector_image_in_table" :src="'/public/images/sector_img/' + image.image"></td>
-                  <td><button class="btn btn-danger" @click="del_sector_image(image.id)">Del</button></td>
-              </SlickItem>
-          </SlickList>
+            <div class="container">
+                <div class="root">
+                    <table
+                        tag="table"
+                        :style="'width: 100%'"
+                    >
+                        <thead>
+                            <tr>
+                                <td>Image</td>
+                                <td>Delete</td>
+                            </tr>
+                        </thead>
+                        <tbody
+                            v-for="(image, index) in sector_new_images"
+                            :index="index"
+                            :key="index"
+                            tag="tr"
+                        >
+                            <td>
+                                <form ref="myForm">
+                                    <input type="file" name="image" id="image" v-on:change="onFileChange($event, image.id)">
+                                </form> 
+                            </td>
+                            <td>
+                                <button
+                                    class="btn btn-danger"
+                                    @click="del_sector_image(image.id)"
+                                >
+                                    Del
+                                </button>
+                            </td>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <div class="row justify-content-center" v-if="is_geting_data_isset">
+            <div class="col-md-4">
+                <img :src="'../../../../../../public/images/site_img/loading.gif'" alt="loading">
+            </div>
         </div>
     </div>
-  </div>
 </template>
 <script>
-  import Uploader from "vux-uploader-component";
-  import { SlickList, SlickItem } from 'vue-slicksort';
+import Uploader from "vux-uploader-component";
+import { SlickList, SlickItem } from "vue-slicksort"; //https://www.npmjs.com/package/vue-slicksort/v/2.0.0-alpha.2
 
-  export default {
+export default {
     components: {
-      Uploader,
-      // StackModal,
-      SlickItem,
-      SlickList,
+        Uploader,
+        SlickItem,
+        SlickList,
     },
-    props:[
-        'editing_sector_id'
-    ],
     data() {
-      return {
-        fileList: [], //https://github.com/eJayYoung/vux-uploader-component
-        regions: '',
+        return {
+            fileList: [], //https://github.com/eJayYoung/vux-uploader-component
+            regions: "",
 
-        errors: [],
+            is_geting_data_isset: true,
 
-        myModal: false,
+            editorConfig: {},
 
-        name: '',
-        article_id: '',
-        text: '',
+            errors: [],
+            // image_errors: [],
 
-        all_day_in_shade: '',
-        all_day_in_sun: '',
-        in_the_shade_afternoon: '',
-        in_the_shade_befornoon: '',
-        in_shade_after_10: '',
-        in_shade_after_15: '',
+            data: {
+                published: 0,
+                name: "",
+                image: "",
+                success: "",
 
-        slabby: '',
-        vertical: '',
-        overhang: '',
+                article_id: "",
+                name: "",
+                text: "",
 
-        images: [],
-        index: [],
+                all_day_in_shade: null,
+                all_day_in_sun: null,
+                in_the_shade_afternoon: null,
+                in_the_shade_befornoon: null,
+                in_shade_after_10: null,
+                in_shade_after_15: null,
 
-        image_is_refresh: false,
-        image_reset_id: 0,
-      };
+                slabby: null,
+                vertical: null,
+                overhang: null,
+                roof: null,
+
+                for_family: null,
+                for_kids: null,
+                wolking_time: null,
+            },
+
+            // temporary_sector_id: 0,
+
+            // image_is_refresh: false,
+            // image_reset_id: 0,
+
+            // sector_new_images: ['Item 1', 'Item 2', 'Item 3', 'Item 4', 'Item 5', 'Item 6', 'Item 7', 'Item 10'],
+            sector_new_images: [],
+            sector_old_images: [],
+        };
     },
     mounted() {
-      this.get_region_data()
-      this.get_sector_data()
-      this.get_sector_image()
+        this.get_region_data();
+        this.get_editing_sector_data();
     },
+    // beforeRouteLeave (to, from, next) {
+    //     this.go_back()
+    // },
     methods: {
-      showModal(){
-          this.myModal = !this.myModal
-      },
-      
-      get_region_data: function(){
-        axios
-        .get("/routes_and_sectors/get_region_data/")
-        .then(response => {
-          this.regions = response.data
-        })
-        .catch(
-          error => console.log(error)
-        );
-      },
-      get_sector_data: function(){
-        axios
-        .get("/routes_and_sectors/get_sector_editing_data/" + this.editing_sector_id)
-        .then(response => {
-            this.editing_data = response.data
+        add_sector_new_image_value(){
+            var new_item_id = this.sector_new_images.length+1
+            this.sector_new_images.push(
+                {
+                    id: new_item_id,
+                    image: '',
+                }
+            );
+        },
+        onFileChange(event, item_id){
+            let image = event.target.files[0]
+            let id = item_id - 1 
+            this.sector_new_images[id]['image'] = image
+        },
+        del_sector_image(id){
+            this.removeObjectWithId(this.sector_new_images, id);
+        },
+        removeObjectWithId(arr, id) {
+            const objWithIdIndex = arr.findIndex((obj) => obj.id === id);
+            arr.splice(objWithIdIndex, 1);
 
-            // send data in editing form value
-            this.name = this.editing_data.sector['name']
-            this.article_id = this.editing_data.sector['article_id']
-            this.text = this.editing_data.sector['text']
+            return arr;
+        },
 
-            this.all_day_in_shade = this.editing_data.sector['all_day_in_shade']
-            this.all_day_in_sun = this.editing_data.sector['all_day_in_sun']
-            this.in_the_shade_afternoon = this.editing_data.sector['in_the_shade_afternoon']
-            this.in_the_shade_befornoon = this.editing_data.sector['in_the_shade_befornoon']
-            this.in_shade_after_10 = this.editing_data.sector['in_shade_after_10']
-            this.in_shade_after_15 = this.editing_data.sector['in_shade_after_15']
-
-            this.slabby = this.editing_data.sector['slabby']
-            this.vertical = this.editing_data.sector['vertical']
-            this.overhang = this.editing_data.sector['overhang']
-        })
-        .catch(
-          error => console.log(error)
-        );
-      },
-      get_sector_image: function () {
-        this.table_1_is_refresh = true
-        axios
-        .get("../../routes_and_sectors/get_sector_image/" + this.editing_sector_id)
-        .then(response => {
-          this.sector_images = response.data
-          this.images = this.sector_images.sector_images
-
-          this.image_is_refresh = false
-          this.image_reset_id++
-        })
-        .catch(
-          error => console.log(error)
-        );
-      },
-
-      edit_sector: function () {
-        axios
-        .post('/routes_and_sectors/sector_edit/' + this.editing_sector_id, {
-            article_id: this.article_id,
-            name: this.name,
-            text: this.text,
-            all_day_in_shade: this.all_day_in_shade,
-            all_day_in_sun: this.all_day_in_sun,
-            in_the_shade_afternoon: this.in_the_shade_afternoon,
-            in_the_shade_befornoon: this.in_the_shade_befornoon,
-            in_shade_after_10: this.in_shade_after_10,
-            in_shade_after_15: this.in_shade_after_15,
-            slabby: this.slabby,
-            vertical: this.vertical,
-            overhang: this.overhang,
-        })
-        .then(function (response) {
-            window.location.href = '/routes_and_sectors';
-        })
-        .catch(error =>{
-            if (error.response.status == 422) {
-              this.errors = error.response.data.errors
+        del_sector_image_from_db(image_id) {
+            if(confirm('Are you sure, you want delite this image?')){
+                axios
+                .delete("../../../api/sector/del_sector_image_from_db/"+image_id)
+                .then(response => {
+                    this.get_sector_images()
+                })
+                .catch(
+                    error => console.log(error)
+                );
             }
-        })
-      },
+        },
 
-      add_sector_image: function (e) {
-        var myFormData = new FormData(this.$refs.myForm)
-        axios({
-            method: 'post',
-            url: '/routes_and_sectors/upload_sector_image/' + this.editing_sector_id,
-            data: myFormData,
-            config: { 
-                headers: {'Content-Type': 'multipart/form-data' },
-            },
-        })
-        .then((response)=>  {
-            // this.is_image_succes = 1;
-            // alert(response.data.message);
-        });
-        this.showModal()
-        e.preventDefault();
+        get_region_data: function () {
+            axios
+                .get('../../api/articles/outdoor/us')
+                .then(response => {
+                    this.regions = response.data
+                })
+                .catch(error =>{
+                })
+                // .finally(() => this.oudoor_loading = false)
+        },
 
-      },
-      del_sector_image(imageId) {
-          axios
-          .post("../../routes_and_sectors/delete_sector_image/" + imageId, {
-              id: imageId,
-          })
-          .then(Response => {
-              console.log(response)
-              this.get_data_in_table_1()
-          })
-          .catch(error => console.log(error))
-      },
+        get_editing_sector_data: function(){
+            axios
+            .get("../../api/sector/get_sector_editing_data/"+this.$route.params.id)
+            .then(response => {
+                this.data = response.data.sector
+                this.get_sector_images()
+                // this.sector_old_images = response.data.images
+            })
+            .catch(
+            error => console.log(error)
+            )
+            .finally(() => this.is_geting_data_isset = false);
+        },
 
-      save_sector_images_sequence() {
-        axios
-        .post('/routes_and_sectors/save_sector_images_sequence/', {
-            sector_images_sequence: this.images,
-        })
-        .then(function (response) {
-        })
-        .catch(error =>{
-            if (error.response.status == 422) {
-              alert(error.response.data.errors)
+        get_sector_images: function(){
+            axios
+            .get("../../api/sector/get_sector_images/"+this.$route.params.id)
+            .then(response => {
+                this.sector_old_images = response.data
+            })
+            .catch(
+            error => console.log(error)
+            );
+        },
+
+        edit_sector: function () {
+            let formData = new FormData();
+
+            var loop_num = 0
+            this.sector_new_images.forEach(image => {
+                formData.append('sector_new_images['+loop_num+']', image.image)
+                loop_num++
+            });
+            loop_num = 0
+
+            formData.append('data', JSON.stringify(this.data))
+
+            axios
+            .post("../../api/sector/edit_sector/"+this.$route.params.id, formData)
+            .then(response => {
+                this.go_back(true)
+            })
+            .catch((error) => {
+                console.log(error);
+                // if (error.response.status == 422) {
+                //     this.errors = error.response.data.errors;
+                // }
+            });
+        },
+
+        go_back(back_action = false) {
+            if(back_action == false){
+                if(confirm('Are you sure, you want go back?')){
+                    // this.$router.go(-1)
+                    this.$router.push({ name: 'routeAndSectorList' })
+                }
             }
-        })
-      },
-      save_all: function () {
-        this.save_sector_images_sequence()
-        this.edit_sector()
-      }
-    }
-  };
+            else{
+                // this.$router.go(-1)
+                this.$router.push({ name: 'routeAndSectorList' })
+            }
+        },
+    },
+}
 </script>
-
 <style scoped>
 .sector_img{
   border-radius: 5%;

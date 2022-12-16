@@ -208,6 +208,13 @@ class ServicesController extends Controller
 
         return $data;
     }
+    
+    public function get_service_images(Request $request)
+    {
+        $service = Service::where('id', '=', $request->service_id)->first();
+        
+        return $service->service_images;
+    }
 
     public function edit_service(Request $request)
     {

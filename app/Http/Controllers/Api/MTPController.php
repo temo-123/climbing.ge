@@ -10,6 +10,8 @@ use App\Models\Route;
 use App\Models\Mtp;
 use App\Models\Mtp_pitch;
 
+use Validator;
+
 class MTPController extends Controller
 {
     /**
@@ -65,21 +67,32 @@ class MTPController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function mtp_add(Request $request)
     {
-        $request->user()->authorizeRoles(['manager', 'admin']);
+        // dd($request->data);
+        $mtp_validate = $this->mtp_validate($request->data);
+        if ($mtp_validate != null) { 
+            return response()->json([
+                $mtp_validate
+            ], 422);
+        }
+        else{
+            if ($request -> isMethod('post')) {
 
-        if ($request -> isMethod('post')) {
-            $this->mtp_validate($request); 
+                $new_mtp = new Mtp();
 
-            $mtp = mtp::find($request->id);
+                $sector_mtp_pitch_count = Mtp::where('sector_id',strip_tags($request->sector_id))->count();
+                $new_mtp = $sector_mtp_pitch_count+1;
 
-            $mtp->sector_id = $request->sector_id;
-            $mtp->name = $request->name;
-            $mtp->text = $request->text;
-            $mtp->height = $request->height;
-            
-            $mtp->update();
+                $new_mtp->sector_id = $request->data['sector_id'];
+                $new_mtp->name = $request->data['name'];
+                $new_mtp->text = $request->data['text'];
+                $new_mtp->height = $request->data['height'];
+                $new_mtp->first_ascent = $request->data['first_ascent'];
+                $new_mtp->author = $request->data['author'];
+                
+                $new_mtp->save();
+            }
         }
     }
 
@@ -90,34 +103,35 @@ class MTPController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function mtp_edit(Request $request, $id)
     {
-        $request->user()->authorizeRoles(['manager', 'admin']);
-        
-        if ($request -> isMethod('post')) {
-            $this->mtp_validate($request); 
-            
-            $article = new Mtp();
-
-            $sector_mtp_count = Mtp::where('sector_id',strip_tags($request->sector_id))->count();
-            $new_mtp_num = $sector_mtp_count+1;
-
-            $article['sector_id']=$request->sector_id;
-            $article['num']=$new_mtp_num;
-            $article['name']=$request->name;
-            $article['text']=$request->text; 
-            $article['height']=$request->height;
-
-            $article -> save();
+        $mtp_validate = $this->mtp_validate($request->data);
+        if ($mtp_validate != null) { 
+            return response()->json([
+                $mtp_validate
+            ], 422);
         }
-    	if (view() -> exists('user.components.forms.routes_and_sectors.mtp.mtp_add')) {
-    	    $data=[
-    			'title' => 'New multy-pitch',
-    		];
-    		
-    		return view('user.components.forms.routes_and_sectors.mtp.mtp_add', $data);
-    	}
+        else{
+            if ($request -> isMethod('post')) {
+                $edit_mtp = Mtp::where('id',strip_tags($request->mtp_id))->first();
+
+                $edit_mtp->sector_id = $request->data['sector_id'];
+                $edit_mtp->name = $request->data['name'];
+                $edit_mtp->text = $request->data['text'];
+                $edit_mtp->height = $request->data['height'];
+                $edit_mtp->first_ascent = $request->data['first_ascent'];
+                $edit_mtp->author = $request->data['author'];
+                
+                $edit_mtp->save();
+            }
+        }
     }
+
+    public function get_editing_mtp(Request $request, $id)
+    {
+        return Mtp::where('id',strip_tags($request->mtp_id))->first();
+    }
+    
 
     /**
      * Remove the specified resource from storage.
@@ -125,9 +139,9 @@ class MTPController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function del_mtp(Request $request)
     {
-        $mtp = Mtp::where('id',strip_tags($id))->first();
+        $mtp = Mtp::where('id',strip_tags($request->mtp_id))->first();
         $mtp_pitch_count = Mtp_pitch::where('mtp_id',strip_tags($mtp->id))->count();
         if ($mtp_pitch_count > 0) {
             $mtp_pitch = Mtp_pitch::where('mtp_id',strip_tags($mtp->id))->get();
@@ -147,9 +161,12 @@ class MTPController extends Controller
     }
     public function mtp_validate($request)
     {
-        $request->validate([
-            'name' => 'required|max:190',
+        $validator = Validator::make($request, [
+            'name' => 'required',
             'sector_id' => 'required',
         ]);
+        if ($validator->fails()) {
+            return $validator->messages();
+        }
     }
 }

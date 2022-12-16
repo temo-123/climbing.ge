@@ -69,29 +69,36 @@ class RouteController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit_route(Request $request)
     {
-        $request->user()->authorizeRoles(['manager', 'admin']);
+        $route_validate = $this->route_validate($request->data);
+        if ($route_validate != null) { 
+            return response()->json([
+                $route_validate
+            ], 422);
+        }
+        else{
+        // $request->user()->authorizeRoles(['manager', 'admin']);
+// dd($request->data);
+        // if ($request -> isMethod('post')) {
+            // $this->route_validate($request);
 
-        if ($request -> isMethod('post')) {
-            $this->route_validate($request);
+            $route = route::where('id', '=', $request->route_id)->first();
 
-            $route = route::find($request->id);
+            // $category = $this->get_route_category($request);
 
-            $category = $this->get_route_category($request);
-
-            $route->category = $category;
-            $route->sector_id = $request->sector_id;
-            $route->grade = $request->grade;
-            $route->or_grade = $request->or_grade; 
-            $route->name = $request->name;
-            $route->text = $request->text; 
-            $route->last_carabin = $request->last_carabin;
-            $route->height = $request->height;
-            $route->bolts = $request->bolts;
-            $route->bolter = $request->bolter;
-            $route->bolting_data = $request->bolting_data;
-            $route->first_ascent = $request->first_ascent;
+            $route->category = $request->data['category'];
+            $route->sector_id = $request->data['sector_id'];
+            $route->grade = $request->data['grade'];
+            $route->or_grade = $request->data['or_grade'];
+            $route->name = $request->data['name'];
+            $route->text = $request->data['text'] ;
+            $route->anchor_type = $request->data["anchor_type"];
+            $route->height = $request->data['height'];
+            $route->bolts = $request->data['bolts'];
+            $route->author = $request->data["author"];
+            $route->creation_data = $request->data["creation_data"];
+            $route->first_ascent = $request->data["first_ascent"];
             
             $route->update();
         }
@@ -127,15 +134,14 @@ class RouteController extends Controller
         // dd($request->validate);
         // $request->user()->authorizeRoles(['manager', 'admin']);
 
-        if ($request -> isMethod('post')) {
-            
-            $validate = $this->route_validate($request);
-
-            // dd($validate);
-
-            if ($validate != null) {
-                return($validate);
-            }
+        
+        $route_validate = $this->route_validate($request->data);
+        if ($route_validate != null) { 
+            return response()->json([
+                $route_validate
+            ], 422);
+        }
+        else{
             
             $sector_route_count = Route::where('sector_id',strip_tags($request->data['sector_id']))->count();
             if($sector_route_count == 0){
@@ -149,7 +155,7 @@ class RouteController extends Controller
             $route['num']=$new_route_num;
 
             // $category = $this->get_route_category($request);
-            $route['category']=$request->data["route_type"];
+            $route['category']=$request->data["category"];
 
             $route['sector_id']=$request->data["sector_id"];
 
@@ -500,12 +506,7 @@ class RouteController extends Controller
 
     public function get_route_editing_data(Request $request)
     {
-        $route = Route::where('id',strip_tags($request->id))->first();
-        return(
-            $data = [
-                "route" => $route,
-            ]
-        );
+        return Route::where('id',strip_tags($request->route_id))->first();
     }
 
 
@@ -532,10 +533,10 @@ class RouteController extends Controller
 
     private function route_validate($request)
     {
-        $validator = Validator::make($request->all(), [
-            'data.name' => 'required|max:190',
-            'data.grade' => 'required',
-            'data.sector_id' => 'required',
+        $validator = Validator::make($request, [
+            'name' => 'required|max:190',
+            'grade' => 'required',
+            'sector_id' => 'required',
         ]);
         
         if ($validator->fails()) {

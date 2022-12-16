@@ -55,7 +55,6 @@
                                         });
 
                     this.get_routes()
-                    this.get_mtp()
                 })
                 .catch(
                     error => console.log(error)
@@ -73,6 +72,7 @@
                                             'table_del_url': 'del_url', 
                                             'table_edit_url': 'edit_url'
                                         });
+                    this.get_mtp()
                 })
                 .catch(
                     error => console.log(error)
@@ -80,7 +80,7 @@
             },
             get_mtp(){
                 axios
-                .get("../api/MTP/")
+                .get("../api/mtp/")
                 .then(response => {
                     this.data_for_tab.push({'id': 3,
                                             'data': response.data, 
@@ -98,7 +98,7 @@
             },
             get_mtp_pitch(){
                 axios
-                .get("../api/MTPPitch/")
+                .get("../api/mtp/mtp_pitch/")
                 .then(response => {
                     this.data_for_tab.push({'id': 4,
                                             'data': response.data, 

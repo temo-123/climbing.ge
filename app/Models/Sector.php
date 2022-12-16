@@ -26,25 +26,25 @@ class Sector extends Model
         "article_id",
     ];
 
-    public function sector_routes()
+    public function routes()
     {
         return $this->hasMany(Route::class);
     }
 
-    public function sector_images()
+    public function images()
     {
         return $this->hasMany(Sector_image::class);
     }
 
-    public function sector_mtps()
+    public function mtps()
     {
         return $this->hasMany(Mtp::class);
     }
 
-	public function sector_rocks_images()
-	{
-		return $this->hasOhe(Spot_rocks_image_sector::class, 'sector_id');
-	}
+	// public function sector_rocks_images()
+	// {
+	// 	return $this->hasOhe(Spot_rocks_image_sector::class, 'sector_id');
+	// }
 
 	public function sector_local_image()
 	{

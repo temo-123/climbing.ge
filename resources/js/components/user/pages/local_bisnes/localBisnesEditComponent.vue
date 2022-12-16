@@ -339,7 +339,7 @@ export default {
                 axios
                 .delete("../../../api/bisnes/del_local_bisnes_image/"+image_id)
                 .then(response => {
-                    this.get_editing_bisnes_data()
+                    this.get_bisnes_images()
                 })
                 .catch(
                     error => console.log(error)
@@ -362,12 +362,22 @@ export default {
                     ka_data: response.data.ka_bisnes,
                 }
 
+                // this.bisnes_old_images = response.data.bisnes_images
+            })
+            .catch(
+                error => console.log(error)
+            );
+        },
+
+        get_bisnes_images(){
+            axios
+            .get("../../api/bisnes/get_bisnes_images/"+this.$route.params.id)
+            .then(response => {
                 this.bisnes_old_images = response.data.bisnes_images
             })
             .catch(
                 error => console.log(error)
             );
-
         },
 
         del_bisnes_image(id){

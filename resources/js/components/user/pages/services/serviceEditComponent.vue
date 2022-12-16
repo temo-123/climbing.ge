@@ -343,6 +343,8 @@ export default {
 
                 this.service_old_images = response.data.service_images
 
+                this.get_service_images()
+
                 // if(this.data.global_data.published_data != null){
                 //     this.the_date = this.data.global_data.published_data
                 // }
@@ -350,14 +352,24 @@ export default {
             .catch(
                 error => console.log(error)
             );
-
+        },
+        get_service_images(){
+            this.data_for_tab = []
+            axios
+            .get("../../api/service/get_service_images/"+this.$route.params.id)
+            .then(response => {
+                this.service_old_images = response.data
+            })
+            .catch(
+                error => console.log(error)
+            );
         },
         del_service_image_from_db(image_id){
             if(confirm('Are you sure, you want delite this image?')){
                 axios
                 .delete("../../../api/service/del_service_image/"+image_id)
                 .then(response => {
-                    this.get_editing_service_data()
+                    this.get_service_images()
                 })
                 .catch(
                     error => console.log(error)

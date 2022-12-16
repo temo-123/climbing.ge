@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
+use Validator;
 
 use App\Models\Sector;
 use App\Models\Route;
@@ -55,29 +56,61 @@ class MTPPitchController extends Controller
         //
     }
 
+
+    public function pitch_sequence(Request $request)
+    {
+        if($request->pitch_sequence){
+            $pitch_num = 0;
+            foreach ($request->pitch_sequence as $pitch) {
+                $pitch_id = $pitch['id'];
+                $pitch = Mtp_pitch::where('id',strip_tags($pitch_id))->first();
+                $pitch_num++;
+                $pitch['num'] = $pitch_num;
+                $pitch->update();
+            }
+        }
+    }
+
+    public function get_mtp_pitchs_for_model(Request $request)
+    {
+        return Mtp_pitch::where('mtp_id',strip_tags($request->mtp_id))->orderBy('num')->get();
+        // return( $mtp_pitchs );
+    }
+
     /**
      * Show the form for editing the specified resource.
      *
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function mtp_pitch_edit(Request $request)
     {
-        $this->mtp_pitch_validate($request);
+        $pitch_validate = $this->pitch_validate($request->data);
+        if ($pitch_validate != null) { 
+            return response()->json([
+                $pitch_validate
+            ], 422);
+        }
+        else{
+            if ($request -> isMethod('post')) {
+                $article = Mtp_pitch::where('id',strip_tags($request->pitch_id))->first();
 
-        $mtp_pitch = Mtp_pitch::find($request->id);
+                $article['mtp_id']=$request->data['mtp_id'];
+                $article['category']=$request->data['category'];
+                $article['grade']=$request->data['grade'];
+                $article['or_grade']=$request->data['or_grade'] ;
+                $article['name']=$request->data['name'];
+                $article['text']=$request->data['text'];
+                $article['height']=$request->data['height'];
+                $article['bolts']=$request->data['bolts'];
 
-        $mtp_pitch->mtp_id = $request->mtp_id;
-        $mtp_pitch->grade = $request->grade;
-        $mtp_pitch->or_grade = $request->or_grade; 
-        $mtp_pitch->name = $request->name;
-        $mtp_pitch->text = $request->text; 
-        $mtp_pitch->height = $request->height;
-        $mtp_pitch->bolts = $request->bolts;
-        $mtp_pitch->bolter = $request->bolter;
-        $mtp_pitch->first_ascent = $request->first_ascent;
-        
-        $mtp_pitch->update();
+                $article['author'] = $request->data["author"];
+                $article['creation_data'] = $request->data["creation_data"];
+                $article['first_ascent'] = $request->data["first_ascent"];
+
+                $article -> save();
+            }
+        }
     }
 
     /**
@@ -87,40 +120,43 @@ class MTPPitchController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function mtp_pitch_add(Request $request)
     {
-        $request->user()->authorizeRoles(['manager', 'admin']);
-        
-        if ($request -> isMethod('post')) {
-            $this->mtp_pitch_validate($request);
-            
-            $article = new mtp_pitch();
-
-            $sector_mtp_pitch_count = Mtp_pitch::where('mtp_id',strip_tags($request->mtp_id))->count();
-            $new_pitch_num = $sector_mtp_pitch_count+1;
-
-            $article['mtp_id']=$request->mtp_id;
-            $article['num']=$new_pitch_num;
-            $article['grade']=$request->grade;
-            $article['or_grade']=$request->or_grade; 
-            $article['name']=$request->name;
-            $article['text']=$request->text;
-            $article['height']=$request->height;
-            $article['bolts']=$request->bolts;
-            $article['bolter']=$request->bolter;
-            $article['first_ascent']=$request->first_ascent;
-
-            $article -> save();
+        $pitch_validate = $this->pitch_validate($request->data);
+        if ($pitch_validate != null) { 
+            return response()->json([
+                $pitch_validate
+            ], 422);
         }
-    	if (view() -> exists('user.components.forms.routes_and_sectors.mtp_pitch.mtp_pitch_add')) {
+        else{
+            if ($request -> isMethod('post')) {
+                $new_pitch = new mtp_pitch();
 
-            $data=[
-    			'title' => 'New route',
-            ];
-            
-    		return view('user.components.forms.routes_and_sectors.mtp_pitch.mtp_pitch_add', $data);
-    	}
-    	abort(404);
+                $sector_mtp_pitch_count = Mtp_pitch::where('mtp_id',strip_tags($request->data['mtp_id']))->count();
+                if($sector_mtp_pitch_count == 0){
+                    $new_pitch_num = 1;
+                }
+                else{
+                    $new_pitch_num = $sector_mtp_pitch_count+1;
+                }
+
+                $new_pitch['mtp_id']=$request->data['mtp_id'];
+                $new_pitch['num']=$new_pitch_num;
+                $new_pitch['category']=$request->data['category'];
+                $new_pitch['grade']=$request->data['grade'];
+                $new_pitch['or_grade']=$request->data['or_grade'] ;
+                $new_pitch['name']=$request->data['name'];
+                $new_pitch['text']=$request->data['text'];
+                $new_pitch['height']=$request->data['height'];
+                $new_pitch['bolts']=$request->data['bolts'];
+
+                $new_pitch['author'] = $request->data["author"];
+                $new_pitch['creation_data'] = $request->data["creation_data"];
+                $new_pitch['first_ascent'] = $request->data["first_ascent"];
+
+                $new_pitch -> save();
+            }
+        }
     }
 
     /**
@@ -129,20 +165,17 @@ class MTPPitchController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function del_pitch(Request $request)
     {
-        $sector = Mtp_pitch::where('id',strip_tags($id))->first();
+        $sector = Mtp_pitch::where('id',strip_tags($request->pitch_id))->first();
         $sector ->delete();
     }
 
-    public function get_mtp_pitch_editing_data(Request $request)
+
+
+    public function get_editin_pitch(Request $request)
     {
-        $mtp_pitch = Mtp_pitch::where('id',strip_tags($request->id))->first();
-        return(
-            $data = [
-                "mtp_pitch" => $mtp_pitch,
-            ]
-        );
+        return Mtp_pitch::where('id',strip_tags($request->pitch_id))->first();
     }
 
 
@@ -163,12 +196,16 @@ class MTPPitchController extends Controller
             $pitch->update();
         }
     }
-    public function mtp_pitch_validate($request)
+    public function pitch_validate($request)
     {
-        $request->validate([
+        $validator = Validator::make($request, [
             'name' => 'required|max:190',
             'grade' => 'required',
             'mtp_id' => 'required',
         ]);
+        
+        if ($validator->fails()) {
+            return response()->json($validator->errors(), 422);
+        }
     }
 }

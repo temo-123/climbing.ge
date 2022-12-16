@@ -16,61 +16,42 @@
                 <button
                     type="submit"
                     class="btn btn-primary"
-                    v-on:click="save_all()"
+                    form="sector_adding_form"
                 >
                     Save
                 </button>
             </div>
         </div>
-        <!-- <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal">Open Modal</button> -->
-        <!-- Modal -->
-        <div class="modal fade" id="myModal" role="dialog">
-            <div class="modal-dialog">
-                <!-- Modal content-->
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <button
-                            type="button"
-                            class="close"
-                            data-dismiss="modal"
-                        >
-                            &times;
-                        </button>
-                        <h4 class="modal-title">Modal Header</h4>
-                    </div>
-                    <div class="modal-body">
-                        <p>Some text in the modal.</p>
-                    </div>
-                    <div class="modal-footer">
-                        <button
-                            type="button"
-                            class="btn btn-default"
-                            data-dismiss="modal"
-                        >
-                            Close
-                        </button>
-                    </div>
-                </div>
-            </div>
-        </div>
         <form
-            @submit.prevent="add_sector"
-            id="js_form"
+            @submit.prevent="save()"
+            id="sector_adding_form"
             class="contact-form"
             method="POST"
             enctype="multipart/form-data"
         >
+
+            <div class="form-group clearfix row">
+                <label for="published" class='col-md-2 control-label '> Publish </label>
+                <div class="col-md-10">
+                    <select class="form-control" v-model="data.published" name="published" required> 
+                        <option :value="0">Not public</option> 
+                        <option :value="1">Public</option> 
+                    </select> 
+                </div>
+            </div>
+
             <div class="form-group clearfix row">
                 <label for="name" class="col-md-2 control-label">
                     Sector name
                 </label>
-                <div class="col-md-8">
+                <div class="col-md-10">
                     <input
                         type="text"
                         v-model="data.name"
                         name="name"
                         placeholder="Name"
                         class="form-control textarea"
+                        required
                     />
                     <div
                         class="alert alert-danger"
@@ -84,18 +65,25 @@
 
             <div class="form-group clearfix row">
                 <label class="col-md-2 control-label"> Region </label>
-                <div class="col-md-8">
+                <div class="col-md-10">
                     <select
                         class="form-control"
                         name="article_id"
                         v-model="data.article_id"
+                        required
                     >
+                        <option
+                            v-bind:value="''"
+                            disabled
+                        >
+                            Select outdoor area
+                        </option>
                         <option
                             v-for="region in regions"
                             :key="region"
-                            v-bind:value="region.id"
+                            v-bind:value="region.area.id"
                         >
-                            {{ region.url_title }}
+                            {{ region.area.url_title }}
                         </option>
                     </select>
                     <div
@@ -110,7 +98,7 @@
 
             <div class="form-group clearfix row">
                 <label class="col-md-2 control-label"> Text </label>
-                <div class="col-md-8">
+                <div class="col-md-10">
                     <ckeditor v-model="data.text" :config="editorConfig"></ckeditor>
                 </div>
             </div>
@@ -118,8 +106,32 @@
             <hr />
 
             <div class="form-group clearfix row">
+                <label for="name" class="col-md-2 control-label">
+                    wolking_time
+                </label>
+                <div class="col-md-10">
+                    <input
+                        type="text"
+                        v-model="data.wolking_time"
+                        wolking_time="wolking_time"
+                        placeholder="Wolking time"
+                        class="form-control textarea"
+                    />
+                    <div
+                        class="alert alert-danger"
+                        role="alert"
+                        v-if="errors.wolking_time"
+                    >
+                        {{ errors.wolking_time[0] }}
+                    </div>
+                </div>
+            </div>
+
+            <hr />
+
+            <div class="form-group clearfix row">
                 <label class="col-md-2 control-label"> Shadow time: </label>
-                <div class="col-md-8">
+                <div class="col-md-10">
                     <div class="row">
                         <div class="col-md-4">
                             <label for="vehicle1" class="sector_checbox_title">
@@ -233,8 +245,8 @@
 
             <div class="form-group clearfix row">
                 <label class="col-md-2 control-label"> Sector relief: </label>
-                <div class="col-md-8 row">
-                    <div class="col-md-4">
+                <div class="col-md-10 row">
+                    <div class="col-md-3">
                         <label for="vehicle1"> slabby</label><br />
                         <img
                             class="sun_svg"
@@ -250,7 +262,7 @@
                             class="largerCheckbox"
                         />
                     </div>
-                    <div class="col-md-4">
+                    <div class="col-md-3">
                         <label for="vehicle1"> vertical</label><br />
                         <img
                             class="sun_svg"
@@ -266,7 +278,7 @@
                             class="largerCheckbox"
                         />
                     </div>
-                    <div class="col-md-4">
+                    <div class="col-md-3">
                         <label for="vehicle1"> overhang</label><br />
                         <img
                             class="sun_svg"
@@ -282,148 +294,100 @@
                             class="largerCheckbox"
                         />
                     </div>
+                    <div class="col-md-3">
+                        <label for="vehicle1"> roof</label><br />
+                        <img
+                            class="sun_svg"
+                            :src="'../../images/svg/roof.svg'"
+                            alt="Overhang"
+                            title="Overhang"
+                        />
+                        <input
+                            type="checkbox"
+                            v-model="data.roof"
+                            name="beforenoon"
+                            value="1"
+                            class="largerCheckbox"
+                        />
+                    </div>
+                </div>
+            </div>
+
+            <hr />
+
+            <div class="form-group clearfix row">
+                <label class="col-md-2 control-label"> Kids: </label>
+                <div class="col-md-10 row">
+                    <div class="col-md-6">
+                        <label for="vehicle1"> for_family</label><br />
+                        <img
+                            class="sun_svg"
+                            :src="'../../images/svg/for family.svg'"
+                            alt="Slabby"
+                            title="Slabby"
+                        />
+                        <input
+                            type="checkbox"
+                            v-model="data.for_family"
+                            name="no_sun"
+                            value="1"
+                            class="largerCheckbox"
+                        />
+                    </div>
+                    <div class="col-md-6">
+                        <label for="vehicle1"> for_kids</label><br />
+                        <img
+                            class="sun_svg"
+                            :src="'../../images/svg/for kids.svg'"
+                            alt="Vertical"
+                            title="Vertical"
+                        />
+                        <input
+                            type="checkbox"
+                            v-model="data.for_kids"
+                            name="afternoon"
+                            value="1"
+                            class="largerCheckbox"
+                        />
+                    </div>
+                    
+                    
                 </div>
             </div>
 
             <hr />
         </form>
-        <div class="container">
-            <div class="row">
-                <div
-                    class="alert alert-danger"
-                    role="alert"
-                    v-if="image_errors.image"
-                >
-                    {{ image_errors.image[0] }}
-                </div>
-                <div class="card" v-if="myModal">
-                    <div class="card-header">Add image</div>
-                    <div class="card-body">
-                        <div class="row">
-                            <div class="col-md-6">
-                                <div class="form-group clearfix">
-                                    <button
-                                        class="btn btn-primary"
-                                        @click="
-                                            add_sector_image(
-                                                temporary_sector_id
-                                            )
-                                        "
-                                    >
-                                        seve image
-                                    </button>
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <form
-                                    @submit="
-                                        add_sector_image(temporary_sector_id)
-                                    "
-                                    ref="myForm"
-                                >
-                                    <div class="form-group clearfix">
-                                        <input
-                                            type="file"
-                                            name="profile_pic"
-                                            id="profile_pic"
-                                        />
-                                    </div>
-                                </form>
-                            </div>
-                        </div>
-                    </div>
+        
+        <div class="row">
+            <div class="col-md-12">
+                <div class="form-groupe">
+                    <button class="btn btn-primary float-left" @click="add_sector_new_image_value()">Add new sector image</button>
                 </div>
             </div>
-
-            <!-- <div class="container">
-                <div class="row">
-                    <div class="form-groupe">
-                        <button
-                            class="btn btn-primary mb-4"
-                            @click="showModal()"
-                        >
-                            Add image
-                        </button>
-                    </div>
-                    <div class="form-groupe">
-                        <button
-                            @click="get_sector_image(temporary_sector_id)"
-                            class="btn main-btn pull-right"
-                            v-if="!image_is_refresh"
-                        >
-                            Refresh ({{ image_reset_id }})
-                        </button>
-                        <span
-                            class="badge badge-primare mb-1 pull-right"
-                            v-if="image_is_refresh"
-                            >Updating...</span
-                        >
-                    </div>
-                </div>
-                <div class="row">
-                    <button
-                        class="btn btn-secondary pull-left"
-                        @click="save_sector_images_sequence()"
-                    >
-                        Save sector images sequence
-                    </button>
-                </div>
-            </div> -->
         </div>
 
         <div class="container">
-            <!-- <div class="col-md-3">
-          <div class="row">
-            <div class="col-md-12">
-              <img alt="300x200" @click="showModal()" src="/public/images/site_img/image.png">
-            </div>
-          </div>
-        </div> -->
-            <!-- <div class="col-md-3" v-for="image in images" :key="image.id">
-          <div class="row">
-            <div class="col-md-12">
-              <img :alt="'sector image - (' + image.image + ')'" class="sector_img" :src="'/public/images/sector_img/' + image.image">
-            </div>
-          </div>
-          <div class="row">
-            <div class="col-md-6">
-              <button class="btn btn-secondary pull-left" @click="edit_image()">Edit</button>
-            </div>
-            <div class="col-md-6">
-              <button class="btn btn-danger pull-right" @click="del_sector_image(image.id)">Del</button>
-            </div>
-          </div>
-        </div> -->
             <div class="root">
-                <SlickList
-                    lockAxis="y"
-                    v-model="images"
+                <table
                     tag="table"
-                    style="width: 100%"
+                    :style="'width: 100%'"
                 >
-                    <tr>
-                        <td>ID</td>
-                        <td>Number</td>
-                        <td>Image</td>
-                        <td>Delete</td>
-                    </tr>
-                    <SlickItem
-                        v-for="(image, index) in images"
+                    <thead>
+                        <tr>
+                            <td>Image</td>
+                            <td>Delete</td>
+                        </tr>
+                    </thead>
+                    <tbody
+                        v-for="(image, index) in sector_images"
                         :index="index"
                         :key="index"
                         tag="tr"
                     >
-                        <td>{{ image.id }}</td>
-                        <td v-if="image.num == NULL">0</td>
-                        <td v-else>{{ image.num }}</td>
                         <td>
-                            <img
-                                :alt="'sector image - (' + image.image + ')'"
-                                class="sector_image_in_table"
-                                :src="
-                                    '/public/images/sector_img/' + image.image
-                                "
-                            />
+                            <form ref="myForm">
+                                <input type="file" name="image" id="image" v-on:change="onFileChange($event, image.id)">
+                            </form> 
                         </td>
                         <td>
                             <button
@@ -433,15 +397,15 @@
                                 Del
                             </button>
                         </td>
-                    </SlickItem>
-                </SlickList>
+                    </tbody>
+                </table>
             </div>
         </div>
     </div>
 </template>
 <script>
 import Uploader from "vux-uploader-component";
-import { SlickList, SlickItem } from "vue-slicksort";
+import { SlickList, SlickItem } from "vue-slicksort"; //https://www.npmjs.com/package/vue-slicksort/v/2.0.0-alpha.2
 
 export default {
     components: {
@@ -454,12 +418,15 @@ export default {
             fileList: [], //https://github.com/eJayYoung/vux-uploader-component
             regions: "",
 
-            myModal: false,
+            // myModal: false,
+
+            editorConfig: {},
 
             errors: [],
-            image_errors: [],
+            // image_errors: [],
 
             data: {
+                published: 0,
                 name: "",
                 image: "",
                 success: "",
@@ -468,134 +435,101 @@ export default {
                 name: "",
                 text: "",
 
-                all_day_in_shade: "",
-                all_day_in_sun: "",
-                in_the_shade_afternoon: "",
-                in_the_shade_befornoon: "",
-                in_shade_after_10: "",
-                in_shade_after_15: "",
+                all_day_in_shade: null,
+                all_day_in_sun: null,
+                in_the_shade_afternoon: null,
+                in_the_shade_befornoon: null,
+                in_shade_after_10: null,
+                in_shade_after_15: null,
 
-                slabby: "",
-                vertical: "",
-                overhang: "",
+                slabby: null,
+                vertical: null,
+                overhang: null,
+                roof: null,
+
+                for_family: null,
+                for_kids: null,
+                wolking_time: null,
             },
 
             // temporary_sector_id: 0,
 
-            image_is_refresh: false,
-            image_reset_id: 0,
+            // image_is_refresh: false,
+            // image_reset_id: 0,
+
+            // sector_images: ['Item 1', 'Item 2', 'Item 3', 'Item 4', 'Item 5', 'Item 6', 'Item 7', 'Item 10'],
+            sector_images: [],
         };
     },
     mounted() {
         this.get_region_data();
         // this.create_temporary_sector();
     },
-    beforeRouteLeave (to, from, next) {
-        if(this.is_back_action = true){
-            if (window.confirm('Added information will be deleted!!! Are you sure, you want go back?')) {
-                this.is_back_action = false;
-                next()
-            } else {
-                next(false)
-            }
-        }
-    },
+    // beforeRouteLeave (to, from, next) {
+    //     this.go_back()
+    // },
     methods: {
-        // create_temporary_sector() {
-        //     axios
-        //         .post("/routes_and_sectors/create_temporary_sector/", {
-        //             // ka_title: this.ka_title,
-        //         })
-        //         .then((response) => {
-        //             this.get_temporary_sector_data();
-        //             // console.log(response)
-        //             // this.is_ka_sector_succes = 1
-        //             // console.log('georgian sector upload successful');
-        //         })
-        //         .catch((error) => console.log(error));
-        // },
-        // del_temporary_sector(temporary_sector_id) {
-        //     axios
-        //         .post(
-        //             "../../api/routes_and_sectors/delete_temporary_sector/" +
-        //                 temporary_sector_id,
-        //             {
-        //                 // ka_title: this.ka_title,
-        //             }
-        //         )
-        //         .then((response) => {
-        //             // console.log(response)
-        //             // this.is_ka_sector_succes = 1
-        //             // console.log('georgian sector upload successful');
-        //         })
-        //         .catch((error) => console.log(error));
-        // },
-
-        showModal() {
-            this.myModal = !this.myModal;
+        add_sector_new_image_value(){
+            var new_item_id = this.sector_images.length+1
+            this.sector_images.push(
+                {
+                    id: new_item_id,
+                    image: '',
+                }
+            );
         },
+        onFileChange(event, item_id){
+            let image = event.target.files[0]
+            let id = item_id - 1 
+            this.sector_images[id]['image'] = image
+        },
+        del_sector_image(id){
+            this.removeObjectWithId(this.sector_images, id);
+        },
+        removeObjectWithId(arr, id) {
+            const objWithIdIndex = arr.findIndex((obj) => obj.id === id);
+            arr.splice(objWithIdIndex, 1);
+
+            return arr;
+        },
+
+        // showModal() {
+        //     this.myModal = !this.myModal;
+        // },
 
         get_region_data: function () {
+            // axios
+            //     .get("../api/article/")
+            //     .then((response) => {
+            //         this.regions = response.data;
+            //     })
+            //     .catch((error) => console.log(error));
+
             axios
-                .get("../api/article/")
-                .then((response) => {
-                    this.regions = response.data;
-                })
-                .catch((error) => console.log(error));
+            .get('../../api/articles/outdoor/us')
+            .then(response => {
+                this.regions = response.data
+            })
+            .catch(error =>{
+            })
         },
-        // get_temporary_sector_data: function () {
-        //     axios
-        //         .get("../../api/routes_and_sectors/get_temporary_sector_editing_data/")
-        //         .then((response) => {
-        //             this.editing_data = response.data;
-        //             this.get_sector_image(
-        //                 this.editing_data.last_temporary_sectore_id
-        //             );
-        //             this.temporary_sector_id =
-        //                 this.editing_data.last_temporary_sectore_id;
-        //         })
-        //         .catch((error) => console.log(error));
-        // },
-        // get_sector_image: function (temporary_sector_id) {
-        //     this.image_is_refresh = true;
-        //     axios
-        //         .get(
-        //             "../../../api/routes_and_sectors/get_sector_image/" +
-        //                 temporary_sector_id
-        //         )
-        //         .then((response) => {
-        //             this.sector_images = response.data;
-        //             this.images = this.sector_images.sector_images;
 
-        //             this.image_is_refresh = false;
-        //             this.image_reset_id++;
-        //         })
-        //         .catch((error) => console.log(error));
-        // },
+        save: function () {
+            let formData = new FormData();
 
-        add_sector: function () {
+            var loop_num = 0
+            this.sector_images.forEach(image => {
+                formData.append('sector_images['+loop_num+']', image.image)
+                loop_num++
+            });
+            loop_num = 0
+
+            formData.append('data', JSON.stringify(this.data))
+
             axios
-                .post("../../api/sector/", {
-                    // article_id: this.article_id,
-                    // name: this.name,
-                    // text: this.text,
-                    // all_day_in_shade: this.all_day_in_shade,
-                    // all_day_in_sun: this.all_day_in_sun,
-                    // in_the_shade_afternoon: this.in_the_shade_afternoon,
-                    // in_the_shade_befornoon: this.in_the_shade_befornoon,
-                    // in_shade_after_10: this.in_shade_after_10,
-                    // in_shade_after_15: this.in_shade_after_15,
-                    // slabby: this.slabby,
-                    // vertical: this.vertical,
-                    // overhang: this.overhang,
-                    data: this.data,
-
-                    _method: 'POST'
-                })
-                .then(function (response) {
-                    // window.location.href = "../../api/routes_and_sectors";
-
-                    this.go_back()
+                .post("../../api/sector/add_sector/", formData)
+                .then(response => {
+                    this.go_back(true)
                 })
                 .catch((error) => {
                     console.log(error);
@@ -604,73 +538,19 @@ export default {
                     // }
                 });
         },
-        // add_sector_image: function (temporary_sector_id) {
-        //     var myFormData = new FormData(this.$refs.myForm);
-        //     // console.log(temporary_sector_id);
-        //     axios({
-        //         method: "post",
-        //         url:
-        //             "../../api/routes_and_sectors/upload_sector_image/" +
-        //             temporary_sector_id,
-        //         data: myFormData,
-        //         config: {
-        //             headers: { "Content-Type": "multipart/form-data" },
-        //         },
-        //     })
-        //         .then((response) => {
-        //             // this.is_image_succes = 1;
-        //             // alert(response.data.message);
-        //         })
-        //         .catch((error) => {
-        //             if (error.response.status == 422) {
-        //                 this.image_errors = error.response.data.errors;
-        //             }
-        //         });
-        //     this.showModal();
-        //     // e.preventDefault();
-        // },
-        // del_sector_image(imageId) {
-        //     axios
-        //         .post(
-        //             "../../../api/routes_and_sectors/delete_sector_image/" + imageId,
-        //             {
-        //                 id: imageId,
-        //             }
-        //         )
-        //         .then((Response) => {
-        //             console.log(response);
-        //             this.get_data_in_table_1();
-        //         })
-        //         .catch((error) => console.log(error));
-        // },
 
-        // back: function (temporary_sector_id) {
-        //     // confirm("Are you sure, you want go back?");
-        //     // this.del_temporary_sector(temporary_sector_id);
-        //     window.location.href = "../../api/routes_and_sectors";
-        // },
-
-        go_back: function() {
-            // this.is_back_action = true
-
-            this.$router.go(-1)
+        go_back(back_action = false) {
+            if(back_action == false){
+                if(confirm('Are you sure, you want go back?')){
+                    // this.$router.go(-1)
+                    this.$router.push({ name: 'routeAndSectorList' })
+                }
+            }
+            else{
+                // this.$router.go(-1)
+                this.$router.push({ name: 'routeAndSectorList' })
+            }
         },
-
-        // save_all: function () {
-        //     this.add_sector();
-        // },
-        // save_sector_images_sequence() {
-        //     axios
-        //         .post("../../api/routes_and_sectors/save_sector_images_sequence/", {
-        //             sector_images_sequence: this.images,
-        //         })
-        //         .then(function (response) {})
-        //         .catch((error) => {
-        //             if (error.response.status == 422) {
-        //                 alert(error.response.data.errors);
-        //             }
-        //         });
-        // },
     },
 };
 </script>

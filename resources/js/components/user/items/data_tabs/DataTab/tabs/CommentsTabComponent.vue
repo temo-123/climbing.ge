@@ -153,6 +153,7 @@
                         _method: 'DELETE'
                     })
                     .then(Response => {
+                        this.$emit('restart')
                     })
                     .catch(error => console.log(error))
                 }
@@ -166,6 +167,7 @@
                     })
                     .then(Response => {
                         this.is_user_comment_delite_model = false
+                        this.$emit('restart')
                     })
                     .catch(error => console.log(error))
                 }

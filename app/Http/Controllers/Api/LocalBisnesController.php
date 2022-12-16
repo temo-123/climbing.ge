@@ -186,10 +186,16 @@ class LocalBisnesController extends Controller
             'ka_bisnes' => $bisnes->ka_bisnes,
             'ru_bisnes' => $bisnes->ru_bisnes,
 
-            'bisnes_images' => $bisnes->bisnes_images,
+            // 'bisnes_images' => $bisnes->bisnes_images,
         ];
 
         return $data;
+    }
+    public function get_bisnes_images(Request $request)
+    {
+        $bisnes = Suport_local_bisnes::where('id', '=', $request->bisnes_id)->first();
+
+        return $bisnes->bisnes_images;
     }
     public function edit_local_bisnes(Request $request)
     {

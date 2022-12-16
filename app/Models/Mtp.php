@@ -16,7 +16,7 @@ class Mtp extends Model
         "height",
     ];
 
-    public function mtp_pitchs()
+    public function pitchs()
     {
         return $this->hasMany(Mtp_pitch::class);
     }

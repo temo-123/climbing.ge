@@ -274,6 +274,44 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
  //https://github.com/Jexordexan/vue-slicksort
 
  //https://innologica.github.io/vue-stackable-modal/#sample-css
@@ -588,6 +626,21 @@ var render = function () {
       _c("div", { staticClass: "col-sm-3" }, [_c("left-menu")], 1),
       _vm._v(" "),
       _c("div", { staticClass: "col-sm-9" }, [
+        _c(
+          "button",
+          {
+            staticClass: "btn btn-info btn-lg",
+            attrs: {
+              type: "button",
+              "data-toggle": "modal",
+              "data-target": "#myModal",
+            },
+          },
+          [_vm._v("Open Modal")]
+        ),
+        _vm._v(" "),
+        _vm._m(0),
+        _vm._v(" "),
         _c("div", { staticClass: "row justify-content-center" }, [
           _c("div", { staticClass: "col-md-12" }, [
             _c(
@@ -702,14 +755,14 @@ var render = function () {
               !this.user["country"] ||
               !this.user["city"] ||
               !this.user["email"]
-                ? _c("span", [_vm._m(0)])
-                : _vm._e(),
-              _vm._v(" "),
-              !this.user["email_verified_at"]
                 ? _c("span", [_vm._m(1)])
                 : _vm._e(),
               _vm._v(" "),
-              !this.user["image"] ? _c("span", [_vm._m(2)]) : _vm._e(),
+              !this.user["email_verified_at"]
+                ? _c("span", [_vm._m(2)])
+                : _vm._e(),
+              _vm._v(" "),
+              !this.user["image"] ? _c("span", [_vm._m(3)]) : _vm._e(),
               _vm._v(" "),
               _vm._l(_vm.complaints, function (complaint) {
                 return _c("span", { key: complaint.id }, [
@@ -1349,6 +1402,58 @@ var render = function () {
   )
 }
 var staticRenderFns = [
+  function () {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c(
+      "div",
+      { staticClass: "modal fade", attrs: { id: "myModal", role: "dialog" } },
+      [
+        _c("div", { staticClass: "modal-dialog" }, [
+          _c("div", { staticClass: "modal-content" }, [
+            _c("div", { staticClass: "modal-header" }, [
+              _c(
+                "button",
+                {
+                  staticClass: "close",
+                  attrs: { type: "button", "data-dismiss": "modal" },
+                },
+                [
+                  _vm._v(
+                    "\n                            ×\n                        "
+                  ),
+                ]
+              ),
+              _vm._v(" "),
+              _c("h4", { staticClass: "modal-title" }, [
+                _vm._v("Modal Header"),
+              ]),
+            ]),
+            _vm._v(" "),
+            _c("div", { staticClass: "modal-body" }, [
+              _c("p", [_vm._v("Some text in the modal.")]),
+            ]),
+            _vm._v(" "),
+            _c("div", { staticClass: "modal-footer" }, [
+              _c(
+                "button",
+                {
+                  staticClass: "btn btn-default",
+                  attrs: { type: "button", "data-dismiss": "modal" },
+                },
+                [
+                  _vm._v(
+                    "\n                            Close\n                        "
+                  ),
+                ]
+              ),
+            ]),
+          ]),
+        ]),
+      ]
+    )
+  },
   function () {
     var _vm = this
     var _h = _vm.$createElement

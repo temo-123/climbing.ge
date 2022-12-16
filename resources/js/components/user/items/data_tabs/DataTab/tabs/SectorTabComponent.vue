@@ -7,8 +7,8 @@
         <td>{{table_info.id}}</td>
         <td>|</td>
 
-        <td>
-            <a @click="show_sector_model(table_info.id)" class="sector_model_action_button">{{table_info.name}}</a>
+        <td @click="show_sector_model(table_info.id)" class="cursor_zoom_in">
+            <a>{{table_info.name}}</a>
         </td>
         <td>|</td>
 
@@ -26,17 +26,25 @@
         <td>
             <button type="submit" class="btn btn-danger" @click="del_sector(table_info.id)">Delete</button>
         </td>
+
+        <sectorModal
+            ref="sector_modal"
+        />
     </tr>
 </template>
 
 <script>
     // import { SlickList, SlickItem } from 'vue-slicksort'; //https://github.com/Jexordexan/vue-slicksort
     // import StackModal from '@innologica/vue-stackable-modal'  //https://innologica.github.io/vue-stackable-modal/#sample-css
+
+    import sectorModal from "../tab_modals/SectorModalComponent.vue";
     export default {
         components: {
             // StackModal,
             // SlickItem,
             // SlickList,
+
+            sectorModal
         },
         props: [
             'table_info',
@@ -48,20 +56,17 @@
             del_sector(id){
                 if(confirm('Are you sure, you want delite it?')){
                     axios
-                    .post('../../api/sector/'+id, {
-                        id: id,
+                    .post('../../api/sector/del_sector_sector/'+id, {
                         _method: 'DELETE'
                     })
                     .then(Response => {
-                        this.update(this.tab_num)
+                        this.$emit('restart')
                     })
                     .catch(error => console.log(error))
                 }
             },
             show_sector_model(sector_id){
-                // console.log(sector_id)
-                this.$emit('sector_id', sector_id)
-                // this.$emit('show_sector_modal', true)
+                this.$refs.sector_modal.show_sector_modal(sector_id)
             },
         }
     }

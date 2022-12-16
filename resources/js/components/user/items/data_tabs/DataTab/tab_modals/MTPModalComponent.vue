@@ -1,8 +1,8 @@
 <template>
     <stack-modal
-            :show="show_mtp_modal"
+            :show="is_show_mtp_modal"
             title="Multy-pitch"
-            @close="show_mtp_modal=false"
+            @close="is_show_mtp_modal=false"
             :modal-class="{ [MTPModalClass]: true }"
             :saveButton="{ visible: true }"
             :cancelButton="{ title: 'Close', btnClass: { 'btn btn-primary': true } }">
@@ -61,7 +61,7 @@
         },
         data(){
             return {
-                show_mtp_modal: false,
+                is_show_mtp_modal: false,
                 sector_mtp_pitchs_for_modal:[],
                 MTPModalClass: ''
             }
@@ -73,12 +73,12 @@
 
         methods: {
 
-            show_mtp_model(mtp_id){
-                this.show_mtp_modal=true
+            show_mtp_modal(mtp_id){
+                this.is_show_mtp_modal=true
 
-                if (this.show_mtp_modal==true) {
+                if (this.is_show_mtp_modal==true) {
                     axios
-                    .get('/routes_and_sectors/get_mtp_pitchs_for_model/'+ mtp_id)
+                    .get('../api/mtp/mtp_pitch/get_mtp_pitchs_for_model/'+ mtp_id)
                     .then(response => {
                         this.sector_mtp_pitchs_for_modal = response.data
                     })
@@ -92,11 +92,11 @@
             },
             save_pitchs_sequence(){
                 axios
-                .post('../routes_and_sectors/pitchs_sequence/', {
+                .post('../api/mtp/mtp_pitch/pitchs_sequence/', {
                     pitchs_sequence: this.sector_mtp_pitchs_for_modal,
                 })
                 .then((response)=> { 
-                    this.show_mtp_modal = false
+                    this.is_show_mtp_modal = false
                 })
                 .catch(error =>{
                 })

@@ -32,7 +32,7 @@
                     //     _method: 'DELETE'
                     // })
                     // .then(Response => {
-                    //     this.update(this.tab_num)
+                        // this.$emit('restart')
                     // })
                     // .catch(error => console.log(error))
                 }
