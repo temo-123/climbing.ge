@@ -4,179 +4,186 @@
             <left-menu />
         </div>
         <div class="col-sm-9">
-            <div class="tabs">
-                <div class="row">
-                    
-                    <input type="radio" name="tabs" id="1" checked="checked">
-                    <label for="1">Global Data</label>
-                    <div class="tab">
-                        <div class="row edit_buttom">
-                            <div class="col-md-6">
-                                <router-link class="btn btn-primary" :to="{ name: 'siteGlobalDataEdit' }">Edit Global data</router-link>
-                            </div>
-                            <div class="col-md-6">
-                                <router-link class="btn btn-success float-right" :to="{ name: 'siteDataEdit' }">Edit all sites data</router-link>
-                            </div>
-                        </div>
-                        <table class="table table-hover" id="dev-table" >
-                            <thead>
-                                <tr>
-                                    <th>Value name</th>
-                                    <th>#</th>
-                                    <th>Data</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td>Email</td>
-                                    <td>|</td>
-                                    <td>{{this.$siteData.email}}</td>
-                                </tr>
-                                <tr>
-                                    <td>Phone</td>
-                                    <td>|</td>
-                                    <td>{{site_info.number}}</td>
-                                </tr>
-
-                                <tr>
-                                    <td>Map</td>
-                                    <td>|</td>
-                                    <td>
-                                        {{site_info.map}}
-                                    </td>
-                                </tr>
-
-                                <tr>
-                                    <td>Map</td>
-                                    <td>|</td>
-                                    <td>
-                                        <span v-html="this.$siteData.map"></span>
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
-
-                        <p>Social networks</p>
-
-                        <div class="row edit_buttom">
-                            <div class="col-md-6">
-                                <a class="btn btn-primary pull-left" @click="social_link_add_model()">Add Social link</a>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="form-groupe">
-                                    <button @click="get_social_links()" class="btn btn-success float-right" v-if="!is_social_links_refresh">Refresh</button>
-                                    <span class="badge badge-primare mb-1 float-right" v-if="is_social_links_refresh">Updating...</span>
+            <div class="row">
+                <div class="col-md-12">
+                    <breadcrumb />
+                </div>
+            </div>
+            <div class="row">
+                <div class="tabs">
+                    <div class="row">
+                        
+                        <input type="radio" name="tabs" id="1" checked="checked">
+                        <label for="1">Global Data</label>
+                        <div class="tab">
+                            <div class="row edit_buttom">
+                                <div class="col-md-6">
+                                    <router-link class="btn btn-primary" :to="{ name: 'siteGlobalDataEdit' }">Edit Global data</router-link>
+                                </div>
+                                <div class="col-md-6">
+                                    <router-link class="btn btn-success float-right" :to="{ name: 'siteDataEdit' }">Edit all sites data</router-link>
                                 </div>
                             </div>
-                        </div>
+                            <table class="table table-hover" id="dev-table" >
+                                <thead>
+                                    <tr>
+                                        <th>Value name</th>
+                                        <th>#</th>
+                                        <th>Data</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>Email</td>
+                                        <td>|</td>
+                                        <td>{{this.$siteData.email}}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Phone</td>
+                                        <td>|</td>
+                                        <td>{{site_info.number}}</td>
+                                    </tr>
 
-                        <table class="table table-hover" id="dev-table">
-                            <thead>
-                                <tr>
-                                    <th>Link</th>
-                                    <th>#</th>
-                                    <th>Delete</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr v-for="link in site_social_links" :key="link.id">
-                                    <td v-if="link.title"><a :href="link.url" target="_blank">{{ link.title }}</a></td>
-                                    <td v-else><a :href="link.url" target="_blank">{{ from_user_site_url_get_domen(link.url) }}</a></td>
-                                    <td>|</td>
-                                    <td>
-                                    <button class="btn btn-danger" @click="del_social_link(link.id)">Delete</button></td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
+                                    <tr>
+                                        <td>Map</td>
+                                        <td>|</td>
+                                        <td>
+                                            {{site_info.map}}
+                                        </td>
+                                    </tr>
 
-                    <input type="radio" name="tabs" id="2">
-                    <label for="2">English Data</label>
-                    <div class="tab">
-                        <div class="row edit_buttom">
-                            <div class="col-md-6">
-                                <!-- <button class="btn btn-primary" >Edit English data</button> -->
-                                <router-link class="btn btn-primary pull-left" :to="{ name: 'siteUsDataEdit' }">Edit English data</router-link>
-                            </div>
-                        </div>
-                        <localeInfoForm :info = site_us_info />
-                    </div>
+                                    <tr>
+                                        <td>Map</td>
+                                        <td>|</td>
+                                        <td>
+                                            <span v-html="this.$siteData.map"></span>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
 
-                    <input type="radio" name="tabs" id="3">
-                    <label for="3">Russion Data</label>
-                    <div class="tab">
-                        <div class="row edit_buttom">
-                            <div class="col-md-6">
-                                <!-- <button class="btn btn-primary" >Russion data</button> -->
-                                <router-link class="btn btn-primary pull-left" :to="{ name: 'siteRuDataEdit' }">Edit Russion data</router-link>
-                            </div>
-                        </div>
-                        <localeInfoForm :info = site_ru_info />
-                    </div>
+                            <p>Social networks</p>
 
-                    <input type="radio" name="tabs" id="4">
-                    <label for="4">Georgian Data</label>
-                    <div class="tab">
-                        <div class="row edit_buttom">
-                            <div class="col-md-6">
-                                <!-- <button class="btn btn-primary" >Georgian data</button> -->
-                                <router-link class="btn btn-primary pull-left" :to="{ name: 'siteKaDataEdit' }">Edit Georgian data</router-link>
-                            </div>
-                        </div>
-                        <localeInfoForm :info = site_ka_info />
-                    </div>
-
-
-                    <input type="radio" name="tabs" id="5">
-                    <label for="5">General info</label>
-                    <div class="tab">
-                        <div class="row edit_buttom">
-                            <div class="col-md-6">
-                                <router-link class="btn btn-primary pull-left" :to="{ name: 'GlobalInfoAdd' }">Add General info</router-link>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="form-groupe">
-                                    <button @click="get_general_info()" class="btn btn-success float-right" v-if="!is_general_info_refresh">Refresh ({{general_info_reset_id}})</button>
-                                    <span class="badge badge-primare mb-1 float-right" v-if="is_general_info_refresh">Updating...</span>
+                            <div class="row edit_buttom">
+                                <div class="col-md-6">
+                                    <a class="btn btn-primary pull-left" @click="social_link_add_model()">Add Social link</a>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-groupe">
+                                        <button @click="get_social_links()" class="btn btn-success float-right" v-if="!is_social_links_refresh">Refresh</button>
+                                        <span class="badge badge-primare mb-1 float-right" v-if="is_social_links_refresh">Updating...</span>
+                                    </div>
                                 </div>
                             </div>
+
+                            <table class="table table-hover" id="dev-table">
+                                <thead>
+                                    <tr>
+                                        <th>Link</th>
+                                        <th>#</th>
+                                        <th>Delete</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr v-for="link in site_social_links" :key="link.id">
+                                        <td v-if="link.title"><a :href="link.url" target="_blank">{{ link.title }}</a></td>
+                                        <td v-else><a :href="link.url" target="_blank">{{ from_user_site_url_get_domen(link.url) }}</a></td>
+                                        <td>|</td>
+                                        <td>
+                                        <button class="btn btn-danger" @click="del_social_link(link.id)">Delete</button></td>
+                                    </tr>
+                                </tbody>
+                            </table>
                         </div>
-                        <table  class="table table-hover" id="dev-table" >
-                            <thead>
-                                <tr>
-                                    <th>Id</th>
 
-                                    <th>|</th>
-                                    <th>Demo title</th>
+                        <input type="radio" name="tabs" id="2">
+                        <label for="2">English Data</label>
+                        <div class="tab">
+                            <div class="row edit_buttom">
+                                <div class="col-md-6">
+                                    <!-- <button class="btn btn-primary" >Edit English data</button> -->
+                                    <router-link class="btn btn-primary pull-left" :to="{ name: 'siteUsDataEdit' }">Edit English data</router-link>
+                                </div>
+                            </div>
+                            <localeInfoForm :info = site_us_info />
+                        </div>
 
-                                    <th>|</th>
-                                    <th>edit</th>
+                        <input type="radio" name="tabs" id="3">
+                        <label for="3">Russion Data</label>
+                        <div class="tab">
+                            <div class="row edit_buttom">
+                                <div class="col-md-6">
+                                    <!-- <button class="btn btn-primary" >Russion data</button> -->
+                                    <router-link class="btn btn-primary pull-left" :to="{ name: 'siteRuDataEdit' }">Edit Russion data</router-link>
+                                </div>
+                            </div>
+                            <localeInfoForm :info = site_ru_info />
+                        </div>
 
-                                    <th>|</th>
-                                    <th>del</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr v-for="general_info in general_infos" :key="general_info.id">
-                                    <th>{{general_info.id}}</th>
+                        <input type="radio" name="tabs" id="4">
+                        <label for="4">Georgian Data</label>
+                        <div class="tab">
+                            <div class="row edit_buttom">
+                                <div class="col-md-6">
+                                    <!-- <button class="btn btn-primary" >Georgian data</button> -->
+                                    <router-link class="btn btn-primary pull-left" :to="{ name: 'siteKaDataEdit' }">Edit Georgian data</router-link>
+                                </div>
+                            </div>
+                            <localeInfoForm :info = site_ka_info />
+                        </div>
 
-                                    <th>|</th>
-                                    <td>{{general_info.title}}</td>
 
-                                    <th>|</th>
-                                    <td>
-                                        <router-link class="btn btn-primary" :to="{ name: 'GlobalInfoEdit', params: { id: general_info.id } }" >Edit</router-link>
-                                        <!-- <a  class="btn btn-primary" type="submit">Edit</a> -->
-                                        <!-- <a :href="table_1_edit_url+table_info.id" class="btn btn-primary" type="submit">Edit</a> -->
-                                    </td>
-                                    
-                                    <td>|</td>
-                                    <td>
-                                        <button type="submit" class="btn btn-danger" @click="del_social_link(general_info.id)">Delete</button>
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
+                        <input type="radio" name="tabs" id="5">
+                        <label for="5">General info</label>
+                        <div class="tab">
+                            <div class="row edit_buttom">
+                                <div class="col-md-6">
+                                    <router-link class="btn btn-primary pull-left" :to="{ name: 'GlobalInfoAdd' }">Add General info</router-link>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-groupe">
+                                        <button @click="get_general_info()" class="btn btn-success float-right" v-if="!is_general_info_refresh">Refresh ({{general_info_reset_id}})</button>
+                                        <span class="badge badge-primare mb-1 float-right" v-if="is_general_info_refresh">Updating...</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <table  class="table table-hover" id="dev-table" >
+                                <thead>
+                                    <tr>
+                                        <th>Id</th>
+
+                                        <th>|</th>
+                                        <th>Demo title</th>
+
+                                        <th>|</th>
+                                        <th>edit</th>
+
+                                        <th>|</th>
+                                        <th>del</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr v-for="general_info in general_infos" :key="general_info.id">
+                                        <th>{{general_info.id}}</th>
+
+                                        <th>|</th>
+                                        <td>{{general_info.title}}</td>
+
+                                        <th>|</th>
+                                        <td>
+                                            <router-link class="btn btn-primary" :to="{ name: 'GlobalInfoEdit', params: { id: general_info.id } }" >Edit</router-link>
+                                            <!-- <a  class="btn btn-primary" type="submit">Edit</a> -->
+                                            <!-- <a :href="table_1_edit_url+table_info.id" class="btn btn-primary" type="submit">Edit</a> -->
+                                        </td>
+                                        
+                                        <td>|</td>
+                                        <td>
+                                            <button type="submit" class="btn btn-danger" @click="del_social_link(general_info.id)">Delete</button>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -215,13 +222,14 @@
 
     import { SlickList, SlickItem } from 'vue-slicksort'; //https://github.com/Jexordexan/vue-slicksort
     import StackModal from '@innologica/vue-stackable-modal'  //https://innologica.github.io/vue-stackable-modal/#sample-css
-
+    import breadcrumb from '../../items/BreadcrumbComponent.vue'
     export default {
         components: {
             localeInfoForm,
             StackModal,
             SlickItem,
             SlickList,
+            breadcrumb
         },
         inject:['siteData'],
         props: [

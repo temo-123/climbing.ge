@@ -1,52 +1,9 @@
 import VueRouter from 'vue-router'
 
-import myPostPage from '../components/user/pages/posts/MyPostsPageCompoents.vue'
-import allPostPage from '../components/user/pages/posts/AllPostsPageComponent.vue'
-
-import favoriteFilmsPage from '../components/user/pages/favorites/FavoriteFilmsPageComponent.vue'
-import favoriteOutdoorArea from '../components/user/pages/favorites/FavoriteOutdoorAreaPageComponent.vue'
-import favoriteProductsPage from '../components/user/pages/favorites/FavoriteProductsPageComponent.vue'
-import interestedEventsPage from '../components/user/pages/favorites/InterestedEventsPageComponent.vue'
-
-import cartPage from '../components/user/pages/cartPageComponent.vue'
-import galleryPage from '../components/user/pages/GalleryPageComponent.vue'
-import optionsPage from '../components/user/pages/optionsPageComponent.vue'
-import usersList from '../components/user/pages/usersListPageComponent.vue'
-
-import commentsPage from '../components/user/pages/comments/CommentsPageComponent.vue'
-import myCommentsPage from '../components/user/pages/comments/MyCommentsPageComponent.vue'
-
-import siteInfoPage from '../components/user/pages/siteInfo/siteInfoPageComponent.vue'
-
-import filmsList from '../components/user/pages/films/filmsListComponent.vue'
-import filmsAdd from '../components/user/pages/films/filmsAddComponent.vue'
-import filmsEdit from '../components/user/pages/films/filmsEditComponent.vue'
-
-import mountList from '../components/user/pages/mountRoutes/mountListComponent.vue'
-
-import articleList from '../components/user/pages/articles/articleListComponent.vue'
-import articleEdit from '../components/user/pages/articles/articleEditComponent.vue'
-import articleAdd from '../components/user/pages/articles/articleAddComponent.vue'
-
-import routeAndSectorList from '../components/user/pages/routes_and_sectors/routeAndSectorListComponent.vue'
-
-import routeAdd from '../components/user/pages/routes_and_sectors/routes/routeAddComponent.vue'
-import routeEdit from '../components/user/pages/routes_and_sectors/routes/routeEditComponent.vue'
-
-import sectorAdd from '../components/user/pages/routes_and_sectors/sectors/sectorAddComponent.vue'
-import sectorEdit from '../components/user/pages/routes_and_sectors/sectors/sectorEditComponent.vue'
-
-import MTPAdd from '../components/user/pages/routes_and_sectors/MTP/MTPAddComponent.vue'
-import MTPEdit from '../components/user/pages/routes_and_sectors/MTP/MTPEditComponent.vue'
-
-import MTPPitchAdd from '../components/user/pages/routes_and_sectors/MTPPitch/MTPPitchAddComponent.vue'
-import MTPPitchEdit from '../components/user/pages/routes_and_sectors/MTPPitch/MTPPitchEditComponent.vue'
-
 import NotFound from '../components/errors/404Component.vue'
 
 import login from '../components/auth/LoginComponent.vue'
 import register from '../components/auth/RegisterComponent.vue'
-
 
 function load(component) {
     return () => import(`../components/user/pages/${component}.vue`)
@@ -65,24 +22,24 @@ const router = new VueRouter({
         
         { path: '/order/confirm_order/:order_id/user/:user_id', name: 'confirmOrder', component: load('orders/decloration/mailOrderConfirmComponent') },
 
-        { path: '/my_posts', name: 'myPosts', component: myPostPage },
-        { path: '/all_posts', name: 'allPosts', component: allPostPage },
+        { path: '/my_posts', name: 'myPosts', component: load('posts/MyPostsPageCompoents') },
+        { path: '/all_posts', name: 'allPosts', component: load('posts/AllPostsPageComponent') },
 
-        { path: '/cart', name: 'cart', component: cartPage },
-        { path: '/favorite_products', name: 'favoriteProducts', component: favoriteProductsPage },
-        { path: '/gallery', name: 'gallery', component: galleryPage },
-        { path: '/options', name: 'options', component: optionsPage },
-        { path: '/interested_events', name: 'interestedEvents', component: interestedEventsPage },
-        { path: '/users_list', name: 'usersList', component: usersList },
+        { path: '/cart', name: 'cart', component: load('cartPageComponent') },
+        { path: '/gallery', name: 'gallery', component: load('GalleryPageComponent') },
+        { path: '/options', name: 'options', component: load('optionsPageComponent') },
+        { path: '/users_list', name: 'usersList', component: load('usersListPageComponent') },
 
-        { path: '/comments', name: 'comentsList', component: commentsPage },
-        { path: '/myComments', name: 'myComentsList', component: myCommentsPage },
+        { path: '/comments', name: 'comentsList', component: load('comments/CommentsPageComponent') },
+        { path: '/myComments', name: 'myComentsList', component: load('comments/MyCommentsPageComponent') },
 
-        { path: '/favorite_films', name: 'favoriteFilmsPage', component: favoriteFilmsPage },
-        { path: '/my_favorite_outdoor_area', name: 'favoriteOutdoorArea', component: favoriteOutdoorArea },
+        { path: '/favorite_films', name: 'favoriteFilmsPage', component: load('favorites/FavoriteFilmsPageComponent') },
+        { path: '/my_favorite_outdoor_area', name: 'favoriteOutdoorArea', component: load('FavoriteOutdoorAreaPageComponent') },
+        { path: '/interested_events', name: 'interestedEvents', component: load('favorites/InterestedEventsPageComponent') },
+        { path: '/favorite_products', name: 'favoriteProducts', component: load('favorites/FavoriteProductsPageComponent') },
 
-        { path: '/site_info', name: 'siteInfo', component: siteInfoPage },
-        
+        { path: '/site_info', name: 'siteInfo', component: load('siteInfo/siteInfoPageComponent') },
+
         { path: '/site_info/site_data_edit', name: 'siteDataEdit', component: load('siteInfo/SiteData/SiteInfoEditComponent') },
         { path: '/site_info/site_global_data_edit', name: 'siteGlobalDataEdit', component: load('siteInfo/SiteData/SiteGlobalInfoEditComponent') },
         { path: '/site_info/site_global_ka_edit', name: 'siteKaDataEdit', component: load('siteInfo/SiteData/SiteKaInfoEditComponent') },
@@ -92,15 +49,15 @@ const router = new VueRouter({
         { path: '/site_info/add_general_info', name: 'GlobalInfoAdd', component: load('siteInfo/GeneralInfo/GlobalInfoAddFormComponent') },
         { path: '/site_info/edit_general_info/:id', name: 'GlobalInfoEdit', component: load('siteInfo/GeneralInfo/GlobalInfoEditFormComponent') },
 
-        { path: '/films', name: 'filmsList', component: filmsList },
-        { path: '/films/add', name: 'filmsAdd', component: filmsAdd },
-        { path: '/films/edit/:id', name: 'filmsEdit', component: filmsEdit },
+        { path: '/films', name: 'filmsList', component: load('films/filmsListComponent') },
+        { path: '/films/add', name: 'filmsAdd', component: load('films/filmsAddComponent') },
+        { path: '/films/edit/:id', name: 'filmsEdit', component: load('films/filmsEditComponent') },
 
-        { path: '/mount_routes/mount_routes_list', name: 'mountlist', component: mountList },
+        { path: '/mount_routes/mount_routes_list', name: 'mountlist', component: load('films/mountListComponent') },
 
-        { path: '/article/:article_category', name: 'articlelist', component: articleList },
-        { path: '/article/edit/:id', name: 'articleEdit', component: articleEdit },
-        { path: '/article/add/:article_category', name: 'articleAdd', component: articleAdd },
+        { path: '/article/:article_category', name: 'articlelist', component: load('articles/articleListComponent') },
+        { path: '/article/edit/:id', name: 'articleEdit', component: load('articles/articleEditComponent') },
+        { path: '/article/add/:article_category', name: 'articleAdd', component: load('articles/articleAddComponent') },
    
         { path: '/spot_category/edit/:id', name: 'spot_category_edit', component: load('spots_categories/SpotsCategoriesEditPageComponent') },
         { path: '/spot_category/add/', name: 'spot_category_add', component: load('spots_categories/SpotsCategoriesAddPageComponent') },
@@ -108,19 +65,19 @@ const router = new VueRouter({
         { path: '/mount_massive/edit/:id', name: 'mount_massive_edit', component: load('mountRoutes/mountMassiveEditComponent') },
         { path: '/mount_massive/add/', name: 'mount_massive_add', component: load('mountRoutes/mountMassiveAddComponent') },
 
-        { path: '/routes_and_sectors', name: 'routeAndSectorList', component: routeAndSectorList },
+        { path: '/routes_and_sectors', name: 'routeAndSectorList', component: load('routes_and_sectors/routeAndSectorListComponent') },
 
-        { path: '/route/add', name: 'routeAdd', component: routeAdd },
-        { path: '/route/edit/:id', name: 'routeEdit', component: routeEdit },
+        { path: '/route/add', name: 'routeAdd', component: load('routes_and_sectors/routes/routeAddComponent') },
+        { path: '/route/edit/:id', name: 'routeEdit', component: load('routes_and_sectors/routes/routeEditComponent') },
 
-        { path: '/sector/add', name: 'sectorAdd', component: sectorAdd },
-        { path: '/sector/edit/:id', name: 'sectorEdit', component: sectorEdit },
+        { path: '/sector/add', name: 'sectorAdd', component: load('routes_and_sectors/sectors/sectorAddComponent') },
+        { path: '/sector/edit/:id', name: 'sectorEdit', component: load('routes_and_sectors/sectors/sectorEditComponent') },
 
-        { path: '/MTP/add', name: 'MTPAdd', component: MTPAdd },
-        { path: '/MTP/edit/:id', name: 'MTPEdit', component: MTPEdit },
+        { path: '/MTP/add', name: 'MTPAdd', component: load('routes_and_sectors/MTP/MTPAddComponent') },
+        { path: '/MTP/edit/:id', name: 'MTPEdit', component: load('routes_and_sectors/MTP/MTPEditComponent') },
 
-        { path: '/MTPPitch/add', name: 'MTPPitchAdd', component: MTPPitchAdd },
-        { path: '/MTPPitch/edit/:id', name: 'MTPPitchEdit', component: MTPPitchEdit },
+        { path: '/MTPPitch/add', name: 'MTPPitchAdd', component: load('routes_and_sectors/MTPPitch/MTPPitchAddComponent') },
+        { path: '/MTPPitch/edit/:id', name: 'MTPPitchEdit', component: load('routes_and_sectors/MTPPitch/MTPPitchEditComponent') },
 
         { path: '/sector_local_images', name: 'sectorLocalImagesList', component: load('sector_local_images/sectorLocalImagesListComponent') },
         { path: '/sector_local_images/add', name: 'sectorLocalImagesListAdd', component: load('sector_local_images/sectorLocalImageAddComponent') },
@@ -129,6 +86,10 @@ const router = new VueRouter({
         { path: '/local_bisnes', name: 'localBisnesList', component: load('local_bisnes/localBisnesListComponent') },
         { path: '/local_bisnes/add', name: 'localBisnesAdd', component: load('local_bisnes/localBisnesAddComponent') },
         { path: '/local_bisnes/edit/:id', name: 'localBisnesEdit', component: load('local_bisnes/localBisnesEditComponent') },
+
+        { path: '/event', name: 'eventList', component: load('event/eventListComponent') },
+        { path: '/event/add', name: 'eventAdd', component: load('event/eventAddComponent') },
+        { path: '/event/edit/:id', name: 'eventEdit', component: load('event/eventEditComponent') },
         
         { path: '/products_and_categories', name: 'productsList', component: load('products_and_categories/productsAndCatgoriesListComponent') },
         { path: '/product/edit/:id', name: 'productEdit', component: load('products_and_categories/products/productEditComponent') },

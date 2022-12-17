@@ -57,6 +57,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
 // import { SlickList, SlickItem } from 'vue-slicksort';
 // import StackModal from '@innologica/vue-stackable-modal'  //https://innologica.github.io/vue-stackable-modal/#sample-css
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
@@ -190,19 +191,19 @@ var render = function () {
   var _c = _vm._self._c || _h
   return _c("div", { staticClass: "col-md-12" }, [
     _c("div", { staticClass: "row" }, [
-      _c("div", { staticClass: "col-md-2" }, [
+      _c("div", { staticClass: "col-md-12" }, [
         _c("div", { staticClass: "form-groupe" }, [
           _c(
             "button",
             {
-              staticClass: "btn btn-primary float-right",
+              staticClass: "btn btn-primary float-left",
               on: {
                 click: function ($event) {
                   return _vm.add_new_sector_image_value()
                 },
               },
             },
-            [_vm._v("Add new image")]
+            [_vm._v("Add new sector image")]
           ),
         ]),
       ]),

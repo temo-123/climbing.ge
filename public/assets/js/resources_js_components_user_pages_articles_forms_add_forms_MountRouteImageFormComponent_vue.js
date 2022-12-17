@@ -11,10 +11,6 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
-/* harmony import */ var vue_slicksort__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vue-slicksort */ "./node_modules/vue-slicksort/dist/vue-slicksort.umd.js");
-/* harmony import */ var vue_slicksort__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(vue_slicksort__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var _innologica_vue_stackable_modal__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @innologica/vue-stackable-modal */ "./node_modules/@innologica/vue-stackable-modal/dist/vue-stackable-modal.umd.min.js");
-/* harmony import */ var _innologica_vue_stackable_modal__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_innologica_vue_stackable_modal__WEBPACK_IMPORTED_MODULE_1__);
 //
 //
 //
@@ -26,51 +22,77 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-
- //https://innologica.github.io/vue-stackable-modal/#sample-css
-
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+// import { SlickList, SlickItem } from 'vue-slicksort';
+// import StackModal from '@innologica/vue-stackable-modal'  //https://innologica.github.io/vue-stackable-modal/#sample-css
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
-  components: {
-    StackModal: (_innologica_vue_stackable_modal__WEBPACK_IMPORTED_MODULE_1___default()),
-    SlickItem: vue_slicksort__WEBPACK_IMPORTED_MODULE_0__.SlickItem,
-    SlickList: vue_slicksort__WEBPACK_IMPORTED_MODULE_0__.SlickList
+  props: [// 'category'
+  ],
+  components: {// StackModal,
+    // SlickItem,
+    // SlickList,
   },
-  props: ['category'],
   data: function data() {
     return {
-      myModal: false,
-      // errors: [],
-      image_errors: [],
-      without_info: false,
-      is_add_image: false,
-      category: this.$route.params.article_category,
-      image_is_refresh: false,
-      image_reset_id: 0
+      mount_route_images: []
     };
   },
   mounted: function mounted() {},
   methods: {
-    add_image_modal: function add_image_modal() {
-      this.is_add_image = true;
+    onFileChange: function onFileChange(event, item_id) {
+      var image = event.target.files[0];
+      var id = item_id - 1;
+      this.mount_route_images[id]['image'] = image;
+      this.upload_img();
     },
-    add_image: function add_image() {
-      var _this = this;
-
-      var myFormData = new FormData(this.$refs.myForm);
-      axios({
-        method: 'post',
-        url: '/gallery/add/',
-        data: myFormData,
-        config: {
-          headers: {
-            'Content-Type': 'multipart/form-data'
-          }
-        }
-      }).then(function (response) {
-        _this.is_add_image = false;
-
-        _this.get_gallery_data();
+    upload_img: function upload_img(event) {
+      this.$emit("upload_img", this.mount_route_images);
+    },
+    add_new_mount_route_image_value: function add_new_mount_route_image_value() {
+      var new_item_id = this.mount_route_images.length + 1;
+      this.mount_route_images.push({
+        id: new_item_id,
+        image: ''
       });
+    },
+    del_mount_route_image: function del_mount_route_image(id) {
+      this.removeObjectWithId(this.mount_route_images, id);
+    },
+    removeObjectWithId: function removeObjectWithId(arr, id) {
+      var objWithIdIndex = arr.findIndex(function (obj) {
+        return obj.id === id;
+      });
+      arr.splice(objWithIdIndex, 1);
+      return arr;
     }
   }
 });
@@ -161,8 +183,80 @@ var render = function () {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("form", { ref: "myForm", on: { submit: _vm.checkForm } }, [
-    _vm._m(0),
+  return _c("div", { staticClass: "col-md-12" }, [
+    _c("div", { staticClass: "row" }, [
+      _c("div", { staticClass: "col-md-12" }, [
+        _c("div", { staticClass: "form-groupe" }, [
+          _c(
+            "button",
+            {
+              staticClass: "btn btn-primary float-left",
+              on: {
+                click: function ($event) {
+                  return _vm.add_new_mount_route_image_value()
+                },
+              },
+            },
+            [_vm._v("Add new mount route image")]
+          ),
+        ]),
+      ]),
+    ]),
+    _vm._v(" "),
+    _c("div", { staticClass: "row" }, [
+      _c("div", { staticClass: "col-md-12" }, [
+        _c(
+          "table",
+          { staticClass: "table table-hover", attrs: { id: "dev-table" } },
+          [
+            _vm._m(0),
+            _vm._v(" "),
+            _c(
+              "tbody",
+              _vm._l(_vm.mount_route_images, function (mount_route_image) {
+                return _c("tr", { key: mount_route_image.id }, [
+                  _c("td", [
+                    _c("form", { ref: "myForm", refInFor: true }, [
+                      _c("input", {
+                        attrs: { type: "file", name: "image", id: "image" },
+                        on: {
+                          change: function ($event) {
+                            return _vm.onFileChange(
+                              $event,
+                              mount_route_image.id
+                            )
+                          },
+                        },
+                      }),
+                    ]),
+                  ]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("|")]),
+                  _vm._v(" "),
+                  _c("td", [
+                    _c(
+                      "button",
+                      {
+                        staticClass: "btn btn-danger",
+                        on: {
+                          click: function ($event) {
+                            return _vm.del_mount_route_image(
+                              mount_route_image.id
+                            )
+                          },
+                        },
+                      },
+                      [_vm._v("Delete")]
+                    ),
+                  ]),
+                ])
+              }),
+              0
+            ),
+          ]
+        ),
+      ]),
+    ]),
   ])
 }
 var staticRenderFns = [
@@ -170,15 +264,13 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "form-group clearfix row" }, [
-      _c(
-        "label",
-        { staticClass: "col-md-6 control-label", attrs: { for: "email" } },
-        [_vm._v("Upload mount route image:")]
-      ),
-      _vm._v(" "),
-      _c("div", { staticClass: "col-md-6" }, [
-        _c("input", { attrs: { type: "file", name: "image", id: "image" } }),
+    return _c("thead", [
+      _c("tr", [
+        _c("th", [_vm._v("Image")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("|")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Delite")]),
       ]),
     ])
   },

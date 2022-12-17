@@ -165,9 +165,9 @@
 
             <li class="list-group-item text-muted admin_menu_static_block"></li>
 
-            <router-link :to="{ name: 'articlelist', params: { article_category: 'events' } }">
+            <router-link :to="{ name: 'eventList' }">
                 <li class="list-group-item text-muted ">
-                    <span class="admin_menu">{{ $t('user menu events') }} (Beta)</span>
+                    <span class="admin_menu">{{ $t('user menu events') }}</span>
                 </li>
             </router-link>
 

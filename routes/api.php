@@ -45,7 +45,6 @@ Route::group(['namespace'=>'Api'], function() {
     Route::get('/get_articles_for_forum/{category}/{lang}', 'ArticleController@get_articles_for_forum');
     Route::get('/last_news/{lang}', 'ArticleController@get_last_news');
 
-
     /*
     *   Outdoor regions
     */
@@ -57,6 +56,18 @@ Route::group(['namespace'=>'Api'], function() {
         Route::get('/get_editing_spot_data/{id}', 'get_editing_spot_data');
         Route::post('/edit_spot/{id}', 'edit_spot');
         Route::delete('/del_spot/{id}', 'del_spot');
+    });
+
+    /*
+    *   Events
+    */
+    Route::controller(EventController::class)->prefix('event')->group( function() {
+        Route::get('/get_events_for_site', 'get_events_for_site');
+        Route::get('/get_all_events', 'get_all_events');
+        Route::post('/add_event', 'add_event');
+        Route::post('/edit_event/{event_id}', 'edit_event');
+        Route::get('/get_editing_event/{event_id}', 'get_editing_event');
+        Route::delete('/del_event/{event_id}', 'del_event');
     });
 
     /*

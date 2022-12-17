@@ -561,65 +561,6 @@ var render = function () {
                 ])
               : _vm._e(),
             _vm._v(" "),
-            this.category == "event"
-              ? _c("div", { staticClass: "form-group clearfix row" }, [
-                  _c(
-                    "label",
-                    {
-                      staticClass: "col-md-2 control-label",
-                      attrs: { for: "name" },
-                    },
-                    [_vm._v(" Completed ")]
-                  ),
-                  _vm._v(" "),
-                  _c("div", { staticClass: "col-md-10" }, [
-                    _c(
-                      "select",
-                      {
-                        directives: [
-                          {
-                            name: "model",
-                            rawName: "v-model",
-                            value: _vm.data.completed,
-                            expression: "data.completed",
-                          },
-                        ],
-                        staticClass: "form-control",
-                        attrs: { name: "completed" },
-                        on: {
-                          change: function ($event) {
-                            var $$selectedVal = Array.prototype.filter
-                              .call($event.target.options, function (o) {
-                                return o.selected
-                              })
-                              .map(function (o) {
-                                var val = "_value" in o ? o._value : o.value
-                                return val
-                              })
-                            _vm.$set(
-                              _vm.data,
-                              "completed",
-                              $event.target.multiple
-                                ? $$selectedVal
-                                : $$selectedVal[0]
-                            )
-                          },
-                        },
-                      },
-                      [
-                        _c("option", { attrs: { value: "0" } }, [
-                          _vm._v("No complited"),
-                        ]),
-                        _vm._v(" "),
-                        _c("option", { attrs: { value: "1" } }, [
-                          _vm._v("Complited"),
-                        ]),
-                      ]
-                    ),
-                  ]),
-                ])
-              : _vm._e(),
-            _vm._v(" "),
             this.category != "mount_route"
               ? _c("div", { staticClass: "form-group clearfix row" }, [
                   _c(

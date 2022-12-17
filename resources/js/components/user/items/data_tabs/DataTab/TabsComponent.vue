@@ -195,6 +195,11 @@
                                     :table_name="data.table_name"
                                 />
                             </thead>
+                            <thead  v-else-if="data.table_name == 'Events'">
+                                <eventTabHeader 
+                                    :table_name="data.table_name"
+                                />
+                            </thead>
                             <thead v-else-if="
                                         data.table_name == 'outdoor' || 
                                         data.table_name == 'indoor'  || 
@@ -229,6 +234,15 @@
                             </tbody>
                             <tbody v-else-if="data.table_name == 'Mount vasives'">
                                 <mountMassiveTab
+                                    v-for="table_info in data.data"
+                                    :key="table_info.id"
+                                    :table_info="table_info"
+                                    
+                                    @restart="update"
+                                />
+                            </tbody>
+                            <tbody v-else-if="data.table_name == 'Events'">
+                                <eventTab
                                     v-for="table_info in data.data"
                                     :key="table_info.id"
                                     :table_info="table_info"
@@ -469,7 +483,9 @@ import filmTagsTabHeader from "./tab_header/FilmTagsTabHeaderComponenr.vue"
 import mountMassiveTabHeader from "./tab_header/MountMassiveTabHeaderComponent.vue"
 import productTagsTabHeader from "./tab_header/ProductTabHeaderComponent.vue"
 import sectorLocalImageTabHeader from "./tab_header/SectorLocalImageTabHeaderComponent.vue"
+import eventTabHeader from "./tab_header/EventTabHeaderComponent.vue"
 
+import eventTab from "./tabs/EventTabComponent.vue";
 import sectorLocalImageTab from "./tabs/SectorLocalImageTabComponent.vue";
 import routeTab from "./tabs/RouteTabComponent.vue";
 import sectorTab from "./tabs/SectorTabComponent.vue";
@@ -513,6 +529,7 @@ export default {
         productTagsTabHeader,
         mountMassiveTabHeader,
         sectorLocalImageTabHeader,
+        eventTabHeader,
 
         sectorLocalImageTab,
         routeTab,
@@ -536,6 +553,7 @@ export default {
         qountryTab,
         filmTagsTab,
         saleCodesTab,
+        eventTab, 
 
         // sectorModal,
         // editOrderStatusModal,
