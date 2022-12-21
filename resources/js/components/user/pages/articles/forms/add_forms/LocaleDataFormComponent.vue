@@ -1,6 +1,6 @@
 <template>
-    <!-- <div class="col-md-12" > -->
-        <div class="row">
+    <div class="col-md-12" >
+        <!-- <div class="row"> -->
             <div class="col-md-12">
                 <div class="jumbotron width_100">
                     <div class="container">
@@ -8,6 +8,8 @@
                         <p class="lead">{{ this.description }}</p>
                     </div>
                 </div>
+
+            <div class="wrapper container-fluid container">
                 <form method="POST" @submit.prevent="add_article">
                     <div class="form-group clearfix row">
                         <label for="name" class='col-md-2 control-label'> Title </label>
@@ -32,10 +34,14 @@
                     <div class="form-group clearfix row">
                         <label for="name" class='col-md-2 control-label'> text </label>
                         <div class="col-md-10">
-                            <ckeditor v-model="data.text"></ckeditor>
+                            <!-- <ckeditor v-model="data.text"></ckeditor>
                             <div class="alert alert-danger" role="alert" v-if="errors.text">
                                 {{ errors.text[0] }}
-                            </div>
+                            </div> -->
+
+                            <ckeditor
+                                v-model="data.text"
+                            />
                         </div>
                     </div>
 
@@ -237,7 +243,7 @@
                 </form>
             </div>
         </div>
-    <!-- </div> -->
+    </div>
 </template>
 
 <script>
@@ -263,15 +269,17 @@
         ],
         data(){
             return {
+                // category: 'this.$route.params.article_category',
                 category: this.$route.params.article_category,
 
                 general_infos: [],
 
                 errors: [],
+                error: [],
 
-                // editorConfig: {
+                editorConfig: {
                     // toolbar: [ [ 'Bold' ] ]
-                // },
+                },
 
                 data: {
                     title: '',
@@ -323,6 +331,13 @@
             // }
         },
         methods: {
+            uploader(editor)
+            {
+                editor.plugins.get( 'FileRepository' ).createUploadAdapter = ( loader ) => {
+                    return new UploadAdapter( loader );
+                };
+            },
+
             get_general_info(){
                 axios
                 .get('../../../api/general_info/')

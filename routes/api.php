@@ -33,16 +33,21 @@ Route::group(['namespace'=>'Api'], function() {
     /*
     *   Article routes
     */
-    Route::apiResource('/article', 'ArticleController');
-    Route::post('/article/add_article/{category}', 'ArticleController@add_article');
-    Route::get('/articles/get_editing_data/{id}', 'ArticleController@get_editing_data');
-    Route::get('/articles/{category}/{lang}', 'ArticleController@get_locale_articles');
-    Route::get('/article/{category}/{lang}/{url_title}', 'ArticleController@get_locale_article_on_page');
+    Route::controller(ArticleController::class)->prefix('article')->group( function() {
+        Route::apiResource('/', 'ArticleController');
+        Route::post('/add_article/{category}', 'add_article');
+        Route::get('/{category}/{lang}/{url_title}', 'get_locale_article_on_page');
+        Route::post('/edit_article/{article_id}', 'edit_article');
+    });
+
     Route::post('/similar_article/{lang}', 'ArticleController@get_similar_locale_article');
     Route::post('/articles/upload_spot_rock_images', 'ArticleController@upload_spot_rock_images');
-    Route::post('/articles/upload_image', 'ArticleController@image_upload');
     Route::post('/get_article_global_data/{leng}/{article_id}', 'ArticleController@get_article_global_data');
+
     Route::get('/get_articles_for_forum/{category}/{lang}', 'ArticleController@get_articles_for_forum');
+    Route::get('/articles/get_editing_data/{id}', 'ArticleController@get_editing_data');
+    Route::get('/articles/{category}/{lang}', 'ArticleController@get_locale_articles');
+    Route::post('/articles/upload_image', 'ArticleController@image_upload');
     Route::get('/last_news/{lang}', 'ArticleController@get_last_news');
 
     /*
@@ -73,16 +78,23 @@ Route::group(['namespace'=>'Api'], function() {
     /*
     *   Mountain (mount routes) regions
     */
-    Route::get('/mount_route/get_filtred_mount_route_for_admin/{filter_id}', 'MountRouteController@get_filtred_mount_route_for_admin');
-    Route::get('/mount_route/get_filtred_mount_route_for_user/{lang}/{filter_id}', 'MountRouteController@get_filtred_mount_route_for_user');
+    Route::controller(MountRouteController::class)->prefix('mount_route')->group( function() {
+        Route::get('/get_filtred_mount_route_for_admin/{filter_id}', 'get_filtred_mount_route_for_admin');
+        Route::get('/get_filtred_mount_route_for_user/{lang}/{filter_id}', 'get_filtred_mount_route_for_user');
+
+        Route::get('/get_mount_routes_images/{article_id}', 'get_mount_routes_images');
+        Route::delete('/del_mount_routes_images/{image_id}', 'del_mount_routes_images');
+    });
 
     /*
     *   Mount (mountain system) routes
     */
-    Route::apiResource('/mount', 'MountController');
+    Route::controller(MountController::class)->prefix('mount')->group( function() {
+        Route::apiResource('/mount', 'MountController');
+        Route::get('/{lang}/{mount_id}', 'get_locale_mount');
+        Route::get('/on_page/{lang}/{mount_route_id}', 'get_locale_mount_on_route_page');
+    });
     Route::get('/mounts/{lang}', 'MountController@get_locale_mounts');
-    Route::get('/mount/{lang}/{mount_id}', 'MountController@get_locale_mount');
-    Route::get('/mount/on_page/{lang}/{mount_route_id}', 'MountController@get_locale_mount_on_route_page');
     
     /*
     *   Product and product categories routes
@@ -273,7 +285,12 @@ Route::group(['namespace'=>'Api'], function() {
 
     Route::get('/get_sectors_for_forum/{article_id}', 'SectorController@get_sectors_for_forum');
     Route::get('/sectors_and_routes_quantity', 'SectorController@get_sectors_and_routes_quantity');
-    Route::get('/get_spot_rocks_images/{article_id}', 'SectorController@get_spot_rocks_images');
+    // Route::get('/get_spot_rocks_images/{article_id}', 'SectorController@get_spot_rocks_images');
+
+    Route::controller(SpotRockController::class)->prefix('spot_rock_images')->group( function() {
+        Route::get('/get_spot_rock_images/{article_id}', 'get_spot_rock_images');
+        Route::delete('/del_spot_rock_image/{image_id}', 'del_spot_rock_image');
+    });
 
     Route::controller(RouteController::class)->prefix('route')->group( function() {
         Route::apiResource('/', 'RouteController');
@@ -352,9 +369,12 @@ Route::group(['namespace'=>'Api'], function() {
     /*
     *   Climbing regions routes
     */
-    Route::apiResource('/region', 'link.');
+
+    Route::controller(RegionController::class)->prefix('region')->group( function() {
+        Route::apiResource('/', 'RegionController');
+        Route::get('/{lang}/{region_id}', 'locale_region');
+    });
     Route::get('/regions/{lang}', 'RegionController@locale_regions');
-    Route::get('/region/{lang}/{region_id}', 'RegionController@locale_region');
 
     /*
     *   Forum posts routes
@@ -396,5 +416,10 @@ Route::group(['namespace'=>'Api'], function() {
         Route::get('email/verify/{hash}', 'VerificationController@verify')->name('verification.verify');
         Route::get('email/resend', 'VerificationController@resend')->name('verification.resend');
         Route::get('auth_user', 'AuthenticationController@user')->name('auth_user');
+    });
+
+    Route::controller(CkeditorController::class)->prefix('ckeditor')->group( function() {
+        Route::get('', 'index');
+        Route::post('/upload', 'upload');
     });
 });

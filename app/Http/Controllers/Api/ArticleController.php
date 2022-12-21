@@ -127,10 +127,154 @@ class ArticleController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function edit_article(Request $request, $id)
     {
-        // dd($request);
+        $validation_issets = [];
+
+        $data = json_decode($request->data, true );
+        $global_blocks = json_decode($request->global_blocks, true );
+
+        $ka_validate = $this->local_article_validate($data['ka_data']);
+        if ($ka_validate != null) {
+            $validation_issets['ka_info_validation'] = $ka_validate;
+        }
+        else{
+            $validation_issets['ka_info_validation'] = false;
+        }
+
+        $us_validate = $this->local_article_validate($data['en_data']);
+        if ($us_validate != null) {
+            $validation_issets['us_info_validation'] = $us_validate;
+        }
+        else{
+            $validation_issets['us_info_validation'] = false;
+        }
+
+        $ru_validate = $this->local_article_validate($data['ru_data']);
+        if ($ru_validate != null) {
+            $validation_issets['ru_info_validation'] = $ru_validate;
+        }
+        else{
+            $validation_issets['ru_info_validation'] = false;
+        }
+
+        $global_validate = $this->global_article_validate($data['global_data']);
+        if ($global_validate != null) {
+            $validation_issets['global_info_validation'] = $global_validate;
+        }
+        else{
+            $validation_issets['global_info_validation'] = false;
+        }
+
+        if (
+            !$validation_issets['global_info_validation'] && 
+            !$validation_issets['ru_info_validation'] && 
+            !$validation_issets['ka_info_validation'] && 
+            !$validation_issets['us_info_validation']
+        ) {
+
+            $action_article_id = $this->editGlobalArticle(
+                $data['global_data'], 
+                $global_blocks,
+                $request,                
+            );
+
+            if (
+                $action_article_id != 'Error'
+            ) {
+                $this->edit_locale_article($data['ka_data'], $action_article_id['ka_article']);
+                $this->edit_locale_article($data['ru_data'], $action_article_id['ru_article']);
+                $this->edit_locale_article($data['en_data'], $action_article_id['us_article']);
+
+                if($data['global_data']["category"] == 'outdoor'){
+                    if($request->hasFile('outdoor_area_images')){
+                        $this->edit_outdoor_area_images($request->outdoor_area_images, $action_article_id);
+                    }
+                }
+                else if($data['global_data']["category"] == 'mount_route'){
+                    if($request->hasFile('mount_route_images')){
+                        $this->edit_mount_route_images($request->outdoor_area_images, $action_article_id);
+                    }
+                }
+            }
+        }
+        else{            
+            return response()->json([
+                'Data validation' => $validation_issets
+            ], 422);
+        }
     }
+
+    public function editGlobalArticle($global_data, $global_blocks, $request)
+    {
+        $url_title = URLTitleService::get_url_title($global_data["us_title_for_url_title"]); // make url_title from us_title value
+
+        $editing_article = Article::where('id', '=', $request->article_id);
+
+        if($request->hasFile('image')){
+            $editing_article['image'] =  ImageControllService::image_upload('images/'.$global_data["category"].'_img/', $request, 'image', 1);
+        }
+        
+        $editing_article['url_title'] = $url_title;
+
+        $editing_article['category']=$global_data["category"];
+        $editing_article['published']=$global_data["published"];
+        $editing_article['map']=$global_data["map"];
+        $editing_article['weather']=$global_data["weather"];
+
+        $editing_article['open_time'] = $global_data["open_timen"];
+        $editing_article['closed_time'] = $global_data["closed_time"];
+
+        $editing_article['price_from'] = $global_data["price_from"];
+
+        $editing_article['fb_link']=$global_data["fb_link"];
+        $editing_article['twit_link']=$global_data["twit_link"];
+        $editing_article['google_link']=$global_data["google_link"];
+        $editing_article['inst_link']=$global_data["inst_link"];
+        $editing_article['web_link']=$global_data["web_link"];
+        
+        $saved = $editing_article -> save();
+        
+        $this->edit_general_info_articles($global_blocks);
+
+        if(!$saved){
+            App::abort(500, 'Error');
+        }
+        else{
+            $locale_articles = [
+                'us_article' => $editing_article['us_article_id'],
+                'ka_article' => $editing_article['ka_article_id'],
+                'ru_article' => $editing_article['ru_article_id'],
+            ];
+    
+            return $locale_articles;
+        }
+    }
+
+    public function edit_locale_article($data, $locale_article_id)
+    {
+        $editing_local_article = Locale_article::where('id', '=', $locale_article_id);
+        
+        $editing_local_article['title']=$data["title"];
+        $editing_local_article['locale']=$locale;
+        $editing_local_article['short_description']=$data["short_description"];
+        $editing_local_article['text']=$data["text"];
+        $editing_local_article['route']=$data["route"];
+        $editing_local_article['how_get']=$data["how_get"];
+        $editing_local_article['best_time']=$data["best_time"];
+        $editing_local_article['what_need']=$data["what_need"];
+        $editing_local_article['info']=$data["info"];
+
+        $saved = $editing_local_article->save();
+
+        if(!$saved){
+            App::abort(500, 'Error');
+        }
+        else{
+            return $editing_local_article->id;
+        }
+    }
+
 
     public function add_article(Request $request)
     {
@@ -357,6 +501,31 @@ class ArticleController extends Controller
         return $article->id;
     }
 
+    public function add_locale_article($data, $locale)
+    {
+        $article = new Locale_article;
+        
+        $article['title']=$data["title"];
+        $article['locale']=$locale;
+        $article['short_description']=$data["short_description"];
+        $article['text']=$data["text"];
+        $article['route']=$data["route"];
+        $article['how_get']=$data["how_get"];
+        $article['best_time']=$data["best_time"];
+        $article['what_need']=$data["what_need"];
+        $article['info']=$data["info"];
+
+        $saved = $article->save();
+
+        if(!$saved){
+            App::abort(500, 'Error');
+        }
+        else{
+            return $article->id;
+        }
+    }
+
+
     public function add_regioin_articles($region_id, $article_id){
         $article = new Article_region;
         
@@ -421,31 +590,6 @@ class ArticleController extends Controller
             $general_info_article -> save();
         }
     }
-
-    public function add_locale_article($data, $locale)
-    {
-        $article = new Locale_article;
-        
-        $article['title']=$data["title"];
-        $article['locale']=$locale;
-        $article['short_description']=$data["short_description"];
-        $article['text']=$data["text"];
-        $article['route']=$data["route"];
-        $article['how_get']=$data["how_get"];
-        $article['best_time']=$data["best_time"];
-        $article['what_need']=$data["what_need"];
-        $article['info']=$data["info"];
-
-        $saved = $article->save();
-
-        if(!$saved){
-            App::abort(500, 'Error');
-        }
-        else{
-            return $article->id;
-        }
-    }
-
     
 
 

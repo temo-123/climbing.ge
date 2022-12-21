@@ -4801,72 +4801,7 @@ __webpack_require__.r(__webpack_exports__);
       })["finally"](function () {
         return _this3.article_loading = false;
       });
-    } // get_regions(){
-    //     axios
-    //     .get('../api/regions/en')
-    //     .then(response => {
-    //         this.regions = response.data
-    //     })
-    //     .catch(error =>{
-    //     })
-    //     .finally(() => this.region_loading = false)
-    // },
-    // table_1_del(itemId) {
-    //     axios
-    //     .post(this.table_1_del_url + itemId, {
-    //         id: itemId,
-    //     })
-    //     .then(Response => {
-    //         if (this.table_1_name == 'Sector') {
-    //             this.get_sectors_data();
-    //         }
-    //         if (this.table_1_name == 'Products') {
-    //             this.get_product_data();
-    //         }
-    //         if (this.table_1_name == 'Mount routes') {
-    //             this.get_mount_route_data();
-    //         }
-    //         this.get_data_in_table_1()
-    //     })
-    //     .catch(error => console.log(error))
-    // },
-    // show_parmission_edit_madel(user_id){
-    //     this.roles_modal=true;
-    //     this.user_id_for_rditing_parmission = user_id
-    // },
-    // edit_permission(id) {
-    //     axios
-    //     .post('users/edit_user_permission/' + id, {
-    //         parmission: this.user_new_parmission,
-    //     })
-    //     .then((response)=> { 
-    //         this.roles_modal = false
-    //     })
-    //     .catch(error =>{
-    //         if (error.response.status == 422) {
-    //             this.parmision_error = error.response.data.errors
-    //         }
-    //         this.is_parmision_error = true
-    //     })
-    // },
-    // get_user_role: function(user_id){
-    //     axios
-    //     .get('users/get_role/', {
-    //     })
-    //     .then(Response => {
-    //         console.log(Response.data);
-    //         this.user_roles = Response.data
-    //     })
-    //     .catch(error => {
-    //         // this.user_role = "error"
-    //     })
-    // },
-    // update(id){
-    //     if(id == 1){
-    //         this.get_articles()
-    //     }
-    // }
-
+    }
   }
 });
 

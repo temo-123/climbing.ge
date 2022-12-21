@@ -72,7 +72,7 @@
                     </div>
                 </div>
             </div>
-            <div class="row" v-show="tab_num == 1">
+            <div class="col-md-12" v-show="tab_num == 1">
                 <GlobalDataForm 
                     @global_form_data="article_data.global_data = $event" 
                 />
@@ -84,7 +84,7 @@
                 <SectorsImagesForm      v-if="this.category == 'outdoor'"       :category="this.category" @upload_img="upload_area_images"/>
                 <MountRouteImagesForm   v-if="this.category == 'mount_route'"   :category="this.category" @upload_img="upload_mount_route_images"/>
             </div>
-            <div class="row" v-show="tab_num == 2">
+            <div class="col-md-12" v-show="tab_num == 2">
                 <LocaleDataForm 
                     @locale_form_data="article_data.en_data = $event"
                     @global_blocks="global_blocks_action"
@@ -95,7 +95,7 @@
                     :description="$t('user add en article description')"
                 />
             </div>
-            <div class="row" v-show="tab_num == 3">
+            <div class="col-md-12" v-show="tab_num == 3">
                 <LocaleDataForm 
                     @locale_form_data="article_data.ka_data = $event"
                     @global_blocks="global_blocks_action"
@@ -106,7 +106,7 @@
                     :description="$t('user add ka article description')"
                 />
             </div>
-            <div class="row" v-show="tab_num == 4">
+            <div class="col-md-12" v-show="tab_num == 4">
                 <LocaleDataForm 
                     @locale_form_data="article_data.ru_data = $event"
                     @global_blocks="global_blocks_action"

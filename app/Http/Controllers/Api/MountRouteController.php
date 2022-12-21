@@ -42,4 +42,26 @@ class MountRouteController extends Controller
             return $filtred_articles_by_mount;
         }
     }
+
+    public function get_mount_routes_images(Request $request)
+    {
+        $bisnes = Suport_local_bisnes::where('id', '=', $request->bisnes_id)->first();
+        $bisnes_images_count = Suport_local_bisnes_image::where('bisnes_id', '=', $bisnes->id)->count();
+
+        if($bisnes_images_count > 0){
+            $bisnes_images = Suport_local_bisnes_image::where('bisnes_id', '=', $bisnes->id)->get();
+            // dd($bisnes_images);
+            foreach ($bisnes_images as $image) {
+                ImageControllService::image_delete('images/mount_route_img/', $image, 'image');
+                $image ->delete();
+            }
+        }
+        $bisnes ->delete();
+    }
+
+    public function del_mount_routes_images(Request $request)
+    {   $image = Suport_local_bisnes_image::where('id', '=', $request->image_id)->first();
+        ImageControllService::image_delete('images/mount_route_img/', $image, 'image');
+        $image ->delete();
+    }
 }

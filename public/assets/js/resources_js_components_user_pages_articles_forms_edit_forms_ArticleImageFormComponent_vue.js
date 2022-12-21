@@ -28,33 +28,19 @@ __webpack_require__.r(__webpack_exports__);
   props: [// 
   ],
   data: function data() {
-    return {// sucses_upload: true
+    return {
+      image: ''
     };
   },
   mounted: function mounted() {// 
   },
   methods: {
-    checkForm: function checkForm() {
-      var _this = this;
-
-      console.log('test');
-      var myFormData = new FormData(this.$refs.myForm);
-      axios({
-        method: 'post',
-        url: '../../api/articles/upload_image/',
-        data: myFormData,
-        config: {
-          headers: {
-            'Content-Type': 'multipart/form-data'
-          }
-        }
-      }).then(function (response) {
-        _this.upload_sucses();
-      });
+    onFileChange: function onFileChange(e) {
+      this.image = e.target.files[0];
+      this.upload_img();
     },
-    upload_sucses: function upload_sucses() {
-      // this.sucses_upload = true
-      this.$emit("sucses_upload", false);
+    upload_img: function upload_img(event) {
+      this.$emit("upload_img", this.image);
     }
   }
 });
@@ -145,28 +131,24 @@ var render = function () {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("form", { ref: "myForm", on: { submit: _vm.checkForm } }, [
-    _vm._m(0),
-  ])
-}
-var staticRenderFns = [
-  function () {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "form-group clearfix row" }, [
+  return _c("form", [
+    _c("div", { staticClass: "form-group clearfix row" }, [
       _c(
         "label",
-        { staticClass: "col-md-5 control-label", attrs: { for: "email" } },
+        { staticClass: "col-md-6 control-label", attrs: { for: "email" } },
         [_vm._v("Upload article image:")]
       ),
       _vm._v(" "),
       _c("div", { staticClass: "col-md-6" }, [
-        _c("input", { attrs: { type: "file", name: "image", id: "image" } }),
+        _c("input", {
+          attrs: { type: "file", name: "image", id: "image", required: "" },
+          on: { change: _vm.onFileChange },
+        }),
       ]),
-    ])
-  },
-]
+    ]),
+  ])
+}
+var staticRenderFns = []
 render._withStripped = true
 
 

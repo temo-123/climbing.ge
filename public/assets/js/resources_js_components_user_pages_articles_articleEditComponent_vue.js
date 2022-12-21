@@ -132,7 +132,9 @@ __webpack_require__.r(__webpack_exports__);
 
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
-  props: ['back_url', 'category' // 'editing_article_id'
+  props: [// 'back_url',
+    // 'category',
+    // 'editing_article_id'
   ],
   components: {
     // StackModal,
@@ -147,6 +149,7 @@ __webpack_require__.r(__webpack_exports__);
   data: function data() {
     return {
       // editing_url: '/articles/get_editing_data/',
+      category: '',
       tab_num: 1,
       global_article_error: [],
       is_global_article_error: true,
@@ -174,10 +177,7 @@ __webpack_require__.r(__webpack_exports__);
     };
   },
   mounted: function mounted() {
-    this.get_editing_data(); // if (this.category == 'mount_route') {
-    //     this.get_mount_massive_data()
-    // }
-    // this.check_permission()
+    this.get_editing_data();
   },
   methods: {
     get_editing_data: function get_editing_data() {
@@ -185,6 +185,7 @@ __webpack_require__.r(__webpack_exports__);
 
       axios.get('../../../api/articles/get_editing_data/' + this.$route.params.id).then(function (response) {
         _this.editing_data = response.data;
+        _this.category = response.data.global_article.category;
 
         _this.editing_data.general_data.forEach(function (general_text) {
           if (general_text.block == 'info_block') {
@@ -205,357 +206,52 @@ __webpack_require__.r(__webpack_exports__);
         return console.log(error);
       });
     },
-    edit_global_article: function edit_global_article() {
+    edit_article: function edit_article() {
       var _this2 = this;
 
-      axios.post('/articles/global/edit/' + this.editing_article_id, {
-        us_title_for_url_title: this.us_title,
-        published: this.published,
-        mount_id: this.mount_id,
-        completed: this.completed,
-        map: this.map,
-        weather: this.weather,
-        start_data_day: this.start_data_day,
-        end_data_day: this.end_data_day,
-        start_data_month: this.start_data_month,
-        end_data_month: this.end_data_month,
-        working_time: this.working_time,
-        price_from: this.price_from,
-        fb_link: this.fb_link,
-        twit_link: this.twit_link,
-        google_link: this.google_link,
-        inst_link: this.inst_link,
-        web_link: this.web_link
-      }).then(function (Response) {
-        _this2.is_global_article_error = false;
+      this.editing_data.global_data.us_title_for_url_title = this.editing_data.en_data.title, this.is_us_article_error = [];
+      this.error.global_article_error = [], this.error.ka_article_error = [], this.error.ru_article_error = [], this.error.us_article_error = [];
+      var formData = new FormData();
+      formData.append('image', this.article_image);
+      formData.append('data', JSON.stringify(this.editing_data));
+      formData.append('global_blocks', JSON.stringify(this.global_blocks));
 
-        _this2.if_isset_go_beck(_this2.is_global_article_error);
-      })["catch"](function (error) {
-        if (error.response.status == 422) {
-          _this2.global_article_error = error.response.data.errors;
-        }
+      if (this.category == 'outdoor') {
+        var loop_num = 0;
+        this.area_images.forEach(function (area_image) {
+          formData.append('outdoor_area_images[' + loop_num + ']', area_image.image);
+          loop_num++;
+        });
+        loop_num = 0;
+      } else if (this.category == 'mount_route') {
+        var loop_num = 0;
+        this.mount_route_images.forEach(function (mount_route_image) {
+          formData.append('mountain_route_images[' + loop_num + ']', mount_route_image.image);
+          loop_num++;
+        });
+        loop_num = 0;
+      }
 
-        _this2.is_global_article_error = true;
+      axios // .post('/api/article/add_article/' + this.category, 
+      .post('../../api/articles/global/edit/' + this.editing_article_id, formData).then(function (response) {
+        _this2.is_back_action = true; // this.$refs.ArticleImage.checkForm()
+
+        _this2.go_back();
+      })["catch"](function (err) {
+        console.log(err); // if (error.response.status == 422) {
+        //     this.error.global_article_error = error.response.data['global_data']
+        //     this.error.ka_article_error = error.response.data['ka_data']
+        //     this.error.ru_article_error = error.response.data['ru_data']
+        //     this.error.us_article_error = error.response.data['us_data']
+        // }
+        // this.is_us_article_error = true
       });
     },
     global_blocks_action: function global_blocks_action(event) {
       this.global_blocks = event;
     }
   }
-}); // export default {
-//     props: [
-//         'back_url',
-//         'category',
-//         'editing_article_id'
-//     ],
-//             global_article_error: [],
-//             is_global_article_error: true,
-//             ka_article_error: [],
-//             is_ka_article_error: true,
-//             ru_article_error: [],
-//             is_ru_article_error: true,
-//             us_article_error: [],
-//             is_us_article_error: true,
-//             editor: 'editor',
-//             editorConfig:{},
-//             permission: '',
-//             url: '',
-//             editing_data: '',
-//             us_title_for_url_title: "",
-//             published: "",
-//             completed: "",
-//             map: "",
-//             weather: "",
-//             start_data_day: "",
-//             end_data_day: "",
-//             end_data_month: "",
-//             end_data_month: "",
-//             fb_link: "",
-//             twit_link: "",
-//             google_link: "",
-//             inst_link: "",
-//             web_link: "",
-//             working_time: "",
-//             price_from: "",
-//             name: '',
-//             image_name: '',
-//             region_sectors_image_name: '',
-//             mount_route_description_image_name: '',
-//             success: '',
-//             // 
-//             // 
-//             // 
-//             us_title: "",
-//             us_short_description: "",
-//             us_text: "",
-//             us_route: "",
-//             us_how_get: "",
-//             us_best_time: "",
-//             us_what_need: "",
-//             us_info: "",
-//             us_meta_keyword: "",
-//             // 
-//             // 
-//             // 
-//             ka_title: "",
-//             ka_short_description: "",
-//             ka_text: "",
-//             ka_route: "",
-//             ka_how_get: "",
-//             ka_best_time: "",
-//             ka_what_need: "",
-//             ka_info: "",
-//             ka_meta_keyword: "",
-//             // 
-//             // 
-//             // 
-//             ru_title: "",
-//             ru_short_description: "",
-//             ru_text: "",
-//             ru_route: "",
-//             ru_how_get: "",
-//             ru_best_time: "",
-//             ru_what_need: "",
-//             ru_info: "",
-//             ru_meta_keyword: "",
-//             us_article_id: "",
-//             ru_article_id: "",
-//             ka_article_id: "",
-//         }
-//     },
-//     
-//     methods: {
-//         check_permission(){
-//             axios
-//             .get('../../../check_permission/')
-//             .then(Response => {
-//                 this.permission =  Response.data
-//             })
-//             .catch(error =>{
-//             })
-//         },
-//         
-//         edit_ru_article() {
-//             axios
-//             .post('/articles/ru/edit/' + this.ru_article_id, {
-//                 ru_title: this.ru_title,
-//                 ru_short_description: this.ru_short_description,
-//                 ru_text: this.ru_text,
-//                 ru_route: this.ru_route,
-//                 ru_how_get: this.ru_how_get,
-//                 ru_best_time: this.ru_best_time,
-//                 ru_what_need: this.ru_what_need,
-//                 ru_info: this.ru_info,
-//                 ru_meta_keyword: this.ru_meta_keyword,
-//             })
-//             .then(Response => {
-//                 this.is_ru_article_error = false
-//                 this.if_isset_go_beck(this.is_ru_article_error)
-//             })
-//             .catch(error =>{
-//                 if (error.response.status == 422) {
-//                     this.ru_article_error = error.response.data.errors
-//                 }
-//                 this.is_ru_article_error = true
-//             })
-//         },
-//         edit_us_article() {
-//             axios
-//             .post('/articles/us/edit/' + this.us_article_id, {
-//                 us_title: this.us_title,
-//                 us_short_description: this.us_short_description,
-//                 us_text: this.us_text,
-//                 us_route: this.us_route,
-//                 us_how_get: this.us_how_get,
-//                 us_best_time: this.us_best_time,
-//                 us_what_need: this.us_what_need,
-//                 us_info: this.us_info,
-//                 us_meta_keyword: this.us_meta_keyword,
-//             })
-//             .then(Response => {
-//                 this.is_us_article_error = false
-//                 this.if_isset_go_beck(this.is_us_article_error)
-//             })
-//             .catch(error =>{
-//                 if (error.response.status == 422) {
-//                     this.us_article_error = error.response.data.errors
-//                 }
-//                 this.is_us_article_error = true
-//             })
-//         },
-//         edit_ka_article() {
-//             axios
-//             .post('/articles/ka/edit/' + this.ka_article_id, {
-//                 ka_title: this.ka_title,
-//                 ka_short_description: this.ka_short_description,
-//                 ka_text: this.ka_text,
-//                 ka_route: this.ka_route,
-//                 ka_how_get: this.ka_how_get,
-//                 ka_best_time: this.ka_best_time,
-//                 ka_what_need: this.ka_what_need,
-//                 ka_info: this.ka_info,
-//                 ka_meta_keyword: this.ka_meta_keyword,
-//             })
-//             .then(Response => {
-//                 this.is_ka_article_error = false
-//                 this.if_isset_go_beck(this.is_ka_article_error)
-//             })
-//             .catch(error =>{
-//                 if (error.response.status == 422) {
-//                     this.ka_article_error = error.response.data.errors
-//                 }
-//                 this.is_ka_article_error = true
-//             })
-//         },
-//         get_mount_massive_data: function(){
-//             axios
-//             .get("/mountaineering/get_mount_data/")
-//             .then(response => {
-//                 this.mount_data = response.data
-//             })
-//             .catch(
-//             error => console.log(error)
-//             );
-//         },
-//         checkForm: function (e) {
-//             var myFormData = new FormData(this.$refs.myForm)
-//             axios({
-//                 method: 'post',
-//                 url: '/articles/update_image/' + this.editing_article_id,
-//                 data: myFormData,
-//                 config: { 
-//                     headers: {'Content-Type': 'multipart/form-data' },
-//                 },
-//             })
-//             .then((response)=>  {
-//                 // this.is_image_succes = 1;
-//                 // alert(response.data.message);
-//             });
-//             // e.preventDefault();
-//         },
-//         upload_region_image: function () {
-//             // var mySectorRegionImageData = new Array(this.$refs.sectorRegionImage)
-//             var mySectorRegionImageData = new FormData(this.$refs.sectorRegionImage)
-//             axios({
-//                 method: 'post',
-//                 url: '/articles/region_sectors_image_update/' + this.editing_article_id,
-//                 data: mySectorRegionImageData,
-//                 config: { 
-//                     headers: {'Content-Type': 'multipart/form-data' },
-//                 },
-//             })
-//             .then((response)=>  {
-//             });
-//         },
-//         upload_mount_route_image: function () {
-//             var myMountRouteImageData = new FormData(this.$refs.mountRouteImage)
-//             axios({
-//                 method: 'post',
-//                 url: '/articles/mount_route_image_update/' + this.editing_article_id,
-//                 data: myMountRouteImageData,
-//                 config: { 
-//                     headers: {'Content-Type': 'multipart/form-data' },
-//                 },
-//             })
-//             .then((response)=>  {
-//             });
-//         },
-//         get_editing_data() {
-//             this.url = this.editing_url + this.editing_article_id
-//             axios
-//             .get(this.url)
-//             .then(response => {
-//                 this.editing_data = response.data
-//                 this.us_article_id = this.editing_data.global_article['us_article_id'],
-//                 this.ru_article_id = this.editing_data.global_article['ru_article_id'],
-//                 this.ka_article_id = this.editing_data.global_article['ka_article_id'],
-//                 // send data in editing form value
-//                 this.published = this.editing_data.global_article['published'],
-//                 this.mount_id = this.editing_data.global_article['mount_id'],
-//                 this.completed = this.editing_data.global_article['completed'],
-//                 this.map = this.editing_data.global_article['map'],
-//                 this.weather = this.editing_data.global_article['weather'],
-//                 this.start_data_day = this.editing_data.global_article['start_data_day'],
-//                 this.end_data_day = this.editing_data.global_article['end_data_day'],
-//                 this.start_data_month = this.editing_data.global_article['start_data_month'],
-//                 this.end_data_month = this.editing_data.global_article['end_data_month'],
-//                 this.fb_link = this.editing_data.global_article['fb_link'],
-//                 this.twit_link = this.editing_data.global_article['twit_link'],
-//                 this.google_link = this.editing_data.global_article['google_link'],
-//                 this.inst_link = this.editing_data.global_article['inst_link'],
-//                 this.web_link = this.editing_data.global_article['web_link'],
-//                 this.us_price_from = this.editing_data.global_article['price_from'],
-//                 this.image_name = this.editing_data.global_article['image'],
-//                 this.region_sectors_image_name = this.editing_data.global_article['climbing_area_image']
-//                 this.mount_route_description_image_name = this.editing_data.global_article['mount_route_image']
-//                 this.price_from = this.editing_data.global_article['price_from']
-//                 this.working_time = this.editing_data.global_article['working_time']
-//                 // 
-//                 // 
-//                 // 
-//                 this.us_title = this.editing_data.us_article['title'],
-//                 this.us_short_description = this.editing_data.us_article['short_description'],
-//                 this.us_text = this.editing_data.us_article['text'],
-//                 this.us_route = this.editing_data.us_article['route'],
-//                 this.us_how_get = this.editing_data.us_article['how_get'],
-//                 this.us_best_time = this.editing_data.us_article['best_time'],
-//                 this.us_what_need = this.editing_data.us_article['what_need'],
-//                 this.us_info = this.editing_data.us_article['info'],
-//                 this.us_meta_keyword = this.editing_data.us_article['meta_keyword'],
-//                 // 
-//                 // 
-//                 // 
-//                 this.ru_title = this.editing_data.ru_article['title'],
-//                 this.ru_short_description = this.editing_data.ru_article['short_description'],
-//                 this.ru_text = this.editing_data.ru_article['text'],
-//                 this.ru_route = this.editing_data.ru_article['route'],
-//                 this.ru_how_get = this.editing_data.ru_article['how_get'],
-//                 this.ru_best_time = this.editing_data.ru_article['best_time'],
-//                 this.ru_what_need = this.editing_data.ru_article['what_need'],
-//                 this.ru_info = this.editing_data.ru_article['info'],
-//                 this.ru_meta_keyword = this.editing_data.ru_article['meta_keyword']
-//                 // 
-//                 // 
-//                 // 
-//                 this.ka_title = this.editing_data.ka_article['title'],
-//                 this.ka_short_description = this.editing_data.ka_article['short_description'],
-//                 this.ka_text = this.editing_data.ka_article['text'],
-//                 this.ka_route = this.editing_data.ka_article['route'],
-//                 this.ka_how_get = this.editing_data.ka_article['how_get'],
-//                 this.ka_best_time = this.editing_data.ka_article['best_time'],
-//                 this.ka_what_need = this.editing_data.ka_article['what_need'],
-//                 this.ka_info = this.editing_data.ka_article['info'],
-//                 this.ka_meta_keyword = this.editing_data.ka_article['meta_keyword']
-//             })
-//             .catch(
-//                 error => console.log(error)
-//             );
-//         },
-//         save_all() {
-//             this.edit_global_article();
-//             this.edit_us_article();
-//             this.edit_ka_article();
-//             this.edit_ru_article();
-//             this.checkForm();
-//             if (this.category == 'outdoor') {
-//                 this.upload_region_image()
-//             }
-//             else if (this.category == 'mount_route') {
-//                 this.upload_mount_route_image()
-//             }
-//         },
-//         if_isset_go_beck() {
-//             if (
-//                 this.is_global_article_error == false &&
-//                 this.is_ka_article_error == false &&
-//                 this.is_ru_article_error == false &&
-//                 this.is_us_article_error == false
-//             ) {
-//                 window.location.href = this.back_url;
-//             }
-//         }
-//     }
-// }
+});
 
 /***/ }),
 
@@ -586,33 +282,19 @@ __webpack_require__.r(__webpack_exports__);
   props: [// 
   ],
   data: function data() {
-    return {// sucses_upload: true
+    return {
+      image: ''
     };
   },
   mounted: function mounted() {// 
   },
   methods: {
-    checkForm: function checkForm() {
-      var _this = this;
-
-      console.log('test');
-      var myFormData = new FormData(this.$refs.myForm);
-      axios({
-        method: 'post',
-        url: '../../api/articles/upload_image/',
-        data: myFormData,
-        config: {
-          headers: {
-            'Content-Type': 'multipart/form-data'
-          }
-        }
-      }).then(function (response) {
-        _this.upload_sucses();
-      });
+    onFileChange: function onFileChange(e) {
+      this.image = e.target.files[0];
+      this.upload_img();
     },
-    upload_sucses: function upload_sucses() {
-      // this.sucses_upload = true
-      this.$emit("sucses_upload", false);
+    upload_img: function upload_img(event) {
+      this.$emit("upload_img", this.image);
     }
   }
 });
@@ -1198,10 +880,6 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
-/* harmony import */ var vue_slicksort__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vue-slicksort */ "./node_modules/vue-slicksort/dist/vue-slicksort.umd.js");
-/* harmony import */ var vue_slicksort__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(vue_slicksort__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var _innologica_vue_stackable_modal__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @innologica/vue-stackable-modal */ "./node_modules/@innologica/vue-stackable-modal/dist/vue-stackable-modal.umd.min.js");
-/* harmony import */ var _innologica_vue_stackable_modal__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_innologica_vue_stackable_modal__WEBPACK_IMPORTED_MODULE_1__);
 //
 //
 //
@@ -1279,57 +957,70 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
-//
-//
-//
-//
-
- //https://innologica.github.io/vue-stackable-modal/#sample-css
-
+// import { SlickList, SlickItem } from 'vue-slicksort';
+// import StackModal from '@innologica/vue-stackable-modal'  //https://innologica.github.io/vue-stackable-modal/#sample-css
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
-  components: {
-    StackModal: (_innologica_vue_stackable_modal__WEBPACK_IMPORTED_MODULE_1___default()),
-    SlickItem: vue_slicksort__WEBPACK_IMPORTED_MODULE_0__.SlickItem,
-    SlickList: vue_slicksort__WEBPACK_IMPORTED_MODULE_0__.SlickList
+  props: [// 'category'
+  ],
+  components: {// StackModal,
+    // SlickItem,
+    // SlickList,
   },
-  props: ['category'],
   data: function data() {
     return {
-      myModal: false,
-      // errors: [],
-      image_errors: [],
-      without_info: false,
-      is_add_image: false,
-      category: this.$route.params.article_category,
-      image_is_refresh: false,
-      image_reset_id: 0
+      mount_route_images: [],
+      mount_route_old_images: []
     };
   },
-  mounted: function mounted() {},
+  mounted: function mounted() {
+    this.get_old_mount_routes_images();
+  },
   methods: {
-    add_image_modal: function add_image_modal() {
-      this.is_add_image = true;
-    },
-    add_image: function add_image() {
+    get_old_mount_routes_images: function get_old_mount_routes_images() {
       var _this = this;
 
-      var myFormData = new FormData(this.$refs.myForm);
-      axios({
-        method: 'post',
-        url: '/gallery/add/',
-        data: myFormData,
-        config: {
-          headers: {
-            'Content-Type': 'multipart/form-data'
-          }
-        }
-      }).then(function (response) {
-        _this.is_add_image = false;
-
-        _this.get_gallery_data();
+      axios.get("../../../api/mount_route/get_mount_routes_images/" + this.$route.params.id).then(function (response) {
+        _this.mount_route_old_images = response.data.mount_route_images;
+      })["catch"](function (error) {
+        return console.log(error);
       });
+    },
+    del_old_mount_routes_image_from_db: function del_old_mount_routes_image_from_db(image_id) {
+      var _this2 = this;
+
+      if (confirm('Are you sure, you want delite this image?')) {
+        axios["delete"]("../../../api/mount_route/del_mount_routes_images/" + image_id).then(function (response) {
+          _this2.get_old_mount_routes_images();
+        })["catch"](function (error) {
+          return console.log(error);
+        });
+      }
+    },
+    onFileChange: function onFileChange(event, item_id) {
+      var image = event.target.files[0];
+      var id = item_id - 1;
+      this.mount_route_images[id]['image'] = image;
+      this.upload_img();
+    },
+    upload_img: function upload_img(event) {
+      this.$emit("upload_img", this.mount_route_images);
+    },
+    add_new_mount_route_image_value: function add_new_mount_route_image_value() {
+      var new_item_id = this.mount_route_images.length + 1;
+      this.mount_route_images.push({
+        id: new_item_id,
+        image: ''
+      });
+    },
+    del_mount_route_image: function del_mount_route_image(id) {
+      this.removeObjectWithId(this.mount_route_images, id);
+    },
+    removeObjectWithId: function removeObjectWithId(arr, id) {
+      var objWithIdIndex = arr.findIndex(function (obj) {
+        return obj.id === id;
+      });
+      arr.splice(objWithIdIndex, 1);
+      return arr;
     }
   }
 });
@@ -1346,10 +1037,6 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
-/* harmony import */ var vue_slicksort__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vue-slicksort */ "./node_modules/vue-slicksort/dist/vue-slicksort.umd.js");
-/* harmony import */ var vue_slicksort__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(vue_slicksort__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var _innologica_vue_stackable_modal__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @innologica/vue-stackable-modal */ "./node_modules/@innologica/vue-stackable-modal/dist/vue-stackable-modal.umd.min.js");
-/* harmony import */ var _innologica_vue_stackable_modal__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_innologica_vue_stackable_modal__WEBPACK_IMPORTED_MODULE_1__);
 //
 //
 //
@@ -1434,109 +1121,70 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-
- //https://innologica.github.io/vue-stackable-modal/#sample-css
-
+// import { SlickList, SlickItem } from 'vue-slicksort';
+// import StackModal from '@innologica/vue-stackable-modal'  //https://innologica.github.io/vue-stackable-modal/#sample-css
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
-  props: ['category'],
-  components: {
-    StackModal: (_innologica_vue_stackable_modal__WEBPACK_IMPORTED_MODULE_1___default()),
-    SlickItem: vue_slicksort__WEBPACK_IMPORTED_MODULE_0__.SlickItem,
-    SlickList: vue_slicksort__WEBPACK_IMPORTED_MODULE_0__.SlickList
+  props: [// 'category'
+  ],
+  components: {// StackModal,
+    // SlickItem,
+    // SlickList,
   },
   data: function data() {
     return {
-      myModal: false,
-      // errors: [],
-      image_errors: [],
-      without_info: false,
-      is_add_image: false,
-      category: this.$route.params.article_category,
-      image_is_refresh: false,
-      image_reset_id: 0
+      sector_images: [],
+      sector_old_images: []
     };
   },
-  mounted: function mounted() {},
+  mounted: function mounted() {
+    this.get_old_sector_images();
+  },
   methods: {
-    add_image_modal: function add_image_modal() {
-      this.is_add_image = true;
+    get_old_sector_images: function get_old_sector_images() {
+      var _this = this;
+
+      axios.get("../../../api/spot_rock_images/get_spot_rock_images/" + this.$route.params.id).then(function (response) {
+        _this.mount_route_old_images = response.data.mount_route_images;
+      })["catch"](function (error) {
+        return console.log(error);
+      });
     },
-    // add_image(){
-    //     var myFormData = new FormData(this.$refs.myForm)
-    //     axios({
-    //         method: 'post',
-    //         url: '/gallery/add/',
-    //         data: myFormData,
-    //         config: { 
-    //             headers: {'Content-Type': 'multipart/form-data' },
-    //         },
-    //     })
-    //     .then((response)=>  {
-    //         this.is_add_image = false
-    //         // this.get_gallery_data()
-    //     });
-    // },
-    add_spot_rock_image: function add_spot_rock_image() {
-      var myFormData = new FormData(this.$refs.myForm);
-      axios({
-        method: 'post',
-        url: '../../api/articles/upload_image/',
-        data: myFormData,
-        config: {
-          headers: {
-            'Content-Type': 'multipart/form-data'
-          }
-        }
-      }).then(function (response) {});
+    del_old_sector_image_from_db: function del_old_sector_image_from_db(image_id) {
+      var _this2 = this;
+
+      if (confirm('Are you sure, you want delite this image?')) {
+        axios["delete"]("../../../api/spot_rock_images/del_spot_rock_images/" + image_id).then(function (response) {
+          _this2.get_old_mount_routes_images();
+        })["catch"](function (error) {
+          return console.log(error);
+        });
+      }
+    },
+    onFileChange: function onFileChange(event, item_id) {
+      var image = event.target.files[0];
+      var id = item_id - 1;
+      this.sector_images[id]['image'] = image;
+      this.upload_img();
+    },
+    upload_img: function upload_img(event) {
+      this.$emit("upload_img", this.sector_images);
+    },
+    add_new_sector_image_value: function add_new_sector_image_value() {
+      var new_item_id = this.sector_images.length + 1;
+      this.sector_images.push({
+        id: new_item_id,
+        image: ''
+      });
+    },
+    del_sector_image: function del_sector_image(id) {
+      this.removeObjectWithId(this.sector_images, id);
+    },
+    removeObjectWithId: function removeObjectWithId(arr, id) {
+      var objWithIdIndex = arr.findIndex(function (obj) {
+        return obj.id === id;
+      });
+      arr.splice(objWithIdIndex, 1);
+      return arr;
     }
   }
 });
@@ -2066,7 +1714,7 @@ var render = function () {
             attrs: { type: "submit" },
             on: {
               click: function ($event) {
-                return _vm.save_all()
+                return _vm.edit_article()
               },
             },
           },
@@ -2167,7 +1815,7 @@ var render = function () {
           ]),
         ]),
         _vm._v(" "),
-        _c("div", { staticClass: "ro" }, [
+        _c("div", { staticClass: "row" }, [
           _vm.ka_article_error.ka_info
             ? _c(
                 "div",
@@ -2195,13 +1843,13 @@ var render = function () {
               expression: "tab_num == 1",
             },
           ],
-          staticClass: "row",
+          staticClass: "col-md-12",
         },
         [
           _c("GlobalDataForm", {
             attrs: {
               global_data: _vm.editing_data.global_article,
-              category: _vm.editing_data.global_article.category,
+              category: this.category,
             },
             on: {
               global_form_data: function ($event) {
@@ -2212,16 +1860,12 @@ var render = function () {
           _vm._v(" "),
           _c("ArticleImage", { ref: "ArticleImage" }),
           _vm._v(" "),
-          _vm.editing_data.global_article.category == "outdoor"
-            ? _c("SectorsImagesForm", {
-                attrs: { category: _vm.editing_data.global_article.category },
-              })
+          this.category == "outdoor"
+            ? _c("SectorsImagesForm", { attrs: { category: this.category } })
             : _vm._e(),
           _vm._v(" "),
-          _vm.editing_data.global_article.category == "mount_route"
-            ? _c("MountRouteImagesForm", {
-                attrs: { category: _vm.editing_data.global_article.category },
-              })
+          this.category == "mount_route"
+            ? _c("MountRouteImagesForm", { attrs: { category: this.category } })
             : _vm._e(),
         ],
         1
@@ -2238,14 +1882,14 @@ var render = function () {
               expression: "tab_num == 2",
             },
           ],
-          staticClass: "row",
+          staticClass: "col-md-12",
         },
         [
           _c("LocaleDataForm", {
             attrs: {
               global_blocks_prop: _vm.global_blocks,
               locale_data: _vm.editing_data.us_article,
-              category: _vm.editing_data.global_article.category,
+              category: this.category,
               title: _vm.$t("user edit en article title"),
               description: _vm.$t("user edit en article description"),
             },
@@ -2271,14 +1915,14 @@ var render = function () {
               expression: "tab_num == 3",
             },
           ],
-          staticClass: "row",
+          staticClass: "col-md-12",
         },
         [
           _c("LocaleDataForm", {
             attrs: {
               global_blocks_prop: _vm.global_blocks,
               locale_data: _vm.editing_data.ka_article,
-              category: _vm.editing_data.global_article.category,
+              category: this.category,
               title: _vm.$t("user edit ka article title"),
               description: _vm.$t("user edit ka article description"),
             },
@@ -2304,14 +1948,14 @@ var render = function () {
               expression: "tab_num == 4",
             },
           ],
-          staticClass: "row",
+          staticClass: "col-md-12",
         },
         [
           _c("LocaleDataForm", {
             attrs: {
               global_blocks_prop: _vm.global_blocks,
               locale_data: _vm.editing_data.ru_article,
-              category: _vm.editing_data.global_article.category,
+              category: this.category,
               title: _vm.$t("user edit ru article title"),
               description: _vm.$t("user edit ru article description"),
             },
@@ -2350,28 +1994,24 @@ var render = function () {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("form", { ref: "myForm", on: { submit: _vm.checkForm } }, [
-    _vm._m(0),
-  ])
-}
-var staticRenderFns = [
-  function () {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "form-group clearfix row" }, [
+  return _c("form", [
+    _c("div", { staticClass: "form-group clearfix row" }, [
       _c(
         "label",
-        { staticClass: "col-md-5 control-label", attrs: { for: "email" } },
+        { staticClass: "col-md-6 control-label", attrs: { for: "email" } },
         [_vm._v("Upload article image:")]
       ),
       _vm._v(" "),
       _c("div", { staticClass: "col-md-6" }, [
-        _c("input", { attrs: { type: "file", name: "image", id: "image" } }),
+        _c("input", {
+          attrs: { type: "file", name: "image", id: "image", required: "" },
+          on: { change: _vm.onFileChange },
+        }),
       ]),
-    ])
-  },
-]
+    ]),
+  ])
+}
+var staticRenderFns = []
 render._withStripped = true
 
 
@@ -3236,7 +2876,7 @@ var render = function () {
                                 key: general_info.id,
                                 domProps: { value: general_info.id },
                               },
-                              [_vm._v(_vm._s(general_info.title_us))]
+                              [_vm._v(_vm._s(general_info.title))]
                             )
                           }),
                           0
@@ -3307,7 +2947,7 @@ var render = function () {
                                 key: general_info.id,
                                 domProps: { value: general_info.id },
                               },
-                              [_vm._v(_vm._s(general_info.title_us))]
+                              [_vm._v(_vm._s(general_info.title))]
                             )
                           }),
                           0
@@ -3496,7 +3136,7 @@ var render = function () {
                                 key: general_info.id,
                                 domProps: { value: general_info.id },
                               },
-                              [_vm._v(_vm._s(general_info.title_us))]
+                              [_vm._v(_vm._s(general_info.title))]
                             )
                           }),
                           0
@@ -3567,7 +3207,7 @@ var render = function () {
                                 key: general_info.id,
                                 domProps: { value: general_info.id },
                               },
-                              [_vm._v(_vm._s(general_info.title_us))]
+                              [_vm._v(_vm._s(general_info.title))]
                             )
                           }),
                           0
@@ -3732,7 +3372,7 @@ var render = function () {
                                 key: general_info.id,
                                 domProps: { value: general_info.id },
                               },
-                              [_vm._v(_vm._s(general_info.title_us))]
+                              [_vm._v(_vm._s(general_info.title))]
                             )
                           }),
                           0
@@ -3803,7 +3443,7 @@ var render = function () {
                                 key: general_info.id,
                                 domProps: { value: general_info.id },
                               },
-                              [_vm._v(_vm._s(general_info.title_us))]
+                              [_vm._v(_vm._s(general_info.title))]
                             )
                           }),
                           0
@@ -3950,7 +3590,7 @@ var render = function () {
                             key: general_info.id,
                             domProps: { value: general_info.id },
                           },
-                          [_vm._v(_vm._s(general_info.title_us))]
+                          [_vm._v(_vm._s(general_info.title))]
                         )
                       }),
                       0
@@ -4021,7 +3661,7 @@ var render = function () {
                             key: general_info.id,
                             domProps: { value: general_info.id },
                           },
-                          [_vm._v(_vm._s(general_info.title_us))]
+                          [_vm._v(_vm._s(general_info.title))]
                         )
                       }),
                       0
@@ -4087,221 +3727,175 @@ var render = function () {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c(
-    "div",
-    { staticClass: "row" },
-    [
-      this.category == "mount_route"
-        ? _c("div", { staticClass: "container" }, [
+  return _c("div", { staticClass: "col-md-12" }, [
+    _c("div", { staticClass: "row" }, [
+      _vm._m(0),
+      _vm._v(" "),
+      _c("div", { staticClass: "col-md-12" }, [
+        _c("div", { staticClass: "row" }, [
+          _c("div", { staticClass: "col-md-12" }, [
             _c(
-              "label",
-              {
-                staticClass: "col-md-12 control-label",
-                attrs: { for: "email" },
-              },
-              [_vm._v("Upload outdoor climbing area mount image:")]
-            ),
-            _vm._v(" "),
-            _c("div", { staticClass: "container" }, [
-              _vm.image_errors.image
-                ? _c(
-                    "div",
-                    {
-                      staticClass: "alert alert-danger",
-                      attrs: { role: "alert" },
-                    },
-                    [
-                      _vm._v(
-                        "\n                " +
-                          _vm._s(_vm.image_errors.image[0]) +
-                          "\n            "
-                      ),
-                    ]
-                  )
-                : _vm._e(),
-              _vm._v(" "),
-              _c("div", { staticClass: "row" }, [
-                _c("div", { staticClass: "form-groupe" }, [
-                  _c(
-                    "button",
-                    {
-                      staticClass: "btn btn-primary mb-4",
-                      on: {
-                        click: function ($event) {
-                          return _vm.add_image_modal()
-                        },
-                      },
-                    },
-                    [_vm._v("Add image")]
-                  ),
-                ]),
+              "table",
+              { staticClass: "table table-hover", attrs: { id: "dev-table" } },
+              [
+                _vm._m(1),
                 _vm._v(" "),
-                _c("div", { staticClass: "form-groupe" }, [
-                  !_vm.image_is_refresh
-                    ? _c(
-                        "button",
-                        {
-                          staticClass: "btn main-btn float-right",
-                          on: {
-                            click: function ($event) {
-                              return _vm.get_spost_mounts_image(
-                                _vm.temporary_spost_mounts_id
-                              )
+                _c(
+                  "tbody",
+                  _vm._l(_vm.mount_route_old_images, function (image) {
+                    return _c("tr", { key: image.id }, [
+                      _c("td", [
+                        _c("img", {
+                          staticClass: "img-responsive",
+                          attrs: {
+                            src:
+                              "../../../../images/suport_local_bisnes_img/" +
+                              image.image,
+                            alt: image.image,
+                          },
+                        }),
+                      ]),
+                      _vm._v(" "),
+                      _c("td", [_vm._v("|")]),
+                      _vm._v(" "),
+                      _c("td", [
+                        _c(
+                          "button",
+                          {
+                            staticClass: "btn btn-danger",
+                            on: {
+                              click: function ($event) {
+                                return _vm.del_old_mount_routes_image_from_db(
+                                  image.id
+                                )
+                              },
                             },
                           },
-                        },
-                        [_vm._v("Refresh (" + _vm._s(_vm.image_reset_id) + ")")]
-                      )
-                    : _vm._e(),
-                  _vm._v(" "),
-                  _vm.image_is_refresh
-                    ? _c(
-                        "span",
-                        { staticClass: "badge badge-primare mb-1 float-right" },
-                        [_vm._v("Updating...")]
-                      )
-                    : _vm._e(),
-                ]),
-              ]),
-              _vm._v(" "),
-              _c("div", { staticClass: "row" }, [
-                _c(
-                  "button",
-                  {
-                    staticClass: "btn btn-secondary float-left",
-                    on: {
-                      click: function ($event) {
-                        return _vm.save_spost_mounts_images_sequence()
-                      },
-                    },
-                  },
-                  [_vm._v("Save spost_mounts images sequence")]
-                ),
-              ]),
-            ]),
-            _vm._v(" "),
-            this.category == "mount_route"
-              ? _c(
-                  "form",
-                  {
-                    ref: "mountRouteImage",
-                    on: { submit: _vm.upload_mount_route_image },
-                  },
-                  [
-                    _c("div", { staticClass: "form-group clearfix" }, [
-                      _vm._m(0),
-                      _vm._v(" "),
-                      _c("div", { staticClass: "row" }, [
-                        _c("div", { staticClass: "col-md-4" }, [
-                          _c("img", {
-                            attrs: {
-                              src:
-                                "/public/images/mount_route_description_img/" +
-                                this.mount_route_description_image_name,
-                              alt: "article image",
-                            },
-                          }),
-                        ]),
+                          [_vm._v("Delete")]
+                        ),
                       ]),
-                    ]),
-                  ]
-                )
-              : _vm._e(),
-          ])
-        : _vm._e(),
-      _vm._v(" "),
-      _c(
-        "stack-modal",
-        {
-          attrs: {
-            show: _vm.is_add_image,
-            title: "Add image",
-            saveButton: {
-              visible: true,
-              title: "Save",
-              btnClass: { "btn btn-primary": true },
-            },
-            cancelButton: {
-              visible: false,
-              title: "Close",
-              btnClass: { "btn btn-danger": true },
-            },
-          },
-          on: {
-            close: function ($event) {
-              _vm.is_add_image = false
-            },
-          },
-        },
-        [
-          _c("pre", { staticClass: "language-vue" }, [
-            _vm._v("            "),
-            _c("form", { ref: "myForm" }, [
-              _vm._v("\n                "),
-              _c("div", { staticClass: "container" }, [
-                _vm._v("\n                    "),
-                _c("div", { staticClass: "form-group clearfix row" }, [
-                  _vm._v("\n                        "),
-                  _c("input", {
-                    attrs: {
-                      type: "file",
-                      name: "image",
-                      id: "image",
-                      value: "image",
-                    },
+                    ])
                   }),
-                  _vm._v("\n                    "),
-                ]),
-                _vm._v("\n                "),
-              ]),
-              _vm._v("\n            "),
-            ]),
-            _vm._v("\n        "),
+                  0
+                ),
+              ]
+            ),
           ]),
-          _vm._v(" "),
-          _c("div", { attrs: { slot: "modal-footer" }, slot: "modal-footer" }, [
-            _c("div", { staticClass: "modal-footer" }, [
-              _c(
-                "button",
-                {
-                  class: { "btn btn-primary": true },
-                  attrs: { type: "button" },
-                  on: {
-                    click: function ($event) {
-                      return _vm.add_image()
-                    },
-                  },
+        ]),
+      ]),
+    ]),
+    _vm._v(" "),
+    _c("div", { staticClass: "row" }, [
+      _c("div", { staticClass: "col-md-12" }, [
+        _c("div", { staticClass: "form-groupe" }, [
+          _c(
+            "button",
+            {
+              staticClass: "btn btn-primary float-left",
+              on: {
+                click: function ($event) {
+                  return _vm.add_new_mount_route_image_value()
                 },
-                [_vm._v("\n                Save\n                ")]
-              ),
-            ]),
-          ]),
-        ]
-      ),
-    ],
-    1
-  )
+              },
+            },
+            [_vm._v("Add new mount route image")]
+          ),
+        ]),
+      ]),
+    ]),
+    _vm._v(" "),
+    _c("div", { staticClass: "row" }, [
+      _c("div", { staticClass: "col-md-12" }, [
+        _c(
+          "table",
+          { staticClass: "table table-hover", attrs: { id: "dev-table" } },
+          [
+            _vm._m(2),
+            _vm._v(" "),
+            _c(
+              "tbody",
+              _vm._l(_vm.mount_route_images, function (mount_route_image) {
+                return _c("tr", { key: mount_route_image.id }, [
+                  _c("td", [
+                    _c("form", { ref: "myForm", refInFor: true }, [
+                      _c("input", {
+                        attrs: { type: "file", name: "image", id: "image" },
+                        on: {
+                          change: function ($event) {
+                            return _vm.onFileChange(
+                              $event,
+                              mount_route_image.id
+                            )
+                          },
+                        },
+                      }),
+                    ]),
+                  ]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("|")]),
+                  _vm._v(" "),
+                  _c("td", [
+                    _c(
+                      "button",
+                      {
+                        staticClass: "btn btn-danger",
+                        on: {
+                          click: function ($event) {
+                            return _vm.del_mount_route_image(
+                              mount_route_image.id
+                            )
+                          },
+                        },
+                      },
+                      [_vm._v("Delete")]
+                    ),
+                  ]),
+                ])
+              }),
+              0
+            ),
+          ]
+        ),
+      ]),
+    ]),
+  ])
 }
 var staticRenderFns = [
   function () {
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "row" }, [
-      _c(
-        "label",
-        { staticClass: "col-md-5 control-label", attrs: { for: "email" } },
-        [_vm._v("Update mount route image:")]
-      ),
-      _vm._v(" "),
-      _c("div", { staticClass: "col-md-4" }, [
-        _c("input", {
-          attrs: {
-            type: "file",
-            name: "mount_route_img",
-            id: "mount_route_img",
-          },
-        }),
+    return _c("div", { staticClass: "col-md-12" }, [
+      _c("div", { staticClass: "row" }, [
+        _vm._v("\n                Olredy added\n            "),
+      ]),
+    ])
+  },
+  function () {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("thead", [
+      _c("tr", [
+        _c("th", [_vm._v("Image")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("|")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Delite")]),
+      ]),
+    ])
+  },
+  function () {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("thead", [
+      _c("tr", [
+        _c("th", [_vm._v("Image")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("|")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Delite")]),
       ]),
     ])
   },
@@ -4327,234 +3921,169 @@ var render = function () {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c(
-    "div",
-    { staticClass: "row" },
-    [
-      this.category == "outdoor"
-        ? _c("div", { staticClass: "container" }, [
+  return _c("div", { staticClass: "col-md-12" }, [
+    _c("div", { staticClass: "row" }, [
+      _vm._m(0),
+      _vm._v(" "),
+      _c("div", { staticClass: "col-md-12" }, [
+        _c("div", { staticClass: "row" }, [
+          _c("div", { staticClass: "col-md-12" }, [
             _c(
-              "label",
-              {
-                staticClass: "col-md-12 control-label",
-                attrs: { for: "email" },
-              },
-              [_vm._v("Upload outdoor climbing area sector image:")]
-            ),
-            _vm._v(" "),
-            _c("div", { staticClass: "container" }, [
-              _vm.image_errors.image
-                ? _c(
-                    "div",
-                    {
-                      staticClass: "alert alert-danger",
-                      attrs: { role: "alert" },
-                    },
-                    [
-                      _vm._v(
-                        "\n                " +
-                          _vm._s(_vm.image_errors.image[0]) +
-                          "\n            "
-                      ),
-                    ]
-                  )
-                : _vm._e(),
-              _vm._v(" "),
-              _c("div", { staticClass: "row" }, [
-                _c("div", { staticClass: "form-groupe" }, [
-                  _c(
-                    "button",
-                    {
-                      staticClass: "btn btn-primary mb-4",
-                      on: {
-                        click: function ($event) {
-                          return _vm.add_image_modal()
-                        },
-                      },
-                    },
-                    [_vm._v("Add image")]
-                  ),
-                ]),
+              "table",
+              { staticClass: "table table-hover", attrs: { id: "dev-table" } },
+              [
+                _vm._m(1),
                 _vm._v(" "),
-                _c("div", { staticClass: "form-groupe" }, [
-                  !_vm.image_is_refresh
-                    ? _c(
-                        "button",
-                        {
-                          staticClass: "btn main-btn float-right",
-                          on: {
-                            click: function ($event) {
-                              return _vm.get_spost_sectors_image(
-                                _vm.temporary_spost_sectors_id
-                              )
+                _c(
+                  "tbody",
+                  _vm._l(_vm.sector_old_images, function (image) {
+                    return _c("tr", { key: image.id }, [
+                      _c("td", [
+                        _c("img", {
+                          staticClass: "img-responsive",
+                          attrs: {
+                            src:
+                              "../../../../images/spot_rock_img/" + image.image,
+                            alt: image.image,
+                          },
+                        }),
+                      ]),
+                      _vm._v(" "),
+                      _c("td", [_vm._v("|")]),
+                      _vm._v(" "),
+                      _c("td", [
+                        _c(
+                          "button",
+                          {
+                            staticClass: "btn btn-danger",
+                            on: {
+                              click: function ($event) {
+                                return _vm.del_old_sector_image_from_db(
+                                  image.id
+                                )
+                              },
                             },
                           },
-                        },
-                        [_vm._v("Refresh (" + _vm._s(_vm.image_reset_id) + ")")]
-                      )
-                    : _vm._e(),
-                  _vm._v(" "),
-                  _vm.image_is_refresh
-                    ? _c(
-                        "span",
-                        { staticClass: "badge badge-primare mb-1 float-right" },
-                        [_vm._v("Updating...")]
-                      )
-                    : _vm._e(),
-                ]),
-              ]),
-              _vm._v(" "),
-              _c("div", { staticClass: "row" }, [
-                _c(
-                  "button",
-                  {
-                    staticClass: "btn btn-secondary float-left",
-                    on: {
-                      click: function ($event) {
-                        return _vm.save_spost_sectors_images_sequence()
-                      },
-                    },
-                  },
-                  [_vm._v("Save spost_sectors images sequence")]
-                ),
-              ]),
-            ]),
-            _vm._v(" "),
-            this.category == "outdoor"
-              ? _c(
-                  "form",
-                  {
-                    ref: "sectorRegionImage",
-                    on: { submit: _vm.upload_region_image },
-                  },
-                  [
-                    _c("div", { staticClass: "form-group clearfix" }, [
-                      _vm._m(0),
-                      _vm._v(" "),
-                      _c("div", { staticClass: "row" }, [
-                        _c("div", { staticClass: "col-md-4" }, [
-                          _c("img", {
-                            attrs: {
-                              src:
-                                "/public/images/region_sectors_img/" +
-                                this.region_sectors_image_name,
-                              alt: "article image",
-                            },
-                          }),
-                        ]),
+                          [_vm._v("Delete")]
+                        ),
                       ]),
-                    ]),
-                  ]
-                )
-              : _vm._e(),
-          ])
-        : _vm._e(),
-      _vm._v(" "),
-      _c(
-        "stack-modal",
-        {
-          attrs: {
-            show: _vm.is_add_image,
-            title: "Add image",
-            saveButton: {
-              visible: true,
-              title: "Save",
-              btnClass: { "btn btn-primary": true },
-            },
-            cancelButton: {
-              visible: false,
-              title: "Close",
-              btnClass: { "btn btn-danger": true },
-            },
-          },
-          on: {
-            close: function ($event) {
-              _vm.is_add_image = false
-            },
-          },
-        },
-        [
-          _c("pre", { staticClass: "language-vue" }, [
-            _vm._v("            "),
-            _c("form", { ref: "myForm" }, [
-              _vm._v("\n                "),
-              _c("div", { staticClass: "container" }, [
-                _vm._v("\n                    "),
-                _c("div", { staticClass: "form-group col-md-12" }, [
-                  _vm._v("\n                        "),
-                  _c("div", { staticClass: "row" }, [
-                    _vm._v("\n                            "),
-                    _c("label", { attrs: { for: "image" } }, [
-                      _vm._v("Add Spot Image:"),
-                    ]),
-                    _vm._v("\n                        "),
-                  ]),
-                  _vm._v("\n                        "),
-                  _c("div", { staticClass: "row" }, [
-                    _vm._v("\n                            "),
-                    _c("input", {
-                      attrs: {
-                        type: "file",
-                        name: "image",
-                        id: "image",
-                        value: "image",
-                      },
-                    }),
-                    _vm._v("\n                        "),
-                  ]),
-                  _vm._v("\n                    "),
-                ]),
-                _vm._v("\n                "),
-              ]),
-              _vm._v("\n            "),
-            ]),
-            _vm._v("\n\n            "),
-            _vm._v("\n        "),
+                    ])
+                  }),
+                  0
+                ),
+              ]
+            ),
           ]),
-          _vm._v(" "),
-          _c("div", { attrs: { slot: "modal-footer" }, slot: "modal-footer" }, [
-            _c("div", { staticClass: "modal-footer" }, [
-              _c(
-                "button",
-                {
-                  class: { "btn btn-primary": true },
-                  attrs: { type: "button" },
-                  on: {
-                    click: function ($event) {
-                      return _vm.add_spot_rock_image()
-                    },
-                  },
+        ]),
+      ]),
+    ]),
+    _vm._v(" "),
+    _c("div", { staticClass: "row" }, [
+      _c("div", { staticClass: "col-md-12" }, [
+        _c("div", { staticClass: "form-groupe" }, [
+          _c(
+            "button",
+            {
+              staticClass: "btn btn-primary float-left",
+              on: {
+                click: function ($event) {
+                  return _vm.add_new_sector_image_value()
                 },
-                [_vm._v("\n                Save\n                ")]
-              ),
-            ]),
-          ]),
-        ]
-      ),
-    ],
-    1
-  )
+              },
+            },
+            [_vm._v("Add new sector image")]
+          ),
+        ]),
+      ]),
+    ]),
+    _vm._v(" "),
+    _c("div", { staticClass: "row" }, [
+      _c("div", { staticClass: "col-md-12" }, [
+        _c(
+          "table",
+          { staticClass: "table table-hover", attrs: { id: "dev-table" } },
+          [
+            _vm._m(2),
+            _vm._v(" "),
+            _c(
+              "tbody",
+              _vm._l(_vm.sector_images, function (sector_image) {
+                return _c("tr", { key: sector_image.id }, [
+                  _c("td", [
+                    _c("form", { ref: "myForm", refInFor: true }, [
+                      _c("input", {
+                        attrs: { type: "file", name: "image", id: "image" },
+                        on: {
+                          change: function ($event) {
+                            return _vm.onFileChange($event, sector_image.id)
+                          },
+                        },
+                      }),
+                    ]),
+                  ]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("|")]),
+                  _vm._v(" "),
+                  _c("td", [
+                    _c(
+                      "button",
+                      {
+                        staticClass: "btn btn-danger",
+                        on: {
+                          click: function ($event) {
+                            return _vm.del_sector_image(sector_image.id)
+                          },
+                        },
+                      },
+                      [_vm._v("Delete")]
+                    ),
+                  ]),
+                ])
+              }),
+              0
+            ),
+          ]
+        ),
+      ]),
+    ]),
+  ])
 }
 var staticRenderFns = [
   function () {
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "row" }, [
-      _c(
-        "label",
-        { staticClass: "col-md-5 control-label", attrs: { for: "email" } },
-        [_vm._v("Update outdoor climbing area sector image:")]
-      ),
-      _vm._v(" "),
-      _c("div", { staticClass: "col-md-4" }, [
-        _c("input", {
-          attrs: {
-            type: "file",
-            name: "region_sectors_img",
-            id: "region_sectors_img",
-          },
-        }),
+    return _c("div", { staticClass: "col-md-12" }, [
+      _c("div", { staticClass: "row" }, [
+        _vm._v("\n                Olredy added\n            "),
+      ]),
+    ])
+  },
+  function () {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("thead", [
+      _c("tr", [
+        _c("th", [_vm._v("Image")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("|")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Delite")]),
+      ]),
+    ])
+  },
+  function () {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("thead", [
+      _c("tr", [
+        _c("th", [_vm._v("Image")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("|")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Delite")]),
       ]),
     ])
   },

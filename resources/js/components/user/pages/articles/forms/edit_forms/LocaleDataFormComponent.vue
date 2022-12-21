@@ -67,7 +67,7 @@
                         <div class="col-md-10">
                             <div class="col-md-12" v-if="global_blocks.routes_info == 'befor'" >
                                 <select class="form-control"  v-model="global_blocks.routes_info_id" > 
-                                    <option v-for="general_info in general_infos" :key="general_info.id" :value="general_info.id">{{ general_info.title_us }}</option>
+                                    <option v-for="general_info in general_infos" :key="general_info.id" :value="general_info.id">{{ general_info.title }}</option>
                                 </select> 
                             </div>
                         
@@ -77,7 +77,7 @@
 
                             <div class="col-md-12" v-if="global_blocks.routes_info == 'after' || global_blocks.routes_info == 'instead'">
                                 <select class="form-control"  v-model="global_blocks.routes_info_id" > 
-                                    <option v-for="general_info in general_infos" :key="general_info.id" :value="general_info.id">{{ general_info.title_us }}</option>
+                                    <option v-for="general_info in general_infos" :key="general_info.id" :value="general_info.id">{{ general_info.title }}</option>
                                 </select> 
                             </div>
                         </div>
@@ -120,7 +120,7 @@
                         <div class="col-md-10">
                             <div class="col-md-12" v-if="global_blocks.best_time == 'befor'">
                                 <select class="form-control"  v-model="global_blocks.best_time_id" >
-                                    <option v-for="general_info in general_infos" :key="general_info.id" :value="general_info.id">{{ general_info.title_us }}</option>
+                                    <option v-for="general_info in general_infos" :key="general_info.id" :value="general_info.id">{{ general_info.title }}</option>
                                 </select> 
                             </div>
                         
@@ -130,7 +130,7 @@
 
                             <div class="col-md-12" v-if="global_blocks.best_time == 'after' || global_blocks.best_time == 'instead'">
                                 <select class="form-control"  v-model="global_blocks.best_time_id" >
-                                    <option v-for="general_info in general_infos" :key="general_info.id" :value="general_info.id">{{ general_info.title_us }}</option>
+                                    <option v-for="general_info in general_infos" :key="general_info.id" :value="general_info.id">{{ general_info.title }}</option>
                                 </select> 
                             </div>
                         </div>
@@ -165,7 +165,7 @@
                         <div class="col-md-10">
                             <div class="col-md-12" v-if="global_blocks.what_need_info == 'befor'">
                                 <select class="form-control"  v-model="global_blocks.what_need_info_id" > 
-                                    <option v-for="general_info in general_infos" :key="general_info.id" :value="general_info.id">{{ general_info.title_us }}</option>
+                                    <option v-for="general_info in general_infos" :key="general_info.id" :value="general_info.id">{{ general_info.title }}</option>
                                 </select> 
                             </div>
                         
@@ -175,7 +175,7 @@
 
                             <div class="col-md-12" v-if="global_blocks.what_need_info == 'after' || global_blocks.what_need_info == 'instead'">
                                 <select class="form-control"  v-model="global_blocks.what_need_info_id" > 
-                                    <option v-for="general_info in general_infos" :key="general_info.id" :value="general_info.id">{{ general_info.title_us }}</option>
+                                    <option v-for="general_info in general_infos" :key="general_info.id" :value="general_info.id">{{ general_info.title }}</option>
                                 </select> 
                             </div>
                         </div>
@@ -209,7 +209,7 @@
                         <div class="col-md-10">
                             <div class="col-md-12" v-if="global_blocks.info_block == 'befor'">
                                 <select v-model="global_blocks.info_block_id"  class="form-control"> 
-                                    <option v-for="general_info in general_infos" :key="general_info.id" :value="general_info.id">{{ general_info.title_us }}</option>
+                                    <option v-for="general_info in general_infos" :key="general_info.id" :value="general_info.id">{{ general_info.title }}</option>
                                 </select> 
                             </div>
                         
@@ -219,7 +219,7 @@
 
                             <div class="col-md-12" v-if="global_blocks.info_block == 'after' || global_blocks.info_block == 'instead'">
                                 <select v-model="global_blocks.info_block_id"  class="form-control"> 
-                                    <option v-for="general_info in general_infos" :key="general_info.id" :value="general_info.id">{{ general_info.title_us }}</option>
+                                    <option v-for="general_info in general_infos" :key="general_info.id" :value="general_info.id">{{ general_info.title }}</option>
                                 </select> 
                             </div>
                         </div>

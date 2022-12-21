@@ -641,7 +641,7 @@ var render = function () {
                                 key: general_info.id,
                                 domProps: { value: general_info.id },
                               },
-                              [_vm._v(_vm._s(general_info.title_us))]
+                              [_vm._v(_vm._s(general_info.title))]
                             )
                           }),
                           0
@@ -712,7 +712,7 @@ var render = function () {
                                 key: general_info.id,
                                 domProps: { value: general_info.id },
                               },
-                              [_vm._v(_vm._s(general_info.title_us))]
+                              [_vm._v(_vm._s(general_info.title))]
                             )
                           }),
                           0
@@ -901,7 +901,7 @@ var render = function () {
                                 key: general_info.id,
                                 domProps: { value: general_info.id },
                               },
-                              [_vm._v(_vm._s(general_info.title_us))]
+                              [_vm._v(_vm._s(general_info.title))]
                             )
                           }),
                           0
@@ -972,7 +972,7 @@ var render = function () {
                                 key: general_info.id,
                                 domProps: { value: general_info.id },
                               },
-                              [_vm._v(_vm._s(general_info.title_us))]
+                              [_vm._v(_vm._s(general_info.title))]
                             )
                           }),
                           0
@@ -1137,7 +1137,7 @@ var render = function () {
                                 key: general_info.id,
                                 domProps: { value: general_info.id },
                               },
-                              [_vm._v(_vm._s(general_info.title_us))]
+                              [_vm._v(_vm._s(general_info.title))]
                             )
                           }),
                           0
@@ -1208,7 +1208,7 @@ var render = function () {
                                 key: general_info.id,
                                 domProps: { value: general_info.id },
                               },
-                              [_vm._v(_vm._s(general_info.title_us))]
+                              [_vm._v(_vm._s(general_info.title))]
                             )
                           }),
                           0
@@ -1355,7 +1355,7 @@ var render = function () {
                             key: general_info.id,
                             domProps: { value: general_info.id },
                           },
-                          [_vm._v(_vm._s(general_info.title_us))]
+                          [_vm._v(_vm._s(general_info.title))]
                         )
                       }),
                       0
@@ -1426,7 +1426,7 @@ var render = function () {
                             key: general_info.id,
                             domProps: { value: general_info.id },
                           },
-                          [_vm._v(_vm._s(general_info.title_us))]
+                          [_vm._v(_vm._s(general_info.title))]
                         )
                       }),
                       0

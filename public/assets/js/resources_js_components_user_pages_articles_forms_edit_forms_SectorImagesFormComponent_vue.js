@@ -11,10 +11,6 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
-/* harmony import */ var vue_slicksort__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vue-slicksort */ "./node_modules/vue-slicksort/dist/vue-slicksort.umd.js");
-/* harmony import */ var vue_slicksort__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(vue_slicksort__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var _innologica_vue_stackable_modal__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @innologica/vue-stackable-modal */ "./node_modules/@innologica/vue-stackable-modal/dist/vue-stackable-modal.umd.min.js");
-/* harmony import */ var _innologica_vue_stackable_modal__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_innologica_vue_stackable_modal__WEBPACK_IMPORTED_MODULE_1__);
 //
 //
 //
@@ -99,109 +95,70 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-
- //https://innologica.github.io/vue-stackable-modal/#sample-css
-
+// import { SlickList, SlickItem } from 'vue-slicksort';
+// import StackModal from '@innologica/vue-stackable-modal'  //https://innologica.github.io/vue-stackable-modal/#sample-css
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
-  props: ['category'],
-  components: {
-    StackModal: (_innologica_vue_stackable_modal__WEBPACK_IMPORTED_MODULE_1___default()),
-    SlickItem: vue_slicksort__WEBPACK_IMPORTED_MODULE_0__.SlickItem,
-    SlickList: vue_slicksort__WEBPACK_IMPORTED_MODULE_0__.SlickList
+  props: [// 'category'
+  ],
+  components: {// StackModal,
+    // SlickItem,
+    // SlickList,
   },
   data: function data() {
     return {
-      myModal: false,
-      // errors: [],
-      image_errors: [],
-      without_info: false,
-      is_add_image: false,
-      category: this.$route.params.article_category,
-      image_is_refresh: false,
-      image_reset_id: 0
+      sector_images: [],
+      sector_old_images: []
     };
   },
-  mounted: function mounted() {},
+  mounted: function mounted() {
+    this.get_old_sector_images();
+  },
   methods: {
-    add_image_modal: function add_image_modal() {
-      this.is_add_image = true;
+    get_old_sector_images: function get_old_sector_images() {
+      var _this = this;
+
+      axios.get("../../../api/spot_rock_images/get_spot_rock_images/" + this.$route.params.id).then(function (response) {
+        _this.mount_route_old_images = response.data.mount_route_images;
+      })["catch"](function (error) {
+        return console.log(error);
+      });
     },
-    // add_image(){
-    //     var myFormData = new FormData(this.$refs.myForm)
-    //     axios({
-    //         method: 'post',
-    //         url: '/gallery/add/',
-    //         data: myFormData,
-    //         config: { 
-    //             headers: {'Content-Type': 'multipart/form-data' },
-    //         },
-    //     })
-    //     .then((response)=>  {
-    //         this.is_add_image = false
-    //         // this.get_gallery_data()
-    //     });
-    // },
-    add_spot_rock_image: function add_spot_rock_image() {
-      var myFormData = new FormData(this.$refs.myForm);
-      axios({
-        method: 'post',
-        url: '../../api/articles/upload_image/',
-        data: myFormData,
-        config: {
-          headers: {
-            'Content-Type': 'multipart/form-data'
-          }
-        }
-      }).then(function (response) {});
+    del_old_sector_image_from_db: function del_old_sector_image_from_db(image_id) {
+      var _this2 = this;
+
+      if (confirm('Are you sure, you want delite this image?')) {
+        axios["delete"]("../../../api/spot_rock_images/del_spot_rock_images/" + image_id).then(function (response) {
+          _this2.get_old_mount_routes_images();
+        })["catch"](function (error) {
+          return console.log(error);
+        });
+      }
+    },
+    onFileChange: function onFileChange(event, item_id) {
+      var image = event.target.files[0];
+      var id = item_id - 1;
+      this.sector_images[id]['image'] = image;
+      this.upload_img();
+    },
+    upload_img: function upload_img(event) {
+      this.$emit("upload_img", this.sector_images);
+    },
+    add_new_sector_image_value: function add_new_sector_image_value() {
+      var new_item_id = this.sector_images.length + 1;
+      this.sector_images.push({
+        id: new_item_id,
+        image: ''
+      });
+    },
+    del_sector_image: function del_sector_image(id) {
+      this.removeObjectWithId(this.sector_images, id);
+    },
+    removeObjectWithId: function removeObjectWithId(arr, id) {
+      var objWithIdIndex = arr.findIndex(function (obj) {
+        return obj.id === id;
+      });
+      arr.splice(objWithIdIndex, 1);
+      return arr;
     }
   }
 });
@@ -292,234 +249,169 @@ var render = function () {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c(
-    "div",
-    { staticClass: "row" },
-    [
-      this.category == "outdoor"
-        ? _c("div", { staticClass: "container" }, [
+  return _c("div", { staticClass: "col-md-12" }, [
+    _c("div", { staticClass: "row" }, [
+      _vm._m(0),
+      _vm._v(" "),
+      _c("div", { staticClass: "col-md-12" }, [
+        _c("div", { staticClass: "row" }, [
+          _c("div", { staticClass: "col-md-12" }, [
             _c(
-              "label",
-              {
-                staticClass: "col-md-12 control-label",
-                attrs: { for: "email" },
-              },
-              [_vm._v("Upload outdoor climbing area sector image:")]
-            ),
-            _vm._v(" "),
-            _c("div", { staticClass: "container" }, [
-              _vm.image_errors.image
-                ? _c(
-                    "div",
-                    {
-                      staticClass: "alert alert-danger",
-                      attrs: { role: "alert" },
-                    },
-                    [
-                      _vm._v(
-                        "\n                " +
-                          _vm._s(_vm.image_errors.image[0]) +
-                          "\n            "
-                      ),
-                    ]
-                  )
-                : _vm._e(),
-              _vm._v(" "),
-              _c("div", { staticClass: "row" }, [
-                _c("div", { staticClass: "form-groupe" }, [
-                  _c(
-                    "button",
-                    {
-                      staticClass: "btn btn-primary mb-4",
-                      on: {
-                        click: function ($event) {
-                          return _vm.add_image_modal()
-                        },
-                      },
-                    },
-                    [_vm._v("Add image")]
-                  ),
-                ]),
+              "table",
+              { staticClass: "table table-hover", attrs: { id: "dev-table" } },
+              [
+                _vm._m(1),
                 _vm._v(" "),
-                _c("div", { staticClass: "form-groupe" }, [
-                  !_vm.image_is_refresh
-                    ? _c(
-                        "button",
-                        {
-                          staticClass: "btn main-btn float-right",
-                          on: {
-                            click: function ($event) {
-                              return _vm.get_spost_sectors_image(
-                                _vm.temporary_spost_sectors_id
-                              )
+                _c(
+                  "tbody",
+                  _vm._l(_vm.sector_old_images, function (image) {
+                    return _c("tr", { key: image.id }, [
+                      _c("td", [
+                        _c("img", {
+                          staticClass: "img-responsive",
+                          attrs: {
+                            src:
+                              "../../../../images/spot_rock_img/" + image.image,
+                            alt: image.image,
+                          },
+                        }),
+                      ]),
+                      _vm._v(" "),
+                      _c("td", [_vm._v("|")]),
+                      _vm._v(" "),
+                      _c("td", [
+                        _c(
+                          "button",
+                          {
+                            staticClass: "btn btn-danger",
+                            on: {
+                              click: function ($event) {
+                                return _vm.del_old_sector_image_from_db(
+                                  image.id
+                                )
+                              },
                             },
                           },
-                        },
-                        [_vm._v("Refresh (" + _vm._s(_vm.image_reset_id) + ")")]
-                      )
-                    : _vm._e(),
-                  _vm._v(" "),
-                  _vm.image_is_refresh
-                    ? _c(
-                        "span",
-                        { staticClass: "badge badge-primare mb-1 float-right" },
-                        [_vm._v("Updating...")]
-                      )
-                    : _vm._e(),
-                ]),
-              ]),
-              _vm._v(" "),
-              _c("div", { staticClass: "row" }, [
-                _c(
-                  "button",
-                  {
-                    staticClass: "btn btn-secondary float-left",
-                    on: {
-                      click: function ($event) {
-                        return _vm.save_spost_sectors_images_sequence()
-                      },
-                    },
-                  },
-                  [_vm._v("Save spost_sectors images sequence")]
-                ),
-              ]),
-            ]),
-            _vm._v(" "),
-            this.category == "outdoor"
-              ? _c(
-                  "form",
-                  {
-                    ref: "sectorRegionImage",
-                    on: { submit: _vm.upload_region_image },
-                  },
-                  [
-                    _c("div", { staticClass: "form-group clearfix" }, [
-                      _vm._m(0),
-                      _vm._v(" "),
-                      _c("div", { staticClass: "row" }, [
-                        _c("div", { staticClass: "col-md-4" }, [
-                          _c("img", {
-                            attrs: {
-                              src:
-                                "/public/images/region_sectors_img/" +
-                                this.region_sectors_image_name,
-                              alt: "article image",
-                            },
-                          }),
-                        ]),
+                          [_vm._v("Delete")]
+                        ),
                       ]),
-                    ]),
-                  ]
-                )
-              : _vm._e(),
-          ])
-        : _vm._e(),
-      _vm._v(" "),
-      _c(
-        "stack-modal",
-        {
-          attrs: {
-            show: _vm.is_add_image,
-            title: "Add image",
-            saveButton: {
-              visible: true,
-              title: "Save",
-              btnClass: { "btn btn-primary": true },
-            },
-            cancelButton: {
-              visible: false,
-              title: "Close",
-              btnClass: { "btn btn-danger": true },
-            },
-          },
-          on: {
-            close: function ($event) {
-              _vm.is_add_image = false
-            },
-          },
-        },
-        [
-          _c("pre", { staticClass: "language-vue" }, [
-            _vm._v("            "),
-            _c("form", { ref: "myForm" }, [
-              _vm._v("\n                "),
-              _c("div", { staticClass: "container" }, [
-                _vm._v("\n                    "),
-                _c("div", { staticClass: "form-group col-md-12" }, [
-                  _vm._v("\n                        "),
-                  _c("div", { staticClass: "row" }, [
-                    _vm._v("\n                            "),
-                    _c("label", { attrs: { for: "image" } }, [
-                      _vm._v("Add Spot Image:"),
-                    ]),
-                    _vm._v("\n                        "),
-                  ]),
-                  _vm._v("\n                        "),
-                  _c("div", { staticClass: "row" }, [
-                    _vm._v("\n                            "),
-                    _c("input", {
-                      attrs: {
-                        type: "file",
-                        name: "image",
-                        id: "image",
-                        value: "image",
-                      },
-                    }),
-                    _vm._v("\n                        "),
-                  ]),
-                  _vm._v("\n                    "),
-                ]),
-                _vm._v("\n                "),
-              ]),
-              _vm._v("\n            "),
-            ]),
-            _vm._v("\n\n            "),
-            _vm._v("\n        "),
+                    ])
+                  }),
+                  0
+                ),
+              ]
+            ),
           ]),
-          _vm._v(" "),
-          _c("div", { attrs: { slot: "modal-footer" }, slot: "modal-footer" }, [
-            _c("div", { staticClass: "modal-footer" }, [
-              _c(
-                "button",
-                {
-                  class: { "btn btn-primary": true },
-                  attrs: { type: "button" },
-                  on: {
-                    click: function ($event) {
-                      return _vm.add_spot_rock_image()
-                    },
-                  },
+        ]),
+      ]),
+    ]),
+    _vm._v(" "),
+    _c("div", { staticClass: "row" }, [
+      _c("div", { staticClass: "col-md-12" }, [
+        _c("div", { staticClass: "form-groupe" }, [
+          _c(
+            "button",
+            {
+              staticClass: "btn btn-primary float-left",
+              on: {
+                click: function ($event) {
+                  return _vm.add_new_sector_image_value()
                 },
-                [_vm._v("\n                Save\n                ")]
-              ),
-            ]),
-          ]),
-        ]
-      ),
-    ],
-    1
-  )
+              },
+            },
+            [_vm._v("Add new sector image")]
+          ),
+        ]),
+      ]),
+    ]),
+    _vm._v(" "),
+    _c("div", { staticClass: "row" }, [
+      _c("div", { staticClass: "col-md-12" }, [
+        _c(
+          "table",
+          { staticClass: "table table-hover", attrs: { id: "dev-table" } },
+          [
+            _vm._m(2),
+            _vm._v(" "),
+            _c(
+              "tbody",
+              _vm._l(_vm.sector_images, function (sector_image) {
+                return _c("tr", { key: sector_image.id }, [
+                  _c("td", [
+                    _c("form", { ref: "myForm", refInFor: true }, [
+                      _c("input", {
+                        attrs: { type: "file", name: "image", id: "image" },
+                        on: {
+                          change: function ($event) {
+                            return _vm.onFileChange($event, sector_image.id)
+                          },
+                        },
+                      }),
+                    ]),
+                  ]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("|")]),
+                  _vm._v(" "),
+                  _c("td", [
+                    _c(
+                      "button",
+                      {
+                        staticClass: "btn btn-danger",
+                        on: {
+                          click: function ($event) {
+                            return _vm.del_sector_image(sector_image.id)
+                          },
+                        },
+                      },
+                      [_vm._v("Delete")]
+                    ),
+                  ]),
+                ])
+              }),
+              0
+            ),
+          ]
+        ),
+      ]),
+    ]),
+  ])
 }
 var staticRenderFns = [
   function () {
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "row" }, [
-      _c(
-        "label",
-        { staticClass: "col-md-5 control-label", attrs: { for: "email" } },
-        [_vm._v("Update outdoor climbing area sector image:")]
-      ),
-      _vm._v(" "),
-      _c("div", { staticClass: "col-md-4" }, [
-        _c("input", {
-          attrs: {
-            type: "file",
-            name: "region_sectors_img",
-            id: "region_sectors_img",
-          },
-        }),
+    return _c("div", { staticClass: "col-md-12" }, [
+      _c("div", { staticClass: "row" }, [
+        _vm._v("\n                Olredy added\n            "),
+      ]),
+    ])
+  },
+  function () {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("thead", [
+      _c("tr", [
+        _c("th", [_vm._v("Image")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("|")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Delite")]),
+      ]),
+    ])
+  },
+  function () {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("thead", [
+      _c("tr", [
+        _c("th", [_vm._v("Image")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("|")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Delite")]),
       ]),
     ])
   },
