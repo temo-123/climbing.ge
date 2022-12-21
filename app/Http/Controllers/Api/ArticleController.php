@@ -34,7 +34,7 @@ use App\Models\Region;
 use App\Models\Article_mount;
 use App\Models\Article_region;
 
-// use App\Models\Interested_event;
+use App\Models\Suport_local_bisnes;
 // use App\Models\Favorite_outdoor_area;
 
 use Auth;
@@ -419,6 +419,19 @@ class ArticleController extends Controller
                 return 'Upload error';
             }
         }
+    }
+
+    public function get_article_on_bisnes_page(Request $request)
+    {
+        $bisnes = Suport_local_bisnes::where('url_title', '=', $request->bisnes_url_title)->first();
+
+        $article_count =Article::where('id', '=', $bisnes->article_id)->where('published', '=', 1)->count();
+        $articles = [];
+        if($article_count > 0){
+            $global_articles = Article::where('id', '=', $bisnes->article_id)->where('published', '=', 1)->get();
+            $articles = GetArticlesService::get_locale_article_use_locale($global_articles, $request->lang);
+        }
+        return $articles;
     }
 
     public function add_mount_route_images($images, $article_id)

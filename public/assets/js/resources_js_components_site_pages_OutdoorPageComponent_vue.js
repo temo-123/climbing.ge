@@ -1001,11 +1001,18 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   name: "Article Right Navigation Menu",
   data: function data() {
     return {
-      right_navbar_class: ''
+      right_navbar_class: '',
+      local_bisnes: {
+        image: '',
+        global_data: '',
+        local_data: ''
+      }
     };
   },
   mounted: function mounted() {
@@ -1020,17 +1027,26 @@ __webpack_require__.r(__webpack_exports__);
     } else {
       this.right_navbar_class = '';
     }
+
+    this.get_local_bisnes_for_article();
   },
-  // watch: {
-  //     '$route' (to, from) {
-  //         // this.$refs.SArticles.test();
-  //         // this.$refs.SimilarArticles.get_same_articles();
-  //     }
-  // },
+  watch: {
+    '$route': function $route(to, from) {
+      // this.$refs.SArticles.test();
+      // this.$refs.SimilarArticles.get_same_articles();
+      this.get_local_bisnes_for_article();
+    }
+  },
   methods: {
-    // test(){
-    //     console.log(Math.random())
-    // },
+    get_local_bisnes_for_article: function get_local_bisnes_for_article() {
+      var _this = this;
+
+      axios.get('../api/bisnes/get_local_bisnes_for_article/' + this.$route.params.url_title + '/' + localStorage.getItem('lang'), {}).then(function (response) {
+        _this.local_bisnes.image = response.data.image;
+        _this.local_bisnes.local_data = response.data.local_data;
+        _this.local_bisnes.global_data = response.data.global_data;
+      })["catch"](function (error) {});
+    },
     handleScroll: function handleScroll(event) {
       this.margin_bottom_position = document.body.offsetHeight - window.scrollY;
 
@@ -5125,31 +5141,66 @@ var render = function () {
       _vm._v(" "),
       _c("div", { staticClass: "row" }, [
         _c("div", { staticClass: "col-sm-10 col-md-10" }, [
-          _c("div", { staticClass: "thumbnail" }, [
-            _c("img", {
-              attrs: {
-                src: "../../../images/site_img/place-your-ads-here.jpg",
-                alt: "...",
-              },
-            }),
-            _vm._v(" "),
-            _vm._m(0),
-          ]),
+          _c(
+            "div",
+            { staticClass: "thumbnail" },
+            [
+              _c(
+                "router-link",
+                {
+                  staticStyle: { "font-size": "1.5em" },
+                  attrs: {
+                    to:
+                      "../local_bisnes/" +
+                      _vm.local_bisnes.global_data.url_title,
+                    exact: "",
+                  },
+                },
+                [
+                  _c("img", {
+                    attrs: {
+                      src:
+                        "../../../images/suport_local_bisnes_img/" +
+                        _vm.local_bisnes.image.image,
+                      alt: "...",
+                    },
+                  }),
+                ]
+              ),
+              _vm._v(" "),
+              _c(
+                "div",
+                { staticClass: "caption" },
+                [
+                  _c(
+                    "router-link",
+                    {
+                      staticStyle: { "font-size": "1.5em" },
+                      attrs: {
+                        to:
+                          "../local_bisnes/" +
+                          _vm.local_bisnes.global_data.url_title,
+                        exact: "",
+                      },
+                    },
+                    [
+                      _c("h3", [
+                        _vm._v(_vm._s(_vm.local_bisnes.local_data.title)),
+                      ]),
+                    ]
+                  ),
+                ],
+                1
+              ),
+            ],
+            1
+          ),
         ]),
       ]),
     ]
   )
 }
-var staticRenderFns = [
-  function () {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "caption" }, [
-      _c("h3", [_vm._v("Sveri camp")]),
-    ])
-  },
-]
+var staticRenderFns = []
 render._withStripped = true
 
 

@@ -40,14 +40,16 @@
                 </ul>
             </nav>
 
-            <!-- <rightAd /> -->
-
             <div class="row">
                 <div class="col-sm-10 col-md-10">
                     <div class="thumbnail">
-                        <img :src="'../../../images/site_img/place-your-ads-here.jpg'" alt="...">
+                        <router-link style="font-size: 1.5em;" :to="'../local_bisnes/' + local_bisnes.global_data.url_title" exact>
+                            <img :src="'../../../images/suport_local_bisnes_img/' + local_bisnes.image.image" alt="...">
+                        </router-link>
                         <div class="caption">
-                            <h3>Sveri camp</h3>
+                            <router-link style="font-size: 1.5em;" :to="'../local_bisnes/' + local_bisnes.global_data.url_title" exact>
+                                <h3>{{ local_bisnes.local_data.title }}</h3>
+                            </router-link>
                         </div>
                     </div>
                 </div>
@@ -63,6 +65,11 @@
         data(){
             return{
                 right_navbar_class: '',
+                local_bisnes: {
+                    image: '',
+                    global_data: '',
+                    local_data: ''
+                },
             }
         },
         mounted() {
@@ -79,17 +86,29 @@
             else{
                 this.right_navbar_class = ''
             }
+
+            this.get_local_bisnes_for_article()
         },
-        // watch: {
-        //     '$route' (to, from) {
-        //         // this.$refs.SArticles.test();
-        //         // this.$refs.SimilarArticles.get_same_articles();
-        //     }
-        // },
+        watch: {
+            '$route' (to, from) {
+                // this.$refs.SArticles.test();
+                // this.$refs.SimilarArticles.get_same_articles();
+                this.get_local_bisnes_for_article()
+            }
+        },
         methods: {
-            // test(){
-            //     console.log(Math.random())
-            // },
+            get_local_bisnes_for_article(){
+                axios
+                .get('../api/bisnes/get_local_bisnes_for_article/' + this.$route.params.url_title + '/' + localStorage.getItem('lang'), {
+                })
+                .then(response => {
+                    this.local_bisnes.image = response.data.image
+                    this.local_bisnes.local_data = response.data.local_data
+                    this.local_bisnes.global_data = response.data.global_data
+                })
+                .catch(error =>{
+                })
+            },
             handleScroll (event) {
                 this.margin_bottom_position = document.body.offsetHeight - window.scrollY
                 

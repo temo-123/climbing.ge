@@ -53,6 +53,7 @@ const router = new VueRouter({
                 { path: 'event/:url_title', name: 'event', component: load('EventPageComponent') },
                 { path: 'tech_tip/:url_title', name: 'tech_tip', component: load('TechTipPageComponent') },
                 { path: 'partner/:url_title', name: 'partner', component: load('PartnerPageComponent') },
+                { path: 'local_bisnes/:url_title', name: 'local_bisnes', component: load('LocalBisnesPageComponent') },
 
                 { path: 'ice', name: 'ices', component: load('IceListComponent') },
                 { path: 'ice/:url_title', name: 'ice', component: load('IcePageComponent') },

@@ -314,15 +314,15 @@ __webpack_require__.r(__webpack_exports__);
       this.bisnes_new_images[id]['image'] = image;
     },
     add_bisnes_new_image_value: function add_bisnes_new_image_value() {
-      if (this.bisnes_old_images) {
-        if (this.bisnes_new_images.length + this.bisnes_old_images.length < 8) {
-          var new_item_id = this.bisnes_new_images.length + 1;
-          this.bisnes_new_images.push({
-            id: new_item_id,
-            image: ''
-          });
-        }
-      } else {
+      // if(this.bisnes_old_images){
+      if (this.bisnes_new_images.length + this.bisnes_old_images.length < 8) {
+        var new_item_id = this.bisnes_new_images.length + 1;
+        this.bisnes_new_images.push({
+          id: new_item_id,
+          image: ''
+        });
+      } // }
+      else {
         if (this.bisnes_new_images.length < 8) {
           var new_item_id = this.bisnes_new_images.length + 1;
           this.bisnes_new_images.push({
@@ -355,6 +355,8 @@ __webpack_require__.r(__webpack_exports__);
           ru_data: response.data.ru_bisnes,
           ka_data: response.data.ka_bisnes
         }; // this.bisnes_old_images = response.data.bisnes_images
+
+        _this3.get_bisnes_images();
       })["catch"](function (error) {
         return console.log(error);
       });
@@ -363,7 +365,7 @@ __webpack_require__.r(__webpack_exports__);
       var _this4 = this;
 
       axios.get("../../api/bisnes/get_bisnes_images/" + this.$route.params.id).then(function (response) {
-        _this4.bisnes_old_images = response.data.bisnes_images;
+        _this4.bisnes_old_images = response.data;
       })["catch"](function (error) {
         return console.log(error);
       });

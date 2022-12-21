@@ -37,6 +37,7 @@ Route::group(['namespace'=>'Api'], function() {
         Route::apiResource('/', 'ArticleController');
         Route::post('/add_article/{category}', 'add_article');
         Route::get('/{category}/{lang}/{url_title}', 'get_locale_article_on_page');
+        Route::get('/get_article/for_bisnes_page/{lang}/{bisnes_url_title}', 'get_article_on_bisnes_page');
         Route::post('/edit_article/{article_id}', 'edit_article');
     });
 
@@ -73,6 +74,9 @@ Route::group(['namespace'=>'Api'], function() {
         Route::post('/edit_event/{event_id}', 'edit_event');
         Route::get('/get_editing_event/{event_id}', 'get_editing_event');
         Route::delete('/del_event/{event_id}', 'del_event');
+
+        Route::get('/get_event_on_site_list/{lang}/', 'get_event_on_site_list');
+        Route::get('/get_event_on_site_page/{lang}/{url_title}', 'get_event_on_site_page');
     });
 
     /*
@@ -124,6 +128,8 @@ Route::group(['namespace'=>'Api'], function() {
     */
     Route::controller(LocalBisnesController::class)->prefix('bisnes')->group( function() {
         Route::get('/get_local_bisneses', 'get_local_bisneses');
+        Route::get('/get_local_bisnes_for_article/{article_url_title}/{locale}', 'get_local_bisnes_for_article');
+        Route::get('/get_local_bisnes_in_page/{url_title}/{locale}', 'get_local_bisnes_in_page');
         Route::post('/add_local_bisnes', 'add_local_bisnes');
         Route::get('/get_editing_local_bisnes_info/{bisnes_id}', 'get_editing_local_bisnes_info');
         Route::get('/get_bisnes_images/{bisnes_id}', 'get_bisnes_images');

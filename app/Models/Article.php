@@ -70,6 +70,13 @@ class Article extends Model
 	}
 
 
+	public function bisnes()
+	{
+		return $this->hasOne(Suport_local_bisnes::class, 'article_id', 'id');
+	}
+
+
+
 	public function general_info()
 	{
         return $this->belongsToMany(General_info::class, 'general_info_article', 'article_id', 'info_id');
@@ -83,9 +90,6 @@ class Article extends Model
 
 	public function mount_masiv()
 	{
-		// return $this->hasMany(Article_mount::class, 'article_id');
-        // return $this->belongsToMany(Comment::class, 'article_comment_user', 'user_id', 'comment_id');
         return $this->belongsToMany(Mount::class, 'article_mount', 'article_id', 'mount_id');
-        // return $this->belongsTo(Article_mount::class, 'article_mount', 'user_id', 'comment_id');
 	}
 }

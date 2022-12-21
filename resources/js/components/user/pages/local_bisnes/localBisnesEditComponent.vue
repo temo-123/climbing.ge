@@ -308,7 +308,7 @@ export default {
         },
 
         add_bisnes_new_image_value(){
-            if(this.bisnes_old_images){
+            // if(this.bisnes_old_images){
                 if(this.bisnes_new_images.length + this.bisnes_old_images.length < 8){
                     var new_item_id = this.bisnes_new_images.length+1
 
@@ -319,7 +319,7 @@ export default {
                         }
                     );
                 }
-            }
+            // }
             else{
                 if(this.bisnes_new_images.length < 8){
                     var new_item_id = this.bisnes_new_images.length+1
@@ -363,6 +363,7 @@ export default {
                 }
 
                 // this.bisnes_old_images = response.data.bisnes_images
+                this.get_bisnes_images()
             })
             .catch(
                 error => console.log(error)
@@ -373,7 +374,7 @@ export default {
             axios
             .get("../../api/bisnes/get_bisnes_images/"+this.$route.params.id)
             .then(response => {
-                this.bisnes_old_images = response.data.bisnes_images
+                this.bisnes_old_images = response.data
             })
             .catch(
                 error => console.log(error)
