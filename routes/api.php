@@ -77,6 +77,10 @@ Route::group(['namespace'=>'Api'], function() {
 
         Route::get('/get_event_on_site_list/{lang}/', 'get_event_on_site_list');
         Route::get('/get_event_on_site_page/{lang}/{url_title}', 'get_event_on_site_page');
+
+        Route::post('add_to_interested_events/', 'FaworitesController@add_to_interested_events');
+        Route::get('get_interested_events/', 'FaworitesController@get_interested_events');
+        Route::delete('del_interested_event/{article_id}', 'FaworitesController@del_interested_event');
     });
 
     /*
@@ -192,9 +196,6 @@ Route::group(['namespace'=>'Api'], function() {
     Route::get('/outdoor/get_faworite_outdoor_region', 'FaworitesController@get_faworite_outdoor_region');
     Route::delete('/outdoor/del_faworite_outdoor_region/{article_id}', 'FaworitesController@del_faworite_outdoor_region');
 
-    Route::post('/articles/add_to_interested_events/', 'FaworitesController@add_to_interested_events');
-    Route::get('/articles/get_interested_events/', 'FaworitesController@get_interested_events');
-    Route::delete('/articles/del_interested_event/{article_id}', 'FaworitesController@del_interested_event');
 
     /*
     *   Cart and orders routes

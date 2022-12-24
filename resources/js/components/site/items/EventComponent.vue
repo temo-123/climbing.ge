@@ -45,7 +45,7 @@
         methods: {
             get_event(){
                 axios
-                .get('../api/articles/event/'+localStorage.getItem('lang'))
+                .get('../api/event/get_event_on_site_list/'+localStorage.getItem('lang'))
                 .then(response => {
                     this.events = response.data
                 })

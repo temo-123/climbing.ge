@@ -18,16 +18,15 @@ class FaworitesController extends Controller
     public function add_to_interested_events(Request $request)
     {
         if (Auth::user()) {
-            
-            if(Interested_event::where('user_id', '=', Auth::user()->id)->where('article_id', '=', $request->event_id)->count() > 0){
+            if(Interested_event::where('user_id', '=', Auth::user()->id)->where('event_id', '=', $request->event_id)->count() > 0){
                 return 'this event are in faworite';
             }
             else{
-                $faworit = new Interested_event();
+                $faworit = new Interested_event;
             
                 $faworit['user_id'] = Auth::user()->id;
-                $faworit['article_id'] = $request->event_id;
-                
+                $faworit['event_id'] = $request->event_id;
+                // dd($faworit);
                 $faworit -> save();
 
                 return 'event eded socsesful';

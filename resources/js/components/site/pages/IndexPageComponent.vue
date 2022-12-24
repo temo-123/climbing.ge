@@ -67,7 +67,7 @@
 </template>
 
 <script>
-    import indexGalleryComponent from '../items/IndexGalleryComponent'
+    import indexGalleryComponent from '../items/galleries/IndexGalleryComponent'
     import techtipsComponent from '../items/TechtipsComponent'
     import otherArticlesComponent from '../items/OtherArticlesComponent'
     import eventComponent from '../items/EventComponent'
@@ -105,6 +105,7 @@
             '$route' (to, from) {
                 this.get_news()
                 // this.get_last_news()
+                window.scrollTo(0,0)
             }
         },
         methods: {

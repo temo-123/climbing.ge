@@ -561,77 +561,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
 
 
 
@@ -640,7 +569,13 @@ __webpack_require__.r(__webpack_exports__);
   ],
   data: function data() {
     return {
-      event: []
+      event: [],
+      start_day: 0,
+      end_day: 0,
+      start_month: 0,
+      end_month: 0,
+      start_year: 0,
+      end_year: 0
     };
   },
   components: {
@@ -660,12 +595,18 @@ __webpack_require__.r(__webpack_exports__);
     get_event: function get_event() {
       var _this = this;
 
-      axios.get('../../api/article/event/' + localStorage.getItem('lang') + '/' + this.$route.params.url_title).then(function (response) {
+      axios.get('../../api/event/get_event_on_site_page/' + localStorage.getItem('lang') + '/' + this.$route.params.url_title).then(function (response) {
         _this.event = response.data;
+        _this.start_day = moment(response.data.global_event.start_data).format("D");
+        _this.end_day = moment(response.data.global_event.end_data).format("D");
+        _this.start_month = moment(response.data.global_event.start_data).format("MMM");
+        _this.end_month = moment(response.data.global_event.end_data).format("MMM");
+        _this.start_year = moment(response.data.global_event.start_data).format("Y");
+        _this.end_year = moment(response.data.global_event.end_data).format("Y");
       })["catch"](function (error) {});
     },
     add_to_interestid_event: function add_to_interestid_event(article_id) {
-      axios.post('../../api/articles/add_to_interested_events/', {
+      axios.post('../../api/event/add_to_interested_events/', {
         event_id: article_id
       }).then(function (response) {
         alert(response.data);
@@ -715,7 +656,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_laravel_mix_node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, "\n.add_to_favorite[data-v-ee2129e8]{\n    float: right; \n    cursor: pointer;\n}\n", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, "\n.add_to_favorite[data-v-ee2129e8]{\n    float: right; \n    cursor: pointer;\n}\n.calendar_monthe[data-v-ee2129e8]{\n    display: block;\n    margin-top: -48%;\n    margin-bottom: -15%;\n    font-size: 60%;\n}\n", ""]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
@@ -1815,20 +1756,35 @@ var render = function () {
       _c("div", { staticClass: "row" }, [
         _c(
           "div",
-          { staticClass: "col-md-6" },
+          { staticClass: "col-md-12" },
           [
             _c("breadcrumb"),
             _vm._v(" "),
-            _vm._m(0),
+            _vm.start_day != 0 && _vm.start_month != 0
+              ? _c("p", { staticClass: "calendar" }, [
+                  _vm._v(
+                    "\n                " +
+                      _vm._s(_vm.start_day) +
+                      "\n                "
+                  ),
+                  _c("span", { staticClass: "calendar_monthe" }, [
+                    _vm._v(_vm._s(_vm.start_month)),
+                  ]),
+                  _vm._v(" "),
+                  _c("em", [_vm._v("Start")]),
+                ])
+              : _vm._e(),
             _vm._v(" "),
             _c("h1", [
-              _vm._v(_vm._s(_vm.event[0].title) + " "),
+              _vm._v(_vm._s(_vm.event.locale_event.title) + " "),
               _c(
                 "span",
                 {
                   on: {
                     click: function ($event) {
-                      return _vm.add_to_interestid_event(_vm.event.id)
+                      return _vm.add_to_interestid_event(
+                        _vm.event.global_event.id
+                      )
                     },
                   },
                 },
@@ -1840,169 +1796,41 @@ var render = function () {
               ),
             ]),
             _vm._v(" "),
-            this.event[0].text != null
+            this.event.locale_event.text != null
               ? _c("span", {
-                  domProps: { innerHTML: _vm._s(_vm.event[0].text) },
+                  domProps: { innerHTML: _vm._s(_vm.event.locale_event.text) },
                 })
               : _vm._e(),
           ],
           1
         ),
-        _vm._v(" "),
-        _c("div", { staticClass: "col-md-6" }, [
-          this.event.map != null
+      ]),
+      _vm._v(" "),
+      _c("div", { staticClass: "row" }, [
+        _c("div", { staticClass: "col-md-12" }, [
+          this.event.global_event.map != null
             ? _c("div", { staticClass: "row" }, [
                 _c("h2", { attrs: { id: "map" } }, [
                   _vm._v(_vm._s(_vm.$t("map"))),
                 ]),
                 _vm._v(" "),
-                _c("span", { domProps: { innerHTML: _vm._s(_vm.event.map) } }),
+                _c("span", {
+                  domProps: { innerHTML: _vm._s(_vm.event.global_event.map) },
+                }),
               ])
             : _vm._e(),
           _vm._v(" "),
-          this.event[0].info || this.event.global_info.info_block != []
+          this.event.locale_event.info != null
             ? _c("div", { staticClass: "row" }, [
-                _c("h2", { attrs: { id: "how_to_get_there" } }, [
+                _c("h2", { attrs: { id: "info" } }, [
                   _vm._v(_vm._s(_vm.$t("info"))),
                 ]),
                 _vm._v(" "),
-                this.event.global_info.info_block.length == 0
-                  ? _c("span", [
-                      _c("span", {
-                        domProps: { innerHTML: _vm._s(this.event[0].info) },
-                      }),
-                    ])
-                  : _c("span", [
-                      this.event.global_info.info_block.block_action == "befor"
-                        ? _c("span", [
-                            _c("span", {
-                              domProps: {
-                                innerHTML: _vm._s(
-                                  this.event.global_info.info_block.text
-                                ),
-                              },
-                            }),
-                            _vm._v(" "),
-                            _c("span", {
-                              domProps: {
-                                innerHTML: _vm._s(this.event[0].info),
-                              },
-                            }),
-                          ])
-                        : _vm._e(),
-                      _vm._v(" "),
-                      this.event.global_info.info_block.block_action == "after"
-                        ? _c("span", [
-                            _c("span", {
-                              domProps: {
-                                innerHTML: _vm._s(this.event[0].info),
-                              },
-                            }),
-                            _vm._v(" "),
-                            _c("span", {
-                              domProps: {
-                                innerHTML: _vm._s(
-                                  this.event.global_info.info_block.text
-                                ),
-                              },
-                            }),
-                          ])
-                        : _vm._e(),
-                      _vm._v(" "),
-                      this.event.global_info.info_block.block_action ==
-                      "instead"
-                        ? _c("span", [
-                            _c("span", {
-                              domProps: {
-                                innerHTML: _vm._s(
-                                  this.event.global_info.info_block.text
-                                ),
-                              },
-                            }),
-                          ])
-                        : _vm._e(),
-                    ]),
+                _c("span", {
+                  domProps: { innerHTML: _vm._s(_vm.event.locale_event.info) },
+                }),
               ])
             : _vm._e(),
-          _vm._v(" "),
-          _c("div", { staticClass: "col-md-12" }, [
-            _c(
-              "ul",
-              {
-                staticClass: "social-network social-circle",
-                staticStyle: { "text-align": "center" },
-              },
-              [
-                _vm.event.fb_link
-                  ? _c("li", [
-                      _c(
-                        "a",
-                        {
-                          staticClass: "icoFacebook ico_color",
-                          attrs: {
-                            target: "_blank",
-                            href: _vm.event.fb_link,
-                            title: "Facebook",
-                          },
-                        },
-                        [_c("i", { staticClass: "fa fa-facebook" })]
-                      ),
-                    ])
-                  : _vm._e(),
-                _vm._v(" "),
-                _vm.event.twit_link
-                  ? _c("li", [
-                      _c(
-                        "a",
-                        {
-                          staticClass: "icoTwitter ico_color",
-                          attrs: {
-                            target: "_blank",
-                            href: _vm.event.twit_link,
-                            title: "Twitter",
-                          },
-                        },
-                        [_c("i", { staticClass: "fa fa-twitter" })]
-                      ),
-                    ])
-                  : _vm._e(),
-                _vm._v(" "),
-                _vm.event.google_link
-                  ? _c("li", [
-                      _c(
-                        "a",
-                        {
-                          staticClass: "icoGoogle ico_color",
-                          attrs: {
-                            target: "_blank",
-                            href: _vm.event.google_link,
-                            title: "Google +",
-                          },
-                        },
-                        [_c("i", { staticClass: "fa fa-google-plus" })]
-                      ),
-                    ])
-                  : _vm._e(),
-                _vm._v(" "),
-                _vm.event.inst_link
-                  ? _c("li", [
-                      _c(
-                        "a",
-                        {
-                          staticClass: "icoLinkedin ico_color",
-                          attrs: {
-                            target: "_blank",
-                            href: _vm.event.inst_link,
-                            title: "Instagram",
-                          },
-                        },
-                        [_c("i", { staticClass: "fa fa-instagram" })]
-                      ),
-                    ])
-                  : _vm._e(),
-              ]
-            ),
-          ]),
         ]),
       ]),
       _vm._v(" "),
@@ -2021,7 +1849,9 @@ var render = function () {
                     attrs: { type: "button" },
                     on: {
                       click: function ($event) {
-                        return _vm.add_to_interestid_event(_vm.event.id)
+                        return _vm.add_to_interestid_event(
+                          _vm.event.global_event.id
+                        )
                       },
                     },
                   },
@@ -2033,17 +1863,10 @@ var render = function () {
         ]),
       ]),
       _vm._v(" "),
-      _c(
-        "div",
-        { staticClass: "row" },
-        [_c("commentForm", { attrs: { article_id: _vm.event.id } })],
-        1
-      ),
-      _vm._v(" "),
       _c("metaData", {
         attrs: {
-          title: _vm.event[0].title,
-          description: _vm.event[0].description,
+          title: _vm.event.locale_event.title,
+          description: _vm.event.locale_event.description,
           image: "../../../../public/images/event_img/" + _vm.event.image,
         },
       }),
@@ -2051,17 +1874,7 @@ var render = function () {
     1
   )
 }
-var staticRenderFns = [
-  function () {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("p", { staticClass: "calendar" }, [
-      _vm._v("\n                1"),
-      _c("em", [_vm._v("mar")]),
-    ])
-  },
-]
+var staticRenderFns = []
 render._withStripped = true
 
 

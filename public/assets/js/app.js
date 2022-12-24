@@ -9140,6 +9140,44 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
  // https://www.npmjs.com/package/vue-moment
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
@@ -9152,29 +9190,37 @@ __webpack_require__.r(__webpack_exports__);
       start_day: 0,
       end_day: 0,
       start_month: 0,
+      start_year: 0,
       end_month: 0,
+      end_year: 0,
       start_time: 0,
-      end_time: 0 // option: {
-      //     // "bottomleft", "bottomright", "topleft", "topright", "center", "fill"
-      //     mode: "bottomright",
-      //     textBaseline: "middle",
-      //     font: "20px Arial",
-      //     fillStyle: "crimson",
-      //     content: "CLIMBING.GE",
-      //     rotate: 30
-      // }
-
+      end_time: 0,
+      start_time_for_check: 0,
+      end_time_for_check: 0,
+      time: ''
     };
   },
   mounted: function mounted() {
-    this.start_day = moment__WEBPACK_IMPORTED_MODULE_0___default()(this.event.start_data).format("D");
-    this.end_day = moment__WEBPACK_IMPORTED_MODULE_0___default()(this.event.end_data).format("D");
-    this.start_month = moment__WEBPACK_IMPORTED_MODULE_0___default()(this.event.start_data).format("MMM");
-    this.end_month = moment__WEBPACK_IMPORTED_MODULE_0___default()(this.event.end_data).format("MMM");
-    this.start_time = moment__WEBPACK_IMPORTED_MODULE_0___default()(this.event.start_data).format("H:MM A");
-    this.end_time = moment__WEBPACK_IMPORTED_MODULE_0___default()(this.event.end_data).format("H:MM A");
+    this.start_day = moment__WEBPACK_IMPORTED_MODULE_0___default()(this.event.global_event.start_data).format("D");
+    this.end_day = moment__WEBPACK_IMPORTED_MODULE_0___default()(this.event.global_event.end_data).format("D");
+    this.start_month = moment__WEBPACK_IMPORTED_MODULE_0___default()(this.event.global_event.start_data).format("MMM");
+    this.end_month = moment__WEBPACK_IMPORTED_MODULE_0___default()(this.event.global_event.end_data).format("MMM");
+    this.start_year = moment__WEBPACK_IMPORTED_MODULE_0___default()(this.event.global_event.start_data).format("Y");
+    this.end_year = moment__WEBPACK_IMPORTED_MODULE_0___default()(this.event.global_event.end_data).format("Y");
+    this.start_time = moment__WEBPACK_IMPORTED_MODULE_0___default()(this.event.global_event.start_data).format("H:MM A");
+    this.end_time = moment__WEBPACK_IMPORTED_MODULE_0___default()(this.event.global_event.end_data).format("H:MM A");
+    this.start_time_for_check = moment__WEBPACK_IMPORTED_MODULE_0___default()(this.event.global_event.start_data).format("H:MM");
+    this.end_time_for_check = moment__WEBPACK_IMPORTED_MODULE_0___default()(this.event.global_event.end_data).format("H:MM");
+    this.realy_time();
   },
-  methods: {//
+  methods: {
+    realy_time: function realy_time() {
+      var d = new Date();
+      var s = d.getSeconds();
+      var m = d.getMinutes();
+      var h = d.getHours();
+      this.time = h + ":" + m;
+    }
   }
 });
 
@@ -16364,7 +16410,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_laravel_mix_node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, "\n.img-responsive{\n    width: 100%;\n}\n", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, "\n.img-responsive{\n    width: 100%;\n}\n.underway_now{\n    font-size: 2em !important;\n}\n", ""]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
@@ -74197,11 +74243,11 @@ var render = function () {
           [
             _c(
               "router-link",
-              { attrs: { to: "event/" + _vm.event.url_title } },
+              { attrs: { to: "event/" + _vm.event.global_event.url_title } },
               [
                 _vm._v(
                   "\n                    " +
-                    _vm._s(_vm.event[0][0].title) +
+                    _vm._s(_vm.event.locale_event.title) +
                     "\n                "
                 ),
               ]
@@ -74217,70 +74263,117 @@ var render = function () {
         [
           _c(
             "router-link",
-            { attrs: { to: "event/" + _vm.event.url_title } },
+            { attrs: { to: "event/" + _vm.event.global_event.url_title } },
             [
-              _vm.event.image != null
+              _vm.event.global_event.image != null
                 ? _c("site-img", {
                     attrs: {
-                      src: "images/event_img/" + _vm.event.image,
+                      src: "images/event_img/" + _vm.event.global_event.image,
                       img_class: "img-responsive",
-                      alt: _vm.event[0][0].title,
+                      alt: _vm.event.locale_event.title,
                     },
                   })
                 : _c("site-img", {
                     attrs: {
                       src: "../../../public/images/site_img/image.png",
                       img_class: "img-responsive",
-                      alt: _vm.event[0][0].title,
+                      alt: _vm.event.locale_event.title,
                     },
                   }),
             ],
             1
           ),
           _vm._v(" "),
-          _c("div", { staticClass: "row nopadding" }, [
-            _c("div", { staticClass: "col-sm-6 col-xs-6 nopadding" }, [
-              _c("time", { staticClass: "end green" }, [
-                _vm._v(
-                  "\n                        Start \n                        "
+          new Date().getFullYear() == this.end_year &&
+          new Date().getDate() >= this.start_day &&
+          new Date().getDate() <= this.end_day &&
+          this.start_time_for_check <= this.start_time
+            ? _c("div", { staticClass: "row nopadding" }, [
+                _c("div", { staticClass: "col-sm-12 col-xs-12 nopadding" }, [
+                  _c("time", { staticClass: "end orange_red" }, [
+                    _c("span", { staticClass: "day underway_now" }, [
+                      _vm._v("Underway now"),
+                    ]),
+                    _vm._v(" "),
+                    _c("span", { staticClass: "month" }, [
+                      _vm._v(
+                        "Finish at - " +
+                          _vm._s(this.end_day) +
+                          " " +
+                          _vm._s(this.end_month) +
+                          " " +
+                          _vm._s(this.end_time)
+                      ),
+                    ]),
+                    _vm._v(" "),
+                    _c("span", { staticClass: "month" }),
+                    _vm._v(" "),
+                    _c("span", { staticClass: "month" }),
+                  ]),
+                ]),
+              ])
+            : new Date().getFullYear() == this.end_year &&
+              new Date().getDate() < this.end_day &&
+              new Date().getDate() == this.end_day
+            ? _c("div", { staticClass: "row nopadding" }, [_vm._m(0)])
+            : _c("div", { staticClass: "row nopadding" }, [
+                _c("div", { staticClass: "col-sm-6 col-xs-6 nopadding" }, [
+                  _c("time", { staticClass: "end green" }, [
+                    _vm._v(
+                      "\n                        Start \n                        "
+                    ),
+                    _c("span", { staticClass: "day" }, [
+                      _vm._v(_vm._s(this.start_day)),
+                    ]),
+                    _vm._v(" "),
+                    _c("span", { staticClass: "month" }, [
+                      _vm._v(_vm._s(this.start_month)),
+                    ]),
+                    _vm._v(" "),
+                    new Date().getFullYear() != this.start_year
+                      ? _c("span", { staticClass: "month" }, [
+                          _vm._v(_vm._s(this.start_year)),
+                        ])
+                      : _vm._e(),
+                    _vm._v(" "),
+                    _c("span", { staticClass: "month" }, [
+                      _vm._v(_vm._s(this.start_time)),
+                    ]),
+                  ]),
+                ]),
+                _vm._v(" "),
+                _c(
+                  "div",
+                  {
+                    staticClass:
+                      "col-lg-6 col-md-6 col-sm-6 col-xs-6 nopadding",
+                  },
+                  [
+                    _c("time", { staticClass: "end blue_green" }, [
+                      _vm._v(
+                        "\n                        End \n                        "
+                      ),
+                      _c("span", { staticClass: "day" }, [
+                        _vm._v(_vm._s(this.end_day)),
+                      ]),
+                      _vm._v(" "),
+                      _c("span", { staticClass: "month" }, [
+                        _vm._v(_vm._s(this.end_month)),
+                      ]),
+                      _vm._v(" "),
+                      new Date().getFullYear() != this.end_year
+                        ? _c("span", { staticClass: "month" }, [
+                            _vm._v(_vm._s(this.end_year)),
+                          ])
+                        : _vm._e(),
+                      _vm._v(" "),
+                      _c("span", { staticClass: "month" }, [
+                        _vm._v(_vm._s(this.end_time)),
+                      ]),
+                    ]),
+                  ]
                 ),
-                _c("span", { staticClass: "day" }, [
-                  _vm._v(_vm._s(this.start_day)),
-                ]),
-                _vm._v(" "),
-                _c("span", { staticClass: "month" }, [
-                  _vm._v(_vm._s(this.start_month)),
-                ]),
-                _vm._v(" "),
-                _c("span", { staticClass: "month" }, [
-                  _vm._v(_vm._s(this.start_time)),
-                ]),
               ]),
-            ]),
-            _vm._v(" "),
-            _c(
-              "div",
-              { staticClass: "col-lg-6 col-md-6 col-sm-6 col-xs-6 nopadding" },
-              [
-                _c("time", { staticClass: "end blue_green" }, [
-                  _vm._v(
-                    "\n                        End \n                        "
-                  ),
-                  _c("span", { staticClass: "day" }, [
-                    _vm._v(_vm._s(this.end_day)),
-                  ]),
-                  _vm._v(" "),
-                  _c("span", { staticClass: "month" }, [
-                    _vm._v(_vm._s(this.end_month)),
-                  ]),
-                  _vm._v(" "),
-                  _c("span", { staticClass: "month" }, [
-                    _vm._v(_vm._s(this.end_time)),
-                  ]),
-                ]),
-              ]
-            ),
-          ]),
         ],
         1
       ),
@@ -74289,11 +74382,11 @@ var render = function () {
         "div",
         { staticClass: "panel-footer panel-primary" },
         [
-          _vm.event[0][0].short_description != null
+          _vm.event.locale_event.short_description != null
             ? _c("div", { staticClass: "event_size" }, [
                 _c("span", {
                   domProps: {
-                    innerHTML: _vm._s(_vm.event[0][0].short_description),
+                    innerHTML: _vm._s(_vm.event.locale_event.short_description),
                   },
                 }),
               ])
@@ -74303,7 +74396,7 @@ var render = function () {
             "router-link",
             {
               staticClass: "btn btn-success",
-              attrs: { to: "event/" + _vm.event.url_title },
+              attrs: { to: "event/" + _vm.event.global_event.url_title },
             },
             [_vm._v("\n                Read more...\n            ")]
           ),
@@ -74313,7 +74406,18 @@ var render = function () {
     ]),
   ])
 }
-var staticRenderFns = []
+var staticRenderFns = [
+  function () {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "col-sm-12 col-xs-12 nopadding" }, [
+      _c("time", { staticClass: "end orange_red" }, [
+        _c("span", { staticClass: "day underway_now" }, [_vm._v("Finished")]),
+      ]),
+    ])
+  },
+]
 render._withStripped = true
 
 

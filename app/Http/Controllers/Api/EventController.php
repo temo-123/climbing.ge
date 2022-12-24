@@ -15,87 +15,68 @@ use Validator;
 
 class EventController extends Controller
 {
-    public function get_events_for_site(Request $request)
+    public function get_event_on_site_list(Request $request)
     {
-        dd('fff');
-        return Event::get();
+        $action_data = date("Y/m/d H:i:s");
+        // echo $action_data;
+        $plas_3_day = date('Y/m/d H:i:s', strtotime($action_data. ' + 2 days'));
+        // echo $plas_3_day;
+
+        $events = Event::where('published', '=', 1)->get();
+
+        $events_array = [];
+
+        foreach ($events as $event) {
+            // dd();
+            if(date('Y/m/d H:i:s', strtotime($event->end_data)) > $plas_3_day){
+                $global_event = $event;
+
+                if($request->lang == 'ka'){
+                    $local_event = $event->us_event;
+                }
+                else if($request->lang == 'ru'){
+                    $local_event = $event->ru_event;
+                }
+                else{
+                    $local_event = $event->us_event;
+                }
+
+                array_push($events_array, [
+                    'global_event' => $global_event,
+                    'locale_event' => $local_event,
+                ]);
+            }
+        }
+
+        // dd($events_array);
+        return $events_array;
+
+        // return Event::where('public', '=', 1)->get();
+    }
+
+    public function get_event_on_site_page(Request $request)
+    {
+        $global_event = Event::where('url_title', '=', $request->url_title)->first();
+
+        if($request->lang == 'ka'){
+            $local_event = $global_event->us_event;
+        }
+        else if($request->lang == 'ru'){
+            $local_event = $global_event->ru_event;
+        }
+        else{
+            $local_event = $global_event->us_event;
+        }
+
+        return $data = [
+            'global_event' => $global_event,
+            'locale_event' => $local_event,
+        ];
     }
 
     public function get_all_events(Request $request)
     {
         return Event::get();
-    }
-
-    public function add_event(Request $request)
-    {
-        $validation_issets = [];
-
-        $data = json_decode($request->data, true );
-        $global_blocks = json_decode($request->global_blocks, true );
-
-        $ka_validate = $this->local_event_validate($data['ka_data']);
-        if ($ka_validate != null) {
-            $validation_issets['ka_info_validation'] = $ka_validate;
-        }
-        else{
-            $validation_issets['ka_info_validation'] = false;
-        }
-
-        $us_validate = $this->local_event_validate($data['us_data']);
-        if ($us_validate != null) {
-            $validation_issets['us_info_validation'] = $us_validate;
-        }
-        else{
-            $validation_issets['us_info_validation'] = false;
-        }
-
-        $ru_validate = $this->local_event_validate($data['ru_data']);
-        if ($ru_validate != null) {
-            $validation_issets['ru_info_validation'] = $ru_validate;
-        }
-        else{
-            $validation_issets['ru_info_validation'] = false;
-        }
-
-        $global_validate = $this->global_event_validate($data['global_data']);
-        if ($global_validate != null) {
-            $validation_issets['global_info_validation'] = $global_validate;
-        }
-        else{
-            $validation_issets['global_info_validation'] = false;
-        }
-
-        if (
-            !$validation_issets['global_info_validation'] && 
-            !$validation_issets['ru_info_validation'] && 
-            !$validation_issets['ka_info_validation'] && 
-            !$validation_issets['us_info_validation']
-        ) {
-            $saiving_issets['ka_info_status'] = $this->add_locale_event($data['ka_data'], 'ka');
-            $saiving_issets['ru_info_status'] = $this->add_locale_event($data['ru_data'], 'ru');
-            $saiving_issets['us_info_status'] = $this->add_locale_event($data['us_data'], 'us');
-
-            if (
-                $saiving_issets['ka_info_status'] != 'Error' &&
-                $saiving_issets['ru_info_status'] != 'Error' &&
-                $saiving_issets['us_info_status'] != 'Error'
-            ) {
-                $action_event_id = $this->add_global_event(
-                    $data['global_data'], 
-                    $global_blocks,
-                    $request,
-
-                    $saiving_issets['ka_info_status'],
-                    $saiving_issets['ru_info_status'],
-                    $saiving_issets['us_info_status']                    
-                );
-            }
-        }
-        else{            
-            return response()->json([
-                'Data validation' => $validation_issets
-            ], 422);
-        }
     }
 
     public function edit_event(Request $request)
@@ -248,6 +229,80 @@ class EventController extends Controller
         $ka_event ->delete();
     }
 
+
+    public function add_event(Request $request)
+    {
+        $validation_issets = [];
+
+        dd($request);
+
+        $data = json_decode($request->data, true );
+        $global_blocks = json_decode($request->global_blocks, true );
+
+        $ka_validate = $this->local_event_validate($data['ka_data']);
+        if ($ka_validate != null) {
+            $validation_issets['ka_info_validation'] = $ka_validate;
+        }
+        else{
+            $validation_issets['ka_info_validation'] = false;
+        }
+
+        $us_validate = $this->local_event_validate($data['us_data']);
+        if ($us_validate != null) {
+            $validation_issets['us_info_validation'] = $us_validate;
+        }
+        else{
+            $validation_issets['us_info_validation'] = false;
+        }
+
+        $ru_validate = $this->local_event_validate($data['ru_data']);
+        if ($ru_validate != null) {
+            $validation_issets['ru_info_validation'] = $ru_validate;
+        }
+        else{
+            $validation_issets['ru_info_validation'] = false;
+        }
+
+        $global_validate = $this->global_event_validate($data['global_data']);
+        if ($global_validate != null) {
+            $validation_issets['global_info_validation'] = $global_validate;
+        }
+        else{
+            $validation_issets['global_info_validation'] = false;
+        }
+
+        if (
+            !$validation_issets['global_info_validation'] && 
+            !$validation_issets['ru_info_validation'] && 
+            !$validation_issets['ka_info_validation'] && 
+            !$validation_issets['us_info_validation']
+        ) {
+            $saiving_issets['ka_info_status'] = $this->add_locale_event($data['ka_data'], 'ka');
+            $saiving_issets['ru_info_status'] = $this->add_locale_event($data['ru_data'], 'ru');
+            $saiving_issets['us_info_status'] = $this->add_locale_event($data['us_data'], 'us');
+
+            if (
+                $saiving_issets['ka_info_status'] != 'Error' &&
+                $saiving_issets['ru_info_status'] != 'Error' &&
+                $saiving_issets['us_info_status'] != 'Error'
+            ) {
+                $action_event_id = $this->add_global_event(
+                    $data['global_data'], 
+                    $global_blocks,
+                    $request,
+
+                    $saiving_issets['ka_info_status'],
+                    $saiving_issets['ru_info_status'],
+                    $saiving_issets['us_info_status']                    
+                );
+            }
+        }
+        else{            
+            return response()->json([
+                'Data validation' => $validation_issets
+            ], 422);
+        }
+    }
 
     public function add_locale_event($data, $locale)
     {

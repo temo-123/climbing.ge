@@ -16,10 +16,7 @@ class CreateInterestedEventsTable extends Migration
         Schema::create('interested_events', function (Blueprint $table) {
             $table->id();
 
-            // $table->integer('user_id')->nullable();
-            // $table->integer('article_id')->nullable();
-
-            $table->foreignId('article_id')->constrained()->onDelete('cascade');
+            $table->foreignId('event_id')->constrained()->onDelete('cascade');
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
             
             $table->timestamps();

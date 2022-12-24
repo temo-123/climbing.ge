@@ -158,7 +158,7 @@ __webpack_require__.r(__webpack_exports__);
     get_interestid_events: function get_interestid_events() {
       var _this = this;
 
-      axios.get('../api/articles/get_interested_events').then(function (response) {
+      axios.get('../api/event/get_interested_events').then(function (response) {
         _this.events = response.data;
       })["catch"](function (error) {});
     },
@@ -169,7 +169,7 @@ __webpack_require__.r(__webpack_exports__);
       var _this2 = this;
 
       if (confirm('Are you sure, you want delite this event from your faworites?')) {
-        axios.post('../api/articles/del_interested_event/' + id, {
+        axios.post('../api/event/del_interested_event/' + id, {
           article_id: id,
           _method: 'DELETE'
         }).then(function (Response) {

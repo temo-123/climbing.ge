@@ -73,8 +73,8 @@
 
 <script>
     import commentForm from './CommentFormComponent'
-    import galleryComponent from './GalleryComponent'
-    import articleRightMenu from './RightMenuComponent'
+    import galleryComponent from './galleries/GalleryComponent'
+    import articleRightMenu from './navbars/RightMenuComponent'
     import SimilarArticles from './SimilarArticlesComponent'
     import breadcrumb from './BreadcrumbComponent.vue'
     import articleTextBlocks from './ArticleTextBlocksComponent'

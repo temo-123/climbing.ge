@@ -91,7 +91,7 @@
         methods: {
             get_interestid_events(){
                 axios
-                .get('../api/articles/get_interested_events')
+                .get('../api/event/get_interested_events')
                 .then(response => {
                     this.events = response.data
                 })
@@ -106,7 +106,7 @@
             del_interested_event(id){
                 if(confirm('Are you sure, you want delite this event from your faworites?')){
                     axios
-                    .post('../api/articles/del_interested_event/'+id, {
+                    .post('../api/event/del_interested_event/'+id, {
                         article_id: id,
                         _method: 'DELETE'
                     })

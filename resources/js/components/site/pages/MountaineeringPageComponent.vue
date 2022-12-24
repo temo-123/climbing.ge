@@ -148,8 +148,8 @@
 
 <script>
     import commentForm from '../items/CommentFormComponent'
-    import galleryComponent from '../items/GalleryComponent'
-    import articleRightMenu from '../items/RightMenuComponent'
+    import galleryComponent from '../items/galleries/GalleryComponent'
+    import articleRightMenu from '../items/navbars/RightMenuComponent'
     import metaData from '../items/MetaDataComponent'
     import SimilarArticles from '../items/SimilarArticlesComponent'
     import breadcrumb from '../items/BreadcrumbComponent.vue'
