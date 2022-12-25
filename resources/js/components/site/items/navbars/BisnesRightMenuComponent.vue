@@ -44,9 +44,9 @@
             this.get_bisnes_article()
         },
         watch: {
-            '$route' (to, from) {
-                this.get_bisnes_article()
-            }
+            // '$route' (to, from) {
+            //     this.get_bisnes_article()
+            // }
         },
         methods: {
             get_bisnes_article(){
@@ -85,19 +85,17 @@
 </script> 
 
 <style scoped>
-.right_navigarion_menu_fixed_on_scrine{
-    position: fixed;
-    right: 0;
-}
-.right_navigarion_menu_fixed_on_top{
-    /* position: fixed; */
-    right: 0;
-}
-.right_navigarion_menu_fixed_on_bottom{
-    /* position: fixed; */
-    right: 0;
-}
-.caption h3{
-margin: 0;
-}
+    /* .right_navigarion_menu_fixed_on_scrine{
+        position: fixed;
+        right: 0;
+    }
+    .right_navigarion_menu_fixed_on_top{
+        right: 0;
+    }
+    .right_navigarion_menu_fixed_on_bottom{
+        right: 0;
+    } */
+    .caption h3{
+        margin: 0;
+    }
 </style>

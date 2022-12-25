@@ -205,6 +205,10 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var vue_slicksort__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(vue_slicksort__WEBPACK_IMPORTED_MODULE_1__);
 /* harmony import */ var _innologica_vue_stackable_modal__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @innologica/vue-stackable-modal */ "./node_modules/@innologica/vue-stackable-modal/dist/vue-stackable-modal.umd.min.js");
 /* harmony import */ var _innologica_vue_stackable_modal__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(_innologica_vue_stackable_modal__WEBPACK_IMPORTED_MODULE_2__);
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+//
+//
 //
 //
 //
@@ -411,7 +415,7 @@ __webpack_require__.r(__webpack_exports__);
   },
   props: ["article_id"],
   data: function data() {
-    return {
+    return _defineProperty({
       name: "",
       surname: "",
       email: "",
@@ -432,13 +436,17 @@ __webpack_require__.r(__webpack_exports__);
       MIX_GOOGLE_CAPTCHA_SITE_KEY: "6LfDFkMcAAAAAFh9-1TUlmGPx83715KTD79j0iwF",
       complainter_email: '',
       complaint_loader: false
-    };
+    }, "id", this.article_id);
   },
   mounted: function mounted() {
-    this.update();
+    this.get_comments();
     this.get_user_info();
   },
   methods: {
+    update: function update(id) {
+      this.id = id;
+      this.get_comments();
+    },
     onCaptchaVerified: function onCaptchaVerified() {
       this.is_verify_isset = true;
     },
@@ -485,15 +493,15 @@ __webpack_require__.r(__webpack_exports__);
     add_comment: function add_comment() {
       var _this3 = this;
 
-      axios.put('../api/comment/' + this.article_id, {
+      axios.put('../api/comment/' + this.id, {
         name: this.name,
         is_verify_isset: this.is_verify_isset,
         surname: this.surname,
         email: this.email,
         text: this.text,
-        article_id: this.article_id
+        article_id: this.id
       }).then(function (response) {
-        _this3.update(); // alert(response.data['message'])
+        _this3.get_comments(); // alert(response.data['message'])
 
 
         _this3.errors = [];
@@ -508,14 +516,14 @@ __webpack_require__.r(__webpack_exports__);
       axios["delete"]('../api/comment/' + id, {
         id: id
       }).then(function (Response) {
-        _this4.update();
+        _this4.get_comments();
       })["catch"]();
     },
-    update: function update() {
+    get_comments: function get_comments() {
       var _this5 = this;
 
       this.is_refresh = true;
-      axios.get('../api/comment/' + this.article_id).then(function (response) {
+      axios.get('../api/comment/' + this.id).then(function (response) {
         _this5.comments = response.data;
         _this5.is_refresh = false;
         _this5.id++;
@@ -589,10 +597,6 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
-//
-//
-//
-//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   props: ['title', 'description', 'image'],
   data: function data() {
@@ -781,6 +785,18 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
  // import postsList from './PostsListComponent'
 
@@ -809,27 +825,21 @@ __webpack_require__.r(__webpack_exports__);
       posts: []
     };
   },
-  mounted: function mounted() {
-    this.get_posts();
+  mounted: function mounted() {// this.get_posts()
   },
   watch: {
-    '$route': function $route(to, from) {// this.$refs.SArticles.test();
-      // this.$refs.SimilarArticles.get_same_articles();
+    '$route': function $route(to, from) {// $refs.semilar_articles.get_same_articles()
     }
   },
   methods: {
-    // get_posts(){
-    //     axios
-    //     .get("../api/posts/get_posts_for_outdoor_region/"+this.article.id)
-    //     .then(response => {
-    //         this.posts = response.data
-    //     })
-    //     .catch(
-    //         error => console.log(error)
-    //     );
-    // },
+    update_similar_articles_component: function update_similar_articles_component(id) {
+      this.$refs.similar_articles.update(id);
+      this.$refs.route_quan_diogram.update(id);
+      this.$refs.routes_tab.update(id);
+      this.$refs.gallery_component.update(id);
+      this.$refs.comments.update(id);
+    },
     add_to_favorite_outdoor_area: function add_to_favorite_outdoor_area(article_id) {
-      // alert('add to interested event. ID = ' + article_id)
       axios.post('../../api/articles/add_to_favorite_outdoor_area/', {
         article_id: article_id
       }).then(function (response) {
@@ -892,12 +902,6 @@ __webpack_require__.r(__webpack_exports__);
         }
       },
       sportChartData: [],
-      // sportChartData: [
-      //     ['Gread', 'Quantyty'],
-      //     ['4', 2],
-      //     ['5a', 3],
-      //     ['5b', 4],
-      // ],
       boulderChartOptions: {
         chart: {
           title: 'Sport climbing route quantity',
@@ -905,29 +909,35 @@ __webpack_require__.r(__webpack_exports__);
           subtitle: 'Sales, Expenses, and Profit: 2014-2017'
         }
       },
-      bolderChartData: [] // bolderChartData: [
-      //     ['Gread', 'Quantyty'],
-      //     ['V1', 2],
-      //     ['V1+', 3],
-      //     ['V2', 2],
-      // ],
-
+      bolderChartData: [],
+      id: this.outdoor_region_article_id
     };
   },
   mounted: function mounted() {
     // console.log(this.outdoor_region_article_id);
     this.get_routes_quantiti();
   },
+  watch: {
+    '$route': function $route(to, from) {
+      this.get_routes_quantiti(), window.scrollTo(0, 0);
+    }
+  },
   methods: {
     get_routes_quantiti: function get_routes_quantiti() {
       var _this = this;
 
-      axios.get("../../api/get_routes_quantity/" + this.outdoor_region_article_id).then(function (response) {
+      this.bolderChartData = [];
+      this.sportChartData = [];
+      axios.get("../../api/get_routes_quantity/" + this.id).then(function (response) {
         _this.bolderChartData = response.data.bouldering;
         _this.sportChartData = response.data.sport_routes;
       })["catch"](function (error) {
         return console.log(error);
       });
+    },
+    update: function update(id) {
+      this.id = id;
+      this.get_routes_quantiti();
     }
   }
 });
@@ -1553,6 +1563,25 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 // import VueExpandableImage from 'vue-expandable-image' //https://github.com/TahaSh/vue-expandable-image
 // import { SlickList, SlickItem } from 'vue-slicksort'; //https://github.com/Jexordexan/vue-slicksort
  //https://innologica.github.io/vue-stackable-modal/#sample-css
@@ -1572,55 +1601,29 @@ __webpack_require__.r(__webpack_exports__);
   props: ["article_id"],
   data: function data() {
     return {
-      // option: {
-      //     mode: "bottomright",
-      //     textBaseline: "middle",
-      //     font: "20px Arial",
-      //     fillStyle: "crimson",
-      //     content: 'CLIMBING.GE',
-      //     rotate: 30
-      // },
-      // Array will be automatically processed with visualization.arrayToDataTable function
-      // chartData: [
-      //     ['Year', 'Sales', 'Expenses', 'Profit'],
-      //     ['2014', 1000, 400, 200],
-      //     ['2015', 1170, 460, 250],
-      //     ['2016', 660, 1120, 300],
-      //     ['2017', 1030, 540, 350]
-      // ],
-      // chartOptions: {
-      //     chart: {
-      //     title: 'Company Performance',
-      //     subtitle: 'Sales, Expenses, and Profit: 2014-2017',
-      //     }
-      // },
       climbing_area: [],
       spot_images: [],
       show_route_modal: false,
       show_mtp_modal: false,
       modalClass: [],
       route_detals: [],
-      // route_posts: [],
-      mtp_detals: [] // mtp_posts: [],
-      // route_post_list: false,
-      // mtp_post_list: false,
-
+      mtp_detals: [],
+      id: this.article_id
     };
   },
   mounted: function mounted() {
-    this.get_outdoor_routes();
-    this.get_spot_rocks_images();
+    this.get_outdoor_routes(); // this.get_spot_rocks_images();
   },
   watch: {
     $route: function $route(to, from) {
       this.get_outdoor_routes();
-      this.get_spot_rocks_images();
     }
   },
-  // beforeDestroy() {
-  //     document.removeEventListener("grade", "this.storageListener");
-  // },
   methods: {
+    update: function update(id) {
+      this.id = id;
+      this.get_outdoor_routes();
+    },
     lead_grade_chart: function lead_grade_chart(grade_fr) {
       var grad = "";
 
@@ -1651,17 +1654,28 @@ __webpack_require__.r(__webpack_exports__);
     get_spot_rocks_images: function get_spot_rocks_images() {
       var _this = this;
 
-      axios.get("/api/get_spot_rocks_images/" + this.article_id).then(function (response) {
+      this.spot_images = [];
+      axios.get("../../api/get_spot_rocks_images/" + this.id).then(function (response) {
         _this.spot_images = response.data;
       })["catch"](function (error) {});
     },
-    show_route_model: function show_route_model(id) {
+    get_outdoor_routes: function get_outdoor_routes() {
       var _this2 = this;
+
+      this.climbing_area = [];
+      axios.get("../../api/sector/" + this.id).then(function (response) {
+        _this2.climbing_area = response.data;
+
+        _this2.get_spot_rocks_images();
+      })["catch"](function (error) {});
+    },
+    show_route_model: function show_route_model(id) {
+      var _this3 = this;
 
       this.show_route_modal = true;
       this.route_detals = [];
-      axios.get("/api/route/" + id).then(function (response) {
-        _this2.route_detals = response.data; // this.route_post_list = true;
+      axios.get("../../api/route/" + id).then(function (response) {
+        _this3.route_detals = response.data; // this.route_post_list = true;
       })["catch"](function (error) {});
     },
     // get_route_posts(route_id) {
@@ -1674,15 +1688,14 @@ __webpack_require__.r(__webpack_exports__);
     //         .catch((error) => console.log(error));
     // },
     show_mtp_madel: function show_mtp_madel(id) {
-      var _this3 = this;
+      var _this4 = this;
 
       this.show_mtp_modal = true;
       this.mtp_detals = [];
-      axios.get("/api/MTP/" + id).then(function (response) {
-        _this3.mtp_detals = response.data; // this.mtp_post_list = true;
+      axios.get("../../api/MTP/" + id).then(function (response) {
+        _this4.mtp_detals = response.data; // this.mtp_post_list = true;
       })["catch"](function (error) {});
-    },
-    // get_mtp_posts(mtp_id) {
+    } // get_mtp_posts(mtp_id) {
     //     this.mtp_posts = [];
     //     axios
     //         .get("../api/posts/get_mtp_posts/" + mtp_id)
@@ -1691,14 +1704,6 @@ __webpack_require__.r(__webpack_exports__);
     //         })
     //         .catch((error) => console.log(error));
     // },
-    get_outdoor_routes: function get_outdoor_routes() {
-      var _this4 = this;
-
-      axios.get("../api/sector/" + this.article_id).then(function (response) {
-        _this4.climbing_area = response.data;
-      })["catch"](function (error) {});
-    } // get_spot_rocks_images(){
-    // }
 
   }
 });
@@ -1717,6 +1722,19 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
 /* harmony import */ var _cards_SimilarArticleCardComponent_vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./cards/SimilarArticleCardComponent.vue */ "./resources/js/components/site/items/cards/SimilarArticleCardComponent.vue");
+/* harmony import */ var _cards_SimilarOutdoorAreaCardComponent_vue__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./cards/SimilarOutdoorAreaCardComponent.vue */ "./resources/js/components/site/items/cards/SimilarOutdoorAreaCardComponent.vue");
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -1733,24 +1751,32 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 
+
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   props: ['article_id', 'article_category', 'img_dir', 'route'],
   components: {
-    SimilarArticleCardComponent: _cards_SimilarArticleCardComponent_vue__WEBPACK_IMPORTED_MODULE_0__["default"]
+    SimilarArticleCardComponent: _cards_SimilarArticleCardComponent_vue__WEBPACK_IMPORTED_MODULE_0__["default"],
+    SimilarOutdoorAreaCardComponent: _cards_SimilarOutdoorAreaCardComponent_vue__WEBPACK_IMPORTED_MODULE_1__["default"]
   },
   data: function data() {
     return {
-      image_dir: '',
-      route: '',
-      similar_article: []
+      // image_dir: '',
+      // route: '',
+      similar_article: [],
+      id: this.article_id
     };
   },
   mounted: function mounted() {
     this.get_same_articles();
+    console.log(this.article_id);
+    console.log(this.article_category);
+    console.log(this.img_dir);
+    console.log(this.route);
   },
   watch: {
     '$route': function $route(to, from) {
-      this.get_same_articles();
+      // this.similar_article = []
+      // this.get_same_articles()
       window.scrollTo(0, 0);
     }
   },
@@ -1758,15 +1784,21 @@ __webpack_require__.r(__webpack_exports__);
     get_same_articles: function get_same_articles() {
       var _this = this;
 
-      axios.post('../api/similar_article/' + localStorage.getItem('lang'), {
-        article_id: this.article_id,
+      console.log(this.id);
+      axios.post('../../api/similar_article/' + localStorage.getItem('lang'), {
+        article_id: this.id,
         article_category: this.article_category
       }).then(function (response) {
+        _this.similar_article = [];
         _this.similar_article = response.data;
       })["catch"](function (error) {});
     },
-    test: function test() {
-      console.log('test');
+    update: function update(id) {
+      this.id = id;
+      this.get_same_articles(); // console.log(this.article_id);
+      // console.log(this.article_category);
+      // console.log(this.img_dir);
+      // console.log(this.route);
     }
   }
 });
@@ -1802,6 +1834,43 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
+  props: ['article', 'image_dir', 'route', 'category'],
+  mounted: function mounted() {// console.log( 'article.area[0].url_title' );
+    // console.log( article );
+    // console.log( 'article.area[0].url_title' );
+  }
+});
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/site/items/cards/SimilarOutdoorAreaCardComponent.vue?vue&type=script&lang=js&":
+/*!*******************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/site/items/cards/SimilarOutdoorAreaCardComponent.vue?vue&type=script&lang=js& ***!
+  \*******************************************************************************************************************************************************************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -1814,7 +1883,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
-  props: ['article', 'image_dir', 'route'],
+  props: ['article', 'image_dir', 'route', 'category'],
   mounted: function mounted() {// console.log( 'article.area[0].url_title' );
     // console.log( article );
     // console.log( 'article.area[0].url_title' );
@@ -1878,17 +1947,22 @@ __webpack_require__.r(__webpack_exports__);
     return {
       db_images: [],
       active_img: [],
-      open_img: false
+      open_img: false.valueOf,
+      id: this.article_id
     };
   },
   mounted: function mounted() {
     this.get_article_images();
   },
   methods: {
+    update: function update(id) {
+      this.id = id;
+      this.get_article_images();
+    },
     get_article_images: function get_article_images() {
       var _this = this;
 
-      axios.get('../api/gallery_image/' + this.article_id).then(function (response) {
+      axios.get('../api/gallery_image/' + this.id).then(function (response) {
         _this.db_images = response.data;
       })["catch"](function (error) {});
     },
@@ -1981,10 +2055,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
-//
-//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   name: "Article Right Navigation Menu",
   data: function data() {
@@ -2014,8 +2084,6 @@ __webpack_require__.r(__webpack_exports__);
   },
   watch: {
     '$route': function $route(to, from) {
-      // this.$refs.SArticles.test();
-      // this.$refs.SimilarArticles.get_same_articles();
       this.get_local_bisnes_for_article();
     }
   },
@@ -2078,12 +2146,25 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
     return {
-      outdoor: []
+      outdoor: [],
+      article_loading: true
     };
   },
   components: {
@@ -2102,9 +2183,14 @@ __webpack_require__.r(__webpack_exports__);
     get_outdoor: function get_outdoor() {
       var _this = this;
 
+      this.outdoor = [];
       axios.get('../api/article/outdoor/' + localStorage.getItem('lang') + '/' + this.$route.params.url_title).then(function (response) {
         _this.outdoor = response.data;
-      })["catch"](function (error) {});
+
+        _this.$refs.article_page.update_similar_articles_component(_this.outdoor.id);
+      })["catch"](function (error) {})["finally"](function () {
+        return _this.article_loading = false;
+      });
     }
   }
 });
@@ -2152,7 +2238,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_laravel_mix_node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, "\n.complaint_icon[data-v-1f7e7156]{\n    float: right;\n    cursor: pointer;\n    font-size: 130%;\n}\n", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, "\n.complaint_icon[data-v-1f7e7156]{\n    float: right;\n    cursor: pointer;\n    font-size: 130%;\n}\n.comentator_name[data-v-1f7e7156]{\n    margin: 0px;\n    margin-left: 18%;\n    float: left;\n    color: #000;\n}\n", ""]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
@@ -2231,6 +2317,30 @@ ___CSS_LOADER_EXPORT___.push([module.id, "\n.similar_article_title{\n    margin-
 
 /***/ }),
 
+/***/ "./node_modules/laravel-mix/node_modules/css-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[1]!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/site/items/cards/SimilarOutdoorAreaCardComponent.vue?vue&type=style&index=0&lang=css&":
+/*!****************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/laravel-mix/node_modules/css-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[1]!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/site/items/cards/SimilarOutdoorAreaCardComponent.vue?vue&type=style&index=0&lang=css& ***!
+  \****************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************/
+/***/ ((module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _node_modules_laravel_mix_node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../../../../../node_modules/laravel-mix/node_modules/css-loader/dist/runtime/api.js */ "./node_modules/laravel-mix/node_modules/css-loader/dist/runtime/api.js");
+/* harmony import */ var _node_modules_laravel_mix_node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_node_modules_laravel_mix_node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0__);
+// Imports
+
+var ___CSS_LOADER_EXPORT___ = _node_modules_laravel_mix_node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
+// Module
+___CSS_LOADER_EXPORT___.push([module.id, "\n.similar_article_title{\n    margin-bottom: 2%;\n    font-size: 155%;\n}\n.similar_article_routes_quantity{\n    color: #8b8b8b;\n    margin-top: 5%;\n    font-size: 90%;\n}\n.similar_articles{\n    margin-top: 2%;\n}\n@media only screen and (max-width: 768px)\n{\n.similar_articles{\n        display: none;\n}\n}\n.similar_articles_img img{\n    /* // margin-left: 10%; \n    // margin-right: 10%; \n    // width: 80%;  */\n    border-radius: 1em;\n}\n.similar_articles_title{\n    /* margin-top: -15%;  */\n    text-align: center;\n}\n.similar_articles_title h3{\n    margin: 0;\n    font-size: 155%;\n}\n", ""]);
+// Exports
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
+
+
+/***/ }),
+
 /***/ "./node_modules/laravel-mix/node_modules/css-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[1]!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/site/items/galleries/GalleryComponent.vue?vue&type=style&index=0&id=6b8d2466&scoped=true&lang=css&":
 /*!*****************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
   !*** ./node_modules/laravel-mix/node_modules/css-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[1]!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/site/items/galleries/GalleryComponent.vue?vue&type=style&index=0&id=6b8d2466&scoped=true&lang=css& ***!
@@ -2272,7 +2382,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_laravel_mix_node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, "\n.right_navigarion_menu_fixed_on_scrine[data-v-4ddfd4aa]{\n    position: fixed;\n    right: 0;\n}\n.right_navigarion_menu_fixed_on_top[data-v-4ddfd4aa]{\n    /* position: fixed; */\n    right: 0;\n}\n.right_navigarion_menu_fixed_on_bottom[data-v-4ddfd4aa]{\n    /* position: fixed; */\n    right: 0;\n}\n.caption h3[data-v-4ddfd4aa]{\nmargin: 0;\n}\n", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, "\n.right_navigarion_menu_fixed_on_scrine[data-v-4ddfd4aa]{\n    position: fixed;\n    right: 0;\n}\n.right_navigarion_menu_fixed_on_top[data-v-4ddfd4aa]{\n    /* position: fixed; */\n    right: 0;\n}\n.right_navigarion_menu_fixed_on_bottom[data-v-4ddfd4aa]{\n    /* position: fixed; */\n    right: 0;\n}\n.caption h3[data-v-4ddfd4aa]{\n    margin: 0;\n}\n.navbar_title[data-v-4ddfd4aa]{\n    text-align: left;\n}\n", ""]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
@@ -2426,6 +2536,36 @@ var update = _node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js
 
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (_node_modules_laravel_mix_node_modules_css_loader_dist_cjs_js_clonedRuleSet_9_0_rules_0_use_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_dist_cjs_js_clonedRuleSet_9_0_rules_0_use_2_node_modules_vue_loader_lib_index_js_vue_loader_options_SimilarArticleCardComponent_vue_vue_type_style_index_0_lang_css___WEBPACK_IMPORTED_MODULE_1__["default"].locals || {});
+
+/***/ }),
+
+/***/ "./node_modules/style-loader/dist/cjs.js!./node_modules/laravel-mix/node_modules/css-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[1]!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/site/items/cards/SimilarOutdoorAreaCardComponent.vue?vue&type=style&index=0&lang=css&":
+/*!********************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/style-loader/dist/cjs.js!./node_modules/laravel-mix/node_modules/css-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[1]!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/site/items/cards/SimilarOutdoorAreaCardComponent.vue?vue&type=style&index=0&lang=css& ***!
+  \********************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! !../../../../../../node_modules/style-loader/dist/runtime/injectStylesIntoStyleTag.js */ "./node_modules/style-loader/dist/runtime/injectStylesIntoStyleTag.js");
+/* harmony import */ var _node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _node_modules_laravel_mix_node_modules_css_loader_dist_cjs_js_clonedRuleSet_9_0_rules_0_use_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_dist_cjs_js_clonedRuleSet_9_0_rules_0_use_2_node_modules_vue_loader_lib_index_js_vue_loader_options_SimilarOutdoorAreaCardComponent_vue_vue_type_style_index_0_lang_css___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! !!../../../../../../node_modules/laravel-mix/node_modules/css-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[1]!../../../../../../node_modules/vue-loader/lib/loaders/stylePostLoader.js!../../../../../../node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[2]!../../../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./SimilarOutdoorAreaCardComponent.vue?vue&type=style&index=0&lang=css& */ "./node_modules/laravel-mix/node_modules/css-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[1]!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/site/items/cards/SimilarOutdoorAreaCardComponent.vue?vue&type=style&index=0&lang=css&");
+
+            
+
+var options = {};
+
+options.insert = "head";
+options.singleton = false;
+
+var update = _node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0___default()(_node_modules_laravel_mix_node_modules_css_loader_dist_cjs_js_clonedRuleSet_9_0_rules_0_use_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_dist_cjs_js_clonedRuleSet_9_0_rules_0_use_2_node_modules_vue_loader_lib_index_js_vue_loader_options_SimilarOutdoorAreaCardComponent_vue_vue_type_style_index_0_lang_css___WEBPACK_IMPORTED_MODULE_1__["default"], options);
+
+
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (_node_modules_laravel_mix_node_modules_css_loader_dist_cjs_js_clonedRuleSet_9_0_rules_0_use_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_dist_cjs_js_clonedRuleSet_9_0_rules_0_use_2_node_modules_vue_loader_lib_index_js_vue_loader_options_SimilarOutdoorAreaCardComponent_vue_vue_type_style_index_0_lang_css___WEBPACK_IMPORTED_MODULE_1__["default"].locals || {});
 
 /***/ }),
 
@@ -2693,20 +2833,19 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
-/* harmony import */ var _MetaDataComponent_vue_vue_type_template_id_765add42___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./MetaDataComponent.vue?vue&type=template&id=765add42& */ "./resources/js/components/site/items/MetaDataComponent.vue?vue&type=template&id=765add42&");
-/* harmony import */ var _MetaDataComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./MetaDataComponent.vue?vue&type=script&lang=js& */ "./resources/js/components/site/items/MetaDataComponent.vue?vue&type=script&lang=js&");
-/* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! !../../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
-
-
+/* harmony import */ var _MetaDataComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./MetaDataComponent.vue?vue&type=script&lang=js& */ "./resources/js/components/site/items/MetaDataComponent.vue?vue&type=script&lang=js&");
+/* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! !../../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+var render, staticRenderFns
+;
 
 
 
 /* normalize component */
 ;
-var component = (0,_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
-  _MetaDataComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
-  _MetaDataComponent_vue_vue_type_template_id_765add42___WEBPACK_IMPORTED_MODULE_0__.render,
-  _MetaDataComponent_vue_vue_type_template_id_765add42___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns,
+var component = (0,_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_1__["default"])(
+  _MetaDataComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"],
+  render,
+  staticRenderFns,
   false,
   null,
   null,
@@ -2918,6 +3057,47 @@ var component = (0,_node_modules_vue_loader_lib_runtime_componentNormalizer_js__
 /* hot reload */
 if (false) { var api; }
 component.options.__file = "resources/js/components/site/items/cards/SimilarArticleCardComponent.vue"
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (component.exports);
+
+/***/ }),
+
+/***/ "./resources/js/components/site/items/cards/SimilarOutdoorAreaCardComponent.vue":
+/*!**************************************************************************************!*\
+  !*** ./resources/js/components/site/items/cards/SimilarOutdoorAreaCardComponent.vue ***!
+  \**************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _SimilarOutdoorAreaCardComponent_vue_vue_type_template_id_8d447f52___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./SimilarOutdoorAreaCardComponent.vue?vue&type=template&id=8d447f52& */ "./resources/js/components/site/items/cards/SimilarOutdoorAreaCardComponent.vue?vue&type=template&id=8d447f52&");
+/* harmony import */ var _SimilarOutdoorAreaCardComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./SimilarOutdoorAreaCardComponent.vue?vue&type=script&lang=js& */ "./resources/js/components/site/items/cards/SimilarOutdoorAreaCardComponent.vue?vue&type=script&lang=js&");
+/* harmony import */ var _SimilarOutdoorAreaCardComponent_vue_vue_type_style_index_0_lang_css___WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./SimilarOutdoorAreaCardComponent.vue?vue&type=style&index=0&lang=css& */ "./resources/js/components/site/items/cards/SimilarOutdoorAreaCardComponent.vue?vue&type=style&index=0&lang=css&");
+/* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! !../../../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+;
+
+
+/* normalize component */
+
+var component = (0,_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_3__["default"])(
+  _SimilarOutdoorAreaCardComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _SimilarOutdoorAreaCardComponent_vue_vue_type_template_id_8d447f52___WEBPACK_IMPORTED_MODULE_0__.render,
+  _SimilarOutdoorAreaCardComponent_vue_vue_type_template_id_8d447f52___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns,
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/components/site/items/cards/SimilarOutdoorAreaCardComponent.vue"
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (component.exports);
 
 /***/ }),
@@ -3203,6 +3383,22 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
+/***/ "./resources/js/components/site/items/cards/SimilarOutdoorAreaCardComponent.vue?vue&type=script&lang=js&":
+/*!***************************************************************************************************************!*\
+  !*** ./resources/js/components/site/items/cards/SimilarOutdoorAreaCardComponent.vue?vue&type=script&lang=js& ***!
+  \***************************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_0_rules_0_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_SimilarOutdoorAreaCardComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../../node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!../../../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./SimilarOutdoorAreaCardComponent.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/site/items/cards/SimilarOutdoorAreaCardComponent.vue?vue&type=script&lang=js&");
+ /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (_node_modules_babel_loader_lib_index_js_clonedRuleSet_5_0_rules_0_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_SimilarOutdoorAreaCardComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
 /***/ "./resources/js/components/site/items/galleries/GalleryComponent.vue?vue&type=script&lang=js&":
 /*!****************************************************************************************************!*\
   !*** ./resources/js/components/site/items/galleries/GalleryComponent.vue?vue&type=script&lang=js& ***!
@@ -3316,6 +3512,19 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
+/***/ "./resources/js/components/site/items/cards/SimilarOutdoorAreaCardComponent.vue?vue&type=style&index=0&lang=css&":
+/*!***********************************************************************************************************************!*\
+  !*** ./resources/js/components/site/items/cards/SimilarOutdoorAreaCardComponent.vue?vue&type=style&index=0&lang=css& ***!
+  \***********************************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_style_loader_dist_cjs_js_node_modules_laravel_mix_node_modules_css_loader_dist_cjs_js_clonedRuleSet_9_0_rules_0_use_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_dist_cjs_js_clonedRuleSet_9_0_rules_0_use_2_node_modules_vue_loader_lib_index_js_vue_loader_options_SimilarOutdoorAreaCardComponent_vue_vue_type_style_index_0_lang_css___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../../node_modules/style-loader/dist/cjs.js!../../../../../../node_modules/laravel-mix/node_modules/css-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[1]!../../../../../../node_modules/vue-loader/lib/loaders/stylePostLoader.js!../../../../../../node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[2]!../../../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./SimilarOutdoorAreaCardComponent.vue?vue&type=style&index=0&lang=css& */ "./node_modules/style-loader/dist/cjs.js!./node_modules/laravel-mix/node_modules/css-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[1]!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/site/items/cards/SimilarOutdoorAreaCardComponent.vue?vue&type=style&index=0&lang=css&");
+
+
+/***/ }),
+
 /***/ "./resources/js/components/site/items/galleries/GalleryComponent.vue?vue&type=style&index=0&id=6b8d2466&scoped=true&lang=css&":
 /*!************************************************************************************************************************************!*\
   !*** ./resources/js/components/site/items/galleries/GalleryComponent.vue?vue&type=style&index=0&id=6b8d2466&scoped=true&lang=css& ***!
@@ -3410,23 +3619,6 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
-/***/ "./resources/js/components/site/items/MetaDataComponent.vue?vue&type=template&id=765add42&":
-/*!*************************************************************************************************!*\
-  !*** ./resources/js/components/site/items/MetaDataComponent.vue?vue&type=template&id=765add42& ***!
-  \*************************************************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "render": () => (/* reexport safe */ _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_MetaDataComponent_vue_vue_type_template_id_765add42___WEBPACK_IMPORTED_MODULE_0__.render),
-/* harmony export */   "staticRenderFns": () => (/* reexport safe */ _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_MetaDataComponent_vue_vue_type_template_id_765add42___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns)
-/* harmony export */ });
-/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_MetaDataComponent_vue_vue_type_template_id_765add42___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./MetaDataComponent.vue?vue&type=template&id=765add42& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/site/items/MetaDataComponent.vue?vue&type=template&id=765add42&");
-
-
-/***/ }),
-
 /***/ "./resources/js/components/site/items/OutdoorComponent.vue?vue&type=template&id=0bd7c3bd&scoped=true&":
 /*!************************************************************************************************************!*\
   !*** ./resources/js/components/site/items/OutdoorComponent.vue?vue&type=template&id=0bd7c3bd&scoped=true& ***!
@@ -3508,6 +3700,23 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "staticRenderFns": () => (/* reexport safe */ _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_SimilarArticleCardComponent_vue_vue_type_template_id_3710df2a___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns)
 /* harmony export */ });
 /* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_SimilarArticleCardComponent_vue_vue_type_template_id_3710df2a___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./SimilarArticleCardComponent.vue?vue&type=template&id=3710df2a& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/site/items/cards/SimilarArticleCardComponent.vue?vue&type=template&id=3710df2a&");
+
+
+/***/ }),
+
+/***/ "./resources/js/components/site/items/cards/SimilarOutdoorAreaCardComponent.vue?vue&type=template&id=8d447f52&":
+/*!*********************************************************************************************************************!*\
+  !*** ./resources/js/components/site/items/cards/SimilarOutdoorAreaCardComponent.vue?vue&type=template&id=8d447f52& ***!
+  \*********************************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "render": () => (/* reexport safe */ _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_SimilarOutdoorAreaCardComponent_vue_vue_type_template_id_8d447f52___WEBPACK_IMPORTED_MODULE_0__.render),
+/* harmony export */   "staticRenderFns": () => (/* reexport safe */ _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_SimilarOutdoorAreaCardComponent_vue_vue_type_template_id_8d447f52___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns)
+/* harmony export */ });
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_SimilarOutdoorAreaCardComponent_vue_vue_type_template_id_8d447f52___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./SimilarOutdoorAreaCardComponent.vue?vue&type=template&id=8d447f52& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/site/items/cards/SimilarOutdoorAreaCardComponent.vue?vue&type=template&id=8d447f52&");
 
 
 /***/ }),
@@ -4294,7 +4503,7 @@ var render = function () {
                             "button",
                             {
                               staticClass: "btn btn-success pull-right",
-                              on: { click: _vm.update },
+                              on: { click: _vm.get_comments },
                             },
                             [_vm._v("Refresh (" + _vm._s(_vm.id) + ")")]
                           )
@@ -4348,6 +4557,16 @@ var render = function () {
                         )
                       : _vm._e(),
                     _vm._v(" "),
+                    _c("div", { staticClass: "row" }, [
+                      _c("h3", { staticClass: "comentator_name" }, [
+                        _c("strong", [
+                          _vm._v(
+                            _vm._s(comment.name) + " " + _vm._s(comment.surname)
+                          ),
+                        ]),
+                      ]),
+                    ]),
+                    _vm._v(" "),
                     _c("div", { staticClass: "col-xs-2 col-md-2" }, [
                       _c("img", {
                         attrs: {
@@ -4357,14 +4576,6 @@ var render = function () {
                     ]),
                     _vm._v(" "),
                     _c("div", { staticClass: "col-xs-10 col-md-10" }, [
-                      _c("h4", [
-                        _c("strong", [
-                          _vm._v(
-                            _vm._s(comment.name) + " " + _vm._s(comment.surname)
-                          ),
-                        ]),
-                      ]),
-                      _vm._v(" "),
                       _c("div", { staticClass: "row" }, [
                         _c("p", [_vm._v(_vm._s(comment.text))]),
                       ]),
@@ -4708,31 +4919,6 @@ render._withStripped = true
 
 /***/ }),
 
-/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/site/items/MetaDataComponent.vue?vue&type=template&id=765add42&":
-/*!****************************************************************************************************************************************************************************************************************************************!*\
-  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/site/items/MetaDataComponent.vue?vue&type=template&id=765add42& ***!
-  \****************************************************************************************************************************************************************************************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "render": () => (/* binding */ render),
-/* harmony export */   "staticRenderFns": () => (/* binding */ staticRenderFns)
-/* harmony export */ });
-var render = function () {
-  var _vm = this
-  var _h = _vm.$createElement
-  var _c = _vm._self._c || _h
-  return _c("div")
-}
-var staticRenderFns = []
-render._withStripped = true
-
-
-
-/***/ }),
-
 /***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/site/items/OutdoorComponent.vue?vue&type=template&id=0bd7c3bd&scoped=true&":
 /*!***************************************************************************************************************************************************************************************************************************************************!*\
   !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/site/items/OutdoorComponent.vue?vue&type=template&id=0bd7c3bd&scoped=true& ***!
@@ -4814,6 +5000,7 @@ var render = function () {
                       ]),
                       _vm._v(" "),
                       _c("routeQuanDiogram", {
+                        ref: "route_quan_diogram",
                         attrs: { outdoor_region_article_id: this.article.id },
                       }),
                       _vm._v(" "),
@@ -4885,9 +5072,13 @@ var render = function () {
                   )
                 : _vm._e(),
               _vm._v(" "),
-              _c("routesTab", { attrs: { article_id: this.article.id } }),
+              _c("routesTab", {
+                ref: "routes_tab",
+                attrs: { article_id: this.article.id },
+              }),
               _vm._v(" "),
               _c("galleryComponent", {
+                ref: "gallery_component",
                 attrs: { article_id: this.article.id },
               }),
             ],
@@ -4902,12 +5093,17 @@ var render = function () {
       _c(
         "div",
         { staticClass: "row" },
-        [_c("commentForm", { attrs: { article_id: this.article.id } })],
+        [
+          _c("commentForm", {
+            ref: "comments",
+            attrs: { article_id: this.article.id },
+          }),
+        ],
         1
       ),
       _vm._v(" "),
       _c("SimilarArticles", {
-        ref: "SArticles",
+        ref: "similar_articles",
         attrs: {
           article_id: this.article.id,
           article_category: this.article.category,
@@ -5023,7 +5219,7 @@ var render = function () {
                 [
                   _c("openImg", {
                     attrs: {
-                      img: "/images/spot_rocks_img/" + spot_image.image,
+                      img: "../../images/spot_rocks_img/" + spot_image.image,
                       img_alt: spot_image.title,
                     },
                   }),
@@ -5763,31 +5959,48 @@ var render = function () {
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
   return this.similar_article.length > 0
-    ? _c(
-        "div",
-        { staticClass: "row similar_articles" },
-        [
-          _c("div", { staticClass: "container" }, [
-            _c("h2", { attrs: { id: "other" } }, [
-              _vm._v(_vm._s(_vm.$t("similar articles"))),
-            ]),
-            _vm._v(" "),
-            _c("hr", { staticClass: "other_line" }),
+    ? _c("div", { staticClass: "row similar_articles" }, [
+        _c("div", { staticClass: "container" }, [
+          _c("h2", { attrs: { id: "other" } }, [
+            _vm._v(_vm._s(_vm.$t("similar articles"))),
           ]),
           _vm._v(" "),
-          _vm._l(_vm.similar_article, function (other_article) {
-            return _c("SimilarArticleCardComponent", {
-              key: other_article.id,
-              attrs: {
-                article: other_article,
-                route: _vm.route + other_article.area.url_title,
-                image_dir: "images/" + _vm.img_dir,
-              },
-            })
-          }),
-        ],
-        2
-      )
+          _c("hr", { staticClass: "other_line" }),
+        ]),
+        _vm._v(" "),
+        _vm.article_category == "outdoor"
+          ? _c(
+              "span",
+              _vm._l(_vm.similar_article, function (other_article) {
+                return _c("SimilarOutdoorAreaCardComponent", {
+                  key: other_article.area.id,
+                  attrs: {
+                    article: other_article,
+                    route:
+                      "../../../" + _vm.route + other_article.area.url_title,
+                    image_dir: "images/" + _vm.article_category + "_img",
+                    category: _vm.article_category,
+                  },
+                })
+              }),
+              1
+            )
+          : _c(
+              "span",
+              _vm._l(_vm.similar_article, function (other_article) {
+                return _c("SimilarArticleCardComponent", {
+                  key: other_article.id,
+                  attrs: {
+                    article: other_article,
+                    route: "../../../" + _vm.route + other_article.url_title,
+                    image_dir: "images/" + _vm.article_category + "_img",
+                    category: _vm.article_category,
+                  },
+                })
+              }),
+              1
+            ),
+      ])
     : _vm._e()
 }
 var staticRenderFns = []
@@ -5820,28 +6033,21 @@ var render = function () {
       [
         _c(
           "router-link",
-          {
-            attrs: {
-              to: {
-                name: "outdoor",
-                params: { url_title: _vm.article.area.url_title },
-              },
-            },
-          },
+          { attrs: { to: this.route } },
           [
-            _vm.article.area.image != null
+            _vm.article.image != null
               ? _c("site-img", {
                   attrs: {
-                    src: this.image_dir + _vm.article.area.image,
+                    src: "../../../" + this.image_dir + "/" + _vm.article.image,
                     img_class: "img-responsive",
-                    alt: _vm.article.area[0][0].title,
+                    alt: _vm.article[0][0].title,
                   },
                 })
               : _c("site-img", {
                   attrs: {
                     src: "../../../public/images/site_img/image.png",
                     img_class: "img-responsive",
-                    alt: _vm.article.area[0][0].title,
+                    alt: _vm.article[0][0].title,
                   },
                 }),
           ],
@@ -5856,47 +6062,116 @@ var render = function () {
         "div",
         { staticClass: "similar_articles_title" },
         [
-          _c(
-            "router-link",
-            {
-              attrs: {
-                to: {
-                  name: "outdoor",
-                  params: { url_title: _vm.article.area.url_title },
-                },
-              },
-            },
-            [_c("h3", [_vm._v(_vm._s(_vm.article.area[0][0].title))])]
-          ),
+          _c("router-link", { attrs: { to: this.route } }, [
+            _c("h3", [_vm._v(_vm._s(_vm.article[0][0].title))]),
+          ]),
+        ],
+        1
+      ),
+    ]),
+  ])
+}
+var staticRenderFns = []
+render._withStripped = true
+
+
+
+/***/ }),
+
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/site/items/cards/SimilarOutdoorAreaCardComponent.vue?vue&type=template&id=8d447f52&":
+/*!************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/site/items/cards/SimilarOutdoorAreaCardComponent.vue?vue&type=template&id=8d447f52& ***!
+  \************************************************************************************************************************************************************************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "render": () => (/* binding */ render),
+/* harmony export */   "staticRenderFns": () => (/* binding */ staticRenderFns)
+/* harmony export */ });
+var render = function () {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("div", { staticClass: "col-md-3 col-xs-6" }, [
+    _c(
+      "div",
+      { staticClass: "similar_articles_img" },
+      [
+        _vm.category == "outdoor"
+          ? _c(
+              "router-link",
+              { attrs: { to: this.route } },
+              [
+                _vm.article.area.image != null
+                  ? _c("site-img", {
+                      attrs: {
+                        src:
+                          "../../../" +
+                          this.image_dir +
+                          "/" +
+                          _vm.article.area.image,
+                        img_class: "img-responsive",
+                        alt: _vm.article.area[0][0].title,
+                      },
+                    })
+                  : _c("site-img", {
+                      attrs: {
+                        src: "../../../public/images/site_img/image.png",
+                        img_class: "img-responsive",
+                        alt: _vm.article.area[0][0].title,
+                      },
+                    }),
+              ],
+              1
+            )
+          : _vm._e(),
+      ],
+      1
+    ),
+    _vm._v(" "),
+    _c("div", { staticClass: "similar_article_data" }, [
+      _c(
+        "div",
+        { staticClass: "similar_articles_title" },
+        [
+          _c("router-link", { attrs: { to: this.route } }, [
+            _vm.category == "outdoor"
+              ? _c("h3", [_vm._v(_vm._s(_vm.article.area[0][0].title))])
+              : _vm._e(),
+          ]),
         ],
         1
       ),
       _vm._v(" "),
-      _c(
-        "div",
-        { staticClass: "col text-center similar_article_routes_quantity" },
-        [
-          _c("div", { staticClass: "row" }, [
-            _vm._v(
-              "\n                " +
-                _vm._s(_vm.article.route_quantyty.sectors) +
-                " Sectors\n                " +
-                _vm._s(_vm.article.route_quantyty.routes) +
-                " Routes\n            "
-            ),
-          ]),
-          _vm._v(" "),
-          _vm.article.route_quantyty.mtps > 0
-            ? _c("div", { staticClass: "row" }, [
+      _vm.category == "outdoor"
+        ? _c(
+            "div",
+            { staticClass: "col text-center similar_article_routes_quantity" },
+            [
+              _c("div", { staticClass: "row" }, [
                 _vm._v(
                   "\n                " +
-                    _vm._s(_vm.article.route_quantyty.mtps) +
-                    " Multy pitch\n            "
+                    _vm._s(_vm.article.route_quantyty.sectors) +
+                    " Sectors\n                " +
+                    _vm._s(_vm.article.route_quantyty.routes) +
+                    " Routes\n            "
                 ),
-              ])
-            : _vm._e(),
-        ]
-      ),
+              ]),
+              _vm._v(" "),
+              _vm.article.route_quantyty.mtps > 0
+                ? _c("div", { staticClass: "row" }, [
+                    _vm._v(
+                      "\n                " +
+                        _vm._s(_vm.article.route_quantyty.mtps) +
+                        " Multy pitch\n            "
+                    ),
+                  ])
+                : _vm._e(),
+            ]
+          )
+        : _vm._e(),
     ]),
   ])
 }
@@ -6072,12 +6347,12 @@ var render = function () {
         [_vm.right_navbar_class],
     },
     [
+      _c("h3", { staticClass: "navbar_title" }, [
+        _vm._v(_vm._s(_vm.$t("article navigation menu"))),
+      ]),
+      _vm._v(" "),
       _c("nav", { staticClass: "navbar fading-side-menu" }, [
         _c("ul", { staticClass: "list-unstyled" }, [
-          _c("li", [
-            _c("h4", [_vm._v(_vm._s(_vm.$t("article navigation menu")))]),
-          ]),
-          _vm._v(" "),
           _c("li", [
             _c("a", { attrs: { href: "#description" } }, [
               _c("span", { staticClass: "text-primary" }, [
@@ -6120,38 +6395,14 @@ var render = function () {
         ]),
       ]),
       _vm._v(" "),
-      _c("div", { staticClass: "row" }, [
-        _c("div", { staticClass: "col-sm-10 col-md-10" }, [
-          _c(
-            "div",
-            { staticClass: "thumbnail" },
-            [
-              _c(
-                "router-link",
-                {
-                  staticStyle: { "font-size": "1.5em" },
-                  attrs: {
-                    to:
-                      "../local_bisnes/" +
-                      _vm.local_bisnes.global_data.url_title,
-                    exact: "",
-                  },
-                },
-                [
-                  _c("img", {
-                    attrs: {
-                      src:
-                        "../../../images/suport_local_bisnes_img/" +
-                        _vm.local_bisnes.image.image,
-                      alt: "...",
-                    },
-                  }),
-                ]
-              ),
-              _vm._v(" "),
+      _vm.local_bisnes.image &&
+      _vm.local_bisnes.local_data &&
+      _vm.local_bisnes.global_data
+        ? _c("div", { staticClass: "row" }, [
+            _c("div", { staticClass: "col-sm-10 col-md-10" }, [
               _c(
                 "div",
-                { staticClass: "caption" },
+                { staticClass: "thumbnail" },
                 [
                   _c(
                     "router-link",
@@ -6165,19 +6416,47 @@ var render = function () {
                       },
                     },
                     [
-                      _c("h3", [
-                        _vm._v(_vm._s(_vm.local_bisnes.local_data.title)),
-                      ]),
+                      _c("img", {
+                        attrs: {
+                          src:
+                            "../../../images/suport_local_bisnes_img/" +
+                            _vm.local_bisnes.image.image,
+                          alt: "...",
+                        },
+                      }),
                     ]
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "div",
+                    { staticClass: "caption" },
+                    [
+                      _c(
+                        "router-link",
+                        {
+                          staticStyle: { "font-size": "1.5em" },
+                          attrs: {
+                            to:
+                              "../local_bisnes/" +
+                              _vm.local_bisnes.global_data.url_title,
+                            exact: "",
+                          },
+                        },
+                        [
+                          _c("h3", [
+                            _vm._v(_vm._s(_vm.local_bisnes.local_data.title)),
+                          ]),
+                        ]
+                      ),
+                    ],
+                    1
                   ),
                 ],
                 1
               ),
-            ],
-            1
-          ),
-        ]),
-      ]),
+            ]),
+          ])
+        : _vm._e(),
     ]
   )
 }
@@ -6204,22 +6483,42 @@ var render = function () {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c(
-    "div",
-    { staticClass: "container" },
-    [
-      _c("outdoor", { attrs: { article: _vm.outdoor } }),
-      _vm._v(" "),
-      _c("metaData", {
-        attrs: {
-          title: _vm.outdoor[0].title,
-          description: _vm.outdoor[0].description,
-          image: "../../../../public/images/outdoor_img/" + _vm.outdoor.image,
-        },
-      }),
-    ],
-    1
-  )
+  return _c("div", { staticClass: "container" }, [
+    _vm.article_loading
+      ? _c("span", [
+          _c("div", { staticClass: "row" }, [
+            _c("div", { staticClass: "col-md-4" }, [
+              _c("img", {
+                attrs: {
+                  src: "../../../../../../public/images/site_img/loading.gif",
+                  alt: "loading",
+                },
+              }),
+            ]),
+          ]),
+        ])
+      : !_vm.article_loading
+      ? _c(
+          "span",
+          [
+            _c("outdoor", {
+              ref: "article_page",
+              attrs: { article: _vm.outdoor },
+            }),
+            _vm._v(" "),
+            _c("metaData", {
+              attrs: {
+                title: _vm.outdoor[0].title,
+                description: _vm.outdoor[0].description,
+                image:
+                  "../../../../public/images/outdoor_img/" + _vm.outdoor.image,
+              },
+            }),
+          ],
+          1
+        )
+      : _vm._e(),
+  ])
 }
 var staticRenderFns = []
 render._withStripped = true

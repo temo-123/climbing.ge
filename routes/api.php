@@ -292,7 +292,7 @@ Route::group(['namespace'=>'Api'], function() {
 
     Route::get('/get_sectors_for_forum/{article_id}', 'SectorController@get_sectors_for_forum');
     Route::get('/sectors_and_routes_quantity', 'SectorController@get_sectors_and_routes_quantity');
-    // Route::get('/get_spot_rocks_images/{article_id}', 'SectorController@get_spot_rocks_images');
+    Route::get('/get_spot_rocks_images/{article_id}', 'SectorController@get_spot_rocks_images');
 
     Route::controller(SpotRockController::class)->prefix('spot_rock_images')->group( function() {
         Route::get('/get_spot_rock_images/{article_id}', 'get_spot_rock_images');

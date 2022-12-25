@@ -93,7 +93,7 @@
                                     <button class="btn btn-primary" >Add comment</button>
                                 </div>
                                 <div class="col-xs-6 col-md-6">
-                                    <button @click="update" class="btn btn-success pull-right" v-if="!is_refresh">Refresh ({{id}})</button>
+                                    <button @click="get_comments" class="btn btn-success pull-right" v-if="!is_refresh">Refresh ({{id}})</button>
                                     <span class="badge badge-primare mb-1 pull-right" v-if="is_refresh">Updating...</span>
                                 </div>
                             </div>
@@ -113,6 +113,9 @@
                                 <div @click="show_complaint_modal(comment.id)" v-if="user.length != [] && comment.user_id != user.id" >
                                     <i class="fa fa-ellipsis-v complaint_icon" aria-hidden="true"></i>
                                 </div>
+                                    <div class="row">
+                                        <h3 class="comentator_name"><strong>{{comment.name}} {{comment.surname}}</strong> <!-- [ {{comment.email}} ] --> </h3>
+                                    </div>
 
                                 <!-- <a @click="show_complaint_modal(comment.id)" v-if="comment.user_id != user.id" class="complaint_icon">
                                     <i class="fa fa-ellipsis-v" aria-hidden="true"></i>
@@ -122,7 +125,6 @@
                                     <img :src="'/public/images/site_img/user_demo_img.gif'" />
                                 </div>
                                 <div class="col-xs-10 col-md-10">
-                                    <h4><strong>{{comment.name}} {{comment.surname}}</strong> <!-- [ {{comment.email}} ] --> </h4>
                                     <div class="row">
                                         <p>{{comment.text}}</p>
                                     </div>
@@ -230,13 +232,20 @@
                 MIX_GOOGLE_CAPTCHA_SITE_KEY: process.env.MIX_GOOGLE_CAPTCHA_SITE_KEY,
                 complainter_email: '',
                 complaint_loader: false,
+
+                id: this.article_id
             }
         },
         mounted() {
-            this.update()
+            this.get_comments()
             this.get_user_info()
         },
         methods: {
+            update(id){
+                this.id = id
+                this.get_comments();
+            },
+
             onCaptchaVerified() {
                 this.is_verify_isset = true
             },
@@ -297,16 +306,16 @@
 
             add_comment() {
                 axios
-                .put('../api/comment/' + this.article_id, {
+                .put('../api/comment/' + this.id, {
                     name: this.name,
                     is_verify_isset: this.is_verify_isset,
                     surname: this.surname,
                     email: this.email,
                     text: this.text,
-                    article_id: this.article_id
+                    article_id: this.id
                 })
                 .then(response => {
-                    this.update()
+                    this.get_comments()
                     // alert(response.data['message'])
                     this.errors = []
 
@@ -328,15 +337,15 @@
                     id: id,
                 })
                 .then(Response => {
-                    this.update()
+                    this.get_comments()
                 })
                 .catch()
             },
 
-            update: function(){
+            get_comments: function(){
                 this.is_refresh = true
                 axios
-                .get('../api/comment/' + this.article_id)
+                .get('../api/comment/' + this.id)
                 .then(response => {
                     this.comments = response.data
                     this.is_refresh = false
@@ -354,5 +363,11 @@
         float: right;
         cursor: pointer;
         font-size: 130%;
+    }
+    .comentator_name{
+        margin: 0px;
+        margin-left: 18%;
+        float: left;
+        color: #000;
     }
 </style>

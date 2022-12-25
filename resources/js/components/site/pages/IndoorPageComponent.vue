@@ -1,12 +1,24 @@
 <template>
     <div class="container">
-        <articlPage :article="indoors" />
+        <span v-if="article_loading">
+            <div class="row">
+                <div class="col-md-4">
+                    <img :src="'../../../../../../public/images/site_img/loading.gif'" alt="loading">
+                </div>
+            </div>
+        </span>
+        <span v-else-if="!article_loading">
+            <articlPage 
+                :article="indoors" 
+                ref="article_page"
+            />
 
-        <metaData 
-            :title = "indoors[0].title"
-            :description = "indoors[0].description"
-            :image = "'../../../../public/images/indoor_img/'+indoors.image"
-        />
+            <metaData 
+                :title = "indoors[0].title"
+                :description = "indoors[0].description"
+                :image = "'../../../../public/images/indoor_img/'+indoors.image"
+            />
+        </span>
     </div>
 </template>
 
@@ -19,6 +31,7 @@
         data: function () {
             return {
                 indoors: [],
+                article_loading: true
             }
         },
         components: {
@@ -30,6 +43,7 @@
         },
         watch: {
             '$route' (to, from) {
+                this.indoors = []
                 this.get_indoors(),
                 window.scrollTo(0,0)
             }
@@ -40,9 +54,12 @@
                 .get('../api/article/indoor/'+localStorage.getItem('lang')+'/'+this.$route.params.url_title)
                 .then(response => {
                     this.indoors = response.data
+
+                    this.$refs.article_page.update_similar_articles_component(this.indoors.id)
                 })
                 .catch(error =>{
                 })
+                .finally(() => this.article_loading = false);
             },
         }
     }

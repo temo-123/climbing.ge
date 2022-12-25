@@ -26,7 +26,10 @@
                 <div v-if="this.article[0].route || this.article.global_info.routes_info != []">
                     <h2 id="routes">{{ $t('route')}}</h2>
 
-                    <routeQuanDiogram :outdoor_region_article_id="this.article.id"/>
+                    <routeQuanDiogram 
+                        :outdoor_region_article_id="this.article.id"
+                        ref="route_quan_diogram"
+                    />
 
                     <span v-if="this.article.global_info.routes_info.length == 0">
                         <span v-html="this.article[0].route"></span>
@@ -46,9 +49,15 @@
                     </span>
                 </div>
 
-                <routesTab :article_id="this.article.id" />
+                <routesTab 
+                    :article_id="this.article.id" 
+                    ref="routes_tab"
+                />
                 
-                <galleryComponent :article_id="this.article.id" />
+                <galleryComponent 
+                    :article_id="this.article.id" 
+                    ref="gallery_component"
+                />
             </div>
 
             <articleRightMenu />
@@ -56,7 +65,10 @@
         </div>
 
         <div class="row"> 
-            <commentForm :article_id="this.article.id" />
+            <commentForm 
+                :article_id="this.article.id" 
+                ref="comments"
+            />
         </div>
 
         <SimilarArticles 
@@ -65,7 +77,7 @@
             :route="'outdoor/'"
             :img_dir="'outdoor_img/'"
 
-            ref="SArticles"
+            ref="similar_articles"
         />
 
     </div> 
@@ -105,29 +117,23 @@
             }
         },
         mounted() {
-            this.get_posts()
+            // this.get_posts()
         },
         watch: {
             '$route' (to, from) {
-                // this.$refs.SArticles.test();
-                // this.$refs.SimilarArticles.get_same_articles();
+                // $refs.semilar_articles.get_same_articles()
             }
         },
         methods: {
-            // get_posts(){
-            //     axios
-            //     .get("../api/posts/get_posts_for_outdoor_region/"+this.article.id)
-            //     .then(response => {
-            //         this.posts = response.data
-            //     })
-            //     .catch(
-            //         error => console.log(error)
-            //     );
-            // },
+            update_similar_articles_component(id){
+                this.$refs.similar_articles.update(id)
+                this.$refs.route_quan_diogram.update(id)
+                this.$refs.routes_tab.update(id)
+                this.$refs.gallery_component.update(id)
+                this.$refs.comments.update(id)
+            },
 
             add_to_favorite_outdoor_area(article_id){
-                // alert('add to interested event. ID = ' + article_id)
-
                 axios
                 .post('../../api/articles/add_to_favorite_outdoor_area/', {
                     article_id: article_id,

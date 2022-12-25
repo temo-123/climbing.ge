@@ -41,12 +41,6 @@
                 },
 
                 sportChartData: [],
-                // sportChartData: [
-                //     ['Gread', 'Quantyty'],
-                //     ['4', 2],
-                //     ['5a', 3],
-                //     ['5b', 4],
-                // ],
 
                 boulderChartOptions: {
                     chart: {
@@ -56,23 +50,26 @@
                     }
                 },
                 bolderChartData: [],
-                // bolderChartData: [
-                //     ['Gread', 'Quantyty'],
-                //     ['V1', 2],
-                //     ['V1+', 3],
-                //     ['V2', 2],
-                // ],
+
+                id: this.outdoor_region_article_id
             };
         },
         mounted() {
             // console.log(this.outdoor_region_article_id);
             this.get_routes_quantiti()
         },
-        
+        watch: {
+            '$route' (to, from) {
+                this.get_routes_quantiti(),
+                window.scrollTo(0,0)
+            }
+        },
         methods: {
             get_routes_quantiti(){
+                this.bolderChartData = []
+                this.sportChartData = []
                 axios
-                .get("../../api/get_routes_quantity/"+this.outdoor_region_article_id)
+                .get("../../api/get_routes_quantity/"+this.id)
                 .then(response => {
                     this.bolderChartData = response.data.bouldering
                     this.sportChartData = response.data.sport_routes
@@ -81,6 +78,11 @@
                     error => console.log(error)
                 );
             },
+
+            update(id){
+                this.id = id
+                this.get_routes_quantiti()
+            }
         }
     }
 </script>

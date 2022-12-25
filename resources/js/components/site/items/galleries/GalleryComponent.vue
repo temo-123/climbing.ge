@@ -45,16 +45,21 @@
       return {
         db_images: [],
         active_img: [],
-        open_img: false
+        open_img: false.valueOf,
+        id: this.article_id
       };
     },
     mounted() {
         this.get_article_images();
     },
     methods: {
+        update(id){
+            this.id = id
+            this.get_article_images();
+        },
         get_article_images() {
             axios
-            .get('../api/gallery_image/' + this.article_id)
+            .get('../api/gallery_image/' + this.id)
             .then(response => {
                 this.db_images = response.data
             })

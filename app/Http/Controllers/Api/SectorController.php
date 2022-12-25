@@ -95,7 +95,7 @@ class SectorController extends Controller
         }
     }
 
-    public function get_Spot_rocks_images(Request $request)
+    public function get_spot_rocks_images(Request $request)
     {
         return (Spot_rocks_image::where('article_id','=', $request->article_id)->get());
     }
@@ -318,6 +318,11 @@ class SectorController extends Controller
     {
         //
     }
+
+    // public function get_Spot_rocks_images(Request $request)
+    // {
+    //     return (Spot_rocks_image::where('article_id','=', $request->article_id)->get());
+    // }
 
     /**
      * Update the specified resource in storage.

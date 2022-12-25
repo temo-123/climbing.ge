@@ -1,16 +1,25 @@
 <template>
     <div class="col-md-3 col-xs-6">
         <div class="similar_articles_img">
-            <router-link :to="this.route">
-                <site-img v-if="article.image != null" :src="'../../../' + this.image_dir + '/' + article.image" :img_class="'img-responsive'" :alt='article[0][0].title'/>
-                <site-img v-else :src="'../../../public/images/site_img/image.png'" :img_class="'img-responsive'" :alt='article[0][0].title'/>
+            <router-link :to="this.route" v-if="category == 'outdoor'">
+                <site-img v-if="article.area.image != null" :src="'../../../' + this.image_dir + '/' + article.area.image" :img_class="'img-responsive'" :alt='article.area[0][0].title'/>
+                <site-img v-else :src="'../../../public/images/site_img/image.png'" :img_class="'img-responsive'" :alt='article.area[0][0].title'/>
             </router-link>
         </div>
         <div class="similar_article_data">
             <div class="similar_articles_title">
                 <router-link :to="this.route">
-                    <h3>{{ article[0][0].title }}</h3>
+                    <h3 v-if="category == 'outdoor'">{{ article.area[0][0].title }}</h3>
                 </router-link>
+            </div>
+            <div class="col text-center similar_article_routes_quantity" v-if="category == 'outdoor'">
+                <div class="row">
+                    {{ article.route_quantyty.sectors }} Sectors
+                    {{ article.route_quantyty.routes }} Routes
+                </div>
+                <div class="row" v-if="article.route_quantyty.mtps > 0">
+                    {{ article.route_quantyty.mtps }} Multy pitch
+                </div>
             </div>
         </div>
     </div>

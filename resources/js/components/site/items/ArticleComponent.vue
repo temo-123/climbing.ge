@@ -20,7 +20,7 @@
            
                 <articleTextBlocks :article="this.article"/>
 
-                <ul class="social-network social-circle" style="text-align: center;"> 
+                <!-- <ul class="social-network social-circle" style="text-align: center;"> 
                     <li v-if="this.article['fb_link'] != NULL">
                         <a target="_blank" href="$article['fb_link']}}" class="icoFacebook ico_color" title="Facebook">
                             <i class="fa fa-facebook"></i>
@@ -50,22 +50,31 @@
                             <i class="fa fa-globe "></i>
                         </a>
                     </li>
-                </ul>
+                </ul> -->
                 
-                <galleryComponent :article_id="this.article.id" />
+                
+                <galleryComponent 
+                    :article_id="this.article.id" 
+                    ref="gallery_component"
+                />
             </div>
 
             <articleRightMenu />
             
         </div>
 
-        <commentForm :article_id="this.article.id" />
+        <commentForm 
+            :article_id="this.article.id" 
+            ref="comments"
+        />
 
         <SimilarArticles 
             :article_id="this.article.id" 
             :article_category="this.article.category" 
-            :route="'outdoor/'"
-            :img_dir="'outdoor'"
+            :route="this.article.category + '/'"
+            :img_dir="this.article.category"
+
+            ref="similar_articles"
         />
 
     </div> 
@@ -98,17 +107,24 @@
         },
         mounted() {
             // this.get_article_global_data()
+                // console.log('mmmmmmmmmmmmmmmmmmmmmmm');
+        },
+        watch: {
+            '$route' (to, from) {
+                // console.log('lllllllllllll');
+                // this.update_similar_articles_component()
+                // console.log('lllllllllllll');
+            }
         },
         methods: {
-            // get_article_global_data(){
-            //     axios
-            //     .get('../../api/get_article_global_data/'+localStorage.getItem('lang')+'/'+this.article.id)
-            //     .then(response => {
-            //         this.article_global_data = response.data
-            //     })
-            //     .catch(error =>{
-            //     })
-            // },
+            update_similar_articles_component(id){
+                // console.log(this.article);
+                this.$refs.similar_articles.update(id)
+                this.$refs.route_quan_diogram.update(id)
+                this.$refs.routes_tab.update(id)
+                this.$refs.gallery_component.update(id)
+                this.$refs.comments.update(id)
+            }
         }
     }
 </script>

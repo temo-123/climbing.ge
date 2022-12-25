@@ -653,40 +653,52 @@ class ArticleController extends Controller
             $articles = $this->similar_outdoor_list($request->lang, $request->article_id);
         }
         elseif ($request->article_category == "indoor") {
-            $articles = $this->similar_article_list($request->category, $request->lang);
+            $articles = $this->similar_article_list($request->article_category, $request->lang, $request->article_id);
         }
         elseif ($request->article_category == "ice") {
-            $articles = $this->similar_article_list($request->category, $request->lang);
+            $articles = $this->similar_article_list($request->article_category, $request->lang, $request->article_id);
         }
         elseif ($request->article_category == "news") {
-            $articles = $this->similar_article_list($request->category, $request->lang);
+            $articles = $this->similar_article_list($request->article_category, $request->lang, $request->article_id);
         }
         elseif ($request->article_category == "other") {
-            $articles = $this->similar_article_list($request->category, $request->lang);
+            $articles = $this->similar_article_list($request->article_category, $request->lang, $request->article_id);
         }
         elseif ($request->article_category == "tech_tip" || $request->article_category == 'security') {
-            $articles = $this->similar_article_list($request->category, $request->lang);
+            $articles = $this->similar_article_list($request->article_category, $request->lang, $request->article_id);
         }
         elseif ($request->article_category == "partner") {
-            $articles = $this->similar_article_list($request->category, $request->lang);
+            $articles = $this->similar_article_list($request->article_category, $request->lang, $request->article_id);
         }
         elseif ($request->article_category == "event") {
-            $articles = $this->similar_article_list($request->category, $request->lang);
+            $articles = $this->similar_article_list($request->article_category, $request->lang, $request->article_id);
         }
         elseif ($request->article_category == "mount_route") {
-            $articles = $this->similar_mount_route_list($request->lang);
+            $articles = $this->similar_mount_route_list($request->lang, $request->article_id);
         }
 
         return $articles;
     }
 
 
-    public function similar_mount_route_list($lang)
+    public function similar_article_list($category, $lang, $article_id)
     {
-        $article_count = Article::where('category', '=', 'mount_route')->where('published', '=', 1)->count();
+        $article_count = Article::where('category', '=', $category)->where('id', '!=', $article_id)->where('published', '=', 1)->count();
         $articles = [];
         if($article_count > 0){
-            $global_articles = Article::where('category', '=', 'mount_route')->where('published', '=', 1)->get();
+            $global_articles = Article::where('category', '=', $category)->where('id', '!=', $article_id)->where('published', '=', 1)->get();
+            $articles = GetArticlesService::get_locale_article_use_locale($global_articles, $lang);
+        }
+        return $articles;
+    }
+
+
+    public function similar_mount_route_list($lang, $article_id)
+    {
+        $article_count = Article::where('category', '=', 'mount_route')->where('id', '!=', $article_id)->where('published', '=', 1)->count();
+        $articles = [];
+        if($article_count > 0){
+            $global_articles = Article::where('category', '=', 'mount_route')->where('id', '!=', $article_id)->where('published', '=', 1)->get();
             $articles = GetArticlesService::get_locale_article_use_locale($global_articles, $lang);
         }
         return $articles;
