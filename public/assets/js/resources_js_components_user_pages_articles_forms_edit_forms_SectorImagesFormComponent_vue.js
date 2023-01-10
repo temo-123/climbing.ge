@@ -107,7 +107,7 @@ __webpack_require__.r(__webpack_exports__);
   data: function data() {
     return {
       sector_images: [],
-      sector_old_images: []
+      spot_rocks_old_images: []
     };
   },
   mounted: function mounted() {
@@ -118,7 +118,7 @@ __webpack_require__.r(__webpack_exports__);
       var _this = this;
 
       axios.get("../../../api/spot_rock_images/get_spot_rock_images/" + this.$route.params.id).then(function (response) {
-        _this.mount_route_old_images = response.data.mount_route_images;
+        _this.spot_rocks_old_images = response.data;
       })["catch"](function (error) {
         return console.log(error);
       });
@@ -127,8 +127,8 @@ __webpack_require__.r(__webpack_exports__);
       var _this2 = this;
 
       if (confirm('Are you sure, you want delite this image?')) {
-        axios["delete"]("../../../api/spot_rock_images/del_spot_rock_images/" + image_id).then(function (response) {
-          _this2.get_old_mount_routes_images();
+        axios["delete"]("../../../api/spot_rock_images/del_spot_rock_image/" + image_id).then(function (response) {
+          _this2.get_old_sector_images();
         })["catch"](function (error) {
           return console.log(error);
         });
@@ -141,7 +141,7 @@ __webpack_require__.r(__webpack_exports__);
       this.upload_img();
     },
     upload_img: function upload_img(event) {
-      this.$emit("upload_img", this.sector_images);
+      this.$emit("area_images", this.sector_images);
     },
     add_new_sector_image_value: function add_new_sector_image_value() {
       var new_item_id = this.sector_images.length + 1;
@@ -264,14 +264,15 @@ var render = function () {
                 _vm._v(" "),
                 _c(
                   "tbody",
-                  _vm._l(_vm.sector_old_images, function (image) {
+                  _vm._l(_vm.spot_rocks_old_images, function (image) {
                     return _c("tr", { key: image.id }, [
                       _c("td", [
                         _c("img", {
                           staticClass: "img-responsive",
                           attrs: {
                             src:
-                              "../../../../images/spot_rock_img/" + image.image,
+                              "../../../../images/spot_rocks_img/" +
+                              image.image,
                             alt: image.image,
                           },
                         }),

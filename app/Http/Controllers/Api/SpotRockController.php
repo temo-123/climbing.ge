@@ -17,7 +17,7 @@ class SpotRockController extends Controller
         // ImageControllService::image_delete('images/spot_rock_img/', $image, 'image');
         // $image ->delete();
 
-        return Spot_rocks_image::where('id', '=', $request->article_id)->first();
+        return Spot_rocks_image::where('article_id', '=', $request->article_id)->get();
     }
 
     public function del_spot_rock_image(Request $request)

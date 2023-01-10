@@ -11,7 +11,7 @@
                 <button type="submit" class="btn btn-primary" v-on:click="edit_article()" >Save</button>
             </div>
         </div>
-        <div class="row">
+        <div class="row" >
             <div class="col-md-12">
                 <div class="row">
                     <div class="col" >
@@ -36,28 +36,43 @@
                     </div>
                 </div>
                 <div class="row">
-                    <div class="alert alert-danger" role="alert" v-if="ka_article_error.ka_info">
+                    <!-- <div class="alert alert-danger" role="alert" v-if="ka_article_error.ka_info">
                         {{ ka_article_error.ka_info[0] }}
-                    </div>
+                    </div> -->
                 </div>
             </div>
             <div class="col-md-12" v-show="tab_num == 1">
                 <GlobalDataForm 
                     @global_form_data="article_data.global_data = $event" 
 
-                    :global_data="editing_data.global_article"
-                    :category="this.category"
+                    :global_data_prop="editing_data.global_article"
+                    :category_prop="this.category"
+
+                    :region_id_prop="region_id"
+                    :mount_id_prop="mount_id"
+
+                    :title_prop="$t('user edit en article title')"
+                    :description_prop="$t('user edit en article description')"
                 />
 
-                <ArticleImage ref="ArticleImage"/>
+                <!-- ref="ArticleImage" -->
+
+                <ArticleImage 
+                    @upload_img="article_image = $event" 
+
+                    :image_prop="article_old_image"
+                    :category_prop="this.category"
+                />
 
                 <SectorsImagesForm      
                     v-if="this.category == 'outdoor'"
-                    :category="this.category"
+
+                    @area_images="area_rocks_images = $event" 
                 />
                 <MountRouteImagesForm
                     v-if="this.category == 'mount_route'"
-                    :category="this.category"
+
+                    @mount_route_images="article_image = $event" 
                 />
                
             </div>
@@ -67,11 +82,12 @@
                     @global_blocks="global_blocks_action"
 
                     :global_blocks_prop="global_blocks"
-                    :locale_data="editing_data.us_article"
-                    :category="this.category"
+                    :locale_data_prop="editing_data.us_article"
+                    :category_prop="this.category"
+                    :locale_prop="'us'"
 
-                    :title="$t('user edit en article title')"
-                    :description="$t('user edit en article description')"
+                    :title_prop="$t('user edit en article title')"
+                    :description_prop="$t('user edit en article description')"
                 />
                 
             </div>
@@ -81,11 +97,12 @@
                     @global_blocks="global_blocks_action"
 
                     :global_blocks_prop="global_blocks"
-                    :locale_data="editing_data.ka_article"
-                    :category="this.category"
+                    :locale_data_prop="editing_data.ka_article"
+                    :category_prop="this.category"
+                    :locale_prop="'ka'"
 
-                    :title="$t('user edit ka article title')"
-                    :description="$t('user edit ka article description')"
+                    :title_prop="$t('user edit ka article title')"
+                    :description_prop="$t('user edit ka article description')"
                 />
                 
             </div>
@@ -95,11 +112,12 @@
                     @global_blocks="global_blocks_action"
 
                     :global_blocks_prop="global_blocks"
-                    :locale_data="editing_data.ru_article"
-                    :category="this.category"
+                    :locale_data_prop="editing_data.ru_article"
+                    :category_prop="this.category"
+                    :locale_prop="'ru'"
 
-                    :title="$t('user edit ru article title')"
-                    :description="$t('user edit ru article description')"
+                    :title_prop="$t('user edit ru article title')"
+                    :description_prop="$t('user edit ru article description')"
                 />
                
             </div>
@@ -122,10 +140,6 @@
             // 'editing_article_id'
         ],
         components: {
-            // StackModal,
-            // SlickItem,
-            // SlickList,
-
             GlobalDataForm,
             LocaleDataForm,
             ArticleImage,
@@ -134,27 +148,23 @@
         },
         data(){
             return {
-                // editing_url: '/articles/get_editing_data/',
-                category: '',
+                article_id: this.$route.params.id,
                 tab_num: 1,
 
-                global_article_error: [],
-                is_global_article_error: true,
+                errors: [],
 
-                ka_article_error: [],
-                is_ka_article_error: true,
-
-                ru_article_error: [],
-                is_ru_article_error: true,
-
-                us_article_error: [],
-                is_us_article_error: true,
-
-                // global_data: [],
-                // us_data: [],
-                // ka_data: [],
-                // ru_data: [],
                 editing_data: [],
+
+                article_image: '',
+                area_rocks_images: [],
+                mount_route_images: [],
+
+                region_id: 0,
+                mount_id: 0,
+
+                article_old_image: '',
+
+                is_dala_geting: true,
 
                 global_blocks: {
                     info_block: 'new_info',
@@ -179,41 +189,41 @@
                 .then(response => {
                     this.editing_data = response.data
                     this.category = response.data.global_article.category
+                    this.article_old_image = this.editing_data.global_article.image
+
+                    this.region_id = this.editing_data.region_id
+                    this.mount_id = this.editing_data.mount_id
 
                     this.editing_data.general_data.forEach(general_text => {
-                        if(general_text.block == 'info_block'){
-                            this.global_blocks.info_block = general_text.block_action
-                            this.global_blocks.info_block_id = general_text.info_id
+                        if(general_text.position.block == 'info_block'){
+                            this.global_blocks.info_block = general_text.position.block_action
+                            this.global_blocks.info_block_id = general_text.data.id
                         }
 
-                        else if(general_text.block == 'routes_info'){
-                            this.global_blocks.routes_info = general_text.block_action
-                            this.global_blocks.routes_info_id = general_text.info_id
+                        else if(general_text.position.block == 'routes_info'){
+                            this.global_blocks.routes_info = general_text.position.block_action
+                            this.global_blocks.routes_info_id = general_text.data.id
                         }
 
-                        else if(general_text.block == 'what_need_info'){
-                            this.global_blocks.what_need_info = general_text.block_action
-                            this.global_blocks.what_need_info_id = general_text.info_id
+                        else if(general_text.position.block == 'what_need_info'){
+                            this.global_blocks.what_need_info = general_text.position.block_action
+                            this.global_blocks.what_need_info_id = general_text.data.id
                         }
 
-                        else if(general_text.block == 'best_time'){
-                            this.global_blocks.best_time = general_text.block_action
-                            this.global_blocks.best_time_id = general_text.info_id
+                        else if(general_text.position.block == 'best_time'){
+                            this.global_blocks.best_time = general_text.position.block_action
+                            this.global_blocks.best_time_id = general_text.data.id
                         }
                     });
                 })
                 .catch(
                     error => console.log(error)
-                );
+                )
+                .finally(() => this.is_dala_geting = false);
             },
-            edit_article() {
-                this.editing_data.global_data.us_title_for_url_title = this.editing_data.en_data.title,
 
-                this.is_us_article_error = []
-                this.error.global_article_error = [],
-                this.error.ka_article_error = [],
-                this.error.ru_article_error = [],
-                this.error.us_article_error = []
+            edit_article() {
+                this.errors = []
 
                 let formData = new FormData();
                 formData.append('image', this.article_image);
@@ -221,31 +231,35 @@
                 formData.append('global_blocks', JSON.stringify(this.global_blocks))
 
                 if(this.category == 'outdoor'){
-                    var loop_num = 0
-                    this.area_images.forEach(area_image => {
-                        formData.append('outdoor_area_images['+loop_num+']', area_image.image)
-                        loop_num++
-                    });
-                    loop_num = 0
+                    if(this.area_rocks_images){
+                        var loop_num = 0
+                        this.area_rocks_images.forEach(area_image => {
+                            formData.append('outdoor_area_images['+loop_num+']', area_image.image)
+                            loop_num++
+                        });
+                        loop_num = 0
+                    }
                 }
                 else if(this.category == 'mount_route'){
-                    var loop_num = 0
-                    this.mount_route_images.forEach(mount_route_image => {
-                        formData.append('mountain_route_images['+loop_num+']', mount_route_image.image)
-                        loop_num++
-                    });
-                    loop_num = 0
+                    if(this.mount_route_images){
+                        var loop_num = 0
+                        this.mount_route_images.forEach(mount_route_image => {
+                            formData.append('mountain_route_images['+loop_num+']', mount_route_image.image)
+                            loop_num++
+                        });
+                        loop_num = 0
+                    }
                 }
 
                 axios
                 // .post('/api/article/add_article/' + this.category, 
-                .post('../../api/articles/global/edit/' + this.editing_article_id, 
+                .post('../../../api/article/edit_article/' + this.article_id, 
                     formData,
                 )
                 .then(response => {
-                    this.is_back_action = true
+                    // this.is_back_action = true
                     // this.$refs.ArticleImage.checkForm()
-                    this.go_back()
+                    this.go_back(true)
                 })
                 .catch(err => {
                     console.log(err);
@@ -261,6 +275,17 @@
 
             global_blocks_action(event){
                 this.global_blocks = event
+            },
+
+            go_back: function(back_action = false) {
+                if(back_action == false){
+                    if(confirm('Are you sure, you want go back?')){
+                        this.$router.go(-1)
+                    }
+                }
+                else{
+                    this.$router.go(-1)
+                }
             },
         },
     }

@@ -34,7 +34,7 @@ const router = new VueRouter({
         { path: '/myComments', name: 'myComentsList', component: load('comments/MyCommentsPageComponent') },
 
         { path: '/favorite_films', name: 'favoriteFilmsPage', component: load('favorites/FavoriteFilmsPageComponent') },
-        { path: '/my_favorite_outdoor_area', name: 'favoriteOutdoorArea', component: load('FavoriteOutdoorAreaPageComponent') },
+        { path: '/my_favorite_outdoor_area', name: 'favoriteOutdoorArea', component: load('favorites/FavoriteOutdoorAreaPageComponent') },
         { path: '/interested_events', name: 'interestedEvents', component: load('favorites/InterestedEventsPageComponent') },
         { path: '/favorite_products', name: 'favoriteProducts', component: load('favorites/FavoriteProductsPageComponent') },
 

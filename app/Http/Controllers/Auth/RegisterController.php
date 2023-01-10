@@ -78,6 +78,7 @@ class RegisterController extends Controller
     protected function create(array $data)
     {
         // $token = $data['g-recaptcha-response'];
+        // dd('dd');
         $capcha = true;
 
         if($capcha){

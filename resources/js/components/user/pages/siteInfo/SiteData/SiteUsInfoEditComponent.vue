@@ -7,7 +7,7 @@
         </div>
         <div class="row">
             <div class="form-group">  
-                <!-- <button type="submit" class="btn btn-primary" v-on:click="add_bisnes()" >Save updatid inof</button> -->
+                <button type="submit" class="btn btn-primary" v-on:click="update()" >Save updatid info</button>
             </div>
         </div>
         <div class="row">
@@ -56,6 +56,20 @@ export default {
         this.get_site_us_data()
     },
     methods: {
+        update(){
+            axios
+            .post('../../api/siteData/edit_site_us_data',{
+                site_us_info: this.site_us_info
+            })
+            .then(response => {
+                // this.site_us_info = response.data
+                this.go_back()
+            })
+            .catch(
+                error => console.log(error)
+            );
+        },
+
         get_site_us_data: function(){
             axios
             .get('../../api/siteData/get_site_us_data')

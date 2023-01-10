@@ -107,7 +107,7 @@
 
             <router-link :to="{ name: 'articlelist', params: { article_category: 'outdoor' } }">
                 <li class="list-group-item text-muted">
-                    <span class="admin_menu">{{ $t('user menu outdoor climbing') }}(Beta)</span>
+                    <span class="admin_menu">{{ $t('user menu outdoor climbing') }}</span>
                 </li>
             </router-link>
             <router-link :to="{name: 'routeAndSectorList'}" exact>
@@ -175,7 +175,7 @@
             
             <router-link :to="{name: 'siteInfo'}" exact> 
                 <li class="list-group-item text-muted ">
-                    <span class="admin_menu">{{ $t('user menu about') }} (Beta)</span>
+                    <span class="admin_menu">{{ $t('user menu about') }}</span>
                 </li>
             </router-link>
 

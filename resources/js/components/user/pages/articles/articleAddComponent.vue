@@ -182,16 +182,16 @@
         mounted() {
             //
         },
-        beforeRouteLeave (to, from, next) {
-            if(this.is_back_action){
-                next()
-            }
-            else if (window.confirm('Added information will be deleted!!! Are you sure, you want go back?')) {
-                next()
-            } else {
-                next(false)
-            }
-        },
+        // beforeRouteLeave (to, from, next) {
+        //     if(this.is_back_action){
+        //         next()
+        //     }
+        //     else if (window.confirm('Added information will be deleted!!! Are you sure, you want go back?')) {
+        //         next()
+        //     } else {
+        //         next(false)
+        //     }
+        // },
         methods: {
             global_blocks_action(event){
                 this.global_blocks = event
@@ -256,8 +256,16 @@
                 })
             },
             
-            go_back: function() {
-                this.$router.go(-1)
+            
+            go_back: function(back_action = false) {
+                if(back_action == false){
+                    if(confirm('Are you sure, you want go back?')){
+                        this.$router.go(-1)
+                    }
+                }
+                else{
+                    this.$router.go(-1)
+                }
             },
         }
     }

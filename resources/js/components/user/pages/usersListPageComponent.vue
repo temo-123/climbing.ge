@@ -13,6 +13,7 @@
                 <div class="col-sm-12">
                     <tabsComponent 
                         :table_data="this.data_for_tab"
+                        @update-data="get_users"
                     />
                 </div>
             </div>
@@ -46,19 +47,20 @@
         },
         methods: {
             get_users(){
+                this.data_for_tab = [],
+
                 axios
                 .get("../api/users/")
                 .then(response => {
                     this.data_for_tab.push({'id': 1,
                                             'data': response.data, 
-                                            'table_name': 'Users', 
-                                            'table_category': '', 
+                                            'table_name': 'Users',
+                                            'table_add_url': 'del_url', 
                                             'table_del_url': 'del_url', 
                                             'table_edit_url': 'edit_url'
                                         });
                     
                     this.get_roles()
-                    this.get_parmisions()
                 })
                 .catch(
                     error => console.log(error)
@@ -68,13 +70,15 @@
                 axios
                 .get("../api/role/")
                 .then(response => {
-                    this.data_for_tab.push({'id': 2,
+                    this.data_for_tab.push({'id': 3,
                                             'data': response.data, 
                                             'table_name': 'Roles', 
                                             'table_category': '', 
                                             'table_del_url': 'del_url', 
                                             'table_edit_url': 'edit_url'
                                         });
+                    
+                    this.get_parmisions()
                 })
                 .catch(
                     error => console.log(error)
@@ -84,7 +88,7 @@
                 axios
                 .get("../api/parmisions_list/")
                 .then(response => {
-                    this.data_for_tab.push({'id': 3,
+                    this.data_for_tab.push({'id': 2,
                                             'data': response.data, 
                                             'table_name': 'Parmissions',
                                         });

@@ -4072,7 +4072,7 @@ var render = function () {
                     type: "url",
                     name: "url",
                     id: "url",
-                    pattern: "https://.*",
+                    pattern: "https://.*|http://.*",
                     required: "",
                   },
                   domProps: { value: _vm.user_site_form_data.url },

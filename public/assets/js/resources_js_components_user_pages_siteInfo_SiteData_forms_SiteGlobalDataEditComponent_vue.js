@@ -48,8 +48,14 @@ __webpack_require__.r(__webpack_exports__);
       data: []
     };
   },
-  mounted: function mounted() {
-    console.log(this.global_data_prop); // this.data = JSON.parse(this.global_data_prop)
+  watch: {
+    global_data_prop: function global_data_prop(newVal, oldVal) {
+      // console.log('Prop changed: ', newVal, ' | was: ', oldVal)
+      this.global_editing_data = this.global_data_prop;
+    }
+  },
+  mounted: function mounted() {// console.log(this.global_data_prop);
+    // this.data = JSON.parse(this.global_data_prop)
   }
 });
 

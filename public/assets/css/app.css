@@ -1257,17 +1257,7 @@ tr td:last-child {
   border-radius: 50%;
   border-top-color: blue;
   position: absolute;
-  -webkit-animation: 1s spin infinite linear;
-          animation: 1s spin infinite linear;
-}
-
-@-webkit-keyframes spin {
-  from {
-    transform: translate(-50%, -50%) rotate(0deg);
-  }
-  to {
-    transform: translate(-50%, -50%) rotate(360deg);
-  }
+  animation: 1s spin infinite linear;
 }
 
 @keyframes spin {
@@ -2473,8 +2463,7 @@ select:focus {
 }
 
 .fadeIn {
-  -webkit-animation-duration: 3s;
-          animation-duration: 3s;
+  animation-duration: 3s;
 }
 
 .textarea-contact {

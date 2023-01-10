@@ -21,9 +21,9 @@
                             </thead>
 
                             <tbody>
-                                <tr v-for="image in sector_old_images" :key="image.id">
+                                <tr v-for="image in spot_rocks_old_images" :key="image.id">
                                     <td>
-                                        <img class="img-responsive" :src="'../../../../images/spot_rock_img/'+image.image" :alt="image.image">
+                                        <img class="img-responsive" :src="'../../../../images/spot_rocks_img/'+image.image" :alt="image.image">
                                     </td>
                                     <td>|</td>
                                     <td>
@@ -98,7 +98,7 @@
         data(){
             return {
                 sector_images: [],
-                sector_old_images: [],
+                spot_rocks_old_images: [],
             }
         },
         mounted() {
@@ -109,7 +109,7 @@
                 axios
                 .get("../../../api/spot_rock_images/get_spot_rock_images/"+this.$route.params.id)
                 .then(response => {
-                    this.mount_route_old_images = response.data.mount_route_images
+                    this.spot_rocks_old_images = response.data
                 })
                 .catch(
                     error => console.log(error)
@@ -118,9 +118,9 @@
             del_old_sector_image_from_db(image_id){
                 if(confirm('Are you sure, you want delite this image?')){
                     axios
-                    .delete("../../../api/spot_rock_images/del_spot_rock_images/"+image_id)
+                    .delete("../../../api/spot_rock_images/del_spot_rock_image/"+image_id)
                     .then(response => {
-                        this.get_old_mount_routes_images()
+                        this.get_old_sector_images()
                     })
                     .catch(
                         error => console.log(error)
@@ -135,7 +135,7 @@
                 this.upload_img()
             },
             upload_img(event){
-                this.$emit("upload_img", this.sector_images);
+                this.$emit("area_images", this.sector_images);
             },
             add_new_sector_image_value(){
                 var new_item_id = this.sector_images.length+1

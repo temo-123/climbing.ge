@@ -130,92 +130,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
 
  //https://innologica.github.io/vue-stackable-modal/#sample-css
 
@@ -225,46 +139,80 @@ __webpack_require__.r(__webpack_exports__);
     SlickItem: vue_slicksort__WEBPACK_IMPORTED_MODULE_0__.SlickItem,
     SlickList: vue_slicksort__WEBPACK_IMPORTED_MODULE_0__.SlickList
   },
-  props: ['global_data', 'category'],
+  props: ['global_data_prop', 'category_prop', 'title_prop', 'description_prop', 'region_id_prop', 'mount_id_prop'],
   data: function data() {
     return {
-      // category: this.$route.params.article_category,
       editorConfig: {// toolbar: [ [ 'Bold' ] ]
       },
+      data: [],
+      region_id: 'select_region',
+      mount_id: 'select_mount',
+      category: '',
       error: [],
-      regions: [] // data: {
-      //     // category: this.$route.params.article_category,
-      //     us_title_for_url_title: "",
-      //     published: 0,
-      //     completed: "",
-      //     map: "",
-      //     weather: "",
-      //     open_timen: "",
-      //     closed_time: "",
-      //     price_from: "",
-      //     start_data: "",
-      //     end_data: "",
-      //     fb_link: "",
-      //     twit_link: "",
-      //     google_link: "",
-      //     inst_link: "",
-      //     web_link: "",
-      //     region: "select_region",
-      //     mount_id: "select_mount",
-      // },
-
+      regions: [],
+      mount_masive: []
     };
   },
-  mounted: function mounted() {// if (this.category == 'outdoor') {
-    //     this.get_regions('outdoor')
-    // }
-    // if (this.category == 'mount_route') {
-    //     this.get_mount_massive_data('mount_route')
-    // }
-    // this.$emit('global_form_data', this.data)
-    // console.log(this.$route.params.id)
+  watch: {
+    global_data_prop: function global_data_prop(newVal, oldVal) {
+      // console.log('Prop changed: ', newVal, ' | was: ', oldVal)
+      this.data = this.global_data_prop;
+    },
+    category_prop: function category_prop(newVal, oldVal) {
+      this.category = this.category_prop;
+
+      if (this.category == 'outdoor') {
+        this.get_regions();
+      }
+
+      if (this.category == 'mount_route') {
+        this.get_mount_massive_data();
+      }
+    },
+    region_id_prop: function region_id_prop(newVal, oldVal) {
+      this.data.region_id = this.region_id_prop;
+    },
+    mount_id_prop: function mount_id_prop(newVal, oldVal) {
+      this.data.mount_id = this.mount_id_prop;
+    }
   },
-  methods: {}
+  mounted: function mounted() {
+    if (this.category == 'outdoor') {
+      this.get_regions();
+    }
+
+    if (this.category == 'mount_route') {
+      this.get_mount_massive_data();
+    } // if(!this.region_id == 'select_region'){
+    //     this.data.region_id = this.region_id
+    // }
+    // if(!this.mount_id == 'select_mount'){
+    //     this.data.mount_id = this.mount_id
+    // }
+
+
+    this.$emit('global_form_data', this.data);
+  },
+  methods: {
+    get_mount_massive_data: function get_mount_massive_data() {
+      var _this = this;
+
+      axios.get("../../../api/mountaineering/get_mount_data/").then(function (response) {
+        _this.mount_masive = response.data;
+      })["catch"](function (error) {
+        return console.log(error);
+      });
+    },
+    get_regions: function get_regions() {
+      var _this2 = this;
+
+      axios.get("../../../api/region/").then(function (response) {
+        _this2.regions = response.data;
+      })["catch"](function (error) {
+        return console.log(error);
+      });
+    }
+  }
 });
 
 /***/ }),
@@ -388,8 +336,8 @@ var render = function () {
                       {
                         name: "model",
                         rawName: "v-model",
-                        value: _vm.global_data.published,
-                        expression: "global_data.published",
+                        value: _vm.data.published,
+                        expression: "data.published",
                       },
                     ],
                     staticClass: "form-control",
@@ -405,7 +353,7 @@ var render = function () {
                             return val
                           })
                         _vm.$set(
-                          _vm.global_data,
+                          _vm.data,
                           "published",
                           $event.target.multiple
                             ? $$selectedVal
@@ -424,6 +372,75 @@ var render = function () {
                 ),
               ]),
             ]),
+            _vm._v(" "),
+            this.category == "outdoor"
+              ? _c("div", { staticClass: "form-group clearfix row" }, [
+                  _c(
+                    "label",
+                    {
+                      staticClass: "col-md-2 control-label ",
+                      attrs: { for: "region" },
+                    },
+                    [_vm._v(" Regions ")]
+                  ),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "col-md-10" }, [
+                    _c(
+                      "select",
+                      {
+                        directives: [
+                          {
+                            name: "model",
+                            rawName: "v-model",
+                            value: _vm.data.region_id,
+                            expression: "data.region_id",
+                          },
+                        ],
+                        staticClass: "form-control",
+                        attrs: { name: "region" },
+                        on: {
+                          change: function ($event) {
+                            var $$selectedVal = Array.prototype.filter
+                              .call($event.target.options, function (o) {
+                                return o.selected
+                              })
+                              .map(function (o) {
+                                var val = "_value" in o ? o._value : o.value
+                                return val
+                              })
+                            _vm.$set(
+                              _vm.data,
+                              "region_id",
+                              $event.target.multiple
+                                ? $$selectedVal
+                                : $$selectedVal[0]
+                            )
+                          },
+                        },
+                      },
+                      [
+                        _c(
+                          "option",
+                          {
+                            attrs: { disabled: "" },
+                            domProps: { value: "select_region" },
+                          },
+                          [_vm._v("Select region")]
+                        ),
+                        _vm._v(" "),
+                        _vm._l(_vm.regions, function (region) {
+                          return _c(
+                            "option",
+                            { key: region.id, domProps: { value: region.id } },
+                            [_vm._v(_vm._s(region.us_name))]
+                          )
+                        }),
+                      ],
+                      2
+                    ),
+                  ]),
+                ])
+              : _vm._e(),
             _vm._v(" "),
             this.category == "mount_route"
               ? _c("div", { staticClass: "form-group clearfix row" }, [
@@ -444,8 +461,8 @@ var render = function () {
                           {
                             name: "model",
                             rawName: "v-model",
-                            value: _vm.global_data.mount_id,
-                            expression: "global_data.mount_id",
+                            value: _vm.data.mount_id,
+                            expression: "data.mount_id",
                           },
                         ],
                         staticClass: "form-control",
@@ -461,7 +478,7 @@ var render = function () {
                                 return val
                               })
                             _vm.$set(
-                              _vm.global_data,
+                              _vm.data,
                               "mount_id",
                               $event.target.multiple
                                 ? $$selectedVal
@@ -470,73 +487,25 @@ var render = function () {
                           },
                         },
                       },
-                      _vm._l(_vm.mount_data, function (mount) {
-                        return _c(
-                          "option",
-                          { key: mount.id, domProps: { value: mount.id } },
-                          [_vm._v(_vm._s(mount.name))]
-                        )
-                      }),
-                      0
-                    ),
-                  ]),
-                ])
-              : _vm._e(),
-            _vm._v(" "),
-            this.category == "event"
-              ? _c("div", { staticClass: "form-group clearfix row" }, [
-                  _c(
-                    "label",
-                    {
-                      staticClass: "col-md-2 control-label",
-                      attrs: { for: "name" },
-                    },
-                    [_vm._v(" completed ")]
-                  ),
-                  _vm._v(" "),
-                  _c("div", { staticClass: "col-md-10" }, [
-                    _c(
-                      "select",
-                      {
-                        directives: [
-                          {
-                            name: "model",
-                            rawName: "v-model",
-                            value: _vm.global_data.completed,
-                            expression: "global_data.completed",
-                          },
-                        ],
-                        staticClass: "form-control",
-                        attrs: { name: "completed" },
-                        on: {
-                          change: function ($event) {
-                            var $$selectedVal = Array.prototype.filter
-                              .call($event.target.options, function (o) {
-                                return o.selected
-                              })
-                              .map(function (o) {
-                                var val = "_value" in o ? o._value : o.value
-                                return val
-                              })
-                            _vm.$set(
-                              _vm.global_data,
-                              "completed",
-                              $event.target.multiple
-                                ? $$selectedVal
-                                : $$selectedVal[0]
-                            )
-                          },
-                        },
-                      },
                       [
-                        _c("option", { attrs: { value: "0" } }, [
-                          _vm._v("No complited"),
-                        ]),
+                        _c(
+                          "option",
+                          {
+                            attrs: { disabled: "" },
+                            domProps: { value: "select_mount" },
+                          },
+                          [_vm._v("Select mount")]
+                        ),
                         _vm._v(" "),
-                        _c("option", { attrs: { value: "1" } }, [
-                          _vm._v("Complited"),
-                        ]),
-                      ]
+                        _vm._l(_vm.mount_masive, function (mount) {
+                          return _c(
+                            "option",
+                            { key: mount.id, domProps: { value: mount.id } },
+                            [_vm._v(_vm._s(mount.name))]
+                          )
+                        }),
+                      ],
+                      2
                     ),
                   ]),
                 ])
@@ -559,19 +528,19 @@ var render = function () {
                         {
                           name: "model",
                           rawName: "v-model",
-                          value: _vm.global_data.map,
-                          expression: "global_data.map",
+                          value: _vm.data.map,
+                          expression: "data.map",
                         },
                       ],
                       staticClass: "form-control",
                       attrs: { type: "text", name: "map" },
-                      domProps: { value: _vm.global_data.map },
+                      domProps: { value: _vm.data.map },
                       on: {
                         input: function ($event) {
                           if ($event.target.composing) {
                             return
                           }
-                          _vm.$set(_vm.global_data, "map", $event.target.value)
+                          _vm.$set(_vm.data, "map", $event.target.value)
                         },
                       },
                     }),
@@ -596,23 +565,19 @@ var render = function () {
                         {
                           name: "model",
                           rawName: "v-model",
-                          value: _vm.global_data.weather,
-                          expression: "global_data.weather",
+                          value: _vm.data.weather,
+                          expression: "data.weather",
                         },
                       ],
                       staticClass: "form-control",
                       attrs: { type: "text", name: "weather" },
-                      domProps: { value: _vm.global_data.weather },
+                      domProps: { value: _vm.data.weather },
                       on: {
                         input: function ($event) {
                           if ($event.target.composing) {
                             return
                           }
-                          _vm.$set(
-                            _vm.global_data,
-                            "weather",
-                            $event.target.value
-                          )
+                          _vm.$set(_vm.data, "weather", $event.target.value)
                         },
                       },
                     }),
@@ -639,23 +604,19 @@ var render = function () {
                         {
                           name: "model",
                           rawName: "v-model",
-                          value: _vm.global_data.price_from,
-                          expression: "global_data.price_from",
+                          value: _vm.data.price_from,
+                          expression: "data.price_from",
                         },
                       ],
                       staticClass: "form-control",
                       attrs: { type: "text", name: "price_from" },
-                      domProps: { value: _vm.global_data.price_from },
+                      domProps: { value: _vm.data.price_from },
                       on: {
                         input: function ($event) {
                           if ($event.target.composing) {
                             return
                           }
-                          _vm.$set(
-                            _vm.global_data,
-                            "price_from",
-                            $event.target.value
-                          )
+                          _vm.$set(_vm.data, "price_from", $event.target.value)
                         },
                       },
                     }),
@@ -680,20 +641,20 @@ var render = function () {
                         {
                           name: "model",
                           rawName: "v-model",
-                          value: _vm.global_data.working_time,
-                          expression: "global_data.working_time",
+                          value: _vm.data.working_time,
+                          expression: "data.working_time",
                         },
                       ],
                       staticClass: "form-control",
                       attrs: { type: "text", name: "time" },
-                      domProps: { value: _vm.global_data.working_time },
+                      domProps: { value: _vm.data.working_time },
                       on: {
                         input: function ($event) {
                           if ($event.target.composing) {
                             return
                           }
                           _vm.$set(
-                            _vm.global_data,
+                            _vm.data,
                             "working_time",
                             $event.target.value
                           )
@@ -704,17 +665,11 @@ var render = function () {
                 ])
               : _vm._e(),
             _vm._v(" "),
-            this.category == "event" ? _c("hr") : _vm._e(),
-            _vm._v(" "),
-            this.category == "event" ||
-            this.category == "partner" ||
-            this.category == "indoor"
+            this.category == "partner" || this.category == "indoor"
               ? _c("hr")
               : _vm._e(),
             _vm._v(" "),
-            this.category == "event" ||
-            this.category == "partner" ||
-            this.category == "indoor"
+            this.category == "partner" || this.category == "indoor"
               ? _c("div", { staticClass: "form-group clearfix row" }, [
                   _c(
                     "label",
@@ -731,23 +686,19 @@ var render = function () {
                         {
                           name: "model",
                           rawName: "v-model",
-                          value: _vm.global_data.fb_link,
-                          expression: "global_data.fb_link",
+                          value: _vm.data.fb_link,
+                          expression: "data.fb_link",
                         },
                       ],
                       staticClass: "form-control",
                       attrs: { type: "text", name: "fb_link" },
-                      domProps: { value: _vm.global_data.fb_link },
+                      domProps: { value: _vm.data.fb_link },
                       on: {
                         input: function ($event) {
                           if ($event.target.composing) {
                             return
                           }
-                          _vm.$set(
-                            _vm.global_data,
-                            "fb_link",
-                            $event.target.value
-                          )
+                          _vm.$set(_vm.data, "fb_link", $event.target.value)
                         },
                       },
                     }),
@@ -759,23 +710,19 @@ var render = function () {
                         {
                           name: "model",
                           rawName: "v-model",
-                          value: _vm.global_data.twit_link,
-                          expression: "global_data.twit_link",
+                          value: _vm.data.twit_link,
+                          expression: "data.twit_link",
                         },
                       ],
                       staticClass: "form-control",
                       attrs: { type: "text", name: "twit_link" },
-                      domProps: { value: _vm.global_data.twit_link },
+                      domProps: { value: _vm.data.twit_link },
                       on: {
                         input: function ($event) {
                           if ($event.target.composing) {
                             return
                           }
-                          _vm.$set(
-                            _vm.global_data,
-                            "twit_link",
-                            $event.target.value
-                          )
+                          _vm.$set(_vm.data, "twit_link", $event.target.value)
                         },
                       },
                     }),
@@ -783,9 +730,7 @@ var render = function () {
                 ])
               : _vm._e(),
             _vm._v(" "),
-            this.category == "event" ||
-            this.category == "partner" ||
-            this.category == "indoor"
+            this.category == "partner" || this.category == "indoor"
               ? _c("div", { staticClass: "form-group clearfix row" }, [
                   _c(
                     "label",
@@ -802,23 +747,19 @@ var render = function () {
                         {
                           name: "model",
                           rawName: "v-model",
-                          value: _vm.global_data.google_link,
-                          expression: "global_data.google_link",
+                          value: _vm.data.google_link,
+                          expression: "data.google_link",
                         },
                       ],
                       staticClass: "form-control",
                       attrs: { type: "text", name: "google_link" },
-                      domProps: { value: _vm.global_data.google_link },
+                      domProps: { value: _vm.data.google_link },
                       on: {
                         input: function ($event) {
                           if ($event.target.composing) {
                             return
                           }
-                          _vm.$set(
-                            _vm.global_data,
-                            "google_link",
-                            $event.target.value
-                          )
+                          _vm.$set(_vm.data, "google_link", $event.target.value)
                         },
                       },
                     }),
@@ -830,23 +771,19 @@ var render = function () {
                         {
                           name: "model",
                           rawName: "v-model",
-                          value: _vm.global_data.inst_link,
-                          expression: "global_data.inst_link",
+                          value: _vm.data.inst_link,
+                          expression: "data.inst_link",
                         },
                       ],
                       staticClass: "form-control",
                       attrs: { type: "text", name: "inst_link" },
-                      domProps: { value: _vm.global_data.inst_link },
+                      domProps: { value: _vm.data.inst_link },
                       on: {
                         input: function ($event) {
                           if ($event.target.composing) {
                             return
                           }
-                          _vm.$set(
-                            _vm.global_data,
-                            "inst_link",
-                            $event.target.value
-                          )
+                          _vm.$set(_vm.data, "inst_link", $event.target.value)
                         },
                       },
                     }),
@@ -854,9 +791,7 @@ var render = function () {
                 ])
               : _vm._e(),
             _vm._v(" "),
-            this.category == "event" ||
-            this.category == "partner" ||
-            this.category == "indoor"
+            this.category == "partner" || this.category == "indoor"
               ? _c("div", { staticClass: "form-group clearfix row" }, [
                   _c(
                     "label",
@@ -873,23 +808,19 @@ var render = function () {
                         {
                           name: "model",
                           rawName: "v-model",
-                          value: _vm.global_data.web_link,
-                          expression: "global_data.web_link",
+                          value: _vm.data.web_link,
+                          expression: "data.web_link",
                         },
                       ],
                       staticClass: "form-control",
                       attrs: { type: "text", name: "web_link" },
-                      domProps: { value: _vm.global_data.web_link },
+                      domProps: { value: _vm.data.web_link },
                       on: {
                         input: function ($event) {
                           if ($event.target.composing) {
                             return
                           }
-                          _vm.$set(
-                            _vm.global_data,
-                            "web_link",
-                            $event.target.value
-                          )
+                          _vm.$set(_vm.data, "web_link", $event.target.value)
                         },
                       },
                     }),

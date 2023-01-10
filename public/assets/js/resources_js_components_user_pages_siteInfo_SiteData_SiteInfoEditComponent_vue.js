@@ -123,6 +123,22 @@ __webpack_require__.r(__webpack_exports__);
     this.site_data();
   },
   methods: {
+    update: function update() {
+      var _this = this;
+
+      axios.post('../../api/siteData/edit_site_data', {
+        // site_us_info: this.site_us_info
+        site_global_info: this.site_global_info,
+        site_ka_info: this.site_ka_info,
+        site_ru_info: this.site_ru_info,
+        site_us_info: this.site_us_info
+      }).then(function (response) {
+        // this.site_us_info = response.data
+        _this.go_back();
+      })["catch"](function (error) {
+        return console.log(error);
+      });
+    },
     site_data: function site_data() {
       this.get_site_global_data();
       this.get_site_ka_data();
@@ -130,37 +146,37 @@ __webpack_require__.r(__webpack_exports__);
       this.get_site_us_data();
     },
     get_site_global_data: function get_site_global_data() {
-      var _this = this;
+      var _this2 = this;
 
       axios.get('../../../api/siteData/get_site_global_data').then(function (response) {
-        _this.site_global_info = response.data;
+        _this2.site_global_info = response.data;
       })["catch"](function (error) {
         return console.log(error);
       });
     },
     get_site_ka_data: function get_site_ka_data() {
-      var _this2 = this;
+      var _this3 = this;
 
       axios.get('../../../api/siteData/get_site_ka_data').then(function (response) {
-        _this2.site_ka_info = response.data;
+        _this3.site_ka_info = response.data;
       })["catch"](function (error) {
         return console.log(error);
       });
     },
     get_site_ru_data: function get_site_ru_data() {
-      var _this3 = this;
+      var _this4 = this;
 
       axios.get('../../../api/siteData/get_site_ru_data').then(function (response) {
-        _this3.site_ru_info = response.data;
+        _this4.site_ru_info = response.data;
       })["catch"](function (error) {
         return console.log(error);
       });
     },
     get_site_us_data: function get_site_us_data() {
-      var _this4 = this;
+      var _this5 = this;
 
       axios.get('../../../api/siteData/get_site_us_data').then(function (response) {
-        _this4.site_us_info = response.data;
+        _this5.site_us_info = response.data;
       })["catch"](function (error) {
         return console.log(error);
       });
@@ -228,8 +244,14 @@ __webpack_require__.r(__webpack_exports__);
       data: []
     };
   },
-  mounted: function mounted() {
-    console.log(this.global_data_prop); // this.data = JSON.parse(this.global_data_prop)
+  watch: {
+    global_data_prop: function global_data_prop(newVal, oldVal) {
+      // console.log('Prop changed: ', newVal, ' | was: ', oldVal)
+      this.global_editing_data = this.global_data_prop;
+    }
+  },
+  mounted: function mounted() {// console.log(this.global_data_prop);
+    // this.data = JSON.parse(this.global_data_prop)
   }
 });
 
@@ -338,6 +360,99 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   props: ['locale_data_prop'],
   data: function data() {
@@ -347,9 +462,15 @@ __webpack_require__.r(__webpack_exports__);
       locale_data: []
     };
   },
-  mounted: function mounted() {
-    // console.log(this.locale_data_prop);
-    this.locale_data = this.locale_data_prop; // this.$emit('locale_form_data', this.locale_data)
+  watch: {
+    locale_data_prop: function locale_data_prop(newVal, oldVal) {
+      // console.log('Prop changed: ', newVal, ' | was: ', oldVal)
+      this.locale_data = this.locale_data_prop;
+    }
+  },
+  mounted: function mounted() {// console.log(this.locale_data_prop);
+    // this.locale_data = this.locale_data_prop
+    // this.$emit('locale_form_data', this.locale_data)
   }
 });
 
@@ -605,11 +726,11 @@ var render = function () {
             attrs: { type: "submit" },
             on: {
               click: function ($event) {
-                return _vm.add_bisnes()
+                return _vm.update()
               },
             },
           },
-          [_vm._v("Save updatid inof")]
+          [_vm._v("Save updatid info")]
         ),
       ]),
     ]),
@@ -725,7 +846,7 @@ var render = function () {
             _vm._m(0),
             _vm._v(" "),
             _c("globalInfoForm", {
-              attrs: { global_data_prop: [_vm.site_global_info] },
+              attrs: { global_data_prop: _vm.site_global_info },
             }),
           ],
           1
@@ -1042,19 +1163,19 @@ var render = function () {
               {
                 name: "model",
                 rawName: "v-model",
-                value: _vm.locale_data.title,
-                expression: "locale_data.title",
+                value: _vm.locale_data.guid_title,
+                expression: "locale_data.guid_title",
               },
             ],
             staticClass: "form-control",
             attrs: { type: "text", name: "value name" },
-            domProps: { value: _vm.locale_data.title },
+            domProps: { value: _vm.locale_data.guid_title },
             on: {
               input: function ($event) {
                 if ($event.target.composing) {
                   return
                 }
-                _vm.$set(_vm.locale_data, "title", $event.target.value)
+                _vm.$set(_vm.locale_data, "guid_title", $event.target.value)
               },
             },
           }),
@@ -1075,11 +1196,11 @@ var render = function () {
             _c("ckeditor", {
               attrs: { config: _vm.editorConfig },
               model: {
-                value: _vm.locale_data.short_description,
+                value: _vm.locale_data.guid_short_description,
                 callback: function ($$v) {
-                  _vm.$set(_vm.locale_data, "short_description", $$v)
+                  _vm.$set(_vm.locale_data, "guid_short_description", $$v)
                 },
-                expression: "locale_data.short_description",
+                expression: "locale_data.guid_short_description",
               },
             }),
           ],
@@ -1101,11 +1222,349 @@ var render = function () {
             _c("ckeditor", {
               attrs: { config: _vm.editorConfig },
               model: {
-                value: _vm.locale_data.text,
+                value: _vm.locale_data.guid_description,
                 callback: function ($$v) {
-                  _vm.$set(_vm.locale_data, "text", $$v)
+                  _vm.$set(_vm.locale_data, "guid_description", $$v)
                 },
-                expression: "locale_data.text",
+                expression: "locale_data.guid_description",
+              },
+            }),
+          ],
+          1
+        ),
+      ]),
+      _vm._v(" "),
+      _c("div", { staticClass: "form-group clearfix" }, [
+        _c(
+          "label",
+          { staticClass: "col-xs-2 control-label", attrs: { for: "name" } },
+          [_vm._v(" films_title ")]
+        ),
+        _vm._v(" "),
+        _c(
+          "div",
+          { staticClass: "col-xs-8" },
+          [
+            _c("ckeditor", {
+              attrs: { config: _vm.editorConfig },
+              model: {
+                value: _vm.locale_data.films_title,
+                callback: function ($$v) {
+                  _vm.$set(_vm.locale_data, "films_title", $$v)
+                },
+                expression: "locale_data.films_title",
+              },
+            }),
+          ],
+          1
+        ),
+      ]),
+      _vm._v(" "),
+      _c("div", { staticClass: "form-group clearfix" }, [
+        _c(
+          "label",
+          { staticClass: "col-xs-2 control-label", attrs: { for: "name" } },
+          [_vm._v(" films_description ")]
+        ),
+        _vm._v(" "),
+        _c(
+          "div",
+          { staticClass: "col-xs-8" },
+          [
+            _c("ckeditor", {
+              attrs: { config: _vm.editorConfig },
+              model: {
+                value: _vm.locale_data.films_description,
+                callback: function ($$v) {
+                  _vm.$set(_vm.locale_data, "films_description", $$v)
+                },
+                expression: "locale_data.films_description",
+              },
+            }),
+          ],
+          1
+        ),
+      ]),
+      _vm._v(" "),
+      _c("div", { staticClass: "form-group clearfix" }, [
+        _c(
+          "label",
+          { staticClass: "col-xs-2 control-label", attrs: { for: "name" } },
+          [_vm._v(" films_short_description ")]
+        ),
+        _vm._v(" "),
+        _c(
+          "div",
+          { staticClass: "col-xs-8" },
+          [
+            _c("ckeditor", {
+              attrs: { config: _vm.editorConfig },
+              model: {
+                value: _vm.locale_data.films_short_description,
+                callback: function ($$v) {
+                  _vm.$set(_vm.locale_data, "films_short_description", $$v)
+                },
+                expression: "locale_data.films_short_description",
+              },
+            }),
+          ],
+          1
+        ),
+      ]),
+      _vm._v(" "),
+      _c("div", { staticClass: "form-group clearfix" }, [
+        _c(
+          "label",
+          { staticClass: "col-xs-2 control-label", attrs: { for: "name" } },
+          [_vm._v(" forum_title ")]
+        ),
+        _vm._v(" "),
+        _c(
+          "div",
+          { staticClass: "col-xs-8" },
+          [
+            _c("ckeditor", {
+              attrs: { config: _vm.editorConfig },
+              model: {
+                value: _vm.locale_data.forum_title,
+                callback: function ($$v) {
+                  _vm.$set(_vm.locale_data, "forum_title", $$v)
+                },
+                expression: "locale_data.forum_title",
+              },
+            }),
+          ],
+          1
+        ),
+      ]),
+      _vm._v(" "),
+      _c("div", { staticClass: "form-group clearfix" }, [
+        _c(
+          "label",
+          { staticClass: "col-xs-2 control-label", attrs: { for: "name" } },
+          [_vm._v(" forum_description ")]
+        ),
+        _vm._v(" "),
+        _c(
+          "div",
+          { staticClass: "col-xs-8" },
+          [
+            _c("ckeditor", {
+              attrs: { config: _vm.editorConfig },
+              model: {
+                value: _vm.locale_data.forum_description,
+                callback: function ($$v) {
+                  _vm.$set(_vm.locale_data, "forum_description", $$v)
+                },
+                expression: "locale_data.forum_description",
+              },
+            }),
+          ],
+          1
+        ),
+      ]),
+      _vm._v(" "),
+      _c("div", { staticClass: "form-group clearfix" }, [
+        _c(
+          "label",
+          { staticClass: "col-xs-2 control-label", attrs: { for: "name" } },
+          [_vm._v(" forum_short_description ")]
+        ),
+        _vm._v(" "),
+        _c(
+          "div",
+          { staticClass: "col-xs-8" },
+          [
+            _c("ckeditor", {
+              attrs: { config: _vm.editorConfig },
+              model: {
+                value: _vm.locale_data.forum_short_description,
+                callback: function ($$v) {
+                  _vm.$set(_vm.locale_data, "forum_short_description", $$v)
+                },
+                expression: "locale_data.forum_short_description",
+              },
+            }),
+          ],
+          1
+        ),
+      ]),
+      _vm._v(" "),
+      _c("div", { staticClass: "form-group clearfix" }, [
+        _c(
+          "label",
+          { staticClass: "col-xs-2 control-label", attrs: { for: "name" } },
+          [_vm._v(" shop_title ")]
+        ),
+        _vm._v(" "),
+        _c(
+          "div",
+          { staticClass: "col-xs-8" },
+          [
+            _c("ckeditor", {
+              attrs: { config: _vm.editorConfig },
+              model: {
+                value: _vm.locale_data.shop_title,
+                callback: function ($$v) {
+                  _vm.$set(_vm.locale_data, "shop_title", $$v)
+                },
+                expression: "locale_data.shop_title",
+              },
+            }),
+          ],
+          1
+        ),
+      ]),
+      _vm._v(" "),
+      _c("div", { staticClass: "form-group clearfix" }, [
+        _c(
+          "label",
+          { staticClass: "col-xs-2 control-label", attrs: { for: "name" } },
+          [_vm._v(" other_activity_description ")]
+        ),
+        _vm._v(" "),
+        _c(
+          "div",
+          { staticClass: "col-xs-8" },
+          [
+            _c("ckeditor", {
+              attrs: { config: _vm.editorConfig },
+              model: {
+                value: _vm.locale_data.other_activity_description,
+                callback: function ($$v) {
+                  _vm.$set(_vm.locale_data, "other_activity_description", $$v)
+                },
+                expression: "locale_data.other_activity_description",
+              },
+            }),
+          ],
+          1
+        ),
+      ]),
+      _vm._v(" "),
+      _c("div", { staticClass: "form-group clearfix" }, [
+        _c(
+          "label",
+          { staticClass: "col-xs-2 control-label", attrs: { for: "name" } },
+          [_vm._v(" event_description ")]
+        ),
+        _vm._v(" "),
+        _c(
+          "div",
+          { staticClass: "col-xs-8" },
+          [
+            _c("ckeditor", {
+              attrs: { config: _vm.editorConfig },
+              model: {
+                value: _vm.locale_data.event_description,
+                callback: function ($$v) {
+                  _vm.$set(_vm.locale_data, "event_description", $$v)
+                },
+                expression: "locale_data.event_description",
+              },
+            }),
+          ],
+          1
+        ),
+      ]),
+      _vm._v(" "),
+      _c("div", { staticClass: "form-group clearfix" }, [
+        _c(
+          "label",
+          { staticClass: "col-xs-2 control-label", attrs: { for: "name" } },
+          [_vm._v(" tech_tips_description ")]
+        ),
+        _vm._v(" "),
+        _c(
+          "div",
+          { staticClass: "col-xs-8" },
+          [
+            _c("ckeditor", {
+              attrs: { config: _vm.editorConfig },
+              model: {
+                value: _vm.locale_data.tech_tips_description,
+                callback: function ($$v) {
+                  _vm.$set(_vm.locale_data, "tech_tips_description", $$v)
+                },
+                expression: "locale_data.tech_tips_description",
+              },
+            }),
+          ],
+          1
+        ),
+      ]),
+      _vm._v(" "),
+      _c("div", { staticClass: "form-group clearfix" }, [
+        _c(
+          "label",
+          { staticClass: "col-xs-2 control-label", attrs: { for: "name" } },
+          [_vm._v(" news_description ")]
+        ),
+        _vm._v(" "),
+        _c(
+          "div",
+          { staticClass: "col-xs-8" },
+          [
+            _c("ckeditor", {
+              attrs: { config: _vm.editorConfig },
+              model: {
+                value: _vm.locale_data.news_description,
+                callback: function ($$v) {
+                  _vm.$set(_vm.locale_data, "news_description", $$v)
+                },
+                expression: "locale_data.news_description",
+              },
+            }),
+          ],
+          1
+        ),
+      ]),
+      _vm._v(" "),
+      _c("div", { staticClass: "form-group clearfix" }, [
+        _c(
+          "label",
+          { staticClass: "col-xs-2 control-label", attrs: { for: "name" } },
+          [_vm._v(" index_gallery_description ")]
+        ),
+        _vm._v(" "),
+        _c(
+          "div",
+          { staticClass: "col-xs-8" },
+          [
+            _c("ckeditor", {
+              attrs: { config: _vm.editorConfig },
+              model: {
+                value: _vm.locale_data.index_gallery_description,
+                callback: function ($$v) {
+                  _vm.$set(_vm.locale_data, "index_gallery_description", $$v)
+                },
+                expression: "locale_data.index_gallery_description",
+              },
+            }),
+          ],
+          1
+        ),
+      ]),
+      _vm._v(" "),
+      _c("div", { staticClass: "form-group clearfix" }, [
+        _c(
+          "label",
+          { staticClass: "col-xs-2 control-label", attrs: { for: "name" } },
+          [_vm._v(" products_description ")]
+        ),
+        _vm._v(" "),
+        _c(
+          "div",
+          { staticClass: "col-xs-8" },
+          [
+            _c("ckeditor", {
+              attrs: { config: _vm.editorConfig },
+              model: {
+                value: _vm.locale_data.products_description,
+                callback: function ($$v) {
+                  _vm.$set(_vm.locale_data, "products_description", $$v)
+                },
+                expression: "locale_data.products_description",
               },
             }),
           ],

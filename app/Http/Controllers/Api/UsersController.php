@@ -7,15 +7,18 @@ use Illuminate\Http\Request;
 
 use Validator;
 use Auth;
+use Mail;
 
 use App\User;
 use App\Models\Following_users;
 use App\Models\Role;
+use App\Models\Permission;
 use App\Models\user_notification;
+use App\Models\User_role;
+use App\Models\User_permission;
 
 use App\Services\ImageControllService;
 
-use Mail;
 use App\Notifications\FollowingNotification;
 // use App\Mail\Message;
 
@@ -28,17 +31,18 @@ class UsersController extends Controller
      */
     public function index()
     {
-        return User::all();
+        // dd(Auth::user());
+        return User::latest('id')->get();
     }
 
     public function get_following_users_list()
     {
-        return following_users::all();
+        return following_users::latest('id')->get();
     }
 
     public function get_followers_list()
     {
-        return following_users::all();
+        return following_users::latest('id')->get();
     }
 
     public function follow(Request $request)
@@ -72,6 +76,56 @@ class UsersController extends Controller
 
                 return("Tenk you for following! :) Plis check your emeil!");
             }
+        }
+    }
+
+    public function get_auth_user_permissions(Request $request)
+    {
+        // dd(Auth::user());
+        if (Auth::user()) {
+            $auth_user = Auth::user();
+
+            $test_user = User::where("id", "=", 1)->first();
+            dd( $test_user->perm);
+
+            // $user = User::first();
+            // $user_role = $user->roles;
+            // $user_permissions = $user->permissions;
+
+            // dd($user_role, $user_permissions);
+
+            // $user_role = $auth_user -> roles;
+            // dd($user_role);
+
+            // $user_permissions = $auth_user -> permissions;
+            // dd($user_permissions);
+            
+            // $roles = Role::where("id", "=", $user_role->role_id)->get();
+
+            // $permissons = Permission::where("id", "=", $user_permissons->permission_id)->get();
+
+            $user_all_permissions = [];
+
+            if ($permissons) {
+                foreach ($permissons as $permisson) {
+                    array_push($user_all_permissions, 
+                        $permisson
+                    );
+                }
+            }
+
+            if ($roles) {
+                foreach ($roles as $role) {
+                    array_push($user_all_permissions, 
+                        $role
+                    );
+                }
+            }
+
+            dd($user_all_permissions);
+        }
+        else{
+            return 'plees login';
         }
     }
 
@@ -223,7 +277,7 @@ class UsersController extends Controller
     public function destroy($id)
     {
         $deleted_user = User::where('id','=',$request->user_id)->first();
-        DB::table('role_user')->where('user_id','=',$deleted_user->id)->delete();
+        DB::table('user_role')->where('user_id','=',$deleted_user->id)->delete();
         $deleted_user -> delete();
     }
 

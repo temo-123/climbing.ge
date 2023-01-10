@@ -63,8 +63,7 @@
             del_article(id){
                 if(confirm('Are you sure, you want delite it?')){
                     axios
-                    .post('../../api/article/'+id, {
-                        id: id,
+                    .post('../../api/article/del_article/'+id, {
                         _method: 'DELETE'
                     })
                     .then(Response => {

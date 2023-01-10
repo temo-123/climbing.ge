@@ -1,20 +1,29 @@
 <template>
-   <div class="row">
+    <div class="col-md-12" >
+        <!-- <h2 @click="test()">test</h2> -->
+        <!-- {{ category }} -->
+        <!-- <div class="row"> -->
             <div class="col-md-12">
-                <div class="jumbotron jumbotron-fluid">
+                <div class="jumbotron width_100">
                     <div class="container">
-                        <h2 class="display-4"><span style="text-transform: capitalize">{{category}}</span> {{ title }}</h2>
-                        <p class="lead">{{ description }}</p>
+                        <h2 class="display-4"><span style="text-transform: capitalize">{{this.category_prop}}</span> {{ this.title_prop }}</h2>
+                        <p class="lead">{{ this.description_prop }}</p>
                     </div>
                 </div>
-                <form method="POST" @submit.prevent="edit_locale_article">
-                    <div class="form-group clearfix row">
+
+            <div class="wrapper container-fluid container">
+                <form method="POST">
+                    <div class="form-group clearfix row" >
                         <label for="name" class='col-md-2 control-label'> Title </label>
                         <div class="col-md-10">
                             <input type="text" name="name" v-model="data.title"  class="form-control"> 
-                            <!-- <div class="alert alert-danger" role="alert" v-if="errors.title">
-                                {{ errors.title[0] }}
-                            </div> -->
+                        </div>
+                    </div>
+    
+                    <div class="form-group clearfix row" v-if="locale_prop == 'us'">
+                        <label for="name" class='col-md-4 control-label'> Change URL title </label>
+                        <div class="col-md-8">
+                            <input type="checkbox" id="scales" name="scales" v-model="is_change_url_title" @click="change_url_title_in_global_bisnes()">
                         </div>
                     </div>
 
@@ -31,17 +40,21 @@
                     <div class="form-group clearfix row">
                         <label for="name" class='col-md-2 control-label'> text </label>
                         <div class="col-md-10">
-                            <ckeditor v-model="data.text"></ckeditor>
-                            <!-- <div class="alert alert-danger" role="alert" v-if="errors.text">
+                            <!-- <ckeditor v-model="data.text"></ckeditor>
+                            <div class="alert alert-danger" role="alert" v-if="errors.text">
                                 {{ errors.text[0] }}
                             </div> -->
+
+                            <ckeditor
+                                v-model="data.text"
+                            />
                         </div>
                     </div>
 
-                    <hr v-if="category == 'outdoor'">
+                    <hr v-if="this.category == 'outdoor'">
 
                     <div  v-if="general_infos.length">
-                        <div class="row" v-if="category == 'outdoor'">
+                        <div class="row" v-if="this.category == 'outdoor'">
                             <div class="col-md-2">
                                 <input type="radio" id="routes_new_info" name="fav_language" value="new_info" @click="routes_action('new_info')">
                                 <label for="routes_new_info">New info</label><br>
@@ -61,7 +74,7 @@
                         </div>
                     </div>
 
-                    <div class="form-group clearfix row" v-if="category == 'outdoor'">
+                    <div class="form-group clearfix row" v-if="this.category == 'outdoor'">
                         <label for="name" class='col-md-2 control-label'> Routes description </label>
 
                         <div class="col-md-10">
@@ -83,7 +96,7 @@
                         </div>
                     </div>
 
-                    <div class="form-group clearfix row" v-if="category != 'mount_route'">
+                    <div class="form-group clearfix row" v-if="this.category != 'mount_route'">
                         <label for="name" class='col-md-2 control-label'> How to get hear </label>
                         <div class="col-md-10">
                             <!-- <ckeditor v-model="data.how_get" :config="editorConfig"></ckeditor> -->
@@ -91,10 +104,10 @@
                         </div>
                     </div>
 
-                    <hr v-if="category == 'outdoor' || category == 'ice'">
+                    <hr v-if="this.category == 'outdoor' || this.category == 'ice'">
 
                     <div  v-if="general_infos.length">
-                        <div class="row" v-if="category == 'outdoor' || category == 'ice'">
+                        <div class="row" v-if="this.category == 'outdoor' || this.category == 'ice'">
                             <div class="col-md-2">
                                 <input type="radio" id="time_new_info" name="fav_language" value="new_info" @click="best_time_action('new_info')">
                                 <label for="time_new_info">New info</label><br>
@@ -114,7 +127,7 @@
                         </div>
                     </div>
 
-                    <div class="form-group clearfix row" v-if="category == 'outdoor' || category == 'ice'">
+                    <div class="form-group clearfix row" v-if="this.category == 'outdoor' || this.category == 'ice'">
                         <label for="name" class='col-md-2 control-label'> Best time for climbing </label>
 
                         <div class="col-md-10">
@@ -136,10 +149,10 @@
                         </div>
                     </div>
 
-                    <hr v-if="category == 'outdoor' || category == 'ice' || category == 'mount_route' ">
+                    <hr v-if="this.category == 'outdoor' || this.category == 'ice' || this.category == 'mount_route' ">
 
                     <div  v-if="general_infos.length">
-                        <div class="row" v-if="category == 'outdoor' || category == 'ice' || category == 'mount_route' ">
+                        <div class="row" v-if="this.category == 'outdoor' || this.category == 'ice' || this.category == 'mount_route' ">
                             <div class="col-md-2">
                                 <input type="radio" id="need_new_info" name="fav_language" value="new_info" @click="what_need_block_action('new_info')">
                                 <label for="need_new_info">New info</label><br>
@@ -159,7 +172,7 @@
                         </div>
                     </div>
 
-                    <div class="form-group clearfix row" v-if="category == 'outdoor' || category == 'ice' || category == 'mount_route' ">
+                    <div class="form-group clearfix row" v-if="this.category == 'outdoor' || this.category == 'ice' || this.category == 'mount_route' ">
                         <label for="name" class='col-md-2 control-label'> what you need </label>
 
                         <div class="col-md-10">
@@ -226,7 +239,7 @@
                     </div>
                     
 
-                    <div class="form-group clearfix row" v-if="category == 'indoor'">
+                    <div class="form-group clearfix row" v-if="this.category == 'indoor'">
                         <label for="name" class='col-md-2 control-label'> Price description </label>
                         <div class="col-md-10">
                             <ckeditor v-model="data.price_text"></ckeditor>
@@ -236,48 +249,107 @@
                 </form>
             </div>
         </div>
+    </div>
 </template>
 
 <script>
-    
+    import { SlickList, SlickItem } from 'vue-slicksort';
+    import StackModal from '@innologica/vue-stackable-modal'  //https://innologica.github.io/vue-stackable-modal/#sample-css
+
     export default {
         components: {
-            // StackModal,
+            StackModal,
+            SlickItem,
+            SlickList,
         },
         props: [
-            'locale_data',
-            'category',
             'global_blocks_prop',
-            'title',
-            'description'
+            'locale_data_prop',
+            'category_prop',
+            'locale_prop',
+            
+            'title_prop',
+            'description_prop'
         ],
         data(){
             return {
-                // category: this.$route.params.article_category,
-
-                editorConfig: [],
+                // category: 'this.$route.params.article_category',
+                category: this.category_prop,
 
                 general_infos: [],
-                data: [],
-                global_blocks: []
+
+                is_change_url_title: false,
+                // error: [],
+
+                editorConfig: {
+                    // toolbar: [ [ 'Bold' ] ]
+                },
+
+                data: {
+                    change_url_title: false,
+                    title: '',
+                    short_description: '',
+                    text: '',
+                    route: '',
+                    how_get: '',
+                    best_time: '',
+                    what_need: '',
+                    info: '',
+                    time: '',
+                },
+
+                global_blocks: {
+                    info_block: '',
+                    routes_info: '',
+                    what_need_info: '',
+                    best_time: '',
+
+                    info_block_id: 0,
+                    routes_info_id: 0,
+                    what_need_info_id: 0,
+                    best_time_id: 0,
+                }
             }
         },
         mounted() {
-            this.data = this.locale_data
             this.global_blocks = this.global_blocks_prop
+
             this.get_general_info()
         },
+        watch: {
+            global_block: function(){
+                this.global_blocks = this.global_blocks_prop
+            },
+            category_prop: function(newVal, oldVal) { 
+                // console.log('Prop changed: ', newVal, ' | was: ', oldVal)
+                this.category = this.category_prop
+            },
+            locale_data_prop: function(newVal, oldVal) { 
+                // console.log('Prop changed: ', newVal, ' | was: ', oldVal)
+                this.data = this.locale_data_prop
+            }
+        },
         methods: {
-            // edit_ka_article(){
+            change_url_title_in_global_bisnes(){
+                if(!this.is_change_url_title){
+                    if(confirm('Are you sure, you want change URL title? It vhile bad for SEO potimization')){
+                        this.is_change_url_title = true
+                    }
+                    else{
+                        this.is_change_url_title = false 
+                    }
+                }
+                else{
+                    this.is_change_url_title = false 
+                }
 
-            // },
-
+                this.data.is_change_url_title = this.is_change_url_title
+            },
             get_general_info(){
                 axios
                 .get('../../../api/general_info/')
                 .then(response => {
-                    this.general_infos = response.data
-                    // console.log(response.data)
+                    this.general_infos = response.data          
                 })
                 .catch(
                     errors => console.log(errors)

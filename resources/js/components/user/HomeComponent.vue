@@ -4,6 +4,15 @@
 
         <div class="container top_menu_margin">
             <div class="container bootstrap snippet mt-5">
+                <div v-if="$can('read', 'Article')">
+                    <a >read Article</a>
+                </div>
+                <div v-if="$can('create', 'Article')">
+                    <a >create Article</a>
+                </div>
+                <div v-if="$can('del', 'Article')">
+                    <a >del Article</a>
+                </div>
                 <router-view />
             </div>
         </div>
@@ -22,13 +31,28 @@ export default {
     components: {
         navbar,
     },
+
     mounted() {
-        // console.log( this.authing_user());
+        // this.get_user_data()
+    },
+
+    methods: {
+        get_user_data: function(){
+            axios
+            .get("./api/user/get_auth_user_permissions/")
+            .then(response => {
+                console.log("🚀 ~ file: HomeComponent.vue:49 ~ response", response)
+            })
+            .catch(
+                error => console.log(error)
+            );
+        },
     },
 
     watch: {
         $route(to, from) {
             window.scrollTo(0, 0);
+            this.get_user_data()
         },
     },
 };

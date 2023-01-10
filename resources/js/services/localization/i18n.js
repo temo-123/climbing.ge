@@ -3,9 +3,9 @@
 
 import Vue from "vue";
 
-import en from "../lang/i18n/en.json";
-import ka from "../lang/i18n/ka.json";
-import ru from "../lang/i18n/ru.json";
+import en from "../../../lang/i18n/en.json";
+import ka from "../../../lang/i18n/ka.json";
+import ru from "../../../lang/i18n/ru.json";
 
 import VueI18n from "vue-i18n";
 Vue.use(VueI18n);

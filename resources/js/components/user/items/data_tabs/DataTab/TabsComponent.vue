@@ -74,7 +74,6 @@
 
                         <div
                             class="row"
-                            v-if="filtr_data.table_name != 'Parmissions'"
                         >
                             <div class="col-md-12">
                                 <div class="add_buttom float-left">
@@ -101,6 +100,20 @@
                                         "
                                     >
                                         <button class="btn btn-primary pull-left" @click="sale_code_modal('add')">New sale code</button>
+                                    </span>
+                                    <span
+                                        v-else-if="
+                                            filtr_data.table_name == 'Roles'
+                                        "
+                                    >
+                                        <button class="btn btn-primary pull-left" @click="add_role()">Add new role</button>
+                                    </span>
+                                    <span
+                                        v-else-if="
+                                            filtr_data.table_name == 'Users'
+                                        "
+                                    >
+                                        <button class="btn btn-primary pull-left" @click="add_user()">Add new user (beta)</button>
                                     </span>
                                     <span
                                         v-else-if="
@@ -450,9 +463,12 @@
             :show_sector_modal="show_sector_modal"
             v-if="table_data[tab_num - 1].table_name == 'Sectors'"
         /> -->
-        <mtpModel v-if="table_data[tab_num - 1].table_name == 'Multi-pitchs'" />
 
-        <roleModal v-if="table_data[tab_num - 1].table_name == 'Roles'" />
+        <!-- <mtpModel v-if="table_data[tab_num - 1].table_name == 'Multi-pitchs'" /> -->
+
+        <addRoleModal ref="add_role_modal"/>
+
+        <addUserModal ref="add_user_modal"/>
 
         <!-- <orderDetalModal
             v-if="table_data[tab_num - 1].table_name == 'Orders'"
@@ -471,7 +487,6 @@
 // import { SlickList, SlickItem } from 'vue-slicksort'; //https://github.com/Jexordexan/vue-slicksort
 // import StackModal from '@innologica/vue-stackable-modal'  //https://innologica.github.io/vue-stackable-modal/#sample-css
 
-// import editor from '../../../items/canvas/EditorComponent.vue'
 import functionalBattoms from "./tabs_components/TabFunctionalBottomsComponent.vue";
 import tabHeader from "./tabs_components/TabHeaderComponent.vue";
 
@@ -511,10 +526,10 @@ import postTab from "./tabs/PostTabComponent.vue";
 
 //import sectorModal from "./tab_modals/SectorsModalComponent.vue";
 // import editOrderStatusModal from "./tab_modals/EditOrderStatusსModalComponent.vue";
-import mtpModel from "./tab_modals/MTPModalComponent.vue";
+import addRoleModal from "./tab_modals/RolesAddModalComponent.vue";
 // import orderDetalModal from "./tab_modals/OrderDetalsModalComponent.vue";
-import roleModal from "./tab_modals/RolesModalComponent.vue";
-import articleQuickViewModal from "./tab_modals/ArticleQuickViewModalComponen.vue";
+import addUserModal from "./tab_modals/UserAddModalComponent.vue";
+// import articleQuickViewModal from "./tab_modals/ArticleQuickViewModalComponen.vue";
 
 export default {
     components: {
@@ -557,10 +572,9 @@ export default {
 
         // sectorModal,
         // editOrderStatusModal,
-        mtpModel,
-        // orderDetalModal,
-        roleModal,
-        articleQuickViewModal,
+        addRoleModal,
+        addUserModal,
+        // articleQuickViewModal,
     },
 
     props: [
@@ -587,6 +601,13 @@ export default {
         },
         sale_code_modal(action){
             this.$refs.control_sale_code[0].sale_code_control_modal(action)
+        },
+
+        add_role(){
+            this.$refs.add_role_modal.open_role_add_modal()
+        },
+        add_user(){
+            this.$refs.add_user_modal.open_user_add_modal()
         },
 
         filtr(event) {

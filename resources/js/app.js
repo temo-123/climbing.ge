@@ -11,12 +11,17 @@ import VueMeta from "vue-meta"; // https://www.epiloge.com/how-to-add-dynamic-me
 import VueExpandableImage from "vue-expandable-image";
 import Vuex from "vuex";
 import axios from "axios";
-import i18n from "./i18n";
+import i18n from "./services/localization/i18n";
 import VueSocialSharing from "vue-social-sharing";
 import plugin from "@serializedowen/vue-img-watermark";
 import VueGlide from "vue-glide-js";
 import "vue-glide-js/dist/vue-glide.css";
 import VueGtag from "vue-gtag";
+
+import { abilitiesPlugin } from "@casl/vue";
+import ability from "./services/ability/ability";
+
+Vue.use(abilitiesPlugin, ability());
 
 Vue.use(VueGlide);
 Vue.use(plugin);
@@ -119,9 +124,8 @@ if (window.location.hostname == process.env.MIX_SITE_URL) {
 // console.log("🚀 ~ file: app.js:96 ~ axios.defaults.baseURL", axios.defaults.baseURL)
 
 Vue.use(VueGtag, {
-    config: { id: analytic_id }
+    config: { id: analytic_id },
 });
-
 
 // Vue.runtimeCompiler = true;
 Vue.config.productionTip = false;
@@ -132,6 +136,7 @@ const app = new Vue({
     el: "#app",
     i18n,
     store,
+    // ability,
 
     // option,
     components: {
@@ -140,7 +145,7 @@ const app = new Vue({
     router: serviceRoutes,
 
     mounted() {
-        this.get_site_data();
+        // this.get_site_data();
         // this.get_auth_user_data()
     },
     methods: {

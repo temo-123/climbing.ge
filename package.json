@@ -12,7 +12,7 @@
     "devDependencies": {
         "@tailwindcss/forms": "^0.2.1",
         "@tailwindcss/typography": "^0.3.0",
-        "@vue/devtools": "^6.1.4",
+        "@vue/devtools": "^5.1.1",
         "autoprefixer": "^10.0.2",
         "axios": "^0.21.4",
         "cross-env": "^7.0.3",
@@ -35,7 +35,7 @@
     "dependencies": {
         "-": "^0.0.1",
         "@braid/vue-formulate": "^2.5.2",
-        "@casl/ability": "^5.4.3",
+        "@casl/ability": "^5.4.4",
         "@casl/vue": "^1.2.3",
         "@ckeditor/ckeditor5-build-classic": "^24.0.0",
         "@ckeditor/ckeditor5-vue": "^2.0.1",

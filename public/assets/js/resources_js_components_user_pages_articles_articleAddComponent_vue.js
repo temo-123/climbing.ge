@@ -189,15 +189,16 @@ __webpack_require__.r(__webpack_exports__);
   },
   mounted: function mounted() {//
   },
-  beforeRouteLeave: function beforeRouteLeave(to, from, next) {
-    if (this.is_back_action) {
-      next();
-    } else if (window.confirm('Added information will be deleted!!! Are you sure, you want go back?')) {
-      next();
-    } else {
-      next(false);
-    }
-  },
+  // beforeRouteLeave (to, from, next) {
+  //     if(this.is_back_action){
+  //         next()
+  //     }
+  //     else if (window.confirm('Added information will be deleted!!! Are you sure, you want go back?')) {
+  //         next()
+  //     } else {
+  //         next(false)
+  //     }
+  // },
   methods: {
     global_blocks_action: function global_blocks_action(event) {
       this.global_blocks = event;
@@ -247,7 +248,15 @@ __webpack_require__.r(__webpack_exports__);
       });
     },
     go_back: function go_back() {
-      this.$router.go(-1);
+      var back_action = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : false;
+
+      if (back_action == false) {
+        if (confirm('Are you sure, you want go back?')) {
+          this.$router.go(-1);
+        }
+      } else {
+        this.$router.go(-1);
+      }
     }
   }
 });
@@ -475,6 +484,7 @@ __webpack_require__.r(__webpack_exports__);
       },
       error: [],
       regions: [],
+      mount_masive: [],
       data: {
         category: this.$route.params.article_category,
         us_title_for_url_title: "",
@@ -492,7 +502,7 @@ __webpack_require__.r(__webpack_exports__);
         google_link: "",
         inst_link: "",
         web_link: "",
-        region: "select_region",
+        region_id: "select_region",
         mount_id: "select_mount"
       }
     };
@@ -514,7 +524,7 @@ __webpack_require__.r(__webpack_exports__);
 
       if (category == 'mount_route') {
         axios.get("../../../api/mountaineering/get_mount_data/").then(function (response) {
-          _this.mount_data = response.data;
+          _this.mount_masive = response.data;
         })["catch"](function (error) {
           return console.log(error);
         });
@@ -2201,8 +2211,8 @@ var render = function () {
                           {
                             name: "model",
                             rawName: "v-model",
-                            value: _vm.data.region,
-                            expression: "data.region",
+                            value: _vm.data.region_id,
+                            expression: "data.region_id",
                           },
                         ],
                         staticClass: "form-control",
@@ -2219,7 +2229,7 @@ var render = function () {
                               })
                             _vm.$set(
                               _vm.data,
-                              "region",
+                              "region_id",
                               $event.target.multiple
                                 ? $$selectedVal
                                 : $$selectedVal[0]
@@ -2306,7 +2316,7 @@ var render = function () {
                           [_vm._v("Select mount")]
                         ),
                         _vm._v(" "),
-                        _vm._l(_vm.mount_data, function (mount) {
+                        _vm._l(_vm.mount_masive, function (mount) {
                           return _c(
                             "option",
                             { key: mount.id, domProps: { value: mount.id } },

@@ -7,7 +7,7 @@
         </div>
         <div class="row">
             <div class="form-group">  
-                <!-- <button type="submit" class="btn btn-primary" v-on:click="add_bisnes()" >Save updatid inof</button> -->
+                <button type="submit" class="btn btn-primary" v-on:click="update()" >Save updatid info</button>
             </div>
         </div>
         <div class="row">
@@ -31,7 +31,7 @@
                         </div>
                     </div>
                     <globalInfoForm 
-                        :global_data_prop=JSON.stringify(site_global_info)
+                        :global_data_prop=site_global_info
                     />
                         <!-- :global_data_prop='site_global_info' -->
                         <!-- :global_data_prop="JSON.stringify(site_global_info)" -->
@@ -68,6 +68,20 @@ export default {
         //     let id = item_id - 1 
         //     this.bisnes_images[id]['image'] = image
         // },
+        
+        update(){
+            axios
+            .post('../../api/siteData/edit_site_global_data',{
+                site_global_info: this.site_global_info
+            })
+            .then(response => {
+                // this.site_ru_info = response.data
+                this.go_back()
+            })
+            .catch(
+                error => console.log(error)
+            );
+        },
        
         get_site_global_data: function(){
             axios

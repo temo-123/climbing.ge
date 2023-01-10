@@ -197,16 +197,16 @@
                         <td>{{ route.height }}</td>
                         <td>{{ route.bolts }}</td>
 
-                        <td v-if="route.or_grade_fr != NULL">
-                            {{ route.grade_fr }} / {{ route.or_grade_fr }}
+                        <td v-if="route.or_grade != NULL">
+                            {{ route.grade }} / {{ route.or_grade }}
                         </td>
-                        <td v-else>{{ route.grade_fr }}</td>
+                        <td v-else>{{ route.grade }}</td>
 
-                        <td v-if="route.or_grade_fr != NULL">
-                            {{ lead_grade_chart(route.grade_fr) }} /
-                            {{ lead_grade_chart(route.or_grade_fr) }}
+                        <td v-if="route.or_grade != NULL">
+                            {{ lead_grade_chart(route.grade) }} /
+                            {{ lead_grade_chart(route.or_grade) }}
                         </td>
-                        <td v-else>{{ lead_grade_chart(route.grade_fr) }}</td>
+                        <td v-else>{{ lead_grade_chart(route.grade) }}</td>
 
                         <td @click="show_route_model(route.id)">
                             <a style="margin-top: -5%; font-size: 120%"
@@ -239,18 +239,18 @@
                         </td>
                         <td>{{ route.height }}</td>
 
-                        <td v-if="route.or_grade_fr != NULL">
-                            {{ boulder_grade_chart(route.grade_fr) }} /
-                            {{ boulder_grade_chart(route.or_grade_fr) }}
+                        <td v-if="route.or_grade != NULL">
+                            {{ boulder_grade_chart(route.grade) }} /
+                            {{ boulder_grade_chart(route.or_grade) }}
                         </td>
                         <td v-else>
-                            {{ boulder_grade_chart(route.grade_fr) }}
+                            {{ boulder_grade_chart(route.grade) }}
                         </td>
 
-                        <td v-if="route.or_grade_fr != NULL">
-                            {{ route.grade_fr }} / {{ route.or_grade_fr }}
+                        <td v-if="route.or_grade != NULL">
+                            {{ route.grade }} / {{ route.or_grade }}
                         </td>
-                        <td v-else>{{ route.grade_fr }}</td>
+                        <td v-else>{{ route.grade }}</td>
 
                         <td @click="show_route_model(route.id)">
                             <a style="margin-top: -5%; font-size: 120%"
@@ -308,15 +308,15 @@
                             <td>{{ pitch.pitch_height }}</td>
                             <td>{{ pitch.pitch_bolts }}</td>
 
-                            <td v-if="pitch.pitch_or_grade_fr != NULL">
+                            <td v-if="pitch.pitch_or_grade != NULL">
                                 {{ pitch.pitch_grade_fr }} /
-                                {{ pitch.pitch_or_grade_fr }}
+                                {{ pitch.pitch_or_grade }}
                             </td>
                             <td v-else>{{ pitch.pitch_grade_fr }}</td>
 
-                            <td v-if="pitch.pitch_or_grade_fr != NULL">
+                            <td v-if="pitch.pitch_or_grade != NULL">
                                 {{ lead_grade_chart(pitch.pitch_grade_fr) }} /
-                                {{ lead_grade_chart(pitch.pitch_or_grade_fr) }}
+                                {{ lead_grade_chart(pitch.pitch_or_grade) }}
                             </td>
                             <td v-else>
                                 {{ lead_grade_chart(pitch.pitch_grade_fr) }}
@@ -705,6 +705,7 @@ export default {
                 else if (grade_fr == "9b+") grad = "5.15c";
                 else if (grade_fr == "9c") grad = "5.15d";
                 else if (grade_fr == "9c+") grad = "5.16a";
+                else if (grade_fr == "Project") grad = "Project";
                 else grad = "?";
             } else if (localStorage.getItem("grade") == "UIAA") {
                 // console.log(localStorage.getItem("grade"))
@@ -735,6 +736,7 @@ export default {
                 else if (grade_fr == "9b") grad = "XII";
                 else if (grade_fr == "9b+") grad = "XII+";
                 else if (grade_fr == "9c") grad = "XIII";
+                else if (grade_fr == "Project") grad = "Project";
                 else grad = "?";
             } else {
                 grad = "Error";
@@ -765,6 +767,7 @@ export default {
                 else if (grade_fr == "V15") grade = "8c";
                 else if (grade_fr == "V16") grade = "8c+";
                 else if (grade_fr == "V17") grade = "9a";
+                else if (grade_fr == "Project") grad = "Project";
                 else grade = "?";
             } else if (localStorage.getItem("grade") == "UIAA") {
                 if (grade_fr == "VB") grade = "4-";
@@ -788,6 +791,7 @@ export default {
                 else if (grade_fr == "V15") grade = "XI";
                 else if (grade_fr == "V16") grade = "XI+";
                 else if (grade_fr == "V17") grade = "XII-";
+                else if (grade_fr == "Project") grad = "Project";
                 else grade = "?";
             } else {
                 grad = "Error";
@@ -808,7 +812,7 @@ export default {
         get_outdoor_routes() {
             this.climbing_area = []
             axios
-                .get("../../api/sector/" + this.id)
+                .get("../../api/sector/get_sector_and_routes/" + this.id)
                 .then((response) => {
                     this.climbing_area = response.data;
 

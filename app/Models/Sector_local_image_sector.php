@@ -11,8 +11,13 @@ class Sector_local_image_sector extends Model
 
     public $table = 'sector_local_image_sector';
 
-    // public function image()
-    // {
-    //     return $this->hasMany(Sector::class);
-    // }
+    public function image()
+    {
+        return $this->hasOne(Sector_local_image::class, 'id', 'image_id');
+    }
+    public function sector()
+    {
+        // return $this->hasMany(Sector_local_image::class);
+		return $this->hasOne(Sector::class, 'id', 'sector_id');
+    }
 }

@@ -35,7 +35,9 @@ Route::group(['namespace'=>'Api'], function() {
     */
     Route::controller(ArticleController::class)->prefix('article')->group( function() {
         Route::apiResource('/', 'ArticleController');
+        Route::delete('/del_article/{article_id}', 'del_article');
         Route::post('/add_article/{category}', 'add_article');
+        Route::post('/edit_article/{article_id}', 'edit_article');
         Route::get('/{category}/{lang}/{url_title}', 'get_locale_article_on_page');
         Route::get('/get_article/for_bisnes_page/{lang}/{bisnes_url_title}', 'get_article_on_bisnes_page');
         Route::post('/edit_article/{article_id}', 'edit_article');
@@ -232,6 +234,8 @@ Route::group(['namespace'=>'Api'], function() {
         Route::get('/get_site_ru_data', 'get_site_ru_data');
         Route::get('/get_site_us_data', 'get_site_us_data');
 
+        Route::post('/edit_site_data', 'edit_site_data');
+
         Route::post('/edit_site_global_data', 'edit_site_global_data');
         Route::post('/edit_site_ka_data', 'edit_site_ka_data');
         Route::post('/edit_site_ru_data', 'edit_site_ru_data');
@@ -277,6 +281,7 @@ Route::group(['namespace'=>'Api'], function() {
     */
     Route::controller(SectorController::class)->prefix('sector')->group( function() {
         Route::apiResource('/', 'SectorController');
+        Route::get('/get_sector_and_routes/{article_id}', 'get_sector_and_routes');
         Route::post('/add_sector', 'add_sector');
         Route::post('/edit_sector/{sector_id}', 'edit_sector');
         Route::delete('/del_sector_sector/{sector_id}', 'del_sector_sector');
@@ -339,6 +344,7 @@ Route::group(['namespace'=>'Api'], function() {
     *   Users routes
     */
     Route::apiResource('/users', 'UsersController');
+    Route::get('/user/get_auth_user_permissions/', 'UsersController@get_auth_user_permissions');
     Route::get('/post_user/{user_id}', 'UsersController@get_post_user');
     Route::post('user_image_update/{user_id}', 'UsersController@user_image_update');
     
@@ -370,13 +376,26 @@ Route::group(['namespace'=>'Api'], function() {
     /*
     *   User roles and pormisions routes
     */
-    Route::apiResource('/role', 'RolesController');
+    // Route::apiResource('/role', 'RolesController');
+    Route::controller(RolesController::class)->prefix('role')->group( function() {
+        Route::apiResource('/', 'RolesController');
+
+        Route::get('get_editing_role/{role_id}', 'get_editing_role');
+        Route::get('get_editing_role_permissions/{role_id}', 'get_editing_role_permissions');
+        Route::post('create_role', 'create_role');
+        Route::post('edit_role/{role_id}', 'edit_role');
+        Route::delete('del_role_permission/{role_id}/{permission_id}', 'del_role_permission');
+        Route::delete('del_role/{role_id}', 'del_role');
+
+        Route::get('get_user_permissions/{user_id}', 'get_user_permissions');
+        Route::post('edit_permissions_and_role/{user_id}', 'edit_permissions_and_role');
+        Route::delete('del_user_pemisino/{permission_id}/{user_id}', 'del_user_pemisino');
+    });
     Route::get('/parmisions_list', 'RolesController@get_parmisions_list');
 
     /*
     *   Climbing regions routes
     */
-
     Route::controller(RegionController::class)->prefix('region')->group( function() {
         Route::apiResource('/', 'RegionController');
         Route::get('/{lang}/{region_id}', 'locale_region');

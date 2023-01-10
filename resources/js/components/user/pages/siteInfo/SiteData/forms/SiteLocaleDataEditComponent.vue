@@ -4,14 +4,14 @@
             <label for="name" class='col-xs-2 control-label'> Title </label>
             <div class="col-xs-8">
                 <!-- <input type="text" name="value name" value="old data" class="form-control"> -->
-                <input type="text" name="value name" v-model="locale_data.title" class="form-control"> 
+                <input type="text" name="value name" v-model="locale_data.guid_title" class="form-control"> 
             </div>
         </div>
 
         <div class="form-group clearfix">
             <label for="name" class='col-xs-2 control-label'> Short description </label>
             <div class="col-xs-8">
-                <ckeditor v-model="locale_data.short_description" :config="editorConfig"></ckeditor>
+                <ckeditor v-model="locale_data.guid_short_description" :config="editorConfig"></ckeditor>
                 <!-- <textarea type="text" id="short_description" name="short_description" rows="15" class="form-cotrol md-textarea form-control"></textarea> -->
             </div>
         </div>
@@ -19,7 +19,100 @@
         <div class="form-group clearfix">
             <label for="name" class='col-xs-2 control-label'> text </label>
             <div class="col-xs-8">
-                <ckeditor v-model="locale_data.text" :config="editorConfig"></ckeditor>
+                <ckeditor v-model="locale_data.guid_description" :config="editorConfig"></ckeditor>
+                <!-- <textarea type="text" id="txt" name="txt" rows="15" class="form-cotrol md-textarea form-control"></textarea> -->
+            </div>
+        </div>
+
+
+        <div class="form-group clearfix">
+            <label for="name" class='col-xs-2 control-label'> films_title </label>
+            <div class="col-xs-8">
+                <ckeditor v-model="locale_data.films_title" :config="editorConfig"></ckeditor>
+                <!-- <textarea type="text" id="txt" name="txt" rows="15" class="form-cotrol md-textarea form-control"></textarea> -->
+            </div>
+        </div>
+        <div class="form-group clearfix">
+            <label for="name" class='col-xs-2 control-label'> films_description </label>
+            <div class="col-xs-8">
+                <ckeditor v-model="locale_data.films_description" :config="editorConfig"></ckeditor>
+                <!-- <textarea type="text" id="txt" name="txt" rows="15" class="form-cotrol md-textarea form-control"></textarea> -->
+            </div>
+        </div>
+        <div class="form-group clearfix">
+            <label for="name" class='col-xs-2 control-label'> films_short_description </label>
+            <div class="col-xs-8">
+                <ckeditor v-model="locale_data.films_short_description" :config="editorConfig"></ckeditor>
+                <!-- <textarea type="text" id="txt" name="txt" rows="15" class="form-cotrol md-textarea form-control"></textarea> -->
+            </div>
+        </div>
+        <div class="form-group clearfix">
+            <label for="name" class='col-xs-2 control-label'> forum_title </label>
+            <div class="col-xs-8">
+                <ckeditor v-model="locale_data.forum_title" :config="editorConfig"></ckeditor>
+                <!-- <textarea type="text" id="txt" name="txt" rows="15" class="form-cotrol md-textarea form-control"></textarea> -->
+            </div>
+        </div>
+        <div class="form-group clearfix">
+            <label for="name" class='col-xs-2 control-label'> forum_description </label>
+            <div class="col-xs-8">
+                <ckeditor v-model="locale_data.forum_description" :config="editorConfig"></ckeditor>
+                <!-- <textarea type="text" id="txt" name="txt" rows="15" class="form-cotrol md-textarea form-control"></textarea> -->
+            </div>
+        </div>
+        <div class="form-group clearfix">
+            <label for="name" class='col-xs-2 control-label'> forum_short_description </label>
+            <div class="col-xs-8">
+                <ckeditor v-model="locale_data.forum_short_description" :config="editorConfig"></ckeditor>
+                <!-- <textarea type="text" id="txt" name="txt" rows="15" class="form-cotrol md-textarea form-control"></textarea> -->
+            </div>
+        </div>
+        <div class="form-group clearfix">
+            <label for="name" class='col-xs-2 control-label'> shop_title </label>
+            <div class="col-xs-8">
+                <ckeditor v-model="locale_data.shop_title" :config="editorConfig"></ckeditor>
+                <!-- <textarea type="text" id="txt" name="txt" rows="15" class="form-cotrol md-textarea form-control"></textarea> -->
+            </div>
+        </div>
+        <div class="form-group clearfix">
+            <label for="name" class='col-xs-2 control-label'> other_activity_description </label>
+            <div class="col-xs-8">
+                <ckeditor v-model="locale_data.other_activity_description" :config="editorConfig"></ckeditor>
+                <!-- <textarea type="text" id="txt" name="txt" rows="15" class="form-cotrol md-textarea form-control"></textarea> -->
+            </div>
+        </div>
+        <div class="form-group clearfix">
+            <label for="name" class='col-xs-2 control-label'> event_description </label>
+            <div class="col-xs-8">
+                <ckeditor v-model="locale_data.event_description" :config="editorConfig"></ckeditor>
+                <!-- <textarea type="text" id="txt" name="txt" rows="15" class="form-cotrol md-textarea form-control"></textarea> -->
+            </div>
+        </div>
+        <div class="form-group clearfix">
+            <label for="name" class='col-xs-2 control-label'> tech_tips_description </label>
+            <div class="col-xs-8">
+                <ckeditor v-model="locale_data.tech_tips_description" :config="editorConfig"></ckeditor>
+                <!-- <textarea type="text" id="txt" name="txt" rows="15" class="form-cotrol md-textarea form-control"></textarea> -->
+            </div>
+        </div>
+        <div class="form-group clearfix">
+            <label for="name" class='col-xs-2 control-label'> news_description </label>
+            <div class="col-xs-8">
+                <ckeditor v-model="locale_data.news_description" :config="editorConfig"></ckeditor>
+                <!-- <textarea type="text" id="txt" name="txt" rows="15" class="form-cotrol md-textarea form-control"></textarea> -->
+            </div>
+        </div>
+        <div class="form-group clearfix">
+            <label for="name" class='col-xs-2 control-label'> index_gallery_description </label>
+            <div class="col-xs-8">
+                <ckeditor v-model="locale_data.index_gallery_description" :config="editorConfig"></ckeditor>
+                <!-- <textarea type="text" id="txt" name="txt" rows="15" class="form-cotrol md-textarea form-control"></textarea> -->
+            </div>
+        </div>
+        <div class="form-group clearfix">
+            <label for="name" class='col-xs-2 control-label'> products_description </label>
+            <div class="col-xs-8">
+                <ckeditor v-model="locale_data.products_description" :config="editorConfig"></ckeditor>
                 <!-- <textarea type="text" id="txt" name="txt" rows="15" class="form-cotrol md-textarea form-control"></textarea> -->
             </div>
         </div>
@@ -106,9 +199,17 @@
                 ],
             }
         },
+
+        watch: {
+            locale_data_prop: function(newVal, oldVal) { 
+                // console.log('Prop changed: ', newVal, ' | was: ', oldVal)
+                this.locale_data = this.locale_data_prop
+            },
+        },
+
         mounted() {
             // console.log(this.locale_data_prop);
-            this.locale_data = this.locale_data_prop
+            // this.locale_data = this.locale_data_prop
             // this.$emit('locale_form_data', this.locale_data)
         },
 

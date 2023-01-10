@@ -25,7 +25,7 @@
                     <div class="form-group clearfix row" v-if="this.category == 'outdoor'">
                         <label for="region" class='col-md-2 control-label '> Regions </label>
                         <div class="col-md-10">
-                            <select class="form-control" v-model="data.region" name="region" > 
+                            <select class="form-control" v-model="data.region_id" name="region" > 
                                 <option :value="'select_region'" disabled>Select region</option> 
                                 <option  v-for="region in regions" :key="region.id" :value="region.id">{{ region.us_name }}</option>
                             </select> 
@@ -37,7 +37,7 @@
                         <div class="col-md-10">
                             <select class="form-control" v-model="data.mount_id" name="mount_id"> 
                                 <option :value="'select_mount'" disabled>Select mount</option> 
-                                <option v-for="mount in mount_data" :key="mount.id" v-bind:value="mount.id">{{mount.name}}</option> 
+                                <option v-for="mount in mount_masive" :key="mount.id" v-bind:value="mount.id">{{mount.name}}</option> 
                             </select> 
                         </div>
                     </div>
@@ -163,7 +163,9 @@
                 },
 
                 error: [],
+                
                 regions: [],
+                mount_masive: [],
 
                 data: {
                     category: this.$route.params.article_category,
@@ -183,7 +185,7 @@
                     inst_link: "",
                     web_link: "",
 
-                    region: "select_region",
+                    region_id: "select_region",
                     mount_id: "select_mount",
                 },
             }
@@ -204,7 +206,7 @@
                     axios
                     .get("../../../api/mountaineering/get_mount_data/")
                     .then(response => {
-                        this.mount_data = response.data
+                        this.mount_masive = response.data
                     })
                     .catch(
                         error => console.log(error)

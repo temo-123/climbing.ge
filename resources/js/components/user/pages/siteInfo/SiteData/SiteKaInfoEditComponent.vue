@@ -7,7 +7,7 @@
         </div>
         <div class="row">
             <div class="form-group">  
-                <!-- <button type="submit" class="btn btn-primary" v-on:click="add_bisnes()" >Save updatid inof</button> -->
+                <button type="submit" class="btn btn-primary" v-on:click="update()" >Save updatid info</button>
             </div>
         </div>
         <div class="row">
@@ -28,7 +28,7 @@
                             <p class="lead">Site georgian version for site localisation.</p>
                         </div>
                     </div>
-                    <localeInfoForm />
+                    <localeInfoForm :locale_data_prop=site_ka_info />
                 </div>
             </div>
         </div>
@@ -57,6 +57,20 @@ export default {
         this.get_site_ka_data()
     },
     methods: {
+        update(){
+            axios
+            .post('../../api/siteData/edit_site_ka_data',{
+                site_ka_info: this.site_ka_info
+            })
+            .then(response => {
+                // this.site_us_info = response.data
+                this.go_back()
+            })
+            .catch(
+                error => console.log(error)
+            );
+        },
+
         get_site_ka_data: function(){
             axios
             .get('../../api/siteData/get_site_ka_data')

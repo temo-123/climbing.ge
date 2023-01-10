@@ -176,6 +176,7 @@ __webpack_require__.r(__webpack_exports__);
       },
       error: [],
       regions: [],
+      mount_masive: [],
       data: {
         category: this.$route.params.article_category,
         us_title_for_url_title: "",
@@ -193,7 +194,7 @@ __webpack_require__.r(__webpack_exports__);
         google_link: "",
         inst_link: "",
         web_link: "",
-        region: "select_region",
+        region_id: "select_region",
         mount_id: "select_mount"
       }
     };
@@ -215,7 +216,7 @@ __webpack_require__.r(__webpack_exports__);
 
       if (category == 'mount_route') {
         axios.get("../../../api/mountaineering/get_mount_data/").then(function (response) {
-          _this.mount_data = response.data;
+          _this.mount_masive = response.data;
         })["catch"](function (error) {
           return console.log(error);
         });
@@ -442,8 +443,8 @@ var render = function () {
                           {
                             name: "model",
                             rawName: "v-model",
-                            value: _vm.data.region,
-                            expression: "data.region",
+                            value: _vm.data.region_id,
+                            expression: "data.region_id",
                           },
                         ],
                         staticClass: "form-control",
@@ -460,7 +461,7 @@ var render = function () {
                               })
                             _vm.$set(
                               _vm.data,
-                              "region",
+                              "region_id",
                               $event.target.multiple
                                 ? $$selectedVal
                                 : $$selectedVal[0]
@@ -547,7 +548,7 @@ var render = function () {
                           [_vm._v("Select mount")]
                         ),
                         _vm._v(" "),
-                        _vm._l(_vm.mount_data, function (mount) {
+                        _vm._l(_vm.mount_masive, function (mount) {
                           return _c(
                             "option",
                             { key: mount.id, domProps: { value: mount.id } },

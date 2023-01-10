@@ -22,11 +22,19 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   components: {//
   },
-  props: [// 
-  ],
+  props: ['image_prop', 'category_prop'],
   data: function data() {
     return {
       image: ''
@@ -36,11 +44,11 @@ __webpack_require__.r(__webpack_exports__);
   },
   methods: {
     onFileChange: function onFileChange(e) {
-      this.image = e.target.files[0];
-      this.upload_img();
+      // this.image = e.target.files[0];
+      this.upload_img(e.target.files[0]);
     },
     upload_img: function upload_img(event) {
-      this.$emit("upload_img", this.image);
+      this.$emit("upload_img", event);
     }
   }
 });
@@ -131,21 +139,57 @@ var render = function () {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("form", [
-    _c("div", { staticClass: "form-group clearfix row" }, [
-      _c(
-        "label",
-        { staticClass: "col-md-6 control-label", attrs: { for: "email" } },
-        [_vm._v("Upload article image:")]
-      ),
-      _vm._v(" "),
-      _c("div", { staticClass: "col-md-6" }, [
-        _c("input", {
-          attrs: { type: "file", name: "image", id: "image", required: "" },
-          on: { change: _vm.onFileChange },
-        }),
-      ]),
-    ]),
+  return _c("div", { staticClass: "col-md-12" }, [
+    _c(
+      "form",
+      {
+        ref: "myForm",
+        attrs: { id: "myForm", enctype: "multipart/form-data" },
+      },
+      [
+        _c("div", { staticClass: "form-group clearfix row" }, [
+          _c(
+            "label",
+            {
+              staticClass: "col-md-2 control-label",
+              attrs: { for: "article image" },
+            },
+            [_vm._v("Active image:")]
+          ),
+          _vm._v(" "),
+          _c("div", { staticClass: "col-md-5" }, [
+            _c("img", {
+              attrs: {
+                src:
+                  "/public/images/" +
+                  _vm.category_prop +
+                  "_img/" +
+                  _vm.image_prop,
+                alt: "Locale sectors image",
+              },
+            }),
+          ]),
+        ]),
+        _vm._v(" "),
+        _c("div", { staticClass: "form-group clearfix row" }, [
+          _c(
+            "label",
+            {
+              staticClass: "col-md-2 control-label",
+              attrs: { for: "new image" },
+            },
+            [_vm._v("Upload new image:")]
+          ),
+          _vm._v(" "),
+          _c("div", { staticClass: "col-md-10" }, [
+            _c("input", {
+              attrs: { type: "file", name: "image", id: "image" },
+              on: { change: _vm.onFileChange },
+            }),
+          ]),
+        ]),
+      ]
+    ),
   ])
 }
 var staticRenderFns = []

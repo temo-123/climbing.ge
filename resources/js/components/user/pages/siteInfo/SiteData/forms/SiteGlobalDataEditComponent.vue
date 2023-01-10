@@ -28,6 +28,7 @@
         props: [
             'global_data_prop',
         ],
+
         data(){
             return {
                 global_editing_data: {
@@ -38,9 +39,16 @@
                 data: []
             }
         },
+
+        watch: {
+            global_data_prop: function(newVal, oldVal) { 
+                // console.log('Prop changed: ', newVal, ' | was: ', oldVal)
+                this.global_editing_data = this.global_data_prop
+            },
+        },
     
         mounted() {
-            console.log(this.global_data_prop);
+            // console.log(this.global_data_prop);
             // this.data = JSON.parse(this.global_data_prop)
         },
     }

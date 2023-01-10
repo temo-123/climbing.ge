@@ -79,11 +79,23 @@ __webpack_require__.r(__webpack_exports__);
     //     let id = item_id - 1 
     //     this.bisnes_images[id]['image'] = image
     // },
-    get_site_global_data: function get_site_global_data() {
+    update: function update() {
       var _this = this;
 
+      axios.post('../../api/siteData/edit_site_global_data', {
+        site_global_info: this.site_global_info
+      }).then(function (response) {
+        // this.site_ru_info = response.data
+        _this.go_back();
+      })["catch"](function (error) {
+        return console.log(error);
+      });
+    },
+    get_site_global_data: function get_site_global_data() {
+      var _this2 = this;
+
       axios.get('../../api/siteData/get_site_global_data').then(function (response) {
-        _this.site_global_info = response.data;
+        _this2.site_global_info = response.data;
       })["catch"](function (error) {
         return console.log(error);
       });
@@ -151,8 +163,14 @@ __webpack_require__.r(__webpack_exports__);
       data: []
     };
   },
-  mounted: function mounted() {
-    console.log(this.global_data_prop); // this.data = JSON.parse(this.global_data_prop)
+  watch: {
+    global_data_prop: function global_data_prop(newVal, oldVal) {
+      // console.log('Prop changed: ', newVal, ' | was: ', oldVal)
+      this.global_editing_data = this.global_data_prop;
+    }
+  },
+  mounted: function mounted() {// console.log(this.global_data_prop);
+    // this.data = JSON.parse(this.global_data_prop)
   }
 });
 
@@ -330,7 +348,23 @@ var render = function () {
       ]),
     ]),
     _vm._v(" "),
-    _vm._m(0),
+    _c("div", { staticClass: "row" }, [
+      _c("div", { staticClass: "form-group" }, [
+        _c(
+          "button",
+          {
+            staticClass: "btn btn-primary",
+            attrs: { type: "submit" },
+            on: {
+              click: function ($event) {
+                return _vm.update()
+              },
+            },
+          },
+          [_vm._v("Save updatid info")]
+        ),
+      ]),
+    ]),
     _vm._v(" "),
     _c("div", { staticClass: "row" }, [
       _c("div", { staticClass: "col-md-12" }, [
@@ -374,10 +408,10 @@ var render = function () {
             staticClass: "row width_100",
           },
           [
-            _vm._m(1),
+            _vm._m(0),
             _vm._v(" "),
             _c("globalInfoForm", {
-              attrs: { global_data_prop: JSON.stringify(_vm.site_global_info) },
+              attrs: { global_data_prop: _vm.site_global_info },
             }),
           ],
           1
@@ -387,14 +421,6 @@ var render = function () {
   ])
 }
 var staticRenderFns = [
-  function () {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "row" }, [
-      _c("div", { staticClass: "form-group" }),
-    ])
-  },
   function () {
     var _vm = this
     var _h = _vm.$createElement

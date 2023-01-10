@@ -9,7 +9,6 @@ class Sector_local_image extends Model
 {
     use HasFactory;
 
-
     public function sectors()
     {
         return $this->belongsToMany(Sector::class, 'sector_local_image_sector', 'image_id', 'sector_id');

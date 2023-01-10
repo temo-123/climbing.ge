@@ -92,4 +92,9 @@ class Article extends Model
 	{
         return $this->belongsToMany(Mount::class, 'article_mount', 'article_id', 'mount_id');
 	}
+
+	public function outdoor_region()
+	{
+        return $this->belongsToMany(Region::class, 'article_region', 'article_id', 'region_id');
+	}
 }

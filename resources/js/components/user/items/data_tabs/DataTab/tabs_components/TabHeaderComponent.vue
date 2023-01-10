@@ -5,7 +5,7 @@
         </th>
         <th>|</th>
         <th>ID</th>
-        <th v-if="  data.table_name != 'Orders' &&
+         <th v-if="  data.table_name != 'Orders' &&
                     data.table_name != 'My orders'
         ">|</th>
 
@@ -57,15 +57,15 @@
             Description
         </td>
 
-        <td v-if="data.table_name == 'Users'">|</td>
+        <!-- <td v-if="data.table_name == 'Users'">|</td>
         <th
             style="text-align: center"
             v-if="data.table_name == 'Users'"
         >
             Role
-        </th>
+        </th> -->
 
-        <th
+        <!-- <th
             v-if="
                 data.table_name == 'Routes' ||
                 data.table_name == 'Pitches'
@@ -81,9 +81,13 @@
             "
         >
             Grade
+        </th> -->
+
+        <th v-if="data.table_name == 'Users'">
+            |
         </th>
 
-        <th v-if="data.table_name != 'Parmissions'">
+        <th v-if="data.table_name == 'Roles'">
             |
         </th>
 
@@ -114,7 +118,7 @@
             Delite
         </th>
 
-        <th v-if="data.table_name == 'My orders' ||
+        <!-- <th v-if="data.table_name == 'My orders' ||
                 data.table_name == 'Orders'
         ">
             Status
@@ -123,14 +127,14 @@
         <th v-if="data.table_name == 'Orders' ||
                 data.table_name == 'My orders'">
             |
-        </th>
+        </th> -->
 
-        <th v-if="data.table_name == 'Orders' && location == 'all_orders'">
+        <!-- <th v-if="data.table_name == 'Orders' && location == 'all_orders'">
             Edit order status
         </th>
         <th v-else-if="data.table_name == 'My orders' && location == 'my_orders'">
             Show order status
-        </th>
+        </th> -->
     </tr>
 </template>
 

@@ -7,7 +7,7 @@
         </div>
         <div class="row">
             <div class="form-group">  
-                <!-- <button type="submit" class="btn btn-primary" v-on:click="add_bisnes()" >Save updatid inof</button> -->
+                <button type="submit" class="btn btn-primary" v-on:click="update()" >Save updatid info</button>
             </div>
         </div>
         <div class="row">
@@ -28,7 +28,7 @@
                             <p class="lead">Site rusion version for site localisation.</p>
                         </div>
                     </div>
-                    <localeInfoForm />
+                    <localeInfoForm :locale_data_prop=site_ru_info />
                 </div>
             </div>
         </div>
@@ -56,6 +56,20 @@ export default {
         this.get_site_ru_data()
     },
     methods: {
+        update(){
+            axios
+            .post('../../api/siteData/edit_site_ru_data',{
+                site_ru_info: this.site_ru_info
+            })
+            .then(response => {
+                // this.site_ru_info = response.data
+                this.go_back()
+            })
+            .catch(
+                error => console.log(error)
+            );
+        },
+
         get_site_ru_data: function(){
             axios
             .get('../../api/siteData/get_site_ru_data')

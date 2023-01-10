@@ -28,17 +28,27 @@ class Sector extends Model
 
     public function routes()
     {
-        return $this->hasMany(Route::class);
+        return $this->hasMany(Route::class)->latest('num');
+    }
+
+    public function sport_routes()
+    {
+        return $this->hasMany(Route::class)->where('category', '=', 'sport climbing')->latest('num');
+    }
+
+    public function boulder_routes()
+    {
+        return $this->hasMany(Route::class)->where('category', '=', 'bouldering')->latest('num');
     }
 
     public function images()
     {
-        return $this->hasMany(Sector_image::class);
+        return $this->hasMany(Sector_image::class)->latest('num');
     }
 
     public function mtps()
     {
-        return $this->hasMany(Mtp::class);
+        return $this->hasMany(Mtp::class)->latest('num');
     }
 
 	// public function sector_rocks_images()
@@ -48,6 +58,7 @@ class Sector extends Model
 
 	public function sector_local_image()
 	{
-		return $this->hasOhe(Spot_rocks_image_sector::class, 'sector_id');
+		// return $this->hasOhe(Spot_rocks_image_sector::class, 'sector_id');
+        return $this->belongsToMany(Sector_local_image::class, 'sector_local_image_sector', 'sector_id', 'image_id');
 	}
 }

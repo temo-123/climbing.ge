@@ -28,6 +28,10 @@ For foront use Vue.js(2) templite
 
     vue-html2pdf (Will be added soon)    -   https://www.npmjs.com/package/vue-html2pdf
 
+    casl/ability    -   https://casl.js.org/v5/en/package/casl-vue
+                        https://medium.com/dailyjs/vue-acl-with-casl-781a374b987a
+                        https://casl.js.org/v6/en/package/casl-vue
+
 ## CkEditor4
 
 For text editor use CkEdior4
