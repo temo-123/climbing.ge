@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 
 use App\Services\ImageControllService;
 
+use App\Models\Article;
 use App\Models\Gallery_image;
 use App\Models\Gallery_category;
 use App\Models\Gallery_image_article;
@@ -37,7 +38,7 @@ class GalleryController extends Controller
         // }
         // return response()->json($gallery);
 
-        return Gallery_image::limit(8)->where('image_type', '=', 1)->where('published', '=', 1)->get();
+        return Gallery_image::limit(8)->where('image_type', '=', 'Index gallery images')->where('published', '=', 1)->get();
     }
 
     public function get_swiper_images()
@@ -87,12 +88,17 @@ class GalleryController extends Controller
      */
     public function show($id)
     {
-        return Gallery_image::limit(8)->where('article_id', '=', $id)->where('published', '=', 1)->get();
+        $article = Article::where('id', '=', $id)->where('published', '=', 1)->first();
+        
+        return $article->gallery_images;
     }
 
     public function show_article_images($id)
     {
-        return Gallery_image::limit(8)->where('article_id', '=', $id)->where('published', '=', 1)->get();
+        $article = Article::where('id', '=', $id)->where('published', '=', 1)->first();
+        
+        return $article->gallery_images;
+        // return Gallery_image::limit(8)->where('article_id', '=', $id)->where('published', '=', 1)->get();
     }
 
     /**

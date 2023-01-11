@@ -149,7 +149,7 @@ class SectorController extends Controller
         if(count($sectors)){
             foreach($sectors as $sector){
                 $area_local_image = Sector_local_image_sector::where('sector_id', '=', $sector->id)->first();
-                // dd($area_local_image->image_id);
+                dd($area_local_image);
                 $area_local_image_id = $area_local_image->image_id;
                 echo($area_local_image_id);
                 $area_local_sector_images = Sector_local_image_sector::where('image_id', strip_tags($area_local_image_id))->get();

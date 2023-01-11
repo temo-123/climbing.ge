@@ -16,12 +16,12 @@
 
         <div class="open_img" v-if="open_img" >
           <div class="close_bottom">
-            <bottom @click="close_image(image)">X</bottom>
+            <span @click="close_image()">X</span>
           </div>
 
           <site-img :src="'../images/gallery_img/'+active_img.image" :alt="active_img.image" :img_class="'gallery_big_img'" />
 
-          <div class="image_moving">
+          <!-- <div class="image_moving">
             <div class="previes_img_bottom"  @click="previes_image()">
                 <i class="fa fa-chevron-left" aria-hidden="true"></i>
             </div>
@@ -29,7 +29,7 @@
             <div class="next_img_bottom"  @click="next_image()">
                 <i class="fa fa-chevron-right" aria-hidden="true"></i>
             </div>
-          </div>
+          </div> -->
 
         </div>
       </div>
@@ -45,7 +45,8 @@
       return {
         db_images: [],
         active_img: [],
-        open_img: false.valueOf,
+        // open_img: false.valueOf,
+        open_img: false,
         id: this.article_id
       };
     },
@@ -71,8 +72,15 @@
           this.open_img = true
           
           document.body.classList.add('body_hiden') // off page scroling
+
+          let that = this;
+          document.addEventListener('keyup', function (evt) {
+              if (evt.keyCode === 27) {
+                that.close_image();
+              }
+          }, { once: true });
         },
-        close_image(){
+        close_image (){
           this.active_img = []
           this.open_img = false
 

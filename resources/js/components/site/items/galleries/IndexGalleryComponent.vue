@@ -7,20 +7,6 @@
       <h3> <span v-html="this.$siteData.index_gallery_description"></span></h3>
 
       <div class="container-fluid">
-          <!-- <gallery :images="db_images" :index="db_gallery_index" @close="db_gallery_index = null" v-watermark='config = option'></gallery>
-          <div
-              class="gallery col-md-4 index_gallery_image"
-              :style="{ backgroundImage: 'url(' + dbImage + ')', width: '25%', height: '8em' }"
-
-              v-for="(dbImage, dbImageIndex) in db_images"
-              :key="dbImageIndex"
-
-              @click="db_gallery_index = dbImageIndex"
-              
-              v-watermark='config = option'
-          >
-          </div> -->
-
           <div class="container">
             <div class="row">
               <div class="col-xs-6 col-sm-6 col-md-3 gallery_images" v-for="image in db_images" :key="image.id" @click="open_image(image)">
@@ -31,7 +17,7 @@
 
           <div class="open_img" v-if="open_img" >
             <div class="close_bottom">
-              <bottom @click="close_image(image)">X</bottom>
+              <span @click="close_image()">X</span>
             </div>
 
             <site-img :src="'../images/gallery_img/'+active_img.image" :alt="active_img.image" :img_class="'gallery_big_img'" />
@@ -53,17 +39,12 @@
 </template>
 
 <script>
-    // https://vuejsexamples.com/vuejs-responsive-and-customizable-image-and-video-gallery-2/
-  // import VueGallery from 'vue-gallery';
-  // const VueGallery = require('vue-gallery');
-  
   export default {
     // components: {
     //   'gallery': VueGallery
     // },
     props:[
-        'article_id',
-        // 'image_url',
+        // 'article_id',
     ],
     data: function () {
       return {
@@ -91,6 +72,13 @@
           this.open_img = true
           
           document.body.classList.add('body_hiden') // off page scroling
+
+          let that = this;
+          document.addEventListener('keyup', function (evt) {
+              if (evt.keyCode === 27) {
+                that.close_image();
+              }
+          }, { once: true });
         },
         close_image(){
           this.active_img = []
@@ -105,18 +93,6 @@
           console.log('next');
         }
     },
-    // created(){
-    //       axios
-    //         .get('../api/gallery_image', {
-    //         })
-    //         .then(response => {
-    //           // console.log('response.data');
-    //           // console.log(response.data);
-    //           this.db_images = response.data
-    //         })
-    //         .catch(error =>{
-    //         })
-    // }
   }
 </script>
 

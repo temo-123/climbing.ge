@@ -752,28 +752,11 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-// https://vuejsexamples.com/vuejs-responsive-and-customizable-image-and-video-gallery-2/
-// import VueGallery from 'vue-gallery';
-// const VueGallery = require('vue-gallery');
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   // components: {
   //   'gallery': VueGallery
   // },
-  props: ['article_id' // 'image_url',
+  props: [// 'article_id',
   ],
   data: function data() {
     return {
@@ -797,6 +780,15 @@ __webpack_require__.r(__webpack_exports__);
       this.active_img = db_img;
       this.open_img = true;
       document.body.classList.add('body_hiden'); // off page scroling
+
+      var that = this;
+      document.addEventListener('keyup', function (evt) {
+        if (evt.keyCode === 27) {
+          that.close_image();
+        }
+      }, {
+        once: true
+      });
     },
     close_image: function close_image() {
       this.active_img = [];
@@ -809,19 +801,7 @@ __webpack_require__.r(__webpack_exports__);
     next_image: function next_image() {
       console.log('next');
     }
-  } // created(){
-  //       axios
-  //         .get('../api/gallery_image', {
-  //         })
-  //         .then(response => {
-  //           // console.log('response.data');
-  //           // console.log(response.data);
-  //           this.db_images = response.data
-  //         })
-  //         .catch(error =>{
-  //         })
-  // }
-
+  }
 });
 
 /***/ }),
@@ -2103,8 +2083,11 @@ var render = function () {
           { key: slide.id, staticClass: "head_slider" },
           [
             _c("site-img", {
-              class: "slider_img",
-              attrs: { src: slide.image, alt: slide.title },
+              attrs: {
+                src: slide.image,
+                alt: slide.title,
+                img_class: "slider_img",
+              },
             }),
           ],
           1
@@ -2872,24 +2855,19 @@ var render = function () {
                   "div",
                   { staticClass: "open_img" },
                   [
-                    _c(
-                      "div",
-                      { staticClass: "close_bottom" },
-                      [
-                        _c(
-                          "bottom",
-                          {
-                            on: {
-                              click: function ($event) {
-                                return _vm.close_image(_vm.image)
-                              },
+                    _c("div", { staticClass: "close_bottom" }, [
+                      _c(
+                        "span",
+                        {
+                          on: {
+                            click: function ($event) {
+                              return _vm.close_image()
                             },
                           },
-                          [_vm._v("X")]
-                        ),
-                      ],
-                      1
-                    ),
+                        },
+                        [_vm._v("X")]
+                      ),
+                    ]),
                     _vm._v(" "),
                     _c("site-img", {
                       attrs: {

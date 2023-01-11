@@ -726,7 +726,8 @@ __webpack_require__.r(__webpack_exports__);
     return {
       db_images: [],
       active_img: [],
-      open_img: false.valueOf,
+      // open_img: false.valueOf,
+      open_img: false,
       id: this.article_id
     };
   },
@@ -749,6 +750,15 @@ __webpack_require__.r(__webpack_exports__);
       this.active_img = db_img;
       this.open_img = true;
       document.body.classList.add('body_hiden'); // off page scroling
+
+      var that = this;
+      document.addEventListener('keyup', function (evt) {
+        if (evt.keyCode === 27) {
+          that.close_image();
+        }
+      }, {
+        once: true
+      });
     },
     close_image: function close_image() {
       this.active_img = [];
@@ -3036,24 +3046,19 @@ var render = function () {
                 "div",
                 { staticClass: "open_img" },
                 [
-                  _c(
-                    "div",
-                    { staticClass: "close_bottom" },
-                    [
-                      _c(
-                        "bottom",
-                        {
-                          on: {
-                            click: function ($event) {
-                              return _vm.close_image(_vm.image)
-                            },
+                  _c("div", { staticClass: "close_bottom" }, [
+                    _c(
+                      "span",
+                      {
+                        on: {
+                          click: function ($event) {
+                            return _vm.close_image()
                           },
                         },
-                        [_vm._v("X")]
-                      ),
-                    ],
-                    1
-                  ),
+                      },
+                      [_vm._v("X")]
+                    ),
+                  ]),
                   _vm._v(" "),
                   _c("site-img", {
                     attrs: {
@@ -3062,44 +3067,6 @@ var render = function () {
                       img_class: "gallery_big_img",
                     },
                   }),
-                  _vm._v(" "),
-                  _c("div", { staticClass: "image_moving" }, [
-                    _c(
-                      "div",
-                      {
-                        staticClass: "previes_img_bottom",
-                        on: {
-                          click: function ($event) {
-                            return _vm.previes_image()
-                          },
-                        },
-                      },
-                      [
-                        _c("i", {
-                          staticClass: "fa fa-chevron-left",
-                          attrs: { "aria-hidden": "true" },
-                        }),
-                      ]
-                    ),
-                    _vm._v(" "),
-                    _c(
-                      "div",
-                      {
-                        staticClass: "next_img_bottom",
-                        on: {
-                          click: function ($event) {
-                            return _vm.next_image()
-                          },
-                        },
-                      },
-                      [
-                        _c("i", {
-                          staticClass: "fa fa-chevron-right",
-                          attrs: { "aria-hidden": "true" },
-                        }),
-                      ]
-                    ),
-                  ]),
                 ],
                 1
               )
