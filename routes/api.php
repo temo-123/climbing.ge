@@ -225,9 +225,11 @@ Route::group(['namespace'=>'Api'], function() {
     */
     Route::controller(SiteDataController::class)->prefix('siteData')->group( function() {
         Route::apiResource('/', 'SiteDataController');
+
         Route::apiResource('/site_social_links', 'SocialLinkController');
 
         Route::get('/get_site_locale_data/{locale}', 'get_site_locale_data');
+        // Route::get('/get_locale_site_data/{locale}', 'get_locale_site_data');
 
         Route::get('/get_site_global_data', 'get_site_global_data');
         Route::get('/get_site_ka_data', 'get_site_ka_data');

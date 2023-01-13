@@ -9849,7 +9849,7 @@ var app = new vue__WEBPACK_IMPORTED_MODULE_12__["default"]({
   },
   methods: {
     get_site_data: function get_site_data() {
-      axios__WEBPACK_IMPORTED_MODULE_3___default().get("../api/siteData").then(function (response) {
+      axios__WEBPACK_IMPORTED_MODULE_3___default().get("../../../../api/siteData/get_site_locale_data/" + localStorage.getItem('lang')).then(function (response) {
         return vue__WEBPACK_IMPORTED_MODULE_12__["default"].prototype.$siteData = response.data;
       });
     } // get_auth_user_data() {

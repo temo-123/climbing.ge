@@ -46,6 +46,35 @@ class SiteDataController extends Controller
         return $site_data = Site::first();
     }
 
+    // public function FunctionName($model)
+    // {
+    //     $model['guid_title'];
+    //     $model['guid_description'];
+    //     $model['guid_short_description'];
+    //     $model['films_title'];
+    //     $model['films_description'];
+    //     $model['films_short_description'];
+    //     $model['forum_title'];
+	// 	$model['forum_description'];
+	// 	$model['forum_short_description'];
+	// 	$model['shop_title'];
+	// 	$model['shop_description'];
+	// 	$model['shop_short_description'];
+	// 	$model['other_activity_description'];
+	// 	$model['mount_description'];
+	// 	$model['event_description'];
+	// 	$model['tech_tips_description'];
+	// 	$model['news_description'];
+	// 	$model['index_gallery_description'];
+	// 	$model['outdoor_description'];
+	// 	$model['indoor_description'];
+	// 	$model['ice_description'];
+	// 	$model['topo_description'];
+	// 	$model['what_we_do_description'];
+	// 	$model['products_description'];
+	// 	$model['services_description'];
+    // }
+
     public function site_data_counts()
     {
         $counts = [];
@@ -99,29 +128,47 @@ class SiteDataController extends Controller
         return $counts;
     }
 
+
+    // public function get_site_locale_data(Request $request)
+    // {
+    //     $data = [
+    //         'site_global_data' => Site::first()
+    //     ];
+    //     if($request->locale == 'ka') {
+    //         $data = [
+    //             'site_global_data' => Locale_site::where("locale", "=", 'ka')->first()
+    //         ];
+    //     }
+    //     if($request->locale == 'ru') {
+    //         $data = [
+    //             'site_global_data' => Locale_site::where("locale", "=", 'ru')->first()
+    //         ];
+    //     }
+    //     if($request->locale == 'us') {
+    //         $data = [
+    //             'site_global_data' => Locale_site::where("locale", "=", 'us')->first()
+    //         ];
+    //     }
+
+    //     return $data;
+    // }
+
     public function get_site_locale_data(Request $request)
     {
-        $data = [
-            'site_global_data' => Site::first()
-        ];
-        if($request->locale == 'ka') {
-            $data = [
-                'site_global_data' => Locale_site::where("locale", "=", 'ka')->first()
-            ];
+        $site_global_data = Site::first();
+        
+        if($request->locale == 'ka'){
+            return Locale_site::where('id', "=", $site_global_data->ka_site_info)->first();
         }
-        if($request->locale == 'ru') {
-            $data = [
-                'site_global_data' => Locale_site::where("locale", "=", 'ru')->first()
-            ];
+        else if($request->locale == 'ru'){
+            return Locale_site::where('id', "=", $site_global_data->ru_site_info)->first();
         }
-        if($request->locale == 'us') {
-            $data = [
-                'site_global_data' => Locale_site::where("locale", "=", 'us')->first()
-            ];
+        else{
+            return Locale_site::where('id', "=", $site_global_data->us_site_info)->first();
         }
-
-        return $data;
     }
+
+
 
     public function get_site_global_data(){
         return Site::first();

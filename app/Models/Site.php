@@ -62,16 +62,16 @@ class Site extends Model
 
 	public function us_site()
 	{
-		return $this->hasOne(Locale_site::class, 'id');
+		return $this->hasOne(Locale_site::class, 'id', 'us_site_info');
 	}
 
 	public function ka_site()
 	{
-		return $this->hasOne(Locale_site::class, 'id');
+		return $this->hasOne(Locale_site::class, 'id', 'ka_site_info');
 	}
 
 	public function ru_site()
 	{
-		return $this->hasOne(Locale_site::class, 'id');
+		return $this->hasOne(Locale_site::class, 'id', 'ru_site_info');
 	}
 }

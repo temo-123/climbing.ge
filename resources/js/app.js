@@ -151,8 +151,11 @@ const app = new Vue({
     methods: {
         get_site_data() {
             axios
-                .get("../api/siteData")
-                .then((response) => (Vue.prototype.$siteData = response.data));
+            .get("../../../../api/siteData/get_site_locale_data/"+localStorage.getItem('lang'))
+            .then((response) => (
+                Vue.prototype.$siteData = response.data
+            ));
+
         },
         // get_auth_user_data() {
         //     axios
