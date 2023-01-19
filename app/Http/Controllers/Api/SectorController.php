@@ -139,50 +139,143 @@ class SectorController extends Controller
      */
     public function get_sector_and_routes(Request $request)
     {
-        // dd($this->get_sector_data(17));
         $sectors = Sector::where('article_id','=', $request->article_id)->where('published', '=', 1)->get();
-
         $area_info = array();
-        $area_local_images_sectors = array();
-        $images = array();
+        // $test_arr = array();
+
+        $sector_action = 0;
 
         if(count($sectors)){
-            foreach($sectors as $sector){
-                $area_local_image = Sector_local_image_sector::where('sector_id', '=', $sector->id)->first();
-                dd($area_local_image);
-                $area_local_image_id = $area_local_image->image_id;
-                echo($area_local_image_id);
-                $area_local_sector_images = Sector_local_image_sector::where('image_id', strip_tags($area_local_image_id))->get();
-                // dd($area_local_sector_images);
-                if ($area_local_sector_images) {
-                    foreach($area_local_sector_images as $img){
-                        array_push($images, [
-                                'image'=>$img,
-                                'secors'=>$img->sector
-                            ]
-                        );
-                        // dd($img->sector);
+
+            $test_arr = $this->get_area_local_images($sectors);
+
+            if(count($test_arr)){
+                foreach($sectors as $sector){
+                    $sector_action = 0;
+                    for ($i=0; $i < count($test_arr); $i++) { 
+                        $images = $test_arr[$i]['local_images'];
+                            
+                        for ($j=0; $j < count($images); $j++) { 
+                            if($images[$j]->sector_id == $sector->id){
+                                if(count($area_info) > 0){
+                                    // if array is not empty, add new value.
+                                    // dd($images[$j]->sector_id, end($area_info)['local_images'][0]->image_sector->where('sector_id','=', $images[$j]->sector_id)->first()->image_id);
+                                    $last_image = end($area_info)['local_images'][0]->image_sector->where('sector_id','=', $images[$j]->sector_id)->first();
+                                    // dd(optional($last_image)->image_id);
+                                    if(optional($last_image)->image_id == $images[$j] -> image_id){
+                                    // if(end($area_info)['local_images'][0]->image_id == $images[$j] -> image_id){
+                                        // create new image 2D array.
+                                        // dd($images[$j]->image->id);
+                                        // dd(end($area_info[count($area_info) - 1]['local_images'])->id);
+                                        if($images[$j]->image->id != end($area_info[count($area_info) - 1]['local_images'])->id){
+                                            array_push($area_info[count($area_info) - 1]['local_images'], 
+                                                $images[$j]->image
+                                            );
+                                        }
+
+                                        array_push($area_info[count($area_info) - 1]['sectors'], 
+                                            $this->get_sector_data($sector->id)
+                                        );
+                                        $sector_action++;
+                                    }
+                                    else{
+                                        // create new image 1D array.
+                                        array_push($area_info, 
+                                            array(
+                                                "local_images" => [$images[$j]->image],
+                                                "sectors" => [$this->get_sector_data($sector->id)],
+                                            )
+                                        );
+                                        $sector_action++;
+                                    }
+                                }
+                                else{
+                                    // if array is empty, create first value.
+                                    array_push($area_info, 
+                                        array(
+                                            "local_images" => [$images[$j]->image],
+                                            "sectors" => [$this->get_sector_data($sector->id)],
+                                        )
+                                    );
+                                    $sector_action++;
+                                }
+                            }
+                        }
                     }
-                    // dd($images);
-                    array_push($area_info, 
-                        $images
-                    );
+                    
+                    if($sector_action == 0){
+                        array_push($area_info, 
+                            $this->get_sector_data($sector->id)
+                        );
+                    }
                 }
-                else{
+            }
+            else{
+                foreach($sectors as $sector){
                     array_push($area_info, 
                         $this->get_sector_data($sector->id)
                     );
                 }
             }
-            // dd('fff');
-            array_push($area_info, [
-                    'sectors' => $area_local_images_sectors,
-                    'images' => $area_local_images
-                ]
-            );
+
+            // foreach($sectors as $sector){
+            //     array_push($area_info, 
+            //         $this->get_sector_data($sector->id)
+            //     );
+            // }
         }
-        // dd($area_info);
+
+        // dd($test_arr, $area_info);
+
         return $area_info;
+    }
+
+    public function get_area_local_images($sector_model)
+    {
+        $area_local_images = array();
+        $local_images_arr = array();
+
+        if(count($sector_model)){
+            foreach($sector_model as $sector){
+                $area_local_image = Sector_local_image_sector::where('sector_id', '=', $sector->id)->first();
+                if($area_local_image){
+                    array_push($area_local_images, 
+                        $area_local_image
+                    );
+                }
+            }
+            
+            foreach ($area_local_images as $image_sector) {
+                if(count($local_images_arr) > 0){
+                    // if array is not empty, add new value.
+                    if(end($local_images_arr)['local_images'][0]->image_id == $image_sector -> image_id){
+                        // create new image 2D array.
+                        array_push($local_images_arr[count($local_images_arr) - 1]['local_images'], 
+                            $image_sector
+                        );
+                    }
+                    else{
+                        // create new image 1D array.
+                        array_push($local_images_arr, 
+                            array(
+                                "local_images" => [$image_sector],
+                                // "sectors" => [],
+                            )
+                        );
+                    }
+                }
+                else{
+                    // if array is empty, create first value.
+                    array_push($local_images_arr, 
+                        array(
+                            "local_images" => [$image_sector],
+                            // "sectors" => [],
+                        )
+                    );
+                }
+            }
+        }
+        return $local_images_arr;
     }
 
     public function get_sector_data($sector_id)
@@ -208,7 +301,7 @@ class SectorController extends Controller
         }
         else $sport_route_info = array();
 
-        $boulder_routes = $sector->bolder_routes;
+        $boulder_routes = $sector->boulder_routes;
         if ($boulder_routes){
             $boulder_route_info = $boulder_routes;
         }

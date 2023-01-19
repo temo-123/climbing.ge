@@ -11,12 +11,12 @@
         <td :class='"text-center"'>{{table_info.shiping_price}}</td>
         <td>|</td>
         <td>
-            <button class="btn btn-primary" type="submit" @click="open_editing_modal(table_info)">Edit</button>
+            <button class="btn btn-primary" type="submit" @click="open_editing_modal(table_info)"><i class="fa fa-pencil" aria-hidden="true"></i></button>
         </td>
         
         <td>|</td>
         <td>
-            <button type="submit" class="btn btn-danger" @click="del_country(table_info.id)">Delete</button>
+            <button type="submit" class="btn btn-danger" @click="del_country(table_info.id)"><i class="fa fa-trash" aria-hidden="true"></i></button>
         </td>
 
         <stack-modal

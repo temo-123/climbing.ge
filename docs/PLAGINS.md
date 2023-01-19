@@ -32,6 +32,8 @@ For foront use Vue.js(2) templite
                         https://medium.com/dailyjs/vue-acl-with-casl-781a374b987a
                         https://casl.js.org/v6/en/package/casl-vue
 
+    QR-generator    -   https://gera2ld.github.io/qrcanvas-vue/v2/#padding
+
 ## CkEditor4
 
 For text editor use CkEdior4

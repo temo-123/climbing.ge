@@ -14,12 +14,12 @@
         
         <td>|</td>
         <td>
-            <button type="submit" class="btn btn-primary" @click="sale_code_control_modal('edit', table_info.id)">Edit</button>
+            <button type="submit" class="btn btn-primary" @click="sale_code_control_modal('edit', table_info.id)"><i class="fa fa-pencil" aria-hidden="true"></i></button>
         </td>
         
         <td>|</td>
         <td>
-            <button type="submit" class="btn btn-danger" @click="del_sale_code(table_info.id)">Delete</button>
+            <button type="submit" class="btn btn-danger" @click="del_sale_code(table_info.id)"><i class="fa fa-trash" aria-hidden="true"></i></button>
         </td>
 
         <stack-modal

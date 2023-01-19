@@ -84,7 +84,7 @@
 </template>
 
 <script>
-    import routesTab from './RoutesTabComponent'
+    import routesTab from './climbing_routes/SectorAndRoutesTabComponent'
     import commentForm from './CommentFormComponent'
     // import postsList from './PostsListComponent'
     import galleryComponent from './galleries/GalleryComponent'

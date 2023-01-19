@@ -704,7 +704,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
-/* harmony import */ var _RoutesTabComponent__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./RoutesTabComponent */ "./resources/js/components/site/items/RoutesTabComponent.vue");
+/* harmony import */ var _climbing_routes_SectorAndRoutesTabComponent__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./climbing_routes/SectorAndRoutesTabComponent */ "./resources/js/components/site/items/climbing_routes/SectorAndRoutesTabComponent.vue");
 /* harmony import */ var _CommentFormComponent__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./CommentFormComponent */ "./resources/js/components/site/items/CommentFormComponent.vue");
 /* harmony import */ var _galleries_GalleryComponent__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./galleries/GalleryComponent */ "./resources/js/components/site/items/galleries/GalleryComponent.vue");
 /* harmony import */ var _navbars_RightMenuComponent__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./navbars/RightMenuComponent */ "./resources/js/components/site/items/navbars/RightMenuComponent.vue");
@@ -813,7 +813,7 @@ __webpack_require__.r(__webpack_exports__);
     galleryComponent: _galleries_GalleryComponent__WEBPACK_IMPORTED_MODULE_2__["default"],
     articleRightMenu: _navbars_RightMenuComponent__WEBPACK_IMPORTED_MODULE_3__["default"],
     SimilarArticles: _SimilarArticlesComponent__WEBPACK_IMPORTED_MODULE_4__["default"],
-    routesTab: _RoutesTabComponent__WEBPACK_IMPORTED_MODULE_0__["default"],
+    routesTab: _climbing_routes_SectorAndRoutesTabComponent__WEBPACK_IMPORTED_MODULE_0__["default"],
     breadcrumb: _BreadcrumbComponent_vue__WEBPACK_IMPORTED_MODULE_5__["default"],
     routeQuanDiogram: _items_RoutesQuantityComponent_vue__WEBPACK_IMPORTED_MODULE_7__["default"],
     articleTextBlocks: _ArticleTextBlocksComponent__WEBPACK_IMPORTED_MODULE_6__["default"] // postsList
@@ -939,772 +939,6 @@ __webpack_require__.r(__webpack_exports__);
       this.id = id;
       this.get_routes_quantiti();
     }
-  }
-});
-
-/***/ }),
-
-/***/ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/site/items/RoutesTabComponent.vue?vue&type=script&lang=js&":
-/*!************************************************************************************************************************************************************************************************************************************!*\
-  !*** ./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/site/items/RoutesTabComponent.vue?vue&type=script&lang=js& ***!
-  \************************************************************************************************************************************************************************************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
-/* harmony export */ });
-/* harmony import */ var _innologica_vue_stackable_modal__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @innologica/vue-stackable-modal */ "./node_modules/@innologica/vue-stackable-modal/dist/vue-stackable-modal.umd.min.js");
-/* harmony import */ var _innologica_vue_stackable_modal__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_innologica_vue_stackable_modal__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var _ImageOpenComponent_vue__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./ImageOpenComponent.vue */ "./resources/js/components/site/items/ImageOpenComponent.vue");
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-// import VueExpandableImage from 'vue-expandable-image' //https://github.com/TahaSh/vue-expandable-image
-// import { SlickList, SlickItem } from 'vue-slicksort'; //https://github.com/Jexordexan/vue-slicksort
- //https://innologica.github.io/vue-stackable-modal/#sample-css
-// import StackModal from '../../../src/components/StackModal'
-// import  routeQuanDiogram  from './RoutesQuantityComponent.vue'
-
-
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
-  components: {
-    // SlickItem,
-    // SlickList,
-    StackModal: (_innologica_vue_stackable_modal__WEBPACK_IMPORTED_MODULE_0___default()),
-    // routeQuanDiogram,
-    // VueExpandableImage,
-    openImg: _ImageOpenComponent_vue__WEBPACK_IMPORTED_MODULE_1__["default"]
-  },
-  props: ["article_id"],
-  data: function data() {
-    return {
-      climbing_area: [],
-      spot_images: [],
-      show_route_modal: false,
-      show_mtp_modal: false,
-      modalClass: [],
-      route_detals: [],
-      mtp_detals: [],
-      id: this.article_id
-    };
-  },
-  mounted: function mounted() {
-    this.get_outdoor_routes(); // this.get_spot_rocks_images();
-  },
-  watch: {
-    $route: function $route(to, from) {
-      this.get_outdoor_routes();
-    }
-  },
-  methods: {
-    update: function update(id) {
-      this.id = id;
-      this.get_outdoor_routes();
-    },
-    lead_grade_chart: function lead_grade_chart(grade_fr) {
-      var grad = "";
-
-      if (localStorage.getItem("grade") == "yds") {
-        if (grade_fr == "4") grad = "5.6";else if (grade_fr == "5a" || grade_fr == "5a+") grad = "5.7";else if (grade_fr == "5b" || grade_fr == "5b+") grad = "5.8";else if (grade_fr == "5c" || grade_fr == "5c+") grad = "5.9";else if (grade_fr == "6a") grad = "5.10a";else if (grade_fr == "6a+") grad = "5.10b";else if (grade_fr == "6b") grad = "5.10c";else if (grade_fr == "6b+") grad = "5.10d";else if (grade_fr == "6c") grad = "5.11a/5.11b";else if (grade_fr == "6c+") grad = "5.11c";else if (grade_fr == "7a") grad = "5.11d";else if (grade_fr == "7a+") grad = "5.12a";else if (grade_fr == "7b") grad = "5.12b";else if (grade_fr == "7b+") grad = "5.12c";else if (grade_fr == "7c") grad = "5.12d";else if (grade_fr == "7c+") grad = "5.13a";else if (grade_fr == "8a") grad = "5.13b";else if (grade_fr == "8a+") grad = "5.13c";else if (grade_fr == "8b") grad = "5.13d";else if (grade_fr == "8b+") grad = "5.14a";else if (grade_fr == "8c") grad = "5.14b";else if (grade_fr == "8c+") grad = "5.14c";else if (grade_fr == "9a") grad = "5.14d";else if (grade_fr == "9a+") grad = "5.15a";else if (grade_fr == "9b") grad = "5.15b";else if (grade_fr == "9b+") grad = "5.15c";else if (grade_fr == "9c") grad = "5.15d";else if (grade_fr == "9c+") grad = "5.16a";else if (grade_fr == "Project") grad = "Project";else grad = "?";
-      } else if (localStorage.getItem("grade") == "UIAA") {
-        // console.log(localStorage.getItem("grade"))
-        if (grade_fr == "4") grad = "IV";else if (grade_fr == "5a" || grade_fr == "5a+") grad = "V+";else if (grade_fr == "5b" || grade_fr == "5b+") grad = "VI-";else if (grade_fr == "5c" || grade_fr == "5c+") grad = "VI";else if (grade_fr == "6a") grad = "VI+";else if (grade_fr == "6a+") grad = "VII-";else if (grade_fr == "6b") grad = "VII";else if (grade_fr == "6b+") grad = "VII+";else if (grade_fr == "6c") grad = "VII+/VIII-";else if (grade_fr == "6c+") grad = "VIII-";else if (grade_fr == "7a") grad = "VIII";else if (grade_fr == "7a+") grad = "VIII+";else if (grade_fr == "7b") grad = "VIII+/IX-";else if (grade_fr == "7b+") grad = "IX-";else if (grade_fr == "7c") grad = "IX";else if (grade_fr == "7c+") grad = "IX+";else if (grade_fr == "8a") grad = "IX+/X-";else if (grade_fr == "8a+") grad = "X-";else if (grade_fr == "8b") grad = "X";else if (grade_fr == "8b+") grad = "X+";else if (grade_fr == "8c") grad = "XI-";else if (grade_fr == "8c+") grad = "XI";else if (grade_fr == "9a") grad = "XI+";else if (grade_fr == "9a+") grad = "XII-";else if (grade_fr == "9b") grad = "XII";else if (grade_fr == "9b+") grad = "XII+";else if (grade_fr == "9c") grad = "XIII";else if (grade_fr == "Project") grad = "Project";else grad = "?";
-      } else {
-        grad = "Error";
-      }
-
-      return grad;
-    },
-    boulder_grade_chart: function boulder_grade_chart(grade_fr) {
-      var grade = "";
-
-      if (localStorage.getItem("grade") == "yds") {
-        if (grade_fr == "VB") grade = "4-";else if (grade_fr == "V0-") grade = "4";else if (grade_fr == "V0") grade = "4+";else if (grade_fr == "V0+") grade = "5a";else if (grade_fr == "V1") grade = "5b";else if (grade_fr == "V2") grade = "5c";else if (grade_fr == "V3") grade = "6a";else if (grade_fr == "V4") grade = "6b";else if (grade_fr == "V5") grade = "6c+";else if (grade_fr == "V6") grade = "7a";else if (grade_fr == "V7") grade = "7a+";else if (grade_fr == "V8") grade = "7b";else if (grade_fr == "V9") grade = "7c";else if (grade_fr == "V10") grade = "7c+";else if (grade_fr == "V11") grade = "8a";else if (grade_fr == "V12") grade = "8a+";else if (grade_fr == "V13") grade = "8b";else if (grade_fr == "V14") grade = "8b+";else if (grade_fr == "V15") grade = "8c";else if (grade_fr == "V16") grade = "8c+";else if (grade_fr == "V17") grade = "9a";else if (grade_fr == "Project") grad = "Project";else grade = "?";
-      } else if (localStorage.getItem("grade") == "UIAA") {
-        if (grade_fr == "VB") grade = "4-";else if (grade_fr == "V0-") grade = "VI+";else if (grade_fr == "V0") grade = "VII-";else if (grade_fr == "V0+") grade = "VII";else if (grade_fr == "V1") grade = "VII+";else if (grade_fr == "V2") grade = "VII+/VII-";else if (grade_fr == "V3") grade = "VIII-";else if (grade_fr == "V4") grade = "VIII";else if (grade_fr == "V5") grade = "VIII/VIII+";else if (grade_fr == "V6") grade = "VIII+";else if (grade_fr == "V7") grade = "IX-";else if (grade_fr == "V8") grade = "IX";else if (grade_fr == "V9") grade = "IX/IX+";else if (grade_fr == "V10") grade = "IX+";else if (grade_fr == "V11") grade = "X-";else if (grade_fr == "V12") grade = "X";else if (grade_fr == "V13") grade = "X+";else if (grade_fr == "V14") grade = "XI-";else if (grade_fr == "V15") grade = "XI";else if (grade_fr == "V16") grade = "XI+";else if (grade_fr == "V17") grade = "XII-";else if (grade_fr == "Project") grad = "Project";else grade = "?";
-      } else {
-        grad = "Error";
-      }
-
-      return grade;
-    },
-    get_spot_rocks_images: function get_spot_rocks_images() {
-      var _this = this;
-
-      this.spot_images = [];
-      axios.get("../../api/get_spot_rocks_images/" + this.id).then(function (response) {
-        _this.spot_images = response.data;
-      })["catch"](function (error) {});
-    },
-    get_outdoor_routes: function get_outdoor_routes() {
-      var _this2 = this;
-
-      this.climbing_area = [];
-      axios.get("../../api/sector/get_sector_and_routes/" + this.id).then(function (response) {
-        _this2.climbing_area = response.data;
-
-        _this2.get_spot_rocks_images();
-      })["catch"](function (error) {});
-    },
-    show_route_model: function show_route_model(id) {
-      var _this3 = this;
-
-      this.show_route_modal = true;
-      this.route_detals = [];
-      axios.get("../../api/route/" + id).then(function (response) {
-        _this3.route_detals = response.data; // this.route_post_list = true;
-      })["catch"](function (error) {});
-    },
-    // get_route_posts(route_id) {
-    //     this.route_posts = [];
-    //     axios
-    //         .get("../api/posts/get_route_posts/" + route_id)
-    //         .then((response) => {
-    //             this.route_posts = response.data;
-    //         })
-    //         .catch((error) => console.log(error));
-    // },
-    show_mtp_madel: function show_mtp_madel(id) {
-      var _this4 = this;
-
-      this.show_mtp_modal = true;
-      this.mtp_detals = [];
-      axios.get("../../api/MTP/" + id).then(function (response) {
-        _this4.mtp_detals = response.data; // this.mtp_post_list = true;
-      })["catch"](function (error) {});
-    } // get_mtp_posts(mtp_id) {
-    //     this.mtp_posts = [];
-    //     axios
-    //         .get("../api/posts/get_mtp_posts/" + mtp_id)
-    //         .then((response) => {
-    //             this.mtp_posts = response.data;
-    //         })
-    //         .catch((error) => console.log(error));
-    // },
-
   }
 });
 
@@ -1887,6 +1121,1066 @@ __webpack_require__.r(__webpack_exports__);
   mounted: function mounted() {// console.log( 'article.area[0].url_title' );
     // console.log( article );
     // console.log( 'article.area[0].url_title' );
+  }
+});
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/site/items/climbing_routes/SectorAndRoutesTabComponent.vue?vue&type=script&lang=js&":
+/*!*************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/site/items/climbing_routes/SectorAndRoutesTabComponent.vue?vue&type=script&lang=js& ***!
+  \*************************************************************************************************************************************************************************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _innologica_vue_stackable_modal__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @innologica/vue-stackable-modal */ "./node_modules/@innologica/vue-stackable-modal/dist/vue-stackable-modal.umd.min.js");
+/* harmony import */ var _innologica_vue_stackable_modal__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_innologica_vue_stackable_modal__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _items_SectorComponent_vue__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./items/SectorComponent.vue */ "./resources/js/components/site/items/climbing_routes/items/SectorComponent.vue");
+/* harmony import */ var _items_SectorsAndAreaLocalImageComponrnt_vue__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./items/SectorsAndAreaLocalImageComponrnt.vue */ "./resources/js/components/site/items/climbing_routes/items/SectorsAndAreaLocalImageComponrnt.vue");
+/* harmony import */ var _ImageOpenComponent_vue__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../ImageOpenComponent.vue */ "./resources/js/components/site/items/ImageOpenComponent.vue");
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+ //https://innologica.github.io/vue-stackable-modal/#sample-css
+
+
+
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
+  components: {
+    StackModal: (_innologica_vue_stackable_modal__WEBPACK_IMPORTED_MODULE_0___default()),
+    sector: _items_SectorComponent_vue__WEBPACK_IMPORTED_MODULE_1__["default"],
+    sector_and_local_area_images: _items_SectorsAndAreaLocalImageComponrnt_vue__WEBPACK_IMPORTED_MODULE_2__["default"],
+    openImg: _ImageOpenComponent_vue__WEBPACK_IMPORTED_MODULE_3__["default"]
+  },
+  props: ["article_id"],
+  data: function data() {
+    return {
+      climbing_area: [],
+      spot_images: [],
+      show_route_modal: false,
+      show_mtp_modal: false,
+      modalClass: [],
+      route_detals: [],
+      mtp_detals: [],
+      id: this.article_id
+    };
+  },
+  mounted: function mounted() {
+    this.get_outdoor_routes();
+    this.get_spot_rocks_images(); // this.get_spot_rocks_images();
+  },
+  watch: {
+    $route: function $route(to, from) {
+      this.get_outdoor_routes();
+      this.get_spot_rocks_images();
+    }
+  },
+  methods: {
+    update: function update(id) {
+      this.id = id;
+      this.get_outdoor_routes();
+      this.get_spot_rocks_images();
+    },
+    lead_grade_chart: function lead_grade_chart(grade_fr) {
+      var grad = "";
+
+      if (localStorage.getItem("grade") == "yds") {
+        if (grade_fr == "4") grad = "5.6";else if (grade_fr == "5a" || grade_fr == "5a+") grad = "5.7";else if (grade_fr == "5b" || grade_fr == "5b+") grad = "5.8";else if (grade_fr == "5c" || grade_fr == "5c+") grad = "5.9";else if (grade_fr == "6a") grad = "5.10a";else if (grade_fr == "6a+") grad = "5.10b";else if (grade_fr == "6b") grad = "5.10c";else if (grade_fr == "6b+") grad = "5.10d";else if (grade_fr == "6c") grad = "5.11a/5.11b";else if (grade_fr == "6c+") grad = "5.11c";else if (grade_fr == "7a") grad = "5.11d";else if (grade_fr == "7a+") grad = "5.12a";else if (grade_fr == "7b") grad = "5.12b";else if (grade_fr == "7b+") grad = "5.12c";else if (grade_fr == "7c") grad = "5.12d";else if (grade_fr == "7c+") grad = "5.13a";else if (grade_fr == "8a") grad = "5.13b";else if (grade_fr == "8a+") grad = "5.13c";else if (grade_fr == "8b") grad = "5.13d";else if (grade_fr == "8b+") grad = "5.14a";else if (grade_fr == "8c") grad = "5.14b";else if (grade_fr == "8c+") grad = "5.14c";else if (grade_fr == "9a") grad = "5.14d";else if (grade_fr == "9a+") grad = "5.15a";else if (grade_fr == "9b") grad = "5.15b";else if (grade_fr == "9b+") grad = "5.15c";else if (grade_fr == "9c") grad = "5.15d";else if (grade_fr == "9c+") grad = "5.16a";else if (grade_fr == "Project") grad = "Project";else grad = "?";
+      } else if (localStorage.getItem("grade") == "UIAA") {
+        // console.log(localStorage.getItem("grade"))
+        if (grade_fr == "4") grad = "IV";else if (grade_fr == "5a" || grade_fr == "5a+") grad = "V+";else if (grade_fr == "5b" || grade_fr == "5b+") grad = "VI-";else if (grade_fr == "5c" || grade_fr == "5c+") grad = "VI";else if (grade_fr == "6a") grad = "VI+";else if (grade_fr == "6a+") grad = "VII-";else if (grade_fr == "6b") grad = "VII";else if (grade_fr == "6b+") grad = "VII+";else if (grade_fr == "6c") grad = "VII+/VIII-";else if (grade_fr == "6c+") grad = "VIII-";else if (grade_fr == "7a") grad = "VIII";else if (grade_fr == "7a+") grad = "VIII+";else if (grade_fr == "7b") grad = "VIII+/IX-";else if (grade_fr == "7b+") grad = "IX-";else if (grade_fr == "7c") grad = "IX";else if (grade_fr == "7c+") grad = "IX+";else if (grade_fr == "8a") grad = "IX+/X-";else if (grade_fr == "8a+") grad = "X-";else if (grade_fr == "8b") grad = "X";else if (grade_fr == "8b+") grad = "X+";else if (grade_fr == "8c") grad = "XI-";else if (grade_fr == "8c+") grad = "XI";else if (grade_fr == "9a") grad = "XI+";else if (grade_fr == "9a+") grad = "XII-";else if (grade_fr == "9b") grad = "XII";else if (grade_fr == "9b+") grad = "XII+";else if (grade_fr == "9c") grad = "XIII";else if (grade_fr == "Project") grad = "Project";else grad = "?";
+      } else {
+        grad = "Error";
+      }
+
+      return grad;
+    },
+    boulder_grade_chart: function boulder_grade_chart(grade_fr) {
+      var grade = "";
+
+      if (localStorage.getItem("grade") == "yds") {
+        if (grade_fr == "VB") grade = "4-";else if (grade_fr == "V0-") grade = "4";else if (grade_fr == "V0") grade = "4+";else if (grade_fr == "V0+") grade = "5a";else if (grade_fr == "V1") grade = "5b";else if (grade_fr == "V2") grade = "5c";else if (grade_fr == "V3") grade = "6a";else if (grade_fr == "V4") grade = "6b";else if (grade_fr == "V5") grade = "6c+";else if (grade_fr == "V6") grade = "7a";else if (grade_fr == "V7") grade = "7a+";else if (grade_fr == "V8") grade = "7b";else if (grade_fr == "V9") grade = "7c";else if (grade_fr == "V10") grade = "7c+";else if (grade_fr == "V11") grade = "8a";else if (grade_fr == "V12") grade = "8a+";else if (grade_fr == "V13") grade = "8b";else if (grade_fr == "V14") grade = "8b+";else if (grade_fr == "V15") grade = "8c";else if (grade_fr == "V16") grade = "8c+";else if (grade_fr == "V17") grade = "9a";else if (grade_fr == "Project") grad = "Project";else grade = "?";
+      } else if (localStorage.getItem("grade") == "UIAA") {
+        if (grade_fr == "VB") grade = "4-";else if (grade_fr == "V0-") grade = "VI+";else if (grade_fr == "V0") grade = "VII-";else if (grade_fr == "V0+") grade = "VII";else if (grade_fr == "V1") grade = "VII+";else if (grade_fr == "V2") grade = "VII+/VII-";else if (grade_fr == "V3") grade = "VIII-";else if (grade_fr == "V4") grade = "VIII";else if (grade_fr == "V5") grade = "VIII/VIII+";else if (grade_fr == "V6") grade = "VIII+";else if (grade_fr == "V7") grade = "IX-";else if (grade_fr == "V8") grade = "IX";else if (grade_fr == "V9") grade = "IX/IX+";else if (grade_fr == "V10") grade = "IX+";else if (grade_fr == "V11") grade = "X-";else if (grade_fr == "V12") grade = "X";else if (grade_fr == "V13") grade = "X+";else if (grade_fr == "V14") grade = "XI-";else if (grade_fr == "V15") grade = "XI";else if (grade_fr == "V16") grade = "XI+";else if (grade_fr == "V17") grade = "XII-";else if (grade_fr == "Project") grad = "Project";else grade = "?";
+      } else {
+        grad = "Error";
+      }
+
+      return grade;
+    },
+    get_spot_rocks_images: function get_spot_rocks_images() {
+      var _this = this;
+
+      this.spot_images = [];
+      axios.get("../../api/get_spot_rocks_images/" + this.id).then(function (response) {
+        _this.spot_images = response.data;
+      })["catch"](function (error) {});
+    },
+    get_outdoor_routes: function get_outdoor_routes() {
+      var _this2 = this;
+
+      this.climbing_area = [];
+      axios.get("../../api/sector/get_sector_and_routes/" + this.id).then(function (response) {
+        _this2.climbing_area = response.data;
+      })["catch"](function (error) {});
+    },
+    show_route_model: function show_route_model(id) {
+      var _this3 = this;
+
+      this.show_route_modal = true;
+      this.route_detals = [];
+      axios.get("../../api/route/" + id).then(function (response) {
+        _this3.route_detals = response.data; // this.route_post_list = true;
+      })["catch"](function (error) {});
+    },
+    // get_route_posts(route_id) {
+    //     this.route_posts = [];
+    //     axios
+    //         .get("../api/posts/get_route_posts/" + route_id)
+    //         .then((response) => {
+    //             this.route_posts = response.data;
+    //         })
+    //         .catch((error) => console.log(error));
+    // },
+    show_mtp_madel: function show_mtp_madel(id) {
+      var _this4 = this;
+
+      this.show_mtp_modal = true;
+      this.mtp_detals = [];
+      axios.get("../../api/MTP/" + id).then(function (response) {
+        _this4.mtp_detals = response.data; // this.mtp_post_list = true;
+      })["catch"](function (error) {});
+    } // get_mtp_posts(mtp_id) {
+    //     this.mtp_posts = [];
+    //     axios
+    //         .get("../api/posts/get_mtp_posts/" + mtp_id)
+    //         .then((response) => {
+    //             this.mtp_posts = response.data;
+    //         })
+    //         .catch((error) => console.log(error));
+    // },
+
+  }
+});
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/site/items/climbing_routes/items/SectorComponent.vue?vue&type=script&lang=js&":
+/*!*******************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/site/items/climbing_routes/items/SectorComponent.vue?vue&type=script&lang=js& ***!
+  \*******************************************************************************************************************************************************************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _modals_RouteModalComponent_vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./modals/RouteModalComponent.vue */ "./resources/js/components/site/items/climbing_routes/items/modals/RouteModalComponent.vue");
+/* harmony import */ var _modals_MTPModalComponent_vue__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./modals/MTPModalComponent.vue */ "./resources/js/components/site/items/climbing_routes/items/modals/MTPModalComponent.vue");
+/* harmony import */ var _ImageOpenComponent_vue__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../ImageOpenComponent.vue */ "./resources/js/components/site/items/ImageOpenComponent.vue");
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
+  components: {
+    openImg: _ImageOpenComponent_vue__WEBPACK_IMPORTED_MODULE_2__["default"],
+    route_modal: _modals_RouteModalComponent_vue__WEBPACK_IMPORTED_MODULE_0__["default"],
+    mtp_modal: _modals_MTPModalComponent_vue__WEBPACK_IMPORTED_MODULE_1__["default"]
+  },
+  props: ["sector"],
+  data: function data() {
+    return {// climbing_sector: [],
+    };
+  },
+  mounted: function mounted() {// this.get_spot_rocks_images();
+  },
+  methods: {
+    lead_grade_chart: function lead_grade_chart(grade_fr) {
+      var grad = "";
+
+      if (localStorage.getItem("grade") == "yds") {
+        if (grade_fr == "4") grad = "5.6";else if (grade_fr == "5a" || grade_fr == "5a+") grad = "5.7";else if (grade_fr == "5b" || grade_fr == "5b+") grad = "5.8";else if (grade_fr == "5c" || grade_fr == "5c+") grad = "5.9";else if (grade_fr == "6a") grad = "5.10a";else if (grade_fr == "6a+") grad = "5.10b";else if (grade_fr == "6b") grad = "5.10c";else if (grade_fr == "6b+") grad = "5.10d";else if (grade_fr == "6c") grad = "5.11a/5.11b";else if (grade_fr == "6c+") grad = "5.11c";else if (grade_fr == "7a") grad = "5.11d";else if (grade_fr == "7a+") grad = "5.12a";else if (grade_fr == "7b") grad = "5.12b";else if (grade_fr == "7b+") grad = "5.12c";else if (grade_fr == "7c") grad = "5.12d";else if (grade_fr == "7c+") grad = "5.13a";else if (grade_fr == "8a") grad = "5.13b";else if (grade_fr == "8a+") grad = "5.13c";else if (grade_fr == "8b") grad = "5.13d";else if (grade_fr == "8b+") grad = "5.14a";else if (grade_fr == "8c") grad = "5.14b";else if (grade_fr == "8c+") grad = "5.14c";else if (grade_fr == "9a") grad = "5.14d";else if (grade_fr == "9a+") grad = "5.15a";else if (grade_fr == "9b") grad = "5.15b";else if (grade_fr == "9b+") grad = "5.15c";else if (grade_fr == "9c") grad = "5.15d";else if (grade_fr == "9c+") grad = "5.16a";else if (grade_fr == "Project") grad = "Project";else grad = "?";
+      } else if (localStorage.getItem("grade") == "UIAA") {
+        // console.log(localStorage.getItem("grade"))
+        if (grade_fr == "4") grad = "IV";else if (grade_fr == "5a" || grade_fr == "5a+") grad = "V+";else if (grade_fr == "5b" || grade_fr == "5b+") grad = "VI-";else if (grade_fr == "5c" || grade_fr == "5c+") grad = "VI";else if (grade_fr == "6a") grad = "VI+";else if (grade_fr == "6a+") grad = "VII-";else if (grade_fr == "6b") grad = "VII";else if (grade_fr == "6b+") grad = "VII+";else if (grade_fr == "6c") grad = "VII+/VIII-";else if (grade_fr == "6c+") grad = "VIII-";else if (grade_fr == "7a") grad = "VIII";else if (grade_fr == "7a+") grad = "VIII+";else if (grade_fr == "7b") grad = "VIII+/IX-";else if (grade_fr == "7b+") grad = "IX-";else if (grade_fr == "7c") grad = "IX";else if (grade_fr == "7c+") grad = "IX+";else if (grade_fr == "8a") grad = "IX+/X-";else if (grade_fr == "8a+") grad = "X-";else if (grade_fr == "8b") grad = "X";else if (grade_fr == "8b+") grad = "X+";else if (grade_fr == "8c") grad = "XI-";else if (grade_fr == "8c+") grad = "XI";else if (grade_fr == "9a") grad = "XI+";else if (grade_fr == "9a+") grad = "XII-";else if (grade_fr == "9b") grad = "XII";else if (grade_fr == "9b+") grad = "XII+";else if (grade_fr == "9c") grad = "XIII";else if (grade_fr == "Project") grad = "Project";else grad = "?";
+      } else {
+        grad = "Error";
+      }
+
+      return grad;
+    },
+    boulder_grade_chart: function boulder_grade_chart(grade_fr) {
+      var grade = "";
+
+      if (localStorage.getItem("grade") == "yds") {
+        if (grade_fr == "VB") grade = "4-";else if (grade_fr == "V0-") grade = "4";else if (grade_fr == "V0") grade = "4+";else if (grade_fr == "V0+") grade = "5a";else if (grade_fr == "V1") grade = "5b";else if (grade_fr == "V2") grade = "5c";else if (grade_fr == "V3") grade = "6a";else if (grade_fr == "V4") grade = "6b";else if (grade_fr == "V5") grade = "6c+";else if (grade_fr == "V6") grade = "7a";else if (grade_fr == "V7") grade = "7a+";else if (grade_fr == "V8") grade = "7b";else if (grade_fr == "V9") grade = "7c";else if (grade_fr == "V10") grade = "7c+";else if (grade_fr == "V11") grade = "8a";else if (grade_fr == "V12") grade = "8a+";else if (grade_fr == "V13") grade = "8b";else if (grade_fr == "V14") grade = "8b+";else if (grade_fr == "V15") grade = "8c";else if (grade_fr == "V16") grade = "8c+";else if (grade_fr == "V17") grade = "9a";else if (grade_fr == "Project") grad = "Project";else grade = "?";
+      } else if (localStorage.getItem("grade") == "UIAA") {
+        if (grade_fr == "VB") grade = "4-";else if (grade_fr == "V0-") grade = "VI+";else if (grade_fr == "V0") grade = "VII-";else if (grade_fr == "V0+") grade = "VII";else if (grade_fr == "V1") grade = "VII+";else if (grade_fr == "V2") grade = "VII+/VII-";else if (grade_fr == "V3") grade = "VIII-";else if (grade_fr == "V4") grade = "VIII";else if (grade_fr == "V5") grade = "VIII/VIII+";else if (grade_fr == "V6") grade = "VIII+";else if (grade_fr == "V7") grade = "IX-";else if (grade_fr == "V8") grade = "IX";else if (grade_fr == "V9") grade = "IX/IX+";else if (grade_fr == "V10") grade = "IX+";else if (grade_fr == "V11") grade = "X-";else if (grade_fr == "V12") grade = "X";else if (grade_fr == "V13") grade = "X+";else if (grade_fr == "V14") grade = "XI-";else if (grade_fr == "V15") grade = "XI";else if (grade_fr == "V16") grade = "XI+";else if (grade_fr == "V17") grade = "XII-";else if (grade_fr == "Project") grad = "Project";else grade = "?";
+      } else {
+        grad = "Error";
+      }
+
+      return grade;
+    },
+    show_route_modal: function show_route_modal(route_id) {
+      this.$refs.open_route_modal.show_route_modal(route_id); // console.log("🚀 ~ file: SectorComponent.vue:456 ~ show_route_model ~ this.$refs.route_modal", this.$refs.open_route_modal.show_route_modal)
+    },
+    show_mtp_madel: function show_mtp_madel(mtp_id) {
+      this.$refs.open_mtp_modal.show_mtp_modal(mtp_id);
+    }
+  }
+});
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/site/items/climbing_routes/items/SectorsAndAreaLocalImageComponrnt.vue?vue&type=script&lang=js&":
+/*!*************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/site/items/climbing_routes/items/SectorsAndAreaLocalImageComponrnt.vue?vue&type=script&lang=js& ***!
+  \*************************************************************************************************************************************************************************************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _modals_RouteModalComponent_vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./modals/RouteModalComponent.vue */ "./resources/js/components/site/items/climbing_routes/items/modals/RouteModalComponent.vue");
+/* harmony import */ var _modals_MTPModalComponent_vue__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./modals/MTPModalComponent.vue */ "./resources/js/components/site/items/climbing_routes/items/modals/MTPModalComponent.vue");
+/* harmony import */ var _ImageOpenComponent_vue__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../ImageOpenComponent.vue */ "./resources/js/components/site/items/ImageOpenComponent.vue");
+/* harmony import */ var _SectorComponent_vue__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./SectorComponent.vue */ "./resources/js/components/site/items/climbing_routes/items/SectorComponent.vue");
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+
+
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
+  components: {
+    openImg: _ImageOpenComponent_vue__WEBPACK_IMPORTED_MODULE_2__["default"],
+    route_modal: _modals_RouteModalComponent_vue__WEBPACK_IMPORTED_MODULE_0__["default"],
+    mtp_modal: _modals_MTPModalComponent_vue__WEBPACK_IMPORTED_MODULE_1__["default"],
+    sector: _SectorComponent_vue__WEBPACK_IMPORTED_MODULE_3__["default"]
+  },
+  props: ["sectors_and_images"],
+  data: function data() {
+    return {// climbing_sector: [],
+    };
+  },
+  mounted: function mounted() {// this.get_spot_rocks_images();
+  },
+  methods: {// show_route_modal(route_id) {
+    //     this.$refs.open_route_modal.show_route_modal(route_id)
+    //     // console.log("🚀 ~ file: SectorComponent.vue:456 ~ show_route_model ~ this.$refs.route_modal", this.$refs.open_route_modal.show_route_modal)
+    // },
+    // show_mtp_madel(mtp_id) {
+    //     this.$refs.open_mtp_modal.show_mtp_modal(mtp_id)
+    // },
+  }
+});
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/site/items/climbing_routes/items/modals/MTPModalComponent.vue?vue&type=script&lang=js&":
+/*!****************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/site/items/climbing_routes/items/modals/MTPModalComponent.vue?vue&type=script&lang=js& ***!
+  \****************************************************************************************************************************************************************************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _innologica_vue_stackable_modal__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @innologica/vue-stackable-modal */ "./node_modules/@innologica/vue-stackable-modal/dist/vue-stackable-modal.umd.min.js");
+/* harmony import */ var _innologica_vue_stackable_modal__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_innologica_vue_stackable_modal__WEBPACK_IMPORTED_MODULE_0__);
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+ //https://innologica.github.io/vue-stackable-modal/#sample-css
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
+  components: {
+    StackModal: (_innologica_vue_stackable_modal__WEBPACK_IMPORTED_MODULE_0___default()) // route_modal,
+    // mtp_model,
+
+  },
+  props: [// "sector",
+  ],
+  data: function data() {
+    return {
+      // climbing_sector: [],
+      // spot_images: [],
+      // show_route_modal: false,
+      is_show_mtp_modal: false,
+      // modalClass: [],
+      // route_detals: [],
+      mtp_detals: [] // id: this.article_id
+
+    };
+  },
+  mounted: function mounted() {// this.get_spot_rocks_images();
+  },
+  methods: {
+    lead_grade_chart: function lead_grade_chart(grade_fr) {
+      var grad = "";
+
+      if (localStorage.getItem("grade") == "yds") {
+        if (grade_fr == "4") grad = "5.6";else if (grade_fr == "5a" || grade_fr == "5a+") grad = "5.7";else if (grade_fr == "5b" || grade_fr == "5b+") grad = "5.8";else if (grade_fr == "5c" || grade_fr == "5c+") grad = "5.9";else if (grade_fr == "6a") grad = "5.10a";else if (grade_fr == "6a+") grad = "5.10b";else if (grade_fr == "6b") grad = "5.10c";else if (grade_fr == "6b+") grad = "5.10d";else if (grade_fr == "6c") grad = "5.11a/5.11b";else if (grade_fr == "6c+") grad = "5.11c";else if (grade_fr == "7a") grad = "5.11d";else if (grade_fr == "7a+") grad = "5.12a";else if (grade_fr == "7b") grad = "5.12b";else if (grade_fr == "7b+") grad = "5.12c";else if (grade_fr == "7c") grad = "5.12d";else if (grade_fr == "7c+") grad = "5.13a";else if (grade_fr == "8a") grad = "5.13b";else if (grade_fr == "8a+") grad = "5.13c";else if (grade_fr == "8b") grad = "5.13d";else if (grade_fr == "8b+") grad = "5.14a";else if (grade_fr == "8c") grad = "5.14b";else if (grade_fr == "8c+") grad = "5.14c";else if (grade_fr == "9a") grad = "5.14d";else if (grade_fr == "9a+") grad = "5.15a";else if (grade_fr == "9b") grad = "5.15b";else if (grade_fr == "9b+") grad = "5.15c";else if (grade_fr == "9c") grad = "5.15d";else if (grade_fr == "9c+") grad = "5.16a";else if (grade_fr == "Project") grad = "Project";else grad = "?";
+      } else if (localStorage.getItem("grade") == "UIAA") {
+        // console.log(localStorage.getItem("grade"))
+        if (grade_fr == "4") grad = "IV";else if (grade_fr == "5a" || grade_fr == "5a+") grad = "V+";else if (grade_fr == "5b" || grade_fr == "5b+") grad = "VI-";else if (grade_fr == "5c" || grade_fr == "5c+") grad = "VI";else if (grade_fr == "6a") grad = "VI+";else if (grade_fr == "6a+") grad = "VII-";else if (grade_fr == "6b") grad = "VII";else if (grade_fr == "6b+") grad = "VII+";else if (grade_fr == "6c") grad = "VII+/VIII-";else if (grade_fr == "6c+") grad = "VIII-";else if (grade_fr == "7a") grad = "VIII";else if (grade_fr == "7a+") grad = "VIII+";else if (grade_fr == "7b") grad = "VIII+/IX-";else if (grade_fr == "7b+") grad = "IX-";else if (grade_fr == "7c") grad = "IX";else if (grade_fr == "7c+") grad = "IX+";else if (grade_fr == "8a") grad = "IX+/X-";else if (grade_fr == "8a+") grad = "X-";else if (grade_fr == "8b") grad = "X";else if (grade_fr == "8b+") grad = "X+";else if (grade_fr == "8c") grad = "XI-";else if (grade_fr == "8c+") grad = "XI";else if (grade_fr == "9a") grad = "XI+";else if (grade_fr == "9a+") grad = "XII-";else if (grade_fr == "9b") grad = "XII";else if (grade_fr == "9b+") grad = "XII+";else if (grade_fr == "9c") grad = "XIII";else if (grade_fr == "Project") grad = "Project";else grad = "?";
+      } else {
+        grad = "Error";
+      }
+
+      return grad;
+    },
+    show_mtp_modal: function show_mtp_modal(id) {
+      var _this = this;
+
+      this.is_show_mtp_modal = true;
+      this.mtp_detals = [];
+      axios.get("../../api/mtp/get_mtp_for_modal/" + id).then(function (response) {
+        _this.mtp_detals = response.data; // this.mtp_post_list = true;
+      })["catch"](function (error) {});
+    }
+  }
+});
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/site/items/climbing_routes/items/modals/RouteModalComponent.vue?vue&type=script&lang=js&":
+/*!******************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/site/items/climbing_routes/items/modals/RouteModalComponent.vue?vue&type=script&lang=js& ***!
+  \******************************************************************************************************************************************************************************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _innologica_vue_stackable_modal__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @innologica/vue-stackable-modal */ "./node_modules/@innologica/vue-stackable-modal/dist/vue-stackable-modal.umd.min.js");
+/* harmony import */ var _innologica_vue_stackable_modal__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_innologica_vue_stackable_modal__WEBPACK_IMPORTED_MODULE_0__);
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+ //https://innologica.github.io/vue-stackable-modal/#sample-css
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
+  components: {
+    StackModal: (_innologica_vue_stackable_modal__WEBPACK_IMPORTED_MODULE_0___default()) // openImg,
+    // route_modal,
+    // mtp_model,
+
+  },
+  props: [// "sector",
+  ],
+  data: function data() {
+    return {
+      // climbing_sector: [],
+      // spot_images: [],
+      is_show_route_modal: false,
+      // show_mtp_modal: false,
+      // modalClass: [],
+      route_detals: [] // mtp_detals: [],
+      // id: this.article_id
+
+    };
+  },
+  mounted: function mounted() {// this.get_spot_rocks_images();
+  },
+  methods: {
+    show_route_modal: function show_route_modal(id) {
+      var _this = this;
+
+      this.is_show_route_modal = true;
+      this.route_detals = [];
+      axios.get("../../api/route/get_route_for_modal/" + id).then(function (response) {
+        _this.route_detals = response.data; // this.route_post_list = true;
+      })["catch"](function (error) {});
+    } // show_mtp_madel(id) {
+    //     this.show_mtp_modal = true;
+    //     this.mtp_detals = [];
+    //     axios
+    //         .get("../../api/MTP/" + id)
+    //         .then((response) => {
+    //             this.mtp_detals = response.data;
+    //             // this.mtp_post_list = true;
+    //         })
+    //         .catch((error) => {});
+    // },
+
   }
 });
 
@@ -2207,10 +2501,10 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
-/***/ "./node_modules/laravel-mix/node_modules/css-loader/dist/cjs.js??clonedRuleSet-12[0].rules[0].use[1]!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-12[0].rules[0].use[2]!./node_modules/sass-loader/dist/cjs.js??clonedRuleSet-12[0].rules[0].use[3]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/site/items/RoutesTabComponent.vue?vue&type=style&index=0&lang=scss&":
-/*!****************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
-  !*** ./node_modules/laravel-mix/node_modules/css-loader/dist/cjs.js??clonedRuleSet-12[0].rules[0].use[1]!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-12[0].rules[0].use[2]!./node_modules/sass-loader/dist/cjs.js??clonedRuleSet-12[0].rules[0].use[3]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/site/items/RoutesTabComponent.vue?vue&type=style&index=0&lang=scss& ***!
-  \****************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************/
+/***/ "./node_modules/laravel-mix/node_modules/css-loader/dist/cjs.js??clonedRuleSet-12[0].rules[0].use[1]!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-12[0].rules[0].use[2]!./node_modules/sass-loader/dist/cjs.js??clonedRuleSet-12[0].rules[0].use[3]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/site/items/climbing_routes/SectorAndRoutesTabComponent.vue?vue&type=style&index=0&lang=scss&":
+/*!*****************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/laravel-mix/node_modules/css-loader/dist/cjs.js??clonedRuleSet-12[0].rules[0].use[1]!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-12[0].rules[0].use[2]!./node_modules/sass-loader/dist/cjs.js??clonedRuleSet-12[0].rules[0].use[3]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/site/items/climbing_routes/SectorAndRoutesTabComponent.vue?vue&type=style&index=0&lang=scss& ***!
+  \*****************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************/
 /***/ ((module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
@@ -2218,7 +2512,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
-/* harmony import */ var _node_modules_laravel_mix_node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../../../../node_modules/laravel-mix/node_modules/css-loader/dist/runtime/api.js */ "./node_modules/laravel-mix/node_modules/css-loader/dist/runtime/api.js");
+/* harmony import */ var _node_modules_laravel_mix_node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../../../../../node_modules/laravel-mix/node_modules/css-loader/dist/runtime/api.js */ "./node_modules/laravel-mix/node_modules/css-loader/dist/runtime/api.js");
 /* harmony import */ var _node_modules_laravel_mix_node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_node_modules_laravel_mix_node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0__);
 // Imports
 
@@ -2351,6 +2645,54 @@ ___CSS_LOADER_EXPORT___.push([module.id, "\n.similar_article_title{\n    margin-
 
 /***/ }),
 
+/***/ "./node_modules/laravel-mix/node_modules/css-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[1]!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/site/items/climbing_routes/items/SectorComponent.vue?vue&type=style&index=0&lang=css&":
+/*!****************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/laravel-mix/node_modules/css-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[1]!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/site/items/climbing_routes/items/SectorComponent.vue?vue&type=style&index=0&lang=css& ***!
+  \****************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************/
+/***/ ((module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _node_modules_laravel_mix_node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../../../../../../node_modules/laravel-mix/node_modules/css-loader/dist/runtime/api.js */ "./node_modules/laravel-mix/node_modules/css-loader/dist/runtime/api.js");
+/* harmony import */ var _node_modules_laravel_mix_node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_node_modules_laravel_mix_node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0__);
+// Imports
+
+var ___CSS_LOADER_EXPORT___ = _node_modules_laravel_mix_node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
+// Module
+___CSS_LOADER_EXPORT___.push([module.id, "\n.sector_walking_time{\n    float: right;\n    font-size: 1.5em;\n}\n", ""]);
+// Exports
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
+
+
+/***/ }),
+
+/***/ "./node_modules/laravel-mix/node_modules/css-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[1]!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/site/items/climbing_routes/items/SectorsAndAreaLocalImageComponrnt.vue?vue&type=style&index=0&id=805b6b16&scoped=true&lang=css&":
+/*!**********************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/laravel-mix/node_modules/css-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[1]!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/site/items/climbing_routes/items/SectorsAndAreaLocalImageComponrnt.vue?vue&type=style&index=0&id=805b6b16&scoped=true&lang=css& ***!
+  \**********************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************/
+/***/ ((module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _node_modules_laravel_mix_node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../../../../../../node_modules/laravel-mix/node_modules/css-loader/dist/runtime/api.js */ "./node_modules/laravel-mix/node_modules/css-loader/dist/runtime/api.js");
+/* harmony import */ var _node_modules_laravel_mix_node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_node_modules_laravel_mix_node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0__);
+// Imports
+
+var ___CSS_LOADER_EXPORT___ = _node_modules_laravel_mix_node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
+// Module
+___CSS_LOADER_EXPORT___.push([module.id, "\n.sector_images[data-v-805b6b16] {\n    float: left;\n    margin: 0.25%;\n}\n.sector_images_1[data-v-805b6b16] {\n    width: 99%;\n}\n.sector_images_2[data-v-805b6b16] {\n    width: 49%;\n}\n.sector_images_3[data-v-805b6b16] {\n    width: 32.6%;\n}\n.sector_images_4[data-v-805b6b16] {\n    width: 24.1%;\n}\n.sector_images_5[data-v-805b6b16] {\n    width: 19.5%;\n}\n.sector_images_6[data-v-805b6b16] {\n    width: 16%;\n}\n.sector_images_7[data-v-805b6b16] {\n    width: 14, 0%;\n}\n.sector_images_8[data-v-805b6b16] {\n    width: 12%;\n}\n.sector_images_9[data-v-805b6b16] {\n    width: 10.5%;\n}\n", ""]);
+// Exports
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
+
+
+/***/ }),
+
 /***/ "./node_modules/laravel-mix/node_modules/css-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[1]!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/site/items/galleries/GalleryComponent.vue?vue&type=style&index=0&id=6b8d2466&scoped=true&lang=css&":
 /*!*****************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
   !*** ./node_modules/laravel-mix/node_modules/css-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[1]!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/site/items/galleries/GalleryComponent.vue?vue&type=style&index=0&id=6b8d2466&scoped=true&lang=css& ***!
@@ -2399,10 +2741,10 @@ ___CSS_LOADER_EXPORT___.push([module.id, "\n.right_navigarion_menu_fixed_on_scri
 
 /***/ }),
 
-/***/ "./node_modules/style-loader/dist/cjs.js!./node_modules/laravel-mix/node_modules/css-loader/dist/cjs.js??clonedRuleSet-12[0].rules[0].use[1]!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-12[0].rules[0].use[2]!./node_modules/sass-loader/dist/cjs.js??clonedRuleSet-12[0].rules[0].use[3]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/site/items/RoutesTabComponent.vue?vue&type=style&index=0&lang=scss&":
-/*!********************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
-  !*** ./node_modules/style-loader/dist/cjs.js!./node_modules/laravel-mix/node_modules/css-loader/dist/cjs.js??clonedRuleSet-12[0].rules[0].use[1]!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-12[0].rules[0].use[2]!./node_modules/sass-loader/dist/cjs.js??clonedRuleSet-12[0].rules[0].use[3]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/site/items/RoutesTabComponent.vue?vue&type=style&index=0&lang=scss& ***!
-  \********************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************/
+/***/ "./node_modules/style-loader/dist/cjs.js!./node_modules/laravel-mix/node_modules/css-loader/dist/cjs.js??clonedRuleSet-12[0].rules[0].use[1]!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-12[0].rules[0].use[2]!./node_modules/sass-loader/dist/cjs.js??clonedRuleSet-12[0].rules[0].use[3]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/site/items/climbing_routes/SectorAndRoutesTabComponent.vue?vue&type=style&index=0&lang=scss&":
+/*!*********************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/style-loader/dist/cjs.js!./node_modules/laravel-mix/node_modules/css-loader/dist/cjs.js??clonedRuleSet-12[0].rules[0].use[1]!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-12[0].rules[0].use[2]!./node_modules/sass-loader/dist/cjs.js??clonedRuleSet-12[0].rules[0].use[3]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/site/items/climbing_routes/SectorAndRoutesTabComponent.vue?vue&type=style&index=0&lang=scss& ***!
+  \*********************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
@@ -2410,9 +2752,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
-/* harmony import */ var _node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! !../../../../../node_modules/style-loader/dist/runtime/injectStylesIntoStyleTag.js */ "./node_modules/style-loader/dist/runtime/injectStylesIntoStyleTag.js");
+/* harmony import */ var _node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! !../../../../../../node_modules/style-loader/dist/runtime/injectStylesIntoStyleTag.js */ "./node_modules/style-loader/dist/runtime/injectStylesIntoStyleTag.js");
 /* harmony import */ var _node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var _node_modules_laravel_mix_node_modules_css_loader_dist_cjs_js_clonedRuleSet_12_0_rules_0_use_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_dist_cjs_js_clonedRuleSet_12_0_rules_0_use_2_node_modules_sass_loader_dist_cjs_js_clonedRuleSet_12_0_rules_0_use_3_node_modules_vue_loader_lib_index_js_vue_loader_options_RoutesTabComponent_vue_vue_type_style_index_0_lang_scss___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! !!../../../../../node_modules/laravel-mix/node_modules/css-loader/dist/cjs.js??clonedRuleSet-12[0].rules[0].use[1]!../../../../../node_modules/vue-loader/lib/loaders/stylePostLoader.js!../../../../../node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-12[0].rules[0].use[2]!../../../../../node_modules/sass-loader/dist/cjs.js??clonedRuleSet-12[0].rules[0].use[3]!../../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./RoutesTabComponent.vue?vue&type=style&index=0&lang=scss& */ "./node_modules/laravel-mix/node_modules/css-loader/dist/cjs.js??clonedRuleSet-12[0].rules[0].use[1]!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-12[0].rules[0].use[2]!./node_modules/sass-loader/dist/cjs.js??clonedRuleSet-12[0].rules[0].use[3]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/site/items/RoutesTabComponent.vue?vue&type=style&index=0&lang=scss&");
+/* harmony import */ var _node_modules_laravel_mix_node_modules_css_loader_dist_cjs_js_clonedRuleSet_12_0_rules_0_use_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_dist_cjs_js_clonedRuleSet_12_0_rules_0_use_2_node_modules_sass_loader_dist_cjs_js_clonedRuleSet_12_0_rules_0_use_3_node_modules_vue_loader_lib_index_js_vue_loader_options_SectorAndRoutesTabComponent_vue_vue_type_style_index_0_lang_scss___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! !!../../../../../../node_modules/laravel-mix/node_modules/css-loader/dist/cjs.js??clonedRuleSet-12[0].rules[0].use[1]!../../../../../../node_modules/vue-loader/lib/loaders/stylePostLoader.js!../../../../../../node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-12[0].rules[0].use[2]!../../../../../../node_modules/sass-loader/dist/cjs.js??clonedRuleSet-12[0].rules[0].use[3]!../../../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./SectorAndRoutesTabComponent.vue?vue&type=style&index=0&lang=scss& */ "./node_modules/laravel-mix/node_modules/css-loader/dist/cjs.js??clonedRuleSet-12[0].rules[0].use[1]!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-12[0].rules[0].use[2]!./node_modules/sass-loader/dist/cjs.js??clonedRuleSet-12[0].rules[0].use[3]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/site/items/climbing_routes/SectorAndRoutesTabComponent.vue?vue&type=style&index=0&lang=scss&");
 
             
 
@@ -2421,11 +2763,11 @@ var options = {};
 options.insert = "head";
 options.singleton = false;
 
-var update = _node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0___default()(_node_modules_laravel_mix_node_modules_css_loader_dist_cjs_js_clonedRuleSet_12_0_rules_0_use_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_dist_cjs_js_clonedRuleSet_12_0_rules_0_use_2_node_modules_sass_loader_dist_cjs_js_clonedRuleSet_12_0_rules_0_use_3_node_modules_vue_loader_lib_index_js_vue_loader_options_RoutesTabComponent_vue_vue_type_style_index_0_lang_scss___WEBPACK_IMPORTED_MODULE_1__["default"], options);
+var update = _node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0___default()(_node_modules_laravel_mix_node_modules_css_loader_dist_cjs_js_clonedRuleSet_12_0_rules_0_use_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_dist_cjs_js_clonedRuleSet_12_0_rules_0_use_2_node_modules_sass_loader_dist_cjs_js_clonedRuleSet_12_0_rules_0_use_3_node_modules_vue_loader_lib_index_js_vue_loader_options_SectorAndRoutesTabComponent_vue_vue_type_style_index_0_lang_scss___WEBPACK_IMPORTED_MODULE_1__["default"], options);
 
 
 
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (_node_modules_laravel_mix_node_modules_css_loader_dist_cjs_js_clonedRuleSet_12_0_rules_0_use_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_dist_cjs_js_clonedRuleSet_12_0_rules_0_use_2_node_modules_sass_loader_dist_cjs_js_clonedRuleSet_12_0_rules_0_use_3_node_modules_vue_loader_lib_index_js_vue_loader_options_RoutesTabComponent_vue_vue_type_style_index_0_lang_scss___WEBPACK_IMPORTED_MODULE_1__["default"].locals || {});
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (_node_modules_laravel_mix_node_modules_css_loader_dist_cjs_js_clonedRuleSet_12_0_rules_0_use_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_dist_cjs_js_clonedRuleSet_12_0_rules_0_use_2_node_modules_sass_loader_dist_cjs_js_clonedRuleSet_12_0_rules_0_use_3_node_modules_vue_loader_lib_index_js_vue_loader_options_SectorAndRoutesTabComponent_vue_vue_type_style_index_0_lang_scss___WEBPACK_IMPORTED_MODULE_1__["default"].locals || {});
 
 /***/ }),
 
@@ -2576,6 +2918,66 @@ var update = _node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js
 
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (_node_modules_laravel_mix_node_modules_css_loader_dist_cjs_js_clonedRuleSet_9_0_rules_0_use_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_dist_cjs_js_clonedRuleSet_9_0_rules_0_use_2_node_modules_vue_loader_lib_index_js_vue_loader_options_SimilarOutdoorAreaCardComponent_vue_vue_type_style_index_0_lang_css___WEBPACK_IMPORTED_MODULE_1__["default"].locals || {});
+
+/***/ }),
+
+/***/ "./node_modules/style-loader/dist/cjs.js!./node_modules/laravel-mix/node_modules/css-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[1]!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/site/items/climbing_routes/items/SectorComponent.vue?vue&type=style&index=0&lang=css&":
+/*!********************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/style-loader/dist/cjs.js!./node_modules/laravel-mix/node_modules/css-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[1]!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/site/items/climbing_routes/items/SectorComponent.vue?vue&type=style&index=0&lang=css& ***!
+  \********************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! !../../../../../../../node_modules/style-loader/dist/runtime/injectStylesIntoStyleTag.js */ "./node_modules/style-loader/dist/runtime/injectStylesIntoStyleTag.js");
+/* harmony import */ var _node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _node_modules_laravel_mix_node_modules_css_loader_dist_cjs_js_clonedRuleSet_9_0_rules_0_use_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_dist_cjs_js_clonedRuleSet_9_0_rules_0_use_2_node_modules_vue_loader_lib_index_js_vue_loader_options_SectorComponent_vue_vue_type_style_index_0_lang_css___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! !!../../../../../../../node_modules/laravel-mix/node_modules/css-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[1]!../../../../../../../node_modules/vue-loader/lib/loaders/stylePostLoader.js!../../../../../../../node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[2]!../../../../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./SectorComponent.vue?vue&type=style&index=0&lang=css& */ "./node_modules/laravel-mix/node_modules/css-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[1]!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/site/items/climbing_routes/items/SectorComponent.vue?vue&type=style&index=0&lang=css&");
+
+            
+
+var options = {};
+
+options.insert = "head";
+options.singleton = false;
+
+var update = _node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0___default()(_node_modules_laravel_mix_node_modules_css_loader_dist_cjs_js_clonedRuleSet_9_0_rules_0_use_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_dist_cjs_js_clonedRuleSet_9_0_rules_0_use_2_node_modules_vue_loader_lib_index_js_vue_loader_options_SectorComponent_vue_vue_type_style_index_0_lang_css___WEBPACK_IMPORTED_MODULE_1__["default"], options);
+
+
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (_node_modules_laravel_mix_node_modules_css_loader_dist_cjs_js_clonedRuleSet_9_0_rules_0_use_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_dist_cjs_js_clonedRuleSet_9_0_rules_0_use_2_node_modules_vue_loader_lib_index_js_vue_loader_options_SectorComponent_vue_vue_type_style_index_0_lang_css___WEBPACK_IMPORTED_MODULE_1__["default"].locals || {});
+
+/***/ }),
+
+/***/ "./node_modules/style-loader/dist/cjs.js!./node_modules/laravel-mix/node_modules/css-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[1]!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/site/items/climbing_routes/items/SectorsAndAreaLocalImageComponrnt.vue?vue&type=style&index=0&id=805b6b16&scoped=true&lang=css&":
+/*!**************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/style-loader/dist/cjs.js!./node_modules/laravel-mix/node_modules/css-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[1]!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/site/items/climbing_routes/items/SectorsAndAreaLocalImageComponrnt.vue?vue&type=style&index=0&id=805b6b16&scoped=true&lang=css& ***!
+  \**************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! !../../../../../../../node_modules/style-loader/dist/runtime/injectStylesIntoStyleTag.js */ "./node_modules/style-loader/dist/runtime/injectStylesIntoStyleTag.js");
+/* harmony import */ var _node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _node_modules_laravel_mix_node_modules_css_loader_dist_cjs_js_clonedRuleSet_9_0_rules_0_use_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_dist_cjs_js_clonedRuleSet_9_0_rules_0_use_2_node_modules_vue_loader_lib_index_js_vue_loader_options_SectorsAndAreaLocalImageComponrnt_vue_vue_type_style_index_0_id_805b6b16_scoped_true_lang_css___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! !!../../../../../../../node_modules/laravel-mix/node_modules/css-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[1]!../../../../../../../node_modules/vue-loader/lib/loaders/stylePostLoader.js!../../../../../../../node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[2]!../../../../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./SectorsAndAreaLocalImageComponrnt.vue?vue&type=style&index=0&id=805b6b16&scoped=true&lang=css& */ "./node_modules/laravel-mix/node_modules/css-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[1]!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/site/items/climbing_routes/items/SectorsAndAreaLocalImageComponrnt.vue?vue&type=style&index=0&id=805b6b16&scoped=true&lang=css&");
+
+            
+
+var options = {};
+
+options.insert = "head";
+options.singleton = false;
+
+var update = _node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0___default()(_node_modules_laravel_mix_node_modules_css_loader_dist_cjs_js_clonedRuleSet_9_0_rules_0_use_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_dist_cjs_js_clonedRuleSet_9_0_rules_0_use_2_node_modules_vue_loader_lib_index_js_vue_loader_options_SectorsAndAreaLocalImageComponrnt_vue_vue_type_style_index_0_id_805b6b16_scoped_true_lang_css___WEBPACK_IMPORTED_MODULE_1__["default"], options);
+
+
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (_node_modules_laravel_mix_node_modules_css_loader_dist_cjs_js_clonedRuleSet_9_0_rules_0_use_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_dist_cjs_js_clonedRuleSet_9_0_rules_0_use_2_node_modules_vue_loader_lib_index_js_vue_loader_options_SectorsAndAreaLocalImageComponrnt_vue_vue_type_style_index_0_id_805b6b16_scoped_true_lang_css___WEBPACK_IMPORTED_MODULE_1__["default"].locals || {});
 
 /***/ }),
 
@@ -2950,47 +3352,6 @@ component.options.__file = "resources/js/components/site/items/RoutesQuantityCom
 
 /***/ }),
 
-/***/ "./resources/js/components/site/items/RoutesTabComponent.vue":
-/*!*******************************************************************!*\
-  !*** ./resources/js/components/site/items/RoutesTabComponent.vue ***!
-  \*******************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
-/* harmony export */ });
-/* harmony import */ var _RoutesTabComponent_vue_vue_type_template_id_684aa72e___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./RoutesTabComponent.vue?vue&type=template&id=684aa72e& */ "./resources/js/components/site/items/RoutesTabComponent.vue?vue&type=template&id=684aa72e&");
-/* harmony import */ var _RoutesTabComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./RoutesTabComponent.vue?vue&type=script&lang=js& */ "./resources/js/components/site/items/RoutesTabComponent.vue?vue&type=script&lang=js&");
-/* harmony import */ var _RoutesTabComponent_vue_vue_type_style_index_0_lang_scss___WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./RoutesTabComponent.vue?vue&type=style&index=0&lang=scss& */ "./resources/js/components/site/items/RoutesTabComponent.vue?vue&type=style&index=0&lang=scss&");
-/* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! !../../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
-
-
-
-;
-
-
-/* normalize component */
-
-var component = (0,_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_3__["default"])(
-  _RoutesTabComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
-  _RoutesTabComponent_vue_vue_type_template_id_684aa72e___WEBPACK_IMPORTED_MODULE_0__.render,
-  _RoutesTabComponent_vue_vue_type_template_id_684aa72e___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns,
-  false,
-  null,
-  null,
-  null
-  
-)
-
-/* hot reload */
-if (false) { var api; }
-component.options.__file = "resources/js/components/site/items/RoutesTabComponent.vue"
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (component.exports);
-
-/***/ }),
-
 /***/ "./resources/js/components/site/items/SimilarArticlesComponent.vue":
 /*!*************************************************************************!*\
   !*** ./resources/js/components/site/items/SimilarArticlesComponent.vue ***!
@@ -3108,6 +3469,207 @@ var component = (0,_node_modules_vue_loader_lib_runtime_componentNormalizer_js__
 /* hot reload */
 if (false) { var api; }
 component.options.__file = "resources/js/components/site/items/cards/SimilarOutdoorAreaCardComponent.vue"
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (component.exports);
+
+/***/ }),
+
+/***/ "./resources/js/components/site/items/climbing_routes/SectorAndRoutesTabComponent.vue":
+/*!********************************************************************************************!*\
+  !*** ./resources/js/components/site/items/climbing_routes/SectorAndRoutesTabComponent.vue ***!
+  \********************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _SectorAndRoutesTabComponent_vue_vue_type_template_id_8ae71c78___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./SectorAndRoutesTabComponent.vue?vue&type=template&id=8ae71c78& */ "./resources/js/components/site/items/climbing_routes/SectorAndRoutesTabComponent.vue?vue&type=template&id=8ae71c78&");
+/* harmony import */ var _SectorAndRoutesTabComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./SectorAndRoutesTabComponent.vue?vue&type=script&lang=js& */ "./resources/js/components/site/items/climbing_routes/SectorAndRoutesTabComponent.vue?vue&type=script&lang=js&");
+/* harmony import */ var _SectorAndRoutesTabComponent_vue_vue_type_style_index_0_lang_scss___WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./SectorAndRoutesTabComponent.vue?vue&type=style&index=0&lang=scss& */ "./resources/js/components/site/items/climbing_routes/SectorAndRoutesTabComponent.vue?vue&type=style&index=0&lang=scss&");
+/* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! !../../../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+;
+
+
+/* normalize component */
+
+var component = (0,_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_3__["default"])(
+  _SectorAndRoutesTabComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _SectorAndRoutesTabComponent_vue_vue_type_template_id_8ae71c78___WEBPACK_IMPORTED_MODULE_0__.render,
+  _SectorAndRoutesTabComponent_vue_vue_type_template_id_8ae71c78___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns,
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/components/site/items/climbing_routes/SectorAndRoutesTabComponent.vue"
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (component.exports);
+
+/***/ }),
+
+/***/ "./resources/js/components/site/items/climbing_routes/items/SectorComponent.vue":
+/*!**************************************************************************************!*\
+  !*** ./resources/js/components/site/items/climbing_routes/items/SectorComponent.vue ***!
+  \**************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _SectorComponent_vue_vue_type_template_id_0cab1a29___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./SectorComponent.vue?vue&type=template&id=0cab1a29& */ "./resources/js/components/site/items/climbing_routes/items/SectorComponent.vue?vue&type=template&id=0cab1a29&");
+/* harmony import */ var _SectorComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./SectorComponent.vue?vue&type=script&lang=js& */ "./resources/js/components/site/items/climbing_routes/items/SectorComponent.vue?vue&type=script&lang=js&");
+/* harmony import */ var _SectorComponent_vue_vue_type_style_index_0_lang_css___WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./SectorComponent.vue?vue&type=style&index=0&lang=css& */ "./resources/js/components/site/items/climbing_routes/items/SectorComponent.vue?vue&type=style&index=0&lang=css&");
+/* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! !../../../../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+;
+
+
+/* normalize component */
+
+var component = (0,_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_3__["default"])(
+  _SectorComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _SectorComponent_vue_vue_type_template_id_0cab1a29___WEBPACK_IMPORTED_MODULE_0__.render,
+  _SectorComponent_vue_vue_type_template_id_0cab1a29___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns,
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/components/site/items/climbing_routes/items/SectorComponent.vue"
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (component.exports);
+
+/***/ }),
+
+/***/ "./resources/js/components/site/items/climbing_routes/items/SectorsAndAreaLocalImageComponrnt.vue":
+/*!********************************************************************************************************!*\
+  !*** ./resources/js/components/site/items/climbing_routes/items/SectorsAndAreaLocalImageComponrnt.vue ***!
+  \********************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _SectorsAndAreaLocalImageComponrnt_vue_vue_type_template_id_805b6b16_scoped_true___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./SectorsAndAreaLocalImageComponrnt.vue?vue&type=template&id=805b6b16&scoped=true& */ "./resources/js/components/site/items/climbing_routes/items/SectorsAndAreaLocalImageComponrnt.vue?vue&type=template&id=805b6b16&scoped=true&");
+/* harmony import */ var _SectorsAndAreaLocalImageComponrnt_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./SectorsAndAreaLocalImageComponrnt.vue?vue&type=script&lang=js& */ "./resources/js/components/site/items/climbing_routes/items/SectorsAndAreaLocalImageComponrnt.vue?vue&type=script&lang=js&");
+/* harmony import */ var _SectorsAndAreaLocalImageComponrnt_vue_vue_type_style_index_0_id_805b6b16_scoped_true_lang_css___WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./SectorsAndAreaLocalImageComponrnt.vue?vue&type=style&index=0&id=805b6b16&scoped=true&lang=css& */ "./resources/js/components/site/items/climbing_routes/items/SectorsAndAreaLocalImageComponrnt.vue?vue&type=style&index=0&id=805b6b16&scoped=true&lang=css&");
+/* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! !../../../../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+;
+
+
+/* normalize component */
+
+var component = (0,_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_3__["default"])(
+  _SectorsAndAreaLocalImageComponrnt_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _SectorsAndAreaLocalImageComponrnt_vue_vue_type_template_id_805b6b16_scoped_true___WEBPACK_IMPORTED_MODULE_0__.render,
+  _SectorsAndAreaLocalImageComponrnt_vue_vue_type_template_id_805b6b16_scoped_true___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns,
+  false,
+  null,
+  "805b6b16",
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/components/site/items/climbing_routes/items/SectorsAndAreaLocalImageComponrnt.vue"
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (component.exports);
+
+/***/ }),
+
+/***/ "./resources/js/components/site/items/climbing_routes/items/modals/MTPModalComponent.vue":
+/*!***********************************************************************************************!*\
+  !*** ./resources/js/components/site/items/climbing_routes/items/modals/MTPModalComponent.vue ***!
+  \***********************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _MTPModalComponent_vue_vue_type_template_id_742ab9a4___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./MTPModalComponent.vue?vue&type=template&id=742ab9a4& */ "./resources/js/components/site/items/climbing_routes/items/modals/MTPModalComponent.vue?vue&type=template&id=742ab9a4&");
+/* harmony import */ var _MTPModalComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./MTPModalComponent.vue?vue&type=script&lang=js& */ "./resources/js/components/site/items/climbing_routes/items/modals/MTPModalComponent.vue?vue&type=script&lang=js&");
+/* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! !../../../../../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+/* normalize component */
+;
+var component = (0,_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+  _MTPModalComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _MTPModalComponent_vue_vue_type_template_id_742ab9a4___WEBPACK_IMPORTED_MODULE_0__.render,
+  _MTPModalComponent_vue_vue_type_template_id_742ab9a4___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns,
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/components/site/items/climbing_routes/items/modals/MTPModalComponent.vue"
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (component.exports);
+
+/***/ }),
+
+/***/ "./resources/js/components/site/items/climbing_routes/items/modals/RouteModalComponent.vue":
+/*!*************************************************************************************************!*\
+  !*** ./resources/js/components/site/items/climbing_routes/items/modals/RouteModalComponent.vue ***!
+  \*************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _RouteModalComponent_vue_vue_type_template_id_1509a2e4___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./RouteModalComponent.vue?vue&type=template&id=1509a2e4& */ "./resources/js/components/site/items/climbing_routes/items/modals/RouteModalComponent.vue?vue&type=template&id=1509a2e4&");
+/* harmony import */ var _RouteModalComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./RouteModalComponent.vue?vue&type=script&lang=js& */ "./resources/js/components/site/items/climbing_routes/items/modals/RouteModalComponent.vue?vue&type=script&lang=js&");
+/* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! !../../../../../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+/* normalize component */
+;
+var component = (0,_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+  _RouteModalComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _RouteModalComponent_vue_vue_type_template_id_1509a2e4___WEBPACK_IMPORTED_MODULE_0__.render,
+  _RouteModalComponent_vue_vue_type_template_id_1509a2e4___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns,
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/components/site/items/climbing_routes/items/modals/RouteModalComponent.vue"
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (component.exports);
 
 /***/ }),
@@ -3345,22 +3907,6 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
-/***/ "./resources/js/components/site/items/RoutesTabComponent.vue?vue&type=script&lang=js&":
-/*!********************************************************************************************!*\
-  !*** ./resources/js/components/site/items/RoutesTabComponent.vue?vue&type=script&lang=js& ***!
-  \********************************************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
-/* harmony export */ });
-/* harmony import */ var _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_0_rules_0_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_RoutesTabComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!../../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./RoutesTabComponent.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/site/items/RoutesTabComponent.vue?vue&type=script&lang=js&");
- /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (_node_modules_babel_loader_lib_index_js_clonedRuleSet_5_0_rules_0_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_RoutesTabComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
-
-/***/ }),
-
 /***/ "./resources/js/components/site/items/SimilarArticlesComponent.vue?vue&type=script&lang=js&":
 /*!**************************************************************************************************!*\
   !*** ./resources/js/components/site/items/SimilarArticlesComponent.vue?vue&type=script&lang=js& ***!
@@ -3406,6 +3952,86 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_0_rules_0_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_SimilarOutdoorAreaCardComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../../node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!../../../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./SimilarOutdoorAreaCardComponent.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/site/items/cards/SimilarOutdoorAreaCardComponent.vue?vue&type=script&lang=js&");
  /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (_node_modules_babel_loader_lib_index_js_clonedRuleSet_5_0_rules_0_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_SimilarOutdoorAreaCardComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./resources/js/components/site/items/climbing_routes/SectorAndRoutesTabComponent.vue?vue&type=script&lang=js&":
+/*!*********************************************************************************************************************!*\
+  !*** ./resources/js/components/site/items/climbing_routes/SectorAndRoutesTabComponent.vue?vue&type=script&lang=js& ***!
+  \*********************************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_0_rules_0_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_SectorAndRoutesTabComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../../node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!../../../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./SectorAndRoutesTabComponent.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/site/items/climbing_routes/SectorAndRoutesTabComponent.vue?vue&type=script&lang=js&");
+ /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (_node_modules_babel_loader_lib_index_js_clonedRuleSet_5_0_rules_0_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_SectorAndRoutesTabComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./resources/js/components/site/items/climbing_routes/items/SectorComponent.vue?vue&type=script&lang=js&":
+/*!***************************************************************************************************************!*\
+  !*** ./resources/js/components/site/items/climbing_routes/items/SectorComponent.vue?vue&type=script&lang=js& ***!
+  \***************************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_0_rules_0_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_SectorComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../../../node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!../../../../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./SectorComponent.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/site/items/climbing_routes/items/SectorComponent.vue?vue&type=script&lang=js&");
+ /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (_node_modules_babel_loader_lib_index_js_clonedRuleSet_5_0_rules_0_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_SectorComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./resources/js/components/site/items/climbing_routes/items/SectorsAndAreaLocalImageComponrnt.vue?vue&type=script&lang=js&":
+/*!*********************************************************************************************************************************!*\
+  !*** ./resources/js/components/site/items/climbing_routes/items/SectorsAndAreaLocalImageComponrnt.vue?vue&type=script&lang=js& ***!
+  \*********************************************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_0_rules_0_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_SectorsAndAreaLocalImageComponrnt_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../../../node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!../../../../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./SectorsAndAreaLocalImageComponrnt.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/site/items/climbing_routes/items/SectorsAndAreaLocalImageComponrnt.vue?vue&type=script&lang=js&");
+ /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (_node_modules_babel_loader_lib_index_js_clonedRuleSet_5_0_rules_0_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_SectorsAndAreaLocalImageComponrnt_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./resources/js/components/site/items/climbing_routes/items/modals/MTPModalComponent.vue?vue&type=script&lang=js&":
+/*!************************************************************************************************************************!*\
+  !*** ./resources/js/components/site/items/climbing_routes/items/modals/MTPModalComponent.vue?vue&type=script&lang=js& ***!
+  \************************************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_0_rules_0_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_MTPModalComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../../../../node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!../../../../../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./MTPModalComponent.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/site/items/climbing_routes/items/modals/MTPModalComponent.vue?vue&type=script&lang=js&");
+ /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (_node_modules_babel_loader_lib_index_js_clonedRuleSet_5_0_rules_0_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_MTPModalComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./resources/js/components/site/items/climbing_routes/items/modals/RouteModalComponent.vue?vue&type=script&lang=js&":
+/*!**************************************************************************************************************************!*\
+  !*** ./resources/js/components/site/items/climbing_routes/items/modals/RouteModalComponent.vue?vue&type=script&lang=js& ***!
+  \**************************************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_0_rules_0_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_RouteModalComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../../../../node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!../../../../../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./RouteModalComponent.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/site/items/climbing_routes/items/modals/RouteModalComponent.vue?vue&type=script&lang=js&");
+ /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (_node_modules_babel_loader_lib_index_js_clonedRuleSet_5_0_rules_0_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_RouteModalComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
 
 /***/ }),
 
@@ -3457,15 +4083,15 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
-/***/ "./resources/js/components/site/items/RoutesTabComponent.vue?vue&type=style&index=0&lang=scss&":
-/*!*****************************************************************************************************!*\
-  !*** ./resources/js/components/site/items/RoutesTabComponent.vue?vue&type=style&index=0&lang=scss& ***!
-  \*****************************************************************************************************/
+/***/ "./resources/js/components/site/items/climbing_routes/SectorAndRoutesTabComponent.vue?vue&type=style&index=0&lang=scss&":
+/*!******************************************************************************************************************************!*\
+  !*** ./resources/js/components/site/items/climbing_routes/SectorAndRoutesTabComponent.vue?vue&type=style&index=0&lang=scss& ***!
+  \******************************************************************************************************************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _node_modules_style_loader_dist_cjs_js_node_modules_laravel_mix_node_modules_css_loader_dist_cjs_js_clonedRuleSet_12_0_rules_0_use_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_dist_cjs_js_clonedRuleSet_12_0_rules_0_use_2_node_modules_sass_loader_dist_cjs_js_clonedRuleSet_12_0_rules_0_use_3_node_modules_vue_loader_lib_index_js_vue_loader_options_RoutesTabComponent_vue_vue_type_style_index_0_lang_scss___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../node_modules/style-loader/dist/cjs.js!../../../../../node_modules/laravel-mix/node_modules/css-loader/dist/cjs.js??clonedRuleSet-12[0].rules[0].use[1]!../../../../../node_modules/vue-loader/lib/loaders/stylePostLoader.js!../../../../../node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-12[0].rules[0].use[2]!../../../../../node_modules/sass-loader/dist/cjs.js??clonedRuleSet-12[0].rules[0].use[3]!../../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./RoutesTabComponent.vue?vue&type=style&index=0&lang=scss& */ "./node_modules/style-loader/dist/cjs.js!./node_modules/laravel-mix/node_modules/css-loader/dist/cjs.js??clonedRuleSet-12[0].rules[0].use[1]!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-12[0].rules[0].use[2]!./node_modules/sass-loader/dist/cjs.js??clonedRuleSet-12[0].rules[0].use[3]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/site/items/RoutesTabComponent.vue?vue&type=style&index=0&lang=scss&");
+/* harmony import */ var _node_modules_style_loader_dist_cjs_js_node_modules_laravel_mix_node_modules_css_loader_dist_cjs_js_clonedRuleSet_12_0_rules_0_use_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_dist_cjs_js_clonedRuleSet_12_0_rules_0_use_2_node_modules_sass_loader_dist_cjs_js_clonedRuleSet_12_0_rules_0_use_3_node_modules_vue_loader_lib_index_js_vue_loader_options_SectorAndRoutesTabComponent_vue_vue_type_style_index_0_lang_scss___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../../node_modules/style-loader/dist/cjs.js!../../../../../../node_modules/laravel-mix/node_modules/css-loader/dist/cjs.js??clonedRuleSet-12[0].rules[0].use[1]!../../../../../../node_modules/vue-loader/lib/loaders/stylePostLoader.js!../../../../../../node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-12[0].rules[0].use[2]!../../../../../../node_modules/sass-loader/dist/cjs.js??clonedRuleSet-12[0].rules[0].use[3]!../../../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./SectorAndRoutesTabComponent.vue?vue&type=style&index=0&lang=scss& */ "./node_modules/style-loader/dist/cjs.js!./node_modules/laravel-mix/node_modules/css-loader/dist/cjs.js??clonedRuleSet-12[0].rules[0].use[1]!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-12[0].rules[0].use[2]!./node_modules/sass-loader/dist/cjs.js??clonedRuleSet-12[0].rules[0].use[3]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/site/items/climbing_routes/SectorAndRoutesTabComponent.vue?vue&type=style&index=0&lang=scss&");
 
 
 /***/ }),
@@ -3531,6 +4157,32 @@ __webpack_require__.r(__webpack_exports__);
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _node_modules_style_loader_dist_cjs_js_node_modules_laravel_mix_node_modules_css_loader_dist_cjs_js_clonedRuleSet_9_0_rules_0_use_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_dist_cjs_js_clonedRuleSet_9_0_rules_0_use_2_node_modules_vue_loader_lib_index_js_vue_loader_options_SimilarOutdoorAreaCardComponent_vue_vue_type_style_index_0_lang_css___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../../node_modules/style-loader/dist/cjs.js!../../../../../../node_modules/laravel-mix/node_modules/css-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[1]!../../../../../../node_modules/vue-loader/lib/loaders/stylePostLoader.js!../../../../../../node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[2]!../../../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./SimilarOutdoorAreaCardComponent.vue?vue&type=style&index=0&lang=css& */ "./node_modules/style-loader/dist/cjs.js!./node_modules/laravel-mix/node_modules/css-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[1]!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/site/items/cards/SimilarOutdoorAreaCardComponent.vue?vue&type=style&index=0&lang=css&");
+
+
+/***/ }),
+
+/***/ "./resources/js/components/site/items/climbing_routes/items/SectorComponent.vue?vue&type=style&index=0&lang=css&":
+/*!***********************************************************************************************************************!*\
+  !*** ./resources/js/components/site/items/climbing_routes/items/SectorComponent.vue?vue&type=style&index=0&lang=css& ***!
+  \***********************************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_style_loader_dist_cjs_js_node_modules_laravel_mix_node_modules_css_loader_dist_cjs_js_clonedRuleSet_9_0_rules_0_use_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_dist_cjs_js_clonedRuleSet_9_0_rules_0_use_2_node_modules_vue_loader_lib_index_js_vue_loader_options_SectorComponent_vue_vue_type_style_index_0_lang_css___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../../../node_modules/style-loader/dist/cjs.js!../../../../../../../node_modules/laravel-mix/node_modules/css-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[1]!../../../../../../../node_modules/vue-loader/lib/loaders/stylePostLoader.js!../../../../../../../node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[2]!../../../../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./SectorComponent.vue?vue&type=style&index=0&lang=css& */ "./node_modules/style-loader/dist/cjs.js!./node_modules/laravel-mix/node_modules/css-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[1]!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/site/items/climbing_routes/items/SectorComponent.vue?vue&type=style&index=0&lang=css&");
+
+
+/***/ }),
+
+/***/ "./resources/js/components/site/items/climbing_routes/items/SectorsAndAreaLocalImageComponrnt.vue?vue&type=style&index=0&id=805b6b16&scoped=true&lang=css&":
+/*!*****************************************************************************************************************************************************************!*\
+  !*** ./resources/js/components/site/items/climbing_routes/items/SectorsAndAreaLocalImageComponrnt.vue?vue&type=style&index=0&id=805b6b16&scoped=true&lang=css& ***!
+  \*****************************************************************************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_style_loader_dist_cjs_js_node_modules_laravel_mix_node_modules_css_loader_dist_cjs_js_clonedRuleSet_9_0_rules_0_use_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_dist_cjs_js_clonedRuleSet_9_0_rules_0_use_2_node_modules_vue_loader_lib_index_js_vue_loader_options_SectorsAndAreaLocalImageComponrnt_vue_vue_type_style_index_0_id_805b6b16_scoped_true_lang_css___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../../../node_modules/style-loader/dist/cjs.js!../../../../../../../node_modules/laravel-mix/node_modules/css-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[1]!../../../../../../../node_modules/vue-loader/lib/loaders/stylePostLoader.js!../../../../../../../node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[2]!../../../../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./SectorsAndAreaLocalImageComponrnt.vue?vue&type=style&index=0&id=805b6b16&scoped=true&lang=css& */ "./node_modules/style-loader/dist/cjs.js!./node_modules/laravel-mix/node_modules/css-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[1]!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/site/items/climbing_routes/items/SectorsAndAreaLocalImageComponrnt.vue?vue&type=style&index=0&id=805b6b16&scoped=true&lang=css&");
 
 
 /***/ }),
@@ -3663,23 +4315,6 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
-/***/ "./resources/js/components/site/items/RoutesTabComponent.vue?vue&type=template&id=684aa72e&":
-/*!**************************************************************************************************!*\
-  !*** ./resources/js/components/site/items/RoutesTabComponent.vue?vue&type=template&id=684aa72e& ***!
-  \**************************************************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "render": () => (/* reexport safe */ _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_RoutesTabComponent_vue_vue_type_template_id_684aa72e___WEBPACK_IMPORTED_MODULE_0__.render),
-/* harmony export */   "staticRenderFns": () => (/* reexport safe */ _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_RoutesTabComponent_vue_vue_type_template_id_684aa72e___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns)
-/* harmony export */ });
-/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_RoutesTabComponent_vue_vue_type_template_id_684aa72e___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./RoutesTabComponent.vue?vue&type=template&id=684aa72e& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/site/items/RoutesTabComponent.vue?vue&type=template&id=684aa72e&");
-
-
-/***/ }),
-
 /***/ "./resources/js/components/site/items/SimilarArticlesComponent.vue?vue&type=template&id=eb80741e&":
 /*!********************************************************************************************************!*\
   !*** ./resources/js/components/site/items/SimilarArticlesComponent.vue?vue&type=template&id=eb80741e& ***!
@@ -3727,6 +4362,91 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "staticRenderFns": () => (/* reexport safe */ _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_SimilarOutdoorAreaCardComponent_vue_vue_type_template_id_8d447f52___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns)
 /* harmony export */ });
 /* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_SimilarOutdoorAreaCardComponent_vue_vue_type_template_id_8d447f52___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./SimilarOutdoorAreaCardComponent.vue?vue&type=template&id=8d447f52& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/site/items/cards/SimilarOutdoorAreaCardComponent.vue?vue&type=template&id=8d447f52&");
+
+
+/***/ }),
+
+/***/ "./resources/js/components/site/items/climbing_routes/SectorAndRoutesTabComponent.vue?vue&type=template&id=8ae71c78&":
+/*!***************************************************************************************************************************!*\
+  !*** ./resources/js/components/site/items/climbing_routes/SectorAndRoutesTabComponent.vue?vue&type=template&id=8ae71c78& ***!
+  \***************************************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "render": () => (/* reexport safe */ _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_SectorAndRoutesTabComponent_vue_vue_type_template_id_8ae71c78___WEBPACK_IMPORTED_MODULE_0__.render),
+/* harmony export */   "staticRenderFns": () => (/* reexport safe */ _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_SectorAndRoutesTabComponent_vue_vue_type_template_id_8ae71c78___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns)
+/* harmony export */ });
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_SectorAndRoutesTabComponent_vue_vue_type_template_id_8ae71c78___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./SectorAndRoutesTabComponent.vue?vue&type=template&id=8ae71c78& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/site/items/climbing_routes/SectorAndRoutesTabComponent.vue?vue&type=template&id=8ae71c78&");
+
+
+/***/ }),
+
+/***/ "./resources/js/components/site/items/climbing_routes/items/SectorComponent.vue?vue&type=template&id=0cab1a29&":
+/*!*********************************************************************************************************************!*\
+  !*** ./resources/js/components/site/items/climbing_routes/items/SectorComponent.vue?vue&type=template&id=0cab1a29& ***!
+  \*********************************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "render": () => (/* reexport safe */ _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_SectorComponent_vue_vue_type_template_id_0cab1a29___WEBPACK_IMPORTED_MODULE_0__.render),
+/* harmony export */   "staticRenderFns": () => (/* reexport safe */ _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_SectorComponent_vue_vue_type_template_id_0cab1a29___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns)
+/* harmony export */ });
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_SectorComponent_vue_vue_type_template_id_0cab1a29___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./SectorComponent.vue?vue&type=template&id=0cab1a29& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/site/items/climbing_routes/items/SectorComponent.vue?vue&type=template&id=0cab1a29&");
+
+
+/***/ }),
+
+/***/ "./resources/js/components/site/items/climbing_routes/items/SectorsAndAreaLocalImageComponrnt.vue?vue&type=template&id=805b6b16&scoped=true&":
+/*!***************************************************************************************************************************************************!*\
+  !*** ./resources/js/components/site/items/climbing_routes/items/SectorsAndAreaLocalImageComponrnt.vue?vue&type=template&id=805b6b16&scoped=true& ***!
+  \***************************************************************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "render": () => (/* reexport safe */ _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_SectorsAndAreaLocalImageComponrnt_vue_vue_type_template_id_805b6b16_scoped_true___WEBPACK_IMPORTED_MODULE_0__.render),
+/* harmony export */   "staticRenderFns": () => (/* reexport safe */ _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_SectorsAndAreaLocalImageComponrnt_vue_vue_type_template_id_805b6b16_scoped_true___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns)
+/* harmony export */ });
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_SectorsAndAreaLocalImageComponrnt_vue_vue_type_template_id_805b6b16_scoped_true___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./SectorsAndAreaLocalImageComponrnt.vue?vue&type=template&id=805b6b16&scoped=true& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/site/items/climbing_routes/items/SectorsAndAreaLocalImageComponrnt.vue?vue&type=template&id=805b6b16&scoped=true&");
+
+
+/***/ }),
+
+/***/ "./resources/js/components/site/items/climbing_routes/items/modals/MTPModalComponent.vue?vue&type=template&id=742ab9a4&":
+/*!******************************************************************************************************************************!*\
+  !*** ./resources/js/components/site/items/climbing_routes/items/modals/MTPModalComponent.vue?vue&type=template&id=742ab9a4& ***!
+  \******************************************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "render": () => (/* reexport safe */ _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_MTPModalComponent_vue_vue_type_template_id_742ab9a4___WEBPACK_IMPORTED_MODULE_0__.render),
+/* harmony export */   "staticRenderFns": () => (/* reexport safe */ _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_MTPModalComponent_vue_vue_type_template_id_742ab9a4___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns)
+/* harmony export */ });
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_MTPModalComponent_vue_vue_type_template_id_742ab9a4___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./MTPModalComponent.vue?vue&type=template&id=742ab9a4& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/site/items/climbing_routes/items/modals/MTPModalComponent.vue?vue&type=template&id=742ab9a4&");
+
+
+/***/ }),
+
+/***/ "./resources/js/components/site/items/climbing_routes/items/modals/RouteModalComponent.vue?vue&type=template&id=1509a2e4&":
+/*!********************************************************************************************************************************!*\
+  !*** ./resources/js/components/site/items/climbing_routes/items/modals/RouteModalComponent.vue?vue&type=template&id=1509a2e4& ***!
+  \********************************************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "render": () => (/* reexport safe */ _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_RouteModalComponent_vue_vue_type_template_id_1509a2e4___WEBPACK_IMPORTED_MODULE_0__.render),
+/* harmony export */   "staticRenderFns": () => (/* reexport safe */ _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_RouteModalComponent_vue_vue_type_template_id_1509a2e4___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns)
+/* harmony export */ });
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_RouteModalComponent_vue_vue_type_template_id_1509a2e4___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./RouteModalComponent.vue?vue&type=template&id=1509a2e4& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/site/items/climbing_routes/items/modals/RouteModalComponent.vue?vue&type=template&id=1509a2e4&");
 
 
 /***/ }),
@@ -5193,763 +5913,6 @@ render._withStripped = true
 
 /***/ }),
 
-/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/site/items/RoutesTabComponent.vue?vue&type=template&id=684aa72e&":
-/*!*****************************************************************************************************************************************************************************************************************************************!*\
-  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/site/items/RoutesTabComponent.vue?vue&type=template&id=684aa72e& ***!
-  \*****************************************************************************************************************************************************************************************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "render": () => (/* binding */ render),
-/* harmony export */   "staticRenderFns": () => (/* binding */ staticRenderFns)
-/* harmony export */ });
-var render = function () {
-  var _obj, _obj$1
-  var _vm = this
-  var _h = _vm.$createElement
-  var _c = _vm._self._c || _h
-  return _c(
-    "div",
-    { staticClass: "container", attrs: { id: "sectors" } },
-    [
-      _vm.spot_images.length > 0
-        ? _c(
-            "div",
-            { staticClass: "row" },
-            _vm._l(_vm.spot_images, function (spot_image) {
-              return _c(
-                "div",
-                {
-                  key: spot_image,
-                  class:
-                    "sector_images sector_images_" + _vm.spot_images.length,
-                },
-                [
-                  _c("openImg", {
-                    attrs: {
-                      img: "../../images/spot_rocks_img/" + spot_image.image,
-                      img_alt: spot_image.title,
-                    },
-                  }),
-                ],
-                1
-              )
-            }),
-            0
-          )
-        : _vm._e(),
-      _vm._v(" "),
-      _vm._l(_vm.climbing_area, function (area) {
-        return _c(
-          "div",
-          { key: area, staticClass: "row" },
-          [
-            _c("span", [
-              _c("h2", { staticStyle: { "font-size": "160%" } }, [
-                _vm._v(
-                  "\n                " +
-                    _vm._s(_vm.$t("sector name")) +
-                    " -\n                "
-                ),
-                _c("strong", [_vm._v(_vm._s(area.sectors.name))]),
-              ]),
-            ]),
-            _vm._v(" "),
-            _c("div", { staticClass: "row" }, [
-              _c("div", { staticClass: "col-md-6" }, [
-                area.sectors.in_shade_after_10
-                  ? _c("img", {
-                      staticClass: "sun_svg",
-                      attrs: {
-                        src: "../images/svg/in shade after 10.00 am.svg",
-                        alt: "In shade after 10.00 am",
-                        title: "In shade after 10.00 am",
-                      },
-                    })
-                  : _vm._e(),
-                _vm._v(" "),
-                area.sectors.in_shade_after_15
-                  ? _c("img", {
-                      staticClass: "sun_svg",
-                      attrs: {
-                        src: "../images/svg/in shade after 15.00 pm.svg",
-                        alt: "In shade after 15.00 pm",
-                        title: "In shade after 15.00 pm",
-                      },
-                    })
-                  : _vm._e(),
-                _vm._v(" "),
-                area.sectors.in_the_shade_befornoon
-                  ? _c("img", {
-                      staticClass: "sun_svg",
-                      attrs: {
-                        src: "../images/svg/in shade befor noon.svg",
-                        alt: "In shade befor noon",
-                        title: "In shade befor noon",
-                      },
-                    })
-                  : _vm._e(),
-                _vm._v(" "),
-                area.sectors.in_the_shade_afternoon
-                  ? _c("img", {
-                      staticClass: "sun_svg",
-                      attrs: {
-                        src: "../images/svg/in shade in the afternoon.svg",
-                        alt: "In shade in the afternoon",
-                        title: "In shade in the afternoon",
-                      },
-                    })
-                  : _vm._e(),
-                _vm._v(" "),
-                area.sectors.all_day_in_shade
-                  ? _c("img", {
-                      staticClass: "sun_svg",
-                      attrs: {
-                        src: "../images/svg/in the shade whole day.svg",
-                        alt: "In the shade whole day",
-                        title: "In the shade whole day",
-                      },
-                    })
-                  : _vm._e(),
-                _vm._v(" "),
-                area.sectors.all_day_in_sun
-                  ? _c("img", {
-                      staticClass: "sun_svg",
-                      attrs: {
-                        src: "../images/svg/in the sun the whole day.svg",
-                        alt: "In the sun the whole day",
-                        title: "In the sun the whole day",
-                      },
-                    })
-                  : _vm._e(),
-              ]),
-              _vm._v(" "),
-              _c("div", { staticClass: "col-md-6" }, [
-                area.sectors.roof
-                  ? _c("img", {
-                      staticClass: "relief_svg",
-                      attrs: {
-                        src: "../images/svg/roof.svg",
-                        alt: "Roof",
-                        title: "Roof",
-                      },
-                    })
-                  : _vm._e(),
-                _vm._v(" "),
-                area.sectors.overhang
-                  ? _c("img", {
-                      staticClass: "relief_svg",
-                      attrs: {
-                        src: "../images/svg/overhang.svg",
-                        alt: "Overhang",
-                        title: "Overhang",
-                      },
-                    })
-                  : _vm._e(),
-                _vm._v(" "),
-                area.sectors.vertical
-                  ? _c("img", {
-                      staticClass: "relief_svg",
-                      attrs: {
-                        src: "../images/svg/vertical.svg",
-                        alt: "Vertical",
-                        title: "Vertical",
-                      },
-                    })
-                  : _vm._e(),
-                _vm._v(" "),
-                area.sectors.slabby
-                  ? _c("img", {
-                      staticClass: "relief_svg",
-                      attrs: {
-                        src: "../images/svg/slabby.svg",
-                        alt: "Slabby",
-                        title: "Slabby",
-                      },
-                    })
-                  : _vm._e(),
-              ]),
-            ]),
-            _vm._v(" "),
-            _c("div", { staticClass: "row" }, [
-              _c("div", { staticClass: "col-md-6" }, [
-                area.sectors.for_family
-                  ? _c("img", {
-                      staticClass: "sun_svg",
-                      attrs: {
-                        src: "../images/svg/for family.svg",
-                        alt: "In this sector recomendidi family climbing. It`s seifty for kids",
-                        title:
-                          "In this sector recomendidi family climbing. It`s seifty for kids",
-                      },
-                    })
-                  : _vm._e(),
-                _vm._v(" "),
-                area.sectors.for_kids
-                  ? _c("img", {
-                      staticClass: "sun_svg",
-                      attrs: {
-                        src: "../images/svg/for kids.svg",
-                        alt: "In this sector recomendidi for kids. It`a seifty for kids and poseble to kid climbing",
-                        title:
-                          "In this sector recomendidi for kids. It`a seifty for kids and poseble to kid climbing",
-                      },
-                    })
-                  : _vm._e(),
-              ]),
-              _vm._v(" "),
-              _c("div", { staticClass: "col-md-6" }, [
-                area.sectors.wolking_time
-                  ? _c("img", {
-                      staticClass: "relief_svg",
-                      attrs: {
-                        src: "../images/svg/walking.svg",
-                        alt: "Wolging time from car stoping to climbin sector.",
-                        title:
-                          "Wolging time from car stoping to climbin sector.",
-                      },
-                    })
-                  : _vm._e(),
-                _vm._v(" "),
-                _c("span", [_vm._v(" 30+ min. ")]),
-              ]),
-            ]),
-            _vm._v(" "),
-            _c("span", { domProps: { innerHTML: _vm._s(area.sectors.text) } }),
-            _vm._v(" "),
-            _vm._l(area.sectors.sector_img, function (image) {
-              return _c("openImg", {
-                key: image.id,
-                attrs: {
-                  img: "../images/sector_img/" + image.image,
-                  img_alt: image.image,
-                  img_class:
-                    "sector_images sector_images_" +
-                    area.sectors.sector_img.length,
-                },
-              })
-            }),
-            _vm._v(" "),
-            area.sport_routes.length > 0
-              ? _c(
-                  "table",
-                  { staticClass: "table col-md-12 table table-hover" },
-                  [
-                    _c("tbody", [
-                      _c("tr", [
-                        _c("td", [_vm._v("N")]),
-                        _vm._v(" "),
-                        _c("td", [_vm._v(_vm._s(_vm.$t("route_tab name")))]),
-                        _vm._v(" "),
-                        _c("td", [_vm._v(_vm._s(_vm.$t("route_tab height")))]),
-                        _vm._v(" "),
-                        _c("td", [_vm._v(_vm._s(_vm.$t("route_tab bolts")))]),
-                        _vm._v(" "),
-                        _c("td", [
-                          _vm._v(_vm._s(_vm.$t("route_tab grade fr"))),
-                        ]),
-                        _vm._v(" "),
-                        _c("td", [
-                          _vm._v(_vm._s(_vm.$t("route_tab grade yds"))),
-                        ]),
-                        _vm._v(" "),
-                        _c("td", [_vm._v("Info")]),
-                      ]),
-                    ]),
-                    _vm._v(" "),
-                    _c(
-                      "tbody",
-                      _vm._l(area.sport_routes, function (route) {
-                        return _c("tr", { key: route.id }, [
-                          _c("td", [_vm._v(_vm._s(route.num))]),
-                          _vm._v(" "),
-                          _c(
-                            "td",
-                            {
-                              on: {
-                                click: function ($event) {
-                                  return _vm.show_route_model()
-                                },
-                              },
-                            },
-                            [_vm._v(_vm._s(route.name))]
-                          ),
-                          _vm._v(" "),
-                          _c("td", [_vm._v(_vm._s(route.height))]),
-                          _vm._v(" "),
-                          _c("td", [_vm._v(_vm._s(route.bolts))]),
-                          _vm._v(" "),
-                          route.or_grade != _vm.NULL
-                            ? _c("td", [
-                                _vm._v(
-                                  "\n                        " +
-                                    _vm._s(route.grade) +
-                                    " / " +
-                                    _vm._s(route.or_grade) +
-                                    "\n                    "
-                                ),
-                              ])
-                            : _c("td", [_vm._v(_vm._s(route.grade))]),
-                          _vm._v(" "),
-                          route.or_grade != _vm.NULL
-                            ? _c("td", [
-                                _vm._v(
-                                  "\n                        " +
-                                    _vm._s(_vm.lead_grade_chart(route.grade)) +
-                                    " /\n                        " +
-                                    _vm._s(
-                                      _vm.lead_grade_chart(route.or_grade)
-                                    ) +
-                                    "\n                    "
-                                ),
-                              ])
-                            : _c("td", [
-                                _vm._v(
-                                  _vm._s(_vm.lead_grade_chart(route.grade))
-                                ),
-                              ]),
-                          _vm._v(" "),
-                          _c(
-                            "td",
-                            {
-                              on: {
-                                click: function ($event) {
-                                  return _vm.show_route_model(route.id)
-                                },
-                              },
-                            },
-                            [_vm._m(0, true)]
-                          ),
-                        ])
-                      }),
-                      0
-                    ),
-                  ]
-                )
-              : _vm._e(),
-            _vm._v(" "),
-            area.boulder_route.length > 0
-              ? _c(
-                  "table",
-                  { staticClass: "table col-md-12 table table-hover" },
-                  [
-                    _c("tbody", [
-                      _c("tr", [
-                        _c("td", [_vm._v("N")]),
-                        _vm._v(" "),
-                        _c("td", [_vm._v(_vm._s(_vm.$t("route_tab name")))]),
-                        _vm._v(" "),
-                        _c("td", [_vm._v(_vm._s(_vm.$t("route_tab height")))]),
-                        _vm._v(" "),
-                        _c("td", [
-                          _vm._v(_vm._s(_vm.$t("route_tab grade fr"))),
-                        ]),
-                        _vm._v(" "),
-                        _c("td", [
-                          _vm._v(_vm._s(_vm.$t("route_tab grade yds"))),
-                        ]),
-                        _vm._v(" "),
-                        _c("td", [_vm._v("Info")]),
-                      ]),
-                    ]),
-                    _vm._v(" "),
-                    _c(
-                      "tbody",
-                      _vm._l(area.boulder_route, function (route) {
-                        return _c("tr", { key: route.id }, [
-                          _c("td", [_vm._v(_vm._s(route.num))]),
-                          _vm._v(" "),
-                          _c(
-                            "td",
-                            {
-                              on: {
-                                click: function ($event) {
-                                  return _vm.show_route_model(route.id)
-                                },
-                              },
-                            },
-                            [
-                              _vm._v(
-                                "\n                        " +
-                                  _vm._s(route.name) +
-                                  "\n                    "
-                              ),
-                            ]
-                          ),
-                          _vm._v(" "),
-                          _c("td", [_vm._v(_vm._s(route.height))]),
-                          _vm._v(" "),
-                          route.or_grade != _vm.NULL
-                            ? _c("td", [
-                                _vm._v(
-                                  "\n                        " +
-                                    _vm._s(
-                                      _vm.boulder_grade_chart(route.grade)
-                                    ) +
-                                    " /\n                        " +
-                                    _vm._s(
-                                      _vm.boulder_grade_chart(route.or_grade)
-                                    ) +
-                                    "\n                    "
-                                ),
-                              ])
-                            : _c("td", [
-                                _vm._v(
-                                  "\n                        " +
-                                    _vm._s(
-                                      _vm.boulder_grade_chart(route.grade)
-                                    ) +
-                                    "\n                    "
-                                ),
-                              ]),
-                          _vm._v(" "),
-                          route.or_grade != _vm.NULL
-                            ? _c("td", [
-                                _vm._v(
-                                  "\n                        " +
-                                    _vm._s(route.grade) +
-                                    " / " +
-                                    _vm._s(route.or_grade) +
-                                    "\n                    "
-                                ),
-                              ])
-                            : _c("td", [_vm._v(_vm._s(route.grade))]),
-                          _vm._v(" "),
-                          _c(
-                            "td",
-                            {
-                              on: {
-                                click: function ($event) {
-                                  return _vm.show_route_model(route.id)
-                                },
-                              },
-                            },
-                            [_vm._m(1, true)]
-                          ),
-                        ])
-                      }),
-                      0
-                    ),
-                  ]
-                )
-              : _vm._e(),
-            _vm._v(" "),
-            _vm._l(area.mtps, function (mtp) {
-              return _c(
-                "span",
-                { key: mtp.id, attrs: { if: area.mtps.length > 0 } },
-                [
-                  _c("div", { staticClass: "col-md-8" }, [
-                    _c("span", { staticClass: "mtp_name" }, [
-                      _c("h3", [
-                        _vm._v(
-                          "\n                        " +
-                            _vm._s(_vm.$t("mtp name")) +
-                            " -\n                        "
-                        ),
-                        _c("strong", [_vm._v(_vm._s(mtp.mtp_name))]),
-                      ]),
-                    ]),
-                  ]),
-                  _vm._v(" "),
-                  _c("div", { staticClass: "col-md-4" }, [
-                    _c(
-                      "a",
-                      {
-                        attrs: {
-                          "data-toggle": "modal",
-                          "data-target": "#squarespaceModal_mtp_info_",
-                        },
-                        on: {
-                          click: function ($event) {
-                            return _vm.show_mtp_madel(mtp.mtp_id)
-                          },
-                        },
-                      },
-                      [_vm._m(2, true)]
-                    ),
-                  ]),
-                  _vm._v(" "),
-                  _c(
-                    "table",
-                    { staticClass: "table col-md-12 table table-hover" },
-                    [
-                      _c("tbody", [
-                        _c("tr", [
-                          _c("td", [_vm._v("N")]),
-                          _vm._v(" "),
-                          _c("td", [_vm._v(_vm._s(_vm.$t("route_tab name")))]),
-                          _vm._v(" "),
-                          _c("td", [
-                            _vm._v(_vm._s(_vm.$t("route_tab height"))),
-                          ]),
-                          _vm._v(" "),
-                          _c("td", [_vm._v(_vm._s(_vm.$t("route_tab bolts")))]),
-                          _vm._v(" "),
-                          _c("td", [
-                            _vm._v(_vm._s(_vm.$t("route_tab grade fr"))),
-                          ]),
-                          _vm._v(" "),
-                          _c("td", { staticClass: "display-none-720px" }, [
-                            _vm._v(
-                              "\n                            " +
-                                _vm._s(_vm.$t("route_tab grade yds")) +
-                                "\n                        "
-                            ),
-                          ]),
-                        ]),
-                      ]),
-                      _vm._v(" "),
-                      _c(
-                        "tbody",
-                        _vm._l(mtp.mtp_pitchs, function (pitch) {
-                          return _c("tr", { key: pitch.pitch_id }, [
-                            _c("td", [_vm._v(_vm._s(pitch.pitch_num))]),
-                            _vm._v(" "),
-                            _c("td", [_vm._v(_vm._s(pitch.pitch_name))]),
-                            _vm._v(" "),
-                            _c("td", [_vm._v(_vm._s(pitch.pitch_height))]),
-                            _vm._v(" "),
-                            _c("td", [_vm._v(_vm._s(pitch.pitch_bolts))]),
-                            _vm._v(" "),
-                            pitch.pitch_or_grade != _vm.NULL
-                              ? _c("td", [
-                                  _vm._v(
-                                    "\n                            " +
-                                      _vm._s(pitch.pitch_grade_fr) +
-                                      " /\n                            " +
-                                      _vm._s(pitch.pitch_or_grade) +
-                                      "\n                        "
-                                  ),
-                                ])
-                              : _c("td", [
-                                  _vm._v(_vm._s(pitch.pitch_grade_fr)),
-                                ]),
-                            _vm._v(" "),
-                            pitch.pitch_or_grade != _vm.NULL
-                              ? _c("td", [
-                                  _vm._v(
-                                    "\n                            " +
-                                      _vm._s(
-                                        _vm.lead_grade_chart(
-                                          pitch.pitch_grade_fr
-                                        )
-                                      ) +
-                                      " /\n                            " +
-                                      _vm._s(
-                                        _vm.lead_grade_chart(
-                                          pitch.pitch_or_grade
-                                        )
-                                      ) +
-                                      "\n                        "
-                                  ),
-                                ])
-                              : _c("td", [
-                                  _vm._v(
-                                    "\n                            " +
-                                      _vm._s(
-                                        _vm.lead_grade_chart(
-                                          pitch.pitch_grade_fr
-                                        )
-                                      ) +
-                                      "\n                        "
-                                  ),
-                                ]),
-                          ])
-                        }),
-                        0
-                      ),
-                    ]
-                  ),
-                ]
-              )
-            }),
-          ],
-          2
-        )
-      }),
-      _vm._v(" "),
-      _c(
-        "stack-modal",
-        {
-          attrs: {
-            show: _vm.show_route_modal,
-            title: "Route detals",
-            "modal-class": ((_obj = {}), (_obj[_vm.ModalClass] = true), _obj),
-            saveButton: { visible: true },
-            cancelButton: {
-              title: "Close",
-              btnClass: { "btn btn-primary": true },
-            },
-          },
-          on: {
-            close: function ($event) {
-              _vm.show_route_modal = false
-            },
-          },
-        },
-        [
-          _c("div", { staticClass: "model-body" }, [
-            _c("div", { staticClass: "container" }, [
-              _c(
-                "div",
-                { staticClass: "row" },
-                [
-                  _c("h2", [_vm._v("Routes detals")]),
-                  _vm._v(" "),
-                  _vm._l(_vm.route_detals, function (route) {
-                    return _c(
-                      "span",
-                      { key: route.id, staticClass: "routes_detals" },
-                      [
-                        _c("p", { staticClass: "route_detal" }, [
-                          _vm._v("Name - " + _vm._s(route.name)),
-                        ]),
-                        _vm._v(" "),
-                        _c("p", { staticClass: "route_detal" }, [
-                          _vm._v(
-                            "\n                            Height - " +
-                              _vm._s(route.height) +
-                              "\n                        "
-                          ),
-                        ]),
-                        _vm._v(" "),
-                        _c("p", [_vm._v("Bolts - " + _vm._s(route.bolts))]),
-                        _vm._v(" "),
-                        route.bolter
-                          ? _c("p", { staticClass: "route_detal" }, [
-                              _vm._v(
-                                "\n                            Bolter - " +
-                                  _vm._s(route.bolter) +
-                                  "\n                        "
-                              ),
-                            ])
-                          : _vm._e(),
-                        _vm._v(" "),
-                        route.first_ascent
-                          ? _c("p", { staticClass: "route_detal" }, [
-                              _vm._v(
-                                "\n                            First ascent - " +
-                                  _vm._s(route.first_ascent) +
-                                  "\n                        "
-                              ),
-                            ])
-                          : _vm._e(),
-                      ]
-                    )
-                  }),
-                ],
-                2
-              ),
-            ]),
-          ]),
-          _vm._v(" "),
-          _c("div", { attrs: { slot: "modal-footer" }, slot: "modal-footer" }, [
-            _c("div", { staticClass: "modal-footer" }),
-          ]),
-        ]
-      ),
-      _vm._v(" "),
-      _c(
-        "stack-modal",
-        {
-          attrs: {
-            show: _vm.show_mtp_modal,
-            title: "Molty pitch",
-            "modal-class":
-              ((_obj$1 = {}), (_obj$1[_vm.modalClass] = true), _obj$1),
-            saveButton: {
-              visible: true,
-              title: "Save",
-              btnClass: { "btn btn-primary": true },
-            },
-            cancelButton: {
-              visible: false,
-              title: "Close",
-              btnClass: { "btn btn-danger": true },
-            },
-          },
-          on: {
-            close: function ($event) {
-              _vm.show_mtp_modal = false
-            },
-          },
-        },
-        [
-          _c("div", { staticClass: "model-body" }, [
-            _c("div", { staticClass: "container" }, [
-              _c(
-                "div",
-                { staticClass: "row" },
-                [
-                  _c("h2", [_vm._v("Multy-pitch detals")]),
-                  _vm._v(" "),
-                  _vm._l(_vm.mtp_detals, function (mtp) {
-                    return _c(
-                      "span",
-                      { key: mtp.id, staticClass: "routes_detals" },
-                      [
-                        _c("p", { staticClass: "route_detal" }, [
-                          _vm._v("Name - " + _vm._s(mtp.name)),
-                        ]),
-                        _vm._v(" "),
-                        _c("p", { staticClass: "route_detal" }, [
-                          _vm._v("Height - " + _vm._s(mtp.height)),
-                        ]),
-                      ]
-                    )
-                  }),
-                ],
-                2
-              ),
-            ]),
-          ]),
-          _vm._v(" "),
-          _c("div", { attrs: { slot: "modal-footer" }, slot: "modal-footer" }, [
-            _c("div", { staticClass: "modal-footer" }),
-          ]),
-        ]
-      ),
-    ],
-    2
-  )
-}
-var staticRenderFns = [
-  function () {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c(
-      "a",
-      { staticStyle: { "margin-top": "-5%", "font-size": "120%" } },
-      [_c("i", { staticClass: "fa fa-info", attrs: { "aria-hidden": "true" } })]
-    )
-  },
-  function () {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c(
-      "a",
-      { staticStyle: { "margin-top": "-5%", "font-size": "120%" } },
-      [_c("i", { staticClass: "fa fa-info", attrs: { "aria-hidden": "true" } })]
-    )
-  },
-  function () {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("h4", [_c("strong", [_vm._v("More information")])])
-  },
-]
-render._withStripped = true
-
-
-
-/***/ }),
-
 /***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/site/items/SimilarArticlesComponent.vue?vue&type=template&id=eb80741e&":
 /*!***********************************************************************************************************************************************************************************************************************************************!*\
   !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/site/items/SimilarArticlesComponent.vue?vue&type=template&id=eb80741e& ***!
@@ -6182,6 +6145,930 @@ var render = function () {
         : _vm._e(),
     ]),
   ])
+}
+var staticRenderFns = []
+render._withStripped = true
+
+
+
+/***/ }),
+
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/site/items/climbing_routes/SectorAndRoutesTabComponent.vue?vue&type=template&id=8ae71c78&":
+/*!******************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/site/items/climbing_routes/SectorAndRoutesTabComponent.vue?vue&type=template&id=8ae71c78& ***!
+  \******************************************************************************************************************************************************************************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "render": () => (/* binding */ render),
+/* harmony export */   "staticRenderFns": () => (/* binding */ staticRenderFns)
+/* harmony export */ });
+var render = function () {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(
+    "div",
+    { staticClass: "container", attrs: { id: "sectors" } },
+    [
+      _vm.spot_images.length > 0
+        ? _c(
+            "div",
+            { staticClass: "row" },
+            _vm._l(_vm.spot_images, function (spot_image) {
+              return _c(
+                "div",
+                {
+                  key: spot_image,
+                  class:
+                    "sector_images sector_images_" + _vm.spot_images.length,
+                },
+                [
+                  _c("openImg", {
+                    attrs: {
+                      img: "../../images/spot_rocks_img/" + spot_image.image,
+                      img_alt: spot_image.title,
+                    },
+                  }),
+                ],
+                1
+              )
+            }),
+            0
+          )
+        : _vm._e(),
+      _vm._v(" "),
+      _vm._l(_vm.climbing_area, function (area) {
+        return _c("div", { key: area, staticClass: "row" }, [
+          area["local_images"]
+            ? _c(
+                "span",
+                [
+                  _c("sector_and_local_area_images", {
+                    attrs: { sectors_and_images: area },
+                  }),
+                ],
+                1
+              )
+            : _c("span", [_c("sector", { attrs: { sector: area } })], 1),
+        ])
+      }),
+    ],
+    2
+  )
+}
+var staticRenderFns = []
+render._withStripped = true
+
+
+
+/***/ }),
+
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/site/items/climbing_routes/items/SectorComponent.vue?vue&type=template&id=0cab1a29&":
+/*!************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/site/items/climbing_routes/items/SectorComponent.vue?vue&type=template&id=0cab1a29& ***!
+  \************************************************************************************************************************************************************************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "render": () => (/* binding */ render),
+/* harmony export */   "staticRenderFns": () => (/* binding */ staticRenderFns)
+/* harmony export */ });
+var render = function () {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(
+    "div",
+    { staticClass: "row" },
+    [
+      _c("span", [
+        _c("h2", { staticStyle: { "font-size": "160%" } }, [
+          _vm._v(
+            "\n            " +
+              _vm._s(_vm.$t("sector name")) +
+              " -\n            "
+          ),
+          _c("strong", [_vm._v(_vm._s(_vm.sector.sector.name))]),
+        ]),
+      ]),
+      _vm._v(" "),
+      _c("div", { staticClass: "row" }, [
+        _c("div", { staticClass: "col-md-6" }, [
+          _vm.sector.sector.in_shade_after_10
+            ? _c("img", {
+                staticClass: "sun_svg",
+                attrs: {
+                  src: "../images/svg/in shade after 10.00 am.svg",
+                  alt: "In shade after 10.00 am",
+                  title: "In shade after 10.00 am",
+                },
+              })
+            : _vm._e(),
+          _vm._v(" "),
+          _vm.sector.sector.in_shade_after_15
+            ? _c("img", {
+                staticClass: "sun_svg",
+                attrs: {
+                  src: "../images/svg/in shade after 15.00 pm.svg",
+                  alt: "In shade after 15.00 pm",
+                  title: "In shade after 15.00 pm",
+                },
+              })
+            : _vm._e(),
+          _vm._v(" "),
+          _vm.sector.sector.in_the_shade_befornoon
+            ? _c("img", {
+                staticClass: "sun_svg",
+                attrs: {
+                  src: "../images/svg/in shade befor noon.svg",
+                  alt: "In shade befor noon",
+                  title: "In shade befor noon",
+                },
+              })
+            : _vm._e(),
+          _vm._v(" "),
+          _vm.sector.sector.in_the_shade_afternoon
+            ? _c("img", {
+                staticClass: "sun_svg",
+                attrs: {
+                  src: "../images/svg/in shade in the afternoon.svg",
+                  alt: "In shade in the afternoon",
+                  title: "In shade in the afternoon",
+                },
+              })
+            : _vm._e(),
+          _vm._v(" "),
+          _vm.sector.sector.all_day_in_shade
+            ? _c("img", {
+                staticClass: "sun_svg",
+                attrs: {
+                  src: "../images/svg/in the shade whole day.svg",
+                  alt: "In the shade whole day",
+                  title: "In the shade whole day",
+                },
+              })
+            : _vm._e(),
+          _vm._v(" "),
+          _vm.sector.sector.all_day_in_sun
+            ? _c("img", {
+                staticClass: "sun_svg",
+                attrs: {
+                  src: "../images/svg/in the sun the whole day.svg",
+                  alt: "In the sun the whole day",
+                  title: "In the sun the whole day",
+                },
+              })
+            : _vm._e(),
+        ]),
+        _vm._v(" "),
+        _c("div", { staticClass: "col-md-6" }, [
+          _vm.sector.sector.roof
+            ? _c("img", {
+                staticClass: "relief_svg",
+                attrs: {
+                  src: "../images/svg/roof.svg",
+                  alt: "Roof",
+                  title: "Roof",
+                },
+              })
+            : _vm._e(),
+          _vm._v(" "),
+          _vm.sector.sector.overhang
+            ? _c("img", {
+                staticClass: "relief_svg",
+                attrs: {
+                  src: "../images/svg/overhang.svg",
+                  alt: "Overhang",
+                  title: "Overhang",
+                },
+              })
+            : _vm._e(),
+          _vm._v(" "),
+          _vm.sector.sector.vertical
+            ? _c("img", {
+                staticClass: "relief_svg",
+                attrs: {
+                  src: "../images/svg/vertical.svg",
+                  alt: "Vertical",
+                  title: "Vertical",
+                },
+              })
+            : _vm._e(),
+          _vm._v(" "),
+          _vm.sector.sector.slabby
+            ? _c("img", {
+                staticClass: "relief_svg",
+                attrs: {
+                  src: "../images/svg/slabby.svg",
+                  alt: "Slabby",
+                  title: "Slabby",
+                },
+              })
+            : _vm._e(),
+        ]),
+      ]),
+      _vm._v(" "),
+      _c("div", { staticClass: "row" }, [
+        _c("div", { staticClass: "col-md-6" }, [
+          _vm.sector.sector.for_family
+            ? _c("img", {
+                staticClass: "sun_svg",
+                attrs: {
+                  src: "../images/svg/for family.svg",
+                  alt: "This sector recomendidi family climbing. It`s seifty for kids",
+                  title:
+                    "This sector recomendidi family climbing. It`s seifty for kids",
+                },
+              })
+            : _vm._e(),
+          _vm._v(" "),
+          _vm.sector.sector.for_kids
+            ? _c("img", {
+                staticClass: "sun_svg",
+                attrs: {
+                  src: "../images/svg/for kids.svg",
+                  alt: "This sector recomendidi for kids. It`a seifty for kids and poseble to kid climbing",
+                  title:
+                    "This sector recomendidi for kids. It`a seifty for kids and poseble to kid climbing",
+                },
+              })
+            : _vm._e(),
+        ]),
+        _vm._v(" "),
+        _vm.sector.sector.wolking_time
+          ? _c("div", { staticClass: "col-md-6" }, [
+              _c("span", { staticClass: "sector_walking_time" }, [
+                _vm._v(" ~ " + _vm._s(_vm.sector.sector.wolking_time) + "."),
+              ]),
+              _vm._v(" "),
+              _c("img", {
+                staticClass: "relief_svg",
+                attrs: {
+                  src: "../images/svg/walking.svg",
+                  alt: "Wolging time from car stoping to climbin sector.",
+                  title: "Wolging time from car stoping to climbin sector.",
+                },
+              }),
+            ])
+          : _vm._e(),
+      ]),
+      _vm._v(" "),
+      _c("span", { domProps: { innerHTML: _vm._s(_vm.sector.sector.text) } }),
+      _vm._v(" "),
+      _vm._l(_vm.sector.sector_imgs, function (image) {
+        return _c("openImg", {
+          key: image.id,
+          attrs: {
+            img: "../images/sector_img/" + image.image,
+            img_alt: image.image,
+            img_class:
+              "sector_images sector_images_" + _vm.sector.sector_imgs.length,
+          },
+        })
+      }),
+      _vm._v(" "),
+      _vm.sector.sport_routes.length > 0
+        ? _c("table", { staticClass: "table col-md-12 table table-hover" }, [
+            _c("tbody", [
+              _c("tr", [
+                _c("td", [_vm._v("N")]),
+                _vm._v(" "),
+                _c("td", [_vm._v(_vm._s(_vm.$t("route_tab name")))]),
+                _vm._v(" "),
+                _c("td", [_vm._v(_vm._s(_vm.$t("route_tab height")))]),
+                _vm._v(" "),
+                _c("td", [_vm._v(_vm._s(_vm.$t("route_tab bolts")))]),
+                _vm._v(" "),
+                _c("td", [_vm._v(_vm._s(_vm.$t("route_tab grade fr")))]),
+                _vm._v(" "),
+                _c("td", [_vm._v(_vm._s(_vm.$t("route_tab grade yds")))]),
+                _vm._v(" "),
+                _c("td", [_vm._v("Info")]),
+              ]),
+            ]),
+            _vm._v(" "),
+            _c(
+              "tbody",
+              _vm._l(_vm.sector.sport_routes, function (route) {
+                return _c("tr", { key: route.id }, [
+                  _c("td", [_vm._v(_vm._s(route.num))]),
+                  _vm._v(" "),
+                  _c(
+                    "td",
+                    {
+                      on: {
+                        click: function ($event) {
+                          return _vm.show_route_modal()
+                        },
+                      },
+                    },
+                    [_vm._v(_vm._s(route.name))]
+                  ),
+                  _vm._v(" "),
+                  _c("td", [_vm._v(_vm._s(route.height))]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v(_vm._s(route.bolts))]),
+                  _vm._v(" "),
+                  route.or_grade != _vm.NULL
+                    ? _c("td", [
+                        _vm._v(
+                          "\n                    " +
+                            _vm._s(route.grade) +
+                            " / " +
+                            _vm._s(route.or_grade) +
+                            "\n                "
+                        ),
+                      ])
+                    : _c("td", [_vm._v(_vm._s(route.grade))]),
+                  _vm._v(" "),
+                  route.or_grade != _vm.NULL
+                    ? _c("td", [
+                        _vm._v(
+                          "\n                    " +
+                            _vm._s(_vm.lead_grade_chart(route.grade)) +
+                            " /\n                    " +
+                            _vm._s(_vm.lead_grade_chart(route.or_grade)) +
+                            "\n                "
+                        ),
+                      ])
+                    : _c("td", [
+                        _vm._v(_vm._s(_vm.lead_grade_chart(route.grade))),
+                      ]),
+                  _vm._v(" "),
+                  _c(
+                    "td",
+                    {
+                      on: {
+                        click: function ($event) {
+                          return _vm.show_route_modal(route.id)
+                        },
+                      },
+                    },
+                    [_vm._m(0, true)]
+                  ),
+                ])
+              }),
+              0
+            ),
+          ])
+        : _vm._e(),
+      _vm._v(" "),
+      _vm.sector.boulder_route.length > 0
+        ? _c("table", { staticClass: "table col-md-12 table table-hover" }, [
+            _c("tbody", [
+              _c("tr", [
+                _c("td", [_vm._v("N")]),
+                _vm._v(" "),
+                _c("td", [_vm._v(_vm._s(_vm.$t("route_tab name")))]),
+                _vm._v(" "),
+                _c("td", [_vm._v(_vm._s(_vm.$t("route_tab height")))]),
+                _vm._v(" "),
+                _c("td", [_vm._v(_vm._s(_vm.$t("route_tab grade fr")))]),
+                _vm._v(" "),
+                _c("td", [_vm._v(_vm._s(_vm.$t("route_tab grade yds")))]),
+                _vm._v(" "),
+                _c("td", [_vm._v("Info")]),
+              ]),
+            ]),
+            _vm._v(" "),
+            _c(
+              "tbody",
+              _vm._l(_vm.sector.boulder_route, function (route) {
+                return _c("tr", { key: route.id }, [
+                  _c("td", [_vm._v(_vm._s(route.num))]),
+                  _vm._v(" "),
+                  _c(
+                    "td",
+                    {
+                      on: {
+                        click: function ($event) {
+                          return _vm.show_route_modal(route.id)
+                        },
+                      },
+                    },
+                    [
+                      _vm._v(
+                        "\n                    " +
+                          _vm._s(route.name) +
+                          "\n                "
+                      ),
+                    ]
+                  ),
+                  _vm._v(" "),
+                  _c("td", [_vm._v(_vm._s(route.height))]),
+                  _vm._v(" "),
+                  route.or_grade != _vm.NULL
+                    ? _c("td", [
+                        _vm._v(
+                          "\n                    " +
+                            _vm._s(_vm.boulder_grade_chart(route.grade)) +
+                            " /\n                    " +
+                            _vm._s(_vm.boulder_grade_chart(route.or_grade)) +
+                            "\n                "
+                        ),
+                      ])
+                    : _c("td", [
+                        _vm._v(
+                          "\n                    " +
+                            _vm._s(_vm.boulder_grade_chart(route.grade)) +
+                            "\n                "
+                        ),
+                      ]),
+                  _vm._v(" "),
+                  route.or_grade != _vm.NULL
+                    ? _c("td", [
+                        _vm._v(
+                          "\n                    " +
+                            _vm._s(route.grade) +
+                            " / " +
+                            _vm._s(route.or_grade) +
+                            "\n                "
+                        ),
+                      ])
+                    : _c("td", [_vm._v(_vm._s(route.grade))]),
+                  _vm._v(" "),
+                  _c(
+                    "td",
+                    {
+                      on: {
+                        click: function ($event) {
+                          return _vm.show_route_modal(route.id)
+                        },
+                      },
+                    },
+                    [_vm._m(1, true)]
+                  ),
+                ])
+              }),
+              0
+            ),
+          ])
+        : _vm._e(),
+      _vm._v(" "),
+      _vm._l(_vm.sector.mtps, function (mtp) {
+        return _c(
+          "span",
+          { key: mtp.id, attrs: { if: _vm.sector.mtps.length > 0 } },
+          [
+            _c("div", { staticClass: "col-md-8" }, [
+              _c("span", { staticClass: "mtp_name" }, [
+                _c("h3", [
+                  _vm._v(
+                    "\n                    " +
+                      _vm._s(_vm.$t("mtp name")) +
+                      " -\n                    "
+                  ),
+                  _c("strong", [_vm._v(_vm._s(mtp.mtp_name))]),
+                ]),
+              ]),
+            ]),
+            _vm._v(" "),
+            _c("div", { staticClass: "col-md-4" }, [
+              _c(
+                "a",
+                {
+                  attrs: {
+                    "data-toggle": "modal",
+                    "data-target": "#squarespaceModal_mtp_info_",
+                  },
+                  on: {
+                    click: function ($event) {
+                      return _vm.show_mtp_madel(mtp.mtp_id)
+                    },
+                  },
+                },
+                [_vm._m(2, true)]
+              ),
+            ]),
+            _vm._v(" "),
+            _c("table", { staticClass: "table col-md-12 table table-hover" }, [
+              _c("tbody", [
+                _c("tr", [
+                  _c("td", [_vm._v("N")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v(_vm._s(_vm.$t("route_tab name")))]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v(_vm._s(_vm.$t("route_tab height")))]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v(_vm._s(_vm.$t("route_tab bolts")))]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v(_vm._s(_vm.$t("route_tab grade fr")))]),
+                  _vm._v(" "),
+                  _c("td", { staticClass: "display-none-720px" }, [
+                    _vm._v(
+                      "\n                        " +
+                        _vm._s(_vm.$t("route_tab grade yds")) +
+                        "\n                    "
+                    ),
+                  ]),
+                ]),
+              ]),
+              _vm._v(" "),
+              _c(
+                "tbody",
+                _vm._l(mtp.mtp_pitchs, function (pitch) {
+                  return _c("tr", { key: pitch.pitch_id }, [
+                    _c("td", [_vm._v(_vm._s(pitch.num))]),
+                    _vm._v(" "),
+                    _c("td", [_vm._v(_vm._s(pitch.name))]),
+                    _vm._v(" "),
+                    _c("td", [_vm._v(_vm._s(pitch.height))]),
+                    _vm._v(" "),
+                    _c("td", [_vm._v(_vm._s(pitch.bolts))]),
+                    _vm._v(" "),
+                    pitch.or_grade != _vm.NULL
+                      ? _c("td", [
+                          _vm._v(
+                            "\n                        " +
+                              _vm._s(pitch.grade) +
+                              " /\n                        " +
+                              _vm._s(pitch.or_grade) +
+                              "\n                    "
+                          ),
+                        ])
+                      : _c("td", [_vm._v(_vm._s(pitch.grade))]),
+                    _vm._v(" "),
+                    pitch.or_grade != _vm.NULL
+                      ? _c("td", [
+                          _vm._v(
+                            "\n                        " +
+                              _vm._s(_vm.lead_grade_chart(pitch.grade)) +
+                              " /\n                        " +
+                              _vm._s(_vm.lead_grade_chart(pitch.or_grade)) +
+                              "\n                    "
+                          ),
+                        ])
+                      : _c("td", [
+                          _vm._v(
+                            "\n                        " +
+                              _vm._s(_vm.lead_grade_chart(pitch.grade)) +
+                              "\n                    "
+                          ),
+                        ]),
+                  ])
+                }),
+                0
+              ),
+            ]),
+          ]
+        )
+      }),
+      _vm._v(" "),
+      _c("route_modal", { ref: "open_route_modal" }),
+      _vm._v(" "),
+      _c("mtp_modal", { ref: "open_mtp_modal" }),
+    ],
+    2
+  )
+}
+var staticRenderFns = [
+  function () {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c(
+      "a",
+      { staticStyle: { "margin-top": "-5%", "font-size": "120%" } },
+      [_c("i", { staticClass: "fa fa-info", attrs: { "aria-hidden": "true" } })]
+    )
+  },
+  function () {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c(
+      "a",
+      { staticStyle: { "margin-top": "-5%", "font-size": "120%" } },
+      [_c("i", { staticClass: "fa fa-info", attrs: { "aria-hidden": "true" } })]
+    )
+  },
+  function () {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("h4", [_c("strong", [_vm._v("More information")])])
+  },
+]
+render._withStripped = true
+
+
+
+/***/ }),
+
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/site/items/climbing_routes/items/SectorsAndAreaLocalImageComponrnt.vue?vue&type=template&id=805b6b16&scoped=true&":
+/*!******************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/site/items/climbing_routes/items/SectorsAndAreaLocalImageComponrnt.vue?vue&type=template&id=805b6b16&scoped=true& ***!
+  \******************************************************************************************************************************************************************************************************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "render": () => (/* binding */ render),
+/* harmony export */   "staticRenderFns": () => (/* binding */ staticRenderFns)
+/* harmony export */ });
+var render = function () {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("span", [
+    _vm.sectors_and_images.local_images.length > 0
+      ? _c(
+          "div",
+          { staticClass: "row" },
+          _vm._l(_vm.sectors_and_images.local_images, function (spot_image) {
+            return _c(
+              "div",
+              {
+                key: spot_image,
+                class:
+                  "sector_images sector_images_" +
+                  _vm.sectors_and_images.local_images.length,
+              },
+              [
+                _c("openImg", {
+                  attrs: {
+                    img: "../../images/sector_local_img/" + spot_image.image,
+                    img_alt: spot_image.title,
+                  },
+                }),
+              ],
+              1
+            )
+          }),
+          0
+        )
+      : _vm._e(),
+    _vm._v(" "),
+    _vm.sectors_and_images.sectors.length > 0
+      ? _c(
+          "div",
+          { staticClass: "row" },
+          _vm._l(_vm.sectors_and_images.sectors, function (sector) {
+            return _c(
+              "div",
+              { key: sector },
+              [_c("sector", { attrs: { sector: sector } })],
+              1
+            )
+          }),
+          0
+        )
+      : _vm._e(),
+  ])
+}
+var staticRenderFns = []
+render._withStripped = true
+
+
+
+/***/ }),
+
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/site/items/climbing_routes/items/modals/MTPModalComponent.vue?vue&type=template&id=742ab9a4&":
+/*!*********************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/site/items/climbing_routes/items/modals/MTPModalComponent.vue?vue&type=template&id=742ab9a4& ***!
+  \*********************************************************************************************************************************************************************************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "render": () => (/* binding */ render),
+/* harmony export */   "staticRenderFns": () => (/* binding */ staticRenderFns)
+/* harmony export */ });
+var render = function () {
+  var _obj
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(
+    "stack-modal",
+    {
+      attrs: {
+        show: _vm.is_show_mtp_modal,
+        title: "Molty pitch",
+        "modal-class": ((_obj = {}), (_obj[_vm.modalClass] = true), _obj),
+        saveButton: {
+          visible: true,
+          title: "Save",
+          btnClass: { "btn btn-primary": true },
+        },
+        cancelButton: {
+          visible: false,
+          title: "Close",
+          btnClass: { "btn btn-danger": true },
+        },
+      },
+      on: {
+        close: function ($event) {
+          _vm.is_show_mtp_modal = false
+        },
+      },
+    },
+    [
+      _c("div", { staticClass: "model-body" }, [
+        _c("div", { staticClass: "container" }, [
+          _c("div", { staticClass: "row" }, [
+            _c("h2", [_vm._v("Multy-pitch detals")]),
+            _vm._v(" "),
+            _c("span", { staticClass: "routes_detals" }, [
+              _c("p", { staticClass: "route_detal" }, [
+                _vm._v("Name - " + _vm._s(_vm.mtp_detals.mtp.name)),
+              ]),
+              _vm._v(" "),
+              _c("p", { staticClass: "route_detal" }, [
+                _vm._v("Height - " + _vm._s(_vm.mtp_detals.mtp.height)),
+              ]),
+            ]),
+          ]),
+          _vm._v(" "),
+          _c("table", { staticClass: "table col-md-12 table table-hover" }, [
+            _c("tbody", [
+              _c("tr", [
+                _c("td", [_vm._v("N")]),
+                _vm._v(" "),
+                _c("td", [_vm._v(_vm._s(_vm.$t("route_tab name")))]),
+                _vm._v(" "),
+                _c("td", [_vm._v(_vm._s(_vm.$t("route_tab height")))]),
+                _vm._v(" "),
+                _c("td", [_vm._v(_vm._s(_vm.$t("route_tab bolts")))]),
+                _vm._v(" "),
+                _c("td", [_vm._v(_vm._s(_vm.$t("route_tab grade fr")))]),
+                _vm._v(" "),
+                _c("td", { staticClass: "display-none-720px" }, [
+                  _vm._v(
+                    "\n                                " +
+                      _vm._s(_vm.$t("route_tab grade yds")) +
+                      "\n                            "
+                  ),
+                ]),
+              ]),
+            ]),
+            _vm._v(" "),
+            _c(
+              "tbody",
+              _vm._l(_vm.mtp_detals.mtp_pitchs, function (pitch) {
+                return _c("tr", { key: pitch.pitch_id }, [
+                  _c("td", [_vm._v(_vm._s(pitch.num))]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v(_vm._s(pitch.name))]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v(_vm._s(pitch.height))]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v(_vm._s(pitch.bolts))]),
+                  _vm._v(" "),
+                  pitch.or_grade != _vm.NULL
+                    ? _c("td", [
+                        _vm._v(
+                          "\n                                " +
+                            _vm._s(pitch.grade) +
+                            " /\n                                " +
+                            _vm._s(pitch.or_grade) +
+                            "\n                            "
+                        ),
+                      ])
+                    : _c("td", [_vm._v(_vm._s(pitch.grade))]),
+                  _vm._v(" "),
+                  pitch.or_grade != _vm.NULL
+                    ? _c("td", [
+                        _vm._v(
+                          "\n                                " +
+                            _vm._s(_vm.lead_grade_chart(pitch.grade)) +
+                            " /\n                                " +
+                            _vm._s(_vm.lead_grade_chart(pitch.or_grade)) +
+                            "\n                            "
+                        ),
+                      ])
+                    : _c("td", [
+                        _vm._v(
+                          "\n                                " +
+                            _vm._s(_vm.lead_grade_chart(pitch.grade)) +
+                            "\n                            "
+                        ),
+                      ]),
+                ])
+              }),
+              0
+            ),
+          ]),
+        ]),
+      ]),
+      _vm._v(" "),
+      _c("div", { attrs: { slot: "modal-footer" }, slot: "modal-footer" }, [
+        _c("div", { staticClass: "modal-footer" }),
+      ]),
+    ]
+  )
+}
+var staticRenderFns = []
+render._withStripped = true
+
+
+
+/***/ }),
+
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/site/items/climbing_routes/items/modals/RouteModalComponent.vue?vue&type=template&id=1509a2e4&":
+/*!***********************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/site/items/climbing_routes/items/modals/RouteModalComponent.vue?vue&type=template&id=1509a2e4& ***!
+  \***********************************************************************************************************************************************************************************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "render": () => (/* binding */ render),
+/* harmony export */   "staticRenderFns": () => (/* binding */ staticRenderFns)
+/* harmony export */ });
+var render = function () {
+  var _obj
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(
+    "stack-modal",
+    {
+      attrs: {
+        show: _vm.is_show_route_modal,
+        title: "Route detals",
+        "modal-class": ((_obj = {}), (_obj[_vm.ModalClass] = true), _obj),
+        saveButton: { visible: true },
+        cancelButton: {
+          title: "Close",
+          btnClass: { "btn btn-primary": true },
+        },
+      },
+      on: {
+        close: function ($event) {
+          _vm.is_show_route_modal = false
+        },
+      },
+    },
+    [
+      _c("div", { staticClass: "model-body" }, [
+        _c("div", { staticClass: "container" }, [
+          _c(
+            "div",
+            { staticClass: "row" },
+            [
+              _c("h2", [_vm._v("Routes detals")]),
+              _vm._v(" "),
+              _vm._l(_vm.route_detals, function (route) {
+                return _c(
+                  "span",
+                  { key: route.id, staticClass: "routes_detals" },
+                  [
+                    _c("p", { staticClass: "route_detal" }, [
+                      _vm._v("Name - " + _vm._s(route.name)),
+                    ]),
+                    _vm._v(" "),
+                    _c("p", { staticClass: "route_detal" }, [
+                      _vm._v(
+                        "\n                            Height - " +
+                          _vm._s(route.height) +
+                          "\n                        "
+                      ),
+                    ]),
+                    _vm._v(" "),
+                    _c("p", [_vm._v("Bolts - " + _vm._s(route.bolts))]),
+                    _vm._v(" "),
+                    route.bolter
+                      ? _c("p", { staticClass: "route_detal" }, [
+                          _vm._v(
+                            "\n                            Bolter - " +
+                              _vm._s(route.bolter) +
+                              "\n                        "
+                          ),
+                        ])
+                      : _vm._e(),
+                    _vm._v(" "),
+                    route.first_ascent
+                      ? _c("p", { staticClass: "route_detal" }, [
+                          _vm._v(
+                            "\n                            First ascent - " +
+                              _vm._s(route.first_ascent) +
+                              "\n                        "
+                          ),
+                        ])
+                      : _vm._e(),
+                  ]
+                )
+              }),
+            ],
+            2
+          ),
+        ]),
+      ]),
+      _vm._v(" "),
+      _c("div", { attrs: { slot: "modal-footer" }, slot: "modal-footer" }, [
+        _c("div", { staticClass: "modal-footer" }),
+      ]),
+    ]
+  )
 }
 var staticRenderFns = []
 render._withStripped = true

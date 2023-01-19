@@ -56,7 +56,7 @@
                             </td>
                             <td>|</td>
                             <td>
-                                <button type="button" class="btn btn-danger" @click="del_user_pemisino_from_db(permission.id)">Delete</button>
+                                <button type="button" class="btn btn-danger" @click="del_user_pemisino_from_db(permission.id)"><i class="fa fa-trash" aria-hidden="true"></i></button>
                             </td>
                         </tr>
                     </tbody>
@@ -87,7 +87,7 @@
                             </td>
                             <td>|</td>
                             <td>
-                                <button type="button" class="btn btn-danger" @click="del_bisnes_value(permission.id)">Delete</button>
+                                <button type="button" class="btn btn-danger" @click="del_bisnes_value(permission.id)"><i class="fa fa-trash" aria-hidden="true"></i></button>
                             </td>
                         </tr>
                     </tbody>

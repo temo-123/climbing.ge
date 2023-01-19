@@ -13,4 +13,9 @@ class Sector_local_image extends Model
     {
         return $this->belongsToMany(Sector::class, 'sector_local_image_sector', 'image_id', 'sector_id');
     }
+
+    public function image_sector()
+    {
+		return $this->hasMany(Sector_local_image_sector::class, 'image_id', 'id');
+    }
 }

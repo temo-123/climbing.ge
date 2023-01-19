@@ -16,13 +16,13 @@
 
         <td>|</td>
         <td>
-            <router-link class="btn btn-primary" :to="{ name: 'localBisnesEdit', params: { id: table_info.id } }" >Edit</router-link>
+            <router-link class="btn btn-primary" :to="{ name: 'localBisnesEdit', params: { id: table_info.id } }" ><i class="fa fa-pencil" aria-hidden="true"></i></router-link>
         </td>
         
         <td>|</td>
         
         <td>
-            <button type="submit" class="btn btn-danger" @click="del_bisnes(table_info.id)">Delete</button>
+            <button type="submit" class="btn btn-danger" @click="del_bisnes(table_info.id)"><i class="fa fa-trash" aria-hidden="true"></i></button>
         </td>
     </tr>
 </template>

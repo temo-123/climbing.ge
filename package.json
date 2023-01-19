@@ -64,6 +64,7 @@
         "npm": "^8.12.1",
         "paper": "^0.12.15",
         "path": "^0.12.7",
+        "qrcanvas-vue": "^2.1.1",
         "radium": "^0.26.1",
         "react-content-loader": "^6.2.0",
         "save": "^2.4.0",

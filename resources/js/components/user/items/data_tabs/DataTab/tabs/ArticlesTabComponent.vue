@@ -27,19 +27,19 @@
         
         <td>|</td>
 
-        <td v-if="table_name == 'Users'">
+        <!-- <td v-if="table_name == 'Users'">
             <button class="btn btn-primary" @click="show_parmission_edit_madel(table_info.id)">Edit roles</button>
         </td>
         <td v-if="table_name == 'Orders'">
             <button class="btn btn-primary" @click="show_order_status_edit_madel(table_info.id)">Edit Status</button>
-        </td>
-        <td v-else>
-            <router-link class="btn btn-primary" :to="{ name: 'articleEdit', params: { id: table_info.id } }">Edit</router-link>
+        </td> -->
+        <td>
+            <router-link class="btn btn-primary" :to="{ name: 'articleEdit', params: { id: table_info.id } }"><i class="fa fa-pencil" aria-hidden="true"></i></router-link>
         </td>
         
         <td>|</td>
         <td>
-            <button type="submit" class="btn btn-danger" @click="del_article(table_info.id)">Delete</button>
+            <button type="submit" class="btn btn-danger" @click="del_article(table_info.id)"><i class="fa fa-trash" aria-hidden="true"></i></button>
         </td>
     </tr>
 </template>

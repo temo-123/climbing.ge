@@ -127,7 +127,6 @@ export default {
                 // data: window.location.href,
                 data: "",
                 padding: 8,
-                cellSize: 8,
                 correctLevel: 'H',
             },
         };

@@ -56,9 +56,27 @@ class MTPController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    // public function show($id)
+    // {
+    //     return Mtp::where('id',strip_tags($id))->get();
+    // }
+
+    public function get_mtp_for_modal(Request $request)
     {
-        return Mtp::where('id',strip_tags($id))->get();
+        $mtp = Mtp::where('id',strip_tags($request->mtp_id))->first();
+        $mtp_pitchs = $mtp->pitchs;
+        // dd($mtp_pitchs);
+
+        $mtp_model_info = [];
+
+        array_push($mtp_model_info, 
+            array(
+                'mtp' => $mtp,
+                'mtp_pitchs' => $mtp_pitchs,
+            )
+        );
+
+        return $mtp_model_info[0];
     }
 
     /**

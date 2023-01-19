@@ -1273,10 +1273,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
-/* harmony import */ var vue_slicksort__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vue-slicksort */ "./node_modules/vue-slicksort/dist/vue-slicksort.umd.js");
-/* harmony import */ var vue_slicksort__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(vue_slicksort__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var _innologica_vue_stackable_modal__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @innologica/vue-stackable-modal */ "./node_modules/@innologica/vue-stackable-modal/dist/vue-stackable-modal.umd.min.js");
-/* harmony import */ var _innologica_vue_stackable_modal__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_innologica_vue_stackable_modal__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var _innologica_vue_stackable_modal__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @innologica/vue-stackable-modal */ "./node_modules/@innologica/vue-stackable-modal/dist/vue-stackable-modal.umd.min.js");
+/* harmony import */ var _innologica_vue_stackable_modal__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_innologica_vue_stackable_modal__WEBPACK_IMPORTED_MODULE_0__);
 //
 //
 //
@@ -1357,8 +1355,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
- //https://github.com/Jexordexan/vue-slicksort     https://www.npmjs.com/package/vue-slicksort/v/2.0.0-alpha.2?activeTab=versions
-
+// import { SlickList, SlickItem } from 'vue-slicksort'; //https://github.com/Jexordexan/vue-slicksort     https://www.npmjs.com/package/vue-slicksort/v/2.0.0-alpha.2?activeTab=versions
  //https://innologica.github.io/vue-stackable-modal/#sample-css
 // import { ContainerMixin, ElementMixin } from 'vue-slicksort'; //
 
@@ -1366,9 +1363,9 @@ __webpack_require__.r(__webpack_exports__);
   props: [// 'show_sector_modal',
   ],
   components: {
-    StackModal: (_innologica_vue_stackable_modal__WEBPACK_IMPORTED_MODULE_1___default()),
-    SlickItem: vue_slicksort__WEBPACK_IMPORTED_MODULE_0__.SlickItem,
-    SlickList: vue_slicksort__WEBPACK_IMPORTED_MODULE_0__.SlickList
+    StackModal: (_innologica_vue_stackable_modal__WEBPACK_IMPORTED_MODULE_0___default()) // SlickItem,
+    // SlickList,
+
   },
   data: function data() {
     return {
@@ -11361,57 +11358,27 @@ var render = function () {
     _vm._v(" "),
     _c("td", [_vm._v("|")]),
     _vm._v(" "),
-    _vm.table_name == "Users"
-      ? _c("td", [
-          _c(
-            "button",
-            {
-              staticClass: "btn btn-primary",
-              on: {
-                click: function ($event) {
-                  return _vm.show_parmission_edit_madel(_vm.table_info.id)
-                },
-              },
+    _c(
+      "td",
+      [
+        _c(
+          "router-link",
+          {
+            staticClass: "btn btn-primary",
+            attrs: {
+              to: { name: "articleEdit", params: { id: _vm.table_info.id } },
             },
-            [_vm._v("Edit roles")]
-          ),
-        ])
-      : _vm._e(),
-    _vm._v(" "),
-    _vm.table_name == "Orders"
-      ? _c("td", [
-          _c(
-            "button",
-            {
-              staticClass: "btn btn-primary",
-              on: {
-                click: function ($event) {
-                  return _vm.show_order_status_edit_madel(_vm.table_info.id)
-                },
-              },
-            },
-            [_vm._v("Edit Status")]
-          ),
-        ])
-      : _c(
-          "td",
+          },
           [
-            _c(
-              "router-link",
-              {
-                staticClass: "btn btn-primary",
-                attrs: {
-                  to: {
-                    name: "articleEdit",
-                    params: { id: _vm.table_info.id },
-                  },
-                },
-              },
-              [_vm._v("Edit")]
-            ),
-          ],
-          1
+            _c("i", {
+              staticClass: "fa fa-pencil",
+              attrs: { "aria-hidden": "true" },
+            }),
+          ]
         ),
+      ],
+      1
+    ),
     _vm._v(" "),
     _c("td", [_vm._v("|")]),
     _vm._v(" "),
@@ -11427,7 +11394,12 @@ var render = function () {
             },
           },
         },
-        [_vm._v("Delete")]
+        [
+          _c("i", {
+            staticClass: "fa fa-trash",
+            attrs: { "aria-hidden": "true" },
+          }),
+        ]
       ),
     ]),
   ])
@@ -11489,7 +11461,14 @@ var render = function () {
               },
             },
           },
-          [_c("button", { staticClass: "btn btn-primary " }, [_vm._v("Edit")])]
+          [
+            _c("button", { staticClass: "btn btn-primary " }, [
+              _c("i", {
+                staticClass: "fa fa-pencil",
+                attrs: { "aria-hidden": "true" },
+              }),
+            ]),
+          ]
         ),
       ],
       1
@@ -11509,7 +11488,12 @@ var render = function () {
             },
           },
         },
-        [_vm._v("Delete")]
+        [
+          _c("i", {
+            staticClass: "fa fa-trash",
+            attrs: { "aria-hidden": "true" },
+          }),
+        ]
       ),
     ]),
   ])
@@ -11921,7 +11905,12 @@ var render = function () {
               to: { name: "eventEdit", params: { id: _vm.table_info.id } },
             },
           },
-          [_vm._v("Edit")]
+          [
+            _c("i", {
+              staticClass: "fa fa-pencil",
+              attrs: { "aria-hidden": "true" },
+            }),
+          ]
         ),
       ],
       1
@@ -11941,7 +11930,12 @@ var render = function () {
             },
           },
         },
-        [_vm._v("Delete")]
+        [
+          _c("i", {
+            staticClass: "fa fa-trash",
+            attrs: { "aria-hidden": "true" },
+          }),
+        ]
       ),
     ]),
   ])
@@ -11997,7 +11991,12 @@ var render = function () {
               },
             },
           },
-          [_vm._v("Edit")]
+          [
+            _c("i", {
+              staticClass: "fa fa-pencil",
+              attrs: { "aria-hidden": "true" },
+            }),
+          ]
         ),
       ]),
       _vm._v(" "),
@@ -12015,7 +12014,12 @@ var render = function () {
               },
             },
           },
-          [_vm._v("Delete")]
+          [
+            _c("i", {
+              staticClass: "fa fa-trash",
+              attrs: { "aria-hidden": "true" },
+            }),
+          ]
         ),
       ]),
       _vm._v(" "),
@@ -12233,7 +12237,12 @@ var render = function () {
               },
             },
           },
-          [_vm._v("Edit")]
+          [
+            _c("i", {
+              staticClass: "fa fa-pencil",
+              attrs: { "aria-hidden": "true" },
+            }),
+          ]
         ),
       ],
       1
@@ -12253,7 +12262,12 @@ var render = function () {
             },
           },
         },
-        [_vm._v("Delete")]
+        [
+          _c("i", {
+            staticClass: "fa fa-trash",
+            attrs: { "aria-hidden": "true" },
+          }),
+        ]
       ),
     ]),
   ])
@@ -12317,7 +12331,12 @@ var render = function () {
                 to: { name: "MTPEdit", params: { id: _vm.table_info.id } },
               },
             },
-            [_vm._v("Edit")]
+            [
+              _c("i", {
+                staticClass: "fa fa-pencil",
+                attrs: { "aria-hidden": "true" },
+              }),
+            ]
           ),
         ],
         1
@@ -12337,7 +12356,12 @@ var render = function () {
               },
             },
           },
-          [_vm._v("Delete")]
+          [
+            _c("i", {
+              staticClass: "fa fa-trash",
+              attrs: { "aria-hidden": "true" },
+            }),
+          ]
         ),
       ]),
       _vm._v(" "),
@@ -12406,7 +12430,12 @@ var render = function () {
               },
             },
           },
-          [_vm._v("Edit")]
+          [
+            _c("i", {
+              staticClass: "fa fa-pencil",
+              attrs: { "aria-hidden": "true" },
+            }),
+          ]
         ),
       ],
       1
@@ -12426,7 +12455,12 @@ var render = function () {
             },
           },
         },
-        [_vm._v("Delete")]
+        [
+          _c("i", {
+            staticClass: "fa fa-trash",
+            attrs: { "aria-hidden": "true" },
+          }),
+        ]
       ),
     ]),
   ])
@@ -13444,7 +13478,12 @@ var render = function () {
               to: { name: "MTPPitchEdit", params: { id: _vm.table_info.id } },
             },
           },
-          [_vm._v("Edit")]
+          [
+            _c("i", {
+              staticClass: "fa fa-pencil",
+              attrs: { "aria-hidden": "true" },
+            }),
+          ]
         ),
       ],
       1
@@ -13464,7 +13503,12 @@ var render = function () {
             },
           },
         },
-        [_vm._v("Delete")]
+        [
+          _c("i", {
+            staticClass: "fa fa-trash",
+            attrs: { "aria-hidden": "true" },
+          }),
+        ]
       ),
     ]),
   ])
@@ -13525,7 +13569,12 @@ var render = function () {
             },
           },
         },
-        [_vm._v("Delete")]
+        [
+          _c("i", {
+            staticClass: "fa fa-trash",
+            attrs: { "aria-hidden": "true" },
+          }),
+        ]
       ),
     ]),
   ])
@@ -13588,7 +13637,12 @@ var render = function () {
             type: "submit",
           },
         },
-        [_vm._v("Edit")]
+        [
+          _c("i", {
+            staticClass: "fa fa-pencil",
+            attrs: { "aria-hidden": "true" },
+          }),
+        ]
       ),
     ]),
     _vm._v(" "),
@@ -13606,7 +13660,12 @@ var render = function () {
             },
           },
         },
-        [_vm._v("Delete")]
+        [
+          _c("i", {
+            staticClass: "fa fa-trash",
+            attrs: { "aria-hidden": "true" },
+          }),
+        ]
       ),
     ]),
   ])
@@ -13697,7 +13756,12 @@ var render = function () {
               },
             },
           },
-          [_vm._v("Edit")]
+          [
+            _c("i", {
+              staticClass: "fa fa-pencil",
+              attrs: { "aria-hidden": "true" },
+            }),
+          ]
         ),
       ],
       1
@@ -13717,7 +13781,12 @@ var render = function () {
             },
           },
         },
-        [_vm._v("Delete")]
+        [
+          _c("i", {
+            staticClass: "fa fa-trash",
+            attrs: { "aria-hidden": "true" },
+          }),
+        ]
       ),
     ]),
   ])
@@ -13788,7 +13857,12 @@ var render = function () {
               },
             },
           },
-          [_vm._v("Edit")]
+          [
+            _c("i", {
+              staticClass: "fa fa-pencil",
+              attrs: { "aria-hidden": "true" },
+            }),
+          ]
         ),
       ]),
       _vm._v(" "),
@@ -13806,7 +13880,12 @@ var render = function () {
               },
             },
           },
-          [_vm._v("Delete")]
+          [
+            _c("i", {
+              staticClass: "fa fa-trash",
+              attrs: { "aria-hidden": "true" },
+            }),
+          ]
         ),
       ]),
       _vm._v(" "),
@@ -14140,7 +14219,12 @@ var render = function () {
               },
             },
           },
-          [_vm._v("Edit")]
+          [
+            _c("i", {
+              staticClass: "fa fa-pencil",
+              attrs: { "aria-hidden": "true" },
+            }),
+          ]
         ),
       ],
       1
@@ -14160,7 +14244,12 @@ var render = function () {
             },
           },
         },
-        [_vm._v("Delete")]
+        [
+          _c("i", {
+            staticClass: "fa fa-trash",
+            attrs: { "aria-hidden": "true" },
+          }),
+        ]
       ),
     ]),
   ])
@@ -14228,7 +14317,12 @@ var render = function () {
               },
             },
           },
-          [_vm._v(" Edit ")]
+          [
+            _c("i", {
+              staticClass: "fa fa-pencil",
+              attrs: { "aria-hidden": "true" },
+            }),
+          ]
         ),
       ]),
       _vm._v(" "),
@@ -14246,7 +14340,12 @@ var render = function () {
               },
             },
           },
-          [_vm._v("Delete")]
+          [
+            _c("i", {
+              staticClass: "fa fa-trash",
+              attrs: { "aria-hidden": "true" },
+            }),
+          ]
         ),
       ]),
       _vm._v(" "),
@@ -14401,7 +14500,12 @@ var render = function () {
                                 },
                               },
                             },
-                            [_vm._v("Delete")]
+                            [
+                              _c("i", {
+                                staticClass: "fa fa-trash",
+                                attrs: { "aria-hidden": "true" },
+                              }),
+                            ]
                           ),
                           _vm._v("\n                        "),
                         ]),
@@ -14519,7 +14623,12 @@ var render = function () {
                                 },
                               },
                             },
-                            [_vm._v("Delete")]
+                            [
+                              _c("i", {
+                                staticClass: "fa fa-trash",
+                                attrs: { "aria-hidden": "true" },
+                              }),
+                            ]
                           ),
                           _vm._v("\n                        "),
                         ]),
@@ -14621,7 +14730,12 @@ var render = function () {
               to: { name: "routeEdit", params: { id: _vm.table_info.id } },
             },
           },
-          [_vm._v("Edit")]
+          [
+            _c("i", {
+              staticClass: "fa fa-pencil",
+              attrs: { "aria-hidden": "true" },
+            }),
+          ]
         ),
       ],
       1
@@ -14641,7 +14755,12 @@ var render = function () {
             },
           },
         },
-        [_vm._v("Delete")]
+        [
+          _c("i", {
+            staticClass: "fa fa-trash",
+            attrs: { "aria-hidden": "true" },
+          }),
+        ]
       ),
     ]),
   ])
@@ -14710,7 +14829,12 @@ var render = function () {
               },
             },
           },
-          [_vm._v("Edit")]
+          [
+            _c("i", {
+              staticClass: "fa fa-pencil",
+              attrs: { "aria-hidden": "true" },
+            }),
+          ]
         ),
       ]),
       _vm._v(" "),
@@ -14728,7 +14852,12 @@ var render = function () {
               },
             },
           },
-          [_vm._v("Delete")]
+          [
+            _c("i", {
+              staticClass: "fa fa-trash",
+              attrs: { "aria-hidden": "true" },
+            }),
+          ]
         ),
       ]),
       _vm._v(" "),
@@ -15041,7 +15170,14 @@ var render = function () {
               },
             },
           },
-          [_c("button", { staticClass: "btn btn-primary " }, [_vm._v("Edit")])]
+          [
+            _c("button", { staticClass: "btn btn-primary " }, [
+              _c("i", {
+                staticClass: "fa fa-pencil",
+                attrs: { "aria-hidden": "true" },
+              }),
+            ]),
+          ]
         ),
       ],
       1
@@ -15061,7 +15197,12 @@ var render = function () {
             },
           },
         },
-        [_vm._v("Delete")]
+        [
+          _c("i", {
+            staticClass: "fa fa-trash",
+            attrs: { "aria-hidden": "true" },
+          }),
+        ]
       ),
     ]),
   ])
@@ -15140,7 +15281,12 @@ var render = function () {
                 to: { name: "sectorEdit", params: { id: _vm.table_info.id } },
               },
             },
-            [_vm._v("Edit")]
+            [
+              _c("i", {
+                staticClass: "fa fa-pencil",
+                attrs: { "aria-hidden": "true" },
+              }),
+            ]
           ),
         ],
         1
@@ -15160,7 +15306,12 @@ var render = function () {
               },
             },
           },
-          [_vm._v("Delete")]
+          [
+            _c("i", {
+              staticClass: "fa fa-trash",
+              attrs: { "aria-hidden": "true" },
+            }),
+          ]
         ),
       ]),
       _vm._v(" "),
@@ -15232,7 +15383,12 @@ var render = function () {
               to: { name: "serviceEdit", params: { id: _vm.table_info.id } },
             },
           },
-          [_vm._v("Edit")]
+          [
+            _c("i", {
+              staticClass: "fa fa-pencil",
+              attrs: { "aria-hidden": "true" },
+            }),
+          ]
         ),
       ],
       1
@@ -15252,7 +15408,12 @@ var render = function () {
             },
           },
         },
-        [_vm._v("Delete")]
+        [
+          _c("i", {
+            staticClass: "fa fa-trash",
+            attrs: { "aria-hidden": "true" },
+          }),
+        ]
       ),
     ]),
   ])
@@ -15458,7 +15619,12 @@ var render = function () {
                                 },
                               },
                             },
-                            [_vm._v("Delete")]
+                            [
+                              _c("i", {
+                                staticClass: "fa fa-trash",
+                                attrs: { "aria-hidden": "true" },
+                              }),
+                            ]
                           ),
                           _vm._v("\n                        "),
                         ]),
@@ -15578,7 +15744,12 @@ var render = function () {
                                 },
                               },
                             },
-                            [_vm._v("Delete")]
+                            [
+                              _c("i", {
+                                staticClass: "fa fa-trash",
+                                attrs: { "aria-hidden": "true" },
+                              }),
+                            ]
                           ),
                           _vm._v("\n                        "),
                         ]),

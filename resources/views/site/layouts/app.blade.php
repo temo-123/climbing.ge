@@ -57,6 +57,7 @@
     <link rel="stylesheet" href="{{ asset('assets/css/app.css') }}">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    {{-- <link rel="stylesheet" href="path/to/font-awesome/css/font-awesome.min.css"> --}}
 
     {{-- And analytics.google.com --}}
     {{-- <script async src="https://www.googletagmanager.com/gtag/js?id=G-YSKGLXMWGF"></script>

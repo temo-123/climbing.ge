@@ -7,12 +7,14 @@
       <div class="row mt-2">
           <div class="col-md-6 text-center">
             <button type="button" class="btn btn-danger" @click="social_login('google')">
-              Google
+              <!-- Google -->
+              <i class="fa fa-google" aria-hidden="true"></i>
             </button>
           </div>
           <div class="col-md-6 text-center">
             <button type="button" class="btn btn-primary" @click="social_login('facebook')">
-              Facebook
+              <!-- Facebook -->
+              <i class="fa fa-facebook" aria-hidden="true"></i>
             </button>
           </div>
       </div>
@@ -79,7 +81,8 @@
         remember_me: null,
 
         MIX_USER_PAGE_URL: process.env.MIX_USER_PAGE_URL,
-        MIX_APP_SSH: process.env.MIX_APP_SSH
+        MIX_APP_SSH: process.env.MIX_APP_SSH,
+        MIX_BASE_URL_SSH: process.env.MIX_BASE_URL_SSH
       };
     },
     mounted() {
@@ -89,7 +92,8 @@
     // },
     methods: {
       social_login(service){
-        window.location.href = `api/login/${service}`
+        // window.location.href = 'api/login/'+service
+        window.location.href = this.MIX_APP_SSH + this.MIX_USER_PAGE_URL + '/api/login/' + service
       },
       login(){
         axios

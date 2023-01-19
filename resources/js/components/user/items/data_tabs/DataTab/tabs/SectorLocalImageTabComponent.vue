@@ -12,13 +12,13 @@
             <!-- <a :href="table_1_edit_url+table_info.id" class="btn btn-primary" type="submit">Edit</a> -->
 
             <router-link :to="{name: 'sectorLocalImagesListEdit', params: { id: table_info.id } }"> 
-                <button class="btn btn-primary " >Edit</button>
+                <button class="btn btn-primary " ><i class="fa fa-pencil" aria-hidden="true"></i></button>
             </router-link>
         </td>
         
         <td>|</td>
         <td>
-            <button type="submit" class="btn btn-danger" @click="del_image(table_info.id)">Delete</button>
+            <button type="submit" class="btn btn-danger" @click="del_image(table_info.id)"><i class="fa fa-trash" aria-hidden="true"></i></button>
         </td>
     </tr>
 </template>

@@ -10,7 +10,7 @@
         
         <td>|</td>
         <td>
-            <button type="submit" class="btn btn-danger" @click="del_post(table_info.id)">Delete</button>
+            <button type="submit" class="btn btn-danger" @click="del_post(table_info.id)"><i class="fa fa-trash" aria-hidden="true"></i></button>
         </td>
     </tr>
 </template>

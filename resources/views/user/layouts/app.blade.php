@@ -23,6 +23,7 @@
     {{-- Google analitics (Global site tag (gtag.js) - Google Analytics) --}}
     {{-- <script async src="https://www.googletagmanager.com/gtag/js?id=UA-101870435-3"></script>
     <script src="{{ asset('assets/js/analitic/user.climbing.ge_analitic.js') }}"></script> --}}
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
     <meta http-equiv="cache-control" content="max-age=0" />
     <meta http-equiv="cache-control" content="no-cache" />

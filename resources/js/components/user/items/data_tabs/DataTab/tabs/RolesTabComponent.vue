@@ -15,13 +15,13 @@
 
         <td>|</td>
         <td>
-            <button :class="'btn btn-primary'" @click="open_role_edit_modal(table_info.id)"> Edit </button>
+            <button :class="'btn btn-primary'" @click="open_role_edit_modal(table_info.id)"> <i class="fa fa-pencil" aria-hidden="true"></i> </button>
         </td>
         
         <td>|</td>
         
         <td>
-            <button type="submit" class="btn btn-danger" @click="del_role(table_info.id)">Delete</button>
+            <button type="submit" class="btn btn-danger" @click="del_role(table_info.id)"><i class="fa fa-trash" aria-hidden="true"></i></button>
         </td>
 
         <stack-modal
@@ -68,7 +68,7 @@
                             </td>
                             <td>|</td>
                             <td>
-                                <button type="button" class="btn btn-danger" @click="del_role_permission_from_db(permission.id)">Delete</button>
+                                <button type="button" class="btn btn-danger" @click="del_role_permission_from_db(permission.id)"><i class="fa fa-trash" aria-hidden="true"></i></button>
                             </td>
                         </tr>
                     </tbody>
@@ -97,7 +97,7 @@
                             </td>
                             <td>|</td>
                             <td>
-                                <button type="button" class="btn btn-danger" @click="del_bisnes_value(permission.id)">Delete</button>
+                                <button type="button" class="btn btn-danger" @click="del_bisnes_value(permission.id)"><i class="fa fa-trash" aria-hidden="true"></i></button>
                             </td>
                         </tr>
                     </tbody>

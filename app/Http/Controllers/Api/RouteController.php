@@ -63,6 +63,11 @@ class RouteController extends Controller
         return route::where('id',strip_tags($id))->get();
     }
 
+    public function get_route_for_modal(Request $request)
+    {
+        return route::where('id',strip_tags($request->route_id))->get();
+    }
+
     /**
      * Show the form for editing the specified resource.
      *

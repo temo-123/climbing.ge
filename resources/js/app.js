@@ -132,6 +132,21 @@ Vue.config.productionTip = false;
 Vue.prototype.$siteData = [];
 Vue.prototype.$authUserData = [];
 
+if(
+    window.location.hostname == 'climbing.ge' &&
+    window.location.hostname == 'shop.climbing.ge' &&
+    window.location.hostname == 'user.climbing.ge' &&
+    window.location.hostname == 'films.climbing.ge' &&
+    window.location.hostname == 'forum.climbing.ge'
+){
+    Vue.config.devtools = false
+    Vue.config.debug = false
+    Vue.config.select = false
+}
+else{
+    Vue.config.devtools = true
+}
+
 const app = new Vue({
     el: "#app",
     i18n,
