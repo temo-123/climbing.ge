@@ -1,38 +1,43 @@
 <p align="center"><img src="/public/images/site_img/site_logo/climibng,ge(becground).jpg" width="400"></p>
 <h1 align="center">Welcome to climbing.ge opensource project</h1>
-<h5>Progect version 3.5.3</5>
 
 <p>Sercice climbing.ge is georgian rock climbing and mountaineering areas description and social netvork for your climbing ascent sheering. Alse ouer product onlain shop. in services we have 5 subdomain: climibng.ge, forum.climbing.ge, shop.climbing,ge, films.climbing.ge, user.climbing.ge. (All descriptions see down)</p>
 
-<p>General sites is:</p>
+<p>Service is opensorse and you can see them structure down</p>
+
+<h2>General sites is:</h2>
 
 [climibng.ge](/docs/GUIDBOOK.md) - Is a Georgian rock climibng guidbook
 
-[forum.climbing.ge](/docs/FORUM.md) - Comming soon
-
 [shop.climbing,ge](/docs/SHOP.md) - Ouer products store
 
-[films.climbing.ge](/docs/FILMS.md) - This is a climbing films portal
+[forum.climbing.ge](/docs/FORUM.md) - This is a climbing forum for Georgian climbers (Coming soon)
 
-<p>Admin & user dashboard, also CMS system, paseble to us in:</p>
+[films.climbing.ge](/docs/FILMS.md) - This is a climbing films portal (Coming soon)
+
+
+<h2>Admin & user dashboard, also CMS system: user.climbing.ge</h2>
 
 [user.climbing.ge](/docs/USER_PAGE.md) - Your privat room
 
 <p>This project is free and opensorse. Objective of the project is popularization climbing in Georgia.</p>
 
-## Examples
+<h1>Configuration & config examples</h1>
 
-<p id="examples">In folder ./examples/ you can faind: Databace file example, configuration for apatch example fale and .env file example
+<p>In folder ./examples/ you can find: Databace example, configuration for apatch and .env file example</p>
 
-## Databace & Database examples
+<p>You can find db tables in /docs/examples/db_examples.sql file. Off course you can use laravel migrations for migrate database tabs, bus exemple is easiest for use and check some bag (errors) in migration.</p>
 
-<p>Also you can faind db tables <a href="#examples">example</a> in /docs/examples/db_examples.sql file. Off course you can use laravel migrations for migrate database tabs, bus exemple is easiest for use and check some bag in migration.</p>
+<p>For migration and seed us command. It created all tabs and insert defolt data</p>
 
-<p>For migration us commang ( $ php artisan migrate --seed )</p>
+```bash
+php artisan migrate --seed 
+```
 
 [climibng.ge](/docs/PLAGINS.md) - In this file you can see some plafins witch we use in this project
 
 <!-- Ctrl+Shift+V - for demo test  -->
 
+<h5>Progect version 3.5.3</h5>
 <h2 align="center">Best wishes from climbing.ge</h2>
 <p align="center"><img src="/public/images/site_img/site_logo/header logo(bacground).png" width="400"></p>
