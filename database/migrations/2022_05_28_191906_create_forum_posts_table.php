@@ -14,7 +14,7 @@ return new class extends Migration
     public function up()
     {
         Schema::create('forum_posts', function (Blueprint $table) {
-            $table->id();
+            $table->bigIncrements('id');
 
             $table->text('text')->nullable();
             $table->string('image')->nullable();
@@ -24,8 +24,8 @@ return new class extends Migration
             $table->string('mtp_id')->nullable();
             $table->string('region_id')->nullable();
 
-            $table->foreignId('topic_id')->constrained()->onDelete('cascade');
-            $table->foreignId('user_id')->constrained()->onDelete('cascade');
+            $table->foreignId('topic_id')->constrained();
+            $table->foreignId('user_id')->constrained();
 
             $table->timestamps();
         });

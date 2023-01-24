@@ -1,11 +1,17 @@
 <template>
   <div class="login mt-5">
+    <router-link :to="{name: 'login'}" exact class="btn btn-success">
+      login
+    </router-link>
+
+    <hr>
+
     <div class="card">
       <div class="card-header">
         Register
       </div>
       <div class="card-body">
-        <form>
+        <form id="register_form" v-on:submit.prevent="register">
           <div class="form-group">
             <label for="email">Name</label>
             <input
@@ -15,6 +21,7 @@
               id="name"
               v-model="name"
               placeholder="Enter name"
+              required
             />
             <div class="invalid-feedback" v-if="errors.name">
               {{ errors.name[0] }}
@@ -29,6 +36,7 @@
               id="surname"
               v-model="surname"
               placeholder="Enter surname"
+              required
             />
             <div class="invalid-feedback" v-if="errors.surname">
               {{ errors.surname[0] }}
@@ -43,6 +51,7 @@
               id="email"
               v-model="email"
               placeholder="Enter email"
+              required
             />
             <div class="invalid-feedback" v-if="errors.email">
               {{ errors.email[0] }}
@@ -57,6 +66,7 @@
               id="country"
               v-model="country"
               placeholder="Enter country"
+              required
             />
             <div class="invalid-feedback" v-if="errors.country">
               {{ errors.country[0] }}
@@ -71,6 +81,7 @@
               id="city"
               v-model="city"
               placeholder="Enter city"
+              required
             />
             <div class="invalid-feedback" v-if="errors.city">
               {{ errors.city[0] }}
@@ -85,6 +96,7 @@
               id="phone_number"
               v-model="phone_number"
               placeholder="Enter phone_number"
+              required
             />
             <div class="invalid-feedback" v-if="errors.phone_number">
               {{ errors.phone_number[0] }}
@@ -99,6 +111,8 @@
               id="password"
               v-model="password"
               placeholder="Password"
+              minlength="8"
+              required
             />
             <div class="invalid-feedback" v-if="errors.password">
               {{ errors.password[0] }}
@@ -112,6 +126,8 @@
               id="password_confirmation"
               v-model="password_confirmation"
               placeholder="Confirm password"
+              minlength="8"
+              required
             />
           </div>
           <div class="form-group">
@@ -139,17 +155,30 @@
           <div class="row">
             <div class="col-md-12">
                 <div class="form-group"  v-if="is_verify_isset != false && terms_of_use != false">
-                    <button type="submit" @click="register" class="btn btn-default btn-send main-btn">Send</button>
+                    <!-- <button type="submit" @click="register" class="btn btn-default btn-send main-btn">Register</button> -->
+                  <button
+                          type="submit"
+                          class="btn btn-default btn-send main-btn"
+                          form="register_form"
+                      >
+                      Save
+                  </button>
                 </div>
                 <div class="form-group"  v-else>
-                    <button type="submit" @click="register" class="btn btn-default btn-send main-btn" disabled>Send</button>
+                    <!-- <button type="submit" @click="register" class="btn btn-default btn-send main-btn" disabled>Register</button> -->
+                  <button
+                          type="submit"
+                          class="btn btn-default btn-send main-btn"
+                          form="register_form"
+                          disabled
+                      >
+                      Save
+                  </button>
                 </div>
+
+
             </div>
           </div>
-          <hr>
-          <router-link :to="{name: 'login'}" exact class="btn btn-success">
-            login
-          </router-link>
         </form>
       </div>
     </div>
@@ -215,7 +244,6 @@ export default {
               password_confirmation: this.password_confirmation
             })
             .then(res=>{
-              // console.log(res);
               localStorage.setItem('x_xsrf_token', res.config.headers['X-XSRF-TOKEN'])
               this.$router.push({ path: "/" });
             })

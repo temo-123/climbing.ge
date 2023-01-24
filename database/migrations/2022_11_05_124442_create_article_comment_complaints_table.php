@@ -14,7 +14,7 @@ return new class extends Migration
     public function up()
     {
         Schema::create('article_comment_complaints', function (Blueprint $table) {
-            $table->id();
+            $table->bigIncrements('id');
 
             $table->string('complaint')->nullable();
             $table->string('cause')->nullable();

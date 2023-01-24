@@ -1331,7 +1331,7 @@ var render = function () {
                         _vm._v(" "),
                         _c("td", [_vm._v("|")]),
                         _vm._v(" "),
-                        _c("td", [_vm._v(_vm._s(this.$siteData.email))]),
+                        _c("td", [_vm._v(_vm._s(_vm.site_info.email))]),
                       ]),
                       _vm._v(" "),
                       _c("tr", [
@@ -1363,7 +1363,7 @@ var render = function () {
                         _vm._v(" "),
                         _c("td", [
                           _c("span", {
-                            domProps: { innerHTML: _vm._s(this.$siteData.map) },
+                            domProps: { innerHTML: _vm._s(_vm.site_info.map) },
                           }),
                         ]),
                       ]),

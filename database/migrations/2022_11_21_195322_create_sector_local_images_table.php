@@ -14,7 +14,7 @@ return new class extends Migration
     public function up()
     {
         Schema::create('sector_local_images', function (Blueprint $table) {
-            $table->id();
+            $table->bigIncrements('id');
             $table->string('title')->nullable();
             $table->string('image')->nullable();
             $table->timestamps();

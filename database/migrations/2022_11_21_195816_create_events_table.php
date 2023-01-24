@@ -14,17 +14,19 @@ return new class extends Migration
     public function up()
     {
         Schema::create('events', function (Blueprint $table) {
-            $table->id();
+            $table->bigIncrements('id');
 
             $table->string('url_title')->nullable();
+
+            $table->integer('published')->nullable();
+            
             $table->string('category')->nullable();
             $table->string('map')->nullable();
-            $table->string('image')->nullable();
 
             $table->timestamp('start_data')->nullable();
             $table->timestamp('end_data')->nullable();
 
-            $table->integer('published')->nullable();
+            $table->string('image')->nullable();
 
             $table->unsignedBigInteger('us_event_id');
             $table->foreign('us_event_id')->references('id')->on('locale_events')->onDelete('cascade');

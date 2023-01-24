@@ -14,7 +14,7 @@ return new class extends Migration
     public function up()
     {
         Schema::create('spot_rocks_images', function (Blueprint $table) {
-            $table->id();
+            $table->bigIncrements('id');
 
             $table->string('title')->nullable();
             $table->string('image')->nullable();
@@ -22,7 +22,7 @@ return new class extends Migration
             $table->integer('num')->nullable();
             // $table->integer('article_id')->nullable();
             
-            // $table->foreignId('article_id')->constrained()->onDelete('cascade');
+            $table->foreignId('article_id')->constrained();
             
             $table->timestamps();
         });

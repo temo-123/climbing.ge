@@ -14,7 +14,7 @@ return new class extends Migration
     public function up()
     {
         Schema::create('article_region', function (Blueprint $table) {
-            $table->id();
+            $table->bigIncrements('id');
 
             $table->foreignId('article_id')->constrained()->onDelete('cascade');
             $table->foreignId('region_id')->constrained()->onDelete('cascade');

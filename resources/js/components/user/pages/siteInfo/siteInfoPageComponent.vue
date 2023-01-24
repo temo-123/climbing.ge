@@ -36,7 +36,7 @@
                                     <tr>
                                         <td>Email</td>
                                         <td>|</td>
-                                        <td>{{this.$siteData.email}}</td>
+                                        <td>{{site_info.email}}</td>
                                     </tr>
                                     <tr>
                                         <td>Phone</td>
@@ -56,7 +56,7 @@
                                         <td>Map</td>
                                         <td>|</td>
                                         <td>
-                                            <span v-html="this.$siteData.map"></span>
+                                            <span v-html="site_info.map"></span>
                                         </td>
                                     </tr>
                                 </tbody>

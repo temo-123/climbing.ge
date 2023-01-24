@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-return new class extends Migration
+class CreateInterestedEventsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,14 +13,12 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('film_reitings', function (Blueprint $table) {
-            $table->id();
+        Schema::create('interested_events', function (Blueprint $table) {
+            $table->bigIncrements('id');
 
-            $table->integer('review_stars')->nullable();
-
+            $table->foreignId('event_id')->constrained()->onDelete('cascade');
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
-            $table->foreignId('film_id')->constrained()->onDelete('cascade');
-
+            
             $table->timestamps();
         });
     }
@@ -32,6 +30,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('film_reitings');
+        Schema::dropIfExists('interested_events');
     }
-};
+}

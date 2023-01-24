@@ -25,9 +25,9 @@
                 </div>
                 <div class="m-card--content">
                     <div class="m-ellipsis m-card--header">
-                        <a onclick="return phoenixTrackClickEvent(this, event);" phx-track-id="Title" href="#">
+                        <!-- <a onclick="return phoenixTrackClickEvent(this, event);" phx-track-id="Title" href="#"> -->
                             <h3 class="m-ellipsis--text m-card--header-text" role="heading" aria-level="2">{{ news[0][0].title }}</h3>
-                        </a>
+                        <!-- </a> -->
                     </div>
                     <div class="m-ellipsis">
                         <!-- <p class="m-card--body m-ellipsis--text">{{ news[0][0].short_description }}</p> -->

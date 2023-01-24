@@ -14,10 +14,11 @@ class CreateServiceImagesTable extends Migration
     public function up()
     {
         Schema::create('service_images', function (Blueprint $table) {
-            $table->id();
+            $table->bigIncrements('id');
 
+            $table->string('titlr')->nullable();
+            
             $table->string('image')->nullable();
-            // $table->integer('service_id')->nullable();
 
             $table->foreignId('service_id')->constrained()->onDelete('cascade');
             

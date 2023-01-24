@@ -95,12 +95,7 @@ class RegisterController extends Controller
                 'password' => bcrypt($data['password']),
             ]);
 
-            // $token = $user->createToken($data['name'].' '.$data['surname'])->plainTextToken;
-            // dd($token);
-
-            $user->roles()->attach(Role::where('name', 'user')->first());
-            
-            // $user->notify(new WelcomeEmailNotification());
+            // $user->roles()->attach(Role::where('name', 'user')->first());
 
             return $user;
         }

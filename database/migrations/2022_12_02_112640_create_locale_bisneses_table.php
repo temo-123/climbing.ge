@@ -14,7 +14,15 @@ return new class extends Migration
     public function up()
     {
         Schema::create('locale_bisneses', function (Blueprint $table) {
-            $table->id();
+            
+            $table->bigIncrements('id');
+
+            $table->string('locale')->nullable();
+
+            $table->string('title')->nullable();
+            $table->string('short_description')->nullable();
+            $table->text('text')->nullable();
+            
             $table->timestamps();
         });
     }

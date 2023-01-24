@@ -14,13 +14,10 @@ class CreateFavoriteProductsTable extends Migration
     public function up()
     {
         Schema::create('favorite_products', function (Blueprint $table) {
-            $table->id();
-            
-            // $table->integer('user_id')->nullable();
-            // $table->integer('product_id')->nullable();
+            $table->bigIncrements('id');
 
-            $table->foreignId('product_id')->constrained()->onDelete('cascade');
-            $table->foreignId('user_id')->constrained()->onDelete('cascade');
+            $table->foreignId('product_id')->constrained();
+            $table->foreignId('user_id')->constrained();
 
             $table->timestamps();
         });

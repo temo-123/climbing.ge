@@ -14,17 +14,16 @@ return new class extends Migration
     public function up()
     {
         Schema::create('product_options', function (Blueprint $table) {
-            $table->id();
+            $table->bigIncrements('id');
 
             $table->string('name')->nullable();
-            // $table->string('color')->nullable();
 
             $table->string('price')->nullable();
             $table->string('currency')->nullable();
             
             $table->string('quantity')->nullable();
 
-            $table->foreignId('product_id')->constrained()->onDelete('cascade');
+            $table->foreignId('product_id')->constrained();
 
             $table->timestamps();
         });

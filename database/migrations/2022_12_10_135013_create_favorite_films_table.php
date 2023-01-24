@@ -13,11 +13,11 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('film_tegs_film', function (Blueprint $table) {
-            $table->id();
+        Schema::create('favorite_films', function (Blueprint $table) {
+            $table->bigIncrements('id');
 
+            $table->foreignId('user_id')->constrained()->onDelete('cascade');
             $table->foreignId('film_id')->constrained()->onDelete('cascade');
-            $table->foreignId('tag_id')->constrained()->onDelete('cascade');
 
             $table->timestamps();
         });
@@ -30,6 +30,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('film_tegs_film');
+        Schema::dropIfExists('favorite_films');
     }
 };

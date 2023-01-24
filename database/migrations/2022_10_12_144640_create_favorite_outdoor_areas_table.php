@@ -14,7 +14,7 @@ return new class extends Migration
     public function up()
     {
         Schema::create('favorite_outdoor_areas', function (Blueprint $table) {
-            $table->id();
+            $table->bigIncrements('id');
 
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
             $table->foreignId('article_id')->constrained()->onDelete('cascade');

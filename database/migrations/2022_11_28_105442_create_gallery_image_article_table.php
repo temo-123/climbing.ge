@@ -14,11 +14,12 @@ return new class extends Migration
     public function up()
     {
         Schema::create('gallery_image_article', function (Blueprint $table) {
-            $table->id();
+            $table->bigIncrements('id');
 
             $table->unsignedBigInteger('image_id');
-            $table->foreign('image_id')->references('id')->on('gallery_images')->onDelete('cascade');
-            $table->foreignId('article_id')->constrained()->onDelete('cascade');
+            $table->foreign('image_id')->references('id')->on('gallery_images');
+
+            $table->foreignId('article_id')->constrained();
             // $table->foreignId('tag_id')->constrained()->onDelete('cascade');
 
             $table->timestamps();

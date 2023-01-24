@@ -135,31 +135,43 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _tab_header_ProductTabHeaderComponent_vue__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./tab_header/ProductTabHeaderComponent.vue */ "./resources/js/components/user/items/data_tabs/DataTab/tab_header/ProductTabHeaderComponent.vue");
 /* harmony import */ var _tab_header_SectorLocalImageTabHeaderComponent_vue__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./tab_header/SectorLocalImageTabHeaderComponent.vue */ "./resources/js/components/user/items/data_tabs/DataTab/tab_header/SectorLocalImageTabHeaderComponent.vue");
 /* harmony import */ var _tab_header_EventTabHeaderComponent_vue__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./tab_header/EventTabHeaderComponent.vue */ "./resources/js/components/user/items/data_tabs/DataTab/tab_header/EventTabHeaderComponent.vue");
-/* harmony import */ var _tabs_EventTabComponent_vue__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ./tabs/EventTabComponent.vue */ "./resources/js/components/user/items/data_tabs/DataTab/tabs/EventTabComponent.vue");
-/* harmony import */ var _tabs_SectorLocalImageTabComponent_vue__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ./tabs/SectorLocalImageTabComponent.vue */ "./resources/js/components/user/items/data_tabs/DataTab/tabs/SectorLocalImageTabComponent.vue");
-/* harmony import */ var _tabs_RouteTabComponent_vue__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ./tabs/RouteTabComponent.vue */ "./resources/js/components/user/items/data_tabs/DataTab/tabs/RouteTabComponent.vue");
-/* harmony import */ var _tabs_SectorTabComponent_vue__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! ./tabs/SectorTabComponent.vue */ "./resources/js/components/user/items/data_tabs/DataTab/tabs/SectorTabComponent.vue");
-/* harmony import */ var _tabs_ArticlesTabComponent_vue__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! ./tabs/ArticlesTabComponent.vue */ "./resources/js/components/user/items/data_tabs/DataTab/tabs/ArticlesTabComponent.vue");
-/* harmony import */ var _tabs_ServiceTabComponent_vue__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! ./tabs/ServiceTabComponent.vue */ "./resources/js/components/user/items/data_tabs/DataTab/tabs/ServiceTabComponent.vue");
-/* harmony import */ var _tabs_LocalBisnesTabComponent_vue__WEBPACK_IMPORTED_MODULE_16__ = __webpack_require__(/*! ./tabs/LocalBisnesTabComponent.vue */ "./resources/js/components/user/items/data_tabs/DataTab/tabs/LocalBisnesTabComponent.vue");
-/* harmony import */ var _tabs_MountMassiveTabComponent_vue__WEBPACK_IMPORTED_MODULE_17__ = __webpack_require__(/*! ./tabs/MountMassiveTabComponent.vue */ "./resources/js/components/user/items/data_tabs/DataTab/tabs/MountMassiveTabComponent.vue");
-/* harmony import */ var _tabs_MTPTabComponent_vue__WEBPACK_IMPORTED_MODULE_18__ = __webpack_require__(/*! ./tabs/MTPTabComponent.vue */ "./resources/js/components/user/items/data_tabs/DataTab/tabs/MTPTabComponent.vue");
-/* harmony import */ var _tabs_PitchsTabComponents_vue__WEBPACK_IMPORTED_MODULE_19__ = __webpack_require__(/*! ./tabs/PitchsTabComponents.vue */ "./resources/js/components/user/items/data_tabs/DataTab/tabs/PitchsTabComponents.vue");
-/* harmony import */ var _tabs_RolesTabComponent_vue__WEBPACK_IMPORTED_MODULE_20__ = __webpack_require__(/*! ./tabs/RolesTabComponent.vue */ "./resources/js/components/user/items/data_tabs/DataTab/tabs/RolesTabComponent.vue");
-/* harmony import */ var _tabs_ParmissionsTabComponent_vue__WEBPACK_IMPORTED_MODULE_21__ = __webpack_require__(/*! ./tabs/ParmissionsTabComponent.vue */ "./resources/js/components/user/items/data_tabs/DataTab/tabs/ParmissionsTabComponent.vue");
-/* harmony import */ var _tabs_RegionsTabComponent_vue__WEBPACK_IMPORTED_MODULE_22__ = __webpack_require__(/*! ./tabs/RegionsTabComponent.vue */ "./resources/js/components/user/items/data_tabs/DataTab/tabs/RegionsTabComponent.vue");
-/* harmony import */ var _tabs_ProductsTabComponent_vue__WEBPACK_IMPORTED_MODULE_23__ = __webpack_require__(/*! ./tabs/ProductsTabComponent.vue */ "./resources/js/components/user/items/data_tabs/DataTab/tabs/ProductsTabComponent.vue");
-/* harmony import */ var _tabs_UsersTabComponent_vue__WEBPACK_IMPORTED_MODULE_24__ = __webpack_require__(/*! ./tabs/UsersTabComponent.vue */ "./resources/js/components/user/items/data_tabs/DataTab/tabs/UsersTabComponent.vue");
-/* harmony import */ var _tabs_CommentsTabComponent_vue__WEBPACK_IMPORTED_MODULE_25__ = __webpack_require__(/*! ./tabs/CommentsTabComponent.vue */ "./resources/js/components/user/items/data_tabs/DataTab/tabs/CommentsTabComponent.vue");
-/* harmony import */ var _tabs_FilmTagsTabComponent_vue__WEBPACK_IMPORTED_MODULE_26__ = __webpack_require__(/*! ./tabs/FilmTagsTabComponent.vue */ "./resources/js/components/user/items/data_tabs/DataTab/tabs/FilmTagsTabComponent.vue");
-/* harmony import */ var _tabs_SaleCodesTabComponent_vue__WEBPACK_IMPORTED_MODULE_27__ = __webpack_require__(/*! ./tabs/SaleCodesTabComponent.vue */ "./resources/js/components/user/items/data_tabs/DataTab/tabs/SaleCodesTabComponent.vue");
-/* harmony import */ var _tabs_OrderTabComponent_vue__WEBPACK_IMPORTED_MODULE_28__ = __webpack_require__(/*! ./tabs/OrderTabComponent.vue */ "./resources/js/components/user/items/data_tabs/DataTab/tabs/OrderTabComponent.vue");
-/* harmony import */ var _tabs_QountryTabComponent_vue__WEBPACK_IMPORTED_MODULE_29__ = __webpack_require__(/*! ./tabs/QountryTabComponent.vue */ "./resources/js/components/user/items/data_tabs/DataTab/tabs/QountryTabComponent.vue");
-/* harmony import */ var _tabs_CategoriesTabComponent_vue__WEBPACK_IMPORTED_MODULE_30__ = __webpack_require__(/*! ./tabs/CategoriesTabComponent.vue */ "./resources/js/components/user/items/data_tabs/DataTab/tabs/CategoriesTabComponent.vue");
-/* harmony import */ var _tabs_PostTopicTabComponent_vue__WEBPACK_IMPORTED_MODULE_31__ = __webpack_require__(/*! ./tabs/PostTopicTabComponent.vue */ "./resources/js/components/user/items/data_tabs/DataTab/tabs/PostTopicTabComponent.vue");
-/* harmony import */ var _tabs_PostTabComponent_vue__WEBPACK_IMPORTED_MODULE_32__ = __webpack_require__(/*! ./tabs/PostTabComponent.vue */ "./resources/js/components/user/items/data_tabs/DataTab/tabs/PostTabComponent.vue");
-/* harmony import */ var _tab_modals_RolesAddModalComponent_vue__WEBPACK_IMPORTED_MODULE_33__ = __webpack_require__(/*! ./tab_modals/RolesAddModalComponent.vue */ "./resources/js/components/user/items/data_tabs/DataTab/tab_modals/RolesAddModalComponent.vue");
-/* harmony import */ var _tab_modals_UserAddModalComponent_vue__WEBPACK_IMPORTED_MODULE_34__ = __webpack_require__(/*! ./tab_modals/UserAddModalComponent.vue */ "./resources/js/components/user/items/data_tabs/DataTab/tab_modals/UserAddModalComponent.vue");
+/* harmony import */ var _tab_header_RegionTabHeaderComponrent_vue__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ./tab_header/RegionTabHeaderComponrent.vue */ "./resources/js/components/user/items/data_tabs/DataTab/tab_header/RegionTabHeaderComponrent.vue");
+/* harmony import */ var _tab_header_RouteTabHeaderComponrent_vue__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ./tab_header/RouteTabHeaderComponrent.vue */ "./resources/js/components/user/items/data_tabs/DataTab/tab_header/RouteTabHeaderComponrent.vue");
+/* harmony import */ var _tabs_EventTabComponent_vue__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ./tabs/EventTabComponent.vue */ "./resources/js/components/user/items/data_tabs/DataTab/tabs/EventTabComponent.vue");
+/* harmony import */ var _tabs_SectorLocalImageTabComponent_vue__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! ./tabs/SectorLocalImageTabComponent.vue */ "./resources/js/components/user/items/data_tabs/DataTab/tabs/SectorLocalImageTabComponent.vue");
+/* harmony import */ var _tabs_RouteTabComponent_vue__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! ./tabs/RouteTabComponent.vue */ "./resources/js/components/user/items/data_tabs/DataTab/tabs/RouteTabComponent.vue");
+/* harmony import */ var _tabs_SectorTabComponent_vue__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! ./tabs/SectorTabComponent.vue */ "./resources/js/components/user/items/data_tabs/DataTab/tabs/SectorTabComponent.vue");
+/* harmony import */ var _tabs_ArticlesTabComponent_vue__WEBPACK_IMPORTED_MODULE_16__ = __webpack_require__(/*! ./tabs/ArticlesTabComponent.vue */ "./resources/js/components/user/items/data_tabs/DataTab/tabs/ArticlesTabComponent.vue");
+/* harmony import */ var _tabs_ServiceTabComponent_vue__WEBPACK_IMPORTED_MODULE_17__ = __webpack_require__(/*! ./tabs/ServiceTabComponent.vue */ "./resources/js/components/user/items/data_tabs/DataTab/tabs/ServiceTabComponent.vue");
+/* harmony import */ var _tabs_LocalBisnesTabComponent_vue__WEBPACK_IMPORTED_MODULE_18__ = __webpack_require__(/*! ./tabs/LocalBisnesTabComponent.vue */ "./resources/js/components/user/items/data_tabs/DataTab/tabs/LocalBisnesTabComponent.vue");
+/* harmony import */ var _tabs_MountMassiveTabComponent_vue__WEBPACK_IMPORTED_MODULE_19__ = __webpack_require__(/*! ./tabs/MountMassiveTabComponent.vue */ "./resources/js/components/user/items/data_tabs/DataTab/tabs/MountMassiveTabComponent.vue");
+/* harmony import */ var _tabs_MTPTabComponent_vue__WEBPACK_IMPORTED_MODULE_20__ = __webpack_require__(/*! ./tabs/MTPTabComponent.vue */ "./resources/js/components/user/items/data_tabs/DataTab/tabs/MTPTabComponent.vue");
+/* harmony import */ var _tabs_PitchsTabComponents_vue__WEBPACK_IMPORTED_MODULE_21__ = __webpack_require__(/*! ./tabs/PitchsTabComponents.vue */ "./resources/js/components/user/items/data_tabs/DataTab/tabs/PitchsTabComponents.vue");
+/* harmony import */ var _tabs_RolesTabComponent_vue__WEBPACK_IMPORTED_MODULE_22__ = __webpack_require__(/*! ./tabs/RolesTabComponent.vue */ "./resources/js/components/user/items/data_tabs/DataTab/tabs/RolesTabComponent.vue");
+/* harmony import */ var _tabs_ParmissionsTabComponent_vue__WEBPACK_IMPORTED_MODULE_23__ = __webpack_require__(/*! ./tabs/ParmissionsTabComponent.vue */ "./resources/js/components/user/items/data_tabs/DataTab/tabs/ParmissionsTabComponent.vue");
+/* harmony import */ var _tabs_RegionsTabComponent_vue__WEBPACK_IMPORTED_MODULE_24__ = __webpack_require__(/*! ./tabs/RegionsTabComponent.vue */ "./resources/js/components/user/items/data_tabs/DataTab/tabs/RegionsTabComponent.vue");
+/* harmony import */ var _tabs_ProductsTabComponent_vue__WEBPACK_IMPORTED_MODULE_25__ = __webpack_require__(/*! ./tabs/ProductsTabComponent.vue */ "./resources/js/components/user/items/data_tabs/DataTab/tabs/ProductsTabComponent.vue");
+/* harmony import */ var _tabs_UsersTabComponent_vue__WEBPACK_IMPORTED_MODULE_26__ = __webpack_require__(/*! ./tabs/UsersTabComponent.vue */ "./resources/js/components/user/items/data_tabs/DataTab/tabs/UsersTabComponent.vue");
+/* harmony import */ var _tabs_CommentsTabComponent_vue__WEBPACK_IMPORTED_MODULE_27__ = __webpack_require__(/*! ./tabs/CommentsTabComponent.vue */ "./resources/js/components/user/items/data_tabs/DataTab/tabs/CommentsTabComponent.vue");
+/* harmony import */ var _tabs_FilmTagsTabComponent_vue__WEBPACK_IMPORTED_MODULE_28__ = __webpack_require__(/*! ./tabs/FilmTagsTabComponent.vue */ "./resources/js/components/user/items/data_tabs/DataTab/tabs/FilmTagsTabComponent.vue");
+/* harmony import */ var _tabs_SaleCodesTabComponent_vue__WEBPACK_IMPORTED_MODULE_29__ = __webpack_require__(/*! ./tabs/SaleCodesTabComponent.vue */ "./resources/js/components/user/items/data_tabs/DataTab/tabs/SaleCodesTabComponent.vue");
+/* harmony import */ var _tabs_OrderTabComponent_vue__WEBPACK_IMPORTED_MODULE_30__ = __webpack_require__(/*! ./tabs/OrderTabComponent.vue */ "./resources/js/components/user/items/data_tabs/DataTab/tabs/OrderTabComponent.vue");
+/* harmony import */ var _tabs_QountryTabComponent_vue__WEBPACK_IMPORTED_MODULE_31__ = __webpack_require__(/*! ./tabs/QountryTabComponent.vue */ "./resources/js/components/user/items/data_tabs/DataTab/tabs/QountryTabComponent.vue");
+/* harmony import */ var _tabs_CategoriesTabComponent_vue__WEBPACK_IMPORTED_MODULE_32__ = __webpack_require__(/*! ./tabs/CategoriesTabComponent.vue */ "./resources/js/components/user/items/data_tabs/DataTab/tabs/CategoriesTabComponent.vue");
+/* harmony import */ var _tabs_PostTopicTabComponent_vue__WEBPACK_IMPORTED_MODULE_33__ = __webpack_require__(/*! ./tabs/PostTopicTabComponent.vue */ "./resources/js/components/user/items/data_tabs/DataTab/tabs/PostTopicTabComponent.vue");
+/* harmony import */ var _tabs_PostTabComponent_vue__WEBPACK_IMPORTED_MODULE_34__ = __webpack_require__(/*! ./tabs/PostTabComponent.vue */ "./resources/js/components/user/items/data_tabs/DataTab/tabs/PostTabComponent.vue");
+/* harmony import */ var _tab_modals_RolesAddModalComponent_vue__WEBPACK_IMPORTED_MODULE_35__ = __webpack_require__(/*! ./tab_modals/RolesAddModalComponent.vue */ "./resources/js/components/user/items/data_tabs/DataTab/tab_modals/RolesAddModalComponent.vue");
+/* harmony import */ var _tab_modals_UserAddModalComponent_vue__WEBPACK_IMPORTED_MODULE_36__ = __webpack_require__(/*! ./tab_modals/UserAddModalComponent.vue */ "./resources/js/components/user/items/data_tabs/DataTab/tab_modals/UserAddModalComponent.vue");
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -679,6 +691,8 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
+
+
  //import sectorModal from "./tab_modals/SectorsModalComponent.vue";
 // import editOrderStatusModal from "./tab_modals/EditOrderStatusსModalComponent.vue";
 
@@ -698,33 +712,35 @@ __webpack_require__.r(__webpack_exports__);
     mountMassiveTabHeader: _tab_header_MountMassiveTabHeaderComponent_vue__WEBPACK_IMPORTED_MODULE_6__["default"],
     sectorLocalImageTabHeader: _tab_header_SectorLocalImageTabHeaderComponent_vue__WEBPACK_IMPORTED_MODULE_8__["default"],
     eventTabHeader: _tab_header_EventTabHeaderComponent_vue__WEBPACK_IMPORTED_MODULE_9__["default"],
-    sectorLocalImageTab: _tabs_SectorLocalImageTabComponent_vue__WEBPACK_IMPORTED_MODULE_11__["default"],
-    routeTab: _tabs_RouteTabComponent_vue__WEBPACK_IMPORTED_MODULE_12__["default"],
-    sectorTab: _tabs_SectorTabComponent_vue__WEBPACK_IMPORTED_MODULE_13__["default"],
-    localBisnesTab: _tabs_LocalBisnesTabComponent_vue__WEBPACK_IMPORTED_MODULE_16__["default"],
-    articlesTab: _tabs_ArticlesTabComponent_vue__WEBPACK_IMPORTED_MODULE_14__["default"],
-    serviceTab: _tabs_ServiceTabComponent_vue__WEBPACK_IMPORTED_MODULE_15__["default"],
-    mountMassiveTab: _tabs_MountMassiveTabComponent_vue__WEBPACK_IMPORTED_MODULE_17__["default"],
-    mtpTab: _tabs_MTPTabComponent_vue__WEBPACK_IMPORTED_MODULE_18__["default"],
-    pitchsTab: _tabs_PitchsTabComponents_vue__WEBPACK_IMPORTED_MODULE_19__["default"],
-    rolesTab: _tabs_RolesTabComponent_vue__WEBPACK_IMPORTED_MODULE_20__["default"],
-    parmissionsTab: _tabs_ParmissionsTabComponent_vue__WEBPACK_IMPORTED_MODULE_21__["default"],
-    productsTab: _tabs_ProductsTabComponent_vue__WEBPACK_IMPORTED_MODULE_23__["default"],
-    userTab: _tabs_UsersTabComponent_vue__WEBPACK_IMPORTED_MODULE_24__["default"],
-    regionsTab: _tabs_RegionsTabComponent_vue__WEBPACK_IMPORTED_MODULE_22__["default"],
-    categoryTab: _tabs_CategoriesTabComponent_vue__WEBPACK_IMPORTED_MODULE_30__["default"],
-    postTopicTab: _tabs_PostTopicTabComponent_vue__WEBPACK_IMPORTED_MODULE_31__["default"],
-    postTab: _tabs_PostTabComponent_vue__WEBPACK_IMPORTED_MODULE_32__["default"],
-    commentsTab: _tabs_CommentsTabComponent_vue__WEBPACK_IMPORTED_MODULE_25__["default"],
-    orderTab: _tabs_OrderTabComponent_vue__WEBPACK_IMPORTED_MODULE_28__["default"],
-    qountryTab: _tabs_QountryTabComponent_vue__WEBPACK_IMPORTED_MODULE_29__["default"],
-    filmTagsTab: _tabs_FilmTagsTabComponent_vue__WEBPACK_IMPORTED_MODULE_26__["default"],
-    saleCodesTab: _tabs_SaleCodesTabComponent_vue__WEBPACK_IMPORTED_MODULE_27__["default"],
-    eventTab: _tabs_EventTabComponent_vue__WEBPACK_IMPORTED_MODULE_10__["default"],
+    regionTabHeader: _tab_header_RegionTabHeaderComponrent_vue__WEBPACK_IMPORTED_MODULE_10__["default"],
+    routeTabHeader: _tab_header_RouteTabHeaderComponrent_vue__WEBPACK_IMPORTED_MODULE_11__["default"],
+    sectorLocalImageTab: _tabs_SectorLocalImageTabComponent_vue__WEBPACK_IMPORTED_MODULE_13__["default"],
+    routeTab: _tabs_RouteTabComponent_vue__WEBPACK_IMPORTED_MODULE_14__["default"],
+    sectorTab: _tabs_SectorTabComponent_vue__WEBPACK_IMPORTED_MODULE_15__["default"],
+    localBisnesTab: _tabs_LocalBisnesTabComponent_vue__WEBPACK_IMPORTED_MODULE_18__["default"],
+    articlesTab: _tabs_ArticlesTabComponent_vue__WEBPACK_IMPORTED_MODULE_16__["default"],
+    serviceTab: _tabs_ServiceTabComponent_vue__WEBPACK_IMPORTED_MODULE_17__["default"],
+    mountMassiveTab: _tabs_MountMassiveTabComponent_vue__WEBPACK_IMPORTED_MODULE_19__["default"],
+    mtpTab: _tabs_MTPTabComponent_vue__WEBPACK_IMPORTED_MODULE_20__["default"],
+    pitchsTab: _tabs_PitchsTabComponents_vue__WEBPACK_IMPORTED_MODULE_21__["default"],
+    rolesTab: _tabs_RolesTabComponent_vue__WEBPACK_IMPORTED_MODULE_22__["default"],
+    parmissionsTab: _tabs_ParmissionsTabComponent_vue__WEBPACK_IMPORTED_MODULE_23__["default"],
+    productsTab: _tabs_ProductsTabComponent_vue__WEBPACK_IMPORTED_MODULE_25__["default"],
+    userTab: _tabs_UsersTabComponent_vue__WEBPACK_IMPORTED_MODULE_26__["default"],
+    regionsTab: _tabs_RegionsTabComponent_vue__WEBPACK_IMPORTED_MODULE_24__["default"],
+    categoryTab: _tabs_CategoriesTabComponent_vue__WEBPACK_IMPORTED_MODULE_32__["default"],
+    postTopicTab: _tabs_PostTopicTabComponent_vue__WEBPACK_IMPORTED_MODULE_33__["default"],
+    postTab: _tabs_PostTabComponent_vue__WEBPACK_IMPORTED_MODULE_34__["default"],
+    commentsTab: _tabs_CommentsTabComponent_vue__WEBPACK_IMPORTED_MODULE_27__["default"],
+    orderTab: _tabs_OrderTabComponent_vue__WEBPACK_IMPORTED_MODULE_30__["default"],
+    qountryTab: _tabs_QountryTabComponent_vue__WEBPACK_IMPORTED_MODULE_31__["default"],
+    filmTagsTab: _tabs_FilmTagsTabComponent_vue__WEBPACK_IMPORTED_MODULE_28__["default"],
+    saleCodesTab: _tabs_SaleCodesTabComponent_vue__WEBPACK_IMPORTED_MODULE_29__["default"],
+    eventTab: _tabs_EventTabComponent_vue__WEBPACK_IMPORTED_MODULE_12__["default"],
     // sectorModal,
     // editOrderStatusModal,
-    addRoleModal: _tab_modals_RolesAddModalComponent_vue__WEBPACK_IMPORTED_MODULE_33__["default"],
-    addUserModal: _tab_modals_UserAddModalComponent_vue__WEBPACK_IMPORTED_MODULE_34__["default"] // articleQuickViewModal,
+    addRoleModal: _tab_modals_RolesAddModalComponent_vue__WEBPACK_IMPORTED_MODULE_35__["default"],
+    addUserModal: _tab_modals_UserAddModalComponent_vue__WEBPACK_IMPORTED_MODULE_36__["default"] // articleQuickViewModal,
 
   },
   props: ["table_data"],
@@ -986,6 +1002,83 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
+  props: ['table_name']
+});
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/user/items/data_tabs/DataTab/tab_header/RegionTabHeaderComponrent.vue?vue&type=script&lang=js&":
+/*!************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/user/items/data_tabs/DataTab/tab_header/RegionTabHeaderComponrent.vue?vue&type=script&lang=js& ***!
+  \************************************************************************************************************************************************************************************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
+  props: ['table_name']
+});
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/user/items/data_tabs/DataTab/tab_header/RouteTabHeaderComponrent.vue?vue&type=script&lang=js&":
+/*!***********************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/user/items/data_tabs/DataTab/tab_header/RouteTabHeaderComponrent.vue?vue&type=script&lang=js& ***!
+  \***********************************************************************************************************************************************************************************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
 //
 //
 //
@@ -6746,6 +6839,84 @@ component.options.__file = "resources/js/components/user/items/data_tabs/DataTab
 
 /***/ }),
 
+/***/ "./resources/js/components/user/items/data_tabs/DataTab/tab_header/RegionTabHeaderComponrent.vue":
+/*!*******************************************************************************************************!*\
+  !*** ./resources/js/components/user/items/data_tabs/DataTab/tab_header/RegionTabHeaderComponrent.vue ***!
+  \*******************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _RegionTabHeaderComponrent_vue_vue_type_template_id_e5be7796___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./RegionTabHeaderComponrent.vue?vue&type=template&id=e5be7796& */ "./resources/js/components/user/items/data_tabs/DataTab/tab_header/RegionTabHeaderComponrent.vue?vue&type=template&id=e5be7796&");
+/* harmony import */ var _RegionTabHeaderComponrent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./RegionTabHeaderComponrent.vue?vue&type=script&lang=js& */ "./resources/js/components/user/items/data_tabs/DataTab/tab_header/RegionTabHeaderComponrent.vue?vue&type=script&lang=js&");
+/* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! !../../../../../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+/* normalize component */
+;
+var component = (0,_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+  _RegionTabHeaderComponrent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _RegionTabHeaderComponrent_vue_vue_type_template_id_e5be7796___WEBPACK_IMPORTED_MODULE_0__.render,
+  _RegionTabHeaderComponrent_vue_vue_type_template_id_e5be7796___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns,
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/components/user/items/data_tabs/DataTab/tab_header/RegionTabHeaderComponrent.vue"
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (component.exports);
+
+/***/ }),
+
+/***/ "./resources/js/components/user/items/data_tabs/DataTab/tab_header/RouteTabHeaderComponrent.vue":
+/*!******************************************************************************************************!*\
+  !*** ./resources/js/components/user/items/data_tabs/DataTab/tab_header/RouteTabHeaderComponrent.vue ***!
+  \******************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _RouteTabHeaderComponrent_vue_vue_type_template_id_56730ff0___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./RouteTabHeaderComponrent.vue?vue&type=template&id=56730ff0& */ "./resources/js/components/user/items/data_tabs/DataTab/tab_header/RouteTabHeaderComponrent.vue?vue&type=template&id=56730ff0&");
+/* harmony import */ var _RouteTabHeaderComponrent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./RouteTabHeaderComponrent.vue?vue&type=script&lang=js& */ "./resources/js/components/user/items/data_tabs/DataTab/tab_header/RouteTabHeaderComponrent.vue?vue&type=script&lang=js&");
+/* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! !../../../../../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+/* normalize component */
+;
+var component = (0,_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+  _RouteTabHeaderComponrent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _RouteTabHeaderComponrent_vue_vue_type_template_id_56730ff0___WEBPACK_IMPORTED_MODULE_0__.render,
+  _RouteTabHeaderComponrent_vue_vue_type_template_id_56730ff0___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns,
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/components/user/items/data_tabs/DataTab/tab_header/RouteTabHeaderComponrent.vue"
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (component.exports);
+
+/***/ }),
+
 /***/ "./resources/js/components/user/items/data_tabs/DataTab/tab_header/SectorLocalImageTabHeaderComponent.vue":
 /*!****************************************************************************************************************!*\
   !*** ./resources/js/components/user/items/data_tabs/DataTab/tab_header/SectorLocalImageTabHeaderComponent.vue ***!
@@ -8409,6 +8580,38 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
+/***/ "./resources/js/components/user/items/data_tabs/DataTab/tab_header/RegionTabHeaderComponrent.vue?vue&type=script&lang=js&":
+/*!********************************************************************************************************************************!*\
+  !*** ./resources/js/components/user/items/data_tabs/DataTab/tab_header/RegionTabHeaderComponrent.vue?vue&type=script&lang=js& ***!
+  \********************************************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_0_rules_0_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_RegionTabHeaderComponrent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../../../../node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!../../../../../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./RegionTabHeaderComponrent.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/user/items/data_tabs/DataTab/tab_header/RegionTabHeaderComponrent.vue?vue&type=script&lang=js&");
+ /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (_node_modules_babel_loader_lib_index_js_clonedRuleSet_5_0_rules_0_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_RegionTabHeaderComponrent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./resources/js/components/user/items/data_tabs/DataTab/tab_header/RouteTabHeaderComponrent.vue?vue&type=script&lang=js&":
+/*!*******************************************************************************************************************************!*\
+  !*** ./resources/js/components/user/items/data_tabs/DataTab/tab_header/RouteTabHeaderComponrent.vue?vue&type=script&lang=js& ***!
+  \*******************************************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_0_rules_0_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_RouteTabHeaderComponrent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../../../../node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!../../../../../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./RouteTabHeaderComponrent.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/user/items/data_tabs/DataTab/tab_header/RouteTabHeaderComponrent.vue?vue&type=script&lang=js&");
+ /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (_node_modules_babel_loader_lib_index_js_clonedRuleSet_5_0_rules_0_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_RouteTabHeaderComponrent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
 /***/ "./resources/js/components/user/items/data_tabs/DataTab/tab_header/SectorLocalImageTabHeaderComponent.vue?vue&type=script&lang=js&":
 /*!*****************************************************************************************************************************************!*\
   !*** ./resources/js/components/user/items/data_tabs/DataTab/tab_header/SectorLocalImageTabHeaderComponent.vue?vue&type=script&lang=js& ***!
@@ -9282,6 +9485,40 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "staticRenderFns": () => (/* reexport safe */ _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_ProductTabHeaderComponent_vue_vue_type_template_id_7bf047aa___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns)
 /* harmony export */ });
 /* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_ProductTabHeaderComponent_vue_vue_type_template_id_7bf047aa___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./ProductTabHeaderComponent.vue?vue&type=template&id=7bf047aa& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/user/items/data_tabs/DataTab/tab_header/ProductTabHeaderComponent.vue?vue&type=template&id=7bf047aa&");
+
+
+/***/ }),
+
+/***/ "./resources/js/components/user/items/data_tabs/DataTab/tab_header/RegionTabHeaderComponrent.vue?vue&type=template&id=e5be7796&":
+/*!**************************************************************************************************************************************!*\
+  !*** ./resources/js/components/user/items/data_tabs/DataTab/tab_header/RegionTabHeaderComponrent.vue?vue&type=template&id=e5be7796& ***!
+  \**************************************************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "render": () => (/* reexport safe */ _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_RegionTabHeaderComponrent_vue_vue_type_template_id_e5be7796___WEBPACK_IMPORTED_MODULE_0__.render),
+/* harmony export */   "staticRenderFns": () => (/* reexport safe */ _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_RegionTabHeaderComponrent_vue_vue_type_template_id_e5be7796___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns)
+/* harmony export */ });
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_RegionTabHeaderComponrent_vue_vue_type_template_id_e5be7796___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./RegionTabHeaderComponrent.vue?vue&type=template&id=e5be7796& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/user/items/data_tabs/DataTab/tab_header/RegionTabHeaderComponrent.vue?vue&type=template&id=e5be7796&");
+
+
+/***/ }),
+
+/***/ "./resources/js/components/user/items/data_tabs/DataTab/tab_header/RouteTabHeaderComponrent.vue?vue&type=template&id=56730ff0&":
+/*!*************************************************************************************************************************************!*\
+  !*** ./resources/js/components/user/items/data_tabs/DataTab/tab_header/RouteTabHeaderComponrent.vue?vue&type=template&id=56730ff0& ***!
+  \*************************************************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "render": () => (/* reexport safe */ _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_RouteTabHeaderComponrent_vue_vue_type_template_id_56730ff0___WEBPACK_IMPORTED_MODULE_0__.render),
+/* harmony export */   "staticRenderFns": () => (/* reexport safe */ _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_RouteTabHeaderComponrent_vue_vue_type_template_id_56730ff0___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns)
+/* harmony export */ });
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_RouteTabHeaderComponrent_vue_vue_type_template_id_56730ff0___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./RouteTabHeaderComponrent.vue?vue&type=template&id=56730ff0& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/user/items/data_tabs/DataTab/tab_header/RouteTabHeaderComponrent.vue?vue&type=template&id=56730ff0&");
 
 
 /***/ }),
@@ -10357,6 +10594,26 @@ var render = function () {
                               ],
                               1
                             )
+                          : data.table_name == "Regions"
+                          ? _c(
+                              "thead",
+                              [
+                                _c("regionTabHeader", {
+                                  attrs: { table_name: data.table_name },
+                                }),
+                              ],
+                              1
+                            )
+                          : data.table_name == "Routes"
+                          ? _c(
+                              "thead",
+                              [
+                                _c("routeTabHeader", {
+                                  attrs: { table_name: data.table_name },
+                                }),
+                              ],
+                              1
+                            )
                           : data.table_name == "outdoor" ||
                             data.table_name == "indoor" ||
                             data.table_name == "ice" ||
@@ -11036,6 +11293,114 @@ var staticRenderFns = [
       _c("th", [_vm._v("|")]),
       _vm._v(" "),
       _c("th", [_vm._v("Options")]),
+      _vm._v(" "),
+      _c("th", [_vm._v("|")]),
+      _vm._v(" "),
+      _c("th", [_vm._v("Edit")]),
+      _vm._v(" "),
+      _c("th", [_vm._v("|")]),
+      _vm._v(" "),
+      _c("th", [_vm._v("Delite")]),
+    ])
+  },
+]
+render._withStripped = true
+
+
+
+/***/ }),
+
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/user/items/data_tabs/DataTab/tab_header/RegionTabHeaderComponrent.vue?vue&type=template&id=e5be7796&":
+/*!*****************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/user/items/data_tabs/DataTab/tab_header/RegionTabHeaderComponrent.vue?vue&type=template&id=e5be7796& ***!
+  \*****************************************************************************************************************************************************************************************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "render": () => (/* binding */ render),
+/* harmony export */   "staticRenderFns": () => (/* binding */ staticRenderFns)
+/* harmony export */ });
+var render = function () {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _vm._m(0)
+}
+var staticRenderFns = [
+  function () {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("tr", [
+      _c("th", { staticStyle: { "text-align": "center" } }, [
+        _c("input", { staticClass: "all", attrs: { type: "checkbox" } }),
+      ]),
+      _vm._v(" "),
+      _c("th", [_vm._v("|")]),
+      _vm._v(" "),
+      _c("th", [_vm._v("ID")]),
+      _vm._v(" "),
+      _c("th", [_vm._v("|")]),
+      _vm._v(" "),
+      _c("th", [_vm._v("Title")]),
+      _vm._v(" "),
+      _c("th", [_vm._v("|")]),
+      _vm._v(" "),
+      _c("th", [_vm._v("Edit")]),
+      _vm._v(" "),
+      _c("th", [_vm._v("|")]),
+      _vm._v(" "),
+      _c("th", [_vm._v("Delite")]),
+    ])
+  },
+]
+render._withStripped = true
+
+
+
+/***/ }),
+
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/user/items/data_tabs/DataTab/tab_header/RouteTabHeaderComponrent.vue?vue&type=template&id=56730ff0&":
+/*!****************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/user/items/data_tabs/DataTab/tab_header/RouteTabHeaderComponrent.vue?vue&type=template&id=56730ff0& ***!
+  \****************************************************************************************************************************************************************************************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "render": () => (/* binding */ render),
+/* harmony export */   "staticRenderFns": () => (/* binding */ staticRenderFns)
+/* harmony export */ });
+var render = function () {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _vm._m(0)
+}
+var staticRenderFns = [
+  function () {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("tr", [
+      _c("th", { staticStyle: { "text-align": "center" } }, [
+        _c("input", { staticClass: "all", attrs: { type: "checkbox" } }),
+      ]),
+      _vm._v(" "),
+      _c("th", [_vm._v("|")]),
+      _vm._v(" "),
+      _c("th", [_vm._v("ID")]),
+      _vm._v(" "),
+      _c("th", [_vm._v("|")]),
+      _vm._v(" "),
+      _c("th", [_vm._v("Name")]),
+      _vm._v(" "),
+      _c("th", [_vm._v("|")]),
+      _vm._v(" "),
+      _c("th", [_vm._v("Grade")]),
       _vm._v(" "),
       _c("th", [_vm._v("|")]),
       _vm._v(" "),
@@ -16836,13 +17201,7 @@ var render = function () {
       ? _c("td", [_vm._v("\n        Description\n    ")])
       : _vm._e(),
     _vm._v(" "),
-    _vm.data.table_name == "Users"
-      ? _c("th", [_vm._v("\n        |\n    ")])
-      : _vm._e(),
-    _vm._v(" "),
-    _vm.data.table_name == "Roles"
-      ? _c("th", [_vm._v("\n        |\n    ")])
-      : _vm._e(),
+    _c("th", [_vm._v("\n        |\n    ")]),
     _vm._v(" "),
     _vm.data.table_name != "Parmissions" &&
     _vm.data.table_name != "My comments" &&

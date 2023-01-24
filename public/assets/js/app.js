@@ -5656,6 +5656,35 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
  //https://www.npmjs.com/package/vue-recaptcha
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
@@ -5702,7 +5731,6 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
           password: _this.password,
           password_confirmation: _this.password_confirmation
         }).then(function (res) {
-          // console.log(res);
           localStorage.setItem('x_xsrf_token', res.config.headers['X-XSRF-TOKEN']);
 
           _this.$router.push({
@@ -9836,6 +9864,7 @@ vue__WEBPACK_IMPORTED_MODULE_12__["default"].use(vue_gtag__WEBPACK_IMPORTED_MODU
 
 vue__WEBPACK_IMPORTED_MODULE_12__["default"].config.productionTip = false;
 vue__WEBPACK_IMPORTED_MODULE_12__["default"].prototype.$siteData = [];
+vue__WEBPACK_IMPORTED_MODULE_12__["default"].prototype.$globalSiteData = [];
 vue__WEBPACK_IMPORTED_MODULE_12__["default"].prototype.$authUserData = [];
 
 if (window.location.hostname == 'climbing.ge' && window.location.hostname == 'shop.climbing.ge' && window.location.hostname == 'user.climbing.ge' && window.location.hostname == 'films.climbing.ge' && window.location.hostname == 'forum.climbing.ge') {
@@ -9862,7 +9891,7 @@ var app = new vue__WEBPACK_IMPORTED_MODULE_12__["default"]({
   methods: {
     get_site_data: function get_site_data() {
       axios__WEBPACK_IMPORTED_MODULE_3___default().get("../../../../api/siteData/get_site_locale_data/" + localStorage.getItem('lang')).then(function (response) {
-        return vue__WEBPACK_IMPORTED_MODULE_12__["default"].prototype.$siteData = response.data;
+        return vue__WEBPACK_IMPORTED_MODULE_12__["default"].prototype.$siteData = response.data.locale_data, vue__WEBPACK_IMPORTED_MODULE_12__["default"].prototype.$globalSiteData = response.data.global_data;
       });
     } // get_auth_user_data() {
     //     axios
@@ -71357,445 +71386,488 @@ var render = function () {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", { staticClass: "login mt-5" }, [
-    _c("div", { staticClass: "card" }, [
-      _c("div", { staticClass: "card-header" }, [
-        _vm._v("\n      Register\n    "),
-      ]),
+  return _c(
+    "div",
+    { staticClass: "login mt-5" },
+    [
+      _c(
+        "router-link",
+        {
+          staticClass: "btn btn-success",
+          attrs: { to: { name: "login" }, exact: "" },
+        },
+        [_vm._v("\n    login\n  ")]
+      ),
       _vm._v(" "),
-      _c("div", { staticClass: "card-body" }, [
-        _c(
-          "form",
-          [
-            _c("div", { staticClass: "form-group" }, [
-              _c("label", { attrs: { for: "email" } }, [_vm._v("Name")]),
-              _vm._v(" "),
-              _c("input", {
-                directives: [
-                  {
-                    name: "model",
-                    rawName: "v-model",
-                    value: _vm.name,
-                    expression: "name",
-                  },
-                ],
-                staticClass: "form-control",
-                class: { "is-invalid": _vm.errors.name },
-                attrs: { type: "text", id: "name", placeholder: "Enter name" },
-                domProps: { value: _vm.name },
-                on: {
-                  input: function ($event) {
-                    if ($event.target.composing) {
-                      return
-                    }
-                    _vm.name = $event.target.value
-                  },
+      _c("hr"),
+      _vm._v(" "),
+      _c("div", { staticClass: "card" }, [
+        _c("div", { staticClass: "card-header" }, [
+          _vm._v("\n      Register\n    "),
+        ]),
+        _vm._v(" "),
+        _c("div", { staticClass: "card-body" }, [
+          _c(
+            "form",
+            {
+              attrs: { id: "register_form" },
+              on: {
+                submit: function ($event) {
+                  $event.preventDefault()
+                  return _vm.register.apply(null, arguments)
                 },
-              }),
-              _vm._v(" "),
-              _vm.errors.name
-                ? _c("div", { staticClass: "invalid-feedback" }, [
-                    _vm._v(
-                      "\n            " +
-                        _vm._s(_vm.errors.name[0]) +
-                        "\n          "
-                    ),
-                  ])
-                : _vm._e(),
-            ]),
-            _vm._v(" "),
-            _c("div", { staticClass: "form-group" }, [
-              _c("label", { attrs: { for: "email" } }, [_vm._v("surname")]),
-              _vm._v(" "),
-              _c("input", {
-                directives: [
-                  {
-                    name: "model",
-                    rawName: "v-model",
-                    value: _vm.surname,
-                    expression: "surname",
-                  },
-                ],
-                staticClass: "form-control",
-                class: { "is-invalid": _vm.errors.surname },
-                attrs: {
-                  type: "text",
-                  id: "surname",
-                  placeholder: "Enter surname",
-                },
-                domProps: { value: _vm.surname },
-                on: {
-                  input: function ($event) {
-                    if ($event.target.composing) {
-                      return
-                    }
-                    _vm.surname = $event.target.value
-                  },
-                },
-              }),
-              _vm._v(" "),
-              _vm.errors.surname
-                ? _c("div", { staticClass: "invalid-feedback" }, [
-                    _vm._v(
-                      "\n            " +
-                        _vm._s(_vm.errors.surname[0]) +
-                        "\n          "
-                    ),
-                  ])
-                : _vm._e(),
-            ]),
-            _vm._v(" "),
-            _c("div", { staticClass: "form-group" }, [
-              _c("label", { attrs: { for: "email" } }, [
-                _vm._v("Email address"),
-              ]),
-              _vm._v(" "),
-              _c("input", {
-                directives: [
-                  {
-                    name: "model",
-                    rawName: "v-model",
-                    value: _vm.email,
-                    expression: "email",
-                  },
-                ],
-                staticClass: "form-control",
-                class: { "is-invalid": _vm.errors.email },
-                attrs: {
-                  type: "email",
-                  id: "email",
-                  placeholder: "Enter email",
-                },
-                domProps: { value: _vm.email },
-                on: {
-                  input: function ($event) {
-                    if ($event.target.composing) {
-                      return
-                    }
-                    _vm.email = $event.target.value
-                  },
-                },
-              }),
-              _vm._v(" "),
-              _vm.errors.email
-                ? _c("div", { staticClass: "invalid-feedback" }, [
-                    _vm._v(
-                      "\n            " +
-                        _vm._s(_vm.errors.email[0]) +
-                        "\n          "
-                    ),
-                  ])
-                : _vm._e(),
-            ]),
-            _vm._v(" "),
-            _c("div", { staticClass: "form-group" }, [
-              _c("label", { attrs: { for: "country" } }, [_vm._v("country")]),
-              _vm._v(" "),
-              _c("input", {
-                directives: [
-                  {
-                    name: "model",
-                    rawName: "v-model",
-                    value: _vm.country,
-                    expression: "country",
-                  },
-                ],
-                staticClass: "form-control",
-                class: { "is-invalid": _vm.errors.country },
-                attrs: {
-                  type: "country",
-                  id: "country",
-                  placeholder: "Enter country",
-                },
-                domProps: { value: _vm.country },
-                on: {
-                  input: function ($event) {
-                    if ($event.target.composing) {
-                      return
-                    }
-                    _vm.country = $event.target.value
-                  },
-                },
-              }),
-              _vm._v(" "),
-              _vm.errors.country
-                ? _c("div", { staticClass: "invalid-feedback" }, [
-                    _vm._v(
-                      "\n            " +
-                        _vm._s(_vm.errors.country[0]) +
-                        "\n          "
-                    ),
-                  ])
-                : _vm._e(),
-            ]),
-            _vm._v(" "),
-            _c("div", { staticClass: "form-group" }, [
-              _c("label", { attrs: { for: "city" } }, [_vm._v("city")]),
-              _vm._v(" "),
-              _c("input", {
-                directives: [
-                  {
-                    name: "model",
-                    rawName: "v-model",
-                    value: _vm.city,
-                    expression: "city",
-                  },
-                ],
-                staticClass: "form-control",
-                class: { "is-invalid": _vm.errors.city },
-                attrs: { type: "city", id: "city", placeholder: "Enter city" },
-                domProps: { value: _vm.city },
-                on: {
-                  input: function ($event) {
-                    if ($event.target.composing) {
-                      return
-                    }
-                    _vm.city = $event.target.value
-                  },
-                },
-              }),
-              _vm._v(" "),
-              _vm.errors.city
-                ? _c("div", { staticClass: "invalid-feedback" }, [
-                    _vm._v(
-                      "\n            " +
-                        _vm._s(_vm.errors.city[0]) +
-                        "\n          "
-                    ),
-                  ])
-                : _vm._e(),
-            ]),
-            _vm._v(" "),
-            _c("div", { staticClass: "form-group" }, [
-              _c("label", { attrs: { for: "phone_number" } }, [
-                _vm._v("phone_number"),
-              ]),
-              _vm._v(" "),
-              _c("input", {
-                directives: [
-                  {
-                    name: "model",
-                    rawName: "v-model",
-                    value: _vm.phone_number,
-                    expression: "phone_number",
-                  },
-                ],
-                staticClass: "form-control",
-                class: { "is-invalid": _vm.errors.phone_number },
-                attrs: {
-                  type: "phone_number",
-                  id: "phone_number",
-                  placeholder: "Enter phone_number",
-                },
-                domProps: { value: _vm.phone_number },
-                on: {
-                  input: function ($event) {
-                    if ($event.target.composing) {
-                      return
-                    }
-                    _vm.phone_number = $event.target.value
-                  },
-                },
-              }),
-              _vm._v(" "),
-              _vm.errors.phone_number
-                ? _c("div", { staticClass: "invalid-feedback" }, [
-                    _vm._v(
-                      "\n            " +
-                        _vm._s(_vm.errors.phone_number[0]) +
-                        "\n          "
-                    ),
-                  ])
-                : _vm._e(),
-            ]),
-            _vm._v(" "),
-            _c("div", { staticClass: "form-group" }, [
-              _c("label", { attrs: { for: "password" } }, [_vm._v("Password")]),
-              _vm._v(" "),
-              _c("input", {
-                directives: [
-                  {
-                    name: "model",
-                    rawName: "v-model",
-                    value: _vm.password,
-                    expression: "password",
-                  },
-                ],
-                staticClass: "form-control",
-                class: { "is-invalid": _vm.errors.password },
-                attrs: {
-                  type: "password",
-                  id: "password",
-                  placeholder: "Password",
-                },
-                domProps: { value: _vm.password },
-                on: {
-                  input: function ($event) {
-                    if ($event.target.composing) {
-                      return
-                    }
-                    _vm.password = $event.target.value
-                  },
-                },
-              }),
-              _vm._v(" "),
-              _vm.errors.password
-                ? _c("div", { staticClass: "invalid-feedback" }, [
-                    _vm._v(
-                      "\n            " +
-                        _vm._s(_vm.errors.password[0]) +
-                        "\n          "
-                    ),
-                  ])
-                : _vm._e(),
-            ]),
-            _vm._v(" "),
-            _c("div", { staticClass: "form-group" }, [
-              _c("label", { attrs: { for: "password_confirmation" } }, [
-                _vm._v("Confirm password"),
-              ]),
-              _vm._v(" "),
-              _c("input", {
-                directives: [
-                  {
-                    name: "model",
-                    rawName: "v-model",
-                    value: _vm.password_confirmation,
-                    expression: "password_confirmation",
-                  },
-                ],
-                staticClass: "form-control",
-                attrs: {
-                  type: "password",
-                  id: "password_confirmation",
-                  placeholder: "Confirm password",
-                },
-                domProps: { value: _vm.password_confirmation },
-                on: {
-                  input: function ($event) {
-                    if ($event.target.composing) {
-                      return
-                    }
-                    _vm.password_confirmation = $event.target.value
-                  },
-                },
-              }),
-            ]),
-            _vm._v(" "),
-            _c("div", { staticClass: "form-group" }, [
-              _c("input", {
-                directives: [
-                  {
-                    name: "model",
-                    rawName: "v-model",
-                    value: _vm.terms_of_use,
-                    expression: "terms_of_use",
-                  },
-                ],
-                attrs: {
-                  type: "checkbox",
-                  name: "One time code",
-                  value: "One time code",
-                },
-                domProps: {
-                  checked: Array.isArray(_vm.terms_of_use)
-                    ? _vm._i(_vm.terms_of_use, "One time code") > -1
-                    : _vm.terms_of_use,
-                },
-                on: {
-                  change: function ($event) {
-                    var $$a = _vm.terms_of_use,
-                      $$el = $event.target,
-                      $$c = $$el.checked ? true : false
-                    if (Array.isArray($$a)) {
-                      var $$v = "One time code",
-                        $$i = _vm._i($$a, $$v)
-                      if ($$el.checked) {
-                        $$i < 0 && (_vm.terms_of_use = $$a.concat([$$v]))
-                      } else {
-                        $$i > -1 &&
-                          (_vm.terms_of_use = $$a
-                            .slice(0, $$i)
-                            .concat($$a.slice($$i + 1)))
-                      }
-                    } else {
-                      _vm.terms_of_use = $$c
-                    }
-                  },
-                },
-              }),
-              _vm._v("\n          I agree with the "),
-              _c("a", { attrs: { href: "" } }, [_vm._v("terms of use")]),
-            ]),
-            _vm._v(" "),
-            _c("div", { staticClass: "row" }, [
-              _c("div", { staticClass: "col-md-12" }, [
-                _c(
-                  "div",
-                  { staticClass: "form-group form_left" },
-                  [
-                    _c("vue-recaptcha", {
-                      ref: "recaptcha",
-                      attrs: {
-                        sitekey: _vm.MIX_GOOGLE_CAPTCHA_SITE_KEY,
-                        loadRecaptchaScript: true,
-                        type: "invisible",
-                      },
-                      on: {
-                        verify: _vm.onCaptchaVerified,
-                        expired: _vm.onCaptchaExpired,
-                      },
-                    }),
+              },
+            },
+            [
+              _c("div", { staticClass: "form-group" }, [
+                _c("label", { attrs: { for: "email" } }, [_vm._v("Name")]),
+                _vm._v(" "),
+                _c("input", {
+                  directives: [
+                    {
+                      name: "model",
+                      rawName: "v-model",
+                      value: _vm.name,
+                      expression: "name",
+                    },
                   ],
-                  1
-                ),
-              ]),
-            ]),
-            _vm._v(" "),
-            _c("div", { staticClass: "row" }, [
-              _c("div", { staticClass: "col-md-12" }, [
-                _vm.is_verify_isset != false && _vm.terms_of_use != false
-                  ? _c("div", { staticClass: "form-group" }, [
-                      _c(
-                        "button",
-                        {
-                          staticClass: "btn btn-default btn-send main-btn",
-                          attrs: { type: "submit" },
-                          on: { click: _vm.register },
-                        },
-                        [_vm._v("Send")]
+                  staticClass: "form-control",
+                  class: { "is-invalid": _vm.errors.name },
+                  attrs: {
+                    type: "text",
+                    id: "name",
+                    placeholder: "Enter name",
+                    required: "",
+                  },
+                  domProps: { value: _vm.name },
+                  on: {
+                    input: function ($event) {
+                      if ($event.target.composing) {
+                        return
+                      }
+                      _vm.name = $event.target.value
+                    },
+                  },
+                }),
+                _vm._v(" "),
+                _vm.errors.name
+                  ? _c("div", { staticClass: "invalid-feedback" }, [
+                      _vm._v(
+                        "\n            " +
+                          _vm._s(_vm.errors.name[0]) +
+                          "\n          "
                       ),
                     ])
-                  : _c("div", { staticClass: "form-group" }, [
-                      _c(
-                        "button",
-                        {
-                          staticClass: "btn btn-default btn-send main-btn",
-                          attrs: { type: "submit", disabled: "" },
-                          on: { click: _vm.register },
-                        },
-                        [_vm._v("Send")]
-                      ),
-                    ]),
+                  : _vm._e(),
               ]),
-            ]),
-            _vm._v(" "),
-            _c("hr"),
-            _vm._v(" "),
-            _c(
-              "router-link",
-              {
-                staticClass: "btn btn-success",
-                attrs: { to: { name: "login" }, exact: "" },
-              },
-              [_vm._v("\n          login\n        ")]
-            ),
-          ],
-          1
-        ),
+              _vm._v(" "),
+              _c("div", { staticClass: "form-group" }, [
+                _c("label", { attrs: { for: "email" } }, [_vm._v("surname")]),
+                _vm._v(" "),
+                _c("input", {
+                  directives: [
+                    {
+                      name: "model",
+                      rawName: "v-model",
+                      value: _vm.surname,
+                      expression: "surname",
+                    },
+                  ],
+                  staticClass: "form-control",
+                  class: { "is-invalid": _vm.errors.surname },
+                  attrs: {
+                    type: "text",
+                    id: "surname",
+                    placeholder: "Enter surname",
+                    required: "",
+                  },
+                  domProps: { value: _vm.surname },
+                  on: {
+                    input: function ($event) {
+                      if ($event.target.composing) {
+                        return
+                      }
+                      _vm.surname = $event.target.value
+                    },
+                  },
+                }),
+                _vm._v(" "),
+                _vm.errors.surname
+                  ? _c("div", { staticClass: "invalid-feedback" }, [
+                      _vm._v(
+                        "\n            " +
+                          _vm._s(_vm.errors.surname[0]) +
+                          "\n          "
+                      ),
+                    ])
+                  : _vm._e(),
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "form-group" }, [
+                _c("label", { attrs: { for: "email" } }, [
+                  _vm._v("Email address"),
+                ]),
+                _vm._v(" "),
+                _c("input", {
+                  directives: [
+                    {
+                      name: "model",
+                      rawName: "v-model",
+                      value: _vm.email,
+                      expression: "email",
+                    },
+                  ],
+                  staticClass: "form-control",
+                  class: { "is-invalid": _vm.errors.email },
+                  attrs: {
+                    type: "email",
+                    id: "email",
+                    placeholder: "Enter email",
+                    required: "",
+                  },
+                  domProps: { value: _vm.email },
+                  on: {
+                    input: function ($event) {
+                      if ($event.target.composing) {
+                        return
+                      }
+                      _vm.email = $event.target.value
+                    },
+                  },
+                }),
+                _vm._v(" "),
+                _vm.errors.email
+                  ? _c("div", { staticClass: "invalid-feedback" }, [
+                      _vm._v(
+                        "\n            " +
+                          _vm._s(_vm.errors.email[0]) +
+                          "\n          "
+                      ),
+                    ])
+                  : _vm._e(),
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "form-group" }, [
+                _c("label", { attrs: { for: "country" } }, [_vm._v("country")]),
+                _vm._v(" "),
+                _c("input", {
+                  directives: [
+                    {
+                      name: "model",
+                      rawName: "v-model",
+                      value: _vm.country,
+                      expression: "country",
+                    },
+                  ],
+                  staticClass: "form-control",
+                  class: { "is-invalid": _vm.errors.country },
+                  attrs: {
+                    type: "country",
+                    id: "country",
+                    placeholder: "Enter country",
+                    required: "",
+                  },
+                  domProps: { value: _vm.country },
+                  on: {
+                    input: function ($event) {
+                      if ($event.target.composing) {
+                        return
+                      }
+                      _vm.country = $event.target.value
+                    },
+                  },
+                }),
+                _vm._v(" "),
+                _vm.errors.country
+                  ? _c("div", { staticClass: "invalid-feedback" }, [
+                      _vm._v(
+                        "\n            " +
+                          _vm._s(_vm.errors.country[0]) +
+                          "\n          "
+                      ),
+                    ])
+                  : _vm._e(),
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "form-group" }, [
+                _c("label", { attrs: { for: "city" } }, [_vm._v("city")]),
+                _vm._v(" "),
+                _c("input", {
+                  directives: [
+                    {
+                      name: "model",
+                      rawName: "v-model",
+                      value: _vm.city,
+                      expression: "city",
+                    },
+                  ],
+                  staticClass: "form-control",
+                  class: { "is-invalid": _vm.errors.city },
+                  attrs: {
+                    type: "city",
+                    id: "city",
+                    placeholder: "Enter city",
+                    required: "",
+                  },
+                  domProps: { value: _vm.city },
+                  on: {
+                    input: function ($event) {
+                      if ($event.target.composing) {
+                        return
+                      }
+                      _vm.city = $event.target.value
+                    },
+                  },
+                }),
+                _vm._v(" "),
+                _vm.errors.city
+                  ? _c("div", { staticClass: "invalid-feedback" }, [
+                      _vm._v(
+                        "\n            " +
+                          _vm._s(_vm.errors.city[0]) +
+                          "\n          "
+                      ),
+                    ])
+                  : _vm._e(),
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "form-group" }, [
+                _c("label", { attrs: { for: "phone_number" } }, [
+                  _vm._v("phone_number"),
+                ]),
+                _vm._v(" "),
+                _c("input", {
+                  directives: [
+                    {
+                      name: "model",
+                      rawName: "v-model",
+                      value: _vm.phone_number,
+                      expression: "phone_number",
+                    },
+                  ],
+                  staticClass: "form-control",
+                  class: { "is-invalid": _vm.errors.phone_number },
+                  attrs: {
+                    type: "phone_number",
+                    id: "phone_number",
+                    placeholder: "Enter phone_number",
+                    required: "",
+                  },
+                  domProps: { value: _vm.phone_number },
+                  on: {
+                    input: function ($event) {
+                      if ($event.target.composing) {
+                        return
+                      }
+                      _vm.phone_number = $event.target.value
+                    },
+                  },
+                }),
+                _vm._v(" "),
+                _vm.errors.phone_number
+                  ? _c("div", { staticClass: "invalid-feedback" }, [
+                      _vm._v(
+                        "\n            " +
+                          _vm._s(_vm.errors.phone_number[0]) +
+                          "\n          "
+                      ),
+                    ])
+                  : _vm._e(),
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "form-group" }, [
+                _c("label", { attrs: { for: "password" } }, [
+                  _vm._v("Password"),
+                ]),
+                _vm._v(" "),
+                _c("input", {
+                  directives: [
+                    {
+                      name: "model",
+                      rawName: "v-model",
+                      value: _vm.password,
+                      expression: "password",
+                    },
+                  ],
+                  staticClass: "form-control",
+                  class: { "is-invalid": _vm.errors.password },
+                  attrs: {
+                    type: "password",
+                    id: "password",
+                    placeholder: "Password",
+                    minlength: "8",
+                    required: "",
+                  },
+                  domProps: { value: _vm.password },
+                  on: {
+                    input: function ($event) {
+                      if ($event.target.composing) {
+                        return
+                      }
+                      _vm.password = $event.target.value
+                    },
+                  },
+                }),
+                _vm._v(" "),
+                _vm.errors.password
+                  ? _c("div", { staticClass: "invalid-feedback" }, [
+                      _vm._v(
+                        "\n            " +
+                          _vm._s(_vm.errors.password[0]) +
+                          "\n          "
+                      ),
+                    ])
+                  : _vm._e(),
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "form-group" }, [
+                _c("label", { attrs: { for: "password_confirmation" } }, [
+                  _vm._v("Confirm password"),
+                ]),
+                _vm._v(" "),
+                _c("input", {
+                  directives: [
+                    {
+                      name: "model",
+                      rawName: "v-model",
+                      value: _vm.password_confirmation,
+                      expression: "password_confirmation",
+                    },
+                  ],
+                  staticClass: "form-control",
+                  attrs: {
+                    type: "password",
+                    id: "password_confirmation",
+                    placeholder: "Confirm password",
+                    minlength: "8",
+                    required: "",
+                  },
+                  domProps: { value: _vm.password_confirmation },
+                  on: {
+                    input: function ($event) {
+                      if ($event.target.composing) {
+                        return
+                      }
+                      _vm.password_confirmation = $event.target.value
+                    },
+                  },
+                }),
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "form-group" }, [
+                _c("input", {
+                  directives: [
+                    {
+                      name: "model",
+                      rawName: "v-model",
+                      value: _vm.terms_of_use,
+                      expression: "terms_of_use",
+                    },
+                  ],
+                  attrs: {
+                    type: "checkbox",
+                    name: "One time code",
+                    value: "One time code",
+                  },
+                  domProps: {
+                    checked: Array.isArray(_vm.terms_of_use)
+                      ? _vm._i(_vm.terms_of_use, "One time code") > -1
+                      : _vm.terms_of_use,
+                  },
+                  on: {
+                    change: function ($event) {
+                      var $$a = _vm.terms_of_use,
+                        $$el = $event.target,
+                        $$c = $$el.checked ? true : false
+                      if (Array.isArray($$a)) {
+                        var $$v = "One time code",
+                          $$i = _vm._i($$a, $$v)
+                        if ($$el.checked) {
+                          $$i < 0 && (_vm.terms_of_use = $$a.concat([$$v]))
+                        } else {
+                          $$i > -1 &&
+                            (_vm.terms_of_use = $$a
+                              .slice(0, $$i)
+                              .concat($$a.slice($$i + 1)))
+                        }
+                      } else {
+                        _vm.terms_of_use = $$c
+                      }
+                    },
+                  },
+                }),
+                _vm._v("\n          I agree with the "),
+                _c("a", { attrs: { href: "" } }, [_vm._v("terms of use")]),
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "row" }, [
+                _c("div", { staticClass: "col-md-12" }, [
+                  _c(
+                    "div",
+                    { staticClass: "form-group form_left" },
+                    [
+                      _c("vue-recaptcha", {
+                        ref: "recaptcha",
+                        attrs: {
+                          sitekey: _vm.MIX_GOOGLE_CAPTCHA_SITE_KEY,
+                          loadRecaptchaScript: true,
+                          type: "invisible",
+                        },
+                        on: {
+                          verify: _vm.onCaptchaVerified,
+                          expired: _vm.onCaptchaExpired,
+                        },
+                      }),
+                    ],
+                    1
+                  ),
+                ]),
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "row" }, [
+                _c("div", { staticClass: "col-md-12" }, [
+                  _vm.is_verify_isset != false && _vm.terms_of_use != false
+                    ? _c("div", { staticClass: "form-group" }, [
+                        _c(
+                          "button",
+                          {
+                            staticClass: "btn btn-default btn-send main-btn",
+                            attrs: { type: "submit", form: "register_form" },
+                          },
+                          [
+                            _vm._v(
+                              "\n                    Save\n                "
+                            ),
+                          ]
+                        ),
+                      ])
+                    : _c("div", { staticClass: "form-group" }, [
+                        _c(
+                          "button",
+                          {
+                            staticClass: "btn btn-default btn-send main-btn",
+                            attrs: {
+                              type: "submit",
+                              form: "register_form",
+                              disabled: "",
+                            },
+                          },
+                          [
+                            _vm._v(
+                              "\n                    Save\n                "
+                            ),
+                          ]
+                        ),
+                      ]),
+                ]),
+              ]),
+            ]
+          ),
+        ]),
       ]),
-    ]),
-  ])
+    ],
+    1
+  )
 }
 var staticRenderFns = []
 render._withStripped = true
@@ -99222,7 +99294,7 @@ function i(o){return o instanceof Date?o.getTime():o&&"function"==typeof o.toJSO
 /***/ ((module) => {
 
 "use strict";
-module.exports = JSON.parse('{"name":"axios","version":"0.21.4","description":"Promise based HTTP client for the browser and node.js","main":"index.js","scripts":{"test":"grunt test","start":"node ./sandbox/server.js","build":"NODE_ENV=production grunt build","preversion":"npm test","version":"npm run build && grunt version && git add -A dist && git add CHANGELOG.md bower.json package.json","postversion":"git push && git push --tags","examples":"node ./examples/server.js","coveralls":"cat coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js","fix":"eslint --fix lib/**/*.js"},"repository":{"type":"git","url":"https://github.com/axios/axios.git"},"keywords":["xhr","http","ajax","promise","node"],"author":"Matt Zabriskie","license":"MIT","bugs":{"url":"https://github.com/axios/axios/issues"},"homepage":"https://axios-http.com","devDependencies":{"coveralls":"^3.0.0","es6-promise":"^4.2.4","grunt":"^1.3.0","grunt-banner":"^0.6.0","grunt-cli":"^1.2.0","grunt-contrib-clean":"^1.1.0","grunt-contrib-watch":"^1.0.0","grunt-eslint":"^23.0.0","grunt-karma":"^4.0.0","grunt-mocha-test":"^0.13.3","grunt-ts":"^6.0.0-beta.19","grunt-webpack":"^4.0.2","istanbul-instrumenter-loader":"^1.0.0","jasmine-core":"^2.4.1","karma":"^6.3.2","karma-chrome-launcher":"^3.1.0","karma-firefox-launcher":"^2.1.0","karma-jasmine":"^1.1.1","karma-jasmine-ajax":"^0.1.13","karma-safari-launcher":"^1.0.0","karma-sauce-launcher":"^4.3.6","karma-sinon":"^1.0.5","karma-sourcemap-loader":"^0.3.8","karma-webpack":"^4.0.2","load-grunt-tasks":"^3.5.2","minimist":"^1.2.0","mocha":"^8.2.1","sinon":"^4.5.0","terser-webpack-plugin":"^4.2.3","typescript":"^4.0.5","url-search-params":"^0.10.0","webpack":"^4.44.2","webpack-dev-server":"^3.11.0"},"browser":{"./lib/adapters/http.js":"./lib/adapters/xhr.js"},"jsdelivr":"dist/axios.min.js","unpkg":"dist/axios.min.js","typings":"./index.d.ts","dependencies":{"follow-redirects":"^1.14.0"},"bundlesize":[{"path":"./dist/axios.min.js","threshold":"5kB"}]}');
+module.exports = JSON.parse('{"_args":[["axios@0.21.4","/var/www/climbing.loc"]],"_from":"axios@0.21.4","_id":"axios@0.21.4","_inBundle":false,"_integrity":"sha512-ut5vewkiu8jjGBdqpM44XxjuCjq9LAKeHVmoVfHVzy8eHgxxq8SbAVQNovDA8mVi05kP0Ea/n/UzcSHcTJQfNg==","_location":"/axios","_phantomChildren":{},"_requested":{"type":"version","registry":true,"raw":"axios@0.21.4","name":"axios","escapedName":"axios","rawSpec":"0.21.4","saveSpec":null,"fetchSpec":"0.21.4"},"_requiredBy":["#DEV:/","/mdbvue"],"_resolved":"https://registry.npmjs.org/axios/-/axios-0.21.4.tgz","_spec":"0.21.4","_where":"/var/www/climbing.loc","author":{"name":"Matt Zabriskie"},"browser":{"./lib/adapters/http.js":"./lib/adapters/xhr.js"},"bugs":{"url":"https://github.com/axios/axios/issues"},"bundlesize":[{"path":"./dist/axios.min.js","threshold":"5kB"}],"dependencies":{"follow-redirects":"^1.14.0"},"description":"Promise based HTTP client for the browser and node.js","devDependencies":{"coveralls":"^3.0.0","es6-promise":"^4.2.4","grunt":"^1.3.0","grunt-banner":"^0.6.0","grunt-cli":"^1.2.0","grunt-contrib-clean":"^1.1.0","grunt-contrib-watch":"^1.0.0","grunt-eslint":"^23.0.0","grunt-karma":"^4.0.0","grunt-mocha-test":"^0.13.3","grunt-ts":"^6.0.0-beta.19","grunt-webpack":"^4.0.2","istanbul-instrumenter-loader":"^1.0.0","jasmine-core":"^2.4.1","karma":"^6.3.2","karma-chrome-launcher":"^3.1.0","karma-firefox-launcher":"^2.1.0","karma-jasmine":"^1.1.1","karma-jasmine-ajax":"^0.1.13","karma-safari-launcher":"^1.0.0","karma-sauce-launcher":"^4.3.6","karma-sinon":"^1.0.5","karma-sourcemap-loader":"^0.3.8","karma-webpack":"^4.0.2","load-grunt-tasks":"^3.5.2","minimist":"^1.2.0","mocha":"^8.2.1","sinon":"^4.5.0","terser-webpack-plugin":"^4.2.3","typescript":"^4.0.5","url-search-params":"^0.10.0","webpack":"^4.44.2","webpack-dev-server":"^3.11.0"},"homepage":"https://axios-http.com","jsdelivr":"dist/axios.min.js","keywords":["xhr","http","ajax","promise","node"],"license":"MIT","main":"index.js","name":"axios","repository":{"type":"git","url":"git+https://github.com/axios/axios.git"},"scripts":{"build":"NODE_ENV=production grunt build","coveralls":"cat coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js","examples":"node ./examples/server.js","fix":"eslint --fix lib/**/*.js","postversion":"git push && git push --tags","preversion":"npm test","start":"node ./sandbox/server.js","test":"grunt test","version":"npm run build && grunt version && git add -A dist && git add CHANGELOG.md bower.json package.json"},"typings":"./index.d.ts","unpkg":"dist/axios.min.js","version":"0.21.4"}');
 
 /***/ }),
 

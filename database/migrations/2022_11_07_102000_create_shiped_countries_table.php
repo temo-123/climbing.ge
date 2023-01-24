@@ -14,7 +14,7 @@ return new class extends Migration
     public function up()
     {
         Schema::create('shiped_countries', function (Blueprint $table) {
-            $table->id();
+            $table->bigIncrements('id');
             
             $table->string('country')->nullable();
             $table->string('shiping_price')->nullable();

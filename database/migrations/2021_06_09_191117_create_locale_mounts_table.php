@@ -14,7 +14,8 @@ class CreateLocaleMountsTable extends Migration
     public function up()
     {
         Schema::create('locale_mounts', function (Blueprint $table) {
-            $table->id();
+            
+            $table->bigIncrements('id');
 
             $table->string('locale')->nullable();
 
@@ -24,7 +25,7 @@ class CreateLocaleMountsTable extends Migration
             $table->text('how_get')->nullable();
             $table->text('best_time')->nullable();
             $table->text('what_need')->nullable();
-            $table->text('info')->nullable();
+            // $table->text('info')->nullable();
 
             $table->timestamps();
         });

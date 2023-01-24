@@ -225,6 +225,11 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       this.get_other_articles();
     }
   },
+  data: function data() {
+    return {
+      other_articles: []
+    };
+  },
   methods: {
     get_other_articles: function get_other_articles() {
       var _this = this;
@@ -2003,7 +2008,7 @@ var render = function () {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return this.other_articles.length > 0
+  return _vm.other_articles.length > 0
     ? _c("div", { staticClass: "h-recent-work", attrs: { id: "other" } }, [
         _c(
           "div",
@@ -2018,7 +2023,7 @@ var render = function () {
             _c("h3", [
               _c("span", {
                 domProps: {
-                  innerHTML: _vm._s(this.$siteData.other_activity_description),
+                  innerHTML: _vm._s(_vm.$siteData.other_activity_description),
                 },
               }),
             ]),
@@ -2255,180 +2260,176 @@ var render = function () {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return this.$siteData.map
-    ? _c("div", { staticClass: "services" }, [
-        _c("div", { staticClass: "container" }, [
-          _c("h2", { staticClass: "index_h2" }, [
-            _vm._v(_vm._s(_vm.$t("title what we do"))),
-          ]),
-          _vm._v(" "),
-          _vm._m(0),
-          _vm._v(" "),
-          _c("h3", [
-            _vm._v(" " + _vm._s(this.$siteData.what_we_do_description) + " "),
-          ]),
-          _vm._v(" "),
-          _c("div", { staticClass: "row" }, [
-            _c("div", { staticClass: "col-xs-6 col-sm-6 col-md-6 col-lg-6" }, [
-              _c("ul", { staticClass: "right-text" }, [
-                _c("li", [
+  return _c("div", { staticClass: "services" }, [
+    _c("div", { staticClass: "container" }, [
+      _c("h2", { staticClass: "index_h2" }, [
+        _vm._v(_vm._s(_vm.$t("title what we do"))),
+      ]),
+      _vm._v(" "),
+      _vm._m(0),
+      _vm._v(" "),
+      _c("h3", [
+        _vm._v(" " + _vm._s(this.$siteData.what_we_do_description) + " "),
+      ]),
+      _vm._v(" "),
+      _c("div", { staticClass: "row" }, [
+        _c("div", { staticClass: "col-xs-6 col-sm-6 col-md-6 col-lg-6" }, [
+          _c("ul", { staticClass: "right-text" }, [
+            _c("li", [
+              _c(
+                "h4",
+                [
                   _c(
-                    "h4",
+                    "router-link",
+                    {
+                      staticStyle: { "font-size": "1.5em" },
+                      attrs: { to: { name: "outdoors" }, exact: "" },
+                    },
                     [
-                      _c(
-                        "router-link",
-                        {
-                          staticStyle: { "font-size": "1.5em" },
-                          attrs: { to: { name: "outdoors" }, exact: "" },
+                      _c("strong", [
+                        _vm._v(_vm._s(_vm.$t("title outdoor climbing"))),
+                      ]),
+                      _vm._v(" "),
+                      _c("img", {
+                        staticClass: "index_category_right",
+                        attrs: {
+                          alt: "Outdoor climbing in Georgia",
+                          src: "/images/site_img/outdoor.png",
+                          height: "auto",
                         },
-                        [
-                          _c("strong", [
-                            _vm._v(_vm._s(_vm.$t("title outdoor climbing"))),
-                          ]),
-                          _vm._v(" "),
-                          _c("img", {
-                            staticClass: "index_category_right",
-                            attrs: {
-                              alt: "Outdoor climbing in Georgia",
-                              src: "/images/site_img/outdoor.png",
-                              height: "auto",
-                            },
-                          }),
-                        ]
-                      ),
-                    ],
-                    1
+                      }),
+                    ]
                   ),
-                  _vm._v(" "),
-                  _c("div", { staticClass: "content-text" }, [
-                    _c("span", {
-                      domProps: {
-                        innerHTML: _vm._s(this.$siteData.indoor_description),
-                      },
-                    }),
-                  ]),
-                ]),
-                _vm._v(" "),
-                _c("div", { staticClass: "clearfix" }),
-                _vm._v(" "),
-                _c("li", [
-                  _c(
-                    "h4",
-                    [
-                      _c(
-                        "router-link",
-                        {
-                          staticStyle: { "font-size": "1.5em" },
-                          attrs: { to: { name: "indoors" }, exact: "" },
-                        },
-                        [
-                          _c("strong", [
-                            _vm._v(_vm._s(_vm.$t("title indoor climbing"))),
-                          ]),
-                          _vm._v(" "),
-                          _c("img", {
-                            staticClass: "index_category_right",
-                            attrs: {
-                              alt: "Indoor climbing",
-                              src: "/images/site_img/indoor.png",
-                            },
-                          }),
-                        ]
-                      ),
-                    ],
-                    1
-                  ),
-                  _vm._v(" "),
-                  _c("div", { staticClass: "content-text" }, [
-                    _c("span", {
-                      domProps: {
-                        innerHTML: _vm._s(this.$siteData.indoor_description),
-                      },
-                    }),
-                  ]),
-                ]),
+                ],
+                1
+              ),
+              _vm._v(" "),
+              _c("div", { staticClass: "content-text" }, [
+                _c("span", {
+                  domProps: {
+                    innerHTML: _vm._s(this.$siteData.indoor_description),
+                  },
+                }),
               ]),
             ]),
             _vm._v(" "),
-            _c("div", { staticClass: "col-xs-6 col-sm-6 col-md-6 col-lg-6" }, [
-              _c("ul", { staticClass: "left-text" }, [
-                _c("li", [
+            _c("div", { staticClass: "clearfix" }),
+            _vm._v(" "),
+            _c("li", [
+              _c(
+                "h4",
+                [
                   _c(
-                    "h4",
+                    "router-link",
+                    {
+                      staticStyle: { "font-size": "1.5em" },
+                      attrs: { to: { name: "indoors" }, exact: "" },
+                    },
                     [
-                      _c(
-                        "router-link",
-                        {
-                          attrs: { to: { name: "mountaineerings" }, exact: "" },
+                      _c("strong", [
+                        _vm._v(_vm._s(_vm.$t("title indoor climbing"))),
+                      ]),
+                      _vm._v(" "),
+                      _c("img", {
+                        staticClass: "index_category_right",
+                        attrs: {
+                          alt: "Indoor climbing",
+                          src: "/images/site_img/indoor.png",
                         },
-                        [
-                          _c("strong", [
-                            _vm._v(_vm._s(_vm.$t("title ice climbing"))),
-                          ]),
-                          _vm._v(" "),
-                          _c("img", {
-                            staticClass: "index_category_left",
-                            attrs: {
-                              alt: "Mountaineering in Georgia",
-                              src: "/images/site_img/ice.png",
-                            },
-                          }),
-                        ]
-                      ),
-                    ],
-                    1
+                      }),
+                    ]
                   ),
-                  _vm._v(" "),
-                  _c("div", { staticClass: "content-text" }, [
-                    _c("span", {
-                      domProps: {
-                        innerHTML: _vm._s(this.$siteData.ice_description),
-                      },
-                    }),
-                  ]),
-                ]),
-                _vm._v(" "),
-                _c("div", { staticClass: "clearfix" }),
-                _vm._v(" "),
-                _c("li", [
-                  _c(
-                    "h4",
-                    [
-                      _c(
-                        "router-link",
-                        { attrs: { to: { name: "ices" }, exact: "" } },
-                        [
-                          _c("strong", [
-                            _vm._v(_vm._s(_vm.$t("title mountaineering"))),
-                          ]),
-                          _vm._v(" "),
-                          _c("img", {
-                            staticClass: "index_category_left",
-                            attrs: {
-                              alt: "Ice climbing in Georgia",
-                              src: "/images/site_img/mount.png",
-                            },
-                          }),
-                        ]
-                      ),
-                    ],
-                    1
-                  ),
-                  _vm._v(" "),
-                  _c("div", { staticClass: "content-text" }, [
-                    _c("span", {
-                      domProps: {
-                        innerHTML: _vm._s(this.$siteData.mount_description),
-                      },
-                    }),
-                  ]),
-                ]),
+                ],
+                1
+              ),
+              _vm._v(" "),
+              _c("div", { staticClass: "content-text" }, [
+                _c("span", {
+                  domProps: {
+                    innerHTML: _vm._s(this.$siteData.indoor_description),
+                  },
+                }),
               ]),
             ]),
           ]),
         ]),
-      ])
-    : _vm._e()
+        _vm._v(" "),
+        _c("div", { staticClass: "col-xs-6 col-sm-6 col-md-6 col-lg-6" }, [
+          _c("ul", { staticClass: "left-text" }, [
+            _c("li", [
+              _c(
+                "h4",
+                [
+                  _c(
+                    "router-link",
+                    { attrs: { to: { name: "mountaineerings" }, exact: "" } },
+                    [
+                      _c("strong", [
+                        _vm._v(_vm._s(_vm.$t("title ice climbing"))),
+                      ]),
+                      _vm._v(" "),
+                      _c("img", {
+                        staticClass: "index_category_left",
+                        attrs: {
+                          alt: "Mountaineering in Georgia",
+                          src: "/images/site_img/ice.png",
+                        },
+                      }),
+                    ]
+                  ),
+                ],
+                1
+              ),
+              _vm._v(" "),
+              _c("div", { staticClass: "content-text" }, [
+                _c("span", {
+                  domProps: {
+                    innerHTML: _vm._s(this.$siteData.ice_description),
+                  },
+                }),
+              ]),
+            ]),
+            _vm._v(" "),
+            _c("div", { staticClass: "clearfix" }),
+            _vm._v(" "),
+            _c("li", [
+              _c(
+                "h4",
+                [
+                  _c(
+                    "router-link",
+                    { attrs: { to: { name: "ices" }, exact: "" } },
+                    [
+                      _c("strong", [
+                        _vm._v(_vm._s(_vm.$t("title mountaineering"))),
+                      ]),
+                      _vm._v(" "),
+                      _c("img", {
+                        staticClass: "index_category_left",
+                        attrs: {
+                          alt: "Ice climbing in Georgia",
+                          src: "/images/site_img/mount.png",
+                        },
+                      }),
+                    ]
+                  ),
+                ],
+                1
+              ),
+              _vm._v(" "),
+              _c("div", { staticClass: "content-text" }, [
+                _c("span", {
+                  domProps: {
+                    innerHTML: _vm._s(this.$siteData.mount_description),
+                  },
+                }),
+              ]),
+            ]),
+          ]),
+        ]),
+      ]),
+    ]),
+  ])
 }
 var staticRenderFns = [
   function () {
@@ -2741,24 +2742,12 @@ var render = function () {
             _c("div", { staticClass: "m-card--content" }, [
               _c("div", { staticClass: "m-ellipsis m-card--header" }, [
                 _c(
-                  "a",
+                  "h3",
                   {
-                    attrs: {
-                      onclick: "return phoenixTrackClickEvent(this, event);",
-                      "phx-track-id": "Title",
-                      href: "#",
-                    },
+                    staticClass: "m-ellipsis--text m-card--header-text",
+                    attrs: { role: "heading", "aria-level": "2" },
                   },
-                  [
-                    _c(
-                      "h3",
-                      {
-                        staticClass: "m-ellipsis--text m-card--header-text",
-                        attrs: { role: "heading", "aria-level": "2" },
-                      },
-                      [_vm._v(_vm._s(_vm.news[0][0].title))]
-                    ),
-                  ]
+                  [_vm._v(_vm._s(_vm.news[0][0].title))]
                 ),
               ]),
               _vm._v(" "),
@@ -2974,7 +2963,7 @@ var render = function () {
       _vm._v(" "),
       _c("whatWeDoComponent"),
       _vm._v(" "),
-      this.$siteData.map
+      this.$globalSiteData.map
         ? _c("div", { staticClass: "container h-recent-work" }, [
             _c("h2", { staticClass: "index_h2" }, [
               _vm._v(_vm._s(_vm.$t("title topo"))),
@@ -2988,7 +2977,7 @@ var render = function () {
             _vm._v(" "),
             _c("div", { style: "margin-bottom: 7%" }, [
               _c("span", {
-                domProps: { innerHTML: _vm._s(this.$siteData.map) },
+                domProps: { innerHTML: _vm._s(this.$globalSiteData.map) },
               }),
             ]),
           ])
@@ -3019,7 +3008,7 @@ var render = function () {
                   )
                 : _vm._e(),
               _vm._v(" "),
-              _vm.newses.length > 6
+              _vm.newses.length >= 6
                 ? _c(
                     "section",
                     {
