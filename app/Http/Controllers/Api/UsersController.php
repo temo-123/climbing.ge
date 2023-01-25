@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use Validator;
 use Auth;
 use Mail;
+use Hash;
 
 use App\User;
 use App\Models\Following_users;
@@ -78,6 +79,23 @@ class UsersController extends Controller
             }
         }
     }
+
+
+    public function update_password(Request $request)
+    {
+        #Match The Old Password
+        if(!Hash::check($request['data']['old_pass'], auth()->user()->password)){
+            return "Old Password Doesn't match!";
+        }
+
+        #Update the new Password
+        User::whereId(auth()->user()->id)->update([
+            'password' => Hash::make($request['data']['new_pass'])
+        ]);
+
+        return "Password changed successfully!";
+    }
+
 
     public function get_auth_user_permissions(Request $request)
     {

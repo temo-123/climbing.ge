@@ -349,8 +349,12 @@ Route::group(['namespace'=>'Api'], function() {
     /*
     *   Users routes
     */
+    Route::controller(UsersController::class)->prefix('user')->group( function() {
+        Route::post('/update_password', 'update_password');
+        Route::get('/get_auth_user_permissions', 'get_auth_user_permissions');
+    });
+
     Route::apiResource('/users', 'UsersController');
-    Route::get('/user/get_auth_user_permissions/', 'UsersController@get_auth_user_permissions');
     Route::get('/post_user/{user_id}', 'UsersController@get_post_user');
     Route::post('user_image_update/{user_id}', 'UsersController@user_image_update');
     
@@ -358,11 +362,14 @@ Route::group(['namespace'=>'Api'], function() {
     Route::get('/following_users_list', 'UsersController@get_following_users_list');
     Route::post('/follow/{service_id}', 'UsersController@follow');
 
-    Route::get('/options/get_user_data', 'UsersController@get_user_data');
-    Route::post('/options/user_info_update/{user_id}', 'UsersController@user_info_update');
+    Route::controller(UsersController::class)->prefix('options')->group( function() {
+        Route::get('/get_user_data', 'get_user_data');
+        Route::post('/user_info_update/{user_id}', 'user_info_update');
 
-    Route::get('/options/get_user_notification_data', 'UsersController@get_user_notification_data');
-    Route::post('/options/update_user_notification_data/{notification_id}', 'UsersController@update_user_notification_data');
+        Route::get('/get_user_notification_data', 'get_user_notification_data');
+        Route::post('/update_user_notification_data/{notification_id}', 'update_user_notification_data');
+    });
+
     
     /*
     *   Users routes

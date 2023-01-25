@@ -220,24 +220,31 @@
         <stack-modal
                 :show="is_change_password"
                 title="Edit password"
-                @close="is_change_password=false"
+                @close="close_edit_password_model()"
                 :saveButton="{ visible: true, title: 'Save', btnClass: { 'btn btn-primary': true } }"
                 :cancelButton="{ visible: false, title: 'Close', btnClass: { 'btn btn-danger': true } }"
             >
             <pre class="language-vue">
-                <form class="form" method="POST" id="registrationForm">
-                    <input type="text" class="form-control" name="Olde password" placeholder="Olde password" title="Olde password">
+                <form class="form" method="POST" id="edit_password" v-on:submit.prevent="edit_password">
+                    <div class="alert alert-danger" role="alert" v-if="is_old_pass_error">
+                        Your password is incorrect!
+                    </div>
+                    <input type="password" class="form-control" name="Olde password" placeholder="Olde password" v-model="password_edit_data.old_pass" title="Olde password" required>
                     <hr>
-                    <input type="text" class="form-control" name="New password" placeholder="New password" title="New password">
-                    <input type="text" class="form-control" name="Repeat new password" placeholder="Repeat new password" title="Repeat new password">
+                    <input type="password" class="form-control" name="New password" placeholder="New password" v-model="password_edit_data.new_pass" title="New password" required>
+                    
+                    <div class="alert alert-danger" role="alert" v-if="is_password_cofirming_error">
+                        Password confirming error
+                    </div>
+                    <input type="password" class="form-control" name="Repeat new password" placeholder="Repeat new password" v-model="password_edit_data.confirm_new_pass" title="Repeat new password" required>
                 </form>
             </pre>
             <div slot="modal-footer">
                 <div class="modal-footer">
                     <button
-                        type="button"
-                        :class="{'btn btn-primary': true}"
-                        @click="edit_password()"
+                        type="submit"
+                        class="btn btn-primary"
+                        form="edit_password"
                     >
                     Save
                     </button>
@@ -277,6 +284,14 @@
                     city: '',
                     country: '',
                 },
+
+                password_edit_data: {
+                    old_pass: '',
+                    new_pass: '',
+                    confirm_new_pass: '',
+                },
+                is_password_cofirming_error: false,
+                is_old_pass_error: false,
 
                 user_site_form_data: {
                     url: ''
@@ -340,9 +355,41 @@
                 this.is_change_password = true
             },
 
-            edit_password(){
+            close_edit_password_model(){
                 this.is_change_password = false
-                alert('update password')
+                this.password_edit_data.old_pass = ''
+                this.password_edit_data.new_pass = ''
+                this.password_edit_data.confirm_new_pass = ''
+            },
+
+            edit_password(){
+                this.is_password_cofirming_error = false
+                this.is_old_pass_error = false
+
+                if(this.password_edit_data.new_pass === this.password_edit_data.confirm_new_pass){
+                    if(confirm('Are you sure, you want delite it?')){
+                        axios
+                        .post("../../api/user/update_password/",{
+                            data: this.password_edit_data,
+                        })
+                        .then(response => {
+                            if(response.data == "Old Password Doesn't match!"){
+                                this.password_edit_data.old_pass = ''
+                                this.is_old_pass_error = true
+                            }
+                            else{
+                                this.close_edit_password_model()
+                                alert(response.data)
+                            }
+                        })
+                        .catch(
+                            error => console.log(error)
+                        );
+                    }
+                }
+                else{
+                    this.is_password_cofirming_error = true
+                }
             },
 
             edit_image(){
