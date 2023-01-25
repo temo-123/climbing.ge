@@ -14,10 +14,10 @@ return new class extends Migration
     public function up()
     {
         Schema::create('user_followers', function (Blueprint $table) {
-            $table->id();
+            $table->bigIncrements('id');
 
             $table->integer('following_user_id')->nullable();
-            $table->integer('topic_id')->nullable();
+            $table->integer('user_id')->nullable();
             
             $table->timestamps();
         });

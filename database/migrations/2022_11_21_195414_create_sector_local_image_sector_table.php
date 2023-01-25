@@ -16,10 +16,10 @@ return new class extends Migration
         Schema::create('sector_local_image_sector', function (Blueprint $table) {
             $table->id();
 
-            $table->foreignId('sector_id')->constrained()->onDelete('cascade');
+            $table->foreignId('sector_id')->constrained();
 
             $table->unsignedBigInteger('image_id');
-            $table->foreign('image_id')->references('id')->on('sector_local_images')->onDelete('cascade');
+            $table->foreign('image_id')->references('id')->on('sector_local_images');
 
             $table->timestamps();
         });

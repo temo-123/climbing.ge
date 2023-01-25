@@ -14,7 +14,9 @@ return new class extends Migration
     public function up()
     {
         Schema::create('mounts', function (Blueprint $table) {
-            $table->id();
+            $table->bigIncrements('id');
+
+            $table->string('name');
             
             $table->integer('published')->nullable();
 

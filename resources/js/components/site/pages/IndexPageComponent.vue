@@ -6,7 +6,7 @@
 
         <whatWeDoComponent />
 
-        <div class="container h-recent-work" v-if="this.$siteData.map">
+        <div class="container h-recent-work" v-if="this.$globalSiteData.map">
 
             <h2 class='index_h2'>{{ $t('title topo') }}</h2>
 
@@ -15,7 +15,7 @@
             <h3> {{this.$siteData.topo_description}} </h3>
 
             <div :style='"margin-bottom: 7%"'>
-                <span v-html="this.$siteData.map"></span>
+                <span v-html="this.$globalSiteData.map"></span>
             </div>
         </div>
 
@@ -31,7 +31,7 @@
                     />
                 </span>
                 
-                <section v-if="newses.length > 6" class="m-collection-strip mm-collection-strip--is-stretched m-component-stack mm-component-stack--is-stacked mm-component-stack--has-header">
+                <section v-if="newses.length >= 6" class="m-collection-strip mm-collection-strip--is-stretched m-component-stack mm-component-stack--is-stacked mm-component-stack--has-header">
                     <div class="m-collection-strip--carousel">
                         <div class="m-collection-strip--carousel-wrapper">
                             <div class="m-collection-strip--carousel-container">

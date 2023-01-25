@@ -14,7 +14,8 @@ class CreateLocaleProductsTable extends Migration
     public function up()
     {
         Schema::create('locale_products', function (Blueprint $table) {
-            $table->id();
+            
+            $table->bigIncrements('id');
 
             $table->string('locale')->nullable();
 

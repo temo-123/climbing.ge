@@ -130,6 +130,7 @@ Vue.use(VueGtag, {
 // Vue.runtimeCompiler = true;
 Vue.config.productionTip = false;
 Vue.prototype.$siteData = [];
+Vue.prototype.$globalSiteData = [];
 Vue.prototype.$authUserData = [];
 
 if(
@@ -168,7 +169,8 @@ const app = new Vue({
             axios
             .get("../../../../api/siteData/get_site_locale_data/"+localStorage.getItem('lang'))
             .then((response) => (
-                Vue.prototype.$siteData = response.data
+                Vue.prototype.$siteData = response.data.locale_data,
+                Vue.prototype.$globalSiteData = response.data.global_data
             ));
 
         },

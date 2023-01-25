@@ -14,7 +14,7 @@ return new class extends Migration
     public function up()
     {
         Schema::create('product_comments', function (Blueprint $table) {
-            $table->id();
+            $table->bigIncrements('id');
 
             $table->text('text')->nullable();
 

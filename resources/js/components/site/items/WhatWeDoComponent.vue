@@ -1,5 +1,5 @@
 <template>
-    <div class="services" v-if="this.$siteData.map">
+    <div class="services">
         <div class="container">
 
             <h2 class='index_h2'>{{ $t('title what we do') }}</h2>

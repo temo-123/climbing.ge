@@ -14,7 +14,7 @@ class CreateSectorsTable extends Migration
     public function up()
     {
         Schema::create('sectors', function (Blueprint $table) {
-            $table->id();
+            $table->bigIncrements('id');
 
             $table->string('name')->nullable();
             $table->text('text')->nullable();
@@ -36,9 +36,6 @@ class CreateSectorsTable extends Migration
             $table->integer('slabby')->nullable();
             $table->integer('vertical')->nullable();
 
-            $table->integer('num')->nullable();
-
-            // $table->foreignId('article_id')->constrained()->onDelete('cascade');
             $table->foreignId('article_id')->constrained();
             
             $table->integer('published')->nullable();

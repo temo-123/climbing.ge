@@ -14,14 +14,14 @@ return new class extends Migration
     public function up()
     {
         Schema::create('user_bans', function (Blueprint $table) {
-            $table->id();
+            
+            $table->bigIncrements('id');
             
             $table->string('reason')->nullable();
 
             $table->timestamp('ban_time')->nullable();
             $table->timestamp('ban_start_time')->nullable();
 
-            // $table->integer('user_id')->nullable();
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
 
             $table->timestamps();

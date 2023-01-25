@@ -14,22 +14,22 @@ class CreateFilmsTable extends Migration
     public function up()
     {
         Schema::create('films', function (Blueprint $table) {
-            $table->id();
+            
+            $table->bigIncrements('id');
+
+            $table->string('url_title')->nullable();
+
+            $table->unsignedBigInteger('us_film_id');
+            $table->foreign('us_film_id')->references('id')->on('locale_films')->constrained()->onDelete('cascade');
+
+            $table->unsignedBigInteger('ka_film_id');
+            $table->foreign('ka_film_id')->references('id')->on('locale_films')->constrained()->onDelete('cascade');
+
+            $table->unsignedBigInteger('ru_film_id');
+            $table->foreign('ru_film_id')->references('id')->on('locale_films')->constrained()->onDelete('cascade');
 
             $table->integer('published')->nullable();
             $table->string('image')->nullable();
-
-            $table->increments('us_film_id');
-            // $table->unsignedBigInteger('us_film_id');
-            $table->foreign('us_film_id')->references('id')->on('locale_films')->constrained()->onDelete('cascade');
-
-            $table->increments('ka_film_id');
-            // $table->unsignedBigInteger('ka_film_id');
-            $table->foreign('ka_film_id')->references('id')->on('locale_films')->constrained()->onDelete('cascade');
-
-            $table->increments('ru_film_id');
-            // $table->unsignedBigInteger('ru_film_id');
-            $table->foreign('ru_film_id')->references('id')->on('locale_films')->constrained()->onDelete('cascade');
 
             $table->timestamps();
         });

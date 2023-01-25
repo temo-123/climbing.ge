@@ -213,6 +213,16 @@
                                     :table_name="data.table_name"
                                 />
                             </thead>
+                            <thead v-else-if="data.table_name == 'Regions'">
+                                <regionTabHeader 
+                                    :table_name="data.table_name"
+                                />
+                            </thead>
+                            <thead v-else-if="data.table_name == 'Routes'">
+                                <routeTabHeader 
+                                    :table_name="data.table_name"
+                                />
+                            </thead>
                             <thead v-else-if="
                                         data.table_name == 'outdoor' || 
                                         data.table_name == 'indoor'  || 
@@ -499,6 +509,8 @@ import mountMassiveTabHeader from "./tab_header/MountMassiveTabHeaderComponent.v
 import productTagsTabHeader from "./tab_header/ProductTabHeaderComponent.vue"
 import sectorLocalImageTabHeader from "./tab_header/SectorLocalImageTabHeaderComponent.vue"
 import eventTabHeader from "./tab_header/EventTabHeaderComponent.vue"
+import regionTabHeader from "./tab_header/RegionTabHeaderComponrent.vue"
+import routeTabHeader from "./tab_header/RouteTabHeaderComponrent.vue"
 
 import eventTab from "./tabs/EventTabComponent.vue";
 import sectorLocalImageTab from "./tabs/SectorLocalImageTabComponent.vue";
@@ -545,6 +557,8 @@ export default {
         mountMassiveTabHeader,
         sectorLocalImageTabHeader,
         eventTabHeader,
+        regionTabHeader,
+        routeTabHeader,
 
         sectorLocalImageTab,
         routeTab,

@@ -14,7 +14,7 @@ return new class extends Migration
     public function up()
     {
         Schema::create('gallery_categories', function (Blueprint $table) {
-            $table->id();
+            $table->bigIncrements('id');
 
             $table->string('us_name')->nullable();
             $table->string('ru_name')->nullable();

@@ -14,7 +14,7 @@ return new class extends Migration
     public function up()
     {
         Schema::create('film_tags', function (Blueprint $table) {
-            $table->id();
+            $table->bigIncrements('id');
 
             $table->string('us_name')->nullable();
             $table->string('ka_name')->nullable();

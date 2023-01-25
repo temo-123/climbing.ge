@@ -14,7 +14,7 @@ return new class extends Migration
     public function up()
     {
         Schema::create('gallery_images', function (Blueprint $table) {
-            $table->id();
+            $table->bigIncrements('id');
 
             $table->string('title')->nullable();
             $table->text('text')->nullable();
@@ -27,7 +27,7 @@ return new class extends Migration
             // $table->foreignId('category_id')->constrained()
             // $table->unsignedBigInteger('category_id');
             $table->unsignedBigInteger('category_id');
-            $table->foreign('category_id')->references('id')->on('gallery_categories')->onDelete('cascade');
+            $table->foreign('category_id')->references('id')->on('gallery_categories');
 
             // $table->integer('article_id')->nullable();
             // $table->foreignId('article_id')->constrained()->onDelete('cascade');

@@ -14,22 +14,7 @@ return new class extends Migration
     public function up()
     {
         Schema::create('locale_sites', function (Blueprint $table) {
-            $table->id();
-
-            // $table->title();
-            // $table->text(); 
-            // $table->short_description();
-            // $table->other_activity_description();
-            // $table->ice_description(); 
-             
-            // $table->mount_description();
-            // $table->outdoor_description();
-            // $table->indoor_description();
-            // $table->topo_description();
-            // $table->what_we_do_description();
-            // $table->shop_description();
-            // $table->shop_short_description();
-            // $table->services_description(); 
+            $table->bigIncrements('id');
 
             $table->string('locale', 70, 20)->nullable();
 

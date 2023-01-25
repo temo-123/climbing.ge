@@ -14,12 +14,15 @@ return new class extends Migration
     public function up()
     {
         Schema::create('sale_codes', function (Blueprint $table) {
-            $table->id();
+            $table->bigIncrements('id');
 
             $table->string('code')->nullable();
-            $table->bigIncrements('discount')->nullable();
+            
+            $table->string('one_time_code')->nullable();
 
-            $table->timestamp('finished_at')->nullable();
+            $table->integer('discount')->nullable();
+
+            $table->timestamp('action_data')->nullable();
 
             $table->timestamps();
         });

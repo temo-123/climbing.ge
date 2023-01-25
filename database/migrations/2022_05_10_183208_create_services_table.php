@@ -14,7 +14,7 @@ return new class extends Migration
     public function up()
     {
         Schema::create('services', function (Blueprint $table) {
-            $table->id();
+            $table->bigIncrements('id');
             
             $table->string('url_title')->nullable();
 

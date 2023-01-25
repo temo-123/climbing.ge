@@ -14,11 +14,11 @@ class CreateUserAdresesTable extends Migration
     public function up()
     {
         Schema::create('user_adreses', function (Blueprint $table) {
-            $table->id();
+            
+            $table->bigIncrements('id');
 
-            $table->string('home_category')->nullable();
+            $table->string('name')->nullable();
 
-            $table->string('country')->nullable();
             $table->string('city')->nullable();
             
             $table->string('strit')->nullable();
@@ -29,8 +29,8 @@ class CreateUserAdresesTable extends Migration
 
             $table->string('zip_code')->nullable();
 
-            // $table->integer('user_id')->nullable();
-            $table->foreignId('user_id')->constrained()->onDelete('cascade'); // to
+            $table->string('country_id')->constrained();
+            $table->foreignId('user_id')->constrained();
 
             $table->timestamps();
         });

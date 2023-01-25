@@ -14,7 +14,8 @@ class CreateLocaleServicesTable extends Migration
     public function up()
     {
         Schema::create('locale_services', function (Blueprint $table) {
-            $table->id();
+            
+            $table->bigIncrements('id');
 
             $table->string('locale')->nullable();
 

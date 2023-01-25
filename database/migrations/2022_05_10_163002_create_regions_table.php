@@ -14,7 +14,8 @@ return new class extends Migration
     public function up()
     {
         Schema::create('regions', function (Blueprint $table) {
-            $table->id();
+            
+            $table->bigIncrements('id');
             
             $table->string('us_name')->nullable();
             $table->string('ru_name')->nullable();
@@ -23,6 +24,8 @@ return new class extends Migration
             $table->text('us_text')->nullable();
             $table->text('ru_text')->nullable();
             $table->text('ka_text')->nullable();
+
+            $table->text('map')->nullable();
 
             $table->timestamps();
         });

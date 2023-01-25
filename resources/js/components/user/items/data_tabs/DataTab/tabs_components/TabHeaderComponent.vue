@@ -83,11 +83,11 @@
             Grade
         </th> -->
 
-        <th v-if="data.table_name == 'Users'">
+        <!-- <th v-if="data.table_name == 'Users'">
             |
-        </th>
+        </th> -->
 
-        <th v-if="data.table_name == 'Roles'">
+        <th>
             |
         </th>
 

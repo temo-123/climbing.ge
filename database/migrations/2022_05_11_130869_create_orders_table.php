@@ -14,7 +14,17 @@ class CreateOrdersTable extends Migration
     public function up()
     {
         Schema::create('orders', function (Blueprint $table) {
-            $table->id();
+            $table->bigIncrements('id');
+
+            $table->integer('confirm')->nullable();
+            $table->string('payment')->nullable();
+            $table->string('discount')->nullable();
+            $table->integer('shiping')->nullable();
+            
+            $table->foreignId('user_id')->constrained();
+
+            $table->unsignedBigInteger('adres_id');
+            $table->foreign('adres_id')->references('id')->on('user_adreses');
 
             $table->integer('treatment')->nullable();
             $table->timestamp('treatment_data')->nullable();
@@ -28,15 +38,6 @@ class CreateOrdersTable extends Migration
             $table->timestamp('transferred_to_the_delivery_service_data')->nullable();
             $table->integer('delivered')->nullable();
             $table->timestamp('delivered_data')->nullable();
-
-            $table->integer('confirm')->nullable();
-            $table->string('payment')->nullable();
-            $table->integer('shiping')->nullable();
-            
-            $table->foreignId('user_id')->constrained()->onDelete('cascade');
-
-            $table->unsignedBigInteger('adres_id');
-            $table->foreign('adres_id')->references('id')->on('user_adreses')->onDelete('cascade'); // froom
 
             $table->timestamps();
         });

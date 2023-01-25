@@ -14,7 +14,13 @@ return new class extends Migration
     public function up()
     {
         Schema::create('suport_local_bisnes_images', function (Blueprint $table) {
-            $table->id();
+            $table->bigIncrements('id');
+
+            $table->string('image')->nullable();
+
+            $table->unsignedBigInteger('bisnes_id');
+            $table->foreign('bisnes_id')->references('id')->on('suport_local_bisneses');
+
             $table->timestamps();
         });
     }

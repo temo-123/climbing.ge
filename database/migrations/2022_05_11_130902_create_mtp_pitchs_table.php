@@ -14,7 +14,7 @@ class CreateMtpPitchsTable extends Migration
     public function up()
     {
         Schema::create('mtp_pitchs', function (Blueprint $table) {
-            $table->id();
+            $table->bigIncrements('id');
 
             $table->string('name')->nullable();
             $table->text('text')->nullable();
@@ -23,10 +23,11 @@ class CreateMtpPitchsTable extends Migration
             $table->string('or_grade')->nullable();
 
             $table->string('bolts')->nullable();
-            $table->string('bolter')->nullable();
-            $table->string('bolting_data')->nullable();
+            $table->string('author')->nullable();
+            $table->string('creation_data')->nullable();
             $table->string('height')->nullable();
             $table->string('first_ascent')->nullable();
+            $table->string('category')->nullable();
 
             $table->integer('num')->nullable();
             // $table->integer('mtp_id')->nullable();

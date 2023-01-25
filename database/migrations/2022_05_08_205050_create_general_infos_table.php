@@ -14,11 +14,10 @@ return new class extends Migration
     public function up()
     {
         Schema::create('general_infos', function (Blueprint $table) {
-            $table->id();
+            
+            $table->bigIncrements('id');
 
-            $table->string('title_us')->nullable();
-            $table->string('title_ka')->nullable();
-            $table->string('title_ru')->nullable();
+            $table->string('title')->nullable();
 
             $table->text('text_ru')->nullable();
             $table->text('text_ka')->nullable();

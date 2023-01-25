@@ -14,11 +14,15 @@ class CreateMtpsTable extends Migration
     public function up()
     {
         Schema::create('mtps', function (Blueprint $table) {
-            $table->id();
+            $table->bigIncrements('id');
 
             $table->string('name')->nullable();
             $table->text('text')->nullable();
             $table->integer('height')->nullable();
+
+
+            $table->string('author')->nullable();
+            $table->string('first_ascent')->nullable();
             
             $table->integer('num')->nullable();
             // $table->integer('sector_id')->nullable();
