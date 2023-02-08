@@ -5427,8 +5427,8 @@ __webpack_require__.r(__webpack_exports__);
       email_errors: null,
       remember_me: null,
       MIX_USER_PAGE_URL: "user.climbing.loc",
-      MIX_APP_SSH: "http://",
-      MIX_BASE_URL_SSH: "http://climbing.loc"
+      MIX_APP_SSH: "https://",
+      MIX_BASE_URL_SSH: "https://climbing.loc"
     };
   },
   mounted: function mounted() {},
@@ -5438,7 +5438,7 @@ __webpack_require__.r(__webpack_exports__);
   methods: {
     social_login: function social_login(service) {
       // window.location.href = 'api/login/'+service
-      window.location.href = this.MIX_APP_SSH + this.MIX_USER_PAGE_URL + '/api/login/' + service;
+      window.location.href = this.MIX_APP_SSH + this.MIX_USER_PAGE_URL + '/api/login/' + service; // console.log("🚀 ~ file: LoginComponent.vue:97 ~ social_login ~ this.MIX_APP_SSH + this.MIX_USER_PAGE_URL + '/api/login/' + service", this.MIX_APP_SSH + this.MIX_USER_PAGE_URL + '/api/login/' + service)
     },
     login: function login() {
       var _this = this;
@@ -6027,7 +6027,7 @@ __webpack_require__.r(__webpack_exports__);
     return {
       search_query: '',
       MIX_SITE_URL: "climbing.loc",
-      MIX_APP_SSH: "http://",
+      MIX_APP_SSH: "https://",
       navbar_general_class: 'collapse navbar-collapse mobile_nav_menu',
       navbar_class: 'collapse navbar-collapse mobile_nav_menu',
       navbar_open_class: 'collapse navbar-collapse mobile_nav_menu show',
@@ -7100,7 +7100,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
 /* harmony import */ var _items_RightMenuComponent_vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../items/RightMenuComponent.vue */ "./resources/js/components/forum/items/RightMenuComponent.vue");
-/* harmony import */ var _site_items_cards_EventCardComponent__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../site/items/cards/EventCardComponent */ "./resources/js/components/site/items/cards/EventCardComponent.vue");
+/* harmony import */ var _site_items_cards_IndexEventCardComponent__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../site/items/cards/IndexEventCardComponent */ "./resources/js/components/site/items/cards/IndexEventCardComponent.vue");
 //
 //
 //
@@ -7135,7 +7135,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   components: {
     rightMenu: _items_RightMenuComponent_vue__WEBPACK_IMPORTED_MODULE_0__["default"],
-    eventCard: _site_items_cards_EventCardComponent__WEBPACK_IMPORTED_MODULE_1__["default"]
+    eventCard: _site_items_cards_IndexEventCardComponent__WEBPACK_IMPORTED_MODULE_1__["default"]
   },
   data: function data() {
     return {
@@ -7492,7 +7492,7 @@ __webpack_require__.r(__webpack_exports__);
   data: function data() {
     return {
       MIX_SITE_URL: "climbing.loc",
-      MIX_APP_SSH: "http://"
+      MIX_APP_SSH: "https://"
     };
   },
   props: ['go_to_page'],
@@ -7664,7 +7664,7 @@ __webpack_require__.r(__webpack_exports__);
       email_errors: null,
       remember_me: null,
       MIX_USER_PAGE_URL: "user.climbing.loc",
-      MIX_APP_SSH: "http://",
+      MIX_APP_SSH: "https://",
       is_login_model: false
     };
   },
@@ -7964,7 +7964,7 @@ __webpack_require__.r(__webpack_exports__);
   data: function data() {
     return {
       MIX_SITE_URL: "climbing.loc",
-      MIX_APP_SSH: "http://"
+      MIX_APP_SSH: "https://"
     };
   },
   methods: {
@@ -8538,7 +8538,7 @@ __webpack_require__.r(__webpack_exports__);
     return {
       search_query: '',
       MIX_SITE_URL: "climbing.loc",
-      MIX_APP_SSH: "http://",
+      MIX_APP_SSH: "https://",
       navbar_general_class: 'collapse navbar-collapse mobile_nav_menu',
       navbar_class: 'collapse navbar-collapse mobile_nav_menu',
       navbar_open_class: 'collapse navbar-collapse mobile_nav_menu show',
@@ -9023,6 +9023,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
  // https://www.npmjs.com/package/vue-country-flag
 
 
@@ -9107,10 +9108,10 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
-/***/ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/site/items/cards/EventCardComponent.vue?vue&type=script&lang=js&":
-/*!******************************************************************************************************************************************************************************************************************************************!*\
-  !*** ./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/site/items/cards/EventCardComponent.vue?vue&type=script&lang=js& ***!
-  \******************************************************************************************************************************************************************************************************************************************/
+/***/ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/site/items/cards/IndexEventCardComponent.vue?vue&type=script&lang=js&":
+/*!***********************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/site/items/cards/IndexEventCardComponent.vue?vue&type=script&lang=js& ***!
+  \***********************************************************************************************************************************************************************************************************************************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
@@ -9885,8 +9886,8 @@ var app = new vue__WEBPACK_IMPORTED_MODULE_12__["default"]({
     homeComponent: homeComponent
   },
   router: serviceRoutes,
-  mounted: function mounted() {// this.get_site_data();
-    // this.get_auth_user_data()
+  mounted: function mounted() {
+    this.get_site_data(); // this.get_auth_user_data()
   },
   methods: {
     get_site_data: function get_site_data() {
@@ -9934,7 +9935,7 @@ window.axios = __webpack_require__(/*! axios */ "./node_modules/axios/index.js")
 window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 window.axios.defaults.whithCredentials = true;
 window.axios.interceptors.response.use({}, function (err) {
-  if (err.response.status === 401 || error.response.status === 419) {
+  if (err.response.status === 401 || err.response.status === 419) {
     var token = localStorage.getItem('x_xsrf_token');
 
     if (token) {
@@ -9944,6 +9945,10 @@ window.axios.interceptors.response.use({}, function (err) {
     router.push({
       name: "login"
     });
+  } else if (err.response.status === 422) {
+    return Promise.reject(err);
+  } else {
+    return Promise.reject(err);
   }
 });
 /**
@@ -9951,14 +9956,6 @@ window.axios.interceptors.response.use({}, function (err) {
  * for events that are broadcast by Laravel. Echo and event broadcasting
  * allows your team to easily build robust real-time web applications.
  */
-// import Echo from 'laravel-echo';
-// window.Pusher = require('pusher-js');
-// window.Echo = new Echo({
-//     broadcaster: 'pusher',
-//     key: process.env.MIX_PUSHER_APP_KEY,
-//     cluster: process.env.MIX_PUSHER_APP_CLUSTER,
-//     forceTLS: true
-// });
 
 /***/ }),
 
@@ -10254,10 +10251,6 @@ var router = new vue_router__WEBPACK_IMPORTED_MODULE_2__["default"]({
       name: "news",
       component: load("NewsPageComponent")
     }, {
-      path: "event/:url_title",
-      name: "event",
-      component: load("EventPageComponent")
-    }, {
       path: "tech_tip/:url_title",
       name: "tech_tip",
       component: load("TechTipPageComponent")
@@ -10269,6 +10262,14 @@ var router = new vue_router__WEBPACK_IMPORTED_MODULE_2__["default"]({
       path: "local_bisnes/:url_title",
       name: "local_bisnes",
       component: load("LocalBisnesPageComponent")
+    }, {
+      path: "events",
+      name: "events",
+      component: load("EventsListPageComponent")
+    }, {
+      path: "event/:url_title",
+      name: "event",
+      component: load("EventPageComponent")
     }, {
       path: "ice",
       name: "ices",
@@ -10499,7 +10500,15 @@ var router = new vue_router__WEBPACK_IMPORTED_MODULE_3__["default"]({
   }, {
     path: '/mount_routes/mount_routes_list',
     name: 'mountlist',
-    component: load('films/mountListComponent')
+    component: load('mountRoutes/mountListComponent')
+  }, {
+    path: '/mount_massive/edit/:id',
+    name: 'mount_massive_edit',
+    component: load('mountRoutes/mountMassiveEditComponent')
+  }, {
+    path: '/mount_massive/add/',
+    name: 'mount_massive_add',
+    component: load('mountRoutes/mountMassiveAddComponent')
   }, {
     path: '/article/:article_category',
     name: 'articlelist',
@@ -10520,14 +10529,6 @@ var router = new vue_router__WEBPACK_IMPORTED_MODULE_3__["default"]({
     path: '/spot_category/add/',
     name: 'spot_category_add',
     component: load('spots_categories/SpotsCategoriesAddPageComponent')
-  }, {
-    path: '/mount_massive/edit/:id',
-    name: 'mount_massive_edit',
-    component: load('mountRoutes/mountMassiveEditComponent')
-  }, {
-    path: '/mount_massive/add/',
-    name: 'mount_massive_add',
-    component: load('mountRoutes/mountMassiveAddComponent')
   }, {
     path: '/routes_and_sectors',
     name: 'routeAndSectorList',
@@ -10591,15 +10592,23 @@ var router = new vue_router__WEBPACK_IMPORTED_MODULE_3__["default"]({
   }, {
     path: '/event',
     name: 'eventList',
-    component: load('event/eventListComponent')
+    component: load('event/eventsAndCompetitionsListComponent')
   }, {
     path: '/event/add',
     name: 'eventAdd',
-    component: load('event/eventAddComponent')
+    component: load('event/events/eventAddComponent')
   }, {
     path: '/event/edit/:id',
     name: 'eventEdit',
-    component: load('event/eventEditComponent')
+    component: load('event/events/eventEditComponent')
+  }, {
+    path: '/competition/add',
+    name: 'competitionsAdd',
+    component: load('event/competitions/competitionAddComponent')
+  }, {
+    path: '/competition/edit/:id',
+    name: 'competitionsEdit',
+    component: load('event/competitions/competitionEditComponent')
   }, {
     path: '/products_and_categories',
     name: 'productsList',
@@ -16483,10 +16492,10 @@ ___CSS_LOADER_EXPORT___.push([module.id, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n
 
 /***/ }),
 
-/***/ "./node_modules/laravel-mix/node_modules/css-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[1]!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/site/items/cards/EventCardComponent.vue?vue&type=style&index=0&lang=css&":
-/*!***************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
-  !*** ./node_modules/laravel-mix/node_modules/css-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[1]!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/site/items/cards/EventCardComponent.vue?vue&type=style&index=0&lang=css& ***!
-  \***************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************/
+/***/ "./node_modules/laravel-mix/node_modules/css-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[1]!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/site/items/cards/IndexEventCardComponent.vue?vue&type=style&index=0&lang=css&":
+/*!********************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/laravel-mix/node_modules/css-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[1]!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/site/items/cards/IndexEventCardComponent.vue?vue&type=style&index=0&lang=css& ***!
+  \********************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************/
 /***/ ((module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
@@ -59752,10 +59761,10 @@ var update = _node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js
 
 /***/ }),
 
-/***/ "./node_modules/style-loader/dist/cjs.js!./node_modules/laravel-mix/node_modules/css-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[1]!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/site/items/cards/EventCardComponent.vue?vue&type=style&index=0&lang=css&":
-/*!*******************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
-  !*** ./node_modules/style-loader/dist/cjs.js!./node_modules/laravel-mix/node_modules/css-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[1]!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/site/items/cards/EventCardComponent.vue?vue&type=style&index=0&lang=css& ***!
-  \*******************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************/
+/***/ "./node_modules/style-loader/dist/cjs.js!./node_modules/laravel-mix/node_modules/css-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[1]!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/site/items/cards/IndexEventCardComponent.vue?vue&type=style&index=0&lang=css&":
+/*!************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/style-loader/dist/cjs.js!./node_modules/laravel-mix/node_modules/css-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[1]!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/site/items/cards/IndexEventCardComponent.vue?vue&type=style&index=0&lang=css& ***!
+  \************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
@@ -59765,7 +59774,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var _node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! !../../../../../../node_modules/style-loader/dist/runtime/injectStylesIntoStyleTag.js */ "./node_modules/style-loader/dist/runtime/injectStylesIntoStyleTag.js");
 /* harmony import */ var _node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var _node_modules_laravel_mix_node_modules_css_loader_dist_cjs_js_clonedRuleSet_9_0_rules_0_use_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_dist_cjs_js_clonedRuleSet_9_0_rules_0_use_2_node_modules_vue_loader_lib_index_js_vue_loader_options_EventCardComponent_vue_vue_type_style_index_0_lang_css___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! !!../../../../../../node_modules/laravel-mix/node_modules/css-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[1]!../../../../../../node_modules/vue-loader/lib/loaders/stylePostLoader.js!../../../../../../node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[2]!../../../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./EventCardComponent.vue?vue&type=style&index=0&lang=css& */ "./node_modules/laravel-mix/node_modules/css-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[1]!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/site/items/cards/EventCardComponent.vue?vue&type=style&index=0&lang=css&");
+/* harmony import */ var _node_modules_laravel_mix_node_modules_css_loader_dist_cjs_js_clonedRuleSet_9_0_rules_0_use_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_dist_cjs_js_clonedRuleSet_9_0_rules_0_use_2_node_modules_vue_loader_lib_index_js_vue_loader_options_IndexEventCardComponent_vue_vue_type_style_index_0_lang_css___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! !!../../../../../../node_modules/laravel-mix/node_modules/css-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[1]!../../../../../../node_modules/vue-loader/lib/loaders/stylePostLoader.js!../../../../../../node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[2]!../../../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./IndexEventCardComponent.vue?vue&type=style&index=0&lang=css& */ "./node_modules/laravel-mix/node_modules/css-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[1]!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/site/items/cards/IndexEventCardComponent.vue?vue&type=style&index=0&lang=css&");
 
             
 
@@ -59774,11 +59783,11 @@ var options = {};
 options.insert = "head";
 options.singleton = false;
 
-var update = _node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0___default()(_node_modules_laravel_mix_node_modules_css_loader_dist_cjs_js_clonedRuleSet_9_0_rules_0_use_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_dist_cjs_js_clonedRuleSet_9_0_rules_0_use_2_node_modules_vue_loader_lib_index_js_vue_loader_options_EventCardComponent_vue_vue_type_style_index_0_lang_css___WEBPACK_IMPORTED_MODULE_1__["default"], options);
+var update = _node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0___default()(_node_modules_laravel_mix_node_modules_css_loader_dist_cjs_js_clonedRuleSet_9_0_rules_0_use_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_dist_cjs_js_clonedRuleSet_9_0_rules_0_use_2_node_modules_vue_loader_lib_index_js_vue_loader_options_IndexEventCardComponent_vue_vue_type_style_index_0_lang_css___WEBPACK_IMPORTED_MODULE_1__["default"], options);
 
 
 
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (_node_modules_laravel_mix_node_modules_css_loader_dist_cjs_js_clonedRuleSet_9_0_rules_0_use_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_dist_cjs_js_clonedRuleSet_9_0_rules_0_use_2_node_modules_vue_loader_lib_index_js_vue_loader_options_EventCardComponent_vue_vue_type_style_index_0_lang_css___WEBPACK_IMPORTED_MODULE_1__["default"].locals || {});
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (_node_modules_laravel_mix_node_modules_css_loader_dist_cjs_js_clonedRuleSet_9_0_rules_0_use_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_dist_cjs_js_clonedRuleSet_9_0_rules_0_use_2_node_modules_vue_loader_lib_index_js_vue_loader_options_IndexEventCardComponent_vue_vue_type_style_index_0_lang_css___WEBPACK_IMPORTED_MODULE_1__["default"].locals || {});
 
 /***/ }),
 
@@ -69471,10 +69480,10 @@ component.options.__file = "resources/js/components/site/items/NavbarComponent.v
 
 /***/ }),
 
-/***/ "./resources/js/components/site/items/cards/EventCardComponent.vue":
-/*!*************************************************************************!*\
-  !*** ./resources/js/components/site/items/cards/EventCardComponent.vue ***!
-  \*************************************************************************/
+/***/ "./resources/js/components/site/items/cards/IndexEventCardComponent.vue":
+/*!******************************************************************************!*\
+  !*** ./resources/js/components/site/items/cards/IndexEventCardComponent.vue ***!
+  \******************************************************************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
@@ -69482,9 +69491,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
-/* harmony import */ var _EventCardComponent_vue_vue_type_template_id_084ca9db___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./EventCardComponent.vue?vue&type=template&id=084ca9db& */ "./resources/js/components/site/items/cards/EventCardComponent.vue?vue&type=template&id=084ca9db&");
-/* harmony import */ var _EventCardComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./EventCardComponent.vue?vue&type=script&lang=js& */ "./resources/js/components/site/items/cards/EventCardComponent.vue?vue&type=script&lang=js&");
-/* harmony import */ var _EventCardComponent_vue_vue_type_style_index_0_lang_css___WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./EventCardComponent.vue?vue&type=style&index=0&lang=css& */ "./resources/js/components/site/items/cards/EventCardComponent.vue?vue&type=style&index=0&lang=css&");
+/* harmony import */ var _IndexEventCardComponent_vue_vue_type_template_id_4db2606d___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./IndexEventCardComponent.vue?vue&type=template&id=4db2606d& */ "./resources/js/components/site/items/cards/IndexEventCardComponent.vue?vue&type=template&id=4db2606d&");
+/* harmony import */ var _IndexEventCardComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./IndexEventCardComponent.vue?vue&type=script&lang=js& */ "./resources/js/components/site/items/cards/IndexEventCardComponent.vue?vue&type=script&lang=js&");
+/* harmony import */ var _IndexEventCardComponent_vue_vue_type_style_index_0_lang_css___WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./IndexEventCardComponent.vue?vue&type=style&index=0&lang=css& */ "./resources/js/components/site/items/cards/IndexEventCardComponent.vue?vue&type=style&index=0&lang=css&");
 /* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! !../../../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
 
 
@@ -69495,9 +69504,9 @@ __webpack_require__.r(__webpack_exports__);
 /* normalize component */
 
 var component = (0,_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_3__["default"])(
-  _EventCardComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
-  _EventCardComponent_vue_vue_type_template_id_084ca9db___WEBPACK_IMPORTED_MODULE_0__.render,
-  _EventCardComponent_vue_vue_type_template_id_084ca9db___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns,
+  _IndexEventCardComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _IndexEventCardComponent_vue_vue_type_template_id_4db2606d___WEBPACK_IMPORTED_MODULE_0__.render,
+  _IndexEventCardComponent_vue_vue_type_template_id_4db2606d___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns,
   false,
   null,
   null,
@@ -69507,7 +69516,7 @@ var component = (0,_node_modules_vue_loader_lib_runtime_componentNormalizer_js__
 
 /* hot reload */
 if (false) { var api; }
-component.options.__file = "resources/js/components/site/items/cards/EventCardComponent.vue"
+component.options.__file = "resources/js/components/site/items/cards/IndexEventCardComponent.vue"
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (component.exports);
 
 /***/ }),
@@ -70225,10 +70234,10 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
-/***/ "./resources/js/components/site/items/cards/EventCardComponent.vue?vue&type=script&lang=js&":
-/*!**************************************************************************************************!*\
-  !*** ./resources/js/components/site/items/cards/EventCardComponent.vue?vue&type=script&lang=js& ***!
-  \**************************************************************************************************/
+/***/ "./resources/js/components/site/items/cards/IndexEventCardComponent.vue?vue&type=script&lang=js&":
+/*!*******************************************************************************************************!*\
+  !*** ./resources/js/components/site/items/cards/IndexEventCardComponent.vue?vue&type=script&lang=js& ***!
+  \*******************************************************************************************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
@@ -70236,8 +70245,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
-/* harmony import */ var _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_0_rules_0_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_EventCardComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../../node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!../../../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./EventCardComponent.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/site/items/cards/EventCardComponent.vue?vue&type=script&lang=js&");
- /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (_node_modules_babel_loader_lib_index_js_clonedRuleSet_5_0_rules_0_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_EventCardComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_0_rules_0_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_IndexEventCardComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../../node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!../../../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./IndexEventCardComponent.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/site/items/cards/IndexEventCardComponent.vue?vue&type=script&lang=js&");
+ /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (_node_modules_babel_loader_lib_index_js_clonedRuleSet_5_0_rules_0_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_IndexEventCardComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
 
 /***/ }),
 
@@ -70367,15 +70376,15 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
-/***/ "./resources/js/components/site/items/cards/EventCardComponent.vue?vue&type=style&index=0&lang=css&":
-/*!**********************************************************************************************************!*\
-  !*** ./resources/js/components/site/items/cards/EventCardComponent.vue?vue&type=style&index=0&lang=css& ***!
-  \**********************************************************************************************************/
+/***/ "./resources/js/components/site/items/cards/IndexEventCardComponent.vue?vue&type=style&index=0&lang=css&":
+/*!***************************************************************************************************************!*\
+  !*** ./resources/js/components/site/items/cards/IndexEventCardComponent.vue?vue&type=style&index=0&lang=css& ***!
+  \***************************************************************************************************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _node_modules_style_loader_dist_cjs_js_node_modules_laravel_mix_node_modules_css_loader_dist_cjs_js_clonedRuleSet_9_0_rules_0_use_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_dist_cjs_js_clonedRuleSet_9_0_rules_0_use_2_node_modules_vue_loader_lib_index_js_vue_loader_options_EventCardComponent_vue_vue_type_style_index_0_lang_css___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../../node_modules/style-loader/dist/cjs.js!../../../../../../node_modules/laravel-mix/node_modules/css-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[1]!../../../../../../node_modules/vue-loader/lib/loaders/stylePostLoader.js!../../../../../../node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[2]!../../../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./EventCardComponent.vue?vue&type=style&index=0&lang=css& */ "./node_modules/style-loader/dist/cjs.js!./node_modules/laravel-mix/node_modules/css-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[1]!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/site/items/cards/EventCardComponent.vue?vue&type=style&index=0&lang=css&");
+/* harmony import */ var _node_modules_style_loader_dist_cjs_js_node_modules_laravel_mix_node_modules_css_loader_dist_cjs_js_clonedRuleSet_9_0_rules_0_use_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_dist_cjs_js_clonedRuleSet_9_0_rules_0_use_2_node_modules_vue_loader_lib_index_js_vue_loader_options_IndexEventCardComponent_vue_vue_type_style_index_0_lang_css___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../../node_modules/style-loader/dist/cjs.js!../../../../../../node_modules/laravel-mix/node_modules/css-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[1]!../../../../../../node_modules/vue-loader/lib/loaders/stylePostLoader.js!../../../../../../node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[2]!../../../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./IndexEventCardComponent.vue?vue&type=style&index=0&lang=css& */ "./node_modules/style-loader/dist/cjs.js!./node_modules/laravel-mix/node_modules/css-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[1]!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/site/items/cards/IndexEventCardComponent.vue?vue&type=style&index=0&lang=css&");
 
 
 /***/ }),
@@ -71035,19 +71044,19 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
-/***/ "./resources/js/components/site/items/cards/EventCardComponent.vue?vue&type=template&id=084ca9db&":
-/*!********************************************************************************************************!*\
-  !*** ./resources/js/components/site/items/cards/EventCardComponent.vue?vue&type=template&id=084ca9db& ***!
-  \********************************************************************************************************/
+/***/ "./resources/js/components/site/items/cards/IndexEventCardComponent.vue?vue&type=template&id=4db2606d&":
+/*!*************************************************************************************************************!*\
+  !*** ./resources/js/components/site/items/cards/IndexEventCardComponent.vue?vue&type=template&id=4db2606d& ***!
+  \*************************************************************************************************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "render": () => (/* reexport safe */ _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_EventCardComponent_vue_vue_type_template_id_084ca9db___WEBPACK_IMPORTED_MODULE_0__.render),
-/* harmony export */   "staticRenderFns": () => (/* reexport safe */ _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_EventCardComponent_vue_vue_type_template_id_084ca9db___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns)
+/* harmony export */   "render": () => (/* reexport safe */ _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_IndexEventCardComponent_vue_vue_type_template_id_4db2606d___WEBPACK_IMPORTED_MODULE_0__.render),
+/* harmony export */   "staticRenderFns": () => (/* reexport safe */ _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_IndexEventCardComponent_vue_vue_type_template_id_4db2606d___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns)
 /* harmony export */ });
-/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_EventCardComponent_vue_vue_type_template_id_084ca9db___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./EventCardComponent.vue?vue&type=template&id=084ca9db& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/site/items/cards/EventCardComponent.vue?vue&type=template&id=084ca9db&");
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_IndexEventCardComponent_vue_vue_type_template_id_4db2606d___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./IndexEventCardComponent.vue?vue&type=template&id=4db2606d& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/site/items/cards/IndexEventCardComponent.vue?vue&type=template&id=4db2606d&");
 
 
 /***/ }),
@@ -77173,6 +77182,32 @@ var render = function () {
                         {
                           attrs: {
                             to: {
+                              name: "events",
+                              params: { lang: this.$i18n.locale },
+                            },
+                            exact: "",
+                          },
+                        },
+                        [
+                          _c("span", [
+                            _vm._v(
+                              " " + _vm._s(_vm.$t("menu events")) + "        "
+                            ),
+                          ]),
+                        ]
+                      ),
+                    ],
+                    1
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "li",
+                    [
+                      _c(
+                        "router-link",
+                        {
+                          attrs: {
+                            to: {
                               name: "others",
                               params: { lang: this.$i18n.locale },
                             },
@@ -77500,10 +77535,10 @@ render._withStripped = true
 
 /***/ }),
 
-/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/site/items/cards/EventCardComponent.vue?vue&type=template&id=084ca9db&":
-/*!***********************************************************************************************************************************************************************************************************************************************!*\
-  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/site/items/cards/EventCardComponent.vue?vue&type=template&id=084ca9db& ***!
-  \***********************************************************************************************************************************************************************************************************************************************/
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/site/items/cards/IndexEventCardComponent.vue?vue&type=template&id=4db2606d&":
+/*!****************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/site/items/cards/IndexEventCardComponent.vue?vue&type=template&id=4db2606d& ***!
+  \****************************************************************************************************************************************************************************************************************************************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
@@ -77814,7 +77849,7 @@ var render = function () {
               [
                 _c("li", { staticClass: "list-group-item text-muted" }, [
                   _c("span", { staticClass: "admin_menu" }, [
-                    _vm._v(_vm._s(_vm.$t("user menu admin page"))),
+                    _vm._v(_vm._s(_vm.$t("user menu admin dashboard"))),
                   ]),
                 ]),
               ]
@@ -98526,6 +98561,10 @@ var map = {
 		"./resources/js/components/site/pages/EventPageComponent.vue",
 		"resources_js_components_site_pages_EventPageComponent_vue"
 	],
+	"./EventsListPageComponent.vue": [
+		"./resources/js/components/site/pages/EventsListPageComponent.vue",
+		"resources_js_components_site_pages_EventsListPageComponent_vue"
+	],
 	"./IceListComponent.vue": [
 		"./resources/js/components/site/pages/IceListComponent.vue",
 		"resources_js_components_site_pages_IceListComponent_vue"
@@ -98694,17 +98733,25 @@ var map = {
 		"./resources/js/components/user/pages/comments/MyCommentsPageComponent.vue",
 		"resources_js_components_user_pages_comments_MyCommentsPageComponent_vue"
 	],
-	"./event/eventAddComponent.vue": [
-		"./resources/js/components/user/pages/event/eventAddComponent.vue",
-		"resources_js_components_user_pages_event_eventAddComponent_vue"
+	"./event/competitions/competitionsAddComponent.vue": [
+		"./resources/js/components/user/pages/event/competitions/competitionsAddComponent.vue",
+		"resources_js_components_user_pages_event_competitions_competitionsAddComponent_vue"
 	],
-	"./event/eventEditComponent.vue": [
-		"./resources/js/components/user/pages/event/eventEditComponent.vue",
-		"resources_js_components_user_pages_event_eventEditComponent_vue"
+	"./event/competitions/competitionsEditComponent.vue": [
+		"./resources/js/components/user/pages/event/competitions/competitionsEditComponent.vue",
+		"resources_js_components_user_pages_event_competitions_competitionsEditComponent_vue"
 	],
-	"./event/eventListComponent.vue": [
-		"./resources/js/components/user/pages/event/eventListComponent.vue",
-		"resources_js_components_user_pages_event_eventListComponent_vue"
+	"./event/events/eventAddComponent.vue": [
+		"./resources/js/components/user/pages/event/events/eventAddComponent.vue",
+		"resources_js_components_user_pages_event_events_eventAddComponent_vue"
+	],
+	"./event/events/eventEditComponent.vue": [
+		"./resources/js/components/user/pages/event/events/eventEditComponent.vue",
+		"resources_js_components_user_pages_event_events_eventEditComponent_vue"
+	],
+	"./event/eventsAndCompetitionsListComponent.vue": [
+		"./resources/js/components/user/pages/event/eventsAndCompetitionsListComponent.vue",
+		"resources_js_components_user_pages_event_eventsAndCompetitionsListComponent_vue"
 	],
 	"./favorites/FavoriteFilmsPageComponent.vue": [
 		"./resources/js/components/user/pages/favorites/FavoriteFilmsPageComponent.vue",
@@ -99305,7 +99352,7 @@ module.exports = JSON.parse('{"_args":[["axios@0.21.4","/var/www/climbing.loc"]]
 /***/ ((module) => {
 
 "use strict";
-module.exports = JSON.parse('{"site name":"Climbing.ge","menu climbing":"Rock climbing","menu indoor climbing":"Indoor climbing","menu outdoor climbing":"Outdoor climbing","menu ice climbing":"Ice & mix","menu mountaineering":"Mountaineering","menu other":"Other","menu about us":"About us","menu login":"Login","menu sitemap":"Sitemap","title news":"Newss","title topo":"Topo","title what we do":"what we do","title gallery":"Gallery","title tech tips":"Tech tips","title events":"Events","title climbing":"Climbing","title indoor climbing":"Indoor climbing","title outdoor climbing":"Outdoor climbing","title ice climbing":"Ice & mix","title mountaineering":"Mountaineering","title other":"Other","title about us":"About us","title partner":"Partners","title service list":"Ouer services","title message":"Send message","name":"Name","height":"Height","bolts":"Bolts","grade FR":"grade FR","grade YDS":"grade UDS","sector-name":"Sector name","mtp name":"Multy-pitch name","bolter":"Bolter","bolting data":"Bolting data","first ascent":"First ascent","top rope":"Top Rope","tred":"Tred Gear","message form":"Message","mount massive":"Mountain Massive","best time":"Best time to climb","how get":"How to get there","what need":"What you need","comments":"Comments","gallery":"Gallery","info":"Info","map":"Map","interested event":"Interested","similar articles":"Similar Articles","sector name":"Sector name","address":"Address","price":"Price","route":"Routes","back":"Go Back","all articles":"All Articles","prices from":"Prices from","working time":"Working hours","closed":"Temporarily closed","breadcrumb home":"Home","article navigation menu":"Navigation Menu","nav similar articles":"Similar Articles","nav gallery":"Gallery","nav comments":"Comments","nav description":"Description","nav sectors":"Climbing sectors & routes","route_tab name":"Name","route_tab height":"Height","route_tab bolts":"Bolts","route_tab grade fr":"Grade FR","route_tab grade yds":"grade YDS","shade after 10.00 am":"In shade after 10.00 am","shade after 15.00 pm":"In shade after 15.00 pm","shade befor noon":"In shade befor noon","shade in the afternoon":"In shade in the afternoon","shade whole day":"In the shade whole day","sun the whole day":"In the sun the whole day","overhang":"Overhang","slabby":"Slabby","vertical":"Vertical","links":"Links","share":"Share","more":"More","about us":"About us","user menu favorite products":"My favorite products","user menu favorite films":"My favorite films","user menu admin page":"Admin page","user menu home":"My page","user menu cart":"My cart","user menu orders":"Orders","user menu my orders":"My Orders","user menu total orders":"All orders","user menu films":"Films list","user menu my interested events":"Interested events","user menu followers":"Followers & following","user menu products & category":"Products & Category","user menu services":"Services","user menu all comments":"All comments","user menu my comments":"My comments","user menu my posts":"My posts","user menu all posts":"All posts","user menu users":"Users & Parmissions","user menu options":"Options","user menu indoor climbing":"Indoor climbing","user menu outdoor climbing":"Outdoor climbing","user menu ice climbing":"Ice & Mix","user menu mountaineering":"Mountaineering","user menu other":"Other","user menu security":"Security (Tech tips)","user menu partners":"Partners","user menu events":"Events","user menu news":"News","user menu gallery":"Gallery","user menu about":"About us","user menu login":"Login","user menu logout":"Logout","user menu sectors & routes":"Sectors & Routes","user menu local bisnes":"Suport local bisnes","user menu my favorite outdoor area":"My favorite outdoor areas","user add en article title":"article English version","user add ru article title":"article Russion version","user add ka article title":"article Georgian version","user add en article description":"Article English version for site localisation.","user add ru article description":"Article Russion version for site localisation.","user add ka article description":"Article Georgian version for site localisation.","user edit en article title":"article English version","user edit ru article title":"article Russion version","user edit ka article title":"article Georgian version","user edit en article description":"Article English version for site localisation.","user edit ru article description":"Article Russion version for site localisation.","user edit ka article description":"Article Georgian version for site localisation.","Munu":"","Dashboard":"","Sites index pages":"","shop name":"climbng.ge shop","shop menu products":"Products","shop menu services":"Services","shop menu categories":"Categories","shop menu about us":"About us","limited quantity":"Limited quantity ","out of stock":"Out of stock","product description":"Description","seller contact":"Contacts","products":"Products","category":"Category","material":"Material","weight":"Weight","seller":"Seller","email":"Email","phone number":"Phone number","you might also like":"You might also like","all products":"All products","shop login":"Login","services title":"Services","service page other services":"Other services"}');
+module.exports = JSON.parse('{"site name":"Climbing.ge","menu climbing":"Rock climbing","menu indoor climbing":"Indoor climbing","menu outdoor climbing":"Outdoor climbing","menu ice climbing":"Ice & mix","menu events":"Events & competitions","menu mountaineering":"Mountaineering","menu other":"Other","menu about us":"About us","menu login":"Login","menu sitemap":"Sitemap","title news":"Newss","title topo":"Topo","title what we do":"what we do","title gallery":"Gallery","title tech tips":"Tech tips","title events":"Events and Cometitions","title climbing":"Climbing","title indoor climbing":"Indoor climbing","title outdoor climbing":"Outdoor climbing","title ice climbing":"Ice & mix","title mountaineering":"Mountaineering","title other":"Other","title about us":"About us","title partner":"Partners","title service list":"Ouer services","title message":"Send message","name":"Name","height":"Height","bolts":"Bolts","grade FR":"grade FR","grade YDS":"grade UDS","sector-name":"Sector name","mtp name":"Multy-pitch name","bolter":"Bolter","bolting data":"Bolting data","first ascent":"First ascent","top rope":"Top Rope","tred":"Tred Gear","message form":"Message","mount massive":"Mountain Massive","best time":"Best time to climb","how get":"How to get there","what need":"What you need","comments":"Comments","gallery":"Gallery","info":"Info","map":"Map","interested event":"Interested","similar articles":"Similar Articles","sector name":"Sector name","address":"Address","price":"Price","route":"Routes","back":"Go Back","all articles":"All Articles","prices from":"Prices from","working time":"Working hours","closed":"Temporarily closed","breadcrumb home":"Home","article navigation menu":"Navigation Menu","nav similar articles":"Similar Articles","nav gallery":"Gallery","nav comments":"Comments","nav description":"Description","nav sectors":"Climbing sectors & routes","route_tab name":"Name","route_tab height":"Height","route_tab bolts":"Bolts","route_tab grade fr":"Grade FR","route_tab grade yds":"grade YDS","shade after 10.00 am":"In shade after 10.00 am","shade after 15.00 pm":"In shade after 15.00 pm","shade befor noon":"In shade befor noon","shade in the afternoon":"In shade in the afternoon","shade whole day":"In the shade whole day","sun the whole day":"In the sun the whole day","overhang":"Overhang","slabby":"Slabby","vertical":"Vertical","links":"Links","share":"Share","more":"More","about us":"About us","user menu favorite products":"My favorite products","user menu favorite films":"My favorite films","user menu admin dashboard":"Admin dashboard","user menu home":"My page","user menu cart":"My cart","user menu orders":"Orders","user menu my orders":"My Orders","user menu total orders":"All orders","user menu films":"Films list","user menu my interested events":"Interested events","user menu followers":"Followers & following","user menu products & category":"Products & Category","user menu services":"Services","user menu all comments":"All comments","user menu my comments":"My comments","user menu my posts":"My posts","user menu all posts":"All posts","user menu users":"Users & Parmissions","user menu options":"Options","user menu indoor climbing":"Indoor climbing","user menu outdoor climbing":"Outdoor climbing","user menu ice climbing":"Ice & Mix","user menu mountaineering":"Mountaineering","user menu other":"Other","user menu security":"Security (Tech tips)","user menu partners":"Partners","user menu events":"Events","user menu news":"News","user menu gallery":"Gallery","user menu about":"About us","user menu login":"Login","user menu logout":"Logout","user menu sectors & routes":"Sectors & Routes","user menu local bisnes":"Suport local bisnes","user menu my favorite outdoor area":"My favorite outdoor areas","user add en article title":"article English version","user add ru article title":"article Russion version","user add ka article title":"article Georgian version","user add en article description":"Article English version for site localisation.","user add ru article description":"Article Russion version for site localisation.","user add ka article description":"Article Georgian version for site localisation.","user edit en article title":"article English version","user edit ru article title":"article Russion version","user edit ka article title":"article Georgian version","user edit en article description":"Article English version for site localisation.","user edit ru article description":"Article Russion version for site localisation.","user edit ka article description":"Article Georgian version for site localisation.","Munu":"","Dashboard":"","Sites index pages":"","shop name":"climbng.ge shop","shop menu products":"Products","shop menu services":"Services","shop menu categories":"Categories","shop menu about us":"About us","limited quantity":"Limited quantity ","out of stock":"Out of stock","product description":"Description","seller contact":"Contacts","products":"Products","category":"Category","material":"Material","weight":"Weight","seller":"Seller","email":"Email","phone number":"Phone number","you might also like":"You might also like","all products":"All products","shop login":"Login","services title":"Services","service page other services":"Other services"}');
 
 /***/ }),
 
@@ -99438,7 +99485,7 @@ module.exports = JSON.parse('{"site name":"climbng.ge","menu climbing":"скал
 /******/ 		// This function allow to reference async chunks
 /******/ 		__webpack_require__.u = (chunkId) => {
 /******/ 			// return url for filenames not based on template
-/******/ 			if ({"resources_js_components_shop_pages_AboutUsComponent_vue":1,"resources_js_components_shop_pages_CatalogComponent_vue":1,"resources_js_components_shop_pages_ProductPageComponent_vue":1,"resources_js_components_shop_pages_SearchPageComponent_vue":1,"resources_js_components_shop_pages_ServicePageComponent_vue":1,"resources_js_components_shop_pages_ServicesCatalogComponent_vue":1,"resources_js_components_site_pages_AboutUsComponent_vue":1,"resources_js_components_site_pages_EventPageComponent_vue":1,"resources_js_components_site_pages_IceListComponent_vue":1,"resources_js_components_site_pages_IcePageComponent_vue":1,"resources_js_components_site_pages_IndexPageComponent_vue":1,"resources_js_components_site_pages_IndoorListComponent_vue":1,"resources_js_components_site_pages_IndoorPageComponent_vue":1,"resources_js_components_site_pages_LocalBisnesPageComponent_vue":1,"resources_js_components_site_pages_MountaineeringListComponent_vue":1,"resources_js_components_site_pages_MountaineeringPageComponent_vue":1,"resources_js_components_site_pages_NewsPageComponent_vue":1,"resources_js_components_site_pages_OtherListComponent_vue":1,"resources_js_components_site_pages_OtherPageComponent_vue":1,"resources_js_components_site_pages_OutdoorListComponent_vue":1,"resources_js_components_site_pages_OutdoorPageComponent_vue":1,"resources_js_components_site_pages_PartnerPageComponent_vue":1,"resources_js_components_site_pages_SerchPageComponent_vue":1,"resources_js_components_site_pages_TechTipPageComponent_vue":1,"resources_js_components_user_pages_AdminPageComponent_vue":1,"resources_js_components_user_pages_GalleryPageComponent_vue":1,"resources_js_components_user_pages_HomePageComponent_vue":1,"resources_js_components_user_pages_articles_articleAddComponent_vue":1,"resources_js_components_user_pages_articles_articleEditComponent_vue":1,"resources_js_components_user_pages_articles_articleListComponent_vue":1,"resources_js_components_user_pages_articles_forms_add_forms_ArticleImageFormComponent_vue":1,"resources_js_components_user_pages_articles_forms_add_forms_GlobalDataFormComponent_vue":1,"resources_js_components_user_pages_articles_forms_add_forms_LocaleDataFormComponent_vue":1,"resources_js_components_user_pages_articles_forms_add_forms_MountRouteImageFormComponent_vue":1,"resources_js_components_user_pages_articles_forms_add_forms_SectorImagesFormComponent_vue":1,"resources_js_components_user_pages_articles_forms_edit_forms_ArticleImageFormComponent_vue":1,"resources_js_components_user_pages_articles_forms_edit_forms_GlobalDataFormComponent_vue":1,"resources_js_components_user_pages_articles_forms_edit_forms_LocaleDataFormComponent_vue":1,"resources_js_components_user_pages_articles_forms_edit_forms_MountRouteImageFormComponent_vue":1,"resources_js_components_user_pages_articles_forms_edit_forms_SectorImagesFormComponent_vue":1,"resources_js_components_user_pages_cartPageComponent_vue":1,"resources_js_components_user_pages_comments_CommentsPageComponent_vue":1,"resources_js_components_user_pages_comments_MyCommentsPageComponent_vue":1,"resources_js_components_user_pages_event_eventAddComponent_vue":1,"resources_js_components_user_pages_event_eventEditComponent_vue":1,"resources_js_components_user_pages_event_eventListComponent_vue":1,"resources_js_components_user_pages_favorites_FavoriteFilmsPageComponent_vue":1,"resources_js_components_user_pages_favorites_FavoriteOutdoorAreaPageComponent_vue":1,"resources_js_components_user_pages_favorites_FavoriteProductsPageComponent_vue":1,"resources_js_components_user_pages_favorites_FollowersPageComponent_vue":1,"resources_js_components_user_pages_favorites_InterestedEventsPageComponent_vue":1,"resources_js_components_user_pages_films_filmsAddComponent_vue":1,"resources_js_components_user_pages_films_filmsEditComponent_vue":1,"resources_js_components_user_pages_films_filmsListComponent_vue":1,"resources_js_components_user_pages_local_bisnes_localBisnesAddComponent_vue":1,"resources_js_components_user_pages_local_bisnes_localBisnesEditComponent_vue":1,"resources_js_components_user_pages_local_bisnes_localBisnesListComponent_vue":1,"resources_js_components_user_pages_mountRoutes_mountListComponent_vue":1,"resources_js_components_user_pages_mountRoutes_mountMassiveAddComponent_vue":1,"resources_js_components_user_pages_mountRoutes_mountMassiveEditComponent_vue":1,"resources_js_components_user_pages_optionsPageComponent_vue":1,"resources_js_components_user_pages_orders_allOrderPageComponent_vue":1,"resources_js_components_user_pages_orders_decloration_confirmOrderPageComponent_vue":1,"resources_js_components_user_pages_orders_decloration_items_BreadcrumbComponent_vue":1,"resources_js_components_user_pages_orders_decloration_mailOrderConfirmComponent_vue":1,"resources_js_components_user_pages_orders_decloration_orderDeclorationPageComponent_vue":1,"resources_js_components_user_pages_orders_decloration_orderPaymentPageComponent_vue":1,"resources_js_components_user_pages_orders_myOrderComponent_vue":1,"resources_js_components_user_pages_posts_AllPostsPageComponent_vue":1,"resources_js_components_user_pages_posts_MyPostsPageCompoents_vue":1,"resources_js_components_user_pages_products_and_categories_categories_productCategoryAddCompo-6c462b":1,"resources_js_components_user_pages_products_and_categories_categories_productCategoryEditComp-b66cd8":1,"resources_js_components_user_pages_products_and_categories_productOptionControlPageComponent_vue":1,"resources_js_components_user_pages_products_and_categories_products_productAddComponent_vue":1,"resources_js_components_user_pages_products_and_categories_products_productEditComponent_vue":1,"resources_js_components_user_pages_products_and_categories_productsAndCatgoriesListComponent_vue":1,"resources_js_components_user_pages_routes_and_sectors_MTP_MTPAddComponent_vue":1,"resources_js_components_user_pages_routes_and_sectors_MTP_MTPEditComponent_vue":1,"resources_js_components_user_pages_routes_and_sectors_MTPPitch_MTPPitchAddComponent_vue":1,"resources_js_components_user_pages_routes_and_sectors_MTPPitch_MTPPitchEditComponent_vue":1,"resources_js_components_user_pages_routes_and_sectors_routeAndSectorListComponent_vue":1,"resources_js_components_user_pages_routes_and_sectors_routes_routeAddComponent_vue":1,"resources_js_components_user_pages_routes_and_sectors_routes_routeEditComponent_vue":1,"resources_js_components_user_pages_routes_and_sectors_sectors_sectorAddComponent_vue":1,"resources_js_components_user_pages_routes_and_sectors_sectors_sectorEditComponent_vue":1,"resources_js_components_user_pages_sector_local_images_addSectorModalComponent_vue":1,"resources_js_components_user_pages_sector_local_images_sectorLocalImageAddComponent_vue":1,"resources_js_components_user_pages_sector_local_images_sectorLocalImageEditComponent_vue":1,"resources_js_components_user_pages_sector_local_images_sectorLocalImagesListComponent_vue":1,"resources_js_components_user_pages_services_serviceAddComponent_vue":1,"resources_js_components_user_pages_services_serviceEditComponent_vue":1,"resources_js_components_user_pages_services_servicesListComponent_vue":1,"resources_js_components_user_pages_siteInfo_GeneralInfo_GlobalInfoAddFormComponent_vue":1,"resources_js_components_user_pages_siteInfo_GeneralInfo_GlobalInfoEditFormComponent_vue":1,"resources_js_components_user_pages_siteInfo_SiteData_SiteGlobalInfoEditComponent_vue":1,"resources_js_components_user_pages_siteInfo_SiteData_SiteInfoEditComponent_vue":1,"resources_js_components_user_pages_siteInfo_SiteData_SiteKaInfoEditComponent_vue":1,"resources_js_components_user_pages_siteInfo_SiteData_SiteRuInfoEditComponent_vue":1,"resources_js_components_user_pages_siteInfo_SiteData_SiteUsInfoEditComponent_vue":1,"resources_js_components_user_pages_siteInfo_SiteData_forms_SiteGlobalDataEditComponent_vue":1,"resources_js_components_user_pages_siteInfo_SiteData_forms_SiteLocaleDataEditComponent_vue":1,"resources_js_components_user_pages_siteInfo_SiteData_tabs_LocaleDataTabComponent_vue":1,"resources_js_components_user_pages_siteInfo_siteInfoPageComponent_vue":1,"resources_js_components_user_pages_spots_categories_SpotsCategoriesAddPageComponent_vue":1,"resources_js_components_user_pages_spots_categories_SpotsCategoriesEditPageComponent_vue":1,"resources_js_components_user_pages_usersListPageComponent_vue":1,"resources_js_components_films_pages_AboutUsComponent_vue":1,"resources_js_components_films_pages_FilmPageComponent_vue":1,"resources_js_components_films_pages_PortalPageComponent_vue":1,"resources_js_components_films_pages_SerchPageComponent_vue":1}[chunkId]) return "assets/js/" + chunkId + ".js";
+/******/ 			if ({"resources_js_components_shop_pages_AboutUsComponent_vue":1,"resources_js_components_shop_pages_CatalogComponent_vue":1,"resources_js_components_shop_pages_ProductPageComponent_vue":1,"resources_js_components_shop_pages_SearchPageComponent_vue":1,"resources_js_components_shop_pages_ServicePageComponent_vue":1,"resources_js_components_shop_pages_ServicesCatalogComponent_vue":1,"resources_js_components_site_pages_AboutUsComponent_vue":1,"resources_js_components_site_pages_EventPageComponent_vue":1,"resources_js_components_site_pages_EventsListPageComponent_vue":1,"resources_js_components_site_pages_IceListComponent_vue":1,"resources_js_components_site_pages_IcePageComponent_vue":1,"resources_js_components_site_pages_IndexPageComponent_vue":1,"resources_js_components_site_pages_IndoorListComponent_vue":1,"resources_js_components_site_pages_IndoorPageComponent_vue":1,"resources_js_components_site_pages_LocalBisnesPageComponent_vue":1,"resources_js_components_site_pages_MountaineeringListComponent_vue":1,"resources_js_components_site_pages_MountaineeringPageComponent_vue":1,"resources_js_components_site_pages_NewsPageComponent_vue":1,"resources_js_components_site_pages_OtherListComponent_vue":1,"resources_js_components_site_pages_OtherPageComponent_vue":1,"resources_js_components_site_pages_OutdoorListComponent_vue":1,"resources_js_components_site_pages_OutdoorPageComponent_vue":1,"resources_js_components_site_pages_PartnerPageComponent_vue":1,"resources_js_components_site_pages_SerchPageComponent_vue":1,"resources_js_components_site_pages_TechTipPageComponent_vue":1,"resources_js_components_user_pages_AdminPageComponent_vue":1,"resources_js_components_user_pages_GalleryPageComponent_vue":1,"resources_js_components_user_pages_HomePageComponent_vue":1,"resources_js_components_user_pages_articles_articleAddComponent_vue":1,"resources_js_components_user_pages_articles_articleEditComponent_vue":1,"resources_js_components_user_pages_articles_articleListComponent_vue":1,"resources_js_components_user_pages_articles_forms_add_forms_ArticleImageFormComponent_vue":1,"resources_js_components_user_pages_articles_forms_add_forms_GlobalDataFormComponent_vue":1,"resources_js_components_user_pages_articles_forms_add_forms_LocaleDataFormComponent_vue":1,"resources_js_components_user_pages_articles_forms_add_forms_MountRouteImageFormComponent_vue":1,"resources_js_components_user_pages_articles_forms_add_forms_SectorImagesFormComponent_vue":1,"resources_js_components_user_pages_articles_forms_edit_forms_ArticleImageFormComponent_vue":1,"resources_js_components_user_pages_articles_forms_edit_forms_GlobalDataFormComponent_vue":1,"resources_js_components_user_pages_articles_forms_edit_forms_LocaleDataFormComponent_vue":1,"resources_js_components_user_pages_articles_forms_edit_forms_MountRouteImageFormComponent_vue":1,"resources_js_components_user_pages_articles_forms_edit_forms_SectorImagesFormComponent_vue":1,"resources_js_components_user_pages_cartPageComponent_vue":1,"resources_js_components_user_pages_comments_CommentsPageComponent_vue":1,"resources_js_components_user_pages_comments_MyCommentsPageComponent_vue":1,"resources_js_components_user_pages_event_competitions_competitionsAddComponent_vue":1,"resources_js_components_user_pages_event_competitions_competitionsEditComponent_vue":1,"resources_js_components_user_pages_event_events_eventAddComponent_vue":1,"resources_js_components_user_pages_event_events_eventEditComponent_vue":1,"resources_js_components_user_pages_event_eventsAndCompetitionsListComponent_vue":1,"resources_js_components_user_pages_favorites_FavoriteFilmsPageComponent_vue":1,"resources_js_components_user_pages_favorites_FavoriteOutdoorAreaPageComponent_vue":1,"resources_js_components_user_pages_favorites_FavoriteProductsPageComponent_vue":1,"resources_js_components_user_pages_favorites_FollowersPageComponent_vue":1,"resources_js_components_user_pages_favorites_InterestedEventsPageComponent_vue":1,"resources_js_components_user_pages_films_filmsAddComponent_vue":1,"resources_js_components_user_pages_films_filmsEditComponent_vue":1,"resources_js_components_user_pages_films_filmsListComponent_vue":1,"resources_js_components_user_pages_local_bisnes_localBisnesAddComponent_vue":1,"resources_js_components_user_pages_local_bisnes_localBisnesEditComponent_vue":1,"resources_js_components_user_pages_local_bisnes_localBisnesListComponent_vue":1,"resources_js_components_user_pages_mountRoutes_mountListComponent_vue":1,"resources_js_components_user_pages_mountRoutes_mountMassiveAddComponent_vue":1,"resources_js_components_user_pages_mountRoutes_mountMassiveEditComponent_vue":1,"resources_js_components_user_pages_optionsPageComponent_vue":1,"resources_js_components_user_pages_orders_allOrderPageComponent_vue":1,"resources_js_components_user_pages_orders_decloration_confirmOrderPageComponent_vue":1,"resources_js_components_user_pages_orders_decloration_items_BreadcrumbComponent_vue":1,"resources_js_components_user_pages_orders_decloration_mailOrderConfirmComponent_vue":1,"resources_js_components_user_pages_orders_decloration_orderDeclorationPageComponent_vue":1,"resources_js_components_user_pages_orders_decloration_orderPaymentPageComponent_vue":1,"resources_js_components_user_pages_orders_myOrderComponent_vue":1,"resources_js_components_user_pages_posts_AllPostsPageComponent_vue":1,"resources_js_components_user_pages_posts_MyPostsPageCompoents_vue":1,"resources_js_components_user_pages_products_and_categories_categories_productCategoryAddCompo-6c462b":1,"resources_js_components_user_pages_products_and_categories_categories_productCategoryEditComp-b66cd8":1,"resources_js_components_user_pages_products_and_categories_productOptionControlPageComponent_vue":1,"resources_js_components_user_pages_products_and_categories_products_productAddComponent_vue":1,"resources_js_components_user_pages_products_and_categories_products_productEditComponent_vue":1,"resources_js_components_user_pages_products_and_categories_productsAndCatgoriesListComponent_vue":1,"resources_js_components_user_pages_routes_and_sectors_MTP_MTPAddComponent_vue":1,"resources_js_components_user_pages_routes_and_sectors_MTP_MTPEditComponent_vue":1,"resources_js_components_user_pages_routes_and_sectors_MTPPitch_MTPPitchAddComponent_vue":1,"resources_js_components_user_pages_routes_and_sectors_MTPPitch_MTPPitchEditComponent_vue":1,"resources_js_components_user_pages_routes_and_sectors_routeAndSectorListComponent_vue":1,"resources_js_components_user_pages_routes_and_sectors_routes_routeAddComponent_vue":1,"resources_js_components_user_pages_routes_and_sectors_routes_routeEditComponent_vue":1,"resources_js_components_user_pages_routes_and_sectors_sectors_sectorAddComponent_vue":1,"resources_js_components_user_pages_routes_and_sectors_sectors_sectorEditComponent_vue":1,"resources_js_components_user_pages_sector_local_images_addSectorModalComponent_vue":1,"resources_js_components_user_pages_sector_local_images_sectorLocalImageAddComponent_vue":1,"resources_js_components_user_pages_sector_local_images_sectorLocalImageEditComponent_vue":1,"resources_js_components_user_pages_sector_local_images_sectorLocalImagesListComponent_vue":1,"resources_js_components_user_pages_services_serviceAddComponent_vue":1,"resources_js_components_user_pages_services_serviceEditComponent_vue":1,"resources_js_components_user_pages_services_servicesListComponent_vue":1,"resources_js_components_user_pages_siteInfo_GeneralInfo_GlobalInfoAddFormComponent_vue":1,"resources_js_components_user_pages_siteInfo_GeneralInfo_GlobalInfoEditFormComponent_vue":1,"resources_js_components_user_pages_siteInfo_SiteData_SiteGlobalInfoEditComponent_vue":1,"resources_js_components_user_pages_siteInfo_SiteData_SiteInfoEditComponent_vue":1,"resources_js_components_user_pages_siteInfo_SiteData_SiteKaInfoEditComponent_vue":1,"resources_js_components_user_pages_siteInfo_SiteData_SiteRuInfoEditComponent_vue":1,"resources_js_components_user_pages_siteInfo_SiteData_SiteUsInfoEditComponent_vue":1,"resources_js_components_user_pages_siteInfo_SiteData_forms_SiteGlobalDataEditComponent_vue":1,"resources_js_components_user_pages_siteInfo_SiteData_forms_SiteLocaleDataEditComponent_vue":1,"resources_js_components_user_pages_siteInfo_SiteData_tabs_LocaleDataTabComponent_vue":1,"resources_js_components_user_pages_siteInfo_siteInfoPageComponent_vue":1,"resources_js_components_user_pages_spots_categories_SpotsCategoriesAddPageComponent_vue":1,"resources_js_components_user_pages_spots_categories_SpotsCategoriesEditPageComponent_vue":1,"resources_js_components_user_pages_usersListPageComponent_vue":1,"resources_js_components_films_pages_AboutUsComponent_vue":1,"resources_js_components_films_pages_FilmPageComponent_vue":1,"resources_js_components_films_pages_PortalPageComponent_vue":1,"resources_js_components_films_pages_SerchPageComponent_vue":1}[chunkId]) return "assets/js/" + chunkId + ".js";
 /******/ 			// return url for filenames based on template
 /******/ 			return undefined;
 /******/ 		};

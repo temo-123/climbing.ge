@@ -113,7 +113,7 @@
                                             filtr_data.table_name == 'Users'
                                         "
                                     >
-                                        <button class="btn btn-primary pull-left" @click="add_user()">Add new user (beta)</button>
+                                        <button class="btn btn-primary pull-left" @click="add_user()">Add new user</button>
                                     </span>
                                     <span
                                         v-else-if="
@@ -478,7 +478,7 @@
 
         <addRoleModal ref="add_role_modal"/>
 
-        <addUserModal ref="add_user_modal"/>
+        <addUserModal ref="add_user_modal" @restart="update"/>
 
         <!-- <orderDetalModal
             v-if="table_data[tab_num - 1].table_name == 'Orders'"

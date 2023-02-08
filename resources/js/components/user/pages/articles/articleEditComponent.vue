@@ -11,6 +11,43 @@
                 <button type="submit" class="btn btn-primary" v-on:click="edit_article()" >Save</button>
             </div>
         </div>
+        <div class="row">
+            <div class="col-md-12" v-if="error.length != 0">
+                <div class="alert alert-danger" role="alert" v-if="error.global_info_validation.published">
+                    Published - {{ error.global_info_validation.published[0] }}
+                </div>
+
+                <div class="alert alert-danger" role="alert" v-if="error.us_info_validation.title">
+                    English title - {{ error.us_info_validation.title[0] }}
+                </div>
+                <div class="alert alert-danger" role="alert" v-if="error.us_info_validation.short_description">
+                    English description - {{ error.us_info_validation.short_description[0] }}
+                </div>
+                <div class="alert alert-danger" role="alert" v-if="error.us_info_validation.text">
+                    English text - {{ error.us_info_validation.text[0] }}
+                </div>
+
+                <div class="alert alert-danger" role="alert" v-if="error.ka_info_validation.title">
+                    Georgian title - {{ error.ka_info_validation.title[0] }}
+                </div>
+                <div class="alert alert-danger" role="alert" v-if="error.ka_info_validation.short_description">
+                    Georgian description - {{ error.ka_info_validation.short_description[0] }}
+                </div>
+                <div class="alert alert-danger" role="alert" v-if="error.ka_info_validation.text">
+                    Georgian text - {{ error.ka_info_validation.text[0] }}
+                </div>
+
+                <div class="alert alert-danger" role="alert" v-if="error.ru_info_validation.title">
+                    Russion title - {{ error.ru_info_validation.title[0] }}
+                </div>
+                <div class="alert alert-danger" role="alert" v-if="error.ru_info_validation.short_description">
+                    Russiondescription - {{ error.ru_info_validation.short_description[0] }}
+                </div>
+                <div class="alert alert-danger" role="alert" v-if="error.ru_info_validation.text">
+                    Russion text - {{ error.ru_info_validation.text[0] }}
+                </div>
+            </div>
+        </div>
         <div class="row" >
             <div class="col-md-12">
                 <div class="row">
@@ -151,7 +188,7 @@
                 article_id: this.$route.params.id,
                 tab_num: 1,
 
-                errors: [],
+                error: [],
 
                 editing_data: [],
 
@@ -261,15 +298,10 @@
                     // this.$refs.ArticleImage.checkForm()
                     this.go_back(true)
                 })
-                .catch(err => {
-                    console.log(err);
-                    // if (error.response.status == 422) {
-                    //     this.error.global_article_error = error.response.data['global_data']
-                    //     this.error.ka_article_error = error.response.data['ka_data']
-                    //     this.error.ru_article_error = error.response.data['ru_data']
-                    //     this.error.us_article_error = error.response.data['us_data']
-                    // }
-                    // this.is_us_article_error = true
+                .catch(error => {
+                    if (error.response.status == 422) {
+                        this.error = error.response.data.validation
+                    }
                 })
             },
 

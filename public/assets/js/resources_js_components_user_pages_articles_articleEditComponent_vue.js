@@ -144,6 +144,43 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 
@@ -165,7 +202,7 @@ __webpack_require__.r(__webpack_exports__);
     return {
       article_id: this.$route.params.id,
       tab_num: 1,
-      errors: [],
+      error: [],
       editing_data: [],
       article_image: '',
       area_rocks_images: [],
@@ -255,14 +292,10 @@ __webpack_require__.r(__webpack_exports__);
         // this.is_back_action = true
         // this.$refs.ArticleImage.checkForm()
         _this2.go_back(true);
-      })["catch"](function (err) {
-        console.log(err); // if (error.response.status == 422) {
-        //     this.error.global_article_error = error.response.data['global_data']
-        //     this.error.ka_article_error = error.response.data['ka_data']
-        //     this.error.ru_article_error = error.response.data['ru_data']
-        //     this.error.us_article_error = error.response.data['us_data']
-        // }
-        // this.is_us_article_error = true
+      })["catch"](function (error) {
+        if (error.response.status == 422) {
+          _this2.error = error.response.data.validation;
+        }
       });
     },
     global_blocks_action: function global_blocks_action(event) {
@@ -1777,6 +1810,188 @@ var render = function () {
           [_vm._v("Save")]
         ),
       ]),
+    ]),
+    _vm._v(" "),
+    _c("div", { staticClass: "row" }, [
+      _vm.error.length != 0
+        ? _c("div", { staticClass: "col-md-12" }, [
+            _vm.error.global_info_validation.published
+              ? _c(
+                  "div",
+                  {
+                    staticClass: "alert alert-danger",
+                    attrs: { role: "alert" },
+                  },
+                  [
+                    _vm._v(
+                      "\n                  Published - " +
+                        _vm._s(_vm.error.global_info_validation.published[0]) +
+                        "\n              "
+                    ),
+                  ]
+                )
+              : _vm._e(),
+            _vm._v(" "),
+            _vm.error.us_info_validation.title
+              ? _c(
+                  "div",
+                  {
+                    staticClass: "alert alert-danger",
+                    attrs: { role: "alert" },
+                  },
+                  [
+                    _vm._v(
+                      "\n                  English title - " +
+                        _vm._s(_vm.error.us_info_validation.title[0]) +
+                        "\n              "
+                    ),
+                  ]
+                )
+              : _vm._e(),
+            _vm._v(" "),
+            _vm.error.us_info_validation.short_description
+              ? _c(
+                  "div",
+                  {
+                    staticClass: "alert alert-danger",
+                    attrs: { role: "alert" },
+                  },
+                  [
+                    _vm._v(
+                      "\n                  English description - " +
+                        _vm._s(
+                          _vm.error.us_info_validation.short_description[0]
+                        ) +
+                        "\n              "
+                    ),
+                  ]
+                )
+              : _vm._e(),
+            _vm._v(" "),
+            _vm.error.us_info_validation.text
+              ? _c(
+                  "div",
+                  {
+                    staticClass: "alert alert-danger",
+                    attrs: { role: "alert" },
+                  },
+                  [
+                    _vm._v(
+                      "\n                  English text - " +
+                        _vm._s(_vm.error.us_info_validation.text[0]) +
+                        "\n              "
+                    ),
+                  ]
+                )
+              : _vm._e(),
+            _vm._v(" "),
+            _vm.error.ka_info_validation.title
+              ? _c(
+                  "div",
+                  {
+                    staticClass: "alert alert-danger",
+                    attrs: { role: "alert" },
+                  },
+                  [
+                    _vm._v(
+                      "\n                  Georgian title - " +
+                        _vm._s(_vm.error.ka_info_validation.title[0]) +
+                        "\n              "
+                    ),
+                  ]
+                )
+              : _vm._e(),
+            _vm._v(" "),
+            _vm.error.ka_info_validation.short_description
+              ? _c(
+                  "div",
+                  {
+                    staticClass: "alert alert-danger",
+                    attrs: { role: "alert" },
+                  },
+                  [
+                    _vm._v(
+                      "\n                  Georgian description - " +
+                        _vm._s(
+                          _vm.error.ka_info_validation.short_description[0]
+                        ) +
+                        "\n              "
+                    ),
+                  ]
+                )
+              : _vm._e(),
+            _vm._v(" "),
+            _vm.error.ka_info_validation.text
+              ? _c(
+                  "div",
+                  {
+                    staticClass: "alert alert-danger",
+                    attrs: { role: "alert" },
+                  },
+                  [
+                    _vm._v(
+                      "\n                  Georgian text - " +
+                        _vm._s(_vm.error.ka_info_validation.text[0]) +
+                        "\n              "
+                    ),
+                  ]
+                )
+              : _vm._e(),
+            _vm._v(" "),
+            _vm.error.ru_info_validation.title
+              ? _c(
+                  "div",
+                  {
+                    staticClass: "alert alert-danger",
+                    attrs: { role: "alert" },
+                  },
+                  [
+                    _vm._v(
+                      "\n                  Russion title - " +
+                        _vm._s(_vm.error.ru_info_validation.title[0]) +
+                        "\n              "
+                    ),
+                  ]
+                )
+              : _vm._e(),
+            _vm._v(" "),
+            _vm.error.ru_info_validation.short_description
+              ? _c(
+                  "div",
+                  {
+                    staticClass: "alert alert-danger",
+                    attrs: { role: "alert" },
+                  },
+                  [
+                    _vm._v(
+                      "\n                  Russiondescription - " +
+                        _vm._s(
+                          _vm.error.ru_info_validation.short_description[0]
+                        ) +
+                        "\n              "
+                    ),
+                  ]
+                )
+              : _vm._e(),
+            _vm._v(" "),
+            _vm.error.ru_info_validation.text
+              ? _c(
+                  "div",
+                  {
+                    staticClass: "alert alert-danger",
+                    attrs: { role: "alert" },
+                  },
+                  [
+                    _vm._v(
+                      "\n                  Russion text - " +
+                        _vm._s(_vm.error.ru_info_validation.text[0]) +
+                        "\n              "
+                    ),
+                  ]
+                )
+              : _vm._e(),
+          ])
+        : _vm._e(),
     ]),
     _vm._v(" "),
     _c("div", { staticClass: "row" }, [

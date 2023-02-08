@@ -94,6 +94,7 @@
       social_login(service){
         // window.location.href = 'api/login/'+service
         window.location.href = this.MIX_APP_SSH + this.MIX_USER_PAGE_URL + '/api/login/' + service
+        // console.log("🚀 ~ file: LoginComponent.vue:97 ~ social_login ~ this.MIX_APP_SSH + this.MIX_USER_PAGE_URL + '/api/login/' + service", this.MIX_APP_SSH + this.MIX_USER_PAGE_URL + '/api/login/' + service)
       },
       login(){
         axios

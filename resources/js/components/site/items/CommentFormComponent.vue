@@ -93,7 +93,7 @@
                                     <button class="btn btn-primary" >Add comment</button>
                                 </div>
                                 <div class="col-xs-6 col-md-6">
-                                    <button @click="get_comments" class="btn btn-success pull-right" v-if="!is_refresh">Refresh ({{id}})</button>
+                                    <button @click="get_comments" class="btn btn-success pull-right" v-if="!is_refresh">Refresh ({{refresh_id}})</button>
                                     <span class="badge badge-primare mb-1 pull-right" v-if="is_refresh">Updating...</span>
                                 </div>
                             </div>
@@ -217,6 +217,7 @@
 
                 comments: [],
                 is_refresh: false,
+                refresh_id: 0,
                 id: 0,
                 loadRecaptchaScript: false,
                 loadComplaintRecaptchaScript: false,
@@ -349,7 +350,7 @@
                 .then(response => {
                     this.comments = response.data
                     this.is_refresh = false
-                    this.id++ 
+                    this.refresh_id++ 
                 })
                 .catch(
                 );

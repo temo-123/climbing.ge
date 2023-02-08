@@ -35,8 +35,8 @@
         </div> 
 
         <metaData 
-            :title = "'Other outdoor activity in Georgia'"
-            :description = "'Other outdoor activity in Georgia'"
+            :title = "$t('title other')"
+            :description = "this.$siteData.other_activity_description"
             :image = "'../../../../public/images/meta_img/other.jpg'"
         />
     </div>

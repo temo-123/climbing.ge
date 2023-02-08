@@ -76,7 +76,7 @@ class EventController extends Controller
 
     public function get_all_events(Request $request)
     {
-        return Event::get();
+        return Event::where("category", "=", "event")->get();
     }
 
     public function edit_event(Request $request)
@@ -233,8 +233,6 @@ class EventController extends Controller
     public function add_event(Request $request)
     {
         $validation_issets = [];
-
-        dd($request);
 
         $data = json_decode($request->data, true );
         $global_blocks = json_decode($request->global_blocks, true );

@@ -173,7 +173,7 @@ __webpack_require__.r(__webpack_exports__);
       price: 0,
       user_id: 0,
       MIX_SHOP_URL: "shop.climbing.loc",
-      MIX_APP_SSH: "http://",
+      MIX_APP_SSH: "https://",
       is_quantity_updating: false
     };
   },

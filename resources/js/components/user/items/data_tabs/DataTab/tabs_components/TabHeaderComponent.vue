@@ -103,6 +103,14 @@
         ">
             User
         </th>
+
+        <th v-if="data.table_name == 'Users'">
+            |
+        </th>
+        <th v-if="data.table_name == 'Users'">
+            Ban
+        </th>
+
         <th v-if="data.table_name != 'Parmissions'&&
                 data.table_name != 'My comments'&&
                 data.table_name != 'My orders' &&

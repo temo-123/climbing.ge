@@ -53,7 +53,9 @@ const router = new VueRouter({
         { path: '/films/add', name: 'filmsAdd', component: load('films/filmsAddComponent') },
         { path: '/films/edit/:id', name: 'filmsEdit', component: load('films/filmsEditComponent') },
 
-        { path: '/mount_routes/mount_routes_list', name: 'mountlist', component: load('films/mountListComponent') },
+        { path: '/mount_routes/mount_routes_list', name: 'mountlist', component: load('mountRoutes/mountListComponent') },
+        { path: '/mount_massive/edit/:id', name: 'mount_massive_edit', component: load('mountRoutes/mountMassiveEditComponent') },
+        { path: '/mount_massive/add/', name: 'mount_massive_add', component: load('mountRoutes/mountMassiveAddComponent') },
 
         { path: '/article/:article_category', name: 'articlelist', component: load('articles/articleListComponent') },
         { path: '/article/edit/:id', name: 'articleEdit', component: load('articles/articleEditComponent') },
@@ -61,9 +63,6 @@ const router = new VueRouter({
    
         { path: '/spot_category/edit/:id', name: 'spot_category_edit', component: load('spots_categories/SpotsCategoriesEditPageComponent') },
         { path: '/spot_category/add/', name: 'spot_category_add', component: load('spots_categories/SpotsCategoriesAddPageComponent') },
-
-        { path: '/mount_massive/edit/:id', name: 'mount_massive_edit', component: load('mountRoutes/mountMassiveEditComponent') },
-        { path: '/mount_massive/add/', name: 'mount_massive_add', component: load('mountRoutes/mountMassiveAddComponent') },
 
         { path: '/routes_and_sectors', name: 'routeAndSectorList', component: load('routes_and_sectors/routeAndSectorListComponent') },
 
@@ -87,9 +86,12 @@ const router = new VueRouter({
         { path: '/local_bisnes/add', name: 'localBisnesAdd', component: load('local_bisnes/localBisnesAddComponent') },
         { path: '/local_bisnes/edit/:id', name: 'localBisnesEdit', component: load('local_bisnes/localBisnesEditComponent') },
 
-        { path: '/event', name: 'eventList', component: load('event/eventListComponent') },
-        { path: '/event/add', name: 'eventAdd', component: load('event/eventAddComponent') },
-        { path: '/event/edit/:id', name: 'eventEdit', component: load('event/eventEditComponent') },
+        { path: '/event', name: 'eventList', component: load('event/eventsAndCompetitionsListComponent') },
+        { path: '/event/add', name: 'eventAdd', component: load('event/events/eventAddComponent') },
+        { path: '/event/edit/:id', name: 'eventEdit', component: load('event/events/eventEditComponent') },
+        
+        { path: '/competition/add', name: 'competitionsAdd', component: load('event/competitions/competitionAddComponent') },
+        { path: '/competition/edit/:id', name: 'competitionsEdit', component: load('event/competitions/competitionEditComponent') },
         
         { path: '/products_and_categories', name: 'productsList', component: load('products_and_categories/productsAndCatgoriesListComponent') },
         { path: '/product/edit/:id', name: 'productEdit', component: load('products_and_categories/products/productEditComponent') },

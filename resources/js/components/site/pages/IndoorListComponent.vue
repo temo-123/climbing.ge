@@ -34,8 +34,8 @@
         </div>
         
         <metaData 
-            :title = "'Indoor climbing in Georgia'"
-            :description = "'Indoor climbing gyms in Georgia'"
+            :title = "$t('title indoor climbing')"
+            :description = "this.$siteData.indoor_description"
             :image = "'../../../../public/images/meta_images/indoor.jpg'"
         />
     </div>

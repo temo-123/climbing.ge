@@ -11,7 +11,7 @@
             </router-link>
             <router-link :to="{name: 'adminPage'}" exact>
                 <li class="list-group-item text-muted">
-                    <span class="admin_menu">{{ $t('user menu admin page') }}</span>
+                    <span class="admin_menu">{{ $t('user menu admin dashboard') }}</span>
                 </li>
             </router-link>
 

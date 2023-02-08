@@ -424,6 +424,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       is_complaint_verify_isset: false,
       comments: [],
       is_refresh: false,
+      refresh_id: 0,
       id: 0,
       loadRecaptchaScript: false,
       loadComplaintRecaptchaScript: false,
@@ -526,7 +527,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       axios.get('../api/comment/' + this.id).then(function (response) {
         _this5.comments = response.data;
         _this5.is_refresh = false;
-        _this5.id++;
+        _this5.refresh_id++;
       })["catch"]();
     }
   }
@@ -603,7 +604,7 @@ __webpack_require__.r(__webpack_exports__);
     return {
       locale: localStorage.getItem('lang'),
       mix_site_url: "climbing.loc",
-      mix_app_ssh: "http://",
+      mix_app_ssh: "https://",
       mix_site_name: "climbing.ge"
     };
   },
@@ -894,6 +895,7 @@ __webpack_require__.r(__webpack_exports__);
   },
   data: function data() {
     return {
+      sportChartData: [],
       sportChartOptions: {
         chart: {
           title: 'Bouldering route quantity',
@@ -901,15 +903,14 @@ __webpack_require__.r(__webpack_exports__);
 
         }
       },
-      sportChartData: [],
+      bolderChartData: [],
       boulderChartOptions: {
         chart: {
           title: 'Sport climbing route quantity',
-          description: 'Sport climbing route quantity in this area',
-          subtitle: 'Sales, Expenses, and Profit: 2014-2017'
+          description: 'Sport climbing route quantity in this area' // subtitle: 'Sales, Expenses, and Profit: 2014-2017',
+
         }
       },
-      bolderChartData: [],
       id: this.outdoor_region_article_id
     };
   },
@@ -5235,7 +5236,7 @@ var render = function () {
                               staticClass: "btn btn-success pull-right",
                               on: { click: _vm.get_comments },
                             },
-                            [_vm._v("Refresh (" + _vm._s(_vm.id) + ")")]
+                            [_vm._v("Refresh (" + _vm._s(_vm.refresh_id) + ")")]
                           )
                         : _vm._e(),
                       _vm._v(" "),

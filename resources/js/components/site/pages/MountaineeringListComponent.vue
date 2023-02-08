@@ -60,8 +60,8 @@
         </div>
         
         <metaData 
-            :title = "'Mountaineering in Georgia'"
-            :description = "'Mountaineering climbing routes and mount masiv in Georgia'"
+            :title = "$t('title mountaineering')"
+            :description = "this.$siteData.mount_description"
             :image = "'../../../../public/images/meta_img/mount.jpg'"
         />
     </div>

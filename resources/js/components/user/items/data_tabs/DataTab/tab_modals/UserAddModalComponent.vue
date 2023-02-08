@@ -10,13 +10,13 @@
         <pre class="language-vue">
             <form v-on:submit.prevent="add_user" id="add_user_form">
                 <!-- <div class="form-group"> -->
-                    <label for="email">Name</label>
+                    <!-- <label for="email">Name</label> -->
                     <input
                     type="text"
                     class="form-control"
                     :class="{ 'is-invalid': errors.name }"
                     id="name"
-                    v-model="name"
+                    v-model="data.name"
                     placeholder="Enter name"
                     required
                     />
@@ -25,13 +25,13 @@
                     </div> -->
                 <!-- </div>
                 <div class="form-group"> -->
-                    <label for="email">surname</label>
+                    <!-- <label for="email">surname</label> -->
                     <input
                     type="text"
                     class="form-control"
                     :class="{ 'is-invalid': errors.surname }"
                     id="surname"
-                    v-model="surname"
+                    v-model="data.surname"
                     placeholder="Enter surname"
                     required
                     />
@@ -40,13 +40,13 @@
                     </div> -->
                 <!-- </div>
                 <div class="form-group"> -->
-                    <label for="email">Email address</label>
+                    <!-- <label for="email">Email address</label> -->
                     <input
                     type="email"
                     class="form-control"
                     :class="{ 'is-invalid': errors.email }"
                     id="email"
-                    v-model="email"
+                    v-model="data.email"
                     placeholder="Enter email"
                     required
                     />
@@ -55,13 +55,13 @@
                     </div> -->
                 <!-- </div>
                 <div class="form-group"> -->
-                    <label for="country">country</label>
+                    <!-- <label for="country">country</label> -->
                     <input
                     type="country"
                     class="form-control"
                     :class="{ 'is-invalid': errors.country }"
                     id="country"
-                    v-model="country"
+                    v-model="data.country"
                     placeholder="Enter country"
                     />
                     <!-- <div class="invalid-feedback" v-if="errors.country">
@@ -69,13 +69,13 @@
                     </div> -->
                 <!-- </div>
                 <div class="form-group"> -->
-                    <label for="city">city</label>
+                    <!-- <label for="city">city</label> -->
                     <input
                     type="city"
                     class="form-control"
                     :class="{ 'is-invalid': errors.city }"
                     id="city"
-                    v-model="city"
+                    v-model="data.city"
                     placeholder="Enter city"
                     />
                     <!-- <div class="invalid-feedback" v-if="errors.city">
@@ -83,13 +83,13 @@
                     </div> -->
                 <!-- </div>
                 <div class="form-group"> -->
-                    <label for="phone_number">phone_number</label>
+                    <!-- <label for="phone_number">phone_number</label> -->
                     <input
                     type="phone_number"
                     class="form-control"
                     :class="{ 'is-invalid': errors.phone_number }"
                     id="phone_number"
-                    v-model="phone_number"
+                    v-model="data.phone_number"
                     placeholder="Enter phone_number"
                     />
                     <!-- <div class="invalid-feedback" v-if="errors.phone_number">
@@ -97,13 +97,13 @@
                     </div> -->
                 <!-- </div>
                 <div class="form-group"> -->
-                    <label for="password">Password</label>
+                    <!-- <label for="password">Password</label> -->
                     <input
                     type="password"
                     class="form-control"
                     :class="{ 'is-invalid': errors.password }"
                     id="password"
-                    v-model="password"
+                    v-model="data.password"
                     placeholder="Password"
                     required
                     />
@@ -112,12 +112,17 @@
                     </div> -->
                 <!-- </div>
                 <div class="form-group"> -->
-                    <label for="password_confirmation">Confirm password</label>
+                    <!-- <label for="password_confirmation">Confirm password</label> -->
+
+                    <div class="alert alert-danger" role="alert" v-if="is_pass_confirm_error">
+                        Confirmed password is incorrect!
+                    </div>
+
                     <input
                     type="password"
                     class="form-control"
                     id="password_confirmation"
-                    v-model="password_confirmation"
+                    v-model="data.password_confirmation"
                     placeholder="Confirm password"
                     required
                     />
@@ -131,7 +136,7 @@
                         :class="{'btn btn-primary': true}"
                         form="add_user_form"
                     >
-                Register user
+                Create user
                 </button>
             </div>
         </div>
@@ -151,18 +156,21 @@
             return {
                 is_user_add_modal: false,
                 // user_new_parmission: '',
-                // is_parmision_error: false,
+                is_pass_confirm_error: false,
                 // parmision_error: [],
                 modalClass: '',
                 errors: [],
-                name: '',
-                surname: '',
-                email: '',
-                phone_number: '',
-                country: '',
-                city: '',
-                password: '',
-                password_confirmation: '',
+
+                data: {
+                    name: '',
+                    surname: '',
+                    email: '',
+                    phone_number: '',
+                    country: '',
+                    city: '',
+                    password: '',
+                    password_confirmation: '',
+                }
             }
         },
 
@@ -176,57 +184,40 @@
             },
             close_user_add_modal(){
                 this.is_user_add_modal = false
+
+                this.data = {
+                    name: '',
+                    surname: '',
+                    email: '',
+                    phone_number: '',
+                    country: '',
+                    city: '',
+                    password: '',
+                    password_confirmation: '',
+                }
             },
             add_user() {
-                axios
-                .post('/register',{
-                    name: this.name,
-                    surname: this.surname,
-                    email: this.email,
-                    phone_number: this.phone_number,
-                    country: this.country,
-                    city: this.city,
-                    password: this.password,
-                    password_confirmation: this.password_confirmation
-                })
-                .then(res=>{
-                    // console.log(res);
-                    // localStorage.setItem('x_xsrf_token', res.config.headers['X-XSRF-TOKEN'])
-                    // this.$router.push({ path: "/" });
-                    this.close_user_add_modal()
-                    alert('User create sucsesful!')
-                    
-                })
-                .catch(err => {
-                    console.log(err);
-                })
+                if(this.data.password == this.data.password_confirmation){
+                    axios
+                    .post('../../api/user/create_user_by_admin',{
+                        data: this.data,
+                    })
+                    .then(res=>{
+                        this.close_user_add_modal()
+                        this.update_users()
+                        // alert('User create sucsesful!')
+                    })
+                    .catch(err => {
+                        console.log(err);
+                    })
+                }
+                else{
+                    this.is_pass_confirm_error = true
+                }
             },
-
-            // register(){
-            // axios
-            //     .get('/sanctum/csrf-cookie')
-            //     .then(response => {
-            //     axios
-            //         .post('/register',{
-            //         name: this.name,
-            //         surname: this.surname,
-            //         email: this.email,
-            //         phone_number: this.phone_number,
-            //         country: this.country,
-            //         city: this.city,
-            //         password: this.password,
-            //         password_confirmation: this.password_confirmation
-            //         })
-            //         .then(res=>{
-            //         // console.log(res);
-            //         localStorage.setItem('x_xsrf_token', res.config.headers['X-XSRF-TOKEN'])
-            //         this.$router.push({ path: "/" });
-            //         })
-            //         .catch(err => {
-            //         console.log(err);
-            //         })
-            //     })
-            // }
+            update_users(){
+                this.$emit('restart')
+            }
         }
     }
 </script>

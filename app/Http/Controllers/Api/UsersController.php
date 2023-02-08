@@ -46,6 +46,56 @@ class UsersController extends Controller
         return following_users::latest('id')->get();
     }
 
+    public function create_user_by_admin(Request $request)
+    {
+        $validator = Validator::make($request['data'], [
+            'name' => 'required',
+            'surname' => 'required',
+
+            'email' => 'required|unique:users,email',
+
+            'password' => 'required',
+        ]);
+        if ($validator->fails()) {
+            return $validator->messages();
+        }
+        else{
+            User::create([
+                'name'     => $request['data']['name'],
+                'surname'    => $request['data']['surname'],
+
+                'country'    => $request['data']['country'],
+                'city'    => $request['data']['city'],
+
+                'phone_number'    => $request['data']['phone_number'],
+                'email'    => $request['data']['email'],
+
+                'password' => bcrypt($request['data']['password']),
+            ]);
+        }
+    }
+
+    public function del_user(Request $request)
+    {
+        $deliting_user = User::where('id',strip_tags($request->user_id))->first();
+
+        // dd($deliting_user);
+
+        if (Auth::user()->id != $deliting_user->id) {
+
+            if ($deliting_user->image) {
+                ImageControllService::image_delete('images/user_profil_img/'.$deliting_user->image.'_img/', $deliting_user, 'image');
+            }
+
+            $deliting_user ->delete();
+
+            return("User deleted socsesful");
+        }
+        else {
+            return("You don`t can delete yourself! :)");
+        }
+    }
+
     public function follow(Request $request)
     {
         if ($request -> isMethod('post')) {
@@ -210,21 +260,46 @@ class UsersController extends Controller
     public function update_user_notification_data(Request $request)
     {
         if (Auth::user()) {
-            $editing_item =  user_notification::where('id', '=', $request->notification_id)->first();
+            // dd(Auth::user()->id);
 
-            $editing_item['add_new_gym'] = $request->data['add_new_gym'];
-            $editing_item['add_new_ice_spot'] = $request->data['add_new_ice_spot'];
-            $editing_item['add_new_outdoor_spot'] = $request->data['add_new_outdoor_spot'];
-            $editing_item['add_new_product'] = $request->data['add_new_product'];
-            $editing_item['add_new_sector'] = $request->data['add_new_sector'];
-            $editing_item['add_new_service'] = $request->data['add_new_service'];
-            $editing_item['add_new_techtip'] = $request->data['add_new_techtip'];
-            $editing_item['favorite_film'] = $request->data['favorite_film'];
-            $editing_item['favorite_outdoor'] = $request->data['favorite_outdoor'];
-            $editing_item['favorite_product'] = $request->data['favorite_product'];
-            $editing_item['interested_event'] = $request->data['interested_event'];
+            if(!user_notification::where('user_id', '=', Auth::user()->id)->first()){
+                $new_notification_item =  new user_notification();
+    
+                $new_notification_item['user_id'] = Auth::user()->id;
 
-            $editing_item -> save();
+                if(isset($request->data['add_new_gym'])){ $new_notification_item['add_new_gym'] = $request->data['add_new_gym']; }
+                if(isset($request->data['news'])){ $new_notification_item['news'] = $request->data['news']; }
+                if(isset($request->data['add_new_ice_spot'])){ $new_notification_item['add_new_ice_spot'] = $request->data['add_new_ice_spot']; }
+                if(isset($request->data['add_new_outdoor_spot'])){ $new_notification_item['add_new_outdoor_spot'] = $request->data['add_new_outdoor_spot']; }
+                if(isset($request->data['add_new_product'])){ $new_notification_item['add_new_product'] = $request->data['add_new_product']; }
+                if(isset($request->data['add_new_sector'])){ $new_notification_item['add_new_sector'] = $request->data['add_new_sector']; }
+                if(isset($request->data['add_new_service'])){ $new_notification_item['add_new_service'] = $request->data['add_new_service']; }
+                if(isset($request->data['add_new_techtip'])){ $new_notification_item['add_new_techtip'] = $request->data['add_new_techtip']; }
+                if(isset($request->data['favorite_film'])){ $new_notification_item['favorite_film'] = $request->data['favorite_film']; }
+                if(isset($request->data['favorite_outdoor'])){ $new_notification_item['favorite_outdoor'] = $request->data['favorite_outdoor']; }
+                if(isset($request->data['favorite_product'])){ $new_notification_item['favorite_product'] = $request->data['favorite_product']; }
+                if(isset($request->data['interested_event'])){ $new_notification_item['interested_event'] = $request->data['interested_event']; }
+    
+                $new_notification_item -> save();
+            }
+            else{
+                $edit_notification_item =  user_notification::where('user_id', '=', Auth::user()->id)->first();
+    
+                $edit_notification_item['add_new_gym'] = $request->data['add_new_gym'];
+                $edit_notification_item['news'] = $request->data['news'];
+                $edit_notification_item['add_new_ice_spot'] = $request->data['add_new_ice_spot'];
+                $edit_notification_item['add_new_outdoor_spot'] = $request->data['add_new_outdoor_spot'];
+                $edit_notification_item['add_new_product'] = $request->data['add_new_product'];
+                $edit_notification_item['add_new_sector'] = $request->data['add_new_sector'];
+                $edit_notification_item['add_new_service'] = $request->data['add_new_service'];
+                $edit_notification_item['add_new_techtip'] = $request->data['add_new_techtip'];
+                $edit_notification_item['favorite_film'] = $request->data['favorite_film'];
+                $edit_notification_item['favorite_outdoor'] = $request->data['favorite_outdoor'];
+                $edit_notification_item['favorite_product'] = $request->data['favorite_product'];
+                $edit_notification_item['interested_event'] = $request->data['interested_event'];
+    
+                $edit_notification_item -> save();
+            }
         }
         else{
             return 'Plees login';

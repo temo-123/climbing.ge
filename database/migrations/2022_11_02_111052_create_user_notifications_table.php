@@ -21,6 +21,7 @@ return new class extends Migration
             $table->integer('favorite_film')->nullable();
             $table->integer('interested_event')->nullable();
 
+            $table->integer('news')->nullable();
             $table->integer('add_new_sector')->nullable();
             $table->integer('add_new_outdoor_spot')->nullable();
             $table->integer('add_new_ice_spot')->nullable();

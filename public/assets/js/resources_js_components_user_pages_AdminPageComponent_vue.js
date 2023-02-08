@@ -1,4 +1,3 @@
-"use strict";
 (self["webpackChunkclimbing_loc"] = self["webpackChunkclimbing_loc"] || []).push([["resources_js_components_user_pages_AdminPageComponent_vue"],{
 
 /***/ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/user/items/BreadcrumbComponent.vue?vue&type=script&lang=js&":
@@ -7,6 +6,7 @@
   \*************************************************************************************************************************************************************************************************************************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
+"use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
@@ -60,6 +60,7 @@ __webpack_require__.r(__webpack_exports__);
   \************************************************************************************************************************************************************************************************************************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
+"use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
@@ -69,6 +70,467 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _innologica_vue_stackable_modal__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @innologica/vue-stackable-modal */ "./node_modules/@innologica/vue-stackable-modal/dist/vue-stackable-modal.umd.min.js");
 /* harmony import */ var _innologica_vue_stackable_modal__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_innologica_vue_stackable_modal__WEBPACK_IMPORTED_MODULE_1__);
 /* harmony import */ var _items_BreadcrumbComponent_vue__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../items/BreadcrumbComponent.vue */ "./resources/js/components/user/items/BreadcrumbComponent.vue");
+/* harmony import */ var vue_google_charts__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! vue-google-charts */ "./node_modules/vue-google-charts/index.js");
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -316,12 +778,14 @@ __webpack_require__.r(__webpack_exports__);
  //https://innologica.github.io/vue-stackable-modal/#sample-css
 
 
+
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   components: {
     StackModal: (_innologica_vue_stackable_modal__WEBPACK_IMPORTED_MODULE_1___default()),
     SlickItem: vue_slicksort__WEBPACK_IMPORTED_MODULE_0__.SlickItem,
     SlickList: vue_slicksort__WEBPACK_IMPORTED_MODULE_0__.SlickList,
-    breadcrumb: _items_BreadcrumbComponent_vue__WEBPACK_IMPORTED_MODULE_2__["default"]
+    breadcrumb: _items_BreadcrumbComponent_vue__WEBPACK_IMPORTED_MODULE_2__["default"],
+    GChart: vue_google_charts__WEBPACK_IMPORTED_MODULE_3__.GChart
   },
   // components: {
   //     Editor,
@@ -332,7 +796,29 @@ __webpack_require__.r(__webpack_exports__);
       tab_num: 1,
       is_notifay_modal: false,
       sending_type: '1',
-      notification_type: '1'
+      notification_type: '1',
+      week_orders_data: [['Day', 'Orders', 'Last week'], [13, 37, 80], [14, 30, 9], [15, 4, 8], [16, 7, 40], [17, 37, 10], [18, 57, 8], [19, 70, 84]],
+      week_orders_options: {
+        title: 'Week Orders',
+        hAxis: {
+          title: 'Day'
+        },
+        vAxis: {
+          title: 'Orders'
+        },
+        legend: 'none'
+      },
+      year_orders_data: [['Month', 'Orders', 'Last yare'], ['January', 7, 5], ['February', 8, 5], ['March', 8, 5], ['April', 9, 5], ['May', 9, 5], ['June', 28, 5], ['July', 9, 5], ['August', 9, 5], ['September', 28, 5], ['October', 9, 5], ['November', 28, 5], ['December', 9, 5]],
+      year_orders_options: {
+        title: 'Year Orders',
+        hAxis: {
+          title: 'Month'
+        },
+        vAxis: {
+          title: 'Orders'
+        },
+        legend: 'none'
+      }
     };
   },
   mounted: function mounted() {
@@ -365,6 +851,7 @@ __webpack_require__.r(__webpack_exports__);
   \**********************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************/
 /***/ ((module, __webpack_exports__, __webpack_require__) => {
 
+"use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
@@ -388,6 +875,7 @@ ___CSS_LOADER_EXPORT___.push([module.id, "\n.user_breadcrumb {\n    background-c
   \*********************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************/
 /***/ ((module, __webpack_exports__, __webpack_require__) => {
 
+"use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
@@ -398,7 +886,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_laravel_mix_node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, "\n.tabs[data-v-4619acf3] {\n        /* display: flex; */\n        flex-wrap: wrap;\n}\n.tabs label[data-v-4619acf3] {\n        order: 1;\n        display: block;\n        padding: 1rem 2rem;\n        margin-right: 0.2rem;\n        cursor: pointer;\n        background: #ccced0;\n        font-weight: bold;\n        transition: background ease 0.2s;\n}\n.tabs .tab[data-v-4619acf3] {\n        order: 99;\n        flex-grow: 1;\n        width: 100%;\n        display: none;\n        padding: 1rem;\n        background: #fff;\n        /* border: 1px solid #ccc!important; */\n}\n.tabs input[type=\"radio\"][data-v-4619acf3] {\n        display: none;\n}\n.tabs input[type=\"radio\"]:checked + label[data-v-4619acf3] {\n        background: #fff;\n        border: 1px solid #ccc !important;\n}\n.tabs input[type=\"radio\"]:checked + label + .tab[data-v-4619acf3] {\n        display: block;\n}\n@media (max-width: 45em) {\n.tabs .tab[data-v-4619acf3],\n        .tabs label[data-v-4619acf3] {\n            order: initial;\n}\n.tabs label[data-v-4619acf3] {\n            width: 100%;\n            margin-right: 0;\n            margin-top: 0.2rem;\n}\n}\n", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, "\n.tabs[data-v-4619acf3] {\n        /* display: flex; */\n        flex-wrap: wrap;\n}\n.tabs label[data-v-4619acf3] {\n        order: 1;\n        display: block;\n        padding: 1rem 2rem;\n        margin-right: 0.2rem;\n        cursor: pointer;\n        background: #ccced0;\n        font-weight: bold;\n        transition: background ease 0.2s;\n}\n.tabs .tab[data-v-4619acf3] {\n        order: 99;\n        flex-grow: 1;\n        width: 100%;\n        display: none;\n        padding: 1rem;\n        background: #fff;\n        /* border: 1px solid #ccc!important; */\n}\n.tabs input[type=\"radio\"][data-v-4619acf3] {\n        display: none;\n}\n.tabs input[type=\"radio\"]:checked + label[data-v-4619acf3] {\n        background: #fff;\n        border: 1px solid #ccc !important;\n}\n.tabs input[type=\"radio\"]:checked + label + .tab[data-v-4619acf3] {\n        display: block;\n}\n@media (max-width: 45em) {\n.tabs .tab[data-v-4619acf3],\n        .tabs label[data-v-4619acf3] {\n            order: initial;\n}\n.tabs label[data-v-4619acf3] {\n            width: 100%;\n            margin-right: 0;\n            margin-top: 0.2rem;\n}\n}\n.card-counter[data-v-4619acf3]{\n    box-shadow: 2px 2px 10px #DADADA;\n    margin: 5px;\n    padding: 20px 10px;\n    background-color: #fff;\n    height: 100px;\n    border-radius: 5px;\n    transition: .3s linear all;\n}\n.card-counter[data-v-4619acf3]:hover{\n    box-shadow: 4px 4px 20px #DADADA;\n    transition: .3s linear all;\n}\n.card-counter.primary[data-v-4619acf3]{\n    background-color: #007bff;\n    color: #FFF;\n}\n.card-counter.secondary[data-v-4619acf3]{\n    background-color: #6c757d;\n    color: #FFF;\n}\n.card-counter.light[data-v-4619acf3]{\n    background-color: #a0a1a1;\n    color: #FFF;\n}\n.card-counter.danger[data-v-4619acf3]{\n    background-color: #ef5350;\n    color: #FFF;\n}\n.card-counter.success[data-v-4619acf3]{\n    background-color: #66bb6a;\n    color: #FFF;\n}\n.card-counter.sectors[data-v-4619acf3]{\n    background-color: #279fbb;\n    color: #FFF;\n}\n.card-counter.warning[data-v-4619acf3]{\n    background-color: #ffc107;\n    color: #FFF;\n}\n.card-counter.info[data-v-4619acf3]{\n    background-color: #26c6da;\n    color: #FFF;\n}\n.card-counter.dark[data-v-4619acf3]{\n    background-color: #343a40;\n    color: #FFF;\n}\n.card-counter i[data-v-4619acf3]{\n    font-size: 5em;\n    opacity: 0.2;\n}\n.card-counter .count-numbers[data-v-4619acf3]{\n    position: absolute;\n    right: 35px;\n    top: 20px;\n    font-size: 32px;\n    display: block;\n}\n.card-counter .count-name[data-v-4619acf3]{\n    position: absolute;\n    right: 35px;\n    top: 65px;\n    font-style: italic;\n    text-transform: capitalize;\n    opacity: 0.5;\n    display: block;\n    font-size: 18px;\n}\n", ""]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
@@ -411,6 +899,7 @@ ___CSS_LOADER_EXPORT___.push([module.id, "\n.tabs[data-v-4619acf3] {\n        /*
   \**************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
+"use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
@@ -440,6 +929,7 @@ var update = _node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js
   \*************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
+"use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
@@ -463,12 +953,46 @@ var update = _node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js
 
 /***/ }),
 
+/***/ "./node_modules/vue-google-charts/dist/vue-google-charts.common.js":
+/*!*************************************************************************!*\
+  !*** ./node_modules/vue-google-charts/dist/vue-google-charts.common.js ***!
+  \*************************************************************************/
+/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
+
+module.exports=function(modules){function __nested_webpack_require_33__(moduleId){if(installedModules[moduleId])return installedModules[moduleId].exports;var module=installedModules[moduleId]={i:moduleId,l:!1,exports:{}};return modules[moduleId].call(module.exports,module,module.exports,__nested_webpack_require_33__),module.l=!0,module.exports}var installedModules={};return __nested_webpack_require_33__.m=modules,__nested_webpack_require_33__.c=installedModules,__nested_webpack_require_33__.i=function(value){return value},__nested_webpack_require_33__.d=function(exports,name,getter){__nested_webpack_require_33__.o(exports,name)||Object.defineProperty(exports,name,{configurable:!1,enumerable:!0,get:getter})},__nested_webpack_require_33__.n=function(module){var getter=module&&module.__esModule?function(){return module.default}:function(){return module};return __nested_webpack_require_33__.d(getter,"a",getter),getter},__nested_webpack_require_33__.o=function(object,property){return Object.prototype.hasOwnProperty.call(object,property)},__nested_webpack_require_33__.p="",__nested_webpack_require_33__(__nested_webpack_require_33__.s=3)}([function(module,__webpack_exports__,__webpack_require__){"use strict";function getChartsLoader(){return window.google&&window.google.charts?Promise.resolve(window.google.charts):(chartsLoaderPromise||(chartsLoaderPromise=new Promise(function(resolve){var script=document.createElement("script");script.type="text/javascript",script.onload=function(){return resolve(window.google.charts)},script.src=chartsScriptUrl,document.body.appendChild(script)})),chartsLoaderPromise)}function loadGoogleCharts(){var version=arguments.length>0&&void 0!==arguments[0]?arguments[0]:"current",settings=arguments.length>1&&void 0!==arguments[1]?arguments[1]:{};return getChartsLoader().then(function(loader){if("object"!==(void 0===settings?"undefined":_typeof(settings)))throw new Error("Google Charts loader: settings must be an object");var settingsKey=version+"_"+JSON.stringify(settings,Object.keys(settings).sort());if(loadedPackages.has(settingsKey))return loadedPackages.get(settingsKey);var loaderPromise=new Promise(function(resolve){loader.load(version,settings),loader.setOnLoadCallback(function(){return resolve(window.google)})});return loadedPackages.set(settingsKey,loaderPromise),loaderPromise})}__webpack_exports__.a=loadGoogleCharts;var _typeof="function"==typeof Symbol&&"symbol"==typeof Symbol.iterator?function(obj){return typeof obj}:function(obj){return obj&&"function"==typeof Symbol&&obj.constructor===Symbol&&obj!==Symbol.prototype?"symbol":typeof obj},chartsScriptUrl="https://www.gstatic.com/charts/loader.js",chartsLoaderPromise=null,loadedPackages=new Map},function(module,exports,__nested_webpack_require_2617__){var Component=__nested_webpack_require_2617__(5)(__nested_webpack_require_2617__(4),__nested_webpack_require_2617__(6),null,null);module.exports=Component.exports},function(module,exports){module.exports=function(func,wait,immediate){function later(){var last=Date.now()-timestamp;last<wait&&last>=0?timeout=setTimeout(later,wait-last):(timeout=null,immediate||(result=func.apply(context,args),context=args=null))}var timeout,args,context,timestamp,result;null==wait&&(wait=100);var debounced=function(){context=this,args=arguments,timestamp=Date.now();var callNow=immediate&&!timeout;return timeout||(timeout=setTimeout(later,wait)),callNow&&(result=func.apply(context,args),context=args=null),result};return debounced.clear=function(){timeout&&(clearTimeout(timeout),timeout=null)},debounced.flush=function(){timeout&&(result=func.apply(context,args),context=args=null,clearTimeout(timeout),timeout=null)},debounced}},function(module,__webpack_exports__,__nested_webpack_require_3558__){"use strict";function install(Vue){Vue.component("GChart",__WEBPACK_IMPORTED_MODULE_1__components_GChart_vue___default.a)}Object.defineProperty(__webpack_exports__,"__esModule",{value:!0}),__webpack_exports__.install=install;var __WEBPACK_IMPORTED_MODULE_0__lib_google_charts_loader__=__nested_webpack_require_3558__(0),__WEBPACK_IMPORTED_MODULE_1__components_GChart_vue__=__nested_webpack_require_3558__(1),__WEBPACK_IMPORTED_MODULE_1__components_GChart_vue___default=__nested_webpack_require_3558__.n(__WEBPACK_IMPORTED_MODULE_1__components_GChart_vue__);__nested_webpack_require_3558__.d(__webpack_exports__,"loadGoogleCharts",function(){return __WEBPACK_IMPORTED_MODULE_0__lib_google_charts_loader__.a}),__nested_webpack_require_3558__.d(__webpack_exports__,"GChart",function(){return __WEBPACK_IMPORTED_MODULE_1__components_GChart_vue___default.a});var plugin={version:"0.3.3",install:install};__webpack_exports__.default=plugin;var GlobalVue=null;"undefined"!=typeof window?GlobalVue=window.Vue:"undefined"!=typeof __webpack_require__.g&&(GlobalVue=__webpack_require__.g.Vue),GlobalVue&&GlobalVue.use(plugin)},function(module,__webpack_exports__,__nested_webpack_require_4641__){"use strict";Object.defineProperty(__webpack_exports__,"__esModule",{value:!0});var __WEBPACK_IMPORTED_MODULE_0__lib_google_charts_loader__=__nested_webpack_require_4641__(0),__WEBPACK_IMPORTED_MODULE_1_debounce__=__nested_webpack_require_4641__(2),__WEBPACK_IMPORTED_MODULE_1_debounce___default=__nested_webpack_require_4641__.n(__WEBPACK_IMPORTED_MODULE_1_debounce__),_slicedToArray=function(){function sliceIterator(arr,i){var _arr=[],_n=!0,_d=!1,_e=void 0;try{for(var _s,_i=arr[Symbol.iterator]();!(_n=(_s=_i.next()).done)&&(_arr.push(_s.value),!i||_arr.length!==i);_n=!0);}catch(err){_d=!0,_e=err}finally{try{!_n&&_i.return&&_i.return()}finally{if(_d)throw _e}}return _arr}return function(arr,i){if(Array.isArray(arr))return arr;if(Symbol.iterator in Object(arr))return sliceIterator(arr,i);throw new TypeError("Invalid attempt to destructure non-iterable instance")}}(),_typeof="function"==typeof Symbol&&"symbol"==typeof Symbol.iterator?function(obj){return typeof obj}:function(obj){return obj&&"function"==typeof Symbol&&obj.constructor===Symbol&&obj!==Symbol.prototype?"symbol":typeof obj},chartsLib=null;__webpack_exports__.default={name:"GChart",props:{type:{type:String},data:{type:[Array,Object],default:function(){return[]}},options:{type:Object,default:function(){return{}}},version:{type:String,default:"current"},settings:{type:Object,default:function(){return{packages:["corechart","table"]}}},events:{type:Object},createChart:{type:Function},resizeDebounce:{type:Number,default:200}},data:function(){return{chartObject:null}},watch:{data:{deep:!0,handler:function(){this.drawChart()}},options:{deep:!0,handler:function(){this.drawChart()}},type:function(value){this.createChartObject(),this.drawChart()}},mounted:function(){var _this=this;__nested_webpack_require_4641__.i(__WEBPACK_IMPORTED_MODULE_0__lib_google_charts_loader__.a)(this.version,this.settings).then(function(api){chartsLib=api;var chart=_this.createChartObject();_this.$emit("ready",chart,api),_this.drawChart()}),this.resizeDebounce>0&&window.addEventListener("resize",__WEBPACK_IMPORTED_MODULE_1_debounce___default()(this.drawChart,this.resizeDebounce))},beforeDestroy:function(){this.chartObject&&"function"==typeof this.chartObject.clearChart&&this.chartObject.clearChart()},methods:{drawChart:function(){if(chartsLib&&this.chartObject){var data=this.getValidChartData();data&&this.chartObject.draw(data,this.options)}},getValidChartData:function(){return this.data instanceof chartsLib.visualization.DataTable?this.data:this.data instanceof chartsLib.visualization.DataView?this.data:Array.isArray(this.data)?chartsLib.visualization.arrayToDataTable(this.data):null!==this.data&&"object"===_typeof(this.data)?new chartsLib.visualization.DataTable(this.data):null},createChartObject:function(){var createChart=function(el,google,type){if(!type)throw new Error("please, provide chart type property");return new google.visualization[type](el)},fn=this.createChart||createChart;return this.chartObject=fn(this.$refs.chart,chartsLib,this.type),this.attachListeners(),this.chartObject},attachListeners:function(){var _this2=this;this.events&&Object.entries(this.events).forEach(function(_ref){var _ref2=_slicedToArray(_ref,2),event=_ref2[0],listener=_ref2[1];chartsLib.visualization.events.addListener(_this2.chartObject,event,listener)})}}}},function(module,exports){module.exports=function(rawScriptExports,compiledTemplate,scopeId,cssModules){var esModule,scriptExports=rawScriptExports=rawScriptExports||{},type=typeof rawScriptExports.default;"object"!==type&&"function"!==type||(esModule=rawScriptExports,scriptExports=rawScriptExports.default);var options="function"==typeof scriptExports?scriptExports.options:scriptExports;if(compiledTemplate&&(options.render=compiledTemplate.render,options.staticRenderFns=compiledTemplate.staticRenderFns),scopeId&&(options._scopeId=scopeId),cssModules){var computed=options.computed||(options.computed={});Object.keys(cssModules).forEach(function(key){var module=cssModules[key];computed[key]=function(){return module}})}return{esModule:esModule,exports:scriptExports,options:options}}},function(module,exports){module.exports={render:function(){var _vm=this,_h=_vm.$createElement;return(_vm._self._c||_h)("div",{ref:"chart"})},staticRenderFns:[]}}]);
+
+/***/ }),
+
+/***/ "./node_modules/vue-google-charts/index.js":
+/*!*************************************************!*\
+  !*** ./node_modules/vue-google-charts/index.js ***!
+  \*************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (/* reexport default from dynamic */ _dist_vue_google_charts_common__WEBPACK_IMPORTED_MODULE_0___default.a)
+/* harmony export */ });
+/* harmony import */ var _dist_vue_google_charts_common__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./dist/vue-google-charts.common */ "./node_modules/vue-google-charts/dist/vue-google-charts.common.js");
+/* harmony import */ var _dist_vue_google_charts_common__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_dist_vue_google_charts_common__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony reexport (unknown) */ var __WEBPACK_REEXPORT_OBJECT__ = {};
+/* harmony reexport (unknown) */ for(const __WEBPACK_IMPORT_KEY__ in _dist_vue_google_charts_common__WEBPACK_IMPORTED_MODULE_0__) if(__WEBPACK_IMPORT_KEY__ !== "default") __WEBPACK_REEXPORT_OBJECT__[__WEBPACK_IMPORT_KEY__] = () => _dist_vue_google_charts_common__WEBPACK_IMPORTED_MODULE_0__[__WEBPACK_IMPORT_KEY__]
+/* harmony reexport (unknown) */ __webpack_require__.d(__webpack_exports__, __WEBPACK_REEXPORT_OBJECT__);
+
+
+// import './dist/vue-google-charts.css'
+
+
+/***/ }),
+
 /***/ "./resources/js/components/user/items/BreadcrumbComponent.vue":
 /*!********************************************************************!*\
   !*** ./resources/js/components/user/items/BreadcrumbComponent.vue ***!
   \********************************************************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
+"use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
@@ -509,6 +1033,7 @@ component.options.__file = "resources/js/components/user/items/BreadcrumbCompone
   \*******************************************************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
+"use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
@@ -549,6 +1074,7 @@ component.options.__file = "resources/js/components/user/pages/AdminPageComponen
   \*********************************************************************************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
+"use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
@@ -564,6 +1090,7 @@ __webpack_require__.r(__webpack_exports__);
   \********************************************************************************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
+"use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
@@ -579,6 +1106,7 @@ __webpack_require__.r(__webpack_exports__);
   \*****************************************************************************************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
+"use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _node_modules_style_loader_dist_cjs_js_node_modules_laravel_mix_node_modules_css_loader_dist_cjs_js_clonedRuleSet_9_0_rules_0_use_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_dist_cjs_js_clonedRuleSet_9_0_rules_0_use_2_node_modules_vue_loader_lib_index_js_vue_loader_options_BreadcrumbComponent_vue_vue_type_style_index_0_lang_css___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../node_modules/style-loader/dist/cjs.js!../../../../../node_modules/laravel-mix/node_modules/css-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[1]!../../../../../node_modules/vue-loader/lib/loaders/stylePostLoader.js!../../../../../node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[2]!../../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./BreadcrumbComponent.vue?vue&type=style&index=0&lang=css& */ "./node_modules/style-loader/dist/cjs.js!./node_modules/laravel-mix/node_modules/css-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[1]!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/user/items/BreadcrumbComponent.vue?vue&type=style&index=0&lang=css&");
 
@@ -591,6 +1119,7 @@ __webpack_require__.r(__webpack_exports__);
   \****************************************************************************************************************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
+"use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _node_modules_style_loader_dist_cjs_js_node_modules_laravel_mix_node_modules_css_loader_dist_cjs_js_clonedRuleSet_9_0_rules_0_use_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_dist_cjs_js_clonedRuleSet_9_0_rules_0_use_2_node_modules_vue_loader_lib_index_js_vue_loader_options_AdminPageComponent_vue_vue_type_style_index_0_id_4619acf3_scoped_true_lang_css___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../node_modules/style-loader/dist/cjs.js!../../../../../node_modules/laravel-mix/node_modules/css-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[1]!../../../../../node_modules/vue-loader/lib/loaders/stylePostLoader.js!../../../../../node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[2]!../../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./AdminPageComponent.vue?vue&type=style&index=0&id=4619acf3&scoped=true&lang=css& */ "./node_modules/style-loader/dist/cjs.js!./node_modules/laravel-mix/node_modules/css-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[1]!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/user/pages/AdminPageComponent.vue?vue&type=style&index=0&id=4619acf3&scoped=true&lang=css&");
 
@@ -603,6 +1132,7 @@ __webpack_require__.r(__webpack_exports__);
   \***************************************************************************************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
+"use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "render": () => (/* reexport safe */ _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_BreadcrumbComponent_vue_vue_type_template_id_3b1460dc___WEBPACK_IMPORTED_MODULE_0__.render),
@@ -619,6 +1149,7 @@ __webpack_require__.r(__webpack_exports__);
   \**************************************************************************************************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
+"use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "render": () => (/* reexport safe */ _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_AdminPageComponent_vue_vue_type_template_id_4619acf3_scoped_true___WEBPACK_IMPORTED_MODULE_0__.render),
@@ -635,6 +1166,7 @@ __webpack_require__.r(__webpack_exports__);
   \******************************************************************************************************************************************************************************************************************************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
+"use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "render": () => (/* binding */ render),
@@ -687,6 +1219,7 @@ render._withStripped = true
   \*****************************************************************************************************************************************************************************************************************************************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
+"use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "render": () => (/* binding */ render),
@@ -699,712 +1232,2296 @@ var render = function () {
   return _c("div", { staticClass: "row" }, [
     _c("div", { staticClass: "col-sm-3" }, [_c("left-menu")], 1),
     _vm._v(" "),
-    _c(
-      "div",
-      { staticClass: "col-sm-9" },
-      [
-        _c("breadcrumb"),
-        _vm._v(" "),
-        _c("div", { staticClass: "tabs" }, [
-          _c("div", { staticClass: "row" }, [
-            _c("div", { staticClass: "col-md-12" }, [
+    _c("div", { staticClass: "col-sm-9" }, [
+      _c("div", { staticClass: "row" }, [
+        _c("div", { staticClass: "col-md-12" }, [_c("breadcrumb")], 1),
+      ]),
+      _vm._v(" "),
+      _c("div", { staticClass: "row" }, [
+        _c(
+          "div",
+          { staticClass: "col-md-12" },
+          [
+            _c("div", { staticClass: "tabs" }, [
               _c("div", { staticClass: "row" }, [
-                _c("div", { staticClass: "col" }, [
-                  _c("input", {
-                    directives: [
-                      {
-                        name: "model",
-                        rawName: "v-model",
-                        value: _vm.tab_num,
-                        expression: "tab_num",
-                      },
-                    ],
-                    attrs: { type: "radio", id: "1" },
-                    domProps: { value: 1, checked: _vm._q(_vm.tab_num, 1) },
-                    on: {
-                      change: function ($event) {
-                        _vm.tab_num = 1
-                      },
-                    },
-                  }),
-                  _vm._v(" "),
-                  _c("label", { attrs: { for: "1" } }, [
-                    _vm._v("Notifications"),
+                _c("div", { staticClass: "col-md-12" }, [
+                  _c("div", { staticClass: "row" }, [
+                    _c("div", { staticClass: "col" }, [
+                      _c("input", {
+                        directives: [
+                          {
+                            name: "model",
+                            rawName: "v-model",
+                            value: _vm.tab_num,
+                            expression: "tab_num",
+                          },
+                        ],
+                        attrs: { type: "radio", id: "1" },
+                        domProps: { value: 1, checked: _vm._q(_vm.tab_num, 1) },
+                        on: {
+                          change: function ($event) {
+                            _vm.tab_num = 1
+                          },
+                        },
+                      }),
+                      _vm._v(" "),
+                      _c("label", { attrs: { for: "1" } }, [_vm._v("Content")]),
+                    ]),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "col" }, [
+                      _c("input", {
+                        directives: [
+                          {
+                            name: "model",
+                            rawName: "v-model",
+                            value: _vm.tab_num,
+                            expression: "tab_num",
+                          },
+                        ],
+                        attrs: { type: "radio", id: "2" },
+                        domProps: { value: 2, checked: _vm._q(_vm.tab_num, 2) },
+                        on: {
+                          change: function ($event) {
+                            _vm.tab_num = 2
+                          },
+                        },
+                      }),
+                      _vm._v(" "),
+                      _c("label", { attrs: { for: "2" } }, [_vm._v("Orders")]),
+                    ]),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "col" }, [
+                      _c("input", {
+                        directives: [
+                          {
+                            name: "model",
+                            rawName: "v-model",
+                            value: _vm.tab_num,
+                            expression: "tab_num",
+                          },
+                        ],
+                        attrs: { type: "radio", id: "3" },
+                        domProps: { value: 3, checked: _vm._q(_vm.tab_num, 3) },
+                        on: {
+                          change: function ($event) {
+                            _vm.tab_num = 3
+                          },
+                        },
+                      }),
+                      _vm._v(" "),
+                      _c("label", { attrs: { for: "3" } }, [
+                        _vm._v("Notifications"),
+                      ]),
+                    ]),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "col" }, [
+                      _c("input", {
+                        directives: [
+                          {
+                            name: "model",
+                            rawName: "v-model",
+                            value: _vm.tab_num,
+                            expression: "tab_num",
+                          },
+                        ],
+                        attrs: { type: "radio", id: "4" },
+                        domProps: { value: 4, checked: _vm._q(_vm.tab_num, 4) },
+                        on: {
+                          change: function ($event) {
+                            _vm.tab_num = 4
+                          },
+                        },
+                      }),
+                      _vm._v(" "),
+                      _c("label", { attrs: { for: "4" } }, [_vm._v("Meils")]),
+                    ]),
                   ]),
-                ]),
-                _vm._v(" "),
-                _c("div", { staticClass: "col" }, [
-                  _c("input", {
-                    directives: [
-                      {
-                        name: "model",
-                        rawName: "v-model",
-                        value: _vm.tab_num,
-                        expression: "tab_num",
-                      },
-                    ],
-                    attrs: { type: "radio", id: "2" },
-                    domProps: { value: 2, checked: _vm._q(_vm.tab_num, 2) },
-                    on: {
-                      change: function ($event) {
-                        _vm.tab_num = 2
-                      },
-                    },
-                  }),
-                  _vm._v(" "),
-                  _c("label", { attrs: { for: "2" } }, [
-                    _vm._v("Content counts"),
-                  ]),
-                ]),
-                _vm._v(" "),
-                _c("div", { staticClass: "col" }, [
-                  _c("input", {
-                    directives: [
-                      {
-                        name: "model",
-                        rawName: "v-model",
-                        value: _vm.tab_num,
-                        expression: "tab_num",
-                      },
-                    ],
-                    attrs: { type: "radio", id: "3" },
-                    domProps: { value: 3, checked: _vm._q(_vm.tab_num, 3) },
-                    on: {
-                      change: function ($event) {
-                        _vm.tab_num = 3
-                      },
-                    },
-                  }),
-                  _vm._v(" "),
-                  _c("label", { attrs: { for: "3" } }, [_vm._v("Meils")]),
                 ]),
               ]),
-            ]),
-          ]),
-          _vm._v(" "),
-          _vm.tab_num == 1
-            ? _c("div", { staticClass: "row" }, [
-                _c("div", { staticClass: "col-md-12" }, [
-                  !this.$siteData["text"] ||
-                  !this.$siteData["text_ru"] ||
-                  !this.$siteData["text_ka"] ||
-                  !this.$siteData["short_description_ru"] ||
-                  !this.$siteData["short_description_ka"] ||
-                  !this.$siteData["short_description"]
-                    ? _c(
-                        "div",
-                        {
-                          staticClass: "alert alert-danger",
-                          attrs: { role: "alert" },
-                        },
-                        [
-                          _c("strong", [_vm._v("Danger!")]),
-                          _vm._v(
-                            ' \n                                    Your web-site information is not fool. check page "\n                                    '
-                          ),
-                          _c(
-                            "router-link",
-                            { attrs: { to: { name: "siteInfo" }, exact: "" } },
+              _vm._v(" "),
+              _vm.tab_num == 3
+                ? _c("div", { staticClass: "row" }, [
+                    _c("div", { staticClass: "col-md-12" }, [
+                      !this.$siteData["text"] ||
+                      !this.$siteData["text_ru"] ||
+                      !this.$siteData["text_ka"] ||
+                      !this.$siteData["short_description_ru"] ||
+                      !this.$siteData["short_description_ka"] ||
+                      !this.$siteData["short_description"]
+                        ? _c(
+                            "div",
+                            {
+                              staticClass: "alert alert-danger",
+                              attrs: { role: "alert" },
+                            },
                             [
+                              _c("strong", [_vm._v("Danger!")]),
                               _vm._v(
-                                " \n                                        About us\n                                    "
+                                ' \n                                Your web-site information is not fool. check page "\n                                '
+                              ),
+                              _c(
+                                "router-link",
+                                {
+                                  attrs: {
+                                    to: { name: "siteInfo" },
+                                    exact: "",
+                                  },
+                                },
+                                [
+                                  _vm._v(
+                                    " \n                                    About us\n                                "
+                                  ),
+                                ]
+                              ),
+                              _vm._v(
+                                '\n                                ", and add missing information.\n                            '
+                              ),
+                            ],
+                            1
+                          )
+                        : _vm._e(),
+                      _vm._v(" "),
+                      this.counts["global_articles_count_us_error"]
+                        ? _c(
+                            "div",
+                            {
+                              staticClass: "alert alert-danger",
+                              attrs: { role: "alert" },
+                            },
+                            [
+                              _c("strong", [_vm._v("Danger!")]),
+                              _vm._v(
+                                " " +
+                                  _vm._s(
+                                    this.counts[
+                                      "global_articles_count_us_error"
+                                    ]
+                                  ) +
+                                  ' articles have empty "us_article_id" vallue. It is wery bad for site localization.\n                            '
                               ),
                             ]
-                          ),
-                          _vm._v(
-                            '\n                                    ", and add missing information.\n                                '
-                          ),
-                        ],
-                        1
-                      )
-                    : _vm._e(),
-                  _vm._v(" "),
-                  this.counts["global_articles_count_us_error"]
-                    ? _c(
-                        "div",
-                        {
-                          staticClass: "alert alert-danger",
-                          attrs: { role: "alert" },
-                        },
-                        [
-                          _c("strong", [_vm._v("Danger!")]),
-                          _vm._v(
-                            " " +
-                              _vm._s(
-                                this.counts["global_articles_count_us_error"]
-                              ) +
-                              ' articles have empty "us_article_id" vallue. It is wery bad for site localization.\n                                '
-                          ),
-                        ]
-                      )
-                    : _vm._e(),
-                  _vm._v(" "),
-                  this.counts["global_articles_count_ka_error"]
-                    ? _c(
-                        "div",
-                        {
-                          staticClass: "alert alert-danger",
-                          attrs: { role: "alert" },
-                        },
-                        [
-                          _c("strong", [_vm._v("Danger!")]),
-                          _vm._v(
-                            " " +
-                              _vm._s(
-                                this.counts["global_articles_count_ka_error"]
-                              ) +
-                              ' articles have empty "ka_article_id" vallue. It is wery bad for site localization.\n                                '
-                          ),
-                        ]
-                      )
-                    : _vm._e(),
-                  _vm._v(" "),
-                  this.counts["global_articles_count_ru_error"]
-                    ? _c(
-                        "div",
-                        {
-                          staticClass: "alert alert-danger",
-                          attrs: { role: "alert" },
-                        },
-                        [
-                          _c("strong", [_vm._v("Danger!")]),
-                          _vm._v(
-                            " " +
-                              _vm._s(
-                                this.counts["global_articles_count_ru_error"]
-                              ) +
-                              ' articles have empty "ru_article_id" vallue. It is wery bad for site localization.\n                                '
-                          ),
-                        ]
-                      )
-                    : _vm._e(),
-                ]),
-              ])
-            : _vm._e(),
-          _vm._v(" "),
-          _vm.tab_num == 2
-            ? _c("div", { staticClass: "row" }, [
-                _c("div", { staticClass: "col-md-12" }, [
-                  this.counts["us_articles_errors_count"] ||
-                  this.counts["ru_articles_errors_count"] ||
-                  this.counts["ka_articles_errors_count"]
-                    ? _c(
-                        "div",
-                        {
-                          staticClass: "alert alert-danger",
-                          attrs: { role: "alert" },
-                        },
-                        [
-                          this.counts["us_articles_errors_count"]
-                            ? _c("div", { staticClass: "col" }, [
-                                _vm._v(
-                                  "us_articles error_count - " +
-                                    _vm._s(
-                                      this.counts["us_articles_errors_count"]
-                                    )
-                                ),
-                              ])
-                            : _vm._e(),
-                          _vm._v(" "),
-                          this.counts["ru_articles_errors_count"]
-                            ? _c("div", { staticClass: "col" }, [
-                                _vm._v(
-                                  "ru_articles error_count - " +
-                                    _vm._s(
-                                      this.counts["ru_articles_errors_count"]
-                                    )
-                                ),
-                              ])
-                            : _vm._e(),
-                          _vm._v(" "),
-                          this.counts["ka_articles_errors_count"]
-                            ? _c("div", { staticClass: "col" }, [
-                                _vm._v(
-                                  "ka_articles error_count - " +
-                                    _vm._s(
-                                      this.counts["ka_articles_errors_count"]
-                                    )
-                                ),
-                              ])
-                            : _vm._e(),
-                        ]
-                      )
-                    : _vm._e(),
-                  _vm._v(" "),
-                  _c("div", { staticClass: "card" }, [
-                    _c("div", { staticClass: "card-body" }, [
-                      _c("div", { staticClass: "col" }, [
-                        _vm._v(
-                          "global_articles_count - " +
-                            _vm._s(this.counts["global_articles_count"])
-                        ),
-                      ]),
+                          )
+                        : _vm._e(),
                       _vm._v(" "),
-                      _c("div", { staticClass: "col" }, [
-                        _vm._v(
-                          "ka_articles_count - " +
-                            _vm._s(this.counts["ka_articles_count"])
-                        ),
-                      ]),
+                      this.counts["global_articles_count_ka_error"]
+                        ? _c(
+                            "div",
+                            {
+                              staticClass: "alert alert-danger",
+                              attrs: { role: "alert" },
+                            },
+                            [
+                              _c("strong", [_vm._v("Danger!")]),
+                              _vm._v(
+                                " " +
+                                  _vm._s(
+                                    this.counts[
+                                      "global_articles_count_ka_error"
+                                    ]
+                                  ) +
+                                  ' articles have empty "ka_article_id" vallue. It is wery bad for site localization.\n                            '
+                              ),
+                            ]
+                          )
+                        : _vm._e(),
                       _vm._v(" "),
-                      _c("div", { staticClass: "col" }, [
-                        _vm._v(
-                          "ru_articles_count - " +
-                            _vm._s(this.counts["ru_articles_count"])
-                        ),
-                      ]),
-                      _vm._v(" "),
-                      _c("div", { staticClass: "col" }, [
-                        _vm._v(
-                          "us_articles_count - " +
-                            _vm._s(this.counts["us_articles_count"])
-                        ),
-                      ]),
+                      this.counts["global_articles_count_ru_error"]
+                        ? _c(
+                            "div",
+                            {
+                              staticClass: "alert alert-danger",
+                              attrs: { role: "alert" },
+                            },
+                            [
+                              _c("strong", [_vm._v("Danger!")]),
+                              _vm._v(
+                                " " +
+                                  _vm._s(
+                                    this.counts[
+                                      "global_articles_count_ru_error"
+                                    ]
+                                  ) +
+                                  ' articles have empty "ru_article_id" vallue. It is wery bad for site localization.\n                            '
+                              ),
+                            ]
+                          )
+                        : _vm._e(),
                     ]),
-                  ]),
-                  _vm._v(" "),
-                  _c("div", { staticClass: "card" }, [
-                    _c("div", { staticClass: "card-body" }, [
-                      _c("div", { staticClass: "col" }, [
-                        _vm._v(
-                          "outdoor climbing - " +
-                            _vm._s(this.counts["outdoor_climbing"])
-                        ),
-                      ]),
-                      _vm._v(" "),
-                      _c("div", { staticClass: "col" }, [
-                        _vm._v(
-                          "spots regions - " + _vm._s(this.counts["region"])
-                        ),
-                      ]),
-                    ]),
-                  ]),
-                  _vm._v(" "),
-                  _c("div", { staticClass: "card" }, [
-                    _c("div", { staticClass: "card-body" }, [
-                      _c("div", { staticClass: "col" }, [
-                        _vm._v(
-                          "all images - " +
-                            _vm._s(this.counts["gallery_images"])
-                        ),
-                      ]),
-                      _vm._v(" "),
-                      _c("div", { staticClass: "col" }, [
-                        _vm._v(
-                          "index header images - " +
-                            _vm._s(this.counts["index_header_images"])
-                        ),
-                      ]),
-                      _vm._v(" "),
-                      _c("div", { staticClass: "col" }, [
-                        _vm._v(
-                          "article gallery images - " +
-                            _vm._s(this.counts["article_gallery_images"])
-                        ),
-                      ]),
-                    ]),
-                  ]),
-                  _vm._v(" "),
-                  _c("div", { staticClass: "card" }, [
-                    _c("div", { staticClass: "card-body" }, [
-                      _c("div", { staticClass: "col" }, [
-                        _vm._v(
-                          "mountaineering climbing routes - " +
-                            _vm._s(this.counts["mountaineering_route"])
-                        ),
-                      ]),
-                      _vm._v(" "),
-                      _c("div", { staticClass: "col" }, [
-                        _vm._v(
-                          "mount masiv - " +
-                            _vm._s(this.counts["mount_masives"])
-                        ),
-                      ]),
-                    ]),
-                  ]),
-                  _vm._v(" "),
-                  _c("div", { staticClass: "card" }, [
-                    _c("div", { staticClass: "card-body" }, [
-                      _c("div", { staticClass: "col" }, [
-                        _vm._v(
-                          "indoor gyms - " + _vm._s(this.counts["indoor_gyms"])
-                        ),
-                      ]),
-                      _vm._v(" "),
-                      _c("div", { staticClass: "col" }, [
-                        _vm._v(
-                          "ice climbing - " +
-                            _vm._s(this.counts["ice_climbing"])
-                        ),
-                      ]),
-                      _vm._v(" "),
-                      _c("div", { staticClass: "col" }, [
-                        _vm._v(
-                          "other_antyvity - " +
-                            _vm._s(this.counts["other_antyvity"])
-                        ),
-                      ]),
-                      _vm._v(" "),
-                      _c("div", { staticClass: "col" }, [
-                        _vm._v("event - " + _vm._s(this.counts["event"])),
-                      ]),
-                      _vm._v(" "),
-                      _c("div", { staticClass: "col" }, [
-                        _vm._v("news - " + _vm._s(this.counts["news"])),
-                      ]),
-                      _vm._v(" "),
-                      _c("div", { staticClass: "col" }, [
-                        _vm._v("techtip - " + _vm._s(this.counts["techtip"])),
-                      ]),
-                    ]),
-                  ]),
-                  _vm._v(" "),
-                  _c("div", { staticClass: "card" }, [
-                    _c("div", { staticClass: "card-body" }, [
-                      _c("div", { staticClass: "col" }, [
-                        _vm._v(
-                          "sport climbing routes - " +
-                            _vm._s(this.counts["sport_climbing_routes_count"])
-                        ),
-                      ]),
-                      _vm._v(" "),
-                      _c("div", { staticClass: "col" }, [
-                        _vm._v(
-                          "top rope - " +
-                            _vm._s(this.counts["top_rope_routes_count"])
-                        ),
-                      ]),
-                      _vm._v(" "),
-                      _c("div", { staticClass: "col" }, [
-                        _vm._v(
-                          "boulder - " +
-                            _vm._s(this.counts["bouldering_routes_count"])
-                        ),
-                      ]),
-                      _vm._v(" "),
-                      _c("div", { staticClass: "col" }, [
-                        _vm._v(
-                          "tred climbing - " +
-                            _vm._s(this.counts["tred_routes_count"])
-                        ),
-                      ]),
-                      _vm._v(" "),
-                      _c("div", { staticClass: "col" }, [
-                        _vm._v(
-                          "aid - " + _vm._s(this.counts["aid_routes_count"])
-                        ),
-                      ]),
-                    ]),
-                  ]),
-                  _vm._v(" "),
-                  _c("div", { staticClass: "card" }, [
-                    _c("div", { staticClass: "card-body" }, [
-                      _c("div", { staticClass: "col" }, [
-                        _vm._v(
-                          "sectors_count - " +
-                            _vm._s(this.counts["sectors_count"])
-                        ),
-                      ]),
-                      _vm._v(" "),
-                      _c("div", { staticClass: "col" }, [
-                        _vm._v(
-                          "routes_count - " +
-                            _vm._s(this.counts["routes_count"])
-                        ),
-                      ]),
-                      _vm._v(" "),
-                      _c("div", { staticClass: "col" }, [
-                        _vm._v(
-                          "mtp_count - " + _vm._s(this.counts["mtp_count"])
-                        ),
-                      ]),
-                      _vm._v(" "),
-                      _c("div", { staticClass: "col" }, [
-                        _vm._v(
-                          "mtp_pitch_count - " +
-                            _vm._s(this.counts["mtp_pitch_count"])
-                        ),
-                      ]),
-                    ]),
-                  ]),
-                  _vm._v(" "),
-                  _c("div", { staticClass: "card" }, [
-                    _c("div", { staticClass: "card-body" }, [
-                      _c("div", { staticClass: "col" }, [
-                        _vm._v("products - " + _vm._s(this.counts["products"])),
-                      ]),
-                      _vm._v(" "),
-                      _c("div", { staticClass: "col" }, [
-                        _vm._v(
-                          "product_categories - " +
-                            _vm._s(this.counts["product_categories"])
-                        ),
-                      ]),
-                    ]),
-                  ]),
-                  _vm._v(" "),
-                  _c("div", { staticClass: "card" }, [
-                    _c("div", { staticClass: "card-body" }, [
-                      _c("div", { staticClass: "col" }, [
-                        _vm._v("users - " + _vm._s(this.counts["users"])),
-                      ]),
-                      _vm._v(" "),
-                      _c("div", { staticClass: "col" }, [
-                        _vm._v(
-                          "following_users - " +
-                            _vm._s(this.counts["following_users"])
-                        ),
-                      ]),
-                    ]),
-                  ]),
-                  _vm._v(" "),
-                  _c("div", { staticClass: "card" }, [
-                    _c("div", { staticClass: "card-body" }, [
-                      _c("div", { staticClass: "col" }, [
-                        _vm._v("roles - " + _vm._s(this.counts["roles"])),
-                      ]),
-                      _vm._v(" "),
-                      _c("div", { staticClass: "col" }, [
-                        _vm._v(
-                          "permissions - " + _vm._s(this.counts["permissions"])
-                        ),
-                      ]),
-                    ]),
-                  ]),
-                ]),
-              ])
-            : _vm._e(),
-          _vm._v(" "),
-          _vm.tab_num == 3
-            ? _c("div", { staticClass: "row" }, [
-                _c("div", { staticClass: "col-md-12" }, [
-                  _c("div", { staticClass: "card" }, [
+                  ])
+                : _vm._e(),
+              _vm._v(" "),
+              _vm.tab_num == 2
+                ? _c("div", { staticClass: "row" }, [
                     _c(
                       "div",
-                      {
-                        staticClass: "card-body",
-                        on: {
-                          click: function ($event) {
-                            return _vm.open_notifay_modal()
+                      { staticClass: "col-md-12" },
+                      [
+                        _c("h2", [_vm._v("Week Orders")]),
+                        _vm._v(" "),
+                        _c("GChart", {
+                          attrs: {
+                            type: "LineChart",
+                            data: _vm.week_orders_data,
+                            options: _vm.week_orders_options,
                           },
-                        },
-                      },
-                      [
-                        _vm._v(
-                          "\n                            Make mail notification\n                        "
-                        ),
-                      ]
+                        }),
+                        _vm._v(" "),
+                        _c("h2", [_vm._v("Year Orders")]),
+                        _vm._v(" "),
+                        _c("GChart", {
+                          attrs: {
+                            type: "LineChart",
+                            data: _vm.year_orders_data,
+                            options: _vm.year_orders_options,
+                          },
+                        }),
+                      ],
+                      1
                     ),
-                  ]),
-                ]),
-              ])
-            : _vm._e(),
-        ]),
-        _vm._v(" "),
-        _c(
-          "stack-modal",
-          {
-            attrs: {
-              show: _vm.is_notifay_modal,
-              title: "Send mail notification",
-              saveButton: {
-                visible: true,
-                title: "Sand",
-                btnClass: { "btn btn-primary": true },
-              },
-              cancelButton: {
-                visible: false,
-                title: "Close",
-                btnClass: { "btn btn-danger": true },
-              },
-            },
-            on: {
-              close: function ($event) {
-                _vm.is_notifay_modal = false
-              },
-            },
-          },
-          [
-            _c("pre", { staticClass: "language-vue" }, [
-              _vm._v("                "),
-              _c("form", { ref: "editingForm" }, [
-                _vm._v("\n                    "),
-                _c("div", { staticClass: "container" }, [
-                  _vm._v("\n\n                        "),
-                  _c("div", { staticClass: "form-group clearfix row" }, [
-                    _vm._v("\n                            "),
-                    _c(
-                      "div",
-                      { staticClass: "col-md-12 image_add_modal_form" },
-                      [
-                        _vm._v("\n                                "),
+                  ])
+                : _vm._e(),
+              _vm._v(" "),
+              _vm.tab_num == 1
+                ? _c("div", { staticClass: "row" }, [
+                    _c("div", { staticClass: "col-md-12" }, [
+                      this.counts["us_articles_errors_count"] ||
+                      this.counts["ru_articles_errors_count"] ||
+                      this.counts["ka_articles_errors_count"]
+                        ? _c(
+                            "div",
+                            {
+                              staticClass: "alert alert-danger",
+                              attrs: { role: "alert" },
+                            },
+                            [
+                              this.counts["us_articles_errors_count"]
+                                ? _c("div", { staticClass: "col" }, [
+                                    _c("i", {
+                                      staticClass: "fa fa-bug",
+                                      attrs: { "aria-hidden": "true" },
+                                    }),
+                                    _vm._v(
+                                      " \n                                    us_articles error_count - " +
+                                        _vm._s(
+                                          this.counts[
+                                            "us_articles_errors_count"
+                                          ]
+                                        ) +
+                                        " \n\n                                    "
+                                    ),
+                                    _c(
+                                      "button",
+                                      {
+                                        staticClass:
+                                          "btn btn-danger float-right",
+                                        on: {
+                                          click: function ($event) {
+                                            return _vm.quick_wiev_action(
+                                              _vm.complaint.comment_id,
+                                              _vm.complaint.id
+                                            )
+                                          },
+                                        },
+                                      },
+                                      [
+                                        _vm._v(
+                                          "\n                                        Fix bag (delete all this articles)\n                                    "
+                                        ),
+                                      ]
+                                    ),
+                                  ])
+                                : _vm._e(),
+                              _vm._v(" "),
+                              this.counts["ru_articles_errors_count"]
+                                ? _c("div", { staticClass: "col" }, [
+                                    _c("i", {
+                                      staticClass: "fa fa-bug",
+                                      attrs: { "aria-hidden": "true" },
+                                    }),
+                                    _vm._v(
+                                      " \n                                    ru_articles error_count - " +
+                                        _vm._s(
+                                          this.counts[
+                                            "ru_articles_errors_count"
+                                          ]
+                                        ) +
+                                        " \n\n                                    "
+                                    ),
+                                    _c(
+                                      "button",
+                                      {
+                                        staticClass:
+                                          "btn btn-danger float-right",
+                                        on: {
+                                          click: function ($event) {
+                                            return _vm.quick_wiev_action(
+                                              _vm.complaint.comment_id,
+                                              _vm.complaint.id
+                                            )
+                                          },
+                                        },
+                                      },
+                                      [
+                                        _vm._v(
+                                          "\n                                        Fix bag (delete all this articles)\n                                    "
+                                        ),
+                                      ]
+                                    ),
+                                  ])
+                                : _vm._e(),
+                              _vm._v(" "),
+                              this.counts["ka_articles_errors_count"]
+                                ? _c("div", { staticClass: "col" }, [
+                                    _c("i", {
+                                      staticClass: "fa fa-bug",
+                                      attrs: { "aria-hidden": "true" },
+                                    }),
+                                    _vm._v(
+                                      " \n                                    ka_articles error_count - " +
+                                        _vm._s(
+                                          this.counts[
+                                            "ka_articles_errors_count"
+                                          ]
+                                        ) +
+                                        " \n\n                                    "
+                                    ),
+                                    _c(
+                                      "button",
+                                      {
+                                        staticClass:
+                                          "btn btn-danger float-right",
+                                        on: {
+                                          click: function ($event) {
+                                            return _vm.quick_wiev_action(
+                                              _vm.complaint.comment_id,
+                                              _vm.complaint.id
+                                            )
+                                          },
+                                        },
+                                      },
+                                      [
+                                        _vm._v(
+                                          "\n                                        Fix bag (delete all this articles)\n                                    "
+                                        ),
+                                      ]
+                                    ),
+                                  ])
+                                : _vm._e(),
+                            ]
+                          )
+                        : _vm._e(),
+                      _vm._v(" "),
+                      _c("h2", [_vm._v("Articles")]),
+                      _vm._v(" "),
+                      _c("div", { staticClass: "card" }, [
+                        _c("div", { staticClass: "card-body" }, [
+                          _c("div", { staticClass: "row" }, [
+                            _c("div", { staticClass: "col-md-3" }, [
+                              _c(
+                                "div",
+                                { staticClass: "card-counter primary" },
+                                [
+                                  _c("i", {
+                                    staticClass: "fa fa-window-maximize",
+                                    attrs: { "aria-hidden": "true" },
+                                  }),
+                                  _vm._v(" "),
+                                  _c("span", { staticClass: "count-numbers" }, [
+                                    _vm._v(
+                                      _vm._s(
+                                        this.counts["global_articles_count"]
+                                      )
+                                    ),
+                                  ]),
+                                  _vm._v(" "),
+                                  _c("span", { staticClass: "count-name" }, [
+                                    _vm._v("Articles"),
+                                  ]),
+                                ]
+                              ),
+                            ]),
+                            _vm._v(" "),
+                            _c("div", { staticClass: "col-md-3" }, [
+                              _c(
+                                "div",
+                                { staticClass: "card-counter primary" },
+                                [
+                                  _c("i", {
+                                    staticClass: "fa fa-language",
+                                    attrs: { "aria-hidden": "true" },
+                                  }),
+                                  _vm._v(" "),
+                                  _c("span", { staticClass: "count-numbers" }, [
+                                    _vm._v(
+                                      _vm._s(this.counts["us_articles_count"])
+                                    ),
+                                  ]),
+                                  _vm._v(" "),
+                                  _c("span", { staticClass: "count-name" }, [
+                                    _vm._v("English articles"),
+                                  ]),
+                                ]
+                              ),
+                            ]),
+                            _vm._v(" "),
+                            _c("div", { staticClass: "col-md-3" }, [
+                              _c(
+                                "div",
+                                { staticClass: "card-counter primary" },
+                                [
+                                  _c("i", {
+                                    staticClass: "fa fa-language",
+                                    attrs: { "aria-hidden": "true" },
+                                  }),
+                                  _vm._v(" "),
+                                  _c("span", { staticClass: "count-numbers" }, [
+                                    _vm._v(
+                                      _vm._s(this.counts["ru_articles_count"])
+                                    ),
+                                  ]),
+                                  _vm._v(" "),
+                                  _c("span", { staticClass: "count-name" }, [
+                                    _vm._v("Russion articles"),
+                                  ]),
+                                ]
+                              ),
+                            ]),
+                            _vm._v(" "),
+                            _c("div", { staticClass: "col-md-3" }, [
+                              _c(
+                                "div",
+                                { staticClass: "card-counter primary" },
+                                [
+                                  _c("i", {
+                                    staticClass: "fa fa-language",
+                                    attrs: { "aria-hidden": "true" },
+                                  }),
+                                  _vm._v(" "),
+                                  _c("span", { staticClass: "count-numbers" }, [
+                                    _vm._v(
+                                      _vm._s(this.counts["ka_articles_count"])
+                                    ),
+                                  ]),
+                                  _vm._v(" "),
+                                  _c("span", { staticClass: "count-name" }, [
+                                    _vm._v("Georgian articles"),
+                                  ]),
+                                ]
+                              ),
+                            ]),
+                          ]),
+                        ]),
+                      ]),
+                      _vm._v(" "),
+                      _c("div", { staticClass: "card" }, [
+                        _c("div", { staticClass: "card-body" }, [
+                          _c("div", { staticClass: "row" }, [
+                            _c(
+                              "div",
+                              { staticClass: "col-md-4" },
+                              [
+                                _c(
+                                  "router-link",
+                                  {
+                                    attrs: {
+                                      to: {
+                                        name: "articlelist",
+                                        params: { article_category: "indoor" },
+                                      },
+                                    },
+                                  },
+                                  [
+                                    _c(
+                                      "div",
+                                      { staticClass: "card-counter primary" },
+                                      [
+                                        _c("i", {
+                                          staticClass: "fa fa-building",
+                                          attrs: { "aria-hidden": "true" },
+                                        }),
+                                        _vm._v(" "),
+                                        _c(
+                                          "span",
+                                          { staticClass: "count-numbers" },
+                                          [
+                                            _vm._v(
+                                              _vm._s(this.counts["indoor_gyms"])
+                                            ),
+                                          ]
+                                        ),
+                                        _vm._v(" "),
+                                        _c(
+                                          "span",
+                                          { staticClass: "count-name" },
+                                          [_vm._v("Indoor gyms")]
+                                        ),
+                                      ]
+                                    ),
+                                  ]
+                                ),
+                              ],
+                              1
+                            ),
+                            _vm._v(" "),
+                            _c(
+                              "div",
+                              { staticClass: "col-md-4" },
+                              [
+                                _c(
+                                  "router-link",
+                                  {
+                                    attrs: {
+                                      to: {
+                                        name: "articlelist",
+                                        params: { article_category: "ice" },
+                                      },
+                                    },
+                                  },
+                                  [
+                                    _c(
+                                      "div",
+                                      { staticClass: "card-counter primary" },
+                                      [
+                                        _c("i", {
+                                          staticClass: "fa fa-snowflake-o",
+                                          attrs: { "aria-hidden": "true" },
+                                        }),
+                                        _vm._v(" "),
+                                        _c(
+                                          "span",
+                                          { staticClass: "count-numbers" },
+                                          [
+                                            _vm._v(
+                                              _vm._s(
+                                                this.counts["ice_climbing"]
+                                              )
+                                            ),
+                                          ]
+                                        ),
+                                        _vm._v(" "),
+                                        _c(
+                                          "span",
+                                          { staticClass: "count-name" },
+                                          [_vm._v("Ice climbing")]
+                                        ),
+                                      ]
+                                    ),
+                                  ]
+                                ),
+                              ],
+                              1
+                            ),
+                            _vm._v(" "),
+                            _c(
+                              "div",
+                              { staticClass: "col-md-4" },
+                              [
+                                _c(
+                                  "router-link",
+                                  {
+                                    attrs: {
+                                      to: {
+                                        name: "articlelist",
+                                        params: { article_category: "other" },
+                                      },
+                                    },
+                                  },
+                                  [
+                                    _c(
+                                      "div",
+                                      { staticClass: "card-counter primary" },
+                                      [
+                                        _c("i", {
+                                          staticClass: "fa fa-bicycle",
+                                          attrs: { "aria-hidden": "true" },
+                                        }),
+                                        _vm._v(" "),
+                                        _c(
+                                          "span",
+                                          { staticClass: "count-numbers" },
+                                          [
+                                            _vm._v(
+                                              _vm._s(
+                                                this.counts["other_antyvity"]
+                                              )
+                                            ),
+                                          ]
+                                        ),
+                                        _vm._v(" "),
+                                        _c(
+                                          "span",
+                                          { staticClass: "count-name" },
+                                          [_vm._v("Other antyvity")]
+                                        ),
+                                      ]
+                                    ),
+                                  ]
+                                ),
+                              ],
+                              1
+                            ),
+                          ]),
+                          _vm._v(" "),
+                          _c("div", { staticClass: "row" }, [
+                            _c(
+                              "div",
+                              { staticClass: "col-md-4" },
+                              [
+                                _c(
+                                  "router-link",
+                                  {
+                                    attrs: {
+                                      to: {
+                                        name: "articlelist",
+                                        params: { article_category: "news" },
+                                      },
+                                    },
+                                  },
+                                  [
+                                    _c(
+                                      "div",
+                                      { staticClass: "card-counter primary" },
+                                      [
+                                        _c("i", {
+                                          staticClass: "fa fa-newspaper-o",
+                                          attrs: { "aria-hidden": "true" },
+                                        }),
+                                        _vm._v(" "),
+                                        _c(
+                                          "span",
+                                          { staticClass: "count-numbers" },
+                                          [_vm._v(_vm._s(this.counts["news"]))]
+                                        ),
+                                        _vm._v(" "),
+                                        _c(
+                                          "span",
+                                          { staticClass: "count-name" },
+                                          [_vm._v("News")]
+                                        ),
+                                      ]
+                                    ),
+                                  ]
+                                ),
+                              ],
+                              1
+                            ),
+                            _vm._v(" "),
+                            _c(
+                              "div",
+                              { staticClass: "col-md-4" },
+                              [
+                                _c(
+                                  "router-link",
+                                  {
+                                    attrs: {
+                                      to: {
+                                        name: "articlelist",
+                                        params: {
+                                          article_category: "tech_tip",
+                                        },
+                                      },
+                                    },
+                                  },
+                                  [
+                                    _c(
+                                      "div",
+                                      { staticClass: "card-counter primary" },
+                                      [
+                                        _c("i", {
+                                          staticClass: "fa fa-shield",
+                                          attrs: { "aria-hidden": "true" },
+                                        }),
+                                        _vm._v(" "),
+                                        _c(
+                                          "span",
+                                          { staticClass: "count-numbers" },
+                                          [
+                                            _vm._v(
+                                              _vm._s(this.counts["techtip"])
+                                            ),
+                                          ]
+                                        ),
+                                        _vm._v(" "),
+                                        _c(
+                                          "span",
+                                          { staticClass: "count-name" },
+                                          [_vm._v("Techtip")]
+                                        ),
+                                      ]
+                                    ),
+                                  ]
+                                ),
+                              ],
+                              1
+                            ),
+                          ]),
+                        ]),
+                      ]),
+                      _vm._v(" "),
+                      _c("hr"),
+                      _vm._v(" "),
+                      _c("h2", [_vm._v("Outdoor climbing")]),
+                      _vm._v(" "),
+                      _c("div", { staticClass: "card" }, [
+                        _c("div", { staticClass: "card-body" }, [
+                          _c("div", { staticClass: "row" }, [
+                            _c(
+                              "div",
+                              { staticClass: "col-md-6" },
+                              [
+                                _c(
+                                  "router-link",
+                                  {
+                                    attrs: {
+                                      to: {
+                                        name: "articlelist",
+                                        params: { article_category: "outdoor" },
+                                      },
+                                    },
+                                  },
+                                  [
+                                    _c(
+                                      "div",
+                                      { staticClass: "card-counter primary" },
+                                      [
+                                        _c("i", {
+                                          staticClass: "fa fa-window-maximize",
+                                          attrs: { "aria-hidden": "true" },
+                                        }),
+                                        _vm._v(" "),
+                                        _c(
+                                          "span",
+                                          { staticClass: "count-numbers" },
+                                          [
+                                            _vm._v(
+                                              _vm._s(
+                                                this.counts["outdoor_climbing"]
+                                              )
+                                            ),
+                                          ]
+                                        ),
+                                        _vm._v(" "),
+                                        _c(
+                                          "span",
+                                          { staticClass: "count-name" },
+                                          [_vm._v("Outdoor climbing")]
+                                        ),
+                                      ]
+                                    ),
+                                  ]
+                                ),
+                              ],
+                              1
+                            ),
+                            _vm._v(" "),
+                            _c(
+                              "div",
+                              { staticClass: "col-md-6" },
+                              [
+                                _c(
+                                  "router-link",
+                                  {
+                                    attrs: {
+                                      to: {
+                                        name: "articlelist",
+                                        params: { article_category: "outdoor" },
+                                      },
+                                    },
+                                  },
+                                  [
+                                    _c(
+                                      "div",
+                                      { staticClass: "card-counter primary" },
+                                      [
+                                        _c("i", {
+                                          staticClass: "fa fa-map-o",
+                                          attrs: { "aria-hidden": "true" },
+                                        }),
+                                        _vm._v(" "),
+                                        _c(
+                                          "span",
+                                          { staticClass: "count-numbers" },
+                                          [
+                                            _vm._v(
+                                              _vm._s(this.counts["region"])
+                                            ),
+                                          ]
+                                        ),
+                                        _vm._v(" "),
+                                        _c(
+                                          "span",
+                                          { staticClass: "count-name" },
+                                          [_vm._v("Spots regions")]
+                                        ),
+                                      ]
+                                    ),
+                                  ]
+                                ),
+                              ],
+                              1
+                            ),
+                          ]),
+                        ]),
+                      ]),
+                      _vm._v(" "),
+                      _c("hr"),
+                      _vm._v(" "),
+                      _c("h2", [_vm._v("Mountaineering")]),
+                      _vm._v(" "),
+                      _c("div", { staticClass: "card" }, [
+                        _c("div", { staticClass: "card-body" }, [
+                          _c("div", { staticClass: "row" }, [
+                            _c(
+                              "div",
+                              { staticClass: "col-md-6" },
+                              [
+                                _c(
+                                  "router-link",
+                                  { attrs: { to: { name: "mountlist" } } },
+                                  [
+                                    _c(
+                                      "div",
+                                      { staticClass: "card-counter primary" },
+                                      [
+                                        _c("i", {
+                                          staticClass: "fa fa-area-chart",
+                                          attrs: { "aria-hidden": "true" },
+                                        }),
+                                        _vm._v(" "),
+                                        _c(
+                                          "span",
+                                          { staticClass: "count-numbers" },
+                                          [
+                                            _vm._v(
+                                              _vm._s(
+                                                this.counts[
+                                                  "mountaineering_route"
+                                                ]
+                                              )
+                                            ),
+                                          ]
+                                        ),
+                                        _vm._v(" "),
+                                        _c(
+                                          "span",
+                                          { staticClass: "count-name" },
+                                          [
+                                            _vm._v(
+                                              "Mountaineering climbing routes"
+                                            ),
+                                          ]
+                                        ),
+                                      ]
+                                    ),
+                                  ]
+                                ),
+                              ],
+                              1
+                            ),
+                            _vm._v(" "),
+                            _c(
+                              "div",
+                              { staticClass: "col-md-6" },
+                              [
+                                _c(
+                                  "router-link",
+                                  { attrs: { to: { name: "mountlist" } } },
+                                  [
+                                    _c(
+                                      "div",
+                                      { staticClass: "card-counter primary" },
+                                      [
+                                        _c("i", {
+                                          staticClass: "fa fa-area-chart",
+                                          attrs: { "aria-hidden": "true" },
+                                        }),
+                                        _vm._v(" "),
+                                        _c(
+                                          "span",
+                                          { staticClass: "count-numbers" },
+                                          [
+                                            _vm._v(
+                                              _vm._s(
+                                                this.counts["mount_masives"]
+                                              )
+                                            ),
+                                          ]
+                                        ),
+                                        _vm._v(" "),
+                                        _c(
+                                          "span",
+                                          { staticClass: "count-name" },
+                                          [_vm._v("Mount masiv")]
+                                        ),
+                                      ]
+                                    ),
+                                  ]
+                                ),
+                              ],
+                              1
+                            ),
+                          ]),
+                        ]),
+                      ]),
+                      _vm._v(" "),
+                      _c("hr"),
+                      _vm._v(" "),
+                      _c("h2", [_vm._v("Events")]),
+                      _vm._v(" "),
+                      _c("div", { staticClass: "card" }, [
+                        _c("div", { staticClass: "card-body" }, [
+                          _c("div", { staticClass: "row" }, [
+                            _c(
+                              "div",
+                              { staticClass: "col-md-6" },
+                              [
+                                _c(
+                                  "router-link",
+                                  { attrs: { to: { name: "eventList" } } },
+                                  [
+                                    _c(
+                                      "div",
+                                      { staticClass: "card-counter success" },
+                                      [
+                                        _c("i", {
+                                          staticClass: "fa fa-calendar-check-o",
+                                          attrs: { "aria-hidden": "true" },
+                                        }),
+                                        _vm._v(" "),
+                                        _c(
+                                          "span",
+                                          { staticClass: "count-numbers" },
+                                          [_vm._v("XXX")]
+                                        ),
+                                        _vm._v(" "),
+                                        _c(
+                                          "span",
+                                          { staticClass: "count-name" },
+                                          [_vm._v("Active events")]
+                                        ),
+                                      ]
+                                    ),
+                                  ]
+                                ),
+                              ],
+                              1
+                            ),
+                            _vm._v(" "),
+                            _c(
+                              "div",
+                              { staticClass: "col-md-6" },
+                              [
+                                _c(
+                                  "router-link",
+                                  { attrs: { to: { name: "eventList" } } },
+                                  [
+                                    _c(
+                                      "div",
+                                      { staticClass: "card-counter success" },
+                                      [
+                                        _c("i", {
+                                          staticClass: "fa fa-calendar-minus-o",
+                                          attrs: { "aria-hidden": "true" },
+                                        }),
+                                        _vm._v(" "),
+                                        _c(
+                                          "span",
+                                          { staticClass: "count-numbers" },
+                                          [_vm._v("XXX")]
+                                        ),
+                                        _vm._v(" "),
+                                        _c(
+                                          "span",
+                                          { staticClass: "count-name" },
+                                          [_vm._v("Completed events")]
+                                        ),
+                                      ]
+                                    ),
+                                  ]
+                                ),
+                              ],
+                              1
+                            ),
+                          ]),
+                        ]),
+                      ]),
+                      _vm._v(" "),
+                      _c("div", { staticClass: "card" }, [
+                        _c("div", { staticClass: "card-body" }, [
+                          _c("div", { staticClass: "row" }, [
+                            _c(
+                              "div",
+                              { staticClass: "col-md-6" },
+                              [
+                                _c(
+                                  "router-link",
+                                  { attrs: { to: { name: "eventList" } } },
+                                  [
+                                    _c(
+                                      "div",
+                                      { staticClass: "card-counter success" },
+                                      [
+                                        _c("i", {
+                                          staticClass: "fa fa-calendar-check-o",
+                                          attrs: { "aria-hidden": "true" },
+                                        }),
+                                        _vm._v(" "),
+                                        _c(
+                                          "span",
+                                          { staticClass: "count-numbers" },
+                                          [_vm._v("XXX")]
+                                        ),
+                                        _vm._v(" "),
+                                        _c(
+                                          "span",
+                                          { staticClass: "count-name" },
+                                          [_vm._v("Active competitions")]
+                                        ),
+                                      ]
+                                    ),
+                                  ]
+                                ),
+                              ],
+                              1
+                            ),
+                            _vm._v(" "),
+                            _c(
+                              "div",
+                              { staticClass: "col-md-6" },
+                              [
+                                _c(
+                                  "router-link",
+                                  { attrs: { to: { name: "eventList" } } },
+                                  [
+                                    _c(
+                                      "div",
+                                      { staticClass: "card-counter success" },
+                                      [
+                                        _c("i", {
+                                          staticClass: "fa fa-calendar-minus-o",
+                                          attrs: { "aria-hidden": "true" },
+                                        }),
+                                        _vm._v(" "),
+                                        _c(
+                                          "span",
+                                          { staticClass: "count-numbers" },
+                                          [_vm._v("XXX")]
+                                        ),
+                                        _vm._v(" "),
+                                        _c(
+                                          "span",
+                                          { staticClass: "count-name" },
+                                          [_vm._v("Completed competitions")]
+                                        ),
+                                      ]
+                                    ),
+                                  ]
+                                ),
+                              ],
+                              1
+                            ),
+                          ]),
+                        ]),
+                      ]),
+                      _vm._v(" "),
+                      _c("hr"),
+                      _vm._v(" "),
+                      _c("h2", [_vm._v("Climbing spots")]),
+                      _vm._v(" "),
+                      _c("div", { staticClass: "card" }, [
+                        _c("div", { staticClass: "card-body" }, [
+                          _c("div", { staticClass: "row" }, [
+                            _c(
+                              "div",
+                              { staticClass: "col-md-6" },
+                              [
+                                _c(
+                                  "router-link",
+                                  {
+                                    attrs: {
+                                      to: { name: "routeAndSectorList" },
+                                    },
+                                  },
+                                  [
+                                    _c(
+                                      "div",
+                                      { staticClass: "card-counter sectors" },
+                                      [
+                                        _c("i", {
+                                          staticClass: "fa fa-heartbeat",
+                                          attrs: { "aria-hidden": "true" },
+                                        }),
+                                        _vm._v(" "),
+                                        _c(
+                                          "span",
+                                          { staticClass: "count-numbers" },
+                                          [
+                                            _vm._v(
+                                              _vm._s(
+                                                this.counts["sectors_count"]
+                                              )
+                                            ),
+                                          ]
+                                        ),
+                                        _vm._v(" "),
+                                        _c(
+                                          "span",
+                                          { staticClass: "count-name" },
+                                          [_vm._v("Sectors")]
+                                        ),
+                                      ]
+                                    ),
+                                  ]
+                                ),
+                              ],
+                              1
+                            ),
+                            _vm._v(" "),
+                            _c(
+                              "div",
+                              { staticClass: "col-md-6" },
+                              [
+                                _c(
+                                  "router-link",
+                                  {
+                                    attrs: {
+                                      to: { name: "routeAndSectorList" },
+                                    },
+                                  },
+                                  [
+                                    _c(
+                                      "div",
+                                      { staticClass: "card-counter sectors" },
+                                      [
+                                        _c("i", {
+                                          staticClass: "fa fa-heartbeat",
+                                          attrs: { "aria-hidden": "true" },
+                                        }),
+                                        _vm._v(" "),
+                                        _c(
+                                          "span",
+                                          { staticClass: "count-numbers" },
+                                          [
+                                            _vm._v(
+                                              _vm._s(
+                                                this.counts["routes_count"]
+                                              )
+                                            ),
+                                          ]
+                                        ),
+                                        _vm._v(" "),
+                                        _c(
+                                          "span",
+                                          { staticClass: "count-name" },
+                                          [_vm._v("Routes")]
+                                        ),
+                                      ]
+                                    ),
+                                  ]
+                                ),
+                              ],
+                              1
+                            ),
+                            _vm._v(" "),
+                            _c(
+                              "div",
+                              { staticClass: "col-md-6" },
+                              [
+                                _c(
+                                  "router-link",
+                                  {
+                                    attrs: {
+                                      to: { name: "routeAndSectorList" },
+                                    },
+                                  },
+                                  [
+                                    _c(
+                                      "div",
+                                      { staticClass: "card-counter sectors" },
+                                      [
+                                        _c("i", {
+                                          staticClass: "fa fa-heartbeat",
+                                          attrs: { "aria-hidden": "true" },
+                                        }),
+                                        _vm._v(" "),
+                                        _c(
+                                          "span",
+                                          { staticClass: "count-numbers" },
+                                          [
+                                            _vm._v(
+                                              _vm._s(this.counts["mtp_count"])
+                                            ),
+                                          ]
+                                        ),
+                                        _vm._v(" "),
+                                        _c(
+                                          "span",
+                                          { staticClass: "count-name" },
+                                          [_vm._v("Multy-pitch")]
+                                        ),
+                                      ]
+                                    ),
+                                  ]
+                                ),
+                              ],
+                              1
+                            ),
+                            _vm._v(" "),
+                            _c(
+                              "div",
+                              { staticClass: "col-md-6" },
+                              [
+                                _c(
+                                  "router-link",
+                                  {
+                                    attrs: {
+                                      to: { name: "routeAndSectorList" },
+                                    },
+                                  },
+                                  [
+                                    _c(
+                                      "div",
+                                      { staticClass: "card-counter sectors" },
+                                      [
+                                        _c("i", {
+                                          staticClass: "fa fa-heartbeat",
+                                          attrs: { "aria-hidden": "true" },
+                                        }),
+                                        _vm._v(" "),
+                                        _c(
+                                          "span",
+                                          { staticClass: "count-numbers" },
+                                          [
+                                            _vm._v(
+                                              _vm._s(
+                                                this.counts["mtp_pitch_count"]
+                                              )
+                                            ),
+                                          ]
+                                        ),
+                                        _vm._v(" "),
+                                        _c(
+                                          "span",
+                                          { staticClass: "count-name" },
+                                          [_vm._v("Multy-pitch pitchs")]
+                                        ),
+                                      ]
+                                    ),
+                                  ]
+                                ),
+                              ],
+                              1
+                            ),
+                          ]),
+                        ]),
+                      ]),
+                      _vm._v(" "),
+                      _c("div", { staticClass: "card" }, [
+                        _c("div", { staticClass: "card-body" }, [
+                          _c("div", { staticClass: "row" }, [
+                            _c(
+                              "div",
+                              { staticClass: "col-md-4" },
+                              [
+                                _c(
+                                  "router-link",
+                                  {
+                                    attrs: {
+                                      to: { name: "routeAndSectorList" },
+                                    },
+                                  },
+                                  [
+                                    _c(
+                                      "div",
+                                      { staticClass: "card-counter sectors" },
+                                      [
+                                        _c("i", {
+                                          staticClass: "fa fa-heartbeat",
+                                          attrs: { "aria-hidden": "true" },
+                                        }),
+                                        _vm._v(" "),
+                                        _c(
+                                          "span",
+                                          { staticClass: "count-numbers" },
+                                          [
+                                            _vm._v(
+                                              _vm._s(
+                                                this.counts[
+                                                  "sport_climbing_routes_count"
+                                                ]
+                                              )
+                                            ),
+                                          ]
+                                        ),
+                                        _vm._v(" "),
+                                        _c(
+                                          "span",
+                                          { staticClass: "count-name" },
+                                          [_vm._v("Sport climbing routes")]
+                                        ),
+                                      ]
+                                    ),
+                                  ]
+                                ),
+                              ],
+                              1
+                            ),
+                            _vm._v(" "),
+                            _c(
+                              "div",
+                              { staticClass: "col-md-4" },
+                              [
+                                _c(
+                                  "router-link",
+                                  {
+                                    attrs: {
+                                      to: { name: "routeAndSectorList" },
+                                    },
+                                  },
+                                  [
+                                    _c(
+                                      "div",
+                                      { staticClass: "card-counter sectors" },
+                                      [
+                                        _c("i", {
+                                          staticClass: "fa fa-heartbeat",
+                                          attrs: { "aria-hidden": "true" },
+                                        }),
+                                        _vm._v(" "),
+                                        _c(
+                                          "span",
+                                          { staticClass: "count-numbers" },
+                                          [
+                                            _vm._v(
+                                              _vm._s(
+                                                this.counts[
+                                                  "top_rope_routes_count"
+                                                ]
+                                              )
+                                            ),
+                                          ]
+                                        ),
+                                        _vm._v(" "),
+                                        _c(
+                                          "span",
+                                          { staticClass: "count-name" },
+                                          [_vm._v("Top rope routes")]
+                                        ),
+                                      ]
+                                    ),
+                                  ]
+                                ),
+                              ],
+                              1
+                            ),
+                            _vm._v(" "),
+                            _c(
+                              "div",
+                              { staticClass: "col-md-4" },
+                              [
+                                _c(
+                                  "router-link",
+                                  {
+                                    attrs: {
+                                      to: { name: "routeAndSectorList" },
+                                    },
+                                  },
+                                  [
+                                    _c(
+                                      "div",
+                                      { staticClass: "card-counter sectors" },
+                                      [
+                                        _c("i", {
+                                          staticClass: "fa fa-heartbeat",
+                                          attrs: { "aria-hidden": "true" },
+                                        }),
+                                        _vm._v(" "),
+                                        _c(
+                                          "span",
+                                          { staticClass: "count-numbers" },
+                                          [
+                                            _vm._v(
+                                              _vm._s(
+                                                this.counts[
+                                                  "bouldering_routes_count"
+                                                ]
+                                              )
+                                            ),
+                                          ]
+                                        ),
+                                        _vm._v(" "),
+                                        _c(
+                                          "span",
+                                          { staticClass: "count-name" },
+                                          [_vm._v("Boulder")]
+                                        ),
+                                      ]
+                                    ),
+                                  ]
+                                ),
+                              ],
+                              1
+                            ),
+                          ]),
+                          _vm._v(" "),
+                          _c("div", { staticClass: "row" }, [
+                            _c(
+                              "div",
+                              { staticClass: "col-md-6" },
+                              [
+                                _c(
+                                  "router-link",
+                                  {
+                                    attrs: {
+                                      to: { name: "routeAndSectorList" },
+                                    },
+                                  },
+                                  [
+                                    _c(
+                                      "div",
+                                      { staticClass: "card-counter sectors" },
+                                      [
+                                        _c("i", {
+                                          staticClass: "fa fa-heartbeat",
+                                          attrs: { "aria-hidden": "true" },
+                                        }),
+                                        _vm._v(" "),
+                                        _c(
+                                          "span",
+                                          { staticClass: "count-numbers" },
+                                          [
+                                            _vm._v(
+                                              _vm._s(
+                                                this.counts["tred_routes_count"]
+                                              )
+                                            ),
+                                          ]
+                                        ),
+                                        _vm._v(" "),
+                                        _c(
+                                          "span",
+                                          { staticClass: "count-name" },
+                                          [_vm._v("Tred climbing")]
+                                        ),
+                                      ]
+                                    ),
+                                  ]
+                                ),
+                              ],
+                              1
+                            ),
+                            _vm._v(" "),
+                            _c(
+                              "div",
+                              { staticClass: "col-md-6" },
+                              [
+                                _c(
+                                  "router-link",
+                                  {
+                                    attrs: {
+                                      to: { name: "routeAndSectorList" },
+                                    },
+                                  },
+                                  [
+                                    _c(
+                                      "div",
+                                      { staticClass: "card-counter sectors" },
+                                      [
+                                        _c("i", {
+                                          staticClass: "fa fa-heartbeat",
+                                          attrs: { "aria-hidden": "true" },
+                                        }),
+                                        _vm._v(" "),
+                                        _c(
+                                          "span",
+                                          { staticClass: "count-numbers" },
+                                          [
+                                            _vm._v(
+                                              _vm._s(
+                                                this.counts["aid_routes_count"]
+                                              )
+                                            ),
+                                          ]
+                                        ),
+                                        _vm._v(" "),
+                                        _c(
+                                          "span",
+                                          { staticClass: "count-name" },
+                                          [_vm._v("Aid")]
+                                        ),
+                                      ]
+                                    ),
+                                  ]
+                                ),
+                              ],
+                              1
+                            ),
+                          ]),
+                        ]),
+                      ]),
+                      _vm._v(" "),
+                      _c("hr"),
+                      _vm._v(" "),
+                      _c("h2", [_vm._v("Gallery & images")]),
+                      _vm._v(" "),
+                      _c("div", { staticClass: "card" }, [
+                        _c("div", { staticClass: "card-body" }, [
+                          _c("div", { staticClass: "row" }, [
+                            _c(
+                              "div",
+                              { staticClass: "col-md-3" },
+                              [
+                                _c(
+                                  "router-link",
+                                  { attrs: { to: { name: "gallery" } } },
+                                  [
+                                    _c(
+                                      "div",
+                                      { staticClass: "card-counter success" },
+                                      [
+                                        _c("i", {
+                                          staticClass: "fa fa-picture-o",
+                                          attrs: { "aria-hidden": "true" },
+                                        }),
+                                        _vm._v(" "),
+                                        _c(
+                                          "span",
+                                          { staticClass: "count-numbers" },
+                                          [
+                                            _vm._v(
+                                              _vm._s(
+                                                this.counts["gallery_images"]
+                                              )
+                                            ),
+                                          ]
+                                        ),
+                                        _vm._v(" "),
+                                        _c(
+                                          "span",
+                                          { staticClass: "count-name" },
+                                          [_vm._v("Gellry images")]
+                                        ),
+                                      ]
+                                    ),
+                                  ]
+                                ),
+                              ],
+                              1
+                            ),
+                            _vm._v(" "),
+                            _c(
+                              "div",
+                              { staticClass: "col-md-3" },
+                              [
+                                _c(
+                                  "router-link",
+                                  { attrs: { to: { name: "gallery" } } },
+                                  [
+                                    _c(
+                                      "div",
+                                      { staticClass: "card-counter success" },
+                                      [
+                                        _c("i", {
+                                          staticClass: "fa fa-picture-o",
+                                          attrs: { "aria-hidden": "true" },
+                                        }),
+                                        _vm._v(" "),
+                                        _c(
+                                          "span",
+                                          { staticClass: "count-numbers" },
+                                          [
+                                            _vm._v(
+                                              _vm._s(
+                                                this.counts[
+                                                  "index_header_images"
+                                                ]
+                                              )
+                                            ),
+                                          ]
+                                        ),
+                                        _vm._v(" "),
+                                        _c(
+                                          "span",
+                                          { staticClass: "count-name" },
+                                          [_vm._v("Index header slider images")]
+                                        ),
+                                      ]
+                                    ),
+                                  ]
+                                ),
+                              ],
+                              1
+                            ),
+                            _vm._v(" "),
+                            _c(
+                              "div",
+                              { staticClass: "col-md-3" },
+                              [
+                                _c(
+                                  "router-link",
+                                  { attrs: { to: { name: "gallery" } } },
+                                  [
+                                    _c(
+                                      "div",
+                                      { staticClass: "card-counter success" },
+                                      [
+                                        _c("i", {
+                                          staticClass: "fa fa-picture-o",
+                                          attrs: { "aria-hidden": "true" },
+                                        }),
+                                        _vm._v(" "),
+                                        _c(
+                                          "span",
+                                          { staticClass: "count-numbers" },
+                                          [_vm._v("XXX")]
+                                        ),
+                                        _vm._v(" "),
+                                        _c(
+                                          "span",
+                                          { staticClass: "count-name" },
+                                          [_vm._v("Index gallery")]
+                                        ),
+                                      ]
+                                    ),
+                                  ]
+                                ),
+                              ],
+                              1
+                            ),
+                            _vm._v(" "),
+                            _c(
+                              "div",
+                              { staticClass: "col-md-3" },
+                              [
+                                _c(
+                                  "router-link",
+                                  { attrs: { to: { name: "gallery" } } },
+                                  [
+                                    _c(
+                                      "div",
+                                      { staticClass: "card-counter success" },
+                                      [
+                                        _c("i", {
+                                          staticClass: "fa fa-picture-o",
+                                          attrs: { "aria-hidden": "true" },
+                                        }),
+                                        _vm._v(" "),
+                                        _c(
+                                          "span",
+                                          { staticClass: "count-numbers" },
+                                          [
+                                            _vm._v(
+                                              _vm._s(
+                                                this.counts[
+                                                  "article_gallery_images"
+                                                ]
+                                              )
+                                            ),
+                                          ]
+                                        ),
+                                        _vm._v(" "),
+                                        _c(
+                                          "span",
+                                          { staticClass: "count-name" },
+                                          [_vm._v("Article gallery images")]
+                                        ),
+                                      ]
+                                    ),
+                                  ]
+                                ),
+                              ],
+                              1
+                            ),
+                          ]),
+                        ]),
+                      ]),
+                      _vm._v(" "),
+                      _c("hr"),
+                      _vm._v(" "),
+                      _c("h2", [_vm._v("Shop / Products")]),
+                      _vm._v(" "),
+                      _c("div", { staticClass: "card" }, [
+                        _c("div", { staticClass: "card-body" }, [
+                          _c("div", { staticClass: "row" }, [
+                            _c(
+                              "div",
+                              { staticClass: "col-md-6" },
+                              [
+                                _c(
+                                  "router-link",
+                                  { attrs: { to: { name: "productsList" } } },
+                                  [
+                                    _c(
+                                      "div",
+                                      { staticClass: "card-counter light" },
+                                      [
+                                        _c("i", {
+                                          staticClass: "fa fa-shopping-bag",
+                                          attrs: { "aria-hidden": "true" },
+                                        }),
+                                        _vm._v(" "),
+                                        _c(
+                                          "span",
+                                          { staticClass: "count-numbers" },
+                                          [
+                                            _vm._v(
+                                              _vm._s(this.counts["products"])
+                                            ),
+                                          ]
+                                        ),
+                                        _vm._v(" "),
+                                        _c(
+                                          "span",
+                                          { staticClass: "count-name" },
+                                          [_vm._v("Products")]
+                                        ),
+                                      ]
+                                    ),
+                                  ]
+                                ),
+                              ],
+                              1
+                            ),
+                            _vm._v(" "),
+                            _c(
+                              "div",
+                              { staticClass: "col-md-6" },
+                              [
+                                _c(
+                                  "router-link",
+                                  { attrs: { to: { name: "productsList" } } },
+                                  [
+                                    _c(
+                                      "div",
+                                      { staticClass: "card-counter light" },
+                                      [
+                                        _c("i", {
+                                          staticClass: "fa fa-shopping-basket",
+                                          attrs: { "aria-hidden": "true" },
+                                        }),
+                                        _vm._v(" "),
+                                        _c(
+                                          "span",
+                                          { staticClass: "count-numbers" },
+                                          [
+                                            _vm._v(
+                                              _vm._s(
+                                                this.counts[
+                                                  "product_categories"
+                                                ]
+                                              )
+                                            ),
+                                          ]
+                                        ),
+                                        _vm._v(" "),
+                                        _c(
+                                          "span",
+                                          { staticClass: "count-name" },
+                                          [_vm._v("Product categories")]
+                                        ),
+                                      ]
+                                    ),
+                                  ]
+                                ),
+                              ],
+                              1
+                            ),
+                          ]),
+                        ]),
+                      ]),
+                      _vm._v(" "),
+                      _c("hr"),
+                      _vm._v(" "),
+                      _c("h2", [_vm._v("Conflicts")]),
+                      _vm._v(" "),
+                      _c("div", { staticClass: "card" }, [
+                        _c("div", { staticClass: "card-body" }, [
+                          _c("div", { staticClass: "row" }, [
+                            _c(
+                              "div",
+                              { staticClass: "col-md-6" },
+                              [
+                                _c(
+                                  "router-link",
+                                  { attrs: { to: { name: "comentsList" } } },
+                                  [
+                                    _c(
+                                      "div",
+                                      { staticClass: "card-counter danger" },
+                                      [
+                                        _c("i", {
+                                          staticClass: "fa fa-gavel",
+                                          attrs: { "aria-hidden": "true" },
+                                        }),
+                                        _vm._v(" "),
+                                        _c(
+                                          "span",
+                                          { staticClass: "count-numbers" },
+                                          [_vm._v("XXX")]
+                                        ),
+                                        _vm._v(" "),
+                                        _c(
+                                          "span",
+                                          { staticClass: "count-name" },
+                                          [_vm._v("Active competitions")]
+                                        ),
+                                      ]
+                                    ),
+                                  ]
+                                ),
+                              ],
+                              1
+                            ),
+                            _vm._v(" "),
+                            _c(
+                              "div",
+                              { staticClass: "col-md-6" },
+                              [
+                                _c(
+                                  "router-link",
+                                  { attrs: { to: { name: "comentsList" } } },
+                                  [
+                                    _c(
+                                      "div",
+                                      { staticClass: "card-counter danger" },
+                                      [
+                                        _c("i", {
+                                          staticClass: "fa fa-gavel",
+                                          attrs: { "aria-hidden": "true" },
+                                        }),
+                                        _vm._v(" "),
+                                        _c(
+                                          "span",
+                                          { staticClass: "count-numbers" },
+                                          [_vm._v("XXX")]
+                                        ),
+                                        _vm._v(" "),
+                                        _c(
+                                          "span",
+                                          { staticClass: "count-name" },
+                                          [_vm._v("Completed competitions")]
+                                        ),
+                                      ]
+                                    ),
+                                  ]
+                                ),
+                              ],
+                              1
+                            ),
+                          ]),
+                        ]),
+                      ]),
+                      _vm._v(" "),
+                      _c("hr"),
+                      _vm._v(" "),
+                      _c("h2", [_vm._v("Comments")]),
+                      _vm._v(" "),
+                      _c("div", { staticClass: "card" }, [
+                        _c("div", { staticClass: "card-body" }, [
+                          _c("div", { staticClass: "row" }, [
+                            _c(
+                              "div",
+                              { staticClass: "col-md-6" },
+                              [
+                                _c(
+                                  "router-link",
+                                  { attrs: { to: { name: "comentsList" } } },
+                                  [
+                                    _c(
+                                      "div",
+                                      { staticClass: "card-counter dark" },
+                                      [
+                                        _c("i", {
+                                          staticClass: "fa fa-comment-o",
+                                          attrs: { "aria-hidden": "true" },
+                                        }),
+                                        _vm._v(" "),
+                                        _c(
+                                          "span",
+                                          { staticClass: "count-numbers" },
+                                          [_vm._v("XXX")]
+                                        ),
+                                        _vm._v(" "),
+                                        _c(
+                                          "span",
+                                          { staticClass: "count-name" },
+                                          [_vm._v("Article comments")]
+                                        ),
+                                      ]
+                                    ),
+                                  ]
+                                ),
+                              ],
+                              1
+                            ),
+                            _vm._v(" "),
+                            _c(
+                              "div",
+                              { staticClass: "col-md-6" },
+                              [
+                                _c(
+                                  "router-link",
+                                  { attrs: { to: { name: "comentsList" } } },
+                                  [
+                                    _c(
+                                      "div",
+                                      { staticClass: "card-counter dark" },
+                                      [
+                                        _c("i", {
+                                          staticClass: "fa fa-comment-o",
+                                          attrs: { "aria-hidden": "true" },
+                                        }),
+                                        _vm._v(" "),
+                                        _c(
+                                          "span",
+                                          { staticClass: "count-numbers" },
+                                          [_vm._v("XXX")]
+                                        ),
+                                        _vm._v(" "),
+                                        _c(
+                                          "span",
+                                          { staticClass: "count-name" },
+                                          [_vm._v("Product comments")]
+                                        ),
+                                      ]
+                                    ),
+                                  ]
+                                ),
+                              ],
+                              1
+                            ),
+                          ]),
+                        ]),
+                      ]),
+                      _vm._v(" "),
+                      _c("h2", [_vm._v("Users")]),
+                      _vm._v(" "),
+                      _c("hr"),
+                      _vm._v(" "),
+                      _c("div", { staticClass: "card" }, [
+                        _c("div", { staticClass: "card-body" }, [
+                          _c("div", { staticClass: "row" }, [
+                            _c(
+                              "div",
+                              { staticClass: "col-md-3" },
+                              [
+                                _c(
+                                  "router-link",
+                                  { attrs: { to: { name: "usersList" } } },
+                                  [
+                                    _c(
+                                      "div",
+                                      { staticClass: "card-counter success" },
+                                      [
+                                        _c("i", {
+                                          staticClass: "fa fa-user-circle-o",
+                                          attrs: { "aria-hidden": "true" },
+                                        }),
+                                        _vm._v(" "),
+                                        _c(
+                                          "span",
+                                          { staticClass: "count-numbers" },
+                                          [_vm._v(_vm._s(this.counts["users"]))]
+                                        ),
+                                        _vm._v(" "),
+                                        _c(
+                                          "span",
+                                          { staticClass: "count-name" },
+                                          [_vm._v("users")]
+                                        ),
+                                      ]
+                                    ),
+                                  ]
+                                ),
+                              ],
+                              1
+                            ),
+                          ]),
+                        ]),
+                      ]),
+                    ]),
+                  ])
+                : _vm._e(),
+              _vm._v(" "),
+              _vm.tab_num == 4
+                ? _c("div", { staticClass: "row" }, [
+                    _c("div", { staticClass: "col-md-12" }, [
+                      _c("div", { staticClass: "card" }, [
                         _c(
-                          "select",
+                          "div",
                           {
-                            directives: [
-                              {
-                                name: "model",
-                                rawName: "v-model",
-                                value: _vm.sending_type,
-                                expression: "sending_type",
-                              },
-                            ],
-                            staticClass: "form-control",
-                            attrs: { name: "published", id: "published" },
+                            staticClass: "card-body",
                             on: {
-                              change: function ($event) {
-                                var $$selectedVal = Array.prototype.filter
-                                  .call($event.target.options, function (o) {
-                                    return o.selected
-                                  })
-                                  .map(function (o) {
-                                    var val = "_value" in o ? o._value : o.value
-                                    return val
-                                  })
-                                _vm.sending_type = $event.target.multiple
-                                  ? $$selectedVal
-                                  : $$selectedVal[0]
+                              click: function ($event) {
+                                return _vm.open_notifay_modal()
                               },
                             },
                           },
                           [
-                            _vm._v("\n                                    "),
-                            _c(
-                              "option",
-                              { attrs: { value: "1", disabled: "" } },
-                              [_vm._v("Select sending type")]
+                            _vm._v(
+                              "\n                                    Make mail notification\n                                "
                             ),
-                            _vm._v(" \n                                    "),
-                            _c("option", { attrs: { value: "one_user" } }, [
-                              _vm._v("Sand to one user"),
-                            ]),
-                            _vm._v(" \n                                    "),
-                            _c("option", { attrs: { value: "one_follower" } }, [
-                              _vm._v("Sand to one followers"),
-                            ]),
-                            _vm._v("\n                                    "),
-                            _c("option", { attrs: { value: "all_users" } }, [
-                              _vm._v("Sand to all users"),
-                            ]),
-                            _vm._v(" \n                                    "),
-                            _c(
-                              "option",
-                              { attrs: { value: "all_followers" } },
-                              [_vm._v("Sand to all folowers")]
-                            ),
-                            _vm._v(" \n                                    "),
-                            _c(
-                              "option",
-                              { attrs: { value: "all_users_all_followers" } },
-                              [_vm._v("Sand to all followers and all users")]
-                            ),
-                            _vm._v(" \n                                "),
                           ]
                         ),
-                        _vm._v(" \n                            "),
-                      ]
-                    ),
-                    _vm._v("\n                        "),
-                  ]),
-                  _vm._v("\n\n                        "),
-                  _c("div", { staticClass: "form-group clearfix row" }, [
-                    _vm._v("\n                            "),
-                    _c(
-                      "div",
-                      { staticClass: "col-md-12 image_add_modal_form" },
-                      [
-                        _vm._v("\n                                "),
-                        _c(
-                          "select",
-                          {
-                            directives: [
-                              {
-                                name: "model",
-                                rawName: "v-model",
-                                value: _vm.notification_type,
-                                expression: "notification_type",
-                              },
-                            ],
-                            staticClass: "form-control",
-                            attrs: { name: "filter" },
-                            on: {
-                              change: function ($event) {
-                                var $$selectedVal = Array.prototype.filter
-                                  .call($event.target.options, function (o) {
-                                    return o.selected
-                                  })
-                                  .map(function (o) {
-                                    var val = "_value" in o ? o._value : o.value
-                                    return val
-                                  })
-                                _vm.notification_type = $event.target.multiple
-                                  ? $$selectedVal
-                                  : $$selectedVal[0]
-                              },
-                            },
-                          },
-                          [
-                            _vm._v("\n                                    "),
-                            _c(
-                              "option",
-                              { attrs: { value: "1", disabled: "" } },
-                              [_vm._v("Select notification type")]
-                            ),
-                            _vm._v(" \n                                    "),
-                            _c("option", { attrs: { value: "article" } }, [
-                              _vm._v("Article notification"),
-                            ]),
-                            _vm._v(" \n                                    "),
-                            _c("option", { attrs: { value: "text" } }, [
-                              _vm._v("New mail"),
-                            ]),
-                            _vm._v(" \n                                    "),
-                            _c(
-                              "option",
-                              { attrs: { value: "article_and_text" } },
-                              [_vm._v("Article and alse new text")]
-                            ),
-                            _vm._v(" \n                                "),
-                          ]
-                        ),
-                        _vm._v(" \n                            "),
-                      ]
-                    ),
-                    _vm._v("\n                        "),
-                  ]),
-                  _vm._v("\n\n                    "),
-                ]),
-                _vm._v("\n                "),
-              ]),
-              _vm._v("\n            "),
+                      ]),
+                    ]),
+                  ])
+                : _vm._e(),
             ]),
             _vm._v(" "),
             _c(
-              "div",
-              { attrs: { slot: "modal-footer" }, slot: "modal-footer" },
+              "stack-modal",
+              {
+                attrs: {
+                  show: _vm.is_notifay_modal,
+                  title: "Send mail notification",
+                  saveButton: {
+                    visible: true,
+                    title: "Sand",
+                    btnClass: { "btn btn-primary": true },
+                  },
+                  cancelButton: {
+                    visible: false,
+                    title: "Close",
+                    btnClass: { "btn btn-danger": true },
+                  },
+                },
+                on: {
+                  close: function ($event) {
+                    _vm.is_notifay_modal = false
+                  },
+                },
+              },
               [
-                _c("div", { staticClass: "modal-footer" }, [
-                  _c(
-                    "button",
-                    {
-                      class: { "btn btn-primary": true },
-                      attrs: { type: "button" },
-                      on: {
-                        click: function ($event) {
-                          return _vm.send_mail()
-                        },
-                      },
-                    },
-                    [_vm._v("\n                    Send\n                    ")]
-                  ),
+                _c("pre", { staticClass: "language-vue" }, [
+                  _vm._v("                    "),
+                  _c("form", { ref: "editingForm" }, [
+                    _vm._v("\n                        "),
+                    _c("div", { staticClass: "container" }, [
+                      _vm._v("\n\n                            "),
+                      _c("div", { staticClass: "form-group clearfix row" }, [
+                        _vm._v("\n                                "),
+                        _c(
+                          "div",
+                          { staticClass: "col-md-12 image_add_modal_form" },
+                          [
+                            _vm._v("\n                                    "),
+                            _c(
+                              "select",
+                              {
+                                directives: [
+                                  {
+                                    name: "model",
+                                    rawName: "v-model",
+                                    value: _vm.sending_type,
+                                    expression: "sending_type",
+                                  },
+                                ],
+                                staticClass: "form-control",
+                                attrs: { name: "published", id: "published" },
+                                on: {
+                                  change: function ($event) {
+                                    var $$selectedVal = Array.prototype.filter
+                                      .call(
+                                        $event.target.options,
+                                        function (o) {
+                                          return o.selected
+                                        }
+                                      )
+                                      .map(function (o) {
+                                        var val =
+                                          "_value" in o ? o._value : o.value
+                                        return val
+                                      })
+                                    _vm.sending_type = $event.target.multiple
+                                      ? $$selectedVal
+                                      : $$selectedVal[0]
+                                  },
+                                },
+                              },
+                              [
+                                _vm._v(
+                                  "\n                                        "
+                                ),
+                                _c(
+                                  "option",
+                                  { attrs: { value: "1", disabled: "" } },
+                                  [_vm._v("Select sending type")]
+                                ),
+                                _vm._v(
+                                  " \n                                        "
+                                ),
+                                _c("option", { attrs: { value: "one_user" } }, [
+                                  _vm._v("Sand to one user"),
+                                ]),
+                                _vm._v(
+                                  " \n                                        "
+                                ),
+                                _c(
+                                  "option",
+                                  { attrs: { value: "one_follower" } },
+                                  [_vm._v("Sand to one followers")]
+                                ),
+                                _vm._v(
+                                  "\n                                        "
+                                ),
+                                _c(
+                                  "option",
+                                  { attrs: { value: "all_users" } },
+                                  [_vm._v("Sand to all users")]
+                                ),
+                                _vm._v(
+                                  " \n                                        "
+                                ),
+                                _c(
+                                  "option",
+                                  { attrs: { value: "all_followers" } },
+                                  [_vm._v("Sand to all folowers")]
+                                ),
+                                _vm._v(
+                                  " \n                                        "
+                                ),
+                                _c(
+                                  "option",
+                                  {
+                                    attrs: { value: "all_users_all_followers" },
+                                  },
+                                  [
+                                    _vm._v(
+                                      "Sand to all followers and all users"
+                                    ),
+                                  ]
+                                ),
+                                _vm._v(
+                                  " \n                                    "
+                                ),
+                              ]
+                            ),
+                            _vm._v(" \n                                "),
+                          ]
+                        ),
+                        _vm._v("\n                            "),
+                      ]),
+                      _vm._v("\n\n                            "),
+                      _c("div", { staticClass: "form-group clearfix row" }, [
+                        _vm._v("\n                                "),
+                        _c(
+                          "div",
+                          { staticClass: "col-md-12 image_add_modal_form" },
+                          [
+                            _vm._v("\n                                    "),
+                            _c(
+                              "select",
+                              {
+                                directives: [
+                                  {
+                                    name: "model",
+                                    rawName: "v-model",
+                                    value: _vm.notification_type,
+                                    expression: "notification_type",
+                                  },
+                                ],
+                                staticClass: "form-control",
+                                attrs: { name: "filter" },
+                                on: {
+                                  change: function ($event) {
+                                    var $$selectedVal = Array.prototype.filter
+                                      .call(
+                                        $event.target.options,
+                                        function (o) {
+                                          return o.selected
+                                        }
+                                      )
+                                      .map(function (o) {
+                                        var val =
+                                          "_value" in o ? o._value : o.value
+                                        return val
+                                      })
+                                    _vm.notification_type = $event.target
+                                      .multiple
+                                      ? $$selectedVal
+                                      : $$selectedVal[0]
+                                  },
+                                },
+                              },
+                              [
+                                _vm._v(
+                                  "\n                                        "
+                                ),
+                                _c(
+                                  "option",
+                                  { attrs: { value: "1", disabled: "" } },
+                                  [_vm._v("Select notification type")]
+                                ),
+                                _vm._v(
+                                  " \n                                        "
+                                ),
+                                _c("option", { attrs: { value: "article" } }, [
+                                  _vm._v("Article notification"),
+                                ]),
+                                _vm._v(
+                                  " \n                                        "
+                                ),
+                                _c("option", { attrs: { value: "text" } }, [
+                                  _vm._v("New mail"),
+                                ]),
+                                _vm._v(
+                                  " \n                                        "
+                                ),
+                                _c(
+                                  "option",
+                                  { attrs: { value: "article_and_text" } },
+                                  [_vm._v("Article and alse new text")]
+                                ),
+                                _vm._v(
+                                  " \n                                    "
+                                ),
+                              ]
+                            ),
+                            _vm._v(" \n                                "),
+                          ]
+                        ),
+                        _vm._v("\n                            "),
+                      ]),
+                      _vm._v("\n\n                        "),
+                    ]),
+                    _vm._v("\n                    "),
+                  ]),
+                  _vm._v("\n                "),
                 ]),
+                _vm._v(" "),
+                _c(
+                  "div",
+                  { attrs: { slot: "modal-footer" }, slot: "modal-footer" },
+                  [
+                    _c("div", { staticClass: "modal-footer" }, [
+                      _c(
+                        "button",
+                        {
+                          class: { "btn btn-primary": true },
+                          attrs: { type: "button" },
+                          on: {
+                            click: function ($event) {
+                              return _vm.send_mail()
+                            },
+                          },
+                        },
+                        [
+                          _vm._v(
+                            "\n                        Send\n                        "
+                          ),
+                        ]
+                      ),
+                    ]),
+                  ]
+                ),
               ]
             ),
-          ]
+          ],
+          1
         ),
-      ],
-      1
-    ),
+      ]),
+    ]),
   ])
 }
 var staticRenderFns = []

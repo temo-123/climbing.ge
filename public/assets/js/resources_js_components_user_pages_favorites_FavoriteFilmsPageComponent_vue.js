@@ -137,7 +137,7 @@ __webpack_require__.r(__webpack_exports__);
   data: function data() {
     return {
       MIX_SITE_URL: "climbing.loc",
-      MIX_APP_SSH: "http://",
+      MIX_APP_SSH: "https://",
       films: []
     };
   },

@@ -18,12 +18,18 @@ window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 window.axios.defaults.whithCredentials = true;
 
 window.axios.interceptors.response.use({}, err => {
-    if(err.response.status === 401 || error.response.status === 419){
+    if(err.response.status === 401 || err.response.status === 419){
         const token = localStorage.getItem('x_xsrf_token')
         if(token){
             localStorage.removeItem('x_xsrf_token')
         }
         router.push({name: "login"})
+    }
+    else if(err.response.status === 422){
+        return Promise.reject(err)
+    }
+    else{
+        return Promise.reject(err)
     }
 })
 
@@ -32,14 +38,3 @@ window.axios.interceptors.response.use({}, err => {
  * for events that are broadcast by Laravel. Echo and event broadcasting
  * allows your team to easily build robust real-time web applications.
  */
-
-// import Echo from 'laravel-echo';
-
-// window.Pusher = require('pusher-js');
-
-// window.Echo = new Echo({
-//     broadcaster: 'pusher',
-//     key: process.env.MIX_PUSHER_APP_KEY,
-//     cluster: process.env.MIX_PUSHER_APP_CLUSTER,
-//     forceTLS: true
-// });

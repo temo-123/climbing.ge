@@ -1,53 +1,53 @@
 <template>
     <div class="tabs"> 
-        <div class="row">
+        <div class="row" v-if="!is_mail_sending_procesing">
             <div class="form-group">
                 <button type="submit" class="btn btn-primary" @click="go_back()">Beck</button>
             </div>
         </div>
-        <div class="row">
+        <div class="row" v-if="!is_mail_sending_procesing">
             <div class="form-group">  
-                <button type="submit" class="btn btn-primary" v-on:click="add_article()" >Save</button>
+                <button type="submit" class="btn btn-primary" v-on:click="save()" >Save</button>
             </div>
         </div>
-        <div class="row">
-            <div class="col-md-12">
-                <div class="alert alert-danger" role="alert" v-if="error.global_article_error.published">
-                    {{ error.global_article_error.published[0] }}
+        <div class="row" v-if="!is_mail_sending_procesing">
+            <div class="col-md-12" v-if="error.length != 0">
+                <div class="alert alert-danger" role="alert" v-if="error.global_info_validation.published">
+                    Published - {{ error.global_info_validation.published[0] }}
                 </div>
 
-                <div class="alert alert-danger" role="alert" v-if="error.us_article_error.us_short_description">
-                    {{ error.us_article_error.us_short_description[0] }}
+                <div class="alert alert-danger" role="alert" v-if="error.us_info_validation.title">
+                    English title - {{ error.us_info_validation.title[0] }}
                 </div>
-                <div class="alert alert-danger" role="alert" v-if="error.us_article_error.us_short_description">
-                    {{ error.us_article_error.us_short_description[0] }}
+                <div class="alert alert-danger" role="alert" v-if="error.us_info_validation.short_description">
+                    English description - {{ error.us_info_validation.short_description[0] }}
                 </div>
-                <div class="alert alert-danger" role="alert" v-if="error.us_article_error.us_text">
-                    {{ error.us_article_error.us_text[0] }}
-                </div>
-
-                <div class="alert alert-danger" role="alert" v-if="error.ka_article_error.ka_short_description">
-                    {{ error.ka_article_error.ka_short_description[0] }}
-                </div>
-                <div class="alert alert-danger" role="alert" v-if="error.ka_article_error.ka_short_description">
-                    {{ error.ka_article_error.ka_short_description[0] }}
-                </div>
-                <div class="alert alert-danger" role="alert" v-if="error.ka_article_error.ka_text">
-                    {{ error.ka_article_error.ka_text[0] }}
+                <div class="alert alert-danger" role="alert" v-if="error.us_info_validation.text">
+                    English text - {{ error.us_info_validation.text[0] }}
                 </div>
 
-                <div class="alert alert-danger" role="alert" v-if="error.ru_article_error.ru_short_description">
-                    {{ error.ru_article_error.ru_short_description[0] }}
+                <div class="alert alert-danger" role="alert" v-if="error.ka_info_validation.title">
+                    Georgian title - {{ error.ka_info_validation.title[0] }}
                 </div>
-                <div class="alert alert-danger" role="alert" v-if="error.ru_article_error.ru_short_description">
-                    {{ error.ru_article_error.ru_short_description[0] }}
+                <div class="alert alert-danger" role="alert" v-if="error.ka_info_validation.short_description">
+                    Georgian description - {{ error.ka_info_validation.short_description[0] }}
                 </div>
-                <div class="alert alert-danger" role="alert" v-if="error.ru_article_error.ru_text">
-                    {{ error.ru_article_error.ru_text[0] }}
+                <div class="alert alert-danger" role="alert" v-if="error.ka_info_validation.text">
+                    Georgian text - {{ error.ka_info_validation.text[0] }}
+                </div>
+
+                <div class="alert alert-danger" role="alert" v-if="error.ru_info_validation.title">
+                    Russion title - {{ error.ru_info_validation.title[0] }}
+                </div>
+                <div class="alert alert-danger" role="alert" v-if="error.ru_info_validation.short_description">
+                    Russiondescription - {{ error.ru_info_validation.short_description[0] }}
+                </div>
+                <div class="alert alert-danger" role="alert" v-if="error.ru_info_validation.text">
+                    Russion text - {{ error.ru_info_validation.text[0] }}
                 </div>
             </div>
         </div>
-        <div class="row">
+        <div class="row" v-if="!is_mail_sending_procesing">
             <div class="col-md-12">
                 <div class="row">
                     <div class="col" >
@@ -119,6 +119,12 @@
             </div>
         </div>
 
+        <div class="row justify-content-center" v-if="is_mail_sending_procesing">
+            <div class="col-md-4">
+                <img :src="'../../../../../../public/images/site_img/loading.gif'" alt="loading">
+                <p>Pless wait! sanding notifications</p>
+            </div>
+        </div>
     </div>
 </template>
 
@@ -146,14 +152,10 @@
                 tab_num: 1,
                 category: this.$route.params.article_category,
 
-                error: {
-                    global_article_error: [],
-                    ka_article_error: [],
-                    ru_article_error: [],
-                    us_article_error: [],
-                },
+                error: [],
 
                 is_back_action: false,
+                is_mail_sending_procesing: false,
 
                 article_data: {
                     global_data: [],
@@ -182,16 +184,17 @@
         mounted() {
             //
         },
-        // beforeRouteLeave (to, from, next) {
-        //     if(this.is_back_action){
-        //         next()
-        //     }
-        //     else if (window.confirm('Added information will be deleted!!! Are you sure, you want go back?')) {
-        //         next()
-        //     } else {
-        //         next(false)
-        //     }
-        // },
+        beforeRouteLeave (to, from, next) {
+            if(this.is_back_action){
+                next()
+            }
+            else if (window.confirm('Added information will be deleted!!! Are you sure, you want go back?')) {
+                next()
+            } 
+            else {
+                next(false)
+            }
+        },
         methods: {
             global_blocks_action(event){
                 this.global_blocks = event
@@ -208,15 +211,11 @@
             upload_mount_route_images(event){
                 this.mount_route_images = event
             },
-
-            add_article() {
+            
+            save(){
                 this.article_data.global_data.us_title_for_url_title = this.article_data.en_data.title,
 
-                this.is_us_article_error = []
-                this.error.global_article_error = [],
-                this.error.ka_article_error = [],
-                this.error.ru_article_error = [],
-                this.error.us_article_error = []
+                this.error = []
 
                 let formData = new FormData();
                 formData.append('image', this.article_image);
@@ -232,7 +231,12 @@
                     loop_num = 0
                 }
                 else if(this.category == 'mount_route'){
-                    formData.append('mountain_route_images', this.mount_route_images)
+                    var loop_num = 0
+                    this.mount_route_images.forEach(mount_image => {
+                        formData.append('mountain_route_images['+loop_num+']', mount_image.image)
+                        loop_num++
+                    });
+                    loop_num = 0
                 }
 
                 axios
@@ -240,24 +244,38 @@
                     formData,
                 )
                 .then(response => {
-                    this.is_back_action = true
-                    // this.$refs.ArticleImage.checkForm()
-                    this.go_back()
+                    if(confirm('Do you want send notification about new article?')){
+                        this.sand_notification()
+                    }
+                    else{
+                        this.go_back(true)
+                    }
+                })
+                .catch(error => {
+                    if (error.response.status == 422) {
+                        this.error = error.response.data.validation
+                    }
+                })
+            },
+
+            sand_notification() {
+                this.is_mail_sending_procesing = true
+
+                axios
+                .post('../../../api/user/notifications/send_article_notification',{
+                    notification_category: this.category
+                } )
+                .then(response => {
+                    this.go_back(true)
                 })
                 .catch(err => {
                     console.log(err);
-                    // if (error.response.status == 422) {
-                    //     this.error.global_article_error = error.response.data['global_data']
-                    //     this.error.ka_article_error = error.response.data['ka_data']
-                    //     this.error.ru_article_error = error.response.data['ru_data']
-                    //     this.error.us_article_error = error.response.data['us_data']
-                    // }
-                    // this.is_us_article_error = true
                 })
+                .finally(() => this.is_dala_geting = false);
             },
             
-            
             go_back: function(back_action = false) {
+                this.is_back_action = true
                 if(back_action == false){
                     if(confirm('Are you sure, you want go back?')){
                         this.$router.go(-1)

@@ -241,7 +241,7 @@ __webpack_require__.r(__webpack_exports__);
     return {
       locale: localStorage.getItem('lang'),
       mix_site_url: "climbing.loc",
-      mix_app_ssh: "http://",
+      mix_app_ssh: "https://",
       mix_site_name: "climbing.ge"
     };
   },

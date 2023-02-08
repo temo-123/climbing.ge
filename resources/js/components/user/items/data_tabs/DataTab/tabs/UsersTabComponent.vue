@@ -20,7 +20,12 @@
         
         <td>|</td>
         <td>
-            <button type="submit" class="btn btn-danger" @click="open_create_ban_modal()">Create Ban (beta)</button>
+            <button type="submit" class="btn btn-warning" @click="open_create_ban_modal()">Create Ban (beta)</button>
+        </td>
+        
+        <td>|</td>
+        <td>
+            <button type="submit" class="btn btn-danger" @click="del_user(table_info.id)"><i class="fa fa-trash" aria-hidden="true"></i></button>
         </td>
 
         <stack-modal
@@ -198,6 +203,25 @@
                 this.roles = []
                 this.permissions_array = []
                 this.user_role = ''
+            },
+
+            del_user(user_id){
+                if(confirm('Are you sure, you want delite it?')){
+                    axios
+                    .post('../../api/user/del_user/'+user_id, {
+                        _method: 'DELETE'
+                    })
+                    .then(Response => {
+                        if(Response.data != 'You don`t can delete yourself! :)'){
+                            alert(Response.data);
+                            this.$emit('restart')
+                        }
+                        else if(Response.data == 'You don`t can delete yourself! :)'){
+                            alert(Response.data);
+                        }
+                    })
+                    .catch(error => console.log(error))
+                }
             },
 
             del_user_pemisino_from_db(id){

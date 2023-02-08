@@ -730,6 +730,13 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
  //https://github.com/Jexordexan/vue-slicksort
 
  //https://innologica.github.io/vue-stackable-modal/#sample-css
@@ -755,7 +762,7 @@ __webpack_require__.r(__webpack_exports__);
         favorite_product: false,
         interested_event: false
       },
-      action_id: 0,
+      // action_id: 0,
       notification_is_refresh: false,
       notification_reset_id: 0
     };
@@ -769,20 +776,22 @@ __webpack_require__.r(__webpack_exports__);
 
       this.notification_is_refresh = true;
       axios.get("../../api/options/get_user_notification_data/").then(function (response) {
-        _this.action_id = response.data.id;
-        _this.data = {
-          add_new_gym: response.data.add_new_gym,
-          add_new_ice_spot: response.data.add_new_ice_spot,
-          add_new_outdoor_spot: response.data.add_new_outdoor_spot,
-          add_new_product: response.data.add_new_product,
-          add_new_sector: response.data.add_new_sector,
-          add_new_service: response.data.add_new_service,
-          add_new_techtip: response.data.add_new_techtip,
-          favorite_film: response.data.favorite_film,
-          favorite_outdoor: response.data.favorite_outdoor,
-          favorite_product: response.data.favorite_product,
-          interested_event: response.data.interested_event
-        }, _this.notification_is_refresh = false;
+        // this.action_id = response.data.id
+        // this.data = {
+        //     add_new_gym: response.data.add_new_gym,
+        //     add_new_ice_spot: response.data.add_new_ice_spot,
+        //     add_new_outdoor_spot: response.data.add_new_outdoor_spot,
+        //     add_new_product: response.data.add_new_product,
+        //     add_new_sector: response.data.add_new_sector,
+        //     add_new_service: response.data.add_new_service,
+        //     add_new_techtip: response.data.add_new_techtip,
+        //     favorite_film: response.data.favorite_film,
+        //     favorite_outdoor: response.data.favorite_outdoor,
+        //     favorite_product: response.data.favorite_product,
+        //     interested_event: response.data.interested_event,
+        // },
+        _this.data = response.data;
+        _this.notification_is_refresh = false;
         _this.notification_reset_id++;
       })["catch"](function (error) {
         return console.log(error);
@@ -792,7 +801,7 @@ __webpack_require__.r(__webpack_exports__);
       var _this2 = this;
 
       this.user_is_refresh = true;
-      axios.post("../../api/options/update_user_notification_data/" + this.action_id, {
+      axios.post("../../api/options/update_user_notification_data/", {
         data: this.data,
         _method: 'POST'
       }).then(function (response) {
@@ -805,6 +814,7 @@ __webpack_require__.r(__webpack_exports__);
       if (window.confirm('Are you sure, you want activate all notifications?')) {
         this.data = {
           add_new_gym: true,
+          news: true,
           add_new_ice_spot: true,
           add_new_outdoor_spot: true,
           add_new_product: true,
@@ -823,6 +833,7 @@ __webpack_require__.r(__webpack_exports__);
       if (window.confirm('Are you sure, you want canceled all notifications?')) {
         this.data = {
           add_new_gym: false,
+          news: false,
           add_new_ice_spot: false,
           add_new_outdoor_spot: false,
           add_new_product: false,
@@ -3393,7 +3404,55 @@ var render = function () {
           _vm._m(2),
           _vm._v(" "),
           _c("tr", [
-            _c("td", [_vm._v("Add new sector")]),
+            _c("td", [_vm._v("News")]),
+            _vm._v(" "),
+            _c("td", [_vm._v("|")]),
+            _vm._v(" "),
+            _c("td", [
+              _c("input", {
+                directives: [
+                  {
+                    name: "model",
+                    rawName: "v-model",
+                    value: _vm.data.news,
+                    expression: "data.news",
+                  },
+                ],
+                attrs: { type: "checkbox" },
+                domProps: {
+                  checked: Array.isArray(_vm.data.news)
+                    ? _vm._i(_vm.data.news, null) > -1
+                    : _vm.data.news,
+                },
+                on: {
+                  change: function ($event) {
+                    var $$a = _vm.data.news,
+                      $$el = $event.target,
+                      $$c = $$el.checked ? true : false
+                    if (Array.isArray($$a)) {
+                      var $$v = null,
+                        $$i = _vm._i($$a, $$v)
+                      if ($$el.checked) {
+                        $$i < 0 && _vm.$set(_vm.data, "news", $$a.concat([$$v]))
+                      } else {
+                        $$i > -1 &&
+                          _vm.$set(
+                            _vm.data,
+                            "news",
+                            $$a.slice(0, $$i).concat($$a.slice($$i + 1))
+                          )
+                      }
+                    } else {
+                      _vm.$set(_vm.data, "news", $$c)
+                    }
+                  },
+                },
+              }),
+            ]),
+          ]),
+          _vm._v(" "),
+          _c("tr", [
+            _c("td", [_vm._v("New sector")]),
             _vm._v(" "),
             _c("td", [_vm._v("|")]),
             _vm._v(" "),
@@ -3446,7 +3505,7 @@ var render = function () {
           ]),
           _vm._v(" "),
           _c("tr", [
-            _c("td", [_vm._v("Add new outdoor climbing spot")]),
+            _c("td", [_vm._v("New outdoor climbing spot")]),
             _vm._v(" "),
             _c("td", [_vm._v("|")]),
             _vm._v(" "),
@@ -3499,7 +3558,7 @@ var render = function () {
           ]),
           _vm._v(" "),
           _c("tr", [
-            _c("td", [_vm._v("Add new ice climbing spot")]),
+            _c("td", [_vm._v("New ice climbing spot")]),
             _vm._v(" "),
             _c("td", [_vm._v("|")]),
             _vm._v(" "),
@@ -3552,7 +3611,7 @@ var render = function () {
           ]),
           _vm._v(" "),
           _c("tr", [
-            _c("td", [_vm._v("Add new techtip")]),
+            _c("td", [_vm._v("New techtip")]),
             _vm._v(" "),
             _c("td", [_vm._v("|")]),
             _vm._v(" "),
@@ -3605,7 +3664,7 @@ var render = function () {
           ]),
           _vm._v(" "),
           _c("tr", [
-            _c("td", [_vm._v("Add new gym")]),
+            _c("td", [_vm._v("New gym")]),
             _vm._v(" "),
             _c("td", [_vm._v("|")]),
             _vm._v(" "),
@@ -3654,7 +3713,7 @@ var render = function () {
           ]),
           _vm._v(" "),
           _c("tr", [
-            _c("td", [_vm._v("Add new product")]),
+            _c("td", [_vm._v("New product")]),
             _vm._v(" "),
             _c("td", [_vm._v("|")]),
             _vm._v(" "),
@@ -3707,7 +3766,7 @@ var render = function () {
           ]),
           _vm._v(" "),
           _c("tr", [
-            _c("td", [_vm._v("Add new service")]),
+            _c("td", [_vm._v("New service")]),
             _vm._v(" "),
             _c("td", [_vm._v("|")]),
             _vm._v(" "),

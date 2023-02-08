@@ -23,7 +23,7 @@
 </template>
 
 <script>
-    import eventCard from './cards/EventCardComponent'
+    import eventCard from './cards/IndexEventCardComponent'
     export default {
         data(){
             return {

@@ -11,7 +11,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
-/* harmony import */ var _cards_EventCardComponent__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./cards/EventCardComponent */ "./resources/js/components/site/items/cards/EventCardComponent.vue");
+/* harmony import */ var _cards_IndexEventCardComponent__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./cards/IndexEventCardComponent */ "./resources/js/components/site/items/cards/IndexEventCardComponent.vue");
 //
 //
 //
@@ -44,7 +44,7 @@ __webpack_require__.r(__webpack_exports__);
     };
   },
   components: {
-    eventCard: _cards_EventCardComponent__WEBPACK_IMPORTED_MODULE_0__["default"]
+    eventCard: _cards_IndexEventCardComponent__WEBPACK_IMPORTED_MODULE_0__["default"]
   },
   mounted: function mounted() {
     this.get_event();
@@ -83,7 +83,7 @@ __webpack_require__.r(__webpack_exports__);
     return {
       locale: localStorage.getItem('lang'),
       mix_site_url: "climbing.loc",
-      mix_app_ssh: "http://",
+      mix_app_ssh: "https://",
       mix_site_name: "climbing.ge"
     };
   },

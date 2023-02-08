@@ -5,20 +5,19 @@
         "menu indoor climbing": "Indoor climbing",
         "menu outdoor climbing": "Outdoor climbing",
         "menu ice climbing": "Ice & mix",
+        "menu events": "Events & competitions",
         "menu mountaineering": "Mountaineering",
         "menu other": "Other",
         "menu about us": "About us",
         "menu login" :"Login",
         "menu sitemap": "Sitemap",
     
-        
-    
         "title news": "Newss",
         "title topo": "Topo",
         "title what we do": "what we do",
         "title gallery" :"Gallery",
         "title tech tips" :"Tech tips",
-        "title events" :"Events",
+        "title events" :"Events and Cometitions",
         "title climbing": "Climbing",
         "title indoor climbing": "Indoor climbing",
         "title outdoor climbing": "Outdoor climbing",
@@ -101,7 +100,7 @@
 
     "user menu favorite products": "My favorite products",
     "user menu favorite films": "My favorite films",
-    "user menu admin page": "Admin page",
+    "user menu admin dashboard": "Admin dashboard",
     "user menu home": "My page",
     "user menu cart": "My cart",
     "user menu orders": "Orders",

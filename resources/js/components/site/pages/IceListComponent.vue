@@ -34,8 +34,8 @@
         </div>
         
         <metaData 
-            :title = "'Ice climbing in Georgia'"
-            :description = "'Ice climbing spots in Georgia'"
+            :title = "$t('title ice climbing')"
+            :description = "this.$siteData.ice_description"
             :image = "'../../../../public/images/meta_img/ice.jpg'"
         />
     </div>

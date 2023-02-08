@@ -161,7 +161,7 @@ const app = new Vue({
     router: serviceRoutes,
 
     mounted() {
-        // this.get_site_data();
+        this.get_site_data();
         // this.get_auth_user_data()
     },
     methods: {

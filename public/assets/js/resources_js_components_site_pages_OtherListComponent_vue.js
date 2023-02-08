@@ -122,7 +122,7 @@ __webpack_require__.r(__webpack_exports__);
     return {
       locale: localStorage.getItem('lang'),
       mix_site_url: "climbing.loc",
-      mix_app_ssh: "http://",
+      mix_app_ssh: "https://",
       mix_site_name: "climbing.ge"
     };
   },
@@ -1372,8 +1372,8 @@ var render = function () {
       _vm._v(" "),
       _c("metaData", {
         attrs: {
-          title: "Other outdoor activity in Georgia",
-          description: "Other outdoor activity in Georgia",
+          title: _vm.$t("title other"),
+          description: this.$siteData.other_activity_description,
           image: "../../../../public/images/meta_img/other.jpg",
         },
       }),

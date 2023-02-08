@@ -84,6 +84,7 @@
 
                             <li><router-link :to="{name: 'mountaineerings', params: {lang: this.$i18n.locale}}" exact> <span> {{ $t('menu mountaineering') }}      </span> </router-link></li>
                             <li><router-link :to="{name: 'ices', params: {lang: this.$i18n.locale}}" exact>            <span> {{ $t('menu ice climbing') }}        </span> </router-link></li>
+                            <li><router-link :to="{name: 'events', params: {lang: this.$i18n.locale}}" exact>            <span> {{ $t('menu events') }}        </span> </router-link></li>
                             <li><router-link :to="{name: 'others', params: {lang: this.$i18n.locale}}" exact>          <span> {{ $t('menu other') }}               </span> </router-link></li>
                             <li><router-link :to="{name: 'about_us', params: {lang: this.$i18n.locale}}" exact>        <span> {{ $t('menu about us') }}            </span> </router-link></li>
                             

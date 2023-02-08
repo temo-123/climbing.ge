@@ -122,7 +122,7 @@ __webpack_require__.r(__webpack_exports__);
     return {
       locale: localStorage.getItem('lang'),
       mix_site_url: "climbing.loc",
-      mix_app_ssh: "http://",
+      mix_app_ssh: "https://",
       mix_site_name: "climbing.ge"
     };
   },
@@ -1575,8 +1575,8 @@ var render = function () {
       _vm._v(" "),
       _c("metaData", {
         attrs: {
-          title: "Indoor climbing in Georgia",
-          description: "Indoor climbing gyms in Georgia",
+          title: _vm.$t("title indoor climbing"),
+          description: this.$siteData.indoor_description,
           image: "../../../../public/images/meta_images/indoor.jpg",
         },
       }),

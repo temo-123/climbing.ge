@@ -78,6 +78,23 @@
                                             'table_add_url': 'eventAdd', 
                                             // 'table_edit_url': 'spot_category_edit',
                                         });
+                    this.get_competitions()
+                })
+                .catch(
+                    error => console.log(error)
+                )
+                .finally(() => this.event_loading = false);
+            },
+            get_competitions(){
+                axios
+                .get("../api/competition/get_all_competitions/")
+                .then(response => {
+                    this.data_for_tab.push({'id': 2,
+                                            'data': response.data, 
+                                            'table_name': "Competitions",
+                                            'table_add_url': 'eventAdd', 
+                                            // 'table_edit_url': 'spot_category_edit',
+                                        });
                 })
                 .catch(
                     error => console.log(error)

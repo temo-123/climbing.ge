@@ -77,12 +77,29 @@ Route::group(['namespace'=>'Api'], function() {
         Route::get('/get_editing_event/{event_id}', 'get_editing_event');
         Route::delete('/del_event/{event_id}', 'del_event');
 
+        Route::get('/get_all_competitions', 'get_all_competitions');
+        Route::post('/add_competition', 'add_competition');
+        Route::post('/edit_competition/{competition_id}', 'edit_competition');
+        Route::get('/get_editing_competition/{competition_id}', 'get_editing_competition');
+        Route::delete('/del_competition/{competition_id}', 'del_competition');
+
         Route::get('/get_event_on_site_list/{lang}/', 'get_event_on_site_list');
         Route::get('/get_event_on_site_page/{lang}/{url_title}', 'get_event_on_site_page');
 
         Route::post('add_to_interested_events/', 'FaworitesController@add_to_interested_events');
         Route::get('get_interested_events/', 'FaworitesController@get_interested_events');
         Route::delete('del_interested_event/{article_id}', 'FaworitesController@del_interested_event');
+    });
+
+    /*
+    *   Competitions
+    */
+    Route::controller(CompetitionController::class)->prefix('competition')->group( function() {
+        Route::get('/get_all_competitions', 'get_all_competitions');
+        Route::post('/add_competition', 'add_competition');
+        Route::post('/edit_competition/{competition_id}', 'edit_competition');
+        Route::get('/get_editing_competition/{competition_id}', 'get_editing_competition');
+        Route::delete('/del_competition/{competition_id}', 'del_competition');
     });
 
     /*
@@ -352,6 +369,14 @@ Route::group(['namespace'=>'Api'], function() {
     Route::controller(UsersController::class)->prefix('user')->group( function() {
         Route::post('/update_password', 'update_password');
         Route::get('/get_auth_user_permissions', 'get_auth_user_permissions');
+
+        Route::post('/create_user_by_admin', 'create_user_by_admin');
+
+        Route::delete('/del_user/{user_id}', 'del_user');
+
+        Route::controller(UserNotificationsController::class)->prefix('notifications')->group( function() {
+            Route::post('/send_article_notification', 'send_article_notification');
+        });
     });
 
     Route::apiResource('/users', 'UsersController');
@@ -367,7 +392,7 @@ Route::group(['namespace'=>'Api'], function() {
         Route::post('/user_info_update/{user_id}', 'user_info_update');
 
         Route::get('/get_user_notification_data', 'get_user_notification_data');
-        Route::post('/update_user_notification_data/{notification_id}', 'update_user_notification_data');
+        Route::post('/update_user_notification_data', 'update_user_notification_data');
     });
 
     

@@ -32,6 +32,7 @@
         },
         data: function () {
             return {
+                sportChartData: [],
                 sportChartOptions: {
                     chart: {
                         title: 'Bouldering route quantity',
@@ -40,16 +41,14 @@
                     }
                 },
 
-                sportChartData: [],
-
+                bolderChartData: [],
                 boulderChartOptions: {
                     chart: {
                         title: 'Sport climbing route quantity',
                         description: 'Sport climbing route quantity in this area',
-                        subtitle: 'Sales, Expenses, and Profit: 2014-2017',
+                        // subtitle: 'Sales, Expenses, and Profit: 2014-2017',
                     }
                 },
-                bolderChartData: [],
 
                 id: this.outdoor_region_article_id
             };

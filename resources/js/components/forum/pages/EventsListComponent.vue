@@ -29,7 +29,7 @@
 
 <script>
     import rightMenu from '../items/RightMenuComponent.vue'
-    import eventCard from '../../site/items/cards/EventCardComponent'
+    import eventCard from '../../site/items/cards/IndexEventCardComponent'
 
     export default {
         components: {

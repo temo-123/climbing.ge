@@ -78,49 +78,56 @@
                         <td>--</td>
                     </tr>
                     <tr>
-                        <td>Add new sector</td>
+                        <td>News</td>
+                        <td>|</td>
+                        <td>
+                            <input type="checkbox" v-model="data.news">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>New sector</td>
                         <td>|</td>
                         <td>
                             <input type="checkbox" v-model="data.add_new_sector">
                         </td>
                     </tr>
                     <tr>
-                        <td>Add new outdoor climbing spot</td>
+                        <td>New outdoor climbing spot</td>
                         <td>|</td>
                         <td>
                             <input type="checkbox" v-model="data.add_new_outdoor_spot">
                         </td>
                     </tr>
                     <tr>
-                        <td>Add new ice climbing spot</td>
+                        <td>New ice climbing spot</td>
                         <td>|</td>
                         <td>
                             <input type="checkbox" v-model="data.add_new_ice_spot">
                         </td>
                     </tr>
                     <tr>
-                        <td>Add new techtip</td>
+                        <td>New techtip</td>
                         <td>|</td>
                         <td>
                             <input type="checkbox" v-model="data.add_new_techtip">
                         </td>
                     </tr>
                     <tr>
-                        <td>Add new gym</td>
+                        <td>New gym</td>
                         <td>|</td>
                         <td>
                             <input type="checkbox" v-model="data.add_new_gym">
                         </td>
                     </tr>
                     <tr>
-                        <td>Add new product</td>
+                        <td>New product</td>
                         <td>|</td>
                         <td>
                             <input type="checkbox" v-model="data.add_new_product">
                         </td>
                     </tr>
                     <tr>
-                        <td>Add new service</td>
+                        <td>New service</td>
                         <td>|</td>
                         <td>
                             <input type="checkbox" v-model="data.add_new_service">
@@ -158,7 +165,7 @@
                     interested_event: false,
                 },
 
-                action_id: 0,
+                // action_id: 0,
 
                 notification_is_refresh: false,
                 notification_reset_id: 0,
@@ -174,20 +181,22 @@
                 axios
                 .get("../../api/options/get_user_notification_data/")
                 .then(response => {
-                    this.action_id = response.data.id
-                    this.data = {
-                        add_new_gym: response.data.add_new_gym,
-                        add_new_ice_spot: response.data.add_new_ice_spot,
-                        add_new_outdoor_spot: response.data.add_new_outdoor_spot,
-                        add_new_product: response.data.add_new_product,
-                        add_new_sector: response.data.add_new_sector,
-                        add_new_service: response.data.add_new_service,
-                        add_new_techtip: response.data.add_new_techtip,
-                        favorite_film: response.data.favorite_film,
-                        favorite_outdoor: response.data.favorite_outdoor,
-                        favorite_product: response.data.favorite_product,
-                        interested_event: response.data.interested_event,
-                    },
+                    // this.action_id = response.data.id
+                    // this.data = {
+                    //     add_new_gym: response.data.add_new_gym,
+                    //     add_new_ice_spot: response.data.add_new_ice_spot,
+                    //     add_new_outdoor_spot: response.data.add_new_outdoor_spot,
+                    //     add_new_product: response.data.add_new_product,
+                    //     add_new_sector: response.data.add_new_sector,
+                    //     add_new_service: response.data.add_new_service,
+                    //     add_new_techtip: response.data.add_new_techtip,
+                    //     favorite_film: response.data.favorite_film,
+                    //     favorite_outdoor: response.data.favorite_outdoor,
+                    //     favorite_product: response.data.favorite_product,
+                    //     interested_event: response.data.interested_event,
+                    // },
+
+                    this.data = response.data
 
                     this.notification_is_refresh = false
                     this.notification_reset_id++
@@ -200,7 +209,7 @@
             update_user_notification_data: function(){
                 this.user_is_refresh = true
                 axios
-                .post("../../api/options/update_user_notification_data/"+this.action_id,{
+                .post("../../api/options/update_user_notification_data/", {
                     data: this.data,
 
                     _method: 'POST'
@@ -217,6 +226,7 @@
                 if (window.confirm('Are you sure, you want activate all notifications?')) {
                     this.data = {
                         add_new_gym: true,
+                        news: true,
                         add_new_ice_spot: true,
                         add_new_outdoor_spot: true,
                         add_new_product: true,
@@ -236,6 +246,7 @@
                 if (window.confirm('Are you sure, you want canceled all notifications?')) {
                     this.data = {
                         add_new_gym: false,
+                        news: false,
                         add_new_ice_spot: false,
                         add_new_outdoor_spot: false,
                         add_new_product: false,

@@ -143,7 +143,7 @@ __webpack_require__.r(__webpack_exports__);
     return {
       products: [],
       MIX_SITE_URL: "climbing.loc",
-      MIX_APP_SSH: "http://" // filtred_products: [],
+      MIX_APP_SSH: "https://" // filtred_products: [],
       // // site_data: [],
       // min_price: 0,
       // max_price: 1000,

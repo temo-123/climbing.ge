@@ -3,56 +3,16 @@
         <div class="col-sm-3">
             <left-menu />
         </div>
+
         <div class="col-sm-9">
-            <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal">Open Modal</button>
-            <!-- Modal -->
-            <div class="modal fade" id="myModal" role="dialog">
-                <div class="modal-dialog">
-                    <!-- Modal content-->
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <button
-                                type="button"
-                                class="close"
-                                data-dismiss="modal"
-                            >
-                                &times;
-                            </button>
-                            <h4 class="modal-title">Modal Header</h4>
-                        </div>
-                        <div class="modal-body">
-                            <p>Some text in the modal.</p>
-                        </div>
-                        <div class="modal-footer">
-                            <button
-                                type="button"
-                                class="btn btn-default"
-                                data-dismiss="modal"
-                            >
-                                Close
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-
-
-
-
-
 
             <div class="row justify-content-center">
                 <div class="col-md-12">
-                    <!-- <div class="card"> -->
-                        <!-- <div class="card-header"> __('Dashboard') }}</div> -->
 
-                        <!-- <div class="card-body"> -->
-                            <div class="alert alert-success" role="alert">
-                                <h1>Hi {{ this.user['name'] }}</h1>
-                            </div>
-                        <!-- </div> -->
-                    <!-- </div> -->
+                    <div class="alert alert-success" role="alert">
+                        <h1>Hi {{ this.user['name'] }}</h1>
+                    </div>
+                            
                 </div>
             </div>
 
@@ -95,7 +55,7 @@
                     </span>
                     <span v-if="!this.user['email_verified_at']">
                         <div class="alert alert-danger" role="alert">
-                            <strong>Danger!</strong> We sent you an email for verification, please check your email and confirm it.
+                            <strong>Danger!</strong> We sent you an email for verification, please check your email and confirm it. If you dont take this male you can call new mail. For new mail -> clicl hear.
                         </div>
                     </span>
 
@@ -116,18 +76,6 @@
                             </div>
                         </div>
                     </span>
-
-                    <!-- <span>
-                        <div class="alert alert-warning" role="alert">
-                            <strong>Warning!</strong> One or more comments have been reported. Check <router-link :to="{name: 'comentsList'}" >comments list</router-link> page!
-                        </div>
-                    </span> -->
-
-                    <!-- <span>
-                        <div class="alert alert-warning" role="alert">
-                            <strong>Warning!</strong> One or more of your comments was delited by admin. Your comment will not be visible on the article page. You can see the reason for deletion on <router-link :to="{name: 'myComentsList'}" > comment list page </router-link>!
-                        </div>
-                    </span> -->
 
                     <span v-for="query in user_queries" :key="query.id">
                         <div class="alert alert-warning" role="alert">

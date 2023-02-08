@@ -197,7 +197,7 @@ class CommentController extends Controller
     public function add_comment_complaint(Request $request)
     {
         if (Auth::user()) {
-            $user_complaint_count = Article_comment_complaint::where('email', '=', $request->email)->where('comment_id', '=', $request->comment_id)->count();
+            $user_complaint_count = Article_comment_complaint::where('user_id', '=', Auth::user())->where('comment_id', '=', $request->comment_id)->count();
 
             if($user_complaint_count){
                 return('You olrede have complaint on this comment!');
@@ -207,7 +207,7 @@ class CommentController extends Controller
         
                 $comment_complaint->comment_id = $request->comment_id;
                 $comment_complaint->complaint = $request->comment_complaint;
-                $comment_complaint->email = $request->email;
+                // $comment_complaint->email = $request->email;
                 $comment_complaint->user_id = Auth::user()->id;
                 
                 $comment_complaint->save();

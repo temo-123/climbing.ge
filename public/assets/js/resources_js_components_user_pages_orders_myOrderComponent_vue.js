@@ -1661,6 +1661,11 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
  //https://github.com/Jexordexan/vue-slicksort
 
  //https://innologica.github.io/vue-stackable-modal/#sample-css
@@ -1675,18 +1680,20 @@ __webpack_require__.r(__webpack_exports__);
     return {
       is_user_add_modal: false,
       // user_new_parmission: '',
-      // is_parmision_error: false,
+      is_pass_confirm_error: false,
       // parmision_error: [],
       modalClass: '',
       errors: [],
-      name: '',
-      surname: '',
-      email: '',
-      phone_number: '',
-      country: '',
-      city: '',
-      password: '',
-      password_confirmation: ''
+      data: {
+        name: '',
+        surname: '',
+        email: '',
+        phone_number: '',
+        country: '',
+        city: '',
+        password: '',
+        password_confirmation: ''
+      }
     };
   },
   mounted: function mounted() {},
@@ -1696,55 +1703,38 @@ __webpack_require__.r(__webpack_exports__);
     },
     close_user_add_modal: function close_user_add_modal() {
       this.is_user_add_modal = false;
+      this.data = {
+        name: '',
+        surname: '',
+        email: '',
+        phone_number: '',
+        country: '',
+        city: '',
+        password: '',
+        password_confirmation: ''
+      };
     },
     add_user: function add_user() {
       var _this = this;
 
-      axios.post('/register', {
-        name: this.name,
-        surname: this.surname,
-        email: this.email,
-        phone_number: this.phone_number,
-        country: this.country,
-        city: this.city,
-        password: this.password,
-        password_confirmation: this.password_confirmation
-      }).then(function (res) {
-        // console.log(res);
-        // localStorage.setItem('x_xsrf_token', res.config.headers['X-XSRF-TOKEN'])
-        // this.$router.push({ path: "/" });
-        _this.close_user_add_modal();
+      if (this.data.password == this.data.password_confirmation) {
+        axios.post('../../api/user/create_user_by_admin', {
+          data: this.data
+        }).then(function (res) {
+          _this.close_user_add_modal();
 
-        alert('User create sucsesful!');
-      })["catch"](function (err) {
-        console.log(err);
-      });
-    } // register(){
-    // axios
-    //     .get('/sanctum/csrf-cookie')
-    //     .then(response => {
-    //     axios
-    //         .post('/register',{
-    //         name: this.name,
-    //         surname: this.surname,
-    //         email: this.email,
-    //         phone_number: this.phone_number,
-    //         country: this.country,
-    //         city: this.city,
-    //         password: this.password,
-    //         password_confirmation: this.password_confirmation
-    //         })
-    //         .then(res=>{
-    //         // console.log(res);
-    //         localStorage.setItem('x_xsrf_token', res.config.headers['X-XSRF-TOKEN'])
-    //         this.$router.push({ path: "/" });
-    //         })
-    //         .catch(err => {
-    //         console.log(err);
-    //         })
-    //     })
-    // }
+          _this.update_users(); // alert('User create sucsesful!')
 
+        })["catch"](function (err) {
+          console.log(err);
+        });
+      } else {
+        this.is_pass_confirm_error = true;
+      }
+    },
+    update_users: function update_users() {
+      this.$emit('restart');
+    }
   }
 });
 
@@ -4409,6 +4399,11 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
  //https://innologica.github.io/vue-stackable-modal/#sample-css
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
@@ -4462,21 +4457,40 @@ __webpack_require__.r(__webpack_exports__);
       this.permissions_array = [];
       this.user_role = '';
     },
-    del_user_pemisino_from_db: function del_user_pemisino_from_db(id) {
+    del_user: function del_user(user_id) {
       var _this = this;
+
+      if (confirm('Are you sure, you want delite it?')) {
+        axios.post('../../api/user/del_user/' + user_id, {
+          _method: 'DELETE'
+        }).then(function (Response) {
+          if (Response.data != 'You don`t can delete yourself! :)') {
+            alert(Response.data);
+
+            _this.$emit('restart');
+          } else if (Response.data == 'You don`t can delete yourself! :)') {
+            alert(Response.data);
+          }
+        })["catch"](function (error) {
+          return console.log(error);
+        });
+      }
+    },
+    del_user_pemisino_from_db: function del_user_pemisino_from_db(id) {
+      var _this2 = this;
 
       if (confirm('Are you sure, you want delite it?')) {
         axios.post('../../api/role/del_user_pemisino/' + id + '/' + this.action_user, {
           _method: 'DELETE'
         }).then(function (Response) {
-          _this.get_user_permissions_and_roles(_this.action_user);
+          _this2.get_user_permissions_and_roles(_this2.action_user);
         })["catch"](function (error) {
           return console.log(error);
         });
       }
     },
     edit_permissions: function edit_permissions() {
-      var _this2 = this;
+      var _this3 = this;
 
       axios.post("../api/role/edit_permissions_and_role/" + this.action_user, {
         new_permissions: this.permissions_array,
@@ -4485,41 +4499,41 @@ __webpack_require__.r(__webpack_exports__);
         // this.user_role  = response.data.role[0].name
         // this.user_permissions = response.data.permissions
         // this.roles = response.data
-        _this2.close_role_editing_modal();
+        _this3.close_role_editing_modal();
       })["catch"](function (error) {
         return console.log(error);
       });
     },
     get_user_permissions_and_roles: function get_user_permissions_and_roles() {
-      var _this3 = this;
+      var _this4 = this;
 
       axios.get("../api/role/get_user_permissions/" + this.action_user).then(function (response) {
         // alert(response.data.role.name)
         if (response.data.role) {
-          _this3.user_role = response.data.role.id;
+          _this4.user_role = response.data.role.id;
         }
 
         if (response.data.permissions.length > 0) {
-          _this3.user_permissions = response.data.permissions;
+          _this4.user_permissions = response.data.permissions;
         }
       })["catch"](function (error) {
         return console.log(error);
       });
     },
     get_roles: function get_roles() {
-      var _this4 = this;
+      var _this5 = this;
 
       axios.get("../api/role/").then(function (response) {
-        _this4.roles = response.data;
+        _this5.roles = response.data;
       })["catch"](function (error) {
         return console.log(error);
       });
     },
     get_permissions: function get_permissions() {
-      var _this5 = this;
+      var _this6 = this;
 
       axios.get("../api/parmisions_list/").then(function (response) {
-        _this5.permissions = response.data;
+        _this6.permissions = response.data;
       })["catch"](function (error) {
         return console.log(error);
       });
@@ -4695,6 +4709,14 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
+//
+//
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -9565,7 +9587,7 @@ var render = function () {
                                       },
                                     },
                                   },
-                                  [_vm._v("Add new user (beta)")]
+                                  [_vm._v("Add new user")]
                                 ),
                               ])
                             : filtr_data.table_name == "Products" &&
@@ -10078,7 +10100,10 @@ var render = function () {
       _vm._v(" "),
       _c("addRoleModal", { ref: "add_role_modal" }),
       _vm._v(" "),
-      _c("addUserModal", { ref: "add_user_modal" }),
+      _c("addUserModal", {
+        ref: "add_user_modal",
+        on: { restart: _vm.update },
+      }),
       _vm._v(" "),
       _vm.table_data[_vm.tab_num - 1].table_name == "Orders"
         ? _c("articleQuickViewModal")
@@ -11360,15 +11385,14 @@ var render = function () {
           [
             _vm._v("\n            "),
             _vm._v("\n                "),
-            _c("label", { attrs: { for: "email" } }, [_vm._v("Name")]),
             _vm._v("\n                "),
             _c("input", {
               directives: [
                 {
                   name: "model",
                   rawName: "v-model",
-                  value: _vm.name,
-                  expression: "name",
+                  value: _vm.data.name,
+                  expression: "data.name",
                 },
               ],
               staticClass: "form-control",
@@ -11379,28 +11403,27 @@ var render = function () {
                 placeholder: "Enter name",
                 required: "",
               },
-              domProps: { value: _vm.name },
+              domProps: { value: _vm.data.name },
               on: {
                 input: function ($event) {
                   if ($event.target.composing) {
                     return
                   }
-                  _vm.name = $event.target.value
+                  _vm.$set(_vm.data, "name", $event.target.value)
                 },
               },
             }),
             _vm._v("\n                "),
             _vm._v("\n            "),
             _vm._v("\n                "),
-            _c("label", { attrs: { for: "email" } }, [_vm._v("surname")]),
             _vm._v("\n                "),
             _c("input", {
               directives: [
                 {
                   name: "model",
                   rawName: "v-model",
-                  value: _vm.surname,
-                  expression: "surname",
+                  value: _vm.data.surname,
+                  expression: "data.surname",
                 },
               ],
               staticClass: "form-control",
@@ -11411,28 +11434,27 @@ var render = function () {
                 placeholder: "Enter surname",
                 required: "",
               },
-              domProps: { value: _vm.surname },
+              domProps: { value: _vm.data.surname },
               on: {
                 input: function ($event) {
                   if ($event.target.composing) {
                     return
                   }
-                  _vm.surname = $event.target.value
+                  _vm.$set(_vm.data, "surname", $event.target.value)
                 },
               },
             }),
             _vm._v("\n                "),
             _vm._v("\n            "),
             _vm._v("\n                "),
-            _c("label", { attrs: { for: "email" } }, [_vm._v("Email address")]),
             _vm._v("\n                "),
             _c("input", {
               directives: [
                 {
                   name: "model",
                   rawName: "v-model",
-                  value: _vm.email,
-                  expression: "email",
+                  value: _vm.data.email,
+                  expression: "data.email",
                 },
               ],
               staticClass: "form-control",
@@ -11443,28 +11465,27 @@ var render = function () {
                 placeholder: "Enter email",
                 required: "",
               },
-              domProps: { value: _vm.email },
+              domProps: { value: _vm.data.email },
               on: {
                 input: function ($event) {
                   if ($event.target.composing) {
                     return
                   }
-                  _vm.email = $event.target.value
+                  _vm.$set(_vm.data, "email", $event.target.value)
                 },
               },
             }),
             _vm._v("\n                "),
             _vm._v("\n            "),
             _vm._v("\n                "),
-            _c("label", { attrs: { for: "country" } }, [_vm._v("country")]),
             _vm._v("\n                "),
             _c("input", {
               directives: [
                 {
                   name: "model",
                   rawName: "v-model",
-                  value: _vm.country,
-                  expression: "country",
+                  value: _vm.data.country,
+                  expression: "data.country",
                 },
               ],
               staticClass: "form-control",
@@ -11474,57 +11495,53 @@ var render = function () {
                 id: "country",
                 placeholder: "Enter country",
               },
-              domProps: { value: _vm.country },
+              domProps: { value: _vm.data.country },
               on: {
                 input: function ($event) {
                   if ($event.target.composing) {
                     return
                   }
-                  _vm.country = $event.target.value
+                  _vm.$set(_vm.data, "country", $event.target.value)
                 },
               },
             }),
             _vm._v("\n                "),
             _vm._v("\n            "),
             _vm._v("\n                "),
-            _c("label", { attrs: { for: "city" } }, [_vm._v("city")]),
             _vm._v("\n                "),
             _c("input", {
               directives: [
                 {
                   name: "model",
                   rawName: "v-model",
-                  value: _vm.city,
-                  expression: "city",
+                  value: _vm.data.city,
+                  expression: "data.city",
                 },
               ],
               staticClass: "form-control",
               class: { "is-invalid": _vm.errors.city },
               attrs: { type: "city", id: "city", placeholder: "Enter city" },
-              domProps: { value: _vm.city },
+              domProps: { value: _vm.data.city },
               on: {
                 input: function ($event) {
                   if ($event.target.composing) {
                     return
                   }
-                  _vm.city = $event.target.value
+                  _vm.$set(_vm.data, "city", $event.target.value)
                 },
               },
             }),
             _vm._v("\n                "),
             _vm._v("\n            "),
             _vm._v("\n                "),
-            _c("label", { attrs: { for: "phone_number" } }, [
-              _vm._v("phone_number"),
-            ]),
             _vm._v("\n                "),
             _c("input", {
               directives: [
                 {
                   name: "model",
                   rawName: "v-model",
-                  value: _vm.phone_number,
-                  expression: "phone_number",
+                  value: _vm.data.phone_number,
+                  expression: "data.phone_number",
                 },
               ],
               staticClass: "form-control",
@@ -11534,28 +11551,27 @@ var render = function () {
                 id: "phone_number",
                 placeholder: "Enter phone_number",
               },
-              domProps: { value: _vm.phone_number },
+              domProps: { value: _vm.data.phone_number },
               on: {
                 input: function ($event) {
                   if ($event.target.composing) {
                     return
                   }
-                  _vm.phone_number = $event.target.value
+                  _vm.$set(_vm.data, "phone_number", $event.target.value)
                 },
               },
             }),
             _vm._v("\n                "),
             _vm._v("\n            "),
             _vm._v("\n                "),
-            _c("label", { attrs: { for: "password" } }, [_vm._v("Password")]),
             _vm._v("\n                "),
             _c("input", {
               directives: [
                 {
                   name: "model",
                   rawName: "v-model",
-                  value: _vm.password,
-                  expression: "password",
+                  value: _vm.data.password,
+                  expression: "data.password",
                 },
               ],
               staticClass: "form-control",
@@ -11566,30 +11582,42 @@ var render = function () {
                 placeholder: "Password",
                 required: "",
               },
-              domProps: { value: _vm.password },
+              domProps: { value: _vm.data.password },
               on: {
                 input: function ($event) {
                   if ($event.target.composing) {
                     return
                   }
-                  _vm.password = $event.target.value
+                  _vm.$set(_vm.data, "password", $event.target.value)
                 },
               },
             }),
             _vm._v("\n                "),
             _vm._v("\n            "),
             _vm._v("\n                "),
-            _c("label", { attrs: { for: "password_confirmation" } }, [
-              _vm._v("Confirm password"),
-            ]),
-            _vm._v("\n                "),
+            _vm._v("\n\n                "),
+            _vm.is_pass_confirm_error
+              ? _c(
+                  "div",
+                  {
+                    staticClass: "alert alert-danger",
+                    attrs: { role: "alert" },
+                  },
+                  [
+                    _vm._v(
+                      "\n                    Confirmed password is incorrect!\n                "
+                    ),
+                  ]
+                )
+              : _vm._e(),
+            _vm._v("\n\n                "),
             _c("input", {
               directives: [
                 {
                   name: "model",
                   rawName: "v-model",
-                  value: _vm.password_confirmation,
-                  expression: "password_confirmation",
+                  value: _vm.data.password_confirmation,
+                  expression: "data.password_confirmation",
                 },
               ],
               staticClass: "form-control",
@@ -11599,13 +11627,17 @@ var render = function () {
                 placeholder: "Confirm password",
                 required: "",
               },
-              domProps: { value: _vm.password_confirmation },
+              domProps: { value: _vm.data.password_confirmation },
               on: {
                 input: function ($event) {
                   if ($event.target.composing) {
                     return
                   }
-                  _vm.password_confirmation = $event.target.value
+                  _vm.$set(
+                    _vm.data,
+                    "password_confirmation",
+                    $event.target.value
+                  )
                 },
               },
             }),
@@ -11624,7 +11656,7 @@ var render = function () {
               class: { "btn btn-primary": true },
               attrs: { type: "submit", form: "add_user_form" },
             },
-            [_vm._v("\n            Register user\n            ")]
+            [_vm._v("\n            Create user\n            ")]
           ),
         ]),
       ]),
@@ -15818,7 +15850,7 @@ var render = function () {
         _c(
           "button",
           {
-            staticClass: "btn btn-danger",
+            staticClass: "btn btn-warning",
             attrs: { type: "submit" },
             on: {
               click: function ($event) {
@@ -15827,6 +15859,29 @@ var render = function () {
             },
           },
           [_vm._v("Create Ban (beta)")]
+        ),
+      ]),
+      _vm._v(" "),
+      _c("td", [_vm._v("|")]),
+      _vm._v(" "),
+      _c("td", [
+        _c(
+          "button",
+          {
+            staticClass: "btn btn-danger",
+            attrs: { type: "submit" },
+            on: {
+              click: function ($event) {
+                return _vm.del_user(_vm.table_info.id)
+              },
+            },
+          },
+          [
+            _c("i", {
+              staticClass: "fa fa-trash",
+              attrs: { "aria-hidden": "true" },
+            }),
+          ]
         ),
       ]),
       _vm._v(" "),
@@ -16312,6 +16367,14 @@ var render = function () {
     _vm._v(" "),
     _vm.data.table_name == "Comments"
       ? _c("th", [_vm._v("\n        User\n    ")])
+      : _vm._e(),
+    _vm._v(" "),
+    _vm.data.table_name == "Users"
+      ? _c("th", [_vm._v("\n        |\n    ")])
+      : _vm._e(),
+    _vm._v(" "),
+    _vm.data.table_name == "Users"
+      ? _c("th", [_vm._v("\n        Ban\n    ")])
       : _vm._e(),
     _vm._v(" "),
     _vm.data.table_name != "Parmissions" &&

@@ -64,11 +64,6 @@ const router = new VueRouter({
                     component: load("NewsPageComponent"),
                 },
                 {
-                    path: "event/:url_title",
-                    name: "event",
-                    component: load("EventPageComponent"),
-                },
-                {
                     path: "tech_tip/:url_title",
                     name: "tech_tip",
                     component: load("TechTipPageComponent"),
@@ -83,7 +78,16 @@ const router = new VueRouter({
                     name: "local_bisnes",
                     component: load("LocalBisnesPageComponent"),
                 },
-
+                {
+                    path: "events",
+                    name: "events",
+                    component: load("EventsListPageComponent"),
+                },
+                {
+                    path: "event/:url_title",
+                    name: "event",
+                    component: load("EventPageComponent"),
+                },
                 {
                     path: "ice",
                     name: "ices",

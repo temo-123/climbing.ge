@@ -122,7 +122,7 @@ __webpack_require__.r(__webpack_exports__);
     return {
       locale: localStorage.getItem('lang'),
       mix_site_url: "climbing.loc",
-      mix_app_ssh: "http://",
+      mix_app_ssh: "https://",
       mix_site_name: "climbing.ge"
     };
   },
@@ -1551,9 +1551,8 @@ var render = function () {
       _vm._v(" "),
       _c("metaData", {
         attrs: {
-          title: "Mountaineering in Georgia",
-          description:
-            "Mountaineering climbing routes and mount masiv in Georgia",
+          title: _vm.$t("title mountaineering"),
+          description: this.$siteData.mount_description,
           image: "../../../../public/images/meta_img/mount.jpg",
         },
       }),

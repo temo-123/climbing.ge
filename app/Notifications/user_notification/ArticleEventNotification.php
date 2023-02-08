@@ -16,9 +16,11 @@ class ArticleEventNotification extends Notification
      *
      * @return void
      */
-    public function __construct()
+    public function __construct($article)
     {
-        //
+        // dd($article);
+        $this->global_article = $article['global_article'];
+        $this->locale_article = $article['locale_article'];
     }
 
     /**
@@ -40,7 +42,22 @@ class ArticleEventNotification extends Notification
      */
     public function toMail($notifiable)
     {
-        return (new MailMessage)->markdown('emails.user_notifications.article_event_notification');
+        // return (new MailMessage)
+        //            ->line('The introduction to the notification.')
+        //            ->action('Notification Action', url('/'))
+        //            ->line('Thank you for using our application!')
+        //            ->markdown('emails.user_notifications.article_event_notification');
+
+        return (new MailMessage)
+            ->markdown('emails.user_notifications.article_event_notification', 
+                [
+                    'locale_article'=>$this->locale_article,
+                    'global_article'=>$this->global_article,
+                ]
+            )
+            ->subject('New article on climbing.ge')
+        ;
+        // return (new MailMessage)->markdown('emails.user_notifications.article_event_notification');
     }
 
     /**

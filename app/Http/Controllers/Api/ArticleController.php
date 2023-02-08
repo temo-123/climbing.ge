@@ -210,7 +210,7 @@ class ArticleController extends Controller
         }
         else{            
             return response()->json([
-                'Data validation' => $validation_issets
+                'validation' => $validation_issets
             ], 422);
         }
     }
@@ -527,7 +527,7 @@ class ArticleController extends Controller
         else{            
             return response()->json([
                 // $validation_issets
-                'Data validation' => $validation_issets
+                'validation' => $validation_issets
             ], 422);
         }
     }
@@ -635,7 +635,7 @@ class ArticleController extends Controller
         
         $article -> save();
 
-        if($global_data['region_id']){
+        if($global_data['region_id'] != "select_region"){
             if($global_data["category"] == 'outdoor'){
                 $new_region = new Article_region;
                 $new_region['article_id'] = $article->id;
@@ -643,7 +643,7 @@ class ArticleController extends Controller
                 $new_region -> save();
             }
         }
-        if($global_data['mount_id']){
+        if($global_data['mount_id'] != "select_mount"){
             if($global_data["category"] == 'mount_route'){
                 $new_mount = new Article_mount;
                 $new_mount['article_id'] = $article->id;
@@ -786,6 +786,7 @@ class ArticleController extends Controller
             'text' => 'required',
         ]);
         if ($validator->fails()) {
+            // dd($validator->messages());
             return $validator->messages();
         }
     }
@@ -1160,22 +1161,30 @@ class ArticleController extends Controller
         if($global_article['category'] == 'outdoor'){
             $data = [
                 "global_article" => $global_article,
-                "region_id" => $global_article->outdoor_region[0]->id,
                 "general_data" => $blobal_data,
                 "us_article" => $us_article,
                 "ka_article" => $ka_article,
                 "ru_article" => $ru_article,
+                "region_id" => 0
             ];
+
+            if(isset($global_article->outdoor_region[0]->id)){
+                $data['region_id'] = $global_article->outdoor_region[0]->id;
+            }
         }
         if($global_article['category'] == 'mount_route'){
             $data = [
                 "global_article" => $global_article,
-                "mount_id" => $global_article->mount_masiv[0]->id,
                 "general_data" => $blobal_data,
                 "us_article" => $us_article,
                 "ka_article" => $ka_article,
                 "ru_article" => $ru_article,
+                "mount_id" => 0,
             ];
+
+            if(isset($global_article->mount_masiv[0]->id)){
+                $data['mount_id'] = $global_article->mount_masiv[0]->id;
+            }
         }
 
         // $data = [
