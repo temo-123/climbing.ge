@@ -4,32 +4,39 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Illuminate\Foundation\Auth\User as Authenticatable;
 
 use Laravel\Sanctum\HasApiTokens;
 use Illuminate\Notifications\Notifiable;
 
-class User extends Model
+class User extends Authenticatable implements MustVerifyEmail
 {
     // use HasFactory;
     use HasApiTokens, HasFactory, Notifiable;
 
-    // use Notifiable;
+    // public function getAuthIdentifierName(){}
+    // public function getAuthIdentifier(){}
+    // public function getAuthPassword(){}
+    // public function getRememberToken(){}
+    // public function setRememberToken($value){}
+    // public function getRememberTokenName(){}
 
     /**
      * The attributes that are mass assignable.
      *
      * @var array
      */
-    // protected $fillable = [
-    //     'name', 
-    //     'surname', 
-    //     'email',
-    //     'phone_number',
-    //     'country',
-    //     'city',
+    protected $fillable = [
+        'name', 
+        'surname', 
+        'email',
+        'phone_number',
+        'country',
+        'city',
 
-    //     'password',
-    // ];
+        'password',
+    ];
 
     /**
      * The attributes that should be hidden for arrays.

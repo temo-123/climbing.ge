@@ -75,27 +75,6 @@ class UsersController extends Controller
         }
     }
 
-    public function del_user(Request $request)
-    {
-        $deliting_user = User::where('id',strip_tags($request->user_id))->first();
-
-        // dd($deliting_user);
-
-        if (Auth::user()->id != $deliting_user->id) {
-
-            if ($deliting_user->image) {
-                ImageControllService::image_delete('images/user_profil_img/'.$deliting_user->image.'_img/', $deliting_user, 'image');
-            }
-
-            $deliting_user ->delete();
-
-            return("User deleted socsesful");
-        }
-        else {
-            return("You don`t can delete yourself! :)");
-        }
-    }
-
     public function follow(Request $request)
     {
         if ($request -> isMethod('post')) {
@@ -367,12 +346,69 @@ class UsersController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+
+
+    public function del_user(Request $request)
     {
-        $deleted_user = User::where('id','=',$request->user_id)->first();
-        DB::table('user_role')->where('user_id','=',$deleted_user->id)->delete();
-        $deleted_user -> delete();
+        $deliting_user = User::where('id',strip_tags($request->user_id))->first();
+
+        if (Auth::user()->id != $deliting_user->id) {
+            if(User_role::where('user_id', '=', $deliting_user->id)->count() > 0){
+                $user_roles = User_role::where('user_id', '=', $deliting_user->id)->first();
+                $user_roles -> delete();
+            }
+    
+            if(user_notification::where('user_id', '=', $deliting_user->id)->count() > 0){
+                $user_notifications = user_notification::where('user_id', '=', $deliting_user->id)->first();
+                $user_notifications -> delete();
+            }
+    
+            if(User_permission::where('user_id', '=', $deliting_user->id)->count() > 0){
+                $user_parmissions = User_permission::where('user_id', '=', $deliting_user->id)->get();
+    
+                foreach ($user_parmissions as $user_parmission) {
+                    $user_parmission -> delete();
+                }
+            }
+
+            if ($deliting_user->image) {
+                ImageControllService::image_delete('images/user_profil_img/'.$deliting_user->image.'_img/', $deliting_user, 'image');
+            }
+
+            $deliting_user ->delete();
+
+            return("User deleted socsesful");
+        }
+        else {
+            return("You don`t can delete yourself! :)");
+        }
     }
+
+    // public function destroy($id)
+    // {
+    //     $deleted_user = User::where('id','=',$request->user_id)->first();
+
+    //     dd(User_role::where('user_id', '=', $deleted_user->id)->count());
+    //     if(User_role::where('user_id', '=', $deleted_user->id)->count() > 0){
+    //         $user_roles = User_role::where('user_id', '=', $deleted_user->id)->first();
+    //         $user_roles -> delete();
+    //     }
+
+    //     if(user_notification::where('user_id', '=', $deleted_user->id)->count() > 0){
+    //         $user_notifications = user_notification::where('user_id', '=', $deleted_user->id)->first();
+    //         $user_notifications -> delete();
+    //     }
+
+    //     if(User_permission::where('user_id', '=', $deleted_user->id)->count() > 0){
+    //         $user_parmissions = User_permission::where('user_id', '=', $deleted_user->id)->get();
+
+    //         foreach ($user_parmissions as $user_parmission) {
+    //             $user_parmission -> delete();
+    //         }
+    //     }
+
+    //     $deleted_user -> delete();
+    // }
 
     public function get_user_data()
     {

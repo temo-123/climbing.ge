@@ -55,7 +55,17 @@
                     </span>
                     <span v-if="!this.user['email_verified_at']">
                         <div class="alert alert-danger" role="alert">
-                            <strong>Danger!</strong> We sent you an email for verification, please check your email and confirm it. If you dont take this male you can call new mail. For new mail -> clicl hear.
+                            <span v-if="!is_email_sending_loader">
+                                <strong>Danger!</strong> We sent you an email for verification, please check your email and confirm it. If you don't got this email you can demand new message. For new message -> <span class="cursor_pointer" @click="send_mail_confirm_notificatione()">Click here</span>.
+                            </span>
+                            <span v-else-if="is_email_sending_loader">
+                                <div class="row justify-content-center" >
+                                    <div class="col-md-3">
+                                        <img :src="'../../../../../../public/images/site_img/loading.gif'" alt="loading">
+                                        <p class="text-center">Pless wait!</p>
+                                    </div>
+                                </div>
+                            </span>
                         </div>
                     </span>
 
@@ -276,6 +286,8 @@
 
                 is_user_comment_complaint_model: false,
 
+                is_email_sending_loader: false,
+
                 complaint_comment_id: 0,
                 complaint_query_id: 0,
             }
@@ -284,6 +296,23 @@
             this.refresh()
         },
         methods: {
+            send_mail_confirm_notificatione(){
+                this.is_email_sending_loader = true
+                axios
+                .get('/api/email/resend')
+                .then((response)=>{
+                    alert('New verification message is sended. Please check your email for verification!')
+                })
+                .catch((error) => {
+                    if(error.response.status === 429) {
+                        alert('The page has expired or you clicked this button too many times! Please try again later or contact support!')
+                    }
+                    else{
+                        alert('Something went wrong! Please try again later, if you encounter this problem again, contact support!')
+                    }
+                })
+                .finally(() => this.is_email_sending_loader = false);
+            },
             refresh(){
                 this.admin_refresh_id++
 

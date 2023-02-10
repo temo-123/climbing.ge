@@ -2,6 +2,8 @@
     <div class="col-sm-4 eav">
         <div class="panel-primary event-primary">
             <div class="panel-heading">
+                <span class="index_event_category_flag" v-if="event.global_event.category == 'event'">Event / Festival</span>
+                <span class="index_event_category_flag" v-else-if="event.global_event.category == 'competition'">Competition</span>
                 <h2>
                     <router-link :to="'event/'+event.global_event.url_title">
                         {{ event.locale_event.title }}
@@ -13,9 +15,6 @@
 
                     <site-img v-if="event.global_event.image != null" :src="'images/event_img/'+event.global_event.image" :img_class="'img-responsive'" :alt='event.locale_event.title'/>
                     <site-img v-else :src="'../../../public/images/site_img/image.png'" :img_class="'img-responsive'" :alt='event.locale_event.title'/>
-
-                    <!-- // <img v-if="event.locale_event.image != null" :src="'images/event_img/'+event.image" v-watermark='config = option' class="img-responsive" :alt='event.locale_event.title' />
-                    // <img v-else :src="'../../../public/images/site_img/image.png'" v-watermark='config = option' class="img-responsive" :alt='event.locale_event.title'> -->
 
                 </router-link>
                 <div class="row nopadding"
@@ -45,9 +44,6 @@
                     <div class="col-sm-12 col-xs-12 nopadding" >
                         <time class="end orange_red">
                             <span class="day underway_now">Finished</span>
-                            <!-- <span class="month">Finish at - {{this.end_day}} {{this.end_month}} {{this.end_time}}</span>
-                            <span class="month"></span>
-                            <span class="month"></span> -->
                         </time>
                     </div>
                 </div>
@@ -148,5 +144,8 @@
     }
     .underway_now{
         font-size: 2em !important;
+    }
+    .index_event_category_flag{
+        width: auto;
     }
 </style>

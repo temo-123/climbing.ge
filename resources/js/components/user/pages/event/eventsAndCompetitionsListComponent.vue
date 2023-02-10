@@ -92,7 +92,7 @@
                     this.data_for_tab.push({'id': 2,
                                             'data': response.data, 
                                             'table_name': "Competitions",
-                                            'table_add_url': 'eventAdd', 
+                                            'table_add_url': 'competitionAdd', 
                                             // 'table_edit_url': 'spot_category_edit',
                                         });
                 })

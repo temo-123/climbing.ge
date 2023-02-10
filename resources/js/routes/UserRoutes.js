@@ -4,6 +4,7 @@ import NotFound from '../components/errors/404Component.vue'
 
 import login from '../components/auth/LoginComponent.vue'
 import register from '../components/auth/RegisterComponent.vue'
+import reset_pass from '../components/auth/PasswordResetComponent.vue'
 
 function load(component) {
     return () => import(`../components/user/pages/${component}.vue`)
@@ -90,8 +91,8 @@ const router = new VueRouter({
         { path: '/event/add', name: 'eventAdd', component: load('event/events/eventAddComponent') },
         { path: '/event/edit/:id', name: 'eventEdit', component: load('event/events/eventEditComponent') },
         
-        { path: '/competition/add', name: 'competitionsAdd', component: load('event/competitions/competitionAddComponent') },
-        { path: '/competition/edit/:id', name: 'competitionsEdit', component: load('event/competitions/competitionEditComponent') },
+        { path: '/competition/add', name: 'competitionAdd', component: load('event/competitions/competitionAddComponent') },
+        { path: '/competition/edit/:id', name: 'competitionEdit', component: load('event/competitions/competitionEditComponent') },
         
         { path: '/products_and_categories', name: 'productsList', component: load('products_and_categories/productsAndCatgoriesListComponent') },
         { path: '/product/edit/:id', name: 'productEdit', component: load('products_and_categories/products/productEditComponent') },
@@ -107,7 +108,8 @@ const router = new VueRouter({
         { path: '/service/add/', name: 'serviceAdd', component: load('services/serviceAddComponent'), },
 
         { path: '/login', name: 'login', component: login },
-        { path: '/register', name: 'register', component: register,},
+        { path: '/register', name: 'register', component: register},
+        { path: '/reset_pass', name: 'reset_pass', component: reset_pass},
 
         { path: '*', name: 'NotFound', component: NotFound },
     ],
@@ -156,7 +158,7 @@ router.beforeEach((to, from, next)=>{
 function check(to, from, next, token) {
 
     if (!token) {
-        if (to.name == 'login' || to.name == 'register') {
+        if (to.name == 'login' || to.name == 'register' || to.name == 'reset_pass') {
             return next()
         }
         else{
@@ -164,10 +166,8 @@ function check(to, from, next, token) {
         }
     }
     else if (token){
-        if(to.name === 'login' || to.name === 'register' && token) {
+        if(to.name === 'login' || to.name === 'register' || to.name === 'reset_pass' && token) {
             return next ({name: 'home'})
-            // this.$router.go(-1)
-            // history.back()
         }
     }
 }

@@ -1,60 +1,53 @@
 <template>
   <div class="login mt-5">
-    <router-link :to="{name: 'login'}" exact class="btn btn-success">
-      login
+    <router-link :to="{name: 'login'}" exact class="btn btn-success" v-if="!is_loading">
+      Login
     </router-link>
 
-    <hr>
+    <hr v-if="!is_loading">
 
     <div class="card">
+
       <div class="card-header">
         Register
       </div>
-      <div class="card-body">
+
+      <div class="card-body" v-if="!is_loading">
         <form id="register_form" v-on:submit.prevent="register">
           <div class="form-group">
             <label for="email">Name</label>
             <input
               type="text"
               class="form-control"
-              :class="{ 'is-invalid': errors.name }"
               id="name"
               v-model="name"
               placeholder="Enter name"
               required
             />
-            <div class="invalid-feedback" v-if="errors.name">
-              {{ errors.name[0] }}
-            </div>
           </div>
           <div class="form-group">
             <label for="email">surname</label>
             <input
               type="text"
               class="form-control"
-              :class="{ 'is-invalid': errors.surname }"
               id="surname"
               v-model="surname"
               placeholder="Enter surname"
               required
             />
-            <div class="invalid-feedback" v-if="errors.surname">
-              {{ errors.surname[0] }}
-            </div>
           </div>
           <div class="form-group">
             <label for="email">Email address</label>
             <input
               type="email"
               class="form-control"
-              :class="{ 'is-invalid': errors.email }"
               id="email"
               v-model="email"
               placeholder="Enter email"
               required
             />
-            <div class="invalid-feedback" v-if="errors.email">
-              {{ errors.email[0] }}
+            <div class="alert alert-danger" role="alert" v-if="error.email">
+              User with this email address already exists!
             </div>
           </div>
           <div class="form-group">
@@ -62,64 +55,48 @@
             <input
               type="country"
               class="form-control"
-              :class="{ 'is-invalid': errors.country }"
               id="country"
               v-model="country"
               placeholder="Enter country"
               required
             />
-            <div class="invalid-feedback" v-if="errors.country">
-              {{ errors.country[0] }}
-            </div>
           </div>
           <div class="form-group">
             <label for="city">city</label>
             <input
               type="city"
               class="form-control"
-              :class="{ 'is-invalid': errors.city }"
               id="city"
               v-model="city"
               placeholder="Enter city"
               required
             />
-            <div class="invalid-feedback" v-if="errors.city">
-              {{ errors.city[0] }}
-            </div>
           </div>
           <div class="form-group">
             <label for="phone_number">phone_number</label>
             <input
               type="phone_number"
               class="form-control"
-              :class="{ 'is-invalid': errors.phone_number }"
               id="phone_number"
               v-model="phone_number"
               placeholder="Enter phone_number"
               required
             />
-            <div class="invalid-feedback" v-if="errors.phone_number">
-              {{ errors.phone_number[0] }}
-            </div>
           </div>
           <div class="form-group">
-            <label for="password">Password</label>
+            <label for="password">Password *</label>
             <input
               type="password"
               class="form-control"
-              :class="{ 'is-invalid': errors.password }"
               id="password"
               v-model="password"
               placeholder="Password"
               minlength="8"
               required
             />
-            <div class="invalid-feedback" v-if="errors.password">
-              {{ errors.password[0] }}
-            </div>
           </div>
           <div class="form-group">
-            <label for="password_confirmation">Confirm password</label>
+            <label for="password_confirmation">Confirm password *</label>
             <input
               type="password"
               class="form-control"
@@ -130,9 +107,12 @@
               required
             />
           </div>
+          <div class="alert alert-danger" role="alert" v-if="error.password">
+            Confirming faild!
+          </div>
           <div class="form-group">
             <input type="checkbox" v-model="terms_of_use" name="One time code" value="One time code">
-            I agree with the <a href="" >terms of use</a>
+            I agree with the <a href="#" >terms of use</a>
           </div>
           <div class="row">
               <div class="col-md-12">
@@ -149,13 +129,10 @@
                   </div>
               </div>
           </div>
-          <!-- <button type="button" @click="register" class="btn btn-primary">
-            Register
-          </button> -->
+          
           <div class="row">
             <div class="col-md-12">
                 <div class="form-group"  v-if="is_verify_isset != false && terms_of_use != false">
-                    <!-- <button type="submit" @click="register" class="btn btn-default btn-send main-btn">Register</button> -->
                   <button
                           type="submit"
                           class="btn btn-default btn-send main-btn"
@@ -165,7 +142,6 @@
                   </button>
                 </div>
                 <div class="form-group"  v-else>
-                    <!-- <button type="submit" @click="register" class="btn btn-default btn-send main-btn" disabled>Register</button> -->
                   <button
                           type="submit"
                           class="btn btn-default btn-send main-btn"
@@ -175,12 +151,19 @@
                       Save
                   </button>
                 </div>
-
-
             </div>
           </div>
+
         </form>
       </div>
+
+      <div class="row justify-content-center" v-else-if="is_loading">
+          <div class="col-md-4">
+              <img :src="'../../../../../../public/images/site_img/loading.gif'" alt="loading">
+              <p class="text-center">Pless wait!</p>
+          </div>
+      </div>
+
     </div>
   </div>
 </template>
@@ -203,17 +186,14 @@ export default {
       password: null,
       password_confirmation: null,
 
-      errors: [],
+      is_loading: false,
 
       is_verify_isset: false,
       terms_of_use: false,
 
-      errors: [],
+      error: [],
 
       MIX_GOOGLE_CAPTCHA_SITE_KEY: process.env.MIX_GOOGLE_CAPTCHA_SITE_KEY,
-
-      isLoading: false,
-      isSuccess: false,
     };
   },
   mounted() {
@@ -222,13 +202,13 @@ export default {
 
     onCaptchaVerified() {
         this.is_verify_isset = true
-        // console.log('test');
     },
     onCaptchaExpired(){
         this.is_verify_isset = false
-        // console.log('test');
     },
     register(){
+      this.error = []
+      this.is_loading = true
       axios
         .get('/sanctum/csrf-cookie')
         .then(response => {
@@ -247,9 +227,12 @@ export default {
               localStorage.setItem('x_xsrf_token', res.config.headers['X-XSRF-TOKEN'])
               this.$router.push({ path: "/" });
             })
-            .catch(err => {
-              console.log(err);
+            .catch((error) => {
+              if(error.response.status === 422) {
+                this.error = error.response.data.errors
+              }
             })
+            .finally(() => this.is_loading = false);
       })
     }
   }

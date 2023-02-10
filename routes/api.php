@@ -22,11 +22,24 @@ use Illuminate\Support\Facades\Route;
 //     return $request->user();
 // });
 
-Route::get('login/{provider}/callback','Auth\SocialController@Callback');
-Route::get('login/{provider}', 'Auth\SocialController@redirect');
 
 Route::middleware('auth:sanctum')->get('token', function () {
     return auth()->user()->createToken('authToken')->plainTextToken;
+});
+
+// Route::get('login/{provider}/callback','Auth\SocialController@Callback');
+// Route::get('login/{provider}', 'Auth\SocialController@redirect');
+
+Route::group(['namespace'=>'Auth'], function() {
+    Route::controller(VerificationController::class)->prefix('email')->group( function() {
+        Route::get('/verify/{id}/{hash}', 'verify')->name('api.verification.verify');
+        // Route::get('/resend', 'resend')->name('api.verification.resend');
+    });
+
+    Route::controller(SocialController::class)->prefix('login')->group( function() {
+        Route::get('{provider}/callback','Callback');
+        Route::get('{provider}', 'redirect');
+    });
 });
 
 Route::group(['namespace'=>'Api'], function() {
@@ -482,8 +495,17 @@ Route::group(['namespace'=>'Api'], function() {
         Route::get('auth_user', 'AuthenticationController@user')->name('auth_user');
     });
 
-    Route::controller(CkeditorController::class)->prefix('ckeditor')->group( function() {
-        Route::get('', 'index');
-        Route::post('/upload', 'upload');
+    /*
+    *   Login verify routes
+    */
+    Route::controller(CKEditorController::class)->prefix('ckeditor')->group( function() {
+        // Route::get('', 'index');
+        // Route::post('/upload', 'upload');
+    });
+
+
+    Route::controller(ResetPasswordController::class)->prefix('password')->group( function() {
+        Route::post('/send_reseting_mail', 'send_reseting_mail');
+        Route::post('/reset_password', 'reset_password');
     });
 });

@@ -230,12 +230,12 @@ __webpack_require__.r(__webpack_exports__);
         });
         loop_num = 0;
       } else if (this.category == 'mount_route') {
-        var loop_num = 0;
+        var _loop_num = 0;
         this.mount_route_images.forEach(function (mount_image) {
-          formData.append('mountain_route_images[' + loop_num + ']', mount_image.image);
-          loop_num++;
+          formData.append('mountain_route_images[' + _loop_num + ']', mount_image.image);
+          _loop_num++;
         });
-        loop_num = 0;
+        _loop_num = 0;
       }
 
       axios.post('/api/article/add_article/' + this.category, formData).then(function (response) {
@@ -261,7 +261,7 @@ __webpack_require__.r(__webpack_exports__);
       })["catch"](function (err) {
         console.log(err);
       })["finally"](function () {
-        return _this2.is_dala_geting = false;
+        return _this2.is_mail_sending_procesing = false;
       });
     },
     go_back: function go_back() {

@@ -19,7 +19,7 @@ class EventController extends Controller
     {
         $action_data = date("Y/m/d H:i:s");
         // echo $action_data;
-        $plas_3_day = date('Y/m/d H:i:s', strtotime($action_data. ' + 2 days'));
+        $plas_3_day = date('Y/m/d H:i:s', strtotime($action_data. ' + 3 days'));
         // echo $plas_3_day;
 
         $events = Event::where('published', '=', 1)->get();
@@ -27,7 +27,6 @@ class EventController extends Controller
         $events_array = [];
 
         foreach ($events as $event) {
-            // dd();
             if(date('Y/m/d H:i:s', strtotime($event->end_data)) > $plas_3_day){
                 $global_event = $event;
 
@@ -48,10 +47,7 @@ class EventController extends Controller
             }
         }
 
-        // dd($events_array);
         return $events_array;
-
-        // return Event::where('public', '=', 1)->get();
     }
 
     public function get_event_on_site_page(Request $request)

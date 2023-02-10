@@ -5512,7 +5512,7 @@ __webpack_require__.r(__webpack_exports__);
           'id': 2,
           'data': response.data,
           'table_name': "Competitions",
-          'table_add_url': 'eventAdd' // 'table_edit_url': 'spot_category_edit',
+          'table_add_url': 'competitionAdd' // 'table_edit_url': 'spot_category_edit',
 
         });
       })["catch"](function (error) {

@@ -4,12 +4,35 @@
             <div class="flag-wrapper">
                 <span class="hexa"></span>
                 <span class="flag">Event / festival.</span>
-                <span class="time-wrapper">
+                <span class="time-wrapper"
+                    v-if="
+                        new Date().getFullYear() == this.end_year &&
+                        new Date().getDate() >= this.start_day &&
+                        new Date().getDate() <= this.end_day &&
+                        this.start_time_for_check <= this.start_time
+                    ">
+                    <span class="time naw_time">Now</span>
+                    <span class="time naw_time">Finish at - {{this.end_day}} {{this.end_month}}</span>
+                </span>
+                <span class="time-wrapper"
+                    v-else-if="
+                        new Date().getFullYear() == this.end_year &&
+                        new Date().getDate() < this.end_day &&
+                        new Date().getDate() == this.end_day
+                    ">
+                    <span class="time finished_time">Finished</span>
+                </span>
+                <span class="time-wrapper" v-else>
                     <span class="time" v-if="new Date().getFullYear() != this.start_year">{{this.start_day}} {{this.start_month}} {{this.start_year}}</span>
                     <span class="time" v-else>{{this.start_day}} {{this.start_month}}</span>
 
                     <span class="time">{{this.start_time}}</span>
                 </span>
+
+                <!-- <span class="time-wrapper">
+                    <span class="time naw_time">Now</span>
+                    <span class="time naw_time">Finish at - {{this.end_day}} {{this.end_month}} </span>
+                </span> -->
             </div>
 
             <div class="desc">
@@ -112,5 +135,10 @@
 </script>
 
 <style>
-
+    .finished_time{
+        background: #f30000 !important;
+    }
+    .naw_time{
+        background: #e700f3 !important;
+    }
 </style>

@@ -260,6 +260,16 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
  //https://github.com/Jexordexan/vue-slicksort
 
  //https://innologica.github.io/vue-stackable-modal/#sample-css
@@ -289,6 +299,7 @@ __webpack_require__.r(__webpack_exports__);
       user_queries: [],
       is_coment_model: false,
       is_user_comment_complaint_model: false,
+      is_email_sending_loader: false,
       complaint_comment_id: 0,
       complaint_query_id: 0
     };
@@ -297,29 +308,45 @@ __webpack_require__.r(__webpack_exports__);
     this.refresh();
   },
   methods: {
+    send_mail_confirm_notificatione: function send_mail_confirm_notificatione() {
+      var _this = this;
+
+      this.is_email_sending_loader = true;
+      axios.get('/api/email/resend').then(function (response) {
+        alert('New verification message is sended. Please check your email for verification!');
+      })["catch"](function (error) {
+        if (error.response.status === 429) {
+          alert('The page has expired or you clicked this button too many times! Please try again later or contact support!');
+        } else {
+          alert('Something went wrong! Please try again later, if you encounter this problem again, contact support!');
+        }
+      })["finally"](function () {
+        return _this.is_email_sending_loader = false;
+      });
+    },
     refresh: function refresh() {
       this.admin_refresh_id++;
       this.get_user_data();
       this.get_comments_complaints();
     },
     get_user_data: function get_user_data() {
-      var _this = this;
+      var _this2 = this;
 
       axios.get('/api/auth_user').then(function (response) {
-        _this.user = response.data;
+        _this2.user = response.data;
 
-        _this.get_user_queries(_this.user.id);
+        _this2.get_user_queries(_this2.user.id);
       });
     },
     get_user_queries: function get_user_queries(user_id) {
-      var _this2 = this;
+      var _this3 = this;
 
       axios.get('../api/get_user_queries/' + user_id).then(function (response) {
-        _this2.user_queries = response.data;
+        _this3.user_queries = response.data;
       });
     },
     make_complaint: function make_complaint() {
-      var _this3 = this;
+      var _this4 = this;
 
       this.complaint_loader = true;
       axios.post('../api/add_comment_complaint/', {
@@ -327,26 +354,26 @@ __webpack_require__.r(__webpack_exports__);
         comment_complaint: this.selected_comment_complaint,
         email: this.complainter_email
       }).then(function (response) {
-        _this3.is_user_comment_complaint_model = false;
-        _this3.selected_comment_complaint = 'Hostile remarks';
+        _this4.is_user_comment_complaint_model = false;
+        _this4.selected_comment_complaint = 'Hostile remarks';
 
-        _this3.refresh();
+        _this4.refresh();
       })["catch"]()["finally"](function () {
-        return _this3.complaint_loader = false;
+        return _this4.complaint_loader = false;
       });
     },
     query_response: function query_response(response, query_id, comment_id) {
-      var _this4 = this;
+      var _this5 = this;
 
       axios.post('../api/query_response/', {
         query_id: query_id,
         comment_id: comment_id,
         response: response
       }).then(function (response) {
-        _this4.refresh;
+        _this5.refresh;
 
-        if (_this4.is_coment_model == true) {
-          _this4.is_coment_model = false;
+        if (_this5.is_coment_model == true) {
+          _this5.is_coment_model = false;
         }
       });
     },
@@ -367,24 +394,24 @@ __webpack_require__.r(__webpack_exports__);
       this.complaint_id = complaint_id;
     },
     get_action_comment: function get_action_comment(comment_id) {
-      var _this5 = this;
+      var _this6 = this;
 
       this.quick_comment = [];
       axios.get("../api/get_quick_comment/" + comment_id).then(function (response) {
-        _this5.quick_comment = response.data;
+        _this6.quick_comment = response.data;
       })["catch"](function (error) {
         return console.log(error);
       });
     },
     get_comments_complaints: function get_comments_complaints() {
-      var _this6 = this;
+      var _this7 = this;
 
       axios.get('./api/get_comments_complaints').then(function (response) {
-        _this6.complaints = response.data;
+        _this7.complaints = response.data;
       });
     },
     make_decision: function make_decision() {
-      var _this7 = this;
+      var _this8 = this;
 
       if (this.comment_decision == 'select_decision') {
         this.is_comment_decision_selected = true;
@@ -395,11 +422,11 @@ __webpack_require__.r(__webpack_exports__);
           comment_id: this.action_comment_id,
           complaint_id: this.complaint_id
         }).then(function (response) {
-          _this7.is_coment_complaint_model = false;
+          _this8.is_coment_complaint_model = false;
 
-          _this7.refresh();
+          _this8.refresh();
         })["finally"](function () {
-          return _this7.decision_loader = false;
+          return _this8.decision_loader = false;
         });
       }
     },
@@ -692,10 +719,62 @@ var render = function () {
                 : _vm._e(),
               _vm._v(" "),
               !this.user["email_verified_at"]
-                ? _c("span", [_vm._m(1)])
+                ? _c("span", [
+                    _c(
+                      "div",
+                      {
+                        staticClass: "alert alert-danger",
+                        attrs: { role: "alert" },
+                      },
+                      [
+                        !_vm.is_email_sending_loader
+                          ? _c("span", [
+                              _c("strong", [_vm._v("Danger!")]),
+                              _vm._v(
+                                " We sent you an email for verification, please check your email and confirm it. If you don't got this email you can demand new message. For new message -> "
+                              ),
+                              _c(
+                                "span",
+                                {
+                                  staticClass: "cursor_pointer",
+                                  on: {
+                                    click: function ($event) {
+                                      return _vm.send_mail_confirm_notificatione()
+                                    },
+                                  },
+                                },
+                                [_vm._v("Click here")]
+                              ),
+                              _vm._v(".\n                        "),
+                            ])
+                          : _vm.is_email_sending_loader
+                          ? _c("span", [
+                              _c(
+                                "div",
+                                { staticClass: "row justify-content-center" },
+                                [
+                                  _c("div", { staticClass: "col-md-3" }, [
+                                    _c("img", {
+                                      attrs: {
+                                        src: "../../../../../../public/images/site_img/loading.gif",
+                                        alt: "loading",
+                                      },
+                                    }),
+                                    _vm._v(" "),
+                                    _c("p", { staticClass: "text-center" }, [
+                                      _vm._v("Pless wait!"),
+                                    ]),
+                                  ]),
+                                ]
+                              ),
+                            ])
+                          : _vm._e(),
+                      ]
+                    ),
+                  ])
                 : _vm._e(),
               _vm._v(" "),
-              !this.user["image"] ? _c("span", [_vm._m(2)]) : _vm._e(),
+              !this.user["image"] ? _c("span", [_vm._m(1)]) : _vm._e(),
               _vm._v(" "),
               _vm._l(_vm.complaints, function (complaint) {
                 return _c("span", { key: complaint.id }, [
@@ -1346,21 +1425,6 @@ var staticRenderFns = [
         _c("strong", [_vm._v("Danger!")]),
         _vm._v(
           ' Your personal data is missing, this can lead to rolling problems. check page "option", and add missing information.\n                    '
-        ),
-      ]
-    )
-  },
-  function () {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c(
-      "div",
-      { staticClass: "alert alert-danger", attrs: { role: "alert" } },
-      [
-        _c("strong", [_vm._v("Danger!")]),
-        _vm._v(
-          " We sent you an email for verification, please check your email and confirm it. If you dont take this male you can call new mail. For new mail -> clicl hear.\n                    "
         ),
       ]
     )

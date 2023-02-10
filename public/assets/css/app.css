@@ -126,7 +126,7 @@ hr {
 *   Admin page styles
 *
 */
-.cursor_pointre, .cursor_pointr {
+.cursor_pointer {
   cursor: pointer;
 }
 

@@ -23,31 +23,6 @@ class RoleTableSeeder extends Seeder
               'description' => 'Users'
           ],
           [
-              'name' => 'Manager',
-              'slug' => 'Global content manager',
-              'description' => 'Global content manager',
-          ],
-          [
-              'name' => 'ka_manager',
-              'slug' => 'Georgian Content mnager',
-              'description' => 'Georgian Content mnager',
-          ],
-          [
-              'name' => 'ru_mannager',
-              'slug' => 'Russian content mennager',
-              'description' => 'Russian content mennager',
-          ],
-          [
-              'name' => 'us_manager',
-              'slug' => 'English content manager',
-              'description' => 'English content manager',
-          ],
-          [
-              'name' => 'seller',
-              'slug' => 'Product Seller',
-              'description' => 'Product Seller',
-          ],
-          [
               'name' => 'admin',
               'slug' => 'Site Administrator',
               'description' => 'Site Administrator',

@@ -223,7 +223,7 @@
                 formData.append('global_blocks', JSON.stringify(this.global_blocks))
 
                 if(this.category == 'outdoor'){
-                    var loop_num = 0
+                    let loop_num = 0
                     this.area_images.forEach(area_image => {
                         formData.append('outdoor_area_images['+loop_num+']', area_image.image)
                         loop_num++
@@ -231,7 +231,7 @@
                     loop_num = 0
                 }
                 else if(this.category == 'mount_route'){
-                    var loop_num = 0
+                    let loop_num = 0
                     this.mount_route_images.forEach(mount_image => {
                         formData.append('mountain_route_images['+loop_num+']', mount_image.image)
                         loop_num++
@@ -271,7 +271,7 @@
                 .catch(err => {
                     console.log(err);
                 })
-                .finally(() => this.is_dala_geting = false);
+                .finally(() => this.is_mail_sending_procesing = false);
             },
             
             go_back: function(back_action = false) {

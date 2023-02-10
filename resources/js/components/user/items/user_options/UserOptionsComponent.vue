@@ -367,7 +367,7 @@
                 this.is_old_pass_error = false
 
                 if(this.password_edit_data.new_pass === this.password_edit_data.confirm_new_pass){
-                    if(confirm('Are you sure, you want delite it?')){
+                    if(confirm('Are you sure, you want edit your password?')){
                         axios
                         .post("../../api/user/update_password/",{
                             data: this.password_edit_data,
