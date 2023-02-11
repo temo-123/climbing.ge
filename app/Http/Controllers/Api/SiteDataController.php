@@ -46,35 +46,6 @@ class SiteDataController extends Controller
         return $site_data = Site::first();
     }
 
-    // public function FunctionName($model)
-    // {
-    //     $model['guid_title'];
-    //     $model['guid_description'];
-    //     $model['guid_short_description'];
-    //     $model['films_title'];
-    //     $model['films_description'];
-    //     $model['films_short_description'];
-    //     $model['forum_title'];
-	// 	$model['forum_description'];
-	// 	$model['forum_short_description'];
-	// 	$model['shop_title'];
-	// 	$model['shop_description'];
-	// 	$model['shop_short_description'];
-	// 	$model['other_activity_description'];
-	// 	$model['mount_description'];
-	// 	$model['event_description'];
-	// 	$model['tech_tips_description'];
-	// 	$model['news_description'];
-	// 	$model['index_gallery_description'];
-	// 	$model['outdoor_description'];
-	// 	$model['indoor_description'];
-	// 	$model['ice_description'];
-	// 	$model['topo_description'];
-	// 	$model['what_we_do_description'];
-	// 	$model['products_description'];
-	// 	$model['services_description'];
-    // }
-
     public function site_data_counts()
     {
         $counts = [];
@@ -127,31 +98,6 @@ class SiteDataController extends Controller
         
         return $counts;
     }
-
-
-    // public function get_site_locale_data(Request $request)
-    // {
-    //     $data = [
-    //         'site_global_data' => Site::first()
-    //     ];
-    //     if($request->locale == 'ka') {
-    //         $data = [
-    //             'site_global_data' => Locale_site::where("locale", "=", 'ka')->first()
-    //         ];
-    //     }
-    //     if($request->locale == 'ru') {
-    //         $data = [
-    //             'site_global_data' => Locale_site::where("locale", "=", 'ru')->first()
-    //         ];
-    //     }
-    //     if($request->locale == 'us') {
-    //         $data = [
-    //             'site_global_data' => Locale_site::where("locale", "=", 'us')->first()
-    //         ];
-    //     }
-
-    //     return $data;
-    // }
 
     public function get_site_locale_data(Request $request)
     {
@@ -226,7 +172,6 @@ class SiteDataController extends Controller
 
     public function edit_local_data($request, $model, $locale)
     {
-        // dd($request['site_'.$locale.'_info']);
         $model['guid_title']=$request['site_'.$locale.'_info']["guid_title"];
         $model['guid_description']=$request['site_'.$locale.'_info']["guid_description"];
         $model['guid_short_description']=$request['site_'.$locale.'_info']["guid_short_description"];
@@ -252,8 +197,7 @@ class SiteDataController extends Controller
 		$model['what_we_do_description']=$request['site_'.$locale.'_info']["what_we_do_description"];
 		$model['products_description']=$request['site_'.$locale.'_info']["products_description"];
 		$model['services_description']=$request['site_'.$locale.'_info']["services_description"];
-
-        // dd($request['site_'.$locale.'_info']);
+		$model['terms_of_use']=$request['site_'.$locale.'_info']["terms_of_use"];
 
         $model->save();
     }
@@ -265,5 +209,33 @@ class SiteDataController extends Controller
         $model['number'] = $request->site_global_info["number"];
 
         $model->save();
+    }
+
+    private function validation_local_data()
+    {
+        $validator = Validator::make($data, [
+            'guid_title' => 'max:70',
+            'films_title' => 'max:70',
+            'forum_title' => 'max:70',
+            'shop_title' => 'max:70',
+
+            'guid_short_description' => 'max:190',
+            'films_short_description' => 'max:190',
+            'forum_short_description' => 'max:190',
+            'shop_short_description' => 'max:190',
+        ]);
+        if ($validator->fails()) {
+            return $validator->messages();
+        }
+    }
+
+    private function validation_global_data()
+    {
+        $validator = Validator::make($data, [
+            'email' => 'required',
+        ]);
+        if ($validator->fails()) {
+            return $validator->messages();
+        }
     }
 }

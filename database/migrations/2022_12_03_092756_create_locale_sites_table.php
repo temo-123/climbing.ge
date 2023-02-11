@@ -48,6 +48,8 @@ return new class extends Migration
             $table->text('products_description')->nullable();
             $table->text('services_description')->nullable();
             
+            $table->text('terms_of_use')->nullable();
+            
             $table->timestamps();
         });
     }

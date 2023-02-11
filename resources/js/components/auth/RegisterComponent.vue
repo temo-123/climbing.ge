@@ -112,7 +112,7 @@
           </div>
           <div class="form-group">
             <input type="checkbox" v-model="terms_of_use" name="One time code" value="One time code">
-            I agree with the <a href="#" >terms of use</a>
+            I agree with the <span class="cursor_pointer text-warning" @click="open_term_of_use_modal()">terms of use</span>
           </div>
           <div class="row">
               <div class="col-md-12">
@@ -165,14 +165,42 @@
       </div>
 
     </div>
+
+    <stack-modal
+        :show="is_term_of_use_modal"
+        title="Terms of use"
+        @close="close_term_of_use_modal()"
+        :modal-class="{ [ModalClass]: true }"
+        :saveButton="{ visible: true }"
+        :cancelButton="{
+            title: 'Close',
+            btnClass: { 'btn btn-primary': true },
+        }"
+    >
+        <div class="model-body">
+            <div class="container">
+                <div class="row">
+                    <span v-html="this.$siteData.terms_of_use"></span>
+                </div>
+            </div>
+        </div>
+        <div slot="modal-footer">
+            <div class="modal-footer">
+                <!-- footer -->
+            </div>
+        </div>
+    </stack-modal>
+
   </div>
 </template>
 
 <script>
 import VueRecaptcha from 'vue-recaptcha'; //https://www.npmjs.com/package/vue-recaptcha
+import StackModal from "@innologica/vue-stackable-modal"; //https://innologica.github.io/vue-stackable-modal/#sample-css
 export default {
     components: { 
         VueRecaptcha,
+        StackModal,
     },
   name: "Register page",
   data: function() {
@@ -194,6 +222,8 @@ export default {
       error: [],
 
       MIX_GOOGLE_CAPTCHA_SITE_KEY: process.env.MIX_GOOGLE_CAPTCHA_SITE_KEY,
+
+      is_term_of_use_modal: false,
     };
   },
   mounted() {
@@ -205,6 +235,12 @@ export default {
     },
     onCaptchaExpired(){
         this.is_verify_isset = false
+    },
+    open_term_of_use_modal(){
+      this.is_term_of_use_modal = true
+    },
+    close_term_of_use_modal(){
+      this.is_term_of_use_modal = false
     },
     register(){
       this.error = []

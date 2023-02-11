@@ -204,6 +204,11 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   props: ['info']
 });
@@ -1021,7 +1026,7 @@ var render = function () {
           _vm._v(" "),
           _c("td", [_vm._v("|")]),
           _vm._v(" "),
-          _c("td", [_vm._v(_vm._s(_vm.info.guid_title))]),
+          _c("td", { domProps: { innerHTML: _vm._s(_vm.info.guid_title) } }),
         ]),
         _vm._v(" "),
         _c("tr", [
@@ -1029,7 +1034,9 @@ var render = function () {
           _vm._v(" "),
           _c("td", [_vm._v("|")]),
           _vm._v(" "),
-          _c("td", [_vm._v(_vm._s(_vm.info.guid_description))]),
+          _c("td", {
+            domProps: { innerHTML: _vm._s(_vm.info.guid_description) },
+          }),
         ]),
         _vm._v(" "),
         _c("tr", [
@@ -1037,7 +1044,9 @@ var render = function () {
           _vm._v(" "),
           _c("td", [_vm._v("|")]),
           _vm._v(" "),
-          _c("td", [_vm._v(_vm._s(_vm.info.guid_short_description))]),
+          _c("td", {
+            domProps: { innerHTML: _vm._s(_vm.info.guid_short_description) },
+          }),
         ]),
         _vm._v(" "),
         _c("tr", [
@@ -1045,7 +1054,7 @@ var render = function () {
           _vm._v(" "),
           _c("td", [_vm._v("|")]),
           _vm._v(" "),
-          _c("td", [_vm._v(_vm._s(_vm.info.films_title))]),
+          _c("td", { domProps: { innerHTML: _vm._s(_vm.info.films_title) } }),
         ]),
         _vm._v(" "),
         _c("tr", [
@@ -1053,7 +1062,9 @@ var render = function () {
           _vm._v(" "),
           _c("td", [_vm._v("|")]),
           _vm._v(" "),
-          _c("td", [_vm._v(_vm._s(_vm.info.films_description))]),
+          _c("td", {
+            domProps: { innerHTML: _vm._s(_vm.info.films_description) },
+          }),
         ]),
         _vm._v(" "),
         _c("tr", [
@@ -1061,7 +1072,9 @@ var render = function () {
           _vm._v(" "),
           _c("td", [_vm._v("|")]),
           _vm._v(" "),
-          _c("td", [_vm._v(_vm._s(_vm.info.films_short_description))]),
+          _c("td", {
+            domProps: { innerHTML: _vm._s(_vm.info.films_short_description) },
+          }),
         ]),
         _vm._v(" "),
         _c("tr", [
@@ -1069,7 +1082,7 @@ var render = function () {
           _vm._v(" "),
           _c("td", [_vm._v("|")]),
           _vm._v(" "),
-          _c("td", [_vm._v(_vm._s(_vm.info.forum_title))]),
+          _c("td", { domProps: { innerHTML: _vm._s(_vm.info.forum_title) } }),
         ]),
         _vm._v(" "),
         _c("tr", [
@@ -1077,7 +1090,9 @@ var render = function () {
           _vm._v(" "),
           _c("td", [_vm._v("|")]),
           _vm._v(" "),
-          _c("td", [_vm._v(_vm._s(_vm.info.forum_description))]),
+          _c("td", {
+            domProps: { innerHTML: _vm._s(_vm.info.forum_description) },
+          }),
         ]),
         _vm._v(" "),
         _c("tr", [
@@ -1085,7 +1100,9 @@ var render = function () {
           _vm._v(" "),
           _c("td", [_vm._v("|")]),
           _vm._v(" "),
-          _c("td", [_vm._v(_vm._s(_vm.info.forum_short_description))]),
+          _c("td", {
+            domProps: { innerHTML: _vm._s(_vm.info.forum_short_description) },
+          }),
         ]),
         _vm._v(" "),
         _c("tr", [
@@ -1093,7 +1110,7 @@ var render = function () {
           _vm._v(" "),
           _c("td", [_vm._v("|")]),
           _vm._v(" "),
-          _c("td", [_vm._v(_vm._s(_vm.info.shop_title))]),
+          _c("td", { domProps: { innerHTML: _vm._s(_vm.info.shop_title) } }),
         ]),
         _vm._v(" "),
         _c("tr", [
@@ -1101,7 +1118,9 @@ var render = function () {
           _vm._v(" "),
           _c("td", [_vm._v("|")]),
           _vm._v(" "),
-          _c("td", [_vm._v(_vm._s(_vm.info.shop_description))]),
+          _c("td", {
+            domProps: { innerHTML: _vm._s(_vm.info.shop_description) },
+          }),
         ]),
         _vm._v(" "),
         _c("tr", [
@@ -1109,7 +1128,9 @@ var render = function () {
           _vm._v(" "),
           _c("td", [_vm._v("|")]),
           _vm._v(" "),
-          _c("td", [_vm._v(_vm._s(_vm.info.shop_short_description))]),
+          _c("td", {
+            domProps: { innerHTML: _vm._s(_vm.info.shop_short_description) },
+          }),
         ]),
         _vm._v(" "),
         _c("tr", [
@@ -1117,7 +1138,11 @@ var render = function () {
           _vm._v(" "),
           _c("td", [_vm._v("|")]),
           _vm._v(" "),
-          _c("td", [_vm._v(_vm._s(_vm.info.other_activity_description))]),
+          _c("td", {
+            domProps: {
+              innerHTML: _vm._s(_vm.info.other_activity_description),
+            },
+          }),
         ]),
         _vm._v(" "),
         _c("tr", [
@@ -1125,7 +1150,9 @@ var render = function () {
           _vm._v(" "),
           _c("td", [_vm._v("|")]),
           _vm._v(" "),
-          _c("td", [_vm._v(_vm._s(_vm.info.mount_description))]),
+          _c("td", {
+            domProps: { innerHTML: _vm._s(_vm.info.mount_description) },
+          }),
         ]),
         _vm._v(" "),
         _c("tr", [
@@ -1133,7 +1160,9 @@ var render = function () {
           _vm._v(" "),
           _c("td", [_vm._v("|")]),
           _vm._v(" "),
-          _c("td", [_vm._v(_vm._s(_vm.info.event_description))]),
+          _c("td", {
+            domProps: { innerHTML: _vm._s(_vm.info.event_description) },
+          }),
         ]),
         _vm._v(" "),
         _c("tr", [
@@ -1141,7 +1170,9 @@ var render = function () {
           _vm._v(" "),
           _c("td", [_vm._v("|")]),
           _vm._v(" "),
-          _c("td", [_vm._v(_vm._s(_vm.info.tech_tips_description))]),
+          _c("td", {
+            domProps: { innerHTML: _vm._s(_vm.info.tech_tips_description) },
+          }),
         ]),
         _vm._v(" "),
         _c("tr", [
@@ -1149,7 +1180,9 @@ var render = function () {
           _vm._v(" "),
           _c("td", [_vm._v("|")]),
           _vm._v(" "),
-          _c("td", [_vm._v(_vm._s(_vm.info.news_description))]),
+          _c("td", {
+            domProps: { innerHTML: _vm._s(_vm.info.news_description) },
+          }),
         ]),
         _vm._v(" "),
         _c("tr", [
@@ -1157,7 +1190,9 @@ var render = function () {
           _vm._v(" "),
           _c("td", [_vm._v("|")]),
           _vm._v(" "),
-          _c("td", [_vm._v(_vm._s(_vm.info.index_gallery_description))]),
+          _c("td", {
+            domProps: { innerHTML: _vm._s(_vm.info.index_gallery_description) },
+          }),
         ]),
         _vm._v(" "),
         _c("tr", [
@@ -1165,7 +1200,9 @@ var render = function () {
           _vm._v(" "),
           _c("td", [_vm._v("|")]),
           _vm._v(" "),
-          _c("td", [_vm._v(_vm._s(_vm.info.outdoor_description))]),
+          _c("td", {
+            domProps: { innerHTML: _vm._s(_vm.info.outdoor_description) },
+          }),
         ]),
         _vm._v(" "),
         _c("tr", [
@@ -1173,7 +1210,9 @@ var render = function () {
           _vm._v(" "),
           _c("td", [_vm._v("|")]),
           _vm._v(" "),
-          _c("td", [_vm._v(_vm._s(_vm.info.indoor_description))]),
+          _c("td", {
+            domProps: { innerHTML: _vm._s(_vm.info.indoor_description) },
+          }),
         ]),
         _vm._v(" "),
         _c("tr", [
@@ -1181,7 +1220,9 @@ var render = function () {
           _vm._v(" "),
           _c("td", [_vm._v("|")]),
           _vm._v(" "),
-          _c("td", [_vm._v(_vm._s(_vm.info.ice_description))]),
+          _c("td", {
+            domProps: { innerHTML: _vm._s(_vm.info.ice_description) },
+          }),
         ]),
         _vm._v(" "),
         _c("tr", [
@@ -1189,7 +1230,9 @@ var render = function () {
           _vm._v(" "),
           _c("td", [_vm._v("|")]),
           _vm._v(" "),
-          _c("td", [_vm._v(_vm._s(_vm.info.topo_description))]),
+          _c("td", {
+            domProps: { innerHTML: _vm._s(_vm.info.topo_description) },
+          }),
         ]),
         _vm._v(" "),
         _c("tr", [
@@ -1197,7 +1240,9 @@ var render = function () {
           _vm._v(" "),
           _c("td", [_vm._v("|")]),
           _vm._v(" "),
-          _c("td", [_vm._v(_vm._s(_vm.info.what_we_do_description))]),
+          _c("td", {
+            domProps: { innerHTML: _vm._s(_vm.info.what_we_do_description) },
+          }),
         ]),
         _vm._v(" "),
         _c("tr", [
@@ -1205,7 +1250,9 @@ var render = function () {
           _vm._v(" "),
           _c("td", [_vm._v("|")]),
           _vm._v(" "),
-          _c("td", [_vm._v(_vm._s(_vm.info.products_description))]),
+          _c("td", {
+            domProps: { innerHTML: _vm._s(_vm.info.products_description) },
+          }),
         ]),
         _vm._v(" "),
         _c("tr", [
@@ -1213,7 +1260,17 @@ var render = function () {
           _vm._v(" "),
           _c("td", [_vm._v("|")]),
           _vm._v(" "),
-          _c("td", [_vm._v(_vm._s(_vm.info.services_description))]),
+          _c("td", {
+            domProps: { innerHTML: _vm._s(_vm.info.services_description) },
+          }),
+        ]),
+        _vm._v(" "),
+        _c("tr", [
+          _c("td", [_vm._v("Terms of use")]),
+          _vm._v(" "),
+          _c("td", [_vm._v("|")]),
+          _vm._v(" "),
+          _c("td", { domProps: { innerHTML: _vm._s(_vm.info.terms_of_use) } }),
         ]),
       ]),
     ]

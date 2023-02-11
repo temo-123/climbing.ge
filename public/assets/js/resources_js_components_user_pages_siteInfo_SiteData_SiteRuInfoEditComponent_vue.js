@@ -299,6 +299,12 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   props: ['locale_data_prop'],
   data: function data() {
@@ -666,7 +672,6 @@ var render = function () {
           { staticClass: "col-xs-8" },
           [
             _c("ckeditor", {
-              attrs: { config: _vm.editorConfig },
               model: {
                 value: _vm.locale_data.guid_short_description,
                 callback: function ($$v) {
@@ -692,7 +697,6 @@ var render = function () {
           { staticClass: "col-xs-8" },
           [
             _c("ckeditor", {
-              attrs: { config: _vm.editorConfig },
               model: {
                 value: _vm.locale_data.guid_description,
                 callback: function ($$v) {
@@ -718,7 +722,6 @@ var render = function () {
           { staticClass: "col-xs-8" },
           [
             _c("ckeditor", {
-              attrs: { config: _vm.editorConfig },
               model: {
                 value: _vm.locale_data.films_title,
                 callback: function ($$v) {
@@ -744,7 +747,6 @@ var render = function () {
           { staticClass: "col-xs-8" },
           [
             _c("ckeditor", {
-              attrs: { config: _vm.editorConfig },
               model: {
                 value: _vm.locale_data.films_description,
                 callback: function ($$v) {
@@ -770,7 +772,6 @@ var render = function () {
           { staticClass: "col-xs-8" },
           [
             _c("ckeditor", {
-              attrs: { config: _vm.editorConfig },
               model: {
                 value: _vm.locale_data.films_short_description,
                 callback: function ($$v) {
@@ -796,7 +797,6 @@ var render = function () {
           { staticClass: "col-xs-8" },
           [
             _c("ckeditor", {
-              attrs: { config: _vm.editorConfig },
               model: {
                 value: _vm.locale_data.forum_title,
                 callback: function ($$v) {
@@ -822,7 +822,6 @@ var render = function () {
           { staticClass: "col-xs-8" },
           [
             _c("ckeditor", {
-              attrs: { config: _vm.editorConfig },
               model: {
                 value: _vm.locale_data.forum_description,
                 callback: function ($$v) {
@@ -848,7 +847,6 @@ var render = function () {
           { staticClass: "col-xs-8" },
           [
             _c("ckeditor", {
-              attrs: { config: _vm.editorConfig },
               model: {
                 value: _vm.locale_data.forum_short_description,
                 callback: function ($$v) {
@@ -874,7 +872,6 @@ var render = function () {
           { staticClass: "col-xs-8" },
           [
             _c("ckeditor", {
-              attrs: { config: _vm.editorConfig },
               model: {
                 value: _vm.locale_data.shop_title,
                 callback: function ($$v) {
@@ -900,7 +897,6 @@ var render = function () {
           { staticClass: "col-xs-8" },
           [
             _c("ckeditor", {
-              attrs: { config: _vm.editorConfig },
               model: {
                 value: _vm.locale_data.other_activity_description,
                 callback: function ($$v) {
@@ -926,7 +922,6 @@ var render = function () {
           { staticClass: "col-xs-8" },
           [
             _c("ckeditor", {
-              attrs: { config: _vm.editorConfig },
               model: {
                 value: _vm.locale_data.event_description,
                 callback: function ($$v) {
@@ -952,7 +947,6 @@ var render = function () {
           { staticClass: "col-xs-8" },
           [
             _c("ckeditor", {
-              attrs: { config: _vm.editorConfig },
               model: {
                 value: _vm.locale_data.tech_tips_description,
                 callback: function ($$v) {
@@ -978,7 +972,6 @@ var render = function () {
           { staticClass: "col-xs-8" },
           [
             _c("ckeditor", {
-              attrs: { config: _vm.editorConfig },
               model: {
                 value: _vm.locale_data.news_description,
                 callback: function ($$v) {
@@ -1004,7 +997,6 @@ var render = function () {
           { staticClass: "col-xs-8" },
           [
             _c("ckeditor", {
-              attrs: { config: _vm.editorConfig },
               model: {
                 value: _vm.locale_data.index_gallery_description,
                 callback: function ($$v) {
@@ -1030,7 +1022,6 @@ var render = function () {
           { staticClass: "col-xs-8" },
           [
             _c("ckeditor", {
-              attrs: { config: _vm.editorConfig },
               model: {
                 value: _vm.locale_data.products_description,
                 callback: function ($$v) {
@@ -1056,7 +1047,6 @@ var render = function () {
           { staticClass: "col-xs-8" },
           [
             _c("ckeditor", {
-              attrs: { config: _vm.editorConfig },
               model: {
                 value: _vm.locale_data.ice_description,
                 callback: function ($$v) {
@@ -1082,7 +1072,6 @@ var render = function () {
           { staticClass: "col-xs-8" },
           [
             _c("ckeditor", {
-              attrs: { config: _vm.editorConfig },
               model: {
                 value: _vm.locale_data.mount_description,
                 callback: function ($$v) {
@@ -1108,7 +1097,6 @@ var render = function () {
           { staticClass: "col-xs-8" },
           [
             _c("ckeditor", {
-              attrs: { config: _vm.editorConfig },
               model: {
                 value: _vm.locale_data.outdoor_description,
                 callback: function ($$v) {
@@ -1134,7 +1122,6 @@ var render = function () {
           { staticClass: "col-xs-8" },
           [
             _c("ckeditor", {
-              attrs: { config: _vm.editorConfig },
               model: {
                 value: _vm.locale_data.indoor_description,
                 callback: function ($$v) {
@@ -1160,7 +1147,6 @@ var render = function () {
           { staticClass: "col-xs-8" },
           [
             _c("ckeditor", {
-              attrs: { config: _vm.editorConfig },
               model: {
                 value: _vm.locale_data.topo_description,
                 callback: function ($$v) {
@@ -1186,7 +1172,6 @@ var render = function () {
           { staticClass: "col-xs-8" },
           [
             _c("ckeditor", {
-              attrs: { config: _vm.editorConfig },
               model: {
                 value: _vm.locale_data.what_we_do_description,
                 callback: function ($$v) {
@@ -1212,7 +1197,6 @@ var render = function () {
           { staticClass: "col-xs-8" },
           [
             _c("ckeditor", {
-              attrs: { config: _vm.editorConfig },
               model: {
                 value: _vm.locale_data.shop_short_description,
                 callback: function ($$v) {
@@ -1238,7 +1222,6 @@ var render = function () {
           { staticClass: "col-xs-8" },
           [
             _c("ckeditor", {
-              attrs: { config: _vm.editorConfig },
               model: {
                 value: _vm.locale_data.shop_description,
                 callback: function ($$v) {
@@ -1264,13 +1247,37 @@ var render = function () {
           { staticClass: "col-xs-8" },
           [
             _c("ckeditor", {
-              attrs: { config: _vm.editorConfig },
               model: {
                 value: _vm.locale_data.services_description,
                 callback: function ($$v) {
                   _vm.$set(_vm.locale_data, "services_description", $$v)
                 },
                 expression: "locale_data.services_description",
+              },
+            }),
+          ],
+          1
+        ),
+      ]),
+      _vm._v(" "),
+      _c("div", { staticClass: "form-group clearfix" }, [
+        _c(
+          "label",
+          { staticClass: "col-xs-2 control-label", attrs: { for: "name" } },
+          [_vm._v(" Terms of use ")]
+        ),
+        _vm._v(" "),
+        _c(
+          "div",
+          { staticClass: "col-xs-8" },
+          [
+            _c("ckeditor", {
+              model: {
+                value: _vm.locale_data.terms_of_use,
+                callback: function ($$v) {
+                  _vm.$set(_vm.locale_data, "terms_of_use", $$v)
+                },
+                expression: "locale_data.terms_of_use",
               },
             }),
           ],

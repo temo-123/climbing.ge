@@ -5594,6 +5594,34 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
 /* harmony import */ var vue_recaptcha__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vue-recaptcha */ "./node_modules/vue-recaptcha/dist/vue-recaptcha.es.js");
+/* harmony import */ var _innologica_vue_stackable_modal__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @innologica/vue-stackable-modal */ "./node_modules/@innologica/vue-stackable-modal/dist/vue-stackable-modal.umd.min.js");
+/* harmony import */ var _innologica_vue_stackable_modal__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_innologica_vue_stackable_modal__WEBPACK_IMPORTED_MODULE_1__);
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -5766,9 +5794,12 @@ __webpack_require__.r(__webpack_exports__);
 //
  //https://www.npmjs.com/package/vue-recaptcha
 
+ //https://innologica.github.io/vue-stackable-modal/#sample-css
+
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   components: {
-    VueRecaptcha: vue_recaptcha__WEBPACK_IMPORTED_MODULE_0__["default"]
+    VueRecaptcha: vue_recaptcha__WEBPACK_IMPORTED_MODULE_0__["default"],
+    StackModal: (_innologica_vue_stackable_modal__WEBPACK_IMPORTED_MODULE_1___default())
   },
   name: "Register page",
   data: function data() {
@@ -5785,7 +5816,8 @@ __webpack_require__.r(__webpack_exports__);
       is_verify_isset: false,
       terms_of_use: false,
       error: [],
-      MIX_GOOGLE_CAPTCHA_SITE_KEY: "6LfDFkMcAAAAAFh9-1TUlmGPx83715KTD79j0iwF"
+      MIX_GOOGLE_CAPTCHA_SITE_KEY: "6LfDFkMcAAAAAFh9-1TUlmGPx83715KTD79j0iwF",
+      is_term_of_use_modal: false
     };
   },
   mounted: function mounted() {},
@@ -5795,6 +5827,12 @@ __webpack_require__.r(__webpack_exports__);
     },
     onCaptchaExpired: function onCaptchaExpired() {
       this.is_verify_isset = false;
+    },
+    open_term_of_use_modal: function open_term_of_use_modal() {
+      this.is_term_of_use_modal = true;
+    },
+    close_term_of_use_modal: function close_term_of_use_modal() {
+      this.is_term_of_use_modal = false;
     },
     register: function register() {
       var _this = this;
@@ -71722,6 +71760,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "staticRenderFns": () => (/* binding */ staticRenderFns)
 /* harmony export */ });
 var render = function () {
+  var _obj
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
@@ -72092,7 +72131,18 @@ var render = function () {
                       },
                     }),
                     _vm._v("\n          I agree with the "),
-                    _c("a", { attrs: { href: "#" } }, [_vm._v("terms of use")]),
+                    _c(
+                      "span",
+                      {
+                        staticClass: "cursor_pointer text-warning",
+                        on: {
+                          click: function ($event) {
+                            return _vm.open_term_of_use_modal()
+                          },
+                        },
+                      },
+                      [_vm._v("terms of use")]
+                    ),
                   ]),
                   _vm._v(" "),
                   _c("div", { staticClass: "row" }, [
@@ -72181,6 +72231,42 @@ var render = function () {
             ])
           : _vm._e(),
       ]),
+      _vm._v(" "),
+      _c(
+        "stack-modal",
+        {
+          attrs: {
+            show: _vm.is_term_of_use_modal,
+            title: "Terms of use",
+            "modal-class": ((_obj = {}), (_obj[_vm.ModalClass] = true), _obj),
+            saveButton: { visible: true },
+            cancelButton: {
+              title: "Close",
+              btnClass: { "btn btn-primary": true },
+            },
+          },
+          on: {
+            close: function ($event) {
+              return _vm.close_term_of_use_modal()
+            },
+          },
+        },
+        [
+          _c("div", { staticClass: "model-body" }, [
+            _c("div", { staticClass: "container" }, [
+              _c("div", { staticClass: "row" }, [
+                _c("span", {
+                  domProps: { innerHTML: _vm._s(this.$siteData.terms_of_use) },
+                }),
+              ]),
+            ]),
+          ]),
+          _vm._v(" "),
+          _c("div", { attrs: { slot: "modal-footer" }, slot: "modal-footer" }, [
+            _c("div", { staticClass: "modal-footer" }),
+          ]),
+        ]
+      ),
     ],
     1
   )

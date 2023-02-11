@@ -767,7 +767,7 @@ class ArticleController extends Controller
         }
     }
 
-    public function image_validate($request)
+    private function image_validate($request)
     {
         $validator = Validator::make($request->all(), [
             'image' => 'nullable | image | mimes:jpeg,png,jpg,gif,svg | max:2048',
@@ -777,11 +777,11 @@ class ArticleController extends Controller
         }
     }
 
-    public function local_article_validate($data)
+    private function local_article_validate($data)
     {
         // dd($data);
         $validator = Validator::make($data, [
-            'title' => 'required',
+            'title' => 'required | max:190',
             'short_description' => 'required',
             'text' => 'required',
         ]);
