@@ -65,8 +65,9 @@
       },
       methods: {
         on_submit(){
+          this.is_mail_sending = true
           axios
-          .post('../../api/password/send_reseting_mail', { email: this.email })
+          .post('../../api/password/send_forget_mail', { email: this.email })
           .then(response => {
             alert('We send message on inserting email -> "' + this.email + '", Please check this email for finishing password resetting. You while returned on login page.')
             this.$router.push({ path: "login" }); 

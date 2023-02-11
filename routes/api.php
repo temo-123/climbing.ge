@@ -33,12 +33,20 @@ Route::middleware('auth:sanctum')->get('token', function () {
 Route::group(['namespace'=>'Auth'], function() {
     Route::controller(VerificationController::class)->prefix('email')->group( function() {
         Route::get('/verify/{id}/{hash}', 'verify')->name('api.verification.verify');
-        // Route::get('/resend', 'resend')->name('api.verification.resend');
+        // Route::get('/resend', 'resend')->name('api.verification.resend'); // resending work on defolt laravel function
     });
 
     Route::controller(SocialController::class)->prefix('login')->group( function() {
-        Route::get('{provider}/callback','Callback');
-        Route::get('{provider}', 'redirect');
+        Route::get('/{provider}/callback','Callback');
+        Route::get('/{provider}', 'redirect');
+    });
+
+    Route::controller(ForgotPasswordController::class)->prefix('password')->group( function() {
+        Route::post('/send_forget_mail', 'send_forget_mail');
+    });
+
+    Route::controller(ResetPasswordController::class)->prefix('password')->group( function() {
+        Route::post('/reset_password', 'reset_password');
     });
 });
 
@@ -501,11 +509,5 @@ Route::group(['namespace'=>'Api'], function() {
     Route::controller(CKEditorController::class)->prefix('ckeditor')->group( function() {
         // Route::get('', 'index');
         // Route::post('/upload', 'upload');
-    });
-
-
-    Route::controller(ResetPasswordController::class)->prefix('password')->group( function() {
-        Route::post('/send_reseting_mail', 'send_reseting_mail');
-        Route::post('/reset_password', 'reset_password');
     });
 });

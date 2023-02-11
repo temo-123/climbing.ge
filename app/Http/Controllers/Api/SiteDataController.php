@@ -232,7 +232,7 @@ class SiteDataController extends Controller
     private function validation_global_data()
     {
         $validator = Validator::make($data, [
-            'email' => 'required',
+            'email' => 'required | string | email',
         ]);
         if ($validator->fails()) {
             return $validator->messages();

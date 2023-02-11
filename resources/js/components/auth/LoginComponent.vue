@@ -19,9 +19,6 @@
           </div>
       </div>
       <div class="card-body">
-        <!-- <div class="alert alert-danger" role="alert" v-if="this.error.message">
-          {{ this.error.message }}
-        </div> -->
         <form id="login_form" v-on:submit.prevent="login">
           <div class="form-group">
             <label for="email">Email address</label>
@@ -42,7 +39,7 @@
           <div class="form-group">
             <label for="password">Password</label>
               (
-                <router-link :to="{name: 'reset_pass'}">
+                <router-link :to="{name: 'forget_pass'}">
                   Return password
                 </router-link>
               )
@@ -60,8 +57,11 @@
             </div>
           </div>
           <div class="form-group">
-            <input type="checkbox" v-model="remember_me" name="One time code" value="One time code">
+            <input type="checkbox" v-model="remember" name="One time code" value="One time code">
             Remember me
+          </div>
+          <div class="alert alert-danger" role="alert" v-if="auth_error">
+            Password or email is not correct
           </div>
           <button type="button" @click.prevent="login" class="btn btn-primary">
             Login
@@ -83,9 +83,10 @@
       return {
         email: null,
         password: null,
+        remember: false,
+        
         error: [],
         auth_error: '',
-        remember_me: null,
 
         MIX_USER_PAGE_URL: process.env.MIX_USER_PAGE_URL,
         MIX_APP_SSH: process.env.MIX_APP_SSH,
@@ -116,7 +117,8 @@
           axios
             .post('login', {
               email: this.email, 
-              password: this.password
+              password: this.password,
+              remember: this.remember
             })
             .then((res) => {
               localStorage.setItem('x_xsrf_token', res.config.headers['X-XSRF-TOKEN'])
