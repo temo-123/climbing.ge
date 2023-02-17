@@ -78,17 +78,22 @@
                         <td>--</td>
                     </tr>
                     <tr>
-                        <td>News</td>
-                        <td>|</td>
-                        <td>
-                            <input type="checkbox" v-model="data.news">
-                        </td>
-                    </tr>
-                    <tr>
                         <td>New sector</td>
                         <td>|</td>
                         <td>
                             <input type="checkbox" v-model="data.add_new_sector">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>--</td>
+                        <td>--</td>
+                        <td>--</td>
+                    </tr>
+                    <tr>
+                        <td>News</td>
+                        <td>|</td>
+                        <td>
+                            <input type="checkbox" v-model="data.news">
                         </td>
                     </tr>
                     <tr>
@@ -118,6 +123,11 @@
                         <td>
                             <input type="checkbox" v-model="data.add_new_gym">
                         </td>
+                    </tr>
+                    <tr>
+                        <td>--</td>
+                        <td>--</td>
+                        <td>--</td>
                     </tr>
                     <tr>
                         <td>New product</td>

@@ -823,15 +823,11 @@ var render = function () {
                 ])
               : _vm._e(),
             _vm._v(" "),
-            this.category == "event" ||
-            this.category == "partner" ||
-            this.category == "indoor"
+            this.category == "partner" || this.category == "indoor"
               ? _c("hr")
               : _vm._e(),
             _vm._v(" "),
-            this.category == "event" ||
-            this.category == "partner" ||
-            this.category == "indoor"
+            this.category == "partner" || this.category == "indoor"
               ? _c("div", { staticClass: "form-group clearfix row" }, [
                   _c(
                     "label",
@@ -892,9 +888,7 @@ var render = function () {
                 ])
               : _vm._e(),
             _vm._v(" "),
-            this.category == "event" ||
-            this.category == "partner" ||
-            this.category == "indoor"
+            this.category == "partner" || this.category == "indoor"
               ? _c("div", { staticClass: "form-group clearfix row" }, [
                   _c(
                     "label",
@@ -955,9 +949,7 @@ var render = function () {
                 ])
               : _vm._e(),
             _vm._v(" "),
-            this.category == "event" ||
-            this.category == "partner" ||
-            this.category == "indoor"
+            this.category == "partner" || this.category == "indoor"
               ? _c("div", { staticClass: "form-group clearfix row" }, [
                   _c(
                     "label",

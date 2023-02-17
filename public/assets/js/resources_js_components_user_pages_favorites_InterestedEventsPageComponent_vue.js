@@ -569,13 +569,13 @@ var render = function () {
                                 src:
                                   "../../../public/images/event_img/" +
                                   event.image,
-                                alt: event[0][0].title,
+                                alt: event.url_title,
                               },
                             })
                           : _c("site-img", {
                               attrs: {
                                 src: "../../../public/images/site_img/image.png",
-                                alt: event[0][0].title,
+                                alt: event.url_title,
                               },
                             }),
                         _vm._v(" "),
@@ -592,7 +592,7 @@ var render = function () {
                                   },
                                 },
                               },
-                              [_vm._v(_vm._s(event[0][0].title))]
+                              [_vm._v(_vm._s(event.url_title))]
                             ),
                             _vm._v(" "),
                             _c(

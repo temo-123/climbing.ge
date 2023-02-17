@@ -146,6 +146,9 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
 
 
 
@@ -239,8 +242,12 @@ __webpack_require__.r(__webpack_exports__);
       }
 
       axios.post('/api/article/add_article/' + this.category, formData).then(function (response) {
-        if (confirm('Do you want send notification about new article?')) {
-          _this.sand_notification();
+        if (_this.category == 'outdoor' || _this.category == 'news' || _this.category == 'tech_tip' || _this.category == 'indoor' || _this.category == 'ice') {
+          if (confirm('Do you want send notification about new article?')) {
+            _this.sand_notification();
+          } else {
+            _this.go_back(true);
+          }
         } else {
           _this.go_back(true);
         }
@@ -254,7 +261,7 @@ __webpack_require__.r(__webpack_exports__);
       var _this2 = this;
 
       this.is_mail_sending_procesing = true;
-      axios.post('../../../api/user/notifications/send_article_notification', {
+      axios.post('../../../api/user/notifications/send_article_adding_notification', {
         notification_category: this.category
       }).then(function (response) {
         _this2.go_back(true);
@@ -1691,6 +1698,26 @@ var render = function () {
                     )
                   : _vm._e(),
                 _vm._v(" "),
+                _vm.error.global_info_validation.us_title_for_url_title
+                  ? _c(
+                      "div",
+                      {
+                        staticClass: "alert alert-danger",
+                        attrs: { role: "alert" },
+                      },
+                      [
+                        _vm._v(
+                          "\n                Us title - " +
+                            _vm._s(
+                              _vm.error.global_info_validation
+                                .us_title_for_url_title[0]
+                            ) +
+                            "\n            "
+                        ),
+                      ]
+                    )
+                  : _vm._e(),
+                _vm._v(" "),
                 _vm.error.us_info_validation.title
                   ? _c(
                       "div",
@@ -2672,15 +2699,11 @@ var render = function () {
                 ])
               : _vm._e(),
             _vm._v(" "),
-            this.category == "event" ||
-            this.category == "partner" ||
-            this.category == "indoor"
+            this.category == "partner" || this.category == "indoor"
               ? _c("hr")
               : _vm._e(),
             _vm._v(" "),
-            this.category == "event" ||
-            this.category == "partner" ||
-            this.category == "indoor"
+            this.category == "partner" || this.category == "indoor"
               ? _c("div", { staticClass: "form-group clearfix row" }, [
                   _c(
                     "label",
@@ -2741,9 +2764,7 @@ var render = function () {
                 ])
               : _vm._e(),
             _vm._v(" "),
-            this.category == "event" ||
-            this.category == "partner" ||
-            this.category == "indoor"
+            this.category == "partner" || this.category == "indoor"
               ? _c("div", { staticClass: "form-group clearfix row" }, [
                   _c(
                     "label",
@@ -2804,9 +2825,7 @@ var render = function () {
                 ])
               : _vm._e(),
             _vm._v(" "),
-            this.category == "event" ||
-            this.category == "partner" ||
-            this.category == "indoor"
+            this.category == "partner" || this.category == "indoor"
               ? _c("div", { staticClass: "form-group clearfix row" }, [
                   _c(
                     "label",

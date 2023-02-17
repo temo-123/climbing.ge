@@ -292,11 +292,30 @@ export default {
                 formData
             )
             .then(response => {
-                this.go_back(true)
+                if(confirm('Do you want send notification about editing sector?')){
+                    this.sand_notification()
+                }
+                else{
+                    this.go_back(true)
+                }
             })
             .catch(
                 error => console.log(error)
             );
+        },
+
+        sand_notification() {
+            this.is_mail_sending_procesing = true
+
+            axios
+            .post('../../../api/user/notifications/send_service_adding_notification')
+            .then(response => {
+                this.go_back(true)
+            })
+            .catch(err => {
+                console.log(err);
+            })
+            .finally(() => this.is_mail_sending_procesing = false);
         },
 
 

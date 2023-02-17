@@ -284,9 +284,25 @@ __webpack_require__.r(__webpack_exports__);
       loop_num = 0;
       formData.append('data', JSON.stringify(this.data));
       axios.post('../api/service/add_service', formData).then(function (response) {
-        _this.go_back(true);
+        if (confirm('Do you want send notification about editing sector?')) {
+          _this.sand_notification();
+        } else {
+          _this.go_back(true);
+        }
       })["catch"](function (error) {
         return console.log(error);
+      });
+    },
+    sand_notification: function sand_notification() {
+      var _this2 = this;
+
+      this.is_mail_sending_procesing = true;
+      axios.post('../../../api/user/notifications/send_service_adding_notification').then(function (response) {
+        _this2.go_back(true);
+      })["catch"](function (err) {
+        console.log(err);
+      })["finally"](function () {
+        return _this2.is_mail_sending_procesing = false;
       });
     },
     go_back: function go_back() {

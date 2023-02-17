@@ -323,10 +323,10 @@ __webpack_require__.r(__webpack_exports__);
         change_url_title: this.change_url_title
       }).then(function (response) {
         _this2.go_back(true);
-      })["catch"](function (error) {// if (error.response.status == 422) {
-        //     this.us_article_error = error.response.data.errors
-        // }
-        // this.is_us_article_error = true
+      })["catch"](function (error) {
+        if (error.response.status == 422) {
+          _this2.us_article_error = error.response.data.errors;
+        }
       });
     },
     get_product_category_data: function get_product_category_data() {

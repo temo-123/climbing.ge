@@ -449,19 +449,12 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         success: "",
         article_id: ""
       }, _defineProperty(_data, "name", ""), _defineProperty(_data, "text", ""), _defineProperty(_data, "all_day_in_shade", null), _defineProperty(_data, "all_day_in_sun", null), _defineProperty(_data, "in_the_shade_afternoon", null), _defineProperty(_data, "in_the_shade_befornoon", null), _defineProperty(_data, "in_shade_after_10", null), _defineProperty(_data, "in_shade_after_15", null), _defineProperty(_data, "slabby", null), _defineProperty(_data, "vertical", null), _defineProperty(_data, "overhang", null), _defineProperty(_data, "roof", null), _defineProperty(_data, "for_family", null), _defineProperty(_data, "for_kids", null), _defineProperty(_data, "wolking_time", null), _data),
-      // temporary_sector_id: 0,
-      // image_is_refresh: false,
-      // image_reset_id: 0,
-      // sector_images: ['Item 1', 'Item 2', 'Item 3', 'Item 4', 'Item 5', 'Item 6', 'Item 7', 'Item 10'],
       sector_images: []
     };
   },
   mounted: function mounted() {
-    this.get_region_data(); // this.create_temporary_sector();
+    this.get_region_data();
   },
-  // beforeRouteLeave (to, from, next) {
-  //     this.go_back()
-  // },
   methods: {
     add_sector_new_image_value: function add_sector_new_image_value() {
       var new_item_id = this.sector_images.length + 1;
@@ -485,18 +478,9 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       arr.splice(objWithIdIndex, 1);
       return arr;
     },
-    // showModal() {
-    //     this.myModal = !this.myModal;
-    // },
     get_region_data: function get_region_data() {
       var _this = this;
 
-      // axios
-      //     .get("../api/article/")
-      //     .then((response) => {
-      //         this.regions = response.data;
-      //     })
-      //     .catch((error) => console.log(error));
       axios.get('../../api/articles/outdoor/us').then(function (response) {
         _this.regions = response.data;
       })["catch"](function (error) {});
@@ -513,11 +497,27 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       loop_num = 0;
       formData.append('data', JSON.stringify(this.data));
       axios.post("../../api/sector/add_sector/", formData).then(function (response) {
-        _this2.go_back(true);
+        if (confirm('Do you want send notification about editing sector?')) {
+          _this2.sand_notification();
+        } else {
+          _this2.go_back(true);
+        }
       })["catch"](function (error) {
-        console.log(error); // if (error.response.status == 422) {
-        //     this.errors = error.response.data.errors;
-        // }
+        if (error.response.status == 422) {
+          _this2.errors = error.response.data.errors;
+        }
+      });
+    },
+    sand_notification: function sand_notification() {
+      var _this3 = this;
+
+      this.is_mail_sending_procesing = true;
+      axios.post('../../../api/user/notifications/send_sector_adding_notification').then(function (response) {
+        _this3.go_back(true);
+      })["catch"](function (err) {
+        console.log(err);
+      })["finally"](function () {
+        return _this3.is_mail_sending_procesing = false;
       });
     },
     go_back: function go_back() {
@@ -525,13 +525,11 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
       if (back_action == false) {
         if (confirm('Are you sure, you want go back?')) {
-          // this.$router.go(-1)
           this.$router.push({
             name: 'routeAndSectorList'
           });
         }
       } else {
-        // this.$router.go(-1)
         this.$router.push({
           name: 'routeAndSectorList'
         });

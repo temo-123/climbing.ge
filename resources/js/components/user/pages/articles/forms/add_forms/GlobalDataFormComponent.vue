@@ -106,9 +106,9 @@
                         </div>
                     </div>
 
-                    <hr v-if="this.category == 'event' || this.category == 'partner' || this.category == 'indoor'">
+                    <hr v-if="this.category == 'partner' || this.category == 'indoor'">
 
-                    <div class="form-group clearfix row"  v-if="this.category == 'event' || this.category == 'partner' || this.category == 'indoor'">
+                    <div class="form-group clearfix row"  v-if="this.category == 'partner' || this.category == 'indoor'">
                         <label for="name" class='col-md-2 control-label'> facebook / twitter </label>
                         <div class="col-md-4">
                             <input type="text" v-model="data.fb_link" name="fb_link" class="form-control"> 
@@ -118,7 +118,7 @@
                         </div>
                     </div>
 
-                    <div class="form-group clearfix row" v-if="this.category == 'event' || this.category == 'partner' || this.category == 'indoor'">
+                    <div class="form-group clearfix row" v-if="this.category == 'partner' || this.category == 'indoor'">
                         <label for="name" class='col-md-2 control-label'> google / instagram </label>
                         <div class="col-md-4">
                             <input type="text" v-model="data.google_link" name="google_link" class="form-control"> 
@@ -128,7 +128,7 @@
                         </div>
                     </div>
 
-                    <div class="form-group clearfix row" v-if="this.category == 'event' || this.category == 'partner' || this.category == 'indoor'">
+                    <div class="form-group clearfix row" v-if="this.category == 'partner' || this.category == 'indoor'">
                         <label for="name" class='col-md-2 control-label'> website </label>
                         <div class="col-md-10">
                             <!-- <input type="text" v-model="data.name" name="value name" value="old data" class="form-control"> -->

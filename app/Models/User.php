@@ -95,16 +95,6 @@ class User extends Authenticatable implements MustVerifyEmail
       return $this->belongsToMany(Permission::class, 'user_permission', 'user_id', 'permission_id');
     }
 
-    // public function rol()
-    // {
-    //   return $this->belongsToMany(Role::class, 'user_role', 'user_id', 'role_id');
-    // }
-
-    // public function perm()
-    // {
-    //   return $this->belongsToMany(Permission::class, 'ddddd', 'user_id', 'permission_id');
-    // }
-
     public function comments()
     {
       return $this->belongsToMany(Comment::class, 'article_comment_user', 'user_id', 'comment_id');
@@ -125,7 +115,7 @@ class User extends Authenticatable implements MustVerifyEmail
 		  return $this->hasMany(Favorite_film::class, 'user_id');
     }
 
-    public function interested_evenst()
+    public function interested_events()
     {
 		  return $this->hasMany(Interested_event::class, 'user_id');
     }

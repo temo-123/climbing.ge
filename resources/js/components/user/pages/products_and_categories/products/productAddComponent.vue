@@ -271,14 +271,32 @@ export default {
                 data: this.data,
             })
             .then((response)=> { 
-                this.go_back(true)
+                if(confirm('Do you want send notification about editing article?')){
+                    this.sand_notification()
+                }
+                else{
+                    this.go_back(true)
+                }
             })
             .catch(error =>{
-                // if (error.response.status == 422) {
-                //     this.us_article_error = error.response.data.errors
-                // }
-                // this.is_us_article_error = true
+                if (error.response.status == 422) {
+                    this.us_article_error = error.response.data.errors
+                }
             })
+        },
+
+        sand_notification() {
+            this.is_mail_sending_procesing = true
+
+            axios
+            .post('../../../api/user/notifications/send_product_adding_notification')
+            .then(response => {
+                this.go_back(true)
+            })
+            .catch(err => {
+                console.log(err);
+            })
+            .finally(() => this.is_mail_sending_procesing = false);
         },
 
         get_product_category_data: function(){

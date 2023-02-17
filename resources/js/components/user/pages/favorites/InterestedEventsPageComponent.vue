@@ -46,14 +46,14 @@
 								</time>
 
 								<!-- <span @click="go_to_events_list('/event/'+event.url_title)" > -->
-									<site-img v-if="event.image != NULL" :src="'../../../public/images/event_img/'+event.image" :alt='event[0][0].title'/>
-									<site-img v-else :src="'../../../public/images/site_img/image.png'" :alt='event[0][0].title'/>
+									<site-img v-if="event.image != NULL" :src="'../../../public/images/event_img/'+event.image" :alt='event.url_title'/>
+									<site-img v-else :src="'../../../public/images/site_img/image.png'" :alt='event.url_title'/>
 								<!-- </span> -->
 
 								<!-- <img alt="Independence Day" src="https://farm4.staticflickr.com/3100/2693171833_3545fb852c_q.jpg" /> -->
 								<div class="info">
 									<h2 class="title">
-										<a @click="go_to_events_list('/event/'+event.url_title)">{{ event[0][0].title }}</a>
+										<a @click="go_to_events_list('/event/'+event.url_title)">{{ event.url_title }}</a>
 										<span @click="del_interested_event(event.id)" class="float-right">X</span>
 									</h2>
 									<!-- <p class="desc">United States Holiday</p> -->

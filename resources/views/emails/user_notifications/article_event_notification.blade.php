@@ -1,13 +1,10 @@
 @component('mail::message')
-# Introduction
+{{-- # Introduction --}}
 
-The body of your message.
+{{ $data['text'] }}
 
-locale - {{ $locale_article }}
-global - {{ $global_article }}
-
-@component('mail::button', ['url' => ''])
-Article
+@component('mail::button', ['url' => $data['url']])
+Wisit this page
 @endcomponent
 
 Thanks,<br>

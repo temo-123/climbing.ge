@@ -17,9 +17,9 @@ return new class extends Migration
             
             $table->bigIncrements('id');
             
-            $table->string('email')->nullable();
+            $table->string('email')->unique();
 
-            $table->integer('service')->nullable();
+            $table->string('service')->nullable();
 
             $table->timestamps();
         });

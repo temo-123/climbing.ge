@@ -405,6 +405,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
     return {
@@ -2180,7 +2181,9 @@ var render = function () {
                               tip.image != null
                                 ? _c("site-img", {
                                     attrs: {
-                                      src: this.image_dir + tip.image,
+                                      src:
+                                        "../../../public/images/tech_tip_img/" +
+                                        tip.image,
                                       img_class: "img-responsive",
                                       alt: tip[0][0].title,
                                     },
@@ -2209,9 +2212,13 @@ var render = function () {
                                 [_c("h3", [_vm._v(_vm._s(tip[0][0].title))])]
                               ),
                               _vm._v(" "),
-                              _c("p", [
-                                _vm._v(_vm._s(tip[0][0].short_description)),
-                              ]),
+                              _c("span", {
+                                domProps: {
+                                  innerHTML: _vm._s(
+                                    tip[0][0].short_description
+                                  ),
+                                },
+                              }),
                             ],
                             1
                           ),

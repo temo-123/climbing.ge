@@ -60,18 +60,31 @@ class UsersController extends Controller
             return $validator->messages();
         }
         else{
-            User::create([
-                'name'     => $request['data']['name'],
-                'surname'    => $request['data']['surname'],
+            // User::create([
+            //     'name'     => $request['data']['name'],
+            //     'surname'    => $request['data']['surname'],
 
-                'country'    => $request['data']['country'],
-                'city'    => $request['data']['city'],
+            //     'country'    => $request['data']['country'],
+            //     'city'    => $request['data']['city'],
 
-                'phone_number'    => $request['data']['phone_number'],
-                'email'    => $request['data']['email'],
+            //     'phone_number'    => $request['data']['phone_number'],
+            //     'email'    => $request['data']['email'],
 
-                'password' => bcrypt($request['data']['password']),
-            ]);
+            //     'password' => bcrypt($request['data']['password']),
+            // ]);
+            $new_user =  new User();
+
+            $new_user['name'] = $request['data']['name'];
+            $new_user['surname'] = $request['data']['surname'];
+            $new_user['country'] = $request['data']['country'];
+            $new_user['city'] = $request['data']['city'];
+            $new_user['phone_number'] = $request['data']['phone_number'];
+            $new_user['email'] = $request['data']['email'];
+            $new_user['password'] = bcrypt($request['data']['password']);
+
+            $new_user -> save();
+
+            $this->create_user_notifications($new_user->id);
         }
     }
 
@@ -290,9 +303,26 @@ class UsersController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create_user_notifications($user_id)
     {
-        //
+        $new_notification =  new user_notification();
+
+        $new_notification['user_id'] = $user_id;
+
+        $new_notification['add_new_gym'] = 1;
+        $new_notification['news'] = 1;
+        $new_notification['add_new_ice_spot'] = 1;
+        $new_notification['add_new_outdoor_spot'] = 1;
+        $new_notification['add_new_product'] = 1;
+        $new_notification['add_new_sector'] = 1;
+        $new_notification['add_new_service'] = 1;
+        $new_notification['add_new_techtip'] = 1;
+        $new_notification['favorite_film'] = 1;
+        $new_notification['favorite_outdoor'] = 1;
+        $new_notification['favorite_product'] = 1;
+        $new_notification['interested_event'] = 1;
+
+        $new_notification -> save();
     }
 
     /**

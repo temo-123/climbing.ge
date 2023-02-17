@@ -12,6 +12,7 @@ use App\Services\GetArticlesService;
 use App\Models\Interested_event;
 use App\Models\Favorite_outdoor_area;
 use App\Models\Article;
+use App\Models\Event;
 
 class FaworitesController extends Controller
 {
@@ -43,9 +44,11 @@ class FaworitesController extends Controller
             $fav_area = Interested_event::where('user_id', '=', Auth::user()->id)->get();
             $articles = [];
             foreach ($fav_area as $area) {
-                $global_articles = Article::where('id', '=', $area->article_id)->get();
-                $outdoors = GetArticlesService::get_locale_article_use_locale($global_articles, $request->lang);
-                array_push($articles, $outdoors[0]);
+                $global_events = Event::where('id', '=', $area->event_id)->get();
+                // $outdoors = GetArticlesService::get_locale_article_use_locale($global_events, $request->lang);
+
+                // dd($global_events);
+                array_push($articles, $global_events[0]);
             }
             
             return $articles;

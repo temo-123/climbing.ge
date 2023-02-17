@@ -14,8 +14,8 @@ class Favorite_outdoor_area extends Model
 	    'article_id',
 	];
 
-    public function outdoor_areas()
+    public function outdoor_area()
     {
-		  return $this->hasOne(Article::class, 'id');
+		return $this->hasOne(Article::class, 'id', 'article_id');
     }
 }

@@ -1,106 +1,116 @@
 <template>
     <div class="container">
-    	    
-        	<h2 class="block_title">{{ $t('title message') }}</h2>
-            <div class="bar"><i class="fa fa-envelope" aria-hidden="true"></i></div>
-            <h3> <span v-html="this.$siteData.message"></span> </h3>
-            
-            <form method="POST"  @submit.prevent="send_message"  id="js_form">
-            <!-- <form method="POST" id="js_form"> -->
-                <div class='row'>
-                    <div class="col-md-6">
-                        <div class="row">
-                            <div class="col-md-12">
-                                <div class="form-group">
-                                    <input type="text" class="form-control" v-model="name" name="name"  id="name" placeholder="Name*">
-                                    <div class="alert alert-danger" role="alert" v-if="errors.name">
-                                        {{ errors.name[0] }}
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-md-12">
-                                <div class="form-group">
-                                    <input type="text" class="form-control" v-model="surname" name="surname"  id="surname" placeholder="Surname*">
-                                    <div class="alert alert-danger" role="alert" v-if="errors.surname">
-                                        {{ errors.surname[0] }}
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-md-12">
-                                <div class="form-group">
-                                    <input type="email" name="email" v-model="email" class="form-control textarea" placeholder="E_mail">
-                                    <div class="alert alert-danger" role="alert" v-if="errors.email">
-                                        {{ errors.email[0] }}
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-md-12">
-                                <div class="form-group">
-                                    <input type="text" class="form-control" v-model="num"  name="num"  id="num" placeholder="Phone number">
-                                    <div class="alert alert-danger" role="alert" v-if="errors.num">
-                                        {{ errors.num[0] }}
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-md-12">
-                                <div class="form-group form_left">
-                                    <input type="text" class="form-control" v-model="country"  name="country"  id="country" placeholder="Yout country">
-                                    <div class="alert alert-danger" role="alert" v-if="errors.country">
-                                        {{ errors.country[0] }}
-                                    </div>
+        <h2 class="block_title">{{ $t('title message') }}</h2>
+        <div class="bar"><i class="fa fa-envelope" aria-hidden="true"></i></div>
+        <h3> <span v-html="this.$siteData.message"></span> </h3>
+        
+        <div class="alert alert-danger" role="alert" v-if="fatal_error">
+            <h2 class="text-center">Fatal error! Please contact support!</h2>
+        </div>
+
+        <form method="POST"  @submit.prevent="send_message"  id="js_form" v-if="!is_mail_sending && !fatal_error">
+        <!-- <form method="POST" id="js_form"> -->
+            <div class='row'>
+                <div class="col-md-6">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <input type="text" class="form-control" v-model="name" name="name"  id="name" placeholder="Name*">
+                                <div class="alert alert-danger" role="alert" v-if="error.name">
+                                    {{ error.name[0] }}
                                 </div>
                             </div>
                         </div>
                     </div>
-
-                    <div class="col-md-6">
-                        <div class="row">
-                            <div class="col-xs-12">
-                                <div class="form-group">
-                                    <textarea rows="10" name="msg" id="msg" v-model="msg" placeholder="Your message" class="form-control textarea"></textarea>
-                                    <div class="alert alert-danger" role="alert" v-if="errors.msg">
-                                        {{ errors.msg[0] }}
-                                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <input type="text" class="form-control" v-model="surname" name="surname"  id="surname" placeholder="Surname*">
+                                <div class="alert alert-danger" role="alert" v-if="error.surname">
+                                    {{ error.surname[0] }}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <input type="email" name="email" v-model="email" class="form-control textarea" placeholder="E_mail">
+                                <div class="alert alert-danger" role="alert" v-if="error.email">
+                                    {{ error.email[0] }}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <input type="text" class="form-control" v-model="num"  name="num"  id="num" placeholder="Phone number">
+                                <div class="alert alert-danger" role="alert" v-if="error.num">
+                                    {{ error.num[0] }}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group form_left">
+                                <input type="text" class="form-control" v-model="country"  name="country"  id="country" placeholder="Yout country">
+                                <div class="alert alert-danger" role="alert" v-if="error.country">
+                                    {{ error.country[0] }}
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
 
-                <div class="row">
-                    <div class="col-md-12">
-                        <div class="form-group form_left">
-                            <vue-recaptcha 
-                                :sitekey="MIX_GOOGLE_CAPTCHA_SITE_KEY" 
-                                :loadRecaptchaScript="true"
-                                ref="recaptcha"
-                                type="invisible"
-                                @verify="onCaptchaVerified"
-                                @expired="onCaptchaExpired"
-                            >
-                            </vue-recaptcha>
+                <div class="col-md-6">
+                    <div class="row">
+                        <div class="col-xs-12">
+                            <div class="form-group">
+                                <textarea rows="10" name="msg" id="msg" v-model="msg" placeholder="Your message" class="form-control textarea"></textarea>
+                                <div class="alert alert-danger" role="alert" v-if="error.msg">
+                                    {{ error.msg[0] }}
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
-                <div class="row">
-                    <div class="col-md-12">
-                        <div class="form-group"  v-if="is_verify_isset == false">
-                            <button type="submit" class="btn btn-default btn-send main-btn" disabled>Send</button>
-                        </div>
-                        <div class="form-group"  v-else>
-                            <button type="submit" class="btn btn-default btn-send main-btn">Send</button>
-                        </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="form-group form_left">
+                        <vue-recaptcha 
+                            :sitekey="MIX_GOOGLE_CAPTCHA_SITE_KEY" 
+                            :loadRecaptchaScript="true"
+                            ref="recaptcha"
+                            type="invisible"
+                            @verify="onCaptchaVerified"
+                            @expired="onCaptchaExpired"
+                        >
+                        </vue-recaptcha>
                     </div>
                 </div>
-            </form>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="form-group"  v-if="is_verify_isset == false">
+                        <button type="submit" class="btn btn-default btn-send main-btn" disabled>Send</button>
+                    </div>
+                    <div class="form-group"  v-else>
+                        <button type="submit" class="btn btn-default btn-send main-btn">Send</button>
+                    </div>
+                </div>
+            </div>
+        </form>
+
+        <div class="row" v-else-if="is_mail_sending && !fatal_error">
+            <div class="text-center loader_margin">
+                <img :src="'../../../../../../public/images/site_img/loading.gif'" class="img-responsive center-block" alt="loading">
+                <p>Pless wait!</p>
+            </div>
+        </div>
     </div>
 </template>
 
@@ -136,7 +146,10 @@
 
                 is_verify_isset: false,
 
-                errors: [],
+                is_mail_sending: false,
+
+                error: [],
+                fatal_error: false,
 
                 // MIX_APP_NAME: process.env.MIX_APP_NAME,
                 MIX_GOOGLE_CAPTCHA_SITE_KEY: process.env.MIX_GOOGLE_CAPTCHA_SITE_KEY,
@@ -154,6 +167,9 @@
                 this.isLoading = true,
                 this.isSuccess = false,
 
+                this.is_mail_sending = true
+                this.fatal_error = false
+
                 axios
                 .post('../api/message', {
                     name: this.name,
@@ -165,17 +181,33 @@
                 })
                 .then(Response => {
                     alert("Tenk you for your message " + this.name + ".")
-                    this.onCaptchaExpired()
-                    this.errors = []
-                    this.isLoading = false
+                    this.clear_form()
                 })
                 .catch(error =>{
                     if (error.response.status == 422) {
-                        this.errors = error.response.data.errors
+                        this.error = error.response.data.error
                         this.isLoading = false
                     }
+                    else if (error.response.status == 500) {
+                        this.fatal_error = true
+                    }
                 })
+                .finally(() => this.is_mail_sending = false)
             },
+
+            clear_form(){
+                this.onCaptchaExpired()
+                this.error = []
+                this.isLoading = false,
+
+                this.name = ''
+                this.surname = ''
+                this.email = ''
+                this.msg = ''
+                this.num = ''
+                this.country = ''
+            },
+
             onCaptchaVerified() {
                 this.is_verify_isset = true
             },
@@ -185,3 +217,9 @@
         }
     }
 </script>
+<style scoped>
+.loader_margin {
+    margin-left: 40%;
+    margin-right: 40%;
+}
+</style>

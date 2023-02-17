@@ -13,4 +13,9 @@ class Favorite_film extends Model
 	    'user_id',
 	    'film_id',
 	];
+
+    public function film()
+    {
+		return $this->hasOne(Film::class, 'id', 'film_id');
+    }
 }

@@ -105,7 +105,16 @@ class EventController extends Controller
             $validation_issets['ru_info_validation'] = false;
         }
 
-        if (!$validation_issets['ru_info_validation'] && 
+        $global_validate = $this->global_event_edit_validate($data['global_data']);
+        if ($global_validate != null) {
+            $validation_issets['global_info_validation'] = $global_validate;
+        }
+        else{
+            $validation_issets['global_info_validation'] = false;
+        }
+
+        if (!$validation_issets['global_info_validation'] && 
+            !$validation_issets['ru_info_validation'] && 
             !$validation_issets['ka_info_validation'] && 
             !$validation_issets['us_info_validation']
         ) {
@@ -128,7 +137,7 @@ class EventController extends Controller
         }
         else{            
             return response()->json([
-                'Data validation' => $validation_issets
+                'validation' => $validation_issets
             ], 422);
         }
     }
@@ -152,10 +161,10 @@ class EventController extends Controller
         $editing_local_event['map']=$global_data["map"];
 
         if ($global_data["start_data"] != '') {
-            $editing_local_event['start_data']=$global_data["start_data"];
+            $editing_local_event['start_data'] = date("Y-m-d\TH:i:s", strtotime($global_data["start_data"]));
         }
         if ($global_data["end_data"] != '') {
-            $editing_local_event['end_data']=$global_data["end_data"];
+            $editing_local_event['end_data'] = date("Y-m-d\TH:i:s", strtotime($global_data["end_data"]));
         }
         
         $saved = $editing_local_event -> save();
@@ -257,7 +266,7 @@ class EventController extends Controller
             $validation_issets['ru_info_validation'] = false;
         }
 
-        $global_validate = $this->global_event_validate($data['global_data']);
+        $global_validate = $this->global_event_add_validate($data['global_data']);
         if ($global_validate != null) {
             $validation_issets['global_info_validation'] = $global_validate;
         }
@@ -293,7 +302,7 @@ class EventController extends Controller
         }
         else{            
             return response()->json([
-                'Data validation' => $validation_issets
+                'validation' => $validation_issets
             ], 422);
         }
     }
@@ -335,10 +344,10 @@ class EventController extends Controller
         $event['map']=$global_data["map"];
 
         if ($global_data["start_data"] != '') {
-            $event['start_data']=$global_data["start_data"];
+            $event['start_data'] = date("Y-m-d\TH:i:s", strtotime($global_data["start_data"]));
         }
         if ($global_data["end_data"] != '') {
-            $event['end_data']=$global_data["end_data"];
+            $event['end_data'] = date("Y-m-d\TH:i:s", strtotime($global_data["end_data"]));
         }
 
         $local_us = $us_info_id;
@@ -355,11 +364,28 @@ class EventController extends Controller
     }
 
 
-    public function global_event_validate($global_data)
+    public function global_event_add_validate($global_data)
     {
         $validator = Validator::make($global_data, [
             'published' => 'required',
+
+            'start_data' => 'required',
+            'end_data' => 'required',
+
             'us_title_for_url_title' => 'required|unique:events,url_title',
+        ]);
+        if ($validator->fails()) {
+            return $validator->messages();
+        }
+    }
+
+    public function global_event_edit_validate($global_data)
+    {
+        $validator = Validator::make($global_data, [
+            'published' => 'required',
+
+            'start_data' => 'required',
+            'end_data' => 'required',
         ]);
         if ($validator->fails()) {
             return $validator->messages();

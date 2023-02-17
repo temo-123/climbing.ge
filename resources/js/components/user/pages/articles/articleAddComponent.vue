@@ -15,6 +15,9 @@
                 <div class="alert alert-danger" role="alert" v-if="error.global_info_validation.published">
                     Published - {{ error.global_info_validation.published[0] }}
                 </div>
+                <div class="alert alert-danger" role="alert" v-if="error.global_info_validation.us_title_for_url_title">
+                    Us title - {{ error.global_info_validation.us_title_for_url_title[0] }}
+                </div>
 
                 <div class="alert alert-danger" role="alert" v-if="error.us_info_validation.title">
                     English title - {{ error.us_info_validation.title[0] }}
@@ -244,8 +247,13 @@
                     formData,
                 )
                 .then(response => {
-                    if(confirm('Do you want send notification about new article?')){
-                        this.sand_notification()
+                    if(this.category == 'outdoor' || this.category == 'news' || this.category == 'tech_tip' || this.category == 'indoor' || this.category == 'ice'){
+                        if(confirm('Do you want send notification about new article?')){
+                            this.sand_notification()
+                        }
+                        else{
+                            this.go_back(true)
+                        }
                     }
                     else{
                         this.go_back(true)
@@ -262,7 +270,7 @@
                 this.is_mail_sending_procesing = true
 
                 axios
-                .post('../../../api/user/notifications/send_article_notification',{
+                .post('../../../api/user/notifications/send_article_adding_notification',{
                     notification_category: this.category
                 } )
                 .then(response => {

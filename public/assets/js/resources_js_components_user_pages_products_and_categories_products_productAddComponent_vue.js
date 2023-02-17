@@ -272,18 +272,34 @@ __webpack_require__.r(__webpack_exports__);
       axios.post('../api/product', {
         data: this.data
       }).then(function (response) {
-        _this.go_back(true);
-      })["catch"](function (error) {// if (error.response.status == 422) {
-        //     this.us_article_error = error.response.data.errors
-        // }
-        // this.is_us_article_error = true
+        if (confirm('Do you want send notification about editing article?')) {
+          _this.sand_notification();
+        } else {
+          _this.go_back(true);
+        }
+      })["catch"](function (error) {
+        if (error.response.status == 422) {
+          _this.us_article_error = error.response.data.errors;
+        }
+      });
+    },
+    sand_notification: function sand_notification() {
+      var _this2 = this;
+
+      this.is_mail_sending_procesing = true;
+      axios.post('../../../api/user/notifications/send_product_adding_notification').then(function (response) {
+        _this2.go_back(true);
+      })["catch"](function (err) {
+        console.log(err);
+      })["finally"](function () {
+        return _this2.is_mail_sending_procesing = false;
       });
     },
     get_product_category_data: function get_product_category_data() {
-      var _this2 = this;
+      var _this3 = this;
 
       axios.get("../api/product_category/").then(function (response) {
-        _this2.categories = response.data;
+        _this3.categories = response.data;
       })["catch"](function (error) {
         return console.log(error);
       });

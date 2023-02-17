@@ -452,22 +452,12 @@ export default {
                 wolking_time: null,
             },
 
-            // temporary_sector_id: 0,
-
-            // image_is_refresh: false,
-            // image_reset_id: 0,
-
-            // sector_images: ['Item 1', 'Item 2', 'Item 3', 'Item 4', 'Item 5', 'Item 6', 'Item 7', 'Item 10'],
             sector_images: [],
         };
     },
     mounted() {
         this.get_region_data();
-        // this.create_temporary_sector();
     },
-    // beforeRouteLeave (to, from, next) {
-    //     this.go_back()
-    // },
     methods: {
         add_sector_new_image_value(){
             var new_item_id = this.sector_images.length+1
@@ -493,18 +483,7 @@ export default {
             return arr;
         },
 
-        // showModal() {
-        //     this.myModal = !this.myModal;
-        // },
-
         get_region_data: function () {
-            // axios
-            //     .get("../api/article/")
-            //     .then((response) => {
-            //         this.regions = response.data;
-            //     })
-            //     .catch((error) => console.log(error));
-
             axios
             .get('../../api/articles/outdoor/us')
             .then(response => {
@@ -529,25 +508,41 @@ export default {
             axios
                 .post("../../api/sector/add_sector/", formData)
                 .then(response => {
-                    this.go_back(true)
+                    if(confirm('Do you want send notification about editing sector?')){
+                        this.sand_notification()
+                    }
+                    else{
+                        this.go_back(true)
+                    }
                 })
                 .catch((error) => {
-                    console.log(error);
-                    // if (error.response.status == 422) {
-                    //     this.errors = error.response.data.errors;
-                    // }
+                    if (error.response.status == 422) {
+                        this.errors = error.response.data.errors;
+                    }
                 });
+        },
+
+        sand_notification() {
+            this.is_mail_sending_procesing = true
+
+            axios
+            .post('../../../api/user/notifications/send_sector_adding_notification')
+            .then(response => {
+                this.go_back(true)
+            })
+            .catch(err => {
+                console.log(err);
+            })
+            .finally(() => this.is_mail_sending_procesing = false);
         },
 
         go_back(back_action = false) {
             if(back_action == false){
                 if(confirm('Are you sure, you want go back?')){
-                    // this.$router.go(-1)
                     this.$router.push({ name: 'routeAndSectorList' })
                 }
             }
             else{
-                // this.$router.go(-1)
                 this.$router.push({ name: 'routeAndSectorList' })
             }
         },

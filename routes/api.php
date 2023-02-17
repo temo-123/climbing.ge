@@ -396,7 +396,12 @@ Route::group(['namespace'=>'Api'], function() {
         Route::delete('/del_user/{user_id}', 'del_user');
 
         Route::controller(UserNotificationsController::class)->prefix('notifications')->group( function() {
-            Route::post('/send_article_notification', 'send_article_notification');
+            Route::post('/send_article_adding_notification', 'send_article_adding_notification');
+            Route::post('/send_product_adding_notification', 'send_product_adding_notification');
+            Route::post('/send_sector_adding_notification', 'send_sector_adding_notification');
+            Route::post('/send_service_adding_notification', 'send_service_adding_notification');
+            
+            Route::post('/send_user_favorites_notification/{action}', 'send_user_favorites_notification');
         });
     });
 

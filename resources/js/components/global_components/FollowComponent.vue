@@ -63,13 +63,13 @@
         methods: {
             follow(){
                 if(window.location.hostname == process.env.MIX_SITE_URL){
-                    this.service = 1
+                    this.service = 'guid'
                 }
                 else if (window.location.hostname == process.env.MIX_SHOP_URL) {
-                    this.service = 2
+                    this.service = 'shop'
                 }
                 else if (window.location.hostname == process.env.FILMS_URL) {
-                    this.service = 3
+                    this.service = 'cinema'
                 }
 
                 this.loading = true

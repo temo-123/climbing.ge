@@ -26,6 +26,11 @@ class Sector extends Model
         "article_id",
     ];
 
+    public function article()
+    {
+        return $this->hasOne(Article::class, "id", "article_id");
+    }
+
     public function routes()
     {
         return $this->hasMany(Route::class)->latest('num');

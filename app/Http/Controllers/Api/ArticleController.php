@@ -158,7 +158,7 @@ class ArticleController extends Controller
             $validation_issets['ru_info_validation'] = false;
         }
 
-        $global_validate = $this->global_article_validate($data['global_article']);
+        $global_validate = $this->global_article_editing_validate($data['global_article']);
         if ($global_validate != null) {
             $validation_issets['global_info_validation'] = $global_validate;
         }
@@ -454,7 +454,8 @@ class ArticleController extends Controller
             $validation_issets['ru_info_validation'] = false;
         }
 
-        $global_validate = $this->global_article_validate($data['global_data']);
+        // dd($data['global_data']);
+        $global_validate = $this->global_article_adding_validate($data['global_data']);
         if ($global_validate != null) {
             $validation_issets['global_info_validation'] = $global_validate;
         }
@@ -469,21 +470,6 @@ class ArticleController extends Controller
         else{
             $validation_issets['image_validation'] = false;
         }
-
-        // if($data['global_data']["category"] == 'outdoor'){
-        //         $outdoor_area_images_validate = $this->images_array_validate($request);
-        //         if ($outdoor_area_images_validate != null) {
-        //             $validation_issets['outdoor_area_images_validation'] = $outdoor_area_images_validate;
-        //         }
-        //         else{
-        //             $validation_issets['outdoor_area_images_validation'] = false;
-        //         }
-        // }
-        // else if($data['global_data']["category"] == 'mount_route'){
-        //     if($request->hasFile('mountain_route_images')){
-
-        //     }
-        // }
 
         if (
             !$validation_issets['image_validation'] && 
@@ -756,11 +742,22 @@ class ArticleController extends Controller
     
 
 
-    public function global_article_validate($global_data)
+    public function global_article_editing_validate($global_data)
     {
         $validator = Validator::make($global_data, [
             'published' => 'required',
             // 'us_title_for_url_title' => 'required|unique:articles,url_title',
+        ]);
+        if ($validator->fails()) {
+            return $validator->messages();
+        }
+    }
+
+    public function global_article_adding_validate($global_data)
+    {
+        $validator = Validator::make($global_data, [
+            'published' => 'required',
+            'us_title_for_url_title' => 'required|unique:locale_articles,title',
         ]);
         if ($validator->fails()) {
             return $validator->messages();
@@ -1172,7 +1169,7 @@ class ArticleController extends Controller
                 $data['region_id'] = $global_article->outdoor_region[0]->id;
             }
         }
-        if($global_article['category'] == 'mount_route'){
+        else if($global_article['category'] == 'mount_route'){
             $data = [
                 "global_article" => $global_article,
                 "general_data" => $blobal_data,
@@ -1186,17 +1183,16 @@ class ArticleController extends Controller
                 $data['mount_id'] = $global_article->mount_masiv[0]->id;
             }
         }
-
-        // $data = [
-        //     "global_article" => $global_article,
-        //     // "general_data" => $global_article->general_info,
-        //     // "region" => $global_article->general_info,
-        //     "general_data" => $blobal_data,
-        //     "us_article" => $us_article,
-        //     "ka_article" => $ka_article,
-        //     "ru_article" => $ru_article,
-        // ];
-        // dd($data);
+        else{
+            $data = [
+                "global_article" => $global_article,
+                "general_data" => $blobal_data,
+                "us_article" => $us_article,
+                "ka_article" => $ka_article,
+                "ru_article" => $ru_article,
+            ];
+        }
+        
         return $data;
     }
 

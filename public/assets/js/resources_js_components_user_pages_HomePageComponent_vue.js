@@ -1,10 +1,10 @@
 "use strict";
 (self["webpackChunkclimbing_loc"] = self["webpackChunkclimbing_loc"] || []).push([["resources_js_components_user_pages_HomePageComponent_vue"],{
 
-/***/ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/user/pages/HomePageComponent.vue?vue&type=script&lang=js&":
-/*!***********************************************************************************************************************************************************************************************************************************!*\
-  !*** ./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/user/pages/HomePageComponent.vue?vue&type=script&lang=js& ***!
-  \***********************************************************************************************************************************************************************************************************************************/
+/***/ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/user/items/UserNotificationsListComponent.vue?vue&type=script&lang=js&":
+/*!************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/user/items/UserNotificationsListComponent.vue?vue&type=script&lang=js& ***!
+  \************************************************************************************************************************************************************************************************************************************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 __webpack_require__.r(__webpack_exports__);
@@ -15,28 +15,6 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var vue_slicksort__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(vue_slicksort__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var _innologica_vue_stackable_modal__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @innologica/vue-stackable-modal */ "./node_modules/@innologica/vue-stackable-modal/dist/vue-stackable-modal.umd.min.js");
 /* harmony import */ var _innologica_vue_stackable_modal__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_innologica_vue_stackable_modal__WEBPACK_IMPORTED_MODULE_1__);
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
 //
 //
 //
@@ -282,9 +260,7 @@ __webpack_require__.r(__webpack_exports__);
   },
   data: function data() {
     return {
-      user: null,
-      MIX_SITE_URL: "climbing.loc",
-      MIX_APP_SSH: "https://",
+      user: [],
       complaint_loader: false,
       complaints: [],
       quick_comment: [],
@@ -306,10 +282,20 @@ __webpack_require__.r(__webpack_exports__);
   },
   mounted: function mounted() {
     this.refresh();
+    this.get_user_data();
   },
   methods: {
-    send_mail_confirm_notificatione: function send_mail_confirm_notificatione() {
+    get_user_data: function get_user_data() {
       var _this = this;
+
+      axios.get('/api/auth_user').then(function (response) {
+        _this.user = response.data;
+
+        _this.get_user_queries(_this.user.id);
+      });
+    },
+    send_mail_confirm_notificatione: function send_mail_confirm_notificatione() {
+      var _this2 = this;
 
       this.is_email_sending_loader = true;
       axios.get('/api/email/resend').then(function (response) {
@@ -321,22 +307,13 @@ __webpack_require__.r(__webpack_exports__);
           alert('Something went wrong! Please try again later, if you encounter this problem again, contact support!');
         }
       })["finally"](function () {
-        return _this.is_email_sending_loader = false;
+        return _this2.is_email_sending_loader = false;
       });
     },
     refresh: function refresh() {
       this.admin_refresh_id++;
       this.get_user_data();
       this.get_comments_complaints();
-    },
-    get_user_data: function get_user_data() {
-      var _this2 = this;
-
-      axios.get('/api/auth_user').then(function (response) {
-        _this2.user = response.data;
-
-        _this2.get_user_queries(_this2.user.id);
-      });
     },
     get_user_queries: function get_user_queries(user_id) {
       var _this3 = this;
@@ -429,6 +406,91 @@ __webpack_require__.r(__webpack_exports__);
           return _this8.decision_loader = false;
         });
       }
+    }
+  }
+});
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/user/pages/HomePageComponent.vue?vue&type=script&lang=js&":
+/*!***********************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/user/pages/HomePageComponent.vue?vue&type=script&lang=js& ***!
+  \***********************************************************************************************************************************************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _items_UserNotificationsListComponent_vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../items/UserNotificationsListComponent.vue */ "./resources/js/components/user/items/UserNotificationsListComponent.vue");
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
+  components: {
+    user_notifications_list: _items_UserNotificationsListComponent_vue__WEBPACK_IMPORTED_MODULE_0__["default"]
+  },
+  data: function data() {
+    return {
+      user: [],
+      MIX_SITE_URL: "climbing.loc",
+      MIX_APP_SSH: "https://"
+    };
+  },
+  mounted: function mounted() {// 
+  },
+  methods: {
+    get_user_data: function get_user_data() {
+      var _this = this;
+
+      axios.get('/api/auth_user').then(function (response) {
+        _this.user = response.data;
+
+        _this.get_user_queries(_this.user.id);
+      });
     },
     go_to_service: function go_to_service(service) {
       if (service == "shop") {
@@ -496,6 +558,44 @@ var update = _node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js
 
 /***/ }),
 
+/***/ "./resources/js/components/user/items/UserNotificationsListComponent.vue":
+/*!*******************************************************************************!*\
+  !*** ./resources/js/components/user/items/UserNotificationsListComponent.vue ***!
+  \*******************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _UserNotificationsListComponent_vue_vue_type_template_id_b3eddc0c___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./UserNotificationsListComponent.vue?vue&type=template&id=b3eddc0c& */ "./resources/js/components/user/items/UserNotificationsListComponent.vue?vue&type=template&id=b3eddc0c&");
+/* harmony import */ var _UserNotificationsListComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./UserNotificationsListComponent.vue?vue&type=script&lang=js& */ "./resources/js/components/user/items/UserNotificationsListComponent.vue?vue&type=script&lang=js&");
+/* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! !../../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+/* normalize component */
+;
+var component = (0,_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+  _UserNotificationsListComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _UserNotificationsListComponent_vue_vue_type_template_id_b3eddc0c___WEBPACK_IMPORTED_MODULE_0__.render,
+  _UserNotificationsListComponent_vue_vue_type_template_id_b3eddc0c___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns,
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/components/user/items/UserNotificationsListComponent.vue"
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (component.exports);
+
+/***/ }),
+
 /***/ "./resources/js/components/user/pages/HomePageComponent.vue":
 /*!******************************************************************!*\
   !*** ./resources/js/components/user/pages/HomePageComponent.vue ***!
@@ -536,6 +636,21 @@ component.options.__file = "resources/js/components/user/pages/HomePageComponent
 
 /***/ }),
 
+/***/ "./resources/js/components/user/items/UserNotificationsListComponent.vue?vue&type=script&lang=js&":
+/*!********************************************************************************************************!*\
+  !*** ./resources/js/components/user/items/UserNotificationsListComponent.vue?vue&type=script&lang=js& ***!
+  \********************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_0_rules_0_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_UserNotificationsListComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!../../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./UserNotificationsListComponent.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/user/items/UserNotificationsListComponent.vue?vue&type=script&lang=js&");
+ /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (_node_modules_babel_loader_lib_index_js_clonedRuleSet_5_0_rules_0_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_UserNotificationsListComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
 /***/ "./resources/js/components/user/pages/HomePageComponent.vue?vue&type=script&lang=js&":
 /*!*******************************************************************************************!*\
   !*** ./resources/js/components/user/pages/HomePageComponent.vue?vue&type=script&lang=js& ***!
@@ -563,6 +678,22 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
+/***/ "./resources/js/components/user/items/UserNotificationsListComponent.vue?vue&type=template&id=b3eddc0c&":
+/*!**************************************************************************************************************!*\
+  !*** ./resources/js/components/user/items/UserNotificationsListComponent.vue?vue&type=template&id=b3eddc0c& ***!
+  \**************************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "render": () => (/* reexport safe */ _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_UserNotificationsListComponent_vue_vue_type_template_id_b3eddc0c___WEBPACK_IMPORTED_MODULE_0__.render),
+/* harmony export */   "staticRenderFns": () => (/* reexport safe */ _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_UserNotificationsListComponent_vue_vue_type_template_id_b3eddc0c___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns)
+/* harmony export */ });
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_UserNotificationsListComponent_vue_vue_type_template_id_b3eddc0c___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./UserNotificationsListComponent.vue?vue&type=template&id=b3eddc0c& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/user/items/UserNotificationsListComponent.vue?vue&type=template&id=b3eddc0c&");
+
+
+/***/ }),
+
 /***/ "./resources/js/components/user/pages/HomePageComponent.vue?vue&type=template&id=07287b2a&":
 /*!*************************************************************************************************!*\
   !*** ./resources/js/components/user/pages/HomePageComponent.vue?vue&type=template&id=07287b2a& ***!
@@ -579,10 +710,10 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
-/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/user/pages/HomePageComponent.vue?vue&type=template&id=07287b2a&":
-/*!****************************************************************************************************************************************************************************************************************************************!*\
-  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/user/pages/HomePageComponent.vue?vue&type=template&id=07287b2a& ***!
-  \****************************************************************************************************************************************************************************************************************************************/
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/user/items/UserNotificationsListComponent.vue?vue&type=template&id=b3eddc0c&":
+/*!*****************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/user/items/UserNotificationsListComponent.vue?vue&type=template&id=b3eddc0c& ***!
+  \*****************************************************************************************************************************************************************************************************************************************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 __webpack_require__.r(__webpack_exports__);
@@ -595,308 +726,268 @@ var render = function () {
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
   return _c(
-    "div",
-    { staticClass: "row" },
+    "span",
     [
-      _c("div", { staticClass: "col-sm-3" }, [_c("left-menu")], 1),
-      _vm._v(" "),
-      _c("div", { staticClass: "col-sm-9" }, [
-        _c("div", { staticClass: "row justify-content-center" }, [
-          _c("div", { staticClass: "col-md-12" }, [
-            _c(
-              "div",
-              { staticClass: "alert alert-success", attrs: { role: "alert" } },
-              [_c("h1", [_vm._v("Hi " + _vm._s(this.user["name"]))])]
-            ),
-          ]),
-        ]),
-        _vm._v(" "),
-        _c("div", { staticClass: "row justify-content-center" }, [
-          _c("div", { staticClass: "col-md-12" }, [
-            _c("div", { staticClass: "card" }, [
-              _c("div", { staticClass: "card-header" }, [
-                _vm._v("Sites index pages"),
-              ]),
-              _vm._v(" "),
-              _c("div", { staticClass: "card-body" }, [
-                _c("div", { staticClass: "row" }, [
-                  _c("div", { staticClass: "col-sm-12 col-md-4" }, [
-                    _c(
-                      "button",
-                      {
-                        staticClass: "btn btn_service_guid",
-                        on: {
-                          click: function ($event) {
-                            return _vm.go_to_service("guid")
-                          },
-                        },
-                      },
-                      [_vm._v("Climbing Guidbook")]
-                    ),
-                  ]),
-                  _vm._v(" "),
-                  _c("div", { staticClass: "col-sm-12 col-md-4 text-center" }, [
-                    _c(
-                      "button",
-                      {
-                        staticClass: "btn btn_service_shop",
-                        on: {
-                          click: function ($event) {
-                            return _vm.go_to_service("shop")
-                          },
-                        },
-                      },
-                      [_vm._v("Climbing Shop")]
-                    ),
-                  ]),
-                  _vm._v(" "),
-                  _c("div", { staticClass: "col-sm-12 col-md-4" }, [
-                    _c(
-                      "button",
-                      {
-                        staticClass: "btn btn_service_films float-right",
-                        on: {
-                          click: function ($event) {
-                            return _vm.go_to_service("films")
-                          },
-                        },
-                      },
-                      [_vm._v("Climbing Films")]
-                    ),
-                  ]),
-                ]),
-              ]),
-            ]),
-          ]),
-        ]),
-        _vm._v(" "),
-        _c("div", { staticClass: "row" }, [
-          _c("div", { staticClass: "col-md-12" }, [
-            _c("div", { staticClass: "form-groupe" }, [
-              !_vm.is_admin_panel_refresh
-                ? _c(
-                    "button",
-                    {
-                      staticClass: "btn btn-success float-right",
-                      on: {
-                        click: function ($event) {
-                          return _vm.refresh()
-                        },
+      _c("div", { staticClass: "row" }, [
+        _c("div", { staticClass: "col-md-12" }, [
+          _c("div", { staticClass: "form-groupe" }, [
+            !_vm.is_admin_panel_refresh
+              ? _c(
+                  "button",
+                  {
+                    staticClass: "btn btn-success float-right",
+                    on: {
+                      click: function ($event) {
+                        return _vm.refresh()
                       },
                     },
-                    [
-                      _vm._v(
-                        "Refresh notifications (" +
-                          _vm._s(_vm.admin_refresh_id) +
-                          ")"
-                      ),
-                    ]
-                  )
-                : _vm._e(),
-              _vm._v(" "),
-              _vm.is_admin_panel_refresh
-                ? _c(
-                    "span",
-                    { staticClass: "badge badge-primare mb-1 float-right" },
-                    [_vm._v("Updating...")]
-                  )
-                : _vm._e(),
-            ]),
+                  },
+                  [
+                    _vm._v(
+                      "Refresh notifications (" +
+                        _vm._s(_vm.admin_refresh_id) +
+                        ")"
+                    ),
+                  ]
+                )
+              : _vm._e(),
+            _vm._v(" "),
+            _vm.is_admin_panel_refresh
+              ? _c(
+                  "span",
+                  { staticClass: "badge badge-primare mb-1 float-right" },
+                  [_vm._v("Updating...")]
+                )
+              : _vm._e(),
           ]),
         ]),
-        _vm._v(" "),
-        _c("div", { staticClass: "row" }, [
-          _c(
-            "div",
-            { staticClass: "col-md-12" },
-            [
-              !this.user["name"] ||
-              !this.user["surname"] ||
-              !this.user["country"] ||
-              !this.user["city"] ||
-              !this.user["email"]
-                ? _c("span", [_vm._m(0)])
-                : _vm._e(),
-              _vm._v(" "),
-              !this.user["email_verified_at"]
-                ? _c("span", [
-                    _c(
-                      "div",
-                      {
-                        staticClass: "alert alert-danger",
-                        attrs: { role: "alert" },
-                      },
-                      [
-                        !_vm.is_email_sending_loader
-                          ? _c("span", [
-                              _c("strong", [_vm._v("Danger!")]),
-                              _vm._v(
-                                " We sent you an email for verification, please check your email and confirm it. If you don't got this email you can demand new message. For new message -> "
-                              ),
-                              _c(
-                                "span",
-                                {
-                                  staticClass: "cursor_pointer",
-                                  on: {
-                                    click: function ($event) {
-                                      return _vm.send_mail_confirm_notificatione()
-                                    },
+      ]),
+      _vm._v(" "),
+      _c("div", { staticClass: "row" }, [
+        _c(
+          "div",
+          { staticClass: "col-md-12" },
+          [
+            !this.user["name"] ||
+            !this.user["surname"] ||
+            !this.user["country"] ||
+            !this.user["city"] ||
+            !this.user["email"]
+              ? _c("span", [_vm._m(0)])
+              : _vm._e(),
+            _vm._v(" "),
+            !this.user["email_verified_at"]
+              ? _c("span", [
+                  _c(
+                    "div",
+                    {
+                      staticClass: "alert alert-danger",
+                      attrs: { role: "alert" },
+                    },
+                    [
+                      !_vm.is_email_sending_loader
+                        ? _c("span", [
+                            _c("strong", [_vm._v("Danger!")]),
+                            _vm._v(
+                              " We sent you an email for verification, please check your email and confirm it. If you don't got this email you can demand new message. For new message -> "
+                            ),
+                            _c(
+                              "span",
+                              {
+                                staticClass: "cursor_pointer",
+                                on: {
+                                  click: function ($event) {
+                                    return _vm.send_mail_confirm_notificatione()
                                   },
                                 },
-                                [_vm._v("Click here")]
-                              ),
-                              _vm._v(".\n                        "),
-                            ])
-                          : _vm.is_email_sending_loader
-                          ? _c("span", [
-                              _c(
-                                "div",
-                                { staticClass: "row justify-content-center" },
-                                [
-                                  _c("div", { staticClass: "col-md-3" }, [
-                                    _c("img", {
-                                      attrs: {
-                                        src: "../../../../../../public/images/site_img/loading.gif",
-                                        alt: "loading",
-                                      },
-                                    }),
-                                    _vm._v(" "),
-                                    _c("p", { staticClass: "text-center" }, [
-                                      _vm._v("Pless wait!"),
-                                    ]),
-                                  ]),
-                                ]
-                              ),
-                            ])
-                          : _vm._e(),
-                      ]
-                    ),
-                  ])
-                : _vm._e(),
-              _vm._v(" "),
-              !this.user["image"] ? _c("span", [_vm._m(1)]) : _vm._e(),
-              _vm._v(" "),
-              _vm._l(_vm.complaints, function (complaint) {
-                return _c("span", { key: complaint.id }, [
-                  _c(
-                    "div",
-                    {
-                      staticClass: "alert alert-warning",
-                      attrs: { role: "alert" },
-                    },
-                    [
-                      _c("strong", [_vm._v("Warning!")]),
-                      _vm._v(
-                        " one comment are a complainted. Please check it and make decision!\n\n                        "
-                      ),
-                      _c("div", { staticClass: "row" }, [
-                        _c("div", { staticClass: "col-md-6" }, [
-                          _c(
-                            "button",
-                            {
-                              staticClass: "btn btn-primary ",
-                              on: {
-                                click: function ($event) {
-                                  return _vm.quick_wiev_action(
-                                    complaint.comment_id,
-                                    complaint.id
-                                  )
-                                },
                               },
-                            },
-                            [_vm._v("Check comment")]
-                          ),
-                          _vm._v(".\n                            "),
-                        ]),
-                      ]),
+                              [_vm._v("Click here")]
+                            ),
+                            _vm._v(".\n                    "),
+                          ])
+                        : _vm.is_email_sending_loader
+                        ? _c("span", [
+                            _c(
+                              "div",
+                              { staticClass: "row justify-content-center" },
+                              [
+                                _c("div", { staticClass: "col-md-3" }, [
+                                  _c("img", {
+                                    attrs: {
+                                      src: "../../../../../../public/images/site_img/loading.gif",
+                                      alt: "loading",
+                                    },
+                                  }),
+                                  _vm._v(" "),
+                                  _c("p", { staticClass: "text-center" }, [
+                                    _vm._v("Pless wait!"),
+                                  ]),
+                                ]),
+                              ]
+                            ),
+                          ])
+                        : _vm._e(),
                     ]
                   ),
                 ])
-              }),
-              _vm._v(" "),
-              _vm._l(_vm.user_queries, function (query) {
-                return _c("span", { key: query.id }, [
-                  _c(
-                    "div",
-                    {
-                      staticClass: "alert alert-warning",
-                      attrs: { role: "alert" },
-                    },
-                    [
-                      _c("strong", [_vm._v("Warning!")]),
-                      _vm._v(
-                        " We fined yor email in one of the article comment. Maybe it's your comment. Plees check it end click to ansver. Is it your comment?\n                        \n                        "
-                      ),
-                      _c("div", { staticClass: "row" }, [
-                        _c("div", { staticClass: "col-md-6" }, [
-                          _c(
-                            "button",
-                            {
-                              staticClass: "btn btn-success ",
-                              on: {
-                                click: function ($event) {
-                                  return _vm.coment_model(
-                                    query.comment_id,
-                                    query.id
-                                  )
-                                },
+              : _vm._e(),
+            _vm._v(" "),
+            !this.user["image"] ? _c("span", [_vm._m(1)]) : _vm._e(),
+            _vm._v(" "),
+            _vm._l(_vm.complaints, function (complaint) {
+              return _c("span", { key: complaint.id }, [
+                _c(
+                  "div",
+                  {
+                    staticClass: "alert alert-warning",
+                    attrs: { role: "alert" },
+                  },
+                  [
+                    _c("strong", [_vm._v("Warning!")]),
+                    _vm._v(
+                      " one comment are a complainted. Please check it and make decision!\n\n                    "
+                    ),
+                    _c("div", { staticClass: "row" }, [
+                      _c("div", { staticClass: "col-md-6" }, [
+                        _c(
+                          "button",
+                          {
+                            staticClass: "btn btn-primary ",
+                            on: {
+                              click: function ($event) {
+                                return _vm.quick_wiev_action(
+                                  complaint.comment_id,
+                                  complaint.id
+                                )
                               },
                             },
-                            [_vm._v("Check comment!")]
-                          ),
-                          _vm._v(".\n                            "),
-                        ]),
+                          },
+                          [_vm._v("Check comment")]
+                        ),
+                        _vm._v(".\n                        "),
+                      ]),
+                    ]),
+                  ]
+                ),
+              ])
+            }),
+            _vm._v(" "),
+            _vm._l(_vm.user_queries, function (query) {
+              return _c("span", { key: query.id }, [
+                _c(
+                  "div",
+                  {
+                    staticClass: "alert alert-warning",
+                    attrs: { role: "alert" },
+                  },
+                  [
+                    _c("strong", [_vm._v("Warning!")]),
+                    _vm._v(
+                      " We fined yor email in one of the article comment. Maybe it's your comment. Plees check it end click to ansver. Is it your comment?\n                    \n                    "
+                    ),
+                    _c("div", { staticClass: "row" }, [
+                      _c("div", { staticClass: "col-md-6" }, [
+                        _c(
+                          "button",
+                          {
+                            staticClass: "btn btn-success ",
+                            on: {
+                              click: function ($event) {
+                                return _vm.coment_model(
+                                  query.comment_id,
+                                  query.id
+                                )
+                              },
+                            },
+                          },
+                          [_vm._v("Check comment!")]
+                        ),
+                        _vm._v(".\n                        "),
+                      ]),
+                    ]),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "row" }, [
+                      _c("div", { staticClass: "col-md-6" }, [
+                        _c(
+                          "button",
+                          {
+                            staticClass: "btn btn-primary",
+                            on: {
+                              click: function ($event) {
+                                return _vm.query_response(
+                                  true,
+                                  query.id,
+                                  query.comment_id
+                                )
+                              },
+                            },
+                          },
+                          [_vm._v("Yes, it is my comment!")]
+                        ),
+                        _vm._v(".\n                        "),
                       ]),
                       _vm._v(" "),
-                      _c("div", { staticClass: "row" }, [
-                        _c("div", { staticClass: "col-md-6" }, [
-                          _c(
-                            "button",
-                            {
-                              staticClass: "btn btn-primary",
-                              on: {
-                                click: function ($event) {
-                                  return _vm.query_response(
-                                    true,
-                                    query.id,
-                                    query.comment_id
-                                  )
-                                },
+                      _c("div", { staticClass: "col-md-6" }, [
+                        _c(
+                          "button",
+                          {
+                            staticClass: "btn btn-danger float-right",
+                            on: {
+                              click: function ($event) {
+                                return _vm.query_response(
+                                  false,
+                                  query.id,
+                                  query.comment_id
+                                )
                               },
                             },
-                            [_vm._v("Yes, it is my comment!")]
-                          ),
-                          _vm._v(".\n                            "),
-                        ]),
-                        _vm._v(" "),
-                        _c("div", { staticClass: "col-md-6" }, [
-                          _c(
-                            "button",
-                            {
-                              staticClass: "btn btn-danger float-right",
-                              on: {
-                                click: function ($event) {
-                                  return _vm.query_response(
-                                    false,
-                                    query.id,
-                                    query.comment_id
-                                  )
-                                },
-                              },
-                            },
-                            [_vm._v("No, it is not my comment!")]
-                          ),
-                          _vm._v(".\n                            "),
-                        ]),
+                          },
+                          [_vm._v("No, it is not my comment!")]
+                        ),
+                        _vm._v(".\n                        "),
                       ]),
-                    ]
-                  ),
-                ])
-              }),
-            ],
-            2
-          ),
-        ]),
+                    ]),
+                  ]
+                ),
+              ])
+            }),
+            _vm._v(" "),
+            !this.$siteData["text"] ||
+            !this.$siteData["text_ru"] ||
+            !this.$siteData["text_ka"] ||
+            !this.$siteData["short_description_ru"] ||
+            !this.$siteData["short_description_ka"] ||
+            !this.$siteData["short_description"]
+              ? _c(
+                  "div",
+                  {
+                    staticClass: "alert alert-danger",
+                    attrs: { role: "alert" },
+                  },
+                  [
+                    _c("strong", [_vm._v("Danger!")]),
+                    _vm._v(
+                      ' \n                Web-site information is not fool. check page "\n                '
+                    ),
+                    _c(
+                      "router-link",
+                      { attrs: { to: { name: "siteInfo" }, exact: "" } },
+                      [
+                        _vm._v(
+                          " \n                    About us\n                "
+                        ),
+                      ]
+                    ),
+                    _vm._v(
+                      '\n                ", and add missing information.\n            '
+                    ),
+                  ],
+                  1
+                )
+              : _vm._e(),
+          ],
+          2
+        ),
       ]),
       _vm._v(" "),
       _c(
@@ -1424,7 +1515,7 @@ var staticRenderFns = [
       [
         _c("strong", [_vm._v("Danger!")]),
         _vm._v(
-          ' Your personal data is missing, this can lead to rolling problems. check page "option", and add missing information.\n                    '
+          ' Your personal data is missing, this can lead to rolling problems. check page "option", and add missing information.\n                '
         ),
       ]
     )
@@ -1439,12 +1530,116 @@ var staticRenderFns = [
       [
         _c("strong", [_vm._v("Warning!")]),
         _vm._v(
-          " Add your profil image and piple faind you isier\n                    "
+          " Add your profil image and piple faind you isier\n                "
         ),
       ]
     )
   },
 ]
+render._withStripped = true
+
+
+
+/***/ }),
+
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/user/pages/HomePageComponent.vue?vue&type=template&id=07287b2a&":
+/*!****************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/user/pages/HomePageComponent.vue?vue&type=template&id=07287b2a& ***!
+  \****************************************************************************************************************************************************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "render": () => (/* binding */ render),
+/* harmony export */   "staticRenderFns": () => (/* binding */ staticRenderFns)
+/* harmony export */ });
+var render = function () {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("div", { staticClass: "row" }, [
+    _c("div", { staticClass: "col-sm-3" }, [_c("left-menu")], 1),
+    _vm._v(" "),
+    _c(
+      "div",
+      { staticClass: "col-sm-9" },
+      [
+        _c("div", { staticClass: "row justify-content-center" }, [
+          _c("div", { staticClass: "col-md-12" }, [
+            _c(
+              "div",
+              { staticClass: "alert alert-success", attrs: { role: "alert" } },
+              [_c("h1", [_vm._v("Hi " + _vm._s(this.user["name"]))])]
+            ),
+          ]),
+        ]),
+        _vm._v(" "),
+        _c("div", { staticClass: "row justify-content-center" }, [
+          _c("div", { staticClass: "col-md-12" }, [
+            _c("div", { staticClass: "card" }, [
+              _c("div", { staticClass: "card-header" }, [
+                _vm._v("Sites index pages"),
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "card-body" }, [
+                _c("div", { staticClass: "row" }, [
+                  _c("div", { staticClass: "col-sm-12 col-md-4" }, [
+                    _c(
+                      "button",
+                      {
+                        staticClass: "btn btn_service_guid",
+                        on: {
+                          click: function ($event) {
+                            return _vm.go_to_service("guid")
+                          },
+                        },
+                      },
+                      [_vm._v("Climbing Guidbook")]
+                    ),
+                  ]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "col-sm-12 col-md-4 text-center" }, [
+                    _c(
+                      "button",
+                      {
+                        staticClass: "btn btn_service_shop",
+                        on: {
+                          click: function ($event) {
+                            return _vm.go_to_service("shop")
+                          },
+                        },
+                      },
+                      [_vm._v("Climbing Shop")]
+                    ),
+                  ]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "col-sm-12 col-md-4" }, [
+                    _c(
+                      "button",
+                      {
+                        staticClass: "btn btn_service_films float-right",
+                        on: {
+                          click: function ($event) {
+                            return _vm.go_to_service("films")
+                          },
+                        },
+                      },
+                      [_vm._v("Climbing Films")]
+                    ),
+                  ]),
+                ]),
+              ]),
+            ]),
+          ]),
+        ]),
+        _vm._v(" "),
+        _c("user_notifications_list"),
+      ],
+      1
+    ),
+  ])
+}
+var staticRenderFns = []
 render._withStripped = true
 
 

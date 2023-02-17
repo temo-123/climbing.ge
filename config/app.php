@@ -15,8 +15,18 @@ return [
 
     'name' => env('APP_NAME', 'climbing.ge'),
 
-    'name' => env('BASE_URL', 'climbing.loc'),
-    'name' => env('BASE_URL_SSH', 'http://climbing.loc'),
+    'base_url' => env('BASE_URL', 'climbing.loc'),
+    'base_url_ssh' => env('BASE_URL_SSH', 'http://climbing.loc'),
+
+    'app_ssh' => env('APP_SSH' , 'https://'),
+
+    'site_url' => env('SITE_URL', 'climbing.loc'),
+    'shop_url' => env('SHOP_URL', 'shop.climbing.loc'),
+    'forum_url' => env('FORUM_URL', 'forum.climbing.loc'),
+    'films_url' => env('FILMS_URL', 'films.climbing.loc'),
+    'user_page_url' => env('USER_PAGE_URL', 'user.climbing.loc'),
+
+    'default' => env('QUEUE_DRIVER', 'database'),
 
     /*
     |--------------------------------------------------------------------------
@@ -69,7 +79,8 @@ return [
     |
     */
 
-    'timezone' => 'UTC',
+    // 'timezone' => 'UTC',
+    'timezone' => env('TIMEZONE', 'Asia/Tbilisi'),
 
     /*
     |--------------------------------------------------------------------------
@@ -180,11 +191,9 @@ return [
 
         App\Providers\AppServiceProvider::class,
         App\Providers\AuthServiceProvider::class,
-        // App\Providers\BroadcastServiceProvider::class,
         App\Providers\EventServiceProvider::class,
         App\Providers\HorizonServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
-        // App\Providers\GetFilmService::class,
 
 
         /*
@@ -260,7 +269,6 @@ return [
 
 
         'Socialite' => Laravel\Socialite\Facades\Socialite::class, // Laravel Socialite
-        // 'LocalisationService' => App\Services\Localisation\LocalisationService::class, // Language localisation
         'GetArticlesService' => App\Services\GetArticlesService::class, // Get articles
         'GetMountSystemService' => App\Services\GetMountSystemService::class, // Get MountSystem
         'GetServicesService' => App\Services\GetServicesService::class, // Get Services
@@ -268,17 +276,11 @@ return [
         'get_url_title' => App\Services\get_url_title::class, // create url_title, from us_title
 
         'GetProductService' => App\Services\GetProductService::class, // Get products
-        // 'GetProductsService' => App\Services\GetProductsService::class,
 
         'GetOrderService' => App\Services\GetOrderService::class,
         'GetFilmService' => App\Services\GetFilmService::class,
 
         'Image' => Intervention\Image\Facades\Image::class,
-
-        
-        // 'ExportLocalization' => KgBot\LaravelLocalization\Facades\ExportLocalizations
-
-        
     ],
 
 ];

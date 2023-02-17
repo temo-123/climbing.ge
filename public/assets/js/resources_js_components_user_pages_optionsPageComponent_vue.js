@@ -737,6 +737,16 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
  //https://github.com/Jexordexan/vue-slicksort
 
  //https://innologica.github.io/vue-stackable-modal/#sample-css
@@ -3404,54 +3414,6 @@ var render = function () {
           _vm._m(2),
           _vm._v(" "),
           _c("tr", [
-            _c("td", [_vm._v("News")]),
-            _vm._v(" "),
-            _c("td", [_vm._v("|")]),
-            _vm._v(" "),
-            _c("td", [
-              _c("input", {
-                directives: [
-                  {
-                    name: "model",
-                    rawName: "v-model",
-                    value: _vm.data.news,
-                    expression: "data.news",
-                  },
-                ],
-                attrs: { type: "checkbox" },
-                domProps: {
-                  checked: Array.isArray(_vm.data.news)
-                    ? _vm._i(_vm.data.news, null) > -1
-                    : _vm.data.news,
-                },
-                on: {
-                  change: function ($event) {
-                    var $$a = _vm.data.news,
-                      $$el = $event.target,
-                      $$c = $$el.checked ? true : false
-                    if (Array.isArray($$a)) {
-                      var $$v = null,
-                        $$i = _vm._i($$a, $$v)
-                      if ($$el.checked) {
-                        $$i < 0 && _vm.$set(_vm.data, "news", $$a.concat([$$v]))
-                      } else {
-                        $$i > -1 &&
-                          _vm.$set(
-                            _vm.data,
-                            "news",
-                            $$a.slice(0, $$i).concat($$a.slice($$i + 1))
-                          )
-                      }
-                    } else {
-                      _vm.$set(_vm.data, "news", $$c)
-                    }
-                  },
-                },
-              }),
-            ]),
-          ]),
-          _vm._v(" "),
-          _c("tr", [
             _c("td", [_vm._v("New sector")]),
             _vm._v(" "),
             _c("td", [_vm._v("|")]),
@@ -3497,6 +3459,56 @@ var render = function () {
                       }
                     } else {
                       _vm.$set(_vm.data, "add_new_sector", $$c)
+                    }
+                  },
+                },
+              }),
+            ]),
+          ]),
+          _vm._v(" "),
+          _vm._m(3),
+          _vm._v(" "),
+          _c("tr", [
+            _c("td", [_vm._v("News")]),
+            _vm._v(" "),
+            _c("td", [_vm._v("|")]),
+            _vm._v(" "),
+            _c("td", [
+              _c("input", {
+                directives: [
+                  {
+                    name: "model",
+                    rawName: "v-model",
+                    value: _vm.data.news,
+                    expression: "data.news",
+                  },
+                ],
+                attrs: { type: "checkbox" },
+                domProps: {
+                  checked: Array.isArray(_vm.data.news)
+                    ? _vm._i(_vm.data.news, null) > -1
+                    : _vm.data.news,
+                },
+                on: {
+                  change: function ($event) {
+                    var $$a = _vm.data.news,
+                      $$el = $event.target,
+                      $$c = $$el.checked ? true : false
+                    if (Array.isArray($$a)) {
+                      var $$v = null,
+                        $$i = _vm._i($$a, $$v)
+                      if ($$el.checked) {
+                        $$i < 0 && _vm.$set(_vm.data, "news", $$a.concat([$$v]))
+                      } else {
+                        $$i > -1 &&
+                          _vm.$set(
+                            _vm.data,
+                            "news",
+                            $$a.slice(0, $$i).concat($$a.slice($$i + 1))
+                          )
+                      }
+                    } else {
+                      _vm.$set(_vm.data, "news", $$c)
                     }
                   },
                 },
@@ -3712,6 +3724,8 @@ var render = function () {
             ]),
           ]),
           _vm._v(" "),
+          _vm._m(4),
+          _vm._v(" "),
           _c("tr", [
             _c("td", [_vm._v("New product")]),
             _vm._v(" "),
@@ -3849,6 +3863,30 @@ var staticRenderFns = [
         _vm._v(" "),
         _c("th", [_vm._v("Action")]),
       ]),
+    ])
+  },
+  function () {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("tr", [
+      _c("td", [_vm._v("--")]),
+      _vm._v(" "),
+      _c("td", [_vm._v("--")]),
+      _vm._v(" "),
+      _c("td", [_vm._v("--")]),
+    ])
+  },
+  function () {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("tr", [
+      _c("td", [_vm._v("--")]),
+      _vm._v(" "),
+      _c("td", [_vm._v("--")]),
+      _vm._v(" "),
+      _c("td", [_vm._v("--")]),
     ])
   },
   function () {

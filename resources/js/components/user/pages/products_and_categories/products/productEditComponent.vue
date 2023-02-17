@@ -329,10 +329,9 @@ export default {
                 this.go_back(true)
             })
             .catch(error =>{
-                // if (error.response.status == 422) {
-                //     this.us_article_error = error.response.data.errors
-                // }
-                // this.is_us_article_error = true
+                if (error.response.status == 422) {
+                    this.us_article_error = error.response.data.errors
+                }
             })
         },
 

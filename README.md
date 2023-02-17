@@ -1,6 +1,8 @@
 <p align="center"><img src="/public/images/site_img/site_logo/climibng,ge(becground).jpg" width="400"></p>
 <h1 align="center">Welcome to climbing.ge opensource project</h1>
 
+<h2>Laravel 9 (PHP 8.1)</h2>
+
 <p>Sercice climbing.ge is georgian rock climbing and mountaineering areas description and social netvork for your climbing ascent sheering. Alse ouer product onlain shop. in services we have 5 subdomain: climibng.ge, forum.climbing.ge, shop.climbing,ge, films.climbing.ge, user.climbing.ge. (All descriptions see down)</p>
 
 <p>Service is opensorse and you can see them structure down</p>

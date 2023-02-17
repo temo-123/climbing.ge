@@ -229,12 +229,56 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   props: [// 'back_url',
   ],
   data: function data() {
     return {
       tab_num: 1,
+      error: [],
       images: [],
       editorConfig: '',
       data: {
@@ -280,10 +324,31 @@ __webpack_require__.r(__webpack_exports__);
       var formData = new FormData();
       formData.append('image', this.image);
       formData.append('data', JSON.stringify(this.data));
+      this.error = [];
       axios.post('../api/event/add_event', formData).then(function (response) {
-        _this.go_back(true);
+        if (confirm('Do you want send notification about editing article?')) {
+          _this.sand_notification();
+        } else {
+          _this.go_back(true);
+        }
       })["catch"](function (error) {
-        return console.log(error);
+        if (error.response.status == 422) {
+          _this.error = error.response.data.validation;
+        }
+      });
+    },
+    sand_notification: function sand_notification() {
+      var _this2 = this;
+
+      this.is_mail_sending_procesing = true;
+      axios.post('../../../api/user/notifications/send_article_notification', {
+        notification_category: this.category
+      }).then(function (response) {
+        _this2.go_back(true);
+      })["catch"](function (err) {
+        console.log(err);
+      })["finally"](function () {
+        return _this2.is_mail_sending_procesing = false;
       });
     },
     go_back: function go_back() {
@@ -422,6 +487,222 @@ var render = function () {
         ),
       ]),
     ]),
+    _vm._v(" "),
+    _vm.error.length != 0
+      ? _c("div", { staticClass: "row" }, [
+          _c("div", { staticClass: "col-md-12" }, [
+            _vm.error.global_info_validation.published
+              ? _c(
+                  "div",
+                  {
+                    staticClass: "alert alert-danger",
+                    attrs: { role: "alert" },
+                  },
+                  [
+                    _vm._v(
+                      "\n                Published - " +
+                        _vm._s(_vm.error.global_info_validation.published[0]) +
+                        "\n            "
+                    ),
+                  ]
+                )
+              : _vm._e(),
+            _vm._v(" "),
+            _vm.error.global_info_validation.start_data
+              ? _c(
+                  "div",
+                  {
+                    staticClass: "alert alert-danger",
+                    attrs: { role: "alert" },
+                  },
+                  [
+                    _vm._v(
+                      "\n                Start data - " +
+                        _vm._s(_vm.error.global_info_validation.start_data[0]) +
+                        "\n            "
+                    ),
+                  ]
+                )
+              : _vm._e(),
+            _vm._v(" "),
+            _vm.error.global_info_validation.end_data
+              ? _c(
+                  "div",
+                  {
+                    staticClass: "alert alert-danger",
+                    attrs: { role: "alert" },
+                  },
+                  [
+                    _vm._v(
+                      "\n                End data - " +
+                        _vm._s(_vm.error.global_info_validation.end_data[0]) +
+                        "\n            "
+                    ),
+                  ]
+                )
+              : _vm._e(),
+            _vm._v(" "),
+            _vm.error.us_info_validation.title
+              ? _c(
+                  "div",
+                  {
+                    staticClass: "alert alert-danger",
+                    attrs: { role: "alert" },
+                  },
+                  [
+                    _vm._v(
+                      "\n                English title - " +
+                        _vm._s(_vm.error.us_info_validation.title[0]) +
+                        "\n            "
+                    ),
+                  ]
+                )
+              : _vm._e(),
+            _vm._v(" "),
+            _vm.error.us_info_validation.short_description
+              ? _c(
+                  "div",
+                  {
+                    staticClass: "alert alert-danger",
+                    attrs: { role: "alert" },
+                  },
+                  [
+                    _vm._v(
+                      "\n                English description - " +
+                        _vm._s(
+                          _vm.error.us_info_validation.short_description[0]
+                        ) +
+                        "\n            "
+                    ),
+                  ]
+                )
+              : _vm._e(),
+            _vm._v(" "),
+            _vm.error.us_info_validation.text
+              ? _c(
+                  "div",
+                  {
+                    staticClass: "alert alert-danger",
+                    attrs: { role: "alert" },
+                  },
+                  [
+                    _vm._v(
+                      "\n                English text - " +
+                        _vm._s(_vm.error.us_info_validation.text[0]) +
+                        "\n            "
+                    ),
+                  ]
+                )
+              : _vm._e(),
+            _vm._v(" "),
+            _vm.error.ka_info_validation.title
+              ? _c(
+                  "div",
+                  {
+                    staticClass: "alert alert-danger",
+                    attrs: { role: "alert" },
+                  },
+                  [
+                    _vm._v(
+                      "\n                Georgian title - " +
+                        _vm._s(_vm.error.ka_info_validation.title[0]) +
+                        "\n            "
+                    ),
+                  ]
+                )
+              : _vm._e(),
+            _vm._v(" "),
+            _vm.error.ka_info_validation.short_description
+              ? _c(
+                  "div",
+                  {
+                    staticClass: "alert alert-danger",
+                    attrs: { role: "alert" },
+                  },
+                  [
+                    _vm._v(
+                      "\n                Georgian description - " +
+                        _vm._s(
+                          _vm.error.ka_info_validation.short_description[0]
+                        ) +
+                        "\n            "
+                    ),
+                  ]
+                )
+              : _vm._e(),
+            _vm._v(" "),
+            _vm.error.ka_info_validation.text
+              ? _c(
+                  "div",
+                  {
+                    staticClass: "alert alert-danger",
+                    attrs: { role: "alert" },
+                  },
+                  [
+                    _vm._v(
+                      "\n                Georgian text - " +
+                        _vm._s(_vm.error.ka_info_validation.text[0]) +
+                        "\n            "
+                    ),
+                  ]
+                )
+              : _vm._e(),
+            _vm._v(" "),
+            _vm.error.ru_info_validation.title
+              ? _c(
+                  "div",
+                  {
+                    staticClass: "alert alert-danger",
+                    attrs: { role: "alert" },
+                  },
+                  [
+                    _vm._v(
+                      "\n                Russion title - " +
+                        _vm._s(_vm.error.ru_info_validation.title[0]) +
+                        "\n            "
+                    ),
+                  ]
+                )
+              : _vm._e(),
+            _vm._v(" "),
+            _vm.error.ru_info_validation.short_description
+              ? _c(
+                  "div",
+                  {
+                    staticClass: "alert alert-danger",
+                    attrs: { role: "alert" },
+                  },
+                  [
+                    _vm._v(
+                      "\n                Russiondescription - " +
+                        _vm._s(
+                          _vm.error.ru_info_validation.short_description[0]
+                        ) +
+                        "\n            "
+                    ),
+                  ]
+                )
+              : _vm._e(),
+            _vm._v(" "),
+            _vm.error.ru_info_validation.text
+              ? _c(
+                  "div",
+                  {
+                    staticClass: "alert alert-danger",
+                    attrs: { role: "alert" },
+                  },
+                  [
+                    _vm._v(
+                      "\n                Russion text - " +
+                        _vm._s(_vm.error.ru_info_validation.text[0]) +
+                        "\n            "
+                    ),
+                  ]
+                )
+              : _vm._e(),
+          ]),
+        ])
+      : _vm._e(),
     _vm._v(" "),
     _c("div", { staticClass: "row" }, [
       _c("div", { staticClass: "col-md-12" }, [
@@ -611,65 +892,6 @@ var render = function () {
                       staticClass: "col-xs-2 control-label",
                       attrs: { for: "name" },
                     },
-                    [_vm._v(" Category ")]
-                  ),
-                  _vm._v(" "),
-                  _c("div", { staticClass: "col-xs-8" }, [
-                    _c(
-                      "select",
-                      {
-                        directives: [
-                          {
-                            name: "model",
-                            rawName: "v-model",
-                            value: _vm.data.global_data.category,
-                            expression: "data.global_data.category",
-                          },
-                        ],
-                        staticClass: "form-control",
-                        attrs: { name: "published" },
-                        on: {
-                          change: function ($event) {
-                            var $$selectedVal = Array.prototype.filter
-                              .call($event.target.options, function (o) {
-                                return o.selected
-                              })
-                              .map(function (o) {
-                                var val = "_value" in o ? o._value : o.value
-                                return val
-                              })
-                            _vm.$set(
-                              _vm.data.global_data,
-                              "category",
-                              $event.target.multiple
-                                ? $$selectedVal
-                                : $$selectedVal[0]
-                            )
-                          },
-                        },
-                      },
-                      [
-                        _c("option", { attrs: { value: "event" } }, [
-                          _vm._v("Event"),
-                        ]),
-                        _vm._v(" "),
-                        _c(
-                          "option",
-                          { attrs: { value: "competition", disabled: "" } },
-                          [_vm._v("Competition")]
-                        ),
-                      ]
-                    ),
-                  ]),
-                ]),
-                _vm._v(" "),
-                _c("div", { staticClass: "form-group clearfix" }, [
-                  _c(
-                    "label",
-                    {
-                      staticClass: "col-xs-2 control-label",
-                      attrs: { for: "name" },
-                    },
                     [_vm._v(" Event location ")]
                   ),
                   _vm._v(" "),
@@ -679,19 +901,23 @@ var render = function () {
                         {
                           name: "model",
                           rawName: "v-model",
-                          value: _vm.data.us_data.map,
-                          expression: "data.us_data.map",
+                          value: _vm.data.global_data.map,
+                          expression: "data.global_data.map",
                         },
                       ],
                       staticClass: "form-control",
                       attrs: { type: "text", name: "name" },
-                      domProps: { value: _vm.data.us_data.map },
+                      domProps: { value: _vm.data.global_data.map },
                       on: {
                         input: function ($event) {
                           if ($event.target.composing) {
                             return
                           }
-                          _vm.$set(_vm.data.us_data, "map", $event.target.value)
+                          _vm.$set(
+                            _vm.data.global_data,
+                            "map",
+                            $event.target.value
+                          )
                         },
                       },
                     }),
@@ -716,8 +942,8 @@ var render = function () {
                             {
                               name: "model",
                               rawName: "v-model",
-                              value: _vm.data.start_data,
-                              expression: "data.start_data",
+                              value: _vm.data.global_data.start_data,
+                              expression: "data.global_data.start_data",
                             },
                           ],
                           staticClass: "form-control",
@@ -726,14 +952,14 @@ var render = function () {
                             name: "start_datatle",
                             placeholder: "Start data/time",
                           },
-                          domProps: { value: _vm.data.start_data },
+                          domProps: { value: _vm.data.global_data.start_data },
                           on: {
                             input: function ($event) {
                               if ($event.target.composing) {
                                 return
                               }
                               _vm.$set(
-                                _vm.data,
+                                _vm.data.global_data,
                                 "start_data",
                                 $event.target.value
                               )
@@ -748,8 +974,8 @@ var render = function () {
                             {
                               name: "model",
                               rawName: "v-model",
-                              value: _vm.data.end_data,
-                              expression: "data.end_data",
+                              value: _vm.data.global_data.end_data,
+                              expression: "data.global_data.end_data",
                             },
                           ],
                           staticClass: "form-control",
@@ -758,14 +984,14 @@ var render = function () {
                             name: "end_data",
                             placeholder: "End data/time",
                           },
-                          domProps: { value: _vm.data.end_data },
+                          domProps: { value: _vm.data.global_data.end_data },
                           on: {
                             input: function ($event) {
                               if ($event.target.composing) {
                                 return
                               }
                               _vm.$set(
-                                _vm.data,
+                                _vm.data.global_data,
                                 "end_data",
                                 $event.target.value
                               )

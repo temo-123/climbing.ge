@@ -242,6 +242,49 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   props: [// 'back_url',
   ],
@@ -328,7 +371,9 @@ __webpack_require__.r(__webpack_exports__);
       axios.post('../../api/event/edit_event/' + this.$route.params.id, formData).then(function (response) {
         _this2.go_back(true);
       })["catch"](function (error) {
-        return console.log(error);
+        if (error.response.status == 422) {
+          _this2.error = error.response.data.validation;
+        }
       });
     },
     go_back: function go_back() {
@@ -467,6 +512,222 @@ var render = function () {
         ),
       ]),
     ]),
+    _vm._v(" "),
+    _vm.error.length != 0
+      ? _c("div", { staticClass: "row" }, [
+          _c("div", { staticClass: "col-md-12" }, [
+            _vm.error.global_info_validation.published
+              ? _c(
+                  "div",
+                  {
+                    staticClass: "alert alert-danger",
+                    attrs: { role: "alert" },
+                  },
+                  [
+                    _vm._v(
+                      "\n                Published - " +
+                        _vm._s(_vm.error.global_info_validation.published[0]) +
+                        "\n            "
+                    ),
+                  ]
+                )
+              : _vm._e(),
+            _vm._v(" "),
+            _vm.error.global_info_validation.start_data
+              ? _c(
+                  "div",
+                  {
+                    staticClass: "alert alert-danger",
+                    attrs: { role: "alert" },
+                  },
+                  [
+                    _vm._v(
+                      "\n                Start data - " +
+                        _vm._s(_vm.error.global_info_validation.start_data[0]) +
+                        "\n            "
+                    ),
+                  ]
+                )
+              : _vm._e(),
+            _vm._v(" "),
+            _vm.error.global_info_validation.end_data
+              ? _c(
+                  "div",
+                  {
+                    staticClass: "alert alert-danger",
+                    attrs: { role: "alert" },
+                  },
+                  [
+                    _vm._v(
+                      "\n                End data - " +
+                        _vm._s(_vm.error.global_info_validation.end_data[0]) +
+                        "\n            "
+                    ),
+                  ]
+                )
+              : _vm._e(),
+            _vm._v(" "),
+            _vm.error.us_info_validation.title
+              ? _c(
+                  "div",
+                  {
+                    staticClass: "alert alert-danger",
+                    attrs: { role: "alert" },
+                  },
+                  [
+                    _vm._v(
+                      "\n                English title - " +
+                        _vm._s(_vm.error.us_info_validation.title[0]) +
+                        "\n            "
+                    ),
+                  ]
+                )
+              : _vm._e(),
+            _vm._v(" "),
+            _vm.error.us_info_validation.short_description
+              ? _c(
+                  "div",
+                  {
+                    staticClass: "alert alert-danger",
+                    attrs: { role: "alert" },
+                  },
+                  [
+                    _vm._v(
+                      "\n                English description - " +
+                        _vm._s(
+                          _vm.error.us_info_validation.short_description[0]
+                        ) +
+                        "\n            "
+                    ),
+                  ]
+                )
+              : _vm._e(),
+            _vm._v(" "),
+            _vm.error.us_info_validation.text
+              ? _c(
+                  "div",
+                  {
+                    staticClass: "alert alert-danger",
+                    attrs: { role: "alert" },
+                  },
+                  [
+                    _vm._v(
+                      "\n                English text - " +
+                        _vm._s(_vm.error.us_info_validation.text[0]) +
+                        "\n            "
+                    ),
+                  ]
+                )
+              : _vm._e(),
+            _vm._v(" "),
+            _vm.error.ka_info_validation.title
+              ? _c(
+                  "div",
+                  {
+                    staticClass: "alert alert-danger",
+                    attrs: { role: "alert" },
+                  },
+                  [
+                    _vm._v(
+                      "\n                Georgian title - " +
+                        _vm._s(_vm.error.ka_info_validation.title[0]) +
+                        "\n            "
+                    ),
+                  ]
+                )
+              : _vm._e(),
+            _vm._v(" "),
+            _vm.error.ka_info_validation.short_description
+              ? _c(
+                  "div",
+                  {
+                    staticClass: "alert alert-danger",
+                    attrs: { role: "alert" },
+                  },
+                  [
+                    _vm._v(
+                      "\n                Georgian description - " +
+                        _vm._s(
+                          _vm.error.ka_info_validation.short_description[0]
+                        ) +
+                        "\n            "
+                    ),
+                  ]
+                )
+              : _vm._e(),
+            _vm._v(" "),
+            _vm.error.ka_info_validation.text
+              ? _c(
+                  "div",
+                  {
+                    staticClass: "alert alert-danger",
+                    attrs: { role: "alert" },
+                  },
+                  [
+                    _vm._v(
+                      "\n                Georgian text - " +
+                        _vm._s(_vm.error.ka_info_validation.text[0]) +
+                        "\n            "
+                    ),
+                  ]
+                )
+              : _vm._e(),
+            _vm._v(" "),
+            _vm.error.ru_info_validation.title
+              ? _c(
+                  "div",
+                  {
+                    staticClass: "alert alert-danger",
+                    attrs: { role: "alert" },
+                  },
+                  [
+                    _vm._v(
+                      "\n                Russion title - " +
+                        _vm._s(_vm.error.ru_info_validation.title[0]) +
+                        "\n            "
+                    ),
+                  ]
+                )
+              : _vm._e(),
+            _vm._v(" "),
+            _vm.error.ru_info_validation.short_description
+              ? _c(
+                  "div",
+                  {
+                    staticClass: "alert alert-danger",
+                    attrs: { role: "alert" },
+                  },
+                  [
+                    _vm._v(
+                      "\n                Russiondescription - " +
+                        _vm._s(
+                          _vm.error.ru_info_validation.short_description[0]
+                        ) +
+                        "\n            "
+                    ),
+                  ]
+                )
+              : _vm._e(),
+            _vm._v(" "),
+            _vm.error.ru_info_validation.text
+              ? _c(
+                  "div",
+                  {
+                    staticClass: "alert alert-danger",
+                    attrs: { role: "alert" },
+                  },
+                  [
+                    _vm._v(
+                      "\n                Russion text - " +
+                        _vm._s(_vm.error.ru_info_validation.text[0]) +
+                        "\n            "
+                    ),
+                  ]
+                )
+              : _vm._e(),
+          ]),
+        ])
+      : _vm._e(),
     _vm._v(" "),
     _c("div", { staticClass: "row" }, [
       _c("div", { staticClass: "col-md-12" }, [
@@ -644,65 +905,6 @@ var render = function () {
                         _c("option", { attrs: { value: "1" } }, [
                           _vm._v("Public"),
                         ]),
-                      ]
-                    ),
-                  ]),
-                ]),
-                _vm._v(" "),
-                _c("div", { staticClass: "form-group clearfix" }, [
-                  _c(
-                    "label",
-                    {
-                      staticClass: "col-xs-2 control-label",
-                      attrs: { for: "name" },
-                    },
-                    [_vm._v(" Category ")]
-                  ),
-                  _vm._v(" "),
-                  _c("div", { staticClass: "col-xs-8" }, [
-                    _c(
-                      "select",
-                      {
-                        directives: [
-                          {
-                            name: "model",
-                            rawName: "v-model",
-                            value: _vm.data.global_data.category,
-                            expression: "data.global_data.category",
-                          },
-                        ],
-                        staticClass: "form-control",
-                        attrs: { name: "published" },
-                        on: {
-                          change: function ($event) {
-                            var $$selectedVal = Array.prototype.filter
-                              .call($event.target.options, function (o) {
-                                return o.selected
-                              })
-                              .map(function (o) {
-                                var val = "_value" in o ? o._value : o.value
-                                return val
-                              })
-                            _vm.$set(
-                              _vm.data.global_data,
-                              "category",
-                              $event.target.multiple
-                                ? $$selectedVal
-                                : $$selectedVal[0]
-                            )
-                          },
-                        },
-                      },
-                      [
-                        _c("option", { attrs: { value: "event" } }, [
-                          _vm._v("Event"),
-                        ]),
-                        _vm._v(" "),
-                        _c(
-                          "option",
-                          { attrs: { value: "competition", disabled: "" } },
-                          [_vm._v("Competition")]
-                        ),
                       ]
                     ),
                   ]),

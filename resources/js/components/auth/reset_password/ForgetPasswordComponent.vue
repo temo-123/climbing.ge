@@ -40,7 +40,7 @@
               <img :src="'../../../../../../public/images/site_img/loading.gif'" alt="loading">
               <p>Pless wait!</p>
           </div>
-      </div>
+        </div>
 
       </div>
     </div>

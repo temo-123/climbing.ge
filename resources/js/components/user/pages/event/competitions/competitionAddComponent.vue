@@ -10,6 +10,49 @@
                 <button type="submit" class="btn btn-primary" v-on:click="add_event()" >Save</button>
             </div>
         </div>
+        <div class="row" v-if="error.length != 0">
+            <div class="col-md-12">
+                <div class="alert alert-danger" role="alert" v-if="error.global_info_validation.published">
+                    Published - {{ error.global_info_validation.published[0] }}
+                </div>
+                <div class="alert alert-danger" role="alert" v-if="error.global_info_validation.start_data">
+                    Start data - {{ error.global_info_validation.start_data[0] }}
+                </div>
+                <div class="alert alert-danger" role="alert" v-if="error.global_info_validation.end_data">
+                    End data - {{ error.global_info_validation.end_data[0] }}
+                </div>
+
+                <div class="alert alert-danger" role="alert" v-if="error.us_info_validation.title">
+                    English title - {{ error.us_info_validation.title[0] }}
+                </div>
+                <div class="alert alert-danger" role="alert" v-if="error.us_info_validation.short_description">
+                    English description - {{ error.us_info_validation.short_description[0] }}
+                </div>
+                <div class="alert alert-danger" role="alert" v-if="error.us_info_validation.text">
+                    English text - {{ error.us_info_validation.text[0] }}
+                </div>
+
+                <div class="alert alert-danger" role="alert" v-if="error.ka_info_validation.title">
+                    Georgian title - {{ error.ka_info_validation.title[0] }}
+                </div>
+                <div class="alert alert-danger" role="alert" v-if="error.ka_info_validation.short_description">
+                    Georgian description - {{ error.ka_info_validation.short_description[0] }}
+                </div>
+                <div class="alert alert-danger" role="alert" v-if="error.ka_info_validation.text">
+                    Georgian text - {{ error.ka_info_validation.text[0] }}
+                </div>
+
+                <div class="alert alert-danger" role="alert" v-if="error.ru_info_validation.title">
+                    Russion title - {{ error.ru_info_validation.title[0] }}
+                </div>
+                <div class="alert alert-danger" role="alert" v-if="error.ru_info_validation.short_description">
+                    Russiondescription - {{ error.ru_info_validation.short_description[0] }}
+                </div>
+                <div class="alert alert-danger" role="alert" v-if="error.ru_info_validation.text">
+                    Russion text - {{ error.ru_info_validation.text[0] }}
+                </div>
+            </div>
+        </div>
         <div class="row">
             <div class="col-md-12">
                 <div class="row">
@@ -58,7 +101,7 @@
                                 </div> -->
                             </div>
                         </div>
-                        <div class="form-group clearfix">
+                        <!-- <div class="form-group clearfix">
                             <label for="name" class='col-xs-2 control-label'> Category </label>
                             <div class="col-xs-8">
                                 <select class="form-control" v-model="data.global_data.category" name="published" > 
@@ -66,7 +109,7 @@
                                     <option value="competition" disabled>Competition</option> 
                                 </select>
                             </div>
-                        </div>
+                        </div> -->
                         <div class="form-group clearfix">
                             <label for="name" class='col-xs-2 control-label'> Event location </label>
                             <div class="col-xs-8">
@@ -284,11 +327,34 @@ export default {
                 formData
             )
             .then(response => {
+                if(confirm('Do you want send notification about editing article?')){
+                    this.sand_notification()
+                }
+                else{
+                    this.go_back(true)
+                }
+            })
+            .catch(error => {
+                if (error.response.status == 422) {
+                    this.error = error.response.data.validation
+                }
+            });
+        },
+
+        sand_notification() {
+            this.is_mail_sending_procesing = true
+
+            axios
+            .post('../../../api/user/notifications/send_article_notification',{
+                notification_category: this.category
+            } )
+            .then(response => {
                 this.go_back(true)
             })
-            .catch(
-                error => console.log(error)
-            );
+            .catch(err => {
+                console.log(err);
+            })
+            .finally(() => this.is_mail_sending_procesing = false);
         },
 
         go_back: function(back_action = false) {

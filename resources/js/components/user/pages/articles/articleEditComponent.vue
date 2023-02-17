@@ -11,8 +11,8 @@
                 <button type="submit" class="btn btn-primary" v-on:click="edit_article()" >Save</button>
             </div>
         </div>
-        <div class="row">
-            <div class="col-md-12" v-if="error.length != 0">
+        <div class="row" v-if="error.length != 0">
+            <div class="col-md-12">
                 <div class="alert alert-danger" role="alert" v-if="error.global_info_validation.published">
                     Published - {{ error.global_info_validation.published[0] }}
                 </div>
@@ -294,8 +294,6 @@
                     formData,
                 )
                 .then(response => {
-                    // this.is_back_action = true
-                    // this.$refs.ArticleImage.checkForm()
                     this.go_back(true)
                 })
                 .catch(error => {

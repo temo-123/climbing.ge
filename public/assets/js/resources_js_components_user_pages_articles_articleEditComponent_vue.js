@@ -289,8 +289,6 @@ __webpack_require__.r(__webpack_exports__);
 
       axios // .post('/api/article/add_article/' + this.category, 
       .post('../../../api/article/edit_article/' + this.article_id, formData).then(function (response) {
-        // this.is_back_action = true
-        // this.$refs.ArticleImage.checkForm()
         _this2.go_back(true);
       })["catch"](function (error) {
         if (error.response.status == 422) {
@@ -1812,9 +1810,9 @@ var render = function () {
       ]),
     ]),
     _vm._v(" "),
-    _c("div", { staticClass: "row" }, [
-      _vm.error.length != 0
-        ? _c("div", { staticClass: "col-md-12" }, [
+    _vm.error.length != 0
+      ? _c("div", { staticClass: "row" }, [
+          _c("div", { staticClass: "col-md-12" }, [
             _vm.error.global_info_validation.published
               ? _c(
                   "div",
@@ -1990,9 +1988,9 @@ var render = function () {
                   ]
                 )
               : _vm._e(),
-          ])
-        : _vm._e(),
-    ]),
+          ]),
+        ])
+      : _vm._e(),
     _vm._v(" "),
     _c("div", { staticClass: "row" }, [
       _c("div", { staticClass: "col-md-12" }, [
