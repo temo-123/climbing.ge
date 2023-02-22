@@ -736,7 +736,7 @@ var render = function () {
                   { staticClass: "col-xs-8" },
                   [
                     _c("ckeditor", {
-                      attrs: { config: _vm.editorConfig },
+                      attrs: { config: this.$editorConfig },
                       model: {
                         value: _vm.text,
                         callback: function ($$v) {
@@ -782,7 +782,7 @@ var render = function () {
                   { staticClass: "col-xs-8" },
                   [
                     _c("ckeditor", {
-                      attrs: { config: _vm.editorConfig },
+                      attrs: { config: this.$editorConfig },
                       model: {
                         value: _vm.short_description,
                         callback: function ($$v) {
@@ -828,7 +828,7 @@ var render = function () {
                   { staticClass: "col-xs-8" },
                   [
                     _c("ckeditor", {
-                      attrs: { config: _vm.editorConfig },
+                      attrs: { config: this.$editorConfig },
                       model: {
                         value: _vm.how_get,
                         callback: function ($$v) {
@@ -874,7 +874,7 @@ var render = function () {
                   { staticClass: "col-xs-8" },
                   [
                     _c("ckeditor", {
-                      attrs: { config: _vm.editorConfig },
+                      attrs: { config: this.$editorConfig },
                       model: {
                         value: _vm.best_time,
                         callback: function ($$v) {
@@ -999,7 +999,7 @@ var render = function () {
                   { staticClass: "col-xs-8" },
                   [
                     _c("ckeditor", {
-                      attrs: { config: _vm.editorConfig },
+                      attrs: { config: this.$editorConfig },
                       model: {
                         value: _vm.text_ru,
                         callback: function ($$v) {
@@ -1045,7 +1045,7 @@ var render = function () {
                   { staticClass: "col-xs-8" },
                   [
                     _c("ckeditor", {
-                      attrs: { config: _vm.editorConfig },
+                      attrs: { config: this.$editorConfig },
                       model: {
                         value: _vm.short_description_ru,
                         callback: function ($$v) {
@@ -1091,7 +1091,7 @@ var render = function () {
                   { staticClass: "col-xs-8" },
                   [
                     _c("ckeditor", {
-                      attrs: { config: _vm.editorConfig },
+                      attrs: { config: this.$editorConfig },
                       model: {
                         value: _vm.how_get_ru,
                         callback: function ($$v) {
@@ -1137,7 +1137,7 @@ var render = function () {
                   { staticClass: "col-xs-8" },
                   [
                     _c("ckeditor", {
-                      attrs: { config: _vm.editorConfig },
+                      attrs: { config: this.$editorConfig },
                       model: {
                         value: _vm.best_time_ru,
                         callback: function ($$v) {
@@ -1262,7 +1262,7 @@ var render = function () {
                   { staticClass: "col-xs-8" },
                   [
                     _c("ckeditor", {
-                      attrs: { config: _vm.editorConfig },
+                      attrs: { config: this.$editorConfig },
                       model: {
                         value: _vm.text_ka,
                         callback: function ($$v) {
@@ -1308,7 +1308,7 @@ var render = function () {
                   { staticClass: "col-xs-8" },
                   [
                     _c("ckeditor", {
-                      attrs: { config: _vm.editorConfig },
+                      attrs: { config: this.$editorConfig },
                       model: {
                         value: _vm.short_description_ka,
                         callback: function ($$v) {
@@ -1354,7 +1354,7 @@ var render = function () {
                   { staticClass: "col-xs-8" },
                   [
                     _c("ckeditor", {
-                      attrs: { config: _vm.editorConfig },
+                      attrs: { config: this.$editorConfig },
                       model: {
                         value: _vm.how_get_ka,
                         callback: function ($$v) {
@@ -1400,7 +1400,7 @@ var render = function () {
                   { staticClass: "col-xs-8" },
                   [
                     _c("ckeditor", {
-                      attrs: { config: _vm.editorConfig },
+                      attrs: { config: this.$editorConfig },
                       model: {
                         value: _vm.best_time_ka,
                         callback: function ($$v) {

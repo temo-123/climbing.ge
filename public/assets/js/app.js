@@ -10313,6 +10313,7 @@ __webpack_require__(/*! ./bootstrap */ "./resources/js/bootstrap.js");
  *   Using pakets
  */
 // import Carousel3d from "vue-carousel-3d";
+// import CKEditor from '@ckeditor/ckeditor5-vue2'; //dont working for updating
 
 
 
@@ -10413,8 +10414,26 @@ vue__WEBPACK_IMPORTED_MODULE_12__["default"].use(vue_gtag__WEBPACK_IMPORTED_MODU
 
 vue__WEBPACK_IMPORTED_MODULE_12__["default"].config.productionTip = false;
 vue__WEBPACK_IMPORTED_MODULE_12__["default"].prototype.$siteData = [];
-vue__WEBPACK_IMPORTED_MODULE_12__["default"].prototype.$globalSiteData = [];
-vue__WEBPACK_IMPORTED_MODULE_12__["default"].prototype.$authUserData = [];
+vue__WEBPACK_IMPORTED_MODULE_12__["default"].prototype.$globalSiteData = []; // Vue.prototype.$authUserData = [];
+//https://ckeditor.com/latest/samples/toolbarconfigurator/#basic
+
+vue__WEBPACK_IMPORTED_MODULE_12__["default"].prototype.$shortDescriptionEditorConfig = {
+  removeButtons: 'Link,Unlink,Anchor,Image,Table,Underline,Strike,Subscript,Superscript,RemoveFormat,NumberedList,BulletedList,Outdent,Indent,Blockquote,Scayt,HorizontalRule,SpecialChar,Styles,Format,Font,FontSize,About'
+};
+vue__WEBPACK_IMPORTED_MODULE_12__["default"].prototype.$editorConfig = {
+  // https://www.tutsmake.com/laravel-8-ckeditor-image-upload-tutorial-example/
+  filebrowserUploadUrl: "../../../../api/ckeditor/upload",
+  // https://ckeditor.com/docs/ckeditor4/latest/examples/mediaembed.html
+  extraPlugins: 'embed,autoembed',
+  // contentsCss: [
+  //     'http://cdn.ckeditor.com/4.20.2/full-all/contents.css',
+  //     'https://ckeditor.com/docs/ckeditor4/4.20.2/examples/assets/css/widgetstyles.css'
+  // ],
+  embed_provider: '//ckeditor.iframe.ly/api/oembed?url={url}&callback={callback}',
+  image2_alignClasses: ['image-align-left', 'image-align-center', 'image-align-right'],
+  image2_disableResizer: true,
+  removeButtons: 'PasteFromWord'
+};
 
 if (window.location.hostname == 'climbing.ge' && window.location.hostname == 'shop.climbing.ge' && window.location.hostname == 'user.climbing.ge' && window.location.hostname == 'films.climbing.ge' && window.location.hostname == 'forum.climbing.ge') {
   vue__WEBPACK_IMPORTED_MODULE_12__["default"].config.devtools = false;

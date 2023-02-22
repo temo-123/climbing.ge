@@ -105,28 +105,28 @@
                             <label for="name" class='col-xs-2 control-label'> English text </label>
                             <div class="col-xs-10">
                                     <!-- <textarea type="text"  name="text" rows="15" class="form-cotrol md-textarea form-control"></textarea> -->
-                                <ckeditor v-model="data.us_data.text" :config="editorConfig"></ckeditor>
+                                <ckeditor v-model="data.us_data.text" :config="this.$editorConfig"></ckeditor>
                             </div>
                         </div>
                         <div class="form-group clearfix">
                             <label for="name" class='col-xs-2 control-label'> English description </label>
                             <div class="col-xs-10">
                                 <!-- <textarea type="text"  name="description" rows="15" class="form-cotrol md-textarea form-control"></textarea> -->
-                                <ckeditor v-model="data.us_data.short_description" :config="editorConfig"></ckeditor>
+                                <ckeditor v-model="data.us_data.short_description" :config="this.$editorConfig"></ckeditor>
                             </div>
                         </div>
                         <div class="form-group clearfix">
                             <label for="name" class='col-xs-2 control-label'> English how get hear </label>
                             <div class="col-xs-10">
                                 <!-- <textarea type="text"  name="how_get" rows="15" class="form-cotrol md-textarea form-control"></textarea> -->
-                                <ckeditor v-model="data.us_data.how_get" :config="editorConfig"></ckeditor>
+                                <ckeditor v-model="data.us_data.how_get" :config="this.$editorConfig"></ckeditor>
                             </div>
                         </div>
                         <div class="form-group clearfix">
                             <label for="name" class='col-xs-2 control-label'> English best time </label>
                             <div class="col-xs-10">
                                 <!-- <textarea type="text" name="best_time" rows="15" class="form-cotrol md-textarea form-control"></textarea> -->
-                                <ckeditor v-model="data.us_data.best_time" :config="editorConfig"></ckeditor>
+                                <ckeditor v-model="data.us_data.best_time" :config="this.$editorConfig"></ckeditor>
                             </div>
                         </div>
                     </form>
@@ -150,28 +150,28 @@
                             <label for="name" class='col-xs-2 control-label'> Rusian text </label>
                             <div class="col-xs-10">
                                 <!-- <textarea type="text"  name="text_ru" rows="15" class="form-cotrol md-textarea form-control"></textarea> -->
-                                <ckeditor v-model="data.ru_data.text" :config="editorConfig"></ckeditor>
+                                <ckeditor v-model="data.ru_data.text" :config="this.$editorConfig"></ckeditor>
                             </div>
                         </div>
                         <div class="form-group clearfix">
                             <label for="name" class='col-xs-2 control-label'> Rusian description </label>
                             <div class="col-xs-10">
                                 <!-- <textarea type="text"  name="description" rows="15" class="form-cotrol md-textarea form-control"></textarea> -->
-                                <ckeditor v-model="data.ru_data.short_description" :config="editorConfig"></ckeditor>
+                                <ckeditor v-model="data.ru_data.short_description" :config="this.$editorConfig"></ckeditor>
                             </div>
                         </div>
                         <div class="form-group clearfix">
                             <label for="name" class='col-xs-2 control-label'> Rusian how get hear </label>
                             <div class="col-xs-10">
                                 <!-- <textarea type="text"  name="how_get" rows="15" class="form-cotrol md-textarea form-control"></textarea> -->
-                                <ckeditor v-model="data.ru_data.how_get" :config="editorConfig"></ckeditor>
+                                <ckeditor v-model="data.ru_data.how_get" :config="this.$editorConfig"></ckeditor>
                             </div>
                         </div>
                         <div class="form-group clearfix">
                             <label for="name" class='col-xs-2 control-label'> Rusian best time </label>
                             <div class="col-xs-10">
                                 <!-- <textarea type="text"  name="best_time_ru" rows="15" class="form-cotrol md-textarea form-control"></textarea> -->
-                                <ckeditor v-model="data.ru_data.best_time" :config="editorConfig"></ckeditor>
+                                <ckeditor v-model="data.ru_data.best_time" :config="this.$editorConfig"></ckeditor>
                             </div>
                         </div>
                     </form>
@@ -195,28 +195,28 @@
                             <label for="name" class='col-xs-2 control-label'> Georgian text </label>
                             <div class="col-xs-10">
                                 <!-- <textarea type="text"  name="text_ka" rows="15" class="form-cotrol md-textarea form-control"></textarea> -->
-                                <ckeditor v-model="data.ka_data.text" :config="editorConfig"></ckeditor>
+                                <ckeditor v-model="data.ka_data.text" :config="this.$editorConfig"></ckeditor>
                             </div>
                         </div>
                         <div class="form-group clearfix">
                             <label for="name" class='col-xs-2 control-label'> Georgian description </label>
                             <div class="col-xs-10">
                                 <!-- <textarea type="text"  name="description_ka" rows="15" class="form-cotrol md-textarea form-control"></textarea> -->
-                                <ckeditor v-model="data.ka_data.short_description" :config="editorConfig"></ckeditor>
+                                <ckeditor v-model="data.ka_data.short_description" :config="this.$editorConfig"></ckeditor>
                             </div>
                         </div>
                         <div class="form-group clearfix">
                             <label for="name" class='col-xs-2 control-label'> Georgian how get hear </label>
                             <div class="col-xs-10">
                                 <!-- <textarea type="text"  name="how_get_ka" rows="15" class="form-cotrol md-textarea form-control"></textarea> -->
-                                <ckeditor v-model="data.ka_data.how_get" :config="editorConfig"></ckeditor>
+                                <ckeditor v-model="data.ka_data.how_get" :config="this.$editorConfig"></ckeditor>
                             </div>
                         </div>
                         <div class="form-group clearfix">
                             <label for="name" class='col-xs-2 control-label'> Georgian best time </label>
                             <div class="col-xs-10">
                                 <!-- <textarea type="text"  name="best_time_ka" rows="15" class="form-cotrol md-textarea form-control"></textarea> -->
-                                <ckeditor v-model="data.ka_data.best_time" :config="editorConfig"></ckeditor>
+                                <ckeditor v-model="data.ka_data.best_time" :config="this.$editorConfig"></ckeditor>
                             </div>
                         </div>
                     </form>

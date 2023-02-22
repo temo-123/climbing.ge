@@ -1117,7 +1117,7 @@ var render = function () {
                     { staticClass: "col-xs-8" },
                     [
                       _c("ckeditor", {
-                        attrs: { config: _vm.editorConfig },
+                        attrs: { config: this.$editorConfig },
                         model: {
                           value: _vm.data.us_data.short_description,
                           callback: function ($$v) {
@@ -1146,7 +1146,7 @@ var render = function () {
                     { staticClass: "col-xs-8" },
                     [
                       _c("ckeditor", {
-                        attrs: { config: _vm.editorConfig },
+                        attrs: { config: this.$editorConfig },
                         model: {
                           value: _vm.data.us_data.text,
                           callback: function ($$v) {
@@ -1246,7 +1246,7 @@ var render = function () {
                     { staticClass: "col-xs-8" },
                     [
                       _c("ckeditor", {
-                        attrs: { config: _vm.editorConfig },
+                        attrs: { config: this.$editorConfig },
                         model: {
                           value: _vm.data.ru_data.short_description,
                           callback: function ($$v) {
@@ -1275,7 +1275,7 @@ var render = function () {
                     { staticClass: "col-xs-8" },
                     [
                       _c("ckeditor", {
-                        attrs: { config: _vm.editorConfig },
+                        attrs: { config: this.$editorConfig },
                         model: {
                           value: _vm.data.ru_data.text,
                           callback: function ($$v) {
@@ -1381,7 +1381,7 @@ var render = function () {
                     { staticClass: "col-xs-8" },
                     [
                       _c("ckeditor", {
-                        attrs: { config: _vm.editorConfig },
+                        attrs: { config: this.$editorConfig },
                         model: {
                           value: _vm.data.ka_data.short_description,
                           callback: function ($$v) {
@@ -1410,7 +1410,7 @@ var render = function () {
                     { staticClass: "col-xs-8" },
                     [
                       _c("ckeditor", {
-                        attrs: { config: _vm.editorConfig },
+                        attrs: { config: this.$editorConfig },
                         model: {
                           value: _vm.data.ka_data.text,
                           callback: function ($$v) {

@@ -100,7 +100,7 @@
                 <div class="form-group clearfix row">
                     <label class="col-md-2 control-label"> Text </label>
                     <div class="col-md-10">
-                        <ckeditor v-model="data.text" :config="editorConfig"></ckeditor>
+                        <ckeditor v-model="data.text" :config="this.$editorConfig"></ckeditor>
                     </div>
                 </div>
 

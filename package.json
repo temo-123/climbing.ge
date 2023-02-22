@@ -39,6 +39,7 @@
         "@casl/vue": "^1.2.3",
         "@ckeditor/ckeditor5-build-classic": "^24.0.0",
         "@ckeditor/ckeditor5-vue": "^2.0.1",
+        "@ckeditor/ckeditor5-vue2": "^3.0.1",
         "@fortawesome/fontawesome-svg-core": "^6.1.1",
         "@innologica/vue-stackable-modal": "^0.1.10",
         "@nuxt/vue-app": "^2.15.8",

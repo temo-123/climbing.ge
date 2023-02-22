@@ -269,6 +269,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
 
  //https://innologica.github.io/vue-stackable-modal/#sample-css
 
@@ -602,6 +603,7 @@ var render = function () {
               { staticClass: "col-md-10" },
               [
                 _c("ckeditor", {
+                  attrs: { config: this.$editorConfig },
                   model: {
                     value: _vm.data.text,
                     callback: function ($$v) {
@@ -777,6 +779,7 @@ var render = function () {
                         { staticClass: "col-md-12" },
                         [
                           _c("ckeditor", {
+                            attrs: { config: this.$editorConfig },
                             model: {
                               value: _vm.data.route,
                               callback: function ($$v) {
@@ -859,6 +862,7 @@ var render = function () {
                   { staticClass: "col-md-10" },
                   [
                     _c("ckeditor", {
+                      attrs: { config: this.$editorConfig },
                       model: {
                         value: _vm.data.how_get,
                         callback: function ($$v) {
@@ -1037,6 +1041,7 @@ var render = function () {
                         { staticClass: "col-md-12" },
                         [
                           _c("ckeditor", {
+                            attrs: { config: this.$editorConfig },
                             model: {
                               value: _vm.data.best_time,
                               callback: function ($$v) {
@@ -1273,6 +1278,7 @@ var render = function () {
                         { staticClass: "col-md-12" },
                         [
                           _c("ckeditor", {
+                            attrs: { config: this.$editorConfig },
                             model: {
                               value: _vm.data.what_need,
                               callback: function ($$v) {
@@ -1491,6 +1497,7 @@ var render = function () {
                     { staticClass: "col-md-12" },
                     [
                       _c("ckeditor", {
+                        attrs: { config: this.$editorConfig },
                         model: {
                           value: _vm.data.info,
                           callback: function ($$v) {
@@ -1572,6 +1579,7 @@ var render = function () {
                   { staticClass: "col-md-10" },
                   [
                     _c("ckeditor", {
+                      attrs: { config: this.$editorConfig },
                       model: {
                         value: _vm.data.price_text,
                         callback: function ($$v) {

@@ -833,6 +833,11 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
 
  //https://innologica.github.io/vue-stackable-modal/#sample-css
 
@@ -854,8 +859,16 @@ __webpack_require__.r(__webpack_exports__);
       general_infos: [],
       errors: [],
       error: [],
-      editorConfig: {// toolbar: [ [ 'Bold' ] ]
+      editorConfig: {
+        // toolbar: [ [ 'Bold' ] ]
+        filebrowserUploadUrl: "{{route('upload', ['_token' => csrf_token() ])}}",
+        filebrowserUploadMethod: 'form',
+        removeButtons: 'Link,Unlink,Anchor'
       },
+      // CKEDITOR.replace( 'description', {
+      //     filebrowserUploadUrl: "{{route('upload', ['_token' => csrf_token() ])}}",
+      //     filebrowserUploadMethod: 'form'
+      // });
       data: {
         title: '',
         short_description: '',
@@ -2984,6 +2997,7 @@ var render = function () {
                 { staticClass: "col-md-10" },
                 [
                   _c("ckeditor", {
+                    attrs: { config: this.$shortDescriptionEditorConfig },
                     model: {
                       value: _vm.data.short_description,
                       callback: function ($$v) {
@@ -3029,6 +3043,7 @@ var render = function () {
                 { staticClass: "col-md-10" },
                 [
                   _c("ckeditor", {
+                    attrs: { config: this.$editorConfig },
                     model: {
                       value: _vm.data.text,
                       callback: function ($$v) {
@@ -3205,6 +3220,7 @@ var render = function () {
                           { staticClass: "col-md-12" },
                           [
                             _c("ckeditor", {
+                              attrs: { config: this.$editorConfig },
                               model: {
                                 value: _vm.data.route,
                                 callback: function ($$v) {
@@ -3288,6 +3304,7 @@ var render = function () {
                     { staticClass: "col-md-10" },
                     [
                       _c("ckeditor", {
+                        attrs: { config: this.$editorConfig },
                         model: {
                           value: _vm.data.how_get,
                           callback: function ($$v) {
@@ -3467,6 +3484,7 @@ var render = function () {
                           { staticClass: "col-md-12" },
                           [
                             _c("ckeditor", {
+                              attrs: { config: this.$editorConfig },
                               model: {
                                 value: _vm.data.best_time,
                                 callback: function ($$v) {
@@ -3705,6 +3723,7 @@ var render = function () {
                           { staticClass: "col-md-12" },
                           [
                             _c("ckeditor", {
+                              attrs: { config: this.$editorConfig },
                               model: {
                                 value: _vm.data.what_need,
                                 callback: function ($$v) {
@@ -3931,6 +3950,7 @@ var render = function () {
                       { staticClass: "col-md-12" },
                       [
                         _c("ckeditor", {
+                          attrs: { config: this.$editorConfig },
                           model: {
                             value: _vm.data.info,
                             callback: function ($$v) {
@@ -4012,6 +4032,7 @@ var render = function () {
                     { staticClass: "col-md-10" },
                     [
                       _c("ckeditor", {
+                        attrs: { config: this.$editorConfig },
                         model: {
                           value: _vm.data.price_text,
                           callback: function ($$v) {

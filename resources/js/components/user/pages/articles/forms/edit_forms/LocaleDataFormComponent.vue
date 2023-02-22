@@ -47,6 +47,7 @@
 
                             <ckeditor
                                 v-model="data.text"
+                                :config="this.$editorConfig"
                             />
                         </div>
                     </div>
@@ -85,7 +86,7 @@
                             </div>
                         
                             <div class="col-md-12" v-if="global_blocks.routes_info == 'befor' || global_blocks.routes_info == 'after' || global_blocks.routes_info == 'new_info'">
-                                <ckeditor v-model="data.route"></ckeditor>
+                                <ckeditor v-model="data.route" :config="this.$editorConfig"></ckeditor>
                             </div>
 
                             <div class="col-md-12" v-if="global_blocks.routes_info == 'after' || global_blocks.routes_info == 'instead'">
@@ -99,8 +100,8 @@
                     <div class="form-group clearfix row" v-if="this.category != 'mount_route'">
                         <label for="name" class='col-md-2 control-label'> How to get hear </label>
                         <div class="col-md-10">
-                            <!-- <ckeditor v-model="data.how_get" :config="editorConfig"></ckeditor> -->
-                            <ckeditor v-model="data.how_get"></ckeditor>
+                            <!-- <ckeditor v-model="data.how_get" :config="editorConfig" :config="this.$editorConfig"></ckeditor> -->
+                            <ckeditor v-model="data.how_get" :config="this.$editorConfig"></ckeditor>
                         </div>
                     </div>
 
@@ -138,7 +139,7 @@
                             </div>
                         
                             <div class="col-md-12" v-if="global_blocks.best_time == 'befor' || global_blocks.best_time == 'after' || global_blocks.best_time == 'new_info'">
-                                <ckeditor v-model="data.best_time"></ckeditor>
+                                <ckeditor v-model="data.best_time" :config="this.$editorConfig"></ckeditor>
                             </div>
 
                             <div class="col-md-12" v-if="global_blocks.best_time == 'after' || global_blocks.best_time == 'instead'">
@@ -183,7 +184,7 @@
                             </div>
                         
                             <div class="col-md-12" v-if="global_blocks.what_need_info == 'befor' || global_blocks.what_need_info == 'after' || global_blocks.what_need_info == 'new_info'">
-                                <ckeditor v-model="data.what_need"></ckeditor>
+                                <ckeditor v-model="data.what_need" :config="this.$editorConfig"></ckeditor>
                             </div>
 
                             <div class="col-md-12" v-if="global_blocks.what_need_info == 'after' || global_blocks.what_need_info == 'instead'">
@@ -227,7 +228,7 @@
                             </div>
                         
                             <div class="col-md-12" v-if="global_blocks.info_block == 'befor' || global_blocks.info_block == 'after' || global_blocks.info_block == 'new_info'">
-                                <ckeditor v-model="data.info"></ckeditor>
+                                <ckeditor v-model="data.info" :config="this.$editorConfig"></ckeditor>
                             </div>
 
                             <div class="col-md-12" v-if="global_blocks.info_block == 'after' || global_blocks.info_block == 'instead'">
@@ -242,7 +243,7 @@
                     <div class="form-group clearfix row" v-if="this.category == 'indoor'">
                         <label for="name" class='col-md-2 control-label'> Price description </label>
                         <div class="col-md-10">
-                            <ckeditor v-model="data.price_text"></ckeditor>
+                            <ckeditor v-model="data.price_text" :config="this.$editorConfig"></ckeditor>
                         </div>
                     </div>
 

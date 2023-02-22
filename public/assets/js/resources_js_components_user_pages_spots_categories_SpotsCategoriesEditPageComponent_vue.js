@@ -614,6 +614,7 @@ var render = function () {
                 ),
                 _vm._v(" "),
                 _c("ckeditor", {
+                  attrs: { config: this.$editorConfig },
                   model: {
                     value: _vm.data.us_text,
                     callback: function ($$v) {
@@ -695,6 +696,7 @@ var render = function () {
                 ),
                 _vm._v(" "),
                 _c("ckeditor", {
+                  attrs: { config: this.$editorConfig },
                   model: {
                     value: _vm.data.ka_text,
                     callback: function ($$v) {
@@ -776,6 +778,7 @@ var render = function () {
                 ),
                 _vm._v(" "),
                 _c("ckeditor", {
+                  attrs: { config: this.$editorConfig },
                   model: {
                     value: _vm.data.ru_text,
                     callback: function ($$v) {

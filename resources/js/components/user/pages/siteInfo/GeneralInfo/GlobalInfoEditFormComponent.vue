@@ -32,19 +32,19 @@
                         <div class="form-group clearfix">
                             <label for="name" class='col-xs-2 control-label'> English name </label>
                             <div class="col-xs-10">
-                                <ckeditor v-model="data.us_text" :config="editorConfig"></ckeditor>
+                                <ckeditor v-model="data.us_text" :config="this.$editorConfig"></ckeditor>
                             </div>
                         </div>
                         <div class="form-group clearfix">
                             <label for="name" class='col-xs-2 control-label'> Georgian name </label>
                             <div class="col-xs-10">
-                                <ckeditor v-model="data.ka_text" :config="editorConfig"></ckeditor>
+                                <ckeditor v-model="data.ka_text" :config="this.$editorConfig"></ckeditor>
                             </div>
                         </div>
                         <div class="form-group clearfix">
                             <label for="name" class='col-xs-2 control-label'> Russian name </label>
                             <div class="col-xs-10">
-                                <ckeditor v-model="data.ru_text" :config="editorConfig"></ckeditor>
+                                <ckeditor v-model="data.ru_text" :config="this.$editorConfig"></ckeditor>
                             </div>
                         </div>
                     </form>

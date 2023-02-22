@@ -9,7 +9,7 @@
     <link href="{{ asset('images/site_img/x.png') }}" rel="shortcut icon">
 
     {{-- CSRF Token --}}
-    {{-- <meta name="csrf-token" content="{{ csrf_token() }}"> --}}
+    <meta name="csrf-token" content="{{ csrf_token() }}">
 
     <title>climbing.ge user</title>
 

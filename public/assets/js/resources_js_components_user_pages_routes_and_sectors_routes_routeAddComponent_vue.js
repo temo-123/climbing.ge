@@ -19358,6 +19358,7 @@ var render = function () {
               { staticClass: "col-md-10" },
               [
                 _c("ckeditor", {
+                  attrs: { config: this.$editorConfig },
                   model: {
                     value: _vm.data.text,
                     callback: function ($$v) {

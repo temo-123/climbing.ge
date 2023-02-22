@@ -522,6 +522,6 @@ Route::group(['namespace'=>'Api'], function() {
     */
     Route::controller(CKEditorController::class)->prefix('ckeditor')->group( function() {
         // Route::get('', 'index');
-        // Route::post('/upload', 'upload');
+        Route::post('/upload', 'upload');
     });
 });

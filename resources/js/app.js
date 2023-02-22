@@ -5,6 +5,7 @@ require("./bootstrap");
  *   Using pakets
  */
 // import Carousel3d from "vue-carousel-3d";
+// import CKEditor from '@ckeditor/ckeditor5-vue2'; //dont working for updating
 import CKEditor from "ckeditor4-vue";
 import Router from "vue-router";
 import VueMeta from "vue-meta"; // https://www.epiloge.com/how-to-add-dynamic-meta-tags-to-your-vuejs-app-for-google-seo-0fa058
@@ -131,7 +132,30 @@ Vue.use(VueGtag, {
 Vue.config.productionTip = false;
 Vue.prototype.$siteData = [];
 Vue.prototype.$globalSiteData = [];
-Vue.prototype.$authUserData = [];
+// Vue.prototype.$authUserData = [];
+
+//https://ckeditor.com/latest/samples/toolbarconfigurator/#basic
+Vue.prototype.$shortDescriptionEditorConfig =  {
+    removeButtons: 'Link,Unlink,Anchor,Image,Table,Underline,Strike,Subscript,Superscript,RemoveFormat,NumberedList,BulletedList,Outdent,Indent,Blockquote,Scayt,HorizontalRule,SpecialChar,Styles,Format,Font,FontSize,About'
+}
+
+Vue.prototype.$editorConfig =  {
+    // https://www.tutsmake.com/laravel-8-ckeditor-image-upload-tutorial-example/
+    filebrowserUploadUrl: "../../../../api/ckeditor/upload",
+
+    // https://ckeditor.com/docs/ckeditor4/latest/examples/mediaembed.html
+    extraPlugins: 'embed,autoembed',
+    
+    // contentsCss: [
+    //     'http://cdn.ckeditor.com/4.20.2/full-all/contents.css',
+    //     'https://ckeditor.com/docs/ckeditor4/4.20.2/examples/assets/css/widgetstyles.css'
+    // ],
+    embed_provider: '//ckeditor.iframe.ly/api/oembed?url={url}&callback={callback}',
+    
+    image2_alignClasses: ['image-align-left', 'image-align-center', 'image-align-right'],
+    image2_disableResizer: true,
+    removeButtons: 'PasteFromWord'
+}
 
 if(
     window.location.hostname == 'climbing.ge' &&

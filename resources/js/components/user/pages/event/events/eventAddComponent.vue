@@ -156,21 +156,21 @@
                         <div class="form-group clearfix">
                             <label for="name" class='col-xs-2 control-label'> Short description </label>
                             <div class="col-xs-8">
-                                <ckeditor v-model="data.us_data.short_description" :config="editorConfig"></ckeditor>
+                                <ckeditor v-model="data.us_data.short_description" :config="this.$editorConfig"></ckeditor>
                             </div>
                         </div>
     
                         <div class="form-group clearfix">
                             <label for="name" class='col-xs-2 control-label'> text </label>
                             <div class="col-xs-8">
-                                <ckeditor v-model="data.us_data.text" :config="editorConfig"></ckeditor>
+                                <ckeditor v-model="data.us_data.text" :config="this.$editorConfig"></ckeditor>
                             </div>
                         </div>
     
                         <div class="form-group clearfix">
                             <label for="name" class='col-xs-2 control-label'> contact info </label>
                             <div class="col-xs-8">
-                                <ckeditor v-model="data.us_data.info" :config="editorConfig"></ckeditor>
+                                <ckeditor v-model="data.us_data.info" :config="this.$editorConfig"></ckeditor>
                             </div>
                         </div>
                     </form>
@@ -195,21 +195,21 @@
                             <label for="name" class='col-xs-2 control-label'> Short description </label>
                             <div class="col-xs-8">
                                 <!-- <textarea type="text"  name="short_description" v-model="data.ru_data.short_description"  rows="15" class="form-cotrol md-textarea form-control"></textarea> -->
-                                <ckeditor v-model="data.ru_data.short_description" :config="editorConfig"></ckeditor>
+                                <ckeditor v-model="data.ru_data.short_description" :config="this.$editorConfig"></ckeditor>
                             </div>
                         </div>
     
                         <div class="form-group clearfix">
                             <label for="name" class='col-xs-2 control-label'> text </label>
                             <div class="col-xs-8">
-                                <ckeditor v-model="data.ru_data.text" :config="editorConfig"></ckeditor>
+                                <ckeditor v-model="data.ru_data.text" :config="this.$editorConfig"></ckeditor>
                             </div>
                         </div>
     
                         <div class="form-group clearfix">
                             <label for="name" class='col-xs-2 control-label'> contact info </label>
                             <div class="col-xs-8">
-                                <ckeditor v-model="data.ru_data.info" :config="editorConfig"></ckeditor>
+                                <ckeditor v-model="data.ru_data.info" :config="this.$editorConfig"></ckeditor>
                             </div>
                         </div>
                     </form>
@@ -234,21 +234,21 @@
                             <label for="name" class='col-xs-2 control-label'> Short description </label>
                             <div class="col-xs-8">
                                 <!-- <textarea type="text"  name="short_description"  v-model="data.ka_data.short_description" rows="15" class="form-cotrol md-textarea form-control"></textarea> -->
-                                <ckeditor v-model="data.ka_data.short_description" :config="editorConfig"></ckeditor>
+                                <ckeditor v-model="data.ka_data.short_description" :config="this.$editorConfig"></ckeditor>
                             </div>
                         </div>
     
                         <div class="form-group clearfix">
                             <label for="name" class='col-xs-2 control-label'> text </label>
                             <div class="col-xs-8">
-                                <ckeditor v-model="data.ka_data.text" :config="editorConfig"></ckeditor>
+                                <ckeditor v-model="data.ka_data.text" :config="this.$editorConfig"></ckeditor>
                             </div>
                         </div>
     
                         <div class="form-group clearfix">
                             <label for="name" class='col-xs-2 control-label'> contact info </label>
                             <div class="col-xs-8">
-                                <ckeditor v-model="data.ka_data.info" :config="editorConfig"></ckeditor>
+                                <ckeditor v-model="data.ka_data.info" :config="this.$editorConfig"></ckeditor>
                             </div>
                         </div>
                     </form>
