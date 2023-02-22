@@ -5443,6 +5443,20 @@ __webpack_require__.r(__webpack_exports__);
   //     this.csrfToken = document.querySelector('meta[name="csrf-token"]').content;
   // },
   methods: {
+    // login() {
+    //   return this.http.post("./api/user/get_auth_user_permissions/")
+    //     .then(response => this.$ability.update(response.data.rules))
+    // },
+    // get_user_data: function(){
+    //       axios
+    //       .get("./api/user/get_auth_user_permissions/")
+    //       .then(response => {
+    //           console.log("🚀 ~ file: HomeComponent.vue:49 ~ response", response)
+    //       })
+    //       .catch(
+    //           error => console.log(error)
+    //       );
+    //   },
     social_login: function social_login(service) {
       // window.location.href = 'api/login/'+service
       window.location.href = this.MIX_APP_SSH + this.MIX_USER_PAGE_URL + '/api/login/' + service;
@@ -5454,6 +5468,24 @@ __webpack_require__.r(__webpack_exports__);
         _this.login_action();
       });
     },
+    // get_user_permissions_data: function(){
+    //     axios
+    //       .get("./api/user/get_auth_user_permissions/")
+    //       .then(response => {
+    //           this.$ability.update(
+    //               response.data
+    //           )
+    //           this.$router.push({ path: "/" });
+    //           // this.$ability.update([
+    //           //     {
+    //           //         action: 'del', subject: 'Article',
+    //           //     }
+    //           // ])
+    //       })
+    //       .catch(
+    //           error => console.log(error)
+    //       ); 
+    // },
     login_action: function login_action() {
       var _this2 = this;
 
@@ -5464,7 +5496,7 @@ __webpack_require__.r(__webpack_exports__);
         password: this.password,
         remember: this.remember
       }).then(function (res) {
-        localStorage.setItem('x_xsrf_token', res.config.headers['X-XSRF-TOKEN']);
+        localStorage.setItem('x_xsrf_token', res.config.headers['X-XSRF-TOKEN']); // this.get_user_permissions_data()
 
         _this2.$router.push({
           path: "/"
@@ -9565,15 +9597,16 @@ __webpack_require__.r(__webpack_exports__);
   components: {
     navbar: _items_NavbarComponent_vue__WEBPACK_IMPORTED_MODULE_0__["default"]
   },
-  mounted: function mounted() {// this.get_user_data()
+  mounted: function mounted() {
+    this.get_user_data();
   },
   methods: {
     get_user_data: function get_user_data() {
-      axios.get("./api/user/get_auth_user_permissions/").then(function (response) {
-        console.log("🚀 ~ file: HomeComponent.vue:49 ~ response", response);
-      })["catch"](function (error) {
-        return console.log(error);
-      });
+      var _this = this;
+
+      axios.get("../../../api/user/get_auth_user_permissions/").then(function (response) {
+        _this.$ability.update(response.data);
+      })["catch"]();
     }
   },
   watch: {
@@ -9827,13 +9860,263 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   name: 'leftMenu',
   data: function data() {
     return {
       width: 0,
       menu: true,
-      menu_but: false
+      menu_but: false,
+      menu_array: {}
     };
   },
   mounted: function mounted() {
@@ -10649,7 +10932,11 @@ var router = new vue_router__WEBPACK_IMPORTED_MODULE_5__["default"]({
   }, {
     path: '/admin_page',
     name: 'adminPage',
-    component: load('AdminPageComponent')
+    component: load('AdminPageComponent'),
+    meta: {
+      can: 'show dashboard',
+      fail: '/'
+    }
   }, {
     path: '/order/my_orders',
     name: 'myOrders',
@@ -10672,7 +10959,7 @@ var router = new vue_router__WEBPACK_IMPORTED_MODULE_5__["default"]({
     component: load('orders/decloration/confirmOrderPageComponent')
   }, {
     path: '/order/confirm_order/:order_id/user/:user_id',
-    name: 'confirmOrder',
+    name: 'mailConfirmOrder',
     component: load('orders/decloration/mailOrderConfirmComponent')
   }, {
     path: '/my_posts',
@@ -10938,8 +11225,7 @@ var router = new vue_router__WEBPACK_IMPORTED_MODULE_5__["default"]({
   mode: 'history'
 });
 router.beforeEach(function (to, from, next) {
-  var token = localStorage.getItem('x_xsrf_token'); // console.log(history.back());
-
+  var token = localStorage.getItem('x_xsrf_token');
   axios.get('./api/auth_user').then(function (response) {
     check(to, from, next, token);
   })["catch"](function (error) {
@@ -11004,17 +11290,15 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
 /* harmony import */ var _casl_ability__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @casl/ability */ "./node_modules/@casl/ability/dist/es6m/index.mjs");
+ // import { Ability } from '@casl/ability';
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (function (user) {
-  return (0,_casl_ability__WEBPACK_IMPORTED_MODULE_0__.defineAbility)(function (can) {
-    can('read', 'Article');
-    can('create', 'Article'); // can('del', 'Article');
+  return (0,_casl_ability__WEBPACK_IMPORTED_MODULE_0__.defineAbility)( // This is defolt abilities
+  function (can) {// 	can('read', 'Article');
+    // 	can('create', 'Article');
+    // 	can('del', 'Article');
   });
-}); // try {
-// } catch (error) {
-// }
-// import { Ability } from '@casl/ability';
-// export default new Ability()
+}); // export default new Ability()
 //https://www.appsloveworld.com/vuejs/100/54/permissions-and-roles-using-vuejs-and-laravel
 
 /***/ }),
@@ -78741,17 +79025,19 @@ var render = function () {
               ]),
             ]),
             _vm._v(" "),
-            _c(
-              "router-link",
-              { attrs: { to: { name: "adminPage" }, exact: "" } },
-              [
-                _c("li", { staticClass: "list-group-item text-muted" }, [
-                  _c("span", { staticClass: "admin_menu" }, [
-                    _vm._v(_vm._s(_vm.$t("user menu admin dashboard"))),
-                  ]),
-                ]),
-              ]
-            ),
+            _vm.$can("show", "dashboard")
+              ? _c(
+                  "router-link",
+                  { attrs: { to: { name: "adminPage" }, exact: "" } },
+                  [
+                    _c("li", { staticClass: "list-group-item text-muted" }, [
+                      _c("span", { staticClass: "admin_menu" }, [
+                        _vm._v(_vm._s(_vm.$t("user menu admin dashboard"))),
+                      ]),
+                    ]),
+                  ]
+                )
+              : _vm._e(),
             _vm._v(" "),
             _c("li", {
               staticClass: "list-group-item text-muted admin_menu_static_block",
@@ -78847,336 +79133,528 @@ var render = function () {
               ]
             ),
             _vm._v(" "),
-            _c("li", {
-              staticClass: "list-group-item text-muted admin_menu_static_block",
-            }),
+            _vm.$can("add", "product") ||
+            _vm.$can("edit", "product") ||
+            _vm.$can("del", "product") ||
+            _vm.$can("add", "product_category") ||
+            _vm.$can("edit", "product_category") ||
+            _vm.$can("del", "product_category") ||
+            _vm.$can("add", "product_option") ||
+            _vm.$can("edit", "product_option") ||
+            _vm.$can("del", "sale_code") ||
+            _vm.$can("add", "sale_code") ||
+            _vm.$can("edit", "sale_code") ||
+            _vm.$can("del", "sale_code")
+              ? _c("li", {
+                  staticClass:
+                    "list-group-item text-muted admin_menu_static_block",
+                })
+              : _vm._e(),
             _vm._v(" "),
-            _c(
-              "router-link",
-              { attrs: { to: { name: "productsList" }, exact: "" } },
-              [
-                _c("li", { staticClass: "list-group-item text-muted" }, [
-                  _c("span", { staticClass: "admin_menu" }, [
-                    _vm._v(_vm._s(_vm.$t("user menu products & category"))),
-                  ]),
-                ]),
-              ]
-            ),
-            _vm._v(" "),
-            _c(
-              "router-link",
-              { attrs: { to: { name: "servicesList" }, exact: "" } },
-              [
-                _c("li", { staticClass: "list-group-item text-muted " }, [
-                  _c("span", { staticClass: "admin_menu" }, [
-                    _vm._v(_vm._s(_vm.$t("user menu services"))),
-                  ]),
-                ]),
-              ]
-            ),
-            _vm._v(" "),
-            _c("li", {
-              staticClass: "list-group-item text-muted admin_menu_static_block",
-            }),
-            _vm._v(" "),
-            _c("router-link", { attrs: { to: { name: "filmsList" } } }, [
-              _c("li", { staticClass: "list-group-item text-muted m" }, [
-                _c("span", { staticClass: "admin_menu" }, [
-                  _vm._v(_vm._s(_vm.$t("user menu films")) + "(Beta)"),
-                ]),
-              ]),
-            ]),
-            _vm._v(" "),
-            _c("li", {
-              staticClass: "list-group-item text-muted admin_menu_static_block",
-            }),
-            _vm._v(" "),
-            _c("router-link", { attrs: { to: { name: "localBisnesList" } } }, [
-              _c("li", { staticClass: "list-group-item text-muted m" }, [
-                _c("span", { staticClass: "admin_menu" }, [
-                  _vm._v(_vm._s(_vm.$t("user menu local bisnes"))),
-                ]),
-              ]),
-            ]),
-            _vm._v(" "),
-            _c("li", {
-              staticClass: "list-group-item text-muted admin_menu_static_block",
-            }),
-            _vm._v(" "),
-            _c(
-              "router-link",
-              {
-                attrs: {
-                  to: {
-                    name: "articlelist",
-                    params: { article_category: "outdoor" },
-                  },
-                },
-              },
-              [
-                _c("li", { staticClass: "list-group-item text-muted" }, [
-                  _c("span", { staticClass: "admin_menu" }, [
-                    _vm._v(_vm._s(_vm.$t("user menu outdoor climbing"))),
-                  ]),
-                ]),
-              ]
-            ),
-            _vm._v(" "),
-            _c(
-              "router-link",
-              { attrs: { to: { name: "routeAndSectorList" }, exact: "" } },
-              [
-                _c(
-                  "li",
-                  {
-                    staticClass:
-                      "list-group-item text-muted mbing Secrots And Route",
-                  },
+            _vm.$can("add", "product") ||
+            _vm.$can("edit", "product") ||
+            _vm.$can("del", "product") ||
+            _vm.$can("add", "product_category") ||
+            _vm.$can("edit", "product_category") ||
+            _vm.$can("del", "product_category") ||
+            _vm.$can("add", "product_option") ||
+            _vm.$can("edit", "product_option") ||
+            _vm.$can("del", "sale_code") ||
+            _vm.$can("add", "sale_code") ||
+            _vm.$can("edit", "sale_code") ||
+            _vm.$can("del", "sale_code")
+              ? _c(
+                  "router-link",
+                  { attrs: { to: { name: "productsList" }, exact: "" } },
                   [
-                    _c("span", { staticClass: "admin_menu" }, [
-                      _vm._v(_vm._s(_vm.$t("user menu sectors & routes"))),
+                    _c("li", { staticClass: "list-group-item text-muted" }, [
+                      _c("span", { staticClass: "admin_menu" }, [
+                        _vm._v(_vm._s(_vm.$t("user menu products & category"))),
+                      ]),
                     ]),
                   ]
-                ),
-              ]
-            ),
+                )
+              : _vm._e(),
             _vm._v(" "),
-            _c(
-              "router-link",
-              { attrs: { to: { name: "sectorLocalImagesList" }, exact: "" } },
-              [
-                _c(
-                  "li",
-                  {
-                    staticClass:
-                      "list-group-item text-muted mbing Secrots And Route",
-                  },
+            _vm.$can("add", "product") ||
+            _vm.$can("edit", "product") ||
+            _vm.$can("del", "product")
+              ? _c(
+                  "router-link",
+                  { attrs: { to: { name: "servicesList" }, exact: "" } },
                   [
-                    _c("span", { staticClass: "admin_menu" }, [
-                      _vm._v(_vm._s(_vm.$t("Sector local images"))),
+                    _c("li", { staticClass: "list-group-item text-muted " }, [
+                      _c("span", { staticClass: "admin_menu" }, [
+                        _vm._v(_vm._s(_vm.$t("user menu services"))),
+                      ]),
                     ]),
                   ]
-                ),
-              ]
-            ),
+                )
+              : _vm._e(),
             _vm._v(" "),
-            _c("li", {
-              staticClass: "list-group-item text-muted admin_menu_static_block",
-            }),
+            _vm.$can("add", "film") ||
+            _vm.$can("edit", "film") ||
+            _vm.$can("del", "film") ||
+            _vm.$can("add", "film_teg") ||
+            _vm.$can("edit", "film_teg") ||
+            _vm.$can("del", "film_teg") ||
+            _vm.$can("add", "film_category") ||
+            _vm.$can("edit", "film_category") ||
+            _vm.$can("del", "film_category")
+              ? _c("li", {
+                  staticClass:
+                    "list-group-item text-muted admin_menu_static_block",
+                })
+              : _vm._e(),
             _vm._v(" "),
-            _c("router-link", { attrs: { to: { name: "mountlist" } } }, [
-              _c("li", { staticClass: "list-group-item text-muted" }, [
-                _c("span", { staticClass: "admin_menu" }, [
-                  _vm._v(_vm._s(_vm.$t("user menu mountaineering"))),
-                ]),
-              ]),
-            ]),
+            _vm.$can("add", "film") ||
+            _vm.$can("edit", "film") ||
+            _vm.$can("del", "film") ||
+            _vm.$can("add", "film_teg") ||
+            _vm.$can("edit", "film_teg") ||
+            _vm.$can("del", "film_teg") ||
+            _vm.$can("add", "film_category") ||
+            _vm.$can("edit", "film_category") ||
+            _vm.$can("del", "film_category")
+              ? _c("router-link", { attrs: { to: { name: "filmsList" } } }, [
+                  _c("li", { staticClass: "list-group-item text-muted m" }, [
+                    _c("span", { staticClass: "admin_menu" }, [
+                      _vm._v(_vm._s(_vm.$t("user menu films")) + "(Beta)"),
+                    ]),
+                  ]),
+                ])
+              : _vm._e(),
             _vm._v(" "),
-            _c("li", {
-              staticClass: "list-group-item text-muted admin_menu_static_block",
-            }),
+            _vm.$can("add", "local_bisnes") ||
+            _vm.$can("edit", "local_bisnes") ||
+            _vm.$can("del", "local_bisnes")
+              ? _c("li", {
+                  staticClass:
+                    "list-group-item text-muted admin_menu_static_block",
+                })
+              : _vm._e(),
             _vm._v(" "),
-            _c(
-              "router-link",
-              {
-                attrs: {
-                  to: {
-                    name: "articlelist",
-                    params: { article_category: "indoor" },
+            _vm.$can("add", "local_bisnes") ||
+            _vm.$can("edit", "local_bisnes") ||
+            _vm.$can("del", "local_bisnes")
+              ? _c(
+                  "router-link",
+                  { attrs: { to: { name: "localBisnesList" } } },
+                  [
+                    _c("li", { staticClass: "list-group-item text-muted m" }, [
+                      _c("span", { staticClass: "admin_menu" }, [
+                        _vm._v(_vm._s(_vm.$t("user menu local bisnes"))),
+                      ]),
+                    ]),
+                  ]
+                )
+              : _vm._e(),
+            _vm._v(" "),
+            _vm.$can("add", "article") ||
+            _vm.$can("edit", "article") ||
+            _vm.$can("del", "article")
+              ? _c("li", {
+                  staticClass:
+                    "list-group-item text-muted admin_menu_static_block",
+                })
+              : _vm._e(),
+            _vm._v(" "),
+            _vm.$can("add", "article") ||
+            _vm.$can("edit", "article") ||
+            _vm.$can("del", "article")
+              ? _c(
+                  "router-link",
+                  {
+                    attrs: {
+                      to: {
+                        name: "articlelist",
+                        params: { article_category: "outdoor" },
+                      },
+                    },
                   },
-                },
-              },
-              [
-                _c("li", { staticClass: "list-group-item text-muted" }, [
-                  _c("span", { staticClass: "admin_menu" }, [
-                    _vm._v(_vm._s(_vm.$t("user menu indoor climbing"))),
-                  ]),
-                ]),
-              ]
-            ),
+                  [
+                    _c("li", { staticClass: "list-group-item text-muted" }, [
+                      _c("span", { staticClass: "admin_menu" }, [
+                        _vm._v(_vm._s(_vm.$t("user menu outdoor climbing"))),
+                      ]),
+                    ]),
+                  ]
+                )
+              : _vm._e(),
             _vm._v(" "),
-            _c(
-              "router-link",
-              {
-                attrs: {
-                  to: {
-                    name: "articlelist",
-                    params: { article_category: "ice" },
-                  },
-                },
-              },
-              [
-                _c("li", { staticClass: "list-group-item text-muted" }, [
-                  _c("span", { staticClass: "admin_menu" }, [
-                    _vm._v(_vm._s(_vm.$t("user menu ice climbing"))),
-                  ]),
-                ]),
-              ]
-            ),
+            _vm.$can("add", "route") ||
+            _vm.$can("edit", "route") ||
+            _vm.$can("del", "route") ||
+            _vm.$can("add", "mtp") ||
+            _vm.$can("edit", "mtp") ||
+            _vm.$can("del", "mtp") ||
+            _vm.$can("add", "mtp_pitch") ||
+            _vm.$can("edit", "mtp_pitch") ||
+            _vm.$can("del", "mtp_pitch") ||
+            _vm.$can("add", "sector") ||
+            _vm.$can("edit", "sector") ||
+            _vm.$can("del", "sector")
+              ? _c("li", {
+                  staticClass:
+                    "list-group-item text-muted admin_menu_static_block",
+                })
+              : _vm._e(),
             _vm._v(" "),
-            _c(
-              "router-link",
-              {
-                attrs: {
-                  to: {
-                    name: "articlelist",
-                    params: { article_category: "news" },
-                  },
-                },
-              },
-              [
-                _c("li", { staticClass: "list-group-item text-muted " }, [
-                  _c("span", { staticClass: "admin_menu" }, [
-                    _vm._v(_vm._s(_vm.$t("user menu news"))),
-                  ]),
-                ]),
-              ]
-            ),
+            _vm.$can("add", "route") ||
+            _vm.$can("edit", "route") ||
+            _vm.$can("del", "route") ||
+            _vm.$can("add", "mtp") ||
+            _vm.$can("edit", "mtp") ||
+            _vm.$can("del", "mtp") ||
+            _vm.$can("add", "mtp_pitch") ||
+            _vm.$can("edit", "mtp_pitch") ||
+            _vm.$can("del", "mtp_pitch") ||
+            _vm.$can("add", "sector") ||
+            _vm.$can("edit", "sector") ||
+            _vm.$can("del", "sector")
+              ? _c(
+                  "router-link",
+                  { attrs: { to: { name: "routeAndSectorList" }, exact: "" } },
+                  [
+                    _c(
+                      "li",
+                      {
+                        staticClass:
+                          "list-group-item text-muted mbing Secrots And Route",
+                      },
+                      [
+                        _c("span", { staticClass: "admin_menu" }, [
+                          _vm._v(_vm._s(_vm.$t("user menu sectors & routes"))),
+                        ]),
+                      ]
+                    ),
+                  ]
+                )
+              : _vm._e(),
             _vm._v(" "),
-            _c(
-              "router-link",
-              {
-                attrs: {
-                  to: {
-                    name: "articlelist",
-                    params: { article_category: "other" },
+            _vm.$can("add", "sector_local_images") ||
+            _vm.$can("edit", "sector_local_images") ||
+            _vm.$can("del", "sector_local_images")
+              ? _c(
+                  "router-link",
+                  {
+                    attrs: { to: { name: "sectorLocalImagesList" }, exact: "" },
                   },
-                },
-              },
-              [
-                _c("li", { staticClass: "list-group-item text-muted" }, [
-                  _c("span", { staticClass: "admin_menu" }, [
-                    _vm._v(_vm._s(_vm.$t("user menu other"))),
-                  ]),
-                ]),
-              ]
-            ),
+                  [
+                    _c(
+                      "li",
+                      {
+                        staticClass:
+                          "list-group-item text-muted mbing Secrots And Route",
+                      },
+                      [
+                        _c("span", { staticClass: "admin_menu" }, [
+                          _vm._v(_vm._s(_vm.$t("Sector local images"))),
+                        ]),
+                      ]
+                    ),
+                  ]
+                )
+              : _vm._e(),
             _vm._v(" "),
-            _c(
-              "router-link",
-              {
-                attrs: {
-                  to: {
-                    name: "articlelist",
-                    params: { article_category: "tech_tip" },
-                  },
-                },
-              },
-              [
-                _c("li", { staticClass: "list-group-item text-muted " }, [
-                  _c("span", { staticClass: "admin_menu" }, [
-                    _vm._v(_vm._s(_vm.$t("user menu security"))),
-                  ]),
-                ]),
-              ]
-            ),
+            _vm.$can("add", "mount_route") ||
+            _vm.$can("edit", "mount_route") ||
+            _vm.$can("del", "mount_route") ||
+            _vm.$can("add", "mount_massive") ||
+            _vm.$can("edit", "mount_massive") ||
+            _vm.$can("del", "mount_massive")
+              ? _c("li", {
+                  staticClass:
+                    "list-group-item text-muted admin_menu_static_block",
+                })
+              : _vm._e(),
             _vm._v(" "),
-            _c(
-              "router-link",
-              {
-                attrs: {
-                  to: {
-                    name: "articlelist",
-                    params: { article_category: "partners" },
-                  },
-                },
-              },
-              [
-                _c("li", { staticClass: "list-group-item text-muted " }, [
-                  _c("span", { staticClass: "admin_menu" }, [
-                    _vm._v(_vm._s(_vm.$t("user menu partners"))),
+            _vm.$can("add", "mount_route") ||
+            _vm.$can("edit", "mount_route") ||
+            _vm.$can("del", "mount_route") ||
+            _vm.$can("add", "mount_massive") ||
+            _vm.$can("edit", "mount_massive") ||
+            _vm.$can("del", "mount_massive")
+              ? _c("router-link", { attrs: { to: { name: "mountlist" } } }, [
+                  _c("li", { staticClass: "list-group-item text-muted" }, [
+                    _c("span", { staticClass: "admin_menu" }, [
+                      _vm._v(_vm._s(_vm.$t("user menu mountaineering"))),
+                    ]),
                   ]),
-                ]),
-              ]
-            ),
+                ])
+              : _vm._e(),
+            _vm._v(" "),
+            _vm.$can("add", "article") ||
+            _vm.$can("edit", "article") ||
+            _vm.$can("del", "article")
+              ? _c("li", {
+                  staticClass:
+                    "list-group-item text-muted admin_menu_static_block",
+                })
+              : _vm._e(),
+            _vm._v(" "),
+            _vm.$can("add", "article") ||
+            _vm.$can("edit", "article") ||
+            _vm.$can("del", "article")
+              ? _c(
+                  "router-link",
+                  {
+                    attrs: {
+                      to: {
+                        name: "articlelist",
+                        params: { article_category: "indoor" },
+                      },
+                    },
+                  },
+                  [
+                    _c("li", { staticClass: "list-group-item text-muted" }, [
+                      _c("span", { staticClass: "admin_menu" }, [
+                        _vm._v(_vm._s(_vm.$t("user menu indoor climbing"))),
+                      ]),
+                    ]),
+                  ]
+                )
+              : _vm._e(),
+            _vm._v(" "),
+            _vm.$can("add", "article") ||
+            _vm.$can("edit", "article") ||
+            _vm.$can("del", "article")
+              ? _c(
+                  "router-link",
+                  {
+                    attrs: {
+                      to: {
+                        name: "articlelist",
+                        params: { article_category: "ice" },
+                      },
+                    },
+                  },
+                  [
+                    _c("li", { staticClass: "list-group-item text-muted" }, [
+                      _c("span", { staticClass: "admin_menu" }, [
+                        _vm._v(_vm._s(_vm.$t("user menu ice climbing"))),
+                      ]),
+                    ]),
+                  ]
+                )
+              : _vm._e(),
+            _vm._v(" "),
+            _vm.$can("add", "article") ||
+            _vm.$can("edit", "article") ||
+            _vm.$can("del", "article")
+              ? _c(
+                  "router-link",
+                  {
+                    attrs: {
+                      to: {
+                        name: "articlelist",
+                        params: { article_category: "news" },
+                      },
+                    },
+                  },
+                  [
+                    _c("li", { staticClass: "list-group-item text-muted " }, [
+                      _c("span", { staticClass: "admin_menu" }, [
+                        _vm._v(_vm._s(_vm.$t("user menu news"))),
+                      ]),
+                    ]),
+                  ]
+                )
+              : _vm._e(),
+            _vm._v(" "),
+            _vm.$can("add", "article") ||
+            _vm.$can("edit", "article") ||
+            _vm.$can("del", "article")
+              ? _c(
+                  "router-link",
+                  {
+                    attrs: {
+                      to: {
+                        name: "articlelist",
+                        params: { article_category: "other" },
+                      },
+                    },
+                  },
+                  [
+                    _c("li", { staticClass: "list-group-item text-muted" }, [
+                      _c("span", { staticClass: "admin_menu" }, [
+                        _vm._v(_vm._s(_vm.$t("user menu other"))),
+                      ]),
+                    ]),
+                  ]
+                )
+              : _vm._e(),
+            _vm._v(" "),
+            _vm.$can("add", "article") ||
+            _vm.$can("edit", "article") ||
+            _vm.$can("del", "article")
+              ? _c(
+                  "router-link",
+                  {
+                    attrs: {
+                      to: {
+                        name: "articlelist",
+                        params: { article_category: "tech_tip" },
+                      },
+                    },
+                  },
+                  [
+                    _c("li", { staticClass: "list-group-item text-muted " }, [
+                      _c("span", { staticClass: "admin_menu" }, [
+                        _vm._v(_vm._s(_vm.$t("user menu security"))),
+                      ]),
+                    ]),
+                  ]
+                )
+              : _vm._e(),
+            _vm._v(" "),
+            _vm.$can("add", "article") ||
+            _vm.$can("edit", "article") ||
+            _vm.$can("del", "article")
+              ? _c(
+                  "router-link",
+                  {
+                    attrs: {
+                      to: {
+                        name: "articlelist",
+                        params: { article_category: "partners" },
+                      },
+                    },
+                  },
+                  [
+                    _c("li", { staticClass: "list-group-item text-muted " }, [
+                      _c("span", { staticClass: "admin_menu" }, [
+                        _vm._v(_vm._s(_vm.$t("user menu partners"))),
+                      ]),
+                    ]),
+                  ]
+                )
+              : _vm._e(),
+            _vm._v(" "),
+            _vm.$can("add", "event") ||
+            _vm.$can("edit", "event") ||
+            _vm.$can("del", "event")
+              ? _c("li", {
+                  staticClass:
+                    "list-group-item text-muted admin_menu_static_block",
+                })
+              : _vm._e(),
+            _vm._v(" "),
+            _vm.$can("add", "event") ||
+            _vm.$can("edit", "event") ||
+            _vm.$can("del", "event")
+              ? _c("router-link", { attrs: { to: { name: "eventList" } } }, [
+                  _c("li", { staticClass: "list-group-item text-muted " }, [
+                    _c("span", { staticClass: "admin_menu" }, [
+                      _vm._v(_vm._s(_vm.$t("user menu events"))),
+                    ]),
+                  ]),
+                ])
+              : _vm._e(),
+            _vm._v(" "),
+            _vm.$can("edit", "site_data")
+              ? _c("li", {
+                  staticClass:
+                    "list-group-item text-muted admin_menu_static_block",
+                })
+              : _vm._e(),
+            _vm._v(" "),
+            _vm.$can("edit", "site_data")
+              ? _c(
+                  "router-link",
+                  { attrs: { to: { name: "siteInfo" }, exact: "" } },
+                  [
+                    _c("li", { staticClass: "list-group-item text-muted " }, [
+                      _c("span", { staticClass: "admin_menu" }, [
+                        _vm._v(_vm._s(_vm.$t("user menu about"))),
+                      ]),
+                    ]),
+                  ]
+                )
+              : _vm._e(),
+            _vm._v(" "),
+            _vm.$can("add", "product") ||
+            _vm.$can("edit", "product") ||
+            _vm.$can("del", "product")
+              ? _c("li", {
+                  staticClass:
+                    "list-group-item text-muted admin_menu_static_block",
+                })
+              : _vm._e(),
+            _vm._v(" "),
+            _vm.$can("add", "product") ||
+            _vm.$can("edit", "product") ||
+            _vm.$can("del", "product")
+              ? _c(
+                  "router-link",
+                  { attrs: { to: { name: "gallery" }, exact: "" } },
+                  [
+                    _c("li", { staticClass: "list-group-item text-muted " }, [
+                      _c("span", { staticClass: "admin_menu" }, [
+                        _vm._v(_vm._s(_vm.$t("user menu gallery"))),
+                      ]),
+                    ]),
+                  ]
+                )
+              : _vm._e(),
+            _vm._v(" "),
+            _vm.$can("show", "comments") ||
+            _vm.$can("del_comment", "comments") ||
+            _vm.$can("edit_order_status", "order")
+              ? _c("li", {
+                  staticClass:
+                    "list-group-item text-muted admin_menu_static_block",
+                })
+              : _vm._e(),
+            _vm._v(" "),
+            _vm.$can("show", "comments") || _vm.$can("del_comment", "comments")
+              ? _c(
+                  "router-link",
+                  { attrs: { to: { name: "comentsList" }, exact: "" } },
+                  [
+                    _c("li", { staticClass: "list-group-item text-muted " }, [
+                      _c("span", { staticClass: "admin_menu" }, [
+                        _vm._v(_vm._s(_vm.$t("user menu all comments"))),
+                      ]),
+                    ]),
+                  ]
+                )
+              : _vm._e(),
+            _vm._v(" "),
+            _vm.$can("edit_order_status", "order")
+              ? _c(
+                  "router-link",
+                  { attrs: { to: { name: "allOrders" }, exact: "" } },
+                  [
+                    _c("li", { staticClass: "list-group-item text-muted" }, [
+                      _c("span", { staticClass: "admin_menu" }, [
+                        _vm._v(_vm._s(_vm.$t("user menu total orders"))),
+                      ]),
+                    ]),
+                  ]
+                )
+              : _vm._e(),
             _vm._v(" "),
             _c("li", {
               staticClass: "list-group-item text-muted admin_menu_static_block",
             }),
             _vm._v(" "),
-            _c("router-link", { attrs: { to: { name: "eventList" } } }, [
-              _c("li", { staticClass: "list-group-item text-muted " }, [
-                _c("span", { staticClass: "admin_menu" }, [
-                  _vm._v(_vm._s(_vm.$t("user menu events"))),
-                ]),
-              ]),
-            ]),
-            _vm._v(" "),
-            _c("li", {
-              staticClass: "list-group-item text-muted admin_menu_static_block",
-            }),
-            _vm._v(" "),
-            _c(
-              "router-link",
-              { attrs: { to: { name: "siteInfo" }, exact: "" } },
-              [
-                _c("li", { staticClass: "list-group-item text-muted " }, [
-                  _c("span", { staticClass: "admin_menu" }, [
-                    _vm._v(_vm._s(_vm.$t("user menu about"))),
-                  ]),
-                ]),
-              ]
-            ),
-            _vm._v(" "),
-            _c("li", {
-              staticClass: "list-group-item text-muted admin_menu_static_block",
-            }),
-            _vm._v(" "),
-            _c(
-              "router-link",
-              { attrs: { to: { name: "gallery" }, exact: "" } },
-              [
-                _c("li", { staticClass: "list-group-item text-muted " }, [
-                  _c("span", { staticClass: "admin_menu" }, [
-                    _vm._v(_vm._s(_vm.$t("user menu gallery"))),
-                  ]),
-                ]),
-              ]
-            ),
-            _vm._v(" "),
-            _c("li", {
-              staticClass: "list-group-item text-muted admin_menu_static_block",
-            }),
-            _vm._v(" "),
-            _c(
-              "router-link",
-              { attrs: { to: { name: "comentsList" }, exact: "" } },
-              [
-                _c("li", { staticClass: "list-group-item text-muted " }, [
-                  _c("span", { staticClass: "admin_menu" }, [
-                    _vm._v(_vm._s(_vm.$t("user menu all comments"))),
-                  ]),
-                ]),
-              ]
-            ),
-            _vm._v(" "),
-            _c(
-              "router-link",
-              { attrs: { to: { name: "allOrders" }, exact: "" } },
-              [
-                _c("li", { staticClass: "list-group-item text-muted" }, [
-                  _c("span", { staticClass: "admin_menu" }, [
-                    _vm._v(_vm._s(_vm.$t("user menu total orders"))),
-                  ]),
-                ]),
-              ]
-            ),
-            _vm._v(" "),
-            _c("li", {
-              staticClass: "list-group-item text-muted admin_menu_static_block",
-            }),
-            _vm._v(" "),
-            _c(
-              "router-link",
-              { attrs: { to: { name: "usersList" }, exact: "" } },
-              [
-                _c("li", { staticClass: "list-group-item text-muted" }, [
-                  _c("span", { staticClass: "admin_menu" }, [
-                    _vm._v(_vm._s(_vm.$t("user menu users")) + " (Beta)"),
-                  ]),
-                ]),
-              ]
-            ),
+            _vm.$can("add", "user") ||
+            _vm.$can("del", "user") ||
+            _vm.$can("edit_permissions", "user") ||
+            _vm.$can("create_ban", "user")
+              ? _c(
+                  "router-link",
+                  { attrs: { to: { name: "usersList" }, exact: "" } },
+                  [
+                    _c("li", { staticClass: "list-group-item text-muted" }, [
+                      _c("span", { staticClass: "admin_menu" }, [
+                        _vm._v(_vm._s(_vm.$t("user menu users")) + " (Beta)"),
+                      ]),
+                    ]),
+                  ]
+                )
+              : _vm._e(),
             _vm._v(" "),
             _c(
               "router-link",

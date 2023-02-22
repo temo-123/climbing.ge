@@ -26,7 +26,7 @@
 
         <stack-modal
                 :show="is_role_edit_modal"
-                title="Edit role & permissions"
+                title="Edit role permissions"
                 @close="close_role_edit_modal()"
                 :saveButton="{ visible: true, title: 'Save', btnClass: { 'btn btn-primary': true } }"
                 :cancelButton="{ visible: false, title: 'Close', btnClass: { 'btn btn-danger': true } }"
@@ -55,7 +55,9 @@
                 <table class="table table-hover" id="dev-table">
                     <thead>
                         <tr>
-                            <th>Image</th>
+                            <th>Subject</th>
+                            <th>|</th>
+                            <th>Action</th>
                             <th>|</th>
                             <th>Delite</th>
                         </tr>
@@ -64,7 +66,11 @@
                     <tbody>
                         <tr v-for="permission in role_permissions" :key="permission.id">
                             <td>
-                                {{ permission.name }}
+                                {{ permission.subject }}
+                            </td>
+                            <td>|</td>
+                            <td>
+                                {{ permission.action }}
                             </td>
                             <td>|</td>
                             <td>
@@ -91,7 +97,7 @@
                                 <form ref="myForm">
                                     <select class="form-control" v-on:change="onFileChange($event, permission.id)">> 
                                         <option disabled selected>Select permission</option> 
-                                        <option v-for="permission in permissions" :key="permission.id" :value="permission.id">{{ permission.name }}</option> 
+                                        <option v-for="permission in permissions" :key="permission.id" :value="permission.id">{{ permission.subject }} {{ permission.action }}</option> 
                                     </select>
                                 </form> 
                             </td>
@@ -241,8 +247,17 @@
             },
 
             get_permissions(){
+                // axios
+                // .get("../api/parmisions_list/")
+                // .then(response => {
+                //     this.permissions = response.data
+                // })
+                // .catch(
+                //     error => console.log(error)
+                // );
+
                 axios
-                .get("../api/parmisions_list/")
+                .get("../api/permission/get_parmisions_for_role/"+this.table_info.id)
                 .then(response => {
                     this.permissions = response.data
                 })

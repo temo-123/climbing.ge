@@ -21,7 +21,7 @@
         </td>
 
         <td v-if="location == 'all_orders'">
-            <button class="btn btn-primary" @click="edit_order_status_model()">Edit order status</button>
+            <button class="btn btn-primary" @click="edit_order_status_model()"  v-if="$can('edit_order_status', 'order')">Edit order status</button>
         </td>
         <td v-else-if="location == 'my_orders'">
             <button class="btn btn-primary" @click="show_order_status_model()">Show order status</button>

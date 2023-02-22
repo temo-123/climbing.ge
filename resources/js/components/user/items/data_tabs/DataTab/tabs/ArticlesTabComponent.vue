@@ -11,35 +11,16 @@
 
         <td  v-if="table_name != 'Users' && table_name != 'Orders'">|</td>
         <td style='text-align: center;' v-if="table_name != 'Sector' && table_name != 'Users' && table_name != 'Orders'">{{table_info.published}}</td>
-
-        <th style='text-align: center;' v-if="table_name == 'Users'">
-            <!-- <div v-for="user_role in user_roles" :key="user_role.id" v-if='user_role.user_id == table_info.id'>
-                <div v-if="table_name == 'Roles'">
-                    <div v-for="table_info in table_2" :key="table_info.id" v-if='user_role.role_id == table_info.id'>
-                        {{ table_info.name }}
-                    </div>
-                </div>
-                <div v-else>
-                    {{ user_role.role_id }}
-                </div>
-            </div> -->
-        </th>
         
         <td>|</td>
 
-        <!-- <td v-if="table_name == 'Users'">
-            <button class="btn btn-primary" @click="show_parmission_edit_madel(table_info.id)">Edit roles</button>
-        </td>
-        <td v-if="table_name == 'Orders'">
-            <button class="btn btn-primary" @click="show_order_status_edit_madel(table_info.id)">Edit Status</button>
-        </td> -->
         <td>
-            <router-link class="btn btn-primary" :to="{ name: 'articleEdit', params: { id: table_info.id } }"><i class="fa fa-pencil" aria-hidden="true"></i></router-link>
+            <router-link class="btn btn-primary" :to="{ name: 'articleEdit', params: { id: table_info.id } }" v-if="$can('edit', 'article')"><i class="fa fa-pencil" aria-hidden="true"></i></router-link>
         </td>
         
         <td>|</td>
         <td>
-            <button type="submit" class="btn btn-danger" @click="del_article(table_info.id)"><i class="fa fa-trash" aria-hidden="true"></i></button>
+            <button type="submit" class="btn btn-danger" @click="del_article(table_info.id)" v-if="$can('del', 'article')"><i class="fa fa-trash" aria-hidden="true"></i></button>
         </td>
     </tr>
 </template>

@@ -9,7 +9,11 @@
                     <span class="admin_menu">{{ $t('user menu home') }}</span>
                 </li>
             </router-link>
-            <router-link :to="{name: 'adminPage'}" exact>
+            <router-link :to="{name: 'adminPage'}" exact 
+                v-if="
+                    $can('show', 'dashboard')
+                "     
+            >
                 <li class="list-group-item text-muted">
                     <span class="admin_menu">{{ $t('user menu admin dashboard') }}</span>
                 </li>
@@ -74,131 +78,369 @@
                 </li>
             </router-link> -->
 
-            <li class="list-group-item text-muted admin_menu_static_block"></li>
+            <li class="list-group-item text-muted admin_menu_static_block"
+                v-if="
+                    $can('add', 'product') ||
+                    $can('edit', 'product') ||
+                    $can('del', 'product') ||
+                    $can('add', 'product_category') ||
+                    $can('edit', 'product_category') ||
+                    $can('del', 'product_category') ||
+                    $can('add', 'product_option') ||
+                    $can('edit', 'product_option') ||
+                    $can('del', 'sale_code') ||
+                    $can('add', 'sale_code') ||
+                    $can('edit', 'sale_code') ||
+                    $can('del', 'sale_code')
+                "
+            > </li>
 
-            <router-link :to="{name: 'productsList'}" exact> 
+            <router-link :to="{name: 'productsList'}" exact 
+                v-if="
+                    $can('add', 'product') ||
+                    $can('edit', 'product') ||
+                    $can('del', 'product') ||
+                    $can('add', 'product_category') ||
+                    $can('edit', 'product_category') ||
+                    $can('del', 'product_category') ||
+                    $can('add', 'product_option') ||
+                    $can('edit', 'product_option') ||
+                    $can('del', 'sale_code') ||
+                    $can('add', 'sale_code') ||
+                    $can('edit', 'sale_code') ||
+                    $can('del', 'sale_code')
+                "
+            > 
                 <li class="list-group-item text-muted">
                     <span class="admin_menu">{{ $t('user menu products & category') }}</span>
                 </li>
             </router-link>
-            <router-link :to="{name: 'servicesList'}" exact> 
+            <router-link :to="{name: 'servicesList'}" exact
+                v-if="
+                    $can('add', 'product') ||
+                    $can('edit', 'product') ||
+                    $can('del', 'product')
+                "        
+            > 
                 <li class="list-group-item text-muted ">
                     <span class="admin_menu">{{ $t('user menu services') }}</span>
                 </li>
             </router-link>
 
-            <li class="list-group-item text-muted admin_menu_static_block"></li>
+            <li class="list-group-item text-muted admin_menu_static_block"
+                v-if="
+                    $can('add', 'film') ||
+                    $can('edit', 'film') ||
+                    $can('del', 'film') ||
+                    $can('add', 'film_teg') ||
+                    $can('edit', 'film_teg') ||
+                    $can('del', 'film_teg') ||
+                    $can('add', 'film_category') ||
+                    $can('edit', 'film_category') ||
+                    $can('del', 'film_category')
+                "     
+            > </li>
 
-            <router-link :to="{name: 'filmsList'}">
+            <router-link :to="{name: 'filmsList'}"
+                v-if="
+                    $can('add', 'film') ||
+                    $can('edit', 'film') ||
+                    $can('del', 'film') ||
+                    $can('add', 'film_teg') ||
+                    $can('edit', 'film_teg') ||
+                    $can('del', 'film_teg') ||
+                    $can('add', 'film_category') ||
+                    $can('edit', 'film_category') ||
+                    $can('del', 'film_category')
+                "        
+            > 
                 <li class="list-group-item text-muted m">
                     <span class="admin_menu">{{ $t('user menu films') }}(Beta)</span>
                 </li>
             </router-link>
 
-            <li class="list-group-item text-muted admin_menu_static_block"></li>
+            <li class="list-group-item text-muted admin_menu_static_block"
+                v-if="
+                    $can('add', 'local_bisnes') ||
+                    $can('edit', 'local_bisnes') ||
+                    $can('del', 'local_bisnes')
+                "     
+            > </li>
 
-            <router-link :to="{name: 'localBisnesList'}">
+            <router-link :to="{name: 'localBisnesList'}"
+                v-if="
+                    $can('add', 'local_bisnes') ||
+                    $can('edit', 'local_bisnes') ||
+                    $can('del', 'local_bisnes')
+                "        
+            > 
                 <li class="list-group-item text-muted m">
                     <span class="admin_menu">{{ $t('user menu local bisnes') }}</span>
                 </li>
             </router-link>
 
-            <li class="list-group-item text-muted admin_menu_static_block"></li>
+            <li class="list-group-item text-muted admin_menu_static_block"
+                v-if="
+                    $can('add', 'article') ||
+                    $can('edit', 'article') ||
+                    $can('del', 'article')
+                "     
+            > </li>
 
-            <router-link :to="{ name: 'articlelist', params: { article_category: 'outdoor' } }">
+            <router-link :to="{ name: 'articlelist', params: { article_category: 'outdoor' } }"
+                v-if="
+                    $can('add', 'article') ||
+                    $can('edit', 'article') ||
+                    $can('del', 'article')
+                "        
+            > 
                 <li class="list-group-item text-muted">
                     <span class="admin_menu">{{ $t('user menu outdoor climbing') }}</span>
                 </li>
             </router-link>
-            <router-link :to="{name: 'routeAndSectorList'}" exact>
+
+            <li class="list-group-item text-muted admin_menu_static_block"
+                v-if="
+                    $can('add', 'route') ||
+                    $can('edit', 'route') ||
+                    $can('del', 'route') ||
+
+                    $can('add', 'mtp') ||
+                    $can('edit', 'mtp') ||
+                    $can('del', 'mtp')||
+
+                    $can('add', 'mtp_pitch') ||
+                    $can('edit', 'mtp_pitch') ||
+                    $can('del', 'mtp_pitch')||
+
+                    $can('add', 'sector') ||
+                    $can('edit', 'sector') ||
+                    $can('del', 'sector')
+                "     
+            > </li>
+
+            <router-link :to="{name: 'routeAndSectorList'}" exact
+                v-if="
+                    $can('add', 'route') ||
+                    $can('edit', 'route') ||
+                    $can('del', 'route') ||
+
+                    $can('add', 'mtp') ||
+                    $can('edit', 'mtp') ||
+                    $can('del', 'mtp')||
+
+                    $can('add', 'mtp_pitch') ||
+                    $can('edit', 'mtp_pitch') ||
+                    $can('del', 'mtp_pitch')||
+
+                    $can('add', 'sector') ||
+                    $can('edit', 'sector') ||
+                    $can('del', 'sector')
+                "        
+            >
                 <li class="list-group-item text-muted mbing Secrots And Route">
                     <span class="admin_menu">{{ $t('user menu sectors & routes') }}</span>
                 </li>
             </router-link>
 
-            <router-link :to="{name: 'sectorLocalImagesList'}" exact>
+            <router-link :to="{name: 'sectorLocalImagesList'}" exact
+                v-if="
+                    $can('add', 'sector_local_images') ||
+                    $can('edit', 'sector_local_images') ||
+                    $can('del', 'sector_local_images')
+                "        
+            >
                 <li class="list-group-item text-muted mbing Secrots And Route">
                     <span class="admin_menu">{{ $t('Sector local images') }}</span>
                 </li>
             </router-link>
 
-            <li class="list-group-item text-muted admin_menu_static_block"></li>
+            <li class="list-group-item text-muted admin_menu_static_block"
+            v-if="
+                    $can('add', 'mount_route') ||
+                    $can('edit', 'mount_route') ||
+                    $can('del', 'mount_route') ||
+                    $can('add', 'mount_massive') ||
+                    $can('edit', 'mount_massive') ||
+                    $can('del', 'mount_massive')
+                "        
+            > </li>
 
-            <router-link :to="{ name: 'mountlist' }">
+            <router-link :to="{ name: 'mountlist' }"
+                v-if="
+                    $can('add', 'mount_route') ||
+                    $can('edit', 'mount_route') ||
+                    $can('del', 'mount_route') ||
+                    $can('add', 'mount_massive') ||
+                    $can('edit', 'mount_massive') ||
+                    $can('del', 'mount_massive')
+                "        
+            > 
                 <li class="list-group-item text-muted">
                     <span class="admin_menu">{{ $t('user menu mountaineering') }}</span>
                 </li>
             </router-link>
 
-            <li class="list-group-item text-muted admin_menu_static_block"></li>
+            <li class="list-group-item text-muted admin_menu_static_block"
+                v-if="
+                    $can('add', 'article') ||
+                    $can('edit', 'article') ||
+                    $can('del', 'article')
+                "     
+            > </li>
 
-            <router-link :to="{ name: 'articlelist', params: { article_category: 'indoor' } }">
+            <router-link :to="{ name: 'articlelist', params: { article_category: 'indoor' } }"
+                v-if="
+                    $can('add', 'article') ||
+                    $can('edit', 'article') ||
+                    $can('del', 'article')
+                "        
+            > 
                 <li class="list-group-item text-muted">
                     <span class="admin_menu">{{ $t('user menu indoor climbing') }}</span>
                 </li>
             </router-link>
-            <router-link :to="{ name: 'articlelist', params: { article_category: 'ice' } }">
+            <router-link :to="{ name: 'articlelist', params: { article_category: 'ice' } }"
+                v-if="
+                    $can('add', 'article') ||
+                    $can('edit', 'article') ||
+                    $can('del', 'article')
+                "        
+            > 
                 <li class="list-group-item text-muted">
                     <span class="admin_menu">{{ $t('user menu ice climbing') }}</span>
                 </li>
             </router-link>
-            <router-link :to="{ name: 'articlelist', params: { article_category: 'news' } }">
+            <router-link :to="{ name: 'articlelist', params: { article_category: 'news' } }"
+                v-if="
+                    $can('add', 'article') ||
+                    $can('edit', 'article') ||
+                    $can('del', 'article')
+                "        
+            > 
                 <li class="list-group-item text-muted ">
                     <span class="admin_menu">{{ $t('user menu news') }}</span>
                 </li>
             </router-link>
-            <router-link :to="{ name: 'articlelist', params: { article_category: 'other' } }">
+            <router-link :to="{ name: 'articlelist', params: { article_category: 'other' } }"
+                v-if="
+                    $can('add', 'article') ||
+                    $can('edit', 'article') ||
+                    $can('del', 'article')
+                "        
+            > 
                 <li class="list-group-item text-muted" >
                     <span class="admin_menu">{{ $t('user menu other') }}</span>
                 </li>
             </router-link>
-            <router-link :to="{ name: 'articlelist', params: { article_category: 'tech_tip' } }">
+            <router-link :to="{ name: 'articlelist', params: { article_category: 'tech_tip' } }"
+                v-if="
+                    $can('add', 'article') ||
+                    $can('edit', 'article') ||
+                    $can('del', 'article')
+                "        
+            > 
                 <li class="list-group-item text-muted ">
                     <span class="admin_menu">{{ $t('user menu security') }}</span>
                 </li>
             </router-link>
-            <router-link :to="{ name: 'articlelist', params: { article_category: 'partners' } }">
+            <router-link :to="{ name: 'articlelist', params: { article_category: 'partners' } }"
+                v-if="
+                    $can('add', 'article') ||
+                    $can('edit', 'article') ||
+                    $can('del', 'article')
+                "        
+            > 
                 <li class="list-group-item text-muted ">
                     <span class="admin_menu">{{ $t('user menu partners') }}</span>
                 </li>
             </router-link>
 
-            <li class="list-group-item text-muted admin_menu_static_block"></li>
+            <li class="list-group-item text-muted admin_menu_static_block"
+                v-if="
+                    $can('add', 'event') ||
+                    $can('edit', 'event') ||
+                    $can('del', 'event')
+                "        
+            > </li>
 
-            <router-link :to="{ name: 'eventList' }">
+            <router-link :to="{ name: 'eventList' }"
+                v-if="
+                    $can('add', 'event') ||
+                    $can('edit', 'event') ||
+                    $can('del', 'event')
+                "        
+            > 
                 <li class="list-group-item text-muted ">
                     <span class="admin_menu">{{ $t('user menu events') }}</span>
                 </li>
             </router-link>
 
-            <li class="list-group-item text-muted admin_menu_static_block"></li>
+            <li class="list-group-item text-muted admin_menu_static_block"
+                v-if="
+                    $can('edit', 'site_data')
+                "        
+            > </li>
             
-            <router-link :to="{name: 'siteInfo'}" exact> 
+            <router-link :to="{name: 'siteInfo'}" exact
+                v-if="
+                    $can('edit', 'site_data')
+                "        
+            > 
                 <li class="list-group-item text-muted ">
                     <span class="admin_menu">{{ $t('user menu about') }}</span>
                 </li>
             </router-link>
 
-            <li class="list-group-item text-muted admin_menu_static_block"></li>
+            <li class="list-group-item text-muted admin_menu_static_block" 
+                v-if="
+                    $can('add', 'product') ||
+                    $can('edit', 'product') ||
+                    $can('del', 'product')
+                "        
+            > </li>
 
-            <router-link :to="{name: 'gallery'}" exact>
+            <router-link :to="{name: 'gallery'}" exact
+                v-if="
+                    $can('add', 'product') ||
+                    $can('edit', 'product') ||
+                    $can('del', 'product')
+                "        
+            > 
                 <li class="list-group-item text-muted ">
                     <span class="admin_menu">{{ $t('user menu gallery') }}</span>
                 </li>
             </router-link>
 
-            <li class="list-group-item text-muted admin_menu_static_block"></li>
+            <li class="list-group-item text-muted admin_menu_static_block"
+                v-if="
+                    $can('show', 'comments') ||
+                    $can('del_comment', 'comments') ||
+                    $can('edit_order_status', 'order')
+                "        
+            > </li>
 
-            <router-link :to="{name: 'comentsList'}" exact>
+            <router-link :to="{name: 'comentsList'}" exact
+                v-if="
+                    $can('show', 'comments') ||
+                    $can('del_comment', 'comments')
+                "        
+            > 
                 <li class="list-group-item text-muted ">
                     <span class="admin_menu">{{ $t('user menu all comments') }}</span>
                 </li>
             </router-link>
-            <router-link :to="{name: 'allOrders'}" exact> 
+
+            <router-link :to="{name: 'allOrders'}" exact
+                v-if="
+                    $can('edit_order_status', 'order')
+                "        
+            > 
                 <li class="list-group-item text-muted">
                     <span class="admin_menu">{{ $t('user menu total orders') }}</span>
                 </li>
             </router-link>
+
             <!-- <router-link :to="{name: 'allPosts'}" exact> 
                 <li class="list-group-item text-muted">
                     <span class="admin_menu">{{ $t('user menu all posts') }}</span>
@@ -207,7 +449,14 @@
 
             <li class="list-group-item text-muted admin_menu_static_block"></li>
 
-            <router-link :to="{name: 'usersList'}" exact> 
+            <router-link :to="{name: 'usersList'}" exact 
+                v-if="
+                    $can('add', 'user') ||
+                    $can('del', 'user') ||
+                    $can('edit_permissions', 'user') ||
+                    $can('create_ban', 'user')
+                "        
+            > 
                 <li class="list-group-item text-muted">
                     <span class="admin_menu">{{ $t('user menu users') }} (Beta)</span>
                 </li>
@@ -236,6 +485,11 @@
                 width: 0,
                 menu: true,
                 menu_but: false,
+
+
+                menu_array: {
+                    
+                }
             }
         },
         mounted() {

@@ -9,9 +9,7 @@
         <td>{{table_info.us_name}} </td>
         <td>|</td>
         <td>
-            <!-- <a :href="table_1_edit_url+table_info.id" class="btn btn-primary" type="submit">Edit</a> -->
-
-            <router-link :to="{name: 'productCategoryEdit', params: { id: table_info.id } }"> 
+            <router-link :to="{name: 'productCategoryEdit', params: { id: table_info.id } }" > 
                 <button class="btn btn-primary " ><i class="fa fa-pencil" aria-hidden="true"></i></button>
             </router-link>
         </td>

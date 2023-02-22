@@ -11,12 +11,12 @@
         
         <td>|</td>
         <td>
-            <button type="submit" class="btn btn-primary" @click="tag_control_modal('edit', table_info.id)"><i class="fa fa-pencil" aria-hidden="true"></i></button>
+            <button type="submit" class="btn btn-primary" @click="tag_control_modal('edit', table_info.id)" v-if="$can('edit', 'film')"><i class="fa fa-pencil" aria-hidden="true"></i></button>
         </td>
         
         <td>|</td>
         <td>
-            <button type="submit" class="btn btn-danger" @click="del_ted(table_info.id)"><i class="fa fa-trash" aria-hidden="true"></i></button>
+            <button type="submit" class="btn btn-danger" @click="del_ted(table_info.id)" v-if="$can('del', 'film')"><i class="fa fa-trash" aria-hidden="true"></i></button>
         </td>
 
         <stack-modal

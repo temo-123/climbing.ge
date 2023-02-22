@@ -22,7 +22,7 @@ use App\Models\Route;
 use App\Models\Mtp;
 use App\Models\Mtp_pitch;
 
-use App\User;
+use App\Models\User;
 use App\Models\Following_users;
 use App\Models\Role;
 use App\Models\Permission;

@@ -99,6 +99,23 @@
     //     this.csrfToken = document.querySelector('meta[name="csrf-token"]').content;
     // },
     methods: {
+
+      // login() {
+      //   return this.http.post("./api/user/get_auth_user_permissions/")
+      //     .then(response => this.$ability.update(response.data.rules))
+      // },
+
+
+      // get_user_data: function(){
+      //       axios
+      //       .get("./api/user/get_auth_user_permissions/")
+      //       .then(response => {
+      //           console.log("🚀 ~ file: HomeComponent.vue:49 ~ response", response)
+      //       })
+      //       .catch(
+      //           error => console.log(error)
+      //       );
+      //   },
       social_login(service){
         // window.location.href = 'api/login/'+service
         window.location.href = this.MIX_APP_SSH + this.MIX_USER_PAGE_URL + '/api/login/' + service
@@ -111,6 +128,27 @@
           }); 
       },
 
+      // get_user_permissions_data: function(){
+      //     axios
+      //       .get("./api/user/get_auth_user_permissions/")
+      //       .then(response => {
+      //           this.$ability.update(
+      //               response.data
+      //           )
+
+      //           this.$router.push({ path: "/" });
+
+      //           // this.$ability.update([
+      //           //     {
+      //           //         action: 'del', subject: 'Article',
+      //           //     }
+      //           // ])
+      //       })
+      //       .catch(
+      //           error => console.log(error)
+      //       ); 
+      // },
+
       login_action(){
           this.error = []
           this.auth_error = ''
@@ -122,6 +160,9 @@
             })
             .then((res) => {
               localStorage.setItem('x_xsrf_token', res.config.headers['X-XSRF-TOKEN'])
+
+              // this.get_user_permissions_data()
+
               this.$router.push({ path: "/" });
             })
             .catch((error) => {

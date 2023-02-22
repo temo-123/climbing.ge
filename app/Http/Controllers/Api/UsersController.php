@@ -10,11 +10,12 @@ use Auth;
 use Mail;
 use Hash;
 
-use App\User;
+use App\Models\User;
 use App\Models\Following_users;
 use App\Models\Role;
 use App\Models\Permission;
 use App\Models\user_notification;
+
 use App\Models\User_role;
 use App\Models\User_permission;
 
@@ -141,48 +142,34 @@ class UsersController extends Controller
 
     public function get_auth_user_permissions(Request $request)
     {
-        // dd(Auth::user());
         if (Auth::user()) {
-            $auth_user = Auth::user();
-
-            $test_user = User::where("id", "=", 1)->first();
-            dd( $test_user->perm);
-
-            // $user = User::first();
-            // $user_role = $user->roles;
-            // $user_permissions = $user->permissions;
-
-            // dd($user_role, $user_permissions);
-
-            // $user_role = $auth_user -> roles;
-            // dd($user_role);
-
-            // $user_permissions = $auth_user -> permissions;
-            // dd($user_permissions);
-            
-            // $roles = Role::where("id", "=", $user_role->role_id)->get();
-
-            // $permissons = Permission::where("id", "=", $user_permissons->permission_id)->get();
+            $user = Auth::user();
 
             $user_all_permissions = [];
 
-            if ($permissons) {
-                foreach ($permissons as $permisson) {
+            
+            $user_permissons = $user->permissions;
+            if ($user_permissons) {
+                foreach ($user_permissons as $permisson) {
                     array_push($user_all_permissions, 
-                        $permisson
+                        ['subject' => $permisson->subject,  'action' => $permisson->action]
                     );
                 }
             }
 
-            if ($roles) {
-                foreach ($roles as $role) {
+
+            $user_role_perissions = $user->role->first()->permissions;
+            if ($user_role_perissions) {
+                foreach ($user_role_perissions as $user_role_perission) {
                     array_push($user_all_permissions, 
-                        $role
+                        ['subject' => $user_role_perission->subject,  'action' => $user_role_perission->action]
                     );
                 }
             }
 
-            dd($user_all_permissions);
+            // dd($user_all_permissions);
+
+            return $user_all_permissions;
         }
         else{
             return 'plees login';

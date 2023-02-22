@@ -9,5 +9,5 @@ class Role_permission extends Model
 {
     use HasFactory;
 
-    public $table = 'role_permission';
+    public $table = 'role_permissions';
 }

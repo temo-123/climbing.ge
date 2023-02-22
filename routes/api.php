@@ -460,6 +460,15 @@ Route::group(['namespace'=>'Api'], function() {
     /*
     *   Climbing regions routes
     */
+
+    Route::controller(PermissionsController::class)->prefix('permission')->group(function() {
+        Route::get('get_parmisions_for_role/{role_id}', 'get_parmisions_for_role');
+    });
+    
+
+    /*
+    *   Climbing regions routes
+    */
     Route::controller(RegionController::class)->prefix('region')->group( function() {
         Route::apiResource('/', 'RegionController');
         Route::get('/{lang}/{region_id}', 'locale_region');

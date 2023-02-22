@@ -1,13 +1,14 @@
 <template>
     <tr>
-        <td style='text-align: center;'>
+        <td style="text-align: center;">
             <input type="checkbox">
         </td>
         <td>|</td>
         <td>{{table_info.id}}</td>
         <td>|</td>
-
-        <td>{{table_info.name}}</td>
+        <td>{{table_info.subject}}</td>
+        <td>|</td>
+        <td>{{table_info.action}}</td>
     </tr>
 </template>
 

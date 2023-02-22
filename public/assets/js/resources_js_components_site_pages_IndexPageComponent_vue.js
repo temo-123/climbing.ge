@@ -424,6 +424,32 @@ __webpack_require__.r(__webpack_exports__);
       axios.get('../api/articles/tech_tip/' + localStorage.getItem('lang')).then(function (response) {
         _this.techtips = response.data;
       })["catch"](function (error) {});
+    },
+    next_tips: function next_tips() {
+      var test_num = 0;
+      test_num = this.image_num;
+      this.test_num += 1;
+
+      if (test_num < this.image_length - 1) {
+        this.image_num += 1;
+      }
+
+      if (test_num < 4) {
+        this.image_num -= 1;
+      }
+    },
+    prewies_tips: function prewies_tips() {
+      var test_num = 0;
+      test_num = this.image_num;
+      this.test_num -= 1;
+
+      if (test_num > 0) {
+        this.image_num -= 1;
+      }
+
+      if (test_num < 4) {
+        this.image_num -= 1;
+      }
     }
   }
 });
@@ -2149,86 +2175,109 @@ var render = function () {
               _c(
                 "div",
                 { staticClass: "row" },
-                _vm._l(_vm.techtips, function (tip) {
-                  return _c(
-                    "div",
-                    { key: tip.id, staticClass: "col-xs-6 col-sm-6 col-md-3" },
-                    [
-                      tip.new_flag
-                        ? _c("div", { staticClass: "product-image" }, [
+                [
+                  _vm._l(_vm.techtips, function (tip) {
+                    return _c(
+                      "div",
+                      {
+                        key: tip.id,
+                        staticClass: "col-xs-6 col-sm-6 col-md-3",
+                      },
+                      [
+                        tip.new_flag
+                          ? _c("div", { staticClass: "product-image" }, [
+                              _c(
+                                "div",
+                                {
+                                  staticClass:
+                                    "discount-percent-badge discount_percent_badge_for_techtip discount-badge-fourty",
+                                },
+                                [_vm._v("NEW")]
+                              ),
+                            ])
+                          : _vm._e(),
+                        _vm._v(" "),
+                        _c(
+                          "div",
+                          { staticClass: "thumbnail" },
+                          [
+                            _c(
+                              "router-link",
+                              {
+                                staticClass: "info",
+                                attrs: { to: "tech_tip/" + tip.url_title },
+                              },
+                              [
+                                tip.image != null
+                                  ? _c("site-img", {
+                                      attrs: {
+                                        src:
+                                          "../../../public/images/tech_tip_img/" +
+                                          tip.image,
+                                        img_class: "img-responsive",
+                                        alt: tip[0][0].title,
+                                      },
+                                    })
+                                  : _c("site-img", {
+                                      attrs: {
+                                        src: "../../../public/images/site_img/image.png",
+                                        img_class: "img-responsive",
+                                        alt: tip[0][0].title,
+                                      },
+                                    }),
+                              ],
+                              1
+                            ),
+                            _vm._v(" "),
                             _c(
                               "div",
-                              {
-                                staticClass:
-                                  "discount-percent-badge discount_percent_badge_for_techtip discount-badge-fourty",
-                              },
-                              [_vm._v("NEW")]
+                              { staticClass: "caption" },
+                              [
+                                _c(
+                                  "router-link",
+                                  {
+                                    staticClass: "info",
+                                    attrs: { to: "tech_tip/" + tip.url_title },
+                                  },
+                                  [_c("h3", [_vm._v(_vm._s(tip[0][0].title))])]
+                                ),
+                                _vm._v(" "),
+                                _c("span", {
+                                  domProps: {
+                                    innerHTML: _vm._s(
+                                      tip[0][0].short_description
+                                    ),
+                                  },
+                                }),
+                              ],
+                              1
                             ),
-                          ])
-                        : _vm._e(),
-                      _vm._v(" "),
-                      _c(
-                        "div",
-                        { staticClass: "thumbnail" },
-                        [
-                          _c(
-                            "router-link",
-                            {
-                              staticClass: "info",
-                              attrs: { to: "tech_tip/" + tip.url_title },
-                            },
-                            [
-                              tip.image != null
-                                ? _c("site-img", {
-                                    attrs: {
-                                      src:
-                                        "../../../public/images/tech_tip_img/" +
-                                        tip.image,
-                                      img_class: "img-responsive",
-                                      alt: tip[0][0].title,
-                                    },
-                                  })
-                                : _c("site-img", {
-                                    attrs: {
-                                      src: "../../../public/images/site_img/image.png",
-                                      img_class: "img-responsive",
-                                      alt: tip[0][0].title,
-                                    },
-                                  }),
-                            ],
-                            1
-                          ),
-                          _vm._v(" "),
-                          _c(
-                            "div",
-                            { staticClass: "caption" },
-                            [
-                              _c(
-                                "router-link",
-                                {
-                                  staticClass: "info",
-                                  attrs: { to: "tech_tip/" + tip.url_title },
-                                },
-                                [_c("h3", [_vm._v(_vm._s(tip[0][0].title))])]
-                              ),
-                              _vm._v(" "),
-                              _c("span", {
-                                domProps: {
-                                  innerHTML: _vm._s(
-                                    tip[0][0].short_description
-                                  ),
-                                },
-                              }),
-                            ],
-                            1
-                          ),
-                        ],
-                        1
-                      ),
-                    ]
-                  )
-                }),
-                0
+                          ],
+                          1
+                        ),
+                      ]
+                    )
+                  }),
+                  _vm._v(" "),
+                  _vm.techtips.length > 4
+                    ? _c("div", { staticClass: "previes_tip_bottom" }, [
+                        _c("i", {
+                          staticClass: "fa fa-chevron-left",
+                          attrs: { "aria-hidden": "true" },
+                        }),
+                      ])
+                    : _vm._e(),
+                  _vm._v(" "),
+                  _vm.techtips.length > 4
+                    ? _c("div", { staticClass: "next_tip_bottom" }, [
+                        _c("i", {
+                          staticClass: "fa fa-chevron-right",
+                          attrs: { "aria-hidden": "true" },
+                        }),
+                      ])
+                    : _vm._e(),
+                ],
+                2
               ),
             ]),
           ])

@@ -33,19 +33,21 @@ export default {
     },
 
     mounted() {
-        // this.get_user_data()
+        this.get_user_data()
     },
 
     methods: {
         get_user_data: function(){
-            axios
-            .get("./api/user/get_auth_user_permissions/")
+        axios
+            .get("../../../api/user/get_auth_user_permissions/")
             .then(response => {
-                console.log("🚀 ~ file: HomeComponent.vue:49 ~ response", response)
+                this.$ability.update(
+                    response.data
+                )
             })
             .catch(
-                error => console.log(error)
-            );
+                // error => console.log(error)
+            ); 
         },
     },
 

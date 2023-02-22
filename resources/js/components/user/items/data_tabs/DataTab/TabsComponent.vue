@@ -83,7 +83,7 @@
                                             filtr_data.table_category !== null
                                         "
                                     >
-                                        <button class="btn btn-primary pull-left" @click="country_add_model">New Shiped countries</button>
+                                        <button class="btn btn-primary pull-left" @click="country_add_model" v-if="$can('add', 'shiping_country')">New Shiped countries</button>
                                     </span>
                                     <span
                                         v-else-if="
@@ -91,7 +91,7 @@
                                             filtr_data.table_category !== null
                                         "
                                     >
-                                        <button class="btn btn-primary pull-left" @click="tag_modal('add')">New tag</button>
+                                        <button class="btn btn-primary pull-left" @click="tag_modal('add')" v-if="$can('add', 'film_teg')">New tag</button>
                                     </span>
                                     <span
                                         v-else-if="
@@ -99,21 +99,21 @@
                                             filtr_data.table_category !== null
                                         "
                                     >
-                                        <button class="btn btn-primary pull-left" @click="sale_code_modal('add')">New sale code</button>
+                                        <button class="btn btn-primary pull-left" @click="sale_code_modal('add')" v-if="$can('add', 'sale_code')">New sale code</button>
                                     </span>
                                     <span
                                         v-else-if="
                                             filtr_data.table_name == 'Roles'
                                         "
                                     >
-                                        <button class="btn btn-primary pull-left" @click="add_role()">Add new role</button>
+                                        <button class="btn btn-primary pull-left" @click="add_role()" v-if="$can('add', 'role')">Add new role</button>
                                     </span>
                                     <span
                                         v-else-if="
                                             filtr_data.table_name == 'Users'
                                         "
                                     >
-                                        <button class="btn btn-primary pull-left" @click="add_user()">Add new user</button>
+                                        <button class="btn btn-primary pull-left" @click="add_user()" v-if="$can('add', 'user')">Add new user</button>
                                     </span>
                                     <span
                                         v-else-if="
@@ -132,7 +132,8 @@
                                     <span v-else>
                                         <span v-if="filtr_data.table_add_url">
                                             <router-link
-                                                class="btn btn-primary pull-left"
+                                                class="btn btn-primary pull-left" 
+                                                v-if="$can('add', 'article')"
                                                 :to="{
                                                     name: filtr_data.table_add_url,
                                                     params: {
@@ -340,12 +341,10 @@
                                 />
                             </tbody>
                             <tbody v-else-if="data.table_name == 'Shiped countries'">
-                                <qountryTab
+                                <countryTab
                                     v-for="table_info in data.data"
                                     :key="table_info.id"
                                     :table_info="table_info"
-
-                                    ref="add_country"
                                     
                                     @restart="update"
                                 />
@@ -469,16 +468,13 @@
             </div>
         </div>
 
-        <!-- <sectorModal
-            :show_sector_modal="show_sector_modal"
-            v-if="table_data[tab_num - 1].table_name == 'Sectors'"
-        /> -->
-
-        <!-- <mtpModel v-if="table_data[tab_num - 1].table_name == 'Multi-pitchs'" /> -->
+        <mtpModel v-if="table_data[tab_num - 1].table_name == 'Multi-pitchs'" />
 
         <addRoleModal ref="add_role_modal"/>
 
         <addUserModal ref="add_user_modal" @restart="update"/>
+
+        <countryAddModal ref="add_country" @restart="update"/>
 
         <!-- <orderDetalModal
             v-if="table_data[tab_num - 1].table_name == 'Orders'"
@@ -531,7 +527,7 @@ import commentsTab from './tabs/CommentsTabComponent.vue'
 import filmTagsTab from './tabs/FilmTagsTabComponent.vue'
 import saleCodesTab from './tabs/SaleCodesTabComponent.vue'
 import orderTab from './tabs/OrderTabComponent.vue'
-import qountryTab from './tabs/QountryTabComponent.vue'
+import countryTab from './tabs/CountryTabComponent.vue'
 import categoryTab from "./tabs/CategoriesTabComponent.vue";
 import postTopicTab from "./tabs/PostTopicTabComponent.vue";
 import postTab from "./tabs/PostTabComponent.vue";
@@ -539,7 +535,7 @@ import postTab from "./tabs/PostTabComponent.vue";
 //import sectorModal from "./tab_modals/SectorsModalComponent.vue";
 // import editOrderStatusModal from "./tab_modals/EditOrderStatusსModalComponent.vue";
 import addRoleModal from "./tab_modals/RolesAddModalComponent.vue";
-// import orderDetalModal from "./tab_modals/OrderDetalsModalComponent.vue";
+import countryAddModal from "./tab_modals/AddCountryModalComponent.vue";
 import addUserModal from "./tab_modals/UserAddModalComponent.vue";
 // import articleQuickViewModal from "./tab_modals/ArticleQuickViewModalComponen.vue";
 
@@ -579,13 +575,13 @@ export default {
         postTab,
         commentsTab,
         orderTab,
-        qountryTab,
+        countryTab,
         filmTagsTab,
         saleCodesTab,
         eventTab, 
 
         // sectorModal,
-        // editOrderStatusModal,
+        countryAddModal,
         addRoleModal,
         addUserModal,
         // articleQuickViewModal,
@@ -608,7 +604,7 @@ export default {
 
     methods: {
         country_add_model(){
-            this.$refs.add_country[0].add_country_model_open()
+            this.$refs.add_country.add_country_model_open()
         },
         tag_modal(action){
             this.$refs.control_tag[0].tag_control_modal(action)

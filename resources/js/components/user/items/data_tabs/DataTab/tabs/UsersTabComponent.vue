@@ -15,17 +15,17 @@
         <td>|</td>
 
         <td>
-            <button class="btn btn-primary" @click="open_role_editing_modal(table_info.id)">Edit roles</button>
+            <button class="btn btn-primary" @click="open_role_editing_modal(table_info.id)" v-if="$can('edit_permissions', 'user')">Edit roles</button>
         </td>
         
         <td>|</td>
         <td>
-            <button type="submit" class="btn btn-warning" @click="open_create_ban_modal()">Create Ban (beta)</button>
+            <button type="submit" class="btn btn-warning" @click="open_create_ban_modal()" v-if="$can('create_ban', 'user')">Create Ban (beta)</button>
         </td>
         
         <td>|</td>
         <td>
-            <button type="submit" class="btn btn-danger" @click="del_user(table_info.id)"><i class="fa fa-trash" aria-hidden="true"></i></button>
+            <button type="submit" class="btn btn-danger" @click="del_user(table_info.id)" v-if="$can('del', 'user')"><i class="fa fa-trash" aria-hidden="true"></i></button>
         </td>
 
         <stack-modal

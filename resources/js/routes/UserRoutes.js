@@ -14,7 +14,11 @@ function load(component) {
 const router = new VueRouter({
     routes: [
         { path: '/', name: 'home', component: load('HomePageComponent') },
-        { path: '/admin_page', name: 'adminPage', component: load('AdminPageComponent') },
+        { path: '/admin_page', name: 'adminPage', component: load('AdminPageComponent'), 
+        meta: {
+            can: 'show dashboard',
+            fail: '/'
+        }},
 
         { path: '/order/my_orders', name: 'myOrders', component: load('orders/myOrderComponent') },
         { path: '/order/all_orders', name: 'allOrders', component: load('orders/allOrderPageComponent') },
@@ -23,7 +27,7 @@ const router = new VueRouter({
         { path: '/order/decloration/order_payment/', name: 'orderPayment', component: load('orders/decloration/orderPaymentPageComponent'), },
         { path: '/order/decloration/confirm_order/', name: 'confirmOrder', component: load('orders/decloration/confirmOrderPageComponent') },
         
-        { path: '/order/confirm_order/:order_id/user/:user_id', name: 'confirmOrder', component: load('orders/decloration/mailOrderConfirmComponent') },
+        { path: '/order/confirm_order/:order_id/user/:user_id', name: 'mailConfirmOrder', component: load('orders/decloration/mailOrderConfirmComponent') },
 
         { path: '/my_posts', name: 'myPosts', component: load('posts/MyPostsPageCompoents') },
         { path: '/all_posts', name: 'allPosts', component: load('posts/AllPostsPageComponent') },
@@ -121,7 +125,7 @@ const router = new VueRouter({
 
 router.beforeEach((to, from, next)=>{
     const token = localStorage.getItem('x_xsrf_token')
-// console.log(history.back());
+    
     axios
         .get('./api/auth_user')
         .then((response)=>{

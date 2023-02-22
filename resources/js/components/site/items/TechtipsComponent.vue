@@ -40,13 +40,13 @@
                         <!-- </div>
                     </div> -->
 
-                    <!-- <div class="previes_tip_bottom" v-if="techtips.length > 4">
+                    <div class="previes_tip_bottom" v-if="techtips.length > 4">
                         <i class="fa fa-chevron-left" aria-hidden="true"></i>
                     </div>
 
                     <div class="next_tip_bottom" v-if="techtips.length > 4">
-                        <i class="fa fa-chevron-right" aria-hidden="true"></i> -->
-                    <!-- </div> -->
+                        <i class="fa fa-chevron-right" aria-hidden="true"></i>
+                    </div>
 
                 </div>
             </div>
@@ -75,7 +75,31 @@
                 })
                 .catch(error =>{
                 })
-            }
+            },
+
+            next_tips(){
+                var test_num = 0
+                test_num = this.image_num
+                this.test_num += 1
+                if(test_num < (this.image_length - 1)){
+                    this.image_num += 1
+                }
+                if(test_num < 4){
+                    this.image_num -= 1
+                }
+            },
+
+            prewies_tips(){
+                var test_num = 0
+                test_num = this.image_num
+                this.test_num -= 1
+                if(test_num > 0){
+                    this.image_num -= 1
+                }
+                if(test_num < 4){
+                    this.image_num -= 1
+                }
+            },
         }
     };
 </script>

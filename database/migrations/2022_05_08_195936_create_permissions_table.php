@@ -16,10 +16,11 @@ return new class extends Migration
         Schema::create('permissions', function (Blueprint $table) {
             $table->bigIncrements('id');
 
-            // $table->increments('id');
+            // $table->string('name'); // edit posts
+            // $table->string('slug'); //edit-posts
 
-            $table->string('name'); // edit posts
-            $table->string('slug'); //edit-posts
+            $table->string('subject'); // article
+            $table->string('action'); // edit
 
             $table->timestamps();
         });
