@@ -63,38 +63,44 @@ class GetProductService
 
         if($locale == "ru"){
             foreach ($global_product as $product) {
-                array_push($products, [
-                    "global_product"=>$product,
-                    "locale_product"=>Product::find($product->id)->ru_product,
-                    "category"=>Product::find($product->id)->product_category,
-                    "max_price"=>(new static)->get_product_price($product->id, 'max'),
-                    "min_price"=>(new static)->get_product_price($product->id, 'min'),
-                    "product_images"=>(new static)->get_product_images($product->id),
-                ]);
+                if($product->product_options->count() > 0){
+                    array_push($products, [
+                        "global_product"=>$product,
+                        "locale_product"=>Product::find($product->id)->ru_product,
+                        "category"=>Product::find($product->id)->product_category,
+                        "max_price"=>(new static)->get_product_price($product->id, 'max'),
+                        "min_price"=>(new static)->get_product_price($product->id, 'min'),
+                        "product_images"=>(new static)->get_product_images($product->id),
+                    ]);
+                }
             }
         }
         elseif ($locale == "ka") {
             foreach ($global_product as $product) {
-                array_push($products, [
-                    "global_product"=>$product,
-                    "locale_product"=>Product::find($product->id)->ka_product,
-                    "category"=>Product::find($product->id)->product_category,
-                    "max_price"=>(new static)->get_product_price($product->id, 'max'),
-                    "min_price"=>(new static)->get_product_price($product->id, 'min'),
-                    "product_images"=>(new static)->get_product_images($product->id),
-                ]);
+                if($product->product_options->count() > 0){
+                    array_push($products, [
+                        "global_product"=>$product,
+                        "locale_product"=>Product::find($product->id)->ka_product,
+                        "category"=>Product::find($product->id)->product_category,
+                        "max_price"=>(new static)->get_product_price($product->id, 'max'),
+                        "min_price"=>(new static)->get_product_price($product->id, 'min'),
+                        "product_images"=>(new static)->get_product_images($product->id),
+                    ]);
+                }
             }
         } 
         else {
             foreach ($global_product as $product) {
-                array_push($products, [
-                    "global_product"=>$product,
-                    "locale_product"=>Product::find($product->id)->us_product,
-                    "category"=>Product::find($product->id)->product_category,
-                    "max_price"=>(new static)->get_product_price($product->id, 'max'),
-                    "min_price"=>(new static)->get_product_price($product->id, 'min'),
-                    "product_images"=>(new static)->get_product_images($product->id),
-                ]);
+                if($product->product_options->count() > 0){
+                    array_push($products, [
+                        "global_product"=>$product,
+                        "locale_product"=>Product::find($product->id)->us_product,
+                        "category"=>Product::find($product->id)->product_category,
+                        "max_price"=>(new static)->get_product_price($product->id, 'max'),
+                        "min_price"=>(new static)->get_product_price($product->id, 'min'),
+                        "product_images"=>(new static)->get_product_images($product->id),
+                    ]);
+                }
             }
         }
 

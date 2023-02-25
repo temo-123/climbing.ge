@@ -1,5 +1,5 @@
 <template>
-    <div class="row related">
+    <div class="row related" v-if="samilar_products.length != 0">
         <h2>You might also like</h2>
 
         <analogProduct

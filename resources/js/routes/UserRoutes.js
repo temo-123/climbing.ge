@@ -7,6 +7,8 @@ import register from '../components/auth/RegisterComponent.vue'
 
 import forget_pass from '../components/auth/reset_password/ForgetPasswordComponent.vue'
 import reset_pass from '../components/auth/reset_password/ResetPasswordComponent.vue'
+import create_password from '../components/auth/social/CreatePasswordComponent.vue'
+import callback_password from '../components/auth/social/CallbackComponent.vue'
 
 function load(component) {
     return () => import(`../components/user/pages/${component}.vue`)
@@ -117,6 +119,8 @@ const router = new VueRouter({
         { path: '/register', name: 'register', component: register},
         { path: '/forget_pass', name: 'forget_pass', component: forget_pass},
         { path: '/reset-password/:token/:user_id', name: 'reset_pass', component: reset_pass},
+        { path: '/create_password/:email', name: 'create_pass', component: create_password},
+        { path: '/login/:provaider/callback', name: 'callback', component: callback_password},
 
         { path: '*', name: 'NotFound', component: NotFound },
     ],
@@ -129,35 +133,21 @@ router.beforeEach((to, from, next)=>{
     axios
         .get('./api/auth_user')
         .then((response)=>{
+            // if (token != null) {
+            //     localStorage.setItem('x_xsrf_token', response.config.headers['X-XSRF-TOKEN'])
+            // }
             check(to, from, next, token)
         })
         .catch(function (error) {
-            // if (error.request.status === 401) {
-                if (token != null) {
-                    localStorage.removeItem('x_xsrf_token');
-                    check(to, from, next, token)
-                    return next ({name: 'login'})
-                }
-                else{
-                    check(to, from, next, token)
-                }
-            // }
+            if (token != null) {
+                localStorage.removeItem('x_xsrf_token');
+                check(to, from, next, token)
+                return next ({name: 'login'})
+            }
+            else{
+                check(to, from, next, token)
+            }
         });
-
-    // var token = localStorage.getItem('x_xsrf_token')
-
-    // if (!token) {
-    //     if (to.name === 'login' || to.name === 'register') {
-    //         return next()
-    //     }
-    //     else{
-    //         return next ({name: 'login'})
-    //     }
-    // }
-
-    // if (to.name === 'login' || to.name === 'register' && token) {
-    //     return next ({name: 'home'})
-    // }
 
     next()
 })
@@ -165,7 +155,7 @@ router.beforeEach((to, from, next)=>{
 function check(to, from, next, token) {
 
     if (!token) {
-        if (to.name == 'login' || to.name == 'register' || to.name == 'forget_pass' || to.name == 'reset_pass') {
+        if (to.name == 'login' || to.name == 'register' || to.name == 'forget_pass' || to.name == 'reset_pass' || to.name == 'callback') {
             return next()
         }
         else{
@@ -173,7 +163,7 @@ function check(to, from, next, token) {
         }
     }
     else if (token){
-        if(to.name === 'login' || to.name === 'register' || to.name === 'forget_pass' || to.name === 'reset_pass' && token) {
+        if(to.name === 'login' || to.name === 'register' || to.name === 'forget_pass' || to.name === 'reset_pass' || to.name == 'callback' && token) {
             return next ({name: 'home'})
         }
     }

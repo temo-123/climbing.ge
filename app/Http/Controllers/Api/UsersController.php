@@ -147,7 +147,6 @@ class UsersController extends Controller
 
             $user_all_permissions = [];
 
-            
             $user_permissons = $user->permissions;
             if ($user_permissons) {
                 foreach ($user_permissons as $permisson) {
@@ -158,7 +157,11 @@ class UsersController extends Controller
             }
 
 
-            $user_role_perissions = $user->role->first()->permissions;
+            // $user_role = Role::first();
+            $user_role = $user->role->first();
+
+            $user_role_perissions = $user_role->permissions;
+
             if ($user_role_perissions) {
                 foreach ($user_role_perissions as $user_role_perission) {
                     array_push($user_all_permissions, 
@@ -167,12 +170,13 @@ class UsersController extends Controller
                 }
             }
 
-            // dd($user_all_permissions);
+            // dd($user_role, $user_role->permissions);
 
             return $user_all_permissions;
         }
         else{
-            return 'plees login';
+            // return 'plees login';
+            return response()->json('Plees login', 401);
         }
     }
 

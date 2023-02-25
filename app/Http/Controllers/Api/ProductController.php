@@ -226,7 +226,9 @@ class ProductController extends Controller
     {
         $this_product = product::where('published', '=', 1)->where('id', '=', $request->product_id)->first();
         $this_category = Product_category::where('id', '=', $this_product->category_id)->first();
-        $global_products = product::latest('id')->where('published', '=', 1)->where('id', '!=', $request->product_id)->where('category_id', '=', $this_category->id)->get();
+
+        $global_products = product::latest('id')->where('published', '=', 1)->where('id', '!=', $request->product_id)->where('category_id', '=', $this_category->id)->limit(3)->get();
+
         return $products = GetProductService::get_locale_product_use_locale($global_products, $request->lang);
     }
 

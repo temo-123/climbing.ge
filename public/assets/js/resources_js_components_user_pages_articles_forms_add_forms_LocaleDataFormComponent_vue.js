@@ -266,8 +266,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
 
  //https://innologica.github.io/vue-stackable-modal/#sample-css
 
@@ -289,16 +287,18 @@ __webpack_require__.r(__webpack_exports__);
       general_infos: [],
       errors: [],
       error: [],
-      editorConfig: {
-        // toolbar: [ [ 'Bold' ] ]
-        filebrowserUploadUrl: "{{route('upload', ['_token' => csrf_token() ])}}",
-        filebrowserUploadMethod: 'form',
-        removeButtons: 'Link,Unlink,Anchor'
-      },
+      // editorConfig: {
+      //     // toolbar: [ [ 'Bold' ] ]
+      //     filebrowserUploadUrl: "{{route('upload', ['_token' => csrf_token() ])}}",
+      //     filebrowserUploadMethod: 'form',
+      //     removeButtons: 'Link,Unlink,Anchor'
+      // },
       // CKEDITOR.replace( 'description', {
       //     filebrowserUploadUrl: "{{route('upload', ['_token' => csrf_token() ])}}",
       //     filebrowserUploadMethod: 'form'
       // });
+      textEditorConfig: this.$editorConfig,
+      routeEditorConfig: this.$editorConfig,
       data: {
         title: '',
         short_description: '',
@@ -605,7 +605,11 @@ var render = function () {
                 { staticClass: "col-md-10" },
                 [
                   _c("ckeditor", {
-                    attrs: { config: this.$editorConfig },
+                    attrs: {
+                      id: "text",
+                      editor: "text",
+                      config: _vm.textEditorConfig,
+                    },
                     model: {
                       value: _vm.data.text,
                       callback: function ($$v) {
@@ -782,7 +786,11 @@ var render = function () {
                           { staticClass: "col-md-12" },
                           [
                             _c("ckeditor", {
-                              attrs: { config: this.$editorConfig },
+                              attrs: {
+                                id: "route",
+                                editor: "route",
+                                config: _vm.routeEditorConfig,
+                              },
                               model: {
                                 value: _vm.data.route,
                                 callback: function ($$v) {

@@ -5,13 +5,13 @@
         <h1>Login</h1>
       </div>
       <div class="row mt-2">
-          <div class="col-md-6 text-center">
+          <div class="col-6 text-center">
             <button type="button" class="btn btn-danger" @click="social_login('google')">
               <!-- Google -->
               <i class="fa fa-google" aria-hidden="true"></i>
             </button>
           </div>
-          <div class="col-md-6 text-center">
+          <div class="col-6 text-center">
             <button type="button" class="btn btn-primary" @click="social_login('facebook')">
               <!-- Facebook -->
               <i class="fa fa-facebook" aria-hidden="true"></i>
@@ -99,27 +99,20 @@
     //     this.csrfToken = document.querySelector('meta[name="csrf-token"]').content;
     // },
     methods: {
-
-      // login() {
-      //   return this.http.post("./api/user/get_auth_user_permissions/")
-      //     .then(response => this.$ability.update(response.data.rules))
-      // },
-
-
-      // get_user_data: function(){
-      //       axios
-      //       .get("./api/user/get_auth_user_permissions/")
-      //       .then(response => {
-      //           console.log("🚀 ~ file: HomeComponent.vue:49 ~ response", response)
-      //       })
-      //       .catch(
-      //           error => console.log(error)
-      //       );
-      //   },
       social_login(service){
-        // window.location.href = 'api/login/'+service
-        window.location.href = this.MIX_APP_SSH + this.MIX_USER_PAGE_URL + '/api/login/' + service
+        // window.location.href = this.MIX_APP_SSH + this.MIX_USER_PAGE_URL + '/api/login/' + service
+
+        axios.get('../../../api/login/' + service)
+        .then(response => {
+          console.log(response.data)
+          if(response.data.url){
+            window.location.href = response.data.url
+          }
+        }).catch(err => {
+          console.log(err.data)
+        })
       },
+
       login(){
         axios
           .get('/sanctum/csrf-cookie')
@@ -127,27 +120,6 @@
             this.login_action()
           }); 
       },
-
-      // get_user_permissions_data: function(){
-      //     axios
-      //       .get("./api/user/get_auth_user_permissions/")
-      //       .then(response => {
-      //           this.$ability.update(
-      //               response.data
-      //           )
-
-      //           this.$router.push({ path: "/" });
-
-      //           // this.$ability.update([
-      //           //     {
-      //           //         action: 'del', subject: 'Article',
-      //           //     }
-      //           // ])
-      //       })
-      //       .catch(
-      //           error => console.log(error)
-      //       ); 
-      // },
 
       login_action(){
           this.error = []
@@ -158,12 +130,10 @@
               password: this.password,
               remember: this.remember
             })
-            .then((res) => {
-              localStorage.setItem('x_xsrf_token', res.config.headers['X-XSRF-TOKEN'])
+            .then((response) => {
+              localStorage.setItem('x_xsrf_token', response.config.headers['X-XSRF-TOKEN'])
 
-              // this.get_user_permissions_data()
-
-              this.$router.push({ path: "/" });
+              this.$router.push({ name: "home" });
             })
             .catch((error) => {
               if(error.response.status === 422) {

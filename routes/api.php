@@ -39,6 +39,7 @@ Route::group(['namespace'=>'Auth'], function() {
     Route::controller(SocialController::class)->prefix('login')->group( function() {
         Route::get('/{provider}/callback','Callback');
         Route::get('/{provider}', 'redirect');
+        Route::post('/social/create_password/{email}', 'create_password');
     });
 
     Route::controller(ForgotPasswordController::class)->prefix('password')->group( function() {

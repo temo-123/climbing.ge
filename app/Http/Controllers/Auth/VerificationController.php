@@ -18,6 +18,7 @@ use Illuminate\Validation\ValidationException;
 
 use App\Models\user_notification;
 use App\Models\User_role;
+use App\Models\Role;
 
 class VerificationController extends Controller
 {
@@ -116,7 +117,7 @@ class VerificationController extends Controller
             $new_permission_item =  new User_role();
 
             $new_permission_item['user_id'] = $user_id;
-            $new_permission_item['role_id'] = 1; // ID 1 in role tab is a user
+            $new_permission_item['role_id'] = Role::where('slug', '=', 'user')->first()->id; // ID 1 in role tab is a user
 
             $new_permission_item -> save();
         }

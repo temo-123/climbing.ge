@@ -38,7 +38,7 @@ class RoleTableSeeder extends Seeder
 
         $admin = new Role();
         $admin->name = 'Admin';
-        $admin->slug = 'Site Administrator';
+        $admin->slug = 'admin';
         $admin->description = 'Site Administrator';
         $admin->save();
 
@@ -51,7 +51,7 @@ class RoleTableSeeder extends Seeder
 
         $visual_menager = new Role();
         $visual_menager->name = 'Visual menager';
-        $visual_menager->slug = 'Visual menager';
+        $visual_menager->slug = 'visual_menader';
         $visual_menager->description = 'Visual menager';
         $visual_menager->save();
 
@@ -65,7 +65,7 @@ class RoleTableSeeder extends Seeder
 
         $mount_menager = new Role();
         $mount_menager->name = 'Mountain routes menager';
-        $mount_menager->slug = 'Mountain routes menager';
+        $mount_menager->slug = 'mountain_routes_menager';
         $mount_menager->description = 'Mountain routes menager';
         $mount_menager->save();
 
@@ -81,7 +81,7 @@ class RoleTableSeeder extends Seeder
 
         $sale_menager = new Role();
         $sale_menager->name = 'Sale menager';
-        $sale_menager->slug = 'Sale menager';
+        $sale_menager->slug = 'sale_menager';
         $sale_menager->description = 'Sale menager';
         $sale_menager->save();
 
@@ -96,7 +96,7 @@ class RoleTableSeeder extends Seeder
 
         $film_menager = new Role();
         $film_menager->name = 'Films menager';
-        $film_menager->slug = 'Films menager';
+        $film_menager->slug = 'films_menager';
         $film_menager->description = 'Films menager';
         $film_menager->save();
 
@@ -109,7 +109,7 @@ class RoleTableSeeder extends Seeder
 
         $locale_bisnes_menager = new Role();
         $locale_bisnes_menager->name = 'Locale bisnes menager';
-        $locale_bisnes_menager->slug = 'Locale bisnes menager';
+        $locale_bisnes_menager->slug = 'Locale_bisnes_menager';
         $locale_bisnes_menager->description = 'Locale bisnes menager';
         $locale_bisnes_menager->save();
 
@@ -122,7 +122,7 @@ class RoleTableSeeder extends Seeder
 
         $event_menager = new Role();
         $event_menager->name = 'Event menager';
-        $event_menager->slug = 'Event menager';
+        $event_menager->slug = 'event_menager';
         $event_menager->description = 'Event menager';
         $event_menager->save();
 
@@ -138,7 +138,7 @@ class RoleTableSeeder extends Seeder
 
         $sale_and_order_menager = new Role();
         $sale_and_order_menager->name = 'Sale and order menager';
-        $sale_and_order_menager->slug = 'Sale and order menager';
+        $sale_and_order_menager->slug = 'sale_and_order_menager';
         $sale_and_order_menager->description = 'Sale and order menager';
         $sale_and_order_menager->save();
 
@@ -151,7 +151,7 @@ class RoleTableSeeder extends Seeder
 
         $order_menager = new Role();
         $order_menager->name = 'Order menager';
-        $order_menager->slug = 'Order menager';
+        $order_menager->slug = 'order_menager';
         $order_menager->description = 'Order menager';
         $order_menager->save();
 
@@ -166,7 +166,7 @@ class RoleTableSeeder extends Seeder
 
         $content_menager = new Role();
         $content_menager->name = 'Content menager';
-        $content_menager->slug = 'Content menager';
+        $content_menager->slug = 'content_menager';
         $content_menager->description = 'Content menager';
         $content_menager->save();
 
@@ -177,7 +177,7 @@ class RoleTableSeeder extends Seeder
         
         $user = new Role();
         $user->name = 'User';
-        $user->slug = 'User';
+        $user->slug = 'user';
         $user->description = 'User';
         $user->save();
     }

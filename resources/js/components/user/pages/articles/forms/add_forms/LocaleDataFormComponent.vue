@@ -42,11 +42,9 @@
                                 {{ errors.text[0] }}
                             </div> -->
 
-                            <!-- <ckeditor
-                                v-model="data.text"
-                            /> -->
+                            <!-- <ckeditor v-model="data.text" /> -->
 
-                            <ckeditor v-model="data.text" :config="this.$editorConfig" ></ckeditor>
+                            <ckeditor id="text" :editor="'text'" v-model="data.text" :config="textEditorConfig" ></ckeditor>
                         </div>
                     </div>
 
@@ -84,7 +82,7 @@
                             </div>
                         
                             <div class="col-md-12" v-if="global_blocks.routes_info == 'befor' || global_blocks.routes_info == 'after' || global_blocks.routes_info == 'new_info'">
-                                <ckeditor v-model="data.route" :config="this.$editorConfig"></ckeditor>
+                                <ckeditor id="route" v-model="data.route" :editor="'route'" :config="routeEditorConfig"></ckeditor>
                             </div>
 
                             <div class="col-md-12" v-if="global_blocks.routes_info == 'after' || global_blocks.routes_info == 'instead'">
@@ -282,18 +280,21 @@
                 errors: [],
                 error: [],
 
-                editorConfig: {
-                    // toolbar: [ [ 'Bold' ] ]
-                    filebrowserUploadUrl: "{{route('upload', ['_token' => csrf_token() ])}}",
-                    filebrowserUploadMethod: 'form',
+                // editorConfig: {
+                //     // toolbar: [ [ 'Bold' ] ]
+                //     filebrowserUploadUrl: "{{route('upload', ['_token' => csrf_token() ])}}",
+                //     filebrowserUploadMethod: 'form',
 
-                    removeButtons: 'Link,Unlink,Anchor'
-                },
+                //     removeButtons: 'Link,Unlink,Anchor'
+                // },
 
                 // CKEDITOR.replace( 'description', {
                 //     filebrowserUploadUrl: "{{route('upload', ['_token' => csrf_token() ])}}",
                 //     filebrowserUploadMethod: 'form'
                 // });
+
+                textEditorConfig: this.$editorConfig,
+                routeEditorConfig: this.$editorConfig,
 
                 data: {
                     title: '',

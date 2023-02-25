@@ -48,8 +48,6 @@ class ResetPasswordController extends Controller
             return $validator->messages();
         }
         else{
-            // dd($request->data['user_id']);
-
             $user = User::where('id', '=', $request->data['id'])->first();
 
             $status = Password::reset(
@@ -62,7 +60,7 @@ class ResetPasswordController extends Controller
                     ])->save();
                 }
             );
-
+            
             if ($status === Password::PASSWORD_RESET) {
                 return response()->json(['message' => trans($status)], 200);
             }

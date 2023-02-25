@@ -98,7 +98,6 @@ class RolesController extends Controller
     public function get_editing_role_permissions(Request $request)
     {
         $role = Role::where("id", "=", $request->role_id)->first();
-        // dd($role->permissions);
         return $role->permissions;
     }
 

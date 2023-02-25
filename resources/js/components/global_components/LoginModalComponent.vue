@@ -63,8 +63,8 @@ export default {
         email_errors: null,
         remember_me: null,
 
-        MIX_USER_PAGE_URL: process.env.MIX_USER_PAGE_URL,
-        MIX_APP_SSH: process.env.MIX_APP_SSH,
+        BASE_URL_SSH: process.env.BASE_URL_SSH,
+        // MIX_APP_SSH: process.env.MIX_APP_SSH,
 
         is_login_model: false
       };
@@ -72,12 +72,14 @@ export default {
     mounted() {
     },
     methods: {
-      social_login(service){
-        window.location.href = `api/login/${service}`
-      },
+      // social_login(service){
+      //   window.location.href = `api/login/${service}`
+      // },
+      
+
       login(){
         axios
-          .get(this.MIX_APP_SSH + this.MIX_USER_PAGE_URL + '/sanctum/csrf-cookie')
+          .get(this.BASE_URL_SSH + '/sanctum/csrf-cookie')
           .then(response => {
             this.login_action()
           }); 
@@ -85,7 +87,7 @@ export default {
 
       login_action(){
           axios
-            .post(this.MIX_APP_SSH + this.MIX_USER_PAGE_URL + '/login', {
+            .post(this.BASE_URL_SSH + '/login', {
               email: this.email, 
               password: this.password
             })

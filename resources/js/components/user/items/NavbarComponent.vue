@@ -5,7 +5,7 @@
             Hi 
         </router-link>
 
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <!-- <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
 
@@ -17,10 +17,6 @@
                     </router-link>
                 </li>
 
-                <!-- <li class="nav-item">
-                    <a class="nav-link" href="#">Routes</a>
-                </li> -->
-
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         Lang
@@ -29,12 +25,11 @@
                         <li v-if="activ_lang == 'ka' || activ_lang == 'ru'"><a class="" @click="activ_lang = 'en', localization('en')"><countryFlag country='usa' size='big'/></a></li>
                         <li v-if="activ_lang == 'en' || activ_lang == 'ru'"><a class="" @click="activ_lang = 'ka', localization('ka')"><countryFlag country='geo' size='big'/></a></li>
                         <li v-if="activ_lang == 'ka' || activ_lang == 'en'"><a class="" @click="activ_lang = 'ru', localization('ru')"><countryFlag country='rus' size='big'/></a></li>
-                        <!-- <div class="dropdown-divider"></div>
-                        <a class="dropdown-item" href="#">Something else here</a> -->
                     </div>
                 </li>
             </ul>
-        </div>
+        </div> -->
+
     </nav>
 </template>
 

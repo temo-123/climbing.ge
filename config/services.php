@@ -36,12 +36,13 @@ return [
     'facebook' => [ 
         'client_id' => env ('FACEBOOK_CLIENT_ID'), 
         'client_secret' => env ('FACEBOOK_CLIENT_SECRET'), 
-        'redirect' => env ('USER_PAGE_URL').'/login/google/colbank', 
+        // 'redirect' => env('APP_SSH' , 'https://') . env('USER_PAGE_URL', 'user.climbing.ge').'/api/login/facebook/callback',
+        'redirect' => env('FACEBOOK_URL'),
     ],
     'google' => [ 
         'client_id' => env ('GOOGLE_CLIENT_ID'), 
         'client_secret' => env ('GOOGLE_CLIENT_SECRET'), 
-        // 'redirect' => env ('GOOGLE_URL'), 
-        'redirect' => env ('USER_PAGE_URL').'/login/google/colbank',
+        // 'redirect' => env('APP_SSH' , 'https://') . env('USER_PAGE_URL', 'user.climbing.ge').'/api/login/google/callback',
+        'redirect' => env('GOOGLE_URL'),
     ],
 ];

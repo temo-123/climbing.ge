@@ -9929,21 +9929,23 @@ var render = function () {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c(
-    "div",
-    { staticClass: "row related" },
-    [
-      _c("h2", [_vm._v("You might also like")]),
-      _vm._v(" "),
-      _vm._l(_vm.samilar_products, function (product) {
-        return _c("analogProduct", {
-          key: product.id,
-          attrs: { product: product },
-        })
-      }),
-    ],
-    2
-  )
+  return _vm.samilar_products.length != 0
+    ? _c(
+        "div",
+        { staticClass: "row related" },
+        [
+          _c("h2", [_vm._v("You might also like")]),
+          _vm._v(" "),
+          _vm._l(_vm.samilar_products, function (product) {
+            return _c("analogProduct", {
+              key: product.id,
+              attrs: { product: product },
+            })
+          }),
+        ],
+        2
+      )
+    : _vm._e()
 }
 var staticRenderFns = []
 render._withStripped = true
