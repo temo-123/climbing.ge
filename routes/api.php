@@ -281,6 +281,8 @@ Route::group(['namespace'=>'Api'], function() {
         Route::post('/edit_site_ka_data', 'edit_site_ka_data');
         Route::post('/edit_site_ru_data', 'edit_site_ru_data');
         Route::post('/edit_site_us_data', 'edit_site_us_data');
+
+        Route::get('/fix_article_bugs', 'fix_article_bugs');
     });
     Route::get('/site_data_counts', 'SiteDataController@site_data_counts');
 

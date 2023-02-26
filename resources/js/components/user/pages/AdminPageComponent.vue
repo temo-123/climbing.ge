@@ -183,8 +183,8 @@
     import breadcrumb from '../items/BreadcrumbComponent.vue'
 
     import user_notifications_list from '../items/UserNotificationsListComponent.vue'
-    import order_list from '../items/OrderDiogramComponent.vue'
-    import data_counts_list from '../items/SiteDataCountListComponent.vue'
+    import order_list from '../items/dashboards/OrderDiogramComponent.vue'
+    import data_counts_list from '../items/dashboards/SiteDataCountListComponent.vue'
 
     export default {
         components: {

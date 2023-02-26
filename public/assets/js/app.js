@@ -10304,7 +10304,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   name: 'leftMenu',
   data: function data() {
@@ -80182,9 +80181,7 @@ var render = function () {
                 )
               : _vm._e(),
             _vm._v(" "),
-            _vm.$can("show", "comments") ||
-            _vm.$can("del_comment", "comments") ||
-            _vm.$can("edit_order_status", "order")
+            _vm.$can("show", "comments") || _vm.$can("del_comment", "comments")
               ? _c("li", {
                   staticClass:
                     "list-group-item text-muted admin_menu_static_block",

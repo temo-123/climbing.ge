@@ -44,28 +44,34 @@
 
                 </div>
 
-                <div class="alert alert-danger" role="alert" v-if="this.counts['us_articles_errors_count'] || this.counts['ru_articles_errors_count'] || this.counts['ka_articles_errors_count']">
-                    <div class="col" v-if="this.counts['us_articles_errors_count']"> 
+                <div class="alert alert-danger" role="alert" v-if="this.counts['us_article_errors']">
+                    <div class="col" v-if="this.counts['us_article_errors']"> 
                         <i class="fa fa-bug" aria-hidden="true"></i> 
-                        us_articles error_count - {{this.counts['us_articles_errors_count']}} 
+                        us_articles error_count - {{this.counts['us_article_errors']}} 
 
-                        <button class="btn btn-danger float-right" @click="quick_wiev_action(complaint.comment_id, complaint.id)">
+                        <button class="btn btn-danger float-right" @click="fix_article_bug()">
                             Fix bag (delete all this articles)
                         </button>
                     </div>
-                    <div class="col" v-if="this.counts['ru_articles_errors_count']"> 
-                        <i class="fa fa-bug" aria-hidden="true"></i> 
-                        ru_articles error_count - {{this.counts['ru_articles_errors_count']}} 
+                </div>
 
-                        <button class="btn btn-danger float-right" @click="quick_wiev_action(complaint.comment_id, complaint.id)">
+                <div class="alert alert-danger" role="alert" v-if="this.counts['us_article_errors']">
+                    <div class="col" v-if="this.counts['us_article_errors']"> 
+                        <i class="fa fa-bug" aria-hidden="true"></i> 
+                        ru_articles error_count - {{this.counts['us_article_errors']}} 
+
+                        <button class="btn btn-danger float-right" @click="fix_article_bug()">
                             Fix bag (delete all this articles)
                         </button>
                     </div>
-                    <div class="col" v-if="this.counts['ka_articles_errors_count']"> 
+                </div>
+                
+                <div class="alert alert-danger" role="alert" v-if="this.counts['us_article_errors']">
+                    <div class="col" v-if="this.counts['us_article_errors']"> 
                         <i class="fa fa-bug" aria-hidden="true"></i> 
-                        ka_articles error_count - {{this.counts['ka_articles_errors_count']}} 
+                        ka_articles error_count - {{this.counts['us_article_errors']}} 
 
-                        <button class="btn btn-danger float-right" @click="quick_wiev_action(complaint.comment_id, complaint.id)">
+                        <button class="btn btn-danger float-right" @click="fix_article_bug()">
                             Fix bag (delete all this articles)
                         </button>
                     </div>
@@ -210,7 +216,7 @@
                         <router-link :to="{ name: 'eventList' }">
                             <div class="card-counter success">
                                 <i class="fa fa-calendar-check-o" aria-hidden="true"></i>
-                                <span class="count-numbers">XXX</span>
+                                <span class="count-numbers">{{ this.counts['active_events_count'] }}</span>
                                 <span class="count-name">Active events</span>
                             </div>
                         </router-link>
@@ -220,7 +226,7 @@
                         <router-link :to="{ name: 'eventList' }">
                             <div class="card-counter success">
                                 <i class="fa fa-calendar-minus-o" aria-hidden="true"></i>
-                                <span class="count-numbers">XXX</span>
+                                <span class="count-numbers">{{ this.counts['completed_events_count'] }}</span>
                                 <span class="count-name">Completed events</span>
                             </div>
                         </router-link>
@@ -238,7 +244,7 @@
                         <router-link :to="{ name: 'eventList' }">
                             <div class="card-counter success">
                                 <i class="fa fa-calendar-check-o" aria-hidden="true"></i>
-                                <span class="count-numbers">XXX</span>
+                                <span class="count-numbers">{{ this.counts['active_comprtitions_count'] }}</span>
                                 <span class="count-name">Active competitions</span>
                             </div>
                         </router-link>
@@ -248,7 +254,7 @@
                         <router-link :to="{ name: 'eventList' }">
                             <div class="card-counter success">
                                 <i class="fa fa-calendar-minus-o" aria-hidden="true"></i>
-                                <span class="count-numbers">XXX</span>
+                                <span class="count-numbers">{{ this.counts['completed_comprtitions_count'] }}</span>
                                 <span class="count-name">Completed competitions</span>
                             </div>
                         </router-link>
@@ -402,7 +408,7 @@
                         <router-link :to="{name: 'gallery'}">
                             <div class="card-counter success">
                                 <i class="fa fa-picture-o" aria-hidden="true"></i>
-                                <span class="count-numbers">XXX</span>
+                                <span class="count-numbers">{{ this.counts['index_gallery_images'] }}</span>
                                 <span class="count-name">Index gallery</span>
                             </div>
                         </router-link>
@@ -456,7 +462,7 @@
 
         <hr>
 
-        <h2>Conflicts</h2>
+        <h2>Conflicts (Comments complaints)</h2>
 
         <div class="card">
             <div class="card-body">
@@ -466,7 +472,7 @@
                         <router-link :to="{name: 'comentsList'}">
                             <div class="card-counter danger">
                                 <i class="fa fa-gavel" aria-hidden="true"></i>
-                                <span class="count-numbers">XXX</span>
+                                <span class="count-numbers">{{ this.counts['article_comment_complaint_count'] }}</span>
                                 <span class="count-name">Active competitions</span>
                             </div>
                         </router-link>
@@ -498,7 +504,7 @@
                         <router-link :to="{name: 'comentsList'}">
                             <div class="card-counter dark">
                                 <i class="fa fa-comment-o" aria-hidden="true"></i>
-                                <span class="count-numbers">XXX</span>
+                                <span class="count-numbers">{{ this.counts['article_comments_count'] }}</span>
                                 <span class="count-name">Article comments</span>
                             </div>
                         </router-link>
@@ -508,7 +514,7 @@
                         <router-link :to="{name: 'comentsList'}">
                             <div class="card-counter dark">
                                 <i class="fa fa-comment-o" aria-hidden="true"></i>
-                                <span class="count-numbers">XXX</span>
+                                <span class="count-numbers">{{ this.counts['product_comments_count'] }}</span>
                                 <span class="count-name">Product comments</span>
                             </div>
                         </router-link>
@@ -540,6 +546,36 @@
             </div>
         </div>
 
+        <h2>Social accounts</h2> 
+
+        <div class="card">
+            <div class="card-body">
+                <div class="row">
+
+                    <div class="col-md-6">
+                        <router-link :to="{name: 'usersList'}">
+                            <div class="card-counter success">
+                                <i class="fa fa-facebook" aria-hidden="true"></i>
+                                <span class="count-numbers">{{ this.counts['google_accounts_count'] }}</span>
+                                <span class="count-name">Google</span>
+                            </div>
+                        </router-link>
+                    </div>
+
+                    <div class="col-md-6">
+                        <router-link :to="{name: 'usersList'}">
+                            <div class="card-counter success">
+                                <i class="fa fa-google" aria-hidden="true"></i>
+                                <span class="count-numbers">{{ this.counts['facebook_accounts_count'] }}</span>
+                                <span class="count-name">Facebook</span>
+                            </div>
+                        </router-link>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
         <h2>Service followers</h2> 
 
         <div class="card">
@@ -550,7 +586,7 @@
                         <router-link :to="{name: 'usersList'}">
                             <div class="card-counter success">
                                 <i class="fa fa-user-circle-o" aria-hidden="true"></i>
-                                <span class="count-numbers">XXX</span>
+                                <span class="count-numbers">{{this.counts['guid_follovers']}}</span>
                                 <span class="count-name">Guid folowers</span>
                             </div>
                         </router-link>
@@ -560,7 +596,7 @@
                         <router-link :to="{name: 'usersList'}">
                             <div class="card-counter success">
                                 <i class="fa fa-user-circle-o" aria-hidden="true"></i>
-                                <span class="count-numbers">XXX</span>
+                                <span class="count-numbers">{{this.counts['shop_follovers']}}</span>
                                 <span class="count-name">Shop folowers</span>
                             </div>
                         </router-link>
@@ -569,6 +605,37 @@
                 </div>
             </div>
         </div>
+
+        <h2>Roles / permissions</h2> 
+
+        <div class="card">
+            <div class="card-body">
+                <div class="row">
+
+                    <div class="col-md-6">
+                        <router-link :to="{name: 'usersList'}">
+                            <div class="card-counter success">
+                                <i class="fa fa-key" aria-hidden="true"></i>
+                                <span class="count-numbers">{{this.counts['roles']}}</span>
+                                <span class="count-name">Role</span>
+                            </div>
+                        </router-link>
+                    </div>
+
+                    <div class="col-md-6">
+                        <router-link :to="{name: 'usersList'}">
+                            <div class="card-counter success">
+                                <i class="fa fa-key" aria-hidden="true"></i>
+                                <span class="count-numbers">{{this.counts['permissions']}}</span>
+                                <span class="count-name">Permissions</span>
+                            </div>
+                        </router-link>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
     </div>
 </template>
 
@@ -593,6 +660,20 @@ export default {
                 error => console.log(error)
             );
         },
+
+        fix_article_bug(){
+            if (window.confirm('This action whil delite all conflictebel items! Are you shore?')) {
+                axios
+                .get('../api/siteData/fix_article_bugs')
+                .then(response => {
+                    // this.counts = response.data
+                    this.get_site_counts()
+                })
+                .catch(
+                    error => console.log(error)
+                );
+            }
+        }
     }
 }
 </script>

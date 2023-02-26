@@ -415,8 +415,7 @@
             <li class="list-group-item text-muted admin_menu_static_block"
                 v-if="
                     $can('show', 'comments') ||
-                    $can('del_comment', 'comments') ||
-                    $can('edit_order_status', 'order')
+                    $can('del_comment', 'comments') 
                 "        
             > </li>
 

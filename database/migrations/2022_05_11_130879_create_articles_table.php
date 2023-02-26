@@ -38,15 +38,15 @@ return new class extends Migration
 
             $table->integer('published')->nullable();
             
-
+            // ->constrained() for onDelete working. Wizout this it not working
             $table->unsignedBigInteger('us_article_id');
-            $table->foreign('us_article_id')->references('id')->on('locale_articles')->onDelete('cascade');
+            $table->foreign('us_article_id')->references('id')->on('locale_articles')->constrained()->onDelete('cascade');
 
             $table->unsignedBigInteger('ka_article_id');
-            $table->foreign('ka_article_id')->references('id')->on('locale_articles')->onDelete('cascade');
+            $table->foreign('ka_article_id')->references('id')->on('locale_articles')->constrained()->onDelete('cascade');
 
             $table->unsignedBigInteger('ru_article_id');
-            $table->foreign('ru_article_id')->references('id')->on('locale_articles')->onDelete('cascade');
+            $table->foreign('ru_article_id')->references('id')->on('locale_articles')->constrained()->onDelete('cascade');
 
             $table->timestamps();
         });

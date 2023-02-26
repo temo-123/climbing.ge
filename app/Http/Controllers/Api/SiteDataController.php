@@ -9,7 +9,8 @@ use App\Models\Gallery_image;
 
 use App\Models\Article;
 use App\Models\Locale_article;
-// use App\Models\Us_article;
+
+use App\Models\Event;
 // use App\Models\Ru_article;
 
 use App\Models\Mount;
@@ -29,6 +30,10 @@ use App\Models\Permission;
 
 use App\Models\Product;
 use App\Models\Product_category;
+
+use App\Models\Service_follower;
+use App\Models\Social_account;
+use App\Models\Article_comment_complaint;
 
 use App\Models\Comment;
 
@@ -52,6 +57,7 @@ class SiteDataController extends Controller
 
         $counts['gallery_images'] = Gallery_image::count();
         $counts['index_header_images'] = Gallery_image::where("image_type", "=", 2)->count();
+        $counts['index_gallery_images'] = Gallery_image::where("image_type", "=", 1)->count();
         $counts['article_gallery_images'] = Gallery_image::where("image_type", "=", 1)->count();
 
         $counts['mount_masives'] = Mount::count();
@@ -62,9 +68,13 @@ class SiteDataController extends Controller
         $counts['ice_climbing'] = Article::where("category", "=", 'ice')->count();
         $counts['indoor_gyms'] = Article::where("category", "=", 'indoor')->count();
         $counts['other_antyvity'] = Article::where("category", "=", 'other')->count();
-        $counts['event'] = Article::where("category", "=", 'event')->count();
         $counts['news'] = Article::where("category", "=", 'news')->count();
         $counts['techtip'] = Article::where("category", "=", 'techtip')->count();
+
+        $counts['active_events_count'] = Event::where("category", "=", 'event')->count();
+        $counts['completed_events_count'] = Event::where("category", "=", 'event')->count();
+        $counts['active_comprtitions_count'] = Event::where("category", "=", "competition")->count();
+        $counts['completed_comprtitions_count'] = Event::where("category", "=", "competition")->count();
 
         $counts['region'] = Region::count();
 
@@ -88,15 +98,86 @@ class SiteDataController extends Controller
         $counts['mtp_count'] = Mtp::count();
         $counts['mtp_pitch_count'] = Mtp_pitch::count();
 
+        $counts['article_comment_complaint_count'] = Article_comment_complaint::count();
+        // $counts['mtp_pitch_count'] = Mtp_pitch::count();
+        
+        $counts['article_comments_count'] = Comment::count();
+        $counts['product_comments_count'] = Comment::count();
+
         $counts['users'] = User::count();
         $counts['following_users'] = Following_users::count();
+
+        $counts['guid_follovers'] = Service_follower::where("service", "=", 'shop')->count();
+        $counts['shop_follovers'] = Service_follower::where("service", "=", 'shop')->count();
+        
+        $counts['google_accounts_count'] = Social_account::where("provider", "=", 'google')->count();
+        $counts['facebook_accounts_count'] = Social_account::where("provider", "=", 'facebook')->count();
+
         $counts['roles'] = Role::count();
         $counts['permissions'] = Permission::count();
 
         $counts['products'] = Product::count();
         $counts['product_categories'] = Product_category::count();
+
+        $conflict_us_articles = array();
+        $conflict_ka_articles = array();
+        $conflict_ru_articles = array();
+
+        foreach (Locale_article::where("locale", "=", 'us')->get() as $local_article) {
+            $active_global_article = $local_article->global_article_us;
+
+            if (!$active_global_article) {
+                array_push($conflict_us_articles, $active_global_article);
+            }
+        }
+        foreach (Locale_article::where("locale", "=", 'ka')->get() as $local_article) {
+            $active_global_article = $local_article->global_article_ka;
+
+            if (!$active_global_article) {
+                array_push($conflict_ka_articles, $active_global_article);
+            }
+        }
+        foreach (Locale_article::where("locale", "=", 'ru')->get() as $local_article) {
+            $active_global_article = $local_article->global_article_ru;
+
+            if (!$active_global_article) {
+                array_push($conflict_ru_articles, $active_global_article);
+            }
+        }
+
+        $counts['us_article_errors'] = count($conflict_us_articles);
+        $counts['ka_article_errors'] = count($conflict_ka_articles);
+        $counts['ru_article_errors'] = count($conflict_ru_articles);
+        
+        // dd(count($post_data),$conflict_ru_articles->count(), $conflict_ru_articles->count(), $conflict_ru_articles->count());
         
         return $counts;
+    }
+
+    public function fix_article_bugs(Request $request)
+    {
+        foreach (Locale_article::where("locale", "=", 'us')->get() as $local_article) {
+            $active_global_article = $local_article->global_article_us;
+
+            if (!$active_global_article) {
+                // dd($local_article->global_article_us);
+                $local_article -> delete();
+            }
+        }
+        foreach (Locale_article::where("locale", "=", 'ka')->get() as $local_article) {
+            $active_global_article = $local_article->global_article_ka;
+
+            if (!$active_global_article) {
+                $local_article -> delete();
+            }
+        }
+        foreach (Locale_article::where("locale", "=", 'ru')->get() as $local_article) {
+            $active_global_article = $local_article->global_article_ru;
+
+            if (!$active_global_article) {
+                $local_article -> delete();
+            }
+        }
     }
 
     public function get_site_locale_data(Request $request)

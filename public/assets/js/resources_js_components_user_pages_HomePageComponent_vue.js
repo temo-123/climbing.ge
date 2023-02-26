@@ -248,6 +248,11 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
  //https://github.com/Jexordexan/vue-slicksort
 
  //https://innologica.github.io/vue-stackable-modal/#sample-css
@@ -834,43 +839,48 @@ var render = function () {
             _vm._v(" "),
             !this.user["image"] ? _c("span", [_vm._m(1)]) : _vm._e(),
             _vm._v(" "),
-            _vm._l(_vm.complaints, function (complaint) {
-              return _c("span", { key: complaint.id }, [
-                _c(
-                  "div",
-                  {
-                    staticClass: "alert alert-warning",
-                    attrs: { role: "alert" },
-                  },
-                  [
-                    _c("strong", [_vm._v("Warning!")]),
-                    _vm._v(
-                      " one comment are a complainted. Please check it and make decision!\n\n                    "
-                    ),
-                    _c("div", { staticClass: "row" }, [
-                      _c("div", { staticClass: "col-md-6" }, [
-                        _c(
-                          "button",
-                          {
-                            staticClass: "btn btn-primary ",
-                            on: {
-                              click: function ($event) {
-                                return _vm.quick_wiev_action(
-                                  complaint.comment_id,
-                                  complaint.id
-                                )
-                              },
-                            },
-                          },
-                          [_vm._v("Check comment")]
+            _vm.$can("show", "comments") || _vm.$can("del_comment", "comments")
+              ? _c(
+                  "span",
+                  _vm._l(_vm.complaints, function (complaint) {
+                    return _c(
+                      "div",
+                      {
+                        key: complaint.id,
+                        staticClass: "alert alert-warning",
+                        attrs: { role: "alert" },
+                      },
+                      [
+                        _c("strong", [_vm._v("Warning!")]),
+                        _vm._v(
+                          " one comment are a complainted. Please check it and make decision!\n\n                    "
                         ),
-                        _vm._v(".\n                        "),
-                      ]),
-                    ]),
-                  ]
-                ),
-              ])
-            }),
+                        _c("div", { staticClass: "row" }, [
+                          _c("div", { staticClass: "col-md-6" }, [
+                            _c(
+                              "button",
+                              {
+                                staticClass: "btn btn-primary ",
+                                on: {
+                                  click: function ($event) {
+                                    return _vm.quick_wiev_action(
+                                      complaint.comment_id,
+                                      complaint.id
+                                    )
+                                  },
+                                },
+                              },
+                              [_vm._v("Check comment")]
+                            ),
+                            _vm._v(".\n                        "),
+                          ]),
+                        ]),
+                      ]
+                    )
+                  }),
+                  0
+                )
+              : _vm._e(),
             _vm._v(" "),
             _vm._l(_vm.user_queries, function (query) {
               return _c("span", { key: query.id }, [
@@ -952,38 +962,42 @@ var render = function () {
               ])
             }),
             _vm._v(" "),
-            !this.$siteData["text"] ||
-            !this.$siteData["text_ru"] ||
-            !this.$siteData["text_ka"] ||
-            !this.$siteData["short_description_ru"] ||
-            !this.$siteData["short_description_ka"] ||
-            !this.$siteData["short_description"]
-              ? _c(
-                  "div",
-                  {
-                    staticClass: "alert alert-danger",
-                    attrs: { role: "alert" },
-                  },
-                  [
-                    _c("strong", [_vm._v("Danger!")]),
-                    _vm._v(
-                      ' \n                Web-site information is not fool. check page "\n                '
-                    ),
-                    _c(
-                      "router-link",
-                      { attrs: { to: { name: "siteInfo" }, exact: "" } },
-                      [
-                        _vm._v(
-                          " \n                    About us\n                "
-                        ),
-                      ]
-                    ),
-                    _vm._v(
-                      '\n                ", and add missing information.\n            '
-                    ),
-                  ],
-                  1
-                )
+            _vm.$can("edit", "site_data")
+              ? _c("span", [
+                  !this.$siteData["text"] ||
+                  !this.$siteData["text_ru"] ||
+                  !this.$siteData["text_ka"] ||
+                  !this.$siteData["short_description_ru"] ||
+                  !this.$siteData["short_description_ka"] ||
+                  !this.$siteData["short_description"]
+                    ? _c(
+                        "div",
+                        {
+                          staticClass: "alert alert-danger",
+                          attrs: { role: "alert" },
+                        },
+                        [
+                          _c("strong", [_vm._v("Danger!")]),
+                          _vm._v(
+                            ' \n                    Web-site information is not fool. check page "\n                    '
+                          ),
+                          _c(
+                            "router-link",
+                            { attrs: { to: { name: "siteInfo" }, exact: "" } },
+                            [
+                              _vm._v(
+                                " \n                        About us\n                    "
+                              ),
+                            ]
+                          ),
+                          _vm._v(
+                            '\n                    ", and add missing information.\n                '
+                          ),
+                        ],
+                        1
+                      )
+                    : _vm._e(),
+                ])
               : _vm._e(),
           ],
           2

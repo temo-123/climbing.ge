@@ -38,8 +38,11 @@
                     </div>
                 </span>
 
-                <span v-for="complaint in complaints" :key="complaint.id">
-                    <div class="alert alert-warning" role="alert">
+                <span   v-if="
+                            $can('show', 'comments') ||
+                            $can('del_comment', 'comments') 
+                        " >
+                    <div class="alert alert-warning" role="alert" v-for="complaint in complaints" :key="complaint.id" >
                         <strong>Warning!</strong> one comment are a complainted. Please check it and make decision!
 
                         <div class="row">
@@ -69,22 +72,24 @@
                         </div>
                     </div>
                 </span>
-                            
-                <div class="alert alert-danger" role="alert" v-if="
-                        !this.$siteData['text'] ||
-                        !this.$siteData['text_ru'] ||
-                        !this.$siteData['text_ka'] ||
-                        !this.$siteData['short_description_ru'] ||
-                        !this.$siteData['short_description_ka'] ||
-                        !this.$siteData['short_description']
-                    ">
-                    <strong>Danger!</strong> 
-                    Web-site information is not fool. check page "
-                    <router-link :to="{name: 'siteInfo'}" exact> 
-                        About us
-                    </router-link>
-                    ", and add missing information.
-                </div>
+                
+                <span v-if="$can('edit', 'site_data')">
+                    <div class="alert alert-danger" role="alert" v-if="
+                            !this.$siteData['text'] ||
+                            !this.$siteData['text_ru'] ||
+                            !this.$siteData['text_ka'] ||
+                            !this.$siteData['short_description_ru'] ||
+                            !this.$siteData['short_description_ka'] ||
+                            !this.$siteData['short_description']
+                        ">
+                        <strong>Danger!</strong> 
+                        Web-site information is not fool. check page "
+                        <router-link :to="{name: 'siteInfo'}" exact> 
+                            About us
+                        </router-link>
+                        ", and add missing information.
+                    </div>
+                </span>
                             
             </div>
         </div>

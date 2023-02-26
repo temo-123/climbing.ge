@@ -54,10 +54,427 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
-/***/ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/user/items/OrderDiogramComponent.vue?vue&type=script&lang=js&":
-/*!***************************************************************************************************************************************************************************************************************************************!*\
-  !*** ./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/user/items/OrderDiogramComponent.vue?vue&type=script&lang=js& ***!
-  \***************************************************************************************************************************************************************************************************************************************/
+/***/ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/user/items/UserNotificationsListComponent.vue?vue&type=script&lang=js&":
+/*!************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/user/items/UserNotificationsListComponent.vue?vue&type=script&lang=js& ***!
+  \************************************************************************************************************************************************************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var vue_slicksort__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vue-slicksort */ "./node_modules/vue-slicksort/dist/vue-slicksort.umd.js");
+/* harmony import */ var vue_slicksort__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(vue_slicksort__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _innologica_vue_stackable_modal__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @innologica/vue-stackable-modal */ "./node_modules/@innologica/vue-stackable-modal/dist/vue-stackable-modal.umd.min.js");
+/* harmony import */ var _innologica_vue_stackable_modal__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_innologica_vue_stackable_modal__WEBPACK_IMPORTED_MODULE_1__);
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+ //https://github.com/Jexordexan/vue-slicksort
+
+ //https://innologica.github.io/vue-stackable-modal/#sample-css
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
+  components: {
+    StackModal: (_innologica_vue_stackable_modal__WEBPACK_IMPORTED_MODULE_1___default()),
+    SlickItem: vue_slicksort__WEBPACK_IMPORTED_MODULE_0__.SlickItem,
+    SlickList: vue_slicksort__WEBPACK_IMPORTED_MODULE_0__.SlickList
+  },
+  data: function data() {
+    return {
+      user: [],
+      complaint_loader: false,
+      complaints: [],
+      quick_comment: [],
+      comment_decision: 'select_decision',
+      selected_comment_complaint: 'This is my comment',
+      is_comment_decision_selected: false,
+      is_coment_complaint_model: false,
+      action_comment_id: 0,
+      is_admin_panel_refresh: false,
+      admin_refresh_id: 0,
+      decision_loader: false,
+      user_queries: [],
+      is_coment_model: false,
+      is_user_comment_complaint_model: false,
+      is_email_sending_loader: false,
+      complaint_comment_id: 0,
+      complaint_query_id: 0
+    };
+  },
+  mounted: function mounted() {
+    this.refresh();
+    this.get_user_data();
+  },
+  methods: {
+    get_user_data: function get_user_data() {
+      var _this = this;
+
+      axios.get('/api/auth_user').then(function (response) {
+        _this.user = response.data;
+
+        _this.get_user_queries(_this.user.id);
+      });
+    },
+    send_mail_confirm_notificatione: function send_mail_confirm_notificatione() {
+      var _this2 = this;
+
+      this.is_email_sending_loader = true;
+      axios.get('/api/email/resend').then(function (response) {
+        alert('New verification message is sended. Please check your email for verification!');
+      })["catch"](function (error) {
+        if (error.response.status === 429) {
+          alert('The page has expired or you clicked this button too many times! Please try again later or contact support!');
+        } else {
+          alert('Something went wrong! Please try again later, if you encounter this problem again, contact support!');
+        }
+      })["finally"](function () {
+        return _this2.is_email_sending_loader = false;
+      });
+    },
+    refresh: function refresh() {
+      this.admin_refresh_id++;
+      this.get_user_data();
+      this.get_comments_complaints();
+    },
+    get_user_queries: function get_user_queries(user_id) {
+      var _this3 = this;
+
+      axios.get('../api/get_user_queries/' + user_id).then(function (response) {
+        _this3.user_queries = response.data;
+      });
+    },
+    make_complaint: function make_complaint() {
+      var _this4 = this;
+
+      this.complaint_loader = true;
+      axios.post('../api/add_comment_complaint/', {
+        comment_id: this.complaint_comment_id,
+        comment_complaint: this.selected_comment_complaint,
+        email: this.complainter_email
+      }).then(function (response) {
+        _this4.is_user_comment_complaint_model = false;
+        _this4.selected_comment_complaint = 'Hostile remarks';
+
+        _this4.refresh();
+      })["catch"]()["finally"](function () {
+        return _this4.complaint_loader = false;
+      });
+    },
+    query_response: function query_response(response, query_id, comment_id) {
+      var _this5 = this;
+
+      axios.post('../api/query_response/', {
+        query_id: query_id,
+        comment_id: comment_id,
+        response: response
+      }).then(function (response) {
+        _this5.refresh;
+
+        if (_this5.is_coment_model == true) {
+          _this5.is_coment_model = false;
+        }
+      });
+    },
+    show_complaint_modal: function show_complaint_modal(comment_id) {
+      this.is_coment_model = false;
+      this.complaint_comment_id = comment_id;
+      this.is_user_comment_complaint_model = true;
+    },
+    coment_model: function coment_model(comment_id, query_id) {
+      this.get_action_comment(comment_id);
+      this.complaint_query_id = query_id;
+      this.is_coment_model = true;
+    },
+    quick_wiev_action: function quick_wiev_action(comment_id, complaint_id) {
+      this.is_coment_complaint_model = true;
+      this.get_action_comment(comment_id);
+      this.action_comment_id = comment_id;
+      this.complaint_id = complaint_id;
+    },
+    get_action_comment: function get_action_comment(comment_id) {
+      var _this6 = this;
+
+      this.quick_comment = [];
+      axios.get("../api/get_quick_comment/" + comment_id).then(function (response) {
+        _this6.quick_comment = response.data;
+      })["catch"](function (error) {
+        return console.log(error);
+      });
+    },
+    get_comments_complaints: function get_comments_complaints() {
+      var _this7 = this;
+
+      axios.get('./api/get_comments_complaints').then(function (response) {
+        _this7.complaints = response.data;
+      });
+    },
+    make_decision: function make_decision() {
+      var _this8 = this;
+
+      if (this.comment_decision == 'select_decision') {
+        this.is_comment_decision_selected = true;
+      } else {
+        this.decision_loader = true;
+        axios.post('./api/make_decision', {
+          decision: this.comment_decision,
+          comment_id: this.action_comment_id,
+          complaint_id: this.complaint_id
+        }).then(function (response) {
+          _this8.is_coment_complaint_model = false;
+
+          _this8.refresh();
+        })["finally"](function () {
+          return _this8.decision_loader = false;
+        });
+      }
+    }
+  }
+});
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/user/items/dashboards/OrderDiogramComponent.vue?vue&type=script&lang=js&":
+/*!**************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/user/items/dashboards/OrderDiogramComponent.vue?vue&type=script&lang=js& ***!
+  \**************************************************************************************************************************************************************************************************************************************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
@@ -121,10 +538,10 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
-/***/ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/user/items/SiteDataCountListComponent.vue?vue&type=script&lang=js&":
-/*!********************************************************************************************************************************************************************************************************************************************!*\
-  !*** ./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/user/items/SiteDataCountListComponent.vue?vue&type=script&lang=js& ***!
-  \********************************************************************************************************************************************************************************************************************************************/
+/***/ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/user/items/dashboards/SiteDataCountListComponent.vue?vue&type=script&lang=js&":
+/*!*******************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/user/items/dashboards/SiteDataCountListComponent.vue?vue&type=script&lang=js& ***!
+  \*******************************************************************************************************************************************************************************************************************************************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
@@ -132,6 +549,73 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -724,416 +1208,16 @@ __webpack_require__.r(__webpack_exports__);
       })["catch"](function (error) {
         return console.log(error);
       });
-    }
-  }
-});
-
-/***/ }),
-
-/***/ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/user/items/UserNotificationsListComponent.vue?vue&type=script&lang=js&":
-/*!************************************************************************************************************************************************************************************************************************************************!*\
-  !*** ./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/user/items/UserNotificationsListComponent.vue?vue&type=script&lang=js& ***!
-  \************************************************************************************************************************************************************************************************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
-/* harmony export */ });
-/* harmony import */ var vue_slicksort__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vue-slicksort */ "./node_modules/vue-slicksort/dist/vue-slicksort.umd.js");
-/* harmony import */ var vue_slicksort__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(vue_slicksort__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var _innologica_vue_stackable_modal__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @innologica/vue-stackable-modal */ "./node_modules/@innologica/vue-stackable-modal/dist/vue-stackable-modal.umd.min.js");
-/* harmony import */ var _innologica_vue_stackable_modal__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_innologica_vue_stackable_modal__WEBPACK_IMPORTED_MODULE_1__);
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
- //https://github.com/Jexordexan/vue-slicksort
-
- //https://innologica.github.io/vue-stackable-modal/#sample-css
-
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
-  components: {
-    StackModal: (_innologica_vue_stackable_modal__WEBPACK_IMPORTED_MODULE_1___default()),
-    SlickItem: vue_slicksort__WEBPACK_IMPORTED_MODULE_0__.SlickItem,
-    SlickList: vue_slicksort__WEBPACK_IMPORTED_MODULE_0__.SlickList
-  },
-  data: function data() {
-    return {
-      user: [],
-      complaint_loader: false,
-      complaints: [],
-      quick_comment: [],
-      comment_decision: 'select_decision',
-      selected_comment_complaint: 'This is my comment',
-      is_comment_decision_selected: false,
-      is_coment_complaint_model: false,
-      action_comment_id: 0,
-      is_admin_panel_refresh: false,
-      admin_refresh_id: 0,
-      decision_loader: false,
-      user_queries: [],
-      is_coment_model: false,
-      is_user_comment_complaint_model: false,
-      is_email_sending_loader: false,
-      complaint_comment_id: 0,
-      complaint_query_id: 0
-    };
-  },
-  mounted: function mounted() {
-    this.refresh();
-    this.get_user_data();
-  },
-  methods: {
-    get_user_data: function get_user_data() {
-      var _this = this;
-
-      axios.get('/api/auth_user').then(function (response) {
-        _this.user = response.data;
-
-        _this.get_user_queries(_this.user.id);
-      });
     },
-    send_mail_confirm_notificatione: function send_mail_confirm_notificatione() {
+    fix_article_bug: function fix_article_bug() {
       var _this2 = this;
 
-      this.is_email_sending_loader = true;
-      axios.get('/api/email/resend').then(function (response) {
-        alert('New verification message is sended. Please check your email for verification!');
-      })["catch"](function (error) {
-        if (error.response.status === 429) {
-          alert('The page has expired or you clicked this button too many times! Please try again later or contact support!');
-        } else {
-          alert('Something went wrong! Please try again later, if you encounter this problem again, contact support!');
-        }
-      })["finally"](function () {
-        return _this2.is_email_sending_loader = false;
-      });
-    },
-    refresh: function refresh() {
-      this.admin_refresh_id++;
-      this.get_user_data();
-      this.get_comments_complaints();
-    },
-    get_user_queries: function get_user_queries(user_id) {
-      var _this3 = this;
-
-      axios.get('../api/get_user_queries/' + user_id).then(function (response) {
-        _this3.user_queries = response.data;
-      });
-    },
-    make_complaint: function make_complaint() {
-      var _this4 = this;
-
-      this.complaint_loader = true;
-      axios.post('../api/add_comment_complaint/', {
-        comment_id: this.complaint_comment_id,
-        comment_complaint: this.selected_comment_complaint,
-        email: this.complainter_email
-      }).then(function (response) {
-        _this4.is_user_comment_complaint_model = false;
-        _this4.selected_comment_complaint = 'Hostile remarks';
-
-        _this4.refresh();
-      })["catch"]()["finally"](function () {
-        return _this4.complaint_loader = false;
-      });
-    },
-    query_response: function query_response(response, query_id, comment_id) {
-      var _this5 = this;
-
-      axios.post('../api/query_response/', {
-        query_id: query_id,
-        comment_id: comment_id,
-        response: response
-      }).then(function (response) {
-        _this5.refresh;
-
-        if (_this5.is_coment_model == true) {
-          _this5.is_coment_model = false;
-        }
-      });
-    },
-    show_complaint_modal: function show_complaint_modal(comment_id) {
-      this.is_coment_model = false;
-      this.complaint_comment_id = comment_id;
-      this.is_user_comment_complaint_model = true;
-    },
-    coment_model: function coment_model(comment_id, query_id) {
-      this.get_action_comment(comment_id);
-      this.complaint_query_id = query_id;
-      this.is_coment_model = true;
-    },
-    quick_wiev_action: function quick_wiev_action(comment_id, complaint_id) {
-      this.is_coment_complaint_model = true;
-      this.get_action_comment(comment_id);
-      this.action_comment_id = comment_id;
-      this.complaint_id = complaint_id;
-    },
-    get_action_comment: function get_action_comment(comment_id) {
-      var _this6 = this;
-
-      this.quick_comment = [];
-      axios.get("../api/get_quick_comment/" + comment_id).then(function (response) {
-        _this6.quick_comment = response.data;
-      })["catch"](function (error) {
-        return console.log(error);
-      });
-    },
-    get_comments_complaints: function get_comments_complaints() {
-      var _this7 = this;
-
-      axios.get('./api/get_comments_complaints').then(function (response) {
-        _this7.complaints = response.data;
-      });
-    },
-    make_decision: function make_decision() {
-      var _this8 = this;
-
-      if (this.comment_decision == 'select_decision') {
-        this.is_comment_decision_selected = true;
-      } else {
-        this.decision_loader = true;
-        axios.post('./api/make_decision', {
-          decision: this.comment_decision,
-          comment_id: this.action_comment_id,
-          complaint_id: this.complaint_id
-        }).then(function (response) {
-          _this8.is_coment_complaint_model = false;
-
-          _this8.refresh();
-        })["finally"](function () {
-          return _this8.decision_loader = false;
+      if (window.confirm('This action whil delite all conflictebel items! Are you shore?')) {
+        axios.get('../api/siteData/fix_article_bugs').then(function (response) {
+          // this.counts = response.data
+          _this2.get_site_counts();
+        })["catch"](function (error) {
+          return console.log(error);
         });
       }
     }
@@ -1159,8 +1243,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _innologica_vue_stackable_modal__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_innologica_vue_stackable_modal__WEBPACK_IMPORTED_MODULE_1__);
 /* harmony import */ var _items_BreadcrumbComponent_vue__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../items/BreadcrumbComponent.vue */ "./resources/js/components/user/items/BreadcrumbComponent.vue");
 /* harmony import */ var _items_UserNotificationsListComponent_vue__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../items/UserNotificationsListComponent.vue */ "./resources/js/components/user/items/UserNotificationsListComponent.vue");
-/* harmony import */ var _items_OrderDiogramComponent_vue__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../items/OrderDiogramComponent.vue */ "./resources/js/components/user/items/OrderDiogramComponent.vue");
-/* harmony import */ var _items_SiteDataCountListComponent_vue__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../items/SiteDataCountListComponent.vue */ "./resources/js/components/user/items/SiteDataCountListComponent.vue");
+/* harmony import */ var _items_dashboards_OrderDiogramComponent_vue__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../items/dashboards/OrderDiogramComponent.vue */ "./resources/js/components/user/items/dashboards/OrderDiogramComponent.vue");
+/* harmony import */ var _items_dashboards_SiteDataCountListComponent_vue__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../items/dashboards/SiteDataCountListComponent.vue */ "./resources/js/components/user/items/dashboards/SiteDataCountListComponent.vue");
 //
 //
 //
@@ -1355,8 +1439,8 @@ __webpack_require__.r(__webpack_exports__);
     SlickList: vue_slicksort__WEBPACK_IMPORTED_MODULE_0__.SlickList,
     breadcrumb: _items_BreadcrumbComponent_vue__WEBPACK_IMPORTED_MODULE_2__["default"],
     user_notifications_list: _items_UserNotificationsListComponent_vue__WEBPACK_IMPORTED_MODULE_3__["default"],
-    order_list: _items_OrderDiogramComponent_vue__WEBPACK_IMPORTED_MODULE_4__["default"],
-    data_counts_list: _items_SiteDataCountListComponent_vue__WEBPACK_IMPORTED_MODULE_5__["default"]
+    order_list: _items_dashboards_OrderDiogramComponent_vue__WEBPACK_IMPORTED_MODULE_4__["default"],
+    data_counts_list: _items_dashboards_SiteDataCountListComponent_vue__WEBPACK_IMPORTED_MODULE_5__["default"]
   },
   data: function data() {
     return {
@@ -1488,10 +1572,10 @@ ___CSS_LOADER_EXPORT___.push([module.id, "\n.user_breadcrumb {\n    background-c
 
 /***/ }),
 
-/***/ "./node_modules/laravel-mix/node_modules/css-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[1]!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/user/items/SiteDataCountListComponent.vue?vue&type=style&index=0&lang=css&":
-/*!*****************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
-  !*** ./node_modules/laravel-mix/node_modules/css-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[1]!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/user/items/SiteDataCountListComponent.vue?vue&type=style&index=0&lang=css& ***!
-  \*****************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************/
+/***/ "./node_modules/laravel-mix/node_modules/css-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[1]!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/user/items/dashboards/SiteDataCountListComponent.vue?vue&type=style&index=0&lang=css&":
+/*!****************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/laravel-mix/node_modules/css-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[1]!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/user/items/dashboards/SiteDataCountListComponent.vue?vue&type=style&index=0&lang=css& ***!
+  \****************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************/
 /***/ ((module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
@@ -1499,7 +1583,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
-/* harmony import */ var _node_modules_laravel_mix_node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../../../../node_modules/laravel-mix/node_modules/css-loader/dist/runtime/api.js */ "./node_modules/laravel-mix/node_modules/css-loader/dist/runtime/api.js");
+/* harmony import */ var _node_modules_laravel_mix_node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../../../../../node_modules/laravel-mix/node_modules/css-loader/dist/runtime/api.js */ "./node_modules/laravel-mix/node_modules/css-loader/dist/runtime/api.js");
 /* harmony import */ var _node_modules_laravel_mix_node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_node_modules_laravel_mix_node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0__);
 // Imports
 
@@ -1542,10 +1626,10 @@ var update = _node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js
 
 /***/ }),
 
-/***/ "./node_modules/style-loader/dist/cjs.js!./node_modules/laravel-mix/node_modules/css-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[1]!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/user/items/SiteDataCountListComponent.vue?vue&type=style&index=0&lang=css&":
-/*!*********************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
-  !*** ./node_modules/style-loader/dist/cjs.js!./node_modules/laravel-mix/node_modules/css-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[1]!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/user/items/SiteDataCountListComponent.vue?vue&type=style&index=0&lang=css& ***!
-  \*********************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************/
+/***/ "./node_modules/style-loader/dist/cjs.js!./node_modules/laravel-mix/node_modules/css-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[1]!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/user/items/dashboards/SiteDataCountListComponent.vue?vue&type=style&index=0&lang=css&":
+/*!********************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/style-loader/dist/cjs.js!./node_modules/laravel-mix/node_modules/css-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[1]!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/user/items/dashboards/SiteDataCountListComponent.vue?vue&type=style&index=0&lang=css& ***!
+  \********************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
@@ -1553,9 +1637,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
-/* harmony import */ var _node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! !../../../../../node_modules/style-loader/dist/runtime/injectStylesIntoStyleTag.js */ "./node_modules/style-loader/dist/runtime/injectStylesIntoStyleTag.js");
+/* harmony import */ var _node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! !../../../../../../node_modules/style-loader/dist/runtime/injectStylesIntoStyleTag.js */ "./node_modules/style-loader/dist/runtime/injectStylesIntoStyleTag.js");
 /* harmony import */ var _node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var _node_modules_laravel_mix_node_modules_css_loader_dist_cjs_js_clonedRuleSet_9_0_rules_0_use_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_dist_cjs_js_clonedRuleSet_9_0_rules_0_use_2_node_modules_vue_loader_lib_index_js_vue_loader_options_SiteDataCountListComponent_vue_vue_type_style_index_0_lang_css___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! !!../../../../../node_modules/laravel-mix/node_modules/css-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[1]!../../../../../node_modules/vue-loader/lib/loaders/stylePostLoader.js!../../../../../node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[2]!../../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./SiteDataCountListComponent.vue?vue&type=style&index=0&lang=css& */ "./node_modules/laravel-mix/node_modules/css-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[1]!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/user/items/SiteDataCountListComponent.vue?vue&type=style&index=0&lang=css&");
+/* harmony import */ var _node_modules_laravel_mix_node_modules_css_loader_dist_cjs_js_clonedRuleSet_9_0_rules_0_use_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_dist_cjs_js_clonedRuleSet_9_0_rules_0_use_2_node_modules_vue_loader_lib_index_js_vue_loader_options_SiteDataCountListComponent_vue_vue_type_style_index_0_lang_css___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! !!../../../../../../node_modules/laravel-mix/node_modules/css-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[1]!../../../../../../node_modules/vue-loader/lib/loaders/stylePostLoader.js!../../../../../../node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[2]!../../../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./SiteDataCountListComponent.vue?vue&type=style&index=0&lang=css& */ "./node_modules/laravel-mix/node_modules/css-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[1]!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/user/items/dashboards/SiteDataCountListComponent.vue?vue&type=style&index=0&lang=css&");
 
             
 
@@ -1646,86 +1730,6 @@ component.options.__file = "resources/js/components/user/items/BreadcrumbCompone
 
 /***/ }),
 
-/***/ "./resources/js/components/user/items/OrderDiogramComponent.vue":
-/*!**********************************************************************!*\
-  !*** ./resources/js/components/user/items/OrderDiogramComponent.vue ***!
-  \**********************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
-/* harmony export */ });
-/* harmony import */ var _OrderDiogramComponent_vue_vue_type_template_id_1cd456e2___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./OrderDiogramComponent.vue?vue&type=template&id=1cd456e2& */ "./resources/js/components/user/items/OrderDiogramComponent.vue?vue&type=template&id=1cd456e2&");
-/* harmony import */ var _OrderDiogramComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./OrderDiogramComponent.vue?vue&type=script&lang=js& */ "./resources/js/components/user/items/OrderDiogramComponent.vue?vue&type=script&lang=js&");
-/* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! !../../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
-
-
-
-
-
-/* normalize component */
-;
-var component = (0,_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
-  _OrderDiogramComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
-  _OrderDiogramComponent_vue_vue_type_template_id_1cd456e2___WEBPACK_IMPORTED_MODULE_0__.render,
-  _OrderDiogramComponent_vue_vue_type_template_id_1cd456e2___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns,
-  false,
-  null,
-  null,
-  null
-  
-)
-
-/* hot reload */
-if (false) { var api; }
-component.options.__file = "resources/js/components/user/items/OrderDiogramComponent.vue"
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (component.exports);
-
-/***/ }),
-
-/***/ "./resources/js/components/user/items/SiteDataCountListComponent.vue":
-/*!***************************************************************************!*\
-  !*** ./resources/js/components/user/items/SiteDataCountListComponent.vue ***!
-  \***************************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
-/* harmony export */ });
-/* harmony import */ var _SiteDataCountListComponent_vue_vue_type_template_id_7387e6f9___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./SiteDataCountListComponent.vue?vue&type=template&id=7387e6f9& */ "./resources/js/components/user/items/SiteDataCountListComponent.vue?vue&type=template&id=7387e6f9&");
-/* harmony import */ var _SiteDataCountListComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./SiteDataCountListComponent.vue?vue&type=script&lang=js& */ "./resources/js/components/user/items/SiteDataCountListComponent.vue?vue&type=script&lang=js&");
-/* harmony import */ var _SiteDataCountListComponent_vue_vue_type_style_index_0_lang_css___WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./SiteDataCountListComponent.vue?vue&type=style&index=0&lang=css& */ "./resources/js/components/user/items/SiteDataCountListComponent.vue?vue&type=style&index=0&lang=css&");
-/* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! !../../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
-
-
-
-;
-
-
-/* normalize component */
-
-var component = (0,_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_3__["default"])(
-  _SiteDataCountListComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
-  _SiteDataCountListComponent_vue_vue_type_template_id_7387e6f9___WEBPACK_IMPORTED_MODULE_0__.render,
-  _SiteDataCountListComponent_vue_vue_type_template_id_7387e6f9___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns,
-  false,
-  null,
-  null,
-  null
-  
-)
-
-/* hot reload */
-if (false) { var api; }
-component.options.__file = "resources/js/components/user/items/SiteDataCountListComponent.vue"
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (component.exports);
-
-/***/ }),
-
 /***/ "./resources/js/components/user/items/UserNotificationsListComponent.vue":
 /*!*******************************************************************************!*\
   !*** ./resources/js/components/user/items/UserNotificationsListComponent.vue ***!
@@ -1761,6 +1765,86 @@ var component = (0,_node_modules_vue_loader_lib_runtime_componentNormalizer_js__
 /* hot reload */
 if (false) { var api; }
 component.options.__file = "resources/js/components/user/items/UserNotificationsListComponent.vue"
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (component.exports);
+
+/***/ }),
+
+/***/ "./resources/js/components/user/items/dashboards/OrderDiogramComponent.vue":
+/*!*********************************************************************************!*\
+  !*** ./resources/js/components/user/items/dashboards/OrderDiogramComponent.vue ***!
+  \*********************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _OrderDiogramComponent_vue_vue_type_template_id_4f2fcd1c___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./OrderDiogramComponent.vue?vue&type=template&id=4f2fcd1c& */ "./resources/js/components/user/items/dashboards/OrderDiogramComponent.vue?vue&type=template&id=4f2fcd1c&");
+/* harmony import */ var _OrderDiogramComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./OrderDiogramComponent.vue?vue&type=script&lang=js& */ "./resources/js/components/user/items/dashboards/OrderDiogramComponent.vue?vue&type=script&lang=js&");
+/* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! !../../../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+/* normalize component */
+;
+var component = (0,_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+  _OrderDiogramComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _OrderDiogramComponent_vue_vue_type_template_id_4f2fcd1c___WEBPACK_IMPORTED_MODULE_0__.render,
+  _OrderDiogramComponent_vue_vue_type_template_id_4f2fcd1c___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns,
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/components/user/items/dashboards/OrderDiogramComponent.vue"
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (component.exports);
+
+/***/ }),
+
+/***/ "./resources/js/components/user/items/dashboards/SiteDataCountListComponent.vue":
+/*!**************************************************************************************!*\
+  !*** ./resources/js/components/user/items/dashboards/SiteDataCountListComponent.vue ***!
+  \**************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _SiteDataCountListComponent_vue_vue_type_template_id_0491832e___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./SiteDataCountListComponent.vue?vue&type=template&id=0491832e& */ "./resources/js/components/user/items/dashboards/SiteDataCountListComponent.vue?vue&type=template&id=0491832e&");
+/* harmony import */ var _SiteDataCountListComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./SiteDataCountListComponent.vue?vue&type=script&lang=js& */ "./resources/js/components/user/items/dashboards/SiteDataCountListComponent.vue?vue&type=script&lang=js&");
+/* harmony import */ var _SiteDataCountListComponent_vue_vue_type_style_index_0_lang_css___WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./SiteDataCountListComponent.vue?vue&type=style&index=0&lang=css& */ "./resources/js/components/user/items/dashboards/SiteDataCountListComponent.vue?vue&type=style&index=0&lang=css&");
+/* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! !../../../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+;
+
+
+/* normalize component */
+
+var component = (0,_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_3__["default"])(
+  _SiteDataCountListComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _SiteDataCountListComponent_vue_vue_type_template_id_0491832e___WEBPACK_IMPORTED_MODULE_0__.render,
+  _SiteDataCountListComponent_vue_vue_type_template_id_0491832e___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns,
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/components/user/items/dashboards/SiteDataCountListComponent.vue"
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (component.exports);
 
 /***/ }),
@@ -1820,38 +1904,6 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
-/***/ "./resources/js/components/user/items/OrderDiogramComponent.vue?vue&type=script&lang=js&":
-/*!***********************************************************************************************!*\
-  !*** ./resources/js/components/user/items/OrderDiogramComponent.vue?vue&type=script&lang=js& ***!
-  \***********************************************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
-/* harmony export */ });
-/* harmony import */ var _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_0_rules_0_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_OrderDiogramComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!../../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./OrderDiogramComponent.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/user/items/OrderDiogramComponent.vue?vue&type=script&lang=js&");
- /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (_node_modules_babel_loader_lib_index_js_clonedRuleSet_5_0_rules_0_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_OrderDiogramComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
-
-/***/ }),
-
-/***/ "./resources/js/components/user/items/SiteDataCountListComponent.vue?vue&type=script&lang=js&":
-/*!****************************************************************************************************!*\
-  !*** ./resources/js/components/user/items/SiteDataCountListComponent.vue?vue&type=script&lang=js& ***!
-  \****************************************************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
-/* harmony export */ });
-/* harmony import */ var _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_0_rules_0_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_SiteDataCountListComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!../../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./SiteDataCountListComponent.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/user/items/SiteDataCountListComponent.vue?vue&type=script&lang=js&");
- /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (_node_modules_babel_loader_lib_index_js_clonedRuleSet_5_0_rules_0_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_SiteDataCountListComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
-
-/***/ }),
-
 /***/ "./resources/js/components/user/items/UserNotificationsListComponent.vue?vue&type=script&lang=js&":
 /*!********************************************************************************************************!*\
   !*** ./resources/js/components/user/items/UserNotificationsListComponent.vue?vue&type=script&lang=js& ***!
@@ -1865,6 +1917,38 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_0_rules_0_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_UserNotificationsListComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!../../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./UserNotificationsListComponent.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/user/items/UserNotificationsListComponent.vue?vue&type=script&lang=js&");
  /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (_node_modules_babel_loader_lib_index_js_clonedRuleSet_5_0_rules_0_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_UserNotificationsListComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./resources/js/components/user/items/dashboards/OrderDiogramComponent.vue?vue&type=script&lang=js&":
+/*!**********************************************************************************************************!*\
+  !*** ./resources/js/components/user/items/dashboards/OrderDiogramComponent.vue?vue&type=script&lang=js& ***!
+  \**********************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_0_rules_0_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_OrderDiogramComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../../node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!../../../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./OrderDiogramComponent.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/user/items/dashboards/OrderDiogramComponent.vue?vue&type=script&lang=js&");
+ /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (_node_modules_babel_loader_lib_index_js_clonedRuleSet_5_0_rules_0_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_OrderDiogramComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./resources/js/components/user/items/dashboards/SiteDataCountListComponent.vue?vue&type=script&lang=js&":
+/*!***************************************************************************************************************!*\
+  !*** ./resources/js/components/user/items/dashboards/SiteDataCountListComponent.vue?vue&type=script&lang=js& ***!
+  \***************************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_0_rules_0_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_SiteDataCountListComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../../node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!../../../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./SiteDataCountListComponent.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/user/items/dashboards/SiteDataCountListComponent.vue?vue&type=script&lang=js&");
+ /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (_node_modules_babel_loader_lib_index_js_clonedRuleSet_5_0_rules_0_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_SiteDataCountListComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
 
 /***/ }),
 
@@ -1897,15 +1981,15 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
-/***/ "./resources/js/components/user/items/SiteDataCountListComponent.vue?vue&type=style&index=0&lang=css&":
-/*!************************************************************************************************************!*\
-  !*** ./resources/js/components/user/items/SiteDataCountListComponent.vue?vue&type=style&index=0&lang=css& ***!
-  \************************************************************************************************************/
+/***/ "./resources/js/components/user/items/dashboards/SiteDataCountListComponent.vue?vue&type=style&index=0&lang=css&":
+/*!***********************************************************************************************************************!*\
+  !*** ./resources/js/components/user/items/dashboards/SiteDataCountListComponent.vue?vue&type=style&index=0&lang=css& ***!
+  \***********************************************************************************************************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _node_modules_style_loader_dist_cjs_js_node_modules_laravel_mix_node_modules_css_loader_dist_cjs_js_clonedRuleSet_9_0_rules_0_use_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_dist_cjs_js_clonedRuleSet_9_0_rules_0_use_2_node_modules_vue_loader_lib_index_js_vue_loader_options_SiteDataCountListComponent_vue_vue_type_style_index_0_lang_css___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../node_modules/style-loader/dist/cjs.js!../../../../../node_modules/laravel-mix/node_modules/css-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[1]!../../../../../node_modules/vue-loader/lib/loaders/stylePostLoader.js!../../../../../node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[2]!../../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./SiteDataCountListComponent.vue?vue&type=style&index=0&lang=css& */ "./node_modules/style-loader/dist/cjs.js!./node_modules/laravel-mix/node_modules/css-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[1]!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/user/items/SiteDataCountListComponent.vue?vue&type=style&index=0&lang=css&");
+/* harmony import */ var _node_modules_style_loader_dist_cjs_js_node_modules_laravel_mix_node_modules_css_loader_dist_cjs_js_clonedRuleSet_9_0_rules_0_use_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_dist_cjs_js_clonedRuleSet_9_0_rules_0_use_2_node_modules_vue_loader_lib_index_js_vue_loader_options_SiteDataCountListComponent_vue_vue_type_style_index_0_lang_css___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../../node_modules/style-loader/dist/cjs.js!../../../../../../node_modules/laravel-mix/node_modules/css-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[1]!../../../../../../node_modules/vue-loader/lib/loaders/stylePostLoader.js!../../../../../../node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[2]!../../../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./SiteDataCountListComponent.vue?vue&type=style&index=0&lang=css& */ "./node_modules/style-loader/dist/cjs.js!./node_modules/laravel-mix/node_modules/css-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[1]!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/user/items/dashboards/SiteDataCountListComponent.vue?vue&type=style&index=0&lang=css&");
 
 
 /***/ }),
@@ -1927,40 +2011,6 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
-/***/ "./resources/js/components/user/items/OrderDiogramComponent.vue?vue&type=template&id=1cd456e2&":
-/*!*****************************************************************************************************!*\
-  !*** ./resources/js/components/user/items/OrderDiogramComponent.vue?vue&type=template&id=1cd456e2& ***!
-  \*****************************************************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "render": () => (/* reexport safe */ _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_OrderDiogramComponent_vue_vue_type_template_id_1cd456e2___WEBPACK_IMPORTED_MODULE_0__.render),
-/* harmony export */   "staticRenderFns": () => (/* reexport safe */ _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_OrderDiogramComponent_vue_vue_type_template_id_1cd456e2___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns)
-/* harmony export */ });
-/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_OrderDiogramComponent_vue_vue_type_template_id_1cd456e2___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./OrderDiogramComponent.vue?vue&type=template&id=1cd456e2& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/user/items/OrderDiogramComponent.vue?vue&type=template&id=1cd456e2&");
-
-
-/***/ }),
-
-/***/ "./resources/js/components/user/items/SiteDataCountListComponent.vue?vue&type=template&id=7387e6f9&":
-/*!**********************************************************************************************************!*\
-  !*** ./resources/js/components/user/items/SiteDataCountListComponent.vue?vue&type=template&id=7387e6f9& ***!
-  \**********************************************************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "render": () => (/* reexport safe */ _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_SiteDataCountListComponent_vue_vue_type_template_id_7387e6f9___WEBPACK_IMPORTED_MODULE_0__.render),
-/* harmony export */   "staticRenderFns": () => (/* reexport safe */ _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_SiteDataCountListComponent_vue_vue_type_template_id_7387e6f9___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns)
-/* harmony export */ });
-/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_SiteDataCountListComponent_vue_vue_type_template_id_7387e6f9___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./SiteDataCountListComponent.vue?vue&type=template&id=7387e6f9& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/user/items/SiteDataCountListComponent.vue?vue&type=template&id=7387e6f9&");
-
-
-/***/ }),
-
 /***/ "./resources/js/components/user/items/UserNotificationsListComponent.vue?vue&type=template&id=b3eddc0c&":
 /*!**************************************************************************************************************!*\
   !*** ./resources/js/components/user/items/UserNotificationsListComponent.vue?vue&type=template&id=b3eddc0c& ***!
@@ -1974,6 +2024,40 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "staticRenderFns": () => (/* reexport safe */ _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_UserNotificationsListComponent_vue_vue_type_template_id_b3eddc0c___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns)
 /* harmony export */ });
 /* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_UserNotificationsListComponent_vue_vue_type_template_id_b3eddc0c___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./UserNotificationsListComponent.vue?vue&type=template&id=b3eddc0c& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/user/items/UserNotificationsListComponent.vue?vue&type=template&id=b3eddc0c&");
+
+
+/***/ }),
+
+/***/ "./resources/js/components/user/items/dashboards/OrderDiogramComponent.vue?vue&type=template&id=4f2fcd1c&":
+/*!****************************************************************************************************************!*\
+  !*** ./resources/js/components/user/items/dashboards/OrderDiogramComponent.vue?vue&type=template&id=4f2fcd1c& ***!
+  \****************************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "render": () => (/* reexport safe */ _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_OrderDiogramComponent_vue_vue_type_template_id_4f2fcd1c___WEBPACK_IMPORTED_MODULE_0__.render),
+/* harmony export */   "staticRenderFns": () => (/* reexport safe */ _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_OrderDiogramComponent_vue_vue_type_template_id_4f2fcd1c___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns)
+/* harmony export */ });
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_OrderDiogramComponent_vue_vue_type_template_id_4f2fcd1c___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./OrderDiogramComponent.vue?vue&type=template&id=4f2fcd1c& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/user/items/dashboards/OrderDiogramComponent.vue?vue&type=template&id=4f2fcd1c&");
+
+
+/***/ }),
+
+/***/ "./resources/js/components/user/items/dashboards/SiteDataCountListComponent.vue?vue&type=template&id=0491832e&":
+/*!*********************************************************************************************************************!*\
+  !*** ./resources/js/components/user/items/dashboards/SiteDataCountListComponent.vue?vue&type=template&id=0491832e& ***!
+  \*********************************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "render": () => (/* reexport safe */ _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_SiteDataCountListComponent_vue_vue_type_template_id_0491832e___WEBPACK_IMPORTED_MODULE_0__.render),
+/* harmony export */   "staticRenderFns": () => (/* reexport safe */ _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_SiteDataCountListComponent_vue_vue_type_template_id_0491832e___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns)
+/* harmony export */ });
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_SiteDataCountListComponent_vue_vue_type_template_id_0491832e___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./SiteDataCountListComponent.vue?vue&type=template&id=0491832e& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/user/items/dashboards/SiteDataCountListComponent.vue?vue&type=template&id=0491832e&");
 
 
 /***/ }),
@@ -2038,1315 +2122,6 @@ var render = function () {
         },
         [_vm._v(_vm._s(_vm.page))]
       ),
-    ]),
-  ])
-}
-var staticRenderFns = []
-render._withStripped = true
-
-
-
-/***/ }),
-
-/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/user/items/OrderDiogramComponent.vue?vue&type=template&id=1cd456e2&":
-/*!********************************************************************************************************************************************************************************************************************************************!*\
-  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/user/items/OrderDiogramComponent.vue?vue&type=template&id=1cd456e2& ***!
-  \********************************************************************************************************************************************************************************************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "render": () => (/* binding */ render),
-/* harmony export */   "staticRenderFns": () => (/* binding */ staticRenderFns)
-/* harmony export */ });
-var render = function () {
-  var _vm = this
-  var _h = _vm.$createElement
-  var _c = _vm._self._c || _h
-  return _c(
-    "div",
-    { staticClass: "col-md-12" },
-    [
-      _c("h2", [_vm._v("Week Orders")]),
-      _vm._v(" "),
-      _c("GChart", {
-        attrs: {
-          type: "LineChart",
-          data: _vm.week_orders_data,
-          options: _vm.week_orders_options,
-        },
-      }),
-      _vm._v(" "),
-      _c("h2", [_vm._v("Year Orders")]),
-      _vm._v(" "),
-      _c("GChart", {
-        attrs: {
-          type: "LineChart",
-          data: _vm.year_orders_data,
-          options: _vm.year_orders_options,
-        },
-      }),
-    ],
-    1
-  )
-}
-var staticRenderFns = []
-render._withStripped = true
-
-
-
-/***/ }),
-
-/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/user/items/SiteDataCountListComponent.vue?vue&type=template&id=7387e6f9&":
-/*!*************************************************************************************************************************************************************************************************************************************************!*\
-  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/user/items/SiteDataCountListComponent.vue?vue&type=template&id=7387e6f9& ***!
-  \*************************************************************************************************************************************************************************************************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "render": () => (/* binding */ render),
-/* harmony export */   "staticRenderFns": () => (/* binding */ staticRenderFns)
-/* harmony export */ });
-var render = function () {
-  var _vm = this
-  var _h = _vm.$createElement
-  var _c = _vm._self._c || _h
-  return _c("div", { staticClass: "col-md-12" }, [
-    _c("h2", [_vm._v("Articles")]),
-    _vm._v(" "),
-    _c("div", { staticClass: "card" }, [
-      _c("div", { staticClass: "card-body" }, [
-        _c("div", { staticClass: "row" }, [
-          _c("div", { staticClass: "col-md-6 offset-md-3" }, [
-            _c("div", { staticClass: "card-counter primary" }, [
-              _c("i", {
-                staticClass: "fa fa-window-maximize",
-                attrs: { "aria-hidden": "true" },
-              }),
-              _vm._v(" "),
-              _c("span", { staticClass: "count-numbers" }, [
-                _vm._v(_vm._s(this.counts["global_articles_count"])),
-              ]),
-              _vm._v(" "),
-              _c("span", { staticClass: "count-name" }, [_vm._v("Articles")]),
-            ]),
-          ]),
-        ]),
-        _vm._v(" "),
-        _c("div", { staticClass: "row" }, [
-          _c("div", { staticClass: "col-md-4" }, [
-            _c("div", { staticClass: "card-counter primary" }, [
-              _c("i", {
-                staticClass: "fa fa-language",
-                attrs: { "aria-hidden": "true" },
-              }),
-              _vm._v(" "),
-              _c("span", { staticClass: "count-numbers" }, [
-                _vm._v(_vm._s(this.counts["us_articles_count"])),
-              ]),
-              _vm._v(" "),
-              _c("span", { staticClass: "count-name" }, [
-                _vm._v("English articles"),
-              ]),
-            ]),
-          ]),
-          _vm._v(" "),
-          _c("div", { staticClass: "col-md-4" }, [
-            _c("div", { staticClass: "card-counter primary" }, [
-              _c("i", {
-                staticClass: "fa fa-language",
-                attrs: { "aria-hidden": "true" },
-              }),
-              _vm._v(" "),
-              _c("span", { staticClass: "count-numbers" }, [
-                _vm._v(_vm._s(this.counts["ru_articles_count"])),
-              ]),
-              _vm._v(" "),
-              _c("span", { staticClass: "count-name" }, [
-                _vm._v("Russion articles"),
-              ]),
-            ]),
-          ]),
-          _vm._v(" "),
-          _c("div", { staticClass: "col-md-4" }, [
-            _c("div", { staticClass: "card-counter primary" }, [
-              _c("i", {
-                staticClass: "fa fa-language",
-                attrs: { "aria-hidden": "true" },
-              }),
-              _vm._v(" "),
-              _c("span", { staticClass: "count-numbers" }, [
-                _vm._v(_vm._s(this.counts["ka_articles_count"])),
-              ]),
-              _vm._v(" "),
-              _c("span", { staticClass: "count-name" }, [
-                _vm._v("Georgian articles"),
-              ]),
-            ]),
-          ]),
-        ]),
-        _vm._v(" "),
-        this.counts["us_articles_errors_count"] ||
-        this.counts["ru_articles_errors_count"] ||
-        this.counts["ka_articles_errors_count"]
-          ? _c(
-              "div",
-              { staticClass: "alert alert-danger", attrs: { role: "alert" } },
-              [
-                this.counts["us_articles_errors_count"]
-                  ? _c("div", { staticClass: "col" }, [
-                      _c("i", {
-                        staticClass: "fa fa-bug",
-                        attrs: { "aria-hidden": "true" },
-                      }),
-                      _vm._v(
-                        " \n                    us_articles error_count - " +
-                          _vm._s(this.counts["us_articles_errors_count"]) +
-                          " \n\n                    "
-                      ),
-                      _c(
-                        "button",
-                        {
-                          staticClass: "btn btn-danger float-right",
-                          on: {
-                            click: function ($event) {
-                              return _vm.quick_wiev_action(
-                                _vm.complaint.comment_id,
-                                _vm.complaint.id
-                              )
-                            },
-                          },
-                        },
-                        [
-                          _vm._v(
-                            "\n                        Fix bag (delete all this articles)\n                    "
-                          ),
-                        ]
-                      ),
-                    ])
-                  : _vm._e(),
-                _vm._v(" "),
-                this.counts["ru_articles_errors_count"]
-                  ? _c("div", { staticClass: "col" }, [
-                      _c("i", {
-                        staticClass: "fa fa-bug",
-                        attrs: { "aria-hidden": "true" },
-                      }),
-                      _vm._v(
-                        " \n                    ru_articles error_count - " +
-                          _vm._s(this.counts["ru_articles_errors_count"]) +
-                          " \n\n                    "
-                      ),
-                      _c(
-                        "button",
-                        {
-                          staticClass: "btn btn-danger float-right",
-                          on: {
-                            click: function ($event) {
-                              return _vm.quick_wiev_action(
-                                _vm.complaint.comment_id,
-                                _vm.complaint.id
-                              )
-                            },
-                          },
-                        },
-                        [
-                          _vm._v(
-                            "\n                        Fix bag (delete all this articles)\n                    "
-                          ),
-                        ]
-                      ),
-                    ])
-                  : _vm._e(),
-                _vm._v(" "),
-                this.counts["ka_articles_errors_count"]
-                  ? _c("div", { staticClass: "col" }, [
-                      _c("i", {
-                        staticClass: "fa fa-bug",
-                        attrs: { "aria-hidden": "true" },
-                      }),
-                      _vm._v(
-                        " \n                    ka_articles error_count - " +
-                          _vm._s(this.counts["ka_articles_errors_count"]) +
-                          " \n\n                    "
-                      ),
-                      _c(
-                        "button",
-                        {
-                          staticClass: "btn btn-danger float-right",
-                          on: {
-                            click: function ($event) {
-                              return _vm.quick_wiev_action(
-                                _vm.complaint.comment_id,
-                                _vm.complaint.id
-                              )
-                            },
-                          },
-                        },
-                        [
-                          _vm._v(
-                            "\n                        Fix bag (delete all this articles)\n                    "
-                          ),
-                        ]
-                      ),
-                    ])
-                  : _vm._e(),
-              ]
-            )
-          : _vm._e(),
-      ]),
-    ]),
-    _vm._v(" "),
-    _c("div", { staticClass: "card" }, [
-      _c("div", { staticClass: "card-body" }, [
-        _c("div", { staticClass: "row" }, [
-          _c(
-            "div",
-            { staticClass: "col-md-4" },
-            [
-              _c(
-                "router-link",
-                {
-                  attrs: {
-                    to: {
-                      name: "articlelist",
-                      params: { article_category: "indoor" },
-                    },
-                  },
-                },
-                [
-                  _c("div", { staticClass: "card-counter primary" }, [
-                    _c("i", {
-                      staticClass: "fa fa-building",
-                      attrs: { "aria-hidden": "true" },
-                    }),
-                    _vm._v(" "),
-                    _c("span", { staticClass: "count-numbers" }, [
-                      _vm._v(_vm._s(this.counts["indoor_gyms"])),
-                    ]),
-                    _vm._v(" "),
-                    _c("span", { staticClass: "count-name" }, [
-                      _vm._v("Indoor gyms"),
-                    ]),
-                  ]),
-                ]
-              ),
-            ],
-            1
-          ),
-          _vm._v(" "),
-          _c(
-            "div",
-            { staticClass: "col-md-4" },
-            [
-              _c(
-                "router-link",
-                {
-                  attrs: {
-                    to: {
-                      name: "articlelist",
-                      params: { article_category: "ice" },
-                    },
-                  },
-                },
-                [
-                  _c("div", { staticClass: "card-counter primary" }, [
-                    _c("i", {
-                      staticClass: "fa fa-snowflake-o",
-                      attrs: { "aria-hidden": "true" },
-                    }),
-                    _vm._v(" "),
-                    _c("span", { staticClass: "count-numbers" }, [
-                      _vm._v(_vm._s(this.counts["ice_climbing"])),
-                    ]),
-                    _vm._v(" "),
-                    _c("span", { staticClass: "count-name" }, [
-                      _vm._v("Ice climbing"),
-                    ]),
-                  ]),
-                ]
-              ),
-            ],
-            1
-          ),
-          _vm._v(" "),
-          _c(
-            "div",
-            { staticClass: "col-md-4" },
-            [
-              _c(
-                "router-link",
-                {
-                  attrs: {
-                    to: {
-                      name: "articlelist",
-                      params: { article_category: "other" },
-                    },
-                  },
-                },
-                [
-                  _c("div", { staticClass: "card-counter primary" }, [
-                    _c("i", {
-                      staticClass: "fa fa-bicycle",
-                      attrs: { "aria-hidden": "true" },
-                    }),
-                    _vm._v(" "),
-                    _c("span", { staticClass: "count-numbers" }, [
-                      _vm._v(_vm._s(this.counts["other_antyvity"])),
-                    ]),
-                    _vm._v(" "),
-                    _c("span", { staticClass: "count-name" }, [
-                      _vm._v("Other antyvity"),
-                    ]),
-                  ]),
-                ]
-              ),
-            ],
-            1
-          ),
-        ]),
-        _vm._v(" "),
-        _c("div", { staticClass: "row" }, [
-          _c(
-            "div",
-            { staticClass: "col-md-6" },
-            [
-              _c(
-                "router-link",
-                {
-                  attrs: {
-                    to: {
-                      name: "articlelist",
-                      params: { article_category: "news" },
-                    },
-                  },
-                },
-                [
-                  _c("div", { staticClass: "card-counter primary" }, [
-                    _c("i", {
-                      staticClass: "fa fa-newspaper-o",
-                      attrs: { "aria-hidden": "true" },
-                    }),
-                    _vm._v(" "),
-                    _c("span", { staticClass: "count-numbers" }, [
-                      _vm._v(_vm._s(this.counts["news"])),
-                    ]),
-                    _vm._v(" "),
-                    _c("span", { staticClass: "count-name" }, [_vm._v("News")]),
-                  ]),
-                ]
-              ),
-            ],
-            1
-          ),
-          _vm._v(" "),
-          _c(
-            "div",
-            { staticClass: "col-md-6" },
-            [
-              _c(
-                "router-link",
-                {
-                  attrs: {
-                    to: {
-                      name: "articlelist",
-                      params: { article_category: "tech_tip" },
-                    },
-                  },
-                },
-                [
-                  _c("div", { staticClass: "card-counter primary" }, [
-                    _c("i", {
-                      staticClass: "fa fa-shield",
-                      attrs: { "aria-hidden": "true" },
-                    }),
-                    _vm._v(" "),
-                    _c("span", { staticClass: "count-numbers" }, [
-                      _vm._v(_vm._s(this.counts["techtip"])),
-                    ]),
-                    _vm._v(" "),
-                    _c("span", { staticClass: "count-name" }, [
-                      _vm._v("Techtip"),
-                    ]),
-                  ]),
-                ]
-              ),
-            ],
-            1
-          ),
-        ]),
-      ]),
-    ]),
-    _vm._v(" "),
-    _c("hr"),
-    _vm._v(" "),
-    _c("h2", [_vm._v("Outdoor climbing")]),
-    _vm._v(" "),
-    _c("div", { staticClass: "card" }, [
-      _c("div", { staticClass: "card-body" }, [
-        _c("div", { staticClass: "row" }, [
-          _c(
-            "div",
-            { staticClass: "col-md-6" },
-            [
-              _c(
-                "router-link",
-                {
-                  attrs: {
-                    to: {
-                      name: "articlelist",
-                      params: { article_category: "outdoor" },
-                    },
-                  },
-                },
-                [
-                  _c("div", { staticClass: "card-counter primary" }, [
-                    _c("i", {
-                      staticClass: "fa fa-window-maximize",
-                      attrs: { "aria-hidden": "true" },
-                    }),
-                    _vm._v(" "),
-                    _c("span", { staticClass: "count-numbers" }, [
-                      _vm._v(_vm._s(this.counts["outdoor_climbing"])),
-                    ]),
-                    _vm._v(" "),
-                    _c("span", { staticClass: "count-name" }, [
-                      _vm._v("Outdoor climbing"),
-                    ]),
-                  ]),
-                ]
-              ),
-            ],
-            1
-          ),
-          _vm._v(" "),
-          _c(
-            "div",
-            { staticClass: "col-md-6" },
-            [
-              _c(
-                "router-link",
-                {
-                  attrs: {
-                    to: {
-                      name: "articlelist",
-                      params: { article_category: "outdoor" },
-                    },
-                  },
-                },
-                [
-                  _c("div", { staticClass: "card-counter primary" }, [
-                    _c("i", {
-                      staticClass: "fa fa-map-o",
-                      attrs: { "aria-hidden": "true" },
-                    }),
-                    _vm._v(" "),
-                    _c("span", { staticClass: "count-numbers" }, [
-                      _vm._v(_vm._s(this.counts["region"])),
-                    ]),
-                    _vm._v(" "),
-                    _c("span", { staticClass: "count-name" }, [
-                      _vm._v("Spots regions"),
-                    ]),
-                  ]),
-                ]
-              ),
-            ],
-            1
-          ),
-        ]),
-      ]),
-    ]),
-    _vm._v(" "),
-    _c("hr"),
-    _vm._v(" "),
-    _c("h2", [_vm._v("Mountaineering")]),
-    _vm._v(" "),
-    _c("div", { staticClass: "card" }, [
-      _c("div", { staticClass: "card-body" }, [
-        _c("div", { staticClass: "row" }, [
-          _c(
-            "div",
-            { staticClass: "col-md-6" },
-            [
-              _c("router-link", { attrs: { to: { name: "mountlist" } } }, [
-                _c("div", { staticClass: "card-counter primary" }, [
-                  _c("i", {
-                    staticClass: "fa fa-area-chart",
-                    attrs: { "aria-hidden": "true" },
-                  }),
-                  _vm._v(" "),
-                  _c("span", { staticClass: "count-numbers" }, [
-                    _vm._v(_vm._s(this.counts["mountaineering_route"])),
-                  ]),
-                  _vm._v(" "),
-                  _c("span", { staticClass: "count-name" }, [
-                    _vm._v("Mountaineering climbing routes"),
-                  ]),
-                ]),
-              ]),
-            ],
-            1
-          ),
-          _vm._v(" "),
-          _c(
-            "div",
-            { staticClass: "col-md-6" },
-            [
-              _c("router-link", { attrs: { to: { name: "mountlist" } } }, [
-                _c("div", { staticClass: "card-counter primary" }, [
-                  _c("i", {
-                    staticClass: "fa fa-area-chart",
-                    attrs: { "aria-hidden": "true" },
-                  }),
-                  _vm._v(" "),
-                  _c("span", { staticClass: "count-numbers" }, [
-                    _vm._v(_vm._s(this.counts["mount_masives"])),
-                  ]),
-                  _vm._v(" "),
-                  _c("span", { staticClass: "count-name" }, [
-                    _vm._v("Mount masiv"),
-                  ]),
-                ]),
-              ]),
-            ],
-            1
-          ),
-        ]),
-      ]),
-    ]),
-    _vm._v(" "),
-    _c("hr"),
-    _vm._v(" "),
-    _c("h2", [_vm._v("Events")]),
-    _vm._v(" "),
-    _c("div", { staticClass: "card" }, [
-      _c("div", { staticClass: "card-body" }, [
-        _c("div", { staticClass: "row" }, [
-          _c(
-            "div",
-            { staticClass: "col-md-6" },
-            [
-              _c("router-link", { attrs: { to: { name: "eventList" } } }, [
-                _c("div", { staticClass: "card-counter success" }, [
-                  _c("i", {
-                    staticClass: "fa fa-calendar-check-o",
-                    attrs: { "aria-hidden": "true" },
-                  }),
-                  _vm._v(" "),
-                  _c("span", { staticClass: "count-numbers" }, [_vm._v("XXX")]),
-                  _vm._v(" "),
-                  _c("span", { staticClass: "count-name" }, [
-                    _vm._v("Active events"),
-                  ]),
-                ]),
-              ]),
-            ],
-            1
-          ),
-          _vm._v(" "),
-          _c(
-            "div",
-            { staticClass: "col-md-6" },
-            [
-              _c("router-link", { attrs: { to: { name: "eventList" } } }, [
-                _c("div", { staticClass: "card-counter success" }, [
-                  _c("i", {
-                    staticClass: "fa fa-calendar-minus-o",
-                    attrs: { "aria-hidden": "true" },
-                  }),
-                  _vm._v(" "),
-                  _c("span", { staticClass: "count-numbers" }, [_vm._v("XXX")]),
-                  _vm._v(" "),
-                  _c("span", { staticClass: "count-name" }, [
-                    _vm._v("Completed events"),
-                  ]),
-                ]),
-              ]),
-            ],
-            1
-          ),
-        ]),
-      ]),
-    ]),
-    _vm._v(" "),
-    _c("div", { staticClass: "card" }, [
-      _c("div", { staticClass: "card-body" }, [
-        _c("div", { staticClass: "row" }, [
-          _c(
-            "div",
-            { staticClass: "col-md-6" },
-            [
-              _c("router-link", { attrs: { to: { name: "eventList" } } }, [
-                _c("div", { staticClass: "card-counter success" }, [
-                  _c("i", {
-                    staticClass: "fa fa-calendar-check-o",
-                    attrs: { "aria-hidden": "true" },
-                  }),
-                  _vm._v(" "),
-                  _c("span", { staticClass: "count-numbers" }, [_vm._v("XXX")]),
-                  _vm._v(" "),
-                  _c("span", { staticClass: "count-name" }, [
-                    _vm._v("Active competitions"),
-                  ]),
-                ]),
-              ]),
-            ],
-            1
-          ),
-          _vm._v(" "),
-          _c(
-            "div",
-            { staticClass: "col-md-6" },
-            [
-              _c("router-link", { attrs: { to: { name: "eventList" } } }, [
-                _c("div", { staticClass: "card-counter success" }, [
-                  _c("i", {
-                    staticClass: "fa fa-calendar-minus-o",
-                    attrs: { "aria-hidden": "true" },
-                  }),
-                  _vm._v(" "),
-                  _c("span", { staticClass: "count-numbers" }, [_vm._v("XXX")]),
-                  _vm._v(" "),
-                  _c("span", { staticClass: "count-name" }, [
-                    _vm._v("Completed competitions"),
-                  ]),
-                ]),
-              ]),
-            ],
-            1
-          ),
-        ]),
-      ]),
-    ]),
-    _vm._v(" "),
-    _c("hr"),
-    _vm._v(" "),
-    _c("h2", [_vm._v("Climbing spots")]),
-    _vm._v(" "),
-    _c("div", { staticClass: "card" }, [
-      _c("div", { staticClass: "card-body" }, [
-        _c("div", { staticClass: "row" }, [
-          _c(
-            "div",
-            { staticClass: "col-md-6" },
-            [
-              _c(
-                "router-link",
-                { attrs: { to: { name: "routeAndSectorList" } } },
-                [
-                  _c("div", { staticClass: "card-counter sectors" }, [
-                    _c("i", {
-                      staticClass: "fa fa-heartbeat",
-                      attrs: { "aria-hidden": "true" },
-                    }),
-                    _vm._v(" "),
-                    _c("span", { staticClass: "count-numbers" }, [
-                      _vm._v(_vm._s(this.counts["sectors_count"])),
-                    ]),
-                    _vm._v(" "),
-                    _c("span", { staticClass: "count-name" }, [
-                      _vm._v("Sectors"),
-                    ]),
-                  ]),
-                ]
-              ),
-            ],
-            1
-          ),
-          _vm._v(" "),
-          _c(
-            "div",
-            { staticClass: "col-md-6" },
-            [
-              _c(
-                "router-link",
-                { attrs: { to: { name: "routeAndSectorList" } } },
-                [
-                  _c("div", { staticClass: "card-counter sectors" }, [
-                    _c("i", {
-                      staticClass: "fa fa-heartbeat",
-                      attrs: { "aria-hidden": "true" },
-                    }),
-                    _vm._v(" "),
-                    _c("span", { staticClass: "count-numbers" }, [
-                      _vm._v(_vm._s(this.counts["routes_count"])),
-                    ]),
-                    _vm._v(" "),
-                    _c("span", { staticClass: "count-name" }, [
-                      _vm._v("Routes"),
-                    ]),
-                  ]),
-                ]
-              ),
-            ],
-            1
-          ),
-          _vm._v(" "),
-          _c(
-            "div",
-            { staticClass: "col-md-6" },
-            [
-              _c(
-                "router-link",
-                { attrs: { to: { name: "routeAndSectorList" } } },
-                [
-                  _c("div", { staticClass: "card-counter sectors" }, [
-                    _c("i", {
-                      staticClass: "fa fa-heartbeat",
-                      attrs: { "aria-hidden": "true" },
-                    }),
-                    _vm._v(" "),
-                    _c("span", { staticClass: "count-numbers" }, [
-                      _vm._v(_vm._s(this.counts["mtp_count"])),
-                    ]),
-                    _vm._v(" "),
-                    _c("span", { staticClass: "count-name" }, [
-                      _vm._v("Multy-pitch"),
-                    ]),
-                  ]),
-                ]
-              ),
-            ],
-            1
-          ),
-          _vm._v(" "),
-          _c(
-            "div",
-            { staticClass: "col-md-6" },
-            [
-              _c(
-                "router-link",
-                { attrs: { to: { name: "routeAndSectorList" } } },
-                [
-                  _c("div", { staticClass: "card-counter sectors" }, [
-                    _c("i", {
-                      staticClass: "fa fa-heartbeat",
-                      attrs: { "aria-hidden": "true" },
-                    }),
-                    _vm._v(" "),
-                    _c("span", { staticClass: "count-numbers" }, [
-                      _vm._v(_vm._s(this.counts["mtp_pitch_count"])),
-                    ]),
-                    _vm._v(" "),
-                    _c("span", { staticClass: "count-name" }, [
-                      _vm._v("Multy-pitch pitchs"),
-                    ]),
-                  ]),
-                ]
-              ),
-            ],
-            1
-          ),
-        ]),
-      ]),
-    ]),
-    _vm._v(" "),
-    _c("div", { staticClass: "card" }, [
-      _c("div", { staticClass: "card-body" }, [
-        _c("div", { staticClass: "row" }, [
-          _c(
-            "div",
-            { staticClass: "col-md-4" },
-            [
-              _c(
-                "router-link",
-                { attrs: { to: { name: "routeAndSectorList" } } },
-                [
-                  _c("div", { staticClass: "card-counter sectors" }, [
-                    _c("i", {
-                      staticClass: "fa fa-heartbeat",
-                      attrs: { "aria-hidden": "true" },
-                    }),
-                    _vm._v(" "),
-                    _c("span", { staticClass: "count-numbers" }, [
-                      _vm._v(
-                        _vm._s(this.counts["sport_climbing_routes_count"])
-                      ),
-                    ]),
-                    _vm._v(" "),
-                    _c("span", { staticClass: "count-name" }, [
-                      _vm._v("Sport climbing routes"),
-                    ]),
-                  ]),
-                ]
-              ),
-            ],
-            1
-          ),
-          _vm._v(" "),
-          _c(
-            "div",
-            { staticClass: "col-md-4" },
-            [
-              _c(
-                "router-link",
-                { attrs: { to: { name: "routeAndSectorList" } } },
-                [
-                  _c("div", { staticClass: "card-counter sectors" }, [
-                    _c("i", {
-                      staticClass: "fa fa-heartbeat",
-                      attrs: { "aria-hidden": "true" },
-                    }),
-                    _vm._v(" "),
-                    _c("span", { staticClass: "count-numbers" }, [
-                      _vm._v(_vm._s(this.counts["top_rope_routes_count"])),
-                    ]),
-                    _vm._v(" "),
-                    _c("span", { staticClass: "count-name" }, [
-                      _vm._v("Top rope routes"),
-                    ]),
-                  ]),
-                ]
-              ),
-            ],
-            1
-          ),
-          _vm._v(" "),
-          _c(
-            "div",
-            { staticClass: "col-md-4" },
-            [
-              _c(
-                "router-link",
-                { attrs: { to: { name: "routeAndSectorList" } } },
-                [
-                  _c("div", { staticClass: "card-counter sectors" }, [
-                    _c("i", {
-                      staticClass: "fa fa-heartbeat",
-                      attrs: { "aria-hidden": "true" },
-                    }),
-                    _vm._v(" "),
-                    _c("span", { staticClass: "count-numbers" }, [
-                      _vm._v(_vm._s(this.counts["bouldering_routes_count"])),
-                    ]),
-                    _vm._v(" "),
-                    _c("span", { staticClass: "count-name" }, [
-                      _vm._v("Boulder"),
-                    ]),
-                  ]),
-                ]
-              ),
-            ],
-            1
-          ),
-        ]),
-        _vm._v(" "),
-        _c("div", { staticClass: "row" }, [
-          _c(
-            "div",
-            { staticClass: "col-md-6" },
-            [
-              _c(
-                "router-link",
-                { attrs: { to: { name: "routeAndSectorList" } } },
-                [
-                  _c("div", { staticClass: "card-counter sectors" }, [
-                    _c("i", {
-                      staticClass: "fa fa-heartbeat",
-                      attrs: { "aria-hidden": "true" },
-                    }),
-                    _vm._v(" "),
-                    _c("span", { staticClass: "count-numbers" }, [
-                      _vm._v(_vm._s(this.counts["tred_routes_count"])),
-                    ]),
-                    _vm._v(" "),
-                    _c("span", { staticClass: "count-name" }, [
-                      _vm._v("Tred climbing"),
-                    ]),
-                  ]),
-                ]
-              ),
-            ],
-            1
-          ),
-          _vm._v(" "),
-          _c(
-            "div",
-            { staticClass: "col-md-6" },
-            [
-              _c(
-                "router-link",
-                { attrs: { to: { name: "routeAndSectorList" } } },
-                [
-                  _c("div", { staticClass: "card-counter sectors" }, [
-                    _c("i", {
-                      staticClass: "fa fa-heartbeat",
-                      attrs: { "aria-hidden": "true" },
-                    }),
-                    _vm._v(" "),
-                    _c("span", { staticClass: "count-numbers" }, [
-                      _vm._v(_vm._s(this.counts["aid_routes_count"])),
-                    ]),
-                    _vm._v(" "),
-                    _c("span", { staticClass: "count-name" }, [_vm._v("Aid")]),
-                  ]),
-                ]
-              ),
-            ],
-            1
-          ),
-        ]),
-      ]),
-    ]),
-    _vm._v(" "),
-    _c("hr"),
-    _vm._v(" "),
-    _c("h2", [_vm._v("Gallery & images")]),
-    _vm._v(" "),
-    _c("div", { staticClass: "card" }, [
-      _c("div", { staticClass: "card-body" }, [
-        _c("div", { staticClass: "row" }, [
-          _c(
-            "div",
-            { staticClass: "col-md-6" },
-            [
-              _c("router-link", { attrs: { to: { name: "gallery" } } }, [
-                _c("div", { staticClass: "card-counter success" }, [
-                  _c("i", {
-                    staticClass: "fa fa-picture-o",
-                    attrs: { "aria-hidden": "true" },
-                  }),
-                  _vm._v(" "),
-                  _c("span", { staticClass: "count-numbers" }, [
-                    _vm._v(_vm._s(this.counts["gallery_images"])),
-                  ]),
-                  _vm._v(" "),
-                  _c("span", { staticClass: "count-name" }, [
-                    _vm._v("Gellry images"),
-                  ]),
-                ]),
-              ]),
-            ],
-            1
-          ),
-          _vm._v(" "),
-          _c(
-            "div",
-            { staticClass: "col-md-6" },
-            [
-              _c("router-link", { attrs: { to: { name: "gallery" } } }, [
-                _c("div", { staticClass: "card-counter success" }, [
-                  _c("i", {
-                    staticClass: "fa fa-picture-o",
-                    attrs: { "aria-hidden": "true" },
-                  }),
-                  _vm._v(" "),
-                  _c("span", { staticClass: "count-numbers" }, [
-                    _vm._v(_vm._s(this.counts["index_header_images"])),
-                  ]),
-                  _vm._v(" "),
-                  _c("span", { staticClass: "count-name" }, [
-                    _vm._v("Index header slider images"),
-                  ]),
-                ]),
-              ]),
-            ],
-            1
-          ),
-        ]),
-        _vm._v(" "),
-        _c("div", { staticClass: "row" }, [
-          _c(
-            "div",
-            { staticClass: "col-md-6" },
-            [
-              _c("router-link", { attrs: { to: { name: "gallery" } } }, [
-                _c("div", { staticClass: "card-counter success" }, [
-                  _c("i", {
-                    staticClass: "fa fa-picture-o",
-                    attrs: { "aria-hidden": "true" },
-                  }),
-                  _vm._v(" "),
-                  _c("span", { staticClass: "count-numbers" }, [_vm._v("XXX")]),
-                  _vm._v(" "),
-                  _c("span", { staticClass: "count-name" }, [
-                    _vm._v("Index gallery"),
-                  ]),
-                ]),
-              ]),
-            ],
-            1
-          ),
-          _vm._v(" "),
-          _c(
-            "div",
-            { staticClass: "col-md-6" },
-            [
-              _c("router-link", { attrs: { to: { name: "gallery" } } }, [
-                _c("div", { staticClass: "card-counter success" }, [
-                  _c("i", {
-                    staticClass: "fa fa-picture-o",
-                    attrs: { "aria-hidden": "true" },
-                  }),
-                  _vm._v(" "),
-                  _c("span", { staticClass: "count-numbers" }, [
-                    _vm._v(_vm._s(this.counts["article_gallery_images"])),
-                  ]),
-                  _vm._v(" "),
-                  _c("span", { staticClass: "count-name" }, [
-                    _vm._v("Article gallery images"),
-                  ]),
-                ]),
-              ]),
-            ],
-            1
-          ),
-        ]),
-      ]),
-    ]),
-    _vm._v(" "),
-    _c("hr"),
-    _vm._v(" "),
-    _c("h2", [_vm._v("Shop / Products")]),
-    _vm._v(" "),
-    _c("div", { staticClass: "card" }, [
-      _c("div", { staticClass: "card-body" }, [
-        _c("div", { staticClass: "row" }, [
-          _c(
-            "div",
-            { staticClass: "col-md-6" },
-            [
-              _c("router-link", { attrs: { to: { name: "productsList" } } }, [
-                _c("div", { staticClass: "card-counter light" }, [
-                  _c("i", {
-                    staticClass: "fa fa-shopping-bag",
-                    attrs: { "aria-hidden": "true" },
-                  }),
-                  _vm._v(" "),
-                  _c("span", { staticClass: "count-numbers" }, [
-                    _vm._v(_vm._s(this.counts["products"])),
-                  ]),
-                  _vm._v(" "),
-                  _c("span", { staticClass: "count-name" }, [
-                    _vm._v("Products"),
-                  ]),
-                ]),
-              ]),
-            ],
-            1
-          ),
-          _vm._v(" "),
-          _c(
-            "div",
-            { staticClass: "col-md-6" },
-            [
-              _c("router-link", { attrs: { to: { name: "productsList" } } }, [
-                _c("div", { staticClass: "card-counter light" }, [
-                  _c("i", {
-                    staticClass: "fa fa-shopping-basket",
-                    attrs: { "aria-hidden": "true" },
-                  }),
-                  _vm._v(" "),
-                  _c("span", { staticClass: "count-numbers" }, [
-                    _vm._v(_vm._s(this.counts["product_categories"])),
-                  ]),
-                  _vm._v(" "),
-                  _c("span", { staticClass: "count-name" }, [
-                    _vm._v("Product categories"),
-                  ]),
-                ]),
-              ]),
-            ],
-            1
-          ),
-        ]),
-      ]),
-    ]),
-    _vm._v(" "),
-    _c("hr"),
-    _vm._v(" "),
-    _c("h2", [_vm._v("Conflicts")]),
-    _vm._v(" "),
-    _c("div", { staticClass: "card" }, [
-      _c("div", { staticClass: "card-body" }, [
-        _c("div", { staticClass: "row" }, [
-          _c(
-            "div",
-            { staticClass: "col-md-6" },
-            [
-              _c("router-link", { attrs: { to: { name: "comentsList" } } }, [
-                _c("div", { staticClass: "card-counter danger" }, [
-                  _c("i", {
-                    staticClass: "fa fa-gavel",
-                    attrs: { "aria-hidden": "true" },
-                  }),
-                  _vm._v(" "),
-                  _c("span", { staticClass: "count-numbers" }, [_vm._v("XXX")]),
-                  _vm._v(" "),
-                  _c("span", { staticClass: "count-name" }, [
-                    _vm._v("Active competitions"),
-                  ]),
-                ]),
-              ]),
-            ],
-            1
-          ),
-          _vm._v(" "),
-          _c(
-            "div",
-            { staticClass: "col-md-6" },
-            [
-              _c("router-link", { attrs: { to: { name: "comentsList" } } }, [
-                _c("div", { staticClass: "card-counter danger" }, [
-                  _c("i", {
-                    staticClass: "fa fa-gavel",
-                    attrs: { "aria-hidden": "true" },
-                  }),
-                  _vm._v(" "),
-                  _c("span", { staticClass: "count-numbers" }, [_vm._v("XXX")]),
-                  _vm._v(" "),
-                  _c("span", { staticClass: "count-name" }, [
-                    _vm._v("Completed competitions"),
-                  ]),
-                ]),
-              ]),
-            ],
-            1
-          ),
-        ]),
-      ]),
-    ]),
-    _vm._v(" "),
-    _c("hr"),
-    _vm._v(" "),
-    _c("h2", [_vm._v("Comments")]),
-    _vm._v(" "),
-    _c("div", { staticClass: "card" }, [
-      _c("div", { staticClass: "card-body" }, [
-        _c("div", { staticClass: "row" }, [
-          _c(
-            "div",
-            { staticClass: "col-md-6" },
-            [
-              _c("router-link", { attrs: { to: { name: "comentsList" } } }, [
-                _c("div", { staticClass: "card-counter dark" }, [
-                  _c("i", {
-                    staticClass: "fa fa-comment-o",
-                    attrs: { "aria-hidden": "true" },
-                  }),
-                  _vm._v(" "),
-                  _c("span", { staticClass: "count-numbers" }, [_vm._v("XXX")]),
-                  _vm._v(" "),
-                  _c("span", { staticClass: "count-name" }, [
-                    _vm._v("Article comments"),
-                  ]),
-                ]),
-              ]),
-            ],
-            1
-          ),
-          _vm._v(" "),
-          _c(
-            "div",
-            { staticClass: "col-md-6" },
-            [
-              _c("router-link", { attrs: { to: { name: "comentsList" } } }, [
-                _c("div", { staticClass: "card-counter dark" }, [
-                  _c("i", {
-                    staticClass: "fa fa-comment-o",
-                    attrs: { "aria-hidden": "true" },
-                  }),
-                  _vm._v(" "),
-                  _c("span", { staticClass: "count-numbers" }, [_vm._v("XXX")]),
-                  _vm._v(" "),
-                  _c("span", { staticClass: "count-name" }, [
-                    _vm._v("Product comments"),
-                  ]),
-                ]),
-              ]),
-            ],
-            1
-          ),
-        ]),
-      ]),
-    ]),
-    _vm._v(" "),
-    _c("hr"),
-    _vm._v(" "),
-    _c("h2", [_vm._v("Users")]),
-    _vm._v(" "),
-    _c("div", { staticClass: "card" }, [
-      _c("div", { staticClass: "card-body" }, [
-        _c("div", { staticClass: "row" }, [
-          _c(
-            "div",
-            { staticClass: "col-md-6 offset-md-3" },
-            [
-              _c("router-link", { attrs: { to: { name: "usersList" } } }, [
-                _c("div", { staticClass: "card-counter success" }, [
-                  _c("i", {
-                    staticClass: "fa fa-user-circle-o",
-                    attrs: { "aria-hidden": "true" },
-                  }),
-                  _vm._v(" "),
-                  _c("span", { staticClass: "count-numbers" }, [
-                    _vm._v(_vm._s(this.counts["users"])),
-                  ]),
-                  _vm._v(" "),
-                  _c("span", { staticClass: "count-name" }, [_vm._v("users")]),
-                ]),
-              ]),
-            ],
-            1
-          ),
-        ]),
-      ]),
-    ]),
-    _vm._v(" "),
-    _c("h2", [_vm._v("Service followers")]),
-    _vm._v(" "),
-    _c("div", { staticClass: "card" }, [
-      _c("div", { staticClass: "card-body" }, [
-        _c("div", { staticClass: "row" }, [
-          _c(
-            "div",
-            { staticClass: "col-md-6" },
-            [
-              _c("router-link", { attrs: { to: { name: "usersList" } } }, [
-                _c("div", { staticClass: "card-counter success" }, [
-                  _c("i", {
-                    staticClass: "fa fa-user-circle-o",
-                    attrs: { "aria-hidden": "true" },
-                  }),
-                  _vm._v(" "),
-                  _c("span", { staticClass: "count-numbers" }, [_vm._v("XXX")]),
-                  _vm._v(" "),
-                  _c("span", { staticClass: "count-name" }, [
-                    _vm._v("Guid folowers"),
-                  ]),
-                ]),
-              ]),
-            ],
-            1
-          ),
-          _vm._v(" "),
-          _c(
-            "div",
-            { staticClass: "col-md-6" },
-            [
-              _c("router-link", { attrs: { to: { name: "usersList" } } }, [
-                _c("div", { staticClass: "card-counter success" }, [
-                  _c("i", {
-                    staticClass: "fa fa-user-circle-o",
-                    attrs: { "aria-hidden": "true" },
-                  }),
-                  _vm._v(" "),
-                  _c("span", { staticClass: "count-numbers" }, [_vm._v("XXX")]),
-                  _vm._v(" "),
-                  _c("span", { staticClass: "count-name" }, [
-                    _vm._v("Shop folowers"),
-                  ]),
-                ]),
-              ]),
-            ],
-            1
-          ),
-        ]),
-      ]),
     ]),
   ])
 }
@@ -3482,43 +2257,48 @@ var render = function () {
             _vm._v(" "),
             !this.user["image"] ? _c("span", [_vm._m(1)]) : _vm._e(),
             _vm._v(" "),
-            _vm._l(_vm.complaints, function (complaint) {
-              return _c("span", { key: complaint.id }, [
-                _c(
-                  "div",
-                  {
-                    staticClass: "alert alert-warning",
-                    attrs: { role: "alert" },
-                  },
-                  [
-                    _c("strong", [_vm._v("Warning!")]),
-                    _vm._v(
-                      " one comment are a complainted. Please check it and make decision!\n\n                    "
-                    ),
-                    _c("div", { staticClass: "row" }, [
-                      _c("div", { staticClass: "col-md-6" }, [
-                        _c(
-                          "button",
-                          {
-                            staticClass: "btn btn-primary ",
-                            on: {
-                              click: function ($event) {
-                                return _vm.quick_wiev_action(
-                                  complaint.comment_id,
-                                  complaint.id
-                                )
-                              },
-                            },
-                          },
-                          [_vm._v("Check comment")]
+            _vm.$can("show", "comments") || _vm.$can("del_comment", "comments")
+              ? _c(
+                  "span",
+                  _vm._l(_vm.complaints, function (complaint) {
+                    return _c(
+                      "div",
+                      {
+                        key: complaint.id,
+                        staticClass: "alert alert-warning",
+                        attrs: { role: "alert" },
+                      },
+                      [
+                        _c("strong", [_vm._v("Warning!")]),
+                        _vm._v(
+                          " one comment are a complainted. Please check it and make decision!\n\n                    "
                         ),
-                        _vm._v(".\n                        "),
-                      ]),
-                    ]),
-                  ]
-                ),
-              ])
-            }),
+                        _c("div", { staticClass: "row" }, [
+                          _c("div", { staticClass: "col-md-6" }, [
+                            _c(
+                              "button",
+                              {
+                                staticClass: "btn btn-primary ",
+                                on: {
+                                  click: function ($event) {
+                                    return _vm.quick_wiev_action(
+                                      complaint.comment_id,
+                                      complaint.id
+                                    )
+                                  },
+                                },
+                              },
+                              [_vm._v("Check comment")]
+                            ),
+                            _vm._v(".\n                        "),
+                          ]),
+                        ]),
+                      ]
+                    )
+                  }),
+                  0
+                )
+              : _vm._e(),
             _vm._v(" "),
             _vm._l(_vm.user_queries, function (query) {
               return _c("span", { key: query.id }, [
@@ -3600,38 +2380,42 @@ var render = function () {
               ])
             }),
             _vm._v(" "),
-            !this.$siteData["text"] ||
-            !this.$siteData["text_ru"] ||
-            !this.$siteData["text_ka"] ||
-            !this.$siteData["short_description_ru"] ||
-            !this.$siteData["short_description_ka"] ||
-            !this.$siteData["short_description"]
-              ? _c(
-                  "div",
-                  {
-                    staticClass: "alert alert-danger",
-                    attrs: { role: "alert" },
-                  },
-                  [
-                    _c("strong", [_vm._v("Danger!")]),
-                    _vm._v(
-                      ' \n                Web-site information is not fool. check page "\n                '
-                    ),
-                    _c(
-                      "router-link",
-                      { attrs: { to: { name: "siteInfo" }, exact: "" } },
-                      [
-                        _vm._v(
-                          " \n                    About us\n                "
-                        ),
-                      ]
-                    ),
-                    _vm._v(
-                      '\n                ", and add missing information.\n            '
-                    ),
-                  ],
-                  1
-                )
+            _vm.$can("edit", "site_data")
+              ? _c("span", [
+                  !this.$siteData["text"] ||
+                  !this.$siteData["text_ru"] ||
+                  !this.$siteData["text_ka"] ||
+                  !this.$siteData["short_description_ru"] ||
+                  !this.$siteData["short_description_ka"] ||
+                  !this.$siteData["short_description"]
+                    ? _c(
+                        "div",
+                        {
+                          staticClass: "alert alert-danger",
+                          attrs: { role: "alert" },
+                        },
+                        [
+                          _c("strong", [_vm._v("Danger!")]),
+                          _vm._v(
+                            ' \n                    Web-site information is not fool. check page "\n                    '
+                          ),
+                          _c(
+                            "router-link",
+                            { attrs: { to: { name: "siteInfo" }, exact: "" } },
+                            [
+                              _vm._v(
+                                " \n                        About us\n                    "
+                              ),
+                            ]
+                          ),
+                          _vm._v(
+                            '\n                    ", and add missing information.\n                '
+                          ),
+                        ],
+                        1
+                      )
+                    : _vm._e(),
+                ])
               : _vm._e(),
           ],
           2
@@ -4184,6 +2968,1450 @@ var staticRenderFns = [
     )
   },
 ]
+render._withStripped = true
+
+
+
+/***/ }),
+
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/user/items/dashboards/OrderDiogramComponent.vue?vue&type=template&id=4f2fcd1c&":
+/*!*******************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/user/items/dashboards/OrderDiogramComponent.vue?vue&type=template&id=4f2fcd1c& ***!
+  \*******************************************************************************************************************************************************************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "render": () => (/* binding */ render),
+/* harmony export */   "staticRenderFns": () => (/* binding */ staticRenderFns)
+/* harmony export */ });
+var render = function () {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(
+    "div",
+    { staticClass: "col-md-12" },
+    [
+      _c("h2", [_vm._v("Week Orders")]),
+      _vm._v(" "),
+      _c("GChart", {
+        attrs: {
+          type: "LineChart",
+          data: _vm.week_orders_data,
+          options: _vm.week_orders_options,
+        },
+      }),
+      _vm._v(" "),
+      _c("h2", [_vm._v("Year Orders")]),
+      _vm._v(" "),
+      _c("GChart", {
+        attrs: {
+          type: "LineChart",
+          data: _vm.year_orders_data,
+          options: _vm.year_orders_options,
+        },
+      }),
+    ],
+    1
+  )
+}
+var staticRenderFns = []
+render._withStripped = true
+
+
+
+/***/ }),
+
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/user/items/dashboards/SiteDataCountListComponent.vue?vue&type=template&id=0491832e&":
+/*!************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/user/items/dashboards/SiteDataCountListComponent.vue?vue&type=template&id=0491832e& ***!
+  \************************************************************************************************************************************************************************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "render": () => (/* binding */ render),
+/* harmony export */   "staticRenderFns": () => (/* binding */ staticRenderFns)
+/* harmony export */ });
+var render = function () {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("div", { staticClass: "col-md-12" }, [
+    _c("h2", [_vm._v("Articles")]),
+    _vm._v(" "),
+    _c("div", { staticClass: "card" }, [
+      _c("div", { staticClass: "card-body" }, [
+        _c("div", { staticClass: "row" }, [
+          _c("div", { staticClass: "col-md-6 offset-md-3" }, [
+            _c("div", { staticClass: "card-counter primary" }, [
+              _c("i", {
+                staticClass: "fa fa-window-maximize",
+                attrs: { "aria-hidden": "true" },
+              }),
+              _vm._v(" "),
+              _c("span", { staticClass: "count-numbers" }, [
+                _vm._v(_vm._s(this.counts["global_articles_count"])),
+              ]),
+              _vm._v(" "),
+              _c("span", { staticClass: "count-name" }, [_vm._v("Articles")]),
+            ]),
+          ]),
+        ]),
+        _vm._v(" "),
+        _c("div", { staticClass: "row" }, [
+          _c("div", { staticClass: "col-md-4" }, [
+            _c("div", { staticClass: "card-counter primary" }, [
+              _c("i", {
+                staticClass: "fa fa-language",
+                attrs: { "aria-hidden": "true" },
+              }),
+              _vm._v(" "),
+              _c("span", { staticClass: "count-numbers" }, [
+                _vm._v(_vm._s(this.counts["us_articles_count"])),
+              ]),
+              _vm._v(" "),
+              _c("span", { staticClass: "count-name" }, [
+                _vm._v("English articles"),
+              ]),
+            ]),
+          ]),
+          _vm._v(" "),
+          _c("div", { staticClass: "col-md-4" }, [
+            _c("div", { staticClass: "card-counter primary" }, [
+              _c("i", {
+                staticClass: "fa fa-language",
+                attrs: { "aria-hidden": "true" },
+              }),
+              _vm._v(" "),
+              _c("span", { staticClass: "count-numbers" }, [
+                _vm._v(_vm._s(this.counts["ru_articles_count"])),
+              ]),
+              _vm._v(" "),
+              _c("span", { staticClass: "count-name" }, [
+                _vm._v("Russion articles"),
+              ]),
+            ]),
+          ]),
+          _vm._v(" "),
+          _c("div", { staticClass: "col-md-4" }, [
+            _c("div", { staticClass: "card-counter primary" }, [
+              _c("i", {
+                staticClass: "fa fa-language",
+                attrs: { "aria-hidden": "true" },
+              }),
+              _vm._v(" "),
+              _c("span", { staticClass: "count-numbers" }, [
+                _vm._v(_vm._s(this.counts["ka_articles_count"])),
+              ]),
+              _vm._v(" "),
+              _c("span", { staticClass: "count-name" }, [
+                _vm._v("Georgian articles"),
+              ]),
+            ]),
+          ]),
+        ]),
+        _vm._v(" "),
+        this.counts["us_article_errors"]
+          ? _c(
+              "div",
+              { staticClass: "alert alert-danger", attrs: { role: "alert" } },
+              [
+                this.counts["us_article_errors"]
+                  ? _c("div", { staticClass: "col" }, [
+                      _c("i", {
+                        staticClass: "fa fa-bug",
+                        attrs: { "aria-hidden": "true" },
+                      }),
+                      _vm._v(
+                        " \n                    us_articles error_count - " +
+                          _vm._s(this.counts["us_article_errors"]) +
+                          " \n\n                    "
+                      ),
+                      _c(
+                        "button",
+                        {
+                          staticClass: "btn btn-danger float-right",
+                          on: {
+                            click: function ($event) {
+                              return _vm.fix_article_bug()
+                            },
+                          },
+                        },
+                        [
+                          _vm._v(
+                            "\n                        Fix bag (delete all this articles)\n                    "
+                          ),
+                        ]
+                      ),
+                    ])
+                  : _vm._e(),
+              ]
+            )
+          : _vm._e(),
+        _vm._v(" "),
+        this.counts["us_article_errors"]
+          ? _c(
+              "div",
+              { staticClass: "alert alert-danger", attrs: { role: "alert" } },
+              [
+                this.counts["us_article_errors"]
+                  ? _c("div", { staticClass: "col" }, [
+                      _c("i", {
+                        staticClass: "fa fa-bug",
+                        attrs: { "aria-hidden": "true" },
+                      }),
+                      _vm._v(
+                        " \n                    ru_articles error_count - " +
+                          _vm._s(this.counts["us_article_errors"]) +
+                          " \n\n                    "
+                      ),
+                      _c(
+                        "button",
+                        {
+                          staticClass: "btn btn-danger float-right",
+                          on: {
+                            click: function ($event) {
+                              return _vm.fix_article_bug()
+                            },
+                          },
+                        },
+                        [
+                          _vm._v(
+                            "\n                        Fix bag (delete all this articles)\n                    "
+                          ),
+                        ]
+                      ),
+                    ])
+                  : _vm._e(),
+              ]
+            )
+          : _vm._e(),
+        _vm._v(" "),
+        this.counts["us_article_errors"]
+          ? _c(
+              "div",
+              { staticClass: "alert alert-danger", attrs: { role: "alert" } },
+              [
+                this.counts["us_article_errors"]
+                  ? _c("div", { staticClass: "col" }, [
+                      _c("i", {
+                        staticClass: "fa fa-bug",
+                        attrs: { "aria-hidden": "true" },
+                      }),
+                      _vm._v(
+                        " \n                    ka_articles error_count - " +
+                          _vm._s(this.counts["us_article_errors"]) +
+                          " \n\n                    "
+                      ),
+                      _c(
+                        "button",
+                        {
+                          staticClass: "btn btn-danger float-right",
+                          on: {
+                            click: function ($event) {
+                              return _vm.fix_article_bug()
+                            },
+                          },
+                        },
+                        [
+                          _vm._v(
+                            "\n                        Fix bag (delete all this articles)\n                    "
+                          ),
+                        ]
+                      ),
+                    ])
+                  : _vm._e(),
+              ]
+            )
+          : _vm._e(),
+      ]),
+    ]),
+    _vm._v(" "),
+    _c("div", { staticClass: "card" }, [
+      _c("div", { staticClass: "card-body" }, [
+        _c("div", { staticClass: "row" }, [
+          _c(
+            "div",
+            { staticClass: "col-md-4" },
+            [
+              _c(
+                "router-link",
+                {
+                  attrs: {
+                    to: {
+                      name: "articlelist",
+                      params: { article_category: "indoor" },
+                    },
+                  },
+                },
+                [
+                  _c("div", { staticClass: "card-counter primary" }, [
+                    _c("i", {
+                      staticClass: "fa fa-building",
+                      attrs: { "aria-hidden": "true" },
+                    }),
+                    _vm._v(" "),
+                    _c("span", { staticClass: "count-numbers" }, [
+                      _vm._v(_vm._s(this.counts["indoor_gyms"])),
+                    ]),
+                    _vm._v(" "),
+                    _c("span", { staticClass: "count-name" }, [
+                      _vm._v("Indoor gyms"),
+                    ]),
+                  ]),
+                ]
+              ),
+            ],
+            1
+          ),
+          _vm._v(" "),
+          _c(
+            "div",
+            { staticClass: "col-md-4" },
+            [
+              _c(
+                "router-link",
+                {
+                  attrs: {
+                    to: {
+                      name: "articlelist",
+                      params: { article_category: "ice" },
+                    },
+                  },
+                },
+                [
+                  _c("div", { staticClass: "card-counter primary" }, [
+                    _c("i", {
+                      staticClass: "fa fa-snowflake-o",
+                      attrs: { "aria-hidden": "true" },
+                    }),
+                    _vm._v(" "),
+                    _c("span", { staticClass: "count-numbers" }, [
+                      _vm._v(_vm._s(this.counts["ice_climbing"])),
+                    ]),
+                    _vm._v(" "),
+                    _c("span", { staticClass: "count-name" }, [
+                      _vm._v("Ice climbing"),
+                    ]),
+                  ]),
+                ]
+              ),
+            ],
+            1
+          ),
+          _vm._v(" "),
+          _c(
+            "div",
+            { staticClass: "col-md-4" },
+            [
+              _c(
+                "router-link",
+                {
+                  attrs: {
+                    to: {
+                      name: "articlelist",
+                      params: { article_category: "other" },
+                    },
+                  },
+                },
+                [
+                  _c("div", { staticClass: "card-counter primary" }, [
+                    _c("i", {
+                      staticClass: "fa fa-bicycle",
+                      attrs: { "aria-hidden": "true" },
+                    }),
+                    _vm._v(" "),
+                    _c("span", { staticClass: "count-numbers" }, [
+                      _vm._v(_vm._s(this.counts["other_antyvity"])),
+                    ]),
+                    _vm._v(" "),
+                    _c("span", { staticClass: "count-name" }, [
+                      _vm._v("Other antyvity"),
+                    ]),
+                  ]),
+                ]
+              ),
+            ],
+            1
+          ),
+        ]),
+        _vm._v(" "),
+        _c("div", { staticClass: "row" }, [
+          _c(
+            "div",
+            { staticClass: "col-md-6" },
+            [
+              _c(
+                "router-link",
+                {
+                  attrs: {
+                    to: {
+                      name: "articlelist",
+                      params: { article_category: "news" },
+                    },
+                  },
+                },
+                [
+                  _c("div", { staticClass: "card-counter primary" }, [
+                    _c("i", {
+                      staticClass: "fa fa-newspaper-o",
+                      attrs: { "aria-hidden": "true" },
+                    }),
+                    _vm._v(" "),
+                    _c("span", { staticClass: "count-numbers" }, [
+                      _vm._v(_vm._s(this.counts["news"])),
+                    ]),
+                    _vm._v(" "),
+                    _c("span", { staticClass: "count-name" }, [_vm._v("News")]),
+                  ]),
+                ]
+              ),
+            ],
+            1
+          ),
+          _vm._v(" "),
+          _c(
+            "div",
+            { staticClass: "col-md-6" },
+            [
+              _c(
+                "router-link",
+                {
+                  attrs: {
+                    to: {
+                      name: "articlelist",
+                      params: { article_category: "tech_tip" },
+                    },
+                  },
+                },
+                [
+                  _c("div", { staticClass: "card-counter primary" }, [
+                    _c("i", {
+                      staticClass: "fa fa-shield",
+                      attrs: { "aria-hidden": "true" },
+                    }),
+                    _vm._v(" "),
+                    _c("span", { staticClass: "count-numbers" }, [
+                      _vm._v(_vm._s(this.counts["techtip"])),
+                    ]),
+                    _vm._v(" "),
+                    _c("span", { staticClass: "count-name" }, [
+                      _vm._v("Techtip"),
+                    ]),
+                  ]),
+                ]
+              ),
+            ],
+            1
+          ),
+        ]),
+      ]),
+    ]),
+    _vm._v(" "),
+    _c("hr"),
+    _vm._v(" "),
+    _c("h2", [_vm._v("Outdoor climbing")]),
+    _vm._v(" "),
+    _c("div", { staticClass: "card" }, [
+      _c("div", { staticClass: "card-body" }, [
+        _c("div", { staticClass: "row" }, [
+          _c(
+            "div",
+            { staticClass: "col-md-6" },
+            [
+              _c(
+                "router-link",
+                {
+                  attrs: {
+                    to: {
+                      name: "articlelist",
+                      params: { article_category: "outdoor" },
+                    },
+                  },
+                },
+                [
+                  _c("div", { staticClass: "card-counter primary" }, [
+                    _c("i", {
+                      staticClass: "fa fa-window-maximize",
+                      attrs: { "aria-hidden": "true" },
+                    }),
+                    _vm._v(" "),
+                    _c("span", { staticClass: "count-numbers" }, [
+                      _vm._v(_vm._s(this.counts["outdoor_climbing"])),
+                    ]),
+                    _vm._v(" "),
+                    _c("span", { staticClass: "count-name" }, [
+                      _vm._v("Outdoor climbing"),
+                    ]),
+                  ]),
+                ]
+              ),
+            ],
+            1
+          ),
+          _vm._v(" "),
+          _c(
+            "div",
+            { staticClass: "col-md-6" },
+            [
+              _c(
+                "router-link",
+                {
+                  attrs: {
+                    to: {
+                      name: "articlelist",
+                      params: { article_category: "outdoor" },
+                    },
+                  },
+                },
+                [
+                  _c("div", { staticClass: "card-counter primary" }, [
+                    _c("i", {
+                      staticClass: "fa fa-map-o",
+                      attrs: { "aria-hidden": "true" },
+                    }),
+                    _vm._v(" "),
+                    _c("span", { staticClass: "count-numbers" }, [
+                      _vm._v(_vm._s(this.counts["region"])),
+                    ]),
+                    _vm._v(" "),
+                    _c("span", { staticClass: "count-name" }, [
+                      _vm._v("Spots regions"),
+                    ]),
+                  ]),
+                ]
+              ),
+            ],
+            1
+          ),
+        ]),
+      ]),
+    ]),
+    _vm._v(" "),
+    _c("hr"),
+    _vm._v(" "),
+    _c("h2", [_vm._v("Mountaineering")]),
+    _vm._v(" "),
+    _c("div", { staticClass: "card" }, [
+      _c("div", { staticClass: "card-body" }, [
+        _c("div", { staticClass: "row" }, [
+          _c(
+            "div",
+            { staticClass: "col-md-6" },
+            [
+              _c("router-link", { attrs: { to: { name: "mountlist" } } }, [
+                _c("div", { staticClass: "card-counter primary" }, [
+                  _c("i", {
+                    staticClass: "fa fa-area-chart",
+                    attrs: { "aria-hidden": "true" },
+                  }),
+                  _vm._v(" "),
+                  _c("span", { staticClass: "count-numbers" }, [
+                    _vm._v(_vm._s(this.counts["mountaineering_route"])),
+                  ]),
+                  _vm._v(" "),
+                  _c("span", { staticClass: "count-name" }, [
+                    _vm._v("Mountaineering climbing routes"),
+                  ]),
+                ]),
+              ]),
+            ],
+            1
+          ),
+          _vm._v(" "),
+          _c(
+            "div",
+            { staticClass: "col-md-6" },
+            [
+              _c("router-link", { attrs: { to: { name: "mountlist" } } }, [
+                _c("div", { staticClass: "card-counter primary" }, [
+                  _c("i", {
+                    staticClass: "fa fa-area-chart",
+                    attrs: { "aria-hidden": "true" },
+                  }),
+                  _vm._v(" "),
+                  _c("span", { staticClass: "count-numbers" }, [
+                    _vm._v(_vm._s(this.counts["mount_masives"])),
+                  ]),
+                  _vm._v(" "),
+                  _c("span", { staticClass: "count-name" }, [
+                    _vm._v("Mount masiv"),
+                  ]),
+                ]),
+              ]),
+            ],
+            1
+          ),
+        ]),
+      ]),
+    ]),
+    _vm._v(" "),
+    _c("hr"),
+    _vm._v(" "),
+    _c("h2", [_vm._v("Events")]),
+    _vm._v(" "),
+    _c("div", { staticClass: "card" }, [
+      _c("div", { staticClass: "card-body" }, [
+        _c("div", { staticClass: "row" }, [
+          _c(
+            "div",
+            { staticClass: "col-md-6" },
+            [
+              _c("router-link", { attrs: { to: { name: "eventList" } } }, [
+                _c("div", { staticClass: "card-counter success" }, [
+                  _c("i", {
+                    staticClass: "fa fa-calendar-check-o",
+                    attrs: { "aria-hidden": "true" },
+                  }),
+                  _vm._v(" "),
+                  _c("span", { staticClass: "count-numbers" }, [
+                    _vm._v(_vm._s(this.counts["active_events_count"])),
+                  ]),
+                  _vm._v(" "),
+                  _c("span", { staticClass: "count-name" }, [
+                    _vm._v("Active events"),
+                  ]),
+                ]),
+              ]),
+            ],
+            1
+          ),
+          _vm._v(" "),
+          _c(
+            "div",
+            { staticClass: "col-md-6" },
+            [
+              _c("router-link", { attrs: { to: { name: "eventList" } } }, [
+                _c("div", { staticClass: "card-counter success" }, [
+                  _c("i", {
+                    staticClass: "fa fa-calendar-minus-o",
+                    attrs: { "aria-hidden": "true" },
+                  }),
+                  _vm._v(" "),
+                  _c("span", { staticClass: "count-numbers" }, [
+                    _vm._v(_vm._s(this.counts["completed_events_count"])),
+                  ]),
+                  _vm._v(" "),
+                  _c("span", { staticClass: "count-name" }, [
+                    _vm._v("Completed events"),
+                  ]),
+                ]),
+              ]),
+            ],
+            1
+          ),
+        ]),
+      ]),
+    ]),
+    _vm._v(" "),
+    _c("div", { staticClass: "card" }, [
+      _c("div", { staticClass: "card-body" }, [
+        _c("div", { staticClass: "row" }, [
+          _c(
+            "div",
+            { staticClass: "col-md-6" },
+            [
+              _c("router-link", { attrs: { to: { name: "eventList" } } }, [
+                _c("div", { staticClass: "card-counter success" }, [
+                  _c("i", {
+                    staticClass: "fa fa-calendar-check-o",
+                    attrs: { "aria-hidden": "true" },
+                  }),
+                  _vm._v(" "),
+                  _c("span", { staticClass: "count-numbers" }, [
+                    _vm._v(_vm._s(this.counts["active_comprtitions_count"])),
+                  ]),
+                  _vm._v(" "),
+                  _c("span", { staticClass: "count-name" }, [
+                    _vm._v("Active competitions"),
+                  ]),
+                ]),
+              ]),
+            ],
+            1
+          ),
+          _vm._v(" "),
+          _c(
+            "div",
+            { staticClass: "col-md-6" },
+            [
+              _c("router-link", { attrs: { to: { name: "eventList" } } }, [
+                _c("div", { staticClass: "card-counter success" }, [
+                  _c("i", {
+                    staticClass: "fa fa-calendar-minus-o",
+                    attrs: { "aria-hidden": "true" },
+                  }),
+                  _vm._v(" "),
+                  _c("span", { staticClass: "count-numbers" }, [
+                    _vm._v(_vm._s(this.counts["completed_comprtitions_count"])),
+                  ]),
+                  _vm._v(" "),
+                  _c("span", { staticClass: "count-name" }, [
+                    _vm._v("Completed competitions"),
+                  ]),
+                ]),
+              ]),
+            ],
+            1
+          ),
+        ]),
+      ]),
+    ]),
+    _vm._v(" "),
+    _c("hr"),
+    _vm._v(" "),
+    _c("h2", [_vm._v("Climbing spots")]),
+    _vm._v(" "),
+    _c("div", { staticClass: "card" }, [
+      _c("div", { staticClass: "card-body" }, [
+        _c("div", { staticClass: "row" }, [
+          _c(
+            "div",
+            { staticClass: "col-md-6" },
+            [
+              _c(
+                "router-link",
+                { attrs: { to: { name: "routeAndSectorList" } } },
+                [
+                  _c("div", { staticClass: "card-counter sectors" }, [
+                    _c("i", {
+                      staticClass: "fa fa-heartbeat",
+                      attrs: { "aria-hidden": "true" },
+                    }),
+                    _vm._v(" "),
+                    _c("span", { staticClass: "count-numbers" }, [
+                      _vm._v(_vm._s(this.counts["sectors_count"])),
+                    ]),
+                    _vm._v(" "),
+                    _c("span", { staticClass: "count-name" }, [
+                      _vm._v("Sectors"),
+                    ]),
+                  ]),
+                ]
+              ),
+            ],
+            1
+          ),
+          _vm._v(" "),
+          _c(
+            "div",
+            { staticClass: "col-md-6" },
+            [
+              _c(
+                "router-link",
+                { attrs: { to: { name: "routeAndSectorList" } } },
+                [
+                  _c("div", { staticClass: "card-counter sectors" }, [
+                    _c("i", {
+                      staticClass: "fa fa-heartbeat",
+                      attrs: { "aria-hidden": "true" },
+                    }),
+                    _vm._v(" "),
+                    _c("span", { staticClass: "count-numbers" }, [
+                      _vm._v(_vm._s(this.counts["routes_count"])),
+                    ]),
+                    _vm._v(" "),
+                    _c("span", { staticClass: "count-name" }, [
+                      _vm._v("Routes"),
+                    ]),
+                  ]),
+                ]
+              ),
+            ],
+            1
+          ),
+          _vm._v(" "),
+          _c(
+            "div",
+            { staticClass: "col-md-6" },
+            [
+              _c(
+                "router-link",
+                { attrs: { to: { name: "routeAndSectorList" } } },
+                [
+                  _c("div", { staticClass: "card-counter sectors" }, [
+                    _c("i", {
+                      staticClass: "fa fa-heartbeat",
+                      attrs: { "aria-hidden": "true" },
+                    }),
+                    _vm._v(" "),
+                    _c("span", { staticClass: "count-numbers" }, [
+                      _vm._v(_vm._s(this.counts["mtp_count"])),
+                    ]),
+                    _vm._v(" "),
+                    _c("span", { staticClass: "count-name" }, [
+                      _vm._v("Multy-pitch"),
+                    ]),
+                  ]),
+                ]
+              ),
+            ],
+            1
+          ),
+          _vm._v(" "),
+          _c(
+            "div",
+            { staticClass: "col-md-6" },
+            [
+              _c(
+                "router-link",
+                { attrs: { to: { name: "routeAndSectorList" } } },
+                [
+                  _c("div", { staticClass: "card-counter sectors" }, [
+                    _c("i", {
+                      staticClass: "fa fa-heartbeat",
+                      attrs: { "aria-hidden": "true" },
+                    }),
+                    _vm._v(" "),
+                    _c("span", { staticClass: "count-numbers" }, [
+                      _vm._v(_vm._s(this.counts["mtp_pitch_count"])),
+                    ]),
+                    _vm._v(" "),
+                    _c("span", { staticClass: "count-name" }, [
+                      _vm._v("Multy-pitch pitchs"),
+                    ]),
+                  ]),
+                ]
+              ),
+            ],
+            1
+          ),
+        ]),
+      ]),
+    ]),
+    _vm._v(" "),
+    _c("div", { staticClass: "card" }, [
+      _c("div", { staticClass: "card-body" }, [
+        _c("div", { staticClass: "row" }, [
+          _c(
+            "div",
+            { staticClass: "col-md-4" },
+            [
+              _c(
+                "router-link",
+                { attrs: { to: { name: "routeAndSectorList" } } },
+                [
+                  _c("div", { staticClass: "card-counter sectors" }, [
+                    _c("i", {
+                      staticClass: "fa fa-heartbeat",
+                      attrs: { "aria-hidden": "true" },
+                    }),
+                    _vm._v(" "),
+                    _c("span", { staticClass: "count-numbers" }, [
+                      _vm._v(
+                        _vm._s(this.counts["sport_climbing_routes_count"])
+                      ),
+                    ]),
+                    _vm._v(" "),
+                    _c("span", { staticClass: "count-name" }, [
+                      _vm._v("Sport climbing routes"),
+                    ]),
+                  ]),
+                ]
+              ),
+            ],
+            1
+          ),
+          _vm._v(" "),
+          _c(
+            "div",
+            { staticClass: "col-md-4" },
+            [
+              _c(
+                "router-link",
+                { attrs: { to: { name: "routeAndSectorList" } } },
+                [
+                  _c("div", { staticClass: "card-counter sectors" }, [
+                    _c("i", {
+                      staticClass: "fa fa-heartbeat",
+                      attrs: { "aria-hidden": "true" },
+                    }),
+                    _vm._v(" "),
+                    _c("span", { staticClass: "count-numbers" }, [
+                      _vm._v(_vm._s(this.counts["top_rope_routes_count"])),
+                    ]),
+                    _vm._v(" "),
+                    _c("span", { staticClass: "count-name" }, [
+                      _vm._v("Top rope routes"),
+                    ]),
+                  ]),
+                ]
+              ),
+            ],
+            1
+          ),
+          _vm._v(" "),
+          _c(
+            "div",
+            { staticClass: "col-md-4" },
+            [
+              _c(
+                "router-link",
+                { attrs: { to: { name: "routeAndSectorList" } } },
+                [
+                  _c("div", { staticClass: "card-counter sectors" }, [
+                    _c("i", {
+                      staticClass: "fa fa-heartbeat",
+                      attrs: { "aria-hidden": "true" },
+                    }),
+                    _vm._v(" "),
+                    _c("span", { staticClass: "count-numbers" }, [
+                      _vm._v(_vm._s(this.counts["bouldering_routes_count"])),
+                    ]),
+                    _vm._v(" "),
+                    _c("span", { staticClass: "count-name" }, [
+                      _vm._v("Boulder"),
+                    ]),
+                  ]),
+                ]
+              ),
+            ],
+            1
+          ),
+        ]),
+        _vm._v(" "),
+        _c("div", { staticClass: "row" }, [
+          _c(
+            "div",
+            { staticClass: "col-md-6" },
+            [
+              _c(
+                "router-link",
+                { attrs: { to: { name: "routeAndSectorList" } } },
+                [
+                  _c("div", { staticClass: "card-counter sectors" }, [
+                    _c("i", {
+                      staticClass: "fa fa-heartbeat",
+                      attrs: { "aria-hidden": "true" },
+                    }),
+                    _vm._v(" "),
+                    _c("span", { staticClass: "count-numbers" }, [
+                      _vm._v(_vm._s(this.counts["tred_routes_count"])),
+                    ]),
+                    _vm._v(" "),
+                    _c("span", { staticClass: "count-name" }, [
+                      _vm._v("Tred climbing"),
+                    ]),
+                  ]),
+                ]
+              ),
+            ],
+            1
+          ),
+          _vm._v(" "),
+          _c(
+            "div",
+            { staticClass: "col-md-6" },
+            [
+              _c(
+                "router-link",
+                { attrs: { to: { name: "routeAndSectorList" } } },
+                [
+                  _c("div", { staticClass: "card-counter sectors" }, [
+                    _c("i", {
+                      staticClass: "fa fa-heartbeat",
+                      attrs: { "aria-hidden": "true" },
+                    }),
+                    _vm._v(" "),
+                    _c("span", { staticClass: "count-numbers" }, [
+                      _vm._v(_vm._s(this.counts["aid_routes_count"])),
+                    ]),
+                    _vm._v(" "),
+                    _c("span", { staticClass: "count-name" }, [_vm._v("Aid")]),
+                  ]),
+                ]
+              ),
+            ],
+            1
+          ),
+        ]),
+      ]),
+    ]),
+    _vm._v(" "),
+    _c("hr"),
+    _vm._v(" "),
+    _c("h2", [_vm._v("Gallery & images")]),
+    _vm._v(" "),
+    _c("div", { staticClass: "card" }, [
+      _c("div", { staticClass: "card-body" }, [
+        _c("div", { staticClass: "row" }, [
+          _c(
+            "div",
+            { staticClass: "col-md-6" },
+            [
+              _c("router-link", { attrs: { to: { name: "gallery" } } }, [
+                _c("div", { staticClass: "card-counter success" }, [
+                  _c("i", {
+                    staticClass: "fa fa-picture-o",
+                    attrs: { "aria-hidden": "true" },
+                  }),
+                  _vm._v(" "),
+                  _c("span", { staticClass: "count-numbers" }, [
+                    _vm._v(_vm._s(this.counts["gallery_images"])),
+                  ]),
+                  _vm._v(" "),
+                  _c("span", { staticClass: "count-name" }, [
+                    _vm._v("Gellry images"),
+                  ]),
+                ]),
+              ]),
+            ],
+            1
+          ),
+          _vm._v(" "),
+          _c(
+            "div",
+            { staticClass: "col-md-6" },
+            [
+              _c("router-link", { attrs: { to: { name: "gallery" } } }, [
+                _c("div", { staticClass: "card-counter success" }, [
+                  _c("i", {
+                    staticClass: "fa fa-picture-o",
+                    attrs: { "aria-hidden": "true" },
+                  }),
+                  _vm._v(" "),
+                  _c("span", { staticClass: "count-numbers" }, [
+                    _vm._v(_vm._s(this.counts["index_header_images"])),
+                  ]),
+                  _vm._v(" "),
+                  _c("span", { staticClass: "count-name" }, [
+                    _vm._v("Index header slider images"),
+                  ]),
+                ]),
+              ]),
+            ],
+            1
+          ),
+        ]),
+        _vm._v(" "),
+        _c("div", { staticClass: "row" }, [
+          _c(
+            "div",
+            { staticClass: "col-md-6" },
+            [
+              _c("router-link", { attrs: { to: { name: "gallery" } } }, [
+                _c("div", { staticClass: "card-counter success" }, [
+                  _c("i", {
+                    staticClass: "fa fa-picture-o",
+                    attrs: { "aria-hidden": "true" },
+                  }),
+                  _vm._v(" "),
+                  _c("span", { staticClass: "count-numbers" }, [
+                    _vm._v(_vm._s(this.counts["index_gallery_images"])),
+                  ]),
+                  _vm._v(" "),
+                  _c("span", { staticClass: "count-name" }, [
+                    _vm._v("Index gallery"),
+                  ]),
+                ]),
+              ]),
+            ],
+            1
+          ),
+          _vm._v(" "),
+          _c(
+            "div",
+            { staticClass: "col-md-6" },
+            [
+              _c("router-link", { attrs: { to: { name: "gallery" } } }, [
+                _c("div", { staticClass: "card-counter success" }, [
+                  _c("i", {
+                    staticClass: "fa fa-picture-o",
+                    attrs: { "aria-hidden": "true" },
+                  }),
+                  _vm._v(" "),
+                  _c("span", { staticClass: "count-numbers" }, [
+                    _vm._v(_vm._s(this.counts["article_gallery_images"])),
+                  ]),
+                  _vm._v(" "),
+                  _c("span", { staticClass: "count-name" }, [
+                    _vm._v("Article gallery images"),
+                  ]),
+                ]),
+              ]),
+            ],
+            1
+          ),
+        ]),
+      ]),
+    ]),
+    _vm._v(" "),
+    _c("hr"),
+    _vm._v(" "),
+    _c("h2", [_vm._v("Shop / Products")]),
+    _vm._v(" "),
+    _c("div", { staticClass: "card" }, [
+      _c("div", { staticClass: "card-body" }, [
+        _c("div", { staticClass: "row" }, [
+          _c(
+            "div",
+            { staticClass: "col-md-6" },
+            [
+              _c("router-link", { attrs: { to: { name: "productsList" } } }, [
+                _c("div", { staticClass: "card-counter light" }, [
+                  _c("i", {
+                    staticClass: "fa fa-shopping-bag",
+                    attrs: { "aria-hidden": "true" },
+                  }),
+                  _vm._v(" "),
+                  _c("span", { staticClass: "count-numbers" }, [
+                    _vm._v(_vm._s(this.counts["products"])),
+                  ]),
+                  _vm._v(" "),
+                  _c("span", { staticClass: "count-name" }, [
+                    _vm._v("Products"),
+                  ]),
+                ]),
+              ]),
+            ],
+            1
+          ),
+          _vm._v(" "),
+          _c(
+            "div",
+            { staticClass: "col-md-6" },
+            [
+              _c("router-link", { attrs: { to: { name: "productsList" } } }, [
+                _c("div", { staticClass: "card-counter light" }, [
+                  _c("i", {
+                    staticClass: "fa fa-shopping-basket",
+                    attrs: { "aria-hidden": "true" },
+                  }),
+                  _vm._v(" "),
+                  _c("span", { staticClass: "count-numbers" }, [
+                    _vm._v(_vm._s(this.counts["product_categories"])),
+                  ]),
+                  _vm._v(" "),
+                  _c("span", { staticClass: "count-name" }, [
+                    _vm._v("Product categories"),
+                  ]),
+                ]),
+              ]),
+            ],
+            1
+          ),
+        ]),
+      ]),
+    ]),
+    _vm._v(" "),
+    _c("hr"),
+    _vm._v(" "),
+    _c("h2", [_vm._v("Conflicts (Comments complaints)")]),
+    _vm._v(" "),
+    _c("div", { staticClass: "card" }, [
+      _c("div", { staticClass: "card-body" }, [
+        _c("div", { staticClass: "row" }, [
+          _c(
+            "div",
+            { staticClass: "col-md-6" },
+            [
+              _c("router-link", { attrs: { to: { name: "comentsList" } } }, [
+                _c("div", { staticClass: "card-counter danger" }, [
+                  _c("i", {
+                    staticClass: "fa fa-gavel",
+                    attrs: { "aria-hidden": "true" },
+                  }),
+                  _vm._v(" "),
+                  _c("span", { staticClass: "count-numbers" }, [
+                    _vm._v(
+                      _vm._s(this.counts["article_comment_complaint_count"])
+                    ),
+                  ]),
+                  _vm._v(" "),
+                  _c("span", { staticClass: "count-name" }, [
+                    _vm._v("Active competitions"),
+                  ]),
+                ]),
+              ]),
+            ],
+            1
+          ),
+          _vm._v(" "),
+          _c(
+            "div",
+            { staticClass: "col-md-6" },
+            [
+              _c("router-link", { attrs: { to: { name: "comentsList" } } }, [
+                _c("div", { staticClass: "card-counter danger" }, [
+                  _c("i", {
+                    staticClass: "fa fa-gavel",
+                    attrs: { "aria-hidden": "true" },
+                  }),
+                  _vm._v(" "),
+                  _c("span", { staticClass: "count-numbers" }, [_vm._v("XXX")]),
+                  _vm._v(" "),
+                  _c("span", { staticClass: "count-name" }, [
+                    _vm._v("Completed competitions"),
+                  ]),
+                ]),
+              ]),
+            ],
+            1
+          ),
+        ]),
+      ]),
+    ]),
+    _vm._v(" "),
+    _c("hr"),
+    _vm._v(" "),
+    _c("h2", [_vm._v("Comments")]),
+    _vm._v(" "),
+    _c("div", { staticClass: "card" }, [
+      _c("div", { staticClass: "card-body" }, [
+        _c("div", { staticClass: "row" }, [
+          _c(
+            "div",
+            { staticClass: "col-md-6" },
+            [
+              _c("router-link", { attrs: { to: { name: "comentsList" } } }, [
+                _c("div", { staticClass: "card-counter dark" }, [
+                  _c("i", {
+                    staticClass: "fa fa-comment-o",
+                    attrs: { "aria-hidden": "true" },
+                  }),
+                  _vm._v(" "),
+                  _c("span", { staticClass: "count-numbers" }, [
+                    _vm._v(_vm._s(this.counts["article_comments_count"])),
+                  ]),
+                  _vm._v(" "),
+                  _c("span", { staticClass: "count-name" }, [
+                    _vm._v("Article comments"),
+                  ]),
+                ]),
+              ]),
+            ],
+            1
+          ),
+          _vm._v(" "),
+          _c(
+            "div",
+            { staticClass: "col-md-6" },
+            [
+              _c("router-link", { attrs: { to: { name: "comentsList" } } }, [
+                _c("div", { staticClass: "card-counter dark" }, [
+                  _c("i", {
+                    staticClass: "fa fa-comment-o",
+                    attrs: { "aria-hidden": "true" },
+                  }),
+                  _vm._v(" "),
+                  _c("span", { staticClass: "count-numbers" }, [
+                    _vm._v(_vm._s(this.counts["product_comments_count"])),
+                  ]),
+                  _vm._v(" "),
+                  _c("span", { staticClass: "count-name" }, [
+                    _vm._v("Product comments"),
+                  ]),
+                ]),
+              ]),
+            ],
+            1
+          ),
+        ]),
+      ]),
+    ]),
+    _vm._v(" "),
+    _c("hr"),
+    _vm._v(" "),
+    _c("h2", [_vm._v("Users")]),
+    _vm._v(" "),
+    _c("div", { staticClass: "card" }, [
+      _c("div", { staticClass: "card-body" }, [
+        _c("div", { staticClass: "row" }, [
+          _c(
+            "div",
+            { staticClass: "col-md-6 offset-md-3" },
+            [
+              _c("router-link", { attrs: { to: { name: "usersList" } } }, [
+                _c("div", { staticClass: "card-counter success" }, [
+                  _c("i", {
+                    staticClass: "fa fa-user-circle-o",
+                    attrs: { "aria-hidden": "true" },
+                  }),
+                  _vm._v(" "),
+                  _c("span", { staticClass: "count-numbers" }, [
+                    _vm._v(_vm._s(this.counts["users"])),
+                  ]),
+                  _vm._v(" "),
+                  _c("span", { staticClass: "count-name" }, [_vm._v("users")]),
+                ]),
+              ]),
+            ],
+            1
+          ),
+        ]),
+      ]),
+    ]),
+    _vm._v(" "),
+    _c("h2", [_vm._v("Social accounts")]),
+    _vm._v(" "),
+    _c("div", { staticClass: "card" }, [
+      _c("div", { staticClass: "card-body" }, [
+        _c("div", { staticClass: "row" }, [
+          _c(
+            "div",
+            { staticClass: "col-md-6" },
+            [
+              _c("router-link", { attrs: { to: { name: "usersList" } } }, [
+                _c("div", { staticClass: "card-counter success" }, [
+                  _c("i", {
+                    staticClass: "fa fa-facebook",
+                    attrs: { "aria-hidden": "true" },
+                  }),
+                  _vm._v(" "),
+                  _c("span", { staticClass: "count-numbers" }, [
+                    _vm._v(_vm._s(this.counts["google_accounts_count"])),
+                  ]),
+                  _vm._v(" "),
+                  _c("span", { staticClass: "count-name" }, [_vm._v("Google")]),
+                ]),
+              ]),
+            ],
+            1
+          ),
+          _vm._v(" "),
+          _c(
+            "div",
+            { staticClass: "col-md-6" },
+            [
+              _c("router-link", { attrs: { to: { name: "usersList" } } }, [
+                _c("div", { staticClass: "card-counter success" }, [
+                  _c("i", {
+                    staticClass: "fa fa-google",
+                    attrs: { "aria-hidden": "true" },
+                  }),
+                  _vm._v(" "),
+                  _c("span", { staticClass: "count-numbers" }, [
+                    _vm._v(_vm._s(this.counts["facebook_accounts_count"])),
+                  ]),
+                  _vm._v(" "),
+                  _c("span", { staticClass: "count-name" }, [
+                    _vm._v("Facebook"),
+                  ]),
+                ]),
+              ]),
+            ],
+            1
+          ),
+        ]),
+      ]),
+    ]),
+    _vm._v(" "),
+    _c("h2", [_vm._v("Service followers")]),
+    _vm._v(" "),
+    _c("div", { staticClass: "card" }, [
+      _c("div", { staticClass: "card-body" }, [
+        _c("div", { staticClass: "row" }, [
+          _c(
+            "div",
+            { staticClass: "col-md-6" },
+            [
+              _c("router-link", { attrs: { to: { name: "usersList" } } }, [
+                _c("div", { staticClass: "card-counter success" }, [
+                  _c("i", {
+                    staticClass: "fa fa-user-circle-o",
+                    attrs: { "aria-hidden": "true" },
+                  }),
+                  _vm._v(" "),
+                  _c("span", { staticClass: "count-numbers" }, [
+                    _vm._v(_vm._s(this.counts["guid_follovers"])),
+                  ]),
+                  _vm._v(" "),
+                  _c("span", { staticClass: "count-name" }, [
+                    _vm._v("Guid folowers"),
+                  ]),
+                ]),
+              ]),
+            ],
+            1
+          ),
+          _vm._v(" "),
+          _c(
+            "div",
+            { staticClass: "col-md-6" },
+            [
+              _c("router-link", { attrs: { to: { name: "usersList" } } }, [
+                _c("div", { staticClass: "card-counter success" }, [
+                  _c("i", {
+                    staticClass: "fa fa-user-circle-o",
+                    attrs: { "aria-hidden": "true" },
+                  }),
+                  _vm._v(" "),
+                  _c("span", { staticClass: "count-numbers" }, [
+                    _vm._v(_vm._s(this.counts["shop_follovers"])),
+                  ]),
+                  _vm._v(" "),
+                  _c("span", { staticClass: "count-name" }, [
+                    _vm._v("Shop folowers"),
+                  ]),
+                ]),
+              ]),
+            ],
+            1
+          ),
+        ]),
+      ]),
+    ]),
+    _vm._v(" "),
+    _c("h2", [_vm._v("Roles / permissions")]),
+    _vm._v(" "),
+    _c("div", { staticClass: "card" }, [
+      _c("div", { staticClass: "card-body" }, [
+        _c("div", { staticClass: "row" }, [
+          _c(
+            "div",
+            { staticClass: "col-md-6" },
+            [
+              _c("router-link", { attrs: { to: { name: "usersList" } } }, [
+                _c("div", { staticClass: "card-counter success" }, [
+                  _c("i", {
+                    staticClass: "fa fa-key",
+                    attrs: { "aria-hidden": "true" },
+                  }),
+                  _vm._v(" "),
+                  _c("span", { staticClass: "count-numbers" }, [
+                    _vm._v(_vm._s(this.counts["roles"])),
+                  ]),
+                  _vm._v(" "),
+                  _c("span", { staticClass: "count-name" }, [_vm._v("Role")]),
+                ]),
+              ]),
+            ],
+            1
+          ),
+          _vm._v(" "),
+          _c(
+            "div",
+            { staticClass: "col-md-6" },
+            [
+              _c("router-link", { attrs: { to: { name: "usersList" } } }, [
+                _c("div", { staticClass: "card-counter success" }, [
+                  _c("i", {
+                    staticClass: "fa fa-key",
+                    attrs: { "aria-hidden": "true" },
+                  }),
+                  _vm._v(" "),
+                  _c("span", { staticClass: "count-numbers" }, [
+                    _vm._v(_vm._s(this.counts["permissions"])),
+                  ]),
+                  _vm._v(" "),
+                  _c("span", { staticClass: "count-name" }, [
+                    _vm._v("Permissions"),
+                  ]),
+                ]),
+              ]),
+            ],
+            1
+          ),
+        ]),
+      ]),
+    ]),
+  ])
+}
+var staticRenderFns = []
 render._withStripped = true
 
 
