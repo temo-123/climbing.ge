@@ -347,6 +347,12 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
  //https://github.com/Jexordexan/vue-slicksort
 
  //https://innologica.github.io/vue-stackable-modal/#sample-css
@@ -390,7 +396,8 @@ __webpack_require__.r(__webpack_exports__);
         image_type: 'Select image type',
         link: ''
       },
-      editing_image: ""
+      editing_image: [],
+      category_error: ""
     };
   },
   mounted: function mounted() {
@@ -432,20 +439,27 @@ __webpack_require__.r(__webpack_exports__);
     add_image: function add_image() {
       var _this3 = this;
 
-      // let formData = new FormData(this.$refs.myForm);
+      this.category_error = ''; // let formData = new FormData(this.$refs.myForm);
+
       var formData = new FormData();
       formData.append('image', this.image);
-      formData.append('data', JSON.stringify(this.form_data));
-      console.log(formData);
-      axios.post('./api/gallery_image_add', formData).then(function (response) {
-        _this3.is_add_image = false;
+      formData.append('data', JSON.stringify(this.form_data)); // console.log(formData);
 
-        _this3.get_gallery_data();
+      if (this.form_data.category_id == 'Select image category') {
+        this.category_error = 'Select this category is inposeble!';
+      } else {
+        axios.post('./api/gallery_image_add', // .post('./api/gallery_image_add', 
+        //     .post('./api/gallery_image_add', 
+        formData).then(function (response) {
+          _this3.is_add_image = false;
 
-        _this3.clear_input_data();
-      })["catch"](function (err) {
-        console.log(err);
-      });
+          _this3.get_gallery_data();
+
+          _this3.clear_input_data();
+        })["catch"](function (err) {
+          console.log(err);
+        });
+      }
     },
     clear_input_data: function clear_input_data() {
       this.form_data = {
@@ -467,7 +481,7 @@ __webpack_require__.r(__webpack_exports__);
         image_type: 'Select image type',
         link: ''
       };
-      this.editing_image = '';
+      this.editing_image = [];
     },
     onEditImageChange: function onEditImageChange(e) {
       this.editing_image = e.target.files[0];
@@ -478,6 +492,7 @@ __webpack_require__.r(__webpack_exports__);
       axios.get("./api/get_editing_image/" + image_id).then(function (response) {
         _this4.editing_data = response.data;
         _this4.editing_data.article_id = response.data.article[0].id;
+        _this4.editing_image.id = response.data.id;
       })["catch"](function (error) {
         return console.log(error);
       });
@@ -493,21 +508,28 @@ __webpack_require__.r(__webpack_exports__);
     edit_image: function edit_image() {
       var _this5 = this;
 
+      this.category_id = '';
       var formData = new FormData();
       formData.append('image', this.editing_image);
       formData.append('data', JSON.stringify(this.editing_data)); // console.log(formData);
 
-      axios.post('./api/gallery_image_edit/' + this.editing_data.id, formData).then(function (response) {
-        _this5.is_add_image = false;
+      if (this.editing_data.category_id == 'Select image category') {
+        this.category_error = 'Select this category is inposeble!';
+      } else {
+        axios.post('./api/gallery_image_edit/' + this.editing_data.id, // .post('./api/gallery_image_edit/'+this.editing_data.id, 
+        //     .post('./api/gallery_image_edit/'+this.editing_data.id, 
+        formData).then(function (response) {
+          _this5.is_add_image = false;
 
-        _this5.get_gallery_data();
+          _this5.get_gallery_data();
 
-        _this5.close_edit_image_modal();
+          _this5.close_edit_image_modal();
 
-        _this5.editing_image = [];
-      })["catch"](function (err) {
-        console.log(err);
-      });
+          _this5.editing_image = [];
+        })["catch"](function (err) {
+          console.log(err);
+        });
+      }
     },
     del_image: function del_image(image_id) {
       var _this6 = this;
@@ -1834,6 +1856,7 @@ var render = function () {
                         name: "image",
                         id: "image",
                         value: "image",
+                        required: "",
                       },
                       on: { change: _vm.onAddImageChange },
                     }),
@@ -1859,7 +1882,11 @@ var render = function () {
                               },
                             ],
                             staticClass: "form-control",
-                            attrs: { name: "published", id: "published" },
+                            attrs: {
+                              name: "published",
+                              id: "published",
+                              required: "",
+                            },
                             on: {
                               change: function ($event) {
                                 var $$selectedVal = Array.prototype.filter
@@ -1917,7 +1944,11 @@ var render = function () {
                               },
                             ],
                             staticClass: "form-control",
-                            attrs: { name: "image_type", id: "image_type" },
+                            attrs: {
+                              name: "image_type",
+                              id: "image_type",
+                              required: "",
+                            },
                             on: {
                               change: function ($event) {
                                 var $$selectedVal = Array.prototype.filter
@@ -1978,7 +2009,7 @@ var render = function () {
                                   },
                                 ],
                                 staticClass: "form-control",
-                                attrs: { name: "article_id" },
+                                attrs: { name: "article_id", required: "" },
                                 on: {
                                   change: function ($event) {
                                     var $$selectedVal = Array.prototype.filter
@@ -2004,7 +2035,7 @@ var render = function () {
                                 },
                               },
                               [
-                                _vm._v(" \n                                "),
+                                _vm._v("\n                                "),
                                 _c("option", { attrs: { disabled: "" } }, [
                                   _vm._v("Select article"),
                                 ]),
@@ -2029,6 +2060,23 @@ var render = function () {
                         _vm._v("\n                    "),
                       ])
                     : _vm._e(),
+                  _vm._v("\n                    "),
+                  _vm.category_error
+                    ? _c(
+                        "div",
+                        {
+                          staticClass: "alert alert-danger",
+                          attrs: { role: "alert" },
+                        },
+                        [
+                          _vm._v(
+                            "\n                        " +
+                              _vm._s(_vm.category_error) +
+                              "\n                    "
+                          ),
+                        ]
+                      )
+                    : _vm._e(),
                   _vm._v("\n\n                    "),
                   _c("div", { staticClass: "form-group clearfix row" }, [
                     _vm._v("\n                        "),
@@ -2049,7 +2097,7 @@ var render = function () {
                               },
                             ],
                             staticClass: "form-control",
-                            attrs: { name: "filter" },
+                            attrs: { name: "filter", required: "" },
                             on: {
                               change: function ($event) {
                                 var $$selectedVal = Array.prototype.filter
@@ -2117,6 +2165,7 @@ var render = function () {
                             type: "text",
                             name: "title",
                             placeholder: "Title",
+                            required: "",
                           },
                           domProps: { value: _vm.form_data.title },
                           on: {
@@ -2152,7 +2201,12 @@ var render = function () {
                           },
                         ],
                         staticClass: "form-cotrol md-textarea form-control",
-                        attrs: { type: "text", name: "text", rows: "15" },
+                        attrs: {
+                          type: "text",
+                          name: "text",
+                          rows: "15",
+                          required: "",
+                        },
                         domProps: { value: _vm.form_data.text },
                         on: {
                           input: function ($event) {
@@ -2254,390 +2308,457 @@ var render = function () {
         [
           _c("pre", { staticClass: "language-vue" }, [
             _vm._v("            "),
-            _c("form", { ref: "editingForm" }, [
-              _vm._v("\n                "),
-              _c("div", { staticClass: "container" }, [
-                _vm._v("\n                    \n                    "),
-                _c("div", { staticClass: "row" }, [
-                  _vm._v("\n                        "),
-                  _c("img", {
-                    attrs: {
-                      src: "/images/gallery_img/" + _vm.editing_data.image,
-                      alt: _vm.editing_data.title,
-                    },
-                  }),
-                  _vm._v("\n                    "),
-                ]),
-                _vm._v("\n                    \n                    "),
-                _c("div", { staticClass: "form-group clearfix row" }, [
-                  _vm._v("\n                        "),
-                  _c("input", {
-                    attrs: {
-                      type: "file",
-                      name: "image",
-                      id: "image",
-                      value: "image",
-                    },
-                    on: { change: _vm.onEditImageChange },
-                  }),
-                  _vm._v("\n                    "),
-                ]),
-                _vm._v("\n\n                    "),
-                _c("div", { staticClass: "form-group clearfix row" }, [
-                  _vm._v("\n                        "),
-                  _c("div", { staticClass: "col-md-12 image_add_modal_form" }, [
-                    _vm._v("\n                            "),
-                    _c(
-                      "select",
-                      {
-                        directives: [
-                          {
-                            name: "model",
-                            rawName: "v-model",
-                            value: _vm.editing_data.published,
-                            expression: "editing_data.published",
-                          },
-                        ],
-                        staticClass: "form-control",
-                        attrs: { name: "published", id: "published" },
-                        on: {
-                          change: function ($event) {
-                            var $$selectedVal = Array.prototype.filter
-                              .call($event.target.options, function (o) {
-                                return o.selected
-                              })
-                              .map(function (o) {
-                                var val = "_value" in o ? o._value : o.value
-                                return val
-                              })
-                            _vm.$set(
-                              _vm.editing_data,
-                              "published",
-                              $event.target.multiple
-                                ? $$selectedVal
-                                : $$selectedVal[0]
-                            )
-                          },
-                        },
+            _c(
+              "form",
+              {
+                ref: "editingForm",
+                attrs: { id: "gallery_iamge_edit_form" },
+                on: {
+                  submit: function ($event) {
+                    $event.preventDefault()
+                    return _vm.edit_image(_vm.editing_image.id)
+                  },
+                },
+              },
+              [
+                _vm._v("\n                "),
+                _c("div", { staticClass: "container" }, [
+                  _vm._v("\n                    \n                    "),
+                  _c("div", { staticClass: "row" }, [
+                    _vm._v("\n                        "),
+                    _c("img", {
+                      attrs: {
+                        src: "/images/gallery_img/" + _vm.editing_data.image,
+                        alt: _vm.editing_data.title,
                       },
+                    }),
+                    _vm._v("\n                    "),
+                  ]),
+                  _vm._v("\n                    \n                    "),
+                  _c("div", { staticClass: "form-group clearfix row" }, [
+                    _vm._v("\n                        "),
+                    _c("input", {
+                      attrs: {
+                        type: "file",
+                        name: "image",
+                        id: "image",
+                        value: "image",
+                      },
+                      on: { change: _vm.onEditImageChange },
+                    }),
+                    _vm._v("\n                    "),
+                  ]),
+                  _vm._v("\n\n                    "),
+                  _c("div", { staticClass: "form-group clearfix row" }, [
+                    _vm._v("\n                        "),
+                    _c(
+                      "div",
+                      { staticClass: "col-md-12 image_add_modal_form" },
                       [
-                        _vm._v("\n                                    "),
-                        _c("option", { attrs: { value: "0" } }, [
-                          _vm._v("Not public"),
-                        ]),
-                        _vm._v(" \n                                    "),
-                        _c("option", { attrs: { value: "1" } }, [
-                          _vm._v("Public"),
-                        ]),
                         _vm._v("\n                            "),
-                      ]
-                    ),
-                    _vm._v(" \n                        "),
-                  ]),
-                  _vm._v("\n                    "),
-                ]),
-                _vm._v("\n\n                    "),
-                _c("div", { staticClass: "form-group clearfix row" }, [
-                  _vm._v("\n                        "),
-                  _c("div", { staticClass: "col-md-12 image_add_modal_form" }, [
-                    _vm._v("\n                            "),
-                    _c(
-                      "select",
-                      {
-                        directives: [
+                        _c(
+                          "select",
                           {
-                            name: "model",
-                            rawName: "v-model",
-                            value: _vm.editing_data.image_type,
-                            expression: "editing_data.image_type",
-                          },
-                        ],
-                        staticClass: "form-control",
-                        attrs: { name: "category", id: "category" },
-                        on: {
-                          change: function ($event) {
-                            var $$selectedVal = Array.prototype.filter
-                              .call($event.target.options, function (o) {
-                                return o.selected
-                              })
-                              .map(function (o) {
-                                var val = "_value" in o ? o._value : o.value
-                                return val
-                              })
-                            _vm.$set(
-                              _vm.editing_data,
-                              "image_type",
-                              $event.target.multiple
-                                ? $$selectedVal
-                                : $$selectedVal[0]
-                            )
-                          },
-                        },
-                      },
-                      [
-                        _vm._v("\n                                "),
-                        _c("option", { attrs: { disabled: "" } }, [
-                          _vm._v("Select image type"),
-                        ]),
-                        _vm._v(" \n                                "),
-                        _c("option", [_vm._v("Article image")]),
-                        _vm._v(" \n                                "),
-                        _c("option", [_vm._v("Index gallery images")]),
-                        _vm._v(" \n                                "),
-                        _c("option", [_vm._v("Index head slider images")]),
-                        _vm._v(" \n                            "),
-                      ]
-                    ),
-                    _vm._v(" \n                        "),
-                  ]),
-                  _vm._v("\n                    "),
-                ]),
-                _vm._v("\n                    \n                    "),
-                _vm.editing_data.image_type == "Article image"
-                  ? _c("div", { staticClass: "form-group clearfix row" }, [
-                      _vm._v("\n                        "),
-                      _c(
-                        "div",
-                        { staticClass: "col-md-12 image_add_modal_form" },
-                        [
-                          _vm._v("\n                            "),
-                          _c(
-                            "select",
-                            {
-                              directives: [
-                                {
-                                  name: "model",
-                                  rawName: "v-model",
-                                  value: _vm.editing_data.article_id,
-                                  expression: "editing_data.article_id",
-                                },
-                              ],
-                              staticClass: "form-control",
-                              attrs: { name: "article_id" },
-                              on: {
-                                change: function ($event) {
-                                  var $$selectedVal = Array.prototype.filter
-                                    .call($event.target.options, function (o) {
-                                      return o.selected
-                                    })
-                                    .map(function (o) {
-                                      var val =
-                                        "_value" in o ? o._value : o.value
-                                      return val
-                                    })
-                                  _vm.$set(
-                                    _vm.editing_data,
-                                    "article_id",
-                                    $event.target.multiple
-                                      ? $$selectedVal
-                                      : $$selectedVal[0]
-                                  )
-                                },
+                            directives: [
+                              {
+                                name: "model",
+                                rawName: "v-model",
+                                value: _vm.editing_data.published,
+                                expression: "editing_data.published",
+                              },
+                            ],
+                            staticClass: "form-control",
+                            attrs: {
+                              name: "published",
+                              id: "published",
+                              required: "",
+                            },
+                            on: {
+                              change: function ($event) {
+                                var $$selectedVal = Array.prototype.filter
+                                  .call($event.target.options, function (o) {
+                                    return o.selected
+                                  })
+                                  .map(function (o) {
+                                    var val = "_value" in o ? o._value : o.value
+                                    return val
+                                  })
+                                _vm.$set(
+                                  _vm.editing_data,
+                                  "published",
+                                  $event.target.multiple
+                                    ? $$selectedVal
+                                    : $$selectedVal[0]
+                                )
                               },
                             },
-                            [
-                              _vm._v(" \n                                "),
-                              _c("option", { attrs: { disabled: "" } }, [
-                                _vm._v("Select article"),
-                              ]),
-                              _vm._v(" \n                                "),
-                              _vm._l(_vm.articles, function (article) {
-                                return _c(
-                                  "option",
-                                  {
-                                    key: article.id,
-                                    domProps: { value: article.id },
-                                  },
-                                  [_vm._v(_vm._s(article.url_title))]
-                                )
-                              }),
-                              _vm._v(" \n                            "),
-                            ],
-                            2
-                          ),
-                          _vm._v(" \n                            "),
-                          _vm._v("\n                        "),
-                        ]
-                      ),
-                      _vm._v("\n                    "),
-                    ])
-                  : _vm._e(),
-                _vm._v("\n\n                    "),
-                _c("div", { staticClass: "form-group clearfix row" }, [
-                  _vm._v("\n                        "),
-                  _c("div", { staticClass: "col-md-12 image_add_modal_form" }, [
-                    _vm._v("\n                            "),
+                          },
+                          [
+                            _vm._v("\n                                    "),
+                            _c("option", { attrs: { value: "0" } }, [
+                              _vm._v("Not public"),
+                            ]),
+                            _vm._v(" \n                                    "),
+                            _c("option", { attrs: { value: "1" } }, [
+                              _vm._v("Public"),
+                            ]),
+                            _vm._v("\n                            "),
+                          ]
+                        ),
+                        _vm._v(" \n                        "),
+                      ]
+                    ),
+                    _vm._v("\n                    "),
+                  ]),
+                  _vm._v("\n\n                    "),
+                  _c("div", { staticClass: "form-group clearfix row" }, [
+                    _vm._v("\n                        "),
                     _c(
-                      "select",
-                      {
+                      "div",
+                      { staticClass: "col-md-12 image_add_modal_form" },
+                      [
+                        _vm._v("\n                            "),
+                        _c(
+                          "select",
+                          {
+                            directives: [
+                              {
+                                name: "model",
+                                rawName: "v-model",
+                                value: _vm.editing_data.image_type,
+                                expression: "editing_data.image_type",
+                              },
+                            ],
+                            staticClass: "form-control",
+                            attrs: {
+                              name: "category",
+                              id: "category",
+                              required: "",
+                            },
+                            on: {
+                              change: function ($event) {
+                                var $$selectedVal = Array.prototype.filter
+                                  .call($event.target.options, function (o) {
+                                    return o.selected
+                                  })
+                                  .map(function (o) {
+                                    var val = "_value" in o ? o._value : o.value
+                                    return val
+                                  })
+                                _vm.$set(
+                                  _vm.editing_data,
+                                  "image_type",
+                                  $event.target.multiple
+                                    ? $$selectedVal
+                                    : $$selectedVal[0]
+                                )
+                              },
+                            },
+                          },
+                          [
+                            _vm._v("\n                                "),
+                            _c("option", { attrs: { disabled: "" } }, [
+                              _vm._v("Select image type"),
+                            ]),
+                            _vm._v(" \n                                "),
+                            _c("option", [_vm._v("Article image")]),
+                            _vm._v(" \n                                "),
+                            _c("option", [_vm._v("Index gallery images")]),
+                            _vm._v(" \n                                "),
+                            _c("option", [_vm._v("Index head slider images")]),
+                            _vm._v(" \n                            "),
+                          ]
+                        ),
+                        _vm._v(" \n                        "),
+                      ]
+                    ),
+                    _vm._v("\n                    "),
+                  ]),
+                  _vm._v("\n                    \n                    "),
+                  _vm.editing_data.image_type == "Article image"
+                    ? _c("div", { staticClass: "form-group clearfix row" }, [
+                        _vm._v("\n                        "),
+                        _c(
+                          "div",
+                          { staticClass: "col-md-12 image_add_modal_form" },
+                          [
+                            _vm._v("\n                            "),
+                            _c(
+                              "select",
+                              {
+                                directives: [
+                                  {
+                                    name: "model",
+                                    rawName: "v-model",
+                                    value: _vm.editing_data.article_id,
+                                    expression: "editing_data.article_id",
+                                  },
+                                ],
+                                staticClass: "form-control",
+                                attrs: { name: "article_id", required: "" },
+                                on: {
+                                  change: function ($event) {
+                                    var $$selectedVal = Array.prototype.filter
+                                      .call(
+                                        $event.target.options,
+                                        function (o) {
+                                          return o.selected
+                                        }
+                                      )
+                                      .map(function (o) {
+                                        var val =
+                                          "_value" in o ? o._value : o.value
+                                        return val
+                                      })
+                                    _vm.$set(
+                                      _vm.editing_data,
+                                      "article_id",
+                                      $event.target.multiple
+                                        ? $$selectedVal
+                                        : $$selectedVal[0]
+                                    )
+                                  },
+                                },
+                              },
+                              [
+                                _vm._v(" \n                                "),
+                                _c("option", { attrs: { disabled: "" } }, [
+                                  _vm._v("Select article"),
+                                ]),
+                                _vm._v(" \n                                "),
+                                _vm._l(_vm.articles, function (article) {
+                                  return _c(
+                                    "option",
+                                    {
+                                      key: article.id,
+                                      domProps: { value: article.id },
+                                    },
+                                    [_vm._v(_vm._s(article.url_title))]
+                                  )
+                                }),
+                                _vm._v(" \n                            "),
+                              ],
+                              2
+                            ),
+                            _vm._v(" \n                            "),
+                            _vm._v("\n                        "),
+                          ]
+                        ),
+                        _vm._v("\n                    "),
+                      ])
+                    : _vm._e(),
+                  _vm._v("\n                    "),
+                  _vm.category_error
+                    ? _c(
+                        "div",
+                        {
+                          staticClass: "alert alert-danger",
+                          attrs: { role: "alert" },
+                        },
+                        [
+                          _vm._v(
+                            "\n                        " +
+                              _vm._s(_vm.category_error) +
+                              "\n                    "
+                          ),
+                        ]
+                      )
+                    : _vm._e(),
+                  _vm._v("\n\n                    "),
+                  _c("div", { staticClass: "form-group clearfix row" }, [
+                    _vm._v("\n                        "),
+                    _c(
+                      "div",
+                      { staticClass: "col-md-12 image_add_modal_form" },
+                      [
+                        _vm._v("\n                            "),
+                        _c(
+                          "select",
+                          {
+                            directives: [
+                              {
+                                name: "model",
+                                rawName: "v-model",
+                                value: _vm.editing_data.category_id,
+                                expression: "editing_data.category_id",
+                              },
+                            ],
+                            staticClass: "form-control",
+                            attrs: { name: "filter", required: "" },
+                            on: {
+                              change: function ($event) {
+                                var $$selectedVal = Array.prototype.filter
+                                  .call($event.target.options, function (o) {
+                                    return o.selected
+                                  })
+                                  .map(function (o) {
+                                    var val = "_value" in o ? o._value : o.value
+                                    return val
+                                  })
+                                _vm.$set(
+                                  _vm.editing_data,
+                                  "category_id",
+                                  $event.target.multiple
+                                    ? $$selectedVal
+                                    : $$selectedVal[0]
+                                )
+                              },
+                            },
+                          },
+                          [
+                            _vm._v("\n                                "),
+                            _c("option", { attrs: { disabled: "" } }, [
+                              _vm._v("Select image category"),
+                            ]),
+                            _vm._v(" \n                                "),
+                            _vm._l(_vm.categories, function (categorie) {
+                              return _c(
+                                "option",
+                                {
+                                  key: categorie.id,
+                                  domProps: { value: categorie.id },
+                                },
+                                [_vm._v(_vm._s(categorie.us_name))]
+                              )
+                            }),
+                            _vm._v(" \n                            "),
+                          ],
+                          2
+                        ),
+                        _vm._v(" \n                        "),
+                      ]
+                    ),
+                    _vm._v("\n                    "),
+                  ]),
+                  _vm._v("\n\n                    "),
+                  _c("div", { staticClass: "form-group clearfix row" }, [
+                    _vm._v("\n                        "),
+                    _c(
+                      "div",
+                      { staticClass: "col-md-12 image_add_modal_form" },
+                      [
+                        _vm._v("\n                            "),
+                        _c("input", {
+                          directives: [
+                            {
+                              name: "model",
+                              rawName: "v-model",
+                              value: _vm.editing_data.title,
+                              expression: "editing_data.title",
+                            },
+                          ],
+                          staticClass: "form-control",
+                          attrs: {
+                            type: "text",
+                            name: "title",
+                            placeholder: "Title",
+                            required: "",
+                          },
+                          domProps: { value: _vm.editing_data.title },
+                          on: {
+                            input: function ($event) {
+                              if ($event.target.composing) {
+                                return
+                              }
+                              _vm.$set(
+                                _vm.editing_data,
+                                "title",
+                                $event.target.value
+                              )
+                            },
+                          },
+                        }),
+                        _vm._v("\n                        "),
+                      ]
+                    ),
+                    _vm._v("\n                    "),
+                  ]),
+                  _vm._v("\n\n\n                    "),
+                  _c("div", { staticClass: "form-group clearfix row" }, [
+                    _vm._v("\n                        "),
+                    _c("div", { staticClass: "col-md-12" }, [
+                      _vm._v("\n                            "),
+                      _c("textarea", {
                         directives: [
                           {
                             name: "model",
                             rawName: "v-model",
-                            value: _vm.editing_data.category_id,
-                            expression: "editing_data.category_id",
+                            value: _vm.editing_data.text,
+                            expression: "editing_data.text",
                           },
                         ],
-                        staticClass: "form-control",
-                        attrs: { name: "filter" },
+                        staticClass: "form-cotrol md-textarea form-control",
+                        attrs: {
+                          type: "text",
+                          name: "text",
+                          rows: "15",
+                          required: "",
+                        },
+                        domProps: { value: _vm.editing_data.text },
                         on: {
-                          change: function ($event) {
-                            var $$selectedVal = Array.prototype.filter
-                              .call($event.target.options, function (o) {
-                                return o.selected
-                              })
-                              .map(function (o) {
-                                var val = "_value" in o ? o._value : o.value
-                                return val
-                              })
+                          input: function ($event) {
+                            if ($event.target.composing) {
+                              return
+                            }
                             _vm.$set(
                               _vm.editing_data,
-                              "category_id",
-                              $event.target.multiple
-                                ? $$selectedVal
-                                : $$selectedVal[0]
+                              "text",
+                              $event.target.value
                             )
                           },
                         },
-                      },
+                      }),
+                      _vm._v("\n                        "),
+                    ]),
+                    _vm._v("\n                    "),
+                  ]),
+                  _vm._v("\n\n                    "),
+                  _c("div", { staticClass: "form-group clearfix row" }, [
+                    _vm._v("\n                        "),
+                    _c(
+                      "div",
+                      { staticClass: "col-md-12 image_add_modal_form" },
                       [
-                        _vm._v("\n                                "),
-                        _c("option", { attrs: { disabled: "" } }, [
-                          _vm._v("Select image category"),
-                        ]),
-                        _vm._v(" \n                                "),
-                        _vm._l(_vm.categories, function (categorie) {
-                          return _c(
-                            "option",
+                        _vm._v("\n                            "),
+                        _c("input", {
+                          directives: [
                             {
-                              key: categorie.id,
-                              domProps: { value: categorie.id },
+                              name: "model",
+                              rawName: "v-model",
+                              value: _vm.editing_data.link,
+                              expression: "editing_data.link",
                             },
-                            [_vm._v(_vm._s(categorie.us_name))]
-                          )
+                          ],
+                          staticClass: "form-control",
+                          attrs: {
+                            type: "text",
+                            name: "link",
+                            placeholder: "Article Link",
+                          },
+                          domProps: { value: _vm.editing_data.link },
+                          on: {
+                            input: function ($event) {
+                              if ($event.target.composing) {
+                                return
+                              }
+                              _vm.$set(
+                                _vm.editing_data,
+                                "link",
+                                $event.target.value
+                              )
+                            },
+                          },
                         }),
-                        _vm._v(" \n                            "),
-                      ],
-                      2
+                        _vm._v("\n                        "),
+                      ]
                     ),
-                    _vm._v(" \n                        "),
+                    _vm._v("\n                    "),
                   ]),
-                  _vm._v("\n                    "),
+                  _vm._v("\n                "),
                 ]),
-                _vm._v("\n\n                    "),
-                _c("div", { staticClass: "form-group clearfix row" }, [
-                  _vm._v("\n                        "),
-                  _c("div", { staticClass: "col-md-12 image_add_modal_form" }, [
-                    _vm._v("\n                            "),
-                    _c("input", {
-                      directives: [
-                        {
-                          name: "model",
-                          rawName: "v-model",
-                          value: _vm.editing_data.title,
-                          expression: "editing_data.title",
-                        },
-                      ],
-                      staticClass: "form-control",
-                      attrs: {
-                        type: "text",
-                        name: "title",
-                        placeholder: "Title",
-                      },
-                      domProps: { value: _vm.editing_data.title },
-                      on: {
-                        input: function ($event) {
-                          if ($event.target.composing) {
-                            return
-                          }
-                          _vm.$set(
-                            _vm.editing_data,
-                            "title",
-                            $event.target.value
-                          )
-                        },
-                      },
-                    }),
-                    _vm._v("\n                        "),
-                  ]),
-                  _vm._v("\n                    "),
-                ]),
-                _vm._v("\n\n\n                    "),
-                _c("div", { staticClass: "form-group clearfix row" }, [
-                  _vm._v("\n                        "),
-                  _c("div", { staticClass: "col-md-12" }, [
-                    _vm._v("\n                            "),
-                    _c("textarea", {
-                      directives: [
-                        {
-                          name: "model",
-                          rawName: "v-model",
-                          value: _vm.editing_data.text,
-                          expression: "editing_data.text",
-                        },
-                      ],
-                      staticClass: "form-cotrol md-textarea form-control",
-                      attrs: { type: "text", name: "text", rows: "15" },
-                      domProps: { value: _vm.editing_data.text },
-                      on: {
-                        input: function ($event) {
-                          if ($event.target.composing) {
-                            return
-                          }
-                          _vm.$set(
-                            _vm.editing_data,
-                            "text",
-                            $event.target.value
-                          )
-                        },
-                      },
-                    }),
-                    _vm._v("\n                        "),
-                  ]),
-                  _vm._v("\n                    "),
-                ]),
-                _vm._v("\n\n                    "),
-                _c("div", { staticClass: "form-group clearfix row" }, [
-                  _vm._v("\n                        "),
-                  _c("div", { staticClass: "col-md-12 image_add_modal_form" }, [
-                    _vm._v("\n                            "),
-                    _c("input", {
-                      directives: [
-                        {
-                          name: "model",
-                          rawName: "v-model",
-                          value: _vm.editing_data.link,
-                          expression: "editing_data.link",
-                        },
-                      ],
-                      staticClass: "form-control",
-                      attrs: {
-                        type: "text",
-                        name: "link",
-                        placeholder: "Article Link",
-                      },
-                      domProps: { value: _vm.editing_data.link },
-                      on: {
-                        input: function ($event) {
-                          if ($event.target.composing) {
-                            return
-                          }
-                          _vm.$set(
-                            _vm.editing_data,
-                            "link",
-                            $event.target.value
-                          )
-                        },
-                      },
-                    }),
-                    _vm._v("\n                        "),
-                  ]),
-                  _vm._v("\n                    "),
-                ]),
-                _vm._v("\n                "),
-              ]),
-              _vm._v("\n            "),
-            ]),
+                _vm._v("\n            "),
+              ]
+            ),
             _vm._v("\n        "),
           ]),
           _vm._v(" "),
@@ -2647,12 +2768,7 @@ var render = function () {
                 "button",
                 {
                   class: { "btn btn-primary": true },
-                  attrs: { type: "button" },
-                  on: {
-                    click: function ($event) {
-                      return _vm.edit_image(_vm.editing_image.id)
-                    },
-                  },
+                  attrs: { type: "submit", form: "gallery_iamge_edit_form" },
                 },
                 [_vm._v("\n                Save\n                ")]
               ),

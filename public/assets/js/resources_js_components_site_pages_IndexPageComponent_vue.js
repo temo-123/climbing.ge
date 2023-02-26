@@ -304,27 +304,16 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
     return {
-      slides: [{
-        id: '1',
-        title: 'Slide #1',
-        text: 'Slide text 1',
-        content: 'Slide 1 content.',
-        image: '../images/gallery_img/2021-11-26-20-11-02.jpg',
-        slide_text_position: 1
-      } // {   
-      //     id: '2',
-      //     title: 'Slide #2',
-      //     text: 'Slide text 2',
-      //     content: 'Slide 2 content.',
-      //     image: '../images/gallery_img/IMG_20220209_182522.jpg',
-      //     slide_text_position: 4
-      // }
-      ],
+      slides: {},
       carrent_slider_index: 0
     };
+  },
+  mounted: function mounted() {
+    this.get_index_header_images();
   },
   methods: {
     next_image: function next_image() {
@@ -334,6 +323,14 @@ __webpack_require__.r(__webpack_exports__);
       if (this.carrent_slider_index > 0) {
         this.carrent_slider_index--;
       }
+    },
+    get_index_header_images: function get_index_header_images() {
+      var _this = this;
+
+      axios.get('../api/swiper').then(function (response) {
+        _this.slides = response.data; // this.lastNews = response.data[0]
+        // this.get_news()
+      })["catch"](function (error) {});
     }
   }
 });
@@ -422,7 +419,8 @@ __webpack_require__.r(__webpack_exports__);
       var _this = this;
 
       axios.get('../api/articles/tech_tip/' + localStorage.getItem('lang')).then(function (response) {
-        _this.techtips = response.data;
+        // this.techtips = response.data
+        _this.techtips = response.data.slice(0, 4);
       })["catch"](function (error) {});
     },
     next_tips: function next_tips() {
@@ -1022,7 +1020,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_laravel_mix_node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, "\n.head_slider[data-v-7794a48e]{\n  /* white-space: normal;\n  background-size: cover;\n  flex-shrink: 0;\n  display: block;\n  width: 100%;\n  position: relative; */\n}\n.head_slide[data-v-7794a48e]{\n}\n.swiper[data-v-7794a48e]{\n  max-width: 100%; \n  overflow: hidden;\n}\n.swiper_sizing[data-v-7794a48e]{\n  /* display: flex; */\n}\n.previes_slide_bottom[data-v-7794a48e]{\n    left: 1%;\n}\n.next_slide_bottom[data-v-7794a48e]{\n    right: 1%;\n}\n.next_slide_bottom[data-v-7794a48e], .previes_slide_bottom[data-v-7794a48e]{\n    margin-top: -18%;\n    font-size: 300%;\n    cursor: pointer;\n    text-shadow: #d0d0d0 1px 1px 1px;\n    position: absolute;\n}\n.slider_img[data-v-7794a48e]{\n  width: 100%\n}\n", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n/* .head_slider{\n  white-space: normal;\n  background-size: cover;\n  flex-shrink: 0;\n  display: block;\n  width: 100%;\n  position: relative;\n} */\n/* .head_slide{\n\n} */\n.swiper[data-v-7794a48e]{\n  max-width: 100%; \n  overflow: hidden;\n}\n/* .swiper_sizing{\n  display: flex;\n} */\n.previes_slide_bottom[data-v-7794a48e]{\n    left: 1%;\n}\n.next_slide_bottom[data-v-7794a48e]{\n    right: 1%;\n}\n.next_slide_bottom[data-v-7794a48e], .previes_slide_bottom[data-v-7794a48e]{\n    margin-top: -18%;\n    font-size: 300%;\n    cursor: pointer;\n    text-shadow: #d0d0d0 1px 1px 1px;\n    position: absolute;\n}\n.slider_img[data-v-7794a48e]{\n  width: 100%\n}\n", ""]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
@@ -2116,7 +2114,7 @@ var render = function () {
           [
             _c("site-img", {
               attrs: {
-                src: slide.image,
+                src: "../images/gallery_img/" + slide.image,
                 alt: slide.title,
                 img_class: "slider_img",
               },

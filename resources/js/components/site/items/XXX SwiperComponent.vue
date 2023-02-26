@@ -20,7 +20,7 @@
             <p>{{slide.text}}</p>
           </div> -->
 
-          <site-img :src="'../images/gallery_img/'+slide.image" :alt="slide.title" :img_class="'slider_img'" />
+          <site-img :src="slide.image" :alt="slide.title" :img_class="'slider_img'" />
           <!-- <site-img :src="slide.image" :alt="slide.title" :img_class="'slider_img'" /> -->
 
       </div>
@@ -41,13 +41,32 @@
   export default {
       data() {
           return {
+              // slides:[
+              //     {   
+              //         id: '1',
+              //         title: 'Slide #1',
+              //         text: 'Slide text 1',
+              //         content: 'Slide 1 content.',
+              //         image: '../images/gallery_img/2021-11-26-20-11-02.jpg',
+              //         slide_text_position: 1
+              //     },
+              //     // {   
+              //     //     id: '2',
+              //     //     title: 'Slide #2',
+              //     //     text: 'Slide text 2',
+              //     //     content: 'Slide 2 content.',
+              //     //     image: '../images/gallery_img/IMG_20220209_182522.jpg',
+              //     //     slide_text_position: 4
+              //     // }
+              // ],
+
               slides: {},
 
               carrent_slider_index: 0,
           };
       },
       mounted() {
-          this.get_index_header_images()
+          this.get_news()
       },
       methods: {
           next_image(){
@@ -59,12 +78,12 @@
             }
           },
           
-          get_index_header_images(){
+          get_news(){
             axios
             .get('../api/swiper')
             .then(response => {
-                this.slides = response.data
-                // this.lastNews = response.data[0]
+                this.newses = response.data
+                this.lastNews = response.data[0]
                 // this.get_news()
             })
             .catch(error =>{
@@ -75,24 +94,24 @@
 </script>
 
 <style scoped>
-/* .head_slider{
-  white-space: normal;
+.head_slider{
+  /* white-space: normal;
   background-size: cover;
   flex-shrink: 0;
   display: block;
   width: 100%;
-  position: relative;
-} */
-/* .head_slide{
+  position: relative; */
+}
+.head_slide{
 
-} */
+}
 .swiper{
   max-width: 100%; 
   overflow: hidden;
 }
-/* .swiper_sizing{
-  display: flex;
-} */
+.swiper_sizing{
+  /* display: flex; */
+}
 .previes_slide_bottom{
     left: 1%;
 }

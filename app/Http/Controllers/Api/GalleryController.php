@@ -43,20 +43,23 @@ class GalleryController extends Controller
 
     public function get_swiper_images()
     {
-        $gallery = array();
-        $full_image = '';
-        $image = '';
+        // $gallery = array();
+        // $full_image = '';
+        // $image = '';
 
-        $gallery_images = Gallery_image::where('image_type', '=', 1)->where('published', '=', 1)->get();
-        $image_url = config('app.url').'/images/gallery_img/';
+        // $gallery_images = Gallery_image::where('image_type', '=', 1)->where('published', '=', 1)->get();
+        // $image_url = config('app.url').'/images/gallery_img/';
 
-        foreach ($gallery_images as $gallery_img) {
-            $image = $gallery_img->image;
-            $image = strval($image);
-            $full_image = $image_url . $image;
-            array_push($gallery, ['id'=> $gallery_img->id, 'image'=> $full_image]);
-        }
-        return response()->json($gallery);
+        // foreach ($gallery_images as $gallery_img) {
+        //     $image = $gallery_img->image;
+        //     $image = strval($image);
+        //     $full_image = $image_url . $image;
+        //     array_push($gallery, ['id'=> $gallery_img->id, 'image'=> $full_image]);
+        // }
+        // return response()->json($gallery);
+
+        // return Gallery_image::where('image_type', '=', 1)->where('published', '=', 1)->get();
+        return Gallery_image::limit(1)->latest('id')->where('image_type', '=', 'Index head slider images')->where('published', '=', 1)->get();
     }
 
     /**
@@ -138,24 +141,26 @@ class GalleryController extends Controller
             
                 $edit_gallery_image->save();
 
-                if($data["article_id"] && $data["image_type"] == 'Article image'){
-                    $galery_image_article_count = Gallery_image_article::where('image_id', '=', $edit_gallery_image->id)->count();
-                    if ($galery_image_article_count > 0) {
-                        $edit_active_conaction = Gallery_image_article::where('image_id', '==', $edit_gallery_image->id)->first();
-                        $edit_active_conaction['article_id'] = $data["article_id"];
-                        $edit_active_conaction->save();
+                if (isset($data["article_id"])) {
+                    if($data["article_id"] && $data["image_type"] == 'Article image'){
+                        $galery_image_article_count = Gallery_image_article::where('image_id', '=', $edit_gallery_image->id)->count();
+                        if ($galery_image_article_count > 0) {
+                            $edit_active_conaction = Gallery_image_article::where('image_id', '==', $edit_gallery_image->id)->first();
+                            $edit_active_conaction['article_id'] = $data["article_id"];
+                            $edit_active_conaction->save();
+                        }
+                        else {
+                            $new_image_article = new Gallery_image_article;
+                            $new_image_article['image_id']=$edit_gallery_image["id"];
+                            $new_image_article['article_id']=$data["article_id"];
+                            $new_image_article->save();
+                        }
                     }
-                    else {
-                        $new_image_article = new Gallery_image_article;
-                        $new_image_article['image_id']=$edit_gallery_image["id"];
-                        $new_image_article['article_id']=$data["article_id"];
-                        $new_image_article->save();
-                    }
-                }
-                else if($data["image_type"] != 'Article image') {
-                    if (Gallery_image_article::where('image_id', '=', $edit_gallery_image->id)->count() > 0) {
-                        $deliting_conection_item = Gallery_image_article::where('image_id', '=', $edit_gallery_image->id)->first();
-                        $deliting_conection_item -> delete();
+                    else if($data["image_type"] != 'Article image') {
+                        if (Gallery_image_article::where('image_id', '=', $edit_gallery_image->id)->count() > 0) {
+                            $deliting_conection_item = Gallery_image_article::where('image_id', '=', $edit_gallery_image->id)->first();
+                            $deliting_conection_item -> delete();
+                        }
                     }
                 }
             }
@@ -221,11 +226,13 @@ class GalleryController extends Controller
         
             $new_gallery_image->save();
 
-            if($data["article_id"] && $data["image_type"] == 'Article image'){
-                $new_image_article = new Gallery_image_article;
-                $new_image_article['image_id']=$new_gallery_image["id"];
-                $new_image_article['article_id']=$data["article_id"];
-                $new_image_article->save();
+            if (isset($data["article_id"])) {
+                if($data["article_id"] && $data["image_type"] == 'Article image'){
+                    $new_image_article = new Gallery_image_article;
+                    $new_image_article['image_id']=$new_gallery_image["id"];
+                    $new_image_article['article_id']=$data["article_id"];
+                    $new_image_article->save();
+                }
             }
         }
         else{

@@ -71,7 +71,8 @@
                 axios
                 .get('../api/articles/tech_tip/'+localStorage.getItem('lang'))
                 .then(response => {
-                    this.techtips = response.data
+                    // this.techtips = response.data
+                    this.techtips = response.data.slice(0, 4)
                 })
                 .catch(error =>{
                 })
