@@ -50,7 +50,7 @@
             get_outdoor(){
                 this.outdoor = []
                 axios
-                .get('../api/article/outdoor/'+localStorage.getItem('lang')+'/'+this.$route.params.url_title)
+                .get('../../api/article/outdoor/'+localStorage.getItem('lang')+'/'+this.$route.params.url_title)
                 .then(response => {
                     this.outdoor = response.data
 

@@ -135,7 +135,7 @@
 
             add_to_favorite_outdoor_area(article_id){
                 axios
-                .post('../../api/articles/add_to_favorite_outdoor_area/', {
+                .post('../../../api/articles/add_to_favorite_outdoor_area/', {
                     article_id: article_id,
                 })
                 .then(response => {

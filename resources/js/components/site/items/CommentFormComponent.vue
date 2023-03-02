@@ -269,7 +269,7 @@
                 this.email = ''
                 
                 axios
-                .get('../api/auth_user/')
+                .get('../../api/auth_user/')
                 .then(response => {
                     this.user = response.data,
                     
@@ -291,7 +291,7 @@
             make_complaint(){
                 this.complaint_loader = true
                 axios
-                .post('../api/add_comment_complaint/',{
+                .post('../../api/add_comment_complaint/',{
                     comment_id: this.complaint_comment_id,
                     comment_complaint: this.selected_comment_complaint,
                     email: this.complainter_email,
@@ -307,7 +307,7 @@
 
             add_comment() {
                 axios
-                .put('../api/comment/' + this.id, {
+                .put('../../api/comment/' + this.id, {
                     name: this.name,
                     is_verify_isset: this.is_verify_isset,
                     surname: this.surname,
@@ -334,7 +334,7 @@
 
             del_comment(id) {
                 axios
-                .delete('../api/comment/'+ id, {
+                .delete('../../api/comment/'+ id, {
                     id: id,
                 })
                 .then(Response => {
@@ -346,7 +346,7 @@
             get_comments: function(){
                 this.is_refresh = true
                 axios
-                .get('../api/comment/' + this.id)
+                .get('../../api/comment/' + this.id)
                 .then(response => {
                     this.comments = response.data
                     this.is_refresh = false

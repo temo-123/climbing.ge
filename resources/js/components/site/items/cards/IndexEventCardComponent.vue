@@ -14,7 +14,7 @@
                 <router-link :to="'event/'+event.global_event.url_title">
 
                     <site-img v-if="event.global_event.image != null" :src="'images/event_img/'+event.global_event.image" :img_class="'img-responsive'" :alt='event.locale_event.title'/>
-                    <site-img v-else :src="'../../../public/images/site_img/image.png'" :img_class="'img-responsive'" :alt='event.locale_event.title'/>
+                    <site-img v-else :src="'./public/images/site_img/image.png'" :img_class="'img-responsive'" :alt='event.locale_event.title'/>
 
                 </router-link>
                 <div class="row nopadding"

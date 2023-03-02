@@ -10,7 +10,7 @@
                                     <lingallery :items="items"/>
                                 </div>
                                 <div class="container" v-else>
-                                    <site-img :src="'../../../public/images/site_img/shop_demo.jpg'" :alt="product.local_product[0].title" />
+                                    <site-img :src="'/public/images/site_img/shop_demo.jpg'" :alt="product.local_product[0].title" />
                                 </div>
                             </div>
                         </div>

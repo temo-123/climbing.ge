@@ -4,8 +4,8 @@
             <router-link :to="article.url_title">
                 <!-- <img :src="'../../'+this.image_dir+this.article.image" :alt="this.article[0][0].title"> -->
                                 
-                <site-img v-if="article.image != NULL" :src="'../../'+this.image_dir+this.article.image" :img_class="'m-image-hero--image'" :alt='article[0][0].title'/>
-                <site-img v-else :src="'../../../public/images/site_img/image.png'" :img_class="'m-image-hero--image'" :alt='article[0][0].title'/>
+                <site-img v-if="article.image != NULL" :src="'/public/'+this.image_dir+this.article.image" :img_class="'m-image-hero--image'" :alt='article[0][0].title'/>
+                <site-img v-else :src="'/public/images/site_img/image.png'" :img_class="'m-image-hero--image'" :alt='article[0][0].title'/>
             </router-link>
         </div>
         <div class="many_articles_title">

@@ -49,14 +49,48 @@
         mounted() {
             // console.log(this.$route.params.locale || 'en');
         },
+        watch: {
+            '$route' (to, from) {
+                // let locale = localStorage.getItem("lang")
+                // console.log("🚀 ~ file: LocaleChangeComponent.vue:55 ~ locale:", locale)
+
+                // if(locale){
+                    // if(locale != 'en'){
+                    //     let actice_locale = locale
+
+                    //     const loc = this.$router.resolve({params: {actice_locale}})
+                    //     this.$router.push(loc.location)
+                    // }
+                    // else if(locale == 'en'){
+                    //     localStorage.setItem('lang', locale)
+                    //     this.$i18n.locale = locale;
+
+                    //     let activ_path_without_locale = this.$router.history.pending.path.split("/").splice(2).join("/")
+                        
+                    //     this.$router.push( '/' + activ_path_without_locale )
+                    // }
+                // }
+                // this.localization(locale)
+            }
+        },
         methods: {
             localization(locale){
                 if(this.$i18n.locale !== locale){
-                    localStorage.setItem('lang', locale)
-                    this.$i18n.locale = locale;
+                    if(locale != 'en'){
+                        localStorage.setItem('lang', locale)
+                        this.$i18n.locale = locale;
 
-                    const to = this.$router.resolve({params: {locale}})
-                    this.$router.push(to.location)
+                        const to = this.$router.resolve({params: {locale}})
+                        this.$router.push(to.location)
+                    }
+                    else if(locale == 'en'){
+                        localStorage.setItem('lang', locale)
+                        this.$i18n.locale = locale;
+
+                        let activ_path_without_locale = this.$router.history.pending.path.split("/").splice(2).join("/")
+                        
+                        this.$router.push( '/' + activ_path_without_locale )
+                    }
                 }
             },
         }

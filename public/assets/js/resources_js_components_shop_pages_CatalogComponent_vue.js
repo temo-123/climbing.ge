@@ -93,7 +93,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
     return {
-      num: 0
+      num: 0,
+      publicPath: window.location.protocol + '//' + window.location.hostname
     };
   },
   components: {},
@@ -10308,56 +10309,78 @@ var render = function () {
     _vm.num == 1
       ? _c("img", {
           staticClass: "article_404",
-          attrs: { src: "./images/404/empty_page/1.jpg" },
+          attrs: {
+            src: this.publicPath + "/public/images/404/empty_page/1.jpg",
+          },
         })
       : _vm.num == 2
       ? _c("img", {
           staticClass: "article_404",
-          attrs: { src: "./images/404/empty_page/2.jpg" },
+          attrs: {
+            src: this.publicPath + "/public/images/404/empty_page/2.jpg",
+          },
         })
       : _vm.num == 3
       ? _c("img", {
           staticClass: "article_404",
-          attrs: { src: "./images/404/empty_page/3.webp" },
+          attrs: {
+            src: this.publicPath + "/public/images/404/empty_page/3.webp",
+          },
         })
       : _vm.num == 4
       ? _c("img", {
           staticClass: "article_404",
-          attrs: { src: "./images/404/empty_page/4.jpg" },
+          attrs: {
+            src: this.publicPath + "/public/images/404/empty_page/4.jpg",
+          },
         })
       : _vm.num == 5
       ? _c("img", {
           staticClass: "article_404",
-          attrs: { src: "./images/404/empty_page/5.jpg" },
+          attrs: {
+            src: this.publicPath + "/public/images/404/empty_page/5.jpg",
+          },
         })
       : _vm.num == 6
       ? _c("img", {
           staticClass: "article_404",
-          attrs: { src: "./images/404/empty_page/6.jpg" },
+          attrs: {
+            src: this.publicPath + "/public/images/404/empty_page/6.jpg",
+          },
         })
       : _vm.num == 7
       ? _c("img", {
           staticClass: "article_404",
-          attrs: { src: "./images/404/empty_page/7.jpg" },
+          attrs: {
+            src: this.publicPath + "/public/images/404/empty_page/7.jpg",
+          },
         })
       : _vm.num == 8
       ? _c("img", {
           staticClass: "article_404",
-          attrs: { src: "./images/404/empty_page/8.jpg" },
+          attrs: {
+            src: this.publicPath + "/public/images/404/empty_page/8.jpg",
+          },
         })
       : _vm.num == 9
       ? _c("img", {
           staticClass: "article_404",
-          attrs: { src: "./images/404/empty_page/9.jpg" },
+          attrs: {
+            src: this.publicPath + "/public/images/404/empty_page/9.jpg",
+          },
         })
       : _vm.num == 0
       ? _c("img", {
           staticClass: "article_404",
-          attrs: { src: "./images/404/empty_page/10.jpg" },
+          attrs: {
+            src: this.publicPath + "/public/images/404/empty_page/10.jpg",
+          },
         })
       : _c("img", {
           staticClass: "article_404",
-          attrs: { src: "./images/404/empty_page/10.jpg" },
+          attrs: {
+            src: this.publicPath + "/public/images/404/empty_page/10.jpg",
+          },
         }),
     _vm._v(" "),
     _c("p", { staticStyle: { "text-align": "center" } }, [
@@ -10426,14 +10449,14 @@ var render = function () {
                     ? _c("site-img", {
                         attrs: {
                           src:
-                            "../images/product_option_img/" +
+                            "/public/images/product_option_img/" +
                             _vm.get_product_image(),
                           alt: _vm.product_data.locale_product.title,
                         },
                       })
                     : _c("site-img", {
                         attrs: {
-                          src: "../../../public/images/site_img/shop_demo.jpg",
+                          src: "/public/images/site_img/shop_demo.jpg",
                           alt: _vm.product_data.locale_product.title,
                         },
                       }),
@@ -10896,7 +10919,7 @@ var render = function () {
                       ? _c("site-img", {
                           attrs: {
                             src:
-                              "../../../public/images/product_option_img/" +
+                              "/public/images/product_option_img/" +
                               q_product.product_images[0],
                             alt: q_product.locale_product.title,
                           },
@@ -10906,7 +10929,7 @@ var render = function () {
                     q_product.product_images.length == 0
                       ? _c("site-img", {
                           attrs: {
-                            src: "../../../public/images/site_img/shop_demo.jpg",
+                            src: "/public/images/site_img/shop_demo.jpg",
                             alt: q_product.locale_product.title,
                           },
                         })

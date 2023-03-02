@@ -403,6 +403,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
     return {
@@ -2114,7 +2115,7 @@ var render = function () {
           [
             _c("site-img", {
               attrs: {
-                src: "../images/gallery_img/" + slide.image,
+                src: "/public/images/gallery_img/" + slide.image,
                 alt: slide.title,
                 img_class: "slider_img",
               },
@@ -2210,7 +2211,7 @@ var render = function () {
                                   ? _c("site-img", {
                                       attrs: {
                                         src:
-                                          "../../../public/images/tech_tip_img/" +
+                                          "/public/images/tech_tip_img/" +
                                           tip.image,
                                         img_class: "img-responsive",
                                         alt: tip[0][0].title,
@@ -2218,7 +2219,7 @@ var render = function () {
                                     })
                                   : _c("site-img", {
                                       attrs: {
-                                        src: "../../../public/images/site_img/image.png",
+                                        src: "/public/images/site_img/image.png",
                                         img_class: "img-responsive",
                                         alt: tip[0][0].title,
                                       },
@@ -2240,7 +2241,10 @@ var render = function () {
                                   [_c("h3", [_vm._v(_vm._s(tip[0][0].title))])]
                                 ),
                                 _vm._v(" "),
+                                _c("hr"),
+                                _vm._v(" "),
                                 _c("span", {
+                                  staticClass: "text-center",
                                   domProps: {
                                     innerHTML: _vm._s(
                                       tip[0][0].short_description
@@ -2534,14 +2538,14 @@ var render = function () {
         _vm.article.image != null
           ? _c("site-img", {
               attrs: {
-                src: this.image_dir + _vm.article.image,
+                src: "/public/" + this.image_dir + _vm.article.image,
                 img_class: "img-responsive",
                 alt: _vm.article[0][0].title,
               },
             })
           : _c("site-img", {
               attrs: {
-                src: "../../../public/images/site_img/image.png",
+                src: "/public/images/site_img/image.png",
                 img_class: "img-responsive",
                 alt: _vm.article[0][0].title,
               },
@@ -2622,14 +2626,14 @@ var render = function () {
                     _vm.news.image
                       ? _c("site-img", {
                           attrs: {
-                            src: "images/news_img/" + _vm.news.image,
+                            src: "/public/images/news_img/" + _vm.news.image,
                             img_class: "m-image-hero--image",
                             alt: _vm.news[0][0].title,
                           },
                         })
                       : _c("site-img", {
                           attrs: {
-                            src: "../../../public/images/site_img/image.png",
+                            src: "/public/images/site_img/image.png",
                             img_class: "m-image-hero--image",
                             alt: _vm.news[0][0].title,
                           },
@@ -2774,7 +2778,7 @@ var render = function () {
                               })
                             : _c("site-img", {
                                 attrs: {
-                                  src: "../../../public/images/site_img/image.png",
+                                  src: "/public/images/site_img/image.png",
                                   img_class: "m-image-hero--image",
                                   alt: _vm.news[0][0].title,
                                 },
@@ -2880,7 +2884,7 @@ var render = function () {
                     [
                       _c("site-img", {
                         attrs: {
-                          src: "../images/gallery_img/" + image.image,
+                          src: "/public/images/gallery_img/" + image.image,
                           alt: image.title,
                           img_class: "gallery_img",
                         },
@@ -2914,7 +2918,8 @@ var render = function () {
                     _vm._v(" "),
                     _c("site-img", {
                       attrs: {
-                        src: "../images/gallery_img/" + _vm.active_img.image,
+                        src:
+                          "/public/images/gallery_img/" + _vm.active_img.image,
                         alt: _vm.active_img.image,
                         img_class: "gallery_big_img",
                       },

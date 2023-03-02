@@ -115,7 +115,7 @@
         <openImg
             v-for="image in sector.sector_imgs"
             :key="image.id"
-            :img="'../images/sector_img/' + image.image"
+            :img="'/public/images/sector_img/' + image.image"
             :img_alt="image.image"
             :img_class="
                 'sector_images sector_images_' +

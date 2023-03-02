@@ -8,9 +8,9 @@
                         Sorry, an error has occured, Requested page not found!
                     </div>
                     <div>
-                        <img v-if="num == 1" class="article_404" :src="'../../../public/images/404/404_page/1.jpg'">
-                        <img v-else-if="num == 2" class="article_404" :src="'../../../public/images/404/404_page/2.jpg'">
-                        <img v-else-if="num == 0" class="article_404" :src="'../../../public/images/404/404_page/3.jpg'">
+                        <img v-if="num == 1" class="article_404" :src=" this.publicPath + '../../../public/images/404/404_page/1.jpg'">
+                        <img v-else-if="num == 2" class="article_404" :src=" this.publicPath + '../../../public/images/404/404_page/2.jpg'">
+                        <img v-else-if="num == 0" class="article_404" :src=" this.publicPath + '../../../public/images/404/404_page/3.jpg'">
                         <p v-else></p>
                     </div>
                     <div class="error-actions">
@@ -30,7 +30,9 @@
     export default {
         data: function () {
             return {
-                num: 0
+                num: 0,
+
+                publicPath: window.location.protocol + '//' + window.location.hostname
             };
         },
         components: {

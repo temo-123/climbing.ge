@@ -17040,7 +17040,7 @@ var render = function () {
     _c(
       "td",
       [
-        _vm.$can("edit", "service")
+        _vm.$can("add", "services")
           ? _c(
               "router-link",
               {
@@ -17067,7 +17067,7 @@ var render = function () {
     _c("td", [_vm._v("|")]),
     _vm._v(" "),
     _c("td", [
-      _vm.$can("del", "service")
+      _vm.$can("del", "services")
         ? _c(
             "button",
             {

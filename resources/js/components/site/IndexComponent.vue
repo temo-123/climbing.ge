@@ -7,7 +7,7 @@
 
         <div
             class="footer__graphic"
-            :style="'background-image: url(../images/svg/mountains.svg)'"
+            :style="'background-image: url(' + publicPath + '/public/images/svg/mountains.svg)'"
         ></div>
         <footter />
         <loginModal />
@@ -21,7 +21,9 @@ import loginModal from "../global_components/LoginModalComponent.vue";
 
 export default {
     data: function () {
-        return {};
+        return {
+            publicPath: window.location.protocol + '//' + window.location.hostname
+        };
     },
     components: {
         navbar,

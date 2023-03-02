@@ -209,6 +209,8 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   props: ['service_data'],
   data: function data() {
@@ -1056,7 +1058,8 @@ var render = function () {
             {
               staticClass: "service-icon red services_bacground_image",
               style:
-                "background-image: url(../../images/service_img/" +
+                "background-image: url(" +
+                "/public/images/service_img/" +
                 _vm.service_data.image +
                 ");",
             },
@@ -1090,7 +1093,11 @@ var render = function () {
             [_c("h3", [_vm._v(_vm._s(_vm.service_data[0][0].title))])]
           ),
           _vm._v(" "),
-          _c("p", [_vm._v(_vm._s(_vm.service_data[0][0].short_description))]),
+          _c("span", {
+            domProps: {
+              innerHTML: _vm._s(_vm.service_data[0][0].short_description),
+            },
+          }),
         ],
         1
       ),

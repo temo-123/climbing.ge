@@ -10,8 +10,8 @@
                             <source srcset="#"> -->
                             <!-- <img class="m-image-hero--image" :alt="news.title" decoding="async" :src="'images/news_img/'+news.image" > -->
 
-                            <site-img v-if="news.image" :src="'images/news_img/'+news.image" :img_class="'m-image-hero--image'" :alt="news[0][0].title"/>
-                            <site-img v-else :src="'../../../public/images/site_img/image.png'" :img_class="'m-image-hero--image'" :alt="news[0][0].title"/>
+                            <site-img v-if="news.image" :src="'/public/images/news_img/'+news.image" :img_class="'m-image-hero--image'" :alt="news[0][0].title"/>
+                            <site-img v-else :src="'/public/images/site_img/image.png'" :img_class="'m-image-hero--image'" :alt="news[0][0].title"/>
                         </div>
                         <div class="m-image-hero--aspect-ratio-wrapper">
                             <div class="m-image-hero--aspect-ratio-pusher"></div>

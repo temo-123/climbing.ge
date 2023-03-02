@@ -1,5 +1,5 @@
 <template>
-    <img :src="this.src"  :class="this.img_class" :alt="this.alt" v-watermark='config = option'/>
+    <img :src="this.image_src"  :class="this.img_class" :alt="this.alt" v-watermark='config = option'/>
 </template>
 
 <script>
@@ -20,11 +20,15 @@
                     fillStyle: "crimson",
                     content: 'SHOP.CLIMBING.GE',
                     rotate: 30
-                }
+                },
+
+                image_src: '',
+
+                publicPath: window.location.protocol + '//' + window.location.hostname
             }
         },
         mounted() {
-            // 
+            this.image_src = this.publicPath  + this.src
         }
     }
 </script>

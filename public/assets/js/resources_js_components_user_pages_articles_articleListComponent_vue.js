@@ -5643,7 +5643,7 @@ __webpack_require__.r(__webpack_exports__);
     get_unfilted_articles: function get_unfilted_articles() {
       var _this3 = this;
 
-      axios.post("../api/article/", {
+      axios.post("/article/", {
         category: this.$route.params.article_category
       }).then(function (response) {
         _this3.data_for_tab = [];
@@ -17085,7 +17085,7 @@ var render = function () {
     _c(
       "td",
       [
-        _vm.$can("edit", "service")
+        _vm.$can("add", "services")
           ? _c(
               "router-link",
               {
@@ -17112,7 +17112,7 @@ var render = function () {
     _c("td", [_vm._v("|")]),
     _vm._v(" "),
     _c("td", [
-      _vm.$can("del", "service")
+      _vm.$can("del", "services")
         ? _c(
             "button",
             {

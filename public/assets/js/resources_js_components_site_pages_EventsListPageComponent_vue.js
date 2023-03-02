@@ -735,7 +735,7 @@ var render = function () {
                       })
                     : _c("site-img", {
                         attrs: {
-                          src: "../../../public/images/site_img/image.png",
+                          src: "/public/images/site_img/image.png",
                           img_class: "img-responsive",
                           alt: _vm.event.locale_event.title,
                         },
@@ -825,7 +825,7 @@ var render = function () {
                       })
                     : _c("site-img", {
                         attrs: {
-                          src: "../../../public/images/site_img/image.png",
+                          src: "./public/images/site_img/image.png",
                           img_class: "img-responsive",
                           alt: _vm.event.locale_event.title,
                         },

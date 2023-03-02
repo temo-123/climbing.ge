@@ -2,18 +2,20 @@
     <div class="container top_menu_margin h-recent-work">
         <h1 class="page_title">{{ setvice.local_service.title }}</h1>
 
-        <breadcrumb />
+        <!-- <breadcrumb /> -->
 
         <div class="row" v-if="setvice.service_images">
             <img class="service_page_image" :src="'../../images/service_img/'+setvice.service_images[0].image" :alt="setvice.local_service.title">
         </div>
         <div class="row service_page_text">
-            {{ setvice.local_service.text }}
+            <!-- {{ setvice.local_service.text }} -->
+            <span v-html="setvice.local_service.text"></span>
         </div>
 
         <div class="row" v-if="this.services.length > 0">
             <hr>
             <h2 class="other_servces">other service</h2>
+
             <ServiceItem
                 v-for="service in services"
                 :key='service.id'

@@ -6259,7 +6259,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
     return {
-      num: 0
+      num: 0,
+      publicPath: window.location.protocol + '//' + window.location.hostname
     };
   },
   components: {},
@@ -8037,17 +8038,43 @@ __webpack_require__.r(__webpack_exports__);
   },
   mounted: function mounted() {// console.log(this.$route.params.locale || 'en');
   },
+  watch: {
+    '$route': function $route(to, from) {// let locale = localStorage.getItem("lang")
+      // console.log("🚀 ~ file: LocaleChangeComponent.vue:55 ~ locale:", locale)
+      // if(locale){
+      // if(locale != 'en'){
+      //     let actice_locale = locale
+      //     const loc = this.$router.resolve({params: {actice_locale}})
+      //     this.$router.push(loc.location)
+      // }
+      // else if(locale == 'en'){
+      //     localStorage.setItem('lang', locale)
+      //     this.$i18n.locale = locale;
+      //     let activ_path_without_locale = this.$router.history.pending.path.split("/").splice(2).join("/")
+      //     this.$router.push( '/' + activ_path_without_locale )
+      // }
+      // }
+      // this.localization(locale)
+    }
+  },
   methods: {
     localization: function localization(locale) {
       if (this.$i18n.locale !== locale) {
-        localStorage.setItem('lang', locale);
-        this.$i18n.locale = locale;
-        var to = this.$router.resolve({
-          params: {
-            locale: locale
-          }
-        });
-        this.$router.push(to.location);
+        if (locale != 'en') {
+          localStorage.setItem('lang', locale);
+          this.$i18n.locale = locale;
+          var to = this.$router.resolve({
+            params: {
+              locale: locale
+            }
+          });
+          this.$router.push(to.location);
+        } else if (locale == 'en') {
+          localStorage.setItem('lang', locale);
+          this.$i18n.locale = locale;
+          var activ_path_without_locale = this.$router.history.pending.path.split("/").splice(2).join("/");
+          this.$router.push('/' + activ_path_without_locale);
+        }
       }
     }
   }
@@ -8808,10 +8835,13 @@ __webpack_require__.r(__webpack_exports__);
         fillStyle: "crimson",
         content: 'SHOP.CLIMBING.GE',
         rotate: 30
-      }
+      },
+      image_src: '',
+      publicPath: window.location.protocol + '//' + window.location.hostname
     };
   },
-  mounted: function mounted() {// 
+  mounted: function mounted() {
+    this.image_src = this.publicPath + this.src;
   }
 });
 
@@ -9127,7 +9157,9 @@ __webpack_require__.r(__webpack_exports__);
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
-    return {};
+    return {
+      publicPath: window.location.protocol + '//' + window.location.hostname
+    };
   },
   components: {
     navbar: _items_NavbarComponent__WEBPACK_IMPORTED_MODULE_0__["default"],
@@ -9362,10 +9394,13 @@ __webpack_require__.r(__webpack_exports__);
         fillStyle: "crimson",
         content: 'CLIMBING.GE',
         rotate: 30
-      }
+      },
+      image_src: '',
+      publicPath: window.location.protocol + '//' + window.location.hostname
     };
   },
-  mounted: function mounted() {// 
+  mounted: function mounted() {
+    this.image_src = this.publicPath + this.src;
   }
 });
 
@@ -10574,15 +10609,18 @@ var analytic_id = "";
 if (window.location.hostname == "climbing.loc") {
   homeComponent = _components_site_IndexComponent_vue__WEBPACK_IMPORTED_MODULE_24__["default"];
   serviceRoutes = _routes_SiteRoutes__WEBPACK_IMPORTED_MODULE_29__["default"];
-  analytic_id = "G-B7KZEJ6CLW"; // axios.defaults.baseURL = process.env.MIX_SITE_URL
+  analytic_id = "G-B7KZEJ6CLW";
+  (axios__WEBPACK_IMPORTED_MODULE_3___default().defaults.baseURL) = "https://" + "climbing.loc" + '/api';
 } else if (window.location.hostname == "shop.climbing.loc") {
   homeComponent = _components_shop_MainWrapperComponent_vue__WEBPACK_IMPORTED_MODULE_23__["default"];
   serviceRoutes = _routes_ShopRoutes__WEBPACK_IMPORTED_MODULE_28__["default"];
-  analytic_id = "G-6D3TLP4Z36"; // axios.defaults.baseURL = process.env.MIX_SHOP_URL
+  analytic_id = "G-6D3TLP4Z36";
+  (axios__WEBPACK_IMPORTED_MODULE_3___default().defaults.baseURL) = "https://" + "shop.climbing.loc" + '/api';
 } else if (window.location.hostname == "user.climbing.loc") {
   homeComponent = _components_user_HomeComponent_vue__WEBPACK_IMPORTED_MODULE_25__["default"];
   serviceRoutes = _routes_UserRoutes__WEBPACK_IMPORTED_MODULE_30__["default"];
-  analytic_id = "G-TDWCRT2C8S"; // axios.defaults.baseURL = process.env.MIX_USER_PAGE_URL
+  analytic_id = "G-TDWCRT2C8S";
+  (axios__WEBPACK_IMPORTED_MODULE_3___default().defaults.baseURL) = "https://" + "user.climbing.loc" + '/api';
 } else if (window.location.hostname == "films.climbing.loc") {
   homeComponent = _components_films_StudiaComponent_vue__WEBPACK_IMPORTED_MODULE_26__["default"];
   serviceRoutes = _routes_FilmsRoutes__WEBPACK_IMPORTED_MODULE_31__["default"];
@@ -10660,9 +10698,35 @@ var app = new vue__WEBPACK_IMPORTED_MODULE_12__["default"]({
   },
   watch: {
     $route: function $route(to, from) {
-      this.get_site_data(); // this.get_auth_user_data()
-
+      // this.get_auth_user_data()
       window.scrollTo(0, 0);
+      var locale = localStorage.getItem("lang");
+      this.get_site_data();
+
+      if (window.location.hostname == "climbing.loc" || window.location.hostname == "shop.climbing.loc") {
+        if (locale != 'en') {
+          localStorage.setItem('lang', locale);
+          this.$i18n.locale = locale;
+
+          var _to = this.$router.resolve({
+            params: {
+              locale: locale
+            }
+          });
+
+          this.$router.push(_to.location);
+        } else if (locale == 'en') {
+          localStorage.setItem('lang', locale);
+          this.$i18n.locale = locale;
+          var activ_path_without_locale = this.$router.history.pending.path.split("/").splice(2).join("/"); // const to = this.$router.resolve(activ_path_without_locale)
+          // this.$router.push( to )
+
+          this.get_site_data();
+          this.$router.push({
+            path: '/' + activ_path_without_locale
+          });
+        }
+      }
     }
   }
 });
@@ -10881,14 +10945,12 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
-/* harmony import */ var vue_router__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! vue-router */ "./node_modules/vue-router/dist/vue-router.esm.js");
+/* harmony import */ var vue_router__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! vue-router */ "./node_modules/vue-router/dist/vue-router.esm.js");
 /* harmony import */ var _components_errors_404Component_vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../components/errors/404Component.vue */ "./resources/js/components/errors/404Component.vue");
- // import Catalog from '../components/shop/pages/CatalogComponent.vue'
-// import ItemPage from '../components/shop/pages/ProductPageComponent.vue'
-// import AboutUs from '../components/shop/pages/AboutUsComponent.vue'
-// import ServicesCatalog from '../components/shop/pages/ServicesCatalogComponent.vue'
-// import ServicePage from '../components/shop/pages/ServicePageComponent.vue'
-// import Search from '../components/shop/pages/SearchPageComponent.vue'
+/* harmony import */ var _services_localization_i18n__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../services/localization/i18n */ "./resources/js/services/localization/i18n.js");
+
+
+
 
 function load(component) {
   return function () {
@@ -10896,38 +10958,78 @@ function load(component) {
   };
 }
 
+function getLocaleRegex() {
+  var reg = "en|ka|ru|/";
+  return "(".concat(reg, ")");
+}
 
-var router = new vue_router__WEBPACK_IMPORTED_MODULE_1__["default"]({
+var router = new vue_router__WEBPACK_IMPORTED_MODULE_2__["default"]({
   routes: [{
-    path: '/',
-    name: 'catalog',
-    component: load('CatalogComponent')
-  }, {
-    path: '/product/:url_title',
-    name: 'product',
-    component: load('ProductPageComponent')
-  }, {
-    path: '/services',
-    name: 'services',
-    component: load('ServicesCatalogComponent')
-  }, {
-    path: '/service/:url_title',
-    name: 'service',
-    component: load('ServicePageComponent')
-  }, {
-    path: '/about_us',
-    name: 'about_store',
-    component: load('AboutUsComponent')
-  }, {
-    path: '/search_products',
-    name: 'search_products',
-    component: load('SearchPageComponent')
-  }, {
-    path: '*',
-    name: 'NotFound',
-    component: _components_errors_404Component_vue__WEBPACK_IMPORTED_MODULE_0__["default"]
+    path: "/:locale".concat(getLocaleRegex(), "?"),
+    // path: `/:locale(ka|ru|/)`,
+    component: {
+      render: function render(h) {
+        return h("router-view");
+      }
+    },
+    beforeEnter: function beforeEnter(to, from, next) {
+      var storage_locale = localStorage.getItem("lang");
+
+      if (storage_locale) {
+        to.params.locale = storage_locale;
+      } else {
+        to.params.locale = 'en';
+      }
+
+      var locale = to.params.locale;
+      localStorage.setItem("lang", locale);
+      var supported_locales = "en|ka|ru|/".split("|");
+
+      if (!supported_locales.includes(locale)) {
+        return next("/");
+      }
+
+      if (_services_localization_i18n__WEBPACK_IMPORTED_MODULE_1__["default"].locale !== locale) {
+        _services_localization_i18n__WEBPACK_IMPORTED_MODULE_1__["default"].locale = locale;
+      }
+
+      return next();
+    },
+    children: [{
+      path: '',
+      name: 'catalog',
+      component: load('CatalogComponent')
+    }, {
+      path: 'product/:url_title',
+      name: 'product',
+      component: load('ProductPageComponent')
+    }, {
+      path: 'services',
+      name: 'services',
+      component: load('ServicesCatalogComponent')
+    }, {
+      path: 'service/:url_title',
+      name: 'service',
+      component: load('ServicePageComponent')
+    }, {
+      path: 'about_us',
+      name: 'about_store',
+      component: load('AboutUsComponent')
+    }, {
+      path: 'search_products',
+      name: 'search_products',
+      component: load('SearchPageComponent')
+    }, {
+      path: '*',
+      name: 'NotFound',
+      component: _components_errors_404Component_vue__WEBPACK_IMPORTED_MODULE_0__["default"]
+    }]
   }],
   mode: 'history'
+});
+router.beforeEach(function (to, from, next) {
+  to.params.locale = localStorage.getItem("lang");
+  next();
 });
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (router);
 
@@ -10958,32 +11060,32 @@ function load(component) {
 }
 
 function getLocaleRegex() {
-  var reg = ""; // SUPPORTED_LOCALES.forEach((locale, index) => {
-  // reg = `${reg}${locale.code}${index !== SUPPORTED_LOCALES.length - 1 ? '|' : ''}`
-  // reg = process.env.MIX_VUE_APP_I18N_SUPORTED_LOCALE.split(',') - 1 ? '|' : '/'
-
-  reg = "ka|ru|/"; // })
-
+  var reg = "en|ka|ru|/";
   return "(".concat(reg, ")");
 }
 
 var router = new vue_router__WEBPACK_IMPORTED_MODULE_2__["default"]({
-  routes: [{
-    path: "/en",
-    redirect: "/"
-  }, {
+  routes: [// { path: "/en", redirect: `/` },
+  {
     path: "/:locale".concat(getLocaleRegex(), "?"),
-    // path: `/:locale`,
+    // path: `/:locale(ka|ru|/)`,
     component: {
       render: function render(h) {
         return h("router-view");
       }
     },
     beforeEnter: function beforeEnter(to, from, next) {
-      to.params.locale = localStorage.getItem("lang");
+      var storage_locale = localStorage.getItem("lang");
+
+      if (storage_locale) {
+        to.params.locale = storage_locale;
+      } else {
+        to.params.locale = 'en';
+      }
+
       var locale = to.params.locale;
       localStorage.setItem("lang", locale);
-      var supported_locales = "en,ka,ru,/".split(",");
+      var supported_locales = "en|ka|ru|/".split("|");
 
       if (!supported_locales.includes(locale)) {
         return next("/");
@@ -11083,20 +11185,13 @@ var router = new vue_router__WEBPACK_IMPORTED_MODULE_2__["default"]({
   mode: "history"
 });
 router.beforeEach(function (to, from, next) {
-  if (!to.params.locale) {
-    _services_localization_i18n__WEBPACK_IMPORTED_MODULE_1__["default"].locale = "en";
-    localStorage.setItem("lang", "en");
-  } // console.log(to.params.locale, getLocaleRegex(), i18n.lang);
-  // axios
-  // .get('/api/auth_user')
-  // .then((response)=>{
-  //     //
-  // })
-  // .catch(function (error) {
-  //     //
-  // });
-
-
+  // if (!to.params.locale) {
+  //     i18n.locale = process.env.MIX_VUE_APP_I18N_LOCALE;
+  //     localStorage.setItem("lang", process.env.MIX_VUE_APP_I18N_LOCALE);
+  // }
+  // this.$router.resolve({params: {locale}})
+  // console.log("🚀 ~ file: SiteRoutes.js:161 ~ router.beforeEach ~  this.$router.resolve:",  resolve)
+  to.params.locale = localStorage.getItem("lang");
   next();
 });
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (router);
@@ -73644,17 +73739,29 @@ var render = function () {
             _vm.num == 1
               ? _c("img", {
                   staticClass: "article_404",
-                  attrs: { src: "../../../public/images/404/404_page/1.jpg" },
+                  attrs: {
+                    src:
+                      this.publicPath +
+                      "../../../public/images/404/404_page/1.jpg",
+                  },
                 })
               : _vm.num == 2
               ? _c("img", {
                   staticClass: "article_404",
-                  attrs: { src: "../../../public/images/404/404_page/2.jpg" },
+                  attrs: {
+                    src:
+                      this.publicPath +
+                      "../../../public/images/404/404_page/2.jpg",
+                  },
                 })
               : _vm.num == 0
               ? _c("img", {
                   staticClass: "article_404",
-                  attrs: { src: "../../../public/images/404/404_page/3.jpg" },
+                  attrs: {
+                    src:
+                      this.publicPath +
+                      "../../../public/images/404/404_page/3.jpg",
+                  },
                 })
               : _c("p"),
           ]),
@@ -77437,7 +77544,7 @@ var render = function () {
       },
     ],
     class: this.img_class,
-    attrs: { src: this.src, alt: this.alt },
+    attrs: { src: this.image_src, alt: this.alt },
   })
 }
 var staticRenderFns = []
@@ -78172,7 +78279,10 @@ var render = function () {
       _vm._v(" "),
       _c("div", {
         staticClass: "footer__graphic",
-        style: "background-image: url(../images/svg/mountains.svg)",
+        style:
+          "background-image: url(" +
+          _vm.publicPath +
+          "/public/images/svg/mountains.svg)",
       }),
       _vm._v(" "),
       _c("footter"),
@@ -78495,7 +78605,7 @@ var render = function () {
       },
     ],
     class: this.img_class,
-    attrs: { src: this.src, alt: this.alt },
+    attrs: { src: this.image_src, alt: this.alt },
   })
 }
 var staticRenderFns = []
@@ -78946,7 +79056,9 @@ var render = function () {
                         [
                           _c("span", [
                             _vm._v(
-                              " " + _vm._s(_vm.$t("menu events")) + "        "
+                              " " +
+                                _vm._s(_vm.$t("menu events")) +
+                                "              "
                             ),
                           ]),
                         ]
@@ -79356,7 +79468,7 @@ var render = function () {
                   })
                 : _c("site-img", {
                     attrs: {
-                      src: "../../../public/images/site_img/image.png",
+                      src: "./public/images/site_img/image.png",
                       img_class: "img-responsive",
                       alt: _vm.event.locale_event.title,
                     },
@@ -79759,9 +79871,9 @@ var render = function () {
                 )
               : _vm._e(),
             _vm._v(" "),
-            _vm.$can("add", "product") ||
-            _vm.$can("edit", "product") ||
-            _vm.$can("del", "product")
+            _vm.$can("add", "services") ||
+            _vm.$can("edit", "services") ||
+            _vm.$can("del", "services")
               ? _c(
                   "router-link",
                   { attrs: { to: { name: "servicesList" }, exact: "" } },

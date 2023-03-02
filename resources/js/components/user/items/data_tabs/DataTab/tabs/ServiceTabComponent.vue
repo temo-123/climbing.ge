@@ -11,12 +11,12 @@
         <td :style='"text-align: center;"'>{{table_info.published}}</td>
         <td>|</td>
         <td>
-            <router-link class="btn btn-primary" :to="{ name: 'serviceEdit', params: { id: table_info.id } }" v-if="$can('edit', 'service')"><i class="fa fa-pencil" aria-hidden="true"></i></router-link>
+            <router-link class="btn btn-primary" :to="{ name: 'serviceEdit', params: { id: table_info.id } }" v-if="$can('add', 'services')"><i class="fa fa-pencil" aria-hidden="true"></i></router-link>
         </td>
         
         <td>|</td>
         <td>
-            <button type="button" class="btn btn-danger" @click="del_service(table_info.id)" v-if="$can('del', 'service')"><i class="fa fa-trash" aria-hidden="true"></i></button>
+            <button type="button" class="btn btn-danger" @click="del_service(table_info.id)" v-if="$can('del', 'services')"><i class="fa fa-trash" aria-hidden="true"></i></button>
         </td>
     </tr>
 </template>

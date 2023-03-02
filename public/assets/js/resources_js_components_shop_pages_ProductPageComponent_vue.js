@@ -10063,7 +10063,7 @@ var render = function () {
                         [
                           _c("site-img", {
                             attrs: {
-                              src: "../../../public/images/site_img/shop_demo.jpg",
+                              src: "/public/images/site_img/shop_demo.jpg",
                               alt: _vm.product.local_product[0].title,
                             },
                           }),

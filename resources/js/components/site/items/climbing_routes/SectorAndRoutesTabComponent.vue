@@ -7,7 +7,7 @@
                 :key="spot_image"
             >
                 <openImg
-                    :img="'../../images/spot_rocks_img/' + spot_image.image"
+                    :img="'/public/images/spot_rocks_img/' + spot_image.image"
                     :img_alt="spot_image.title"
                 />
             </div>

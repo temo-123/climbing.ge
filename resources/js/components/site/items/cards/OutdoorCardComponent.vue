@@ -10,8 +10,8 @@
             <!-- <img v-if="article.area[0][0].image" :src="image_dir+article.area.image" class="img-responsive" :alt='article.area[0][0].title' />
             <img v-else :src="'../../../../public/images/site_img/image.png'" class="img-responsive" :alt='article.area[0][0].title+"fffffffff"'> -->
 
-            <site-img v-if="article.area.image != NULL" :src="image_dir+article.area.image" :img_class="'img-responsive'" :alt='article.area[0][0].title'/>
-            <site-img v-else :src="'../../../public/images/site_img/image.png'" :img_class="'img-responsive'" :alt='article.area[0][0].title'/>
+            <site-img v-if="article.area.image != NULL" :src=" '/public/' + image_dir+article.area.image" :img_class="'img-responsive'" :alt='article.area[0][0].title'/>
+            <site-img v-else :src="'/public/images/site_img/image.png'" :img_class="'img-responsive'" :alt='article.area[0][0].title'/>
 
             <div class="mask">
                 <!-- <a href="#" class="info"> -->

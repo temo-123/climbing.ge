@@ -1296,13 +1296,14 @@ var render = function () {
                     ? _c("site-img", {
                         attrs: {
                           src:
-                            "../images/product_img/" + _vm.get_product_image(),
+                            "/public/images/product_img/" +
+                            _vm.get_product_image(),
                           alt: _vm.product.us_product.title,
                         },
                       })
                     : _c("site-img", {
                         attrs: {
-                          src: "../../../public/images/site_img/shop_demo.jpg",
+                          src: "/public/images/site_img/shop_demo.jpg",
                           alt: _vm.product.us_product.title,
                         },
                       }),

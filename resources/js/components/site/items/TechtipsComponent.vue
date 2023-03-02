@@ -19,17 +19,18 @@
                                 </div>
                                 <!-- {{ tip_num+=1 }} -->
                                 <div class="thumbnail">
-                                    <!-- <site-img :src="'../../../public/images/site_img/image.png'" :img_class="'img-responsive'" :alt='tip[0][0].title'/> -->
+                                    <!-- <site-img :src="'./public/images/site_img/image.png'" :img_class="'img-responsive'" :alt='tip[0][0].title'/> -->
                                     <router-link :to="'tech_tip/'+tip.url_title" class="info">
-                                        <site-img v-if="tip.image != null" :src="'../../../public/images/tech_tip_img/'+tip.image" :img_class="'img-responsive'" :alt='tip[0][0].title'/>
-                                        <site-img v-else :src="'../../../public/images/site_img/image.png'" :img_class="'img-responsive'" :alt='tip[0][0].title'/>
+                                        <site-img v-if="tip.image != null" :src="'/public/images/tech_tip_img/'+tip.image" :img_class="'img-responsive'" :alt='tip[0][0].title'/>
+                                        <site-img v-else :src="'/public/images/site_img/image.png'" :img_class="'img-responsive'" :alt='tip[0][0].title'/>
                                     </router-link>
                                     <div class="caption">
                                         <router-link :to="'tech_tip/'+tip.url_title" class="info">
                                             <h3>{{ tip[0][0].title }}</h3>
                                         </router-link>
                                         <!-- <p>{{ tip[0][0].short_description }}</p> -->
-                                        <span v-html="tip[0][0].short_description"></span>
+                                        <hr>
+                                        <span class="text-center" v-html="tip[0][0].short_description"></span>
                                     </div>
                                 </div>
                                 

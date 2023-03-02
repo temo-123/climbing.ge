@@ -117,9 +117,9 @@
             </router-link>
             <router-link :to="{name: 'servicesList'}" exact
                 v-if="
-                    $can('add', 'product') ||
-                    $can('edit', 'product') ||
-                    $can('del', 'product')
+                    $can('add', 'services') ||
+                    $can('edit', 'services') ||
+                    $can('del', 'services')
                 "        
             > 
                 <li class="list-group-item text-muted ">

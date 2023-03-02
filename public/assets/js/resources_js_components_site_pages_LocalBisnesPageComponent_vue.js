@@ -549,7 +549,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
       this.user = [];
       this.name = '', this.surname = '', this.email = '';
-      axios.get('../api/auth_user/').then(function (response) {
+      axios.get('../../api/auth_user/').then(function (response) {
         _this.user = response.data, _this.name = _this.user.name, _this.surname = _this.user.surname, _this.email = _this.user.email;
         _this.complainter_email = _this.user.email;
       })["catch"]();
@@ -563,7 +563,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       var _this2 = this;
 
       this.complaint_loader = true;
-      axios.post('../api/add_comment_complaint/', {
+      axios.post('../../api/add_comment_complaint/', {
         comment_id: this.complaint_comment_id,
         comment_complaint: this.selected_comment_complaint,
         email: this.complainter_email
@@ -578,7 +578,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     add_comment: function add_comment() {
       var _this3 = this;
 
-      axios.put('../api/comment/' + this.id, {
+      axios.put('../../api/comment/' + this.id, {
         name: this.name,
         is_verify_isset: this.is_verify_isset,
         surname: this.surname,
@@ -598,7 +598,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     del_comment: function del_comment(id) {
       var _this4 = this;
 
-      axios["delete"]('../api/comment/' + id, {
+      axios["delete"]('../../api/comment/' + id, {
         id: id
       }).then(function (Response) {
         _this4.get_comments();
@@ -608,7 +608,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       var _this5 = this;
 
       this.is_refresh = true;
-      axios.get('../api/comment/' + this.id).then(function (response) {
+      axios.get('../../api/comment/' + this.id).then(function (response) {
         _this5.comments = response.data;
         _this5.is_refresh = false;
         _this5.refresh_id++;
@@ -3445,14 +3445,14 @@ var render = function () {
             _vm.article.image != null
               ? _c("site-img", {
                   attrs: {
-                    src: "../../../" + this.image_dir + "/" + _vm.article.image,
+                    src: "/public/" + this.image_dir + "/" + _vm.article.image,
                     img_class: "img-responsive",
                     alt: _vm.article[0][0].title,
                   },
                 })
               : _c("site-img", {
                   attrs: {
-                    src: "../../../public/images/site_img/image.png",
+                    src: "/public/images/site_img/image.png",
                     img_class: "img-responsive",
                     alt: _vm.article[0][0].title,
                   },
@@ -3514,7 +3514,7 @@ var render = function () {
                   ? _c("site-img", {
                       attrs: {
                         src:
-                          "../../../" +
+                          "/public/" +
                           this.image_dir +
                           "/" +
                           _vm.article.area.image,
@@ -3524,7 +3524,7 @@ var render = function () {
                     })
                   : _c("site-img", {
                       attrs: {
-                        src: "../../../public/images/site_img/image.png",
+                        src: "/public/images/site_img/image.png",
                         img_class: "img-responsive",
                         alt: _vm.article.area[0][0].title,
                       },
@@ -3631,7 +3631,9 @@ var render = function () {
                   [
                     _c("site-img", {
                       attrs: {
-                        src: "../images/suport_local_bisnes_img/" + image.image,
+                        src:
+                          "/public/images/suport_local_bisnes_img/" +
+                          image.image,
                         alt: image.title,
                         img_class: "gallery_img",
                       },
@@ -3671,7 +3673,7 @@ var render = function () {
                   _c("site-img", {
                     attrs: {
                       src:
-                        "../images/suport_local_bisnes_img/" +
+                        "/public/images/suport_local_bisnes_img/" +
                         _vm.active_img.image,
                       alt: _vm.active_img.image,
                       img_class: "gallery_big_img",

@@ -5,7 +5,7 @@
                 <!-- <img :src="'images/indoor_img/'+indoor.image" alt="$indoor[0][0] -> title}}"> -->
 
                 <site-img v-if="indoor.image != NULL" :src="'images/indoor_img/'+indoor.image" :img_class="'m-image-hero--image'" :alt='indoor[0][0].title'/>
-                <site-img v-else :src="'../../../public/images/site_img/image.png'" :img_class="'m-image-hero--image'" :alt='indoor[0][0].title'/>
+                <site-img v-else :src="'/public/images/site_img/image.png'" :img_class="'m-image-hero--image'" :alt='indoor[0][0].title'/>
             </router-link>
         </div>
         <div class='col-md-6 indoor_text indoot_text_for_mobile'>

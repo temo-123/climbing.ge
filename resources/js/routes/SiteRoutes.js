@@ -9,31 +9,35 @@ function load(component) {
 }
 
 function getLocaleRegex() {
-    let reg = "";
-    // SUPPORTED_LOCALES.forEach((locale, index) => {
-    // reg = `${reg}${locale.code}${index !== SUPPORTED_LOCALES.length - 1 ? '|' : ''}`
-    // reg = process.env.MIX_VUE_APP_I18N_SUPORTED_LOCALE.split(',') - 1 ? '|' : '/'
-    reg = "ka|ru|/";
-    // })
+    let reg = process.env.MIX_VUE_APP_I18N_SUPORTED_LOCALE
+    
     return `(${reg})`;
 }
 
 const router = new VueRouter({
     routes: [
-        { path: "/en", redirect: `/` },
+        // { path: "/en", redirect: `/` },
         {
             path: `/:locale${getLocaleRegex()}?`,
-            // path: `/:locale`,
+            // path: `/:locale(ka|ru|/)`,
             component: {
                 render: (h) => h("router-view"),
             },
             beforeEnter: (to, from, next) => {
-                to.params.locale = localStorage.getItem("lang");
+                let storage_locale = localStorage.getItem("lang")
+
+                if(storage_locale){
+                    to.params.locale = storage_locale;
+                }
+                else{
+                    to.params.locale = 'en';
+                }
+
                 const locale = to.params.locale;
 
                 localStorage.setItem("lang", locale);
 
-                const supported_locales = process.env.MIX_VUE_APP_I18N_SUPORTED_LOCALE.split(",");
+                const supported_locales = process.env.MIX_VUE_APP_I18N_SUPORTED_LOCALE.split("|");
 
                 if (!supported_locales.includes(locale)) {
                     return next("/");
@@ -157,21 +161,15 @@ const router = new VueRouter({
 });
 
 router.beforeEach((to, from, next) => {
-    if (!to.params.locale) {
-        i18n.locale = process.env.MIX_VUE_APP_I18N_LOCALE;
-        localStorage.setItem("lang", process.env.MIX_VUE_APP_I18N_LOCALE);
-    }
+    // if (!to.params.locale) {
+    //     i18n.locale = process.env.MIX_VUE_APP_I18N_LOCALE;
+    //     localStorage.setItem("lang", process.env.MIX_VUE_APP_I18N_LOCALE);
+    // }
 
-    // console.log(to.params.locale, getLocaleRegex(), i18n.lang);
+    // this.$router.resolve({params: {locale}})
+    // console.log("🚀 ~ file: SiteRoutes.js:161 ~ router.beforeEach ~  this.$router.resolve:",  resolve)
 
-    // axios
-    // .get('/api/auth_user')
-    // .then((response)=>{
-    //     //
-    // })
-    // .catch(function (error) {
-    //     //
-    // });
+    to.params.locale = localStorage.getItem("lang");
 
     next();
 });

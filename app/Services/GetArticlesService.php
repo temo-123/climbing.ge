@@ -13,102 +13,69 @@ class GetArticlesService
 {
     public static function get_locale_article_use_locale($global_article, $locale = 'en')
     {
-        // $locale = $lang;
-
-        // dd($locale);
-
         $articles = array();
 
         if($locale == "ru"){
-            foreach ($global_article as $article) {
-                $ru_articles = Locale_article::where('id', '=', $article->ru_article_id,)->get();
-                foreach ($ru_articles as $us_article) {
-                    if ($us_article->id == $article->ru_article_id) {
-                        array_push($articles, [$ru_articles,    "url_title"=>$article->url_title, 
-                                                                "id" => $article->id,
-                                                                "mount_id" => $article->mount_id,
-                                                                "category" => $article->category,
-                                                                "climbing_area_image" => $article->climbing_area_image,
-                                                                "image" => $article->image,
-                                                                "closed" => $article->closed,
-                                                                "price_from" => $article->price_from,
-                                                                "open_time" => $article->open_time,
-                                                                "closed_time"=>$article->closed_time,
-                                                                "start_data" => $article->start_data,
-                                                                "region_id"=>$article->region_id,
-                                                                "end_data" => $article->end_data,
-                                                                "mount_system" => $mount_system,
-                                                                ]);
-                    }
-                }
-            }
+            $articles = (new static)->get_locale_article($global_article, 'ru');
         }
         elseif ($locale == "ka") {
-            foreach ($global_article as $article) {
-                $ka_articles = Locale_article::where('id', '=', $article->ka_article_id,)->get();
-                foreach ($ka_articles as $us_article) {
-                    if ($us_article->id == $article->ka_article_id) {
-                        array_push($articles, [$ka_articles,    "url_title"=>$article->url_title, 
-                                                                "id" => $article->id,
-                                                                "mount_id" => $article->mount_id,
-                                                                "category" => $article->category,
-                                                                "climbing_area_image" => $article->climbing_area_image,
-                                                                "image" => $article->image,
-                                                                "closed" => $article->closed,
-                                                                "price_from" => $article->price_from,
-                                                                "open_time" => $article->open_time,
-                                                                "closed_time"=>$article->closed_time,
-                                                                "start_data" => $article->start_data,
-                                                                "region_id"=>$article->region_id,
-                                                                "end_data" => $article->end_data,
-                                                                "mount_system" => $mount_system,
-                                                                ]);
-                    }
-                }
-            }
+            $articles = (new static)->get_locale_article($global_article, 'ka');
         } 
         else {
-            foreach ($global_article as $article) {
-                $us_articles = Locale_article::where('id', '=', $article->us_article_id)->get();
-                foreach ($us_articles as $us_article) {
-                    if ($us_article->id == $article->us_article_id) {
-                        $new_article = false;
+            $articles = (new static)->get_locale_article($global_article, );
+        }
 
-                        $new_flag = (new static)->get_new_article_pin($article);
+        // dd($articles);
+        return $articles;
+    }
 
-                        $mount_system = '';
-                        if(count($article->mount_masiv) > 0){
-                            $m_system = $article->mount_masiv;
-                        }
-                        else{
-                            $mount_system = '';
-                        }
+    public static function get_locale_article($global_article, $locale = 'us', )
+    {
+        $response = array();
 
-                        array_push($articles, [$us_articles,    "url_title"=>$article->url_title, 
-                                                                "id" => $article->id,
-                                                                "mount_id" => $article->mount_id,
-                                                                "category" => $article->category,
-                                                                "climbing_area_image" => $article->climbing_area_image,
-                                                                "image" => $article->image,
-                                                                "closed" => $article->closed,
-                                                                "price_from" => $article->price_from,
-                                                                "open_time" => $article->open_time,
-                                                                "closed_time"=>$article->closed_time,
-                                                                "start_data" => $article->start_data,
-                                                                "region_id"=>$article->region_id,
-                                                                "end_data" => $article->end_data,
-                                                                "published" => $article->published,
+        foreach ($global_article as $article) {
+            
+            $localzatione = $locale.'_article_id';
+            $locale_articles = Locale_article::where('id', '=', $article->$localzatione)->get();
+            
+            foreach ($locale_articles as $us_article) {
+                if ($us_article->id == $article->$localzatione) {
+                    $new_article = false;
 
-                                                                "new_flag"=>$new_flag,
+                    $new_flag = (new static)->get_new_article_pin($article);
 
-                                                                "mount_system" => $mount_system,
-                                                                ]);
+                    $mount_system = '';
+                    if(count($article->mount_masiv) > 0){
+                        $m_system = $article->mount_masiv;
                     }
+                    else{
+                        $mount_system = '';
+                    }
+
+                    array_push($response, [$locale_articles,    "url_title"=>$article->url_title, 
+                                                            "id" => $article->id,
+                                                            "mount_id" => $article->mount_id,
+                                                            "category" => $article->category,
+                                                            "climbing_area_image" => $article->climbing_area_image,
+                                                            "image" => $article->image,
+                                                            "closed" => $article->closed,
+                                                            "price_from" => $article->price_from,
+                                                            "open_time" => $article->open_time,
+                                                            "closed_time"=>$article->closed_time,
+                                                            "start_data" => $article->start_data,
+                                                            "region_id"=>$article->region_id,
+                                                            "end_data" => $article->end_data,
+                                                            "published" => $article->published,
+
+                                                            "new_flag"=>$new_flag,
+
+                                                            "mount_system" => $mount_system,
+                                                            ]);
                 }
             }
         }
-        // dd($articles);
-        return $articles;
+
+        return $response;
     }
 
     public function get_list_array($global_article, $local_article)
@@ -154,24 +121,6 @@ class GetArticlesService
     }
 
 
-    // public static function get_new_article_pin($global_article)
-    // {
-    //     $time_array = array();
-
-    //     foreach ($global_article as $article) {
-    //         if ($article[0][0]->created_at->lt(Carbon::now()->subDays(30))){
-    //             $time = 0;
-    //             array_push($time_array, ['id'=>$article[0][0]->id, 'name'=>$article['url_title'], 'time'=>$time]);
-    //         } else {
-    //             $time = 1;
-    //             array_push($time_array, ['id'=>$article[0][0]->id, 'name'=>$article['url_title'], 'time'=>$time]);
-    //         }
-    //     }
-        
-    //     return $time_array;
-    // }
-
-
     public static function get_new_article_pin($article){
         // dd($article);
         $time = false;
@@ -188,7 +137,6 @@ class GetArticlesService
 
     public static function get_locale_article_in_page($article, $locale = 'en')
     {
-        // $locale = request()->segment(1, '');
 
         if($locale == "ru"){
             $ru_article_id = $article->ru_article_id;

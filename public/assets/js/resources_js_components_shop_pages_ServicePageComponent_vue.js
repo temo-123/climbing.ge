@@ -190,6 +190,8 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   props: ['service_data'],
   data: function data() {
@@ -215,6 +217,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _items_ServiceItemComponent__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../items/ServiceItemComponent */ "./resources/js/components/shop/items/ServiceItemComponent.vue");
 /* harmony import */ var _items_MetaDataComponent__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../items/MetaDataComponent */ "./resources/js/components/shop/items/MetaDataComponent.vue");
 /* harmony import */ var _items_BreadcrumbComponent_vue__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../items/BreadcrumbComponent.vue */ "./resources/js/components/shop/items/BreadcrumbComponent.vue");
+//
+//
 //
 //
 //
@@ -670,7 +674,8 @@ var render = function () {
             {
               staticClass: "service-icon red services_bacground_image",
               style:
-                "background-image: url(../../images/service_img/" +
+                "background-image: url(" +
+                "/public/images/service_img/" +
                 _vm.service_data.image +
                 ");",
             },
@@ -704,7 +709,11 @@ var render = function () {
             [_c("h3", [_vm._v(_vm._s(_vm.service_data[0][0].title))])]
           ),
           _vm._v(" "),
-          _c("p", [_vm._v(_vm._s(_vm.service_data[0][0].short_description))]),
+          _c("span", {
+            domProps: {
+              innerHTML: _vm._s(_vm.service_data[0][0].short_description),
+            },
+          }),
         ],
         1
       ),
@@ -741,8 +750,6 @@ var render = function () {
         _vm._v(_vm._s(_vm.setvice.local_service.title)),
       ]),
       _vm._v(" "),
-      _c("breadcrumb"),
-      _vm._v(" "),
       _vm.setvice.service_images
         ? _c("div", { staticClass: "row" }, [
             _c("img", {
@@ -758,9 +765,9 @@ var render = function () {
         : _vm._e(),
       _vm._v(" "),
       _c("div", { staticClass: "row service_page_text" }, [
-        _vm._v(
-          "\n        " + _vm._s(_vm.setvice.local_service.text) + "\n    "
-        ),
+        _c("span", {
+          domProps: { innerHTML: _vm._s(_vm.setvice.local_service.text) },
+        }),
       ]),
       _vm._v(" "),
       this.services.length > 0

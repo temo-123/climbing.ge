@@ -5,7 +5,7 @@
             <!-- <img :src="image_dir+article.image" class="img-responsive" :alt='article[0][0].title' /> -->
 
             <site-img v-if="article.global_article.image" :src="image_dir+article.global_article.image" :img_class="'img-responsive'" :alt='article.us_article.title'/>
-            <site-img v-else :src="'../../../public/images/site_img/image.png'" :img_class="'img-responsive'" :alt='article.us_article.title'/>
+            <site-img v-else :src="'/public/images/site_img/image.png'" :img_class="'img-responsive'" :alt='article.us_article.title'/>
 
             <div class="mask">
 
@@ -41,23 +41,23 @@
         },
         mounted() {
             if (this.article.global_article.category === 'indoor') {
-                this.image_dir = '../images/indoor_img/'
+                this.image_dir = '/public/images/indoor_img/'
                 this.category = 'indoor'
             }
             else if (this.article.global_article.category === 'outdoor') {
-                this.image_dir = '../images/outdoor_img/'
+                this.image_dir = '/public/images/outdoor_img/'
                 this.category = 'outdoor'
             }
             else if (this.article.global_article.category === 'mount_route') {
-                this.image_dir = '../images/mount_route_img/'
+                this.image_dir = '/public/images/mount_route_img/'
                 this.category = 'mount_route'
             }
             // else if (this.article.global_article.category === 'other') {
-            //     this.image_dir = '../images/other_img/'
+            //     this.image_dir = 'public/images/other_img/'
             //     this.category = 'other'
             // }
             else if (this.article.global_article.category === 'ice') {
-                this.image_dir = '../images/ice_img/'
+                this.image_dir = '/public/images/ice_img/'
                 this.category = 'ice'
             }
         },

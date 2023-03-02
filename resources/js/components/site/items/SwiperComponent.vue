@@ -20,7 +20,7 @@
             <p>{{slide.text}}</p>
           </div> -->
 
-          <site-img :src="'../images/gallery_img/'+slide.image" :alt="slide.title" :img_class="'slider_img'" />
+          <site-img :src="'/public/images/gallery_img/'+slide.image" :alt="slide.title" :img_class="'slider_img'" />
           <!-- <site-img :src="slide.image" :alt="slide.title" :img_class="'slider_img'" /> -->
 
       </div>

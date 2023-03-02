@@ -98,17 +98,17 @@ if (window.location.hostname == process.env.MIX_SITE_URL) {
     homeComponent = Index;
     serviceRoutes = site_routes;
     analytic_id = process.env.MIX_CLIMBING_GUIDBOOK_ANALITICS_ID;
-    // axios.defaults.baseURL = process.env.MIX_SITE_URL
+    axios.defaults.baseURL = process.env.MIX_APP_SSH + process.env.MIX_SITE_URL + '/api'
 } else if (window.location.hostname == process.env.MIX_SHOP_URL) {
     homeComponent = MainWrapper;
     serviceRoutes = shop_routes;
     analytic_id = process.env.MIX_SHOP_ANALITICS_ID;
-    // axios.defaults.baseURL = process.env.MIX_SHOP_URL
+    axios.defaults.baseURL = process.env.MIX_APP_SSH + process.env.MIX_SHOP_URL + '/api'
 } else if (window.location.hostname == process.env.MIX_USER_PAGE_URL) {
     homeComponent = Home;
     serviceRoutes = user_routes;
     analytic_id = process.env.MIX_USER_ANALITICS_ID;
-    // axios.defaults.baseURL = process.env.MIX_USER_PAGE_URL
+    axios.defaults.baseURL = process.env.MIX_APP_SSH + process.env.MIX_USER_PAGE_URL + '/api'
 } else if (window.location.hostname == process.env.MIX_FILMS_URL) {
     homeComponent = Films;
     serviceRoutes = films_routes;
@@ -206,10 +206,36 @@ const app = new Vue({
     },
     watch: {
         $route(to, from) {
-            this.get_site_data();
             // this.get_auth_user_data()
 
             window.scrollTo(0, 0);
+
+            let locale = localStorage.getItem("lang")
+            this.get_site_data();
+
+            if (window.location.hostname == process.env.MIX_SITE_URL || window.location.hostname == process.env.MIX_SHOP_URL) {
+                if(locale != 'en'){
+                    localStorage.setItem('lang', locale)
+                    this.$i18n.locale = locale;
+
+                    const to = this.$router.resolve({params: {locale}})
+                    this.$router.push(to.location)
+                }
+                else if(locale == 'en'){
+                    localStorage.setItem('lang', locale)
+                    this.$i18n.locale = locale;
+
+                    let activ_path_without_locale = this.$router.history.pending.path.split("/").splice(2).join("/")
+
+                    // const to = this.$router.resolve(activ_path_without_locale)
+                    
+                    // this.$router.push( to )
+                    this.get_site_data();
+
+                    this.$router.push({ path: '/' + activ_path_without_locale })
+                }
+            }
+            
         },
     },
 });

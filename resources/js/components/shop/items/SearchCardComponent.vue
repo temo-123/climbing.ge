@@ -7,8 +7,8 @@
                 </div>
                 <router-link :to="'product/'+product.global_product.url_title">
                     <div class="item-img">
-                        <site-img v-if="product.product_images.length" :src="'../images/product_img/'+get_product_image()" :alt="product.us_product.title" />
-                        <site-img v-else :src="'../../../public/images/site_img/shop_demo.jpg'" :alt="product.us_product.title" />
+                        <site-img v-if="product.product_images.length" :src="'/public/images/product_img/'+get_product_image()" :alt="product.us_product.title" />
+                        <site-img v-else :src="'/public/images/site_img/shop_demo.jpg'" :alt="product.us_product.title" />
                     </div>
                 </router-link>
                 <div class="next_image" v-if="image_num < (this.image_length - 1)">

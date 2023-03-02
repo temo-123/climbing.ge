@@ -8,7 +8,7 @@
                 :class="'sector_images sector_images_' + sectors_and_images.local_images.length"
             >
                 <openImg
-                    :img="'../../images/sector_local_img/' + spot_image.image"
+                    :img="'/public/images/sector_local_img/' + spot_image.image"
                     :img_alt="spot_image.title"
                 />
             </div>

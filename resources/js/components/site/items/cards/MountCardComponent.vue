@@ -8,7 +8,7 @@
             <!-- <img :src="image_dir+mount.image" class="img-responsive" :alt='mount[0][0].title' /> -->
                                 
             <site-img v-if="mount.image != NULL" :src="image_dir+mount.image" :img_class="'img-responsive'" :alt='mount[0][0].title'/>
-            <site-img v-else :src="'../../../public/images/site_img/image.png'" :img_class="'img-responsive'" :alt='mount[0][0].title'/>
+            <site-img v-else :src="'/public/images/site_img/image.png'" :img_class="'img-responsive'" :alt='mount[0][0].title'/>
 
             <div class="mask">
                 <!-- <a href="#" class="info"><i class="fa fa-arrow-right"></i></a> -->

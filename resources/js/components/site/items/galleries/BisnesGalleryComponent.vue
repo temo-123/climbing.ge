@@ -9,7 +9,7 @@
         <div class="container">
           <div class="row">
             <div class="col-xs-6 col-sm-6 col-md-3 gallery_images" v-for="image in images" :key="image.id" @click="open_image(image)">
-              <site-img :src="'../images/suport_local_bisnes_img/'+image.image" :alt="image.title" :img_class="'gallery_img'"/>
+              <site-img :src="'/public/images/suport_local_bisnes_img/'+image.image" :alt="image.title" :img_class="'gallery_img'"/>
             </div>
           </div>
         </div>
@@ -19,7 +19,7 @@
             <bottom @click="close_image(image)">X</bottom>
           </div>
 
-          <site-img :src="'../images/suport_local_bisnes_img/'+active_img.image" :alt="active_img.image" :img_class="'gallery_big_img'" />
+          <site-img :src="'/public/images/suport_local_bisnes_img/'+active_img.image" :alt="active_img.image" :img_class="'gallery_big_img'" />
 
           <div class="image_moving">
             <div class="previes_img_bottom"  @click="previes_image()">

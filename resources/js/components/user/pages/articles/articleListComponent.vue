@@ -126,7 +126,7 @@
 
             get_unfilted_articles(){
                 axios
-                .post("../api/article/", {
+                .post("/article/", {
                     category: this.$route.params.article_category,
                 })
                 .then(response => {
