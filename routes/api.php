@@ -211,6 +211,7 @@ Route::group(['namespace'=>'Api'], function() {
     Route::post('/cart/update_quantity/{item_id}', 'CartController@update_quantity');
 
     Route::apiResource('/order', 'OrderController');
+    Route::get('/order/get_order_status/{order_id}', 'OrderController@get_order_status');
     Route::get('/my_order', 'OrderController@get_my_orders');
     Route::get('/get_activ_order/{order_id}', 'OrderController@get_activ_order');
     Route::post('/edit_order_status/{order_id}', 'OrderController@edit_order_status');

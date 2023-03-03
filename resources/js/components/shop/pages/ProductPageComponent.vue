@@ -45,7 +45,7 @@
                                 </div>
                             </div>
 
-                            <div class="row" v-if="product.global_product.sale_category == 'online order'">
+                            <div class="row" v-if="product.global_product.sale_type == 'online order'">
                                 <div class="row">
                                     <div class="col-md-12">
                                         <h3 style="margin-bottom: 0;">Add to cart</h3>
@@ -78,7 +78,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="row" v-if="product.global_product.sale_category == 'custom production'">
+                            <div class="row" v-if="product.global_product.sale_type == 'custom production'">
                                 <div class="row">
                                     <div class="col-md-12">
                                         <h3 style="margin-bottom: 0; float: left;">Custom production</h3>
@@ -99,7 +99,7 @@
             </div>
             <div class="row" v-if="product.global_product.mead_in_georgia">
                 <div class="col-md-12">
-                    <img class="mead_in_geo_img" :src="'../images/site_img/mead in georgia.png'" :alt="'Mead in Georgia (' + product.local_product[0].title + ')'"/>
+                    <img class="mead_in_geo_img" :src="this.publicPath + '/public/images/site_img/mead in georgia.png'" :alt="'Mead in Georgia (' + product.local_product[0].title + ')'"/>
                 </div>
             </div>
         </div>
@@ -179,6 +179,8 @@
                 // products: [],
 
                 samilar_products: [],
+
+                publicPath: window.location.protocol + '//' + window.location.hostname
             }
         },
         watch: {
@@ -235,8 +237,8 @@
                         if(option.images.length){
                             option.images.forEach(image => {
                                 this.items.push({
-                                    src: '../images/product_option_img/'+image.image,
-                                    thumbnail: '../images/product_option_img/'+image.image,
+                                    src: this.publicPath + '/public/images/product_option_img/'+image.image,
+                                    thumbnail: this.publicPath + '/public/images/product_option_img/'+image.image,
                                     caption: option.option.title,
                                     id:  option.option.id
                                 })
@@ -276,8 +278,8 @@
                             this.price = option.option.price
                             option.images.forEach(image => {
                                 this.items.push({
-                                    src: '../images/product_option_img/'+image.image,
-                                    thumbnail: '../images/product_option_img/'+image.image,
+                                    src: this.publicPath + '/public/images/product_option_img/'+image.image,
+                                    thumbnail: this.publicPath + '/public/images/product_option_img/'+image.image,
                                     caption: option.option.title,
                                     id:  option.option.id
                                 })

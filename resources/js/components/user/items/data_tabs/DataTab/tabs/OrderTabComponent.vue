@@ -8,13 +8,7 @@
 
         <td @click="show_order_detals_model(table_info.id)" :style="'cursor: zoom-in'">|</td>
 
-        <td @click="show_order_detals_model(table_info.id)" :style="'cursor: zoom-in'" v-if="table_info.delivered">delivered</td>
-        <td @click="show_order_detals_model(table_info.id)" :style="'cursor: zoom-in'" v-else-if="table_info.transferred_to_the_delivery_service">transferred_to_the_delivery_service</td>
-        <td @click="show_order_detals_model(table_info.id)" :style="'cursor: zoom-in'" v-else-if="table_info.order_has_been_sent">order_has_been_sent</td>
-        <td @click="show_order_detals_model(table_info.id)" :style="'cursor: zoom-in'" v-else-if="table_info.ready_to_ship">ready_to_ship</td>
-        <td @click="show_order_detals_model(table_info.id)" :style="'cursor: zoom-in'" v-else-if="table_info.preparation_for_shipment">preparation_for_shipment</td>
-        <td @click="show_order_detals_model(table_info.id)" :style="'cursor: zoom-in'" v-else-if="table_info.treatment">treatment</td>
-        <td @click="show_order_detals_model(table_info.id)" :style="'cursor: zoom-in'" v-else>No information</td>
+        <td @click="show_order_detals_model(table_info.id)" :style="'cursor: zoom-in'">{{ order_status.status }}</td>
 
         <td @click="show_order_detals_model(table_info.id)" :style="'cursor: zoom-in'">
             |
@@ -40,41 +34,16 @@
                     <table class="table table-bordered track_tbl">
                         <thead>
                             <tr>
-                                <th>Status No</th>
                                 <th>Status</th>
-                                <th>Date/Time</th>
+                                <th>|</th>
+                                <th>Updating Date</th>
                             </tr>
                         </thead>
                         <tbody>
-                            <tr v-if="table_info.treatment">
-                                <td>01</td>
-                                <td>Treatment</td>
-                                <td>{{ table_info.treatment_data }}</td>
-                            </tr>
-                            <tr v-if="table_info.preparation_for_shipment">
-                                <td>02</td>
-                                <td>Preparation for shipment</td>
-                                <td>{{ table_info.preparation_for_shipment_data }}</td>
-                            </tr>
-                            <tr v-if="table_info.ready_to_ship">
-                                <td>03</td>
-                                <td>Ready to ship</td>
-                                <td>{{ table_info.preparation_for_shipment_data }}</td>
-                            </tr>
-                            <tr v-if="table_info.order_has_been_sent">
-                                <td>04</td>
-                                <td>Order has been sent</td>
-                                <td>{{ table_info.order_has_been_sent_data }}</td>
-                            </tr>
-                            <tr v-if="table_info.transferred_to_the_delivery_service">
-                                <td>05</td>
-                                <td>Transferred to the delivery service</td>
-                                <td>{{ table_info.transferred_to_the_delivery_service_data }}</td>
-                            </tr>
-                            <tr v-if="table_info.delivered">
-                                <td>06</td>
-                                <td>delivered</td>
-                                <td>{{ table_info.delivered_data }}</td>
+                            <tr>
+                                <td>{{ order_status.status }}</td>
+                                <td>|</td>
+                                <td>{{ order_status.status_updating_data }}</td>
                             </tr>
                         </tbody>
                     </table>
@@ -140,41 +109,16 @@
                         <table class="table table-bordered track_tbl">
                             <thead>
                                 <tr>
-                                    <th>Status No</th>
                                     <th>Status</th>
-                                    <th>Date/Time</th>
+                                    <th>|</th>
+                                    <th>Updating Date</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr v-if="table_info.treatment">
-                                    <td>01</td>
-                                    <td>Treatment</td>
-                                    <td>{{ table_info.treatment_data }}</td>
-                                </tr>
-                                <tr v-if="table_info.preparation_for_shipment">
-                                    <td>02</td>
-                                    <td>Preparation for shipment</td>
-                                    <td>{{ table_info.preparation_for_shipment_data }}</td>
-                                </tr>
-                                <tr v-if="table_info.ready_to_ship">
-                                    <td>03</td>
-                                    <td>Ready to ship</td>
-                                    <td>{{ table_info.preparation_for_shipment_data }}</td>
-                                </tr>
-                                <tr v-if="table_info.order_has_been_sent">
-                                    <td>04</td>
-                                    <td>Order has been sent</td>
-                                    <td>{{ table_info.order_has_been_sent_data }}</td>
-                                </tr>
-                                <tr v-if="table_info.transferred_to_the_delivery_service">
-                                    <td>05</td>
-                                    <td>Transferred to the delivery service</td>
-                                    <td>{{ table_info.transferred_to_the_delivery_service_data }}</td>
-                                </tr>
-                                <tr v-if="table_info.delivered">
-                                    <td>06</td>
-                                    <td>delivered</td>
-                                    <td>{{ table_info.delivered_data }}</td>
+                                <tr>
+                                    <td>{{ order_status.status }}</td>
+                                    <td>|</td>
+                                    <td>{{ order_status.status_updating_data }}</td>
                                 </tr>
                             </tbody>
                         </table>
@@ -203,41 +147,16 @@
                         <table class="table table-bordered track_tbl">
                             <thead>
                                 <tr>
-                                    <th>Status No</th>
                                     <th>Status</th>
-                                    <th>Date/Time</th>
+                                    <th>|</th>
+                                    <th>Updating Date</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr v-if="table_info.treatment">
-                                    <td>01</td>
-                                    <td>Treatment</td>
-                                    <td>{{ table_info.treatment_data }}</td>
-                                </tr>
-                                <tr v-if="table_info.preparation_for_shipment">
-                                    <td>02</td>
-                                    <td>Preparation for shipment</td>
-                                    <td>{{ table_info.preparation_for_shipment_data }}</td>
-                                </tr>
-                                <tr v-if="table_info.ready_to_ship">
-                                    <td>03</td>
-                                    <td>Ready to ship</td>
-                                    <td>{{ table_info.preparation_for_shipment_data }}</td>
-                                </tr>
-                                <tr v-if="table_info.order_has_been_sent">
-                                    <td>04</td>
-                                    <td>Order has been sent</td>
-                                    <td>{{ table_info.order_has_been_sent_data }}</td>
-                                </tr>
-                                <tr v-if="table_info.transferred_to_the_delivery_service">
-                                    <td>05</td>
-                                    <td>Transferred to the delivery service</td>
-                                    <td>{{ table_info.transferred_to_the_delivery_service_data }}</td>
-                                </tr>
-                                <tr v-if="table_info.delivered">
-                                    <td>06</td>
-                                    <td>delivered</td>
-                                    <td>{{ table_info.delivered_data }}</td>
+                                <tr>
+                                    <td>{{ order_status.status }}</td>
+                                    <td>|</td>
+                                    <td>{{ order_status.status_updating_data }}</td>
                                 </tr>
                             </tbody>
                         </table>
@@ -278,13 +197,13 @@
 </template>
 
 <script>
-    import { SlickList, SlickItem } from 'vue-slicksort'; //https://github.com/Jexordexan/vue-slicksort
+    // import { SlickList, SlickItem } from 'vue-slicksort'; //https://github.com/Jexordexan/vue-slicksort
     import StackModal from '@innologica/vue-stackable-modal'  //https://innologica.github.io/vue-stackable-modal/#sample-css
     export default {
         components: {
             StackModal,
-            SlickItem,
-            SlickList,
+            // SlickItem,
+            // SlickList,
         },
         props: [
             'table_info',
@@ -305,7 +224,8 @@
                 price: 0,
                 order_product_items: [],
 
-                order_status_updating_loader: false
+                order_status_updating_loader: false,
+                order_status: '',
             }
         },
         mounted(){
@@ -313,20 +233,33 @@
             this.location = path.split("/").pop();
             this.activ_order_id = this.table_info.id
 
-            if(!this.table_info.confirm){
-                this.row_color = 'row_deanger'
-            }
-            else if(this.table_info.confirm && !this.table_info.delivered){
-                this.row_color = 'row_worning'
-            }
-            else if(this.table_info.confirm && this.table_info.delivered){
-                this.row_color = ''
-            }
-            else{
-                this.row_color = ''
-            }
+            this.get_order_status()
         },
         methods: {
+            get_order_status(){
+                axios
+                .get("../api/order/get_order_status/" + this.activ_order_id)
+                .then(response => {
+                    this.order_status = response.data
+
+                    if(!this.order_status.status){
+                        this.row_color = 'row_deanger'
+                    }
+                    else if(this.order_status.status ){
+                        this.row_color = 'row_worning'
+                    }
+                    else if(this.order_status.status ){
+                        this.row_color = ''
+                    }
+                    else{
+                        this.row_color = ''
+                    }
+                })
+                .catch(
+                    error => console.log(error)
+                );
+            },
+
             show_order_status_model(){
                 this.get_activ_order('show')
             },
@@ -405,36 +338,28 @@
                 axios
                 .get("../api/get_order_detals/"+order_id)
                 .then(response => {
-                    this.activ_order_detals = response.data
+                    this.activ_order_detals = response.data.order
+                    // this.get_order_products(response.data.id)
+
+                    this.order_product_items = response.data.order_products
+                    // this.user_id = response.data[0]['user_id']
+                    // this.is_products_refresh = false
+                    // this.products_reset_id++
+                    this.colculat_total_price()
+
                     this.is_order_detals_model = true
-                    this.get_order_products(response.data.id)
                 })
                 .catch(
                     error => console.log(error)
                 );
             },
 
-            get_order_products: function(order_id) {
-                axios
-                .get("../api/get_order_products/"+order_id)
-                .then(response => {
-                    this.order_product_items = response.data
-                    this.user_id = response.data[0]['user_id']
-                    // this.is_products_refresh = false
-                    // this.products_reset_id++
-                    this.colculat_total_price()
-                })
-                .catch(
-                    error => console.log(error)
-                );
-            },
             colculat_total_price() {
                 this.total_price = 0
                 this.price = 0
                 this.order_product_items.forEach(product => {
                     if (product.quantity > 1) {
                         this.price = product.quantity * product.option.price
-                // console.log("🚀 ~ file: OrderTabComponent.vue ~ line 429 ~ colculat_total_price ~ product", product)
                     }
                     else{
                         this.price = parseInt(product.option.price)

@@ -51,7 +51,7 @@ class AdminOrderDeclorationNotification extends Notification
                     'surname'=>$this->surname,
                     'user_id'=>$this->user_id,
 
-                    'action_url'=>env('APP_SSH').env('USER_PAGE_URL').'/order/all_orders',
+                    'action_url'=>env('APP_SSH').env('USER_PAGE_URL').'/order/my_orders',
 
                     // 'adres'=>$this->adres,
                     // 'products'=>$this->products,

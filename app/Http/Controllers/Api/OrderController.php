@@ -9,6 +9,7 @@ use Auth;
 use App\Models\User;
 use App\Models\Order;
 use App\Models\Order_products;
+use App\Models\Order_status;
 
 use App\Models\Product_option;
 use App\Models\Product;
@@ -39,8 +40,9 @@ class OrderController extends Controller
 
     public function get_my_orders()
     {
-        $user_id = auth()->user()->id;
-        return Order::where("user_id", "=", $user_id)->get();
+        if (Auth::user()) {
+            return Order::where("user_id", "=", Auth::user()->id)->get();
+        }
     }
 
     /**
@@ -48,9 +50,9 @@ class OrderController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function get_order_status($order_id)
     {
-        //
+        return Order_status::where("order_id", "=", $order_id)->first();
     }
 
     /**
@@ -70,20 +72,6 @@ class OrderController extends Controller
             $new_order['adres_id'] = $request->adres;
             $new_order['shiping'] = $request->shiping;
 
-            $new_order['treatment'] = 1;
-            $new_order['preparation_for_shipment'] = null;
-            $new_order['ready_to_ship'] = null;
-            $new_order['order_has_been_sent'] = null;
-            $new_order['transferred_to_the_delivery_service'] = null;
-            $new_order['delivered'] = null;
-
-            $new_order['treatment_data'] = date("Y-m-d H:I:s");
-            $new_order['preparation_for_shipment_data'] = null;
-            $new_order['ready_to_ship_data'] = null;
-            $new_order['order_has_been_sent_data'] = null;
-            $new_order['transferred_to_the_delivery_service_data'] = null;
-            $new_order['delivered_data'] = null;
-
             $new_order['payment'] = $request->payment_tupe;
             $new_order -> save();
 
@@ -99,6 +87,8 @@ class OrderController extends Controller
                 //subtraction number of products
                 (new static)->subtraction_products($product['option']['id'], $product['quantity']);
             }
+
+            (new static)->create_order_status($new_order->id);
 
             //del cart items
             (new static)->del_cart_items(Auth::user()->id);
@@ -221,11 +211,11 @@ class OrderController extends Controller
         //
     }
 
-    public function get_order_products(Request $request)
+    public function get_order_products($order_id)
     {
         // return Order_products::where("order_id", "=", $request->order_id)->get();
         if (Auth::user()) {
-            $product_items = Order_products::where("order_id", "=", $request->order_id)->get();
+            $product_items = Order_products::where("order_id", "=", $order_id)->get();
             $products = array();
             foreach ($product_items as $item) {
 
@@ -250,7 +240,17 @@ class OrderController extends Controller
 
     public function get_order_detals(Request $request)
     {
-        return Order::where("id", "=", $request->order_id)->first();
+        $order = Order::where("id", "=", $request->order_id)->first();
+        $order_status = Order_status::where("order_id", "=", $order->id)->first();
+        $order_products = (new static)->get_order_products($order->id);
+
+        $order_detals = [
+            'order' => $order,
+            'order_status' => $order_status,
+            'order_products' => $order_products
+        ];
+
+        return $order_detals;
     }
 
     public function order_is_confirm(Request $request)
@@ -277,124 +277,35 @@ class OrderController extends Controller
         return $status;
     }
 
+    public function create_order_status($order_id)
+    {
+        // dd($order_id);
+        $add_order_status = new Order_status;
+        
+        $add_order_status['order_id'] = $order_id;
+        $add_order_status['status'] = 'treatment';
+        $add_order_status['status_updating_data'] = date("Y-m-d H:I:s");
+        
+        $add_order_status->save();
+    }
+
     public function edit_order_status(Request $request)
     {
-        // dd(date("Y-m-d H:I:s"));
-        $editing_order = Order::where("id", "=", $request->order_id)->first();
+        $editing_order_status = Order_status::where("order_id", "=", $request->order_id)->first();
         
-        if($request->status == 'Treatment'){
-            $editing_order['treatment'] = 1;
-            $editing_order['treatment_data'] = date("Y-m-d H:I:s");
+        if ($editing_order_status) {
+            $editing_order_status['status'] = $request->status;
+            $editing_order_status['status_updating_data'] = date("Y-m-d H:I:s");
 
-            $editing_order['preparation_for_shipment'] = null;
-            $editing_order['preparation_for_shipment_data'] = null;
+            $editing_order_status->update();
 
-            $editing_order['ready_to_ship'] = null;
-            $editing_order['ready_to_ship_data'] = null;
-            
-            $editing_order['order_has_been_sent'] = null;
-            $editing_order['order_has_been_sent_data'] = null;
-            
-            $editing_order['transferred_to_the_delivery_service'] = null;
-            $editing_order['transferred_to_the_delivery_service_data'] = null;
+            $order = Order::where("id", "=", $editing_order_status->order_id)->first();
 
-            $editing_order['delivered'] = null;
-            $editing_order['delivered_data'] = null;
+            (new static)->order_status_notification($request->status, date("Y-m-d H:I:s"), $order->user_id, $editing_order_status->order_id);
         }
-        else if($request->status == 'Preparation for shipment'){
-            $editing_order['preparation_for_shipment'] = 1;
-            $editing_order['preparation_for_shipment_data'] = date("Y-m-d H:I:s");
-
-            $editing_order['ready_to_ship'] = null;
-            $editing_order['ready_to_ship_data'] = null;
-            
-            $editing_order['order_has_been_sent'] = null;
-            $editing_order['order_has_been_sent_data'] = null;
-            
-            $editing_order['transferred_to_the_delivery_service'] = null;
-            $editing_order['transferred_to_the_delivery_service_data'] = null;
-
-            $editing_order['delivered'] = null;
-            $editing_order['delivered_data'] = null;
+        else{
+            (new static)->create_order_status($request->order_id);
         }
-        else if($request->status == 'Ready to ship'){
-            if(!$editing_order['preparation_for_shipment']){
-                $editing_order['preparation_for_shipment'] = 1;
-                $editing_order['preparation_for_shipment_data'] = date("Y-m-d H:I:s");
-            }
-            $editing_order['ready_to_ship'] = 1;
-            $editing_order['ready_to_ship_data'] = date("Y-m-d H:I:s");
-            
-            $editing_order['order_has_been_sent'] = null;
-            $editing_order['order_has_been_sent_data'] = null;
-            
-            $editing_order['transferred_to_the_delivery_service'] = null;
-            $editing_order['transferred_to_the_delivery_service_data'] = null;
-
-            $editing_order['delivered'] = null;
-            $editing_order['delivered_data'] = null;
-        }
-        else if($request->status == 'Order has been sent'){
-            if(!$editing_order['preparation_for_shipment']){
-                $editing_order['preparation_for_shipment'] = 1;
-                $editing_order['preparation_for_shipment_data'] = date("Y-m-d H:I:s");
-            }
-            if(!$editing_order['ready_to_ship']){
-                $editing_order['ready_to_ship'] = 1;
-                $editing_order['ready_to_ship_data'] = date("Y-m-d H:I:s");
-            }
-            $editing_order['order_has_been_sent'] = 1;
-            $editing_order['order_has_been_sent_data'] = date("Y-m-d H:I:s");
-            
-            $editing_order['transferred_to_the_delivery_service'] = null;
-            $editing_order['transferred_to_the_delivery_service_data'] = null;
-
-            $editing_order['delivered'] = null;
-            $editing_order['delivered_data'] = null;
-        }
-        else if($request->status == 'Transferred to the delivery service'){
-            if(!$editing_order['preparation_for_shipment']){
-                $editing_order['preparation_for_shipment'] = 1;
-                $editing_order['preparation_for_shipment_data'] = date("Y-m-d H:I:s");
-            }
-            if(!$editing_order['ready_to_ship']){
-                $editing_order['ready_to_ship'] = 1;
-                $editing_order['ready_to_ship_data'] = date("Y-m-d H:I:s");
-            }
-            if(!$editing_order['order_has_been_sent']){
-                $editing_order['order_has_been_sent'] = 1;
-                $editing_order['order_has_been_sent_data'] = date("Y-m-d H:I:s");
-            }
-            $editing_order['transferred_to_the_delivery_service'] = 1;
-            $editing_order['transferred_to_the_delivery_service_data'] = date("Y-m-d H:I:s");
-
-            $editing_order['delivered'] = null;
-            $editing_order['delivered_data'] = null;
-        }
-        else if($request->status == 'Delivered'){
-            if(!$editing_order['preparation_for_shipment']){
-                $editing_order['preparation_for_shipment'] = 1;
-                $editing_order['preparation_for_shipment_data'] = date("Y-m-d H:I:s");
-            }
-            if(!$editing_order['ready_to_ship']){
-                $editing_order['ready_to_ship'] = 1;
-                $editing_order['ready_to_ship_data'] = date("Y-m-d H:I:s");
-            }
-            if(!$editing_order['order_has_been_sent']){
-                $editing_order['order_has_been_sent'] = 1;
-                $editing_order['order_has_been_sent_data'] = date("Y-m-d H:I:s");
-            }
-            if(!$editing_order['transferred_to_the_delivery_service']){
-                $editing_order['transferred_to_the_delivery_service'] = 1;
-                $editing_order['transferred_to_the_delivery_service_data'] = date("Y-m-d H:I:s");
-            }
-            $editing_order['delivered'] = 1;
-            $editing_order['delivered_data'] = date("Y-m-d H:I:s");
-        }
-
-        $editing_order->update();
-
-        (new static)->order_status_notification($request->status, date("Y-m-d H:I:s"), $editing_order->user_id, $editing_order->id);
     }
 
 

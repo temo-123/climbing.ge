@@ -501,7 +501,8 @@ __webpack_require__.r(__webpack_exports__);
       prices: [],
       product: [],
       // products: [],
-      samilar_products: []
+      samilar_products: [],
+      publicPath: window.location.protocol + '//' + window.location.hostname
     };
   },
   watch: {
@@ -544,8 +545,8 @@ __webpack_require__.r(__webpack_exports__);
           if (option.images.length) {
             option.images.forEach(function (image) {
               _this.items.push({
-                src: '../images/product_option_img/' + image.image,
-                thumbnail: '../images/product_option_img/' + image.image,
+                src: _this.publicPath + '/public/images/product_option_img/' + image.image,
+                thumbnail: _this.publicPath + '/public/images/product_option_img/' + image.image,
                 caption: option.option.title,
                 id: option.option.id
               });
@@ -581,8 +582,8 @@ __webpack_require__.r(__webpack_exports__);
             _this2.price = option.option.price;
             option.images.forEach(function (image) {
               _this2.items.push({
-                src: '../images/product_option_img/' + image.image,
-                thumbnail: '../images/product_option_img/' + image.image,
+                src: _this2.publicPath + '/public/images/product_option_img/' + image.image,
+                thumbnail: _this2.publicPath + '/public/images/product_option_img/' + image.image,
                 caption: option.option.title,
                 id: option.option.id
               });
@@ -10112,7 +10113,7 @@ var render = function () {
                 _vm._v(" "),
                 _vm._m(0),
                 _vm._v(" "),
-                _vm.product.global_product.sale_category == "online order"
+                _vm.product.global_product.sale_type == "online order"
                   ? _c("div", { staticClass: "row" }, [
                       _c("div", { staticClass: "row" }, [
                         _vm._m(1),
@@ -10265,7 +10266,7 @@ var render = function () {
                     ])
                   : _vm._e(),
                 _vm._v(" "),
-                _vm.product.global_product.sale_category == "custom production"
+                _vm.product.global_product.sale_type == "custom production"
                   ? _c("div", { staticClass: "row" }, [_vm._m(2)])
                   : _vm._e(),
               ]),
@@ -10298,7 +10299,9 @@ var render = function () {
                     _c("img", {
                       staticClass: "mead_in_geo_img",
                       attrs: {
-                        src: "../images/site_img/mead in georgia.png",
+                        src:
+                          this.publicPath +
+                          "/public/images/site_img/mead in georgia.png",
                         alt:
                           "Mead in Georgia (" +
                           _vm.product.local_product[0].title +

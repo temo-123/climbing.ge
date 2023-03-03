@@ -2797,10 +2797,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
-/* harmony import */ var vue_slicksort__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vue-slicksort */ "./node_modules/vue-slicksort/dist/vue-slicksort.umd.js");
-/* harmony import */ var vue_slicksort__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(vue_slicksort__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var _innologica_vue_stackable_modal__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @innologica/vue-stackable-modal */ "./node_modules/@innologica/vue-stackable-modal/dist/vue-stackable-modal.umd.min.js");
-/* harmony import */ var _innologica_vue_stackable_modal__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_innologica_vue_stackable_modal__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var _innologica_vue_stackable_modal__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @innologica/vue-stackable-modal */ "./node_modules/@innologica/vue-stackable-modal/dist/vue-stackable-modal.umd.min.js");
+/* harmony import */ var _innologica_vue_stackable_modal__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_innologica_vue_stackable_modal__WEBPACK_IMPORTED_MODULE_0__);
 //
 //
 //
@@ -2999,96 +2997,14 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
- //https://github.com/Jexordexan/vue-slicksort
-
+// import { SlickList, SlickItem } from 'vue-slicksort'; //https://github.com/Jexordexan/vue-slicksort
  //https://innologica.github.io/vue-stackable-modal/#sample-css
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   components: {
-    StackModal: (_innologica_vue_stackable_modal__WEBPACK_IMPORTED_MODULE_1___default()),
-    SlickItem: vue_slicksort__WEBPACK_IMPORTED_MODULE_0__.SlickItem,
-    SlickList: vue_slicksort__WEBPACK_IMPORTED_MODULE_0__.SlickList
+    StackModal: (_innologica_vue_stackable_modal__WEBPACK_IMPORTED_MODULE_0___default()) // SlickItem,
+    // SlickList,
+
   },
   props: ['table_info'],
   data: function data() {
@@ -3105,25 +3021,36 @@ __webpack_require__.r(__webpack_exports__);
       total_price: 0,
       price: 0,
       order_product_items: [],
-      order_status_updating_loader: false
+      order_status_updating_loader: false,
+      order_status: ''
     };
   },
   mounted: function mounted() {
     var path = window.location.pathname;
     this.location = path.split("/").pop();
     this.activ_order_id = this.table_info.id;
-
-    if (!this.table_info.confirm) {
-      this.row_color = 'row_deanger';
-    } else if (this.table_info.confirm && !this.table_info.delivered) {
-      this.row_color = 'row_worning';
-    } else if (this.table_info.confirm && this.table_info.delivered) {
-      this.row_color = '';
-    } else {
-      this.row_color = '';
-    }
+    this.get_order_status();
   },
   methods: {
+    get_order_status: function get_order_status() {
+      var _this = this;
+
+      axios.get("../api/order/get_order_status/" + this.activ_order_id).then(function (response) {
+        _this.order_status = response.data;
+
+        if (!_this.order_status.status) {
+          _this.row_color = 'row_deanger';
+        } else if (_this.order_status.status) {
+          _this.row_color = 'row_worning';
+        } else if (_this.order_status.status) {
+          _this.row_color = '';
+        } else {
+          _this.row_color = '';
+        }
+      })["catch"](function (error) {
+        return console.log(error);
+      });
+    },
     show_order_status_model: function show_order_status_model() {
       this.get_activ_order('show');
     },
@@ -3134,85 +3061,77 @@ __webpack_require__.r(__webpack_exports__);
       this.get_order_detals(order_id);
     },
     get_activ_order: function get_activ_order(action) {
-      var _this = this;
+      var _this2 = this;
 
       // alert(action)
       axios.get("../api/get_activ_order/" + this.activ_order_id).then(function (response) {
-        _this.activ_order_status = response.data; // this.selected_order_status = response.data.status
+        _this2.activ_order_status = response.data; // this.selected_order_status = response.data.status
 
         if (response.data.treatment) {
-          _this.selected_order_status = 'Treatment';
+          _this2.selected_order_status = 'Treatment';
         }
 
         if (response.data.preparation_for_shipment) {
-          _this.selected_order_status = 'Preparation for shipment';
+          _this2.selected_order_status = 'Preparation for shipment';
         }
 
         if (response.data.ready_to_ship) {
-          _this.selected_order_status = 'Ready to ship';
+          _this2.selected_order_status = 'Ready to ship';
         }
 
         if (response.data.order_has_been_sent) {
-          _this.selected_order_status = 'Order has been sent';
+          _this2.selected_order_status = 'Order has been sent';
         }
 
         if (response.data.transferred_to_the_delivery_service) {
-          _this.selected_order_status = 'Transferred to the delivery service';
+          _this2.selected_order_status = 'Transferred to the delivery service';
         }
 
         if (response.data.delivered) {
-          _this.selected_order_status = 'Delivered';
+          _this2.selected_order_status = 'Delivered';
         }
 
         if (action == 'edit') {
-          _this.is_order_status_edit_model = true;
+          _this2.is_order_status_edit_model = true;
         } else if (action == 'show') {
-          _this.is_order_status_model = true;
+          _this2.is_order_status_model = true;
         }
       })["catch"](function (error) {
         return console.log(error);
       });
     },
     edit_order_status: function edit_order_status() {
-      var _this2 = this;
+      var _this3 = this;
 
       if (this.selected_order_status) {
         this.order_status_updating_loader = true;
         axios.post("../api/edit_order_status/" + this.activ_order_id, {
           status: this.selected_order_status
         }).then(function (response) {
-          _this2.is_order_status_edit_model = false;
+          _this3.is_order_status_edit_model = false;
           alert('Order updated!');
         })["catch"](function (error) {
           return console.log(error);
         })["finally"](function () {
-          return _this2.order_status_updating_loader = false;
+          return _this3.order_status_updating_loader = false;
         });
       } else {
         alert('Plees select order status');
       }
     },
     get_order_detals: function get_order_detals(order_id) {
-      var _this3 = this;
-
-      axios.get("../api/get_order_detals/" + order_id).then(function (response) {
-        _this3.activ_order_detals = response.data;
-        _this3.is_order_detals_model = true;
-
-        _this3.get_order_products(response.data.id);
-      })["catch"](function (error) {
-        return console.log(error);
-      });
-    },
-    get_order_products: function get_order_products(order_id) {
       var _this4 = this;
 
-      axios.get("../api/get_order_products/" + order_id).then(function (response) {
-        _this4.order_product_items = response.data;
-        _this4.user_id = response.data[0]['user_id']; // this.is_products_refresh = false
+      axios.get("../api/get_order_detals/" + order_id).then(function (response) {
+        _this4.activ_order_detals = response.data.order; // this.get_order_products(response.data.id)
+
+        _this4.order_product_items = response.data.order_products; // this.user_id = response.data[0]['user_id']
+        // this.is_products_refresh = false
         // this.products_reset_id++
 
         _this4.colculat_total_price();
+
+        _this4.is_order_detals_model = true;
       })["catch"](function (error) {
         return console.log(error);
       });
@@ -3224,7 +3143,7 @@ __webpack_require__.r(__webpack_exports__);
       this.price = 0;
       this.order_product_items.forEach(function (product) {
         if (product.quantity > 1) {
-          _this5.price = product.quantity * product.option.price; // console.log("🚀 ~ file: OrderTabComponent.vue ~ line 429 ~ colculat_total_price ~ product", product)
+          _this5.price = product.quantity * product.option.price;
         } else {
           _this5.price = parseInt(product.option.price);
         }
@@ -5622,7 +5541,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_laravel_mix_node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n/* .row_deanger{\n\n}\n.row_worning{\n\n} */\n.row_deanger td{\n    background-color: #df8d8d;\n}\n.row_worning td {\n    background-color: #dfad8d;\n}\n", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n/* .row_deanger{\n\n}\n.row_worning{\n\n} */\n.row_deanger td{\n    background-color: #df8d8d;\n}\n.row_worning td {\n    background-color: #dfad8d;\n}\n", ""]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
@@ -13668,96 +13587,18 @@ var render = function () {
         [_vm._v("|")]
       ),
       _vm._v(" "),
-      _vm.table_info.delivered
-        ? _c(
-            "td",
-            {
-              style: "cursor: zoom-in",
-              on: {
-                click: function ($event) {
-                  return _vm.show_order_detals_model(_vm.table_info.id)
-                },
-              },
+      _c(
+        "td",
+        {
+          style: "cursor: zoom-in",
+          on: {
+            click: function ($event) {
+              return _vm.show_order_detals_model(_vm.table_info.id)
             },
-            [_vm._v("delivered")]
-          )
-        : _vm.table_info.transferred_to_the_delivery_service
-        ? _c(
-            "td",
-            {
-              style: "cursor: zoom-in",
-              on: {
-                click: function ($event) {
-                  return _vm.show_order_detals_model(_vm.table_info.id)
-                },
-              },
-            },
-            [_vm._v("transferred_to_the_delivery_service")]
-          )
-        : _vm.table_info.order_has_been_sent
-        ? _c(
-            "td",
-            {
-              style: "cursor: zoom-in",
-              on: {
-                click: function ($event) {
-                  return _vm.show_order_detals_model(_vm.table_info.id)
-                },
-              },
-            },
-            [_vm._v("order_has_been_sent")]
-          )
-        : _vm.table_info.ready_to_ship
-        ? _c(
-            "td",
-            {
-              style: "cursor: zoom-in",
-              on: {
-                click: function ($event) {
-                  return _vm.show_order_detals_model(_vm.table_info.id)
-                },
-              },
-            },
-            [_vm._v("ready_to_ship")]
-          )
-        : _vm.table_info.preparation_for_shipment
-        ? _c(
-            "td",
-            {
-              style: "cursor: zoom-in",
-              on: {
-                click: function ($event) {
-                  return _vm.show_order_detals_model(_vm.table_info.id)
-                },
-              },
-            },
-            [_vm._v("preparation_for_shipment")]
-          )
-        : _vm.table_info.treatment
-        ? _c(
-            "td",
-            {
-              style: "cursor: zoom-in",
-              on: {
-                click: function ($event) {
-                  return _vm.show_order_detals_model(_vm.table_info.id)
-                },
-              },
-            },
-            [_vm._v("treatment")]
-          )
-        : _c(
-            "td",
-            {
-              style: "cursor: zoom-in",
-              on: {
-                click: function ($event) {
-                  return _vm.show_order_detals_model(_vm.table_info.id)
-                },
-              },
-            },
-            [_vm._v("No information")]
-          ),
+          },
+        },
+        [_vm._v(_vm._s(_vm.order_status.status))]
+      ),
       _vm._v(" "),
       _c(
         "td",
@@ -13842,11 +13683,11 @@ var render = function () {
                   _vm._v("\n                        "),
                   _c("tr", [
                     _vm._v("\n                            "),
-                    _c("th", [_vm._v("Status No")]),
-                    _vm._v("\n                            "),
                     _c("th", [_vm._v("Status")]),
                     _vm._v("\n                            "),
-                    _c("th", [_vm._v("Date/Time")]),
+                    _c("th", [_vm._v("|")]),
+                    _vm._v("\n                            "),
+                    _c("th", [_vm._v("Updating Date")]),
                     _vm._v("\n                        "),
                   ]),
                   _vm._v("\n                    "),
@@ -13854,102 +13695,17 @@ var render = function () {
                 _vm._v("\n                    "),
                 _c("tbody", [
                   _vm._v("\n                        "),
-                  _vm.table_info.treatment
-                    ? _c("tr", [
-                        _vm._v("\n                            "),
-                        _c("td", [_vm._v("01")]),
-                        _vm._v("\n                            "),
-                        _c("td", [_vm._v("Treatment")]),
-                        _vm._v("\n                            "),
-                        _c("td", [
-                          _vm._v(_vm._s(_vm.table_info.treatment_data)),
-                        ]),
-                        _vm._v("\n                        "),
-                      ])
-                    : _vm._e(),
-                  _vm._v("\n                        "),
-                  _vm.table_info.preparation_for_shipment
-                    ? _c("tr", [
-                        _vm._v("\n                            "),
-                        _c("td", [_vm._v("02")]),
-                        _vm._v("\n                            "),
-                        _c("td", [_vm._v("Preparation for shipment")]),
-                        _vm._v("\n                            "),
-                        _c("td", [
-                          _vm._v(
-                            _vm._s(_vm.table_info.preparation_for_shipment_data)
-                          ),
-                        ]),
-                        _vm._v("\n                        "),
-                      ])
-                    : _vm._e(),
-                  _vm._v("\n                        "),
-                  _vm.table_info.ready_to_ship
-                    ? _c("tr", [
-                        _vm._v("\n                            "),
-                        _c("td", [_vm._v("03")]),
-                        _vm._v("\n                            "),
-                        _c("td", [_vm._v("Ready to ship")]),
-                        _vm._v("\n                            "),
-                        _c("td", [
-                          _vm._v(
-                            _vm._s(_vm.table_info.preparation_for_shipment_data)
-                          ),
-                        ]),
-                        _vm._v("\n                        "),
-                      ])
-                    : _vm._e(),
-                  _vm._v("\n                        "),
-                  _vm.table_info.order_has_been_sent
-                    ? _c("tr", [
-                        _vm._v("\n                            "),
-                        _c("td", [_vm._v("04")]),
-                        _vm._v("\n                            "),
-                        _c("td", [_vm._v("Order has been sent")]),
-                        _vm._v("\n                            "),
-                        _c("td", [
-                          _vm._v(
-                            _vm._s(_vm.table_info.order_has_been_sent_data)
-                          ),
-                        ]),
-                        _vm._v("\n                        "),
-                      ])
-                    : _vm._e(),
-                  _vm._v("\n                        "),
-                  _vm.table_info.transferred_to_the_delivery_service
-                    ? _c("tr", [
-                        _vm._v("\n                            "),
-                        _c("td", [_vm._v("05")]),
-                        _vm._v("\n                            "),
-                        _c("td", [
-                          _vm._v("Transferred to the delivery service"),
-                        ]),
-                        _vm._v("\n                            "),
-                        _c("td", [
-                          _vm._v(
-                            _vm._s(
-                              _vm.table_info
-                                .transferred_to_the_delivery_service_data
-                            )
-                          ),
-                        ]),
-                        _vm._v("\n                        "),
-                      ])
-                    : _vm._e(),
-                  _vm._v("\n                        "),
-                  _vm.table_info.delivered
-                    ? _c("tr", [
-                        _vm._v("\n                            "),
-                        _c("td", [_vm._v("06")]),
-                        _vm._v("\n                            "),
-                        _c("td", [_vm._v("delivered")]),
-                        _vm._v("\n                            "),
-                        _c("td", [
-                          _vm._v(_vm._s(_vm.table_info.delivered_data)),
-                        ]),
-                        _vm._v("\n                        "),
-                      ])
-                    : _vm._e(),
+                  _c("tr", [
+                    _vm._v("\n                            "),
+                    _c("td", [_vm._v(_vm._s(_vm.order_status.status))]),
+                    _vm._v("\n                            "),
+                    _c("td", [_vm._v("|")]),
+                    _vm._v("\n                            "),
+                    _c("td", [
+                      _vm._v(_vm._s(_vm.order_status.status_updating_data)),
+                    ]),
+                    _vm._v("\n                        "),
+                  ]),
                   _vm._v("\n                    "),
                 ]),
                 _vm._v("\n                "),
@@ -14101,11 +13857,11 @@ var render = function () {
                   _vm._v("\n                            "),
                   _c("tr", [
                     _vm._v("\n                                "),
-                    _c("th", [_vm._v("Status No")]),
-                    _vm._v("\n                                "),
                     _c("th", [_vm._v("Status")]),
                     _vm._v("\n                                "),
-                    _c("th", [_vm._v("Date/Time")]),
+                    _c("th", [_vm._v("|")]),
+                    _vm._v("\n                                "),
+                    _c("th", [_vm._v("Updating Date")]),
                     _vm._v("\n                            "),
                   ]),
                   _vm._v("\n                        "),
@@ -14113,102 +13869,17 @@ var render = function () {
                 _vm._v("\n                        "),
                 _c("tbody", [
                   _vm._v("\n                            "),
-                  _vm.table_info.treatment
-                    ? _c("tr", [
-                        _vm._v("\n                                "),
-                        _c("td", [_vm._v("01")]),
-                        _vm._v("\n                                "),
-                        _c("td", [_vm._v("Treatment")]),
-                        _vm._v("\n                                "),
-                        _c("td", [
-                          _vm._v(_vm._s(_vm.table_info.treatment_data)),
-                        ]),
-                        _vm._v("\n                            "),
-                      ])
-                    : _vm._e(),
-                  _vm._v("\n                            "),
-                  _vm.table_info.preparation_for_shipment
-                    ? _c("tr", [
-                        _vm._v("\n                                "),
-                        _c("td", [_vm._v("02")]),
-                        _vm._v("\n                                "),
-                        _c("td", [_vm._v("Preparation for shipment")]),
-                        _vm._v("\n                                "),
-                        _c("td", [
-                          _vm._v(
-                            _vm._s(_vm.table_info.preparation_for_shipment_data)
-                          ),
-                        ]),
-                        _vm._v("\n                            "),
-                      ])
-                    : _vm._e(),
-                  _vm._v("\n                            "),
-                  _vm.table_info.ready_to_ship
-                    ? _c("tr", [
-                        _vm._v("\n                                "),
-                        _c("td", [_vm._v("03")]),
-                        _vm._v("\n                                "),
-                        _c("td", [_vm._v("Ready to ship")]),
-                        _vm._v("\n                                "),
-                        _c("td", [
-                          _vm._v(
-                            _vm._s(_vm.table_info.preparation_for_shipment_data)
-                          ),
-                        ]),
-                        _vm._v("\n                            "),
-                      ])
-                    : _vm._e(),
-                  _vm._v("\n                            "),
-                  _vm.table_info.order_has_been_sent
-                    ? _c("tr", [
-                        _vm._v("\n                                "),
-                        _c("td", [_vm._v("04")]),
-                        _vm._v("\n                                "),
-                        _c("td", [_vm._v("Order has been sent")]),
-                        _vm._v("\n                                "),
-                        _c("td", [
-                          _vm._v(
-                            _vm._s(_vm.table_info.order_has_been_sent_data)
-                          ),
-                        ]),
-                        _vm._v("\n                            "),
-                      ])
-                    : _vm._e(),
-                  _vm._v("\n                            "),
-                  _vm.table_info.transferred_to_the_delivery_service
-                    ? _c("tr", [
-                        _vm._v("\n                                "),
-                        _c("td", [_vm._v("05")]),
-                        _vm._v("\n                                "),
-                        _c("td", [
-                          _vm._v("Transferred to the delivery service"),
-                        ]),
-                        _vm._v("\n                                "),
-                        _c("td", [
-                          _vm._v(
-                            _vm._s(
-                              _vm.table_info
-                                .transferred_to_the_delivery_service_data
-                            )
-                          ),
-                        ]),
-                        _vm._v("\n                            "),
-                      ])
-                    : _vm._e(),
-                  _vm._v("\n                            "),
-                  _vm.table_info.delivered
-                    ? _c("tr", [
-                        _vm._v("\n                                "),
-                        _c("td", [_vm._v("06")]),
-                        _vm._v("\n                                "),
-                        _c("td", [_vm._v("delivered")]),
-                        _vm._v("\n                                "),
-                        _c("td", [
-                          _vm._v(_vm._s(_vm.table_info.delivered_data)),
-                        ]),
-                        _vm._v("\n                            "),
-                      ])
-                    : _vm._e(),
+                  _c("tr", [
+                    _vm._v("\n                                "),
+                    _c("td", [_vm._v(_vm._s(_vm.order_status.status))]),
+                    _vm._v("\n                                "),
+                    _c("td", [_vm._v("|")]),
+                    _vm._v("\n                                "),
+                    _c("td", [
+                      _vm._v(_vm._s(_vm.order_status.status_updating_data)),
+                    ]),
+                    _vm._v("\n                            "),
+                  ]),
                   _vm._v("\n                        "),
                 ]),
                 _vm._v("\n                    "),
@@ -14266,11 +13937,11 @@ var render = function () {
                           _vm._v("\n                            "),
                           _c("tr", [
                             _vm._v("\n                                "),
-                            _c("th", [_vm._v("Status No")]),
-                            _vm._v("\n                                "),
                             _c("th", [_vm._v("Status")]),
                             _vm._v("\n                                "),
-                            _c("th", [_vm._v("Date/Time")]),
+                            _c("th", [_vm._v("|")]),
+                            _vm._v("\n                                "),
+                            _c("th", [_vm._v("Updating Date")]),
                             _vm._v("\n                            "),
                           ]),
                           _vm._v("\n                        "),
@@ -14278,110 +13949,19 @@ var render = function () {
                         _vm._v("\n                        "),
                         _c("tbody", [
                           _vm._v("\n                            "),
-                          _vm.table_info.treatment
-                            ? _c("tr", [
-                                _vm._v("\n                                "),
-                                _c("td", [_vm._v("01")]),
-                                _vm._v("\n                                "),
-                                _c("td", [_vm._v("Treatment")]),
-                                _vm._v("\n                                "),
-                                _c("td", [
-                                  _vm._v(_vm._s(_vm.table_info.treatment_data)),
-                                ]),
-                                _vm._v("\n                            "),
-                              ])
-                            : _vm._e(),
-                          _vm._v("\n                            "),
-                          _vm.table_info.preparation_for_shipment
-                            ? _c("tr", [
-                                _vm._v("\n                                "),
-                                _c("td", [_vm._v("02")]),
-                                _vm._v("\n                                "),
-                                _c("td", [_vm._v("Preparation for shipment")]),
-                                _vm._v("\n                                "),
-                                _c("td", [
-                                  _vm._v(
-                                    _vm._s(
-                                      _vm.table_info
-                                        .preparation_for_shipment_data
-                                    )
-                                  ),
-                                ]),
-                                _vm._v("\n                            "),
-                              ])
-                            : _vm._e(),
-                          _vm._v("\n                            "),
-                          _vm.table_info.ready_to_ship
-                            ? _c("tr", [
-                                _vm._v("\n                                "),
-                                _c("td", [_vm._v("03")]),
-                                _vm._v("\n                                "),
-                                _c("td", [_vm._v("Ready to ship")]),
-                                _vm._v("\n                                "),
-                                _c("td", [
-                                  _vm._v(
-                                    _vm._s(
-                                      _vm.table_info
-                                        .preparation_for_shipment_data
-                                    )
-                                  ),
-                                ]),
-                                _vm._v("\n                            "),
-                              ])
-                            : _vm._e(),
-                          _vm._v("\n                            "),
-                          _vm.table_info.order_has_been_sent
-                            ? _c("tr", [
-                                _vm._v("\n                                "),
-                                _c("td", [_vm._v("04")]),
-                                _vm._v("\n                                "),
-                                _c("td", [_vm._v("Order has been sent")]),
-                                _vm._v("\n                                "),
-                                _c("td", [
-                                  _vm._v(
-                                    _vm._s(
-                                      _vm.table_info.order_has_been_sent_data
-                                    )
-                                  ),
-                                ]),
-                                _vm._v("\n                            "),
-                              ])
-                            : _vm._e(),
-                          _vm._v("\n                            "),
-                          _vm.table_info.transferred_to_the_delivery_service
-                            ? _c("tr", [
-                                _vm._v("\n                                "),
-                                _c("td", [_vm._v("05")]),
-                                _vm._v("\n                                "),
-                                _c("td", [
-                                  _vm._v("Transferred to the delivery service"),
-                                ]),
-                                _vm._v("\n                                "),
-                                _c("td", [
-                                  _vm._v(
-                                    _vm._s(
-                                      _vm.table_info
-                                        .transferred_to_the_delivery_service_data
-                                    )
-                                  ),
-                                ]),
-                                _vm._v("\n                            "),
-                              ])
-                            : _vm._e(),
-                          _vm._v("\n                            "),
-                          _vm.table_info.delivered
-                            ? _c("tr", [
-                                _vm._v("\n                                "),
-                                _c("td", [_vm._v("06")]),
-                                _vm._v("\n                                "),
-                                _c("td", [_vm._v("delivered")]),
-                                _vm._v("\n                                "),
-                                _c("td", [
-                                  _vm._v(_vm._s(_vm.table_info.delivered_data)),
-                                ]),
-                                _vm._v("\n                            "),
-                              ])
-                            : _vm._e(),
+                          _c("tr", [
+                            _vm._v("\n                                "),
+                            _c("td", [_vm._v(_vm._s(_vm.order_status.status))]),
+                            _vm._v("\n                                "),
+                            _c("td", [_vm._v("|")]),
+                            _vm._v("\n                                "),
+                            _c("td", [
+                              _vm._v(
+                                _vm._s(_vm.order_status.status_updating_data)
+                              ),
+                            ]),
+                            _vm._v("\n                            "),
+                          ]),
                           _vm._v("\n                        "),
                         ]),
                         _vm._v("\n                    "),

@@ -8708,7 +8708,9 @@ __webpack_require__.r(__webpack_exports__);
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
-    return {// is_add_social_link_model: false,
+    return {
+      // is_add_social_link_model: false,
+      publicPath: window.location.protocol + '//' + window.location.hostname
     };
   },
   components: {
@@ -77343,7 +77345,10 @@ var render = function () {
       _vm._v(" "),
       _c("div", {
         staticClass: "footer__graphic",
-        style: "background-image: url(../images/svg/mountains.svg)",
+        style:
+          "background-image: url(" +
+          this.publicPath +
+          "/public/images/svg/mountains.svg)",
       }),
       _vm._v(" "),
       _c("footter"),

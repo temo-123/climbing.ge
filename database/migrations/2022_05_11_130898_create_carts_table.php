@@ -18,7 +18,7 @@ class CreateCartsTable extends Migration
 
             $table->integer('quantity')->nullable();
 
-            $table->foreignId('product_id')->constrained();
+            // $table->foreignId('product_id')->constrained();
             $table->foreignId('user_id')->constrained();
             
             $table->unsignedBigInteger('option_id');

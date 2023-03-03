@@ -6,7 +6,7 @@
         </div>
         <div
             class="footer__graphic"
-            :style="'background-image: url(../images/svg/mountains.svg)'"
+            :style="'background-image: url(' + this.publicPath + '/public/images/svg/mountains.svg)'"
         ></div>
         <footter />
         <loginModal />
@@ -22,6 +22,8 @@ export default {
     data: function () {
         return {
             // is_add_social_link_model: false,
+
+            publicPath: window.location.protocol + '//' + window.location.hostname
         };
     },
     components: {
