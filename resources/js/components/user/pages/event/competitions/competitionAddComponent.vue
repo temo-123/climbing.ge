@@ -156,21 +156,21 @@
                         <div class="form-group clearfix">
                             <label for="name" class='col-xs-2 control-label'> Short description </label>
                             <div class="col-xs-8">
-                                <ckeditor v-model="data.us_data.short_description"  :config="this.$editorConfig"></ckeditor>
+                                <ckeditor v-model="data.us_data.short_description"  :config="us_short_description_text_editor"></ckeditor>
                             </div>
                         </div>
     
                         <div class="form-group clearfix">
                             <label for="name" class='col-xs-2 control-label'> text </label>
                             <div class="col-xs-8">
-                                <ckeditor v-model="data.us_data.text"  :config="this.$editorConfig"></ckeditor>
+                                <ckeditor v-model="data.us_data.text"  :config="us_text_editor_config"></ckeditor>
                             </div>
                         </div>
     
                         <div class="form-group clearfix">
                             <label for="name" class='col-xs-2 control-label'> contact info </label>
                             <div class="col-xs-8">
-                                <ckeditor v-model="data.us_data.info"  :config="this.$editorConfig"></ckeditor>
+                                <ckeditor v-model="data.us_data.info"  :config="us_info_editor_config"></ckeditor>
                             </div>
                         </div>
                     </form>
@@ -195,21 +195,21 @@
                             <label for="name" class='col-xs-2 control-label'> Short description </label>
                             <div class="col-xs-8">
                                 <!-- <textarea type="text"  name="short_description" v-model="data.ru_data.short_description"  rows="15" class="form-cotrol md-textarea form-control"></textarea> -->
-                                <ckeditor v-model="data.ru_data.short_description"  :config="this.$editorConfig"></ckeditor>
+                                <ckeditor v-model="data.ru_data.short_description" :config="ru_short_description_text_editor"></ckeditor>
                             </div>
                         </div>
     
                         <div class="form-group clearfix">
                             <label for="name" class='col-xs-2 control-label'> text </label>
                             <div class="col-xs-8">
-                                <ckeditor v-model="data.ru_data.text"  :config="this.$editorConfig"></ckeditor>
+                                <ckeditor v-model="data.ru_data.text"  :config="ru_text_editor_config"></ckeditor>
                             </div>
                         </div>
     
                         <div class="form-group clearfix">
                             <label for="name" class='col-xs-2 control-label'> contact info </label>
                             <div class="col-xs-8">
-                                <ckeditor v-model="data.ru_data.info"  :config="this.$editorConfig"></ckeditor>
+                                <ckeditor v-model="data.ru_data.info"  :config="ru_info_editor_config"></ckeditor>
                             </div>
                         </div>
                     </form>
@@ -234,21 +234,21 @@
                             <label for="name" class='col-xs-2 control-label'> Short description </label>
                             <div class="col-xs-8">
                                 <!-- <textarea type="text"  name="short_description"  v-model="data.ka_data.short_description" rows="15" class="form-cotrol md-textarea form-control"></textarea> -->
-                                <ckeditor v-model="data.ka_data.short_description"  :config="this.$editorConfig"></ckeditor>
+                                <ckeditor v-model="data.ka_data.short_description" :config="ka_short_description_text_editor"></ckeditor>
                             </div>
                         </div>
     
                         <div class="form-group clearfix">
                             <label for="name" class='col-xs-2 control-label'> text </label>
                             <div class="col-xs-8">
-                                <ckeditor v-model="data.ka_data.text"  :config="this.$editorConfig"></ckeditor>
+                                <ckeditor v-model="data.ka_data.text"  :config="ka_text_editor_config"></ckeditor>
                             </div>
                         </div>
     
                         <div class="form-group clearfix">
                             <label for="name" class='col-xs-2 control-label'> contact info </label>
                             <div class="col-xs-8">
-                                <ckeditor v-model="data.ka_data.info"  :config="this.$editorConfig"></ckeditor>
+                                <ckeditor v-model="data.ka_data.info"  :config="ka_info_editor_config"></ckeditor>
                             </div>
                         </div>
                     </form>
@@ -260,113 +260,127 @@
 </template>
 
 <script>
-export default {
-    props: [
-        // 'back_url',
-    ],
-    data(){
-        return {
-            tab_num: 1,
+    import { editor_config } from '../../../../../mixins/editor/editor_config_mixin.js'
+    export default {
+        mixins: [
+            editor_config
+        ],
+        props: [
+            // 'back_url',
+        ],
+        data(){
+            return {
+                tab_num: 1,
 
-            images: [],
-            editorConfig: '',
+                images: [],
+                editorConfig: '',
 
-            data: {
-                global_data: {
-                    us_title_for_url_title: '',
+                us_short_description_text_editor: editor_config.get_small_editor_config(),
+                us_text_editor_config: editor_config.get_big_editor_config(),
+                us_info_editor_config: editor_config.get_big_editor_config(),
+                ru_short_description_text_editor: editor_config.get_small_editor_config(),
+                ru_text_editor_config: editor_config.get_big_editor_config(),
+                ru_info_editor_config: editor_config.get_big_editor_config(),
+                ka_short_description_text_editor: editor_config.get_small_editor_config(),
+                ka_text_editor_config: editor_config.get_big_editor_config(),
+                ka_info_editor_config: editor_config.get_big_editor_config(),
 
-                    start_data: '',
-                    end_data: '',
+                data: {
+                    global_data: {
+                        us_title_for_url_title: '',
 
-                    category: 'competition',
-                    map: '',
+                        start_data: '',
+                        end_data: '',
 
-                    published: 0,
+                        category: 'competition',
+                        map: '',
+
+                        published: 0,
+                    },
+
+                    us_data: {
+                        title: "",
+                        short_description: "",
+                        text: "",
+                        info: "",
+                    },
+
+                    ka_data: {
+                        title: "",
+                        short_description: "",
+                        text: "",
+                        info: "",
+                    },
+
+                    ru_data: {
+                        title: "",
+                        short_description: "",
+                        text: "",
+                        info: "",
+                    }
                 },
+            }
+        },
+        mounted() {
+            // this.get_event_category_data()
+        },
+        methods: {
+            onFileChange(event){
+                this.image = event.target.files[0];
+            },
+            add_event() {
+                this.data.global_data.us_title_for_url_title = this.data.us_data.title
+                let formData = new FormData();
 
-                us_data: {
-                    title: "",
-                    short_description: "",
-                    text: "",
-                    info: "",
-                },
+                formData.append('image', this.image)
 
-                ka_data: {
-                    title: "",
-                    short_description: "",
-                    text: "",
-                    info: "",
-                },
+                formData.append('data', JSON.stringify(this.data))
 
-                ru_data: {
-                    title: "",
-                    short_description: "",
-                    text: "",
-                    info: "",
+                axios
+                .post('../api/event/add_event', 
+                    formData
+                )
+                .then(response => {
+                    if(confirm('Do you want send notification about editing article?')){
+                        this.sand_notification()
+                    }
+                    else{
+                        this.go_back(true)
+                    }
+                })
+                .catch(error => {
+                    if (error.response.status == 422) {
+                        this.error = error.response.data.validation
+                    }
+                });
+            },
+
+            sand_notification() {
+                this.is_mail_sending_procesing = true
+
+                axios
+                .post('../../../api/user/notifications/send_article_notification',{
+                    notification_category: this.category
+                } )
+                .then(response => {
+                    this.go_back(true)
+                })
+                .catch(err => {
+                    console.log(err);
+                })
+                .finally(() => this.is_mail_sending_procesing = false);
+            },
+
+            go_back: function(back_action = false) {
+                if(back_action == false){
+                    if(confirm('Are you sure, you want go back?')){
+                        this.$router.go(-1)
+                    }
+                }
+                else{
+                    this.$router.go(-1)
                 }
             },
         }
-    },
-    mounted() {
-        // this.get_event_category_data()
-    },
-    methods: {
-        onFileChange(event){
-            this.image = event.target.files[0];
-        },
-        add_event() {
-            this.data.global_data.us_title_for_url_title = this.data.us_data.title
-            let formData = new FormData();
-
-            formData.append('image', this.image)
-
-            formData.append('data', JSON.stringify(this.data))
-
-            axios
-            .post('../api/event/add_event', 
-                formData
-            )
-            .then(response => {
-                if(confirm('Do you want send notification about editing article?')){
-                    this.sand_notification()
-                }
-                else{
-                    this.go_back(true)
-                }
-            })
-            .catch(error => {
-                if (error.response.status == 422) {
-                    this.error = error.response.data.validation
-                }
-            });
-        },
-
-        sand_notification() {
-            this.is_mail_sending_procesing = true
-
-            axios
-            .post('../../../api/user/notifications/send_article_notification',{
-                notification_category: this.category
-            } )
-            .then(response => {
-                this.go_back(true)
-            })
-            .catch(err => {
-                console.log(err);
-            })
-            .finally(() => this.is_mail_sending_procesing = false);
-        },
-
-        go_back: function(back_action = false) {
-            if(back_action == false){
-                if(confirm('Are you sure, you want go back?')){
-                    this.$router.go(-1)
-                }
-            }
-            else{
-                this.$router.go(-1)
-            }
-        },
     }
-}
 </script>

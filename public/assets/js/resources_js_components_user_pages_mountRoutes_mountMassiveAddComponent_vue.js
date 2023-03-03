@@ -11,6 +11,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
+/* harmony import */ var _mixins_editor_editor_config_mixin_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../../../mixins/editor/editor_config_mixin.js */ "./resources/js/mixins/editor/editor_config_mixin.js");
 //
 //
 //
@@ -240,7 +241,9 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
+  mixins: [_mixins_editor_editor_config_mixin_js__WEBPACK_IMPORTED_MODULE_0__.editor_config],
   components: {// StackModal,
   },
   props: [// 'back_url',
@@ -277,7 +280,22 @@ __webpack_require__.r(__webpack_exports__);
           demo_image: "",
           map: "",
           weather: ""
-        }
+        },
+        us_short_description_text_editor: _mixins_editor_editor_config_mixin_js__WEBPACK_IMPORTED_MODULE_0__.editor_config.get_small_editor_config(),
+        us_text_editor_config: _mixins_editor_editor_config_mixin_js__WEBPACK_IMPORTED_MODULE_0__.editor_config.get_big_editor_config(),
+        us_info_editor_config: _mixins_editor_editor_config_mixin_js__WEBPACK_IMPORTED_MODULE_0__.editor_config.get_big_editor_config(),
+        us_how_get_editor_config: _mixins_editor_editor_config_mixin_js__WEBPACK_IMPORTED_MODULE_0__.editor_config.get_big_editor_config(),
+        us_best_time_editor_config: _mixins_editor_editor_config_mixin_js__WEBPACK_IMPORTED_MODULE_0__.editor_config.get_big_editor_config(),
+        ka_short_description_text_editor: _mixins_editor_editor_config_mixin_js__WEBPACK_IMPORTED_MODULE_0__.editor_config.get_small_editor_config(),
+        ka_text_editor_config: _mixins_editor_editor_config_mixin_js__WEBPACK_IMPORTED_MODULE_0__.editor_config.get_big_editor_config(),
+        ka_info_editor_config: _mixins_editor_editor_config_mixin_js__WEBPACK_IMPORTED_MODULE_0__.editor_config.get_big_editor_config(),
+        ka_how_get_editor_config: _mixins_editor_editor_config_mixin_js__WEBPACK_IMPORTED_MODULE_0__.editor_config.get_big_editor_config(),
+        ka_best_time_editor_config: _mixins_editor_editor_config_mixin_js__WEBPACK_IMPORTED_MODULE_0__.editor_config.get_big_editor_config(),
+        ru_short_description_text_editor: _mixins_editor_editor_config_mixin_js__WEBPACK_IMPORTED_MODULE_0__.editor_config.get_small_editor_config(),
+        ru_text_editor_config: _mixins_editor_editor_config_mixin_js__WEBPACK_IMPORTED_MODULE_0__.editor_config.get_big_editor_config(),
+        ru_info_editor_config: _mixins_editor_editor_config_mixin_js__WEBPACK_IMPORTED_MODULE_0__.editor_config.get_big_editor_config(),
+        ru_how_get_editor_config: _mixins_editor_editor_config_mixin_js__WEBPACK_IMPORTED_MODULE_0__.editor_config.get_big_editor_config(),
+        ru_best_time_editor_config: _mixins_editor_editor_config_mixin_js__WEBPACK_IMPORTED_MODULE_0__.editor_config.get_big_editor_config()
       },
       tab_num: 1,
       error: [],
@@ -317,6 +335,43 @@ __webpack_require__.r(__webpack_exports__);
     }
   }
 });
+
+/***/ }),
+
+/***/ "./resources/js/mixins/editor/editor_config_mixin.js":
+/*!***********************************************************!*\
+  !*** ./resources/js/mixins/editor/editor_config_mixin.js ***!
+  \***********************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "editor_config": () => (/* binding */ editor_config)
+/* harmony export */ });
+var editor_config = {
+  //Editor configuration description -> https://ckeditor.com/latest/samples/toolbarconfigurator/#basic
+  get_big_editor_config: function get_big_editor_config() {
+    return {
+      // https://www.tutsmake.com/laravel-8-ckeditor-image-upload-tutorial-example/
+      filebrowserUploadUrl: "../../../../api/ckeditor/upload",
+      // https://ckeditor.com/docs/ckeditor4/latest/examples/mediaembed.html
+      extraPlugins: 'embed,autoembed',
+      // contentsCss: [
+      //     'http://cdn.ckeditor.com/4.20.2/full-all/contents.css',
+      //     'https://ckeditor.com/docs/ckeditor4/4.20.2/examples/assets/css/widgetstyles.css'
+      // ],
+      embed_provider: '//ckeditor.iframe.ly/api/oembed?url={url}&callback={callback}',
+      image2_alignClasses: ['image-align-left', 'image-align-center', 'image-align-right'],
+      image2_disableResizer: true,
+      removeButtons: 'PasteFromWord'
+    };
+  },
+  get_small_editor_config: function get_small_editor_config() {
+    return {
+      removeButtons: 'Link,Unlink,Anchor,Image,Table,Underline,Strike,Subscript,Superscript,RemoveFormat,NumberedList,BulletedList,Outdent,Indent,Blockquote,Scayt,HorizontalRule,SpecialChar,Styles,Format,Font,FontSize,About'
+    };
+  }
+};
 
 /***/ }),
 
@@ -807,7 +862,7 @@ var render = function () {
                   { staticClass: "col-xs-10" },
                   [
                     _c("ckeditor", {
-                      attrs: { config: this.$editorConfig },
+                      attrs: { config: _vm.tus_text_editor_config },
                       model: {
                         value: _vm.data.us_data.text,
                         callback: function ($$v) {
@@ -836,7 +891,7 @@ var render = function () {
                   { staticClass: "col-xs-10" },
                   [
                     _c("ckeditor", {
-                      attrs: { config: this.$editorConfig },
+                      attrs: { config: _vm.us_short_description_text_editor },
                       model: {
                         value: _vm.data.us_data.short_description,
                         callback: function ($$v) {
@@ -865,7 +920,7 @@ var render = function () {
                   { staticClass: "col-xs-10" },
                   [
                     _c("ckeditor", {
-                      attrs: { config: this.$editorConfig },
+                      attrs: { config: _vm.us_how_get_editor_config },
                       model: {
                         value: _vm.data.us_data.how_get,
                         callback: function ($$v) {
@@ -894,7 +949,7 @@ var render = function () {
                   { staticClass: "col-xs-10" },
                   [
                     _c("ckeditor", {
-                      attrs: { config: this.$editorConfig },
+                      attrs: { config: _vm.us_best_time_editor_config },
                       model: {
                         value: _vm.data.us_data.best_time,
                         callback: function ($$v) {
@@ -980,7 +1035,7 @@ var render = function () {
                   { staticClass: "col-xs-10" },
                   [
                     _c("ckeditor", {
-                      attrs: { config: this.$editorConfig },
+                      attrs: { config: _vm.ru_text_editor_config },
                       model: {
                         value: _vm.data.ru_data.text,
                         callback: function ($$v) {
@@ -1009,7 +1064,7 @@ var render = function () {
                   { staticClass: "col-xs-10" },
                   [
                     _c("ckeditor", {
-                      attrs: { config: this.$editorConfig },
+                      attrs: { config: _vm.ru_short_description_text_editor },
                       model: {
                         value: _vm.data.ru_data.short_description,
                         callback: function ($$v) {
@@ -1038,7 +1093,7 @@ var render = function () {
                   { staticClass: "col-xs-10" },
                   [
                     _c("ckeditor", {
-                      attrs: { config: this.$editorConfig },
+                      attrs: { config: _vm.ru_how_get_editor_config },
                       model: {
                         value: _vm.data.ru_data.how_get,
                         callback: function ($$v) {
@@ -1067,7 +1122,7 @@ var render = function () {
                   { staticClass: "col-xs-10" },
                   [
                     _c("ckeditor", {
-                      attrs: { config: this.$editorConfig },
+                      attrs: { config: _vm.ru_best_time_editor_config },
                       model: {
                         value: _vm.data.ru_data.best_time,
                         callback: function ($$v) {
@@ -1153,7 +1208,7 @@ var render = function () {
                   { staticClass: "col-xs-10" },
                   [
                     _c("ckeditor", {
-                      attrs: { config: this.$editorConfig },
+                      attrs: { config: _vm.ka_text_editor_config },
                       model: {
                         value: _vm.data.ka_data.text,
                         callback: function ($$v) {
@@ -1182,7 +1237,7 @@ var render = function () {
                   { staticClass: "col-xs-10" },
                   [
                     _c("ckeditor", {
-                      attrs: { config: this.$editorConfig },
+                      attrs: { config: _vm.ka_short_description_text_editor },
                       model: {
                         value: _vm.data.ka_data.short_description,
                         callback: function ($$v) {
@@ -1211,7 +1266,7 @@ var render = function () {
                   { staticClass: "col-xs-10" },
                   [
                     _c("ckeditor", {
-                      attrs: { config: this.$editorConfig },
+                      attrs: { config: _vm.ka_how_get_editor_config },
                       model: {
                         value: _vm.data.ka_data.how_get,
                         callback: function ($$v) {
@@ -1240,7 +1295,7 @@ var render = function () {
                   { staticClass: "col-xs-10" },
                   [
                     _c("ckeditor", {
-                      attrs: { config: this.$editorConfig },
+                      attrs: { config: _vm.ka_best_time_editor_config },
                       model: {
                         value: _vm.data.ka_data.best_time,
                         callback: function ($$v) {

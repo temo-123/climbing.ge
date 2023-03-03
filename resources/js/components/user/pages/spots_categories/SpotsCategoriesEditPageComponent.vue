@@ -76,7 +76,7 @@
                     <div class="form-group clearfix row">
                         <label for="region" class='col-md-2 control-label '> English text </label>
                         
-                        <ckeditor v-model="data.us_text" :config="this.$editorConfig"></ckeditor>
+                        <ckeditor v-model="data.us_text" :config="us_text_editor_config"></ckeditor>
                     </div>
                 </form>
             </div>
@@ -98,7 +98,7 @@
                     <div class="form-group clearfix row">
                         <label for="region" class='col-md-2 control-label '> Georgian text </label>
                         
-                        <ckeditor v-model="data.ka_text" :config="this.$editorConfig"></ckeditor>
+                        <ckeditor v-model="data.ka_text" :config="ka_text_editor_config"></ckeditor>
                     </div>
                 </form>
             </div>
@@ -120,7 +120,7 @@
                     <div class="form-group clearfix row">
                         <label for="region" class='col-md-2 control-label '> Russion text </label>
                         
-                        <ckeditor v-model="data.ru_text" :config="this.$editorConfig"></ckeditor>
+                        <ckeditor v-model="data.ru_text" :config="ru_text_editor_config"></ckeditor>
                     </div>
                 </form>
             </div>
@@ -130,8 +130,11 @@
 </template>
 
 <script>
-
+    import { editor_config } from '../../../../mixins/editor/editor_config_mixin.js'
     export default {
+        mixins: [
+            editor_config
+        ],
         components: {
             // StackModal,
         },
@@ -152,6 +155,10 @@
 
                     map: '',
                 },
+
+                us_text_editor_config: editor_config.get_big_editor_config(),
+                ru_text_editor_config: editor_config.get_big_editor_config(),
+                ka_text_editor_config: editor_config.get_big_editor_config(),
 
                 tab_num: 1,
 

@@ -125,7 +125,7 @@
           this.error = []
           this.auth_error = ''
           axios
-            .post('login', {
+            .post(process.env.MIX_APP_SSH + process.env.MIX_USER_PAGE_URL + '/login', {
               email: this.email, 
               password: this.password,
               remember: this.remember

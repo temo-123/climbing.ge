@@ -380,7 +380,7 @@
             },
             get_comments_complaints(){
                 axios
-                .get('./api/get_comments_complaints')
+                .get('../api/get_comments_complaints')
                 .then(response => {
                     this.complaints = response.data
                 })

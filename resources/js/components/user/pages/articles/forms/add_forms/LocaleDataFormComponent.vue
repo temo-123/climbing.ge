@@ -27,7 +27,7 @@
                     <div class="form-group clearfix row">
                         <label for="name" class='col-md-2 control-label'> Short description </label>
                         <div class="col-md-10">
-                            <ckeditor v-model="data.short_description" :config="this.$shortDescriptionEditorConfig"></ckeditor>
+                            <ckeditor v-model="data.short_description" :config="short_description_text_editor"></ckeditor>
                             <div class="alert alert-danger" role="alert" v-if="errors.short_description">
                                 {{ errors.short_description[0] }}
                             </div>
@@ -44,7 +44,7 @@
 
                             <!-- <ckeditor v-model="data.text" /> -->
 
-                            <ckeditor id="text" :editor="'text'" v-model="data.text" :config="textEditorConfig" ></ckeditor>
+                            <ckeditor id="text" :editor="'text'" v-model="data.text" :config="text_editor_config" ></ckeditor>
                         </div>
                     </div>
 
@@ -82,7 +82,7 @@
                             </div>
                         
                             <div class="col-md-12" v-if="global_blocks.routes_info == 'befor' || global_blocks.routes_info == 'after' || global_blocks.routes_info == 'new_info'">
-                                <ckeditor id="route" v-model="data.route" :editor="'route'" :config="routeEditorConfig"></ckeditor>
+                                <ckeditor id="route" v-model="data.route" :editor="'route'" :config="route_description_editor_config"></ckeditor>
                             </div>
 
                             <div class="col-md-12" v-if="global_blocks.routes_info == 'after' || global_blocks.routes_info == 'instead'">
@@ -250,15 +250,20 @@
 </template>
 
 <script>
-    import { SlickList, SlickItem } from 'vue-slicksort';
+    // import { SlickList, SlickItem } from 'vue-slicksort';
     import StackModal from '@innologica/vue-stackable-modal'  //https://innologica.github.io/vue-stackable-modal/#sample-css
+
+    import { editor_config } from '../../../../../../mixins/editor/editor_config_mixin.js'
 
     export default {
         components: {
             StackModal,
-            SlickItem,
-            SlickList,
+            // SlickItem,
+            // SlickList,
         },
+        mixins: [
+            editor_config
+        ],
         props: [
             // 'info_block_prop',
             // 'routes_info_prop',
@@ -279,22 +284,14 @@
 
                 errors: [],
                 error: [],
-
-                // editorConfig: {
-                //     // toolbar: [ [ 'Bold' ] ]
-                //     filebrowserUploadUrl: "{{route('upload', ['_token' => csrf_token() ])}}",
-                //     filebrowserUploadMethod: 'form',
-
-                //     removeButtons: 'Link,Unlink,Anchor'
-                // },
-
-                // CKEDITOR.replace( 'description', {
-                //     filebrowserUploadUrl: "{{route('upload', ['_token' => csrf_token() ])}}",
-                //     filebrowserUploadMethod: 'form'
-                // });
-
-                textEditorConfig: this.$editorConfig,
-                routeEditorConfig: this.$editorConfig,
+                
+                short_description_text_editor: editor_config.get_small_editor_config(),
+                text_editor_config: editor_config.get_big_editor_config(),
+                route_description_editor_config: editor_config.get_big_editor_config(), 
+                how_get_editor_config: editor_config.get_big_editor_config(),
+                best_time_editor_config: editor_config.get_big_editor_config(),
+                what_need_editor_config: editor_config.get_big_editor_config(),
+                price_text_editor_config: editor_config.get_big_editor_config(),
 
                 data: {
                     title: '',

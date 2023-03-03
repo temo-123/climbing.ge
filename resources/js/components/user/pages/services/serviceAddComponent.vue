@@ -117,14 +117,14 @@
                         <div class="form-group clearfix">
                             <label for="name" class='col-xs-2 control-label'> Short description </label>
                             <div class="col-xs-8">
-                                <ckeditor v-model="data.us_data.short_description" :config="this.$editorConfig"></ckeditor>
+                                <ckeditor v-model="data.us_data.short_description"  :config="us_short_description_text_editor"></ckeditor>
                             </div>
                         </div>
-    
+
                         <div class="form-group clearfix">
                             <label for="name" class='col-xs-2 control-label'> text </label>
                             <div class="col-xs-8">
-                                <ckeditor v-model="data.us_data.text" :config="this.$editorConfig"></ckeditor>
+                                <ckeditor v-model="data.us_data.text"  :config="us_text_editor_config"></ckeditor>
                             </div>
                         </div>
                     </form>
@@ -149,14 +149,14 @@
                             <label for="name" class='col-xs-2 control-label'> Short description </label>
                             <div class="col-xs-8">
                                 <!-- <textarea type="text"  name="short_description" v-model="data.ru_data.short_description"  rows="15" class="form-cotrol md-textarea form-control"></textarea> -->
-                                <ckeditor v-model="data.ru_data.short_description" :config="this.$editorConfig"></ckeditor>
+                                <ckeditor v-model="data.ru_data.short_description" :config="ru_short_description_text_editor"></ckeditor>
                             </div>
                         </div>
-    
+
                         <div class="form-group clearfix">
                             <label for="name" class='col-xs-2 control-label'> text </label>
                             <div class="col-xs-8">
-                                <ckeditor v-model="data.ru_data.text" :config="this.$editorConfig"></ckeditor>
+                                <ckeditor v-model="data.ru_data.text"  :config="ru_text_editor_config"></ckeditor>
                             </div>
                         </div>
                     </form>
@@ -181,14 +181,14 @@
                             <label for="name" class='col-xs-2 control-label'> Short description </label>
                             <div class="col-xs-8">
                                 <!-- <textarea type="text"  name="short_description"  v-model="data.ka_data.short_description" rows="15" class="form-cotrol md-textarea form-control"></textarea> -->
-                                <ckeditor v-model="data.ka_data.short_description" :config="this.$editorConfig"></ckeditor>
+                                <ckeditor v-model="data.ka_data.short_description" :config="ka_short_description_text_editor"></ckeditor>
                             </div>
                         </div>
-    
+
                         <div class="form-group clearfix">
                             <label for="name" class='col-xs-2 control-label'> text </label>
                             <div class="col-xs-8">
-                                <ckeditor v-model="data.ka_data.text" :config="this.$editorConfig"></ckeditor>
+                                <ckeditor v-model="data.ka_data.text"  :config="ka_text_editor_config"></ckeditor>
                             </div>
                         </div>
                     </form>
@@ -200,135 +200,151 @@
 </template>
 
 <script>
-export default {
-    props: [
-        'back_url',
-    ],
-    data(){
-        return {
-            tab_num: 1,
+    import { editor_config } from '../../../../mixins/editor/editor_config_mixin.js'
+    export default {
+        mixins: [
+            editor_config
+        ],
+        props: [
+            'back_url',
+        ],
+        data(){
+            return {
+                tab_num: 1,
 
-            service_images: [],
-            editorConfig: '',
+                service_images: [],
+                editorConfig: '',
 
-            data: {
-                global_data: {
-                    us_title_for_url_title: '',
+                us_short_description_text_editor: editor_config.get_small_editor_config(),
+                us_text_editor_config: editor_config.get_big_editor_config(),
+                us_info_editor_config: editor_config.get_big_editor_config(),
 
-                    published: 0,
+                ru_short_description_text_editor: editor_config.get_small_editor_config(),
+                ru_text_editor_config: editor_config.get_big_editor_config(),
+                ru_info_editor_config: editor_config.get_big_editor_config(),
+
+                ka_short_description_text_editor: editor_config.get_small_editor_config(),
+                ka_text_editor_config: editor_config.get_big_editor_config(),
+                ka_info_editor_config: editor_config.get_big_editor_config(),
+
+                data: {
+                    global_data: {
+                        us_title_for_url_title: '',
+
+                        published: 0,
+                    },
+
+                    us_data: {
+                        title: "",
+                        short_description: "",
+                        text: "",
+                    },
+
+                    ka_data: {
+                        title: "",
+                        short_description: "",
+                        text: "",
+                    },
+
+                    ru_data: {
+                        title: "",
+                        short_description: "",
+                        text: "",
+                    }
                 },
 
-                us_data: {
-                    title: "",
-                    short_description: "",
-                    text: "",
-                },
+                myModal: false,
 
-                ka_data: {
-                    title: "",
-                    short_description: "",
-                    text: "",
-                },
+                
+            }
+        },
+        mounted() {
+            // this.get_service_category_data()
+        },
+        methods: {
+            onFileChange(event, item_id){
+                let image = event.target.files[0]
+                let id = item_id - 1 
+                this.service_images[id]['image'] = image
+            },
+            add_service_new_image_value(){
+                var new_item_id = this.service_images.length+1
+                this.service_images.push(
+                    {
+                        id: new_item_id,
+                        image: '',
+                    }
+                );
+            },
+            del_service_image(id){
+                this.removeObjectWithId(this.service_images, id);
+            },
+            removeObjectWithId(arr, id) {
+                const objWithIdIndex = arr.findIndex((obj) => obj.id === id);
+                arr.splice(objWithIdIndex, 1);
 
-                ru_data: {
-                    title: "",
-                    short_description: "",
-                    text: "",
-                }
+                return arr;
             },
 
-            myModal: false,
+            // showModal(){
+            //     this.myModal = !this.myModal
+            // },
 
-            
-        }
-    },
-    mounted() {
-        // this.get_service_category_data()
-    },
-    methods: {
-        onFileChange(event, item_id){
-            let image = event.target.files[0]
-            let id = item_id - 1 
-            this.service_images[id]['image'] = image
-        },
-        add_service_new_image_value(){
-            var new_item_id = this.service_images.length+1
-            this.service_images.push(
-                {
-                    id: new_item_id,
-                    image: '',
-                }
-            );
-        },
-        del_service_image(id){
-            this.removeObjectWithId(this.service_images, id);
-        },
-        removeObjectWithId(arr, id) {
-            const objWithIdIndex = arr.findIndex((obj) => obj.id === id);
-            arr.splice(objWithIdIndex, 1);
+            add_service() {
+                this.data.global_data.us_title_for_url_title = this.data.us_data.title
+                let formData = new FormData();
 
-            return arr;
-        },
+                var loop_num = 0
+                this.service_images.forEach(image => {
+                    formData.append('service_images['+loop_num+']', image.image)
+                    loop_num++
+                });
+                loop_num = 0
 
-        // showModal(){
-        //     this.myModal = !this.myModal
-        // },
+                formData.append('data', JSON.stringify(this.data))
 
-        add_service() {
-            this.data.global_data.us_title_for_url_title = this.data.us_data.title
-            let formData = new FormData();
+                axios
+                .post('../api/service/add_service', 
+                    formData
+                )
+                .then(response => {
+                    if(confirm('Do you want send notification about editing sector?')){
+                        this.sand_notification()
+                    }
+                    else{
+                        this.go_back(true)
+                    }
+                })
+                .catch(
+                    error => console.log(error)
+                );
+            },
 
-            var loop_num = 0
-            this.service_images.forEach(image => {
-                formData.append('service_images['+loop_num+']', image.image)
-                loop_num++
-            });
-            loop_num = 0
+            sand_notification() {
+                this.is_mail_sending_procesing = true
 
-            formData.append('data', JSON.stringify(this.data))
+                axios
+                .post('../../../api/user/notifications/send_service_adding_notification')
+                .then(response => {
+                    this.go_back(true)
+                })
+                .catch(err => {
+                    console.log(err);
+                })
+                .finally(() => this.is_mail_sending_procesing = false);
+            },
 
-            axios
-            .post('../api/service/add_service', 
-                formData
-            )
-            .then(response => {
-                if(confirm('Do you want send notification about editing sector?')){
-                    this.sand_notification()
+
+            go_back: function(back_action = false) {
+                if(back_action == false){
+                    if(confirm('Are you sure, you want go back?')){
+                        this.$router.go(-1)
+                    }
                 }
                 else{
-                    this.go_back(true)
-                }
-            })
-            .catch(
-                error => console.log(error)
-            );
-        },
-
-        sand_notification() {
-            this.is_mail_sending_procesing = true
-
-            axios
-            .post('../../../api/user/notifications/send_service_adding_notification')
-            .then(response => {
-                this.go_back(true)
-            })
-            .catch(err => {
-                console.log(err);
-            })
-            .finally(() => this.is_mail_sending_procesing = false);
-        },
-
-
-        go_back: function(back_action = false) {
-            if(back_action == false){
-                if(confirm('Are you sure, you want go back?')){
                     this.$router.go(-1)
                 }
-            }
-            else{
-                this.$router.go(-1)
-            }
-        },
+            },
+        }
     }
-}
 </script>

@@ -68,7 +68,7 @@
                         <label for="name" class='col-xs-2 control-label'> English text </label>
                         <div class="col-xs-8">
                                 <!-- <textarea type="text"  name="text" rows="15" class="form-cotrol md-textarea form-control"></textarea> -->
-                            <ckeditor v-model="text" :config="this.$editorConfig"></ckeditor>
+                            <ckeditor v-model="text" :config="tus_text_editor_config"></ckeditor>
                             <div class="alert alert-danger" role="alert" v-if="errors.text">
                                 {{ errors.text[0] }}
                             </div>
@@ -78,7 +78,7 @@
                         <label for="name" class='col-xs-2 control-label'> English description </label>
                         <div class="col-xs-8">
                             <!-- <textarea type="text"  name="description" rows="15" class="form-cotrol md-textarea form-control"></textarea> -->
-                            <ckeditor v-model="short_description" :config="this.$editorConfig"></ckeditor>
+                            <ckeditor v-model="short_description" :config="us_short_description_text_editor"></ckeditor>
                             <div class="alert alert-danger" role="alert" v-if="errors.short_description">
                                 {{ errors.short_description[0] }}
                             </div>
@@ -88,7 +88,7 @@
                         <label for="name" class='col-xs-2 control-label'> English how get hear </label>
                         <div class="col-xs-8">
                             <!-- <textarea type="text"  name="how_get" rows="15" class="form-cotrol md-textarea form-control"></textarea> -->
-                            <ckeditor v-model="how_get" :config="this.$editorConfig"></ckeditor>
+                            <ckeditor v-model="how_get" :config="us_how_get_editor_config"></ckeditor>
                             <div class="alert alert-danger" role="alert" v-if="errors.how_get">
                                 {{ errors.how_get[0] }}
                             </div>
@@ -98,7 +98,7 @@
                         <label for="name" class='col-xs-2 control-label'> English best time </label>
                         <div class="col-xs-8">
                             <!-- <textarea type="text" name="best_time" rows="15" class="form-cotrol md-textarea form-control"></textarea> -->
-                            <ckeditor v-model="best_time" :config="this.$editorConfig"></ckeditor>
+                            <ckeditor v-model="best_time" :config="us_best_time_editor_config"></ckeditor>
                             <div class="alert alert-danger" role="alert" v-if="errors.best_time">
                                 {{ errors.best_time[0] }}
                             </div>
@@ -130,7 +130,7 @@
                         <label for="name" class='col-xs-2 control-label'> Rusian text </label>
                         <div class="col-xs-8">
                             <!-- <textarea type="text"  name="text_ru" rows="15" class="form-cotrol md-textarea form-control"></textarea> -->
-                            <ckeditor v-model="text_ru" :config="this.$editorConfig"></ckeditor>
+                            <ckeditor v-model="text_ru" :config="ru_text_editor_config"></ckeditor>
                             <div class="alert alert-danger" role="alert" v-if="errors.text_ru">
                                 {{ errors.text_ru[0] }}
                             </div>
@@ -140,7 +140,7 @@
                         <label for="name" class='col-xs-2 control-label'> Rusian description </label>
                         <div class="col-xs-8">
                             <!-- <textarea type="text"  name="description_ru" rows="15" class="form-cotrol md-textarea form-control"></textarea> -->
-                            <ckeditor v-model="short_description_ru" :config="this.$editorConfig"></ckeditor>
+                            <ckeditor v-model="short_description_ru" :config="ru_short_description_text_editor">></ckeditor>
                             <div class="alert alert-danger" role="alert" v-if="errors.short_description_ru">
                                 {{ errors.short_description_ru[0] }}
                             </div>
@@ -150,7 +150,7 @@
                         <label for="name" class='col-xs-2 control-label'> Rusian how get hear </label>
                         <div class="col-xs-8">
                             <!-- <textarea type="text"  name="how_get_ru" rows="15" class="form-cotrol md-textarea form-control"></textarea> -->
-                            <ckeditor v-model="how_get_ru" :config="this.$editorConfig"></ckeditor>
+                            <ckeditor v-model="how_get_ru" :config="ru_how_get_editor_config"></ckeditor>
                             <div class="alert alert-danger" role="alert" v-if="errors.how_get_ru">
                                 {{ errors.how_get_ru[0] }}
                             </div>
@@ -160,7 +160,7 @@
                         <label for="name" class='col-xs-2 control-label'> Rusian best time </label>
                         <div class="col-xs-8">
                             <!-- <textarea type="text"  name="best_time_ru" rows="15" class="form-cotrol md-textarea form-control"></textarea> -->
-                            <ckeditor v-model="best_time_ru" :config="this.$editorConfig"></ckeditor>
+                            <ckeditor v-model="best_time_ru" :config="ru_best_time_editor_config"></ckeditor>
                             <div class="alert alert-danger" role="alert" v-if="errors.best_time_ru">
                                 {{ errors.best_time_ru[0] }}
                             </div>
@@ -190,7 +190,7 @@
                         <label for="name" class='col-xs-2 control-label'> Georgian text </label>
                         <div class="col-xs-8">
                             <!-- <textarea type="text"  name="text_ka" rows="15" class="form-cotrol md-textarea form-control"></textarea> -->
-                            <ckeditor v-model="text_ka" :config="this.$editorConfig"></ckeditor>
+                            <ckeditor v-model="text_ka" :config="ka_text_editor_config"></ckeditor>
                             <div class="alert alert-danger" role="alert" v-if="errors.text_ka">
                                 {{ errors.text_ka[0] }}
                             </div>
@@ -200,7 +200,7 @@
                         <label for="name" class='col-xs-2 control-label'> Georgian description </label>
                         <div class="col-xs-8">
                             <!-- <textarea type="text"  name="description_ka" rows="15" class="form-cotrol md-textarea form-control"></textarea> -->
-                            <ckeditor v-model="short_description_ka" :config="this.$editorConfig"></ckeditor>
+                            <ckeditor v-model="short_description_ka" :config="ka_short_description_text_editor"></ckeditor>
                             <div class="alert alert-danger" role="alert" v-if="errors.short_description_ka">
                                 {{ errors.short_description_ka[0] }}
                             </div>
@@ -210,7 +210,7 @@
                         <label for="name" class='col-xs-2 control-label'> Georgian how get hear </label>
                         <div class="col-xs-8">
                             <!-- <textarea type="text"  name="how_get_ka" rows="15" class="form-cotrol md-textarea form-control"></textarea> -->
-                            <ckeditor v-model="how_get_ka" :config="this.$editorConfig"></ckeditor>
+                            <ckeditor v-model="how_get_ka" :config="ka_how_get_editor_config"></ckeditor>
                             <div class="alert alert-danger" role="alert" v-if="errors.how_get_ka">
                                 {{ errors.how_get_ka[0] }}
                             </div>
@@ -220,7 +220,7 @@
                         <label for="name" class='col-xs-2 control-label'> Georgian best time </label>
                         <div class="col-xs-8">
                             <!-- <textarea type="text"  name="best_time_ka" rows="15" class="form-cotrol md-textarea form-control"></textarea> -->
-                            <ckeditor v-model="best_time_ka" :config="this.$editorConfig"></ckeditor>
+                            <ckeditor v-model="best_time_ka" :config="ka_best_time_editor_config"></ckeditor>
                             <div class="alert alert-danger" role="alert" v-if="errors.best_time_ka">
                                 {{ errors.best_time_ka[0] }}
                             </div>
@@ -236,7 +236,11 @@
 </template>
 
 <script>
+    import { editor_config } from '../../../../mixins/editor/editor_config_mixin.js'
     export default {
+        mixins: [
+            editor_config
+        ],
         props: [
             'editing_mount_id',
             'back_url'
@@ -246,6 +250,21 @@
                 map: "",
                 weather: "",
                 published: "",
+
+                us_short_description_text_editor: editor_config.get_small_editor_config(),
+                us_text_editor_config: editor_config.get_big_editor_config(),
+                us_how_get_editor_config: editor_config.get_big_editor_config(),
+                us_best_time_editor_config: editor_config.get_big_editor_config(),
+
+                ka_short_description_text_editor: editor_config.get_small_editor_config(),
+                ka_text_editor_config: editor_config.get_big_editor_config(),
+                ka_how_get_editor_config: editor_config.get_big_editor_config(),
+                ka_best_time_editor_config: editor_config.get_big_editor_config(),
+
+                ru_short_description_text_editor: editor_config.get_small_editor_config(),
+                ru_text_editor_config: editor_config.get_big_editor_config(),
+                ru_how_get_editor_config: editor_config.get_big_editor_config(),
+                ru_best_time_editor_config: editor_config.get_big_editor_config(),
 
                 errors: [],
 

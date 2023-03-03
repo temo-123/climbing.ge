@@ -442,7 +442,7 @@ __webpack_require__.r(__webpack_exports__);
     get_comments_complaints: function get_comments_complaints() {
       var _this7 = this;
 
-      axios.get('./api/get_comments_complaints').then(function (response) {
+      axios.get('../api/get_comments_complaints').then(function (response) {
         _this7.complaints = response.data;
       });
     },

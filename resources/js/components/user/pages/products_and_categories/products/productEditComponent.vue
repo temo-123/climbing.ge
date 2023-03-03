@@ -134,14 +134,14 @@
                         <div class="form-group clearfix">
                             <label for="name" class='col-xs-2 control-label'> Short description </label>
                             <div class="col-xs-8">
-                                <ckeditor v-model="data.us_data.short_description" :config="this.$editorConfig"></ckeditor>
+                                <ckeditor v-model="data.us_data.short_description"  :config="us_short_description_text_editor"></ckeditor>
                             </div>
                         </div>
-    
+
                         <div class="form-group clearfix">
                             <label for="name" class='col-xs-2 control-label'> text </label>
                             <div class="col-xs-8">
-                                <ckeditor v-model="data.us_data.text" :config="this.$editorConfig"></ckeditor>
+                                <ckeditor v-model="data.us_data.text"  :config="us_text_editor_config"></ckeditor>
                             </div>
                         </div>
                     </form>
@@ -166,14 +166,14 @@
                             <label for="name" class='col-xs-2 control-label'> Short description </label>
                             <div class="col-xs-8">
                                 <!-- <textarea type="text"  name="short_description" v-model="data.ru_data.short_description"  rows="15" class="form-cotrol md-textarea form-control"></textarea> -->
-                                <ckeditor v-model="data.ru_data.short_description" :config="this.$editorConfig"></ckeditor>
+                                <ckeditor v-model="data.ru_data.short_description" :config="ru_short_description_text_editor"></ckeditor>
                             </div>
                         </div>
-    
+
                         <div class="form-group clearfix">
                             <label for="name" class='col-xs-2 control-label'> text </label>
                             <div class="col-xs-8">
-                                <ckeditor v-model="data.ru_data.text" :config="this.$editorConfig"></ckeditor>
+                                <ckeditor v-model="data.ru_data.text"  :config="ru_text_editor_config"></ckeditor>
                             </div>
                         </div>
                     </form>
@@ -198,14 +198,14 @@
                             <label for="name" class='col-xs-2 control-label'> Short description </label>
                             <div class="col-xs-8">
                                 <!-- <textarea type="text"  name="short_description"  v-model="data.ka_data.short_description" rows="15" class="form-cotrol md-textarea form-control"></textarea> -->
-                                <ckeditor v-model="data.ka_data.short_description" :config="this.$editorConfig"></ckeditor>
+                                <ckeditor v-model="data.ka_data.short_description" :config="ka_short_description_text_editor"></ckeditor>
                             </div>
                         </div>
-    
+
                         <div class="form-group clearfix">
                             <label for="name" class='col-xs-2 control-label'> text </label>
                             <div class="col-xs-8">
-                                <ckeditor v-model="data.ka_data.text" :config="this.$editorConfig"></ckeditor>
+                                <ckeditor v-model="data.ka_data.text"  :config="ka_text_editor_config"></ckeditor>
                             </div>
                         </div>
                     </form>
@@ -217,146 +217,163 @@
 </template>
 
 <script>
-export default {
-    props: [
-        'back_url',
-    ],
-    data(){
-        return {
-            tab_num: 1,
+    import { editor_config } from '../../../../../mixins/editor/editor_config_mixin.js'
+    export default {
+        mixins: [
+            editor_config
+        ],
+        props: [
+            'back_url',
+        ],
+        data(){
+            return {
+                tab_num: 1,
 
-            categories: [],
-            editorConfig: '',
-            change_url_title: null,
-            // back_action: false,
-            data: {
-                global_data: {
-                    published: 0,
-                    category_id: "Select category",
-                    material: "",
-                    discount: "",
-                    sale_type: "Custom production",
-                    mead_in_georgia: "",
-                },
+                categories: [],
+                editorConfig: '',
+                change_url_title: null,
+                // back_action: false,
 
-                us_data: {
-                    title: "",
-                    short_description: "",
-                    text: "",
-                },
+                us_short_description_text_editor: editor_config.get_small_editor_config(),
+                us_text_editor_config: editor_config.get_big_editor_config(),
+                us_info_editor_config: editor_config.get_big_editor_config(),
 
-                ka_data: {
-                    title: "",
-                    short_description: "",
-                    text: "",
-                },
+                ru_short_description_text_editor: editor_config.get_small_editor_config(),
+                ru_text_editor_config: editor_config.get_big_editor_config(),
+                ru_info_editor_config: editor_config.get_big_editor_config(),
+                
+                ka_short_description_text_editor: editor_config.get_small_editor_config(),
+                ka_text_editor_config: editor_config.get_big_editor_config(),
+                ka_info_editor_config: editor_config.get_big_editor_config(),
 
-                ru_data: {
-                    title: "",
-                    short_description: "",
-                    text: "",
-                }
-            },
-
-            myModal: false,
-        }
-    },
-    mounted() {
-        this.get_product_category_data()
-        this.get_product_editing_data()
-    },
-    methods: {
-        showModal(){
-            this.myModal = !this.myModal
-        },
-        change_url_title_in_global_product(){
-            if(!this.change_url_title){
-                if(confirm('Are you sure, you want change URL title? It vhile bad for SEO potimization')){
-                    this.change_url_title = true
-                }
-            }
-            else{
-                this.change_url_title = false 
-            }
-
-        },
-
-        get_product_editing_data(){
-            axios
-            .get('../../api/product/'+this.$route.params.id)
-            .then((response)=> { 
-                this.data = {
+                data: {
                     global_data: {
-                        published: response.data.global_product.published,
-                        category_id: response.data.global_product.category_id,
-                        material: response.data.global_product.material,
-                        discount: response.data.global_product.discount,
-                        sale_type: response.data.global_product.sale_type,
-                        mead_in_georgia: response.data.global_product.mead_in_georgia,
+                        published: 0,
+                        category_id: "Select category",
+                        material: "",
+                        discount: "",
+                        sale_type: "Custom production",
+                        mead_in_georgia: "",
                     },
 
                     us_data: {
-                        title: response.data.us_product.title,
-                        short_description: response.data.us_product.short_description,
-                        text: response.data.us_product.text,
+                        title: "",
+                        short_description: "",
+                        text: "",
                     },
 
                     ka_data: {
-                        title: response.data.ka_product.title,
-                        short_description: response.data.ka_product.short_description,
-                        text: response.data.ka_product.text,
+                        title: "",
+                        short_description: "",
+                        text: "",
                     },
 
                     ru_data: {
-                        title: response.data.ru_product.title,
-                        short_description: response.data.ru_product.short_description,
-                        text: response.data.ru_product.text,
+                        title: "",
+                        short_description: "",
+                        text: "",
+                    }
+                },
+
+                myModal: false,
+            }
+        },
+        mounted() {
+            this.get_product_category_data()
+            this.get_product_editing_data()
+        },
+        methods: {
+            showModal(){
+                this.myModal = !this.myModal
+            },
+            change_url_title_in_global_product(){
+                if(!this.change_url_title){
+                    if(confirm('Are you sure, you want change URL title? It vhile bad for SEO potimization')){
+                        this.change_url_title = true
                     }
                 }
-            })
-            .catch(error =>{
-                // 
-            })
-        },
-
-        edit_product() {
-            axios
-            .post('../../api/edit_product_data/'+this.$route.params.id, {        
-                data: this.data,
-                change_url_title: this.change_url_title,
-            })
-            .then((response)=> { 
-                this.go_back(true)
-            })
-            .catch(error =>{
-                if (error.response.status == 422) {
-                    this.us_article_error = error.response.data.errors
+                else{
+                    this.change_url_title = false 
                 }
-            })
-        },
 
-        get_product_category_data: function(){
-            axios
-            .get("../../api/product_category/")
-            .then(response => {
-                this.categories = response.data
-            })
-            .catch(
-                error => console.log(error)
-            );
-        },
+            },
+
+            get_product_editing_data(){
+                axios
+                .get('../../api/product/'+this.$route.params.id)
+                .then((response)=> { 
+                    this.data = {
+                        global_data: {
+                            published: response.data.global_product.published,
+                            category_id: response.data.global_product.category_id,
+                            material: response.data.global_product.material,
+                            discount: response.data.global_product.discount,
+                            sale_type: response.data.global_product.sale_type,
+                            mead_in_georgia: response.data.global_product.mead_in_georgia,
+                        },
+
+                        us_data: {
+                            title: response.data.us_product.title,
+                            short_description: response.data.us_product.short_description,
+                            text: response.data.us_product.text,
+                        },
+
+                        ka_data: {
+                            title: response.data.ka_product.title,
+                            short_description: response.data.ka_product.short_description,
+                            text: response.data.ka_product.text,
+                        },
+
+                        ru_data: {
+                            title: response.data.ru_product.title,
+                            short_description: response.data.ru_product.short_description,
+                            text: response.data.ru_product.text,
+                        }
+                    }
+                })
+                .catch(error =>{
+                    // 
+                })
+            },
+
+            edit_product() {
+                axios
+                .post('../../api/edit_product_data/'+this.$route.params.id, {        
+                    data: this.data,
+                    change_url_title: this.change_url_title,
+                })
+                .then((response)=> { 
+                    this.go_back(true)
+                })
+                .catch(error =>{
+                    if (error.response.status == 422) {
+                        this.us_article_error = error.response.data.errors
+                    }
+                })
+            },
+
+            get_product_category_data: function(){
+                axios
+                .get("../../api/product_category/")
+                .then(response => {
+                    this.categories = response.data
+                })
+                .catch(
+                    error => console.log(error)
+                );
+            },
 
 
-        go_back: function(back_action = false) {
-            if(back_action == false){
-                if(confirm('Are you sure, you want go back?')){
+            go_back: function(back_action = false) {
+                if(back_action == false){
+                    if(confirm('Are you sure, you want go back?')){
+                        this.$router.go(-1)
+                    }
+                }
+                else{
                     this.$router.go(-1)
                 }
-            }
-            else{
-                this.$router.go(-1)
-            }
-        },
+            },
+        }
     }
-}
 </script>

@@ -30,7 +30,7 @@
                     <div class="form-group clearfix row">
                         <label for="name" class='col-md-2 control-label'> Short description </label>
                         <div class="col-md-10">
-                            <ckeditor v-model="data.short_description"></ckeditor>
+                            <ckeditor v-model="data.short_description" :config="short_description_text_editor"></ckeditor>
                             <!-- <div class="alert alert-danger" role="alert" v-if="errors.short_description">
                                 {{ errors.short_description[0] }}
                             </div> -->
@@ -47,7 +47,7 @@
 
                             <ckeditor
                                 v-model="data.text"
-                                :config="this.$editorConfig"
+                                :config="text_editor_config"
                             />
                         </div>
                     </div>
@@ -86,7 +86,8 @@
                             </div>
                         
                             <div class="col-md-12" v-if="global_blocks.routes_info == 'befor' || global_blocks.routes_info == 'after' || global_blocks.routes_info == 'new_info'">
-                                <ckeditor v-model="data.route" :config="this.$editorConfig"></ckeditor>
+                                <ckeditor v-model="data.route" 
+                                :config="route_description_editor_config"></ckeditor>
                             </div>
 
                             <div class="col-md-12" v-if="global_blocks.routes_info == 'after' || global_blocks.routes_info == 'instead'">
@@ -101,7 +102,7 @@
                         <label for="name" class='col-md-2 control-label'> How to get hear </label>
                         <div class="col-md-10">
                             <!-- <ckeditor v-model="data.how_get" :config="editorConfig" :config="this.$editorConfig"></ckeditor> -->
-                            <ckeditor v-model="data.how_get" :config="this.$editorConfig"></ckeditor>
+                            <ckeditor v-model="data.how_get" :config="how_get_editor_config"></ckeditor>
                         </div>
                     </div>
 
@@ -139,7 +140,7 @@
                             </div>
                         
                             <div class="col-md-12" v-if="global_blocks.best_time == 'befor' || global_blocks.best_time == 'after' || global_blocks.best_time == 'new_info'">
-                                <ckeditor v-model="data.best_time" :config="this.$editorConfig"></ckeditor>
+                                <ckeditor v-model="data.best_time" :config="best_time_editor_config"></ckeditor>
                             </div>
 
                             <div class="col-md-12" v-if="global_blocks.best_time == 'after' || global_blocks.best_time == 'instead'">
@@ -184,7 +185,7 @@
                             </div>
                         
                             <div class="col-md-12" v-if="global_blocks.what_need_info == 'befor' || global_blocks.what_need_info == 'after' || global_blocks.what_need_info == 'new_info'">
-                                <ckeditor v-model="data.what_need" :config="this.$editorConfig"></ckeditor>
+                                <ckeditor v-model="data.what_need" :config="what_need_editor_config"></ckeditor>
                             </div>
 
                             <div class="col-md-12" v-if="global_blocks.what_need_info == 'after' || global_blocks.what_need_info == 'instead'">
@@ -228,7 +229,7 @@
                             </div>
                         
                             <div class="col-md-12" v-if="global_blocks.info_block == 'befor' || global_blocks.info_block == 'after' || global_blocks.info_block == 'new_info'">
-                                <ckeditor v-model="data.info" :config="this.$editorConfig"></ckeditor>
+                                <ckeditor v-model="data.info" :config="this.info_editor_config"></ckeditor>
                             </div>
 
                             <div class="col-md-12" v-if="global_blocks.info_block == 'after' || global_blocks.info_block == 'instead'">
@@ -243,7 +244,7 @@
                     <div class="form-group clearfix row" v-if="this.category == 'indoor'">
                         <label for="name" class='col-md-2 control-label'> Price description </label>
                         <div class="col-md-10">
-                            <ckeditor v-model="data.price_text" :config="this.$editorConfig"></ckeditor>
+                            <ckeditor v-model="data.price_text" :config="this.price_text_editor_config"></ckeditor>
                         </div>
                     </div>
 
@@ -254,15 +255,21 @@
 </template>
 
 <script>
-    import { SlickList, SlickItem } from 'vue-slicksort';
+    // import { SlickList, SlickItem } from 'vue-slicksort';
     import StackModal from '@innologica/vue-stackable-modal'  //https://innologica.github.io/vue-stackable-modal/#sample-css
+
+    // import { exampleMixin } from '../../../../../services/editor/editor_config.js'
+    import { editor_config } from '../../../../../../mixins/editor/editor_config_mixin.js'
 
     export default {
         components: {
             StackModal,
-            SlickItem,
-            SlickList,
+            // SlickItem,
+            // SlickList,
         },
+        mixins: [
+            editor_config
+        ],
         props: [
             'global_blocks_prop',
             'locale_data_prop',
@@ -282,9 +289,14 @@
                 is_change_url_title: false,
                 // error: [],
 
-                editorConfig: {
-                    // toolbar: [ [ 'Bold' ] ]
-                },
+                short_description_text_editor: editor_config.get_small_editor_config(),
+                text_editor_config: editor_config.get_big_editor_config(),
+                route_description_editor_config: editor_config.get_big_editor_config(), 
+                how_get_editor_config: editor_config.get_big_editor_config(),
+                best_time_editor_config: editor_config.get_big_editor_config(),
+                what_need_editor_config: editor_config.get_big_editor_config(),
+                info_editor_config: editor_config.get_big_editor_config(),
+                price_text_editor_config: editor_config.get_big_editor_config(),
 
                 data: {
                     change_url_title: false,
@@ -316,6 +328,9 @@
             this.global_blocks = this.global_blocks_prop
 
             this.get_general_info()
+
+            // this.text_editor_config = this.get_config()
+            // this.route_description_editor_config = this.get_config()
         },
         watch: {
             global_block: function(){
@@ -331,6 +346,19 @@
             }
         },
         methods: {
+            get_config(){
+                return {
+                    filebrowserUploadUrl: "../../../../api/ckeditor/upload",
+
+                    extraPlugins: 'embed,autoembed',
+                    
+                    embed_provider: '//ckeditor.iframe.ly/api/oembed?url={url}&callback={callback}',
+
+                    image2_alignClasses: ['image-align-left', 'image-align-center', 'image-align-right'],
+                    image2_disableResizer: true,
+                    removeButtons: 'PasteFromWord'
+                }
+            },
             change_url_title_in_global_bisnes(){
                 if(!this.is_change_url_title){
                     if(confirm('Are you sure, you want change URL title? It vhile bad for SEO potimization')){

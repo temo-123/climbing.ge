@@ -180,14 +180,14 @@
                         <div class="form-group clearfix">
                             <label for="name" class='col-xs-2 control-label'> Short description </label>
                             <div class="col-xs-8">
-                                <ckeditor v-model="data.us_data.short_description" :config="this.$editorConfig"></ckeditor>
+                                <ckeditor v-model="data.us_data.short_description"  :config="us_short_description_text_editor"></ckeditor>
                             </div>
                         </div>
-    
+
                         <div class="form-group clearfix">
                             <label for="name" class='col-xs-2 control-label'> text </label>
                             <div class="col-xs-8">
-                                <ckeditor v-model="data.us_data.text" :config="this.$editorConfig"></ckeditor>
+                                <ckeditor v-model="data.us_data.text"  :config="us_text_editor_config"></ckeditor>
                             </div>
                         </div>
                     </form>
@@ -212,14 +212,14 @@
                             <label for="name" class='col-xs-2 control-label'> Short description </label>
                             <div class="col-xs-8">
                                 <!-- <textarea type="text"  name="short_description" v-model="data.ru_data.short_description"  rows="15" class="form-cotrol md-textarea form-control"></textarea> -->
-                                <ckeditor v-model="data.ru_data.short_description" :config="this.$editorConfig"></ckeditor>
+                                <ckeditor v-model="data.ru_data.short_description" :config="ru_short_description_text_editor"></ckeditor>
                             </div>
                         </div>
     
                         <div class="form-group clearfix">
                             <label for="name" class='col-xs-2 control-label'> text </label>
                             <div class="col-xs-8">
-                                <ckeditor v-model="data.ru_data.text" :config="this.$editorConfig"></ckeditor>
+                                <ckeditor v-model="data.ru_data.text"  :config="ru_text_editor_config"></ckeditor>
                             </div>
                         </div>
                     </form>
@@ -244,14 +244,14 @@
                             <label for="name" class='col-xs-2 control-label'> Short description </label>
                             <div class="col-xs-8">
                                 <!-- <textarea type="text"  name="short_description"  v-model="data.ka_data.short_description" rows="15" class="form-cotrol md-textarea form-control"></textarea> -->
-                                <ckeditor v-model="data.ka_data.short_description" :config="this.$editorConfig"></ckeditor>
+                                <ckeditor v-model="data.ka_data.short_description" :config="ka_short_description_text_editor"></ckeditor>
                             </div>
                         </div>
-    
+
                         <div class="form-group clearfix">
                             <label for="name" class='col-xs-2 control-label'> text </label>
                             <div class="col-xs-8">
-                                <ckeditor v-model="data.ka_data.text" :config="this.$editorConfig"></ckeditor>
+                                <ckeditor v-model="data.ka_data.text"  :config="ka_text_editor_config"></ckeditor>
                             </div>
                         </div>
                     </form>
@@ -263,189 +263,203 @@
 </template>
 
 <script>
-export default {
-    props: [
-        // 'back_url',
-    ],
-    data(){
-        return {
-            tab_num: 1,
+    import { editor_config } from '../../../../mixins/editor/editor_config_mixin.js'
+    export default {
+        mixins: [
+            editor_config
+        ],
+        props: [
+            // 'back_url',
+        ],
+        data(){
+            return {
+                tab_num: 1,
 
-            bisnes_new_images: [],
-            bisnes_old_images: [],
-            regions: [],
+                bisnes_new_images: [],
+                bisnes_old_images: [],
+                regions: [],
 
-            editorConfig: {},
+                us_short_description_text_editor: editor_config.get_small_editor_config(),
+                us_text_editor_config: editor_config.get_big_editor_config(),
+                us_info_editor_config: editor_config.get_big_editor_config(),
+                ru_short_description_text_editor: editor_config.get_small_editor_config(),
+                ru_text_editor_config: editor_config.get_big_editor_config(),
+                ru_info_editor_config: editor_config.get_big_editor_config(),
+                ka_short_description_text_editor: editor_config.get_small_editor_config(),
+                ka_text_editor_config: editor_config.get_big_editor_config(),
+                ka_info_editor_config: editor_config.get_big_editor_config(),
 
-            data: {
-                global_data: {},
-                us_data: {},
-                ka_data: {},
-                ru_data: {}
-            },
+                editorConfig: {},
 
-            change_url_title: false
-        }
-    },
-    mounted() {
-        this.get_editing_bisnes_data()
-        this.get_region_data()
-    },
-    methods: {
-        get_region_data: function () {
-            axios
-                .get("../../api/article/")
-                .then((response) => {
-                    this.regions = response.data;
-                })
-                .catch((error) => console.log(error));
-        },
+                data: {
+                    global_data: {},
+                    us_data: {},
+                    ka_data: {},
+                    ru_data: {}
+                },
 
-        onFileChange(event, item_id){
-            let image = event.target.files[0]
-            let id = item_id - 1 
-            this.bisnes_new_images[id]['image'] = image
-        },
-
-        add_bisnes_new_image_value(){
-            // if(this.bisnes_old_images){
-                if(this.bisnes_new_images.length + this.bisnes_old_images.length < 8){
-                    var new_item_id = this.bisnes_new_images.length+1
-
-                    this.bisnes_new_images.push(
-                        {
-                            id: new_item_id,
-                            image: '',
-                        }
-                    );
-                }
-            // }
-            else{
-                if(this.bisnes_new_images.length < 8){
-                    var new_item_id = this.bisnes_new_images.length+1
-
-                    this.bisnes_new_images.push(
-                        {
-                            id: new_item_id,
-                            image: '',
-                        }
-                    );
-                }
+                change_url_title: false
             }
         },
-
-        del_bisnes_image_from_db(image_id){
-            if(confirm('Are you sure, you want delite this image?')){
+        mounted() {
+            this.get_editing_bisnes_data()
+            this.get_region_data()
+        },
+        methods: {
+            get_region_data: function () {
                 axios
-                .delete("../../../api/bisnes/del_local_bisnes_image/"+image_id)
+                    .get("../../api/article/")
+                    .then((response) => {
+                        this.regions = response.data;
+                    })
+                    .catch((error) => console.log(error));
+            },
+
+            onFileChange(event, item_id){
+                let image = event.target.files[0]
+                let id = item_id - 1 
+                this.bisnes_new_images[id]['image'] = image
+            },
+
+            add_bisnes_new_image_value(){
+                // if(this.bisnes_old_images){
+                    if(this.bisnes_new_images.length + this.bisnes_old_images.length < 8){
+                        var new_item_id = this.bisnes_new_images.length+1
+
+                        this.bisnes_new_images.push(
+                            {
+                                id: new_item_id,
+                                image: '',
+                            }
+                        );
+                    }
+                // }
+                else{
+                    if(this.bisnes_new_images.length < 8){
+                        var new_item_id = this.bisnes_new_images.length+1
+
+                        this.bisnes_new_images.push(
+                            {
+                                id: new_item_id,
+                                image: '',
+                            }
+                        );
+                    }
+                }
+            },
+
+            del_bisnes_image_from_db(image_id){
+                if(confirm('Are you sure, you want delite this image?')){
+                    axios
+                    .delete("../../../api/bisnes/del_local_bisnes_image/"+image_id)
+                    .then(response => {
+                        this.get_bisnes_images()
+                    })
+                    .catch(
+                        error => console.log(error)
+                    );
+                }
+            },
+
+            get_editing_bisnes_data(){
+                this.data_for_tab = []
+                axios
+                .get("../../api/bisnes/get_editing_local_bisnes_info/"+this.$route.params.id)
                 .then(response => {
+                    this.editing_data = response.data
+
+                    this.data = {
+                        global_data: response.data.global_bisnes,
+
+                        us_data: response.data.us_bisnes,
+                        ru_data: response.data.ru_bisnes,
+                        ka_data: response.data.ka_bisnes,
+                    }
+
+                    // this.bisnes_old_images = response.data.bisnes_images
                     this.get_bisnes_images()
                 })
                 .catch(
                     error => console.log(error)
                 );
-            }
-        },
+            },
 
-        get_editing_bisnes_data(){
-            this.data_for_tab = []
-            axios
-            .get("../../api/bisnes/get_editing_local_bisnes_info/"+this.$route.params.id)
-            .then(response => {
-                this.editing_data = response.data
+            get_bisnes_images(){
+                axios
+                .get("../../api/bisnes/get_bisnes_images/"+this.$route.params.id)
+                .then(response => {
+                    this.bisnes_old_images = response.data
+                })
+                .catch(
+                    error => console.log(error)
+                );
+            },
 
-                this.data = {
-                    global_data: response.data.global_bisnes,
+            del_bisnes_image(id){
+                this.removeObjectWithId(this.bisnes_new_images, id);
+            },
 
-                    us_data: response.data.us_bisnes,
-                    ru_data: response.data.ru_bisnes,
-                    ka_data: response.data.ka_bisnes,
+            removeObjectWithId(arr, id) {
+                const objWithIdIndex = arr.findIndex((obj) => obj.id === id);
+                arr.splice(objWithIdIndex, 1);
+
+                return arr;
+            },
+
+            change_url_title_in_global_bisnes(){
+                if(!this.change_url_title){
+                    if(confirm('Are you sure, you want change URL title? It vhile bad for SEO potimization')){
+                        this.change_url_title = true
+                    }
+                }
+                else{
+                    this.change_url_title = false 
+                }
+            },
+
+            edit_bisnes() {
+                if (this.change_url_title) {
+                    this.data.global_data.change_url_title = this.change_url_title
+                    this.data.global_data.us_title_for_url_title = this.data.us_data.title
+                }
+                else{
+                    this.data.global_data.change_url_title = false
+                    this.data.global_data.us_title_for_url_title = false
                 }
 
-                // this.bisnes_old_images = response.data.bisnes_images
-                this.get_bisnes_images()
-            })
-            .catch(
-                error => console.log(error)
-            );
-        },
+                let formData = new FormData();
 
-        get_bisnes_images(){
-            axios
-            .get("../../api/bisnes/get_bisnes_images/"+this.$route.params.id)
-            .then(response => {
-                this.bisnes_old_images = response.data
-            })
-            .catch(
-                error => console.log(error)
-            );
-        },
+                var loop_num = 0
+                this.bisnes_new_images.forEach(image => {
+                    formData.append('bisnes_new_images['+loop_num+']', image.image)
+                    loop_num++
+                });
+                loop_num = 0
 
-        del_bisnes_image(id){
-            this.removeObjectWithId(this.bisnes_new_images, id);
-        },
+                formData.append('data', JSON.stringify(this.data))
 
-        removeObjectWithId(arr, id) {
-            const objWithIdIndex = arr.findIndex((obj) => obj.id === id);
-            arr.splice(objWithIdIndex, 1);
+                axios
+                .post('../../api/bisnes/edit_local_bisnes/'+this.$route.params.id, 
+                    formData
+                )
+                .then(response => {
+                    this.go_back(true)
+                })
+                .catch(
+                    error => console.log(error)
+                );
+            },
 
-            return arr;
-        },
-
-        change_url_title_in_global_bisnes(){
-            if(!this.change_url_title){
-                if(confirm('Are you sure, you want change URL title? It vhile bad for SEO potimization')){
-                    this.change_url_title = true
+            go_back: function(back_action = false) {
+                if(back_action == false){
+                    if(confirm('Are you sure, you want go back?')){
+                        this.$router.go(-1)
+                    }
                 }
-            }
-            else{
-                this.change_url_title = false 
-            }
-        },
-
-        edit_bisnes() {
-            if (this.change_url_title) {
-                this.data.global_data.change_url_title = this.change_url_title
-                this.data.global_data.us_title_for_url_title = this.data.us_data.title
-            }
-            else{
-                this.data.global_data.change_url_title = false
-                this.data.global_data.us_title_for_url_title = false
-            }
-
-            let formData = new FormData();
-
-            var loop_num = 0
-            this.bisnes_new_images.forEach(image => {
-                formData.append('bisnes_new_images['+loop_num+']', image.image)
-                loop_num++
-            });
-            loop_num = 0
-
-            formData.append('data', JSON.stringify(this.data))
-
-            axios
-            .post('../../api/bisnes/edit_local_bisnes/'+this.$route.params.id, 
-                formData
-            )
-            .then(response => {
-                this.go_back(true)
-            })
-            .catch(
-                error => console.log(error)
-            );
-        },
-
-        go_back: function(back_action = false) {
-            if(back_action == false){
-                if(confirm('Are you sure, you want go back?')){
+                else{
                     this.$router.go(-1)
                 }
-            }
-            else{
-                this.$router.go(-1)
-            }
-        },
+            },
+        }
     }
-}
 </script>

@@ -169,21 +169,21 @@
                         <div class="form-group clearfix">
                             <label for="name" class='col-xs-2 control-label'> Short description </label>
                             <div class="col-xs-8">
-                                <ckeditor v-model="data.us_data.short_description" :config="this.$editorConfig"></ckeditor>
+                                <ckeditor v-model="data.us_data.short_description" :config="us_short_description_text_editor"></ckeditor>
                             </div>
                         </div>
     
                         <div class="form-group clearfix">
                             <label for="name" class='col-xs-2 control-label'> text </label>
                             <div class="col-xs-8">
-                                <ckeditor v-model="data.us_data.text" :config="this.$editorConfig"></ckeditor>
+                                <ckeditor v-model="data.us_data.text" :config="us_text_editor_config"></ckeditor>
                             </div>
                         </div>
     
                         <div class="form-group clearfix">
                             <label for="name" class='col-xs-2 control-label'> contact info </label>
                             <div class="col-xs-8">
-                                <ckeditor v-model="data.us_data.info" :config="this.$editorConfig"></ckeditor>
+                                <ckeditor v-model="data.us_data.info" :config="us_info_editor_config"></ckeditor>
                             </div>
                         </div>
                     </form>
@@ -208,21 +208,21 @@
                             <label for="name" class='col-xs-2 control-label'> Short description </label>
                             <div class="col-xs-8">
                                 <!-- <textarea type="text"  name="short_description" v-model="data.ru_data.short_description"  rows="15" class="form-cotrol md-textarea form-control"></textarea> -->
-                                <ckeditor v-model="data.ru_data.short_description" :config="this.$editorConfig"></ckeditor>
+                                <ckeditor v-model="data.ru_data.short_description" :config="ru_short_description_text_editor"></ckeditor>
                             </div>
                         </div>
     
                         <div class="form-group clearfix">
                             <label for="name" class='col-xs-2 control-label'> text </label>
                             <div class="col-xs-8">
-                                <ckeditor v-model="data.ru_data.text" :config="this.$editorConfig"></ckeditor>
+                                <ckeditor v-model="data.ru_data.text" :config="ru_text_editor_config"></ckeditor>
                             </div>
                         </div>
     
                         <div class="form-group clearfix">
                             <label for="name" class='col-xs-2 control-label'> contact info </label>
                             <div class="col-xs-8">
-                                <ckeditor v-model="data.ru_data.info" :config="this.$editorConfig"></ckeditor>
+                                <ckeditor v-model="data.ru_data.info" :config="ru_info_editor_config"></ckeditor>
                             </div>
                         </div>
                     </form>
@@ -247,21 +247,21 @@
                             <label for="name" class='col-xs-2 control-label'> Short description </label>
                             <div class="col-xs-8">
                                 <!-- <textarea type="text"  name="short_description"  v-model="data.ka_data.short_description" rows="15" class="form-cotrol md-textarea form-control"></textarea> -->
-                                <ckeditor v-model="data.ka_data.short_description" :config="this.$editorConfig"></ckeditor>
+                                <ckeditor v-model="data.ka_data.short_description" :config="ka_short_description_text_editor"></ckeditor>
                             </div>
                         </div>
     
                         <div class="form-group clearfix">
                             <label for="name" class='col-xs-2 control-label'> text </label>
                             <div class="col-xs-8">
-                                <ckeditor v-model="data.ka_data.text" :config="this.$editorConfig"></ckeditor>
+                                <ckeditor v-model="data.ka_data.text" :config="ka_text_editor_config"></ckeditor>
                             </div>
                         </div>
     
                         <div class="form-group clearfix">
                             <label for="name" class='col-xs-2 control-label'> contact info </label>
                             <div class="col-xs-8">
-                                <ckeditor v-model="data.ka_data.info" :config="this.$editorConfig"></ckeditor>
+                                <ckeditor v-model="data.ka_data.info" :config="ka_info_editor_config"></ckeditor>
                             </div>
                         </div>
                     </form>
@@ -273,131 +273,145 @@
 </template>
 
 <script>
-export default {
-    props: [
-        // 'back_url',
-    ],
-    data(){
-        return {
-            tab_num: 1,
+    import { editor_config } from '../../../../../mixins/editor/editor_config_mixin.js'
+    export default {
+        mixins: [
+            editor_config
+        ],
+        props: [
+            // 'back_url',
+        ],
+        data(){
+            return {
+                tab_num: 1,
 
-            images: [],
-            editorConfig: '',
+                images: [],
+                editorConfig: '',
 
-            change_url_title: false,
+                change_url_title: false,
 
-            data: {
-                global_data: {
-                    us_title_for_url_title: '',
+                us_short_description_text_editor: editor_config.get_small_editor_config(),
+                us_text_editor_config: editor_config.get_big_editor_config(),
+                us_info_editor_config: editor_config.get_big_editor_config(),
+                ru_short_description_text_editor: editor_config.get_small_editor_config(),
+                ru_text_editor_config: editor_config.get_big_editor_config(),
+                ru_info_editor_config: editor_config.get_big_editor_config(),
+                ka_short_description_text_editor: editor_config.get_small_editor_config(),
+                ka_text_editor_config: editor_config.get_big_editor_config(),
+                ka_info_editor_config: editor_config.get_big_editor_config(),
 
-                    start_data: '',
-                    end_data: '',
+                data: {
+                    global_data: {
+                        us_title_for_url_title: '',
 
-                    category: 'event',
-                    map: '',
+                        start_data: '',
+                        end_data: '',
 
-                    change_url_title: '',
+                        category: 'event',
+                        map: '',
 
-                    published: 0,
+                        change_url_title: '',
+
+                        published: 0,
+                    },
+
+                    us_data: {
+                        title: "",
+                        short_description: "",
+                        text: "",
+                        info: "",
+                    },
+
+                    ka_data: {
+                        title: "",
+                        short_description: "",
+                        text: "",
+                        info: "",
+                    },
+
+                    ru_data: {
+                        title: "",
+                        short_description: "",
+                        text: "",
+                        info: "",
+                    }
                 },
+            }
+        },
+        mounted() {
+            this.get_editing_event()
+        },
+        methods: {
+            onFileChange(event){
+                this.image = event.target.files[0];
+            },
 
-                us_data: {
-                    title: "",
-                    short_description: "",
-                    text: "",
-                    info: "",
-                },
+            get_editing_event() {
+                axios
+                .get('../../api/event/get_editing_event/'+this.$route.params.id)
+                .then(response => {
+                    this.data = response.data
 
-                ka_data: {
-                    title: "",
-                    short_description: "",
-                    text: "",
-                    info: "",
-                },
+                    this.data.global_data = response.data.global_data
+                    this.data.us_data = response.data.us_data
+                    this.data.ru_data = response.data.ru_data
+                    this.data.ka_data = response.data.ka_data
+                })
+                .catch(
+                    error => console.log(error)
+                );
+            },
 
-                ru_data: {
-                    title: "",
-                    short_description: "",
-                    text: "",
-                    info: "",
+            change_url_title_in_global_bisnes(){
+                if(!this.change_url_title){
+                    if(confirm('Are you sure, you want change URL title? It vhile bad for SEO potimization')){
+                        this.change_url_title = true
+                    }
+                }
+                else{
+                    this.change_url_title = false 
+                }
+            },
+
+            edit_event() {
+                if (this.change_url_title) {
+                    this.data.global_data.change_url_title = this.change_url_title
+                    this.data.global_data.us_title_for_url_title = this.data.us_data.title
+                }
+                else{
+                    this.data.global_data.change_url_title = false
+                    this.data.global_data.us_title_for_url_title = false
+                }
+
+                let formData = new FormData();
+
+                formData.append('image', this.image)
+                formData.append('data', JSON.stringify(this.data))
+
+                axios
+                .post('../../api/event/edit_event/'+this.$route.params.id, 
+                    formData
+                )
+                .then(response => {
+                    this.go_back(true)
+                })
+                .catch(error => {
+                    if (error.response.status == 422) {
+                        this.error = error.response.data.validation
+                    }
+                });
+            },
+
+            go_back: function(back_action = false) {
+                if(back_action == false){
+                    if(confirm('Are you sure, you want go back?')){
+                        this.$router.go(-1)
+                    }
+                }
+                else{
+                    this.$router.go(-1)
                 }
             },
         }
-    },
-    mounted() {
-        this.get_editing_event()
-    },
-    methods: {
-        onFileChange(event){
-            this.image = event.target.files[0];
-        },
-
-        get_editing_event() {
-            axios
-            .get('../../api/event/get_editing_event/'+this.$route.params.id)
-            .then(response => {
-                this.data = response.data
-
-                this.data.global_data = response.data.global_data
-                this.data.us_data = response.data.us_data
-                this.data.ru_data = response.data.ru_data
-                this.data.ka_data = response.data.ka_data
-            })
-            .catch(
-                error => console.log(error)
-            );
-        },
-
-        change_url_title_in_global_bisnes(){
-            if(!this.change_url_title){
-                if(confirm('Are you sure, you want change URL title? It vhile bad for SEO potimization')){
-                    this.change_url_title = true
-                }
-            }
-            else{
-                this.change_url_title = false 
-            }
-        },
-
-        edit_event() {
-            if (this.change_url_title) {
-                this.data.global_data.change_url_title = this.change_url_title
-                this.data.global_data.us_title_for_url_title = this.data.us_data.title
-            }
-            else{
-                this.data.global_data.change_url_title = false
-                this.data.global_data.us_title_for_url_title = false
-            }
-
-            let formData = new FormData();
-
-            formData.append('image', this.image)
-            formData.append('data', JSON.stringify(this.data))
-
-            axios
-            .post('../../api/event/edit_event/'+this.$route.params.id, 
-                formData
-            )
-            .then(response => {
-                this.go_back(true)
-            })
-            .catch(error => {
-                if (error.response.status == 422) {
-                    this.error = error.response.data.validation
-                }
-            });
-        },
-
-        go_back: function(back_action = false) {
-            if(back_action == false){
-                if(confirm('Are you sure, you want go back?')){
-                    this.$router.go(-1)
-                }
-            }
-            else{
-                this.$router.go(-1)
-            }
-        },
     }
-}
 </script>

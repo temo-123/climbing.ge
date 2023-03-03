@@ -127,14 +127,14 @@
                         <div class="form-group clearfix">
                             <label for="name" class='col-xs-2 control-label'> Short description </label>
                             <div class="col-xs-8">
-                                <ckeditor v-model="data.us_data.short_description"  :config="this.$editorConfig"></ckeditor>
+                                <ckeditor v-model="data.us_data.short_description"  :config="us_short_description_text_editor"></ckeditor>
                             </div>
                         </div>
-    
+
                         <div class="form-group clearfix">
                             <label for="name" class='col-xs-2 control-label'> text </label>
                             <div class="col-xs-8">
-                                <ckeditor v-model="data.us_data.text"  :config="this.$editorConfig"></ckeditor>
+                                <ckeditor v-model="data.us_data.text"  :config="us_text_editor_config"></ckeditor>
                             </div>
                         </div>
                     </form>
@@ -159,14 +159,14 @@
                             <label for="name" class='col-xs-2 control-label'> Short description </label>
                             <div class="col-xs-8">
                                 <!-- <textarea type="text"  name="short_description" v-model="data.ru_data.short_description"  rows="15" class="form-cotrol md-textarea form-control"></textarea> -->
-                                <ckeditor v-model="data.ru_data.short_description"  :config="this.$editorConfig"></ckeditor>
+                                <ckeditor v-model="data.ru_data.short_description" :config="ru_short_description_text_editor"></ckeditor>
                             </div>
                         </div>
-    
+
                         <div class="form-group clearfix">
                             <label for="name" class='col-xs-2 control-label'> text </label>
                             <div class="col-xs-8">
-                                <ckeditor v-model="data.ru_data.text"  :config="this.$editorConfig"></ckeditor>
+                                <ckeditor v-model="data.ru_data.text"  :config="ru_text_editor_config"></ckeditor>
                             </div>
                         </div>
                     </form>
@@ -191,14 +191,14 @@
                             <label for="name" class='col-xs-2 control-label'> Short description </label>
                             <div class="col-xs-8">
                                 <!-- <textarea type="text"  name="short_description"  v-model="data.ka_data.short_description" rows="15" class="form-cotrol md-textarea form-control"></textarea> -->
-                                <ckeditor v-model="data.ka_data.short_description"  :config="this.$editorConfig"></ckeditor>
+                                <ckeditor v-model="data.ka_data.short_description" :config="ka_short_description_text_editor"></ckeditor>
                             </div>
                         </div>
-    
+
                         <div class="form-group clearfix">
                             <label for="name" class='col-xs-2 control-label'> text </label>
                             <div class="col-xs-8">
-                                <ckeditor v-model="data.ka_data.text"  :config="this.$editorConfig"></ckeditor>
+                                <ckeditor v-model="data.ka_data.text"  :config="ka_text_editor_config"></ckeditor>
                             </div>
                         </div>
                     </form>
@@ -210,117 +210,133 @@
 </template>
 
 <script>
-export default {
-    props: [
-        'back_url',
-    ],
-    data(){
-        return {
-            tab_num: 1,
+    import { editor_config } from '../../../../../mixins/editor/editor_config_mixin.js'
+    export default {
+        mixins: [
+            editor_config
+        ],
+        props: [
+            'back_url',
+        ],
+        data(){
+            return {
+                tab_num: 1,
 
-            categories: [],
-            editorConfig: '',
+                categories: [],
+                editorConfig: '',
 
-            data: {
-                global_data: {
-                    us_title_for_url_title: '',
+                us_short_description_text_editor: editor_config.get_small_editor_config(),
+                us_text_editor_config: editor_config.get_big_editor_config(),
+                us_info_editor_config: editor_config.get_big_editor_config(),
 
-                    published: 0,
-                    category_id: "Select category",
-                    material: "",
-                    discount: "",
-                    sale_type: "Custom production",
-                    mead_in_georgia: "",
+                ru_short_description_text_editor: editor_config.get_small_editor_config(),
+                ru_text_editor_config: editor_config.get_big_editor_config(),
+                ru_info_editor_config: editor_config.get_big_editor_config(),
+
+                ka_short_description_text_editor: editor_config.get_small_editor_config(),
+                ka_text_editor_config: editor_config.get_big_editor_config(),
+                ka_info_editor_config: editor_config.get_big_editor_config(),
+
+                data: {
+                    global_data: {
+                        us_title_for_url_title: '',
+
+                        published: 0,
+                        category_id: "Select category",
+                        material: "",
+                        discount: "",
+                        sale_type: "Custom production",
+                        mead_in_georgia: "",
+                    },
+
+                    us_data: {
+                        title: "",
+                        short_description: "",
+                        text: "",
+                    },
+
+                    ka_data: {
+                        title: "",
+                        short_description: "",
+                        text: "",
+                    },
+
+                    ru_data: {
+                        title: "",
+                        short_description: "",
+                        text: "",
+                    }
                 },
 
-                us_data: {
-                    title: "",
-                    short_description: "",
-                    text: "",
-                },
-
-                ka_data: {
-                    title: "",
-                    short_description: "",
-                    text: "",
-                },
-
-                ru_data: {
-                    title: "",
-                    short_description: "",
-                    text: "",
-                }
+                myModal: false,
+            }
+        },
+        mounted() {
+            this.get_product_category_data()
+        },
+        methods: {
+            showModal(){
+                this.myModal = !this.myModal
             },
 
-            myModal: false,
-        }
-    },
-    mounted() {
-        this.get_product_category_data()
-    },
-    methods: {
-        showModal(){
-            this.myModal = !this.myModal
-        },
+            add_product() {
+                this.data.global_data.us_title_for_url_title = this.data. us_data.title
 
-        add_product() {
-            this.data.global_data.us_title_for_url_title = this.data. us_data.title
+                axios
+                .post('../api/product', {        
+                    data: this.data,
+                })
+                .then((response)=> { 
+                    if(confirm('Do you want send notification about editing article?')){
+                        this.sand_notification()
+                    }
+                    else{
+                        this.go_back(true)
+                    }
+                })
+                .catch(error =>{
+                    if (error.response.status == 422) {
+                        this.us_article_error = error.response.data.errors
+                    }
+                })
+            },
 
-            axios
-            .post('../api/product', {        
-                data: this.data,
-            })
-            .then((response)=> { 
-                if(confirm('Do you want send notification about editing article?')){
-                    this.sand_notification()
+            sand_notification() {
+                this.is_mail_sending_procesing = true
+
+                axios
+                .post('../../../api/user/notifications/send_product_adding_notification')
+                .then(response => {
+                    this.go_back(true)
+                })
+                .catch(err => {
+                    console.log(err);
+                })
+                .finally(() => this.is_mail_sending_procesing = false);
+            },
+
+            get_product_category_data: function(){
+                axios
+                .get("../api/product_category/")
+                .then(response => {
+                    this.categories = response.data
+                })
+                .catch(
+                    error => console.log(error)
+                );
+            },
+
+
+            go_back: function(back_action = false) {
+                if(back_action == false){
+                    if(confirm('Are you sure, you want go back?')){
+                        this.$router.go(-1)
+                    }
                 }
                 else{
-                    this.go_back(true)
-                }
-            })
-            .catch(error =>{
-                if (error.response.status == 422) {
-                    this.us_article_error = error.response.data.errors
-                }
-            })
-        },
-
-        sand_notification() {
-            this.is_mail_sending_procesing = true
-
-            axios
-            .post('../../../api/user/notifications/send_product_adding_notification')
-            .then(response => {
-                this.go_back(true)
-            })
-            .catch(err => {
-                console.log(err);
-            })
-            .finally(() => this.is_mail_sending_procesing = false);
-        },
-
-        get_product_category_data: function(){
-            axios
-            .get("../api/product_category/")
-            .then(response => {
-                this.categories = response.data
-            })
-            .catch(
-                error => console.log(error)
-            );
-        },
-
-
-        go_back: function(back_action = false) {
-            if(back_action == false){
-                if(confirm('Are you sure, you want go back?')){
                     this.$router.go(-1)
                 }
-            }
-            else{
-                this.$router.go(-1)
-            }
-        },
+            },
+        }
     }
-}
 </script>
