@@ -448,16 +448,16 @@ __webpack_require__.r(__webpack_exports__);
       if (this.form_data.category_id == 'Select image category') {
         this.category_error = 'Select this category is inposeble!';
       } else {
-        axios.post('./api/gallery_image_add', // .post('./api/gallery_image_add', 
-        //     .post('./api/gallery_image_add', 
-        formData).then(function (response) {
+        axios.post('../api/gallery_image_add', formData).then(function (response) {
           _this3.is_add_image = false;
 
           _this3.get_gallery_data();
 
           _this3.clear_input_data();
         })["catch"](function (err) {
-          console.log(err);
+          if (error.response.status == 422) {
+            _this3.error = error.response.data.validation;
+          }
         });
       }
     },
@@ -489,7 +489,7 @@ __webpack_require__.r(__webpack_exports__);
     get_editing_image_data: function get_editing_image_data(image_id) {
       var _this4 = this;
 
-      axios.get("./api/get_editing_image/" + image_id).then(function (response) {
+      axios.get("../api/get_editing_image/" + image_id).then(function (response) {
         _this4.editing_data = response.data;
         _this4.editing_data.article_id = response.data.article[0].id;
         _this4.editing_image.id = response.data.id;
@@ -516,9 +516,7 @@ __webpack_require__.r(__webpack_exports__);
       if (this.editing_data.category_id == 'Select image category') {
         this.category_error = 'Select this category is inposeble!';
       } else {
-        axios.post('./api/gallery_image_edit/' + this.editing_data.id, // .post('./api/gallery_image_edit/'+this.editing_data.id, 
-        //     .post('./api/gallery_image_edit/'+this.editing_data.id, 
-        formData).then(function (response) {
+        axios.post('../api/gallery_image_edit/' + this.editing_data.id, formData).then(function (response) {
           _this5.is_add_image = false;
 
           _this5.get_gallery_data();

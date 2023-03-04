@@ -23,7 +23,6 @@
             </ServiceItem>
         </div>
 
-
         <metaData 
             :title = "'Services'"
             :description = "'Service climbing & mountaineering.'"

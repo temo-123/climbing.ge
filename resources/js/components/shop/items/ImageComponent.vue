@@ -1,5 +1,5 @@
 <template>
-    <img :src="this.image_src"  :class="this.img_class" :alt="this.alt" v-watermark='config = option'/>
+    <img :src="this.image_src" :class="this.img_class" :alt="this.alt" v-watermark='config = option'/>
 </template>
 
 <script>
@@ -9,6 +9,12 @@
             'alt',
             'img_class',
         ],
+
+        watch: {
+            src: function(newVal, oldVal){
+                this.image_src = this.src
+            },
+        },
         data(){
             return {
                 content: '',

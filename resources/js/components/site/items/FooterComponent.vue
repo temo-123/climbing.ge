@@ -1,7 +1,7 @@
 <template>
     <div class="footer">
         <div class="container">
-            <footerAd />
+            <footerLogo />
             <div class="row">
 
                 <div class="col-md-4 display-none-720px">
@@ -116,8 +116,11 @@
 
 <script>
 import followComponent from "../../global_components/FollowComponent.vue";
+import footerLogo from "../../global_components/FooterLogoBlockComponent.vue";
 import share from "../../global_components/ShareComponent.vue";
+
 const { QRCanvas } = require("qrcanvas-vue"); //  https://gera2ld.github.io/qrcanvas-vue/v2/#padding
+
 export default {
     data: function () {
         return {
@@ -133,6 +136,7 @@ export default {
     },
     components: {
         followComponent,
+        footerLogo,
         share,
         QRCanvas,
     },

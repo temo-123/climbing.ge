@@ -397,9 +397,7 @@
                 }
                 else{
                     axios
-                    .post('./api/gallery_image_add', 
-                // .post('./api/gallery_image_add', 
-                //     .post('./api/gallery_image_add', 
+                    .post('../api/gallery_image_add', 
                         formData,
                     )
                     .then(response => {
@@ -408,7 +406,9 @@
                         this.clear_input_data()
                     })
                     .catch(err => {
-                        console.log(err);
+                    if (error.response.status == 422) {
+                        this.error = error.response.data.validation
+                    }
                     })
                 }
             },
@@ -442,7 +442,7 @@
             },
             get_editing_image_data(image_id){
                 axios
-                .get("./api/get_editing_image/"+image_id)
+                .get("../api/get_editing_image/"+image_id)
                 .then(response => {
                     this.editing_data = response.data
                     this.editing_data.article_id = response.data.article[0].id
@@ -473,9 +473,7 @@
                 }
                 else{
                     axios
-                    .post('./api/gallery_image_edit/'+this.editing_data.id, 
-                // .post('./api/gallery_image_edit/'+this.editing_data.id, 
-                //     .post('./api/gallery_image_edit/'+this.editing_data.id, 
+                    .post('../api/gallery_image_edit/'+this.editing_data.id, 
                         formData,
                     )
                     .then(response => {

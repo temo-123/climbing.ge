@@ -10062,7 +10062,7 @@ var render = function () {
                         "div",
                         { staticClass: "container" },
                         [
-                          _c("site-img", {
+                          _c("shop-img", {
                             attrs: {
                               src: "/public/images/site_img/shop_demo.jpg",
                               alt: _vm.product.local_product[0].title,

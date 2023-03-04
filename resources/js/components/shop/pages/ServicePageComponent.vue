@@ -1,20 +1,23 @@
 <template>
     <div class="container top_menu_margin h-recent-work">
-        <h1 class="page_title">{{ setvice.local_service.title }}</h1>
+        <h1 class="page_title">{{ service.local_service.title }}</h1>
 
         <!-- <breadcrumb /> -->
 
-        <div class="row" v-if="setvice.service_images">
-            <img class="service_page_image" :src="'../../images/service_img/'+setvice.service_images[0].image" :alt="setvice.local_service.title">
+        <div class="row" v-if="service.service_images.length > 0">
+            <img class="service_page_image" :src="'../../images/service_img/'+service.service_images[0].image" :alt="service.local_service.title">
         </div>
+
         <div class="row service_page_text">
-            <!-- {{ setvice.local_service.text }} -->
-            <span v-html="setvice.local_service.text"></span>
+            <!-- {{ service.local_service.text }} -->
+            <span v-html="service.local_service.text"></span>
         </div>
+
+        <gallery :images_prop="service.service_images"/>
 
         <div class="row" v-if="this.services.length > 0">
             <hr>
-            <h2 class="other_servces">other service</h2>
+            <h2 class="other_servces">Other Service</h2>
 
             <ServiceItem
                 v-for="service in services"
@@ -24,9 +27,9 @@
         </div>
 
         <metaData 
-            :title = "setvice.local_service.title"
-            :description = "setvice.local_service.short_description"
-            :image = "'../../images/service_img/'+setvice.service_images[0].image"
+            :title = "service.local_service.title"
+            :description = "service.local_service.short_description"
+            :image = "'../../images/service_img/'+service.service_images[0].image"
         />
     </div>
 </template>
@@ -35,11 +38,14 @@
     import ServiceItem from '../items/ServiceItemComponent'
     import metaData from '../items/MetaDataComponent'
     import breadcrumb from '../items/BreadcrumbComponent.vue'
+    import gallery from '../items/GalleryComponent.vue'
+
     export default {
         components: {
             metaData,
             ServiceItem,
             breadcrumb,
+            gallery,
         },
         props:[
             'data'
@@ -47,7 +53,7 @@
         data: function () {
             return {
                 services: [],
-                setvice: [],
+                service: [],
             };
         },
         watch: {
@@ -74,8 +80,8 @@
                 axios
                 .get('../api/service/'+localStorage.getItem('lang')+'/'+this.$route.params.url_title)
                 .then(response => {
-                    this.setvice = response.data[0]
-                    this.get_services(this.setvice.global_service.id)
+                    this.service = response.data[0]
+                    this.get_services(this.service.global_service.id)
                 })
                 .catch(error =>{
                 })

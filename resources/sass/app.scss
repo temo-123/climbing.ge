@@ -147,6 +147,22 @@ hr {
     border-bottom: 2px solid #a1a1a1;
 }
 
+// .mb-1{	
+//     border-bottom: 0.25rem;
+// }
+// .mb-2{	
+//     border-bottom: 0.5rem;
+// }
+// .mb-3{	
+//     border-bottom: 1rem;
+// }
+// .mb-4{	
+//     border-bottom: 1.5rem;
+// }
+// .mb-5{
+//     border-bottom: 3rem;
+// }
+
 
 
 
@@ -156,9 +172,9 @@ hr {
 *
 */
 
-.i4ewOd-pzNkMb-haAclf {
-    background-color: #279fbb !important;
-}
+// .i4ewOd-pzNkMb-haAclf {
+//     background-color: #279fbb !important;
+// }
 
 
 
@@ -2645,6 +2661,7 @@ select:focus {
 *   Vue mobal style
 *
 */
+
 // $modal-xl: 900px;
 // $modal-xxl: 1040px;
 // $modal-xxxl: 1180px;
@@ -2674,16 +2691,6 @@ select:focus {
 //   .modal-body {
 //     padding: 0;
 //   }
-
-.modal-content {
-    margin-top: 20% !important;
-}
-
-@media screen and (max-width: 704px) {
-    .modal-content {
-        margin-top: 50% !important;
-    }
-}
 
 //   &.aside .modal-content {
 //     height: auto;
@@ -2728,7 +2735,24 @@ select:focus {
 .modal-dialog {
     width: 60% !important;
     max-width: 100% !important;
-    margin-top: 2% !important;
+    margin-top: 5% !important;
+}
+
+.modal-content {
+    margin-top: 25% !important;
+    // margin-top: 50% !important;
+}
+
+@media screen and (max-width: 704px) {
+    .modal-content {
+        margin-top: 75% !important;
+    }
+
+    .modal-dialog {
+        width: 90% !important;
+        max-width: 100% !important;
+        margin-top: 10% !important;
+    }
 }
 
 // .modal-dialog, .modal-content{
@@ -2757,6 +2781,15 @@ select:focus {
         font-size: 18px;
     }
 }
+
+
+
+/*
+*
+*	
+*   Guid index news block style
+*
+*/
 
 @media only screen and (max-width: 674px) {
     .m-component-stack .m-component-stack--header {

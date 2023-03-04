@@ -117,10 +117,6 @@ hr {
 *   Google my maps styles
 *
 */
-.i4ewOd-pzNkMb-haAclf {
-  background-color: #279fbb !important;
-}
-
 /*
 *
 *   Admin page styles
@@ -2584,21 +2580,27 @@ select:focus {
 *   Vue mobal style
 *
 */
+.modal-dialog {
+  width: 60% !important;
+  max-width: 100% !important;
+  margin-top: 5% !important;
+}
+
 .modal-content {
-  margin-top: 20% !important;
+  margin-top: 25% !important;
 }
 
 @media screen and (max-width: 704px) {
   .modal-content {
-    margin-top: 50% !important;
+    margin-top: 75% !important;
+  }
+
+  .modal-dialog {
+    width: 90% !important;
+    max-width: 100% !important;
+    margin-top: 10% !important;
   }
 }
-.modal-dialog {
-  width: 60% !important;
-  max-width: 100% !important;
-  margin-top: 2% !important;
-}
-
 /*
 *
 *	News block on index opage
@@ -2621,6 +2623,12 @@ select:focus {
     font-size: 18px;
   }
 }
+/*
+*
+*	
+*   Guid index news block style
+*
+*/
 @media only screen and (max-width: 674px) {
   .m-component-stack .m-component-stack--header {
     margin-bottom: 20px;

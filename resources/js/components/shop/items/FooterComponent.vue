@@ -1,7 +1,7 @@
 <template>
     <div class="footer"> 
         <div class="container"> 
-            <footerAd />
+            <footerLogo />
             <div class="row">
 
                 <div class="col-md-4 display-none-720px">
@@ -53,6 +53,8 @@
 <script>
     import followComponent from '../../global_components/FollowComponent.vue'
     import share from '../../global_components/ShareComponent.vue'
+    import footerLogo from "../../global_components/FooterLogoBlockComponent.vue";
+
     export default {
         data: function () {
             return {
@@ -61,7 +63,8 @@
         },
         components: {
             followComponent,
-            share
+            share,
+            footerLogo
         },
         mounted() {
             // this.num = Math.floor(Math.random() * 11);

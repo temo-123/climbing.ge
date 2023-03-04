@@ -7,8 +7,8 @@
                 </div>
                 <router-link :to="'product/'+product_data.global_product.url_title">
                     <div class="item-img">
-                        <site-img v-if="product_data.product_images.length" :src="'/public/images/product_option_img/'+get_product_image()" :alt="product_data.locale_product.title" />
-                        <site-img v-else :src="'/public/images/site_img/shop_demo.jpg'" :alt="product_data.locale_product.title" />
+                        <shop-img v-if="product_data.product_images.length" :src="'/public/images/product_option_img/'+get_product_image()" :alt="product_data.locale_product.title" />
+                        <shop-img v-else :src="'/public/images/site_img/shop_demo.jpg'" :alt="product_data.locale_product.title" />
                     </div>
                 </router-link>
                 <div class="next_image" v-if="image_num < (this.image_length - 1)">
@@ -104,7 +104,9 @@
 
             get_product_image(){
                 this.image_length = this.product_data.product_images.length
-                return(this.product_data.product_images[this.image_num]);
+                var active_image = this.product_data.product_images[this.image_num]
+                // alert(active_image);
+                return(active_image);
             },
 
             product_quick_view(product_id){

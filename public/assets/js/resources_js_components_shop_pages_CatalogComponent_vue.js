@@ -211,7 +211,9 @@ __webpack_require__.r(__webpack_exports__);
     },
     get_product_image: function get_product_image() {
       this.image_length = this.product_data.product_images.length;
-      return this.product_data.product_images[this.image_num];
+      var active_image = this.product_data.product_images[this.image_num]; // alert(active_image);
+
+      return active_image;
     },
     product_quick_view: function product_quick_view(product_id) {
       this.$emit('quick_view', product_id);
@@ -601,6 +603,10 @@ __webpack_require__.r(__webpack_exports__);
         _this2.product_modal = true;
       })["catch"](function (error) {});
     },
+    close_product_modal: function close_product_modal() {
+      this.product_modal = false;
+      this.quick_product = [];
+    },
     serReangSlider: function serReangSlider() {
       if (this.min_price == 0 && this.max_price == 0) {
         this.min_price = 0;
@@ -678,7 +684,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_laravel_mix_node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n/* .cart_icon{\n    font-size: 140%;\n    float: left;\n    margin-right: 2%;\n} */\n.product_quick_view[data-v-4062435e]{\n    text-align: center;\n    /* margin-top: -10%; */\n    background-color: #1d080830;\n    /* display: none; */\n    position: relative;\n}\n.product_quick_view[data-v-4062435e]:hover {\n    background-color: #97b67030;\n}\n.favorite_icon[data-v-4062435e]{\n    font-size: 150%;\n    float: left;\n    margin-right: 2%;\n}\n.previes_image[data-v-4062435e]{\n    position: absolute;\n    font-size: 250%;\n    margin-top: 25%;\n    float: left;\n    text-shadow: #abababb5 1px 1px 0;\n    /* display: none; */\n}\n.next_image[data-v-4062435e]{\n    position: absolute;\n    font-size: 250%;\n    float: right;\n    left: 92%;\n    bottom: 55%;\n    text-shadow: #abababb5 1px 1px 0;\n    /* display: none; */\n}\n.lingalleryContainer[data-v-40681078] .lingallery figure[data-v-4062435e] {\n    height: 100% !important;\n}\n", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n/* .cart_icon{\n    font-size: 140%;\n    float: left;\n    margin-right: 2%;\n} */\n.product_quick_view[data-v-4062435e]{\n    text-align: center;\n    /* margin-top: -10%; */\n    background-color: #1d080830;\n    /* display: none; */\n    position: relative;\n}\n.product_quick_view[data-v-4062435e]:hover {\n    background-color: #97b67030;\n}\n.favorite_icon[data-v-4062435e]{\n    font-size: 150%;\n    float: left;\n    margin-right: 2%;\n}\n.previes_image[data-v-4062435e]{\n    position: absolute;\n    font-size: 250%;\n    margin-top: 25%;\n    float: left;\n    text-shadow: #abababb5 1px 1px 0;\n    /* display: none; */\n}\n.next_image[data-v-4062435e]{\n    position: absolute;\n    font-size: 250%;\n    float: right;\n    left: 92%;\n    bottom: 55%;\n    text-shadow: #abababb5 1px 1px 0;\n    /* display: none; */\n}\n.lingalleryContainer[data-v-40681078] .lingallery figure[data-v-4062435e] {\n    height: 100% !important;\n}\n", ""]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
@@ -702,7 +708,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_laravel_mix_node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, "\n.list_btn[data-v-4148482d]{\n    border: 1px solid !important;\n    border-radius: 3.5px !important;\n    border-color: #b3b3b3 !important;\n}\n.range-slider[data-v-4148482d]{\n    width: 100%;\n    /* margin: auto 16px;\n    text-align: center;\n    position: relative; */\n}\n.range-slider svg[data-v-4148482d], .range-slider input[type = range][data-v-4148482d]{\n    position: absolute;\n    left: 0;\n    right: 0;\n}\ninput[type=range][data-v-4148482d]::-webkit-slider-thumb{\n    z-index: 2;\n    position: relative;\n    top: 2px;\n    margin-top: -7px;\n}\n.price_range[data-v-4148482d]{\n    width: 100%\n}\n.price_range_text p[data-v-4148482d]{\n    /* margin-top: 5%; */\n    margin-bottom: 0% !important;\n}\n\n/* .max_price_range{\n    -webkit-transform: rotateY(180deg);\n    -moz-transform: rotateY(180deg);\n    -ms-transform: rotateY(180deg);\n    -o-transform: rotateY(180deg);\n    transform: rotateY(180deg);\n} */\n\n/* Switch button */\n.btn-default.btn-on.active[data-v-4148482d]{\n    background-color: #8ee48e;\n}\n.btn-default.btn-off.active[data-v-4148482d]{\n    background-color: #fc8480;\n}\n.product_style_but_icon[data-v-4148482d]{\n    font-size: 180%;\n}\n.modal-content[data-v-4148482d] {\n    margin-top: 50% !important;\n}\n", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, "\n.model_price_text_size[data-v-4148482d]{\n    font-size: 2.5em;\n}\n.margin_bottom_top[data-v-4148482d]{\n    margin-top: -3%;\n    margin-bottom: -3%;\n}\n.list_btn[data-v-4148482d]{\n    border: 1px solid !important;\n    border-radius: 3.5px !important;\n    border-color: #b3b3b3 !important;\n}\n.range-slider[data-v-4148482d]{\n    width: 100%;\n    /* margin: auto 16px;\n    text-align: center;\n    position: relative; */\n}\n.range-slider svg[data-v-4148482d], .range-slider input[type = range][data-v-4148482d]{\n    position: absolute;\n    left: 0;\n    right: 0;\n}\ninput[type=range][data-v-4148482d]::-webkit-slider-thumb{\n    z-index: 2;\n    position: relative;\n    top: 2px;\n    margin-top: -7px;\n}\n.price_range[data-v-4148482d]{\n    width: 100%\n}\n.price_range_text p[data-v-4148482d]{\n    /* margin-top: 5%; */\n    margin-bottom: 0% !important;\n}\n\n/* .max_price_range{\n    -webkit-transform: rotateY(180deg);\n    -moz-transform: rotateY(180deg);\n    -ms-transform: rotateY(180deg);\n    -o-transform: rotateY(180deg);\n    transform: rotateY(180deg);\n} */\n\n/* Switch button */\n.btn-default.btn-on.active[data-v-4148482d]{\n    background-color: #8ee48e;\n}\n.btn-default.btn-off.active[data-v-4148482d]{\n    background-color: #fc8480;\n}\n.product_style_but_icon[data-v-4148482d]{\n    font-size: 180%;\n}\n.modal-content[data-v-4148482d] {\n    margin-top: 50% !important;\n}\n", ""]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
@@ -10446,7 +10452,7 @@ var render = function () {
                 { staticClass: "item-img" },
                 [
                   _vm.product_data.product_images.length
-                    ? _c("site-img", {
+                    ? _c("shop-img", {
                         attrs: {
                           src:
                             "/public/images/product_option_img/" +
@@ -10454,7 +10460,7 @@ var render = function () {
                           alt: _vm.product_data.locale_product.title,
                         },
                       })
-                    : _c("site-img", {
+                    : _c("shop-img", {
                         attrs: {
                           src: "/public/images/site_img/shop_demo.jpg",
                           alt: _vm.product_data.locale_product.title,
@@ -10895,7 +10901,7 @@ var render = function () {
           },
           on: {
             close: function ($event) {
-              _vm.product_modal = false
+              return _vm.close_product_modal()
             },
           },
         },
@@ -10907,16 +10913,17 @@ var render = function () {
               _vm._v("            "),
               _vm._l(_vm.quick_product, function (q_product) {
                 return _c(
-                  "div",
+                  "span",
                   { key: q_product.id },
                   [
                     _vm._v("\n                "),
-                    _vm._v("\n\n                "),
-                    _c("h1", [_vm._v(_vm._s(q_product.locale_product.title))]),
-                    _vm._v("\n\n                "),
+                    _c("h1", { staticClass: "margin_bottom_top" }, [
+                      _vm._v(_vm._s(q_product.locale_product.title)),
+                    ]),
                     _vm._v("\n\n                "),
                     q_product.product_images.length > 0
                       ? _c("site-img", {
+                          staticClass: "margin_bottom_top",
                           attrs: {
                             src:
                               "/public/images/product_option_img/" +
@@ -10928,17 +10935,62 @@ var render = function () {
                     _vm._v("\n                "),
                     q_product.product_images.length == 0
                       ? _c("site-img", {
+                          staticClass: "margin_bottom_top",
                           attrs: {
                             src: "/public/images/site_img/shop_demo.jpg",
                             alt: q_product.locale_product.title,
                           },
                         })
                       : _vm._e(),
-                    _vm._v(
-                      "\n\n\n                " +
-                        _vm._s(q_product.locale_product.text) +
-                        "\n            "
+                    _vm._v("\n\n                "),
+                    q_product.min_price != q_product.max_price
+                      ? _c(
+                          "p",
+                          {
+                            staticClass:
+                              "margin_bottom_top model_price_text_size",
+                          },
+                          [
+                            _vm._v(
+                              _vm._s(q_product.min_price) +
+                                " ₾ - " +
+                                _vm._s(q_product.max_price) +
+                                " ₾"
+                            ),
+                          ]
+                        )
+                      : _vm._e(),
+                    _vm._v("\n                "),
+                    q_product.min_price == q_product.max_price
+                      ? _c(
+                          "p",
+                          {
+                            staticClass:
+                              "margin_bottom_top model_price_text_size",
+                          },
+                          [_vm._v(_vm._s(q_product.max_price) + " ₾")]
+                        )
+                      : _vm._e(),
+                    _vm._v("\n\n                "),
+                    _c("span", {
+                      staticClass: "margin_bottom_top",
+                      domProps: {
+                        innerHTML: _vm._s(q_product.locale_product.text),
+                      },
+                    }),
+                    _vm._v("\n\n                "),
+                    _c(
+                      "router-link",
+                      {
+                        staticClass: "btn btn-primary margin_bottom_top",
+                        staticStyle: { float: "left" },
+                        attrs: {
+                          to: "product/" + q_product.global_product.url_title,
+                        },
+                      },
+                      [_vm._v(" Open product")]
                     ),
+                    _vm._v("\n            "),
                   ],
                   1
                 )

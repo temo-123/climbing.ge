@@ -128,29 +128,29 @@
         <stack-modal
             :show="product_modal"
             title="Product"
-            @close="product_modal=false"
+            @close="close_product_modal()"
             :modal-class="{ [modalClass]: true }"
             :saveButton="{ visible: true, title: 'Save', btnClass: { 'btn btn-primary': true } }"
             :cancelButton="{ visible: false, title: 'Close', btnClass: { 'btn btn-danger': true } }"
         >
             <pre class="language-vue">
-                <div v-for="q_product in quick_product" :key='q_product.id'>
-                    <!-- {{ q_product }} -->
+                <span v-for="q_product in quick_product" :key='q_product.id'>
+                    <h1 class="margin_bottom_top">{{ q_product.locale_product.title }}</h1>
 
-                    <h1>{{ q_product.locale_product.title }}</h1>
+                    <site-img class="margin_bottom_top" v-if="q_product.product_images.length > 0" :src="'/public/images/product_option_img/'+q_product.product_images[0]" :alt='q_product.locale_product.title'/>
+                    <site-img class="margin_bottom_top" v-if="q_product.product_images.length == 0" :src="'/public/images/site_img/shop_demo.jpg'" :alt="q_product.locale_product.title" />
 
-                    <!-- <site-img :src="'../../../public/images/product_option_img/'+q_product.product_images[0]" :img_class="''" :alt='q_product.locale_product.title'/> -->
+                    <p class="margin_bottom_top model_price_text_size" v-if="q_product.min_price != q_product.max_price" >{{ q_product.min_price }} ₾ - {{ q_product.max_price }} ₾</p>
+                    <p class="margin_bottom_top model_price_text_size" v-if="q_product.min_price == q_product.max_price">{{ q_product.max_price }} ₾</p>
 
-                    <site-img v-if="q_product.product_images.length > 0" :src="'/public/images/product_option_img/'+q_product.product_images[0]" :alt='q_product.locale_product.title'/>
-                    <site-img v-if="q_product.product_images.length == 0" :src="'/public/images/site_img/shop_demo.jpg'" :alt="q_product.locale_product.title" />
+                    <span class="margin_bottom_top" v-html="q_product.locale_product.text"></span>
 
-
-                    {{ q_product.locale_product.text }}
-                </div>
+                    <router-link :to="'product/'+q_product.global_product.url_title" class="btn btn-primary margin_bottom_top" style="float: left;"> Open product</router-link>
+                </span>
             </pre>
             <div slot="modal-footer">
                 <div class="modal-footer">
-                    
+                    <!-- <router-link :to="'product/'+quick_product[0].global_product.url_title" class="btn btn-primary"> Open product page</router-link> -->
                 </div>
             </div>
         </stack-modal>
@@ -259,6 +259,10 @@
                 .catch(error =>{
                 })
             },
+            close_product_modal(){
+                this.product_modal = false
+                this.quick_product = []
+            },
 
             serReangSlider(){
                 if(this.min_price == 0 && this.max_price == 0){
@@ -334,6 +338,13 @@
 </script>
 
 <style scoped>
+    .model_price_text_size{
+        font-size: 2.5em;
+    }
+    .margin_bottom_top{
+        margin-top: -3%;
+        margin-bottom: -3%;
+    }
     .list_btn{
         border: 1px solid !important;
         border-radius: 3.5px !important;

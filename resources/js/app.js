@@ -42,8 +42,8 @@ Vue.use(Router);
 
 import leftmenu from "./components/user/items/LeftMenuComponent.vue";
 import goTo from "./components/global_components/GoToComponrnt.vue";
-import footerAd from "./components/global_components/ad/FooterAdBlockComponent.vue";
-import rightAd from "./components/global_components/ad/RightAdBlockComponent.vue";
+// import footerAd from "./components/global_components/ad/FooterAdBlockComponent.vue";
+// import rightAd from "./components/global_components/ad/RightAdBlockComponent.vue";
 import store from "./store";
 import site_img from "./components/site/items/ImageComponent.vue";
 import shop_img from "./components/shop/items/ImageComponent.vue";
@@ -54,8 +54,8 @@ Vue.component("shop-img", shop_img);
 Vue.component("forum-img", forum_img);
 Vue.component("left-menu", leftmenu);
 Vue.component("goTo", goTo);
-Vue.component("footerAd", footerAd);
-Vue.component("rightAd", rightAd);
+// Vue.component("footerAd", footerAd);
+// Vue.component("rightAd", rightAd);
 
 import MainWrapper from "./components/shop/MainWrapperComponent.vue";
 import Index from "./components/site/IndexComponent.vue";
