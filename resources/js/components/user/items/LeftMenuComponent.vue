@@ -457,13 +457,28 @@
                 "        
             > 
                 <li class="list-group-item text-muted">
-                    <span class="admin_menu">{{ $t('user menu users') }} (Beta)</span>
+                    <span class="admin_menu">{{ $t('user menu users') }}</span>
                 </li>
             </router-link>
 
             <router-link :to="{name: 'options'}" exact>
                 <li class="list-group-item text-muted ">
                     <span class="admin_menu">{{ $t('user menu options') }}</span>
+                </li>
+            </router-link>
+
+            <li class="list-group-item text-muted admin_menu_static_block"></li>
+
+            <router-link :to="{name: 'usersList'}" exact 
+                v-if="
+                    $can('add', 'user') ||
+                    $can('del', 'user') ||
+                    $can('edit_permissions', 'user') ||
+                    $can('create_ban', 'user')
+                "        
+            > 
+                <li class="list-group-item text-muted">
+                    <span class="admin_menu">Media (Beta)</span>
                 </li>
             </router-link>
 
