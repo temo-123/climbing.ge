@@ -1,0 +1,607 @@
+<template>
+    <div class="container" id="sectors">
+        <div class="row" v-if="spot_images.length > 0">
+            <div
+                :class="'sector_images sector_images_' + spot_images.length"
+                v-for="spot_image in spot_images"
+                :key="spot_image"
+            >
+                <openImg
+                    :img="'/public/images/spot_rocks_img/' + spot_image.image"
+                    :img_alt="spot_image.title"
+                />
+            </div>
+        </div>
+
+
+        <div class="row" v-for="area in climbing_area" :key="area">
+            <!-- {{ area }} -->
+            <span v-if="area['local_images']" >
+                <sector_and_local_area_images :sectors_and_images="area"/>
+            </span>
+            <span v-else>
+                <sector :sector="area"/>
+            </span>
+        </div>
+
+    </div>
+</template>
+
+<script>
+import StackModal from "@innologica/vue-stackable-modal"; //https://innologica.github.io/vue-stackable-modal/#sample-css
+
+import sector from "./items/SectorComponent.vue"
+import sector_and_local_area_images from "./items/SectorsAndAreaLocalImageComponrnt.vue"
+
+import openImg from "../ImageOpenComponent.vue";
+
+export default {
+    components: {
+        StackModal,
+
+        sector,
+        sector_and_local_area_images,
+
+        openImg,
+    },
+    props: ["article_id"],
+    data: function () {
+        return {
+            climbing_area: [],
+            spot_images: [],
+
+            show_route_modal: false,
+            show_mtp_modal: false,
+            modalClass: [],
+
+            route_detals: [],
+
+            mtp_detals: [],
+            id: this.article_id
+        };
+    },
+    mounted() {
+        this.get_outdoor_routes();
+        this.get_spot_rocks_images();
+        // this.get_spot_rocks_images();
+    },
+
+    watch: {
+        $route(to, from) {
+            this.get_outdoor_routes();
+            this.get_spot_rocks_images();
+        },
+    },
+    methods: {
+        update(id){
+            this.id = id
+            this.get_outdoor_routes();
+            this.get_spot_rocks_images();
+        },
+
+        lead_grade_chart(grade_fr) {
+            var grad = "";
+            if (localStorage.getItem("grade") == "yds") {
+                if (grade_fr == "4") grad = "5.6";
+                else if (grade_fr == "5a" || grade_fr == "5a+") grad = "5.7";
+                else if (grade_fr == "5b" || grade_fr == "5b+") grad = "5.8";
+                else if (grade_fr == "5c" || grade_fr == "5c+") grad = "5.9";
+                else if (grade_fr == "6a") grad = "5.10a";
+                else if (grade_fr == "6a+") grad = "5.10b";
+                else if (grade_fr == "6b") grad = "5.10c";
+                else if (grade_fr == "6b+") grad = "5.10d";
+                else if (grade_fr == "6c") grad = "5.11a/5.11b";
+                else if (grade_fr == "6c+") grad = "5.11c";
+                else if (grade_fr == "7a") grad = "5.11d";
+                else if (grade_fr == "7a+") grad = "5.12a";
+                else if (grade_fr == "7b") grad = "5.12b";
+                else if (grade_fr == "7b+") grad = "5.12c";
+                else if (grade_fr == "7c") grad = "5.12d";
+                else if (grade_fr == "7c+") grad = "5.13a";
+                else if (grade_fr == "8a") grad = "5.13b";
+                else if (grade_fr == "8a+") grad = "5.13c";
+                else if (grade_fr == "8b") grad = "5.13d";
+                else if (grade_fr == "8b+") grad = "5.14a";
+                else if (grade_fr == "8c") grad = "5.14b";
+                else if (grade_fr == "8c+") grad = "5.14c";
+                else if (grade_fr == "9a") grad = "5.14d";
+                else if (grade_fr == "9a+") grad = "5.15a";
+                else if (grade_fr == "9b") grad = "5.15b";
+                else if (grade_fr == "9b+") grad = "5.15c";
+                else if (grade_fr == "9c") grad = "5.15d";
+                else if (grade_fr == "9c+") grad = "5.16a";
+                else if (grade_fr == "Project") grad = "Project";
+                else grad = "?";
+            } else if (localStorage.getItem("grade") == "UIAA") {
+                // console.log(localStorage.getItem("grade"))
+                if (grade_fr == "4") grad = "IV";
+                else if (grade_fr == "5a" || grade_fr == "5a+") grad = "V+";
+                else if (grade_fr == "5b" || grade_fr == "5b+") grad = "VI-";
+                else if (grade_fr == "5c" || grade_fr == "5c+") grad = "VI";
+                else if (grade_fr == "6a") grad = "VI+";
+                else if (grade_fr == "6a+") grad = "VII-";
+                else if (grade_fr == "6b") grad = "VII";
+                else if (grade_fr == "6b+") grad = "VII+";
+                else if (grade_fr == "6c") grad = "VII+/VIII-";
+                else if (grade_fr == "6c+") grad = "VIII-";
+                else if (grade_fr == "7a") grad = "VIII";
+                else if (grade_fr == "7a+") grad = "VIII+";
+                else if (grade_fr == "7b") grad = "VIII+/IX-";
+                else if (grade_fr == "7b+") grad = "IX-";
+                else if (grade_fr == "7c") grad = "IX";
+                else if (grade_fr == "7c+") grad = "IX+";
+                else if (grade_fr == "8a") grad = "IX+/X-";
+                else if (grade_fr == "8a+") grad = "X-";
+                else if (grade_fr == "8b") grad = "X";
+                else if (grade_fr == "8b+") grad = "X+";
+                else if (grade_fr == "8c") grad = "XI-";
+                else if (grade_fr == "8c+") grad = "XI";
+                else if (grade_fr == "9a") grad = "XI+";
+                else if (grade_fr == "9a+") grad = "XII-";
+                else if (grade_fr == "9b") grad = "XII";
+                else if (grade_fr == "9b+") grad = "XII+";
+                else if (grade_fr == "9c") grad = "XIII";
+                else if (grade_fr == "Project") grad = "Project";
+                else grad = "?";
+            } else {
+                grad = "Error";
+            }
+            return grad;
+        },
+        boulder_grade_chart(grade_fr) {
+            var grade = "";
+            if (localStorage.getItem("grade") == "yds") {
+                if (grade_fr == "VB") grade = "4-";
+                else if (grade_fr == "V0-") grade = "4";
+                else if (grade_fr == "V0") grade = "4+";
+                else if (grade_fr == "V0+") grade = "5a";
+                else if (grade_fr == "V1") grade = "5b";
+                else if (grade_fr == "V2") grade = "5c";
+                else if (grade_fr == "V3") grade = "6a";
+                else if (grade_fr == "V4") grade = "6b";
+                else if (grade_fr == "V5") grade = "6c+";
+                else if (grade_fr == "V6") grade = "7a";
+                else if (grade_fr == "V7") grade = "7a+";
+                else if (grade_fr == "V8") grade = "7b";
+                else if (grade_fr == "V9") grade = "7c";
+                else if (grade_fr == "V10") grade = "7c+";
+                else if (grade_fr == "V11") grade = "8a";
+                else if (grade_fr == "V12") grade = "8a+";
+                else if (grade_fr == "V13") grade = "8b";
+                else if (grade_fr == "V14") grade = "8b+";
+                else if (grade_fr == "V15") grade = "8c";
+                else if (grade_fr == "V16") grade = "8c+";
+                else if (grade_fr == "V17") grade = "9a";
+                else if (grade_fr == "Project") grad = "Project";
+                else grade = "?";
+            } else if (localStorage.getItem("grade") == "UIAA") {
+                if (grade_fr == "VB") grade = "4-";
+                else if (grade_fr == "V0-") grade = "VI+";
+                else if (grade_fr == "V0") grade = "VII-";
+                else if (grade_fr == "V0+") grade = "VII";
+                else if (grade_fr == "V1") grade = "VII+";
+                else if (grade_fr == "V2") grade = "VII+/VII-";
+                else if (grade_fr == "V3") grade = "VIII-";
+                else if (grade_fr == "V4") grade = "VIII";
+                else if (grade_fr == "V5") grade = "VIII/VIII+";
+                else if (grade_fr == "V6") grade = "VIII+";
+                else if (grade_fr == "V7") grade = "IX-";
+                else if (grade_fr == "V8") grade = "IX";
+                else if (grade_fr == "V9") grade = "IX/IX+";
+                else if (grade_fr == "V10") grade = "IX+";
+                else if (grade_fr == "V11") grade = "X-";
+                else if (grade_fr == "V12") grade = "X";
+                else if (grade_fr == "V13") grade = "X+";
+                else if (grade_fr == "V14") grade = "XI-";
+                else if (grade_fr == "V15") grade = "XI";
+                else if (grade_fr == "V16") grade = "XI+";
+                else if (grade_fr == "V17") grade = "XII-";
+                else if (grade_fr == "Project") grad = "Project";
+                else grade = "?";
+            } else {
+                grad = "Error";
+            }
+            return grade;
+        },
+
+        get_spot_rocks_images() {
+            this.spot_images = []
+            axios
+                .get("../../api/get_spot_rocks_images/" + this.id)
+                .then((response) => {
+                    this.spot_images = response.data;
+                })
+                .catch((error) => {});
+        },
+        
+        get_outdoor_routes() {
+            this.climbing_area = []
+            axios
+                .get("../../api/sector/get_sector_and_routes/" + this.id)
+                .then((response) => {
+                    this.climbing_area = response.data;
+                })
+                .catch((error) => {});
+        },
+
+
+        show_route_model(id) {
+            this.show_route_modal = true;
+            this.route_detals = [];
+
+            axios
+                .get("../../api/route/" + id)
+                .then((response) => {
+                    this.route_detals = response.data;
+                    // this.route_post_list = true;
+                })
+                .catch((error) => {});
+        },
+        // get_route_posts(route_id) {
+        //     this.route_posts = [];
+        //     axios
+        //         .get("../api/posts/get_route_posts/" + route_id)
+        //         .then((response) => {
+        //             this.route_posts = response.data;
+        //         })
+        //         .catch((error) => console.log(error));
+        // },
+        show_mtp_madel(id) {
+            this.show_mtp_modal = true;
+            this.mtp_detals = [];
+
+            axios
+                .get("../../api/MTP/" + id)
+                .then((response) => {
+                    this.mtp_detals = response.data;
+                    // this.mtp_post_list = true;
+                })
+                .catch((error) => {});
+        },
+        // get_mtp_posts(mtp_id) {
+        //     this.mtp_posts = [];
+        //     axios
+        //         .get("../api/posts/get_mtp_posts/" + mtp_id)
+        //         .then((response) => {
+        //             this.mtp_posts = response.data;
+        //         })
+        //         .catch((error) => console.log(error));
+        // },
+    },
+};
+</script>
+
+<style lang="scss">
+    .fade {
+        opacity: 1;
+        background: #000000a3 !important;
+    }
+    body.modal-open {
+        margin-right: 0;
+    }
+    .modal-dialog {
+        margin-top: 15em;
+    }
+    @media screen and (min-width: 768px) {
+        .modal-dialog {
+            width: 75% !important;
+        }
+    }
+    .modal-footer {
+        text-align: left;
+    }
+
+    .route_detal {
+        margin: 0 0 0px !important;
+    }
+    .mtp_name h3 {
+        margin: 0 0 0px !important;
+        text-align: left !important;
+    }
+
+    .spot_rocks_image {
+        width: 100%;
+    }
+
+    .sector_images {
+        float: left;
+        margin: 0.25%;
+    }
+    .sector_images_1 {
+        width: 99%;
+    }
+    .sector_images_2 {
+        width: 49%;
+    }
+    .sector_images_3 {
+        width: 32.6%;
+    }
+    .sector_images_4 {
+        width: 24.1%;
+    }
+    .sector_images_5 {
+        width: 19.5%;
+    }
+    .sector_images_6 {
+        width: 16%;
+    }
+    .sector_images_7 {
+        width: 14, 0%;
+    }
+    .sector_images_8 {
+        width: 12%;
+    }
+    .sector_images_9 {
+        width: 10.5%;
+    }
+    // .sector_images_1 {
+    //     width: 9.5%;
+    // }
+
+    /*
+    *
+    * ===========================================================
+    *     HERO SECTION  https://bootsnipp.com/snippets/VgkqV
+    * ===========================================================
+    *
+    */
+    .hero {
+        padding: 6.25rem 0px !important;
+        margin: 0px !important;
+    }
+    .cardbox {
+        border-radius: 3px;
+        margin-bottom: 20px;
+        padding: 0px !important;
+        border: 1px;
+        border-style: solid;
+        border-color: rgb(186 186 186);
+        border-radius: 1em;
+    }
+
+    /* ------------------------------- */
+    /* Cardbox Heading
+    ---------------------------------- */
+    .cardbox .cardbox-heading {
+        padding: 16px 16px 16px 0;
+        margin: 0;
+    }
+    .cardbox .btn-flat.btn-flat-icon {
+        border-radius: 50%;
+        font-size: 24px;
+        height: 32px;
+        width: 32px;
+        padding: 0;
+        overflow: hidden;
+        color: #fff !important;
+        background: #b5b6b6;
+
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+    }
+    .cardbox .float-right .dropdown-menu {
+        position: relative;
+        left: 13px !important;
+    }
+    .cardbox .float-right a:hover {
+        background: #f4f4f4 !important;
+    }
+    .cardbox .float-right a.dropdown-item {
+        display: block;
+        width: 100%;
+        padding: 4px 0px 4px 10px;
+        clear: both;
+        font-weight: 400;
+        font-family: "Abhaya Libre", serif;
+        font-size: 14px !important;
+        color: #848484;
+        text-align: inherit;
+        white-space: nowrap;
+        background: 0 0;
+        border: 0;
+    }
+
+    /* ------------------------------- */
+    /* Media Section
+    ---------------------------------- */
+    .media {
+        display: -ms-flexbox;
+        display: flex;
+        -ms-flex-align: start;
+        align-items: flex-start;
+    }
+    .d-flex {
+        display: -ms-flexbox !important;
+        display: flex !important;
+    }
+    .media .mr-3 {
+        margin-right: 1rem !important;
+    }
+    .media img {
+        width: 48px !important;
+        height: 48px !important;
+        padding: 2px;
+        border: 2px solid #f4f4f4;
+    }
+    .media-body {
+        -ms-flex: 1;
+        flex: 1;
+        padding: 0.4rem !important;
+    }
+    .media-body p {
+        font-family: "Rokkitt", serif;
+        font-weight: 500 !important;
+        font-size: 14px;
+        color: #88898a;
+
+        float: left;
+    }
+    .media-body small span {
+        font-family: "Rokkitt", serif;
+        font-size: 12px;
+        color: #aaa;
+        margin-right: 10px;
+    }
+
+    /* ------------------------------- */
+    /* Cardbox Item
+    ---------------------------------- */
+    .cardbox .cardbox-item {
+        position: relative;
+        display: block;
+    }
+    /* .cardbox .cardbox-item img{
+    } */
+    .img-responsive {
+        display: block;
+        max-width: 100%;
+        height: auto;
+    }
+    .fw {
+        width: 100% !important;
+        height: auto;
+    }
+
+    /* ------------------------------- */
+    /* Cardbox Base
+    ---------------------------------- */
+    .cardbox-base {
+        border-bottom: 2px solid #f4f4f4;
+    }
+    .cardbox-base ul {
+        /* margin: 10px 0px 10px 15px!important;  */
+        padding: 10px !important;
+        font-size: 0px;
+        display: inline-block;
+    }
+    .cardbox-base li {
+        list-style: none;
+        margin: 0px 0px 0px -8px !important;
+        padding: 0px 0px 0px 0px !important;
+        display: inline-block;
+    }
+
+    .cardbox-base li a {
+        margin: 0px !important;
+        padding: 0px !important;
+    }
+    .cardbox-base li a i {
+        position: relative;
+        top: 4px;
+        font-size: 26px;
+        color: #8d8d8d;
+        margin-right: 15px;
+    }
+    .cardbox-base li a i :hover {
+        color: #00c4cf;
+        cursor: pointer;
+    }
+    .cardbox-base li a span {
+        font-family: "Rokkitt", serif;
+        font-size: 14px;
+        color: #8d8d8d;
+        /* margin-left: 20px; */
+        position: relative;
+        /* top: 5px;  */
+    }
+    .cardbox-base li a em {
+        font-family: "Rokkitt", serif;
+        font-size: 14px;
+        color: #8d8d8d;
+        position: relative;
+        top: 3px;
+    }
+    .cardbox-base li a img {
+        width: 25px;
+        height: 25px;
+        margin: 0px !important;
+        border: 2px solid #fff;
+    }
+
+    /* ------------------------------- */
+    /* Cardbox Comments
+    ---------------------------------- */
+    .cardbox-comments {
+        padding: 10px 0 0 0 !important;
+        /* font-size: 0px;	 */
+        text-align: center;
+        display: inline-block;
+    }
+    .cardbox-comments .comment-avatar img {
+        margin-top: 1px;
+        margin-right: 10px;
+        position: relative;
+        display: inline-block;
+        text-align: center;
+        width: 40px;
+        height: 40px;
+        /* float: left; */
+    }
+    .cardbox-comments .comment-body {
+        overflow: auto;
+    }
+    .post_comment_porm {
+        position: relative;
+        right: -45px;
+        top: -40px;
+        margin-bottom: -34px;
+        border: 4px solid #f4f4f4;
+        width: 100%;
+        overflow: hidden;
+        margin-right: 68px;
+    }
+    .post_comment_porm input[type="text"] {
+        background-color: #fff;
+        line-height: 10px;
+        padding: 10px 60px 8px 10px;
+        border: none;
+        border-radius: 4px;
+        width: 350px;
+        font-family: "Rokkitt", serif;
+        font-size: 14px;
+        color: #8d8d8d;
+        height: inherit;
+        font-weight: 700;
+    }
+    .post_comment_porm button {
+        position: absolute;
+        right: 0;
+        top: 0px;
+        border: none;
+        background-color: transparent;
+        color: #bbbbbb;
+        padding: 15px 25px;
+        cursor: pointer;
+
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+    }
+    .post_comment_porm button i {
+        font-size: 20px;
+        line-height: 30px;
+        display: block;
+    }
+    .m-0 {
+        margin: 0% !important;
+    }
+
+    /* ------------------------------- */
+    /* Author
+    ---------------------------------- */
+    .author a {
+        font-family: "Rokkitt", serif;
+        font-size: 16px;
+        color: #00c4cf;
+    }
+    .author p {
+        font-family: "Rokkitt", serif;
+        font-size: 16px;
+        color: #8d8d8d;
+    }
+</style>

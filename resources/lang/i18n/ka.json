@@ -1,0 +1,213 @@
+{
+    "guide": {
+        "name": "ცოცვის გზამკვლევი",
+
+        "menu": {
+            "climbing": "მეკლდეურობა",
+            "indoor climbing": "საცოცი დარბაზები",
+            "outdoor climbing": "საცოცი რეგიონები",
+            "ice climbing": "ყინული და მიქსი",
+            "events": "ღონისძიებები და შეჯიბრები",
+            "mountaineering": "ალპინიზმი",
+            "other": "სხვა",
+            "about us": "ჩვენ შესახებ",
+            "login" :"ავტორიზაცია",
+            "sitemap": "Sitemap"
+        },
+
+        "article_right_nabar": {
+            "article navigation menu": "სანავიგაციო მენიუ",
+            "similar articles": "შესაძლოა ამანაც დაგაინტერესოთ",
+            "gallery": "გალერეა",
+            "comments": "კომენტარები",
+            "description": "აღწერა",
+            "sectors": "სექტორები და მარშრუტები"
+        },
+
+        "title": {
+            "news": "სიახლეები",
+            "topo": "რუკქ",
+            "what we do": "აკტივობები",
+            "gallery" :"გალერეა",
+            "tech tips" :"უსაფრთხოება",
+            "events" :"ღონისძიებები და შეჯიბრები",
+            "climbing": "მეკლდეურობა",
+            "indoor climbing": "საცოცი დარბაზები",
+            "outdoor climbing": "საცოცი რეგიონები",
+            "ice climbing": "ყინული და მიქსი",
+            "mountaineering": "ალპინიზმი",
+            "other": "სხვა",
+            "about us": "ჩვენ შესახებ",
+            "partner": "პარტნიორები"
+        },
+
+        "route": {
+            "name": "სახელი",
+            "height": "სიმაღლე",
+            "bolts": "ანკერები",
+            "grade FR": "სირთულე FR",
+            "grade YDS": "სირთულე UDS",
+
+            "mtp name": "მულტიპიჩის სახელი",
+            "auther": "ავტორი",
+            "creating data": "შექმნის თარიღი",
+            "first ascent": "პირვიელი გავლა",
+            "top rope": "ზედა დაცვა",
+            "tred": "თრედი",
+
+            "more": "More",
+            "route detals": "მართრუტის დეტალები",
+            "mtp detals": "მულტიპიჩის დეტალები"
+        },
+
+        "sector": {
+            "name": "საქტორის სახელი",
+            "shade after 10.00 am": "ჩრდილში 10.00 am შემდეგ",
+            "shade after 15.00 pm": "ჩრდილში 15.00 pm შემდეგ",
+            "shade befor noon": "ჩრდილში შუადღემდე",
+            "shade in the afternoon": "ჩრდილში შუადღის შემდეგ",
+            "shade whole day": "მთელი დღე ჩრდილში",
+            "sun the whole day": "მთეკი დღე მზეზე",
+
+            "overhang": "უარყოპითი",
+            "slabby": "დადებითი",
+            "vertical": "ვერტიკალე",
+            "roof": "ჭერი",
+
+            "for_family": "სექტორი რეკომენდებულია ოჯახური გასვლებისთვის",
+            "for_kids": "სექტორი რეკომენდებულია ბავშვებისთვის",
+            "walking": "სექტორამდე მისასვლელად საჭირო დრო მანქანის პარკინგიდან"
+        },
+
+        "article": {
+            "route_quantyty": "საქართველოში არის {sectors} საცოცი სექტორი, {sport_routes} სპორტული ცოცვის მარშრუტი, {boulder_routes} ბოლდერინგის მარშრუტი, {mtps} მულტიპიჩი. თქვენ შეგიძლიათ ნახოთ ყველა რეგიონის აღწერა მაგვერდზე.",
+
+            "mount massive": "მთის მასივი",
+            "best time": "საუკეთესო დრო საცოცად",
+            "how get": "როგორ მოვხვდეთ აქ",
+            "what need": "რა დადჭირდებათ",
+            "comments": "კომენტარები",
+            "gallery": "გალერეა",
+            "info": "ცონტაქტები",
+            "map": "რუკა",
+            "interested event": "მაინტერესებს ეს ღონისძიება",
+            "similar articles": "შესაძლოა ამანაც დაგაინტერესოთ",
+            
+            "address": "მისამართი",
+            "price": "ფასი",
+            
+            "back": "უკან დაბრუნება",
+            "all articles": "ყველ სტატია",
+
+            "prices from": "ფასი იწყება",
+            "working time": "სამუშაუ საათები",
+            "closed": "მალე დაიკეტება"
+        },
+
+        "breadcrumb home": "მთავარი"
+    },
+
+    "shop": {
+        "name": "საცოცი პროდუქცია",
+
+        "menu": {
+            "products": "პროდუქტები",
+            "services": "სერვისები",
+            "categories": "კატეგორიები",
+            "about us": "ჩვენ შესახებ"
+        },
+
+        "title": {
+            "services": "ჩვენი სერვისები",
+            "products": "პროდუქტები",
+            "search": "პროდუქტის ძიება",
+            "gallery": "გალერეა",
+            
+            "similar": {
+                "products": "ასევე შესაძლოა დაგაინტერესოთ",
+                "services": "სხვა სერვისები"
+            }
+        },
+
+        "product desc": {
+            "category": "კატეგორიები",
+            "material": "მასალა",
+            "weight": "წონა"
+        },
+
+        "seller": {
+            "seller contact": "კონტაქტები",
+            "email": "Email",
+            "phone": "ტელეფონის ნომერი"
+        },
+
+        "limited quantity": "შეზღუდული რაოდენობა",
+        "out of stock": "მარაგი ამოწურულია",
+    
+        "product description": "აღწერა",
+    
+        "add to cart": "კალათაში დამატება",
+
+        "all products": "ყველა პროდუქტი",
+        "max products": "ეს არის პროდუქტის მაქსიმალური რაოდენობა რაც თქვენ შეგიძლიათ აირჩიოთ!!!",
+        "add successful": "პროდუქტი წარმატებით დაემატა კალათაში!!!",
+        "custom product": "მხოლოდ შეკვეთით"
+    },
+
+    "user": {
+        "name": "მომხმარებლის პანელი",
+
+        "menu": {
+            "favorite products": "ჩემი ფავორიტი პროდუქტები",
+            "favorite films": "My favorite films",
+            "admin dashboard": "Admin dashboard",
+            "home": "My page",
+            "cart": "My cart",
+            "orders": "Orders",
+            "my orders": "My Orders",
+            "total orders": "All orders",
+            "films": "Films list",
+            "my interested events": "Interested events",
+            "followers": "Followers & following",
+            "products & category": "Products & Category",
+            "services": "Services",
+            "all comments": "All comments",
+            "my comments": "My comments",
+            "my posts": "My posts",
+            "all posts": "All posts",
+            "users": "Users & Parmissions",
+            "options": "Options",
+            "indoor climbing": "Indoor climbing",
+            "outdoor climbing": "Outdoor climbing",
+            "ice climbing": "Ice & Mix",
+            "mountaineering": "Mountaineering",
+            "other": "Other",
+            "security": "Security (Tech tips)",
+            "partners": "Partners",
+            "events": "Events",
+            "news": "News",
+            "gallery": "Gallery",
+            "about": "About us",
+            "login" :"Login",
+            "logout": "Logout",
+            "sectors & routes": "Sectors & Routes",
+            "local bisnes" : "Suport local bisnes",
+            "my favorite outdoor area": "My favorite outdoor areas"
+        }
+    },
+
+    "global": {
+        "footer": {
+            "links": "ბმულები",
+            "share": "გააზიარე",
+            "more": "მეტის ნახვა",
+            "about us": "ჩვენ შესახებ",
+            "follow": "გამოიწერე სერვისი",
+            "qr": "QR კოდი"
+        },
+
+        "login": "ავტორიზაცია",
+        "message form": "დაგვიკავშირდით",
+        "page is empty": "ამ დროისთვის ინფორმაცია არ არის მისაწვდომი"
+    }
+}
