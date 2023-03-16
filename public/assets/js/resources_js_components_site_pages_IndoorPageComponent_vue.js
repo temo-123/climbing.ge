@@ -3070,7 +3070,7 @@ var render = function () {
         "li",
         [
           _c("router-link", { attrs: { to: { name: "index" } } }, [
-            _vm._v("Home"),
+            _vm._v(_vm._s(_vm.$t("guide.breadcrumb home"))),
           ]),
         ],
         1
@@ -4044,7 +4044,7 @@ var render = function () {
           _c("li", [
             _c("a", { attrs: { href: "#description" } }, [
               _c("span", { staticClass: "text-primary" }, [
-                _vm._v(_vm._s(_vm.$t("nav description"))),
+                _vm._v(_vm._s(_vm.$t("guide.article_right_nabar.description"))),
               ]),
             ]),
           ]),
@@ -4052,7 +4052,7 @@ var render = function () {
           _c("li", [
             _c("a", { attrs: { href: "#sectors" } }, [
               _c("span", { staticClass: "text-primary" }, [
-                _vm._v(_vm._s(_vm.$t("nav sectors"))),
+                _vm._v(_vm._s(_vm.$t("guide.article_right_nabar.sectors"))),
               ]),
             ]),
           ]),
@@ -4060,7 +4060,7 @@ var render = function () {
           _c("li", [
             _c("a", { attrs: { href: "#gallery" } }, [
               _c("span", { staticClass: "text-primary" }, [
-                _vm._v(_vm._s(_vm.$t("nav gallery"))),
+                _vm._v(_vm._s(_vm.$t("guide.article_right_nabar.gallery"))),
               ]),
             ]),
           ]),
@@ -4068,7 +4068,7 @@ var render = function () {
           _c("li", [
             _c("a", { attrs: { href: "#comments" } }, [
               _c("span", { staticClass: "text-primary" }, [
-                _vm._v(_vm._s(_vm.$t("nav comments"))),
+                _vm._v(_vm._s(_vm.$t("guide.article_right_nabar.comments"))),
               ]),
             ]),
           ]),
@@ -4076,7 +4076,9 @@ var render = function () {
           _c("li", [
             _c("a", { attrs: { href: "#other" } }, [
               _c("span", { staticClass: "text-primary" }, [
-                _vm._v(_vm._s(_vm.$t("nav similar articles"))),
+                _vm._v(
+                  _vm._s(_vm.$t("guide.article_right_nabar.similar articles"))
+                ),
               ]),
             ]),
           ]),

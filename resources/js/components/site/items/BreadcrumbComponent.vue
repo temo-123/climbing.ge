@@ -1,6 +1,6 @@
 <template>
     <ol class="breadcrumb" style="padding: 0; font-size: 75%;">
-        <li><router-link :to="{name: 'index'}">Home</router-link></li>
+        <li><router-link :to="{name: 'index'}">{{ $t("guide.breadcrumb home") }}</router-link></li>
         <li><router-link :to="{name: path_url}">{{ path }}</router-link></li>
         <li class="active">{{ page }}</li>
     </ol>

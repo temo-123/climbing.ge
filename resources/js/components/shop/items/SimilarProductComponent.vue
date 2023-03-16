@@ -1,6 +1,6 @@
 <template>
     <div class="row related" v-if="samilar_products.length != 0">
-        <h2>You might also like</h2>
+        <h2>{{ $t('shop.title.similar.products') }}</h2>
 
         <analogProduct
             v-for="product in samilar_products"

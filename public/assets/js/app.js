@@ -7985,6 +7985,8 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
     return {
@@ -8014,8 +8016,6 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
 /* harmony import */ var vue_country_flag__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vue-country-flag */ "./node_modules/vue-country-flag/dist/country-flag.esm.js");
-//
-//
 //
 //
 //
@@ -8659,7 +8659,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
-/* harmony import */ var _items_NavbarComponent__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./items/NavbarComponent */ "./resources/js/components/shop/items/NavbarComponent.vue");
+/* harmony import */ var _items_navbars_NavbarComponent_vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./items/navbars/NavbarComponent.vue */ "./resources/js/components/shop/items/navbars/NavbarComponent.vue");
 /* harmony import */ var _items_FooterComponent__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./items/FooterComponent */ "./resources/js/components/shop/items/FooterComponent.vue");
 /* harmony import */ var _global_components_LoginModalComponent_vue__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../global_components/LoginModalComponent.vue */ "./resources/js/components/global_components/LoginModalComponent.vue");
 //
@@ -8688,7 +8688,7 @@ __webpack_require__.r(__webpack_exports__);
     };
   },
   components: {
-    navbar: _items_NavbarComponent__WEBPACK_IMPORTED_MODULE_0__["default"],
+    navbar: _items_navbars_NavbarComponent_vue__WEBPACK_IMPORTED_MODULE_0__["default"],
     footter: _items_FooterComponent__WEBPACK_IMPORTED_MODULE_1__["default"],
     loginModal: _global_components_LoginModalComponent_vue__WEBPACK_IMPORTED_MODULE_2__["default"]
   },
@@ -8712,8 +8712,6 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _global_components_FollowComponent_vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../global_components/FollowComponent.vue */ "./resources/js/components/global_components/FollowComponent.vue");
 /* harmony import */ var _global_components_ShareComponent_vue__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../global_components/ShareComponent.vue */ "./resources/js/components/global_components/ShareComponent.vue");
 /* harmony import */ var _global_components_FooterLogoBlockComponent_vue__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../global_components/FooterLogoBlockComponent.vue */ "./resources/js/components/global_components/FooterLogoBlockComponent.vue");
-//
-//
 //
 //
 //
@@ -8831,10 +8829,10 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
-/***/ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/shop/items/NavbarComponent.vue?vue&type=script&lang=js&":
-/*!*********************************************************************************************************************************************************************************************************************************!*\
-  !*** ./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/shop/items/NavbarComponent.vue?vue&type=script&lang=js& ***!
-  \*********************************************************************************************************************************************************************************************************************************/
+/***/ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/shop/items/navbars/NavbarComponent.vue?vue&type=script&lang=js&":
+/*!*****************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/shop/items/navbars/NavbarComponent.vue?vue&type=script&lang=js& ***!
+  \*****************************************************************************************************************************************************************************************************************************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
@@ -8843,135 +8841,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
 /* harmony import */ var vue_country_flag__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! vue-country-flag */ "./node_modules/vue-country-flag/dist/country-flag.esm.js");
-/* harmony import */ var _global_components_LocaleChangeComponent_vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../global_components/LocaleChangeComponent.vue */ "./resources/js/components/global_components/LocaleChangeComponent.vue");
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
+/* harmony import */ var _global_components_LocaleChangeComponent_vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../../global_components/LocaleChangeComponent.vue */ "./resources/js/components/global_components/LocaleChangeComponent.vue");
 //
 //
 //
@@ -9117,7 +8987,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
-/* harmony import */ var _items_NavbarComponent__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./items/NavbarComponent */ "./resources/js/components/site/items/NavbarComponent.vue");
+/* harmony import */ var _items_navbars_NavbarComponent__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./items/navbars/NavbarComponent */ "./resources/js/components/site/items/navbars/NavbarComponent.vue");
 /* harmony import */ var _items_FooterComponent__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./items/FooterComponent */ "./resources/js/components/site/items/FooterComponent.vue");
 /* harmony import */ var _global_components_LoginModalComponent_vue__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../global_components/LoginModalComponent.vue */ "./resources/js/components/global_components/LoginModalComponent.vue");
 //
@@ -9146,7 +9016,7 @@ __webpack_require__.r(__webpack_exports__);
     };
   },
   components: {
-    navbar: _items_NavbarComponent__WEBPACK_IMPORTED_MODULE_0__["default"],
+    navbar: _items_navbars_NavbarComponent__WEBPACK_IMPORTED_MODULE_0__["default"],
     footter: _items_FooterComponent__WEBPACK_IMPORTED_MODULE_1__["default"],
     loginModal: _global_components_LoginModalComponent_vue__WEBPACK_IMPORTED_MODULE_2__["default"]
   },
@@ -9393,240 +9263,6 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
-/***/ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/site/items/NavbarComponent.vue?vue&type=script&lang=js&":
-/*!*********************************************************************************************************************************************************************************************************************************!*\
-  !*** ./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/site/items/NavbarComponent.vue?vue&type=script&lang=js& ***!
-  \*********************************************************************************************************************************************************************************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
-/* harmony export */ });
-/* harmony import */ var vue_country_flag__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! vue-country-flag */ "./node_modules/vue-country-flag/dist/country-flag.esm.js");
-/* harmony import */ var _global_components_LocaleChangeComponent_vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../global_components/LocaleChangeComponent.vue */ "./resources/js/components/global_components/LocaleChangeComponent.vue");
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
- // https://www.npmjs.com/package/vue-country-flag
-
-
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
-  data: function data() {
-    return {
-      search_query: null,
-      show: false,
-      navbar_general_class: 'collapse navbar-collapse mobile_nav_menu',
-      navbar_class: 'collapse navbar-collapse mobile_nav_menu',
-      navbar_open_class: 'collapse navbar-collapse mobile_nav_menu show',
-
-      get activ_grade() {
-        return localStorage.getItem('grade') || 'yds';
-      },
-
-      set activ_grade(value) {
-        localStorage.setItem('grade', value);
-      },
-
-      get activ_lang() {
-        return localStorage.getItem('lang') || 'en';
-      },
-
-      set activ_lang(value) {
-        localStorage.setItem('lang', value);
-      }
-
-    };
-  },
-  components: {
-    localeSwitcher: _global_components_LocaleChangeComponent_vue__WEBPACK_IMPORTED_MODULE_0__["default"],
-    countryFlag: vue_country_flag__WEBPACK_IMPORTED_MODULE_1__["default"]
-  },
-  mounted: function mounted() {
-    this.navbar_class = this.navbar_general_class;
-  },
-  watch: {
-    //     $route(to) {
-    //         if(localStorage.getItem('lang') != 'en'){
-    //             this.i18n.locale = localStorage.getItem('lang')
-    //         } else{this.i18n.locale = ''}
-    //     }
-    //     '$route' (to, from) {
-    //     }
-    '$route': function $route(to, from) {
-      this.navbar_class = this.navbar_general_class;
-    }
-  },
-  methods: {
-    search: function search() {
-      this.$router.push({
-        name: 'search_articles',
-        query: {
-          'query': this.search_query
-        }
-      });
-      this.search_query = '';
-    },
-    grade_charts: function grade_charts(grade) {
-      localStorage.setItem('grade', grade);
-      this.return_data(grade); // this.$router.push(to)
-    },
-    return_data: function return_data(g) {
-      this.$emit('grade', g);
-    },
-    goTo: function goTo() {
-      var page = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : '';
-      window.open(this.MIX_APP_SSH + 'user.' + this.MIX_SITE_URL + page);
-    },
-    open_navbar: function open_navbar() {
-      if (this.navbar_class == 'collapse navbar-collapse mobile_nav_menu') {
-        this.navbar_class = this.navbar_open_class;
-      } else if (this.navbar_class == 'collapse navbar-collapse mobile_nav_menu show') {
-        this.navbar_class = this.navbar_general_class;
-      } else {
-        this.navbar_class = this.navbar_general_class;
-      }
-    }
-  }
-});
-
-/***/ }),
-
 /***/ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/site/items/cards/IndexEventCardComponent.vue?vue&type=script&lang=js&":
 /*!***********************************************************************************************************************************************************************************************************************************************!*\
   !*** ./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/site/items/cards/IndexEventCardComponent.vue?vue&type=script&lang=js& ***!
@@ -9773,6 +9409,206 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
+/***/ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/site/items/navbars/NavbarComponent.vue?vue&type=script&lang=js&":
+/*!*****************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/site/items/navbars/NavbarComponent.vue?vue&type=script&lang=js& ***!
+  \*****************************************************************************************************************************************************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var vue_country_flag__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! vue-country-flag */ "./node_modules/vue-country-flag/dist/country-flag.esm.js");
+/* harmony import */ var _global_components_LocaleChangeComponent_vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../../global_components/LocaleChangeComponent.vue */ "./resources/js/components/global_components/LocaleChangeComponent.vue");
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+ // https://www.npmjs.com/package/vue-country-flag
+
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
+  data: function data() {
+    return {
+      search_query: null,
+      show: false,
+      navbar_general_class: 'collapse navbar-collapse',
+      navbar_class: 'collapse navbar-collapse',
+      navbar_open_class: 'collapse navbar-collapse show',
+
+      get activ_grade() {
+        return localStorage.getItem('grade') || 'yds';
+      },
+
+      set activ_grade(value) {
+        localStorage.setItem('grade', value);
+      },
+
+      get activ_lang() {
+        return localStorage.getItem('lang') || 'en';
+      },
+
+      set activ_lang(value) {
+        localStorage.setItem('lang', value);
+      }
+
+    };
+  },
+  components: {
+    localeSwitcher: _global_components_LocaleChangeComponent_vue__WEBPACK_IMPORTED_MODULE_0__["default"],
+    countryFlag: vue_country_flag__WEBPACK_IMPORTED_MODULE_1__["default"]
+  },
+  mounted: function mounted() {
+    this.navbar_class = this.navbar_general_class;
+  },
+  watch: {
+    //     $route(to) {
+    //         if(localStorage.getItem('lang') != 'en'){
+    //             this.i18n.locale = localStorage.getItem('lang')
+    //         } else{this.i18n.locale = ''}
+    //     }
+    //     '$route' (to, from) {
+    //     }
+    '$route': function $route(to, from) {
+      this.navbar_class = this.navbar_general_class;
+    }
+  },
+  methods: {
+    search: function search() {
+      this.$router.push({
+        name: 'search_articles',
+        query: {
+          'query': this.search_query
+        }
+      });
+      this.search_query = '';
+    },
+    grade_charts: function grade_charts(grade) {
+      localStorage.setItem('grade', grade);
+      this.return_data(grade); // this.$router.push(to)
+    },
+    return_data: function return_data(g) {
+      this.$emit('grade', g);
+    },
+    goTo: function goTo() {
+      var page = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : '';
+      window.open(this.MIX_APP_SSH + 'user.' + this.MIX_SITE_URL + page);
+    },
+    open_navbar: function open_navbar() {
+      if (this.navbar_class == 'collapse navbar-collapse') {
+        this.navbar_class = this.navbar_open_class;
+      } else if (this.navbar_class == 'collapse navbar-collapse show') {
+        this.navbar_class = this.navbar_general_class;
+      } else {
+        this.navbar_class = this.navbar_general_class;
+      }
+    }
+  }
+});
+
+/***/ }),
+
 /***/ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/user/HomeComponent.vue?vue&type=script&lang=js&":
 /*!*************************************************************************************************************************************************************************************************************************!*\
   !*** ./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/user/HomeComponent.vue?vue&type=script&lang=js& ***!
@@ -9848,6 +9684,21 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -17254,6 +17105,30 @@ ___CSS_LOADER_EXPORT___.push([module.id, "\n.footer_input, .footer_re_capcha{\n 
 
 /***/ }),
 
+/***/ "./node_modules/laravel-mix/node_modules/css-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[1]!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/global_components/LocaleChangeComponent.vue?vue&type=style&index=0&lang=css&":
+/*!*******************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/laravel-mix/node_modules/css-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[1]!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/global_components/LocaleChangeComponent.vue?vue&type=style&index=0&lang=css& ***!
+  \*******************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************/
+/***/ ((module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _node_modules_laravel_mix_node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../../../node_modules/laravel-mix/node_modules/css-loader/dist/runtime/api.js */ "./node_modules/laravel-mix/node_modules/css-loader/dist/runtime/api.js");
+/* harmony import */ var _node_modules_laravel_mix_node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_node_modules_laravel_mix_node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0__);
+// Imports
+
+var ___CSS_LOADER_EXPORT___ = _node_modules_laravel_mix_node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
+// Module
+___CSS_LOADER_EXPORT___.push([module.id, "\n.localizatione_flag{\n    width: 50%; \n    margin-left: 25%;\n}\n@media (max-width: 767px) {\n.localizatione_flag{\n        width: 50%; \n        margin-left: 0%;\n}\n}\n", ""]);
+// Exports
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
+
+
+/***/ }),
+
 /***/ "./node_modules/laravel-mix/node_modules/css-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[1]!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/global_components/MessageComponent.vue?vue&type=style&index=0&id=a305cbc4&scoped=true&lang=css&":
 /*!**************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
   !*** ./node_modules/laravel-mix/node_modules/css-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[1]!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/global_components/MessageComponent.vue?vue&type=style&index=0&id=a305cbc4&scoped=true&lang=css& ***!
@@ -17326,6 +17201,30 @@ ___CSS_LOADER_EXPORT___.push([module.id, "\n.share_icons{\n    font-size: 3em;\n
 
 /***/ }),
 
+/***/ "./node_modules/laravel-mix/node_modules/css-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[1]!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/shop/items/navbars/NavbarComponent.vue?vue&type=style&index=0&lang=css&":
+/*!**************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/laravel-mix/node_modules/css-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[1]!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/shop/items/navbars/NavbarComponent.vue?vue&type=style&index=0&lang=css& ***!
+  \**************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************/
+/***/ ((module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _node_modules_laravel_mix_node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../../../../../node_modules/laravel-mix/node_modules/css-loader/dist/runtime/api.js */ "./node_modules/laravel-mix/node_modules/css-loader/dist/runtime/api.js");
+/* harmony import */ var _node_modules_laravel_mix_node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_node_modules_laravel_mix_node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0__);
+// Imports
+
+var ___CSS_LOADER_EXPORT___ = _node_modules_laravel_mix_node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
+// Module
+___CSS_LOADER_EXPORT___.push([module.id, "\n.navbar span{\n    color: #fff;\n}\n\n\n", ""]);
+// Exports
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
+
+
+/***/ }),
+
 /***/ "./node_modules/laravel-mix/node_modules/css-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[1]!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/site/items/FooterComponent.vue?vue&type=style&index=0&id=cf7b5d14&scoped=true&lang=css&":
 /*!******************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
   !*** ./node_modules/laravel-mix/node_modules/css-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[1]!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/site/items/FooterComponent.vue?vue&type=style&index=0&id=cf7b5d14&scoped=true&lang=css& ***!
@@ -17368,6 +17267,30 @@ __webpack_require__.r(__webpack_exports__);
 var ___CSS_LOADER_EXPORT___ = _node_modules_laravel_mix_node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 // Module
 ___CSS_LOADER_EXPORT___.push([module.id, "\n.img-responsive{\n    width: 100%;\n}\n.underway_now{\n    font-size: 2em !important;\n}\n.index_event_category_flag{\n    width: auto;\n}\n", ""]);
+// Exports
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
+
+
+/***/ }),
+
+/***/ "./node_modules/laravel-mix/node_modules/css-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[1]!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/site/items/navbars/NavbarComponent.vue?vue&type=style&index=0&lang=css&":
+/*!**************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/laravel-mix/node_modules/css-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[1]!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/site/items/navbars/NavbarComponent.vue?vue&type=style&index=0&lang=css& ***!
+  \**************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************/
+/***/ ((module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _node_modules_laravel_mix_node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../../../../../node_modules/laravel-mix/node_modules/css-loader/dist/runtime/api.js */ "./node_modules/laravel-mix/node_modules/css-loader/dist/runtime/api.js");
+/* harmony import */ var _node_modules_laravel_mix_node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_node_modules_laravel_mix_node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0__);
+// Imports
+
+var ___CSS_LOADER_EXPORT___ = _node_modules_laravel_mix_node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
+// Module
+___CSS_LOADER_EXPORT___.push([module.id, "\n.grade_chart{\n    width: 50%; \n    margin-left: 25%;\n}\n@media (max-width: 767px) {\n.grade_chart{\n        width: 50%; \n        margin-left: 0%;\n}\n}\n.navbar span{\n    color: #fff;\n}\n\n\n", ""]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
@@ -60529,6 +60452,36 @@ var update = _node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js
 
 /***/ }),
 
+/***/ "./node_modules/style-loader/dist/cjs.js!./node_modules/laravel-mix/node_modules/css-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[1]!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/global_components/LocaleChangeComponent.vue?vue&type=style&index=0&lang=css&":
+/*!***********************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/style-loader/dist/cjs.js!./node_modules/laravel-mix/node_modules/css-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[1]!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/global_components/LocaleChangeComponent.vue?vue&type=style&index=0&lang=css& ***!
+  \***********************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! !../../../../node_modules/style-loader/dist/runtime/injectStylesIntoStyleTag.js */ "./node_modules/style-loader/dist/runtime/injectStylesIntoStyleTag.js");
+/* harmony import */ var _node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _node_modules_laravel_mix_node_modules_css_loader_dist_cjs_js_clonedRuleSet_9_0_rules_0_use_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_dist_cjs_js_clonedRuleSet_9_0_rules_0_use_2_node_modules_vue_loader_lib_index_js_vue_loader_options_LocaleChangeComponent_vue_vue_type_style_index_0_lang_css___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! !!../../../../node_modules/laravel-mix/node_modules/css-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[1]!../../../../node_modules/vue-loader/lib/loaders/stylePostLoader.js!../../../../node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[2]!../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./LocaleChangeComponent.vue?vue&type=style&index=0&lang=css& */ "./node_modules/laravel-mix/node_modules/css-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[1]!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/global_components/LocaleChangeComponent.vue?vue&type=style&index=0&lang=css&");
+
+            
+
+var options = {};
+
+options.insert = "head";
+options.singleton = false;
+
+var update = _node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0___default()(_node_modules_laravel_mix_node_modules_css_loader_dist_cjs_js_clonedRuleSet_9_0_rules_0_use_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_dist_cjs_js_clonedRuleSet_9_0_rules_0_use_2_node_modules_vue_loader_lib_index_js_vue_loader_options_LocaleChangeComponent_vue_vue_type_style_index_0_lang_css___WEBPACK_IMPORTED_MODULE_1__["default"], options);
+
+
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (_node_modules_laravel_mix_node_modules_css_loader_dist_cjs_js_clonedRuleSet_9_0_rules_0_use_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_dist_cjs_js_clonedRuleSet_9_0_rules_0_use_2_node_modules_vue_loader_lib_index_js_vue_loader_options_LocaleChangeComponent_vue_vue_type_style_index_0_lang_css___WEBPACK_IMPORTED_MODULE_1__["default"].locals || {});
+
+/***/ }),
+
 /***/ "./node_modules/style-loader/dist/cjs.js!./node_modules/laravel-mix/node_modules/css-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[1]!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/global_components/MessageComponent.vue?vue&type=style&index=0&id=a305cbc4&scoped=true&lang=css&":
 /*!******************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
   !*** ./node_modules/style-loader/dist/cjs.js!./node_modules/laravel-mix/node_modules/css-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[1]!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/global_components/MessageComponent.vue?vue&type=style&index=0&id=a305cbc4&scoped=true&lang=css& ***!
@@ -60619,6 +60572,36 @@ var update = _node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js
 
 /***/ }),
 
+/***/ "./node_modules/style-loader/dist/cjs.js!./node_modules/laravel-mix/node_modules/css-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[1]!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/shop/items/navbars/NavbarComponent.vue?vue&type=style&index=0&lang=css&":
+/*!******************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/style-loader/dist/cjs.js!./node_modules/laravel-mix/node_modules/css-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[1]!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/shop/items/navbars/NavbarComponent.vue?vue&type=style&index=0&lang=css& ***!
+  \******************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! !../../../../../../node_modules/style-loader/dist/runtime/injectStylesIntoStyleTag.js */ "./node_modules/style-loader/dist/runtime/injectStylesIntoStyleTag.js");
+/* harmony import */ var _node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _node_modules_laravel_mix_node_modules_css_loader_dist_cjs_js_clonedRuleSet_9_0_rules_0_use_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_dist_cjs_js_clonedRuleSet_9_0_rules_0_use_2_node_modules_vue_loader_lib_index_js_vue_loader_options_NavbarComponent_vue_vue_type_style_index_0_lang_css___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! !!../../../../../../node_modules/laravel-mix/node_modules/css-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[1]!../../../../../../node_modules/vue-loader/lib/loaders/stylePostLoader.js!../../../../../../node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[2]!../../../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./NavbarComponent.vue?vue&type=style&index=0&lang=css& */ "./node_modules/laravel-mix/node_modules/css-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[1]!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/shop/items/navbars/NavbarComponent.vue?vue&type=style&index=0&lang=css&");
+
+            
+
+var options = {};
+
+options.insert = "head";
+options.singleton = false;
+
+var update = _node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0___default()(_node_modules_laravel_mix_node_modules_css_loader_dist_cjs_js_clonedRuleSet_9_0_rules_0_use_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_dist_cjs_js_clonedRuleSet_9_0_rules_0_use_2_node_modules_vue_loader_lib_index_js_vue_loader_options_NavbarComponent_vue_vue_type_style_index_0_lang_css___WEBPACK_IMPORTED_MODULE_1__["default"], options);
+
+
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (_node_modules_laravel_mix_node_modules_css_loader_dist_cjs_js_clonedRuleSet_9_0_rules_0_use_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_dist_cjs_js_clonedRuleSet_9_0_rules_0_use_2_node_modules_vue_loader_lib_index_js_vue_loader_options_NavbarComponent_vue_vue_type_style_index_0_lang_css___WEBPACK_IMPORTED_MODULE_1__["default"].locals || {});
+
+/***/ }),
+
 /***/ "./node_modules/style-loader/dist/cjs.js!./node_modules/laravel-mix/node_modules/css-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[1]!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/site/items/FooterComponent.vue?vue&type=style&index=0&id=cf7b5d14&scoped=true&lang=css&":
 /*!**********************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
   !*** ./node_modules/style-loader/dist/cjs.js!./node_modules/laravel-mix/node_modules/css-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[1]!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/site/items/FooterComponent.vue?vue&type=style&index=0&id=cf7b5d14&scoped=true&lang=css& ***!
@@ -60676,6 +60659,36 @@ var update = _node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js
 
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (_node_modules_laravel_mix_node_modules_css_loader_dist_cjs_js_clonedRuleSet_9_0_rules_0_use_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_dist_cjs_js_clonedRuleSet_9_0_rules_0_use_2_node_modules_vue_loader_lib_index_js_vue_loader_options_IndexEventCardComponent_vue_vue_type_style_index_0_lang_css___WEBPACK_IMPORTED_MODULE_1__["default"].locals || {});
+
+/***/ }),
+
+/***/ "./node_modules/style-loader/dist/cjs.js!./node_modules/laravel-mix/node_modules/css-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[1]!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/site/items/navbars/NavbarComponent.vue?vue&type=style&index=0&lang=css&":
+/*!******************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/style-loader/dist/cjs.js!./node_modules/laravel-mix/node_modules/css-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[1]!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/site/items/navbars/NavbarComponent.vue?vue&type=style&index=0&lang=css& ***!
+  \******************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! !../../../../../../node_modules/style-loader/dist/runtime/injectStylesIntoStyleTag.js */ "./node_modules/style-loader/dist/runtime/injectStylesIntoStyleTag.js");
+/* harmony import */ var _node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _node_modules_laravel_mix_node_modules_css_loader_dist_cjs_js_clonedRuleSet_9_0_rules_0_use_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_dist_cjs_js_clonedRuleSet_9_0_rules_0_use_2_node_modules_vue_loader_lib_index_js_vue_loader_options_NavbarComponent_vue_vue_type_style_index_0_lang_css___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! !!../../../../../../node_modules/laravel-mix/node_modules/css-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[1]!../../../../../../node_modules/vue-loader/lib/loaders/stylePostLoader.js!../../../../../../node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[2]!../../../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./NavbarComponent.vue?vue&type=style&index=0&lang=css& */ "./node_modules/laravel-mix/node_modules/css-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[1]!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/site/items/navbars/NavbarComponent.vue?vue&type=style&index=0&lang=css&");
+
+            
+
+var options = {};
+
+options.insert = "head";
+options.singleton = false;
+
+var update = _node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0___default()(_node_modules_laravel_mix_node_modules_css_loader_dist_cjs_js_clonedRuleSet_9_0_rules_0_use_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_dist_cjs_js_clonedRuleSet_9_0_rules_0_use_2_node_modules_vue_loader_lib_index_js_vue_loader_options_NavbarComponent_vue_vue_type_style_index_0_lang_css___WEBPACK_IMPORTED_MODULE_1__["default"], options);
+
+
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (_node_modules_laravel_mix_node_modules_css_loader_dist_cjs_js_clonedRuleSet_9_0_rules_0_use_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_dist_cjs_js_clonedRuleSet_9_0_rules_0_use_2_node_modules_vue_loader_lib_index_js_vue_loader_options_NavbarComponent_vue_vue_type_style_index_0_lang_css___WEBPACK_IMPORTED_MODULE_1__["default"].locals || {});
 
 /***/ }),
 
@@ -69985,15 +69998,17 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var _LocaleChangeComponent_vue_vue_type_template_id_0cec828a___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./LocaleChangeComponent.vue?vue&type=template&id=0cec828a& */ "./resources/js/components/global_components/LocaleChangeComponent.vue?vue&type=template&id=0cec828a&");
 /* harmony import */ var _LocaleChangeComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./LocaleChangeComponent.vue?vue&type=script&lang=js& */ "./resources/js/components/global_components/LocaleChangeComponent.vue?vue&type=script&lang=js&");
-/* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! !../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+/* harmony import */ var _LocaleChangeComponent_vue_vue_type_style_index_0_lang_css___WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./LocaleChangeComponent.vue?vue&type=style&index=0&lang=css& */ "./resources/js/components/global_components/LocaleChangeComponent.vue?vue&type=style&index=0&lang=css&");
+/* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! !../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
 
 
 
+;
 
 
 /* normalize component */
-;
-var component = (0,_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+
+var component = (0,_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_3__["default"])(
   _LocaleChangeComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
   _LocaleChangeComponent_vue_vue_type_template_id_0cec828a___WEBPACK_IMPORTED_MODULE_0__.render,
   _LocaleChangeComponent_vue_vue_type_template_id_0cec828a___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns,
@@ -70290,10 +70305,10 @@ component.options.__file = "resources/js/components/shop/items/ImageComponent.vu
 
 /***/ }),
 
-/***/ "./resources/js/components/shop/items/NavbarComponent.vue":
-/*!****************************************************************!*\
-  !*** ./resources/js/components/shop/items/NavbarComponent.vue ***!
-  \****************************************************************/
+/***/ "./resources/js/components/shop/items/navbars/NavbarComponent.vue":
+/*!************************************************************************!*\
+  !*** ./resources/js/components/shop/items/navbars/NavbarComponent.vue ***!
+  \************************************************************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
@@ -70301,20 +70316,22 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
-/* harmony import */ var _NavbarComponent_vue_vue_type_template_id_60b0ffe0___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./NavbarComponent.vue?vue&type=template&id=60b0ffe0& */ "./resources/js/components/shop/items/NavbarComponent.vue?vue&type=template&id=60b0ffe0&");
-/* harmony import */ var _NavbarComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./NavbarComponent.vue?vue&type=script&lang=js& */ "./resources/js/components/shop/items/NavbarComponent.vue?vue&type=script&lang=js&");
-/* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! !../../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+/* harmony import */ var _NavbarComponent_vue_vue_type_template_id_0271b764___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./NavbarComponent.vue?vue&type=template&id=0271b764& */ "./resources/js/components/shop/items/navbars/NavbarComponent.vue?vue&type=template&id=0271b764&");
+/* harmony import */ var _NavbarComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./NavbarComponent.vue?vue&type=script&lang=js& */ "./resources/js/components/shop/items/navbars/NavbarComponent.vue?vue&type=script&lang=js&");
+/* harmony import */ var _NavbarComponent_vue_vue_type_style_index_0_lang_css___WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./NavbarComponent.vue?vue&type=style&index=0&lang=css& */ "./resources/js/components/shop/items/navbars/NavbarComponent.vue?vue&type=style&index=0&lang=css&");
+/* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! !../../../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
 
 
 
+;
 
 
 /* normalize component */
-;
-var component = (0,_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+
+var component = (0,_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_3__["default"])(
   _NavbarComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
-  _NavbarComponent_vue_vue_type_template_id_60b0ffe0___WEBPACK_IMPORTED_MODULE_0__.render,
-  _NavbarComponent_vue_vue_type_template_id_60b0ffe0___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns,
+  _NavbarComponent_vue_vue_type_template_id_0271b764___WEBPACK_IMPORTED_MODULE_0__.render,
+  _NavbarComponent_vue_vue_type_template_id_0271b764___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns,
   false,
   null,
   null,
@@ -70324,7 +70341,7 @@ var component = (0,_node_modules_vue_loader_lib_runtime_componentNormalizer_js__
 
 /* hot reload */
 if (false) { var api; }
-component.options.__file = "resources/js/components/shop/items/NavbarComponent.vue"
+component.options.__file = "resources/js/components/shop/items/navbars/NavbarComponent.vue"
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (component.exports);
 
 /***/ }),
@@ -70448,45 +70465,6 @@ component.options.__file = "resources/js/components/site/items/ImageComponent.vu
 
 /***/ }),
 
-/***/ "./resources/js/components/site/items/NavbarComponent.vue":
-/*!****************************************************************!*\
-  !*** ./resources/js/components/site/items/NavbarComponent.vue ***!
-  \****************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
-/* harmony export */ });
-/* harmony import */ var _NavbarComponent_vue_vue_type_template_id_3690d121___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./NavbarComponent.vue?vue&type=template&id=3690d121& */ "./resources/js/components/site/items/NavbarComponent.vue?vue&type=template&id=3690d121&");
-/* harmony import */ var _NavbarComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./NavbarComponent.vue?vue&type=script&lang=js& */ "./resources/js/components/site/items/NavbarComponent.vue?vue&type=script&lang=js&");
-/* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! !../../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
-
-
-
-
-
-/* normalize component */
-;
-var component = (0,_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
-  _NavbarComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
-  _NavbarComponent_vue_vue_type_template_id_3690d121___WEBPACK_IMPORTED_MODULE_0__.render,
-  _NavbarComponent_vue_vue_type_template_id_3690d121___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns,
-  false,
-  null,
-  null,
-  null
-  
-)
-
-/* hot reload */
-if (false) { var api; }
-component.options.__file = "resources/js/components/site/items/NavbarComponent.vue"
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (component.exports);
-
-/***/ }),
-
 /***/ "./resources/js/components/site/items/cards/IndexEventCardComponent.vue":
 /*!******************************************************************************!*\
   !*** ./resources/js/components/site/items/cards/IndexEventCardComponent.vue ***!
@@ -70524,6 +70502,47 @@ var component = (0,_node_modules_vue_loader_lib_runtime_componentNormalizer_js__
 /* hot reload */
 if (false) { var api; }
 component.options.__file = "resources/js/components/site/items/cards/IndexEventCardComponent.vue"
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (component.exports);
+
+/***/ }),
+
+/***/ "./resources/js/components/site/items/navbars/NavbarComponent.vue":
+/*!************************************************************************!*\
+  !*** ./resources/js/components/site/items/navbars/NavbarComponent.vue ***!
+  \************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _NavbarComponent_vue_vue_type_template_id_1ff53116___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./NavbarComponent.vue?vue&type=template&id=1ff53116& */ "./resources/js/components/site/items/navbars/NavbarComponent.vue?vue&type=template&id=1ff53116&");
+/* harmony import */ var _NavbarComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./NavbarComponent.vue?vue&type=script&lang=js& */ "./resources/js/components/site/items/navbars/NavbarComponent.vue?vue&type=script&lang=js&");
+/* harmony import */ var _NavbarComponent_vue_vue_type_style_index_0_lang_css___WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./NavbarComponent.vue?vue&type=style&index=0&lang=css& */ "./resources/js/components/site/items/navbars/NavbarComponent.vue?vue&type=style&index=0&lang=css&");
+/* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! !../../../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+;
+
+
+/* normalize component */
+
+var component = (0,_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_3__["default"])(
+  _NavbarComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _NavbarComponent_vue_vue_type_template_id_1ff53116___WEBPACK_IMPORTED_MODULE_0__.render,
+  _NavbarComponent_vue_vue_type_template_id_1ff53116___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns,
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/components/site/items/navbars/NavbarComponent.vue"
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (component.exports);
 
 /***/ }),
@@ -71209,10 +71228,10 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
-/***/ "./resources/js/components/shop/items/NavbarComponent.vue?vue&type=script&lang=js&":
-/*!*****************************************************************************************!*\
-  !*** ./resources/js/components/shop/items/NavbarComponent.vue?vue&type=script&lang=js& ***!
-  \*****************************************************************************************/
+/***/ "./resources/js/components/shop/items/navbars/NavbarComponent.vue?vue&type=script&lang=js&":
+/*!*************************************************************************************************!*\
+  !*** ./resources/js/components/shop/items/navbars/NavbarComponent.vue?vue&type=script&lang=js& ***!
+  \*************************************************************************************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
@@ -71220,7 +71239,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
-/* harmony import */ var _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_0_rules_0_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_NavbarComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!../../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./NavbarComponent.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/shop/items/NavbarComponent.vue?vue&type=script&lang=js&");
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_0_rules_0_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_NavbarComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../../node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!../../../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./NavbarComponent.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/shop/items/navbars/NavbarComponent.vue?vue&type=script&lang=js&");
  /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (_node_modules_babel_loader_lib_index_js_clonedRuleSet_5_0_rules_0_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_NavbarComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
 
 /***/ }),
@@ -71273,22 +71292,6 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
-/***/ "./resources/js/components/site/items/NavbarComponent.vue?vue&type=script&lang=js&":
-/*!*****************************************************************************************!*\
-  !*** ./resources/js/components/site/items/NavbarComponent.vue?vue&type=script&lang=js& ***!
-  \*****************************************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
-/* harmony export */ });
-/* harmony import */ var _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_0_rules_0_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_NavbarComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!../../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./NavbarComponent.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/site/items/NavbarComponent.vue?vue&type=script&lang=js&");
- /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (_node_modules_babel_loader_lib_index_js_clonedRuleSet_5_0_rules_0_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_NavbarComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
-
-/***/ }),
-
 /***/ "./resources/js/components/site/items/cards/IndexEventCardComponent.vue?vue&type=script&lang=js&":
 /*!*******************************************************************************************************!*\
   !*** ./resources/js/components/site/items/cards/IndexEventCardComponent.vue?vue&type=script&lang=js& ***!
@@ -71302,6 +71305,22 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_0_rules_0_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_IndexEventCardComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../../node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!../../../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./IndexEventCardComponent.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/site/items/cards/IndexEventCardComponent.vue?vue&type=script&lang=js&");
  /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (_node_modules_babel_loader_lib_index_js_clonedRuleSet_5_0_rules_0_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_IndexEventCardComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./resources/js/components/site/items/navbars/NavbarComponent.vue?vue&type=script&lang=js&":
+/*!*************************************************************************************************!*\
+  !*** ./resources/js/components/site/items/navbars/NavbarComponent.vue?vue&type=script&lang=js& ***!
+  \*************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_0_rules_0_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_NavbarComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../../node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!../../../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./NavbarComponent.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/site/items/navbars/NavbarComponent.vue?vue&type=script&lang=js&");
+ /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (_node_modules_babel_loader_lib_index_js_clonedRuleSet_5_0_rules_0_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_NavbarComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
 
 /***/ }),
 
@@ -71392,6 +71411,19 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
+/***/ "./resources/js/components/global_components/LocaleChangeComponent.vue?vue&type=style&index=0&lang=css&":
+/*!**************************************************************************************************************!*\
+  !*** ./resources/js/components/global_components/LocaleChangeComponent.vue?vue&type=style&index=0&lang=css& ***!
+  \**************************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_style_loader_dist_cjs_js_node_modules_laravel_mix_node_modules_css_loader_dist_cjs_js_clonedRuleSet_9_0_rules_0_use_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_dist_cjs_js_clonedRuleSet_9_0_rules_0_use_2_node_modules_vue_loader_lib_index_js_vue_loader_options_LocaleChangeComponent_vue_vue_type_style_index_0_lang_css___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/style-loader/dist/cjs.js!../../../../node_modules/laravel-mix/node_modules/css-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[1]!../../../../node_modules/vue-loader/lib/loaders/stylePostLoader.js!../../../../node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[2]!../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./LocaleChangeComponent.vue?vue&type=style&index=0&lang=css& */ "./node_modules/style-loader/dist/cjs.js!./node_modules/laravel-mix/node_modules/css-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[1]!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/global_components/LocaleChangeComponent.vue?vue&type=style&index=0&lang=css&");
+
+
+/***/ }),
+
 /***/ "./resources/js/components/global_components/MessageComponent.vue?vue&type=style&index=0&id=a305cbc4&scoped=true&lang=css&":
 /*!*********************************************************************************************************************************!*\
   !*** ./resources/js/components/global_components/MessageComponent.vue?vue&type=style&index=0&id=a305cbc4&scoped=true&lang=css& ***!
@@ -71431,6 +71463,19 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
+/***/ "./resources/js/components/shop/items/navbars/NavbarComponent.vue?vue&type=style&index=0&lang=css&":
+/*!*********************************************************************************************************!*\
+  !*** ./resources/js/components/shop/items/navbars/NavbarComponent.vue?vue&type=style&index=0&lang=css& ***!
+  \*********************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_style_loader_dist_cjs_js_node_modules_laravel_mix_node_modules_css_loader_dist_cjs_js_clonedRuleSet_9_0_rules_0_use_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_dist_cjs_js_clonedRuleSet_9_0_rules_0_use_2_node_modules_vue_loader_lib_index_js_vue_loader_options_NavbarComponent_vue_vue_type_style_index_0_lang_css___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../../node_modules/style-loader/dist/cjs.js!../../../../../../node_modules/laravel-mix/node_modules/css-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[1]!../../../../../../node_modules/vue-loader/lib/loaders/stylePostLoader.js!../../../../../../node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[2]!../../../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./NavbarComponent.vue?vue&type=style&index=0&lang=css& */ "./node_modules/style-loader/dist/cjs.js!./node_modules/laravel-mix/node_modules/css-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[1]!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/shop/items/navbars/NavbarComponent.vue?vue&type=style&index=0&lang=css&");
+
+
+/***/ }),
+
 /***/ "./resources/js/components/site/items/FooterComponent.vue?vue&type=style&index=0&id=cf7b5d14&scoped=true&lang=css&":
 /*!*************************************************************************************************************************!*\
   !*** ./resources/js/components/site/items/FooterComponent.vue?vue&type=style&index=0&id=cf7b5d14&scoped=true&lang=css& ***!
@@ -71453,6 +71498,19 @@ __webpack_require__.r(__webpack_exports__);
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _node_modules_style_loader_dist_cjs_js_node_modules_laravel_mix_node_modules_css_loader_dist_cjs_js_clonedRuleSet_9_0_rules_0_use_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_dist_cjs_js_clonedRuleSet_9_0_rules_0_use_2_node_modules_vue_loader_lib_index_js_vue_loader_options_IndexEventCardComponent_vue_vue_type_style_index_0_lang_css___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../../node_modules/style-loader/dist/cjs.js!../../../../../../node_modules/laravel-mix/node_modules/css-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[1]!../../../../../../node_modules/vue-loader/lib/loaders/stylePostLoader.js!../../../../../../node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[2]!../../../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./IndexEventCardComponent.vue?vue&type=style&index=0&lang=css& */ "./node_modules/style-loader/dist/cjs.js!./node_modules/laravel-mix/node_modules/css-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[1]!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/site/items/cards/IndexEventCardComponent.vue?vue&type=style&index=0&lang=css&");
+
+
+/***/ }),
+
+/***/ "./resources/js/components/site/items/navbars/NavbarComponent.vue?vue&type=style&index=0&lang=css&":
+/*!*********************************************************************************************************!*\
+  !*** ./resources/js/components/site/items/navbars/NavbarComponent.vue?vue&type=style&index=0&lang=css& ***!
+  \*********************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_style_loader_dist_cjs_js_node_modules_laravel_mix_node_modules_css_loader_dist_cjs_js_clonedRuleSet_9_0_rules_0_use_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_dist_cjs_js_clonedRuleSet_9_0_rules_0_use_2_node_modules_vue_loader_lib_index_js_vue_loader_options_NavbarComponent_vue_vue_type_style_index_0_lang_css___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../../node_modules/style-loader/dist/cjs.js!../../../../../../node_modules/laravel-mix/node_modules/css-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[1]!../../../../../../node_modules/vue-loader/lib/loaders/stylePostLoader.js!../../../../../../node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[2]!../../../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./NavbarComponent.vue?vue&type=style&index=0&lang=css& */ "./node_modules/style-loader/dist/cjs.js!./node_modules/laravel-mix/node_modules/css-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[1]!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/site/items/navbars/NavbarComponent.vue?vue&type=style&index=0&lang=css&");
 
 
 /***/ }),
@@ -72078,19 +72136,19 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
-/***/ "./resources/js/components/shop/items/NavbarComponent.vue?vue&type=template&id=60b0ffe0&":
-/*!***********************************************************************************************!*\
-  !*** ./resources/js/components/shop/items/NavbarComponent.vue?vue&type=template&id=60b0ffe0& ***!
-  \***********************************************************************************************/
+/***/ "./resources/js/components/shop/items/navbars/NavbarComponent.vue?vue&type=template&id=0271b764&":
+/*!*******************************************************************************************************!*\
+  !*** ./resources/js/components/shop/items/navbars/NavbarComponent.vue?vue&type=template&id=0271b764& ***!
+  \*******************************************************************************************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "render": () => (/* reexport safe */ _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_NavbarComponent_vue_vue_type_template_id_60b0ffe0___WEBPACK_IMPORTED_MODULE_0__.render),
-/* harmony export */   "staticRenderFns": () => (/* reexport safe */ _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_NavbarComponent_vue_vue_type_template_id_60b0ffe0___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns)
+/* harmony export */   "render": () => (/* reexport safe */ _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_NavbarComponent_vue_vue_type_template_id_0271b764___WEBPACK_IMPORTED_MODULE_0__.render),
+/* harmony export */   "staticRenderFns": () => (/* reexport safe */ _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_NavbarComponent_vue_vue_type_template_id_0271b764___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns)
 /* harmony export */ });
-/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_NavbarComponent_vue_vue_type_template_id_60b0ffe0___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./NavbarComponent.vue?vue&type=template&id=60b0ffe0& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/shop/items/NavbarComponent.vue?vue&type=template&id=60b0ffe0&");
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_NavbarComponent_vue_vue_type_template_id_0271b764___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./NavbarComponent.vue?vue&type=template&id=0271b764& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/shop/items/navbars/NavbarComponent.vue?vue&type=template&id=0271b764&");
 
 
 /***/ }),
@@ -72146,23 +72204,6 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
-/***/ "./resources/js/components/site/items/NavbarComponent.vue?vue&type=template&id=3690d121&":
-/*!***********************************************************************************************!*\
-  !*** ./resources/js/components/site/items/NavbarComponent.vue?vue&type=template&id=3690d121& ***!
-  \***********************************************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "render": () => (/* reexport safe */ _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_NavbarComponent_vue_vue_type_template_id_3690d121___WEBPACK_IMPORTED_MODULE_0__.render),
-/* harmony export */   "staticRenderFns": () => (/* reexport safe */ _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_NavbarComponent_vue_vue_type_template_id_3690d121___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns)
-/* harmony export */ });
-/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_NavbarComponent_vue_vue_type_template_id_3690d121___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./NavbarComponent.vue?vue&type=template&id=3690d121& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/site/items/NavbarComponent.vue?vue&type=template&id=3690d121&");
-
-
-/***/ }),
-
 /***/ "./resources/js/components/site/items/cards/IndexEventCardComponent.vue?vue&type=template&id=4db2606d&":
 /*!*************************************************************************************************************!*\
   !*** ./resources/js/components/site/items/cards/IndexEventCardComponent.vue?vue&type=template&id=4db2606d& ***!
@@ -72176,6 +72217,23 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "staticRenderFns": () => (/* reexport safe */ _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_IndexEventCardComponent_vue_vue_type_template_id_4db2606d___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns)
 /* harmony export */ });
 /* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_IndexEventCardComponent_vue_vue_type_template_id_4db2606d___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./IndexEventCardComponent.vue?vue&type=template&id=4db2606d& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/site/items/cards/IndexEventCardComponent.vue?vue&type=template&id=4db2606d&");
+
+
+/***/ }),
+
+/***/ "./resources/js/components/site/items/navbars/NavbarComponent.vue?vue&type=template&id=1ff53116&":
+/*!*******************************************************************************************************!*\
+  !*** ./resources/js/components/site/items/navbars/NavbarComponent.vue?vue&type=template&id=1ff53116& ***!
+  \*******************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "render": () => (/* reexport safe */ _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_NavbarComponent_vue_vue_type_template_id_1ff53116___WEBPACK_IMPORTED_MODULE_0__.render),
+/* harmony export */   "staticRenderFns": () => (/* reexport safe */ _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_NavbarComponent_vue_vue_type_template_id_1ff53116___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns)
+/* harmony export */ });
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_NavbarComponent_vue_vue_type_template_id_1ff53116___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./NavbarComponent.vue?vue&type=template&id=1ff53116& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/site/items/navbars/NavbarComponent.vue?vue&type=template&id=1ff53116&");
 
 
 /***/ }),
@@ -76020,7 +76078,11 @@ var render = function () {
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
   return _c("div", { staticClass: "row f-links container" }, [
-    _vm._m(0),
+    _c("div", { staticClass: "flick" }, [
+      _c("h4", { staticClass: "footer_title" }, [
+        _vm._v(_vm._s(_vm.$t("global.footer.follow"))),
+      ]),
+    ]),
     _vm._v(" "),
     _c("div", { staticClass: "form-group row" }, [
       _c("div", { staticClass: "col-md-10" }, [
@@ -76127,16 +76189,7 @@ var render = function () {
     ]),
   ])
 }
-var staticRenderFns = [
-  function () {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "flick" }, [
-      _c("h4", { staticClass: "footer_title" }, [_vm._v("Follow us")]),
-    ])
-  },
-]
+var staticRenderFns = []
 render._withStripped = true
 
 
@@ -76198,11 +76251,11 @@ var render = function () {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("li", { staticClass: "display-none-720px" }, [
+  return _c("li", [
     _c(
       "a",
       {
-        staticStyle: { "margin-top": "-5%", "font-size": "120%" },
+        staticStyle: { "font-size": "120%" },
         attrs: { target: "_blank" },
         on: {
           click: function ($event) {
@@ -76210,11 +76263,18 @@ var render = function () {
           },
         },
       },
-      [_c("i", { staticClass: "fa fa-user-circle" })]
+      [_vm._m(0)]
     ),
   ])
 }
-var staticRenderFns = []
+var staticRenderFns = [
+  function () {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("span", [_c("i", { staticClass: "fa fa-user-circle" })])
+  },
+]
 render._withStripped = true
 
 
@@ -76237,7 +76297,7 @@ var render = function () {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("li", { staticClass: "dropdown display-none-720px" }, [
+  return _c("li", { staticClass: "dropdown" }, [
     _vm._m(0),
     _vm._v(" "),
     _c(
@@ -76249,7 +76309,7 @@ var render = function () {
               _c(
                 "a",
                 {
-                  staticStyle: { width: "50%", "margin-left": "25%" },
+                  staticClass: "localizatione_flag",
                   on: {
                     click: function ($event) {
                       ;(_vm.activ_lang = "en"), _vm.localization("en")
@@ -76267,7 +76327,7 @@ var render = function () {
               _c(
                 "a",
                 {
-                  staticStyle: { width: "50%", "margin-left": "25%" },
+                  staticClass: "localizatione_flag",
                   on: {
                     click: function ($event) {
                       ;(_vm.activ_lang = "ka"), _vm.localization("ka")
@@ -76285,7 +76345,7 @@ var render = function () {
               _c(
                 "a",
                 {
-                  staticStyle: { width: "50%", "margin-left": "25%" },
+                  staticClass: "localizatione_flag",
                   on: {
                     click: function ($event) {
                       ;(_vm.activ_lang = "ru"), _vm.localization("ru")
@@ -76307,10 +76367,12 @@ var staticRenderFns = [
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
     return _c("a", { attrs: { "data-toggle": "dropdown" } }, [
-      _c("i", {
-        staticClass: "fa fa-language",
-        attrs: { "aria-hidden": "true" },
-      }),
+      _c("span", [
+        _c("i", {
+          staticClass: "fa fa-language",
+          attrs: { "aria-hidden": "true" },
+        }),
+      ]),
     ])
   },
 ]
@@ -76445,7 +76507,13 @@ var render = function () {
               class: { "btn btn-primary": true },
               attrs: { type: "submit", form: "login_form" },
             },
-            [_vm._v("\n            Login\n            ")]
+            [
+              _vm._v(
+                "\n            " +
+                  _vm._s(_vm.$t("global.login")) +
+                  "\n            "
+              ),
+            ]
           ),
         ]),
       ]),
@@ -76477,7 +76545,7 @@ var render = function () {
   var _c = _vm._self._c || _h
   return _c("div", { staticClass: "container" }, [
     _c("h2", { staticClass: "block_title" }, [
-      _vm._v(_vm._s(_vm.$t("title message"))),
+      _vm._v(_vm._s(_vm.$t("global.message form"))),
     ]),
     _vm._v(" "),
     _vm._m(0),
@@ -76923,7 +76991,7 @@ var render = function () {
     _c("div", { staticClass: "col-md-12 text-center" }, [
       _c("div", { staticClass: "row" }, [
         _c("h2", { staticClass: "index_h2" }, [
-          _vm._v(_vm._s(_vm.$t("title service list"))),
+          _vm._v(_vm._s(_vm.$t("global.services"))),
         ]),
         _vm._v(" "),
         _vm._m(0),
@@ -76940,7 +77008,7 @@ var render = function () {
       _c(
         "div",
         {
-          staticClass: "col-md-4 text-center",
+          staticClass: "col-md-6 col-xs-6 text-center",
           on: {
             click: function ($event) {
               return _vm.go_to_service("guid")
@@ -76961,7 +77029,7 @@ var render = function () {
       _c(
         "div",
         {
-          staticClass: "col-md-4 text-center",
+          staticClass: "col-md-6 col-xs-6 text-center",
           on: {
             click: function ($event) {
               return _vm.go_to_service("shop")
@@ -76975,27 +77043,6 @@ var render = function () {
             _c("h2", [_vm._v("Climbing shop")]),
             _vm._v(" "),
             _c("p", [_vm._v(_vm._s(_vm.shop_short_description))]),
-          ]),
-        ]
-      ),
-      _vm._v(" "),
-      _c(
-        "div",
-        {
-          staticClass: "col-md-4 text-center",
-          on: {
-            click: function ($event) {
-              return _vm.go_to_service("films")
-            },
-          },
-        },
-        [
-          _vm._m(3),
-          _vm._v(" "),
-          _c("div", { staticClass: "row" }, [
-            _c("h2", [_vm._v("Climbing Films")]),
-            _vm._v(" "),
-            _c("p", [_vm._v(_vm._s(_vm.film_short_description))]),
           ]),
         ]
       ),
@@ -77032,17 +77079,6 @@ var staticRenderFns = [
     return _c("div", { staticClass: "row service_icon" }, [
       _c("i", {
         staticClass: "fa fa-shopping-bag",
-        attrs: { "aria-hidden": "true" },
-      }),
-    ])
-  },
-  function () {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "row service_icon" }, [
-      _c("i", {
-        staticClass: "fa fa-video-camera",
         attrs: { "aria-hidden": "true" },
       }),
     ])
@@ -77264,42 +77300,36 @@ var render = function () {
         _vm._v(" "),
         _c("div", { staticClass: "row" }, [
           _c("div", { staticClass: "col-md-4 display-none-720px" }, [
-            _c(
-              "div",
-              { staticClass: "f-about", staticStyle: { color: "#fff" } },
-              [
-                _c("h4", { staticClass: "footer_title" }, [
-                  _vm._v(_vm._s(_vm.$t("about us"))),
-                ]),
-                _vm._v(" "),
-                _c(
-                  "div",
-                  { staticClass: "footer_description_block" },
-                  [
-                    _c("span", {
-                      domProps: {
-                        innerHTML: _vm._s(
-                          this.$siteData.shop_short_description
-                        ),
-                      },
-                    }),
-                    _vm._v(" "),
-                    _c(
-                      "router-link",
-                      { attrs: { to: { name: "about_store" }, exact: "" } },
-                      [_vm._v(_vm._s(_vm.$t("more")))]
-                    ),
-                  ],
-                  1
-                ),
-              ]
-            ),
+            _c("div", { staticClass: "f-about", style: "color: #fff;" }, [
+              _c("h4", { staticClass: "footer_title" }, [
+                _vm._v(_vm._s(_vm.$t("global.footer.about us"))),
+              ]),
+              _vm._v(" "),
+              _c(
+                "div",
+                { staticClass: "footer_description_block" },
+                [
+                  _c("span", {
+                    domProps: {
+                      innerHTML: _vm._s(this.$siteData.shop_short_description),
+                    },
+                  }),
+                  _vm._v(" "),
+                  _c(
+                    "router-link",
+                    { attrs: { to: { name: "about_store" }, exact: "" } },
+                    [_vm._v(_vm._s(_vm.$t("global.footer.more")))]
+                  ),
+                ],
+                1
+              ),
+            ]),
           ]),
           _vm._v(" "),
           _c("div", { staticClass: "col-md-4 display-none-720px" }, [
             _c("div", { staticClass: "f-links" }, [
               _c("h4", { staticClass: "footer_title" }, [
-                _vm._v(_vm._s(_vm.$t("links"))),
+                _vm._v(_vm._s(_vm.$t("global.footer.links"))),
               ]),
               _vm._v(" "),
               _c("ul", { staticClass: "footer_links" }, [
@@ -77309,7 +77339,7 @@ var render = function () {
                     _c(
                       "router-link",
                       { attrs: { to: { name: "catalog" }, exact: "" } },
-                      [_vm._v(" " + _vm._s(_vm.$t("shop menu products")) + " ")]
+                      [_vm._v(" " + _vm._s(_vm.$t("shop.menu.products")) + " ")]
                     ),
                   ],
                   1
@@ -77321,7 +77351,7 @@ var render = function () {
                     _c(
                       "router-link",
                       { attrs: { to: { name: "services" }, exact: "" } },
-                      [_vm._v(" " + _vm._s(_vm.$t("shop menu services")) + " ")]
+                      [_vm._v(" " + _vm._s(_vm.$t("shop.menu.services")) + " ")]
                     ),
                   ],
                   1
@@ -77333,7 +77363,7 @@ var render = function () {
                     _c(
                       "router-link",
                       { attrs: { to: { name: "about_store" }, exact: "" } },
-                      [_vm._v(" " + _vm._s(_vm.$t("shop menu about us")) + " ")]
+                      [_vm._v(" " + _vm._s(_vm.$t("shop.menu.about us")) + " ")]
                     ),
                   ],
                   1
@@ -77352,7 +77382,7 @@ var render = function () {
                   { staticClass: "flick" },
                   [
                     _c("h4", { staticClass: "footer_title" }, [
-                      _vm._v(_vm._s(_vm.$t("share"))),
+                      _vm._v(_vm._s(_vm.$t("global.footer.share"))),
                     ]),
                     _vm._v(" "),
                     _c("share"),
@@ -77414,10 +77444,10 @@ render._withStripped = true
 
 /***/ }),
 
-/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/shop/items/NavbarComponent.vue?vue&type=template&id=60b0ffe0&":
-/*!**************************************************************************************************************************************************************************************************************************************!*\
-  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/shop/items/NavbarComponent.vue?vue&type=template&id=60b0ffe0& ***!
-  \**************************************************************************************************************************************************************************************************************************************/
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/shop/items/navbars/NavbarComponent.vue?vue&type=template&id=0271b764&":
+/*!**********************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/shop/items/navbars/NavbarComponent.vue?vue&type=template&id=0271b764& ***!
+  \**********************************************************************************************************************************************************************************************************************************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
@@ -77431,551 +77461,191 @@ var render = function () {
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
   return _c(
-    "div",
-    { staticClass: "header navbar-expand-lg navbar-right bg-light" },
+    "nav",
+    { staticClass: "navbar navbar-inverse navbar-fixed-top bg-dark" },
     [
-      _c("div", { staticClass: "row navbar-fixed-top top_menu" }, [
+      _c("div", { staticClass: "container-fluid" }, [
+        _c("div", { staticClass: "navbar-header" }, [
+          _c(
+            "button",
+            {
+              staticClass: "navbar-toggle collapsed",
+              attrs: {
+                type: "button",
+                "data-toggle": "collapse",
+                "aria-expanded": "false",
+              },
+              on: {
+                click: function ($event) {
+                  return _vm.open_navbar()
+                },
+              },
+            },
+            [
+              _c("span", { staticClass: "sr-only" }, [
+                _vm._v("Toggle navigation"),
+              ]),
+              _vm._v(" "),
+              _c("span", { staticClass: "icon-bar" }),
+              _vm._v(" "),
+              _c("span", { staticClass: "icon-bar" }),
+              _vm._v(" "),
+              _c("span", { staticClass: "icon-bar" }),
+            ]
+          ),
+          _vm._v(" "),
+          _c(
+            "span",
+            [
+              _c(
+                "router-link",
+                {
+                  staticClass: "site_title",
+                  staticStyle: { "font-size": "1.5em" },
+                  attrs: { to: { name: "catalog" }, exact: "" },
+                },
+                [_vm._v(_vm._s(_vm.$t("shop.name")))]
+              ),
+            ],
+            1
+          ),
+        ]),
+        _vm._v(" "),
         _c(
           "div",
-          { staticClass: "col-xs-12 col-sm-2 col-md-3 col-lg-3 navbar_title" },
+          { class: [_vm.navbar_class], attrs: { id: "alignment-example" } },
           [
             _c(
-              "div",
-              { staticClass: "site_title" },
+              "ul",
+              { staticClass: "nav navbar-nav navbar-right" },
               [
                 _c(
-                  "router-link",
-                  {
-                    staticClass: "site_title",
-                    staticStyle: { "font-size": "1.5em" },
-                    attrs: { to: { name: "catalog" }, exact: "" },
-                  },
-                  [_vm._v("Climbing Shop")]
+                  "li",
+                  [
+                    _c(
+                      "router-link",
+                      { attrs: { to: { name: "catalog" }, exact: "" } },
+                      [
+                        _c("span", [
+                          _vm._v(
+                            " " + _vm._s(_vm.$t("shop.menu.products")) + "  "
+                          ),
+                        ]),
+                      ]
+                    ),
+                  ],
+                  1
                 ),
+                _vm._v(" "),
+                _c(
+                  "li",
+                  [
+                    _c(
+                      "router-link",
+                      { attrs: { to: { name: "services" }, exact: "" } },
+                      [
+                        _c("span", [
+                          _vm._v(
+                            " " + _vm._s(_vm.$t("shop.menu.services")) + " "
+                          ),
+                        ]),
+                      ]
+                    ),
+                  ],
+                  1
+                ),
+                _vm._v(" "),
+                _c(
+                  "li",
+                  [
+                    _c(
+                      "router-link",
+                      { attrs: { to: { name: "about_store" }, exact: "" } },
+                      [
+                        _c("span", [
+                          _vm._v(
+                            " " + _vm._s(_vm.$t("shop.menu.about us")) + " "
+                          ),
+                        ]),
+                      ]
+                    ),
+                  ],
+                  1
+                ),
+                _vm._v(" "),
+                _c("li", { staticClass: "dropdown" }, [
+                  _vm._m(0),
+                  _vm._v(" "),
+                  _c(
+                    "ul",
+                    {
+                      staticClass: "dropdown-menu shadows ",
+                      staticStyle: { width: "1000%" },
+                      attrs: { role: "menu" },
+                    },
+                    [
+                      _c("li", [
+                        _c(
+                          "form",
+                          {
+                            staticClass: "monail_navbar_form",
+                            attrs: {
+                              action: "/search",
+                              id: "searchForm",
+                              method: "POST",
+                              role: "search",
+                            },
+                            on: {
+                              submit: function ($event) {
+                                $event.preventDefault()
+                                return _vm.search.apply(null, arguments)
+                              },
+                            },
+                          },
+                          [
+                            _c("input", {
+                              directives: [
+                                {
+                                  name: "model",
+                                  rawName: "v-model",
+                                  value: _vm.search_query,
+                                  expression: "search_query",
+                                },
+                              ],
+                              staticClass: "form-control",
+                              attrs: {
+                                name: "request",
+                                placeholder: "Search product.",
+                                autocomplete: "off",
+                                autofocus: "autofocus",
+                                type: "text",
+                                lang: "en",
+                              },
+                              domProps: { value: _vm.search_query },
+                              on: {
+                                input: function ($event) {
+                                  if ($event.target.composing) {
+                                    return
+                                  }
+                                  _vm.search_query = $event.target.value
+                                },
+                              },
+                            }),
+                          ]
+                        ),
+                        _vm._v(" "),
+                        _vm._m(1),
+                      ]),
+                    ]
+                  ),
+                ]),
+                _vm._v(" "),
+                _c("localeSwitcher"),
+                _vm._v(" "),
+                _c("goTo", { attrs: { go_to_page: "/" } }),
               ],
               1
             ),
-          ]
-        ),
-        _vm._v(" "),
-        _c(
-          "nav",
-          {
-            staticClass: "navbar navbar-default float-top",
-            attrs: { role: "navigation" },
-          },
-          [
-            _c("div", { staticClass: "container-fluid" }, [
-              _c(
-                "button",
-                {
-                  staticClass: "navbar-toggle collapsed",
-                  attrs: { type: "button" },
-                  on: {
-                    click: function ($event) {
-                      return _vm.open_navbar()
-                    },
-                  },
-                },
-                [_c("i", { staticClass: "fa fa-angle-down" })]
-              ),
-              _vm._v(" "),
-              _c(
-                "button",
-                {
-                  staticClass: "navbar-toggle margin_right",
-                  attrs: { type: "button" },
-                  on: {
-                    click: function ($event) {
-                      return _vm.goTo("/cart")
-                    },
-                  },
-                },
-                [_c("i", { staticClass: "fa fa-shopping-cart" })]
-              ),
-              _vm._v(" "),
-              _c(
-                "button",
-                {
-                  staticClass: "navbar-toggle margin_right",
-                  attrs: { type: "button" },
-                  on: {
-                    click: function ($event) {
-                      return _vm.goTo("/favorite_products")
-                    },
-                  },
-                },
-                [
-                  _c("i", {
-                    staticClass: "fa fa-heart",
-                    attrs: { "aria-hidden": "true" },
-                  }),
-                ]
-              ),
-              _vm._v(" "),
-              _c("div", { staticClass: "dropdown" }, [
-                _vm._m(0),
-                _vm._v(" "),
-                _c(
-                  "ul",
-                  {
-                    staticClass: "dropdown-menu shadows mobail_dropdown",
-                    attrs: { role: "menu", "aria-labelledby": "dropdown" },
-                  },
-                  [
-                    _c("li", [
-                      _c(
-                        "a",
-                        {
-                          staticClass: "mobail_dropdawn_text",
-                          on: {
-                            click: function ($event) {
-                              return _vm.currency("USD")
-                            },
-                          },
-                        },
-                        [
-                          _c("i", {
-                            staticClass: "fa fa-usd",
-                            attrs: { "aria-hidden": "true" },
-                          }),
-                        ]
-                      ),
-                    ]),
-                    _vm._v(" "),
-                    _c("li", [
-                      _c(
-                        "a",
-                        {
-                          staticClass: "mobail_dropdawn_text",
-                          on: {
-                            click: function ($event) {
-                              return _vm.currency("EUR")
-                            },
-                          },
-                        },
-                        [
-                          _c("i", {
-                            staticClass: "fa fa-eur",
-                            attrs: { "aria-hidden": "true" },
-                          }),
-                        ]
-                      ),
-                    ]),
-                    _vm._v(" "),
-                    _c("li", [
-                      _c(
-                        "a",
-                        {
-                          staticClass: "mobail_dropdawn_text",
-                          on: {
-                            click: function ($event) {
-                              return _vm.currency("GEL")
-                            },
-                          },
-                        },
-                        [_vm._v("lari")]
-                      ),
-                    ]),
-                  ]
-                ),
-              ]),
-              _vm._v(" "),
-              _c("div", { staticClass: "dropdown" }, [
-                _vm._m(1),
-                _vm._v(" "),
-                _c(
-                  "ul",
-                  {
-                    staticClass: "dropdown-menu shadows mobail_dropdown",
-                    attrs: { "aria-labelledby": "dropdown" },
-                  },
-                  [
-                    _c(
-                      "form",
-                      {
-                        staticClass: "monail_navbar_form",
-                        attrs: {
-                          action: "/search",
-                          id: "searchForm",
-                          method: "POST",
-                          role: "search",
-                        },
-                        on: {
-                          submit: function ($event) {
-                            $event.preventDefault()
-                            return _vm.search.apply(null, arguments)
-                          },
-                        },
-                      },
-                      [
-                        _c("input", {
-                          directives: [
-                            {
-                              name: "model",
-                              rawName: "v-model",
-                              value: _vm.search_query,
-                              expression: "search_query",
-                            },
-                          ],
-                          staticClass: "form-control",
-                          attrs: {
-                            name: "request",
-                            placeholder: "Search Here",
-                            autocomplete: "off",
-                            autofocus: "autofocus",
-                            type: "text",
-                            lang: "en",
-                          },
-                          domProps: { value: _vm.search_query },
-                          on: {
-                            input: function ($event) {
-                              if ($event.target.composing) {
-                                return
-                              }
-                              _vm.search_query = $event.target.value
-                            },
-                          },
-                        }),
-                      ]
-                    ),
-                    _vm._v(" "),
-                    _vm._m(2),
-                  ]
-                ),
-              ]),
-              _vm._v(" "),
-              _c("div", { staticClass: "dropdown" }, [
-                _vm._m(3),
-                _vm._v(" "),
-                _c(
-                  "ul",
-                  {
-                    staticClass: "dropdown-menu shadows mobail_dropdown",
-                    attrs: { "aria-labelledby": "dropdown" },
-                  },
-                  [
-                    _vm.activ_lang == "ka" || _vm.activ_lang == "ru"
-                      ? _c("li", [
-                          _c(
-                            "a",
-                            {
-                              staticClass: "mobail_flag",
-                              on: {
-                                click: function ($event) {
-                                  ;(_vm.activ_lang = "en"),
-                                    _vm.localization("en")
-                                },
-                              },
-                            },
-                            [
-                              _c("countryFlag", {
-                                attrs: { country: "usa", size: "big" },
-                              }),
-                            ],
-                            1
-                          ),
-                        ])
-                      : _vm._e(),
-                    _vm._v(" "),
-                    _vm.activ_lang == "en" || _vm.activ_lang == "ru"
-                      ? _c("li", [
-                          _c(
-                            "a",
-                            {
-                              staticClass: "mobail_flag",
-                              on: {
-                                click: function ($event) {
-                                  ;(_vm.activ_lang = "ka"),
-                                    _vm.localization("ka")
-                                },
-                              },
-                            },
-                            [
-                              _c("countryFlag", {
-                                attrs: { country: "geo", size: "big" },
-                              }),
-                            ],
-                            1
-                          ),
-                        ])
-                      : _vm._e(),
-                    _vm._v(" "),
-                    _vm.activ_lang == "ka" || _vm.activ_lang == "en"
-                      ? _c("li", [
-                          _c(
-                            "a",
-                            {
-                              staticClass: "mobail_flag",
-                              on: {
-                                click: function ($event) {
-                                  ;(_vm.activ_lang = "ru"),
-                                    _vm.localization("ru")
-                                },
-                              },
-                            },
-                            [
-                              _c("countryFlag", {
-                                attrs: { country: "rus", size: "big" },
-                              }),
-                            ],
-                            1
-                          ),
-                        ])
-                      : _vm._e(),
-                  ]
-                ),
-              ]),
-              _vm._v(" "),
-              _c(
-                "button",
-                {
-                  staticClass: "navbar-toggle margin_right",
-                  attrs: { type: "button" },
-                  on: {
-                    click: function ($event) {
-                      return _vm.goTo()
-                    },
-                  },
-                },
-                [_c("i", { staticClass: "fa fa-user" })]
-              ),
-            ]),
-            _vm._v(" "),
-            _c("div", { class: [_vm.navbar_class] }, [
-              _c(
-                "ul",
-                { staticClass: "nav navbar-nav pull-right top_menu_buttons" },
-                [
-                  _c(
-                    "li",
-                    [
-                      _c(
-                        "router-link",
-                        { attrs: { to: { name: "catalog" }, exact: "" } },
-                        [
-                          _c("span", [
-                            _vm._v(
-                              " " + _vm._s(_vm.$t("shop menu products")) + "  "
-                            ),
-                          ]),
-                        ]
-                      ),
-                    ],
-                    1
-                  ),
-                  _vm._v(" "),
-                  _c(
-                    "li",
-                    [
-                      _c(
-                        "router-link",
-                        { attrs: { to: { name: "services" }, exact: "" } },
-                        [
-                          _c("span", [
-                            _vm._v(
-                              " " + _vm._s(_vm.$t("shop menu services")) + " "
-                            ),
-                          ]),
-                        ]
-                      ),
-                    ],
-                    1
-                  ),
-                  _vm._v(" "),
-                  _c(
-                    "li",
-                    [
-                      _c(
-                        "router-link",
-                        { attrs: { to: { name: "about_store" }, exact: "" } },
-                        [
-                          _c("span", [
-                            _vm._v(
-                              " " + _vm._s(_vm.$t("shop menu about us")) + " "
-                            ),
-                          ]),
-                        ]
-                      ),
-                    ],
-                    1
-                  ),
-                  _vm._v(" "),
-                  _c("li", { staticClass: "display-none-720px" }, [
-                    _c(
-                      "a",
-                      {
-                        staticStyle: { "margin-top": "-5%" },
-                        on: {
-                          click: function ($event) {
-                            return _vm.goTo("/cart")
-                          },
-                        },
-                      },
-                      [_c("i", { staticClass: "fa fa-shopping-cart" })]
-                    ),
-                  ]),
-                  _vm._v(" "),
-                  _c("li", { staticClass: "display-none-720px" }, [
-                    _c(
-                      "a",
-                      {
-                        staticStyle: { "margin-top": "-5%" },
-                        on: {
-                          click: function ($event) {
-                            return _vm.goTo("/favorite_products")
-                          },
-                        },
-                      },
-                      [
-                        _c("i", {
-                          staticClass: "fa fa-heart",
-                          attrs: { "aria-hidden": "true" },
-                        }),
-                      ]
-                    ),
-                  ]),
-                  _vm._v(" "),
-                  _c("li", { staticClass: "dropdown" }, [
-                    _vm._m(4),
-                    _vm._v(" "),
-                    _c(
-                      "ul",
-                      {
-                        staticClass:
-                          "dropdown-menu shadows menu_margin_left_850",
-                        staticStyle: { width: "1000%" },
-                        attrs: { role: "menu" },
-                      },
-                      [
-                        _c("li", [
-                          _c(
-                            "form",
-                            {
-                              staticClass: "monail_navbar_form",
-                              attrs: {
-                                action: "/search",
-                                id: "searchForm",
-                                method: "POST",
-                                role: "search",
-                              },
-                              on: {
-                                submit: function ($event) {
-                                  $event.preventDefault()
-                                  return _vm.search.apply(null, arguments)
-                                },
-                              },
-                            },
-                            [
-                              _c("input", {
-                                directives: [
-                                  {
-                                    name: "model",
-                                    rawName: "v-model",
-                                    value: _vm.search_query,
-                                    expression: "search_query",
-                                  },
-                                ],
-                                staticClass: "form-control",
-                                attrs: {
-                                  name: "request",
-                                  placeholder: "Search Here",
-                                  autocomplete: "off",
-                                  autofocus: "autofocus",
-                                  type: "text",
-                                  lang: "en",
-                                },
-                                domProps: { value: _vm.search_query },
-                                on: {
-                                  input: function ($event) {
-                                    if ($event.target.composing) {
-                                      return
-                                    }
-                                    _vm.search_query = $event.target.value
-                                  },
-                                },
-                              }),
-                            ]
-                          ),
-                          _vm._v(" "),
-                          _vm._m(5),
-                        ]),
-                      ]
-                    ),
-                  ]),
-                  _vm._v(" "),
-                  _c("li", { staticClass: "dropdown display-none-720px" }, [
-                    _vm._m(6),
-                    _vm._v(" "),
-                    _c(
-                      "ul",
-                      {
-                        staticClass: "dropdown-menu shadows",
-                        attrs: { role: "menu" },
-                      },
-                      [
-                        _c("li", [
-                          _c(
-                            "a",
-                            {
-                              on: {
-                                click: function ($event) {
-                                  return _vm.currency("USD")
-                                },
-                              },
-                            },
-                            [
-                              _c("i", {
-                                staticClass: "fa fa-usd",
-                                attrs: { "aria-hidden": "true" },
-                              }),
-                            ]
-                          ),
-                        ]),
-                        _vm._v(" "),
-                        _c("li", [
-                          _c(
-                            "a",
-                            {
-                              on: {
-                                click: function ($event) {
-                                  return _vm.currency("EUR")
-                                },
-                              },
-                            },
-                            [
-                              _c("i", {
-                                staticClass: "fa fa-eur",
-                                attrs: { "aria-hidden": "true" },
-                              }),
-                            ]
-                          ),
-                        ]),
-                        _vm._v(" "),
-                        _c("li", [
-                          _c(
-                            "a",
-                            {
-                              on: {
-                                click: function ($event) {
-                                  return _vm.currency("GEL")
-                                },
-                              },
-                            },
-                            [_vm._v("lari")]
-                          ),
-                        ]),
-                      ]
-                    ),
-                  ]),
-                  _vm._v(" "),
-                  _c("localeSwitcher"),
-                  _vm._v(" "),
-                  _c("goTo", { attrs: { go_to_page: "/" } }),
-                ],
-                1
-              ),
-            ]),
           ]
         ),
       ]),
@@ -77988,96 +77658,15 @@ var staticRenderFns = [
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
     return _c(
-      "button",
-      {
-        staticClass: "navbar-toggle margin_right",
-        attrs: {
-          type: "button",
-          "data-toggle": "dropdown",
-          id: "dropdown",
-          "aria-haspopup": "true",
-          "aria-expanded": "false",
-        },
-      },
-      [_c("i", { staticClass: "fa fa-usd", attrs: { "aria-hidden": "true" } })]
-    )
-  },
-  function () {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c(
-      "button",
-      {
-        staticClass: "navbar-toggle margin_right",
-        attrs: {
-          type: "button",
-          "data-toggle": "dropdown",
-          id: "dropdown",
-          "aria-haspopup": "true",
-          "aria-expanded": "false",
-        },
-      },
-      [
-        _c("i", {
-          staticClass: "fa fa-search",
-          attrs: { "aria-hidden": "true" },
-        }),
-      ]
-    )
-  },
-  function () {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c(
-      "button",
-      {
-        staticClass: "monail_navbar_form_button",
-        attrs: { type: "submit", form: "searchForm" },
-      },
-      [_c("span", { staticClass: "glyphicon glyphicon-search" })]
-    )
-  },
-  function () {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c(
-      "button",
-      {
-        staticClass: "navbar-toggle margin_right",
-        attrs: {
-          type: "button",
-          "data-toggle": "dropdown",
-          id: "dropdown",
-          "aria-haspopup": "true",
-          "aria-expanded": "false",
-        },
-      },
-      [
-        _c("i", {
-          staticClass: "fa fa-language",
-          attrs: { "aria-hidden": "true" },
-        }),
-      ]
-    )
-  },
-  function () {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c(
       "a",
-      {
-        staticClass: "margin_right admin_menu_for_desctop",
-        attrs: { "data-toggle": "dropdown" },
-      },
+      { staticClass: "margin_right", attrs: { "data-toggle": "dropdown" } },
       [
-        _c("i", {
-          staticClass: "fa fa-search",
-          attrs: { "aria-hidden": "true" },
-        }),
+        _c("span", [
+          _c("i", {
+            staticClass: "fa fa-search",
+            attrs: { "aria-hidden": "true" },
+          }),
+        ]),
       ]
     )
   },
@@ -78093,14 +77682,6 @@ var staticRenderFns = [
       },
       [_c("span", { staticClass: "glyphicon glyphicon-search" })]
     )
-  },
-  function () {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("a", { attrs: { "data-toggle": "dropdown" } }, [
-      _c("i", { staticClass: "fa fa-usd", attrs: { "aria-hidden": "true" } }),
-    ])
   },
 ]
 render._withStripped = true
@@ -78186,7 +77767,7 @@ var render = function () {
           _c("div", { staticClass: "col-md-4 display-none-720px" }, [
             _c("div", { staticClass: "f-about container" }, [
               _c("h4", { staticClass: "footer_title" }, [
-                _vm._v(_vm._s(_vm.$t("about us"))),
+                _vm._v(_vm._s(_vm.$t("global.footer.about us"))),
               ]),
               _vm._v(" "),
               _c(
@@ -78212,7 +77793,7 @@ var render = function () {
                     [
                       _vm._v(
                         "\n                        " +
-                          _vm._s(_vm.$t("more")) +
+                          _vm._s(_vm.$t("global.footer.more")) +
                           "\n                        "
                       ),
                     ]
@@ -78226,7 +77807,7 @@ var render = function () {
           _c("div", { staticClass: "col-md-4" }, [
             _c("div", { staticClass: "f-links" }, [
               _c("h4", { staticClass: "footer_title" }, [
-                _vm._v(_vm._s(_vm.$t("links"))),
+                _vm._v(_vm._s(_vm.$t("global.footer.links"))),
               ]),
               _vm._v(" "),
               _c("ul", { staticClass: "footer_links" }, [
@@ -78246,7 +77827,7 @@ var render = function () {
                       [
                         _vm._v(
                           "\n                                " +
-                            _vm._s(_vm.$t("menu indoor climbing")) +
+                            _vm._s(_vm.$t("guide.menu.indoor climbing")) +
                             "\n                            "
                         ),
                       ]
@@ -78271,7 +77852,7 @@ var render = function () {
                       [
                         _vm._v(
                           "\n                                " +
-                            _vm._s(_vm.$t("menu outdoor climbing")) +
+                            _vm._s(_vm.$t("guide.menu.outdoor climbing")) +
                             "\n                            "
                         ),
                       ]
@@ -78296,7 +77877,7 @@ var render = function () {
                       [
                         _vm._v(
                           "\n                                " +
-                            _vm._s(_vm.$t("menu mountaineering")) +
+                            _vm._s(_vm.$t("guide.menu.mountaineering")) +
                             "\n                            "
                         ),
                       ]
@@ -78321,7 +77902,7 @@ var render = function () {
                       [
                         _vm._v(
                           "\n                                " +
-                            _vm._s(_vm.$t("menu ice climbing")) +
+                            _vm._s(_vm.$t("guide.menu.ice climbing")) +
                             "\n                            "
                         ),
                       ]
@@ -78346,7 +77927,7 @@ var render = function () {
                       [
                         _vm._v(
                           "\n                                " +
-                            _vm._s(_vm.$t("menu other")) +
+                            _vm._s(_vm.$t("guide.menu.other")) +
                             "\n                            "
                         ),
                       ]
@@ -78371,7 +77952,7 @@ var render = function () {
                       [
                         _vm._v(
                           "\n                                " +
-                            _vm._s(_vm.$t("menu about us")) +
+                            _vm._s(_vm.$t("guide.menu.about us")) +
                             "\n                            "
                         ),
                       ]
@@ -78393,7 +77974,7 @@ var render = function () {
                   { staticClass: "flick" },
                   [
                     _c("h4", { staticClass: "footer_title" }, [
-                      _vm._v(_vm._s(_vm.$t("share"))),
+                      _vm._v(_vm._s(_vm.$t("global.footer.share"))),
                     ]),
                     _vm._v(" "),
                     _c("share"),
@@ -78405,7 +77986,7 @@ var render = function () {
               _c("div", { staticClass: "row f-links container" }, [
                 _c("div", { staticClass: "flick" }, [
                   _c("h4", { staticClass: "footer_title" }, [
-                    _vm._v("QR code"),
+                    _vm._v(_vm._s(_vm.$t("global.footer.qr"))),
                   ]),
                   _vm._v(" "),
                   _c(
@@ -78469,793 +78050,6 @@ var render = function () {
   })
 }
 var staticRenderFns = []
-render._withStripped = true
-
-
-
-/***/ }),
-
-/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/site/items/NavbarComponent.vue?vue&type=template&id=3690d121&":
-/*!**************************************************************************************************************************************************************************************************************************************!*\
-  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/site/items/NavbarComponent.vue?vue&type=template&id=3690d121& ***!
-  \**************************************************************************************************************************************************************************************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "render": () => (/* binding */ render),
-/* harmony export */   "staticRenderFns": () => (/* binding */ staticRenderFns)
-/* harmony export */ });
-var render = function () {
-  var _vm = this
-  var _h = _vm.$createElement
-  var _c = _vm._self._c || _h
-  return _c(
-    "div",
-    { staticClass: "header navbar-expand-lg navbar-right bg-light" },
-    [
-      _c("div", { staticClass: "row navbar-fixed-top top_menu" }, [
-        _c(
-          "div",
-          { staticClass: "col-xs-12 col-sm-2 col-md-3 col-lg-3 navbar_title" },
-          [
-            _c(
-              "div",
-              { staticClass: "site_title" },
-              [
-                _c(
-                  "router-link",
-                  {
-                    staticClass: "site_title",
-                    staticStyle: { "font-size": "1.5em" },
-                    attrs: { to: { name: "index" }, exact: "" },
-                  },
-                  [
-                    _vm._v(
-                      "\n                        Climbing Guid\n                    "
-                    ),
-                  ]
-                ),
-              ],
-              1
-            ),
-          ]
-        ),
-        _vm._v(" "),
-        _c(
-          "nav",
-          {
-            staticClass: "navbar navbar-default float-top",
-            attrs: { role: "navigation" },
-          },
-          [
-            _c("div", { staticClass: "container-fluid" }, [
-              _c(
-                "button",
-                {
-                  staticClass: "navbar-toggle collapsed",
-                  attrs: { type: "button" },
-                  on: {
-                    click: function ($event) {
-                      return _vm.open_navbar()
-                    },
-                  },
-                },
-                [_c("i", { staticClass: "fa fa-angle-down" })]
-              ),
-              _vm._v(" "),
-              _c("div", { staticClass: "dropdown" }, [
-                _vm._m(0),
-                _vm._v(" "),
-                _c(
-                  "ul",
-                  {
-                    staticClass: "dropdown-menu shadows mobail_dropdown",
-                    attrs: { role: "menu", "aria-labelledby": "dropdown" },
-                  },
-                  [
-                    _vm.activ_grade == "UIAA"
-                      ? _c(
-                          "li",
-                          {
-                            on: {
-                              click: function ($event) {
-                                ;(_vm.activ_grade = "yds"),
-                                  _vm.grade_charts("yds")
-                              },
-                            },
-                          },
-                          [
-                            _c("a", { staticClass: "mobail_dropdawn_text" }, [
-                              _vm._v("YDS"),
-                            ]),
-                          ]
-                        )
-                      : _vm._e(),
-                    _vm._v(" "),
-                    _vm.activ_grade == "yds"
-                      ? _c(
-                          "li",
-                          {
-                            on: {
-                              click: function ($event) {
-                                ;(_vm.activ_grade = "UIAA"),
-                                  _vm.grade_charts("UIAA")
-                              },
-                            },
-                          },
-                          [
-                            _c("a", { staticClass: "mobail_dropdawn_text" }, [
-                              _vm._v("UIAA"),
-                            ]),
-                          ]
-                        )
-                      : _vm._e(),
-                  ]
-                ),
-              ]),
-              _vm._v(" "),
-              _c("div", { staticClass: "dropdown" }, [
-                _vm._m(1),
-                _vm._v(" "),
-                _c(
-                  "ul",
-                  {
-                    staticClass: "dropdown-menu shadows mobail_dropdown",
-                    attrs: { "aria-labelledby": "dropdown" },
-                  },
-                  [
-                    _vm.activ_lang == "ka" || _vm.activ_lang == "ru"
-                      ? _c("li", [
-                          _c(
-                            "a",
-                            {
-                              staticClass: "mobail_flag",
-                              on: {
-                                click: function ($event) {
-                                  ;(_vm.activ_lang = "en"),
-                                    _vm.localization("en")
-                                },
-                              },
-                            },
-                            [
-                              _c("countryFlag", {
-                                attrs: { country: "usa", size: "big" },
-                              }),
-                            ],
-                            1
-                          ),
-                        ])
-                      : _vm._e(),
-                    _vm._v(" "),
-                    _vm.activ_lang == "en" || _vm.activ_lang == "ru"
-                      ? _c("li", [
-                          _c(
-                            "a",
-                            {
-                              staticClass: "mobail_flag",
-                              on: {
-                                click: function ($event) {
-                                  ;(_vm.activ_lang = "ka"),
-                                    _vm.localization("ka")
-                                },
-                              },
-                            },
-                            [
-                              _c("countryFlag", {
-                                attrs: { country: "geo", size: "big" },
-                              }),
-                            ],
-                            1
-                          ),
-                        ])
-                      : _vm._e(),
-                    _vm._v(" "),
-                    _vm.activ_lang == "ka" || _vm.activ_lang == "en"
-                      ? _c("li", [
-                          _c(
-                            "a",
-                            {
-                              staticClass: "mobail_flag",
-                              on: {
-                                click: function ($event) {
-                                  ;(_vm.activ_lang = "ru"),
-                                    _vm.localization("ru")
-                                },
-                              },
-                            },
-                            [
-                              _c("countryFlag", {
-                                attrs: { country: "rus", size: "big" },
-                              }),
-                            ],
-                            1
-                          ),
-                        ])
-                      : _vm._e(),
-                  ]
-                ),
-              ]),
-              _vm._v(" "),
-              _c("div", { staticClass: "dropdown" }, [
-                _vm._m(2),
-                _vm._v(" "),
-                _c(
-                  "ul",
-                  {
-                    staticClass: "dropdown-menu shadows mobail_dropdown",
-                    attrs: { "aria-labelledby": "dropdown" },
-                  },
-                  [
-                    _c(
-                      "form",
-                      {
-                        staticClass: "monail_navbar_form",
-                        attrs: {
-                          action: "/search",
-                          id: "searchForm",
-                          method: "POST",
-                          role: "search",
-                        },
-                        on: {
-                          submit: function ($event) {
-                            $event.preventDefault()
-                            return _vm.search.apply(null, arguments)
-                          },
-                        },
-                      },
-                      [
-                        _c("input", {
-                          directives: [
-                            {
-                              name: "model",
-                              rawName: "v-model",
-                              value: _vm.search_query,
-                              expression: "search_query",
-                            },
-                          ],
-                          staticClass: "form-control",
-                          attrs: {
-                            name: "request",
-                            placeholder: "Search climbing spot here.",
-                            autocomplete: "off",
-                            autofocus: "autofocus",
-                            type: "text",
-                            lang: "en",
-                          },
-                          domProps: { value: _vm.search_query },
-                          on: {
-                            input: function ($event) {
-                              if ($event.target.composing) {
-                                return
-                              }
-                              _vm.search_query = $event.target.value
-                            },
-                          },
-                        }),
-                      ]
-                    ),
-                    _vm._v(" "),
-                    _vm._m(3),
-                  ]
-                ),
-              ]),
-              _vm._v(" "),
-              _c(
-                "button",
-                {
-                  staticClass: "navbar-toggle margin_right",
-                  attrs: { type: "button" },
-                  on: {
-                    click: function ($event) {
-                      return _vm.goTo()
-                    },
-                  },
-                },
-                [_c("i", { staticClass: "fa fa-user" })]
-              ),
-            ]),
-            _vm._v(" "),
-            _c("div", { class: [_vm.navbar_class] }, [
-              _c(
-                "ul",
-                { staticClass: "nav navbar-nav pull-right top_menu_buttons" },
-                [
-                  _c("li", { staticClass: "dropdown" }, [
-                    _c("a", { attrs: { "data-toggle": "dropdown" } }, [
-                      _vm._v(
-                        " \n                                " +
-                          _vm._s(_vm.$t("menu climbing")) +
-                          "\n                            "
-                      ),
-                    ]),
-                    _vm._v(" "),
-                    _c(
-                      "ul",
-                      {
-                        staticClass: "dropdown-menu ",
-                        staticStyle: {
-                          background: "#1994b1",
-                          position: "absolute",
-                        },
-                        attrs: { role: "menu" },
-                      },
-                      [
-                        _c(
-                          "li",
-                          [
-                            _c(
-                              "router-link",
-                              {
-                                staticStyle: { "font-size": "1.5em" },
-                                attrs: {
-                                  to: {
-                                    name: "indoors",
-                                    params: { lang: this.$i18n.locale },
-                                  },
-                                  exact: "",
-                                },
-                              },
-                              [
-                                _c("span", [
-                                  _vm._v(
-                                    " " +
-                                      _vm._s(_vm.$t("menu indoor climbing")) +
-                                      "  "
-                                  ),
-                                ]),
-                              ]
-                            ),
-                          ],
-                          1
-                        ),
-                        _vm._v(" "),
-                        _c(
-                          "li",
-                          [
-                            _c(
-                              "router-link",
-                              {
-                                staticStyle: { "font-size": "1.5em" },
-                                attrs: {
-                                  to: {
-                                    name: "outdoors",
-                                    params: { lang: this.$i18n.locale },
-                                  },
-                                  exact: "",
-                                },
-                              },
-                              [
-                                _c("span", [
-                                  _vm._v(
-                                    " " +
-                                      _vm._s(_vm.$t("menu outdoor climbing")) +
-                                      " "
-                                  ),
-                                ]),
-                              ]
-                            ),
-                          ],
-                          1
-                        ),
-                      ]
-                    ),
-                  ]),
-                  _vm._v(" "),
-                  _c(
-                    "li",
-                    [
-                      _c(
-                        "router-link",
-                        {
-                          attrs: {
-                            to: {
-                              name: "mountaineerings",
-                              params: { lang: this.$i18n.locale },
-                            },
-                            exact: "",
-                          },
-                        },
-                        [
-                          _c("span", [
-                            _vm._v(
-                              " " +
-                                _vm._s(_vm.$t("menu mountaineering")) +
-                                "      "
-                            ),
-                          ]),
-                        ]
-                      ),
-                    ],
-                    1
-                  ),
-                  _vm._v(" "),
-                  _c(
-                    "li",
-                    [
-                      _c(
-                        "router-link",
-                        {
-                          attrs: {
-                            to: {
-                              name: "ices",
-                              params: { lang: this.$i18n.locale },
-                            },
-                            exact: "",
-                          },
-                        },
-                        [
-                          _c("span", [
-                            _vm._v(
-                              " " +
-                                _vm._s(_vm.$t("menu ice climbing")) +
-                                "        "
-                            ),
-                          ]),
-                        ]
-                      ),
-                    ],
-                    1
-                  ),
-                  _vm._v(" "),
-                  _c(
-                    "li",
-                    [
-                      _c(
-                        "router-link",
-                        {
-                          attrs: {
-                            to: {
-                              name: "events",
-                              params: { lang: this.$i18n.locale },
-                            },
-                            exact: "",
-                          },
-                        },
-                        [
-                          _c("span", [
-                            _vm._v(
-                              " " +
-                                _vm._s(_vm.$t("menu events")) +
-                                "              "
-                            ),
-                          ]),
-                        ]
-                      ),
-                    ],
-                    1
-                  ),
-                  _vm._v(" "),
-                  _c(
-                    "li",
-                    [
-                      _c(
-                        "router-link",
-                        {
-                          attrs: {
-                            to: {
-                              name: "others",
-                              params: { lang: this.$i18n.locale },
-                            },
-                            exact: "",
-                          },
-                        },
-                        [
-                          _c("span", [
-                            _vm._v(
-                              " " +
-                                _vm._s(_vm.$t("menu other")) +
-                                "               "
-                            ),
-                          ]),
-                        ]
-                      ),
-                    ],
-                    1
-                  ),
-                  _vm._v(" "),
-                  _c(
-                    "li",
-                    [
-                      _c(
-                        "router-link",
-                        {
-                          attrs: {
-                            to: {
-                              name: "about_us",
-                              params: { lang: this.$i18n.locale },
-                            },
-                            exact: "",
-                          },
-                        },
-                        [
-                          _c("span", [
-                            _vm._v(
-                              " " +
-                                _vm._s(_vm.$t("menu about us")) +
-                                "            "
-                            ),
-                          ]),
-                        ]
-                      ),
-                    ],
-                    1
-                  ),
-                  _vm._v(" "),
-                  _c("li", { staticClass: "dropdown" }, [
-                    _vm._m(4),
-                    _vm._v(" "),
-                    _c(
-                      "ul",
-                      {
-                        staticClass:
-                          "dropdown-menu shadows menu_margin_left_850",
-                        staticStyle: { width: "1000%" },
-                        attrs: { role: "menu" },
-                      },
-                      [
-                        _c("li", [
-                          _c(
-                            "form",
-                            {
-                              staticClass: "monail_navbar_form",
-                              attrs: {
-                                action: "/search",
-                                id: "searchForm",
-                                method: "POST",
-                                role: "search",
-                              },
-                              on: {
-                                submit: function ($event) {
-                                  $event.preventDefault()
-                                  return _vm.search.apply(null, arguments)
-                                },
-                              },
-                            },
-                            [
-                              _c("input", {
-                                directives: [
-                                  {
-                                    name: "model",
-                                    rawName: "v-model",
-                                    value: _vm.search_query,
-                                    expression: "search_query",
-                                  },
-                                ],
-                                staticClass: "form-control",
-                                attrs: {
-                                  name: "request",
-                                  placeholder: "Search climbing spot here.",
-                                  autocomplete: "off",
-                                  autofocus: "autofocus",
-                                  type: "text",
-                                  lang: "en",
-                                },
-                                domProps: { value: _vm.search_query },
-                                on: {
-                                  input: function ($event) {
-                                    if ($event.target.composing) {
-                                      return
-                                    }
-                                    _vm.search_query = $event.target.value
-                                  },
-                                },
-                              }),
-                            ]
-                          ),
-                          _vm._v(" "),
-                          _vm._m(5),
-                        ]),
-                      ]
-                    ),
-                  ]),
-                  _vm._v(" "),
-                  _c("li", { staticClass: "dropdown display-none-720px" }, [
-                    _vm._m(6),
-                    _vm._v(" "),
-                    _c(
-                      "ul",
-                      {
-                        staticClass: "dropdown-menu shadows",
-                        attrs: { role: "menu" },
-                      },
-                      [
-                        _vm.activ_grade == "UIAA"
-                          ? _c("li", [
-                              _c(
-                                "a",
-                                {
-                                  staticStyle: {
-                                    width: "50%",
-                                    "margin-left": "25%",
-                                  },
-                                  on: {
-                                    click: function ($event) {
-                                      ;(_vm.activ_grade = "yds"),
-                                        _vm.grade_charts("yds")
-                                    },
-                                  },
-                                },
-                                [
-                                  _vm._v(
-                                    "\n                                        YDS\n                                    "
-                                  ),
-                                ]
-                              ),
-                            ])
-                          : _vm._e(),
-                        _vm._v(" "),
-                        _vm.activ_grade == "yds"
-                          ? _c("li", [
-                              _c(
-                                "a",
-                                {
-                                  staticStyle: {
-                                    width: "50%",
-                                    "margin-left": "25%",
-                                  },
-                                  on: {
-                                    click: function ($event) {
-                                      ;(_vm.activ_grade = "UIAA"),
-                                        _vm.grade_charts("UIAA")
-                                    },
-                                  },
-                                },
-                                [
-                                  _vm._v(
-                                    "\n                                        UIAA\n                                    "
-                                  ),
-                                ]
-                              ),
-                            ])
-                          : _vm._e(),
-                      ]
-                    ),
-                  ]),
-                  _vm._v(" "),
-                  _c("localeSwitcher"),
-                  _vm._v(" "),
-                  _c("goTo", { attrs: { go_to_page: "/" } }),
-                ],
-                1
-              ),
-            ]),
-          ]
-        ),
-      ]),
-    ]
-  )
-}
-var staticRenderFns = [
-  function () {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c(
-      "button",
-      {
-        staticClass: "navbar-toggle margin_right",
-        attrs: {
-          type: "button",
-          "data-toggle": "dropdown",
-          id: "dropdown",
-          "aria-haspopup": "true",
-          "aria-expanded": "false",
-        },
-      },
-      [
-        _c("i", {
-          staticClass: "fa fa-heartbeat",
-          attrs: { "aria-hidden": "true" },
-        }),
-      ]
-    )
-  },
-  function () {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c(
-      "button",
-      {
-        staticClass: "navbar-toggle margin_right",
-        attrs: {
-          type: "button",
-          "data-toggle": "dropdown",
-          id: "dropdown",
-          "aria-haspopup": "true",
-          "aria-expanded": "false",
-        },
-      },
-      [
-        _c("i", {
-          staticClass: "fa fa-language",
-          attrs: { "aria-hidden": "true" },
-        }),
-      ]
-    )
-  },
-  function () {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c(
-      "button",
-      {
-        staticClass: "navbar-toggle margin_right",
-        attrs: {
-          type: "button",
-          "data-toggle": "dropdown",
-          id: "dropdown",
-          "aria-haspopup": "true",
-          "aria-expanded": "false",
-        },
-      },
-      [
-        _c("i", {
-          staticClass: "fa fa-search",
-          attrs: { "aria-hidden": "true" },
-        }),
-      ]
-    )
-  },
-  function () {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c(
-      "button",
-      {
-        staticClass: "monail_navbar_form_button",
-        attrs: { type: "submit", form: "searchForm" },
-      },
-      [_c("span", { staticClass: "glyphicon glyphicon-search" })]
-    )
-  },
-  function () {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c(
-      "a",
-      {
-        staticClass: "margin_right admin_menu_for_desctop",
-        attrs: { "data-toggle": "dropdown" },
-      },
-      [
-        _c("i", {
-          staticClass: "fa fa-search",
-          attrs: { "aria-hidden": "true" },
-        }),
-      ]
-    )
-  },
-  function () {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c(
-      "button",
-      {
-        staticClass: "monail_navbar_form_button",
-        attrs: { type: "submit", form: "searchForm" },
-      },
-      [_c("span", { staticClass: "glyphicon glyphicon-search" })]
-    )
-  },
-  function () {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("a", { attrs: { "data-toggle": "dropdown" } }, [
-      _c("i", {
-        staticClass: "fa fa-heartbeat",
-        attrs: { "aria-hidden": "true" },
-      }),
-    ])
-  },
-]
 render._withStripped = true
 
 
@@ -79467,6 +78261,492 @@ var staticRenderFns = [
     return _c("div", { staticClass: "col-sm-12 col-xs-12 nopadding" }, [
       _c("time", { staticClass: "end orange_red" }, [
         _c("span", { staticClass: "day underway_now" }, [_vm._v("Finished")]),
+      ]),
+    ])
+  },
+]
+render._withStripped = true
+
+
+
+/***/ }),
+
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/site/items/navbars/NavbarComponent.vue?vue&type=template&id=1ff53116&":
+/*!**********************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/site/items/navbars/NavbarComponent.vue?vue&type=template&id=1ff53116& ***!
+  \**********************************************************************************************************************************************************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "render": () => (/* binding */ render),
+/* harmony export */   "staticRenderFns": () => (/* binding */ staticRenderFns)
+/* harmony export */ });
+var render = function () {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(
+    "nav",
+    { staticClass: "navbar navbar-inverse navbar-fixed-top bg-dark" },
+    [
+      _c("div", { staticClass: "container-fluid" }, [
+        _c("div", { staticClass: "navbar-header" }, [
+          _c(
+            "button",
+            {
+              staticClass: "navbar-toggle collapsed",
+              attrs: {
+                type: "button",
+                "data-toggle": "collapse",
+                "aria-expanded": "false",
+              },
+              on: {
+                click: function ($event) {
+                  return _vm.open_navbar()
+                },
+              },
+            },
+            [
+              _c("span", { staticClass: "sr-only" }, [
+                _vm._v("Toggle navigation"),
+              ]),
+              _vm._v(" "),
+              _c("span", { staticClass: "icon-bar" }),
+              _vm._v(" "),
+              _c("span", { staticClass: "icon-bar" }),
+              _vm._v(" "),
+              _c("span", { staticClass: "icon-bar" }),
+            ]
+          ),
+          _vm._v(" "),
+          _c(
+            "span",
+            [
+              _c(
+                "router-link",
+                {
+                  staticClass: "site_title",
+                  staticStyle: { "font-size": "1.5em" },
+                  attrs: { to: { name: "index" }, exact: "" },
+                },
+                [
+                  _vm._v(
+                    "\n                    " +
+                      _vm._s(_vm.$t("guide.name")) +
+                      "\n                "
+                  ),
+                ]
+              ),
+            ],
+            1
+          ),
+        ]),
+        _vm._v(" "),
+        _c(
+          "div",
+          { class: [_vm.navbar_class], attrs: { id: "alignment-example" } },
+          [
+            _c(
+              "ul",
+              { staticClass: "nav navbar-nav navbar-right" },
+              [
+                _c("li", { staticClass: "dropdown" }, [
+                  _c("a", { attrs: { "data-toggle": "dropdown" } }, [
+                    _c("span", [_vm._v(_vm._s(_vm.$t("guide.menu.climbing")))]),
+                  ]),
+                  _vm._v(" "),
+                  _c(
+                    "ul",
+                    {
+                      staticClass: "dropdown-menu ",
+                      staticStyle: { "background-color": "#278da5" },
+                      attrs: { role: "menu" },
+                    },
+                    [
+                      _c(
+                        "li",
+                        [
+                          _c(
+                            "router-link",
+                            {
+                              staticStyle: { "font-size": "1.5em" },
+                              attrs: {
+                                to: {
+                                  name: "indoors",
+                                  params: { lang: this.$i18n.locale },
+                                },
+                                exact: "",
+                              },
+                            },
+                            [
+                              _c("span", [
+                                _vm._v(
+                                  " " +
+                                    _vm._s(
+                                      _vm.$t("guide.menu.indoor climbing")
+                                    ) +
+                                    "  "
+                                ),
+                              ]),
+                            ]
+                          ),
+                        ],
+                        1
+                      ),
+                      _vm._v(" "),
+                      _c(
+                        "li",
+                        [
+                          _c(
+                            "router-link",
+                            {
+                              staticStyle: { "font-size": "1.5em" },
+                              attrs: {
+                                to: {
+                                  name: "outdoors",
+                                  params: { lang: this.$i18n.locale },
+                                },
+                                exact: "",
+                              },
+                            },
+                            [
+                              _c("span", [
+                                _vm._v(
+                                  " " +
+                                    _vm._s(
+                                      _vm.$t("guide.menu.outdoor climbing")
+                                    ) +
+                                    " "
+                                ),
+                              ]),
+                            ]
+                          ),
+                        ],
+                        1
+                      ),
+                    ]
+                  ),
+                ]),
+                _vm._v(" "),
+                _c(
+                  "li",
+                  [
+                    _c(
+                      "router-link",
+                      {
+                        attrs: {
+                          to: {
+                            name: "mountaineerings",
+                            params: { lang: this.$i18n.locale },
+                          },
+                          exact: "",
+                        },
+                      },
+                      [
+                        _c("span", [
+                          _vm._v(
+                            " " +
+                              _vm._s(_vm.$t("guide.menu.mountaineering")) +
+                              "      "
+                          ),
+                        ]),
+                      ]
+                    ),
+                  ],
+                  1
+                ),
+                _vm._v(" "),
+                _c(
+                  "li",
+                  [
+                    _c(
+                      "router-link",
+                      {
+                        attrs: {
+                          to: {
+                            name: "ices",
+                            params: { lang: this.$i18n.locale },
+                          },
+                          exact: "",
+                        },
+                      },
+                      [
+                        _c("span", [
+                          _vm._v(
+                            " " +
+                              _vm._s(_vm.$t("guide.menu.ice climbing")) +
+                              "        "
+                          ),
+                        ]),
+                      ]
+                    ),
+                  ],
+                  1
+                ),
+                _vm._v(" "),
+                _c(
+                  "li",
+                  [
+                    _c(
+                      "router-link",
+                      {
+                        attrs: {
+                          to: {
+                            name: "events",
+                            params: { lang: this.$i18n.locale },
+                          },
+                          exact: "",
+                        },
+                      },
+                      [
+                        _c("span", [
+                          _vm._v(
+                            " " +
+                              _vm._s(_vm.$t("guide.menu.events")) +
+                              "              "
+                          ),
+                        ]),
+                      ]
+                    ),
+                  ],
+                  1
+                ),
+                _vm._v(" "),
+                _c(
+                  "li",
+                  [
+                    _c(
+                      "router-link",
+                      {
+                        attrs: {
+                          to: {
+                            name: "others",
+                            params: { lang: this.$i18n.locale },
+                          },
+                          exact: "",
+                        },
+                      },
+                      [
+                        _c("span", [
+                          _vm._v(
+                            " " +
+                              _vm._s(_vm.$t("guide.menu.other")) +
+                              "               "
+                          ),
+                        ]),
+                      ]
+                    ),
+                  ],
+                  1
+                ),
+                _vm._v(" "),
+                _c(
+                  "li",
+                  [
+                    _c(
+                      "router-link",
+                      {
+                        attrs: {
+                          to: {
+                            name: "about_us",
+                            params: { lang: this.$i18n.locale },
+                          },
+                          exact: "",
+                        },
+                      },
+                      [
+                        _c("span", [
+                          _vm._v(
+                            " " +
+                              _vm._s(_vm.$t("guide.menu.about us")) +
+                              "            "
+                          ),
+                        ]),
+                      ]
+                    ),
+                  ],
+                  1
+                ),
+                _vm._v(" "),
+                _c("li", { staticClass: "dropdown" }, [
+                  _vm._m(0),
+                  _vm._v(" "),
+                  _c(
+                    "ul",
+                    {
+                      staticClass: "dropdown-menu shadows ",
+                      staticStyle: { width: "1000%" },
+                      attrs: { role: "menu" },
+                    },
+                    [
+                      _c("li", [
+                        _c(
+                          "form",
+                          {
+                            staticClass: "monail_navbar_form",
+                            attrs: {
+                              action: "/search",
+                              id: "searchForm",
+                              method: "POST",
+                              role: "search",
+                            },
+                            on: {
+                              submit: function ($event) {
+                                $event.preventDefault()
+                                return _vm.search.apply(null, arguments)
+                              },
+                            },
+                          },
+                          [
+                            _c("input", {
+                              directives: [
+                                {
+                                  name: "model",
+                                  rawName: "v-model",
+                                  value: _vm.search_query,
+                                  expression: "search_query",
+                                },
+                              ],
+                              staticClass: "form-control",
+                              attrs: {
+                                name: "request",
+                                placeholder: "Search climbing spot here.",
+                                autocomplete: "off",
+                                autofocus: "autofocus",
+                                type: "text",
+                                lang: "en",
+                              },
+                              domProps: { value: _vm.search_query },
+                              on: {
+                                input: function ($event) {
+                                  if ($event.target.composing) {
+                                    return
+                                  }
+                                  _vm.search_query = $event.target.value
+                                },
+                              },
+                            }),
+                          ]
+                        ),
+                        _vm._v(" "),
+                        _vm._m(1),
+                      ]),
+                    ]
+                  ),
+                ]),
+                _vm._v(" "),
+                _c("li", { staticClass: "dropdown" }, [
+                  _vm._m(2),
+                  _vm._v(" "),
+                  _c(
+                    "ul",
+                    {
+                      staticClass: "dropdown-menu shadows",
+                      attrs: { role: "menu" },
+                    },
+                    [
+                      _vm.activ_grade == "UIAA"
+                        ? _c("li", [
+                            _c(
+                              "a",
+                              {
+                                staticClass: "grade_chart",
+                                on: {
+                                  click: function ($event) {
+                                    ;(_vm.activ_grade = "yds"),
+                                      _vm.grade_charts("yds")
+                                  },
+                                },
+                              },
+                              [
+                                _vm._v(
+                                  "\n                                YDS\n                            "
+                                ),
+                              ]
+                            ),
+                          ])
+                        : _vm._e(),
+                      _vm._v(" "),
+                      _vm.activ_grade == "yds"
+                        ? _c("li", [
+                            _c(
+                              "a",
+                              {
+                                staticClass: "grade_chart",
+                                on: {
+                                  click: function ($event) {
+                                    ;(_vm.activ_grade = "UIAA"),
+                                      _vm.grade_charts("UIAA")
+                                  },
+                                },
+                              },
+                              [
+                                _vm._v(
+                                  "\n                                UIAA\n                            "
+                                ),
+                              ]
+                            ),
+                          ])
+                        : _vm._e(),
+                    ]
+                  ),
+                ]),
+                _vm._v(" "),
+                _c("localeSwitcher"),
+                _vm._v(" "),
+                _c("goTo", { attrs: { go_to_page: "/" } }),
+              ],
+              1
+            ),
+          ]
+        ),
+      ]),
+    ]
+  )
+}
+var staticRenderFns = [
+  function () {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c(
+      "a",
+      { staticClass: "margin_right", attrs: { "data-toggle": "dropdown" } },
+      [
+        _c("span", [
+          _c("i", {
+            staticClass: "fa fa-search",
+            attrs: { "aria-hidden": "true" },
+          }),
+        ]),
+      ]
+    )
+  },
+  function () {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c(
+      "button",
+      {
+        staticClass: "monail_navbar_form_button",
+        attrs: { type: "submit", form: "searchForm" },
+      },
+      [_c("span", { staticClass: "glyphicon glyphicon-search" })]
+    )
+  },
+  function () {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("a", { attrs: { "data-toggle": "dropdown" } }, [
+      _c("span", [
+        _c("i", {
+          staticClass: "fa fa-heartbeat",
+          attrs: { "aria-hidden": "true" },
+        }),
       ]),
     ])
   },
@@ -80202,7 +79482,7 @@ var render = function () {
                   [
                     _c("li", { staticClass: "list-group-item text-muted" }, [
                       _c("span", { staticClass: "admin_menu" }, [
-                        _vm._v(_vm._s(_vm.$t("user menu users")) + " (Beta)"),
+                        _vm._v(_vm._s(_vm.$t("user menu users"))),
                       ]),
                     ]),
                   ]
@@ -80220,6 +79500,27 @@ var render = function () {
                 ]),
               ]
             ),
+            _vm._v(" "),
+            _c("li", {
+              staticClass: "list-group-item text-muted admin_menu_static_block",
+            }),
+            _vm._v(" "),
+            _vm.$can("add", "user") ||
+            _vm.$can("del", "user") ||
+            _vm.$can("edit_permissions", "user") ||
+            _vm.$can("create_ban", "user")
+              ? _c(
+                  "router-link",
+                  { attrs: { to: { name: "usersList" }, exact: "" } },
+                  [
+                    _c("li", { staticClass: "list-group-item text-muted" }, [
+                      _c("span", { staticClass: "admin_menu" }, [
+                        _vm._v("Media (Beta)"),
+                      ]),
+                    ]),
+                  ]
+                )
+              : _vm._e(),
             _vm._v(" "),
             _c("li", {
               staticClass: "list-group-item text-muted admin_menu_static_block",
@@ -101141,7 +100442,7 @@ module.exports = JSON.parse('{"_from":"axios@^0.21.4","_id":"axios@0.21.4","_inB
 /***/ ((module) => {
 
 "use strict";
-module.exports = JSON.parse('{"site name":"Climbing.ge","menu climbing":"Rock climbing","menu indoor climbing":"Indoor climbing","menu outdoor climbing":"Outdoor climbing","menu ice climbing":"Ice & mix","menu events":"Events & competitions","menu mountaineering":"Mountaineering","menu other":"Other","menu about us":"About us","menu login":"Login","menu sitemap":"Sitemap","title news":"Newss","title topo":"Topo","title what we do":"what we do","title gallery":"Gallery","title tech tips":"Tech tips","title events":"Events and Cometitions","title climbing":"Climbing","title indoor climbing":"Indoor climbing","title outdoor climbing":"Outdoor climbing","title ice climbing":"Ice & mix","title mountaineering":"Mountaineering","title other":"Other","title about us":"About us","title partner":"Partners","title service list":"Ouer services","title message":"Send message","name":"Name","height":"Height","bolts":"Bolts","grade FR":"grade FR","grade YDS":"grade UDS","sector-name":"Sector name","mtp name":"Multy-pitch name","bolter":"Bolter","bolting data":"Bolting data","first ascent":"First ascent","top rope":"Top Rope","tred":"Tred Gear","message form":"Message","mount massive":"Mountain Massive","best time":"Best time to climb","how get":"How to get there","what need":"What you need","comments":"Comments","gallery":"Gallery","info":"Info","map":"Map","interested event":"Interested","similar articles":"Similar Articles","sector name":"Sector name","address":"Address","price":"Price","route":"Routes","back":"Go Back","all articles":"All Articles","prices from":"Prices from","working time":"Working hours","closed":"Temporarily closed","breadcrumb home":"Home","article navigation menu":"Navigation Menu","nav similar articles":"Similar Articles","nav gallery":"Gallery","nav comments":"Comments","nav description":"Description","nav sectors":"Climbing sectors & routes","route_tab name":"Name","route_tab height":"Height","route_tab bolts":"Bolts","route_tab grade fr":"Grade FR","route_tab grade yds":"grade YDS","shade after 10.00 am":"In shade after 10.00 am","shade after 15.00 pm":"In shade after 15.00 pm","shade befor noon":"In shade befor noon","shade in the afternoon":"In shade in the afternoon","shade whole day":"In the shade whole day","sun the whole day":"In the sun the whole day","overhang":"Overhang","slabby":"Slabby","vertical":"Vertical","links":"Links","share":"Share","more":"More","about us":"About us","user menu favorite products":"My favorite products","user menu favorite films":"My favorite films","user menu admin dashboard":"Admin dashboard","user menu home":"My page","user menu cart":"My cart","user menu orders":"Orders","user menu my orders":"My Orders","user menu total orders":"All orders","user menu films":"Films list","user menu my interested events":"Interested events","user menu followers":"Followers & following","user menu products & category":"Products & Category","user menu services":"Services","user menu all comments":"All comments","user menu my comments":"My comments","user menu my posts":"My posts","user menu all posts":"All posts","user menu users":"Users & Parmissions","user menu options":"Options","user menu indoor climbing":"Indoor climbing","user menu outdoor climbing":"Outdoor climbing","user menu ice climbing":"Ice & Mix","user menu mountaineering":"Mountaineering","user menu other":"Other","user menu security":"Security (Tech tips)","user menu partners":"Partners","user menu events":"Events","user menu news":"News","user menu gallery":"Gallery","user menu about":"About us","user menu login":"Login","user menu logout":"Logout","user menu sectors & routes":"Sectors & Routes","user menu local bisnes":"Suport local bisnes","user menu my favorite outdoor area":"My favorite outdoor areas","user add en article title":"article English version","user add ru article title":"article Russion version","user add ka article title":"article Georgian version","user add en article description":"Article English version for site localisation.","user add ru article description":"Article Russion version for site localisation.","user add ka article description":"Article Georgian version for site localisation.","user edit en article title":"article English version","user edit ru article title":"article Russion version","user edit ka article title":"article Georgian version","user edit en article description":"Article English version for site localisation.","user edit ru article description":"Article Russion version for site localisation.","user edit ka article description":"Article Georgian version for site localisation.","Munu":"","Dashboard":"","Sites index pages":"","shop name":"climbng.ge shop","shop menu products":"Products","shop menu services":"Services","shop menu categories":"Categories","shop menu about us":"About us","limited quantity":"Limited quantity ","out of stock":"Out of stock","product description":"Description","seller contact":"Contacts","products":"Products","category":"Category","material":"Material","weight":"Weight","seller":"Seller","email":"Email","phone number":"Phone number","you might also like":"You might also like","all products":"All products","shop login":"Login","services title":"Services","service page other services":"Other services"}');
+module.exports = JSON.parse('{"guide":{"name":"Climbing guidebook","menu":{"climbing":"Rock climbing","indoor climbing":"Indoor climbing","outdoor climbing":"Outdoor climbing","ice climbing":"Ice & mix","events":"Events & competitions","mountaineering":"Mountaineering","other":"Other","about us":"About us","login":"Login","sitemap":"Sitemap"},"article_right_nabar":{"article navigation menu":"Navigation Menu","similar articles":"Similar Articles","gallery":"Gallery","comments":"Comments","description":"Description","sectors":"Climbing sectors & routes"},"title":{"news":"News","topo":"Topo","what we do":"what we do","gallery":"Gallery","tech tips":"Tech tips","events":"Events and Cometitions","climbing":"Climbing","indoor climbing":"Indoor climbing","outdoor climbing":"Outdoor climbing","ice climbing":"Ice & mix","mountaineering":"Mountaineering","other":"Other","about us":"About us","partner":"Partners","message":"Send message"},"route":{"name":"Name","height":"Height","bolts":"Bolts","grade FR":"grade FR","grade YDS":"grade UDS","mtp name":"Multy-pitch name","auther":"Auther","creating data":"Creating data","first ascent":"First ascent","top rope":"Top Rope","tred":"Tred Gear","more":"More","route detals":"Routes detals","mtp detals":"Multy-pitch detals"},"sector":{"name":"Sector name","shade after 10.00 am":"In shade after 10.00 am","shade after 15.00 pm":"In shade after 15.00 pm","shade befor noon":"In shade befor noon","shade in the afternoon":"In shade in the afternoon","shade whole day":"In the shade whole day","sun the whole day":"In the sun the whole day","overhang":"Overhang","slabby":"Slabby","vertical":"Vertical","roof":"Roof","for_family":"This sector recomendidi family climbing. It`s seifty for kids","for_kids":"This sector recomendidi family climbing. It`s seifty for kids","walking":"Wolging time from car stoping to climbin sector"},"article":{"route_quantyty":"In Georgia are {sectors} outdoor climbing sectors, {sport_routes} sport climbing routes, {boulder_routes} boulder routes, {mtps} multy pitch. You can see all outdoor climbing arias info on this page.","mount massive":"Mountain Massive","best time":"Best time to climb","how get":"How to get there","what need":"What you need","comments":"Comments","gallery":"Gallery","info":"Info","map":"Map","interested event":"Interested","similar articles":"Similar Articles","sector name":"Sector name","address":"Address","price":"Price","route":"Routes","back":"Go Back","all articles":"All Articles","prices from":"Prices from","working time":"Working hours","closed":"Temporarily closed"},"breadcrumb home":"Home"},"shop":{"name":"Climbng shop","menu":{"products":"Products","services":"Services","categories":"Categories","about us":"About us"},"title":{"services":"Ouer services","products":"Products","search":"Search products","gallery":"Gallery","similar":{"products":"You might also like","services":"Other services"}},"product desc":{"category":"Category","material":"Material","weight":"Weight"},"seller":{"seller contact":"Contacts","email":"Email","phone":"Phone number"},"limited quantity":"Limited quantity ","out of stock":"Out of stock","product description":"Description","add to cart":"Add to cart","all products":"All products","max products":"This is maximal quantyty for this product!!!","add successful":"Product add successful!!!","custom product":"Custom production"},"user":{"name":"User panel","menu":{"favorite products":"My favorite products","favorite films":"My favorite films","admin dashboard":"Admin dashboard","home":"My page","cart":"My cart","orders":"Orders","my orders":"My Orders","total orders":"All orders","films":"Films list","my interested events":"Interested events","followers":"Followers & following","products & category":"Products & Category","services":"Services","all comments":"All comments","my comments":"My comments","my posts":"My posts","all posts":"All posts","users":"Users & Parmissions","options":"Options","indoor climbing":"Indoor climbing","outdoor climbing":"Outdoor climbing","ice climbing":"Ice & Mix","mountaineering":"Mountaineering","other":"Other","security":"Security (Tech tips)","partners":"Partners","events":"Events","news":"News","gallery":"Gallery","about":"About us","login":"Login","logout":"Logout","sectors & routes":"Sectors & Routes","local bisnes":"Suport local bisnes","my favorite outdoor area":"My favorite outdoor areas"}},"global":{"footer":{"links":"Links","share":"Share","more":"More","about us":"About us","follow":"Follow us","qr":"QR code"},"login":"Login","message form":"Message","comments":"Comments","page is empty":"Page is empty","services":"Services"}}');
 
 /***/ }),
 
@@ -101152,7 +100453,7 @@ module.exports = JSON.parse('{"site name":"Climbing.ge","menu climbing":"Rock cl
 /***/ ((module) => {
 
 "use strict";
-module.exports = JSON.parse('{"site name":"climbing.ge","menu my favorite products":"ჩემი საყვარელი პროდუქტები","menu home":"ჩემი გვერდი","menu cart":"ჩემი კალათა","menu orders":"ჩემი შეკვეთები","menu films":"ფილმები","menu total orders":"ყველა შეკვეთა","menu interested events":"საინტერესო ღონისძიებები","menu products & category":"პროდუკტები & კატეგორიები","menu services":"სერვისები","menu comments":"კომენტარები","menu users":"მომხმარებლები","menu options":"ოფციები","menu indoor climbing":"საცოცი დარბაზები","menu outdoor climbing":"საცოცი რეგიონები","menu ice climbing":"ყინული და მიქსი","menu mountaineering":"ალპინიზმი","menu other":"სხვა","menu security":"უსაფრთხოება","menu partners":"პარტნიორები","menu events":"ღონისძიებები","menu news":"სიახლეები","menu gallery":"გალერეა","menu about":"ჩვენ შესახებ","menu login":"ავტორიზაცია","menu logout":"გასვლა","menu sectors & routes":"სექტორები & მარშრუტბი","shop name":"climbng.ge shop","shop menu products":"პროდუკტები","shop menu services":"სერვისები","shop menu categories":"კატეგორიები","shop menu about us":"ჩვენ შესახებ","limited quantity":"შეზღუდული რაოდენობა ","out of stock":"არ არის მარაგში","product description":"პროდუკტის აღწერა","seller contact":"კონტაკტი","products":"პროდუკტები","category":"კატეგორია","material":"მატერიალი","weight":"წონა","seller":"გამყიდველი","email":"მეილი","phone number":"ტელეფონის ნომერი","you might also like":"აგრეთვე იხილეთ","all products":"ყველა პროდუკტი","shop login":"ავტორიზაცია","services title":"სერვისები","service page other services":"სხვა სერვისები","menu climbing":"მეკლდეურობა","menu about us":"ჩვენ შესახებ","menu sitemap":"საიტის რუკა","title news":"ახალი ამბები","title topo":"რუკა","title what we do":"მთავარი აკტიობები","title gallery":"გალერეა","title tech tips":"ტექნიკა და უსაფრთხოება","title events":"ღონისძიებები","title climbing":"მეკლდეურობა","title indoor climbing":"საცოცი დარბაზები","title outdoor climbing":"საცოცი რეგიონები","title ice climbing":"ყინული და მიქსი","title mountaineering":"ალპინიზმი","title other":"სხვა","title about us":"ჩვენ შესახებ","title partner":"პარტნიორები","name":"სახელი","height":"სიმაღლე","bolts":"შლამბურები","grade FR":"სირთულე FR","grade YDS":"სირთულე UDS","sector name":"სექტორის სახელი","bolter":"მარშრუტის შემქმნელი","bolting data":"მარშრუტის შექმინს თარიღი","first ascent":"პირველი ასვლა","top rope":"ზედა დაცვა","tred":"Tred Gear","message form":"მოგვწერეთ","mount massive":"მთის მასივი","best time":"საუკეთესო პერიოდი","how get":"როგორ მივიდეთ რეგიონში","what need":"რა დაგჭირდებათ","comments":"კომენტარები","gallery":"გალერეა","info":"კონტაქტი","similar articles":"მსგავსი სტატიები","address":"მისამართი","price":"ფასი","route":"მარშრუტიები","back":"უკან დაბრუნება","all articles":"ყველა სტატია","prices from":"ფასი (მინიმუმი)","working time":"სამუშაო საათები","closed":"დროებით დაკეტილია","breadcrumb home":"მთავარი","nav menu":"ნავიგაცია","other":"სხვა","links":"გვერდები","share":"გააზიარე","more":"მეტის ნახვა","about us":"ჩვენ შესახებ"}');
+module.exports = JSON.parse('{"guide":{"name":"ცოცვის გზამკვლევი","menu":{"climbing":"მეკლდეურობა","indoor climbing":"საცოცი დარბაზები","outdoor climbing":"საცოცი რეგიონები","ice climbing":"ყინული და მიქსი","events":"ღონისძიებები და შეჯიბრები","mountaineering":"ალპინიზმი","other":"სხვა","about us":"ჩვენ შესახებ","login":"ავტორიზაცია","sitemap":"Sitemap"},"article_right_nabar":{"article navigation menu":"სანავიგაციო მენიუ","similar articles":"შესაძლოა ამანაც დაგაინტერესოთ","gallery":"გალერეა","comments":"კომენტარები","description":"აღწერა","sectors":"სექტორები და მარშრუტები"},"title":{"news":"სიახლეები","topo":"რუკქ","what we do":"აკტივობები","gallery":"გალერეა","tech tips":"უსაფრთხოება","events":"ღონისძიებები და შეჯიბრები","climbing":"მეკლდეურობა","indoor climbing":"საცოცი დარბაზები","outdoor climbing":"საცოცი რეგიონები","ice climbing":"ყინული და მიქსი","mountaineering":"ალპინიზმი","other":"სხვა","about us":"ჩვენ შესახებ","partner":"პარტნიორები"},"route":{"name":"სახელი","height":"სიმაღლე","bolts":"ანკერები","grade FR":"სირთულე FR","grade YDS":"სირთულე UDS","mtp name":"მულტიპიჩის სახელი","auther":"ავტორი","creating data":"შექმნის თარიღი","first ascent":"პირვიელი გავლა","top rope":"ზედა დაცვა","tred":"თრედი","more":"More","route detals":"მართრუტის დეტალები","mtp detals":"მულტიპიჩის დეტალები"},"sector":{"name":"საქტორის სახელი","shade after 10.00 am":"ჩრდილში 10.00 am შემდეგ","shade after 15.00 pm":"ჩრდილში 15.00 pm შემდეგ","shade befor noon":"ჩრდილში შუადღემდე","shade in the afternoon":"ჩრდილში შუადღის შემდეგ","shade whole day":"მთელი დღე ჩრდილში","sun the whole day":"მთეკი დღე მზეზე","overhang":"უარყოპითი","slabby":"დადებითი","vertical":"ვერტიკალე","roof":"ჭერი","for_family":"სექტორი რეკომენდებულია ოჯახური გასვლებისთვის","for_kids":"სექტორი რეკომენდებულია ბავშვებისთვის","walking":"სექტორამდე მისასვლელად საჭირო დრო მანქანის პარკინგიდან"},"article":{"route_quantyty":"საქართველოში არის {sectors} საცოცი სექტორი, {sport_routes} სპორტული ცოცვის მარშრუტი, {boulder_routes} ბოლდერინგის მარშრუტი, {mtps} მულტიპიჩი. თქვენ შეგიძლიათ ნახოთ ყველა რეგიონის აღწერა მაგვერდზე.","mount massive":"მთის მასივი","best time":"საუკეთესო დრო საცოცად","how get":"როგორ მოვხვდეთ აქ","what need":"რა დადჭირდებათ","comments":"კომენტარები","gallery":"გალერეა","info":"ცონტაქტები","map":"რუკა","interested event":"მაინტერესებს ეს ღონისძიება","similar articles":"შესაძლოა ამანაც დაგაინტერესოთ","address":"მისამართი","price":"ფასი","back":"უკან დაბრუნება","all articles":"ყველ სტატია","prices from":"ფასი იწყება","working time":"სამუშაუ საათები","closed":"მალე დაიკეტება"},"breadcrumb home":"მთავარი"},"shop":{"name":"საცოცი პროდუქცია","menu":{"products":"პროდუქტები","services":"სერვისები","categories":"კატეგორიები","about us":"ჩვენ შესახებ"},"title":{"services":"ჩვენი სერვისები","products":"პროდუქტები","search":"პროდუქტის ძიება","gallery":"გალერეა","similar":{"products":"ასევე შესაძლოა დაგაინტერესოთ","services":"სხვა სერვისები"}},"product desc":{"category":"კატეგორიები","material":"მასალა","weight":"წონა"},"seller":{"seller contact":"კონტაქტები","email":"Email","phone":"ტელეფონის ნომერი"},"limited quantity":"შეზღუდული რაოდენობა","out of stock":"მარაგი ამოწურულია","product description":"აღწერა","add to cart":"კალათაში დამატება","all products":"ყველა პროდუქტი","max products":"ეს არის პროდუქტის მაქსიმალური რაოდენობა რაც თქვენ შეგიძლიათ აირჩიოთ!!!","add successful":"პროდუქტი წარმატებით დაემატა კალათაში!!!","custom product":"მხოლოდ შეკვეთით"},"user":{"name":"მომხმარებლის პანელი","menu":{"favorite products":"ჩემი ფავორიტი პროდუქტები","favorite films":"My favorite films","admin dashboard":"Admin dashboard","home":"My page","cart":"My cart","orders":"Orders","my orders":"My Orders","total orders":"All orders","films":"Films list","my interested events":"Interested events","followers":"Followers & following","products & category":"Products & Category","services":"Services","all comments":"All comments","my comments":"My comments","my posts":"My posts","all posts":"All posts","users":"Users & Parmissions","options":"Options","indoor climbing":"Indoor climbing","outdoor climbing":"Outdoor climbing","ice climbing":"Ice & Mix","mountaineering":"Mountaineering","other":"Other","security":"Security (Tech tips)","partners":"Partners","events":"Events","news":"News","gallery":"Gallery","about":"About us","login":"Login","logout":"Logout","sectors & routes":"Sectors & Routes","local bisnes":"Suport local bisnes","my favorite outdoor area":"My favorite outdoor areas"}},"global":{"footer":{"links":"ბმულები","share":"გააზიარე","more":"მეტის ნახვა","about us":"ჩვენ შესახებ","follow":"გამოიწერე სერვისი","qr":"QR კოდი"},"login":"ავტორიზაცია","message form":"დაგვიკავშირდით","page is empty":"ამ დროისთვის ინფორმაცია არ არის მისაწვდომი"}}');
 
 /***/ }),
 
@@ -101163,7 +100464,7 @@ module.exports = JSON.parse('{"site name":"climbing.ge","menu my favorite produc
 /***/ ((module) => {
 
 "use strict";
-module.exports = JSON.parse('{"site name":"climbng.ge","menu climbing":"скалолазание","menu cart":"Корзина","menu orders":"Мои заказы","menu total orders":"Все заказы","menu films":"Films list","menu indoor climbing":"скалолазные залы","menu outdoor climbing":"скалолазные регионы","menu ice climbing":"лед и смешанный","menu mountaineering":"альпинизм","menu other":"разное","menu about us":"О нас","menu login":"авторизоваться","shop name":"climbng.ge shop","shop menu products":"Продукты","shop menu services":"Услуги","shop menu categories":"Категории","shop menu about us":"О нас","limited quantity":"Ограниченное количество","out of stock":"Нет в наличие","product description":"Описание","seller contact":"Контакты","products":"Продукты","category":"Категория","material":"Материал","weight":"Вес","seller":"Продавец","email":"Адрес электронной почты","phone number":"Телефонный номер","you might also like":"Вам также может понравиться","all products":"Все продукты","shop login":"Авторизоваться","services title":"Услуги","service page other services":"Другие услуги","menu sitemap":"საიტის რუკა","title news":"Новости","title topo":"карта","title what we do":"что мы делаем","title gallery":"Галерея","title tech tips":"Технические советы","title events":"мероприятия","title climbing":"скалолазание","title indoor climbing":"скалолазные залы","title outdoor climbing":"скалолазные регионы","title ice climbing":"лед и смешанный","title mountaineering":"альпинизм","title other":"разное","title about us":"О нас","title partner":"партнеры","message form":"сообщение","mount massive":"Mountain Massive","best time":"Best time to climb","how get":"How to get there","what need":"What you need","comments":"Comments","gallery":"Gallery","info":"Info","similar articles":"Similar Articles","sector name":"Sector name","address":"Address","price":"Prices","route":"Route","back":"Go Back","all articles":"All Articles","breadcrumb home":"მთავარი","nav menu":"Navigation Menu","other":"Other","links":"Links","share":"Share","more":"More","about us":"About us"}');
+module.exports = JSON.parse('{"guide":{"name":"Climbing guidebook","menu":{"climbing":"Rock climbing","indoor climbing":"Indoor climbing","outdoor climbing":"Outdoor climbing","ice climbing":"Ice & mix","events":"Events & competitions","mountaineering":"Mountaineering","other":"Other","about us":"About us","login":"Login","sitemap":"Sitemap"},"article_right_nabar":{"article navigation menu":"Navigation Menu","similar articles":"Similar Articles","gallery":"Gallery","comments":"Comments","description":"Description","sectors":"Climbing sectors & routes"},"title":{"news":"News","topo":"Topo","what we do":"what we do","gallery":"Gallery","tech tips":"Tech tips","events":"Events and Cometitions","climbing":"Climbing","indoor climbing":"Indoor climbing","outdoor climbing":"Outdoor climbing","ice climbing":"Ice & mix","mountaineering":"Mountaineering","other":"Other","about us":"About us","partner":"Partners"},"route":{"name":"Name","height":"Height","bolts":"Bolts","grade FR":"grade FR","grade YDS":"grade UDS","mtp name":"Multy-pitch name","auther":"Auther","creating data":"Creating data","first ascent":"First ascent","top rope":"Top Rope","tred":"Tred Gear"},"sector":{"name":"Sector name","shade after 10.00 am":"In shade after 10.00 am","shade after 15.00 pm":"In shade after 15.00 pm","shade befor noon":"In shade befor noon","shade in the afternoon":"In shade in the afternoon","shade whole day":"In the shade whole day","sun the whole day":"In the sun the whole day","overhang":"Overhang","slabby":"Slabby","vertical":"Vertical","roof":"ჭერი","for_family":"სექტორი რეკომენდებულია ოჯახური გასვლებისთვის","for_kids":"სექტორი რეკომენდებულია ბავშვებისთვის","walking":"სექტორამდე მისასვლელად საჭირო დრო მანქანის პარკინგიდან"},"article":{"route_quantyty":"In Georgia are {sectors} outdoor climbing sectors, {sport_routes} sport climbing routes, {boulder_routes} boulder routes, {mtps} multy pitch. You can see all outdoor climbing arias info on this page.","mount massive":"Mountain Massive","best time":"Best time to climb","how get":"How to get there","what need":"What you need","comments":"Comments","gallery":"Gallery","info":"Info","map":"Map","interested event":"Interested","similar articles":"Similar Articles","sector name":"Sector name","address":"Address","price":"Price","route":"Routes","back":"Go Back","all articles":"All Articles","prices from":"Prices from","working time":"Working hours","closed":"Temporarily closed"},"breadcrumb home":"Home"},"shop":{"name":"Climbng shop","menu":{"products":"Products","services":"Services","categories":"Categories","about us":"About us"},"title":{"services":"Ouer services","products":"Products","search":"Search products","gallery":"Gallery","similar":{"products":"You might also like","services":"Other services"}},"product desc":{"category":"Category","material":"Material","weight":"Weight"},"seller":{"seller contact":"Contacts","email":"Email","phone":"Phone number"},"limited quantity":"Limited quantity ","out of stock":"Out of stock","product description":"Description","add to cart":"Add to cart","all products":"All products","max products":"This is maximal quantyty for this product!!!","add successful":"Product add successful!!!","custom product":"Custom production"},"user":{"name":"User panel","menu":{"favorite products":"My favorite products","favorite films":"My favorite films","admin dashboard":"Admin dashboard","home":"My page","cart":"My cart","orders":"Orders","my orders":"My Orders","total orders":"All orders","films":"Films list","my interested events":"Interested events","followers":"Followers & following","products & category":"Products & Category","services":"Services","all comments":"All comments","my comments":"My comments","my posts":"My posts","all posts":"All posts","users":"Users & Parmissions","options":"Options","indoor climbing":"Indoor climbing","outdoor climbing":"Outdoor climbing","ice climbing":"Ice & Mix","mountaineering":"Mountaineering","other":"Other","security":"Security (Tech tips)","partners":"Partners","events":"Events","news":"News","gallery":"Gallery","about":"About us","login":"Login","logout":"Logout","sectors & routes":"Sectors & Routes","local bisnes":"Suport local bisnes","my favorite outdoor area":"My favorite outdoor areas"},"user add en article title":"article English version","user add ru article title":"article Russion version","user add ka article title":"article Georgian version","user add en article description":"Article English version for site localisation.","user add ru article description":"Article Russion version for site localisation.","user add ka article description":"Article Georgian version for site localisation.","user edit en article title":"article English version","user edit ru article title":"article Russion version","user edit ka article title":"article Georgian version","user edit en article description":"Article English version for site localisation.","user edit ru article description":"Article Russion version for site localisation.","user edit ka article description":"Article Georgian version for site localisation.","Munu":"","Dashboard":"","Sites index pages":""},"global":{"footer":{"links":"Links","share":"Share","more":"More","about us":"About us","follow":"Follow us","qr":"QR code"},"login":"Login","message form":"Message","page is empty":"Page is empty"}}');
 
 /***/ })
 

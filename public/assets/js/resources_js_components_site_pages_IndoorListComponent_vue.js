@@ -1346,7 +1346,7 @@ var render = function () {
         }),
     _vm._v(" "),
     _c("p", { staticStyle: { "text-align": "center" } }, [
-      _vm._v("Page is empty"),
+      _vm._v(_vm._s(_vm.$t("global.page is empty"))),
     ]),
   ])
 }
@@ -1546,7 +1546,7 @@ var render = function () {
     [
       _c("div", { staticClass: "container" }, [
         _c("h1", { staticClass: "page_title index_h2" }, [
-          _vm._v(_vm._s(_vm.$t("title indoor climbing"))),
+          _vm._v(_vm._s(_vm.$t("guide.title.indoor climbing"))),
         ]),
         _vm._v(" "),
         _vm._m(0),
@@ -1598,7 +1598,7 @@ var render = function () {
       _vm._v(" "),
       _c("metaData", {
         attrs: {
-          title: _vm.$t("title indoor climbing"),
+          title: _vm.$t("guide.title.indoor climbing"),
           description: this.$siteData.indoor_description,
           image: "../../../../public/images/meta_images/indoor.jpg",
         },

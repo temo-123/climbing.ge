@@ -43,11 +43,10 @@
         
         <messageComponent />
 
-
         <div class="h-recent-work services" id="services" v-if="partners.length > 0">
             <div class="container">
 
-                <h2 class='index_h2'>{{ $t('title partners') }}</h2>
+                <h2 class='index_h2'>{{ $t('guide.title.partners') }}</h2>
 
                 <div class="bar"><i class="fa fa-handshake-o" aria-hidden="true"></i></div>
                 <h3> <span v-html="this.$siteData.partners"></span> </h3>
@@ -69,13 +68,13 @@
                     </div>
                 </div>
 
-                    <div class="previes_partner_bottom" v-if="partners.length > 4">
-                        <i class="fa fa-chevron-left" aria-hidden="true"></i>
-                    </div>
+                <div class="previes_partner_bottom" v-if="partners.length > 4">
+                    <i class="fa fa-chevron-left" aria-hidden="true"></i>
+                </div>
 
-                    <div class="next_partner_bottom" v-if="partners.length > 4">
-                        <i class="fa fa-chevron-right" aria-hidden="true"></i>
-                    </div>
+                <div class="next_partner_bottom" v-if="partners.length > 4">
+                    <i class="fa fa-chevron-right" aria-hidden="true"></i>
+                </div>
             </div>
         </div>
         

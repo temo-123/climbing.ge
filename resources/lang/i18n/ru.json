@@ -1,100 +1,230 @@
 {
-    "site name" : "climbng.ge",
+    "guide": {
+        "name": "Climbing guidebook",
 
-    "menu climbing" : "скалолазание",
-    "menu cart" : "Корзина",
-    "menu orders" : "Мои заказы",
-    "menu total orders" : "Все заказы",
-    "menu films" : "Films list",
-    "menu indoor climbing" : "скалолазные залы",
-    "menu outdoor climbing" : "скалолазные регионы",
-    "menu ice climbing" : "лед и смешанный",
-    "menu mountaineering" : "альпинизм",
-    "menu other" : "разное",
-    "menu about us" : "О нас",
-    "menu login":"авторизоваться",
+        "menu": {
+            "climbing": "Rock climbing",
+            "indoor climbing": "Indoor climbing",
+            "outdoor climbing": "Outdoor climbing",
+            "ice climbing": "Ice & mix",
+            "events": "Events & competitions",
+            "mountaineering": "Mountaineering",
+            "other": "Other",
+            "about us": "About us",
+            "login" :"Login",
+            "sitemap": "Sitemap"
+        },
 
-    "shop name" : "climbng.ge shop",
+        "article_right_nabar": {
+            "article navigation menu": "Navigation Menu",
+            "similar articles": "Similar Articles",
+            "gallery": "Gallery",
+            "comments": "Comments",
+            "description": "Description",
+            "sectors": "Climbing sectors & routes"
+        },
 
-    "shop menu products" : "Продукты",
-    "shop menu services" : "Услуги",
-    "shop menu categories" : "Категории",
-    "shop menu about us" : "О нас",
-    "limited quantity" : "Ограниченное количество",
-    "out of stock" : "Нет в наличие",
+        "title": {
+            "news": "News",
+            "topo": "Topo",
+            "what we do": "what we do",
+            "gallery" :"Gallery",
+            "tech tips" :"Tech tips",
+            "events" :"Events and Cometitions",
+            "climbing": "Climbing",
+            "indoor climbing": "Indoor climbing",
+            "outdoor climbing": "Outdoor climbing",
+            "ice climbing": "Ice & mix",
+            "mountaineering": "Mountaineering",
+            "other": "Other",
+            "about us": "About us",
+            "partner": "Partners"
+        },
 
-    "product description" : "Описание",
-    "seller contact" : "Контакты",
+        "route": {
+            "name": "Name",
+            "height": "Height",
+            "bolts": "Bolts",
+            "grade FR": "grade FR",
+            "grade YDS": "grade UDS",
+            "mtp name": "Multy-pitch name",
+            "auther": "Auther",
+            "creating data": "Creating data",
+            "first ascent": "First ascent",
+            "top rope": "Top Rope",
+            "tred": "Tred Gear"
+        },
 
-    "products" : "Продукты",
+        "sector": {
+            "name": "Sector name",
+            "shade after 10.00 am": "In shade after 10.00 am",
+            "shade after 15.00 pm": "In shade after 15.00 pm",
+            "shade befor noon": "In shade befor noon",
+            "shade in the afternoon": "In shade in the afternoon",
+            "shade whole day": "In the shade whole day",
+            "sun the whole day": "In the sun the whole day",
+            
+            "overhang": "Overhang",
+            "slabby": "Slabby",
+            "vertical": "Vertical",
+            "roof": "ჭერი",
 
-    "category" : "Категория",
-    "material" : "Материал",
-    "weight" : "Вес",
-    "seller" : "Продавец",
-    "email" : "Адрес электронной почты",
-    "phone number" : "Телефонный номер",
+            "for_family": "სექტორი რეკომენდებულია ოჯახური გასვლებისთვის",
+            "for_kids": "სექტორი რეკომენდებულია ბავშვებისთვის",
+            "walking": "სექტორამდე მისასვლელად საჭირო დრო მანქანის პარკინგიდან"
+        },
 
-    "you might also like" : "Вам также может понравиться",
-    "all products" : "Все продукты",
+        "article": {
+            "route_quantyty": "In Georgia are {sectors} outdoor climbing sectors, {sport_routes} sport climbing routes, {boulder_routes} boulder routes, {mtps} multy pitch. You can see all outdoor climbing arias info on this page.",
 
-    "shop login" : "Авторизоваться",
+            "mount massive": "Mountain Massive",
+            "best time": "Best time to climb",
+            "how get": "How to get there",
+            "what need": "What you need",
+            "comments": "Comments",
+            "gallery": "Gallery",
+            "info": "Info",
+            "map": "Map",
+            "interested event": "Interested",
+            "similar articles": "Similar Articles",
+            "sector name": "Sector name",
+            "address": "Address",
+            "price": "Price",
+            "route": "Routes",
+            "back": "Go Back",
+            "all articles": "All Articles",
 
-    "services title" : "Услуги",
-    "service page other services" : "Другие услуги",
+
+            "prices from": "Prices from",
+            "working time": "Working hours",
+            "closed": "Temporarily closed"
+        },
+
+        "breadcrumb home": "Home"
+    },
+
+    "shop": {
+        "name": "Climbng shop",
+
+        "menu": {
+            "products": "Products",
+            "services": "Services",
+            "categories": "Categories",
+            "about us": "About us"
+        },
+
+        "title": {
+            "services": "Ouer services",
+            "products": "Products",
+            "search": "Search products",
+            "gallery": "Gallery",
+            
+            "similar": {
+                "products": "You might also like",
+                "services": "Other services"
+            }
+        },
+
+        "product desc": {
+            "category": "Category",
+            "material": "Material",
+            "weight": "Weight"
+        },
+
+        "seller": {
+            "seller contact": "Contacts",
+            "email": "Email",
+            "phone": "Phone number"
+        },
+
+        "limited quantity": "Limited quantity ",
+        "out of stock": "Out of stock",
+    
+        "product description": "Description",
+    
+        "add to cart": "Add to cart",
+
+        "all products": "All products",
+        "max products": "This is maximal quantyty for this product!!!",
+        "add successful": "Product add successful!!!",
+        "custom product": "Custom production"
+    },
+
+    "user": {
+        "name": "User panel",
+
+        "menu": {
+            "favorite products": "My favorite products",
+            "favorite films": "My favorite films",
+            "admin dashboard": "Admin dashboard",
+            "home": "My page",
+            "cart": "My cart",
+            "orders": "Orders",
+            "my orders": "My Orders",
+            "total orders": "All orders",
+            "films": "Films list",
+            "my interested events": "Interested events",
+            "followers": "Followers & following",
+            "products & category": "Products & Category",
+            "services": "Services",
+            "all comments": "All comments",
+            "my comments": "My comments",
+            "my posts": "My posts",
+            "all posts": "All posts",
+            "users": "Users & Parmissions",
+            "options": "Options",
+            "indoor climbing": "Indoor climbing",
+            "outdoor climbing": "Outdoor climbing",
+            "ice climbing": "Ice & Mix",
+            "mountaineering": "Mountaineering",
+            "other": "Other",
+            "security": "Security (Tech tips)",
+            "partners": "Partners",
+            "events": "Events",
+            "news": "News",
+            "gallery": "Gallery",
+            "about": "About us",
+            "login" :"Login",
+            "logout": "Logout",
+            "sectors & routes": "Sectors & Routes",
+            "local bisnes" : "Suport local bisnes",
+            "my favorite outdoor area": "My favorite outdoor areas"
+        },
+
+        "user add en article title": "article English version",
+        "user add ru article title": "article Russion version",
+        "user add ka article title": "article Georgian version",
+
+        "user add en article description": "Article English version for site localisation.",
+        "user add ru article description": "Article Russion version for site localisation.",
+        "user add ka article description": "Article Georgian version for site localisation.",
 
 
-    "site name" : "climbng.ge",
+        "user edit en article title": "article English version",
+        "user edit ru article title": "article Russion version",
+        "user edit ka article title": "article Georgian version",
 
-    "menu climbing" : "скалолазание",
-    "menu indoor climbing" : "скалолазные залы",
-    "menu outdoor climbing" : "скалолазные регионы",
-    "menu ice climbing" : "лед и смешанный",
-    "menu mountaineering" : "альпинизм",
-    "menu other" : "разное",
-    "menu about us" : "О нас",
-    "menu login":"авторизоваться",
-    "menu sitemap" : "საიტის რუკა",
+        "user edit en article description": "Article English version for site localisation.",
+        "user edit ru article description": "Article Russion version for site localisation.",
+        "user edit ka article description": "Article Georgian version for site localisation.",
 
-    "title news" : "Новости",
-    "title topo" : "карта",
-    "title what we do" : "что мы делаем",
-    "title gallery":"Галерея",
-    "title tech tips":"Технические советы",
-    "title events":"мероприятия",
-    "title climbing" : "скалолазание",
-    "title indoor climbing" : "скалолазные залы",
-    "title outdoor climbing" : "скалолазные регионы",
-    "title ice climbing" : "лед и смешанный",
-    "title mountaineering" : "альпинизм",
-    "title other" : "разное",
-    "title about us" : "О нас",
-    "title partner" : "партнеры",
+        "Munu": "",
+        "Dashboard": "",
+        "Sites index pages": ""
+    },
 
-    "message form" : "сообщение",
+    "global": {
+        "footer": {
+            "links": "Links",
+            "share": "Share",
+            "more": "More",
+            "about us": "About us",
+            "follow": "Follow us",
+            "qr": "QR code"
+        },
 
-    "mount massive" : "Mountain Massive",
-    "best time" : "Best time to climb",
-    "how get" : "How to get there",
-    "what need" : "What you need",
-    "comments" : "Comments",
-    "gallery" : "Gallery",
-    "info" : "Info",
-    "similar articles" : "Similar Articles",
-    "sector name" : "Sector name",
-    "address" : "Address",
-    "price" : "Prices",
-    "route" : "Route",
-    "back" : "Go Back",
-    "all articles" : "All Articles",
-
-    "breadcrumb home" : "მთავარი",
-
-    "nav menu" : "Navigation Menu",
-    "other" : "Other",
-
-    "links" : "Links",
-    "share" : "Share",
-    "more" : "More",
-    "about us" : "About us"
+        "login": "Login",
+        "message form": "Message",
+        "page is empty": "Page is empty"
+    }
 }

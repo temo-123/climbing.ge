@@ -13,7 +13,7 @@
         <img v-else class="article_404" :src=" this.publicPath + '/public/images/404/empty_page/10.jpg'">
         <!-- <p v-else>page is empty</p> -->
 
-        <p style="text-align: center; ">Page is empty</p>
+        <p style="text-align: center; ">{{ $t('global.page is empty') }}</p>
     </div>
 </template>
 

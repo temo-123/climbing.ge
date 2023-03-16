@@ -936,7 +936,9 @@ __webpack_require__.r(__webpack_exports__);
         article_id: article_id
       }).then(function (response) {
         alert(response.data);
-      })["catch"](function (error) {});
+      })["catch"](function (error) {
+        alert(error);
+      });
     }
   }
 });
@@ -1904,114 +1906,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
  //https://innologica.github.io/vue-stackable-modal/#sample-css
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
@@ -2130,124 +2024,18 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
  //https://innologica.github.io/vue-stackable-modal/#sample-css
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   components: {
-    StackModal: (_innologica_vue_stackable_modal__WEBPACK_IMPORTED_MODULE_0___default()) // openImg,
-    // route_modal,
-    // mtp_model,
-
+    StackModal: (_innologica_vue_stackable_modal__WEBPACK_IMPORTED_MODULE_0___default())
   },
   props: [// "sector",
   ],
   data: function data() {
     return {
-      // climbing_sector: [],
-      // spot_images: [],
       is_show_route_modal: false,
-      // show_mtp_modal: false,
-      // modalClass: [],
-      route_detals: [] // mtp_detals: [],
-      // id: this.article_id
-
+      route_detals: []
     };
   },
   mounted: function mounted() {// this.get_spot_rocks_images();
@@ -2261,18 +2049,7 @@ __webpack_require__.r(__webpack_exports__);
       axios.get("../../api/route/get_route_for_modal/" + id).then(function (response) {
         _this.route_detals = response.data; // this.route_post_list = true;
       })["catch"](function (error) {});
-    } // show_mtp_madel(id) {
-    //     this.show_mtp_modal = true;
-    //     this.mtp_detals = [];
-    //     axios
-    //         .get("../../api/MTP/" + id)
-    //         .then((response) => {
-    //             this.mtp_detals = response.data;
-    //             // this.mtp_post_list = true;
-    //         })
-    //         .catch((error) => {});
-    // },
-
+    }
   }
 });
 
@@ -5143,7 +4920,7 @@ var render = function () {
         "li",
         [
           _c("router-link", { attrs: { to: { name: "index" } } }, [
-            _vm._v("Home"),
+            _vm._v(_vm._s(_vm.$t("guide.breadcrumb home"))),
           ]),
         ],
         1
@@ -6487,7 +6264,7 @@ var render = function () {
         _c("h2", { staticStyle: { "font-size": "160%" } }, [
           _vm._v(
             "\n            " +
-              _vm._s(_vm.$t("sector name")) +
+              _vm._s(_vm.$t("guide.secto.e")) +
               " -\n            "
           ),
           _c("strong", [_vm._v(_vm._s(_vm.sector.sector.name))]),
@@ -6675,15 +6452,15 @@ var render = function () {
               _c("tr", [
                 _c("td", [_vm._v("N")]),
                 _vm._v(" "),
-                _c("td", [_vm._v(_vm._s(_vm.$t("route_tab name")))]),
+                _c("td", [_vm._v(_vm._s(_vm.$t("guide.route.name")))]),
                 _vm._v(" "),
-                _c("td", [_vm._v(_vm._s(_vm.$t("route_tab height")))]),
+                _c("td", [_vm._v(_vm._s(_vm.$t("guide.route.height")))]),
                 _vm._v(" "),
-                _c("td", [_vm._v(_vm._s(_vm.$t("route_tab bolts")))]),
+                _c("td", [_vm._v(_vm._s(_vm.$t("guide.route.bolts")))]),
                 _vm._v(" "),
-                _c("td", [_vm._v(_vm._s(_vm.$t("route_tab grade fr")))]),
+                _c("td", [_vm._v(_vm._s(_vm.$t("guide.route.grade fr")))]),
                 _vm._v(" "),
-                _c("td", [_vm._v(_vm._s(_vm.$t("route_tab grade yds")))]),
+                _c("td", [_vm._v(_vm._s(_vm.$t("guide.route.grade yds")))]),
                 _vm._v(" "),
                 _c("td", [_vm._v("Info")]),
               ]),
@@ -6761,13 +6538,13 @@ var render = function () {
               _c("tr", [
                 _c("td", [_vm._v("N")]),
                 _vm._v(" "),
-                _c("td", [_vm._v(_vm._s(_vm.$t("route_tab name")))]),
+                _c("td", [_vm._v(_vm._s(_vm.$t("guide.route.name")))]),
                 _vm._v(" "),
-                _c("td", [_vm._v(_vm._s(_vm.$t("route_tab height")))]),
+                _c("td", [_vm._v(_vm._s(_vm.$t("guide.route.height")))]),
                 _vm._v(" "),
-                _c("td", [_vm._v(_vm._s(_vm.$t("route_tab grade fr")))]),
+                _c("td", [_vm._v(_vm._s(_vm.$t("guide.route.grade fr")))]),
                 _vm._v(" "),
-                _c("td", [_vm._v(_vm._s(_vm.$t("route_tab grade yds")))]),
+                _c("td", [_vm._v(_vm._s(_vm.$t("guide.route.grade yds")))]),
                 _vm._v(" "),
                 _c("td", [_vm._v("Info")]),
               ]),
@@ -6857,7 +6634,7 @@ var render = function () {
                 _c("h3", [
                   _vm._v(
                     "\n                    " +
-                      _vm._s(_vm.$t("mtp name")) +
+                      _vm._s(_vm.$t("guide.route.mtp name")) +
                       " -\n                    "
                   ),
                   _c("strong", [_vm._v(_vm._s(mtp.mtp_name))]),
@@ -6888,18 +6665,18 @@ var render = function () {
                 _c("tr", [
                   _c("td", [_vm._v("N")]),
                   _vm._v(" "),
-                  _c("td", [_vm._v(_vm._s(_vm.$t("route_tab name")))]),
+                  _c("td", [_vm._v(_vm._s(_vm.$t("guide.route.name")))]),
                   _vm._v(" "),
-                  _c("td", [_vm._v(_vm._s(_vm.$t("route_tab height")))]),
+                  _c("td", [_vm._v(_vm._s(_vm.$t("guide.route.height")))]),
                   _vm._v(" "),
-                  _c("td", [_vm._v(_vm._s(_vm.$t("route_tab bolts")))]),
+                  _c("td", [_vm._v(_vm._s(_vm.$t("guide.route.bolts")))]),
                   _vm._v(" "),
-                  _c("td", [_vm._v(_vm._s(_vm.$t("route_tab grade fr")))]),
+                  _c("td", [_vm._v(_vm._s(_vm.$t("guide.route.grade fr")))]),
                   _vm._v(" "),
                   _c("td", { staticClass: "display-none-720px" }, [
                     _vm._v(
                       "\n                        " +
-                        _vm._s(_vm.$t("route_tab grade yds")) +
+                        _vm._s(_vm.$t("guide.route.grade yds")) +
                         "\n                    "
                     ),
                   ]),
@@ -7111,15 +6888,23 @@ var render = function () {
       _c("div", { staticClass: "model-body" }, [
         _c("div", { staticClass: "container" }, [
           _c("div", { staticClass: "row" }, [
-            _c("h2", [_vm._v("Multy-pitch detals")]),
+            _c("h2", [_vm._v(_vm._s(_vm.$t("guide.route.mtp detals")))]),
             _vm._v(" "),
             _c("span", { staticClass: "routes_detals" }, [
               _c("p", { staticClass: "route_detal" }, [
-                _vm._v("Name - " + _vm._s(_vm.mtp_detals.mtp.name)),
+                _vm._v(
+                  _vm._s(_vm.$t("guide.route.name")) +
+                    " - " +
+                    _vm._s(_vm.mtp_detals.mtp.name)
+                ),
               ]),
               _vm._v(" "),
               _c("p", { staticClass: "route_detal" }, [
-                _vm._v("Height - " + _vm._s(_vm.mtp_detals.mtp.height)),
+                _vm._v(
+                  _vm._s(_vm.$t("guide.route.height")) +
+                    " - " +
+                    _vm._s(_vm.mtp_detals.mtp.height)
+                ),
               ]),
             ]),
           ]),
@@ -7129,18 +6914,18 @@ var render = function () {
               _c("tr", [
                 _c("td", [_vm._v("N")]),
                 _vm._v(" "),
-                _c("td", [_vm._v(_vm._s(_vm.$t("route_tab name")))]),
+                _c("td", [_vm._v(_vm._s(_vm.$t("guide.route.name")))]),
                 _vm._v(" "),
-                _c("td", [_vm._v(_vm._s(_vm.$t("route_tab height")))]),
+                _c("td", [_vm._v(_vm._s(_vm.$t("guide.route.height")))]),
                 _vm._v(" "),
-                _c("td", [_vm._v(_vm._s(_vm.$t("route_tab bolts")))]),
+                _c("td", [_vm._v(_vm._s(_vm.$t("guide.route.bolts")))]),
                 _vm._v(" "),
-                _c("td", [_vm._v(_vm._s(_vm.$t("route_tab grade fr")))]),
+                _c("td", [_vm._v(_vm._s(_vm.$t("guide.route.grade fr")))]),
                 _vm._v(" "),
                 _c("td", { staticClass: "display-none-720px" }, [
                   _vm._v(
                     "\n                                " +
-                      _vm._s(_vm.$t("route_tab grade yds")) +
+                      _vm._s(_vm.$t("guide.route.grade yds")) +
                       "\n                            "
                   ),
                 ]),
@@ -7252,7 +7037,7 @@ var render = function () {
             "div",
             { staticClass: "row" },
             [
-              _c("h2", [_vm._v("Routes detals")]),
+              _c("h2", [_vm._v(_vm._s(_vm.$t("guide.route.route detals")))]),
               _vm._v(" "),
               _vm._l(_vm.route_detals, function (route) {
                 return _c(
@@ -7260,24 +7045,50 @@ var render = function () {
                   { key: route.id, staticClass: "routes_detals" },
                   [
                     _c("p", { staticClass: "route_detal" }, [
-                      _vm._v("Name - " + _vm._s(route.name)),
+                      _vm._v(
+                        _vm._s(_vm.$t("guide.route.name")) +
+                          " - " +
+                          _vm._s(route.name)
+                      ),
                     ]),
                     _vm._v(" "),
                     _c("p", { staticClass: "route_detal" }, [
                       _vm._v(
-                        "\n                            Height - " +
+                        "\n                            " +
+                          _vm._s(_vm.$t("guide.route.height")) +
+                          " - " +
                           _vm._s(route.height) +
                           "\n                        "
                       ),
                     ]),
                     _vm._v(" "),
-                    _c("p", [_vm._v("Bolts - " + _vm._s(route.bolts))]),
+                    _c("p", [
+                      _vm._v(
+                        _vm._s(_vm.$t("guide.route.bolts")) +
+                          " - " +
+                          _vm._s(route.bolts)
+                      ),
+                    ]),
                     _vm._v(" "),
-                    route.bolter
+                    route.auther
                       ? _c("p", { staticClass: "route_detal" }, [
                           _vm._v(
-                            "\n                            Bolter - " +
-                              _vm._s(route.bolter) +
+                            "\n                            " +
+                              _vm._s(_vm.$t("guide.route.auther")) +
+                              " - " +
+                              _vm._s(route.auther) +
+                              "\n                        "
+                          ),
+                        ])
+                      : _vm._e(),
+                    _vm._v(" "),
+                    route.creating_data
+                      ? _c("p", { staticClass: "route_detal" }, [
+                          _vm._v(
+                            "\n                            " +
+                              _vm._s(_vm.$t("guide.route.creating data")) +
+                              " - " +
+                              _vm._s(route.creating_data) +
                               "\n                        "
                           ),
                         ])
@@ -7286,7 +7097,9 @@ var render = function () {
                     route.first_ascent
                       ? _c("p", { staticClass: "route_detal" }, [
                           _vm._v(
-                            "\n                            First ascent - " +
+                            "\n                            " +
+                              _vm._s(_vm.$t("guide.route.first_ascent")) +
+                              " - " +
                               _vm._s(route.first_ascent) +
                               "\n                        "
                           ),
@@ -7392,7 +7205,7 @@ var render = function () {
           _c("li", [
             _c("a", { attrs: { href: "#description" } }, [
               _c("span", { staticClass: "text-primary" }, [
-                _vm._v(_vm._s(_vm.$t("nav description"))),
+                _vm._v(_vm._s(_vm.$t("guide.article_right_nabar.description"))),
               ]),
             ]),
           ]),
@@ -7400,7 +7213,7 @@ var render = function () {
           _c("li", [
             _c("a", { attrs: { href: "#sectors" } }, [
               _c("span", { staticClass: "text-primary" }, [
-                _vm._v(_vm._s(_vm.$t("nav sectors"))),
+                _vm._v(_vm._s(_vm.$t("guide.article_right_nabar.sectors"))),
               ]),
             ]),
           ]),
@@ -7408,7 +7221,7 @@ var render = function () {
           _c("li", [
             _c("a", { attrs: { href: "#gallery" } }, [
               _c("span", { staticClass: "text-primary" }, [
-                _vm._v(_vm._s(_vm.$t("nav gallery"))),
+                _vm._v(_vm._s(_vm.$t("guide.article_right_nabar.gallery"))),
               ]),
             ]),
           ]),
@@ -7416,7 +7229,7 @@ var render = function () {
           _c("li", [
             _c("a", { attrs: { href: "#comments" } }, [
               _c("span", { staticClass: "text-primary" }, [
-                _vm._v(_vm._s(_vm.$t("nav comments"))),
+                _vm._v(_vm._s(_vm.$t("guide.article_right_nabar.comments"))),
               ]),
             ]),
           ]),
@@ -7424,7 +7237,9 @@ var render = function () {
           _c("li", [
             _c("a", { attrs: { href: "#other" } }, [
               _c("span", { staticClass: "text-primary" }, [
-                _vm._v(_vm._s(_vm.$t("nav similar articles"))),
+                _vm._v(
+                  _vm._s(_vm.$t("guide.article_right_nabar.similar articles"))
+                ),
               ]),
             ]),
           ]),

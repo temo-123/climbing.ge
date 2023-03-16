@@ -1,6 +1,6 @@
 <template>
     <div class="container">
-        <h2 class="block_title">{{ $t('title message') }}</h2>
+        <h2 class="block_title">{{ $t('global.message form') }}</h2>
         <div class="bar"><i class="fa fa-envelope" aria-hidden="true"></i></div>
         <h3> <span v-html="this.$siteData.message"></span> </h3>
         

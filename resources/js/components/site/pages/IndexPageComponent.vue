@@ -6,9 +6,9 @@
 
         <whatWeDoComponent />
 
-        <div class="container h-recent-work" v-if="this.$globalSiteData.map">
+        <div class="container h-recent-work" v-if="this.$globalSiteData.map && this.$globalSiteData.map != 'function map() { [native code] }'">
 
-            <h2 class='index_h2'>{{ $t('title topo') }}</h2>
+            <h2 class='index_h2'>{{ $t('guide.title.topo') }}</h2>
 
             <div class="bar"><i class="fa fa-map-marker"></i></div>
             
@@ -19,9 +19,9 @@
             </div>
         </div>
 
-        <div class="h-recent-work" v-if="lastNews">
+        <div class="h-recent-work" v-if="lastNews.length">
             <div class="container">
-                <h2 class='index_h2' id="news">{{ $t('title news') }}</h2>
+                <h2 class='index_h2' id="news">{{ $t('guide.title.news') }}</h2>
                 <div class="bar"><i class="fa fa-newspaper-o"></i></div>
                 <h3> <span v-html="this.$siteData.news_description"></span> </h3>
 

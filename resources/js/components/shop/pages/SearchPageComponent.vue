@@ -2,7 +2,7 @@
     <div>
         <div class="container">
 
-            <h1  class='serch_title'>Search products</h1>
+            <h1  class='serch_title'>{{ $t('shop.title.search') }}</h1>
 
             <div class="row">
                 <div class="col-md-12">

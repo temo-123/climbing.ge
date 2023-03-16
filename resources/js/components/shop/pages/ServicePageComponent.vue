@@ -17,7 +17,8 @@
 
         <div class="row" v-if="this.services.length > 0">
             <hr>
-            <h2 class="other_servces">Other Service</h2>
+
+            <h2 class="other_servces">{{ $t('shop.title.similar.services') }}</h2>
 
             <ServiceItem
                 v-for="service in services"

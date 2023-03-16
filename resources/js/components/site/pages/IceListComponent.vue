@@ -2,7 +2,7 @@
     <div class="h-recent-work" id="other">
         <div class="container">
 
-            <h2 class='index_h2'>{{ $t('title ice climbing')}}</h2>
+            <h2 class='index_h2'>{{ $t('guide.title.ice climbing')}}</h2>
 
             <div class="bar"><i class="fa fa-dribbble"></i></div>
             <!-- <h6><span v-html="this.$siteData.other_activity_description"></span></h6> -->

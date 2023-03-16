@@ -1223,7 +1223,7 @@ var render = function () {
         }),
     _vm._v(" "),
     _c("p", { staticStyle: { "text-align": "center" } }, [
-      _vm._v("Page is empty"),
+      _vm._v(_vm._s(_vm.$t("global.page is empty"))),
     ]),
   ])
 }
@@ -1345,7 +1345,7 @@ var render = function () {
     [
       _c("div", { staticClass: "container" }, [
         _c("h2", { staticClass: "index_h2" }, [
-          _vm._v(_vm._s(_vm.$t("title ice climbing"))),
+          _vm._v(_vm._s(_vm.$t("guide.title.ice climbing"))),
         ]),
         _vm._v(" "),
         _vm._m(0),

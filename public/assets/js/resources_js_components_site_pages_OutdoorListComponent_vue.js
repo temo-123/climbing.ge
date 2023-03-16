@@ -249,6 +249,17 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
@@ -1683,7 +1694,7 @@ var render = function () {
         }),
     _vm._v(" "),
     _c("p", { staticStyle: { "text-align": "center" } }, [
-      _vm._v("Page is empty"),
+      _vm._v(_vm._s(_vm.$t("global.page is empty"))),
     ]),
   ])
 }
@@ -1741,33 +1752,32 @@ var render = function () {
           ],
           1
         )
-      : _c("div", [
-          _c(
-            "h3",
-            {
-              attrs: {
-                if:
-                  !_vm.sectors == 0 &&
-                  !_vm.sport_routes == 0 &&
-                  !_vm.boulder_routes == 0 &&
-                  !_vm.mtps == 0,
-              },
-            },
-            [
-              _vm._v("\n            In Georgia are  \n                "),
-              _c("strong", [_vm._v(_vm._s(_vm.sectors))]),
-              _vm._v(" outdoor climbing sectors, \n                "),
-              _c("strong", [_vm._v(_vm._s(_vm.sport_routes))]),
-              _vm._v(" sport climbing routes, \n                "),
-              _c("strong", [_vm._v(_vm._s(_vm.boulder_routes))]),
-              _vm._v(" boulder routes, \n                "),
-              _c("strong", [_vm._v(_vm._s(_vm.mtps))]),
-              _vm._v(
-                " multy pitch. You can see all outdoor climbing arias info on this page.\n        "
-              ),
-            ]
-          ),
-        ]),
+      : _c(
+          "div",
+          [
+            _c("i18n", [
+              _c("p", { attrs: { placeholder: "sectors" } }, [_vm._v("666")]),
+            ]),
+            _vm._v(" "),
+            _vm.sectors
+              ? _c("h3", [
+                  _vm._v(
+                    "\n            " +
+                      _vm._s(
+                        _vm.$t("guide.article.route_quantyty", {
+                          sectors: _vm.sectors,
+                          sport_routes: _vm.sport_routes,
+                          boulder_routes: _vm.boulder_routes,
+                          mtps: _vm.mtps,
+                        })
+                      ) +
+                      "\n            "
+                  ),
+                ])
+              : _vm._e(),
+          ],
+          1
+        ),
   ])
 }
 var staticRenderFns = []
@@ -1925,7 +1935,7 @@ var render = function () {
         { staticClass: "container" },
         [
           _c("h1", { staticClass: "page_title index_h2" }, [
-            _vm._v(_vm._s(_vm.$t("title outdoor climbing"))),
+            _vm._v(_vm._s(_vm.$t("guide.title.outdoor climbing"))),
           ]),
           _vm._v(" "),
           _vm._m(0),
@@ -2187,7 +2197,7 @@ var render = function () {
       _vm._v(" "),
       _c("metaData", {
         attrs: {
-          title: _vm.$t("title outdoor climbing"),
+          title: _vm.$t("guide.title.outdoor climbing"),
           description: this.$siteData.outdoor_description,
           image: "../../../../public/images/meta_img/outdoor.jpg",
         },

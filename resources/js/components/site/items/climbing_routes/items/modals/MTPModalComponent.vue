@@ -18,12 +18,12 @@
             <div class="model-body">
                 <div class="container">
                     <div class="row">
-                        <h2>Multy-pitch detals</h2>
+                        <h2>{{ $t("guide.route.mtp detals") }}</h2>
                         <span
                             class="routes_detals"
                         >
-                            <p class="route_detal">Name - {{ mtp_detals.mtp.name }}</p>
-                            <p class="route_detal">Height - {{ mtp_detals.mtp.height }}</p>
+                            <p class="route_detal">{{ $t("guide.route.name") }} - {{ mtp_detals.mtp.name }}</p>
+                            <p class="route_detal">{{ $t("guide.route.height") }} - {{ mtp_detals.mtp.height }}</p>
                         </span>
                     </div>
 
@@ -31,12 +31,12 @@
                         <tbody>
                             <tr>
                                 <td>N</td>
-                                <td>{{ $t("route_tab name") }}</td>
-                                <td>{{ $t("route_tab height") }}</td>
-                                <td>{{ $t("route_tab bolts") }}</td>
-                                <td>{{ $t("route_tab grade fr") }}</td>
+                                <td>{{ $t("guide.route.name") }}</td>
+                                <td>{{ $t("guide.route.height") }}</td>
+                                <td>{{ $t("guide.route.bolts") }}</td>
+                                <td>{{ $t("guide.route.grade fr") }}</td>
                                 <td class="display-none-720px">
-                                    {{ $t("route_tab grade yds") }}
+                                    {{ $t("guide.route.grade yds") }}
                                 </td>
                             </tr>
                         </tbody>
@@ -66,114 +66,6 @@
                             </tr>
                         </tbody>
                     </table>
-                    <!-- <div class="row" v-if="this.mtp_posts.length > 0">
-                        <div class="row">
-                            <div class="col-md-6">
-                                <h2 @click="mtp_post_list = !mtp_post_list">
-                                    User posts and rewies
-                                </h2>
-                            </div>
-                            <div class="col-md-6">
-                                <p
-                                    style="float: right"
-                                    v-if="mtp_post_list"
-                                    @click="mtp_post_list = !mtp_post_list"
-                                >
-                                    Close
-                                </p>
-                                <p
-                                    style="float: right"
-                                    v-if="!mtp_post_list"
-                                    @click="mtp_post_list = !mtp_post_list"
-                                >
-                                    Open
-                                </p>
-                            </div>
-                        </div>
-                        <div v-show="mtp_post_list">
-                            <div class="row">
-                                <div
-                                    class="cardbox shadow-lg bg-white"
-                                    v-for="mtp_post in mtp_posts"
-                                    :key="mtp_post.id"
-                                >
-                                    <div class="cardbox-heading">
-                                        <div class="media m-0">
-                                            <div class="d-flex mr-3">
-                                                <img
-                                                    class="img-fluid rounded-circle"
-                                                    v-if="
-                                                        mtp_post['user'].image
-                                                    "
-                                                    :src="'/public/images/user_img/user_demo_img.gif'"
-                                                    :alt="
-                                                        mtp_post['user'].name +
-                                                        ' ' +
-                                                        mtp_post['user'].surname
-                                                    "
-                                                />
-                                                <img
-                                                    class="img-fluid rounded-circle"
-                                                    v-else
-                                                    :src="'/public/images/site_img/user_demo_img.gif'"
-                                                    :alt="
-                                                        mtp_post['user'].name +
-                                                        ' ' +
-                                                        mtp_post['user'].surname
-                                                    "
-                                                />
-                                            </div>
-                                            <div class="media-body">
-                                                <div class="row m-0">
-                                                    <p class="m-0">
-                                                        {{
-                                                            mtp_post["user"]
-                                                                .name +
-                                                            " " +
-                                                            mtp_post["user"]
-                                                                .surname
-                                                        }}
-                                                    </p>
-                                                </div>
-                                                <div class="row m-0">
-                                                    <small
-                                                        ><span
-                                                            v-if="
-                                                                mtp_post['post']
-                                                                    .created_at
-                                                            "
-                                                            >{{
-                                                                mtp_post["post"]
-                                                                    .created_at
-                                                            }}</span
-                                                        ></small
-                                                    >
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <div
-                                        class="cardbox-item container"
-                                        v-if="mtp_post['post'].text"
-                                    >
-                                        <p
-                                            style="
-                                                background-color: #eee;
-                                                text-align: center;
-                                                font-size: 1.5em;
-                                            "
-                                        >
-                                            {{ mtp_post["post"].text }}
-                                        </p>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="row">
-                                For more posts visit forum site
-                            </div>
-                        </div>
-                    </div> -->
                 </div>
             </div>
             <div slot="modal-footer">

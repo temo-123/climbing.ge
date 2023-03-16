@@ -14,7 +14,7 @@
 </template>
 
 <script>
-import navbar from "./items/NavbarComponent";
+import navbar from "./items/navbars/NavbarComponent.vue";
 import footter from "./items/FooterComponent";
 import loginModal from "../global_components/LoginModalComponent.vue";
 

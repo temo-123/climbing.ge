@@ -2925,7 +2925,7 @@ var render = function () {
         "li",
         [
           _c("router-link", { attrs: { to: { name: "index" } } }, [
-            _vm._v("Home"),
+            _vm._v(_vm._s(_vm.$t("guide.breadcrumb home"))),
           ]),
         ],
         1

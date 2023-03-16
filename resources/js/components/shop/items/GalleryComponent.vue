@@ -1,7 +1,7 @@
 <template>
     <div class="row similar_articles galery_margin_bottom" v-if="this.db_images.length > 0">
       <div class="container text-center">
-          <h2 id="gallery">{{ $t('gallery')}}</h2>
+          <h2 id="gallery">{{ $t('shop.title.gallery')}}</h2>
       </div>
 
       <galleryComponrnt :images_prop="this.db_images" :image_path_prop="this.images_path"/>

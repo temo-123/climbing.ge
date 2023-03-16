@@ -6,31 +6,31 @@
 
                 <li>
                     <a href="#description">
-                        <span class="text-primary">{{ $t('nav description') }}</span>
+                        <span class="text-primary">{{ $t('guide.article_right_nabar.description') }}</span>
                     </a>
                 </li>
 
                 <li>
                     <a href="#sectors">
-                        <span class="text-primary">{{ $t('nav sectors') }}</span>
+                        <span class="text-primary">{{ $t('guide.article_right_nabar.sectors') }}</span>
                     </a>
                 </li>
 
                 <li>
                     <a href="#gallery">
-                        <span class="text-primary">{{ $t('nav gallery') }}</span>
+                        <span class="text-primary">{{ $t('guide.article_right_nabar.gallery') }}</span>
                     </a>
                 </li>
             
                 <li>
                     <a href="#comments">
-                        <span class="text-primary">{{ $t('nav comments') }}</span>
+                        <span class="text-primary">{{ $t('guide.article_right_nabar.comments') }}</span>
                     </a>
                 </li>
             
                 <li>
                     <a href="#other">
-                        <span class="text-primary">{{ $t('nav similar articles') }}</span>
+                        <span class="text-primary">{{ $t('guide.article_right_nabar.similar articles') }}</span>
                     </a>
                 </li>
             

@@ -2,7 +2,7 @@
     <div class="row">
         <span>
             <h2 style="font-size: 160%">
-                {{ $t("sector name") }} -
+                {{ $t("guide.secto.e") }} -
                 <strong>{{ sector.sector.name }}</strong>
             </h2>
         </span>
@@ -131,11 +131,11 @@
             <tbody>
                 <tr>
                     <td>N</td>
-                    <td>{{ $t("route_tab name") }}</td>
-                    <td>{{ $t("route_tab height") }}</td>
-                    <td>{{ $t("route_tab bolts") }}</td>
-                    <td>{{ $t("route_tab grade fr") }}</td>
-                    <td>{{ $t("route_tab grade yds") }}</td>
+                    <td>{{ $t("guide.route.name") }}</td>
+                    <td>{{ $t("guide.route.height") }}</td>
+                    <td>{{ $t("guide.route.bolts") }}</td>
+                    <td>{{ $t("guide.route.grade fr") }}</td>
+                    <td>{{ $t("guide.route.grade yds") }}</td>
                     <td>Info</td>
                 </tr>
             </tbody>
@@ -173,10 +173,10 @@
             <tbody>
                 <tr>
                     <td>N</td>
-                    <td>{{ $t("route_tab name") }}</td>
-                    <td>{{ $t("route_tab height") }}</td>
-                    <td>{{ $t("route_tab grade fr") }}</td>
-                    <td>{{ $t("route_tab grade yds") }}</td>
+                    <td>{{ $t("guide.route.name") }}</td>
+                    <td>{{ $t("guide.route.height") }}</td>
+                    <td>{{ $t("guide.route.grade fr") }}</td>
+                    <td>{{ $t("guide.route.grade yds") }}</td>
                     <td>Info</td>
                 </tr>
             </tbody>
@@ -218,7 +218,7 @@
             <div class="col-md-8">
                 <span class="mtp_name"
                     ><h3>
-                        {{ $t("mtp name") }} -
+                        {{ $t("guide.route.mtp name") }} -
                         <strong>{{ mtp.mtp_name }}</strong>
                     </h3></span
                 >
@@ -238,12 +238,12 @@
                 <tbody>
                     <tr>
                         <td>N</td>
-                        <td>{{ $t("route_tab name") }}</td>
-                        <td>{{ $t("route_tab height") }}</td>
-                        <td>{{ $t("route_tab bolts") }}</td>
-                        <td>{{ $t("route_tab grade fr") }}</td>
+                        <td>{{ $t("guide.route.name") }}</td>
+                        <td>{{ $t("guide.route.height") }}</td>
+                        <td>{{ $t("guide.route.bolts") }}</td>
+                        <td>{{ $t("guide.route.grade fr") }}</td>
                         <td class="display-none-720px">
-                            {{ $t("route_tab grade yds") }}
+                            {{ $t("guide.route.grade yds") }}
                         </td>
                     </tr>
                 </tbody>

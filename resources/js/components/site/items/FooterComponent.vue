@@ -6,7 +6,7 @@
 
                 <div class="col-md-4 display-none-720px">
                     <div class="f-about container">
-                        <h4 class="footer_title">{{ $t("about us") }}</h4>
+                        <h4 class="footer_title">{{ $t("global.footer.about us") }}</h4>
 
                         <div class="footer_description_block">
                             <span v-html="this.$siteData.guid_short_description"></span>
@@ -16,7 +16,7 @@
                                     params: { lang: this.$i18n.locale },
                                 }"
                             >
-                            {{ $t("more") }}
+                            {{ $t("global.footer.more") }}
                             </router-link>
                         </div>
                     </div>
@@ -24,7 +24,7 @@
 
                 <div class="col-md-4">
                     <div class="f-links">
-                        <h4 class="footer_title">{{ $t("links") }}</h4>
+                        <h4 class="footer_title">{{ $t("global.footer.links") }}</h4>
                         <ul class="footer_links">
                             <li>
                                 <router-link
@@ -33,7 +33,7 @@
                                         params: { lang: this.$i18n.locale },
                                     }"
                                 >
-                                    {{ $t("menu indoor climbing") }}
+                                    {{ $t("guide.menu.indoor climbing") }}
                                 </router-link>
                             </li>
                             <li>
@@ -43,7 +43,7 @@
                                         params: { lang: this.$i18n.locale },
                                     }"
                                 >
-                                    {{ $t("menu outdoor climbing") }}
+                                    {{ $t("guide.menu.outdoor climbing") }}
                                 </router-link>
                             </li>
                             <li>
@@ -53,7 +53,7 @@
                                         params: { lang: this.$i18n.locale },
                                     }"
                                 >
-                                    {{ $t("menu mountaineering") }}
+                                    {{ $t("guide.menu.mountaineering") }}
                                 </router-link>
                             </li>
                             <li>
@@ -63,7 +63,7 @@
                                         params: { lang: this.$i18n.locale },
                                     }"
                                 >
-                                    {{ $t("menu ice climbing") }}
+                                    {{ $t("guide.menu.ice climbing") }}
                                 </router-link>
                             </li>
                             <li>
@@ -73,7 +73,7 @@
                                         params: { lang: this.$i18n.locale },
                                     }"
                                 >
-                                    {{ $t("menu other") }}
+                                    {{ $t("guide.menu.other") }}
                                 </router-link>
                             </li>
                             <li>
@@ -83,7 +83,7 @@
                                         params: { lang: this.$i18n.locale },
                                     }"
                                 >
-                                    {{ $t("menu about us") }}
+                                    {{ $t("guide.menu.about us") }}
                                 </router-link>
                             </li>
                         </ul>
@@ -93,14 +93,14 @@
                 <div class="col-md-4">
                     <div class="row f-links container">
                         <div class="flick">
-                            <h4 class="footer_title">{{ $t("share") }}</h4>
+                            <h4 class="footer_title">{{ $t("global.footer.share") }}</h4>
 
                             <share />
                         </div>
                     </div>
                     <div class="row f-links container">
                         <div class="flick">
-                            <h4 class="footer_title">QR code</h4>
+                            <h4 class="footer_title">{{ $t("global.footer.qr") }}</h4>
                             <div class="row">
                                 <QRCanvas :options="options" class="foo_qr"></QRCanvas>
                             </div>

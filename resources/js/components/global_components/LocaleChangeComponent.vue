@@ -1,7 +1,9 @@
 <template>
-    <li class="dropdown display-none-720px">
+    <li class="dropdown">
         <a data-toggle="dropdown">
-            <i class="fa fa-language" aria-hidden="true"></i>
+            <span>
+                <i class="fa fa-language" aria-hidden="true"></i>
+            </span>
         </a>
 
         <ul class="dropdown-menu shadows" role="menu">
@@ -9,14 +11,10 @@
             <li v-if="activ_lang == 'en' || activ_lang == 'ru'"><a style="width: 50%; margin-left: 25%;"  @click="localization('ka')"><countryFlag country='geo' size='big'/></a></li>
             <li v-if="activ_lang == 'ka' || activ_lang == 'en'"><a style="width: 50%; margin-left: 25%;"  @click="localization('ru')"><countryFlag country='rus' size='big'/></a></li> -->
 
-
-            <li v-if="activ_lang == 'ka' || activ_lang == 'ru'"><a style="width: 50%; margin-left: 25%;"  @click="activ_lang = 'en', localization('en')"><countryFlag country='usa' size='big'/></a></li>
-            <li v-if="activ_lang == 'en' || activ_lang == 'ru'"><a style="width: 50%; margin-left: 25%;"  @click="activ_lang = 'ka', localization('ka')"><countryFlag country='geo' size='big'/></a></li>
-            <li v-if="activ_lang == 'ka' || activ_lang == 'en'"><a style="width: 50%; margin-left: 25%;"  @click="activ_lang = 'ru', localization('ru')"><countryFlag country='rus' size='big'/></a></li>
+            <li v-if="activ_lang == 'ka' || activ_lang == 'ru'"><a class="localizatione_flag" @click="activ_lang = 'en', localization('en')"><countryFlag country='usa' size='big'/></a></li>
+            <li v-if="activ_lang == 'en' || activ_lang == 'ru'"><a class="localizatione_flag"  @click="activ_lang = 'ka', localization('ka')"><countryFlag country='geo' size='big'/></a></li>
+            <li v-if="activ_lang == 'ka' || activ_lang == 'en'"><a class="localizatione_flag"  @click="activ_lang = 'ru', localization('ru')"><countryFlag country='rus' size='big'/></a></li>
         </ul>
-
-        <!-- - {{token}} -
-        <button @click="token++"> + </button> -->
     </li>
 </template>
 
@@ -98,5 +96,15 @@
 </script>
 
 <style>
+.localizatione_flag{
+    width: 50%; 
+    margin-left: 25%;
+}
 
+@media (max-width: 767px) {
+    .localizatione_flag{
+        width: 50%; 
+        margin-left: 0%;
+    }
+}
 </style>

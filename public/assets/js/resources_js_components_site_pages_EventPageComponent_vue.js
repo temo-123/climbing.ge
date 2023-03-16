@@ -1039,7 +1039,7 @@ var render = function () {
         "li",
         [
           _c("router-link", { attrs: { to: { name: "index" } } }, [
-            _vm._v("Home"),
+            _vm._v(_vm._s(_vm.$t("guide.breadcrumb home"))),
           ]),
         ],
         1
@@ -1777,7 +1777,7 @@ var render = function () {
           this.event.global_event.map != null
             ? _c("div", { staticClass: "row" }, [
                 _c("h2", { attrs: { id: "map" } }, [
-                  _vm._v(_vm._s(_vm.$t("map"))),
+                  _vm._v(_vm._s(_vm.$t("guide.title.map"))),
                 ]),
                 _vm._v(" "),
                 _c("span", {
@@ -1789,7 +1789,7 @@ var render = function () {
           this.event.locale_event.info != null
             ? _c("div", { staticClass: "row" }, [
                 _c("h2", { attrs: { id: "info" } }, [
-                  _vm._v(_vm._s(_vm.$t("info"))),
+                  _vm._v(_vm._s(_vm.$t("guide.title.info"))),
                 ]),
                 _vm._v(" "),
                 _c("span", {

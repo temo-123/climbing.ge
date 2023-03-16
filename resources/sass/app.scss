@@ -2297,10 +2297,10 @@ select:focus {
     text-align: center;
 }
 
-.navbar-header {
-    margin-top: 3%;
-    margin-bottom: 3%;
-}
+// .navbar-header {
+//     margin-top: 3%;
+//     margin-bottom: 3%;
+// }
 
 // @media (max-width: 720px){
 //     .site_title{
@@ -2331,29 +2331,32 @@ select:focus {
     color: #fff;
     font-size: 135%;
     // margin-bottom: -6%;
-    margin-bottom: -100%;
-}
-@media (max-width: 720px) {
-    .display-none-720px {
-        display: none !important;
-    }
-    .site_title {
-        // margin-bottom: -6%;
-        margin-bottom: -15%;
-    }
-}
-// @media (max-width: 950px, min-width: 720px){
-@media screen and (max-width: 950px) and (min-width: 767px) {
-  .site_title {
-    display: none !important;
-  }
-}
+    // margin-bottom: -100%;
 
-@media (max-width: 490px) {
-  .site_title {
-    display: none !important;
-  }
+    white-space: nowrap;
+    display: inline-block
 }
+// @media (max-width: 720px) {
+//     .display-none-720px {
+//         display: none !important;
+//     }
+//     .site_title {
+//         // margin-bottom: -6%;
+//         margin-bottom: -15%;
+//     }
+// }
+// @media (max-width: 950px, min-width: 720px){
+// @media screen and (max-width: 950px) and (min-width: 767px) {
+//   .site_title {
+//     display: none !important;
+//   }
+// }
+
+// @media (max-width: 490px) {
+//   .site_title {
+//     display: none !important;
+//   }
+// }
 // @media (min-width: 720px) {
 //     .display-720px {
 //         display: none;
@@ -2424,15 +2427,15 @@ select:focus {
         display: none !important;
     }
 }
-@media (max-width: 720px) {
-    .admin_menu_for_desctop {
-        display: none !important;
-    }
-    // .dropdown-menu a,
-    // hr {
-    //     float: right;
-    // }
-}
+// @media (max-width: 720px) {
+//     // .admin_menu_for_desctop {
+//     //     display: none !important;
+//     // }
+//     // .dropdown-menu a,
+//     // hr {
+//     //     float: right;
+//     // }
+// }
 .admin_icon {
     color: #fff;
     font-size: 24px !important;
@@ -2441,10 +2444,19 @@ select:focus {
 // #actyve {
 //     text-shadow: black 1px 1px 0, #920000 -1px -1px 0, #c10000 -1px 1px 0, #f54805 1px -1px 0;
 // }
-.router-link-exact-active span {
-    text-shadow: black 1px 1px 0, #920000 -1px -1px 0, #c10000 -1px 1px 0,
-        #f54805 1px -1px 0;
-}
+// .router-link-exact-active span {
+    // text-shadow: 
+    //     black 1px 1px 0, 
+    //     #920000 -1px -1px 0, 
+    //     #c10000 -1px 1px 0,
+    //     #f54805 1px -1px 0
+    //     !important
+    // ;
+
+    // color: #fff;
+    // background-color: #2f8d9d;
+// }
+
 
 .serch_title {
     text-align: center;

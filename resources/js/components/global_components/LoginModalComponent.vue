@@ -37,7 +37,7 @@
                     :class="{'btn btn-primary': true}"
                     form="login_form"
                 >
-                Login
+                {{ $t('global.login') }}
                 </button>
             </div>
         </div>

@@ -2,7 +2,7 @@
     <div class="h-recent-work" id="other">
         <div class="container">
 
-            <h1 class='index_h2'>{{ $t('title mountaineering')}}</h1>
+            <h1 class='index_h2'>{{ $t('guide.title.mountaineering')}}</h1>
 
             <div class="bar"><i class="fa fa-dribbble"></i></div>
 
@@ -60,7 +60,7 @@
         </div>
         
         <metaData 
-            :title = "$t('title mountaineering')"
+            :title = "$t('guide.title.mountaineering')"
             :description = "this.$siteData.mount_description"
             :image = "'../../../../public/images/meta_img/mount.jpg'"
         />

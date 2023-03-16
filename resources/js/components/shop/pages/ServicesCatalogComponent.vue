@@ -1,6 +1,6 @@
 <template>
     <div class="col-md-12">
-        <h1 class="page_title">Services</h1>
+        <h1 class="page_title">{{ $t('shop.title.services') }}</h1>
 
         <div class="bar"><i class="fa fa-exclamation-triangle"></i></div>
         
@@ -8,20 +8,26 @@
             <span v-html="this.$siteData.services_description"></span>
         </h2>
 
-        <div class="row" v-if="services_loading">
-            <content-loader
-                viewBox="0 0"
-                primaryColor="#f3f3f3"
-                secondaryColor="#27bb7d8c"
-            />
-        </div>
-        <div class="row" v-else>
-            <ServiceItem
-                v-for="service in services"
-                :key='service.id'
-                :service_data="service">
-            </ServiceItem>
-        </div>
+        <span v-if="services.length">
+            <div class="row" v-if="services_loading">
+                <content-loader
+                    viewBox="0 0"
+                    primaryColor="#f3f3f3"
+                    secondaryColor="#27bb7d8c"
+                />
+            </div>
+            <div class="row" v-else>
+                <ServiceItem
+                    v-for="service in services"
+                    :key='service.id'
+                    :service_data="service">
+                </ServiceItem>
+            </div>
+        </span>
+
+        <span v-else>
+            <emptyPageComponent />
+        </span>
 
         <metaData 
             :title = "'Services'"
@@ -34,13 +40,15 @@
 <script>
     import ServiceItem from '../items/ServiceItemComponent'
     import { ContentLoader } from 'vue-content-loader'
+    import emptyPageComponent from '../../global_components/EmptyPageComponent'
 
     import metaData from '../items/MetaDataComponent'
     export default {
         components: {
             metaData,
             ServiceItem,
-            ContentLoader
+            ContentLoader,
+            emptyPageComponent,
         },
         data: function () {
             return {

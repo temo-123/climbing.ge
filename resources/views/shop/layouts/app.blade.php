@@ -90,6 +90,27 @@
         .preloader {
             background: #27bb7d;
         }
+
+        .navbar {
+            background-color: #09bb80 !important;
+            border-color: #6a8991;
+        }
+
+        .navbar-inverse .navbar-nav>.open>a{
+            background-color: #0e9f6f !important;
+        }
+
+        .navbar-inverse .navbar-nav>.open>a, .navbar-inverse .navbar-nav>.open>a:hover{
+            background-color: #0c8a60 !important;
+        }
+
+        .navbar-inverse .navbar-collapse{
+            border-color: #838383;
+        }
+
+        .navbar-collapse {
+            max-height: none !important;
+        }
     </style>
 </head>
 <body>

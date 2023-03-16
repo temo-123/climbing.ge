@@ -468,6 +468,16 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 // import analogProduct from '../items/AnalogProductComponent.vue'
  // https://github.com/ChristophAnastasiades/Lingallery
 
@@ -9935,7 +9945,7 @@ var render = function () {
         "div",
         { staticClass: "row related" },
         [
-          _c("h2", [_vm._v("You might also like")]),
+          _c("h2", [_vm._v(_vm._s(_vm.$t("shop.title.similar.products")))]),
           _vm._v(" "),
           _vm._l(_vm.samilar_products, function (product) {
             return _c("analogProduct", {
@@ -10116,7 +10126,11 @@ var render = function () {
                 _vm.product.global_product.sale_type == "online order"
                   ? _c("div", { staticClass: "row" }, [
                       _c("div", { staticClass: "row" }, [
-                        _vm._m(1),
+                        _c("div", { staticClass: "col-md-12" }, [
+                          _c("h3", { staticStyle: { "margin-bottom": "0" } }, [
+                            _vm._v(_vm._s(_vm.$t("shop.add to cart"))),
+                          ]),
+                        ]),
                         _vm._v(" "),
                         _vm.products_quantity == _vm.select_product_max_quantyty
                           ? _c("span", [
@@ -10128,7 +10142,9 @@ var render = function () {
                                 },
                                 [
                                   _vm._v(
-                                    "\n                                        This is maximal quantyty for this product!!!\n                                    "
+                                    "\n                                        " +
+                                      _vm._s(_vm.$t("shop.max products")) +
+                                      "\n                                    "
                                   ),
                                 ]
                               ),
@@ -10145,7 +10161,9 @@ var render = function () {
                                 },
                                 [
                                   _vm._v(
-                                    "\n                                        Product add successful!!!\n                                    "
+                                    "\n                                        " +
+                                      _vm._s(_vm.$t("shop.add successful")) +
+                                      "\n                                    "
                                   ),
                                 ]
                               ),
@@ -10267,7 +10285,22 @@ var render = function () {
                   : _vm._e(),
                 _vm._v(" "),
                 _vm.product.global_product.sale_type == "custom production"
-                  ? _c("div", { staticClass: "row" }, [_vm._m(2)])
+                  ? _c("div", { staticClass: "row" }, [
+                      _c("div", { staticClass: "row" }, [
+                        _c("div", { staticClass: "col-md-12" }, [
+                          _c(
+                            "h3",
+                            {
+                              staticStyle: {
+                                "margin-bottom": "0",
+                                float: "left",
+                              },
+                            },
+                            [_vm._v(_vm._s(_vm.$t("custom product")))]
+                          ),
+                        ]),
+                      ]),
+                    ])
                   : _vm._e(),
               ]),
             ]),
@@ -10281,7 +10314,7 @@ var render = function () {
               ? _c("div", { staticClass: "row" }, [
                   _c("div", { staticClass: "col-md-12" }, [
                     _c("h2", { staticClass: "text-center" }, [
-                      _vm._v("Description"),
+                      _vm._v(_vm._s(_vm.$("shop.product description"))),
                     ]),
                     _vm._v(" "),
                     _c("span", {
@@ -10311,6 +10344,26 @@ var render = function () {
                   ]),
                 ])
               : _vm._e(),
+            _vm._v(" "),
+            _c("p", [
+              _vm._v(_vm._s(_vm.$t("shop.product desc.category")) + " - "),
+            ]),
+            _vm._v(" "),
+            _c("p", [
+              _vm._v(_vm._s(_vm.$t("shop.product desc.material")) + " - "),
+            ]),
+            _vm._v(" "),
+            _c("p", [
+              _vm._v(_vm._s(_vm.$t("shop.product desc.weight")) + " - "),
+            ]),
+            _vm._v(" "),
+            _c("hr"),
+            _vm._v(" "),
+            _c("h3", [_vm._v(_vm._s(_vm.$t("shop.seller.seller contact")))]),
+            _vm._v(" "),
+            _c("p", [_vm._v(_vm._s(_vm.$t("shop.seller.email")) + " - ")]),
+            _vm._v(" "),
+            _c("p", [_vm._v(_vm._s(_vm.$t("shop.seller.phone")) + " - ")]),
           ])
         : _vm._e(),
       _vm._v(" "),
@@ -10340,7 +10393,11 @@ var render = function () {
                   _c(
                     "router-link",
                     { attrs: { to: { name: "catalog" }, exact: "" } },
-                    [_c("span", [_vm._v(" All products ")])]
+                    [
+                      _c("span", [
+                        _vm._v(" " + _vm._s(_vm.$t("shop.all products")) + " "),
+                      ]),
+                    ]
                   ),
                 ],
                 1
@@ -10370,28 +10427,6 @@ var staticRenderFns = [
       _c("div", { staticClass: "col-md-12" }, [
         _c("div", { staticClass: "price-shipping" }, [
           _c("div", { staticClass: "price", attrs: { id: "price-preview" } }),
-        ]),
-      ]),
-    ])
-  },
-  function () {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "col-md-12" }, [
-      _c("h3", { staticStyle: { "margin-bottom": "0" } }, [
-        _vm._v("Add to cart"),
-      ]),
-    ])
-  },
-  function () {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "row" }, [
-      _c("div", { staticClass: "col-md-12" }, [
-        _c("h3", { staticStyle: { "margin-bottom": "0", float: "left" } }, [
-          _vm._v("Custom production"),
         ]),
       ]),
     ])

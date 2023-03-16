@@ -48,16 +48,16 @@
                             <div class="row" v-if="product.global_product.sale_type == 'online order'">
                                 <div class="row">
                                     <div class="col-md-12">
-                                        <h3 style="margin-bottom: 0;">Add to cart</h3>
+                                        <h3 style="margin-bottom: 0;">{{ $t('shop.add to cart') }}</h3>
                                     </div>
                                     <span v-if="products_quantity == select_product_max_quantyty">
                                         <div class="alert alert-danger" role="alert">
-                                            This is maximal quantyty for this product!!!
+                                            {{ $t('shop.max products') }}
                                         </div>
                                     </span>
                                     <span v-if="is_adding_in_cart_socsesful">
                                         <div class="alert alert-success" role="alert">
-                                            Product add successful!!!
+                                            {{ $t('shop.add successful') }}
                                         </div>
                                     </span>
                                 </div>
@@ -81,7 +81,7 @@
                             <div class="row" v-if="product.global_product.sale_type == 'custom production'">
                                 <div class="row">
                                     <div class="col-md-12">
-                                        <h3 style="margin-bottom: 0; float: left;">Custom production</h3>
+                                        <h3 style="margin-bottom: 0; float: left;">{{ $t('custom product') }}</h3>
                                     </div>
                                 </div>
                             </div>
@@ -93,7 +93,7 @@
         <div class="container" v-if="product.local_product[0]">
             <div class="row" v-if="product.local_product[0].text">
                 <div class="col-md-12">
-                    <h2 class='text-center'>Description</h2>
+                    <h2 class='text-center'>{{ $('shop.product description') }}</h2>
                     <span v-html="product.local_product[0].text"></span>
                 </div>
             </div>
@@ -102,6 +102,16 @@
                     <img class="mead_in_geo_img" :src="this.publicPath + '/public/images/site_img/mead in georgia.png'" :alt="'Mead in Georgia (' + product.local_product[0].title + ')'"/>
                 </div>
             </div>
+            <p>{{ $t('shop.product desc.category') }} - </p>
+            <p>{{ $t('shop.product desc.material') }} - </p>
+            <p>{{ $t('shop.product desc.weight') }} - </p>
+
+            <hr>
+
+            <h3>{{ $t('shop.seller.seller contact') }}</h3>
+
+            <p>{{ $t('shop.seller.email') }} - </p>
+            <p>{{ $t('shop.seller.phone') }} - </p>
         </div>
 
         <!-- <div class="container">
@@ -130,7 +140,7 @@
         <div class="container">
             <div class="row">
                 <div class="more-products" id="more-products-wrap">
-                    <li><router-link :to="{name: 'catalog'}" exact> <span> All products </span> </router-link></li>
+                    <li><router-link :to="{name: 'catalog'}" exact> <span> {{ $t('shop.all products') }} </span> </router-link></li>
                 </div>
             </div>
         </div>

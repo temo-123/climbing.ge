@@ -2,7 +2,7 @@
     <div class="h-recent-work">
         <div class="container">
 
-            <h1 class="page_title index_h2" >{{ $t('title indoor climbing')}}</h1>                    
+            <h1 class="page_title index_h2" >{{ $t('guide.title.indoor climbing')}}</h1>                    
 
             <div class="bar"><i class="fa fa-exclamation-triangle"></i></div>
             <!-- <h6> <span v-html="this.$siteData.indoor_description"></span></h6> -->
@@ -34,7 +34,7 @@
         </div>
         
         <metaData 
-            :title = "$t('title indoor climbing')"
+            :title = "$t('guide.title.indoor climbing')"
             :description = "this.$siteData.indoor_description"
             :image = "'../../../../public/images/meta_images/indoor.jpg'"
         />

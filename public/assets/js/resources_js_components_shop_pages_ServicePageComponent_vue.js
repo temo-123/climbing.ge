@@ -392,6 +392,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
 
 
 
@@ -1188,7 +1189,7 @@ var render = function () {
         [
           _c("div", { staticClass: "container text-center" }, [
             _c("h2", { attrs: { id: "gallery" } }, [
-              _vm._v(_vm._s(_vm.$t("gallery"))),
+              _vm._v(_vm._s(_vm.$t("shop.title.gallery"))),
             ]),
           ]),
           _vm._v(" "),
@@ -1363,7 +1364,7 @@ var render = function () {
               _c("hr"),
               _vm._v(" "),
               _c("h2", { staticClass: "other_servces" }, [
-                _vm._v("Other Service"),
+                _vm._v(_vm._s(_vm.$t("shop.title.similar.services"))),
               ]),
               _vm._v(" "),
               _vm._l(_vm.services, function (service) {

@@ -1,27 +1,28 @@
 <template>
     <div>
-        <h1 class='index_h2'>{{ $t('title events')}}</h1>
+        <h1 class='index_h2'>{{ $t('guide.title.events')}}</h1>
 
         <h2 style="text-align: center;">
             <span v-html="this.$siteData.event_description"></span>
         </h2>
 
-        <ul class="timeline">
-
+        <ul class="timeline" v-if="events.length">
             <eventListCard 
                 v-for="event in events"
                 :key='event.id'
                 :event="event"
             />
-
         </ul>
+
+        <div v-else>
+          <emptyPageComponent />
+        </div>
         
         <metaData 
             :title = "$t('title events')"
             :description = "this.$siteData.event_description"
             :image = "'../../../../public/images/meta_img/competition.jpg'"
         />
-
     </div>
 </template>
 
@@ -31,12 +32,15 @@
 
 import metaData from '../items/MetaDataComponent'
 
+import emptyPageComponent from '../../global_components/EmptyPageComponent'
+
 import eventListCard from '../items/cards/EventListCardComponent'
 
 export default {
     components: {
         metaData,
         eventListCard,
+        emptyPageComponent,
     },
     data(){
         return {

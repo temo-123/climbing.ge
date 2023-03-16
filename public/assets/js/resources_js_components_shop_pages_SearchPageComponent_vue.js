@@ -1438,7 +1438,9 @@ var render = function () {
     "div",
     [
       _c("div", { staticClass: "container" }, [
-        _c("h1", { staticClass: "serch_title" }, [_vm._v("Search products")]),
+        _c("h1", { staticClass: "serch_title" }, [
+          _vm._v(_vm._s(_vm.$t("shop.title.search"))),
+        ]),
         _vm._v(" "),
         _c("div", { staticClass: "row" }, [
           _c("div", { staticClass: "col-md-12" }, [

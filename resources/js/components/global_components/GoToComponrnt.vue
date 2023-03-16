@@ -1,7 +1,9 @@
 <template>
-    <li class="display-none-720px">
-        <a style="margin-top: -5%; font-size: 120%;" target="_blank" @click="goTo(go_to_page)">
-            <i class="fa fa-user-circle"></i>
+    <li>
+        <a style="font-size: 120%;" target="_blank" @click="goTo(go_to_page)">
+            <span>
+                <i class="fa fa-user-circle"></i>
+            </span>
         </a>
     </li>
 </template>

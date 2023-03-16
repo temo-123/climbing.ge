@@ -2319,7 +2319,7 @@ var render = function () {
         "li",
         [
           _c("router-link", { attrs: { to: { name: "index" } } }, [
-            _vm._v("Home"),
+            _vm._v(_vm._s(_vm.$t("guide.breadcrumb home"))),
           ]),
         ],
         1
@@ -3293,7 +3293,7 @@ var render = function () {
           _c("li", [
             _c("a", { attrs: { href: "#description" } }, [
               _c("span", { staticClass: "text-primary" }, [
-                _vm._v(_vm._s(_vm.$t("nav description"))),
+                _vm._v(_vm._s(_vm.$t("guide.article_right_nabar.description"))),
               ]),
             ]),
           ]),
@@ -3301,7 +3301,7 @@ var render = function () {
           _c("li", [
             _c("a", { attrs: { href: "#sectors" } }, [
               _c("span", { staticClass: "text-primary" }, [
-                _vm._v(_vm._s(_vm.$t("nav sectors"))),
+                _vm._v(_vm._s(_vm.$t("guide.article_right_nabar.sectors"))),
               ]),
             ]),
           ]),
@@ -3309,7 +3309,7 @@ var render = function () {
           _c("li", [
             _c("a", { attrs: { href: "#gallery" } }, [
               _c("span", { staticClass: "text-primary" }, [
-                _vm._v(_vm._s(_vm.$t("nav gallery"))),
+                _vm._v(_vm._s(_vm.$t("guide.article_right_nabar.gallery"))),
               ]),
             ]),
           ]),
@@ -3317,7 +3317,7 @@ var render = function () {
           _c("li", [
             _c("a", { attrs: { href: "#comments" } }, [
               _c("span", { staticClass: "text-primary" }, [
-                _vm._v(_vm._s(_vm.$t("nav comments"))),
+                _vm._v(_vm._s(_vm.$t("guide.article_right_nabar.comments"))),
               ]),
             ]),
           ]),
@@ -3325,7 +3325,9 @@ var render = function () {
           _c("li", [
             _c("a", { attrs: { href: "#other" } }, [
               _c("span", { staticClass: "text-primary" }, [
-                _vm._v(_vm._s(_vm.$t("nav similar articles"))),
+                _vm._v(
+                  _vm._s(_vm.$t("guide.article_right_nabar.similar articles"))
+                ),
               ]),
             ]),
           ]),
@@ -3502,7 +3504,9 @@ var render = function () {
                     ),
                     _vm._v(" "),
                     _c("h2", [
-                      _vm._v(_vm._s(_vm.$t("mount massive")) + " - "),
+                      _vm._v(
+                        _vm._s(_vm.$t("guide.article.mount massive")) + " - "
+                      ),
                       _c("strong", [
                         _vm._v(_vm._s(this.mounts_system.locale_mount.title)),
                       ]),
@@ -3536,7 +3540,11 @@ var render = function () {
                               _c(
                                 "h2",
                                 { attrs: { id: "best_time_to_climb" } },
-                                [_vm._v(_vm._s(_vm.$t("best time")))]
+                                [
+                                  _vm._v(
+                                    _vm._s(_vm.$t("guide.article.best time"))
+                                  ),
+                                ]
                               ),
                               _vm._v(" "),
                               _c("span", {
@@ -3555,7 +3563,11 @@ var render = function () {
                               _c(
                                 "h2",
                                 { attrs: { id: "best_time_to_climb" } },
-                                [_vm._v(_vm._s(_vm.$t("best time")))]
+                                [
+                                  _vm._v(
+                                    _vm._s(_vm.$t("guide.article.best time"))
+                                  ),
+                                ]
                               ),
                               _vm._v(" "),
                               _c("div", { staticClass: "row" }, [
@@ -3601,7 +3613,7 @@ var render = function () {
                         this.mounts_system.locale_mount.how_get != _vm.NUll
                           ? _c("div", [
                               _c("h2", { attrs: { id: "how_to_get_there" } }, [
-                                _vm._v(_vm._s(_vm.$t("how get"))),
+                                _vm._v(_vm._s(_vm.$t("guide.article.how get"))),
                               ]),
                               _vm._v(" "),
                               _c("span", {
@@ -3640,7 +3652,7 @@ var render = function () {
               this.mount_route[0].best_time != _vm.NULL
                 ? _c("div", [
                     _c("h2", { attrs: { id: "best_time_to_climb" } }, [
-                      _vm._v(_vm._s(_vm.$t("best time"))),
+                      _vm._v(_vm._s(_vm.$t("guide.article.best time"))),
                     ]),
                     _vm._v(" "),
                     _c("span", {
@@ -3653,7 +3665,7 @@ var render = function () {
                   this.mount_route[0].best_time != _vm.NULL
                 ? _c("div", [
                     _c("h2", { attrs: { id: "best_time_to_climb" } }, [
-                      _vm._v(_vm._s(_vm.$t("best time"))),
+                      _vm._v(_vm._s(_vm.$t("guide.article.best time"))),
                     ]),
                     _vm._v(" "),
                     _c("div", { staticClass: "row" }, [
@@ -3693,7 +3705,7 @@ var render = function () {
               this.mount_route[0].address != _vm.NUll
                 ? _c("div", [
                     _c("h2", { attrs: { id: "how_to_get_there" } }, [
-                      _vm._v(_vm._s(_vm.$t("address"))),
+                      _vm._v(_vm._s(_vm.$t("guide.article.address"))),
                     ]),
                     _vm._v(" "),
                     _c("span", {
@@ -3707,7 +3719,7 @@ var render = function () {
               this.mount_route[0].how_get != _vm.NUll
                 ? _c("div", [
                     _c("h2", { attrs: { id: "how_to_get_there" } }, [
-                      _vm._v(_vm._s(_vm.$t("how get"))),
+                      _vm._v(_vm._s(_vm.$t("guide.article.how get"))),
                     ]),
                     _vm._v(" "),
                     _c("span", {
@@ -3731,7 +3743,7 @@ var render = function () {
               this.mount_route[0].prices_text != _vm.NUll
                 ? _c("div", [
                     _c("h2", { attrs: { id: "how_to_get_there" } }, [
-                      _vm._v(_vm._s(_vm.$t("price"))),
+                      _vm._v(_vm._s(_vm.$t("guide.article.price"))),
                     ]),
                     _vm._v(" "),
                     _c("span", {
@@ -3745,7 +3757,7 @@ var render = function () {
               this.mount_route[0].info != _vm.NUll
                 ? _c("div", [
                     _c("h2", { attrs: { id: "how_to_get_there" } }, [
-                      _vm._v(_vm._s(_vm.$t("info"))),
+                      _vm._v(_vm._s(_vm.$t("guide.article.info"))),
                     ]),
                     _vm._v(" "),
                     _c("span", {
@@ -3757,7 +3769,7 @@ var render = function () {
               this.mount_route[0].what_need != _vm.NUll
                 ? _c("div", [
                     _c("h2", { attrs: { id: "what_you_need" } }, [
-                      _vm._v(_vm._s(_vm.$t("what need"))),
+                      _vm._v(_vm._s(_vm.$t("guide.article.what need"))),
                     ]),
                     _vm._v(" "),
                     _c("span", {
@@ -3771,7 +3783,7 @@ var render = function () {
               this.mount_route[0].route
                 ? _c("div", [
                     _c("h2", { attrs: { id: "routes" } }, [
-                      _vm._v(_vm._s(_vm.$t("route"))),
+                      _vm._v(_vm._s(_vm.$t("guide.article.route"))),
                     ]),
                     _vm._v(" "),
                     _c("span", {

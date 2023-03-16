@@ -1,7 +1,7 @@
 <template>
     <div class="row f-links container">
         <div class="flick">
-            <h4  class="footer_title">Follow us</h4>
+            <h4  class="footer_title">{{ $t("global.footer.follow") }}</h4>
         </div>
         <div class="form-group row">
             <div class="col-md-10">

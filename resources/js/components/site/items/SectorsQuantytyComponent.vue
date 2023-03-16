@@ -11,12 +11,23 @@
             </content-loader>
         </div>
         <div v-else>
-            <h3 :if='!sectors == 0 && !sport_routes == 0 && !boulder_routes == 0 && !mtps == 0'>
-                In Georgia are  
+            <i18n>
+                <p placeholder="sectors">666</p>
+            </i18n>
+            <h3 v-if='sectors'>
+                {{ 
+                    $t('guide.article.route_quantyty', { 
+                        sectors: sectors,
+                        sport_routes: sport_routes,
+                        boulder_routes: boulder_routes,
+                        mtps: mtps,
+                    }) 
+                }}
+                <!-- In Georgia are  
                     <strong>{{sectors}}</strong> outdoor climbing sectors, 
                     <strong>{{sport_routes}}</strong> sport climbing routes, 
                     <strong>{{boulder_routes}}</strong> boulder routes, 
-                    <strong>{{mtps}}</strong> multy pitch. You can see all outdoor climbing arias info on this page.
+                    <strong>{{mtps}}</strong> multy pitch. You can see all outdoor climbing arias info on this page. -->
             </h3>
         </div>
     </div>

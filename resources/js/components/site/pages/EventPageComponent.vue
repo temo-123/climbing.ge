@@ -27,12 +27,12 @@
             <div class="col-md-12">
 
                 <div class="row" v-if="this.event.global_event.map != null">
-                    <h2 id="map">{{ $t('map')}}</h2>
+                    <h2 id="map">{{ $t('guide.title.map')}}</h2>
                     <span v-html="event.global_event.map"></span>
                 </div>
 
                 <div class="row" v-if="this.event.locale_event.info != null">
-                    <h2 id="info">{{ $t('info')}}</h2>
+                    <h2 id="info">{{ $t('guide.title.info')}}</h2>
                     <span v-html="event.locale_event.info"></span>
                 </div>
 

@@ -10390,7 +10390,7 @@ var render = function () {
         }),
     _vm._v(" "),
     _c("p", { staticStyle: { "text-align": "center" } }, [
-      _vm._v("Page is empty"),
+      _vm._v(_vm._s(_vm.$t("global.page is empty"))),
     ]),
   ])
 }
@@ -10628,7 +10628,9 @@ var render = function () {
     "div",
     { staticClass: "col-sm-12" },
     [
-      _c("h1", { staticClass: "page_title" }, [_vm._v("products list")]),
+      _c("h1", { staticClass: "page_title" }, [
+        _vm._v(_vm._s(_vm.$t("shop.title.products"))),
+      ]),
       _vm._v(" "),
       _vm._m(0),
       _vm._v(" "),

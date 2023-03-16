@@ -2,14 +2,14 @@
     <div class="row">
         <div class="col-md-12 text-center">
             <div class="row">
-                <h2 class='index_h2'>{{ $t('title service list') }}</h2>
+                <h2 class='index_h2'>{{ $t('global.services') }}</h2>
                 <div class="bar"><i class="fa fa-window-restore" aria-hidden="true"></i></div>
                 <h3> <span v-html="this.$siteData.services"></span> </h3>
 
             </div>
         </div>
         <div class="col-md-12">
-            <div class="col-md-4 text-center" @click="go_to_service('guid')">
+            <div class="col-md-6 col-xs-6 text-center" @click="go_to_service('guid')">
                 <div class="row service_icon">
                     <i class="fa fa fa-map" aria-hidden="true"></i>
                 </div>
@@ -18,7 +18,7 @@
                     <p>{{ guid_short_description }}</p>
                 </div>
             </div>
-            <div class="col-md-4 text-center" @click="go_to_service('shop')">
+            <div class="col-md-6 col-xs-6 text-center" @click="go_to_service('shop')">
                 <div class="row service_icon">
                     <i class="fa fa-shopping-bag" aria-hidden="true"></i>
                 </div>
@@ -36,7 +36,7 @@
                     <p>{{ forum_short_description }}</p>
                 </div>
             </div> -->
-            <div class="col-md-4 text-center" @click="go_to_service('films')">
+            <!-- <div class="col-md-4 text-center" @click="go_to_service('films')">
                 <div class="row service_icon">
                     <i class="fa fa-video-camera" aria-hidden="true"></i>
                 </div>
@@ -44,7 +44,7 @@
                     <h2>Climbing Films</h2>
                     <p>{{ film_short_description }}</p>
                 </div>
-            </div>
+            </div> -->
         </div>
     </div>
 </template>

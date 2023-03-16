@@ -5,14 +5,14 @@
             <div class="row">
 
                 <div class="col-md-4 display-none-720px">
-                    <div class="f-about" style='color: #fff;'>
+                    <div class="f-about" :style='"color: #fff;"'>
                     
-                        <h4 class="footer_title">{{ $t('about us')}}</h4>
+                        <h4 class="footer_title">{{ $t('global.footer.about us')}}</h4>
 
                         <div class="footer_description_block">
                             <span v-html="this.$siteData.shop_short_description"></span>
 
-                            <router-link :to="{name: 'about_store'}" exact>{{ $t("more") }}</router-link>
+                            <router-link :to="{name: 'about_store'}" exact>{{ $t("global.footer.more") }}</router-link>
                         </div>
                     
                     </div>
@@ -20,15 +20,11 @@
 
                 <div class="col-md-4 display-none-720px">
                     <div class="f-links">
-                        <h4 class="footer_title">{{ $t('links')}}</h4>
+                        <h4 class="footer_title">{{ $t('global.footer.links')}}</h4>
                         <ul class="footer_links">
-                            <!-- <li> <a href="">{{ $t('shop menu products')}}</a> </li>
-                            <li> <a href="">{{ $t('shop menu about us')}}</a> </li>
-                            <li> <a href="">{{ $t('shop login')}}</a> </li> -->
-
-                            <li><router-link :to="{name: 'catalog'}" exact> {{ $t('shop menu products')}} </router-link></li>
-                            <li><router-link :to="{name: 'services'}" exact> {{ $t('shop menu services') }} </router-link></li>
-                            <li><router-link :to="{name: 'about_store'}" exact> {{ $t('shop menu about us')}} </router-link></li>
+                            <li><router-link :to="{name: 'catalog'}" exact> {{ $t('shop.menu.products')}} </router-link></li>
+                            <li><router-link :to="{name: 'services'}" exact> {{ $t('shop.menu.services') }} </router-link></li>
+                            <li><router-link :to="{name: 'about_store'}" exact> {{ $t('shop.menu.about us')}} </router-link></li>
                         </ul>
                     </div>
                 </div>
@@ -36,13 +32,15 @@
                 <div class="col-md-4">
                     <div class="row f-links">
                         <div class="flick">
-                            <h4 class="footer_title">{{ $t('share')}}</h4>
+                            <h4 class="footer_title">{{ $t('global.footer.share')}}</h4>
                             
                             <share />
+                            
                         </div>
                     </div>
 
                     <followComponent />
+
                 </div>
             </div>
         </div>

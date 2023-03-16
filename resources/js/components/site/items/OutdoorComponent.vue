@@ -142,6 +142,7 @@
                     alert(response.data)
                 })
                 .catch(error =>{
+                    alert(error)
                 })
             },
 

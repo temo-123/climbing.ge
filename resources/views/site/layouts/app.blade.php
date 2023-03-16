@@ -93,6 +93,27 @@
             border-radius: 5px;
             border-radius: 0%
         }
+        
+        .navbar {
+            background-color: #279fbb !important;
+            border-color: #6a8991;
+        }
+
+        .navbar-inverse .navbar-nav>.open>a{
+            background-color: #2f869b !important;
+        }
+
+        .navbar-inverse .navbar-nav>.open>a, .navbar-inverse .navbar-nav>.open>a:hover{
+            background-color: #287386 !important;
+        }
+
+        .navbar-inverse .navbar-collapse{
+            border-color: #838383;
+        }
+
+        .navbar-collapse {
+            max-height: none !important;
+        }
     </style>
 </head>
 <body>

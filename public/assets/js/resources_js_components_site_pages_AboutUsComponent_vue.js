@@ -209,7 +209,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
 
 
 
@@ -479,7 +478,7 @@ var render = function () {
                 { staticClass: "container" },
                 [
                   _c("h2", { staticClass: "index_h2" }, [
-                    _vm._v(_vm._s(_vm.$t("title partners"))),
+                    _vm._v(_vm._s(_vm.$t("guide.title.partners"))),
                   ]),
                   _vm._v(" "),
                   _vm._m(0),
