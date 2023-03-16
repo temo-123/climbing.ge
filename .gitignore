@@ -10,10 +10,10 @@
 /public/images/other_img
 /public/images/outdoor_img
 /public/images/partner_img
-/public/images/product_oprion_img
+/public/images/product_option_img
 /public/images/region_sectors_img
 /public/images/sector_img
-/public/images/sector_locale_img
+/public/images/sector_local_img
 /public/images/mount_route_imgsecurity_img
 /public/images/security_img
 /public/images/service_img
@@ -27,7 +27,7 @@
 /public/images/article_img
 /public/images/spot_rocks_img
 /public/images/suport_local_bisnes_img
-/public/images/tech_tips_img
+/public/images/tech_tip_img
 /public/images/user_profil_img
 
 /climbing.loc.code-workspace
