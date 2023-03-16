@@ -2,16 +2,9 @@
     <div>
         <img v-if="num == 1" class="article_404" :src=" this.publicPath + '/public/images/404/empty_page/1.jpg'">
         <img v-else-if="num == 2" class="article_404" :src=" this.publicPath + '/public/images/404/empty_page/2.jpg'">
-        <img v-else-if="num == 3" class="article_404" :src=" this.publicPath + '/public/images/404/empty_page/3.webp'">
+        <img v-else-if="num == 3" class="article_404" :src=" this.publicPath + '/public/images/404/empty_page/3.jpg'">
         <img v-else-if="num == 4" class="article_404" :src=" this.publicPath + '/public/images/404/empty_page/4.jpg'">
-        <img v-else-if="num == 5" class="article_404" :src=" this.publicPath + '/public/images/404/empty_page/5.jpg'">
-        <img v-else-if="num == 6" class="article_404" :src=" this.publicPath + '/public/images/404/empty_page/6.jpg'">
-        <img v-else-if="num == 7" class="article_404" :src=" this.publicPath + '/public/images/404/empty_page/7.jpg'">
-        <img v-else-if="num == 8" class="article_404" :src=" this.publicPath + '/public/images/404/empty_page/8.jpg'">
-        <img v-else-if="num == 9" class="article_404" :src=" this.publicPath + '/public/images/404/empty_page/9.jpg'">
-        <img v-else-if="num == 0" class="article_404" :src=" this.publicPath + '/public/images/404/empty_page/10.jpg'">
-        <img v-else class="article_404" :src=" this.publicPath + '/public/images/404/empty_page/10.jpg'">
-        <!-- <p v-else>page is empty</p> -->
+        <img v-else class="article_404" :src=" this.publicPath + '/public/images/404/empty_page/3.jpg'">
 
         <p style="text-align: center; ">{{ $t('global.page is empty') }}</p>
     </div>
@@ -28,10 +21,19 @@
         },
         components: {
         },
+
         mounted() {
-            this.num = Math.floor(Math.random() * 10);
+            this.select_image()
+        },
+        watch: {
+            '$route' (to, from) {
+                this.select_image()
+            }
         },
         methods: {
+            select_image(){
+                this.num = Math.floor(Math.random() * 4);
+            },
         }
     }
 </script>

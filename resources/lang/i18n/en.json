@@ -214,5 +214,13 @@
         "comments": "Comments",
         "page is empty": "Page is empty",
         "services": "Services"
+    },
+
+    "error": {
+        "404": {
+            "title": "Oops! Error 404! Page Not Found",
+            "description": "Sorry, an error has occured, Requested page not found!",
+            "go_homehome": "Go to home page"
+        }
     }
 }

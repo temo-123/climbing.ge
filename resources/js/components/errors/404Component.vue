@@ -3,21 +3,21 @@
         <div class="row">
             <div class="col-md-12">
                 <div class="error-template">
-                    <h1>Oops! Error 404! Page Not Found</h1>
+                    <h1> {{ $t("error.404.title") }} </h1>
                     <div class="error-details">
-                        Sorry, an error has occured, Requested page not found!
+                        {{ $t("error.404.description") }}
                     </div>
                     <div>
-                        <img v-if="num == 1" class="article_404" :src=" this.publicPath + '../../../public/images/404/404_page/1.jpg'">
-                        <img v-else-if="num == 2" class="article_404" :src=" this.publicPath + '../../../public/images/404/404_page/2.jpg'">
-                        <img v-else-if="num == 0" class="article_404" :src=" this.publicPath + '../../../public/images/404/404_page/3.jpg'">
-                        <p v-else></p>
+                        <img v-if="num == 1" class="article_404" :src=" this.publicPath + '/public/images/404/404_page/1.jpg'">
+                        <img v-else-if="num == 2" class="article_404" :src=" this.publicPath + '/public/images/404/404_page/2.jpg'">
+                        <img v-else-if="num == 0" class="article_404" :src=" this.publicPath + '/public/images/404/404_page/3.jpg'">
+                        <img v-else class="article_404" :src=" this.publicPath + '/public/images/404/404_page/3.jpg'">
                     </div>
                     <div class="error-actions">
-                        <a @click="go_back()" class="btn btn-primary btn-lg">
+                        <router-link :to="'/'" exact class="btn btn-primary btn-lg">
                             <span class="glyphicon glyphicon-home"></span>
-                            Go Beck
-                        </a>
+                            {{ $t("error.404.go_home") }}
+                        </router-link>
                     </div>
                     <h2>By Climbing.ge</h2>
                 </div>
@@ -38,12 +38,20 @@
         components: {
         },
         mounted() {
-            this.num = Math.floor(Math.random() * 3);
+            this.select_image()
+        },
+        watch: {
+            '$route' (to, from) {
+                this.select_image()
+            }
         },
         methods: {
-            go_back(){
-                history.back()
-            }
+            select_image(){
+                this.num = Math.floor(Math.random() * 4);
+            },
+            // go_back(){
+            //     history.back()
+            // }
         }
     }
 </script>

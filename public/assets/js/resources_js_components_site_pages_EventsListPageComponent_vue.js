@@ -23,13 +23,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
     return {
@@ -39,9 +32,18 @@ __webpack_require__.r(__webpack_exports__);
   },
   components: {},
   mounted: function mounted() {
-    this.num = Math.floor(Math.random() * 10);
+    this.select_image();
   },
-  methods: {}
+  watch: {
+    '$route': function $route(to, from) {
+      this.select_image();
+    }
+  },
+  methods: {
+    select_image: function select_image() {
+      this.num = Math.floor(Math.random() * 4);
+    }
+  }
 });
 
 /***/ }),
@@ -796,7 +798,7 @@ var render = function () {
       ? _c("img", {
           staticClass: "article_404",
           attrs: {
-            src: this.publicPath + "/public/images/404/empty_page/3.webp",
+            src: this.publicPath + "/public/images/404/empty_page/3.jpg",
           },
         })
       : _vm.num == 4
@@ -806,52 +808,10 @@ var render = function () {
             src: this.publicPath + "/public/images/404/empty_page/4.jpg",
           },
         })
-      : _vm.num == 5
-      ? _c("img", {
-          staticClass: "article_404",
-          attrs: {
-            src: this.publicPath + "/public/images/404/empty_page/5.jpg",
-          },
-        })
-      : _vm.num == 6
-      ? _c("img", {
-          staticClass: "article_404",
-          attrs: {
-            src: this.publicPath + "/public/images/404/empty_page/6.jpg",
-          },
-        })
-      : _vm.num == 7
-      ? _c("img", {
-          staticClass: "article_404",
-          attrs: {
-            src: this.publicPath + "/public/images/404/empty_page/7.jpg",
-          },
-        })
-      : _vm.num == 8
-      ? _c("img", {
-          staticClass: "article_404",
-          attrs: {
-            src: this.publicPath + "/public/images/404/empty_page/8.jpg",
-          },
-        })
-      : _vm.num == 9
-      ? _c("img", {
-          staticClass: "article_404",
-          attrs: {
-            src: this.publicPath + "/public/images/404/empty_page/9.jpg",
-          },
-        })
-      : _vm.num == 0
-      ? _c("img", {
-          staticClass: "article_404",
-          attrs: {
-            src: this.publicPath + "/public/images/404/empty_page/10.jpg",
-          },
-        })
       : _c("img", {
           staticClass: "article_404",
           attrs: {
-            src: this.publicPath + "/public/images/404/empty_page/10.jpg",
+            src: this.publicPath + "/public/images/404/empty_page/3.jpg",
           },
         }),
     _vm._v(" "),
