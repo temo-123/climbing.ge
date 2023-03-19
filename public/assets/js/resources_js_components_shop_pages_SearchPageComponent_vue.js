@@ -1579,7 +1579,7 @@ var render = function () {
       _vm._v(" "),
       _c("metaData", {
         attrs: {
-          title: "Search product. Query is - " + this.$route.query.query,
+          title: _vm.$t("shop.meta.search"),
           description: "Search product. All products made in Georgia.",
           image: "../../../../public/images/meta_img/shop.jpg",
         },

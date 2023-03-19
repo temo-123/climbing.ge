@@ -582,7 +582,7 @@ var render = function () {
       _vm._v(" "),
       _c("metaData", {
         attrs: {
-          title: "About climbing in Georgia",
+          title: _vm.$t("site.meta.about us"),
           description:
             "Rock climbing, mountaineering and other outdoor actyvity in Georgia",
           image: "../../../../public/images/meta_img/outdoor.jpg",

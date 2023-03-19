@@ -70,7 +70,7 @@
         </stack-modal>
 
         <metaData 
-            :title = "'Search product. Query is - ' + this.$route.query.query"
+            :title = " $t('shop.meta.search') "
             :description = "'Search product. All products made in Georgia.'"
             :image = "'../../../../public/images/meta_img/shop.jpg'"
         />

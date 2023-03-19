@@ -10970,7 +10970,7 @@ var render = function () {
       _vm._v(" "),
       _c("metaData", {
         attrs: {
-          title: "Climbing shop",
+          title: _vm.$t("shop.meta.products"),
           description: "Climbing products. All products made in Georgia.",
           image: "../../../../public/images/meta_img/shop.jpg",
         },

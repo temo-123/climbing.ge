@@ -19,7 +19,7 @@
         <messageComponent />
 
         <metaData 
-            :title = "'Climbing shop'"
+            :title = " $t('shop.meta.products') "
             :description = "'Climbing products. All products made in Georgia.'"
             :image = "'../../../../public/images/meta_img/shop.jpg'"
         />

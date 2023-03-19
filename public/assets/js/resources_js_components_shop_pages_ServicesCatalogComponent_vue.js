@@ -1368,7 +1368,7 @@ var render = function () {
       _vm._v(" "),
       _c("metaData", {
         attrs: {
-          title: "Services",
+          title: _vm.$t("shop.meta.products"),
           description: "Service climbing & mountaineering.",
           image: "../../../../public/images/meta_img/services.jpg",
         },

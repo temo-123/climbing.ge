@@ -14,7 +14,7 @@
                     <i class="fa fa fa-map" aria-hidden="true"></i>
                 </div>
                 <div class="row">
-                    <h2>Climbing Guidbook</h2>
+                    <h2>{{ $t('guide.name') }}</h2>
                     <p>{{ guid_short_description }}</p>
                 </div>
             </div>
@@ -23,7 +23,7 @@
                     <i class="fa fa-shopping-bag" aria-hidden="true"></i>
                 </div>
                 <div class="row">
-                    <h2>Climbing shop</h2>
+                    <h2>{{ $t('shop.name') }}</h2>
                     <p>{{ shop_short_description }}</p>
                 </div>
             </div>

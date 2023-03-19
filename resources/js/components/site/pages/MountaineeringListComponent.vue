@@ -60,7 +60,7 @@
         </div>
         
         <metaData 
-            :title = "$t('guide.title.mountaineering')"
+            :title = "$t('site.meta.mountaineering')"
             :description = "this.$siteData.mount_description"
             :image = "'../../../../public/images/meta_img/mount.jpg'"
         />

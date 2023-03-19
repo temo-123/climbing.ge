@@ -7,6 +7,7 @@
             <div class="row">
                 <div class="col-md-12">
                     <h2 class="text-center"> The your search query is:"<b> {{ this.$route.query.query }} </b>". Please use only english text for your query!!!</h2>
+                    
                     <div v-if="article_search_loading">
                         <content-loader
                             viewBox="0 0"
@@ -45,7 +46,7 @@
             </div>
         </div>
         <metaData 
-            :title = "'Search climbing spots in Georgia'"
+            :title = " $t('guid.meta.search') "
             :description = "'Search climbing spots in Georgia. Query - ' + this.$route.query.query"
             :image = "'../../../../public/images/meta_img/outdoor.jpg'"
         />

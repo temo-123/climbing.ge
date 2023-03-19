@@ -1,6 +1,6 @@
 <template>
     <div class="container">
-        <h2 class="block_title">{{ $t('global.message form') }}</h2>
+        <h2 class="block_title">{{ $t('global.message.title') }}</h2>
         <div class="bar"><i class="fa fa-envelope" aria-hidden="true"></i></div>
         <h3> <span v-html="this.$siteData.message"></span> </h3>
         
@@ -15,7 +15,7 @@
                     <div class="row">
                         <div class="col-md-12">
                             <div class="form-group">
-                                <input type="text" class="form-control" v-model="name" name="name"  id="name" placeholder="Name*">
+                                <input type="text" class="form-control" v-model="name" name="name"  id="name" :placeholder="$t('global.message.form.name')">
                                 <div class="alert alert-danger" role="alert" v-if="error.name">
                                     {{ error.name[0] }}
                                 </div>
@@ -25,7 +25,7 @@
                     <div class="row">
                         <div class="col-md-12">
                             <div class="form-group">
-                                <input type="text" class="form-control" v-model="surname" name="surname"  id="surname" placeholder="Surname*">
+                                <input type="text" class="form-control" v-model="surname" name="surname"  id="surname" :placeholder="$t('global.message.form.surname')">
                                 <div class="alert alert-danger" role="alert" v-if="error.surname">
                                     {{ error.surname[0] }}
                                 </div>
@@ -35,7 +35,7 @@
                     <div class="row">
                         <div class="col-md-12">
                             <div class="form-group">
-                                <input type="email" name="email" v-model="email" class="form-control textarea" placeholder="E_mail">
+                                <input type="email" name="email" v-model="email" class="form-control textarea" :placeholder="$t('global.message.form.email')">
                                 <div class="alert alert-danger" role="alert" v-if="error.email">
                                     {{ error.email[0] }}
                                 </div>
@@ -45,7 +45,7 @@
                     <div class="row">
                         <div class="col-md-12">
                             <div class="form-group">
-                                <input type="text" class="form-control" v-model="num"  name="num"  id="num" placeholder="Phone number">
+                                <input type="text" class="form-control" v-model="num"  name="num"  id="num" :placeholder="$t('global.message.form.number')">
                                 <div class="alert alert-danger" role="alert" v-if="error.num">
                                     {{ error.num[0] }}
                                 </div>
@@ -55,7 +55,7 @@
                     <div class="row">
                         <div class="col-md-12">
                             <div class="form-group form_left">
-                                <input type="text" class="form-control" v-model="country"  name="country"  id="country" placeholder="Yout country">
+                                <input type="text" class="form-control" v-model="country"  name="country"  id="country" :placeholder="$t('global.message.form.country')">
                                 <div class="alert alert-danger" role="alert" v-if="error.country">
                                     {{ error.country[0] }}
                                 </div>
@@ -68,7 +68,7 @@
                     <div class="row">
                         <div class="col-xs-12">
                             <div class="form-group">
-                                <textarea rows="10" name="msg" id="msg" v-model="msg" placeholder="Your message" class="form-control textarea"></textarea>
+                                <textarea rows="10" name="msg" id="msg" v-model="msg" :placeholder="$t('global.message.form.message text')" class="form-control textarea"></textarea>
                                 <div class="alert alert-danger" role="alert" v-if="error.msg">
                                     {{ error.msg[0] }}
                                 </div>
@@ -96,10 +96,10 @@
             <div class="row">
                 <div class="col-md-12">
                     <div class="form-group"  v-if="is_verify_isset == false">
-                        <button type="submit" class="btn btn-default btn-send main-btn" disabled>Send</button>
+                        <button type="submit" class="btn btn-default btn-send main-btn" disabled>{{ $t("global.message.send") }}</button>
                     </div>
                     <div class="form-group"  v-else>
-                        <button type="submit" class="btn btn-default btn-send main-btn">Send</button>
+                        <button type="submit" class="btn btn-default btn-send main-btn">{{ $t("global.message.send") }}</button>
                     </div>
                 </div>
             </div>

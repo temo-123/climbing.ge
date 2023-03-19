@@ -1355,7 +1355,7 @@ var render = function () {
       _vm._v(" "),
       _c("metaData", {
         attrs: {
-          title: _vm.$t("guide.title.other"),
+          title: _vm.$t("guide.meta.other"),
           description: this.$siteData.other_activity_description,
           image: "../../../../public/images/meta_img/other.jpg",
         },

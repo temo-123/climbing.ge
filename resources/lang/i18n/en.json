@@ -2,6 +2,18 @@
     "guide": {
         "name": "Climbing guidebook",
 
+        "meta": {
+            "index": "Climbing in georgia",
+            "indoor climbing": "Indoor climbing",
+            "outdoor climbing": "Outdoor climbing",
+            "ice climbing": "Ice & mix",
+            "events": "Events & competitions",
+            "mountaineering": "Mountaineering",
+            "other": "Other",
+            "about us": "About us",
+            "search": "Search climbing spots in Georgia"
+        },
+
         "menu": {
             "climbing": "Rock climbing",
             "indoor climbing": "Indoor climbing",
@@ -27,7 +39,7 @@
         "title": {
             "news": "News",
             "topo": "Topo",
-            "what we do": "what we do",
+            "what we do": "What we do",
             "gallery" :"Gallery",
             "tech tips" :"Tech tips",
             "events" :"Events and Cometitions",
@@ -107,11 +119,21 @@
             "closed": "Temporarily closed"
         },
 
-        "breadcrumb home": "Home"
+        "breadcrumb home": "Home",
+
+        "serch": ""
     },
 
     "shop": {
         "name": "Climbng shop",
+
+        "meta": {
+            "products": "Indoor climbing",
+            "services": "Outdoor climbing",
+            "categories": "Categories",
+            "about us": "About us",
+            "search": "Search product"
+        },
 
         "menu": {
             "products": "Products",
@@ -206,11 +228,23 @@
             "more": "More",
             "about us": "About us",
             "follow": "Follow us",
-            "qr": "QR code"
+            "qr": "QR Code"
+        },
+
+        "message": {
+            "title": "Message",
+            "form": {
+                "name": "Name *",
+                "surname": "Surname *",
+                "email": "E_mail *",
+                "number": "Phone number",
+                "country": "Yout country",
+                "message text": "Your message"
+            },
+            "send": "Send"
         },
 
         "login": "Login",
-        "message form": "Message",
         "comments": "Comments",
         "page is empty": "Page is empty",
         "services": "Services"

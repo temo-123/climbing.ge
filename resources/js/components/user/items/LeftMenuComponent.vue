@@ -6,7 +6,7 @@
         <div v-if="menu">
             <router-link :to="{name: 'home'}" exact>
                 <li class="list-group-item text-muted">
-                    <span class="admin_menu">{{ $t('user menu home') }}</span>
+                    <span class="admin_menu">{{ $t('user.menu.home') }}</span>
                 </li>
             </router-link>
             <router-link :to="{name: 'adminPage'}" exact 
@@ -15,7 +15,7 @@
                 "     
             >
                 <li class="list-group-item text-muted">
-                    <span class="admin_menu">{{ $t('user menu admin dashboard') }}</span>
+                    <span class="admin_menu">{{ $t('user.menu.admin dashboard') }}</span>
                 </li>
             </router-link>
 
@@ -23,12 +23,12 @@
 
             <router-link :to="{name: 'cart'}" exact> 
                 <li class="list-group-item text-muted ">
-                    <span class="admin_menu">{{ $t('user menu cart') }}</span>
+                    <span class="admin_menu">{{ $t('user.menu.cart') }}</span>
                 </li>
             </router-link>
             <router-link :to="{name: 'myOrders'}" exact> 
                 <li class="list-group-item text-muted ">
-                    <span class="admin_menu">{{ $t('user menu my orders') }}</span>
+                    <span class="admin_menu">{{ $t('user.menu.my orders') }}</span>
                 </li>
             </router-link>
 
@@ -36,12 +36,12 @@
 
             <router-link :to="{name: 'myComentsList'}" exact> 
                 <li class="list-group-item text-muted ">
-                    <span class="admin_menu">{{ $t('user menu my comments') }}</span>
+                    <span class="admin_menu">{{ $t('user.menu.my comments') }}</span>
                 </li>
             </router-link>
             <!-- <router-link :to="{name: 'myPosts'}" exact> 
                 <li class="list-group-item text-muted ">
-                    <span class="admin_menu">{{ $t('user menu my posts') }}</span>
+                    <span class="admin_menu">{{ $t('user.menu.my posts') }}</span>
                 </li>
             </router-link> -->
 
@@ -49,24 +49,24 @@
 
             <router-link :to="{name: 'favoriteProducts'}" exact> 
                 <li class="list-group-item text-muted">
-                    <span class="admin_menu">{{ $t('user menu favorite products') }}</span>
+                    <span class="admin_menu">{{ $t('user.menu.favorite products') }}</span>
                 </li>
             </router-link>
             <router-link :to="{name: 'favoriteFilmsPage'}" exact> 
                 <li class="list-group-item text-muted">
-                    <span class="admin_menu">{{ $t('user menu favorite films') }}</span>
+                    <span class="admin_menu">{{ $t('user.menu.favorite films') }}</span>
                 </li>
             </router-link>
 
             <router-link :to="{name: 'favoriteOutdoorArea'}" exact> 
                 <li class="list-group-item text-muted ">
-                    <span class="admin_menu">{{ $t('user menu my favorite outdoor area') }}</span>
+                    <span class="admin_menu">{{ $t('user.menu.my favorite outdoor area') }}</span>
                 </li>
             </router-link>
 
             <router-link :to="{name: 'interestedEvents'}" exact> 
                 <li class="list-group-item text-muted ">
-                    <span class="admin_menu">{{ $t('user menu my interested events') }}</span>
+                    <span class="admin_menu">{{ $t('user.menu.my interested events') }}</span>
                 </li>
             </router-link>
 
@@ -74,7 +74,7 @@
 
             <router-link :to="{name: 'followersPage'}" exact> 
                 <li class="list-group-item text-muted ">
-                    <span class="admin_menu">{{ $t('user menu followers') }}</span>
+                    <span class="admin_menu">{{ $t('user.menu.followers') }}</span>
                 </li>
             </router-link> -->
 
@@ -112,7 +112,7 @@
                 "
             > 
                 <li class="list-group-item text-muted">
-                    <span class="admin_menu">{{ $t('user menu products & category') }}</span>
+                    <span class="admin_menu">{{ $t('user.menu.products & category') }}</span>
                 </li>
             </router-link>
             <router-link :to="{name: 'servicesList'}" exact
@@ -123,7 +123,7 @@
                 "        
             > 
                 <li class="list-group-item text-muted ">
-                    <span class="admin_menu">{{ $t('user menu services') }}</span>
+                    <span class="admin_menu">{{ $t('user.menu.services') }}</span>
                 </li>
             </router-link>
 
@@ -155,7 +155,7 @@
                 "        
             > 
                 <li class="list-group-item text-muted m">
-                    <span class="admin_menu">{{ $t('user menu films') }}(Beta)</span>
+                    <span class="admin_menu">{{ $t('user.menu.films') }}(Beta)</span>
                 </li>
             </router-link>
 
@@ -175,7 +175,7 @@
                 "        
             > 
                 <li class="list-group-item text-muted m">
-                    <span class="admin_menu">{{ $t('user menu local bisnes') }}</span>
+                    <span class="admin_menu">{{ $t('user.menu.local bisnes') }}</span>
                 </li>
             </router-link>
 
@@ -195,7 +195,7 @@
                 "        
             > 
                 <li class="list-group-item text-muted">
-                    <span class="admin_menu">{{ $t('user menu outdoor climbing') }}</span>
+                    <span class="admin_menu">{{ $t('user.menu.outdoor climbing') }}</span>
                 </li>
             </router-link>
 
@@ -239,7 +239,7 @@
                 "        
             >
                 <li class="list-group-item text-muted mbing Secrots And Route">
-                    <span class="admin_menu">{{ $t('user menu sectors & routes') }}</span>
+                    <span class="admin_menu">{{ $t('user.menu.sectors & routes') }}</span>
                 </li>
             </router-link>
 
@@ -251,7 +251,7 @@
                 "        
             >
                 <li class="list-group-item text-muted mbing Secrots And Route">
-                    <span class="admin_menu">{{ $t('Sector local images') }}</span>
+                    <span class="admin_menu">{{ $t('Sect.r lo.al images') }}</span>
                 </li>
             </router-link>
 
@@ -277,7 +277,7 @@
                 "        
             > 
                 <li class="list-group-item text-muted">
-                    <span class="admin_menu">{{ $t('user menu mountaineering') }}</span>
+                    <span class="admin_menu">{{ $t('user.menu.mountaineering') }}</span>
                 </li>
             </router-link>
 
@@ -297,7 +297,7 @@
                 "        
             > 
                 <li class="list-group-item text-muted">
-                    <span class="admin_menu">{{ $t('user menu indoor climbing') }}</span>
+                    <span class="admin_menu">{{ $t('user.menu.indoor climbing') }}</span>
                 </li>
             </router-link>
             <router-link :to="{ name: 'articlelist', params: { article_category: 'ice' } }"
@@ -308,7 +308,7 @@
                 "        
             > 
                 <li class="list-group-item text-muted">
-                    <span class="admin_menu">{{ $t('user menu ice climbing') }}</span>
+                    <span class="admin_menu">{{ $t('user.menu.ice climbing') }}</span>
                 </li>
             </router-link>
             <router-link :to="{ name: 'articlelist', params: { article_category: 'news' } }"
@@ -319,7 +319,7 @@
                 "        
             > 
                 <li class="list-group-item text-muted ">
-                    <span class="admin_menu">{{ $t('user menu news') }}</span>
+                    <span class="admin_menu">{{ $t('user.menu.news') }}</span>
                 </li>
             </router-link>
             <router-link :to="{ name: 'articlelist', params: { article_category: 'other' } }"
@@ -330,7 +330,7 @@
                 "        
             > 
                 <li class="list-group-item text-muted" >
-                    <span class="admin_menu">{{ $t('user menu other') }}</span>
+                    <span class="admin_menu">{{ $t('user.menu.other') }}</span>
                 </li>
             </router-link>
             <router-link :to="{ name: 'articlelist', params: { article_category: 'tech_tip' } }"
@@ -341,7 +341,7 @@
                 "        
             > 
                 <li class="list-group-item text-muted ">
-                    <span class="admin_menu">{{ $t('user menu security') }}</span>
+                    <span class="admin_menu">{{ $t('user.menu.security') }}</span>
                 </li>
             </router-link>
             <router-link :to="{ name: 'articlelist', params: { article_category: 'partners' } }"
@@ -352,7 +352,7 @@
                 "        
             > 
                 <li class="list-group-item text-muted ">
-                    <span class="admin_menu">{{ $t('user menu partners') }}</span>
+                    <span class="admin_menu">{{ $t('user.menu.partners') }}</span>
                 </li>
             </router-link>
 
@@ -372,7 +372,7 @@
                 "        
             > 
                 <li class="list-group-item text-muted ">
-                    <span class="admin_menu">{{ $t('user menu events') }}</span>
+                    <span class="admin_menu">{{ $t('user.menu.events') }}</span>
                 </li>
             </router-link>
 
@@ -388,7 +388,7 @@
                 "        
             > 
                 <li class="list-group-item text-muted ">
-                    <span class="admin_menu">{{ $t('user menu about') }}</span>
+                    <span class="admin_menu">{{ $t('user.menu.about') }}</span>
                 </li>
             </router-link>
 
@@ -408,7 +408,7 @@
                 "        
             > 
                 <li class="list-group-item text-muted ">
-                    <span class="admin_menu">{{ $t('user menu gallery') }}</span>
+                    <span class="admin_menu">{{ $t('user.menu.gallery') }}</span>
                 </li>
             </router-link>
 
@@ -426,7 +426,7 @@
                 "        
             > 
                 <li class="list-group-item text-muted ">
-                    <span class="admin_menu">{{ $t('user menu all comments') }}</span>
+                    <span class="admin_menu">{{ $t('user.menu.all comments') }}</span>
                 </li>
             </router-link>
 
@@ -436,13 +436,13 @@
                 "        
             > 
                 <li class="list-group-item text-muted">
-                    <span class="admin_menu">{{ $t('user menu total orders') }}</span>
+                    <span class="admin_menu">{{ $t('user.menu.total orders') }}</span>
                 </li>
             </router-link>
 
             <!-- <router-link :to="{name: 'allPosts'}" exact> 
                 <li class="list-group-item text-muted">
-                    <span class="admin_menu">{{ $t('user menu all posts') }}</span>
+                    <span class="admin_menu">{{ $t('user.menu.all posts') }}</span>
                 </li>
             </router-link> -->
 
@@ -457,13 +457,13 @@
                 "        
             > 
                 <li class="list-group-item text-muted">
-                    <span class="admin_menu">{{ $t('user menu users') }}</span>
+                    <span class="admin_menu">{{ $t('user.menu.users') }}</span>
                 </li>
             </router-link>
 
             <router-link :to="{name: 'options'}" exact>
                 <li class="list-group-item text-muted ">
-                    <span class="admin_menu">{{ $t('user menu options') }}</span>
+                    <span class="admin_menu">{{ $t('user.menu.options') }}</span>
                 </li>
             </router-link>
 
@@ -485,7 +485,7 @@
             <li class="list-group-item text-muted admin_menu_static_block"></li>
 
             <li class="list-group-item text-muted" @click="logout()" :style="'cursor: pointer'">
-                <span class="admin_menu">{{ $t('user menu logout') }}</span>
+                <span class="admin_menu">{{ $t('user.menu.logout') }}</span>
             </li>
         </div>
     </ul>

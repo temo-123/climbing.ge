@@ -17298,7 +17298,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_laravel_mix_node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, "\n.grade_chart{\n    width: 50%; \n    margin-left: 25%;\n}\n@media (max-width: 767px) {\n.grade_chart{\n        width: 50%; \n        margin-left: 0%;\n}\n}\n.navbar span{\n    color: #fff;\n}\n\n\n", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, "\n.grade_chart{\n    width: 50%; \n    margin-left: 25%;\n}\n@media (max-width: 767px) {\n.grade_chart{\n        width: 50%; \n        margin-left: 0%;\n}\n}\n.navbar span{\n    color: #fff;\n}\n\n/* @media (max-width:990px){\n    .navbar-header {float: none;}\n    .navbar-left,.navbar-right {    float: none !important;}\n    .navbar-toggle {    display: block;}\n    .navbar-collapse {  border-top: 1px solid transparent;  box-shadow: inset 0 1px 0 rgba(255,255,255,0.1);}\n    .navbar-fixed-top {    top: 0;    border-width: 0 0 1px;}\n    .navbar-collapse.collapse { display: none!important;}\n    .navbar-nav {float: none!important; margin-top: 7.5px;}\n    .navbar-nav>li {float: none;}\n    .navbar-nav>li>a { padding-top: 10px;padding-bottom: 10px;}\n    .collapse.in{display:block !important;}\n    .navbar-nav .open .dropdown-menu { position: static; float: none; width: auto; margin-top: 0; background-color: transparent; border: 0; -webkit-box-shadow: none; box-shadow: none;}\n} */\n", ""]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
@@ -76557,7 +76557,7 @@ var render = function () {
   var _c = _vm._self._c || _h
   return _c("div", { staticClass: "container" }, [
     _c("h2", { staticClass: "block_title" }, [
-      _vm._v(_vm._s(_vm.$t("global.message form"))),
+      _vm._v(_vm._s(_vm.$t("global.message.title"))),
     ]),
     _vm._v(" "),
     _vm._m(0),
@@ -76610,7 +76610,7 @@ var render = function () {
                           type: "text",
                           name: "name",
                           id: "name",
-                          placeholder: "Name*",
+                          placeholder: _vm.$t("global.message.form.name"),
                         },
                         domProps: { value: _vm.name },
                         on: {
@@ -76660,7 +76660,7 @@ var render = function () {
                           type: "text",
                           name: "surname",
                           id: "surname",
-                          placeholder: "Surname*",
+                          placeholder: _vm.$t("global.message.form.surname"),
                         },
                         domProps: { value: _vm.surname },
                         on: {
@@ -76709,7 +76709,7 @@ var render = function () {
                         attrs: {
                           type: "email",
                           name: "email",
-                          placeholder: "E_mail",
+                          placeholder: _vm.$t("global.message.form.email"),
                         },
                         domProps: { value: _vm.email },
                         on: {
@@ -76759,7 +76759,7 @@ var render = function () {
                           type: "text",
                           name: "num",
                           id: "num",
-                          placeholder: "Phone number",
+                          placeholder: _vm.$t("global.message.form.number"),
                         },
                         domProps: { value: _vm.num },
                         on: {
@@ -76809,7 +76809,7 @@ var render = function () {
                           type: "text",
                           name: "country",
                           id: "country",
-                          placeholder: "Yout country",
+                          placeholder: _vm.$t("global.message.form.country"),
                         },
                         domProps: { value: _vm.country },
                         on: {
@@ -76861,7 +76861,9 @@ var render = function () {
                           rows: "10",
                           name: "msg",
                           id: "msg",
-                          placeholder: "Your message",
+                          placeholder: _vm.$t(
+                            "global.message.form.message text"
+                          ),
                         },
                         domProps: { value: _vm.msg },
                         on: {
@@ -76930,7 +76932,7 @@ var render = function () {
                           staticClass: "btn btn-default btn-send main-btn",
                           attrs: { type: "submit", disabled: "" },
                         },
-                        [_vm._v("Send")]
+                        [_vm._v(_vm._s(_vm.$t("global.message.send")))]
                       ),
                     ])
                   : _c("div", { staticClass: "form-group" }, [
@@ -76940,7 +76942,7 @@ var render = function () {
                           staticClass: "btn btn-default btn-send main-btn",
                           attrs: { type: "submit" },
                         },
-                        [_vm._v("Send")]
+                        [_vm._v(_vm._s(_vm.$t("global.message.send")))]
                       ),
                     ]),
               ]),
@@ -77031,7 +77033,7 @@ var render = function () {
           _vm._m(1),
           _vm._v(" "),
           _c("div", { staticClass: "row" }, [
-            _c("h2", [_vm._v("Climbing Guidbook")]),
+            _c("h2", [_vm._v(_vm._s(_vm.$t("guide.name")))]),
             _vm._v(" "),
             _c("p", [_vm._v(_vm._s(_vm.guid_short_description))]),
           ]),
@@ -77052,7 +77054,7 @@ var render = function () {
           _vm._m(2),
           _vm._v(" "),
           _c("div", { staticClass: "row" }, [
-            _c("h2", [_vm._v("Climbing shop")]),
+            _c("h2", [_vm._v(_vm._s(_vm.$t("shop.name")))]),
             _vm._v(" "),
             _c("p", [_vm._v(_vm._s(_vm.shop_short_description))]),
           ]),
@@ -78867,7 +78869,7 @@ var render = function () {
             _c("router-link", { attrs: { to: { name: "home" }, exact: "" } }, [
               _c("li", { staticClass: "list-group-item text-muted" }, [
                 _c("span", { staticClass: "admin_menu" }, [
-                  _vm._v(_vm._s(_vm.$t("user menu home"))),
+                  _vm._v(_vm._s(_vm.$t("user.menu.home"))),
                 ]),
               ]),
             ]),
@@ -78879,7 +78881,7 @@ var render = function () {
                   [
                     _c("li", { staticClass: "list-group-item text-muted" }, [
                       _c("span", { staticClass: "admin_menu" }, [
-                        _vm._v(_vm._s(_vm.$t("user menu admin dashboard"))),
+                        _vm._v(_vm._s(_vm.$t("user.menu.admin dashboard"))),
                       ]),
                     ]),
                   ]
@@ -78893,7 +78895,7 @@ var render = function () {
             _c("router-link", { attrs: { to: { name: "cart" }, exact: "" } }, [
               _c("li", { staticClass: "list-group-item text-muted " }, [
                 _c("span", { staticClass: "admin_menu" }, [
-                  _vm._v(_vm._s(_vm.$t("user menu cart"))),
+                  _vm._v(_vm._s(_vm.$t("user.menu.cart"))),
                 ]),
               ]),
             ]),
@@ -78904,7 +78906,7 @@ var render = function () {
               [
                 _c("li", { staticClass: "list-group-item text-muted " }, [
                   _c("span", { staticClass: "admin_menu" }, [
-                    _vm._v(_vm._s(_vm.$t("user menu my orders"))),
+                    _vm._v(_vm._s(_vm.$t("user.menu.my orders"))),
                   ]),
                 ]),
               ]
@@ -78920,7 +78922,7 @@ var render = function () {
               [
                 _c("li", { staticClass: "list-group-item text-muted " }, [
                   _c("span", { staticClass: "admin_menu" }, [
-                    _vm._v(_vm._s(_vm.$t("user menu my comments"))),
+                    _vm._v(_vm._s(_vm.$t("user.menu.my comments"))),
                   ]),
                 ]),
               ]
@@ -78936,7 +78938,7 @@ var render = function () {
               [
                 _c("li", { staticClass: "list-group-item text-muted" }, [
                   _c("span", { staticClass: "admin_menu" }, [
-                    _vm._v(_vm._s(_vm.$t("user menu favorite products"))),
+                    _vm._v(_vm._s(_vm.$t("user.menu.favorite products"))),
                   ]),
                 ]),
               ]
@@ -78948,7 +78950,7 @@ var render = function () {
               [
                 _c("li", { staticClass: "list-group-item text-muted" }, [
                   _c("span", { staticClass: "admin_menu" }, [
-                    _vm._v(_vm._s(_vm.$t("user menu favorite films"))),
+                    _vm._v(_vm._s(_vm.$t("user.menu.favorite films"))),
                   ]),
                 ]),
               ]
@@ -78961,7 +78963,7 @@ var render = function () {
                 _c("li", { staticClass: "list-group-item text-muted " }, [
                   _c("span", { staticClass: "admin_menu" }, [
                     _vm._v(
-                      _vm._s(_vm.$t("user menu my favorite outdoor area"))
+                      _vm._s(_vm.$t("user.menu.my favorite outdoor area"))
                     ),
                   ]),
                 ]),
@@ -78974,7 +78976,7 @@ var render = function () {
               [
                 _c("li", { staticClass: "list-group-item text-muted " }, [
                   _c("span", { staticClass: "admin_menu" }, [
-                    _vm._v(_vm._s(_vm.$t("user menu my interested events"))),
+                    _vm._v(_vm._s(_vm.$t("user.menu.my interested events"))),
                   ]),
                 ]),
               ]
@@ -79016,7 +79018,7 @@ var render = function () {
                   [
                     _c("li", { staticClass: "list-group-item text-muted" }, [
                       _c("span", { staticClass: "admin_menu" }, [
-                        _vm._v(_vm._s(_vm.$t("user menu products & category"))),
+                        _vm._v(_vm._s(_vm.$t("user.menu.products & category"))),
                       ]),
                     ]),
                   ]
@@ -79032,7 +79034,7 @@ var render = function () {
                   [
                     _c("li", { staticClass: "list-group-item text-muted " }, [
                       _c("span", { staticClass: "admin_menu" }, [
-                        _vm._v(_vm._s(_vm.$t("user menu services"))),
+                        _vm._v(_vm._s(_vm.$t("user.menu.services"))),
                       ]),
                     ]),
                   ]
@@ -79066,7 +79068,7 @@ var render = function () {
               ? _c("router-link", { attrs: { to: { name: "filmsList" } } }, [
                   _c("li", { staticClass: "list-group-item text-muted m" }, [
                     _c("span", { staticClass: "admin_menu" }, [
-                      _vm._v(_vm._s(_vm.$t("user menu films")) + "(Beta)"),
+                      _vm._v(_vm._s(_vm.$t("user.menu.films")) + "(Beta)"),
                     ]),
                   ]),
                 ])
@@ -79090,7 +79092,7 @@ var render = function () {
                   [
                     _c("li", { staticClass: "list-group-item text-muted m" }, [
                       _c("span", { staticClass: "admin_menu" }, [
-                        _vm._v(_vm._s(_vm.$t("user menu local bisnes"))),
+                        _vm._v(_vm._s(_vm.$t("user.menu.local bisnes"))),
                       ]),
                     ]),
                   ]
@@ -79122,7 +79124,7 @@ var render = function () {
                   [
                     _c("li", { staticClass: "list-group-item text-muted" }, [
                       _c("span", { staticClass: "admin_menu" }, [
-                        _vm._v(_vm._s(_vm.$t("user menu outdoor climbing"))),
+                        _vm._v(_vm._s(_vm.$t("user.menu.outdoor climbing"))),
                       ]),
                     ]),
                   ]
@@ -79171,7 +79173,7 @@ var render = function () {
                       },
                       [
                         _c("span", { staticClass: "admin_menu" }, [
-                          _vm._v(_vm._s(_vm.$t("user menu sectors & routes"))),
+                          _vm._v(_vm._s(_vm.$t("user.menu.sectors & routes"))),
                         ]),
                       ]
                     ),
@@ -79196,7 +79198,7 @@ var render = function () {
                       },
                       [
                         _c("span", { staticClass: "admin_menu" }, [
-                          _vm._v(_vm._s(_vm.$t("Sector local images"))),
+                          _vm._v(_vm._s(_vm.$t("Sect.r lo.al images"))),
                         ]),
                       ]
                     ),
@@ -79225,7 +79227,7 @@ var render = function () {
               ? _c("router-link", { attrs: { to: { name: "mountlist" } } }, [
                   _c("li", { staticClass: "list-group-item text-muted" }, [
                     _c("span", { staticClass: "admin_menu" }, [
-                      _vm._v(_vm._s(_vm.$t("user menu mountaineering"))),
+                      _vm._v(_vm._s(_vm.$t("user.menu.mountaineering"))),
                     ]),
                   ]),
                 ])
@@ -79256,7 +79258,7 @@ var render = function () {
                   [
                     _c("li", { staticClass: "list-group-item text-muted" }, [
                       _c("span", { staticClass: "admin_menu" }, [
-                        _vm._v(_vm._s(_vm.$t("user menu indoor climbing"))),
+                        _vm._v(_vm._s(_vm.$t("user.menu.indoor climbing"))),
                       ]),
                     ]),
                   ]
@@ -79279,7 +79281,7 @@ var render = function () {
                   [
                     _c("li", { staticClass: "list-group-item text-muted" }, [
                       _c("span", { staticClass: "admin_menu" }, [
-                        _vm._v(_vm._s(_vm.$t("user menu ice climbing"))),
+                        _vm._v(_vm._s(_vm.$t("user.menu.ice climbing"))),
                       ]),
                     ]),
                   ]
@@ -79302,7 +79304,7 @@ var render = function () {
                   [
                     _c("li", { staticClass: "list-group-item text-muted " }, [
                       _c("span", { staticClass: "admin_menu" }, [
-                        _vm._v(_vm._s(_vm.$t("user menu news"))),
+                        _vm._v(_vm._s(_vm.$t("user.menu.news"))),
                       ]),
                     ]),
                   ]
@@ -79325,7 +79327,7 @@ var render = function () {
                   [
                     _c("li", { staticClass: "list-group-item text-muted" }, [
                       _c("span", { staticClass: "admin_menu" }, [
-                        _vm._v(_vm._s(_vm.$t("user menu other"))),
+                        _vm._v(_vm._s(_vm.$t("user.menu.other"))),
                       ]),
                     ]),
                   ]
@@ -79348,7 +79350,7 @@ var render = function () {
                   [
                     _c("li", { staticClass: "list-group-item text-muted " }, [
                       _c("span", { staticClass: "admin_menu" }, [
-                        _vm._v(_vm._s(_vm.$t("user menu security"))),
+                        _vm._v(_vm._s(_vm.$t("user.menu.security"))),
                       ]),
                     ]),
                   ]
@@ -79371,7 +79373,7 @@ var render = function () {
                   [
                     _c("li", { staticClass: "list-group-item text-muted " }, [
                       _c("span", { staticClass: "admin_menu" }, [
-                        _vm._v(_vm._s(_vm.$t("user menu partners"))),
+                        _vm._v(_vm._s(_vm.$t("user.menu.partners"))),
                       ]),
                     ]),
                   ]
@@ -79393,7 +79395,7 @@ var render = function () {
               ? _c("router-link", { attrs: { to: { name: "eventList" } } }, [
                   _c("li", { staticClass: "list-group-item text-muted " }, [
                     _c("span", { staticClass: "admin_menu" }, [
-                      _vm._v(_vm._s(_vm.$t("user menu events"))),
+                      _vm._v(_vm._s(_vm.$t("user.menu.events"))),
                     ]),
                   ]),
                 ])
@@ -79413,7 +79415,7 @@ var render = function () {
                   [
                     _c("li", { staticClass: "list-group-item text-muted " }, [
                       _c("span", { staticClass: "admin_menu" }, [
-                        _vm._v(_vm._s(_vm.$t("user menu about"))),
+                        _vm._v(_vm._s(_vm.$t("user.menu.about"))),
                       ]),
                     ]),
                   ]
@@ -79438,7 +79440,7 @@ var render = function () {
                   [
                     _c("li", { staticClass: "list-group-item text-muted " }, [
                       _c("span", { staticClass: "admin_menu" }, [
-                        _vm._v(_vm._s(_vm.$t("user menu gallery"))),
+                        _vm._v(_vm._s(_vm.$t("user.menu.gallery"))),
                       ]),
                     ]),
                   ]
@@ -79459,7 +79461,7 @@ var render = function () {
                   [
                     _c("li", { staticClass: "list-group-item text-muted " }, [
                       _c("span", { staticClass: "admin_menu" }, [
-                        _vm._v(_vm._s(_vm.$t("user menu all comments"))),
+                        _vm._v(_vm._s(_vm.$t("user.menu.all comments"))),
                       ]),
                     ]),
                   ]
@@ -79473,7 +79475,7 @@ var render = function () {
                   [
                     _c("li", { staticClass: "list-group-item text-muted" }, [
                       _c("span", { staticClass: "admin_menu" }, [
-                        _vm._v(_vm._s(_vm.$t("user menu total orders"))),
+                        _vm._v(_vm._s(_vm.$t("user.menu.total orders"))),
                       ]),
                     ]),
                   ]
@@ -79494,7 +79496,7 @@ var render = function () {
                   [
                     _c("li", { staticClass: "list-group-item text-muted" }, [
                       _c("span", { staticClass: "admin_menu" }, [
-                        _vm._v(_vm._s(_vm.$t("user menu users"))),
+                        _vm._v(_vm._s(_vm.$t("user.menu.users"))),
                       ]),
                     ]),
                   ]
@@ -79507,7 +79509,7 @@ var render = function () {
               [
                 _c("li", { staticClass: "list-group-item text-muted " }, [
                   _c("span", { staticClass: "admin_menu" }, [
-                    _vm._v(_vm._s(_vm.$t("user menu options"))),
+                    _vm._v(_vm._s(_vm.$t("user.menu.options"))),
                   ]),
                 ]),
               ]
@@ -79551,7 +79553,7 @@ var render = function () {
               },
               [
                 _c("span", { staticClass: "admin_menu" }, [
-                  _vm._v(_vm._s(_vm.$t("user menu logout"))),
+                  _vm._v(_vm._s(_vm.$t("user.menu.logout"))),
                 ]),
               ]
             ),
@@ -100454,7 +100456,7 @@ module.exports = JSON.parse('{"_from":"axios@^0.21.4","_id":"axios@0.21.4","_inB
 /***/ ((module) => {
 
 "use strict";
-module.exports = JSON.parse('{"guide":{"name":"Climbing guidebook","menu":{"climbing":"Rock climbing","indoor climbing":"Indoor climbing","outdoor climbing":"Outdoor climbing","ice climbing":"Ice & mix","events":"Events & competitions","mountaineering":"Mountaineering","other":"Other","about us":"About us","login":"Login","sitemap":"Sitemap"},"article_right_nabar":{"article navigation menu":"Navigation Menu","similar articles":"Similar Articles","gallery":"Gallery","comments":"Comments","description":"Description","sectors":"Climbing sectors & routes"},"title":{"news":"News","topo":"Topo","what we do":"what we do","gallery":"Gallery","tech tips":"Tech tips","events":"Events and Cometitions","climbing":"Climbing","indoor climbing":"Indoor climbing","outdoor climbing":"Outdoor climbing","ice climbing":"Ice & mix","mountaineering":"Mountaineering","other":"Other","about us":"About us","partner":"Partners","message":"Send message"},"route":{"name":"Name","height":"Height","bolts":"Bolts","grade FR":"grade FR","grade YDS":"grade UDS","mtp name":"Multy-pitch name","auther":"Auther","creating data":"Creating data","first ascent":"First ascent","top rope":"Top Rope","tred":"Tred Gear","more":"More","route detals":"Routes detals","mtp detals":"Multy-pitch detals"},"sector":{"name":"Sector name","shade after 10.00 am":"In shade after 10.00 am","shade after 15.00 pm":"In shade after 15.00 pm","shade befor noon":"In shade befor noon","shade in the afternoon":"In shade in the afternoon","shade whole day":"In the shade whole day","sun the whole day":"In the sun the whole day","overhang":"Overhang","slabby":"Slabby","vertical":"Vertical","roof":"Roof","for_family":"This sector recomendidi family climbing. It`s seifty for kids","for_kids":"This sector recomendidi family climbing. It`s seifty for kids","walking":"Wolging time from car stoping to climbin sector"},"article":{"route_quantyty":"In Georgia are {sectors} outdoor climbing sectors, {sport_routes} sport climbing routes, {boulder_routes} boulder routes, {mtps} multy pitch. You can see all outdoor climbing arias info on this page.","mount massive":"Mountain Massive","best time":"Best time to climb","how get":"How to get there","what need":"What you need","comments":"Comments","gallery":"Gallery","info":"Info","map":"Map","interested event":"Interested","similar articles":"Similar Articles","sector name":"Sector name","address":"Address","price":"Price","route":"Routes","back":"Go Back","all articles":"All Articles","prices from":"Prices from","working time":"Working hours","closed":"Temporarily closed"},"breadcrumb home":"Home"},"shop":{"name":"Climbng shop","menu":{"products":"Products","services":"Services","categories":"Categories","about us":"About us"},"title":{"services":"Ouer services","products":"Products","search":"Search products","gallery":"Gallery","similar":{"products":"You might also like","services":"Other services"}},"product desc":{"category":"Category","material":"Material","weight":"Weight"},"seller":{"seller contact":"Contacts","email":"Email","phone":"Phone number"},"limited quantity":"Limited quantity ","out of stock":"Out of stock","product description":"Description","add to cart":"Add to cart","all products":"All products","max products":"This is maximal quantyty for this product!!!","add successful":"Product add successful!!!","custom product":"Custom production"},"user":{"name":"User panel","menu":{"favorite products":"My favorite products","favorite films":"My favorite films","admin dashboard":"Admin dashboard","home":"My page","cart":"My cart","orders":"Orders","my orders":"My Orders","total orders":"All orders","films":"Films list","my interested events":"Interested events","followers":"Followers & following","products & category":"Products & Category","services":"Services","all comments":"All comments","my comments":"My comments","my posts":"My posts","all posts":"All posts","users":"Users & Parmissions","options":"Options","indoor climbing":"Indoor climbing","outdoor climbing":"Outdoor climbing","ice climbing":"Ice & Mix","mountaineering":"Mountaineering","other":"Other","security":"Security (Tech tips)","partners":"Partners","events":"Events","news":"News","gallery":"Gallery","about":"About us","login":"Login","logout":"Logout","sectors & routes":"Sectors & Routes","local bisnes":"Suport local bisnes","my favorite outdoor area":"My favorite outdoor areas"}},"global":{"footer":{"links":"Links","share":"Share","more":"More","about us":"About us","follow":"Follow us","qr":"QR code"},"login":"Login","message form":"Message","comments":"Comments","page is empty":"Page is empty","services":"Services"},"error":{"404":{"title":"Oops! Error 404! Page Not Found","description":"Sorry, an error has occured, Requested page not found!","go_homehome":"Go to home page"}}}');
+module.exports = JSON.parse('{"guide":{"name":"Climbing guidebook","meta":{"index":"Climbing in georgia","indoor climbing":"Indoor climbing","outdoor climbing":"Outdoor climbing","ice climbing":"Ice & mix","events":"Events & competitions","mountaineering":"Mountaineering","other":"Other","about us":"About us","search":"Search climbing spots in Georgia"},"menu":{"climbing":"Rock climbing","indoor climbing":"Indoor climbing","outdoor climbing":"Outdoor climbing","ice climbing":"Ice & mix","events":"Events & competitions","mountaineering":"Mountaineering","other":"Other","about us":"About us","login":"Login","sitemap":"Sitemap"},"article_right_nabar":{"article navigation menu":"Navigation Menu","similar articles":"Similar Articles","gallery":"Gallery","comments":"Comments","description":"Description","sectors":"Climbing sectors & routes"},"title":{"news":"News","topo":"Topo","what we do":"What we do","gallery":"Gallery","tech tips":"Tech tips","events":"Events and Cometitions","climbing":"Climbing","indoor climbing":"Indoor climbing","outdoor climbing":"Outdoor climbing","ice climbing":"Ice & mix","mountaineering":"Mountaineering","other":"Other","about us":"About us","partner":"Partners","message":"Send message"},"route":{"name":"Name","height":"Height","bolts":"Bolts","grade FR":"grade FR","grade YDS":"grade UDS","mtp name":"Multy-pitch name","auther":"Auther","creating data":"Creating data","first ascent":"First ascent","top rope":"Top Rope","tred":"Tred Gear","more":"More","route detals":"Routes detals","mtp detals":"Multy-pitch detals"},"sector":{"name":"Sector name","shade after 10.00 am":"In shade after 10.00 am","shade after 15.00 pm":"In shade after 15.00 pm","shade befor noon":"In shade befor noon","shade in the afternoon":"In shade in the afternoon","shade whole day":"In the shade whole day","sun the whole day":"In the sun the whole day","overhang":"Overhang","slabby":"Slabby","vertical":"Vertical","roof":"Roof","for_family":"This sector recomendidi family climbing. It`s seifty for kids","for_kids":"This sector recomendidi family climbing. It`s seifty for kids","walking":"Wolging time from car stoping to climbin sector"},"article":{"route_quantyty":"In Georgia are {sectors} outdoor climbing sectors, {sport_routes} sport climbing routes, {boulder_routes} boulder routes, {mtps} multy pitch. You can see all outdoor climbing arias info on this page.","mount massive":"Mountain Massive","best time":"Best time to climb","how get":"How to get there","what need":"What you need","comments":"Comments","gallery":"Gallery","info":"Info","map":"Map","interested event":"Interested","similar articles":"Similar Articles","sector name":"Sector name","address":"Address","price":"Price","route":"Routes","back":"Go Back","all articles":"All Articles","prices from":"Prices from","working time":"Working hours","closed":"Temporarily closed"},"breadcrumb home":"Home","serch":""},"shop":{"name":"Climbng shop","meta":{"products":"Indoor climbing","services":"Outdoor climbing","categories":"Categories","about us":"About us","search":"Search product"},"menu":{"products":"Products","services":"Services","categories":"Categories","about us":"About us"},"title":{"services":"Ouer services","products":"Products","search":"Search products","gallery":"Gallery","similar":{"products":"You might also like","services":"Other services"}},"product desc":{"category":"Category","material":"Material","weight":"Weight"},"seller":{"seller contact":"Contacts","email":"Email","phone":"Phone number"},"limited quantity":"Limited quantity ","out of stock":"Out of stock","product description":"Description","add to cart":"Add to cart","all products":"All products","max products":"This is maximal quantyty for this product!!!","add successful":"Product add successful!!!","custom product":"Custom production"},"user":{"name":"User panel","menu":{"favorite products":"My favorite products","favorite films":"My favorite films","admin dashboard":"Admin dashboard","home":"My page","cart":"My cart","orders":"Orders","my orders":"My Orders","total orders":"All orders","films":"Films list","my interested events":"Interested events","followers":"Followers & following","products & category":"Products & Category","services":"Services","all comments":"All comments","my comments":"My comments","my posts":"My posts","all posts":"All posts","users":"Users & Parmissions","options":"Options","indoor climbing":"Indoor climbing","outdoor climbing":"Outdoor climbing","ice climbing":"Ice & Mix","mountaineering":"Mountaineering","other":"Other","security":"Security (Tech tips)","partners":"Partners","events":"Events","news":"News","gallery":"Gallery","about":"About us","login":"Login","logout":"Logout","sectors & routes":"Sectors & Routes","local bisnes":"Suport local bisnes","my favorite outdoor area":"My favorite outdoor areas"}},"global":{"footer":{"links":"Links","share":"Share","more":"More","about us":"About us","follow":"Follow us","qr":"QR Code"},"message":{"title":"Message","form":{"name":"Name *","surname":"Surname *","email":"E_mail *","number":"Phone number","country":"Yout country","message text":"Your message"},"send":"Send"},"login":"Login","comments":"Comments","page is empty":"Page is empty","services":"Services"},"error":{"404":{"title":"Oops! Error 404! Page Not Found","description":"Sorry, an error has occured, Requested page not found!","go_homehome":"Go to home page"}}}');
 
 /***/ }),
 
@@ -100465,7 +100467,7 @@ module.exports = JSON.parse('{"guide":{"name":"Climbing guidebook","menu":{"clim
 /***/ ((module) => {
 
 "use strict";
-module.exports = JSON.parse('{"guide":{"name":"ცოცვის გზამკვლევი","menu":{"climbing":"მეკლდეურობა","indoor climbing":"საცოცი დარბაზები","outdoor climbing":"საცოცი რეგიონები","ice climbing":"ყინული და მიქსი","events":"ღონისძიებები და შეჯიბრები","mountaineering":"ალპინიზმი","other":"სხვა","about us":"ჩვენ შესახებ","login":"ავტორიზაცია","sitemap":"Sitemap"},"article_right_nabar":{"article navigation menu":"სანავიგაციო მენიუ","similar articles":"შესაძლოა ამანაც დაგაინტერესოთ","gallery":"გალერეა","comments":"კომენტარები","description":"აღწერა","sectors":"სექტორები და მარშრუტები"},"title":{"news":"სიახლეები","topo":"რუკქ","what we do":"აკტივობები","gallery":"გალერეა","tech tips":"უსაფრთხოება","events":"ღონისძიებები და შეჯიბრები","climbing":"მეკლდეურობა","indoor climbing":"საცოცი დარბაზები","outdoor climbing":"საცოცი რეგიონები","ice climbing":"ყინული და მიქსი","mountaineering":"ალპინიზმი","other":"სხვა","about us":"ჩვენ შესახებ","partner":"პარტნიორები"},"route":{"name":"სახელი","height":"სიმაღლე","bolts":"ანკერები","grade FR":"სირთულე FR","grade YDS":"სირთულე UDS","mtp name":"მულტიპიჩის სახელი","auther":"ავტორი","creating data":"შექმნის თარიღი","first ascent":"პირვიელი გავლა","top rope":"ზედა დაცვა","tred":"თრედი","more":"More","route detals":"მართრუტის დეტალები","mtp detals":"მულტიპიჩის დეტალები"},"sector":{"name":"საქტორის სახელი","shade after 10.00 am":"ჩრდილში 10.00 am შემდეგ","shade after 15.00 pm":"ჩრდილში 15.00 pm შემდეგ","shade befor noon":"ჩრდილში შუადღემდე","shade in the afternoon":"ჩრდილში შუადღის შემდეგ","shade whole day":"მთელი დღე ჩრდილში","sun the whole day":"მთეკი დღე მზეზე","overhang":"უარყოპითი","slabby":"დადებითი","vertical":"ვერტიკალე","roof":"ჭერი","for_family":"სექტორი რეკომენდებულია ოჯახური გასვლებისთვის","for_kids":"სექტორი რეკომენდებულია ბავშვებისთვის","walking":"სექტორამდე მისასვლელად საჭირო დრო მანქანის პარკინგიდან"},"article":{"route_quantyty":"საქართველოში არის {sectors} საცოცი სექტორი, {sport_routes} სპორტული ცოცვის მარშრუტი, {boulder_routes} ბოლდერინგის მარშრუტი, {mtps} მულტიპიჩი. თქვენ შეგიძლიათ ნახოთ ყველა რეგიონის აღწერა მაგვერდზე.","mount massive":"მთის მასივი","best time":"საუკეთესო დრო საცოცად","how get":"როგორ მოვხვდეთ აქ","what need":"რა დადჭირდებათ","comments":"კომენტარები","gallery":"გალერეა","info":"ცონტაქტები","map":"რუკა","interested event":"მაინტერესებს ეს ღონისძიება","similar articles":"შესაძლოა ამანაც დაგაინტერესოთ","address":"მისამართი","price":"ფასი","back":"უკან დაბრუნება","all articles":"ყველ სტატია","prices from":"ფასი იწყება","working time":"სამუშაუ საათები","closed":"მალე დაიკეტება"},"breadcrumb home":"მთავარი"},"shop":{"name":"საცოცი პროდუქცია","menu":{"products":"პროდუქტები","services":"სერვისები","categories":"კატეგორიები","about us":"ჩვენ შესახებ"},"title":{"services":"ჩვენი სერვისები","products":"პროდუქტები","search":"პროდუქტის ძიება","gallery":"გალერეა","similar":{"products":"ასევე შესაძლოა დაგაინტერესოთ","services":"სხვა სერვისები"}},"product desc":{"category":"კატეგორიები","material":"მასალა","weight":"წონა"},"seller":{"seller contact":"კონტაქტები","email":"Email","phone":"ტელეფონის ნომერი"},"limited quantity":"შეზღუდული რაოდენობა","out of stock":"მარაგი ამოწურულია","product description":"აღწერა","add to cart":"კალათაში დამატება","all products":"ყველა პროდუქტი","max products":"ეს არის პროდუქტის მაქსიმალური რაოდენობა რაც თქვენ შეგიძლიათ აირჩიოთ!!!","add successful":"პროდუქტი წარმატებით დაემატა კალათაში!!!","custom product":"მხოლოდ შეკვეთით"},"user":{"name":"მომხმარებლის პანელი","menu":{"favorite products":"ჩემი ფავორიტი პროდუქტები","favorite films":"My favorite films","admin dashboard":"Admin dashboard","home":"My page","cart":"My cart","orders":"Orders","my orders":"My Orders","total orders":"All orders","films":"Films list","my interested events":"Interested events","followers":"Followers & following","products & category":"Products & Category","services":"Services","all comments":"All comments","my comments":"My comments","my posts":"My posts","all posts":"All posts","users":"Users & Parmissions","options":"Options","indoor climbing":"Indoor climbing","outdoor climbing":"Outdoor climbing","ice climbing":"Ice & Mix","mountaineering":"Mountaineering","other":"Other","security":"Security (Tech tips)","partners":"Partners","events":"Events","news":"News","gallery":"Gallery","about":"About us","login":"Login","logout":"Logout","sectors & routes":"Sectors & Routes","local bisnes":"Suport local bisnes","my favorite outdoor area":"My favorite outdoor areas"}},"global":{"footer":{"links":"ბმულები","share":"გააზიარე","more":"მეტის ნახვა","about us":"ჩვენ შესახებ","follow":"გამოიწერე სერვისი","qr":"QR კოდი"},"login":"ავტორიზაცია","message form":"დაგვიკავშირდით","page is empty":"ამ დროისთვის ინფორმაცია არ არის მისაწვდომი"},"error":{"404":{"title":"შეცდომა 404! გვერდის მოძებნა ვერ მოხდა!","description":"სამწუხაროდ ის გვერგი რომლსაც გინდათ რომ ეწვიოთ ვერ მოიძებნა","back":"უკან დაბრუნება"}}}');
+module.exports = JSON.parse('{"guide":{"name":"ცოცვის გზამკვლევი","meta":{"indoor climbing":"საცოცი დარბაზები","outdoor climbing":"საცოცი რეგიონები","ice climbing":"ყინული და მიქსი","events":"ღონისძიებები და შეჯიბრები","mountaineering":"ალპინიზმი","other":"სხვა","search":"ინფორმაციის ძიება."},"menu":{"climbing":"მეკლდეურობა","indoor climbing":"საცოცი დარბაზები","outdoor climbing":"საცოცი რეგიონები","ice climbing":"ყინული და მიქსი","events":"ღონისძიებები და შეჯიბრები","mountaineering":"ალპინიზმი","other":"სხვა","about us":"ჩვენ შესახებ","login":"ავტორიზაცია","sitemap":"Sitemap"},"article_right_nabar":{"article navigation menu":"სანავიგაციო მენიუ","similar articles":"შესაძლოა ამანაც დაგაინტერესოთ","gallery":"გალერეა","comments":"კომენტარები","description":"აღწერა","sectors":"სექტორები და მარშრუტები"},"title":{"news":"სიახლეები","topo":"რუკქ","what we do":"აკტივობები","gallery":"გალერეა","tech tips":"უსაფრთხოება","events":"ღონისძიებები და შეჯიბრები","climbing":"მეკლდეურობა","indoor climbing":"საცოცი დარბაზები","outdoor climbing":"საცოცი რეგიონები","ice climbing":"ყინული და მიქსი","mountaineering":"ალპინიზმი","other":"სხვა","about us":"ჩვენ შესახებ","partner":"პარტნიორები"},"route":{"name":"სახელი","height":"სიმაღლე","bolts":"ანკერები","grade FR":"სირთულე FR","grade YDS":"სირთულე UDS","mtp name":"მულტიპიჩის სახელი","auther":"ავტორი","creating data":"შექმნის თარიღი","first ascent":"პირვიელი გავლა","top rope":"ზედა დაცვა","tred":"თრედი","more":"More","route detals":"მართრუტის დეტალები","mtp detals":"მულტიპიჩის დეტალები"},"sector":{"name":"საქტორის სახელი","shade after 10.00 am":"ჩრდილში 10.00 am შემდეგ","shade after 15.00 pm":"ჩრდილში 15.00 pm შემდეგ","shade befor noon":"ჩრდილში შუადღემდე","shade in the afternoon":"ჩრდილში შუადღის შემდეგ","shade whole day":"მთელი დღე ჩრდილში","sun the whole day":"მთეკი დღე მზეზე","overhang":"უარყოპითი","slabby":"დადებითი","vertical":"ვერტიკალე","roof":"ჭერი","for_family":"სექტორი რეკომენდებულია ოჯახური გასვლებისთვის","for_kids":"სექტორი რეკომენდებულია ბავშვებისთვის","walking":"სექტორამდე მისასვლელად საჭირო დრო მანქანის პარკინგიდან"},"article":{"route_quantyty":"საქართველოში არის {sectors} საცოცი სექტორი, {sport_routes} სპორტული ცოცვის მარშრუტი, {boulder_routes} ბოლდერინგის მარშრუტი, {mtps} მულტიპიჩი. თქვენ შეგიძლიათ ნახოთ ყველა რეგიონის აღწერა მაგვერდზე.","mount massive":"მთის მასივი","best time":"საუკეთესო დრო საცოცად","how get":"როგორ მოვხვდეთ აქ","what need":"რა დადჭირდებათ","comments":"კომენტარები","gallery":"გალერეა","info":"ცონტაქტები","map":"რუკა","interested event":"მაინტერესებს ეს ღონისძიება","similar articles":"შესაძლოა ამანაც დაგაინტერესოთ","address":"მისამართი","price":"ფასი","back":"უკან დაბრუნება","all articles":"ყველ სტატია","prices from":"ფასი იწყება","working time":"სამუშაუ საათები","closed":"მალე დაიკეტება"},"breadcrumb home":"მთავარი"},"shop":{"name":"საცოცი პროდუქცია","meta":{"products":"პროდუქტები","services":"სერვისები","categories":"კატეგორიები","about us":"ჩვენ შესახებ","search":"პროდუქტის ძიება."},"menu":{"products":"პროდუქტები","services":"სერვისები","categories":"კატეგორიები","about us":"ჩვენ შესახებ"},"title":{"services":"ჩვენი სერვისები","products":"პროდუქტები","search":"პროდუქტის ძიება","gallery":"გალერეა","similar":{"products":"ასევე შესაძლოა დაგაინტერესოთ","services":"სხვა სერვისები"}},"product desc":{"category":"კატეგორიები","material":"მასალა","weight":"წონა"},"seller":{"seller contact":"კონტაქტები","email":"Email","phone":"ტელეფონის ნომერი"},"limited quantity":"შეზღუდული რაოდენობა","out of stock":"მარაგი ამოწურულია","product description":"აღწერა","add to cart":"კალათაში დამატება","all products":"ყველა პროდუქტი","max products":"ეს არის პროდუქტის მაქსიმალური რაოდენობა რაც თქვენ შეგიძლიათ აირჩიოთ!!!","add successful":"პროდუქტი წარმატებით დაემატა კალათაში!!!","custom product":"მხოლოდ შეკვეთით"},"user":{"name":"მომხმარებლის პანელი","menu":{"favorite products":"ჩემი ფავორიტი პროდუქტები","favorite films":"My favorite films","admin dashboard":"Admin dashboard","home":"My page","cart":"My cart","orders":"Orders","my orders":"My Orders","total orders":"All orders","films":"Films list","my interested events":"Interested events","followers":"Followers & following","products & category":"Products & Category","services":"Services","all comments":"All comments","my comments":"My comments","my posts":"My posts","all posts":"All posts","users":"Users & Parmissions","options":"Options","indoor climbing":"Indoor climbing","outdoor climbing":"Outdoor climbing","ice climbing":"Ice & Mix","mountaineering":"Mountaineering","other":"Other","security":"Security (Tech tips)","partners":"Partners","events":"Events","news":"News","gallery":"Gallery","about":"About us","login":"Login","logout":"Logout","sectors & routes":"Sectors & Routes","local bisnes":"Suport local bisnes","my favorite outdoor area":"My favorite outdoor areas"}},"global":{"footer":{"links":"ბმულები","share":"გააზიარე","more":"მეტის ნახვა","about us":"ჩვენ შესახებ","follow":"გამოიწერე სერვისი","qr":"QR კოდი"},"message":{"title":"დაგვიკავშირდით","form":{"name":"სახელი *","surname":"გვარი *","email":"ელ ფოსტა *","number":"ტელეფონის ნომერი","country":"ქვეყანა","message text":"თქვენი შეტყობინება"},"send":"გაგზავნა"},"login":"ავტორიზაცია","page is empty":"ამ დროისთვის ინფორმაცია არ არის მისაწვდომი","services":"ჩვენი სერვისები"},"error":{"404":{"title":"შეცდომა 404! გვერდის მოძებნა ვერ მოხდა!","description":"სამწუხაროდ ის გვერგი რომლსაც გინდათ რომ ეწვიოთ ვერ მოიძებნა","back":"უკან დაბრუნება"}}}');
 
 /***/ }),
 
@@ -100476,7 +100478,7 @@ module.exports = JSON.parse('{"guide":{"name":"ცოცვის გზამ�
 /***/ ((module) => {
 
 "use strict";
-module.exports = JSON.parse('{"guide":{"name":"Climbing guidebook","menu":{"climbing":"Rock climbing","indoor climbing":"Indoor climbing","outdoor climbing":"Outdoor climbing","ice climbing":"Ice & mix","events":"Events & competitions","mountaineering":"Mountaineering","other":"Other","about us":"About us","login":"Login","sitemap":"Sitemap"},"article_right_nabar":{"article navigation menu":"Navigation Menu","similar articles":"Similar Articles","gallery":"Gallery","comments":"Comments","description":"Description","sectors":"Climbing sectors & routes"},"title":{"news":"News","topo":"Topo","what we do":"what we do","gallery":"Gallery","tech tips":"Tech tips","events":"Events and Cometitions","climbing":"Climbing","indoor climbing":"Indoor climbing","outdoor climbing":"Outdoor climbing","ice climbing":"Ice & mix","mountaineering":"Mountaineering","other":"Other","about us":"About us","partner":"Partners"},"route":{"name":"Name","height":"Height","bolts":"Bolts","grade FR":"grade FR","grade YDS":"grade UDS","mtp name":"Multy-pitch name","auther":"Auther","creating data":"Creating data","first ascent":"First ascent","top rope":"Top Rope","tred":"Tred Gear"},"sector":{"name":"Sector name","shade after 10.00 am":"In shade after 10.00 am","shade after 15.00 pm":"In shade after 15.00 pm","shade befor noon":"In shade befor noon","shade in the afternoon":"In shade in the afternoon","shade whole day":"In the shade whole day","sun the whole day":"In the sun the whole day","overhang":"Overhang","slabby":"Slabby","vertical":"Vertical","roof":"ჭერი","for_family":"სექტორი რეკომენდებულია ოჯახური გასვლებისთვის","for_kids":"სექტორი რეკომენდებულია ბავშვებისთვის","walking":"სექტორამდე მისასვლელად საჭირო დრო მანქანის პარკინგიდან"},"article":{"route_quantyty":"In Georgia are {sectors} outdoor climbing sectors, {sport_routes} sport climbing routes, {boulder_routes} boulder routes, {mtps} multy pitch. You can see all outdoor climbing arias info on this page.","mount massive":"Mountain Massive","best time":"Best time to climb","how get":"How to get there","what need":"What you need","comments":"Comments","gallery":"Gallery","info":"Info","map":"Map","interested event":"Interested","similar articles":"Similar Articles","sector name":"Sector name","address":"Address","price":"Price","route":"Routes","back":"Go Back","all articles":"All Articles","prices from":"Prices from","working time":"Working hours","closed":"Temporarily closed"},"breadcrumb home":"Home"},"shop":{"name":"Climbng shop","menu":{"products":"Products","services":"Services","categories":"Categories","about us":"About us"},"title":{"services":"Ouer services","products":"Products","search":"Search products","gallery":"Gallery","similar":{"products":"You might also like","services":"Other services"}},"product desc":{"category":"Category","material":"Material","weight":"Weight"},"seller":{"seller contact":"Contacts","email":"Email","phone":"Phone number"},"limited quantity":"Limited quantity ","out of stock":"Out of stock","product description":"Description","add to cart":"Add to cart","all products":"All products","max products":"This is maximal quantyty for this product!!!","add successful":"Product add successful!!!","custom product":"Custom production"},"user":{"name":"User panel","menu":{"favorite products":"My favorite products","favorite films":"My favorite films","admin dashboard":"Admin dashboard","home":"My page","cart":"My cart","orders":"Orders","my orders":"My Orders","total orders":"All orders","films":"Films list","my interested events":"Interested events","followers":"Followers & following","products & category":"Products & Category","services":"Services","all comments":"All comments","my comments":"My comments","my posts":"My posts","all posts":"All posts","users":"Users & Parmissions","options":"Options","indoor climbing":"Indoor climbing","outdoor climbing":"Outdoor climbing","ice climbing":"Ice & Mix","mountaineering":"Mountaineering","other":"Other","security":"Security (Tech tips)","partners":"Partners","events":"Events","news":"News","gallery":"Gallery","about":"About us","login":"Login","logout":"Logout","sectors & routes":"Sectors & Routes","local bisnes":"Suport local bisnes","my favorite outdoor area":"My favorite outdoor areas"},"user add en article title":"article English version","user add ru article title":"article Russion version","user add ka article title":"article Georgian version","user add en article description":"Article English version for site localisation.","user add ru article description":"Article Russion version for site localisation.","user add ka article description":"Article Georgian version for site localisation.","user edit en article title":"article English version","user edit ru article title":"article Russion version","user edit ka article title":"article Georgian version","user edit en article description":"Article English version for site localisation.","user edit ru article description":"Article Russion version for site localisation.","user edit ka article description":"Article Georgian version for site localisation.","Munu":"","Dashboard":"","Sites index pages":""},"global":{"footer":{"links":"Links","share":"Share","more":"More","about us":"About us","follow":"Follow us","qr":"QR code"},"login":"Login","message form":"Message","page is empty":"Page is empty"},"error":{"404":{"title":"Oops! Error 404! Page Not Found","description":"Sorry, an error has occured, Requested page not found!","back":"Go Beck"}}}');
+module.exports = JSON.parse('{"guide":{"name":"Climbing guidebook","meta":{"indoor climbing":"Indoor climbing","outdoor climbing":"Outdoor climbing","ice climbing":"Ice & mix","events":"Events & competitions","mountaineering":"Mountaineering","other":"Other","about us":"About us","search":"Search product. Query is - "},"menu":{"climbing":"Rock climbing","indoor climbing":"Indoor climbing","outdoor climbing":"Outdoor climbing","ice climbing":"Ice & mix","events":"Events & competitions","mountaineering":"Mountaineering","other":"Other","about us":"About us","login":"Login","sitemap":"Sitemap"},"article_right_nabar":{"article navigation menu":"Navigation Menu","similar articles":"Similar Articles","gallery":"Gallery","comments":"Comments","description":"Description","sectors":"Climbing sectors & routes"},"title":{"news":"News","topo":"Topo","what we do":"What we do","gallery":"Gallery","tech tips":"Tech tips","events":"Events and Cometitions","climbing":"Climbing","indoor climbing":"Indoor climbing","outdoor climbing":"Outdoor climbing","ice climbing":"Ice & mix","mountaineering":"Mountaineering","other":"Other","about us":"About us","partner":"Partners","message":"Send message"},"route":{"name":"Name","height":"Height","bolts":"Bolts","grade FR":"grade FR","grade YDS":"grade UDS","mtp name":"Multy-pitch name","auther":"Auther","creating data":"Creating data","first ascent":"First ascent","top rope":"Top Rope","tred":"Tred Gear","more":"More","route detals":"Routes detals","mtp detals":"Multy-pitch detals"},"sector":{"name":"Sector name","shade after 10.00 am":"In shade after 10.00 am","shade after 15.00 pm":"In shade after 15.00 pm","shade befor noon":"In shade befor noon","shade in the afternoon":"In shade in the afternoon","shade whole day":"In the shade whole day","sun the whole day":"In the sun the whole day","overhang":"Overhang","slabby":"Slabby","vertical":"Vertical","roof":"Roof","for_family":"This sector recomendidi family climbing. It`s seifty for kids","for_kids":"This sector recomendidi family climbing. It`s seifty for kids","walking":"Wolging time from car stoping to climbin sector"},"article":{"route_quantyty":"In Georgia are {sectors} outdoor climbing sectors, {sport_routes} sport climbing routes, {boulder_routes} boulder routes, {mtps} multy pitch. You can see all outdoor climbing arias info on this page.","mount massive":"Mountain Massive","best time":"Best time to climb","how get":"How to get there","what need":"What you need","comments":"Comments","gallery":"Gallery","info":"Info","map":"Map","interested event":"Interested","similar articles":"Similar Articles","sector name":"Sector name","address":"Address","price":"Price","route":"Routes","back":"Go Back","all articles":"All Articles","prices from":"Prices from","working time":"Working hours","closed":"Temporarily closed"},"breadcrumb home":"Home"},"shop":{"name":"Climbng shop","meta":{"products":"Indoor climbing","services":"Outdoor climbing","categories":"Categories","about us":"About us","search":"Search product. Query is - "},"menu":{"products":"Products","services":"Services","categories":"Categories","about us":"About us"},"title":{"services":"Ouer services","products":"Products","search":"Search products","gallery":"Gallery","similar":{"products":"You might also like","services":"Other services"}},"product desc":{"category":"Category","material":"Material","weight":"Weight"},"seller":{"seller contact":"Contacts","email":"Email","phone":"Phone number"},"limited quantity":"Limited quantity ","out of stock":"Out of stock","product description":"Description","add to cart":"Add to cart","all products":"All products","max products":"This is maximal quantyty for this product!!!","add successful":"Product add successful!!!","custom product":"Custom production"},"user":{"name":"User panel","menu":{"favorite products":"My favorite products","favorite films":"My favorite films","admin dashboard":"Admin dashboard","home":"My page","cart":"My cart","orders":"Orders","my orders":"My Orders","total orders":"All orders","films":"Films list","my interested events":"Interested events","followers":"Followers & following","products & category":"Products & Category","services":"Services","all comments":"All comments","my comments":"My comments","my posts":"My posts","all posts":"All posts","users":"Users & Parmissions","options":"Options","indoor climbing":"Indoor climbing","outdoor climbing":"Outdoor climbing","ice climbing":"Ice & Mix","mountaineering":"Mountaineering","other":"Other","security":"Security (Tech tips)","partners":"Partners","events":"Events","news":"News","gallery":"Gallery","about":"About us","login":"Login","logout":"Logout","sectors & routes":"Sectors & Routes","local bisnes":"Suport local bisnes","my favorite outdoor area":"My favorite outdoor areas"}},"global":{"footer":{"links":"Links","share":"Share","more":"More","about us":"About us","follow":"Follow us","qr":"QR Code"},"message":{"title":"Message","form":{"name":"Name *","surname":"Surname *","email":"E_mail *","number":"Phone number","country":"Yout country","message text":"Your message"},"send":"Send"},"login":"Login","comments":"Comments","page is empty":"Page is empty","services":"Services"},"error":{"404":{"title":"Oops! Error 404! Page Not Found","description":"Sorry, an error has occured, Requested page not found!","go_homehome":"Go to home page"}}}');
 
 /***/ })
 

@@ -307,6 +307,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
 
 
 
@@ -1209,7 +1210,7 @@ var render = function () {
       _vm._v(" "),
       _c("metaData", {
         attrs: {
-          title: "Search climbing spots in Georgia",
+          title: _vm.$t("guid.meta.search"),
           description:
             "Search climbing spots in Georgia. Query - " +
             this.$route.query.query,

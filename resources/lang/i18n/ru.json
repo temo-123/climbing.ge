@@ -2,6 +2,17 @@
     "guide": {
         "name": "Climbing guidebook",
 
+        "meta": {
+            "indoor climbing": "Indoor climbing",
+            "outdoor climbing": "Outdoor climbing",
+            "ice climbing": "Ice & mix",
+            "events": "Events & competitions",
+            "mountaineering": "Mountaineering",
+            "other": "Other",
+            "about us": "About us",
+            "search": "Search product. Query is - "
+        },
+
         "menu": {
             "climbing": "Rock climbing",
             "indoor climbing": "Indoor climbing",
@@ -27,7 +38,7 @@
         "title": {
             "news": "News",
             "topo": "Topo",
-            "what we do": "what we do",
+            "what we do": "What we do",
             "gallery" :"Gallery",
             "tech tips" :"Tech tips",
             "events" :"Events and Cometitions",
@@ -38,7 +49,9 @@
             "mountaineering": "Mountaineering",
             "other": "Other",
             "about us": "About us",
-            "partner": "Partners"
+            "partner": "Partners",
+
+            "message": "Send message"
         },
 
         "route": {
@@ -47,12 +60,17 @@
             "bolts": "Bolts",
             "grade FR": "grade FR",
             "grade YDS": "grade UDS",
+
             "mtp name": "Multy-pitch name",
             "auther": "Auther",
             "creating data": "Creating data",
             "first ascent": "First ascent",
             "top rope": "Top Rope",
-            "tred": "Tred Gear"
+            "tred": "Tred Gear",
+
+            "more": "More",
+            "route detals": "Routes detals",
+            "mtp detals": "Multy-pitch detals"
         },
 
         "sector": {
@@ -63,15 +81,15 @@
             "shade in the afternoon": "In shade in the afternoon",
             "shade whole day": "In the shade whole day",
             "sun the whole day": "In the sun the whole day",
-            
+
             "overhang": "Overhang",
             "slabby": "Slabby",
             "vertical": "Vertical",
-            "roof": "ჭერი",
+            "roof": "Roof",
 
-            "for_family": "სექტორი რეკომენდებულია ოჯახური გასვლებისთვის",
-            "for_kids": "სექტორი რეკომენდებულია ბავშვებისთვის",
-            "walking": "სექტორამდე მისასვლელად საჭირო დრო მანქანის პარკინგიდან"
+            "for_family": "This sector recomendidi family climbing. It`s seifty for kids",
+            "for_kids": "This sector recomendidi family climbing. It`s seifty for kids",
+            "walking": "Wolging time from car stoping to climbin sector"
         },
 
         "article": {
@@ -105,6 +123,14 @@
 
     "shop": {
         "name": "Climbng shop",
+
+        "meta": {
+            "products": "Indoor climbing",
+            "services": "Outdoor climbing",
+            "categories": "Categories",
+            "about us": "About us",
+            "search": "Search product. Query is - "
+        },
 
         "menu": {
             "products": "Products",
@@ -189,28 +215,7 @@
             "sectors & routes": "Sectors & Routes",
             "local bisnes" : "Suport local bisnes",
             "my favorite outdoor area": "My favorite outdoor areas"
-        },
-
-        "user add en article title": "article English version",
-        "user add ru article title": "article Russion version",
-        "user add ka article title": "article Georgian version",
-
-        "user add en article description": "Article English version for site localisation.",
-        "user add ru article description": "Article Russion version for site localisation.",
-        "user add ka article description": "Article Georgian version for site localisation.",
-
-
-        "user edit en article title": "article English version",
-        "user edit ru article title": "article Russion version",
-        "user edit ka article title": "article Georgian version",
-
-        "user edit en article description": "Article English version for site localisation.",
-        "user edit ru article description": "Article Russion version for site localisation.",
-        "user edit ka article description": "Article Georgian version for site localisation.",
-
-        "Munu": "",
-        "Dashboard": "",
-        "Sites index pages": ""
+        }
     },
 
     "global": {
@@ -220,19 +225,33 @@
             "more": "More",
             "about us": "About us",
             "follow": "Follow us",
-            "qr": "QR code"
+            "qr": "QR Code"
+        },
+
+        "message": {
+            "title": "Message",
+            "form": {
+                "name": "Name *",
+                "surname": "Surname *",
+                "email": "E_mail *",
+                "number": "Phone number",
+                "country": "Yout country",
+                "message text": "Your message"
+            },
+            "send": "Send"
         },
 
         "login": "Login",
-        "message form": "Message",
-        "page is empty": "Page is empty"
+        "comments": "Comments",
+        "page is empty": "Page is empty",
+        "services": "Services"
     },
 
     "error": {
         "404": {
             "title": "Oops! Error 404! Page Not Found",
             "description": "Sorry, an error has occured, Requested page not found!",
-            "back": "Go Beck"
+            "go_homehome": "Go to home page"
         }
     }
 }

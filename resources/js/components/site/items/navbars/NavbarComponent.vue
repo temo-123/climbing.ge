@@ -4,7 +4,7 @@
 
             <!-- BRAND -->
             <div class="navbar-header">
-                <!-- <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#alignment-example" aria-expanded="false" @click="open_navbar()"> -->
+                <!-- <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#alignment-example" aria-expanded="false" > -->
                 <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" aria-expanded="false" @click="open_navbar()">
                     <span class="sr-only">Toggle navigation</span>
                     <span class="icon-bar"></span>
@@ -199,5 +199,17 @@
     color: #fff;
 }
 
-
+/* @media (max-width:990px){
+    .navbar-header {float: none;}
+    .navbar-left,.navbar-right {    float: none !important;}
+    .navbar-toggle {    display: block;}
+    .navbar-collapse {  border-top: 1px solid transparent;  box-shadow: inset 0 1px 0 rgba(255,255,255,0.1);}
+    .navbar-fixed-top {    top: 0;    border-width: 0 0 1px;}
+    .navbar-collapse.collapse { display: none!important;}
+    .navbar-nav {float: none!important; margin-top: 7.5px;}
+    .navbar-nav>li {float: none;}
+    .navbar-nav>li>a { padding-top: 10px;padding-bottom: 10px;}
+    .collapse.in{display:block !important;}
+    .navbar-nav .open .dropdown-menu { position: static; float: none; width: auto; margin-top: 0; background-color: transparent; border: 0; -webkit-box-shadow: none; box-shadow: none;}
+} */
 </style>

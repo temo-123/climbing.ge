@@ -1534,7 +1534,7 @@ var render = function () {
       _vm._v(" "),
       _c("metaData", {
         attrs: {
-          title: _vm.$t("guide.title.mountaineering"),
+          title: _vm.$t("site.meta.mountaineering"),
           description: this.$siteData.mount_description,
           image: "../../../../public/images/meta_img/mount.jpg",
         },

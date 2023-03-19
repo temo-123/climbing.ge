@@ -79,7 +79,7 @@
         </div>
         
         <metaData 
-            :title = "'About climbing in Georgia'"
+            :title = " $t('site.meta.about us') "
             :description = "'Rock climbing, mountaineering and other outdoor actyvity in Georgia'"
             :image = "'../../../../public/images/meta_img/outdoor.jpg'"
         />

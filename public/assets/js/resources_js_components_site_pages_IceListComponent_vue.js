@@ -1352,7 +1352,7 @@ var render = function () {
       _vm._v(" "),
       _c("metaData", {
         attrs: {
-          title: _vm.$t("title ice climbing"),
+          title: _vm.$t("site.meta.ice climbing"),
           description: this.$siteData.ice_description,
           image: "../../../../public/images/meta_img/ice.jpg",
         },

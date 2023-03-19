@@ -2157,7 +2157,7 @@ var render = function () {
       _vm._v(" "),
       _c("metaData", {
         attrs: {
-          title: _vm.$t("guide.title.outdoor climbing"),
+          title: _vm.$t("guide.meta.outdoor climbing"),
           description: this.$siteData.outdoor_description,
           image: "../../../../public/images/meta_img/outdoor.jpg",
         },
