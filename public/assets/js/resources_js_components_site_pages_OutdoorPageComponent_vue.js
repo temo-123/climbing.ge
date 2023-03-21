@@ -889,6 +889,8 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
 
  // import postsList from './PostsListComponent'
 
@@ -913,11 +915,12 @@ __webpack_require__.r(__webpack_exports__);
   },
   data: function data() {
     return {
-      // tab_num: 1,
       posts: []
     };
   },
-  mounted: function mounted() {// this.get_posts()
+  mounted: function mounted() {
+    // this.get_posts()
+    console.log(document.querySelector('meta[name="csrf-token"]').getAttribute('content'));
   },
   watch: {
     '$route': function $route(to, from) {// $refs.semilar_articles.get_same_articles()
@@ -932,12 +935,19 @@ __webpack_require__.r(__webpack_exports__);
       this.$refs.comments.update(id);
     },
     add_to_favorite_outdoor_area: function add_to_favorite_outdoor_area(article_id) {
-      axios.post('../../../api/articles/add_to_favorite_outdoor_area/', {
-        article_id: article_id
-      }).then(function (response) {
+      var _this = this;
+
+      axios.post('../api/outdoor/add_to_favorite_outdoor_area/' + article_id).then(function (response) {
         alert(response.data);
       })["catch"](function (error) {
-        alert(error);
+        if (error.response.status === 401) {
+          if (confirm('You are not login. Do you want log in?')) {
+            _this.$router.go(-1);
+          }
+        } else {
+          alert(error);
+          console.log(error);
+        }
       });
     }
   }
@@ -1113,7 +1123,7 @@ __webpack_require__.r(__webpack_exports__);
       var _this = this;
 
       console.log(this.id);
-      axios.post('../../api/similar_article/' + localStorage.getItem('lang'), {
+      axios.post('../api/similar_article/' + localStorage.getItem('lang'), {
         article_id: this.id,
         article_category: this.article_category
       }).then(function (response) {
@@ -7200,7 +7210,7 @@ var render = function () {
         _vm._v(_vm._s(_vm.$t("article navigation menu"))),
       ]),
       _vm._v(" "),
-      _c("nav", { staticClass: "navbar fading-side-menu" }, [
+      _c("nav", { staticClass: "fading-side-menu" }, [
         _c("ul", { staticClass: "list-unstyled" }, [
           _c("li", [
             _c("a", { attrs: { href: "#description" } }, [

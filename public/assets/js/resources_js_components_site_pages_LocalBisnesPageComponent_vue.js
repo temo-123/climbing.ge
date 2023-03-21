@@ -889,7 +889,7 @@ __webpack_require__.r(__webpack_exports__);
       var _this = this;
 
       console.log(this.id);
-      axios.post('../../api/similar_article/' + localStorage.getItem('lang'), {
+      axios.post('../api/similar_article/' + localStorage.getItem('lang'), {
         article_id: this.id,
         article_category: this.article_category
       }).then(function (response) {

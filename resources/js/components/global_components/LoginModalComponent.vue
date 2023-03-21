@@ -7,6 +7,20 @@
             :cancelButton="{ visible: false, title: 'Close', btnClass: { 'btn btn-danger': true } }"
         >
         <pre>
+            <!-- <div class="row mt-2"> -->
+                <div class="left_social_icon">
+                  <button type="button" class="btn btn-danger left_social_icon_button" @click="social_login('google')">
+                    <!-- Google -->
+                    <i class="fa fa-google" aria-hidden="true"></i>
+                  </button>
+                </div>
+                <div class="right_social_icon">
+                  <button type="button" class="btn btn-primary right_social_icon_button" @click="social_login('facebook')">
+                    <!-- Facebook -->
+                    <i class="fa fa-facebook" aria-hidden="true"></i>
+                  </button>
+                </div>
+            <!-- </div> -->
             <form method="POST" id="login_form" v-on:submit.prevent="login">
                 <!-- <label for="email">Email address</label> -->
                 <input
@@ -63,7 +77,7 @@ export default {
         email_errors: null,
         remember_me: null,
 
-        BASE_URL_SSH: process.env.BASE_URL_SSH,
+        // BASE_URL_SSH: process.env.BASE_URL_SSH,
         // MIX_APP_SSH: process.env.MIX_APP_SSH,
 
         is_login_model: false
@@ -79,7 +93,7 @@ export default {
 
       login(){
         axios
-          .get(this.BASE_URL_SSH + '/sanctum/csrf-cookie')
+          .get('/sanctum/csrf-cookie')
           .then(response => {
             this.login_action()
           }); 
@@ -87,7 +101,7 @@ export default {
 
       login_action(){
           axios
-            .post(this.BASE_URL_SSH + '/login', {
+            .post(process.env.MIX_APP_SSH + process.env.MIX_SITE_URL + '/login', {
               email: this.email, 
               password: this.password
             })
@@ -112,5 +126,23 @@ export default {
 </script>
 
 <style>
+.left_social_icon{
+  width: 49.5%;
+  float: left;
+  margin-top: 0%;
+}
+.left_social_icon_button{
+  float: left;
+  margin: 15%;
+}
 
+.right_social_icon{
+  width: 49%;
+  float: right;
+  margin-top: -10%;
+}
+.right_social_icon_button{
+  float: right;
+  margin: 15%;
+}
 </style>

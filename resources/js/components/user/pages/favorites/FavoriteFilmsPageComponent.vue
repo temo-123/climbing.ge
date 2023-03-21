@@ -38,8 +38,8 @@
                     <div class="card">
 
                         <span @click="go_to_film_list('/film/'+film.global_film.url_title)" >
-                            <site-img v-if="film.global_film.image != NULL" :src="'../../../public/images/film_img/'+film.global_film.image" :img_class="'card-img-top'" :alt='film.local_film.name'/>
-                            <site-img v-else :src="'../../../public/images/site_img/image.png'" :img_class="'card-img-top'" :alt='film.local_film.name'/>
+                            <site-img v-if="film.global_film.image != NULL" :src="'/public/images/film_img/'+film.global_film.image" :img_class="'card-img-top'" :alt='film.local_film.name'/>
+                            <site-img v-else :src="'/public/images/site_img/image.png'" :img_class="'card-img-top'" :alt='film.local_film.name'/>
                         </span>
 
                         <div class="card-body">

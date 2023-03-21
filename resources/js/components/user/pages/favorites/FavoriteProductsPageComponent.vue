@@ -44,8 +44,8 @@
                         <span class="favorite_cart_del_bottom" @click="del_from_faworites(product.global_product.id)">X</span>
 
                         <div @click="go_to_product_page('/product/'+product.global_product.url_title)">
-                            <site-img v-if="product.product_images[0] != null" :src="'../images/product_option_img/'+product.product_images[0]" :alt="product.locale_product.title" />
-                            <site-img v-else :src="'../../../public/images/site_img/shop_demo.jpg'" :img_class="'img-responsive'" :alt='product.locale_product.title'/>
+                            <site-img v-if="product.product_images[0] != null" :src="'/public/images/product_option_img/'+product.product_images[0]" :alt="product.locale_product.title" />
+                            <site-img v-else :src="'/public/images/site_img/shop_demo.jpg'" :img_class="'img-responsive'" :alt='product.locale_product.title'/>
                         </div >
 
                         <div class="text-left px-3 favorite_cart_text" >

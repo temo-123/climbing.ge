@@ -115,6 +115,8 @@ const router = new VueRouter({
         { path: '/service/edit/:id', name: 'serviceEdit', component: load('services/serviceEditComponent'), },
         { path: '/service/add/', name: 'serviceAdd', component: load('services/serviceAddComponent'), },
 
+        { path: '/multimedia', name: 'multimedia', component: load('multimedia/MediaFilesListPageComponent'), },
+
         { path: '/login', name: 'login', component: login },
         { path: '/register', name: 'register', component: register},
         { path: '/forget_pass', name: 'forget_pass', component: forget_pass},

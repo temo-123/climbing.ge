@@ -73,10 +73,11 @@ class FaworitesController extends Controller
 
     public function add_to_favorite_outdoor_area(Request $request)
     {
+        // dd(Auth::user());
+
         if (Auth::user()) {
-            
             if(Favorite_outdoor_area::where('user_id', '=', Auth::user()->id)->where('article_id', '=', $request->article_id)->count() > 0){
-                return 'this area olredy are in faworite';
+                return 'This area olredy are in faworite';
             }
             else{
                 $faworit = new Favorite_outdoor_area();
@@ -86,11 +87,12 @@ class FaworitesController extends Controller
                 
                 $faworit -> save();
 
-                return 'area eded socsesful';
+                return 'Area eded socsesful!';
             }
         }
         else{
-            return 'ples login';
+            // return 'Ples login';
+            return response()->json('Plees login', 401);
         }
     }
 

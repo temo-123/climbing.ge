@@ -118,9 +118,10 @@
           .get('/sanctum/csrf-cookie')
           .then(response => {
             this.login_action()
-          }).catch(err => {
+          }).catch(error => {
+            alert(error)
             window.location.reload()
-          }); 
+          });
       },
 
       login_action(){

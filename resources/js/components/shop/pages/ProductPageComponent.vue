@@ -93,7 +93,7 @@
         <div class="container" v-if="product.local_product[0]">
             <div class="row" v-if="product.local_product[0].text">
                 <div class="col-md-12">
-                    <h2 class='text-center'>{{ $('shop.product description') }}</h2>
+                    <h2 class='text-center'>{{ $t('shop.product description') }}</h2>
                     <span v-html="product.local_product[0].text"></span>
                 </div>
             </div>
@@ -329,7 +329,7 @@
                     alert("Product addid in your favorite list!");
                 })
                 .catch(error =>{
-                    alert("Error");
+                    alert(error);
                 })
             }
         }

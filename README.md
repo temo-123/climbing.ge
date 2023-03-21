@@ -22,6 +22,10 @@
 
 [user.climbing.ge](/docs/USER_PAGE.md) - Your privat room
 
+<h2>API</h2>
+
+<!-- [user.climbing.ge](/docs/USER_PAGE.md) - API -->
+
 <p>This project is free and opensorse. Objective of the project is popularization climbing in Georgia.</p>
 
 <h1>Configuration & config examples</h1>
@@ -40,6 +44,6 @@ php artisan migrate --seed
 
 <!-- Ctrl+Shift+V - for demo test  -->
 
-<h5>Progect version 3.5.3</h5>
+<h5>Progect version 3.5.3 (Disain version, API version, Relise version)</h5>
 <h2 align="center">Best wishes from climbing.ge</h2>
 <p align="center"><img src="/public/images/site_img/site_logo/header logo(bacground).png" width="400"></p>

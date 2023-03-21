@@ -911,7 +911,8 @@ var render = function () {
                     ? _c("site-img", {
                         attrs: {
                           src:
-                            "images/event_img/" + _vm.event.global_event.image,
+                            "/public/images/event_img/" +
+                            _vm.event.global_event.image,
                           img_class: "img-responsive",
                           alt: _vm.event.locale_event.title,
                         },
@@ -1001,14 +1002,15 @@ var render = function () {
                     ? _c("site-img", {
                         attrs: {
                           src:
-                            "images/event_img/" + _vm.event.global_event.image,
+                            "/public/images/event_img/" +
+                            _vm.event.global_event.image,
                           img_class: "img-responsive",
                           alt: _vm.event.locale_event.title,
                         },
                       })
                     : _c("site-img", {
                         attrs: {
-                          src: "./public/images/site_img/image.png",
+                          src: "/public/images/site_img/image.png",
                           img_class: "img-responsive",
                           alt: _vm.event.locale_event.title,
                         },

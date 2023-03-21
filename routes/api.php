@@ -234,9 +234,11 @@ Route::group(['namespace'=>'Api'], function() {
     Route::get('/film/get_faworite_film_list', 'FilmsController@get_faworite_film_list');
     Route::delete('/film/del_from_faworite/{film_id}', 'FilmsController@del_from_faworite');
 
-    Route::post('/articles/add_to_favorite_outdoor_area/', 'FaworitesController@add_to_favorite_outdoor_area');
-    Route::get('/outdoor/get_faworite_outdoor_region', 'FaworitesController@get_faworite_outdoor_region');
-    Route::delete('/outdoor/del_faworite_outdoor_region/{article_id}', 'FaworitesController@del_faworite_outdoor_region');
+    Route::controller(FaworitesController::class)->prefix('outdoor')->group( function() {
+        Route::post('/add_to_favorite_outdoor_area/{article_id}', 'add_to_favorite_outdoor_area');
+        Route::get('/get_faworite_outdoor_region', 'get_faworite_outdoor_region');
+        Route::delete('/del_faworite_outdoor_region/{article_id}', 'del_faworite_outdoor_region');
+    });
 
 
     /*

@@ -513,7 +513,7 @@ var render = function () {
                         ? _c("site-img", {
                             attrs: {
                               src:
-                                "../../../public/images/film_img/" +
+                                "/public/images/film_img/" +
                                 film.global_film.image,
                               img_class: "card-img-top",
                               alt: film.local_film.name,
@@ -521,7 +521,7 @@ var render = function () {
                           })
                         : _c("site-img", {
                             attrs: {
-                              src: "../../../public/images/site_img/image.png",
+                              src: "/public/images/site_img/image.png",
                               img_class: "card-img-top",
                               alt: film.local_film.name,
                             },

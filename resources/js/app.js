@@ -18,12 +18,19 @@ import plugin from "@serializedowen/vue-img-watermark";
 import VueGlide from "vue-glide-js";
 import "vue-glide-js/dist/vue-glide.css";
 import VueGtag from "vue-gtag";
-
 import { abilitiesPlugin } from "@casl/vue";
 import ability from "./services/ability/ability";
 
-Vue.use(abilitiesPlugin, ability());
+// import FileManager from 'laravel-file-manager'
 
+// Vue.use(Vuex);
+
+// create Vuex store, if you don't have it
+// const store = new Vuex.Store();
+
+// Vue.use(FileManager, {store});
+
+Vue.use(abilitiesPlugin, ability());
 Vue.use(VueGlide);
 Vue.use(plugin);
 Vue.use(VueSocialSharing);
@@ -40,10 +47,8 @@ Vue.use(Router);
  *   My components
  */
 
-import leftmenu from "./components/user/items/LeftMenuComponent.vue";
+import leftmenu from "./components/user/items/navbars/LeftMenuComponent.vue";
 import goTo from "./components/global_components/GoToComponrnt.vue";
-// import footerAd from "./components/global_components/ad/FooterAdBlockComponent.vue";
-// import rightAd from "./components/global_components/ad/RightAdBlockComponent.vue";
 import store from "./store";
 import site_img from "./components/site/items/ImageComponent.vue";
 import shop_img from "./components/shop/items/ImageComponent.vue";
@@ -54,8 +59,6 @@ Vue.component("shop-img", shop_img);
 Vue.component("forum-img", forum_img);
 Vue.component("left-menu", leftmenu);
 Vue.component("goTo", goTo);
-// Vue.component("footerAd", footerAd);
-// Vue.component("rightAd", rightAd);
 
 import MainWrapper from "./components/shop/MainWrapperComponent.vue";
 import Index from "./components/site/IndexComponent.vue";
@@ -122,17 +125,14 @@ if (window.location.hostname == process.env.MIX_SITE_URL) {
 } else {
     window.location.href = "/404";
 }
-// console.log("🚀 ~ file: app.js:96 ~ axios.defaults.baseURL", axios.defaults.baseURL)
 
 Vue.use(VueGtag, {
     config: { id: analytic_id },
 });
 
-// Vue.runtimeCompiler = true;
 Vue.config.productionTip = false;
 Vue.prototype.$siteData = [];
 Vue.prototype.$globalSiteData = [];
-// Vue.prototype.$authUserData = [];
 
 if(
     window.location.hostname == 'climbing.ge' &&
@@ -175,15 +175,9 @@ const app = new Vue({
             ));
 
         },
-        // get_auth_user_data() {
-        //     axios
-        //     .get('../api/auth_user')
-        //     .then((response) => Vue.prototype.$authUserData = response.data)
-        // },
     },
     watch: {
         $route(to, from) {
-            // this.get_auth_user_data()
 
             window.scrollTo(0, 0);
 
@@ -204,9 +198,6 @@ const app = new Vue({
 
                     let activ_path_without_locale = this.$router.history.pending.path.split("/").splice(2).join("/")
 
-                    // const to = this.$router.resolve(activ_path_without_locale)
-                    
-                    // this.$router.push( to )
                     this.get_site_data();
 
                     this.$router.push({ path: '/' + activ_path_without_locale })

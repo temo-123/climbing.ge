@@ -611,14 +611,14 @@ var render = function () {
                           ? _c("site-img", {
                               attrs: {
                                 src:
-                                  "../images/product_option_img/" +
+                                  "/public/images/product_option_img/" +
                                   product.product_images[0],
                                 alt: product.locale_product.title,
                               },
                             })
                           : _c("site-img", {
                               attrs: {
-                                src: "../../../public/images/site_img/shop_demo.jpg",
+                                src: "/public/images/site_img/shop_demo.jpg",
                                 img_class: "img-responsive",
                                 alt: product.locale_product.title,
                               },

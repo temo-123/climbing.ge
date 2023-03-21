@@ -20,7 +20,7 @@
 </template>
 
 <script>
-import navbar from "./items/NavbarComponent.vue";
+import navbar from "./items/navbars/NavbarComponent.vue";
 
 export default {
     data: function () {

@@ -37,8 +37,8 @@
                     <div class="card">
 
                         <span @click="go_to_spots_list('/outdoor/'+spot.url_title)" >
-                            <site-img v-if="spot.image != NULL" :src="'../../../public/images/outdoor_img/'+spot.image" :img_class="'card-img-top'" :alt='spot[0][0].title'/>
-                            <site-img v-else :src="'../../../public/images/site_img/image.png'" :img_class="'card-img-top'" :alt='spot[0][0].title'/>
+                            <site-img v-if="spot.image != NULL" :src="'/public/images/outdoor_img/'+spot.image" :img_class="'card-img-top'" :alt='spot[0][0].title'/>
+                            <site-img v-else :src="'/public/images/site_img/image.png'" :img_class="'card-img-top'" :alt='spot[0][0].title'/>
                         </span>
 
                         <div class="card-body">

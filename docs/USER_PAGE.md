@@ -114,6 +114,8 @@ php artisan schedule:work
 ``` 
 </p>
 
+<!-- CSRF Token Mismatch On Axios error fixing - https://stackoverflow.com/questions/74340913/csrf-token-mismatch-on-axios-post-requests-in-laravel -->
+
 <hr>
 
 [Go back](../README.md) - to README.md

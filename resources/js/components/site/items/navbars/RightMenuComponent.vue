@@ -1,7 +1,7 @@
 <template>
     <div :class='"col-xs-3 col-xs-offset-1 blog-sidebar display-none-720px "+[right_navbar_class]'>
         <h3 class="navbar_title">{{ $t('article navigation menu') }}</h3>
-        <nav class="navbar fading-side-menu">
+        <nav class="fading-side-menu">
             <ul class="list-unstyled">
 
                 <li>

@@ -625,7 +625,7 @@ __webpack_require__.r(__webpack_exports__);
       axios.post('../api/add_to_favorite/' + product_id).then(function (response) {
         alert("Product addid in your favorite list!");
       })["catch"](function (error) {
-        alert("Error");
+        alert(error);
       });
     }
   }
@@ -10314,7 +10314,7 @@ var render = function () {
               ? _c("div", { staticClass: "row" }, [
                   _c("div", { staticClass: "col-md-12" }, [
                     _c("h2", { staticClass: "text-center" }, [
-                      _vm._v(_vm._s(_vm.$("shop.product description"))),
+                      _vm._v(_vm._s(_vm.$t("shop.product description"))),
                     ]),
                     _vm._v(" "),
                     _c("span", {

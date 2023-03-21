@@ -566,15 +566,13 @@ var render = function () {
                         event.image != _vm.NULL
                           ? _c("site-img", {
                               attrs: {
-                                src:
-                                  "../../../public/images/event_img/" +
-                                  event.image,
+                                src: "/public/images/event_img/" + event.image,
                                 alt: event.url_title,
                               },
                             })
                           : _c("site-img", {
                               attrs: {
-                                src: "../../../public/images/site_img/image.png",
+                                src: "/public/images/site_img/image.png",
                                 alt: event.url_title,
                               },
                             }),

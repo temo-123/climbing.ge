@@ -2,12 +2,17 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Notifications\Notifiable;
+use Laravel\Sanctum\HasApiTokens;
 
 class Favorite_outdoor_area extends Model
 {
-    use HasFactory;
+    // use HasFactory;
+
+    use HasApiTokens, HasFactory, Notifiable;
 
     protected $fillable = [
 	    'user_id',

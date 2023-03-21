@@ -52,11 +52,11 @@
                     <span class="admin_menu">{{ $t('user.menu.favorite products') }}</span>
                 </li>
             </router-link>
-            <router-link :to="{name: 'favoriteFilmsPage'}" exact> 
+            <!-- <router-link :to="{name: 'favoriteFilmsPage'}" exact> 
                 <li class="list-group-item text-muted">
                     <span class="admin_menu">{{ $t('user.menu.favorite films') }}</span>
                 </li>
-            </router-link>
+            </router-link> -->
 
             <router-link :to="{name: 'favoriteOutdoorArea'}" exact> 
                 <li class="list-group-item text-muted ">
@@ -469,12 +469,9 @@
 
             <li class="list-group-item text-muted admin_menu_static_block"></li>
 
-            <router-link :to="{name: 'usersList'}" exact 
+            <router-link :to="{name: 'multimedia'}" exact 
                 v-if="
-                    $can('add', 'user') ||
-                    $can('del', 'user') ||
-                    $can('edit_permissions', 'user') ||
-                    $can('create_ban', 'user')
+                    1 == 1
                 "        
             > 
                 <li class="list-group-item text-muted">
@@ -520,7 +517,7 @@
         methods: {
             logout(){
                 axios
-                .post('/logout')
+                .post(process.env.MIX_APP_SSH + process.env.MIX_USER_PAGE_URL + '/logout')
                 .then(()=>{
                     // window.location.href = "http://climibng.loc";
                     localStorage.removeItem('x_xsrf_token');

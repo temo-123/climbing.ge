@@ -46,8 +46,8 @@
 								</time>
 
 								<!-- <span @click="go_to_events_list('/event/'+event.url_title)" > -->
-									<site-img v-if="event.image != NULL" :src="'../../../public/images/event_img/'+event.image" :alt='event.url_title'/>
-									<site-img v-else :src="'../../../public/images/site_img/image.png'" :alt='event.url_title'/>
+									<site-img v-if="event.image != NULL" :src="'/public/images/event_img/'+event.image" :alt='event.url_title'/>
+									<site-img v-else :src="'/public/images/site_img/image.png'" :alt='event.url_title'/>
 								<!-- </span> -->
 
 								<!-- <img alt="Independence Day" src="https://farm4.staticflickr.com/3100/2693171833_3545fb852c_q.jpg" /> -->

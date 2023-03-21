@@ -5,7 +5,9 @@
                 <h1 class="blog-title">
                     {{ this.article[0].title  }}
 
-                    <span @click="add_to_favorite_outdoor_area(article.id)"> <i class="fa fa-heart-o favorite_icon add_to_favorite" ></i> </span>
+                    <span @click="add_to_favorite_outdoor_area(article.id)"> 
+                        <i class="fa fa-heart-o favorite_icon add_to_favorite" ></i> 
+                    </span>
                 </h1>
             </div>
         </div>
@@ -112,12 +114,12 @@
         },
         data: function () {
             return {
-                // tab_num: 1,
                 posts: [],
             }
         },
         mounted() {
             // this.get_posts()
+            console.log(document.querySelector('meta[name="csrf-token"]').getAttribute('content'));
         },
         watch: {
             '$route' (to, from) {
@@ -135,17 +137,22 @@
 
             add_to_favorite_outdoor_area(article_id){
                 axios
-                .post('../../../api/articles/add_to_favorite_outdoor_area/', {
-                    article_id: article_id,
-                })
+                .post('../api/outdoor/add_to_favorite_outdoor_area/'+article_id)
                 .then(response => {
                     alert(response.data)
                 })
                 .catch(error =>{
-                    alert(error)
+                    if(error.response.status === 401) {
+                        if(confirm('You are not login. Do you want log in?')){
+                            this.$router.go(-1)
+                        }
+                    }
+                    else{
+                        alert(error)
+                        console.log(error);
+                    }
                 })
-            },
-
+            }
             
         }
     }

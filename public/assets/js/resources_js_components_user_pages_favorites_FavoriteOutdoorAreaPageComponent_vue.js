@@ -515,16 +515,14 @@ var render = function () {
                       spot.image != _vm.NULL
                         ? _c("site-img", {
                             attrs: {
-                              src:
-                                "../../../public/images/outdoor_img/" +
-                                spot.image,
+                              src: "/public/images/outdoor_img/" + spot.image,
                               img_class: "card-img-top",
                               alt: spot[0][0].title,
                             },
                           })
                         : _c("site-img", {
                             attrs: {
-                              src: "../../../public/images/site_img/image.png",
+                              src: "/public/images/site_img/image.png",
                               img_class: "card-img-top",
                               alt: spot[0][0].title,
                             },
