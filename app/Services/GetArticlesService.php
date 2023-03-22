@@ -140,13 +140,13 @@ class GetArticlesService
 
         if($locale == "ru"){
             $ru_article_id = $article->ru_article_id;
-            $loc_article = Locale_article::where('id', '=', $ru_article_id,)->get();
+            $loc_article = Locale_article::where('id', '=', $ru_article_id,)->first();
             
             return (new static)->create_page_arr($loc_article, $article);
         }
         elseif ($locale == "ka") {
             $ka_article_id = $article->ka_article_id;
-            $loc_article = Locale_article::where('id', '=', $ka_article_id,)->get();
+            $loc_article = Locale_article::where('id', '=', $ka_article_id,)->first();
             
             return (new static)->create_page_arr($loc_article, $article);
         } else {
@@ -163,6 +163,8 @@ class GetArticlesService
     public function create_page_arr($loc_article, $article)
     {
         $locale_article = array();
+
+        // dd($loc_article);
 
         array_push($locale_article, 
             [

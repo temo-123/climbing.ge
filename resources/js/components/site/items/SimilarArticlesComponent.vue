@@ -1,7 +1,7 @@
 <template>
     <div class="row similar_articles" v-if="this.similar_article.length > 0">
         <div class="container">
-            <h2 id="other">{{ $t('similar articles')}}</h2>
+            <h2 id="other">{{ $t('guide.article.title.similar articles')}}</h2>
             <hr class="other_line">
         </div>
         <span v-if="article_category == 'outdoor'">
@@ -52,10 +52,10 @@
         mounted() {
             this.get_same_articles()
 
-            console.log(this.article_id);
-            console.log(this.article_category);
-            console.log(this.img_dir);
-            console.log(this.route);
+            // console.log(this.article_id);
+            // console.log(this.article_category);
+            // console.log(this.img_dir);
+            // console.log(this.route);
         },
         watch: {
             '$route' (to, from) {

@@ -21,20 +21,20 @@
                 <span v-html="event.locale_event.text" v-if="this.event.locale_event.text != null"></span>
 
             </div>
-        </div>
+        <!-- </div>
 
-        <div class='row'>
+        <div class='row'> -->
             <div class="col-md-12">
 
-                <div class="row" v-if="this.event.global_event.map != null">
-                    <h2 id="map">{{ $t('guide.title.map')}}</h2>
+                <span v-if="this.event.global_event.map != null && this.event.global_event.map != ''">
+                    <h2 id="map">{{ $t('guide.article.title.map')}}</h2>
                     <span v-html="event.global_event.map"></span>
-                </div>
+                </span>
 
-                <div class="row" v-if="this.event.locale_event.info != null">
-                    <h2 id="info">{{ $t('guide.title.info')}}</h2>
+                <span v-if="this.event.locale_event.info != null && this.event.locale_event.info != null">
+                    <h2 id="info">{{ $t('guide.article.title.info')}}</h2>
                     <span v-html="event.locale_event.info"></span>
-                </div>
+                </span>
 
             </div>
         </div>

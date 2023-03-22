@@ -26,7 +26,7 @@
 
                 <!-- routes -->
                 <div v-if="this.article[0].route || this.article.global_info.routes_info != []">
-                    <h2 id="routes">{{ $t('route')}}</h2>
+                    <h2 id="routes">{{ $t('guide.article.title.route')}}</h2>
 
                     <routeQuanDiogram 
                         :outdoor_region_article_id="this.article.id"
@@ -95,7 +95,7 @@
     import breadcrumb from './BreadcrumbComponent.vue'
     import articleTextBlocks from './ArticleTextBlocksComponent'
 
-    import routeQuanDiogram from '../items/RoutesQuantityComponent.vue'
+    import routeQuanDiogram from '../items/climbing_routes/RoutesQuantityComponent.vue'
 
     export default {
         props: [

@@ -1,6 +1,6 @@
 {
     "guide": {
-        "name": "Climbing guidebook",
+        "name": "Climbing Guidebook",
 
         "meta": {
             "index": "Climbing in georgia",
@@ -28,7 +28,7 @@
         },
 
         "article_right_nabar": {
-            "article navigation menu": "Navigation Menu",
+            "menu title": "Navigation Menu",
             "similar articles": "Similar Articles",
             "gallery": "Gallery",
             "comments": "Comments",
@@ -59,8 +59,9 @@
             "name": "Name",
             "height": "Height",
             "bolts": "Bolts",
-            "grade FR": "grade FR",
-            "grade YDS": "grade UDS",
+            "grade fr": "grade FR",
+            "grade yds": "grade YDS",
+            "grade uiaa": "grade UIAA",
 
             "mtp name": "Multy-pitch name",
             "auther": "Auther",
@@ -94,25 +95,26 @@
         },
 
         "article": {
+            "title": {
+                "mount massive": "Mountain Massive",
+                "best time": "Best time to climb",
+                "how_get": "How to get there",
+                "what need": "What you need",
+                "comments": "Comments",
+                "gallery": "Gallery",
+                "info": "Info",
+                "map": "Map",
+                "interested event": "Interested",
+                "similar articles": "Similar Articles",
+                "sector name": "Sector name",
+                "address": "Address",
+                "price": "Price",
+                "route": "Routes",
+                "back": "Go Back",
+                "all articles": "All Articles"
+            },
+
             "route_quantyty": "In Georgia are {sectors} outdoor climbing sectors, {sport_routes} sport climbing routes, {boulder_routes} boulder routes, {mtps} multy pitch. You can see all outdoor climbing arias info on this page.",
-
-            "mount massive": "Mountain Massive",
-            "best time": "Best time to climb",
-            "how get": "How to get there",
-            "what need": "What you need",
-            "comments": "Comments",
-            "gallery": "Gallery",
-            "info": "Info",
-            "map": "Map",
-            "interested event": "Interested",
-            "similar articles": "Similar Articles",
-            "sector name": "Sector name",
-            "address": "Address",
-            "price": "Price",
-            "route": "Routes",
-            "back": "Go Back",
-            "all articles": "All Articles",
-
 
             "prices from": "Prices from",
             "working time": "Working hours",

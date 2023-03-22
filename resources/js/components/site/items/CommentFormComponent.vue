@@ -6,7 +6,7 @@
                                     
                     <div class="row">
                         <div class="col-md-12">
-                            <h2 id='comments'>{{ $t('comments')}}</h2>
+                            <h2 id='comments'>{{ $t('guide.article.title.comments')}}</h2>
                         </div>
                     </div>
                     

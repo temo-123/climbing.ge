@@ -7952,6 +7952,34 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
+/***/ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/global_components/FooterBottomTextComponent.vue?vue&type=script&lang=js&":
+/*!**************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/global_components/FooterBottomTextComponent.vue?vue&type=script&lang=js& ***!
+  \**************************************************************************************************************************************************************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+//
+//
+//
+//
+//
+//
+//
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
+  data: function data() {
+    return {
+      active_year: new Date().getFullYear()
+    };
+  }
+});
+
+/***/ }),
+
 /***/ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/global_components/FooterLogoBlockComponent.vue?vue&type=script&lang=js&":
 /*!*************************************************************************************************************************************************************************************************************************************************!*\
   !*** ./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/global_components/FooterLogoBlockComponent.vue?vue&type=script&lang=js& ***!
@@ -8660,10 +8688,10 @@ __webpack_require__.r(__webpack_exports__);
   data: function data() {
     return {
       url: window.location.href,
-      title: "Say hi to Vite! A brand new, extremely fast development setup for Vue.",
-      description: "This week, I’d like to introduce you to 'Vite', which means 'Fast'. It’s a brand new development setup created by Evan You.",
-      quote: "The hot reload is so fast it\'s near instant. - Evan You",
-      hashtags: "georgia, climbing in georgia"
+      // title: "Say hi to Vite! A brand new, extremely fast development setup for Vue.",
+      // description: "This week, I’d like to introduce you to 'Vite', which means 'Fast'. It’s a brand new development setup created by Evan You.",
+      // quote: "The hot reload is so fast it\'s near instant. - Evan You",
+      hashtags: "georgia, climbingingeorgia"
     };
   }
 });
@@ -8734,6 +8762,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _global_components_FollowComponent_vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../global_components/FollowComponent.vue */ "./resources/js/components/global_components/FollowComponent.vue");
 /* harmony import */ var _global_components_ShareComponent_vue__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../global_components/ShareComponent.vue */ "./resources/js/components/global_components/ShareComponent.vue");
 /* harmony import */ var _global_components_FooterLogoBlockComponent_vue__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../global_components/FooterLogoBlockComponent.vue */ "./resources/js/components/global_components/FooterLogoBlockComponent.vue");
+/* harmony import */ var _global_components_FooterBottomTextComponent_vue__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../global_components/FooterBottomTextComponent.vue */ "./resources/js/components/global_components/FooterBottomTextComponent.vue");
 //
 //
 //
@@ -8784,19 +8813,22 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+
 
 
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
     return {
-      num: 0
+      num: 0,
+      active_year: new Date().getFullYear()
     };
   },
   components: {
     followComponent: _global_components_FollowComponent_vue__WEBPACK_IMPORTED_MODULE_0__["default"],
     share: _global_components_ShareComponent_vue__WEBPACK_IMPORTED_MODULE_1__["default"],
-    footerLogo: _global_components_FooterLogoBlockComponent_vue__WEBPACK_IMPORTED_MODULE_2__["default"]
+    footerLogo: _global_components_FooterLogoBlockComponent_vue__WEBPACK_IMPORTED_MODULE_2__["default"],
+    footerText: _global_components_FooterBottomTextComponent_vue__WEBPACK_IMPORTED_MODULE_3__["default"]
   },
   mounted: function mounted() {// this.num = Math.floor(Math.random() * 11);
   },
@@ -9066,6 +9098,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _global_components_FollowComponent_vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../global_components/FollowComponent.vue */ "./resources/js/components/global_components/FollowComponent.vue");
 /* harmony import */ var _global_components_FooterLogoBlockComponent_vue__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../global_components/FooterLogoBlockComponent.vue */ "./resources/js/components/global_components/FooterLogoBlockComponent.vue");
 /* harmony import */ var _global_components_ShareComponent_vue__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../global_components/ShareComponent.vue */ "./resources/js/components/global_components/ShareComponent.vue");
+/* harmony import */ var _global_components_FooterBottomTextComponent_vue__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../global_components/FooterBottomTextComponent.vue */ "./resources/js/components/global_components/FooterBottomTextComponent.vue");
 function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); enumerableOnly && (symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; })), keys.push.apply(keys, symbols); } return keys; }
 
 function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = null != arguments[i] ? arguments[i] : {}; i % 2 ? ownKeys(Object(source), !0).forEach(function (key) { _defineProperty(target, key, source[key]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)) : ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } return target; }
@@ -9188,6 +9221,8 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 //
+//
+
 
 
 
@@ -9213,6 +9248,7 @@ var _require = __webpack_require__(/*! qrcanvas-vue */ "./node_modules/qrcanvas-
     followComponent: _global_components_FollowComponent_vue__WEBPACK_IMPORTED_MODULE_0__["default"],
     footerLogo: _global_components_FooterLogoBlockComponent_vue__WEBPACK_IMPORTED_MODULE_1__["default"],
     share: _global_components_ShareComponent_vue__WEBPACK_IMPORTED_MODULE_2__["default"],
+    footerText: _global_components_FooterBottomTextComponent_vue__WEBPACK_IMPORTED_MODULE_3__["default"],
     QRCanvas: QRCanvas
   },
   watch: {
@@ -9229,7 +9265,7 @@ var _require = __webpack_require__(/*! qrcanvas-vue */ "./node_modules/qrcanvas-
 
       this.options.data = window.location.href;
       var image = new Image();
-      image.src = "./public/images/site_img/x.png";
+      image.src = "https://" + "user.climbing.loc" + "/public/images/site_img/x.png";
 
       image.onload = function () {
         _this.options = _objectSpread(_objectSpread({}, _this.options), {}, {
@@ -17119,6 +17155,30 @@ ___CSS_LOADER_EXPORT___.push([module.id, "\n.footer_input, .footer_re_capcha{\n 
 
 /***/ }),
 
+/***/ "./node_modules/laravel-mix/node_modules/css-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[1]!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/global_components/FooterBottomTextComponent.vue?vue&type=style&index=0&lang=css&":
+/*!***********************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/laravel-mix/node_modules/css-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[1]!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/global_components/FooterBottomTextComponent.vue?vue&type=style&index=0&lang=css& ***!
+  \***********************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************/
+/***/ ((module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _node_modules_laravel_mix_node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../../../node_modules/laravel-mix/node_modules/css-loader/dist/runtime/api.js */ "./node_modules/laravel-mix/node_modules/css-loader/dist/runtime/api.js");
+/* harmony import */ var _node_modules_laravel_mix_node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_node_modules_laravel_mix_node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0__);
+// Imports
+
+var ___CSS_LOADER_EXPORT___ = _node_modules_laravel_mix_node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
+// Module
+___CSS_LOADER_EXPORT___.push([module.id, "\n.footer_bottom_line {\n    margin: 5% 5% 2%;\n    border-color: #565656;\n}\n.footer_bottom_text{\n    text-align: center;\n    color: #878787;\n}\n", ""]);
+// Exports
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
+
+
+/***/ }),
+
 /***/ "./node_modules/laravel-mix/node_modules/css-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[1]!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/global_components/LocaleChangeComponent.vue?vue&type=style&index=0&lang=css&":
 /*!*******************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
   !*** ./node_modules/laravel-mix/node_modules/css-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[1]!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/global_components/LocaleChangeComponent.vue?vue&type=style&index=0&lang=css& ***!
@@ -17280,7 +17340,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_laravel_mix_node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n/* .footer_qr{\n    width: 80%;\n    margin-left: 10%;\n} */\n.foo_qr[data-v-cf7b5d14]{\n    width: 50%;\n    margin-left: 25%;\n}\n", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n/* .footer_qr{\n    width: 80%;\n    margin-left: 10%;\n} */\n.foo_qr[data-v-cf7b5d14]{\n    width: 50%;\n    margin-left: 25%;\n}\n", ""]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
@@ -60490,6 +60550,36 @@ var update = _node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js
 
 /***/ }),
 
+/***/ "./node_modules/style-loader/dist/cjs.js!./node_modules/laravel-mix/node_modules/css-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[1]!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/global_components/FooterBottomTextComponent.vue?vue&type=style&index=0&lang=css&":
+/*!***************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/style-loader/dist/cjs.js!./node_modules/laravel-mix/node_modules/css-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[1]!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/global_components/FooterBottomTextComponent.vue?vue&type=style&index=0&lang=css& ***!
+  \***************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! !../../../../node_modules/style-loader/dist/runtime/injectStylesIntoStyleTag.js */ "./node_modules/style-loader/dist/runtime/injectStylesIntoStyleTag.js");
+/* harmony import */ var _node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _node_modules_laravel_mix_node_modules_css_loader_dist_cjs_js_clonedRuleSet_9_0_rules_0_use_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_dist_cjs_js_clonedRuleSet_9_0_rules_0_use_2_node_modules_vue_loader_lib_index_js_vue_loader_options_FooterBottomTextComponent_vue_vue_type_style_index_0_lang_css___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! !!../../../../node_modules/laravel-mix/node_modules/css-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[1]!../../../../node_modules/vue-loader/lib/loaders/stylePostLoader.js!../../../../node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[2]!../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./FooterBottomTextComponent.vue?vue&type=style&index=0&lang=css& */ "./node_modules/laravel-mix/node_modules/css-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[1]!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/global_components/FooterBottomTextComponent.vue?vue&type=style&index=0&lang=css&");
+
+            
+
+var options = {};
+
+options.insert = "head";
+options.singleton = false;
+
+var update = _node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0___default()(_node_modules_laravel_mix_node_modules_css_loader_dist_cjs_js_clonedRuleSet_9_0_rules_0_use_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_dist_cjs_js_clonedRuleSet_9_0_rules_0_use_2_node_modules_vue_loader_lib_index_js_vue_loader_options_FooterBottomTextComponent_vue_vue_type_style_index_0_lang_css___WEBPACK_IMPORTED_MODULE_1__["default"], options);
+
+
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (_node_modules_laravel_mix_node_modules_css_loader_dist_cjs_js_clonedRuleSet_9_0_rules_0_use_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_dist_cjs_js_clonedRuleSet_9_0_rules_0_use_2_node_modules_vue_loader_lib_index_js_vue_loader_options_FooterBottomTextComponent_vue_vue_type_style_index_0_lang_css___WEBPACK_IMPORTED_MODULE_1__["default"].locals || {});
+
+/***/ }),
+
 /***/ "./node_modules/style-loader/dist/cjs.js!./node_modules/laravel-mix/node_modules/css-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[1]!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/global_components/LocaleChangeComponent.vue?vue&type=style&index=0&lang=css&":
 /*!***********************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
   !*** ./node_modules/style-loader/dist/cjs.js!./node_modules/laravel-mix/node_modules/css-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[1]!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/global_components/LocaleChangeComponent.vue?vue&type=style&index=0&lang=css& ***!
@@ -69975,6 +70065,47 @@ component.options.__file = "resources/js/components/global_components/FollowComp
 
 /***/ }),
 
+/***/ "./resources/js/components/global_components/FooterBottomTextComponent.vue":
+/*!*********************************************************************************!*\
+  !*** ./resources/js/components/global_components/FooterBottomTextComponent.vue ***!
+  \*********************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _FooterBottomTextComponent_vue_vue_type_template_id_13d2d3dc___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./FooterBottomTextComponent.vue?vue&type=template&id=13d2d3dc& */ "./resources/js/components/global_components/FooterBottomTextComponent.vue?vue&type=template&id=13d2d3dc&");
+/* harmony import */ var _FooterBottomTextComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./FooterBottomTextComponent.vue?vue&type=script&lang=js& */ "./resources/js/components/global_components/FooterBottomTextComponent.vue?vue&type=script&lang=js&");
+/* harmony import */ var _FooterBottomTextComponent_vue_vue_type_style_index_0_lang_css___WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./FooterBottomTextComponent.vue?vue&type=style&index=0&lang=css& */ "./resources/js/components/global_components/FooterBottomTextComponent.vue?vue&type=style&index=0&lang=css&");
+/* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! !../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+;
+
+
+/* normalize component */
+
+var component = (0,_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_3__["default"])(
+  _FooterBottomTextComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _FooterBottomTextComponent_vue_vue_type_template_id_13d2d3dc___WEBPACK_IMPORTED_MODULE_0__.render,
+  _FooterBottomTextComponent_vue_vue_type_template_id_13d2d3dc___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns,
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/components/global_components/FooterBottomTextComponent.vue"
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (component.exports);
+
+/***/ }),
+
 /***/ "./resources/js/components/global_components/FooterLogoBlockComponent.vue":
 /*!********************************************************************************!*\
   !*** ./resources/js/components/global_components/FooterLogoBlockComponent.vue ***!
@@ -71138,6 +71269,22 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
+/***/ "./resources/js/components/global_components/FooterBottomTextComponent.vue?vue&type=script&lang=js&":
+/*!**********************************************************************************************************!*\
+  !*** ./resources/js/components/global_components/FooterBottomTextComponent.vue?vue&type=script&lang=js& ***!
+  \**********************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_0_rules_0_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_FooterBottomTextComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./FooterBottomTextComponent.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/global_components/FooterBottomTextComponent.vue?vue&type=script&lang=js&");
+ /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (_node_modules_babel_loader_lib_index_js_clonedRuleSet_5_0_rules_0_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_FooterBottomTextComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
 /***/ "./resources/js/components/global_components/FooterLogoBlockComponent.vue?vue&type=script&lang=js&":
 /*!*********************************************************************************************************!*\
   !*** ./resources/js/components/global_components/FooterLogoBlockComponent.vue?vue&type=script&lang=js& ***!
@@ -71477,6 +71624,19 @@ __webpack_require__.r(__webpack_exports__);
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _node_modules_style_loader_dist_cjs_js_node_modules_laravel_mix_node_modules_css_loader_dist_cjs_js_clonedRuleSet_9_0_rules_0_use_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_dist_cjs_js_clonedRuleSet_9_0_rules_0_use_2_node_modules_vue_loader_lib_index_js_vue_loader_options_FollowComponent_vue_vue_type_style_index_0_lang_css___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/style-loader/dist/cjs.js!../../../../node_modules/laravel-mix/node_modules/css-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[1]!../../../../node_modules/vue-loader/lib/loaders/stylePostLoader.js!../../../../node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[2]!../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./FollowComponent.vue?vue&type=style&index=0&lang=css& */ "./node_modules/style-loader/dist/cjs.js!./node_modules/laravel-mix/node_modules/css-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[1]!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/global_components/FollowComponent.vue?vue&type=style&index=0&lang=css&");
+
+
+/***/ }),
+
+/***/ "./resources/js/components/global_components/FooterBottomTextComponent.vue?vue&type=style&index=0&lang=css&":
+/*!******************************************************************************************************************!*\
+  !*** ./resources/js/components/global_components/FooterBottomTextComponent.vue?vue&type=style&index=0&lang=css& ***!
+  \******************************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_style_loader_dist_cjs_js_node_modules_laravel_mix_node_modules_css_loader_dist_cjs_js_clonedRuleSet_9_0_rules_0_use_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_dist_cjs_js_clonedRuleSet_9_0_rules_0_use_2_node_modules_vue_loader_lib_index_js_vue_loader_options_FooterBottomTextComponent_vue_vue_type_style_index_0_lang_css___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/style-loader/dist/cjs.js!../../../../node_modules/laravel-mix/node_modules/css-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[1]!../../../../node_modules/vue-loader/lib/loaders/stylePostLoader.js!../../../../node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[2]!../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./FooterBottomTextComponent.vue?vue&type=style&index=0&lang=css& */ "./node_modules/style-loader/dist/cjs.js!./node_modules/laravel-mix/node_modules/css-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[1]!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/global_components/FooterBottomTextComponent.vue?vue&type=style&index=0&lang=css&");
 
 
 /***/ }),
@@ -72045,6 +72205,23 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "staticRenderFns": () => (/* reexport safe */ _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_FollowComponent_vue_vue_type_template_id_0e4e25d8___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns)
 /* harmony export */ });
 /* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_FollowComponent_vue_vue_type_template_id_0e4e25d8___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./FollowComponent.vue?vue&type=template&id=0e4e25d8& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/global_components/FollowComponent.vue?vue&type=template&id=0e4e25d8&");
+
+
+/***/ }),
+
+/***/ "./resources/js/components/global_components/FooterBottomTextComponent.vue?vue&type=template&id=13d2d3dc&":
+/*!****************************************************************************************************************!*\
+  !*** ./resources/js/components/global_components/FooterBottomTextComponent.vue?vue&type=template&id=13d2d3dc& ***!
+  \****************************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "render": () => (/* reexport safe */ _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_FooterBottomTextComponent_vue_vue_type_template_id_13d2d3dc___WEBPACK_IMPORTED_MODULE_0__.render),
+/* harmony export */   "staticRenderFns": () => (/* reexport safe */ _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_FooterBottomTextComponent_vue_vue_type_template_id_13d2d3dc___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns)
+/* harmony export */ });
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_FooterBottomTextComponent_vue_vue_type_template_id_13d2d3dc___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./FooterBottomTextComponent.vue?vue&type=template&id=13d2d3dc& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/global_components/FooterBottomTextComponent.vue?vue&type=template&id=13d2d3dc&");
 
 
 /***/ }),
@@ -76283,6 +76460,46 @@ render._withStripped = true
 
 /***/ }),
 
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/global_components/FooterBottomTextComponent.vue?vue&type=template&id=13d2d3dc&":
+/*!*******************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/global_components/FooterBottomTextComponent.vue?vue&type=template&id=13d2d3dc& ***!
+  \*******************************************************************************************************************************************************************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "render": () => (/* binding */ render),
+/* harmony export */   "staticRenderFns": () => (/* binding */ staticRenderFns)
+/* harmony export */ });
+var render = function () {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("div", { staticClass: "row" }, [
+    _c("hr", { staticClass: "footer_bottom_line" }),
+    _vm._v(" "),
+    _c("p", { staticClass: "footer_bottom_text" }, [
+      _vm._v(
+        "© 2017-" +
+          _vm._s(_vm.active_year) +
+          " Climbing In Georgia. Project by Temo Samsonadze "
+      ),
+      _c(
+        "a",
+        { attrs: { href: "https://github.com/temo-123", target: "_blank" } },
+        [_vm._v("(Github -> temo-123)")]
+      ),
+    ]),
+  ])
+}
+var staticRenderFns = []
+render._withStripped = true
+
+
+
+/***/ }),
+
 /***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/global_components/FooterLogoBlockComponent.vue?vue&type=template&id=7cbb87de&":
 /*!******************************************************************************************************************************************************************************************************************************************************!*\
   !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/global_components/FooterLogoBlockComponent.vue?vue&type=template&id=7cbb87de& ***!
@@ -77442,32 +77659,41 @@ var render = function () {
         _c("footerLogo"),
         _vm._v(" "),
         _c("div", { staticClass: "row" }, [
-          _c("div", { staticClass: "col-md-4 display-none-720px" }, [
-            _c("div", { staticClass: "f-about", style: "color: #fff;" }, [
-              _c("h4", { staticClass: "footer_title" }, [
-                _vm._v(_vm._s(_vm.$t("global.footer.about us"))),
+          _c(
+            "div",
+            { staticClass: "col-md-4 display-none-720px" },
+            [
+              _c("div", { staticClass: "f-about", style: "color: #fff;" }, [
+                _c("h4", { staticClass: "footer_title" }, [
+                  _vm._v(_vm._s(_vm.$t("global.footer.about us"))),
+                ]),
+                _vm._v(" "),
+                _c(
+                  "div",
+                  { staticClass: "footer_description_block" },
+                  [
+                    _c("span", {
+                      domProps: {
+                        innerHTML: _vm._s(
+                          this.$siteData.shop_short_description
+                        ),
+                      },
+                    }),
+                    _vm._v(" "),
+                    _c(
+                      "router-link",
+                      { attrs: { to: { name: "about_store" }, exact: "" } },
+                      [_vm._v(_vm._s(_vm.$t("global.footer.more")))]
+                    ),
+                  ],
+                  1
+                ),
               ]),
               _vm._v(" "),
-              _c(
-                "div",
-                { staticClass: "footer_description_block" },
-                [
-                  _c("span", {
-                    domProps: {
-                      innerHTML: _vm._s(this.$siteData.shop_short_description),
-                    },
-                  }),
-                  _vm._v(" "),
-                  _c(
-                    "router-link",
-                    { attrs: { to: { name: "about_store" }, exact: "" } },
-                    [_vm._v(_vm._s(_vm.$t("global.footer.more")))]
-                  ),
-                ],
-                1
-              ),
-            ]),
-          ]),
+              _c("followComponent"),
+            ],
+            1
+          ),
           _vm._v(" "),
           _c("div", { staticClass: "col-md-4 display-none-720px" }, [
             _c("div", { staticClass: "f-links" }, [
@@ -77515,30 +77741,25 @@ var render = function () {
             ]),
           ]),
           _vm._v(" "),
-          _c(
-            "div",
-            { staticClass: "col-md-4" },
-            [
-              _c("div", { staticClass: "row f-links" }, [
-                _c(
-                  "div",
-                  { staticClass: "flick" },
-                  [
-                    _c("h4", { staticClass: "footer_title" }, [
-                      _vm._v(_vm._s(_vm.$t("global.footer.share"))),
-                    ]),
-                    _vm._v(" "),
-                    _c("share"),
-                  ],
-                  1
-                ),
-              ]),
-              _vm._v(" "),
-              _c("followComponent"),
-            ],
-            1
-          ),
+          _c("div", { staticClass: "col-md-4" }, [
+            _c("div", { staticClass: "row f-links" }, [
+              _c(
+                "div",
+                { staticClass: "flick" },
+                [
+                  _c("h4", { staticClass: "footer_title" }, [
+                    _vm._v(_vm._s(_vm.$t("global.footer.share"))),
+                  ]),
+                  _vm._v(" "),
+                  _c("share"),
+                ],
+                1
+              ),
+            ]),
+          ]),
         ]),
+        _vm._v(" "),
+        _c("footerText"),
       ],
       1
     ),
@@ -77907,45 +78128,54 @@ var render = function () {
         _c("footerLogo"),
         _vm._v(" "),
         _c("div", { staticClass: "row" }, [
-          _c("div", { staticClass: "col-md-4 display-none-720px" }, [
-            _c("div", { staticClass: "f-about container" }, [
-              _c("h4", { staticClass: "footer_title" }, [
-                _vm._v(_vm._s(_vm.$t("global.footer.about us"))),
-              ]),
-              _vm._v(" "),
-              _c(
-                "div",
-                { staticClass: "footer_description_block" },
-                [
-                  _c("span", {
-                    domProps: {
-                      innerHTML: _vm._s(this.$siteData.guid_short_description),
-                    },
-                  }),
-                  _vm._v(" "),
-                  _c(
-                    "router-link",
-                    {
-                      attrs: {
-                        to: {
-                          name: "about_us",
-                          params: { lang: this.$i18n.locale },
+          _c(
+            "div",
+            { staticClass: "col-md-4 display-none-720px" },
+            [
+              _c("div", { staticClass: "f-about container" }, [
+                _c("h4", { staticClass: "footer_title" }, [
+                  _vm._v(_vm._s(_vm.$t("global.footer.about us"))),
+                ]),
+                _vm._v(" "),
+                _c(
+                  "div",
+                  { staticClass: "footer_description_block" },
+                  [
+                    _c("span", {
+                      domProps: {
+                        innerHTML: _vm._s(
+                          this.$siteData.guid_short_description
+                        ),
+                      },
+                    }),
+                    _vm._v(" "),
+                    _c(
+                      "router-link",
+                      {
+                        attrs: {
+                          to: {
+                            name: "about_us",
+                            params: { lang: this.$i18n.locale },
+                          },
                         },
                       },
-                    },
-                    [
-                      _vm._v(
-                        "\n                        " +
-                          _vm._s(_vm.$t("global.footer.more")) +
-                          "\n                        "
-                      ),
-                    ]
-                  ),
-                ],
-                1
-              ),
-            ]),
-          ]),
+                      [
+                        _vm._v(
+                          "\n                        " +
+                            _vm._s(_vm.$t("global.footer.more")) +
+                            "\n                        "
+                        ),
+                      ]
+                    ),
+                  ],
+                  1
+                ),
+              ]),
+              _vm._v(" "),
+              _c("followComponent"),
+            ],
+            1
+          ),
           _vm._v(" "),
           _c("div", { staticClass: "col-md-4" }, [
             _c("div", { staticClass: "f-links" }, [
@@ -78107,50 +78337,45 @@ var render = function () {
             ]),
           ]),
           _vm._v(" "),
-          _c(
-            "div",
-            { staticClass: "col-md-4" },
-            [
-              _c("div", { staticClass: "row f-links container" }, [
+          _c("div", { staticClass: "col-md-4" }, [
+            _c("div", { staticClass: "row f-links container" }, [
+              _c(
+                "div",
+                { staticClass: "flick" },
+                [
+                  _c("h4", { staticClass: "footer_title" }, [
+                    _vm._v(_vm._s(_vm.$t("global.footer.share"))),
+                  ]),
+                  _vm._v(" "),
+                  _c("share"),
+                ],
+                1
+              ),
+            ]),
+            _vm._v(" "),
+            _c("div", { staticClass: "row f-links container" }, [
+              _c("div", { staticClass: "flick" }, [
+                _c("h4", { staticClass: "footer_title" }, [
+                  _vm._v(_vm._s(_vm.$t("global.footer.qr"))),
+                ]),
+                _vm._v(" "),
                 _c(
                   "div",
-                  { staticClass: "flick" },
+                  { staticClass: "row" },
                   [
-                    _c("h4", { staticClass: "footer_title" }, [
-                      _vm._v(_vm._s(_vm.$t("global.footer.share"))),
-                    ]),
-                    _vm._v(" "),
-                    _c("share"),
+                    _c("QRCanvas", {
+                      staticClass: "foo_qr",
+                      attrs: { options: _vm.options },
+                    }),
                   ],
                   1
                 ),
               ]),
-              _vm._v(" "),
-              _c("div", { staticClass: "row f-links container" }, [
-                _c("div", { staticClass: "flick" }, [
-                  _c("h4", { staticClass: "footer_title" }, [
-                    _vm._v(_vm._s(_vm.$t("global.footer.qr"))),
-                  ]),
-                  _vm._v(" "),
-                  _c(
-                    "div",
-                    { staticClass: "row" },
-                    [
-                      _c("QRCanvas", {
-                        staticClass: "foo_qr",
-                        attrs: { options: _vm.options },
-                      }),
-                    ],
-                    1
-                  ),
-                ]),
-              ]),
-              _vm._v(" "),
-              _c("followComponent"),
-            ],
-            1
-          ),
+            ]),
+          ]),
         ]),
+        _vm._v(" "),
+        _c("footerText"),
       ],
       1
     ),
@@ -100576,7 +100801,7 @@ module.exports = JSON.parse('{"_from":"axios@^0.21.4","_id":"axios@0.21.4","_inB
 /***/ ((module) => {
 
 "use strict";
-module.exports = JSON.parse('{"guide":{"name":"Climbing guidebook","meta":{"index":"Climbing in georgia","indoor climbing":"Indoor climbing","outdoor climbing":"Outdoor climbing","ice climbing":"Ice & mix","events":"Events & competitions","mountaineering":"Mountaineering","other":"Other","about us":"About us","search":"Search climbing spots in Georgia"},"menu":{"climbing":"Rock climbing","indoor climbing":"Indoor climbing","outdoor climbing":"Outdoor climbing","ice climbing":"Ice & mix","events":"Events & competitions","mountaineering":"Mountaineering","other":"Other","about us":"About us","login":"Login","sitemap":"Sitemap"},"article_right_nabar":{"article navigation menu":"Navigation Menu","similar articles":"Similar Articles","gallery":"Gallery","comments":"Comments","description":"Description","sectors":"Climbing sectors & routes"},"title":{"news":"News","topo":"Topo","what we do":"What we do","gallery":"Gallery","tech tips":"Tech tips","events":"Events and Cometitions","climbing":"Climbing","indoor climbing":"Indoor climbing","outdoor climbing":"Outdoor climbing","ice climbing":"Ice & mix","mountaineering":"Mountaineering","other":"Other","about us":"About us","partner":"Partners","message":"Send message"},"route":{"name":"Name","height":"Height","bolts":"Bolts","grade FR":"grade FR","grade YDS":"grade UDS","mtp name":"Multy-pitch name","auther":"Auther","creating data":"Creating data","first ascent":"First ascent","top rope":"Top Rope","tred":"Tred Gear","more":"More","route detals":"Routes detals","mtp detals":"Multy-pitch detals"},"sector":{"name":"Sector name","shade after 10.00 am":"In shade after 10.00 am","shade after 15.00 pm":"In shade after 15.00 pm","shade befor noon":"In shade befor noon","shade in the afternoon":"In shade in the afternoon","shade whole day":"In the shade whole day","sun the whole day":"In the sun the whole day","overhang":"Overhang","slabby":"Slabby","vertical":"Vertical","roof":"Roof","for_family":"This sector recomendidi family climbing. It`s seifty for kids","for_kids":"This sector recomendidi family climbing. It`s seifty for kids","walking":"Wolging time from car stoping to climbin sector"},"article":{"route_quantyty":"In Georgia are {sectors} outdoor climbing sectors, {sport_routes} sport climbing routes, {boulder_routes} boulder routes, {mtps} multy pitch. You can see all outdoor climbing arias info on this page.","mount massive":"Mountain Massive","best time":"Best time to climb","how get":"How to get there","what need":"What you need","comments":"Comments","gallery":"Gallery","info":"Info","map":"Map","interested event":"Interested","similar articles":"Similar Articles","sector name":"Sector name","address":"Address","price":"Price","route":"Routes","back":"Go Back","all articles":"All Articles","prices from":"Prices from","working time":"Working hours","closed":"Temporarily closed"},"breadcrumb home":"Home","serch":""},"shop":{"name":"Climbng shop","meta":{"products":"Indoor climbing","services":"Outdoor climbing","categories":"Categories","about us":"About us","search":"Search product"},"menu":{"products":"Products","services":"Services","categories":"Categories","about us":"About us"},"title":{"services":"Ouer services","products":"Products","search":"Search products","gallery":"Gallery","similar":{"products":"You might also like","services":"Other services"}},"product desc":{"category":"Category","material":"Material","weight":"Weight"},"seller":{"seller contact":"Contacts","email":"Email","phone":"Phone number"},"limited quantity":"Limited quantity ","out of stock":"Out of stock","product description":"Description","add to cart":"Add to cart","all products":"All products","max products":"This is maximal quantyty for this product!!!","add successful":"Product add successful!!!","custom product":"Custom production"},"user":{"name":"User panel","menu":{"favorite products":"My favorite products","favorite films":"My favorite films","admin dashboard":"Admin dashboard","home":"My page","cart":"My cart","orders":"Orders","my orders":"My Orders","total orders":"All orders","films":"Films list","my interested events":"Interested events","followers":"Followers & following","products & category":"Products & Category","services":"Services","all comments":"All comments","my comments":"My comments","my posts":"My posts","all posts":"All posts","users":"Users & Parmissions","options":"Options","indoor climbing":"Indoor climbing","outdoor climbing":"Outdoor climbing","ice climbing":"Ice & Mix","mountaineering":"Mountaineering","other":"Other","security":"Security (Tech tips)","partners":"Partners","events":"Events","news":"News","gallery":"Gallery","about":"About us","login":"Login","logout":"Logout","sectors & routes":"Sectors & Routes","local bisnes":"Suport local bisnes","my favorite outdoor area":"My favorite outdoor areas"}},"global":{"footer":{"links":"Links","share":"Share","more":"More","about us":"About us","follow":"Follow us","qr":"QR Code"},"message":{"title":"Message","form":{"name":"Name *","surname":"Surname *","email":"E_mail *","number":"Phone number","country":"Yout country","message text":"Your message"},"send":"Send"},"login":"Login","comments":"Comments","page is empty":"Page is empty","services":"Services"},"error":{"404":{"title":"Oops! Error 404! Page Not Found","description":"Sorry, an error has occured, Requested page not found!","go_homehome":"Go to home page"}}}');
+module.exports = JSON.parse('{"guide":{"name":"Climbing Guidebook","meta":{"index":"Climbing in georgia","indoor climbing":"Indoor climbing","outdoor climbing":"Outdoor climbing","ice climbing":"Ice & mix","events":"Events & competitions","mountaineering":"Mountaineering","other":"Other","about us":"About us","search":"Search climbing spots in Georgia"},"menu":{"climbing":"Rock climbing","indoor climbing":"Indoor climbing","outdoor climbing":"Outdoor climbing","ice climbing":"Ice & mix","events":"Events & competitions","mountaineering":"Mountaineering","other":"Other","about us":"About us","login":"Login","sitemap":"Sitemap"},"article_right_nabar":{"menu title":"Navigation Menu","similar articles":"Similar Articles","gallery":"Gallery","comments":"Comments","description":"Description","sectors":"Climbing sectors & routes"},"title":{"news":"News","topo":"Topo","what we do":"What we do","gallery":"Gallery","tech tips":"Tech tips","events":"Events and Cometitions","climbing":"Climbing","indoor climbing":"Indoor climbing","outdoor climbing":"Outdoor climbing","ice climbing":"Ice & mix","mountaineering":"Mountaineering","other":"Other","about us":"About us","partner":"Partners","message":"Send message"},"route":{"name":"Name","height":"Height","bolts":"Bolts","grade fr":"grade FR","grade yds":"grade YDS","grade uiaa":"grade UIAA","mtp name":"Multy-pitch name","auther":"Auther","creating data":"Creating data","first ascent":"First ascent","top rope":"Top Rope","tred":"Tred Gear","more":"More","route detals":"Routes detals","mtp detals":"Multy-pitch detals"},"sector":{"name":"Sector name","shade after 10.00 am":"In shade after 10.00 am","shade after 15.00 pm":"In shade after 15.00 pm","shade befor noon":"In shade befor noon","shade in the afternoon":"In shade in the afternoon","shade whole day":"In the shade whole day","sun the whole day":"In the sun the whole day","overhang":"Overhang","slabby":"Slabby","vertical":"Vertical","roof":"Roof","for_family":"This sector recomendidi family climbing. It`s seifty for kids","for_kids":"This sector recomendidi family climbing. It`s seifty for kids","walking":"Wolging time from car stoping to climbin sector"},"article":{"title":{"mount massive":"Mountain Massive","best time":"Best time to climb","how_get":"How to get there","what need":"What you need","comments":"Comments","gallery":"Gallery","info":"Info","map":"Map","interested event":"Interested","similar articles":"Similar Articles","sector name":"Sector name","address":"Address","price":"Price","route":"Routes","back":"Go Back","all articles":"All Articles"},"route_quantyty":"In Georgia are {sectors} outdoor climbing sectors, {sport_routes} sport climbing routes, {boulder_routes} boulder routes, {mtps} multy pitch. You can see all outdoor climbing arias info on this page.","prices from":"Prices from","working time":"Working hours","closed":"Temporarily closed"},"breadcrumb home":"Home","serch":""},"shop":{"name":"Climbng shop","meta":{"products":"Indoor climbing","services":"Outdoor climbing","categories":"Categories","about us":"About us","search":"Search product"},"menu":{"products":"Products","services":"Services","categories":"Categories","about us":"About us"},"title":{"services":"Ouer services","products":"Products","search":"Search products","gallery":"Gallery","similar":{"products":"You might also like","services":"Other services"}},"product desc":{"category":"Category","material":"Material","weight":"Weight"},"seller":{"seller contact":"Contacts","email":"Email","phone":"Phone number"},"limited quantity":"Limited quantity ","out of stock":"Out of stock","product description":"Description","add to cart":"Add to cart","all products":"All products","max products":"This is maximal quantyty for this product!!!","add successful":"Product add successful!!!","custom product":"Custom production"},"user":{"name":"User panel","menu":{"favorite products":"My favorite products","favorite films":"My favorite films","admin dashboard":"Admin dashboard","home":"My page","cart":"My cart","orders":"Orders","my orders":"My Orders","total orders":"All orders","films":"Films list","my interested events":"Interested events","followers":"Followers & following","products & category":"Products & Category","services":"Services","all comments":"All comments","my comments":"My comments","my posts":"My posts","all posts":"All posts","users":"Users & Parmissions","options":"Options","indoor climbing":"Indoor climbing","outdoor climbing":"Outdoor climbing","ice climbing":"Ice & Mix","mountaineering":"Mountaineering","other":"Other","security":"Security (Tech tips)","partners":"Partners","events":"Events","news":"News","gallery":"Gallery","about":"About us","login":"Login","logout":"Logout","sectors & routes":"Sectors & Routes","local bisnes":"Suport local bisnes","my favorite outdoor area":"My favorite outdoor areas"}},"global":{"footer":{"links":"Links","share":"Share","more":"More","about us":"About us","follow":"Follow us","qr":"QR Code"},"message":{"title":"Message","form":{"name":"Name *","surname":"Surname *","email":"E_mail *","number":"Phone number","country":"Yout country","message text":"Your message"},"send":"Send"},"login":"Login","comments":"Comments","page is empty":"Page is empty","services":"Services"},"error":{"404":{"title":"Oops! Error 404! Page Not Found","description":"Sorry, an error has occured, Requested page not found!","go_homehome":"Go to home page"}}}');
 
 /***/ }),
 

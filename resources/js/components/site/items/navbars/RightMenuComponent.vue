@@ -1,6 +1,8 @@
 <template>
-    <div :class='"col-xs-3 col-xs-offset-1 blog-sidebar display-none-720px "+[right_navbar_class]'>
-        <h3 class="navbar_title">{{ $t('article navigation menu') }}</h3>
+    <div :class='"col-xs-3 col-xs-offset-1 display-none-720px "+[right_navbar_class]'>
+
+        <h3 class="navbar_title">{{ $t('guide.article_right_nabar.menu title') }}</h3>
+
         <nav class="fading-side-menu">
             <ul class="list-unstyled">
 
@@ -37,7 +39,8 @@
             </ul>
         </nav>
 
-        <div class="row" v-if="local_bisnes.image && local_bisnes.local_data && local_bisnes.global_data">
+        <div class="row local_bisnes" v-if="local_bisnes.image && local_bisnes.local_data && local_bisnes.global_data">
+            <!-- <h3>Lobal bisnes</h3> -->
             <div class="col-sm-10 col-md-10">
                 <div class="thumbnail">
                     <router-link style="font-size: 1.5em;" :to="'../local_bisnes/' + local_bisnes.global_data.url_title" exact>
@@ -47,6 +50,9 @@
                         <router-link style="font-size: 1.5em;" :to="'../local_bisnes/' + local_bisnes.global_data.url_title" exact>
                             <h3>{{ local_bisnes.local_data.title }}</h3>
                         </router-link>
+                    </div>
+                    <div class="caption">
+                        <span v-html="local_bisnes.local_data.short_description"></span>
                     </div>
                 </div>
             </div>
@@ -132,6 +138,8 @@
     .right_navigarion_menu_fixed_on_scrine{
         position: fixed;
         right: 0;
+
+        margin-top: -10%;
     }
     .right_navigarion_menu_fixed_on_top{
         /* position: fixed; */
@@ -146,5 +154,9 @@
     }
     .navbar_title{
         text-align: left;
+        margin: 0 0 8% 0;
+    }
+    .local_bisnes{
+        margin-top: 8%;
     }
 </style>

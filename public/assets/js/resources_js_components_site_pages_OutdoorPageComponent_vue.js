@@ -803,7 +803,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _SimilarArticlesComponent__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./SimilarArticlesComponent */ "./resources/js/components/site/items/SimilarArticlesComponent.vue");
 /* harmony import */ var _BreadcrumbComponent_vue__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./BreadcrumbComponent.vue */ "./resources/js/components/site/items/BreadcrumbComponent.vue");
 /* harmony import */ var _ArticleTextBlocksComponent__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./ArticleTextBlocksComponent */ "./resources/js/components/site/items/ArticleTextBlocksComponent.vue");
-/* harmony import */ var _items_RoutesQuantityComponent_vue__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../items/RoutesQuantityComponent.vue */ "./resources/js/components/site/items/RoutesQuantityComponent.vue");
+/* harmony import */ var _items_climbing_routes_RoutesQuantityComponent_vue__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../items/climbing_routes/RoutesQuantityComponent.vue */ "./resources/js/components/site/items/climbing_routes/RoutesQuantityComponent.vue");
 //
 //
 //
@@ -909,7 +909,7 @@ __webpack_require__.r(__webpack_exports__);
     SimilarArticles: _SimilarArticlesComponent__WEBPACK_IMPORTED_MODULE_4__["default"],
     routesTab: _climbing_routes_SectorAndRoutesTabComponent__WEBPACK_IMPORTED_MODULE_0__["default"],
     breadcrumb: _BreadcrumbComponent_vue__WEBPACK_IMPORTED_MODULE_5__["default"],
-    routeQuanDiogram: _items_RoutesQuantityComponent_vue__WEBPACK_IMPORTED_MODULE_7__["default"],
+    routeQuanDiogram: _items_climbing_routes_RoutesQuantityComponent_vue__WEBPACK_IMPORTED_MODULE_7__["default"],
     articleTextBlocks: _ArticleTextBlocksComponent__WEBPACK_IMPORTED_MODULE_6__["default"] // postsList
 
   },
@@ -949,99 +949,6 @@ __webpack_require__.r(__webpack_exports__);
           console.log(error);
         }
       });
-    }
-  }
-});
-
-/***/ }),
-
-/***/ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/site/items/RoutesQuantityComponent.vue?vue&type=script&lang=js&":
-/*!*****************************************************************************************************************************************************************************************************************************************!*\
-  !*** ./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/site/items/RoutesQuantityComponent.vue?vue&type=script&lang=js& ***!
-  \*****************************************************************************************************************************************************************************************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
-/* harmony export */ });
-/* harmony import */ var vue_google_charts__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vue-google-charts */ "./node_modules/vue-google-charts/index.js");
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
-  props: ['outdoor_region_article_id'],
-  components: {
-    GChart: vue_google_charts__WEBPACK_IMPORTED_MODULE_0__.GChart
-  },
-  data: function data() {
-    return {
-      sportChartData: [],
-      sportChartOptions: {
-        chart: {
-          title: 'Bouldering route quantity',
-          description: 'Bouldering route quantity in this climbing area' // subtitle: 'Sales, Expenses, and Profit: 2014-2017',
-
-        }
-      },
-      bolderChartData: [],
-      boulderChartOptions: {
-        chart: {
-          title: 'Sport climbing route quantity',
-          description: 'Sport climbing route quantity in this area' // subtitle: 'Sales, Expenses, and Profit: 2014-2017',
-
-        }
-      },
-      id: this.outdoor_region_article_id
-    };
-  },
-  mounted: function mounted() {
-    // console.log(this.outdoor_region_article_id);
-    this.get_routes_quantiti();
-  },
-  watch: {
-    '$route': function $route(to, from) {
-      this.get_routes_quantiti(), window.scrollTo(0, 0);
-    }
-  },
-  methods: {
-    get_routes_quantiti: function get_routes_quantiti() {
-      var _this = this;
-
-      this.bolderChartData = [];
-      this.sportChartData = [];
-      axios.get("../../api/get_routes_quantity/" + this.id).then(function (response) {
-        _this.bolderChartData = response.data.bouldering;
-        _this.sportChartData = response.data.sport_routes;
-      })["catch"](function (error) {
-        return console.log(error);
-      });
-    },
-    update: function update(id) {
-      this.id = id;
-      this.get_routes_quantiti();
     }
   }
 });
@@ -1105,11 +1012,10 @@ __webpack_require__.r(__webpack_exports__);
     };
   },
   mounted: function mounted() {
-    this.get_same_articles();
-    console.log(this.article_id);
-    console.log(this.article_category);
-    console.log(this.img_dir);
-    console.log(this.route);
+    this.get_same_articles(); // console.log(this.article_id);
+    // console.log(this.article_category);
+    // console.log(this.img_dir);
+    // console.log(this.route);
   },
   watch: {
     '$route': function $route(to, from) {
@@ -1225,6 +1131,99 @@ __webpack_require__.r(__webpack_exports__);
   mounted: function mounted() {// console.log( 'article.area[0].url_title' );
     // console.log( article );
     // console.log( 'article.area[0].url_title' );
+  }
+});
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/site/items/climbing_routes/RoutesQuantityComponent.vue?vue&type=script&lang=js&":
+/*!*********************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/site/items/climbing_routes/RoutesQuantityComponent.vue?vue&type=script&lang=js& ***!
+  \*********************************************************************************************************************************************************************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var vue_google_charts__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vue-google-charts */ "./node_modules/vue-google-charts/index.js");
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
+  props: ['outdoor_region_article_id'],
+  components: {
+    GChart: vue_google_charts__WEBPACK_IMPORTED_MODULE_0__.GChart
+  },
+  data: function data() {
+    return {
+      sportChartData: [],
+      sportChartOptions: {
+        chart: {
+          title: 'Bouldering route quantity',
+          description: 'Bouldering route quantity in this climbing area' // subtitle: 'Sales, Expenses, and Profit: 2014-2017',
+
+        }
+      },
+      bolderChartData: [],
+      boulderChartOptions: {
+        chart: {
+          title: 'Sport climbing route quantity',
+          description: 'Sport climbing route quantity in this area' // subtitle: 'Sales, Expenses, and Profit: 2014-2017',
+
+        }
+      },
+      id: this.outdoor_region_article_id
+    };
+  },
+  mounted: function mounted() {
+    // console.log(this.outdoor_region_article_id);
+    this.get_routes_quantiti();
+  },
+  watch: {
+    '$route': function $route(to, from) {
+      this.get_routes_quantiti(), window.scrollTo(0, 0);
+    }
+  },
+  methods: {
+    get_routes_quantiti: function get_routes_quantiti() {
+      var _this = this;
+
+      this.bolderChartData = [];
+      this.sportChartData = [];
+      axios.get("../../api/get_routes_quantity/" + this.id).then(function (response) {
+        _this.bolderChartData = response.data.bouldering;
+        _this.sportChartData = response.data.sport_routes;
+      })["catch"](function (error) {
+        return console.log(error);
+      });
+    },
+    update: function update(id) {
+      this.id = id;
+      this.get_routes_quantiti();
+    }
   }
 });
 
@@ -2185,6 +2184,12 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   name: "Article Right Navigation Menu",
   data: function data() {
@@ -2560,7 +2565,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_laravel_mix_node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, "\n.right_navigarion_menu_fixed_on_scrine[data-v-4ddfd4aa]{\n    position: fixed;\n    right: 0;\n}\n.right_navigarion_menu_fixed_on_top[data-v-4ddfd4aa]{\n    /* position: fixed; */\n    right: 0;\n}\n.right_navigarion_menu_fixed_on_bottom[data-v-4ddfd4aa]{\n    /* position: fixed; */\n    right: 0;\n}\n.caption h3[data-v-4ddfd4aa]{\n    margin: 0;\n}\n.navbar_title[data-v-4ddfd4aa]{\n    text-align: left;\n}\n", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, "\n.right_navigarion_menu_fixed_on_scrine[data-v-4ddfd4aa]{\n    position: fixed;\n    right: 0;\n\n    margin-top: -10%;\n}\n.right_navigarion_menu_fixed_on_top[data-v-4ddfd4aa]{\n    /* position: fixed; */\n    right: 0;\n}\n.right_navigarion_menu_fixed_on_bottom[data-v-4ddfd4aa]{\n    /* position: fixed; */\n    right: 0;\n}\n.caption h3[data-v-4ddfd4aa]{\n    margin: 0;\n}\n.navbar_title[data-v-4ddfd4aa]{\n    text-align: left;\n    margin: 0 0 8% 0;\n}\n.local_bisnes[data-v-4ddfd4aa]{\n    margin-top: 8%;\n}\n", ""]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
@@ -3180,45 +3185,6 @@ component.options.__file = "resources/js/components/site/items/OutdoorComponent.
 
 /***/ }),
 
-/***/ "./resources/js/components/site/items/RoutesQuantityComponent.vue":
-/*!************************************************************************!*\
-  !*** ./resources/js/components/site/items/RoutesQuantityComponent.vue ***!
-  \************************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
-/* harmony export */ });
-/* harmony import */ var _RoutesQuantityComponent_vue_vue_type_template_id_197b1148___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./RoutesQuantityComponent.vue?vue&type=template&id=197b1148& */ "./resources/js/components/site/items/RoutesQuantityComponent.vue?vue&type=template&id=197b1148&");
-/* harmony import */ var _RoutesQuantityComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./RoutesQuantityComponent.vue?vue&type=script&lang=js& */ "./resources/js/components/site/items/RoutesQuantityComponent.vue?vue&type=script&lang=js&");
-/* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! !../../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
-
-
-
-
-
-/* normalize component */
-;
-var component = (0,_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
-  _RoutesQuantityComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
-  _RoutesQuantityComponent_vue_vue_type_template_id_197b1148___WEBPACK_IMPORTED_MODULE_0__.render,
-  _RoutesQuantityComponent_vue_vue_type_template_id_197b1148___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns,
-  false,
-  null,
-  null,
-  null
-  
-)
-
-/* hot reload */
-if (false) { var api; }
-component.options.__file = "resources/js/components/site/items/RoutesQuantityComponent.vue"
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (component.exports);
-
-/***/ }),
-
 /***/ "./resources/js/components/site/items/SimilarArticlesComponent.vue":
 /*!*************************************************************************!*\
   !*** ./resources/js/components/site/items/SimilarArticlesComponent.vue ***!
@@ -3336,6 +3302,45 @@ var component = (0,_node_modules_vue_loader_lib_runtime_componentNormalizer_js__
 /* hot reload */
 if (false) { var api; }
 component.options.__file = "resources/js/components/site/items/cards/SimilarOutdoorAreaCardComponent.vue"
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (component.exports);
+
+/***/ }),
+
+/***/ "./resources/js/components/site/items/climbing_routes/RoutesQuantityComponent.vue":
+/*!****************************************************************************************!*\
+  !*** ./resources/js/components/site/items/climbing_routes/RoutesQuantityComponent.vue ***!
+  \****************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _RoutesQuantityComponent_vue_vue_type_template_id_89286aee___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./RoutesQuantityComponent.vue?vue&type=template&id=89286aee& */ "./resources/js/components/site/items/climbing_routes/RoutesQuantityComponent.vue?vue&type=template&id=89286aee&");
+/* harmony import */ var _RoutesQuantityComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./RoutesQuantityComponent.vue?vue&type=script&lang=js& */ "./resources/js/components/site/items/climbing_routes/RoutesQuantityComponent.vue?vue&type=script&lang=js&");
+/* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! !../../../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+/* normalize component */
+;
+var component = (0,_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+  _RoutesQuantityComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _RoutesQuantityComponent_vue_vue_type_template_id_89286aee___WEBPACK_IMPORTED_MODULE_0__.render,
+  _RoutesQuantityComponent_vue_vue_type_template_id_89286aee___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns,
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/components/site/items/climbing_routes/RoutesQuantityComponent.vue"
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (component.exports);
 
 /***/ }),
@@ -3772,22 +3777,6 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
-/***/ "./resources/js/components/site/items/RoutesQuantityComponent.vue?vue&type=script&lang=js&":
-/*!*************************************************************************************************!*\
-  !*** ./resources/js/components/site/items/RoutesQuantityComponent.vue?vue&type=script&lang=js& ***!
-  \*************************************************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
-/* harmony export */ });
-/* harmony import */ var _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_0_rules_0_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_RoutesQuantityComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!../../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./RoutesQuantityComponent.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/site/items/RoutesQuantityComponent.vue?vue&type=script&lang=js&");
- /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (_node_modules_babel_loader_lib_index_js_clonedRuleSet_5_0_rules_0_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_RoutesQuantityComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
-
-/***/ }),
-
 /***/ "./resources/js/components/site/items/SimilarArticlesComponent.vue?vue&type=script&lang=js&":
 /*!**************************************************************************************************!*\
   !*** ./resources/js/components/site/items/SimilarArticlesComponent.vue?vue&type=script&lang=js& ***!
@@ -3833,6 +3822,22 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_0_rules_0_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_SimilarOutdoorAreaCardComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../../node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!../../../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./SimilarOutdoorAreaCardComponent.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/site/items/cards/SimilarOutdoorAreaCardComponent.vue?vue&type=script&lang=js&");
  /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (_node_modules_babel_loader_lib_index_js_clonedRuleSet_5_0_rules_0_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_SimilarOutdoorAreaCardComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./resources/js/components/site/items/climbing_routes/RoutesQuantityComponent.vue?vue&type=script&lang=js&":
+/*!*****************************************************************************************************************!*\
+  !*** ./resources/js/components/site/items/climbing_routes/RoutesQuantityComponent.vue?vue&type=script&lang=js& ***!
+  \*****************************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_0_rules_0_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_RoutesQuantityComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../../node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!../../../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./RoutesQuantityComponent.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/site/items/climbing_routes/RoutesQuantityComponent.vue?vue&type=script&lang=js&");
+ /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (_node_modules_babel_loader_lib_index_js_clonedRuleSet_5_0_rules_0_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_RoutesQuantityComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
 
 /***/ }),
 
@@ -4196,23 +4201,6 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
-/***/ "./resources/js/components/site/items/RoutesQuantityComponent.vue?vue&type=template&id=197b1148&":
-/*!*******************************************************************************************************!*\
-  !*** ./resources/js/components/site/items/RoutesQuantityComponent.vue?vue&type=template&id=197b1148& ***!
-  \*******************************************************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "render": () => (/* reexport safe */ _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_RoutesQuantityComponent_vue_vue_type_template_id_197b1148___WEBPACK_IMPORTED_MODULE_0__.render),
-/* harmony export */   "staticRenderFns": () => (/* reexport safe */ _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_RoutesQuantityComponent_vue_vue_type_template_id_197b1148___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns)
-/* harmony export */ });
-/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_RoutesQuantityComponent_vue_vue_type_template_id_197b1148___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./RoutesQuantityComponent.vue?vue&type=template&id=197b1148& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/site/items/RoutesQuantityComponent.vue?vue&type=template&id=197b1148&");
-
-
-/***/ }),
-
 /***/ "./resources/js/components/site/items/SimilarArticlesComponent.vue?vue&type=template&id=eb80741e&":
 /*!********************************************************************************************************!*\
   !*** ./resources/js/components/site/items/SimilarArticlesComponent.vue?vue&type=template&id=eb80741e& ***!
@@ -4260,6 +4248,23 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "staticRenderFns": () => (/* reexport safe */ _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_SimilarOutdoorAreaCardComponent_vue_vue_type_template_id_8d447f52___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns)
 /* harmony export */ });
 /* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_SimilarOutdoorAreaCardComponent_vue_vue_type_template_id_8d447f52___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./SimilarOutdoorAreaCardComponent.vue?vue&type=template&id=8d447f52& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/site/items/cards/SimilarOutdoorAreaCardComponent.vue?vue&type=template&id=8d447f52&");
+
+
+/***/ }),
+
+/***/ "./resources/js/components/site/items/climbing_routes/RoutesQuantityComponent.vue?vue&type=template&id=89286aee&":
+/*!***********************************************************************************************************************!*\
+  !*** ./resources/js/components/site/items/climbing_routes/RoutesQuantityComponent.vue?vue&type=template&id=89286aee& ***!
+  \***********************************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "render": () => (/* reexport safe */ _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_RoutesQuantityComponent_vue_vue_type_template_id_89286aee___WEBPACK_IMPORTED_MODULE_0__.render),
+/* harmony export */   "staticRenderFns": () => (/* reexport safe */ _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_RoutesQuantityComponent_vue_vue_type_template_id_89286aee___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns)
+/* harmony export */ });
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_RoutesQuantityComponent_vue_vue_type_template_id_89286aee___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./RoutesQuantityComponent.vue?vue&type=template&id=89286aee& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/site/items/climbing_routes/RoutesQuantityComponent.vue?vue&type=template&id=89286aee&");
 
 
 /***/ }),
@@ -4557,7 +4562,7 @@ var render = function () {
           this.article.global_info.best_time != []
             ? _c("div", [
                 _c("h2", { attrs: { id: "best_time_to_climb" } }, [
-                  _vm._v(_vm._s(_vm.$t("best time"))),
+                  _vm._v(_vm._s(_vm.$t("guide.article.title.best time"))),
                 ]),
                 _vm._v(" "),
                 this.article.global_info.best_time.length == 0
@@ -4623,7 +4628,7 @@ var render = function () {
               this.article[0].best_time != _vm.NULL
             ? _c("div", [
                 _c("h2", { attrs: { id: "best_time_to_climb" } }, [
-                  _vm._v(_vm._s(_vm.$t("best time"))),
+                  _vm._v(_vm._s(_vm.$t("guide.article.title.best time"))),
                 ]),
                 _vm._v(" "),
                 _c("div", { staticClass: "row" }, [
@@ -4728,7 +4733,7 @@ var render = function () {
     this.article[0].address != _vm.NUll
       ? _c("div", [
           _c("h2", { attrs: { id: "how_to_get_there" } }, [
-            _vm._v(_vm._s(_vm.__("site.address"))),
+            _vm._v(_vm._s(_vm.$t("guide.article.title.address"))),
           ]),
           _vm._v(" "),
           _c("span", {
@@ -4737,10 +4742,10 @@ var render = function () {
         ])
       : _vm._e(),
     _vm._v(" "),
-    this.article[0].how_get != _vm.NUll
+    this.article[0].how_get != _vm.NUll && this.article[0].how_get != ""
       ? _c("div", [
           _c("h2", { attrs: { id: "how_to_get_there" } }, [
-            _vm._v(_vm._s(_vm.$t("how get"))),
+            _vm._v(_vm._s(_vm.$t("guide.article.title.how_get"))),
           ]),
           _vm._v(" "),
           _c("span", {
@@ -4760,7 +4765,7 @@ var render = function () {
     this.article[0].prices_text != _vm.NUll
       ? _c("div", [
           _c("h2", { attrs: { id: "how_to_get_there" } }, [
-            _vm._v(_vm._s(_vm.__("site.price"))),
+            _vm._v(_vm._s(_vm.$t("guide.article.title.price"))),
           ]),
           _vm._v(" "),
           _c("span", {
@@ -4773,7 +4778,7 @@ var render = function () {
     this.article.global_info.what_need_info.length != 0
       ? _c("div", [
           _c("h2", { attrs: { id: "how_to_get_there" } }, [
-            _vm._v(_vm._s(_vm.$t("what need"))),
+            _vm._v(_vm._s(_vm.$t("guide.article.title.what need"))),
           ]),
           _vm._v(" "),
           this.article.global_info.what_need_info.length == 0
@@ -4838,7 +4843,7 @@ var render = function () {
     this.article[0].info || this.article.global_info.info_block.length != 0
       ? _c("div", [
           _c("h2", { attrs: { id: "how_to_get_there" } }, [
-            _vm._v(_vm._s(_vm.$t("info"))),
+            _vm._v(_vm._s(_vm.$t("guide.article.title.info"))),
           ]),
           _vm._v(" "),
           this.article.global_info.info_block.length == 0
@@ -4998,7 +5003,7 @@ var render = function () {
               _c("div", { staticClass: "row" }, [
                 _c("div", { staticClass: "col-md-12" }, [
                   _c("h2", { attrs: { id: "comments" } }, [
-                    _vm._v(_vm._s(_vm.$t("comments"))),
+                    _vm._v(_vm._s(_vm.$t("guide.article.title.comments"))),
                   ]),
                 ]),
               ]),
@@ -5750,7 +5755,7 @@ var render = function () {
                     "div",
                     [
                       _c("h2", { attrs: { id: "routes" } }, [
-                        _vm._v(_vm._s(_vm.$t("route"))),
+                        _vm._v(_vm._s(_vm.$t("guide.article.title.route"))),
                       ]),
                       _vm._v(" "),
                       _c("routeQuanDiogram", {
@@ -5876,67 +5881,6 @@ render._withStripped = true
 
 /***/ }),
 
-/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/site/items/RoutesQuantityComponent.vue?vue&type=template&id=197b1148&":
-/*!**********************************************************************************************************************************************************************************************************************************************!*\
-  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/site/items/RoutesQuantityComponent.vue?vue&type=template&id=197b1148& ***!
-  \**********************************************************************************************************************************************************************************************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "render": () => (/* binding */ render),
-/* harmony export */   "staticRenderFns": () => (/* binding */ staticRenderFns)
-/* harmony export */ });
-var render = function () {
-  var _vm = this
-  var _h = _vm.$createElement
-  var _c = _vm._self._c || _h
-  return _c("div", { staticClass: "col-md-12" }, [
-    _vm.sportChartData.length > 1
-      ? _c(
-          "div",
-          { staticClass: "row" },
-          [
-            _c("GChart", {
-              attrs: {
-                type: "ColumnChart",
-                data: _vm.sportChartData,
-                options: _vm.sportChartOptions,
-                resizeDebounce: 100,
-              },
-            }),
-          ],
-          1
-        )
-      : _vm._e(),
-    _vm._v(" "),
-    _vm.bolderChartData.length > 1
-      ? _c(
-          "div",
-          { staticClass: "row" },
-          [
-            _c("GChart", {
-              attrs: {
-                type: "ColumnChart",
-                data: _vm.bolderChartData,
-                options: _vm.boulderChartOptions,
-                resizeDebounce: 100,
-              },
-            }),
-          ],
-          1
-        )
-      : _vm._e(),
-  ])
-}
-var staticRenderFns = []
-render._withStripped = true
-
-
-
-/***/ }),
-
 /***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/site/items/SimilarArticlesComponent.vue?vue&type=template&id=eb80741e&":
 /*!***********************************************************************************************************************************************************************************************************************************************!*\
   !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/site/items/SimilarArticlesComponent.vue?vue&type=template&id=eb80741e& ***!
@@ -5957,7 +5901,7 @@ var render = function () {
     ? _c("div", { staticClass: "row similar_articles" }, [
         _c("div", { staticClass: "container" }, [
           _c("h2", { attrs: { id: "other" } }, [
-            _vm._v(_vm._s(_vm.$t("similar articles"))),
+            _vm._v(_vm._s(_vm.$t("guide.article.title.similar articles"))),
           ]),
           _vm._v(" "),
           _c("hr", { staticClass: "other_line" }),
@@ -6177,6 +6121,67 @@ render._withStripped = true
 
 /***/ }),
 
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/site/items/climbing_routes/RoutesQuantityComponent.vue?vue&type=template&id=89286aee&":
+/*!**************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/site/items/climbing_routes/RoutesQuantityComponent.vue?vue&type=template&id=89286aee& ***!
+  \**************************************************************************************************************************************************************************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "render": () => (/* binding */ render),
+/* harmony export */   "staticRenderFns": () => (/* binding */ staticRenderFns)
+/* harmony export */ });
+var render = function () {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("div", { staticClass: "col-md-12" }, [
+    _vm.sportChartData.length > 1
+      ? _c(
+          "div",
+          { staticClass: "row" },
+          [
+            _c("GChart", {
+              attrs: {
+                type: "ColumnChart",
+                data: _vm.sportChartData,
+                options: _vm.sportChartOptions,
+                resizeDebounce: 100,
+              },
+            }),
+          ],
+          1
+        )
+      : _vm._e(),
+    _vm._v(" "),
+    _vm.bolderChartData.length > 1
+      ? _c(
+          "div",
+          { staticClass: "row" },
+          [
+            _c("GChart", {
+              attrs: {
+                type: "ColumnChart",
+                data: _vm.bolderChartData,
+                options: _vm.boulderChartOptions,
+                resizeDebounce: 100,
+              },
+            }),
+          ],
+          1
+        )
+      : _vm._e(),
+  ])
+}
+var staticRenderFns = []
+render._withStripped = true
+
+
+
+/***/ }),
+
 /***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/site/items/climbing_routes/SectorAndRoutesTabComponent.vue?vue&type=template&id=8ae71c78&":
 /*!******************************************************************************************************************************************************************************************************************************************************************!*\
   !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/site/items/climbing_routes/SectorAndRoutesTabComponent.vue?vue&type=template&id=8ae71c78& ***!
@@ -6274,7 +6279,7 @@ var render = function () {
         _c("h2", { staticStyle: { "font-size": "160%" } }, [
           _vm._v(
             "\n            " +
-              _vm._s(_vm.$t("guide.secto.e")) +
+              _vm._s(_vm.$t("guide.article.sector name")) +
               " -\n            "
           ),
           _c("strong", [_vm._v(_vm._s(_vm.sector.sector.name))]),
@@ -7160,7 +7165,7 @@ var render = function () {
         [
           _c("div", { staticClass: "container" }, [
             _c("h2", { attrs: { id: "gallery" } }, [
-              _vm._v(_vm._s(_vm.$t("gallery"))),
+              _vm._v(_vm._s(_vm.$t("guide.article.title.gallery"))),
             ]),
           ]),
           _vm._v(" "),
@@ -7202,12 +7207,12 @@ var render = function () {
     "div",
     {
       class:
-        "col-xs-3 col-xs-offset-1 blog-sidebar display-none-720px " +
+        "col-xs-3 col-xs-offset-1 display-none-720px " +
         [_vm.right_navbar_class],
     },
     [
       _c("h3", { staticClass: "navbar_title" }, [
-        _vm._v(_vm._s(_vm.$t("article navigation menu"))),
+        _vm._v(_vm._s(_vm.$t("guide.article_right_nabar.menu title"))),
       ]),
       _vm._v(" "),
       _c("nav", { staticClass: "fading-side-menu" }, [
@@ -7259,7 +7264,7 @@ var render = function () {
       _vm.local_bisnes.image &&
       _vm.local_bisnes.local_data &&
       _vm.local_bisnes.global_data
-        ? _c("div", { staticClass: "row" }, [
+        ? _c("div", { staticClass: "row local_bisnes" }, [
             _c("div", { staticClass: "col-sm-10 col-md-10" }, [
               _c(
                 "div",
@@ -7312,6 +7317,16 @@ var render = function () {
                     ],
                     1
                   ),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "caption" }, [
+                    _c("span", {
+                      domProps: {
+                        innerHTML: _vm._s(
+                          _vm.local_bisnes.local_data.short_description
+                        ),
+                      },
+                    }),
+                  ]),
                 ],
                 1
               ),

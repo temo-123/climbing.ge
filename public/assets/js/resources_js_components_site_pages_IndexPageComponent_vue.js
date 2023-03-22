@@ -2275,7 +2275,7 @@ var render = function () {
           _c("div", { staticClass: "row" }, [
             _c("div", { staticClass: "container" }, [
               _c("h2", { staticClass: "index_h2" }, [
-                _vm._v(_vm._s(_vm.$t("title events"))),
+                _vm._v(_vm._s(_vm.$t("guide.title.events"))),
               ]),
               _vm._v(" "),
               _vm._m(0),
@@ -2461,7 +2461,7 @@ var render = function () {
       _vm.techtips.length > 0
         ? _c("div", { staticClass: "container" }, [
             _c("h2", { staticClass: "index_h2" }, [
-              _vm._v(_vm._s(_vm.$t("title tech tips"))),
+              _vm._v(_vm._s(_vm.$t("guide.title.tech tips"))),
             ]),
             _vm._v(" "),
             _vm._m(0),
@@ -3154,7 +3154,7 @@ var render = function () {
           "span",
           [
             _c("h2", { staticClass: "index_h2" }, [
-              _vm._v(_vm._s(_vm.$t("title gallery"))),
+              _vm._v(_vm._s(_vm.$t("guide.title.gallery"))),
             ]),
             _vm._v(" "),
             _vm._m(0),

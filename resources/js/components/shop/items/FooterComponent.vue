@@ -16,6 +16,8 @@
                         </div>
                     
                     </div>
+
+                    <followComponent />
                 </div>
 
                 <div class="col-md-4 display-none-720px">
@@ -38,11 +40,9 @@
                             
                         </div>
                     </div>
-
-                    <followComponent />
-
                 </div>
             </div>
+            <footerText />
         </div>
     </div>
 </template>
@@ -52,17 +52,20 @@
     import followComponent from '../../global_components/FollowComponent.vue'
     import share from '../../global_components/ShareComponent.vue'
     import footerLogo from "../../global_components/FooterLogoBlockComponent.vue";
+    import footerText from "../../global_components/FooterBottomTextComponent.vue";
 
     export default {
         data: function () {
             return {
-                num: 0
+                num: 0,
+                active_year: new Date().getFullYear(),
             };
         },
         components: {
             followComponent,
             share,
-            footerLogo
+            footerLogo,
+            footerText
         },
         mounted() {
             // this.num = Math.floor(Math.random() * 11);

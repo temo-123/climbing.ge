@@ -3,7 +3,7 @@
         <div class="row">
             <div class="container">
 
-                <h2 class='index_h2'>{{ $t('title events') }}</h2>
+                <h2 class='index_h2'>{{ $t('guide.title.events') }}</h2>
 
                 <div class="bar"><i class="fa fa-calendar"></i></div>
                 <h3> <span v-html="this.$siteData.event_description"></span></h3>

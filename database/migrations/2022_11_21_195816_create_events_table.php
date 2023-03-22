@@ -21,7 +21,7 @@ return new class extends Migration
             $table->integer('published')->nullable();
             
             $table->string('category')->nullable();
-            $table->string('map')->nullable();
+            $table->text('map')->nullable();
 
             $table->timestamp('start_data')->nullable();
             $table->timestamp('end_data')->nullable();

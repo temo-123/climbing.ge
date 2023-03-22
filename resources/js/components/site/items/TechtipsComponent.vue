@@ -2,7 +2,7 @@
     <div class="h-recent-work services" id="services">
         <div class="container" v-if="techtips.length > 0">
 
-            <h2 class='index_h2'>{{ $t('title tech tips') }}</h2>
+            <h2 class='index_h2'>{{ $t('guide.title.tech tips') }}</h2>
 
             <div class="bar"><i class="fa fa-exclamation-triangle"></i></div>
             <h3> <span v-html="this.$siteData.tech_tips_description"></span> </h3>

@@ -1106,7 +1106,7 @@ var render = function () {
               _c("div", { staticClass: "row" }, [
                 _c("div", { staticClass: "col-md-12" }, [
                   _c("h2", { attrs: { id: "comments" } }, [
-                    _vm._v(_vm._s(_vm.$t("comments"))),
+                    _vm._v(_vm._s(_vm.$t("guide.article.title.comments"))),
                   ]),
                 ]),
               ]),
@@ -1770,14 +1770,13 @@ var render = function () {
           ],
           1
         ),
-      ]),
-      _vm._v(" "),
-      _c("div", { staticClass: "row" }, [
+        _vm._v(" "),
         _c("div", { staticClass: "col-md-12" }, [
-          this.event.global_event.map != null
-            ? _c("div", { staticClass: "row" }, [
+          this.event.global_event.map != null &&
+          this.event.global_event.map != ""
+            ? _c("span", [
                 _c("h2", { attrs: { id: "map" } }, [
-                  _vm._v(_vm._s(_vm.$t("guide.title.map"))),
+                  _vm._v(_vm._s(_vm.$t("guide.article.title.map"))),
                 ]),
                 _vm._v(" "),
                 _c("span", {
@@ -1786,10 +1785,11 @@ var render = function () {
               ])
             : _vm._e(),
           _vm._v(" "),
+          this.event.locale_event.info != null &&
           this.event.locale_event.info != null
-            ? _c("div", { staticClass: "row" }, [
+            ? _c("span", [
                 _c("h2", { attrs: { id: "info" } }, [
-                  _vm._v(_vm._s(_vm.$t("guide.title.info"))),
+                  _vm._v(_vm._s(_vm.$t("guide.article.title.info"))),
                 ]),
                 _vm._v(" "),
                 _c("span", {

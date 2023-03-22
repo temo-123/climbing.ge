@@ -5,7 +5,7 @@
         <!-- Best time for climbing block -->
         <div v-if="this.article[0].weather || this.article.global_info.best_time.length != 0">
             <div v-if="this.article[0].weather == NULL && this.article[0].best_time != NULL || this.article.global_info.best_time != []">
-                <h2 id="best_time_to_climb">{{ $t('best time')}}</h2>
+                <h2 id="best_time_to_climb">{{ $t('guide.article.title.best time')}}</h2>
 
                 <span v-if="this.article.global_info.best_time.length == 0">
                     <span v-html="this.article[0].best_time"></span>
@@ -26,7 +26,7 @@
 
             </div>  
             <div v-else-if="this.article[0].weather != NULL && this.article[0].best_time != NULL">
-                <h2 id="best_time_to_climb">{{ $t('best time')}}</h2>
+                <h2 id="best_time_to_climb">{{ $t('guide.article.title.best time')}}</h2>
 
                 <div class="row">
                     <div class="col-md-6" style="margin-top: 5%;">
@@ -59,13 +59,13 @@
 
         <!-- addres -->
         <div v-if="this.article[0].address != NUll">
-            <h2 id="how_to_get_there">{{__ ('site.address')}}</h2>
+            <h2 id="how_to_get_there">{{ $t('guide.article.title.address')}}</h2>
             <span v-html="this.article[0].address"></span>
         </div>
         
         <!-- how get -->
-        <div v-if="this.article[0].how_get != NUll">
-            <h2 id="how_to_get_there">{{ $t('how get')}}</h2>
+        <div v-if="this.article[0].how_get != NUll && this.article[0].how_get != ''">
+            <h2 id="how_to_get_there">{{ $t('guide.article.title.how_get')}}</h2>
             <span v-html="this.article[0].how_get"></span>
         </div>
 
@@ -78,13 +78,13 @@
 
         <!-- price -->
         <div v-if="this.article[0].prices_text != NUll">
-            <h2 id="how_to_get_there">{{__ ('site.price')}}</h2>
+            <h2 id="how_to_get_there">{{ $t('guide.article.title.price')}}</h2>
             <span v-html="this.article[0].prices_text"></span>
         </div>
 
         <!-- what need -->
         <div v-if="this.article[0].what_need || this.article.global_info.what_need_info.length != 0">
-            <h2 id="how_to_get_there">{{ $t('what need')}}</h2>
+            <h2 id="how_to_get_there">{{ $t('guide.article.title.what need')}}</h2>
             <span v-if="this.article.global_info.what_need_info.length == 0">
                 <span v-html="this.article[0].what_need"></span>
             </span>
@@ -105,7 +105,7 @@
 
         <!-- info -->
         <div v-if="this.article[0].info || this.article.global_info.info_block.length != 0">
-            <h2 id="how_to_get_there">{{ $t('info')}}</h2>
+            <h2 id="how_to_get_there">{{ $t('guide.article.title.info')}}</h2>
             <span v-if="this.article.global_info.info_block.length == 0">
                 <span v-html="this.article[0].info"></span>
             </span>

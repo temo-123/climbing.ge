@@ -352,9 +352,9 @@
                     this.is_refresh = false
                     this.reset_id++
                 })
-                .catch(
-                    error => console.log(error)
-                );
+                .catch(error => {
+                    alert(error)
+                });
             },
 
             get_articles(){
@@ -363,9 +363,9 @@
                 .then(response => {
                     this.articles = response.data
                 })
-                .catch(
-                    error => console.log(error)
-                );
+                .catch(error => {
+                    alert(error)
+                });
             },
 
             show_image_modal(active_img){
@@ -405,10 +405,11 @@
                         this.get_gallery_data()
                         this.clear_input_data()
                     })
-                    .catch(err => {
-                    if (error.response.status == 422) {
-                        this.error = error.response.data.validation
-                    }
+                    .catch(error => {
+                        alert(error)
+                        if (error.response.status == 422) {
+                            this.error = error.response.data.validation
+                        }
                     })
                 }
             },
@@ -448,9 +449,9 @@
                     this.editing_data.article_id = response.data.article[0].id
                     this.editing_image.id = response.data.id
                 })
-                .catch(
-                    error => console.log(error)
-                );
+                .catch(error => {
+                    alert(error)
+                });
             },
             edit_image_modal(editing_image_id){
                 this.is_edit_image = true
@@ -484,9 +485,9 @@
 
                         this.editing_image = []
                     })
-                    .catch(err => {
-                        console.log(err);
-                    })
+                    .catch(error => {
+                        alert(error)
+                    });
                 }
             },
 
@@ -499,7 +500,9 @@
                     .then(Response => {
                         this.get_gallery_data()
                     })
-                    .catch(error => console.log(error))
+                    .catch(error => {
+                        alert(error)
+                    });
                 }
             },
 

@@ -413,7 +413,7 @@ __webpack_require__.r(__webpack_exports__);
         _this.is_refresh = false;
         _this.reset_id++;
       })["catch"](function (error) {
-        return console.log(error);
+        alert(error);
       });
     },
     get_articles: function get_articles() {
@@ -422,7 +422,7 @@ __webpack_require__.r(__webpack_exports__);
       axios.get("../api/article/").then(function (response) {
         _this2.articles = response.data;
       })["catch"](function (error) {
-        return console.log(error);
+        alert(error);
       });
     },
     show_image_modal: function show_image_modal(active_img) {
@@ -454,7 +454,9 @@ __webpack_require__.r(__webpack_exports__);
           _this3.get_gallery_data();
 
           _this3.clear_input_data();
-        })["catch"](function (err) {
+        })["catch"](function (error) {
+          alert(error);
+
           if (error.response.status == 422) {
             _this3.error = error.response.data.validation;
           }
@@ -494,7 +496,7 @@ __webpack_require__.r(__webpack_exports__);
         _this4.editing_data.article_id = response.data.article[0].id;
         _this4.editing_image.id = response.data.id;
       })["catch"](function (error) {
-        return console.log(error);
+        alert(error);
       });
     },
     edit_image_modal: function edit_image_modal(editing_image_id) {
@@ -524,8 +526,8 @@ __webpack_require__.r(__webpack_exports__);
           _this5.close_edit_image_modal();
 
           _this5.editing_image = [];
-        })["catch"](function (err) {
-          console.log(err);
+        })["catch"](function (error) {
+          alert(error);
         });
       }
     },
@@ -538,7 +540,7 @@ __webpack_require__.r(__webpack_exports__);
         }).then(function (Response) {
           _this6.get_gallery_data();
         })["catch"](function (error) {
-          return console.log(error);
+          alert(error);
         });
       }
     },

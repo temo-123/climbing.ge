@@ -2,7 +2,7 @@
     <div class="row">
         <span>
             <h2 style="font-size: 160%">
-                {{ $t("guide.secto.e") }} -
+                {{ $t("guide.article.sector name") }} -
                 <strong>{{ sector.sector.name }}</strong>
             </h2>
         </span>

@@ -143,17 +143,11 @@ class GalleryController extends Controller
 
                 if (isset($data["article_id"])) {
                     if($data["article_id"] && $data["image_type"] == 'Article image'){
-                        $galery_image_article_count = Gallery_image_article::where('image_id', '=', $edit_gallery_image->id)->count();
-                        if ($galery_image_article_count > 0) {
-                            $edit_active_conaction = Gallery_image_article::where('image_id', '==', $edit_gallery_image->id)->first();
+                        $galery_image_article = Gallery_image_article::where('image_id', '=', $edit_gallery_image->id)->first();
+                        if (isset($galery_image_article) && $galery_image_article->article_id != $data["article_id"]) {
+                            $edit_active_conaction = Gallery_image_article::where('image_id', '=', $edit_gallery_image->id)->first();
                             $edit_active_conaction['article_id'] = $data["article_id"];
                             $edit_active_conaction->save();
-                        }
-                        else {
-                            $new_image_article = new Gallery_image_article;
-                            $new_image_article['image_id']=$edit_gallery_image["id"];
-                            $new_image_article['article_id']=$data["article_id"];
-                            $new_image_article->save();
                         }
                     }
                     else if($data["image_type"] != 'Article image') {

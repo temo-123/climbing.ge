@@ -926,11 +926,10 @@ __webpack_require__.r(__webpack_exports__);
     };
   },
   mounted: function mounted() {
-    this.get_same_articles();
-    console.log(this.article_id);
-    console.log(this.article_category);
-    console.log(this.img_dir);
-    console.log(this.route);
+    this.get_same_articles(); // console.log(this.article_id);
+    // console.log(this.article_category);
+    // console.log(this.img_dir);
+    // console.log(this.route);
   },
   watch: {
     '$route': function $route(to, from) {
@@ -1110,6 +1109,12 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -1399,7 +1404,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_laravel_mix_node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, "\n.right_navigarion_menu_fixed_on_scrine[data-v-4ddfd4aa]{\n    position: fixed;\n    right: 0;\n}\n.right_navigarion_menu_fixed_on_top[data-v-4ddfd4aa]{\n    /* position: fixed; */\n    right: 0;\n}\n.right_navigarion_menu_fixed_on_bottom[data-v-4ddfd4aa]{\n    /* position: fixed; */\n    right: 0;\n}\n.caption h3[data-v-4ddfd4aa]{\n    margin: 0;\n}\n.navbar_title[data-v-4ddfd4aa]{\n    text-align: left;\n}\n", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, "\n.right_navigarion_menu_fixed_on_scrine[data-v-4ddfd4aa]{\n    position: fixed;\n    right: 0;\n\n    margin-top: -10%;\n}\n.right_navigarion_menu_fixed_on_top[data-v-4ddfd4aa]{\n    /* position: fixed; */\n    right: 0;\n}\n.right_navigarion_menu_fixed_on_bottom[data-v-4ddfd4aa]{\n    /* position: fixed; */\n    right: 0;\n}\n.caption h3[data-v-4ddfd4aa]{\n    margin: 0;\n}\n.navbar_title[data-v-4ddfd4aa]{\n    text-align: left;\n    margin: 0 0 8% 0;\n}\n.local_bisnes[data-v-4ddfd4aa]{\n    margin-top: 8%;\n}\n", ""]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
@@ -2680,7 +2685,7 @@ var render = function () {
           this.article.global_info.best_time != []
             ? _c("div", [
                 _c("h2", { attrs: { id: "best_time_to_climb" } }, [
-                  _vm._v(_vm._s(_vm.$t("best time"))),
+                  _vm._v(_vm._s(_vm.$t("guide.article.title.best time"))),
                 ]),
                 _vm._v(" "),
                 this.article.global_info.best_time.length == 0
@@ -2746,7 +2751,7 @@ var render = function () {
               this.article[0].best_time != _vm.NULL
             ? _c("div", [
                 _c("h2", { attrs: { id: "best_time_to_climb" } }, [
-                  _vm._v(_vm._s(_vm.$t("best time"))),
+                  _vm._v(_vm._s(_vm.$t("guide.article.title.best time"))),
                 ]),
                 _vm._v(" "),
                 _c("div", { staticClass: "row" }, [
@@ -2851,7 +2856,7 @@ var render = function () {
     this.article[0].address != _vm.NUll
       ? _c("div", [
           _c("h2", { attrs: { id: "how_to_get_there" } }, [
-            _vm._v(_vm._s(_vm.__("site.address"))),
+            _vm._v(_vm._s(_vm.$t("guide.article.title.address"))),
           ]),
           _vm._v(" "),
           _c("span", {
@@ -2860,10 +2865,10 @@ var render = function () {
         ])
       : _vm._e(),
     _vm._v(" "),
-    this.article[0].how_get != _vm.NUll
+    this.article[0].how_get != _vm.NUll && this.article[0].how_get != ""
       ? _c("div", [
           _c("h2", { attrs: { id: "how_to_get_there" } }, [
-            _vm._v(_vm._s(_vm.$t("how get"))),
+            _vm._v(_vm._s(_vm.$t("guide.article.title.how_get"))),
           ]),
           _vm._v(" "),
           _c("span", {
@@ -2883,7 +2888,7 @@ var render = function () {
     this.article[0].prices_text != _vm.NUll
       ? _c("div", [
           _c("h2", { attrs: { id: "how_to_get_there" } }, [
-            _vm._v(_vm._s(_vm.__("site.price"))),
+            _vm._v(_vm._s(_vm.$t("guide.article.title.price"))),
           ]),
           _vm._v(" "),
           _c("span", {
@@ -2896,7 +2901,7 @@ var render = function () {
     this.article.global_info.what_need_info.length != 0
       ? _c("div", [
           _c("h2", { attrs: { id: "how_to_get_there" } }, [
-            _vm._v(_vm._s(_vm.$t("what need"))),
+            _vm._v(_vm._s(_vm.$t("guide.article.title.what need"))),
           ]),
           _vm._v(" "),
           this.article.global_info.what_need_info.length == 0
@@ -2961,7 +2966,7 @@ var render = function () {
     this.article[0].info || this.article.global_info.info_block.length != 0
       ? _c("div", [
           _c("h2", { attrs: { id: "how_to_get_there" } }, [
-            _vm._v(_vm._s(_vm.$t("info"))),
+            _vm._v(_vm._s(_vm.$t("guide.article.title.info"))),
           ]),
           _vm._v(" "),
           this.article.global_info.info_block.length == 0
@@ -3119,7 +3124,7 @@ var render = function () {
               _c("div", { staticClass: "row" }, [
                 _c("div", { staticClass: "col-md-12" }, [
                   _c("h2", { attrs: { id: "comments" } }, [
-                    _vm._v(_vm._s(_vm.$t("comments"))),
+                    _vm._v(_vm._s(_vm.$t("guide.article.title.comments"))),
                   ]),
                 ]),
               ]),
@@ -3732,7 +3737,7 @@ var render = function () {
     ? _c("div", { staticClass: "row similar_articles" }, [
         _c("div", { staticClass: "container" }, [
           _c("h2", { attrs: { id: "other" } }, [
-            _vm._v(_vm._s(_vm.$t("similar articles"))),
+            _vm._v(_vm._s(_vm.$t("guide.article.title.similar articles"))),
           ]),
           _vm._v(" "),
           _c("hr", { staticClass: "other_line" }),
@@ -3972,7 +3977,7 @@ var render = function () {
         [
           _c("div", { staticClass: "container" }, [
             _c("h2", { attrs: { id: "gallery" } }, [
-              _vm._v(_vm._s(_vm.$t("gallery"))),
+              _vm._v(_vm._s(_vm.$t("guide.article.title.gallery"))),
             ]),
           ]),
           _vm._v(" "),
@@ -4013,12 +4018,12 @@ var render = function () {
     "div",
     {
       class:
-        "col-xs-3 col-xs-offset-1 blog-sidebar display-none-720px " +
+        "col-xs-3 col-xs-offset-1 display-none-720px " +
         [_vm.right_navbar_class],
     },
     [
       _c("h3", { staticClass: "navbar_title" }, [
-        _vm._v(_vm._s(_vm.$t("article navigation menu"))),
+        _vm._v(_vm._s(_vm.$t("guide.article_right_nabar.menu title"))),
       ]),
       _vm._v(" "),
       _c("nav", { staticClass: "fading-side-menu" }, [
@@ -4070,7 +4075,7 @@ var render = function () {
       _vm.local_bisnes.image &&
       _vm.local_bisnes.local_data &&
       _vm.local_bisnes.global_data
-        ? _c("div", { staticClass: "row" }, [
+        ? _c("div", { staticClass: "row local_bisnes" }, [
             _c("div", { staticClass: "col-sm-10 col-md-10" }, [
               _c(
                 "div",
@@ -4123,6 +4128,16 @@ var render = function () {
                     ],
                     1
                   ),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "caption" }, [
+                    _c("span", {
+                      domProps: {
+                        innerHTML: _vm._s(
+                          _vm.local_bisnes.local_data.short_description
+                        ),
+                      },
+                    }),
+                  ]),
                 ],
                 1
               ),
