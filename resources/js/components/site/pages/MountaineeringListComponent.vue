@@ -6,8 +6,8 @@
 
             <div class="bar"><i class="fa fa-dribbble"></i></div>
 
-            <h2 style="text-align: center;">
-                <span v-html="this.$siteData.mount_description"></span>
+            <h2 class="article_list_short_descriptio">
+                {{this.$siteData.mount_description}}
             </h2>
 
             <div class="row" v-if="this.mounts.length > 0">

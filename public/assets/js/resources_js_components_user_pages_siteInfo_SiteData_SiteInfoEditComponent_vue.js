@@ -463,6 +463,20 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   mixins: [_mixins_editor_editor_config_mixin_js__WEBPACK_IMPORTED_MODULE_0__.editor_config],
@@ -1477,6 +1491,438 @@ var render = function () {
         _c(
           "label",
           { staticClass: "col-xs-2 control-label", attrs: { for: "name" } },
+          [_vm._v(" other_activity_description ")]
+        ),
+        _vm._v(" "),
+        _c("div", { staticClass: "col-xs-8" }, [
+          _c("input", {
+            directives: [
+              {
+                name: "model",
+                rawName: "v-model",
+                value: _vm.locale_data.other_activity_description,
+                expression: "locale_data.other_activity_description",
+              },
+            ],
+            staticClass: "form-control",
+            attrs: { type: "text", name: "value name" },
+            domProps: { value: _vm.locale_data.other_activity_description },
+            on: {
+              input: function ($event) {
+                if ($event.target.composing) {
+                  return
+                }
+                _vm.$set(
+                  _vm.locale_data,
+                  "other_activity_description",
+                  $event.target.value
+                )
+              },
+            },
+          }),
+        ]),
+      ]),
+      _vm._v(" "),
+      _c("div", { staticClass: "form-group clearfix" }, [
+        _c(
+          "label",
+          { staticClass: "col-xs-2 control-label", attrs: { for: "name" } },
+          [_vm._v(" event_description ")]
+        ),
+        _vm._v(" "),
+        _c("div", { staticClass: "col-xs-8" }, [
+          _c("input", {
+            directives: [
+              {
+                name: "model",
+                rawName: "v-model",
+                value: _vm.locale_data.event_description,
+                expression: "locale_data.event_description",
+              },
+            ],
+            staticClass: "form-control",
+            attrs: { type: "text", name: "value name" },
+            domProps: { value: _vm.locale_data.event_description },
+            on: {
+              input: function ($event) {
+                if ($event.target.composing) {
+                  return
+                }
+                _vm.$set(
+                  _vm.locale_data,
+                  "event_description",
+                  $event.target.value
+                )
+              },
+            },
+          }),
+        ]),
+      ]),
+      _vm._v(" "),
+      _c("div", { staticClass: "form-group clearfix" }, [
+        _c(
+          "label",
+          { staticClass: "col-xs-2 control-label", attrs: { for: "name" } },
+          [_vm._v(" tech_tips_description ")]
+        ),
+        _vm._v(" "),
+        _c("div", { staticClass: "col-xs-8" }, [
+          _c("input", {
+            directives: [
+              {
+                name: "model",
+                rawName: "v-model",
+                value: _vm.locale_data.tech_tips_description,
+                expression: "locale_data.tech_tips_description",
+              },
+            ],
+            staticClass: "form-control",
+            attrs: { type: "text", name: "value name" },
+            domProps: { value: _vm.locale_data.tech_tips_description },
+            on: {
+              input: function ($event) {
+                if ($event.target.composing) {
+                  return
+                }
+                _vm.$set(
+                  _vm.locale_data,
+                  "tech_tips_description",
+                  $event.target.value
+                )
+              },
+            },
+          }),
+        ]),
+      ]),
+      _vm._v(" "),
+      _c("div", { staticClass: "form-group clearfix" }, [
+        _c(
+          "label",
+          { staticClass: "col-xs-2 control-label", attrs: { for: "name" } },
+          [_vm._v(" news_description ")]
+        ),
+        _vm._v(" "),
+        _c("div", { staticClass: "col-xs-8" }, [
+          _c("input", {
+            directives: [
+              {
+                name: "model",
+                rawName: "v-model",
+                value: _vm.locale_data.news_description,
+                expression: "locale_data.news_description",
+              },
+            ],
+            staticClass: "form-control",
+            attrs: { type: "text", name: "value name" },
+            domProps: { value: _vm.locale_data.news_description },
+            on: {
+              input: function ($event) {
+                if ($event.target.composing) {
+                  return
+                }
+                _vm.$set(
+                  _vm.locale_data,
+                  "news_description",
+                  $event.target.value
+                )
+              },
+            },
+          }),
+        ]),
+      ]),
+      _vm._v(" "),
+      _c("div", { staticClass: "form-group clearfix" }, [
+        _c(
+          "label",
+          { staticClass: "col-xs-2 control-label", attrs: { for: "name" } },
+          [_vm._v(" index_gallery_description ")]
+        ),
+        _vm._v(" "),
+        _c("div", { staticClass: "col-xs-8" }, [
+          _c("input", {
+            directives: [
+              {
+                name: "model",
+                rawName: "v-model",
+                value: _vm.locale_data.index_gallery_description,
+                expression: "locale_data.index_gallery_description",
+              },
+            ],
+            staticClass: "form-control",
+            attrs: { type: "text", name: "value name" },
+            domProps: { value: _vm.locale_data.index_gallery_description },
+            on: {
+              input: function ($event) {
+                if ($event.target.composing) {
+                  return
+                }
+                _vm.$set(
+                  _vm.locale_data,
+                  "index_gallery_description",
+                  $event.target.value
+                )
+              },
+            },
+          }),
+        ]),
+      ]),
+      _vm._v(" "),
+      _c("div", { staticClass: "form-group clearfix" }, [
+        _c(
+          "label",
+          { staticClass: "col-xs-2 control-label", attrs: { for: "name" } },
+          [_vm._v(" products_description ")]
+        ),
+        _vm._v(" "),
+        _c("div", { staticClass: "col-xs-8" }, [
+          _c("input", {
+            directives: [
+              {
+                name: "model",
+                rawName: "v-model",
+                value: _vm.locale_data.products_description,
+                expression: "locale_data.products_description",
+              },
+            ],
+            staticClass: "form-control",
+            attrs: { type: "text", name: "value name" },
+            domProps: { value: _vm.locale_data.products_description },
+            on: {
+              input: function ($event) {
+                if ($event.target.composing) {
+                  return
+                }
+                _vm.$set(
+                  _vm.locale_data,
+                  "products_description",
+                  $event.target.value
+                )
+              },
+            },
+          }),
+        ]),
+      ]),
+      _vm._v(" "),
+      _c("div", { staticClass: "form-group clearfix" }, [
+        _c(
+          "label",
+          { staticClass: "col-xs-2 control-label", attrs: { for: "name" } },
+          [_vm._v(" ice_description ")]
+        ),
+        _vm._v(" "),
+        _c("div", { staticClass: "col-xs-8" }, [
+          _c("input", {
+            directives: [
+              {
+                name: "model",
+                rawName: "v-model",
+                value: _vm.locale_data.ice_description,
+                expression: "locale_data.ice_description",
+              },
+            ],
+            staticClass: "form-control",
+            attrs: { type: "text", name: "value name" },
+            domProps: { value: _vm.locale_data.ice_description },
+            on: {
+              input: function ($event) {
+                if ($event.target.composing) {
+                  return
+                }
+                _vm.$set(
+                  _vm.locale_data,
+                  "ice_description",
+                  $event.target.value
+                )
+              },
+            },
+          }),
+        ]),
+      ]),
+      _vm._v(" "),
+      _c("div", { staticClass: "form-group clearfix" }, [
+        _c(
+          "label",
+          { staticClass: "col-xs-2 control-label", attrs: { for: "name" } },
+          [_vm._v(" mount_description ")]
+        ),
+        _vm._v(" "),
+        _c("div", { staticClass: "col-xs-8" }, [
+          _c("input", {
+            directives: [
+              {
+                name: "model",
+                rawName: "v-model",
+                value: _vm.locale_data.mount_description,
+                expression: "locale_data.mount_description",
+              },
+            ],
+            staticClass: "form-control",
+            attrs: { type: "text", name: "value name" },
+            domProps: { value: _vm.locale_data.mount_description },
+            on: {
+              input: function ($event) {
+                if ($event.target.composing) {
+                  return
+                }
+                _vm.$set(
+                  _vm.locale_data,
+                  "mount_description",
+                  $event.target.value
+                )
+              },
+            },
+          }),
+        ]),
+      ]),
+      _vm._v(" "),
+      _c("div", { staticClass: "form-group clearfix" }, [
+        _c(
+          "label",
+          { staticClass: "col-xs-2 control-label", attrs: { for: "name" } },
+          [_vm._v(" outdoor_description ")]
+        ),
+        _vm._v(" "),
+        _c("div", { staticClass: "col-xs-8" }, [
+          _c("input", {
+            directives: [
+              {
+                name: "model",
+                rawName: "v-model",
+                value: _vm.locale_data.outdoor_description,
+                expression: "locale_data.outdoor_description",
+              },
+            ],
+            staticClass: "form-control",
+            attrs: { type: "text", name: "value name" },
+            domProps: { value: _vm.locale_data.outdoor_description },
+            on: {
+              input: function ($event) {
+                if ($event.target.composing) {
+                  return
+                }
+                _vm.$set(
+                  _vm.locale_data,
+                  "outdoor_description",
+                  $event.target.value
+                )
+              },
+            },
+          }),
+        ]),
+      ]),
+      _vm._v(" "),
+      _c("div", { staticClass: "form-group clearfix" }, [
+        _c(
+          "label",
+          { staticClass: "col-xs-2 control-label", attrs: { for: "name" } },
+          [_vm._v(" indoor_description ")]
+        ),
+        _vm._v(" "),
+        _c("div", { staticClass: "col-xs-8" }, [
+          _c("input", {
+            directives: [
+              {
+                name: "model",
+                rawName: "v-model",
+                value: _vm.locale_data.indoor_description,
+                expression: "locale_data.indoor_description",
+              },
+            ],
+            staticClass: "form-control",
+            attrs: { type: "text", name: "value name" },
+            domProps: { value: _vm.locale_data.indoor_description },
+            on: {
+              input: function ($event) {
+                if ($event.target.composing) {
+                  return
+                }
+                _vm.$set(
+                  _vm.locale_data,
+                  "indoor_description",
+                  $event.target.value
+                )
+              },
+            },
+          }),
+        ]),
+      ]),
+      _vm._v(" "),
+      _c("div", { staticClass: "form-group clearfix" }, [
+        _c(
+          "label",
+          { staticClass: "col-xs-2 control-label", attrs: { for: "name" } },
+          [_vm._v(" topo_description ")]
+        ),
+        _vm._v(" "),
+        _c("div", { staticClass: "col-xs-8" }, [
+          _c("input", {
+            directives: [
+              {
+                name: "model",
+                rawName: "v-model",
+                value: _vm.locale_data.topo_description,
+                expression: "locale_data.topo_description",
+              },
+            ],
+            staticClass: "form-control",
+            attrs: { type: "text", name: "value name" },
+            domProps: { value: _vm.locale_data.topo_description },
+            on: {
+              input: function ($event) {
+                if ($event.target.composing) {
+                  return
+                }
+                _vm.$set(
+                  _vm.locale_data,
+                  "topo_description",
+                  $event.target.value
+                )
+              },
+            },
+          }),
+        ]),
+      ]),
+      _vm._v(" "),
+      _c("div", { staticClass: "form-group clearfix" }, [
+        _c(
+          "label",
+          { staticClass: "col-xs-2 control-label", attrs: { for: "name" } },
+          [_vm._v(" what_we_do_description ")]
+        ),
+        _vm._v(" "),
+        _c("div", { staticClass: "col-xs-8" }, [
+          _c("input", {
+            directives: [
+              {
+                name: "model",
+                rawName: "v-model",
+                value: _vm.locale_data.what_we_do_description,
+                expression: "locale_data.what_we_do_description",
+              },
+            ],
+            staticClass: "form-control",
+            attrs: { type: "text", name: "value name" },
+            domProps: { value: _vm.locale_data.what_we_do_description },
+            on: {
+              input: function ($event) {
+                if ($event.target.composing) {
+                  return
+                }
+                _vm.$set(
+                  _vm.locale_data,
+                  "what_we_do_description",
+                  $event.target.value
+                )
+              },
+            },
+          }),
+        ]),
+      ]),
+      _vm._v(" "),
+      _c("div", { staticClass: "form-group clearfix" }, [
+        _c(
+          "label",
+          { staticClass: "col-xs-2 control-label", attrs: { for: "name" } },
           [_vm._v(" shop_title ")]
         ),
         _vm._v(" "),
@@ -1503,318 +1949,6 @@ var render = function () {
             },
           }),
         ]),
-      ]),
-      _vm._v(" "),
-      _c("div", { staticClass: "form-group clearfix" }, [
-        _c(
-          "label",
-          { staticClass: "col-xs-2 control-label", attrs: { for: "name" } },
-          [_vm._v(" other_activity_description ")]
-        ),
-        _vm._v(" "),
-        _c(
-          "div",
-          { staticClass: "col-xs-8" },
-          [
-            _c("ckeditor", {
-              attrs: { config: _vm.other_activity_description_editor_config },
-              model: {
-                value: _vm.locale_data.other_activity_description,
-                callback: function ($$v) {
-                  _vm.$set(_vm.locale_data, "other_activity_description", $$v)
-                },
-                expression: "locale_data.other_activity_description",
-              },
-            }),
-          ],
-          1
-        ),
-      ]),
-      _vm._v(" "),
-      _c("div", { staticClass: "form-group clearfix" }, [
-        _c(
-          "label",
-          { staticClass: "col-xs-2 control-label", attrs: { for: "name" } },
-          [_vm._v(" event_description ")]
-        ),
-        _vm._v(" "),
-        _c(
-          "div",
-          { staticClass: "col-xs-8" },
-          [
-            _c("ckeditor", {
-              attrs: { config: _vm.event_description_editor_config },
-              model: {
-                value: _vm.locale_data.event_description,
-                callback: function ($$v) {
-                  _vm.$set(_vm.locale_data, "event_description", $$v)
-                },
-                expression: "locale_data.event_description",
-              },
-            }),
-          ],
-          1
-        ),
-      ]),
-      _vm._v(" "),
-      _c("div", { staticClass: "form-group clearfix" }, [
-        _c(
-          "label",
-          { staticClass: "col-xs-2 control-label", attrs: { for: "name" } },
-          [_vm._v(" tech_tips_description ")]
-        ),
-        _vm._v(" "),
-        _c(
-          "div",
-          { staticClass: "col-xs-8" },
-          [
-            _c("ckeditor", {
-              attrs: { config: _vm.tech_tips_description_editor_config },
-              model: {
-                value: _vm.locale_data.tech_tips_description,
-                callback: function ($$v) {
-                  _vm.$set(_vm.locale_data, "tech_tips_description", $$v)
-                },
-                expression: "locale_data.tech_tips_description",
-              },
-            }),
-          ],
-          1
-        ),
-      ]),
-      _vm._v(" "),
-      _c("div", { staticClass: "form-group clearfix" }, [
-        _c(
-          "label",
-          { staticClass: "col-xs-2 control-label", attrs: { for: "name" } },
-          [_vm._v(" news_description ")]
-        ),
-        _vm._v(" "),
-        _c(
-          "div",
-          { staticClass: "col-xs-8" },
-          [
-            _c("ckeditor", {
-              attrs: { config: _vm.news_description_editor_config },
-              model: {
-                value: _vm.locale_data.news_description,
-                callback: function ($$v) {
-                  _vm.$set(_vm.locale_data, "news_description", $$v)
-                },
-                expression: "locale_data.news_description",
-              },
-            }),
-          ],
-          1
-        ),
-      ]),
-      _vm._v(" "),
-      _c("div", { staticClass: "form-group clearfix" }, [
-        _c(
-          "label",
-          { staticClass: "col-xs-2 control-label", attrs: { for: "name" } },
-          [_vm._v(" index_gallery_description ")]
-        ),
-        _vm._v(" "),
-        _c(
-          "div",
-          { staticClass: "col-xs-8" },
-          [
-            _c("ckeditor", {
-              attrs: { config: _vm.index_gallery_description_editor_config },
-              model: {
-                value: _vm.locale_data.index_gallery_description,
-                callback: function ($$v) {
-                  _vm.$set(_vm.locale_data, "index_gallery_description", $$v)
-                },
-                expression: "locale_data.index_gallery_description",
-              },
-            }),
-          ],
-          1
-        ),
-      ]),
-      _vm._v(" "),
-      _c("div", { staticClass: "form-group clearfix" }, [
-        _c(
-          "label",
-          { staticClass: "col-xs-2 control-label", attrs: { for: "name" } },
-          [_vm._v(" products_description ")]
-        ),
-        _vm._v(" "),
-        _c(
-          "div",
-          { staticClass: "col-xs-8" },
-          [
-            _c("ckeditor", {
-              attrs: { config: _vm.products_description_editor_config },
-              model: {
-                value: _vm.locale_data.products_description,
-                callback: function ($$v) {
-                  _vm.$set(_vm.locale_data, "products_description", $$v)
-                },
-                expression: "locale_data.products_description",
-              },
-            }),
-          ],
-          1
-        ),
-      ]),
-      _vm._v(" "),
-      _c("div", { staticClass: "form-group clearfix" }, [
-        _c(
-          "label",
-          { staticClass: "col-xs-2 control-label", attrs: { for: "name" } },
-          [_vm._v(" ice_description ")]
-        ),
-        _vm._v(" "),
-        _c(
-          "div",
-          { staticClass: "col-xs-8" },
-          [
-            _c("ckeditor", {
-              attrs: { config: _vm.ice_description_editor_config },
-              model: {
-                value: _vm.locale_data.ice_description,
-                callback: function ($$v) {
-                  _vm.$set(_vm.locale_data, "ice_description", $$v)
-                },
-                expression: "locale_data.ice_description",
-              },
-            }),
-          ],
-          1
-        ),
-      ]),
-      _vm._v(" "),
-      _c("div", { staticClass: "form-group clearfix" }, [
-        _c(
-          "label",
-          { staticClass: "col-xs-2 control-label", attrs: { for: "name" } },
-          [_vm._v(" mount_description ")]
-        ),
-        _vm._v(" "),
-        _c(
-          "div",
-          { staticClass: "col-xs-8" },
-          [
-            _c("ckeditor", {
-              attrs: { config: _vm.mount_description_editor_config },
-              model: {
-                value: _vm.locale_data.mount_description,
-                callback: function ($$v) {
-                  _vm.$set(_vm.locale_data, "mount_description", $$v)
-                },
-                expression: "locale_data.mount_description",
-              },
-            }),
-          ],
-          1
-        ),
-      ]),
-      _vm._v(" "),
-      _c("div", { staticClass: "form-group clearfix" }, [
-        _c(
-          "label",
-          { staticClass: "col-xs-2 control-label", attrs: { for: "name" } },
-          [_vm._v(" outdoor_description ")]
-        ),
-        _vm._v(" "),
-        _c(
-          "div",
-          { staticClass: "col-xs-8" },
-          [
-            _c("ckeditor", {
-              attrs: { config: _vm.outdoor_description_editor_config },
-              model: {
-                value: _vm.locale_data.outdoor_description,
-                callback: function ($$v) {
-                  _vm.$set(_vm.locale_data, "outdoor_description", $$v)
-                },
-                expression: "locale_data.outdoor_description",
-              },
-            }),
-          ],
-          1
-        ),
-      ]),
-      _vm._v(" "),
-      _c("div", { staticClass: "form-group clearfix" }, [
-        _c(
-          "label",
-          { staticClass: "col-xs-2 control-label", attrs: { for: "name" } },
-          [_vm._v(" indoor_description ")]
-        ),
-        _vm._v(" "),
-        _c(
-          "div",
-          { staticClass: "col-xs-8" },
-          [
-            _c("ckeditor", {
-              attrs: { config: _vm.indoor_description_editor_config },
-              model: {
-                value: _vm.locale_data.indoor_description,
-                callback: function ($$v) {
-                  _vm.$set(_vm.locale_data, "indoor_description", $$v)
-                },
-                expression: "locale_data.indoor_description",
-              },
-            }),
-          ],
-          1
-        ),
-      ]),
-      _vm._v(" "),
-      _c("div", { staticClass: "form-group clearfix" }, [
-        _c(
-          "label",
-          { staticClass: "col-xs-2 control-label", attrs: { for: "name" } },
-          [_vm._v(" topo_description ")]
-        ),
-        _vm._v(" "),
-        _c(
-          "div",
-          { staticClass: "col-xs-8" },
-          [
-            _c("ckeditor", {
-              attrs: { config: _vm.topo_description_editor_config },
-              model: {
-                value: _vm.locale_data.topo_description,
-                callback: function ($$v) {
-                  _vm.$set(_vm.locale_data, "topo_description", $$v)
-                },
-                expression: "locale_data.topo_description",
-              },
-            }),
-          ],
-          1
-        ),
-      ]),
-      _vm._v(" "),
-      _c("div", { staticClass: "form-group clearfix" }, [
-        _c(
-          "label",
-          { staticClass: "col-xs-2 control-label", attrs: { for: "name" } },
-          [_vm._v(" what_we_do_description ")]
-        ),
-        _vm._v(" "),
-        _c(
-          "div",
-          { staticClass: "col-xs-8" },
-          [
-            _c("ckeditor", {
-              attrs: { config: _vm.what_we_do_description_editor_config },
-              model: {
-                value: _vm.locale_data.what_we_do_description,
-                callback: function ($$v) {
-                  _vm.$set(_vm.locale_data, "what_we_do_description", $$v)
-                },
-                expression: "locale_data.what_we_do_description",
-              },
-            }),
-          ],
-          1
-        ),
       ]),
       _vm._v(" "),
       _c("div", { staticClass: "form-group clearfix" }, [
@@ -1876,23 +2010,33 @@ var render = function () {
           [_vm._v(" Service description ")]
         ),
         _vm._v(" "),
-        _c(
-          "div",
-          { staticClass: "col-xs-8" },
-          [
-            _c("ckeditor", {
-              attrs: { config: _vm.services_description_editor_config },
-              model: {
+        _c("div", { staticClass: "col-xs-8" }, [
+          _c("input", {
+            directives: [
+              {
+                name: "model",
+                rawName: "v-model",
                 value: _vm.locale_data.services_description,
-                callback: function ($$v) {
-                  _vm.$set(_vm.locale_data, "services_description", $$v)
-                },
                 expression: "locale_data.services_description",
               },
-            }),
-          ],
-          1
-        ),
+            ],
+            staticClass: "form-control",
+            attrs: { type: "text", name: "value name" },
+            domProps: { value: _vm.locale_data.services_description },
+            on: {
+              input: function ($event) {
+                if ($event.target.composing) {
+                  return
+                }
+                _vm.$set(
+                  _vm.locale_data,
+                  "services_description",
+                  $event.target.value
+                )
+              },
+            },
+          }),
+        ]),
       ]),
       _vm._v(" "),
       _c("div", { staticClass: "form-group clearfix" }, [

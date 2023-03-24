@@ -540,7 +540,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     get_social_links: function get_social_links() {
       var _this5 = this;
 
-      axios.get('./api/siteData/site_social_links').then(function (response) {
+      axios.get('/siteData/site_social_links').then(function (response) {
         _this5.site_social_links = response.data;
       })["catch"](function (error) {
         return console.log(error);
@@ -549,7 +549,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     add_social_link: function add_social_link() {
       var _this6 = this;
 
-      axios.post('./api/siteData/site_social_links', {
+      axios.post('/siteData/site_social_links', {
         data: this.form_data,
         _method: 'post'
       }).then(function (response) {
@@ -583,7 +583,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     get_general_info: function get_general_info() {
       var _this8 = this;
 
-      axios.get('./api/general_info').then(function (response) {
+      axios.get('/general_info').then(function (response) {
         _this8.general_infos = response.data;
         _this8.general_info_reset_id++;
       })["catch"](function (error) {

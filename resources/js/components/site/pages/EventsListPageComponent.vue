@@ -2,8 +2,8 @@
     <div>
         <h1 class='index_h2'>{{ $t('guide.title.events')}}</h1>
 
-        <h2 style="text-align: center;">
-            <span v-html="this.$siteData.event_description"></span>
+        <h2 class="article_list_short_descriptio">
+            {{this.$siteData.event_description}}
         </h2>
 
         <ul class="timeline" v-if="events.length">

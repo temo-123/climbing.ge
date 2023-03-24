@@ -1147,6 +1147,10 @@ var render = function () {
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
   return _c("div", [
+    _c("h3", { staticStyle: { "text-align": "center" } }, [
+      _vm._v(_vm._s(_vm.$t("global.page is empty"))),
+    ]),
+    _vm._v(" "),
     _vm.num == 1
       ? _c("img", {
           staticClass: "article_404",
@@ -1181,10 +1185,6 @@ var render = function () {
             src: this.publicPath + "/public/images/404/empty_page/3.jpg",
           },
         }),
-    _vm._v(" "),
-    _c("p", { staticStyle: { "text-align": "center" } }, [
-      _vm._v(_vm._s(_vm.$t("global.page is empty"))),
-    ]),
   ])
 }
 var staticRenderFns = []
@@ -1304,16 +1304,18 @@ var render = function () {
     { staticClass: "h-recent-work", attrs: { id: "other" } },
     [
       _c("div", { staticClass: "container" }, [
-        _c("h2", { staticClass: "index_h2" }, [
+        _c("h1", { staticClass: "index_h2" }, [
           _vm._v(_vm._s(_vm.$t("guide.title.ice climbing"))),
         ]),
         _vm._v(" "),
         _vm._m(0),
         _vm._v(" "),
-        _c("h2", { staticStyle: { "text-align": "center" } }, [
-          _c("span", {
-            domProps: { innerHTML: _vm._s(this.$siteData.ice_description) },
-          }),
+        _c("h2", { staticClass: "article_list_short_descriptio" }, [
+          _vm._v(
+            "\n            " +
+              _vm._s(this.$siteData.ice_description) +
+              "\n        "
+          ),
         ]),
         _vm._v(" "),
         _vm.indoor_article_loading

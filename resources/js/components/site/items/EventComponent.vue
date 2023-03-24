@@ -6,7 +6,7 @@
                 <h2 class='index_h2'>{{ $t('guide.title.events') }}</h2>
 
                 <div class="bar"><i class="fa fa-calendar"></i></div>
-                <h3> <span v-html="this.$siteData.event_description"></span></h3>
+                <h3> {{this.$siteData.event_description}}</h3>
 
                 <div class="container">
                     <div class="row event-list">

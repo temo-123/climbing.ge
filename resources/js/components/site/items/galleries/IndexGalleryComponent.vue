@@ -4,7 +4,7 @@
       <h2 class='index_h2'>{{ $t('guide.title.gallery') }}</h2>
       <div class="bar" style="margin-bottom: 5%;"><i class="fa fa-picture-o" aria-hidden="true"></i></div>
 
-      <h3> <span v-html="this.$siteData.index_gallery_description"></span></h3>
+      <h3> {{this.$siteData.index_gallery_description}} </h3>
 
       <galleryComponrnt :images_prop="this.db_images" :image_path_prop="this.images_path"/>
 

@@ -68,7 +68,7 @@ export default {
         SlickItem,
         SlickList,
     },
-    name: "Login modal",
+    // name: "Login modal",
     data: function() {
       return {
         email: null,

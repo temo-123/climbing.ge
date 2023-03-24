@@ -5,8 +5,9 @@
             <h1 class="page_title index_h2">{{ $t('guide.title.outdoor climbing')}}</h1>
                         
             <div class="bar"><i class="fa fa-exclamation-triangle"></i></div>
-            <h2 style="text-align: center;">
-                <span v-html="this.$siteData.outdoor_description"></span>
+
+            <h2 class="article_list_short_descriptio">
+                {{this.$siteData.outdoor_description}}
             </h2>
             
             <sectorQuantyt />
@@ -88,7 +89,7 @@
                     :show="show_map_modal"
                     :title="selected_region_data.name + 'map'"
                     @close="show_map_modal=false"
-                    :modal-class="{ [modalClass]: true }"
+                    :modal-class="''"
                     :saveButton="{ visible: true, title: 'Save', btnClass: { 'btn btn-primary': true } }"
                     :cancelButton="{ visible: false, title: 'Close', btnClass: { 'btn btn-danger': true } }"
                 >

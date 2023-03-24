@@ -5,9 +5,9 @@
             <h1 class="page_title index_h2" >{{ $t('guide.title.indoor climbing')}}</h1>                    
 
             <div class="bar"><i class="fa fa-exclamation-triangle"></i></div>
-            <!-- <h6> <span v-html="this.$siteData.indoor_description"></span></h6> -->
-            <h2 style="text-align: center;">
-                <span v-html="this.$siteData.indoor_description"></span>
+            
+            <h2 class="article_list_short_descriptio">
+                {{this.$siteData.indoor_description}}
             </h2>
 
             <div class="row featurette" style='margin-bottom: 7%' v-if="this.indoors.length > 0">

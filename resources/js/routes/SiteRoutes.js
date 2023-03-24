@@ -144,7 +144,7 @@ const router = new VueRouter({
                     path: "outdoor/:url_title",
                     name: "outdoor",
                     component: load("OutdoorPageComponent"),
-                    meta: { title: "FOO" },
+                    // meta: { title: "FOO" },
                 },
 
                 {

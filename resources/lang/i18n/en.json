@@ -6,7 +6,7 @@
             "index": "Climbing in georgia",
             "indoor climbing": "Indoor climbing",
             "outdoor climbing": "Outdoor climbing",
-            "ice climbing": "Ice & mix",
+            "ice climbing": "Ice and mix climbing",
             "events": "Events & competitions",
             "mountaineering": "Mountaineering",
             "other": "Other",
@@ -46,7 +46,7 @@
             "climbing": "Climbing",
             "indoor climbing": "Indoor climbing",
             "outdoor climbing": "Outdoor climbing",
-            "ice climbing": "Ice & mix",
+            "ice climbing": "Ice and mix climbing",
             "mountaineering": "Mountaineering",
             "other": "Other",
             "about us": "About us",
@@ -130,8 +130,8 @@
         "name": "Climbng shop",
 
         "meta": {
-            "products": "Indoor climbing",
-            "services": "Outdoor climbing",
+            "products": "Products list",
+            "services": "Services list",
             "categories": "Categories",
             "about us": "About us",
             "search": "Search product"
@@ -218,6 +218,7 @@
             "login" :"Login",
             "logout": "Logout",
             "sectors & routes": "Sectors & Routes",
+            "sectors local images": "Sectors local images",
             "local bisnes" : "Suport local bisnes",
             "my favorite outdoor area": "My favorite outdoor areas"
         }

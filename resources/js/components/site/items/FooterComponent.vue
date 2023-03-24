@@ -96,7 +96,7 @@
                         <div class="flick">
                             <h4 class="footer_title">{{ $t("global.footer.share") }}</h4>
 
-                            <share />
+                            <!-- <share /> -->
                         </div>
                     </div>
                     <div class="row f-links container">

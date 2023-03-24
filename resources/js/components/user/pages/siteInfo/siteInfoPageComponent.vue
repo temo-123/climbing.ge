@@ -319,7 +319,7 @@
 
             get_social_links(){
                 axios
-                .get('./api/siteData/site_social_links')
+                .get('/siteData/site_social_links')
                 .then(response => {
                     this.site_social_links = response.data
                 })
@@ -329,7 +329,7 @@
             },
             add_social_link(){
                 axios
-                .post('./api/siteData/site_social_links', {        
+                .post('/siteData/site_social_links', {        
                     data: this.form_data,
 
                     _method: 'post'
@@ -364,7 +364,7 @@
 
             get_general_info: function(){
                 axios
-                .get('./api/general_info')
+                .get('/general_info')
                 .then(response => {
                     this.general_infos = response.data
                     this.general_info_reset_id++

@@ -2,12 +2,12 @@
     <div class="h-recent-work" id="other">
         <div class="container">
 
-            <h2 class='index_h2'>{{ $t('guide.title.ice climbing')}}</h2>
+            <h1 class='index_h2'>{{ $t('guide.title.ice climbing')}}</h1>
 
             <div class="bar"><i class="fa fa-dribbble"></i></div>
-            <!-- <h6><span v-html="this.$siteData.other_activity_description"></span></h6> -->
-            <h2 style="text-align: center;">
-                <span v-html="this.$siteData.ice_description"></span>
+            
+            <h2 class="article_list_short_descriptio">
+                {{this.$siteData.ice_description}}
             </h2>
 
             <div v-if="indoor_article_loading">

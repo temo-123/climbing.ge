@@ -251,7 +251,7 @@
                 "        
             >
                 <li class="list-group-item text-muted mbing Secrots And Route">
-                    <span class="admin_menu">{{ $t('Sect.r lo.al images') }}</span>
+                    <span class="admin_menu">{{ $t('user.menu.sectors local images') }}</span>
                 </li>
             </router-link>
 

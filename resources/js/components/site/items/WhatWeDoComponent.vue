@@ -5,8 +5,10 @@
             <h2 class='index_h2'>{{ $t('guide.title.what we do') }}</h2>
 
             <div class="bar"><i class="fa fa-book"></i></div>
-        
-            <h3> {{this.$siteData.what_we_do_description}} </h3>
+
+            <h3 class="article_list_short_descriptio">
+                {{ this.$siteData.what_we_do_description }}
+            </h3>
                 
             <div class="row">
                 <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
@@ -20,7 +22,7 @@
                                 </router-link>
                             </h4>
 
-                            <div class="content-text">
+                            <div class="content-text what_we_do_text_description">
                                 <span v-html="this.$siteData.indoor_description"></span>
                             </div>
                         </li>
@@ -34,7 +36,7 @@
                                 </router-link>
                             </h4>
 
-                            <div class="content-text">
+                            <div class="content-text what_we_do_text_description">
                                 <span v-html="this.$siteData.indoor_description"></span>
                             </div>
                         </li>
@@ -51,7 +53,7 @@
                                 </router-link>
                             </h4>
 
-                            <div class="content-text">
+                            <div class="content-text what_we_do_text_description">
                                 <span v-html="this.$siteData.ice_description"></span>
                             </div>
                         </li>
@@ -65,7 +67,7 @@
                                 </router-link>
                             </h4>
 
-                            <div class="content-text">
+                            <div class="content-text what_we_do_text_description">
                                 <span v-html="this.$siteData.mount_description"></span>
                             </div>
                         </li>
@@ -92,9 +94,9 @@ export default {
 
     .right-text h4 {
         /* font-size: 18px; */
-        font-size: 1.5em;
+        /* font-size: 1.5em; */
         color: #4b4b4b;
-        line-height: 60px;
+        line-height: 60px !important;
     }
 
     .right-text h4 i {
@@ -109,16 +111,16 @@ export default {
         margin-right: 0;
         color: #279fbb;
         border: 1px solid #279fbb;
-        font-size: 22px;
-        line-height: 60px;
+        /* font-size: 22px; */
+        line-height: 60px !important;
         text-align: center;
     }
 
-    .right-text {
+    /* .right-text {
         margin-top: -14px;
         margin-left: 0;
         margin-right: 80px;
-    }
+    } */
 
     ul.left-text {
         padding: 0;
@@ -130,7 +132,7 @@ export default {
     .left-text h4 {
         /* font-size: 18px; */
         color: #4b4b4b;
-        /* line-height: 60px; */
+        line-height: 60px  !important;
     }
 
     .left-text h4 i {
@@ -145,17 +147,17 @@ export default {
         margin-left: 0;
         color: #279fbb;
         border: 1px solid #279fbb;
-        font-size: 22px;
-        line-height: 60px;
+        /* font-size: 22px; */
+        line-height: 60px !important;
         text-align: center;
         transition: all 0.4s ease 0s;
     }
 
-    .left-text .content-text {
+    /* .left-text .content-text {
         margin-top: -14px;
         margin-right: 0;
         margin-left: 80px;
-    }
+    } */
 
     .what_we_do_title{
         font-size: 1.5em;
@@ -170,6 +172,10 @@ export default {
             float: none !important;
             margin-left: 40% !important;
             margin-right: 40% !important;
+        }
+        .what_we_do_text_description{
+            text-align: center;
+            margin: 0;
         }
     }
 

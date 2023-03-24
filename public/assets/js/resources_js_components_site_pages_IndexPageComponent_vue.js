@@ -633,6 +633,8 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({});
 
 /***/ }),
@@ -1134,7 +1136,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_laravel_mix_node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, "\nul.right-text {\n    padding: 0;\n    text-align: right;\n    width: 100%;\n    height: auto;\n}\n.right-text h4 {\n    /* font-size: 18px; */\n    font-size: 1.5em;\n    color: #4b4b4b;\n    line-height: 60px;\n}\n.right-text h4 i {\n    width: 60px;\n    height: 60px;\n    border-radius: 50%;\n    margin-top: 30px;\n    float: right;\n    margin-left: 20px;\n    margin-right: 0;\n    color: #279fbb;\n    border: 1px solid #279fbb;\n    font-size: 22px;\n    line-height: 60px;\n    text-align: center;\n}\n.right-text {\n    margin-top: -14px;\n    margin-left: 0;\n    margin-right: 80px;\n}\nul.left-text {\n    padding: 0;\n    text-align: left;\n    width: 100%;\n    height: auto;\n}\n.left-text h4 {\n    /* font-size: 18px; */\n    color: #4b4b4b;\n    /* line-height: 60px; */\n}\n.left-text h4 i {\n    width: 60px;\n    height: 60px;\n    border-radius: 50%;\n    margin-top: 30px;\n    float: left;\n    margin-right: 20px;\n    margin-left: 0;\n    color: #279fbb;\n    border: 1px solid #279fbb;\n    font-size: 22px;\n    line-height: 60px;\n    text-align: center;\n    transition: all 0.4s ease 0s;\n}\n.left-text .content-text {\n    margin-top: -14px;\n    margin-right: 0;\n    margin-left: 80px;\n}\n.what_we_do_title{\n    font-size: 1.5em;\n}\n@media (max-width: 765px) {\n.what_we_do_title{\n        text-align: center;\n        float: none;\n}\n.what_we_do_title_image{\n        float: none !important;\n        margin-left: 40% !important;\n        margin-right: 40% !important;\n}\n}\n.index_category_right {\n    width: 20%;\n    float: right;\n    margin: 5px;\n}\n.index_category_left {\n    width: 20%;\n    float: left;\n    margin: 5px;\n}\n", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, "\nul.right-text {\n    padding: 0;\n    text-align: right;\n    width: 100%;\n    height: auto;\n}\n.right-text h4 {\n    /* font-size: 18px; */\n    /* font-size: 1.5em; */\n    color: #4b4b4b;\n    line-height: 60px !important;\n}\n.right-text h4 i {\n    width: 60px;\n    height: 60px;\n    border-radius: 50%;\n    margin-top: 30px;\n    float: right;\n    margin-left: 20px;\n    margin-right: 0;\n    color: #279fbb;\n    border: 1px solid #279fbb;\n    /* font-size: 22px; */\n    line-height: 60px !important;\n    text-align: center;\n}\n\n/* .right-text {\n    margin-top: -14px;\n    margin-left: 0;\n    margin-right: 80px;\n} */\nul.left-text {\n    padding: 0;\n    text-align: left;\n    width: 100%;\n    height: auto;\n}\n.left-text h4 {\n    /* font-size: 18px; */\n    color: #4b4b4b;\n    line-height: 60px  !important;\n}\n.left-text h4 i {\n    width: 60px;\n    height: 60px;\n    border-radius: 50%;\n    margin-top: 30px;\n    float: left;\n    margin-right: 20px;\n    margin-left: 0;\n    color: #279fbb;\n    border: 1px solid #279fbb;\n    /* font-size: 22px; */\n    line-height: 60px !important;\n    text-align: center;\n    transition: all 0.4s ease 0s;\n}\n\n/* .left-text .content-text {\n    margin-top: -14px;\n    margin-right: 0;\n    margin-left: 80px;\n} */\n.what_we_do_title{\n    font-size: 1.5em;\n}\n@media (max-width: 765px) {\n.what_we_do_title{\n        text-align: center;\n        float: none;\n}\n.what_we_do_title_image{\n        float: none !important;\n        margin-left: 40% !important;\n        margin-right: 40% !important;\n}\n.what_we_do_text_description{\n        text-align: center;\n        margin: 0;\n}\n}\n.index_category_right {\n    width: 20%;\n    float: right;\n    margin: 5px;\n}\n.index_category_left {\n    width: 20%;\n    float: left;\n    margin: 5px;\n}\n", ""]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
@@ -2281,11 +2283,7 @@ var render = function () {
               _vm._m(0),
               _vm._v(" "),
               _c("h3", [
-                _c("span", {
-                  domProps: {
-                    innerHTML: _vm._s(this.$siteData.event_description),
-                  },
-                }),
+                _vm._v(" " + _vm._s(this.$siteData.event_description)),
               ]),
               _vm._v(" "),
               _c("div", { staticClass: "container" }, [
@@ -2467,11 +2465,7 @@ var render = function () {
             _vm._m(0),
             _vm._v(" "),
             _c("h3", [
-              _c("span", {
-                domProps: {
-                  innerHTML: _vm._s(this.$siteData.tech_tips_description),
-                },
-              }),
+              _vm._v(" " + _vm._s(this.$siteData.tech_tips_description) + " "),
             ]),
             _vm._v(" "),
             _c("div", { staticClass: "container" }, [
@@ -2630,8 +2624,12 @@ var render = function () {
       _vm._v(" "),
       _vm._m(0),
       _vm._v(" "),
-      _c("h3", [
-        _vm._v(" " + _vm._s(this.$siteData.what_we_do_description) + " "),
+      _c("h3", { staticClass: "article_list_short_descriptio" }, [
+        _vm._v(
+          "\n            " +
+            _vm._s(this.$siteData.what_we_do_description) +
+            "\n        "
+        ),
       ]),
       _vm._v(" "),
       _c("div", { staticClass: "row" }, [
@@ -2663,13 +2661,17 @@ var render = function () {
                 1
               ),
               _vm._v(" "),
-              _c("div", { staticClass: "content-text" }, [
-                _c("span", {
-                  domProps: {
-                    innerHTML: _vm._s(this.$siteData.indoor_description),
-                  },
-                }),
-              ]),
+              _c(
+                "div",
+                { staticClass: "content-text what_we_do_text_description" },
+                [
+                  _c("span", {
+                    domProps: {
+                      innerHTML: _vm._s(this.$siteData.indoor_description),
+                    },
+                  }),
+                ]
+              ),
             ]),
             _vm._v(" "),
             _c("div", { staticClass: "clearfix" }),
@@ -2700,13 +2702,17 @@ var render = function () {
                 1
               ),
               _vm._v(" "),
-              _c("div", { staticClass: "content-text" }, [
-                _c("span", {
-                  domProps: {
-                    innerHTML: _vm._s(this.$siteData.indoor_description),
-                  },
-                }),
-              ]),
+              _c(
+                "div",
+                { staticClass: "content-text what_we_do_text_description" },
+                [
+                  _c("span", {
+                    domProps: {
+                      innerHTML: _vm._s(this.$siteData.indoor_description),
+                    },
+                  }),
+                ]
+              ),
             ]),
           ]),
         ]),
@@ -2739,13 +2745,17 @@ var render = function () {
                 1
               ),
               _vm._v(" "),
-              _c("div", { staticClass: "content-text" }, [
-                _c("span", {
-                  domProps: {
-                    innerHTML: _vm._s(this.$siteData.ice_description),
-                  },
-                }),
-              ]),
+              _c(
+                "div",
+                { staticClass: "content-text what_we_do_text_description" },
+                [
+                  _c("span", {
+                    domProps: {
+                      innerHTML: _vm._s(this.$siteData.ice_description),
+                    },
+                  }),
+                ]
+              ),
             ]),
             _vm._v(" "),
             _c("div", { staticClass: "clearfix" }),
@@ -2776,13 +2786,17 @@ var render = function () {
                 1
               ),
               _vm._v(" "),
-              _c("div", { staticClass: "content-text" }, [
-                _c("span", {
-                  domProps: {
-                    innerHTML: _vm._s(this.$siteData.mount_description),
-                  },
-                }),
-              ]),
+              _c(
+                "div",
+                { staticClass: "content-text what_we_do_text_description" },
+                [
+                  _c("span", {
+                    domProps: {
+                      innerHTML: _vm._s(this.$siteData.mount_description),
+                    },
+                  }),
+                ]
+              ),
             ]),
           ]),
         ]),
@@ -3160,11 +3174,9 @@ var render = function () {
             _vm._m(0),
             _vm._v(" "),
             _c("h3", [
-              _c("span", {
-                domProps: {
-                  innerHTML: _vm._s(this.$siteData.index_gallery_description),
-                },
-              }),
+              _vm._v(
+                " " + _vm._s(this.$siteData.index_gallery_description) + " "
+              ),
             ]),
             _vm._v(" "),
             _c("galleryComponrnt", {
@@ -3261,11 +3273,7 @@ var render = function () {
               _vm._m(1),
               _vm._v(" "),
               _c("h3", [
-                _c("span", {
-                  domProps: {
-                    innerHTML: _vm._s(this.$siteData.news_description),
-                  },
-                }),
+                _vm._v(" " + _vm._s(this.$siteData.news_description) + " "),
               ]),
               _vm._v(" "),
               _vm.lastNews

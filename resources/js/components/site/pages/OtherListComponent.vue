@@ -5,10 +5,11 @@
             <h2 class='index_h2'>{{ $t('guide.title.other')}}</h2>
 
             <div class="bar"><i class="fa fa-dribbble"></i></div>
-            <!-- <h6> <span v-html="this.$siteData.other_activity_description"></span> </h6> -->
-            <h2 style="text-align: center;">
-                <span v-html="this.$siteData.other_activity_description"></span>
+
+            <h2 class="article_list_short_descriptio">
+                {{this.$siteData.other_activity_description}}
             </h2>
+
             <div v-if="other_article_loading">
                 <content-loader
                     viewBox="0 0"

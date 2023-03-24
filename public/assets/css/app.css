@@ -131,6 +131,15 @@ hr {
 
 /*
 *
+*   Article cards list head title
+*
+*/
+.article_list_short_descriptio {
+  text-align: center;
+}
+
+/*
+*
 *   Navbar styles navbar
 *
 */
@@ -1209,7 +1218,12 @@ tr td:last-child {
   text-align: center;
 }
 
-KD C1 .preloader {
+/*
+*
+*   Preloader style
+*
+*/
+.preloader {
   position: fixed;
   left: 0;
   top: 0;

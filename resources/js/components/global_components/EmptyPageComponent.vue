@@ -1,12 +1,12 @@
 <template>
     <div>
+        <h3 style="text-align: center; ">{{ $t('global.page is empty') }}</h3>
+
         <img v-if="num == 1" class="article_404" :src=" this.publicPath + '/public/images/404/empty_page/1.jpg'">
         <img v-else-if="num == 2" class="article_404" :src=" this.publicPath + '/public/images/404/empty_page/2.jpg'">
         <img v-else-if="num == 3" class="article_404" :src=" this.publicPath + '/public/images/404/empty_page/3.jpg'">
         <img v-else-if="num == 4" class="article_404" :src=" this.publicPath + '/public/images/404/empty_page/4.jpg'">
         <img v-else class="article_404" :src=" this.publicPath + '/public/images/404/empty_page/3.jpg'">
-
-        <p style="text-align: center; ">{{ $t('global.page is empty') }}</p>
     </div>
 </template>
 
