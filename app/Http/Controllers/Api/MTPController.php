@@ -96,11 +96,11 @@ class MTPController extends Controller
         }
         else{
             if ($request -> isMethod('post')) {
-
+                
                 $new_mtp = new Mtp();
 
-                $sector_mtp_pitch_count = Mtp::where('sector_id',strip_tags($request->sector_id))->count();
-                $new_mtp = $sector_mtp_pitch_count+1;
+                $sector_mtp_pitch_count = Mtp::where('sector_id',strip_tags($request->data['sector_id']))->count();
+                $new_mtp->num = $sector_mtp_pitch_count+1;
 
                 $new_mtp->sector_id = $request->data['sector_id'];
                 $new_mtp->name = $request->data['name'];

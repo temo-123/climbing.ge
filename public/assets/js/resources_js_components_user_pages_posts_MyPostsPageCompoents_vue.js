@@ -1418,8 +1418,10 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
-/* harmony import */ var _innologica_vue_stackable_modal__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @innologica/vue-stackable-modal */ "./node_modules/@innologica/vue-stackable-modal/dist/vue-stackable-modal.umd.min.js");
-/* harmony import */ var _innologica_vue_stackable_modal__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_innologica_vue_stackable_modal__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var vue_slicksort__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vue-slicksort */ "./node_modules/vue-slicksort/dist/vue-slicksort.umd.js");
+/* harmony import */ var vue_slicksort__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(vue_slicksort__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _innologica_vue_stackable_modal__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @innologica/vue-stackable-modal */ "./node_modules/@innologica/vue-stackable-modal/dist/vue-stackable-modal.umd.min.js");
+/* harmony import */ var _innologica_vue_stackable_modal__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_innologica_vue_stackable_modal__WEBPACK_IMPORTED_MODULE_1__);
 //
 //
 //
@@ -1500,7 +1502,8 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-// import { SlickList, SlickItem } from 'vue-slicksort'; //https://github.com/Jexordexan/vue-slicksort     https://www.npmjs.com/package/vue-slicksort/v/2.0.0-alpha.2?activeTab=versions
+ //https://github.com/Jexordexan/vue-slicksort     https://www.npmjs.com/package/vue-slicksort/v/2.0.0-alpha.2?activeTab=versions
+
  //https://innologica.github.io/vue-stackable-modal/#sample-css
 // import { ContainerMixin, ElementMixin } from 'vue-slicksort'; //
 
@@ -1508,9 +1511,9 @@ __webpack_require__.r(__webpack_exports__);
   props: [// 'show_sector_modal',
   ],
   components: {
-    StackModal: (_innologica_vue_stackable_modal__WEBPACK_IMPORTED_MODULE_0___default()) // SlickItem,
-    // SlickList,
-
+    StackModal: (_innologica_vue_stackable_modal__WEBPACK_IMPORTED_MODULE_1___default()),
+    SlickItem: vue_slicksort__WEBPACK_IMPORTED_MODULE_0__.SlickItem,
+    SlickList: vue_slicksort__WEBPACK_IMPORTED_MODULE_0__.SlickList
   },
   data: function data() {
     return {

@@ -2369,7 +2369,7 @@ var render = function () {
   return _c(
     "div",
     [
-      _c("div", { staticClass: "row" }, [
+      _c("div", [
         _c("div", { staticClass: "col-md-8" }, [
           _c(
             "form",

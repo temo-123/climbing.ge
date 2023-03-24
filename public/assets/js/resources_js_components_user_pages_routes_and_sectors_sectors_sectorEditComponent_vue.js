@@ -15,6 +15,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var vux_uploader_component__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(vux_uploader_component__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var vue_slicksort__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! vue-slicksort */ "./node_modules/vue-slicksort/dist/vue-slicksort.umd.js");
 /* harmony import */ var vue_slicksort__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(vue_slicksort__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var _mixins_editor_editor_config_mixin_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../../../mixins/editor/editor_config_mixin.js */ "./resources/js/mixins/editor/editor_config_mixin.js");
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
 //
@@ -465,7 +466,9 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
  //https://www.npmjs.com/package/vue-slicksort/v/2.0.0-alpha.2
 
+
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
+  mixins: [_mixins_editor_editor_config_mixin_js__WEBPACK_IMPORTED_MODULE_2__.editor_config],
   components: {
     Uploader: (vux_uploader_component__WEBPACK_IMPORTED_MODULE_0___default()),
     SlickItem: vue_slicksort__WEBPACK_IMPORTED_MODULE_1__.SlickItem,
@@ -475,6 +478,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     var _data;
 
     return {
+      description_editor: _mixins_editor_editor_config_mixin_js__WEBPACK_IMPORTED_MODULE_2__.editor_config.get_small_editor_config(),
       fileList: [],
       //https://github.com/eJayYoung/vux-uploader-component
       regions: "",
@@ -606,6 +610,44 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     }
   }
 });
+
+/***/ }),
+
+/***/ "./resources/js/mixins/editor/editor_config_mixin.js":
+/*!***********************************************************!*\
+  !*** ./resources/js/mixins/editor/editor_config_mixin.js ***!
+  \***********************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "editor_config": () => (/* binding */ editor_config)
+/* harmony export */ });
+var editor_config = {
+  //Editor configuration description -> https://ckeditor.com/latest/samples/toolbarconfigurator/#basic
+  get_big_editor_config: function get_big_editor_config() {
+    return {
+      // https://www.tutsmake.com/laravel-8-ckeditor-image-upload-tutorial-example/
+      filebrowserUploadUrl: "../../../../api/ckeditor/upload",
+      // https://ckeditor.com/docs/ckeditor4/latest/examples/mediaembed.html
+      extraPlugins: 'embed,autoembed',
+      // contentsCss: [
+      //     'http://cdn.ckeditor.com/4.20.2/full-all/contents.css',
+      //     'https://ckeditor.com/docs/ckeditor4/4.20.2/examples/assets/css/widgetstyles.css'
+      // ],
+      embed_provider: '//ckeditor.iframe.ly/api/oembed?url={url}&callback={callback}',
+      image2_alignClasses: ['image-align-left', 'image-align-center', 'image-align-right'],
+      image2_disableResizer: true,
+      removeButtons: 'PasteFromWord'
+    };
+  },
+  get_small_editor_config: function get_small_editor_config() {
+    return {
+      removeButtons: 'Link,Unlink,Anchor,Image,Table,Underline,Strike,Subscript,Superscript,RemoveFormat,NumberedList,BulletedList,Outdent,Indent,Blockquote,Scayt,HorizontalRule,SpecialChar,Styles,Format,Font,FontSize,About'
+    };
+  }
+};
 
 /***/ }),
 
@@ -1022,7 +1064,7 @@ var render = function () {
                   { staticClass: "col-md-10" },
                   [
                     _c("ckeditor", {
-                      attrs: { config: this.$editorConfig },
+                      attrs: { config: _vm.description_editor },
                       model: {
                         value: _vm.data.text,
                         callback: function ($$v) {

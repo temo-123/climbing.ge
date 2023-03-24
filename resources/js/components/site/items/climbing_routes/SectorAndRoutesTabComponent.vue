@@ -1,6 +1,7 @@
 <template>
     <div class="container" id="sectors">
-        <div class="row" v-if="spot_images.length > 0">
+
+        <div v-if="spot_images.length > 0">
             <div
                 :class="'sector_images sector_images_' + spot_images.length"
                 v-for="spot_image in spot_images"
@@ -13,8 +14,7 @@
             </div>
         </div>
 
-
-        <div class="row" v-for="area in climbing_area" :key="area">
+        <div v-for="area in climbing_area" :key="area">
             <!-- {{ area }} -->
             <span v-if="area['local_images']" >
                 <sector_and_local_area_images :sectors_and_images="area"/>

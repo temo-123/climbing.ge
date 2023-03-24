@@ -2,7 +2,7 @@
     <div class="row">
         <span>
             <h2 style="font-size: 160%">
-                {{ $t("guide.article.sector name") }} -
+                {{ $t("guide.article.title.sector name") }} -
                 <strong>{{ sector.sector.name }}</strong>
             </h2>
         </span>
@@ -135,7 +135,9 @@
                     <td>{{ $t("guide.route.height") }}</td>
                     <td>{{ $t("guide.route.bolts") }}</td>
                     <td>{{ $t("guide.route.grade fr") }}</td>
-                    <td>{{ $t("guide.route.grade yds") }}</td>
+                    <!-- <td>{{ $t("guide.route.grade yds") }}</td> -->
+                    <td class="display-none-720px" v-if="activ_grade == 'UIAA'">{{ $t("guide.route.grade uiaa") }}</td>
+                    <td class="display-none-720px" v-if="activ_grade == 'yds'">{{ $t("guide.route.grade yds") }}</td>
                     <td>Info</td>
                 </tr>
             </tbody>
@@ -151,11 +153,11 @@
                     </td>
                     <td v-else>{{ route.grade }}</td>
 
-                    <td v-if="route.or_grade != NULL">
+                    <td class="display-none-720px" v-if="route.or_grade != NULL">
                         {{ lead_grade_chart(route.grade) }} /
                         {{ lead_grade_chart(route.or_grade) }}
                     </td>
-                    <td v-else>{{ lead_grade_chart(route.grade) }}</td>
+                    <td class="display-none-720px" v-else>{{ lead_grade_chart(route.grade) }}</td>
 
                     <td @click="show_route_modal(route.id)">
                         <a style="margin-top: -5%; font-size: 120%"
@@ -175,8 +177,8 @@
                     <td>N</td>
                     <td>{{ $t("guide.route.name") }}</td>
                     <td>{{ $t("guide.route.height") }}</td>
-                    <td>{{ $t("guide.route.grade fr") }}</td>
-                    <td>{{ $t("guide.route.grade yds") }}</td>
+                    <td class="display-none-720px">{{ $t("guide.route.grade fr") }}</td>
+                    <td class="display-none-720px">{{ $t("guide.route.grade yds") }}</td>
                     <td>Info</td>
                 </tr>
             </tbody>
@@ -196,10 +198,10 @@
                         {{ boulder_grade_chart(route.grade) }}
                     </td>
 
-                    <td v-if="route.or_grade != NULL">
+                    <td class="display-none-720px" v-if="route.or_grade != NULL">
                         {{ route.grade }} / {{ route.or_grade }}
                     </td>
-                    <td v-else>{{ route.grade }}</td>
+                    <td class="display-none-720px" v-else>{{ route.grade }}</td>
 
                     <td @click="show_route_modal(route.id)">
                         <a style="margin-top: -5%; font-size: 120%"
@@ -242,9 +244,13 @@
                         <td>{{ $t("guide.route.height") }}</td>
                         <td>{{ $t("guide.route.bolts") }}</td>
                         <td>{{ $t("guide.route.grade fr") }}</td>
-                        <td class="display-none-720px">
+                        
+                        <!-- <td >
                             {{ $t("guide.route.grade yds") }}
-                        </td>
+                        </td> -->
+
+                        <td class="display-none-720px" v-if="activ_grade == 'UIAA'">{{ $t("guide.route.grade uiaa") }}</td>
+                        <td class="display-none-720px" v-if="activ_grade == 'yds'">{{ $t("guide.route.grade yds") }}</td>
                     </tr>
                 </tbody>
                 <tbody>
@@ -263,11 +269,11 @@
                         </td>
                         <td v-else>{{ pitch.grade }}</td>
 
-                        <td v-if="pitch.or_grade != NULL">
+                        <td class="display-none-720px" v-if="pitch.or_grade != NULL">
                             {{ lead_grade_chart(pitch.grade) }} /
                             {{ lead_grade_chart(pitch.or_grade) }}
                         </td>
-                        <td v-else>
+                        <td class="display-none-720px" v-else>
                             {{ lead_grade_chart(pitch.grade) }}
                         </td>
                     </tr>
@@ -302,6 +308,13 @@ export default {
     data: function () {
         return {
             // climbing_sector: [],
+
+            get activ_grade() {
+                return localStorage.getItem('grade') || 'yds';
+            },
+            set activ_grade(value) {
+                localStorage.setItem('grade', value);
+            },
         };
     },
     mounted() {

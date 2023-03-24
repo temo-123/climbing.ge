@@ -1700,6 +1700,12 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
 
 
 
@@ -1711,7 +1717,16 @@ __webpack_require__.r(__webpack_exports__);
   },
   props: ["sector"],
   data: function data() {
-    return {// climbing_sector: [],
+    return {
+      // climbing_sector: [],
+      get activ_grade() {
+        return localStorage.getItem('grade') || 'yds';
+      },
+
+      set activ_grade(value) {
+        localStorage.setItem('grade', value);
+      }
+
     };
   },
   mounted: function mounted() {// this.get_spot_rocks_images();
@@ -4981,7 +4996,7 @@ var render = function () {
   return _c(
     "div",
     [
-      _c("div", { staticClass: "row" }, [
+      _c("div", [
         _c("div", { staticClass: "col-md-8" }, [
           _c(
             "form",
@@ -6205,7 +6220,6 @@ var render = function () {
       _vm.spot_images.length > 0
         ? _c(
             "div",
-            { staticClass: "row" },
             _vm._l(_vm.spot_images, function (spot_image) {
               return _c(
                 "div",
@@ -6230,7 +6244,7 @@ var render = function () {
         : _vm._e(),
       _vm._v(" "),
       _vm._l(_vm.climbing_area, function (area) {
-        return _c("div", { key: area, staticClass: "row" }, [
+        return _c("div", { key: area }, [
           area["local_images"]
             ? _c(
                 "span",
@@ -6279,7 +6293,7 @@ var render = function () {
         _c("h2", { staticStyle: { "font-size": "160%" } }, [
           _vm._v(
             "\n            " +
-              _vm._s(_vm.$t("guide.article.sector name")) +
+              _vm._s(_vm.$t("guide.article.title.sector name")) +
               " -\n            "
           ),
           _c("strong", [_vm._v(_vm._s(_vm.sector.sector.name))]),
@@ -6475,7 +6489,17 @@ var render = function () {
                 _vm._v(" "),
                 _c("td", [_vm._v(_vm._s(_vm.$t("guide.route.grade fr")))]),
                 _vm._v(" "),
-                _c("td", [_vm._v(_vm._s(_vm.$t("guide.route.grade yds")))]),
+                _vm.activ_grade == "UIAA"
+                  ? _c("td", { staticClass: "display-none-720px" }, [
+                      _vm._v(_vm._s(_vm.$t("guide.route.grade uiaa"))),
+                    ])
+                  : _vm._e(),
+                _vm._v(" "),
+                _vm.activ_grade == "yds"
+                  ? _c("td", { staticClass: "display-none-720px" }, [
+                      _vm._v(_vm._s(_vm.$t("guide.route.grade yds"))),
+                    ])
+                  : _vm._e(),
                 _vm._v(" "),
                 _c("td", [_vm._v("Info")]),
               ]),
@@ -6516,7 +6540,7 @@ var render = function () {
                     : _c("td", [_vm._v(_vm._s(route.grade))]),
                   _vm._v(" "),
                   route.or_grade != _vm.NULL
-                    ? _c("td", [
+                    ? _c("td", { staticClass: "display-none-720px" }, [
                         _vm._v(
                           "\n                    " +
                             _vm._s(_vm.lead_grade_chart(route.grade)) +
@@ -6525,7 +6549,7 @@ var render = function () {
                             "\n                "
                         ),
                       ])
-                    : _c("td", [
+                    : _c("td", { staticClass: "display-none-720px" }, [
                         _vm._v(_vm._s(_vm.lead_grade_chart(route.grade))),
                       ]),
                   _vm._v(" "),
@@ -6557,9 +6581,13 @@ var render = function () {
                 _vm._v(" "),
                 _c("td", [_vm._v(_vm._s(_vm.$t("guide.route.height")))]),
                 _vm._v(" "),
-                _c("td", [_vm._v(_vm._s(_vm.$t("guide.route.grade fr")))]),
+                _c("td", { staticClass: "display-none-720px" }, [
+                  _vm._v(_vm._s(_vm.$t("guide.route.grade fr"))),
+                ]),
                 _vm._v(" "),
-                _c("td", [_vm._v(_vm._s(_vm.$t("guide.route.grade yds")))]),
+                _c("td", { staticClass: "display-none-720px" }, [
+                  _vm._v(_vm._s(_vm.$t("guide.route.grade yds"))),
+                ]),
                 _vm._v(" "),
                 _c("td", [_vm._v("Info")]),
               ]),
@@ -6610,7 +6638,7 @@ var render = function () {
                       ]),
                   _vm._v(" "),
                   route.or_grade != _vm.NULL
-                    ? _c("td", [
+                    ? _c("td", { staticClass: "display-none-720px" }, [
                         _vm._v(
                           "\n                    " +
                             _vm._s(route.grade) +
@@ -6619,7 +6647,9 @@ var render = function () {
                             "\n                "
                         ),
                       ])
-                    : _c("td", [_vm._v(_vm._s(route.grade))]),
+                    : _c("td", { staticClass: "display-none-720px" }, [
+                        _vm._v(_vm._s(route.grade)),
+                      ]),
                   _vm._v(" "),
                   _c(
                     "td",
@@ -6688,13 +6718,17 @@ var render = function () {
                   _vm._v(" "),
                   _c("td", [_vm._v(_vm._s(_vm.$t("guide.route.grade fr")))]),
                   _vm._v(" "),
-                  _c("td", { staticClass: "display-none-720px" }, [
-                    _vm._v(
-                      "\n                        " +
-                        _vm._s(_vm.$t("guide.route.grade yds")) +
-                        "\n                    "
-                    ),
-                  ]),
+                  _vm.activ_grade == "UIAA"
+                    ? _c("td", { staticClass: "display-none-720px" }, [
+                        _vm._v(_vm._s(_vm.$t("guide.route.grade uiaa"))),
+                      ])
+                    : _vm._e(),
+                  _vm._v(" "),
+                  _vm.activ_grade == "yds"
+                    ? _c("td", { staticClass: "display-none-720px" }, [
+                        _vm._v(_vm._s(_vm.$t("guide.route.grade yds"))),
+                      ])
+                    : _vm._e(),
                 ]),
               ]),
               _vm._v(" "),
@@ -6723,7 +6757,7 @@ var render = function () {
                       : _c("td", [_vm._v(_vm._s(pitch.grade))]),
                     _vm._v(" "),
                     pitch.or_grade != _vm.NULL
-                      ? _c("td", [
+                      ? _c("td", { staticClass: "display-none-720px" }, [
                           _vm._v(
                             "\n                        " +
                               _vm._s(_vm.lead_grade_chart(pitch.grade)) +
@@ -6732,7 +6766,7 @@ var render = function () {
                               "\n                    "
                           ),
                         ])
-                      : _c("td", [
+                      : _c("td", { staticClass: "display-none-720px" }, [
                           _vm._v(
                             "\n                        " +
                               _vm._s(_vm.lead_grade_chart(pitch.grade)) +

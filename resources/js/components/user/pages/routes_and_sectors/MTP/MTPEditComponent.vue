@@ -54,7 +54,7 @@
           <label for="name" class='col-md-2 control-label'> text </label>
           <div class="col-md-10">
             <!-- <textarea type="text"  name="text" rows="15" class="form-cotrol md-textarea form-control"></textarea> -->
-            <ckeditor v-model="data.text" :config="this.$editorConfig"></ckeditor>
+            <ckeditor v-model="data.text" :config="description_editor"></ckeditor>
           </div>
         </div>
 
@@ -88,133 +88,116 @@
 </template>
 
 <script>
-export default {
-  data() {
-    return {
-      // editorConfig: {},
-      // route_type: '',
+  import { editor_config } from '../../../../../mixins/editor/editor_config_mixin.js'
 
-      regions: [],
-      sectors: [],
+  export default {
+    mixins: [
+        editor_config
+    ],
+    data() {
+      return {
+        description_editor: editor_config.get_small_editor_config(),
 
-      errors: [],
+        regions: [],
+        sectors: [],
 
-      // sector_id: "",
-      // title: "",
-      // text: "",
-      // height: "",
-      // height: "",
+        errors: [],
 
-      data: {
-        article_id: "",
-        sector_id: "",
-        name: "",
-        text: "",
-        height: "",
-        first_ascent: "",
-        author: '',
+        data: {
+          article_id: "",
+          sector_id: "",
+          name: "",
+          text: "",
+          height: "",
+          first_ascent: "",
+          author: '',
+        },
+
+        is_geting_data_isset: true,
+
+        go_back_action: false,
+      }
+    },
+
+    mounted() {
+      this.get_region_data()
+    },
+
+    methods: {
+      get_region_data: function(){
+        axios
+        .post("../../api/article/",{category: 'outdoor'})
+        .then(response => {
+          this.regions = response.data
+          this.get_sectors_data()
+        })
+        .catch(
+          error => console.log(error)
+        );
       },
 
-      is_geting_data_isset: true,
+      get_sectors_data: function(){
+        axios
+        .get("../../api/sector/")
+        .then(response => {
+          this.all_sectors = response.data
+          this.get_mtp_editing_data()
+        })
+        .catch(
+          error => console.log(error)
+        );
+      },
 
-      go_back_action: false,
-    }
-  },
+      get_mtp_editing_data: function(){
+        axios
+        .get("../../api/mtp/get_editing_mtp/"+this.$route.params.id)
+        .then(response => {
+          this.data = response.data
+          let sector = this.all_sectors.find(item => item.id === this.data.sector_id);
+          let action_article = this.regions.find(item => item.id === sector.article_id);
+          this.data.article_id = action_article.id;
 
-  mounted() {
-    this.get_region_data()
-    // this.get_sectors_data()
+          this.filter_sectors()
+        })
+        .catch(
+          error => console.log(error)
+        )
+        .finally(() => this.is_geting_data_isset = false);
+      },
 
-    // this.get_mtp_editing_data()
-  },
+      filter_sectors(){
+        let vm = this;
+        this.sectors = this.all_sectors.filter(function (item){
+            return item.article_id == vm.data.article_id
+        })
+      },
 
-  methods: {
-    get_region_data: function(){
-      axios
-      .post("../../api/article/",{category: 'outdoor'})
-      .then(response => {
-        this.regions = response.data
-        this.get_sectors_data()
-      })
-      .catch(
-        error => console.log(error)
-      );
-    },
-
-    get_sectors_data: function(){
-      axios
-      .get("../../api/sector/")
-      .then(response => {
-        this.all_sectors = response.data
-        this.get_mtp_editing_data()
-      })
-      .catch(
-        error => console.log(error)
-      );
-    },
-
-    get_mtp_editing_data: function(){
-      axios
-      .get("../../api/mtp/get_editing_mtp/"+this.$route.params.id)
-      .then(response => {
-        this.data = response.data
-        let sector = this.all_sectors.find(item => item.id === this.data.sector_id);
-        let action_article = this.regions.find(item => item.id === sector.article_id);
-        this.data.article_id = action_article.id;
-
-        this.filter_sectors()
-      })
-      .catch(
-        error => console.log(error)
-      )
-      .finally(() => this.is_geting_data_isset = false);
-    },
-
-    filter_sectors(){
-      let vm = this;
-      this.sectors = this.all_sectors.filter(function (item){
-          return item.article_id == vm.data.article_id
-      })
-    },
-
-    edit_mtp: function () {
-      axios
-      .post('../../api/mtp/mtp_edit/'+this.$route.params.id, {
-          data: this.data,
-      })
-      .then(response => {
-        this.go_back(true)
-      })
-      .catch(error =>{
-          if (error.response.status == 422) {
-            this.errors = error.response.data.errors
-          }
-      })
-    },
-
-    // clear_form(){
-    //   this.data = {
-    //     article_id: this.data.article_id,
-    //     sector_id: this.data.sector_id,
-    //     name: "",
-    //     text: "",
-    //     height: "",
-    //     first_ascent: "",
-    //     author: '',
-    //   }
-    // },
-
-    go_back(back_action = false) {
-        if(back_action == false){
-            if(confirm('Are you sure, you want go back?')){
-                this.$router.push({ name: 'routeAndSectorList' })
+      edit_mtp: function () {
+        axios
+        .post('../../api/mtp/mtp_edit/'+this.$route.params.id, {
+            data: this.data,
+        })
+        .then(response => {
+          this.go_back(true)
+        })
+        .catch(error =>{
+            if (error.response.status == 422) {
+              this.errors = error.response.data.errors
             }
-        }
-        else{
-            this.$router.push({ name: 'routeAndSectorList' })
-        }
-    },
+        })
+      },
 
+      go_back(back_action = false) {
+          if(back_action == false){
+              if(confirm('Are you sure, you want go back?')){
+                  this.$router.push({ name: 'routeAndSectorList' })
+              }
+          }
+          else{
+              this.$router.push({ name: 'routeAndSectorList' })
+          }
+      },
+
+    }
   }
-}
 </script>

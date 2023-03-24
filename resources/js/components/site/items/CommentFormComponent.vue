@@ -1,6 +1,6 @@
 <template>
     <div>
-        <div class="row">
+        <div>
             <div class="col-md-8">
                 <form @submit.prevent="add_comment" id="js_form" class="contact-form" method="POST" enctype="multipart/form-data">
                                     

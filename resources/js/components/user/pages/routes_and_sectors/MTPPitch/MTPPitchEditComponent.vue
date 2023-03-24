@@ -117,7 +117,7 @@
           <div class="form-group clearfix row">
               <label for="name" class='col-md-2 control-label'> Description (Text) </label>
               <div class="col-md-10">
-                  <ckeditor v-model="data.text" :config="this.$editorConfig"></ckeditor>
+                  <ckeditor v-model="data.text" :config="description_editor"></ckeditor>
               </div>
           </div>
   
@@ -169,187 +169,193 @@
 </template>
   
 <script>
-  import Editor from '../../../items/canvas/EditorComponent.vue'
-  export default {
-      components: {
-          Editor,
-      },
-      data() {
-          return {
-              errors: [],
-      
-              regions: [],
+    import Editor from '../../../items/canvas/EditorComponent.vue'
+    import { editor_config } from '../../../../../mixins/editor/editor_config_mixin.js'
 
-              all_sectors: [],
-              sectors: [],
-              
-              all_mtps: [],
-              mtps: [],
-      
-              status: "",
-              problem_status: "",
-      
-              data: {
-                  article_id: "",
-                  sector_id: "",
-                  mtp_id: "",
-          
-                  grade: "",
-                  or_grade: "",
-          
-                  name: "",
-                  text: "",
-                  
-                  height: "",
-                  bolts: "",
-          
-                  author: "",
-                  creation_data: "",
-                  first_ascent: "",
-          
-                  anchor_type: "",
-                  category: "",
-              },
-      
-              is_geting_data_isset: true,
+    export default {
+        mixins: [
+            editor_config
+        ],
+        components: {
+            Editor,
+        },
+        data() {
+            return {
+                description_editor: editor_config.get_small_editor_config(),
+                errors: [],
+        
+                regions: [],
 
-              sport_route_grade: [
-                  "4",
-                  "5a", "5b", "5c", "5c+",
-                  "6a", "6a+", "6b", "6b+", "6c", "6c+",
-                  "7a", "7a+", "7b", "7b+", "7c", "7c+",
-                  "8a", "8a+", "8b", "8b+", "8c", "8c+",
-                  "9a", "9a+", "9b", "9b+", "9c", "9c+",
-              ],
-          }
-      },
-  
-      mounted() {
-          this.get_region_data()
-          this.get_sectors_data()
-      },
-  
-      methods: {
-          get_region_data: function(){
-              axios
-              .post("../../api/article/",{category: 'outdoor'})
-              .then(response => {
-                  this.regions = response.data
-              })
-              .catch(
-                  error => console.log(error)
-              );
-          },
-          
-          get_sectors_data: function(){
-              axios
-              .get("../../api/sector/")
-              .then(response => {
-                  this.all_sectors = response.data
-                  this.get_mtp_data()
-              })
-              .catch(
-                  error => console.log(error)
-              );
-          },
+                all_sectors: [],
+                sectors: [],
+                
+                all_mtps: [],
+                mtps: [],
+        
+                status: "",
+                problem_status: "",
+        
+                data: {
+                    article_id: "",
+                    sector_id: "",
+                    mtp_id: "",
+            
+                    grade: "",
+                    or_grade: "",
+            
+                    name: "",
+                    text: "",
+                    
+                    height: "",
+                    bolts: "",
+            
+                    author: "",
+                    creation_data: "",
+                    first_ascent: "",
+            
+                    anchor_type: "",
+                    category: "",
+                },
+        
+                is_geting_data_isset: true,
 
-          get_mtp_data: function(){
-              axios
-              .get("../../api/mtp/")
-              .then(response => {
-                  this.all_mtps = response.data
-                  this.get_editing_mtp_data()
-              })
-              .catch(
-                  error => console.log(error)
-              );
-          },
+                sport_route_grade: [
+                    "4",
+                    "5a", "5b", "5c", "5c+",
+                    "6a", "6a+", "6b", "6b+", "6c", "6c+",
+                    "7a", "7a+", "7b", "7b+", "7c", "7c+",
+                    "8a", "8a+", "8b", "8b+", "8c", "8c+",
+                    "9a", "9a+", "9b", "9b+", "9c", "9c+",
+                ],
+            }
+        },
+    
+        mounted() {
+            this.get_region_data()
+            this.get_sectors_data()
+        },
+    
+        methods: {
+            get_region_data: function(){
+                axios
+                .post("../../api/article/",{category: 'outdoor'})
+                .then(response => {
+                    this.regions = response.data
+                })
+                .catch(
+                    error => console.log(error)
+                );
+            },
+            
+            get_sectors_data: function(){
+                axios
+                .get("../../api/sector/")
+                .then(response => {
+                    this.all_sectors = response.data
+                    this.get_mtp_data()
+                })
+                .catch(
+                    error => console.log(error)
+                );
+            },
 
-          get_editing_mtp_data: function(){
-              axios
-              .get("../../api/mtp/mtp_pitch/get_editin_pitch/"+this.$route.params.id)
-              .then(response => {
-                  this.data = response.data
-                  let mtp = this.all_mtps.find(item => item.id === this.data.mtp_id);
-                  
-                  let sector = this.all_sectors.find(item => item.id === mtp.sector_id);
-                  this.data.sector_id = sector.id;
+            get_mtp_data: function(){
+                axios
+                .get("../../api/mtp/")
+                .then(response => {
+                    this.all_mtps = response.data
+                    this.get_editing_mtp_data()
+                })
+                .catch(
+                    error => console.log(error)
+                );
+            },
 
-                  let action_article = this.regions.find(item => item.id === sector.article_id);
-                  this.data.article_id = action_article.id;
+            get_editing_mtp_data: function(){
+                axios
+                .get("../../api/mtp/mtp_pitch/get_editin_pitch/"+this.$route.params.id)
+                .then(response => {
+                    this.data = response.data
+                    let mtp = this.all_mtps.find(item => item.id === this.data.mtp_id);
+                    
+                    let sector = this.all_sectors.find(item => item.id === mtp.sector_id);
+                    this.data.sector_id = sector.id;
 
-                  this.filter_sectors()
-                  this.filter_mtp()
-              })
-              .catch(
-                  error => console.log(error)
-              )
-              .finally(() => this.is_geting_data_isset = false);
-          },
-      
-          filter_sectors(){
-              let vm = this;
-              // this.data.sector_id = ''
-              this.sectors = this.all_sectors.filter(function (item){
-                  return item.article_id == vm.data.article_id
-              })
-          },
-      
-          filter_mtp(){
-              let vm = this;
-              // this.data.mtp_id = ''
-              this.mtps = this.all_mtps.filter(function (item){
-                  return item.sector_id == vm.data.sector_id
-              })
-          },
-      
-          save_editing_pitch: function (go_back_action) {
-              axios
-              .post('../../api/mtp/mtp_pitch/mtp_pitch_edit/'+this.$route.params.id, {
-                  data: this.data,
-              })
-              .then(response => {
-                      this.go_back(true)
-              })
-              .catch(error =>{
-                  this.status = "error"
-              })
-          },
-      
-          clear_form(){
-              this.data = {
-              article_id: this.data.article_id,
-              sector_id: this.data.sector_id,
-              mtp_id: this.data.mtp_id,
-              category: this.data.category,
-      
-              grade: "",
-              or_grade: "",
-      
-              name: "",
-              text: "",
-              
-              height: "",
-              bolts: "",
-      
-              author: "",
-              creation_data: "",
-              first_ascent: "",
-              }
-          },
-  
-          go_back(back_action = false) {
-              if(back_action == false){
-                  if(confirm('Are you sure, you want go back?')){
-                      this.$router.push({ name: 'routeAndSectorList' })
-                  }
-              }
-              else{
-                  this.$router.push({ name: 'routeAndSectorList' })
-              }
-          },
-      }
-  }
+                    let action_article = this.regions.find(item => item.id === sector.article_id);
+                    this.data.article_id = action_article.id;
+
+                    this.filter_sectors()
+                    this.filter_mtp()
+                })
+                .catch(
+                    error => console.log(error)
+                )
+                .finally(() => this.is_geting_data_isset = false);
+            },
+        
+            filter_sectors(){
+                let vm = this;
+                // this.data.sector_id = ''
+                this.sectors = this.all_sectors.filter(function (item){
+                    return item.article_id == vm.data.article_id
+                })
+            },
+        
+            filter_mtp(){
+                let vm = this;
+                // this.data.mtp_id = ''
+                this.mtps = this.all_mtps.filter(function (item){
+                    return item.sector_id == vm.data.sector_id
+                })
+            },
+        
+            save_editing_pitch: function (go_back_action) {
+                axios
+                .post('../../api/mtp/mtp_pitch/mtp_pitch_edit/'+this.$route.params.id, {
+                    data: this.data,
+                })
+                .then(response => {
+                        this.go_back(true)
+                })
+                .catch(error =>{
+                    this.status = "error"
+                })
+            },
+        
+            clear_form(){
+                this.data = {
+                article_id: this.data.article_id,
+                sector_id: this.data.sector_id,
+                mtp_id: this.data.mtp_id,
+                category: this.data.category,
+        
+                grade: "",
+                or_grade: "",
+        
+                name: "",
+                text: "",
+                
+                height: "",
+                bolts: "",
+        
+                author: "",
+                creation_data: "",
+                first_ascent: "",
+                }
+            },
+    
+            go_back(back_action = false) {
+                if(back_action == false){
+                    if(confirm('Are you sure, you want go back?')){
+                        this.$router.push({ name: 'routeAndSectorList' })
+                    }
+                }
+                else{
+                    this.$router.push({ name: 'routeAndSectorList' })
+                }
+            },
+        }
+    }
 </script>
   
   // sport climbing 1

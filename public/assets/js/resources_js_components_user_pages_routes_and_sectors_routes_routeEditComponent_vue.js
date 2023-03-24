@@ -254,6 +254,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
 /* harmony import */ var _items_canvas_EditorComponent_vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../../items/canvas/EditorComponent.vue */ "./resources/js/components/user/items/canvas/EditorComponent.vue");
+/* harmony import */ var _mixins_editor_editor_config_mixin_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../../../../mixins/editor/editor_config_mixin.js */ "./resources/js/mixins/editor/editor_config_mixin.js");
 //
 //
 //
@@ -450,12 +451,15 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 
+
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
+  mixins: [_mixins_editor_editor_config_mixin_js__WEBPACK_IMPORTED_MODULE_1__.editor_config],
   components: {
     Editor: _items_canvas_EditorComponent_vue__WEBPACK_IMPORTED_MODULE_0__["default"]
   },
   data: function data() {
     return {
+      description_editor: _mixins_editor_editor_config_mixin_js__WEBPACK_IMPORTED_MODULE_1__.editor_config.get_small_editor_config(),
       errors: [],
       regions: [],
       all_sectors: [],
@@ -479,26 +483,6 @@ __webpack_require__.r(__webpack_exports__);
       },
       is_geting_data_isset: true,
       sport_route_grade: ["4", "5a", "5b", "5c", "5c+", "6a", "6a+", "6b", "6b+", "6c", "6c+", "7a", "7a+", "7b", "7b+", "7c", "7c+", "8a", "8a+", "8b", "8b+", "8c", "8c+", "9a", "9a+", "9b", "9b+", "9c", "9c+"],
-      // boulder_route_grade: [
-      //   "V1", "V1+",
-      //   "V2", "V2+",
-      //   "V3", "V3+",
-      //   "V4", "V4+",
-      //   "V5", "V5+",
-      //   "V6", "V6+",
-      //   "V7", "V7+",
-      //   "V8", "V8+",
-      //   "V9", "V9+",
-      //   "V10", "V10+",
-      //   "V11", "V11+",
-      //   "V12", "V12+",
-      //   "V13", "V13+",
-      //   "V14", "V14+",
-      //   "V15", "V15+",
-      //   "V16", "V16+",
-      //   "V17", "V17+",
-      //   "V18", "V18+",
-      // ],
       boulder_route_grade: ["V1", "V2", "V3", "V4", "V5", "V6", "V7", "V8", "V9", "V10", "V11", "V12", "V13", "V14", "V15", "V16", "V17", "V18"]
     };
   },
@@ -571,23 +555,6 @@ __webpack_require__.r(__webpack_exports__);
         _this4.status = "error";
       });
     },
-    // clear_form(){
-    //   this.data = {
-    //     article_id: this.data.article_id,
-    //     sector_id: this.data.sector_id,
-    //     category: this.data.category,
-    //     grade: "",
-    //     or_grade: "",
-    //     name: "",
-    //     text: "",
-    //     height: "",
-    //     bolts: "",
-    //     author: "",
-    //     creation_data: "",
-    //     first_ascent: "",
-    //     anchor_type: "",
-    //   }
-    // },
     go_back: function go_back() {
       var back_action = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : false;
 
@@ -605,6 +572,44 @@ __webpack_require__.r(__webpack_exports__);
     }
   }
 });
+
+/***/ }),
+
+/***/ "./resources/js/mixins/editor/editor_config_mixin.js":
+/*!***********************************************************!*\
+  !*** ./resources/js/mixins/editor/editor_config_mixin.js ***!
+  \***********************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "editor_config": () => (/* binding */ editor_config)
+/* harmony export */ });
+var editor_config = {
+  //Editor configuration description -> https://ckeditor.com/latest/samples/toolbarconfigurator/#basic
+  get_big_editor_config: function get_big_editor_config() {
+    return {
+      // https://www.tutsmake.com/laravel-8-ckeditor-image-upload-tutorial-example/
+      filebrowserUploadUrl: "../../../../api/ckeditor/upload",
+      // https://ckeditor.com/docs/ckeditor4/latest/examples/mediaembed.html
+      extraPlugins: 'embed,autoembed',
+      // contentsCss: [
+      //     'http://cdn.ckeditor.com/4.20.2/full-all/contents.css',
+      //     'https://ckeditor.com/docs/ckeditor4/4.20.2/examples/assets/css/widgetstyles.css'
+      // ],
+      embed_provider: '//ckeditor.iframe.ly/api/oembed?url={url}&callback={callback}',
+      image2_alignClasses: ['image-align-left', 'image-align-center', 'image-align-right'],
+      image2_disableResizer: true,
+      removeButtons: 'PasteFromWord'
+    };
+  },
+  get_small_editor_config: function get_small_editor_config() {
+    return {
+      removeButtons: 'Link,Unlink,Anchor,Image,Table,Underline,Strike,Subscript,Superscript,RemoveFormat,NumberedList,BulletedList,Outdent,Indent,Blockquote,Scayt,HorizontalRule,SpecialChar,Styles,Format,Font,FontSize,About'
+    };
+  }
+};
 
 /***/ }),
 
@@ -19390,7 +19395,7 @@ var render = function () {
                   { staticClass: "col-md-10" },
                   [
                     _c("ckeditor", {
-                      attrs: { config: this.$editorConfig },
+                      attrs: { config: _vm.description_editor },
                       model: {
                         value: _vm.data.text,
                         callback: function ($$v) {

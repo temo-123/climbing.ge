@@ -135,7 +135,7 @@
         <div class="form-group clearfix row">
           <label for="name" class='col-md-2 control-label'> Description (Text) </label>
           <div class="col-md-10">
-            <ckeditor v-model="data.text" :config="this.$editorConfig"></ckeditor>
+            <ckeditor v-model="data.text" :config="description_editor"></ckeditor>
           </div>
         </div>
 
@@ -195,185 +195,191 @@
 </template>
 
 <script>
-import Editor from '../../../items/canvas/EditorComponent.vue'
-export default {
-        components: {
-            Editor,
-        },
-  data() {
-    return {
-      errors: [],
+  import Editor from '../../../items/canvas/EditorComponent.vue'
+  import { editor_config } from '../../../../../mixins/editor/editor_config_mixin.js'
 
-      regions: [],
-      all_sectors: [],
-      sectors: [],
-
-      status: "",
-      problem_status: "",
-
-      data: {
-        article_id: "",
-        sector_id: "",
-
-        grade: "",
-        or_grade: "",
-
-        name: "",
-        text: "",
-        
-        height: "",
-        bolts: "",
-
-        author: "",
-        creation_data: "",
-        first_ascent: "",
-
-        anchor_type: "",
-        category: "",
+  export default {
+      mixins: [
+          editor_config
+      ],
+      components: {
+          Editor,
       },
+    data() {
+      return {
+        description_editor: editor_config.get_small_editor_config(),
+        errors: [],
 
-      go_back_action: false,
+        regions: [],
+        all_sectors: [],
+        sectors: [],
 
-      sport_route_grade: [
-        "4",
-        "5a", "5b", "5c", "5c+",
-        "6a", "6a+", "6b", "6b+", "6c", "6c+",
-        "7a", "7a+", "7b", "7b+", "7c", "7c+",
-        "8a", "8a+", "8b", "8b+", "8c", "8c+",
-        "9a", "9a+", "9b", "9b+", "9c", "9c+",
-      ],
-      boulder_route_grade: [
-        "V1",
-        "V2",
-        "V3",
-        "V4",
-        "V5",
-        "V6",
-        "V7",
-        "V8",
-        "V9",
-        "V10", 
-        "V11", 
-        "V12", 
-        "V13", 
-        "V14", 
-        "V15", 
-        "V16", 
-        "V17", 
-        "V18", 
-      ],
-      // boulder_route_grade: [
-      //   "V1", "V1+",
-      //   "V2", "V2+",
-      //   "V3", "V3+",
-      //   "V4", "V4+",
-      //   "V5", "V5+",
-      //   "V6", "V6+",
-      //   "V7", "V7+",
-      //   "V8", "V8+",
-      //   "V9", "V9+",
-      //   "V10", "V10+",
-      //   "V11", "V11+",
-      //   "V12", "V12+",
-      //   "V13", "V13+",
-      //   "V14", "V14+",
-      //   "V15", "V15+",
-      //   "V16", "V16+",
-      //   "V17", "V17+",
-      //   "V18", "V18+",
-      // ],
-    }
-  },
+        status: "",
+        problem_status: "",
 
-  mounted() {
-    this.get_region_data()
-    this.get_sectors_data()
-  },
+        data: {
+          article_id: "",
+          sector_id: "",
 
-  methods: {
-    get_region_data: function(){
-      axios
-      .post("../api/article/",{category: 'outdoor'})
-      .then(response => {
-        this.regions = response.data
-      })
-      .catch(
-        error => console.log(error)
-      );
-    },
-    
-    get_sectors_data: function(){
-      axios
-      .get("../api/sector/")
-      .then(response => {
-        this.all_sectors = response.data
-      })
-      .catch(
-        error => console.log(error)
-      );
-    },
+          grade: "",
+          or_grade: "",
 
-    filter_sectors(){
-      let vm = this;
-      this.sectors = this.all_sectors.filter(function (item){
-          return item.article_id == vm.data.article_id
-      })
-    },
+          name: "",
+          text: "",
+          
+          height: "",
+          bolts: "",
 
-    save_new_route: function (go_back_action) {
-      axios
-      .post('../../api/route/add_route/', {
-          data: this.data,
-      })
-      .then(response => {
-        if(!this.go_back_action){
-          alert('Saving completed')
-          this.clear_form()
-        }
-        else{
-          this.go_back(true)
-        }
-      })
-      .catch(error =>{
-          this.status = "error"
-      })
-    },
+          author: "",
+          creation_data: "",
+          first_ascent: "",
 
-    clear_form(){
-      this.data = {
-        article_id: this.data.article_id,
-        sector_id: this.data.sector_id,
-        category: this.data.category,
+          anchor_type: "",
+          category: "",
+        },
 
-        grade: "",
-        or_grade: "",
+        go_back_action: false,
 
-        name: "",
-        text: "",
-        
-        height: "",
-        bolts: "",
-
-        author: "",
-        creation_data: "",
-        first_ascent: "",
-
-        anchor_type: "",
+        sport_route_grade: [
+          "4",
+          "5a", "5b", "5c", "5c+",
+          "6a", "6a+", "6b", "6b+", "6c", "6c+",
+          "7a", "7a+", "7b", "7b+", "7c", "7c+",
+          "8a", "8a+", "8b", "8b+", "8c", "8c+",
+          "9a", "9a+", "9b", "9b+", "9c", "9c+",
+        ],
+        boulder_route_grade: [
+          "V1",
+          "V2",
+          "V3",
+          "V4",
+          "V5",
+          "V6",
+          "V7",
+          "V8",
+          "V9",
+          "V10", 
+          "V11", 
+          "V12", 
+          "V13", 
+          "V14", 
+          "V15", 
+          "V16", 
+          "V17", 
+          "V18", 
+        ],
+        // boulder_route_grade: [
+        //   "V1", "V1+",
+        //   "V2", "V2+",
+        //   "V3", "V3+",
+        //   "V4", "V4+",
+        //   "V5", "V5+",
+        //   "V6", "V6+",
+        //   "V7", "V7+",
+        //   "V8", "V8+",
+        //   "V9", "V9+",
+        //   "V10", "V10+",
+        //   "V11", "V11+",
+        //   "V12", "V12+",
+        //   "V13", "V13+",
+        //   "V14", "V14+",
+        //   "V15", "V15+",
+        //   "V16", "V16+",
+        //   "V17", "V17+",
+        //   "V18", "V18+",
+        // ],
       }
     },
 
-      go_back(back_action = false) {
-          if(back_action == false){
-              if(confirm('Are you sure, you want go back?')){
-                  this.$router.push({ name: 'routeAndSectorList' })
-              }
+    mounted() {
+      this.get_region_data()
+      this.get_sectors_data()
+    },
+
+    methods: {
+      get_region_data: function(){
+        axios
+        .post("../api/article/",{category: 'outdoor'})
+        .then(response => {
+          this.regions = response.data
+        })
+        .catch(
+          error => console.log(error)
+        );
+      },
+      
+      get_sectors_data: function(){
+        axios
+        .get("../api/sector/")
+        .then(response => {
+          this.all_sectors = response.data
+        })
+        .catch(
+          error => console.log(error)
+        );
+      },
+
+      filter_sectors(){
+        let vm = this;
+        this.sectors = this.all_sectors.filter(function (item){
+            return item.article_id == vm.data.article_id
+        })
+      },
+
+      save_new_route: function (go_back_action) {
+        axios
+        .post('../../api/route/add_route/', {
+            data: this.data,
+        })
+        .then(response => {
+          if(!this.go_back_action){
+            alert('Saving completed')
+            this.clear_form()
           }
           else{
-              this.$router.push({ name: 'routeAndSectorList' })
+            this.go_back(true)
           }
+        })
+        .catch(error =>{
+            this.status = "error"
+        })
       },
+
+      clear_form(){
+        this.data = {
+          article_id: this.data.article_id,
+          sector_id: this.data.sector_id,
+          category: this.data.category,
+
+          grade: "",
+          or_grade: "",
+
+          name: "",
+          text: "",
+          
+          height: "",
+          bolts: "",
+
+          author: "",
+          creation_data: "",
+          first_ascent: "",
+
+          anchor_type: "",
+        }
+      },
+
+        go_back(back_action = false) {
+            if(back_action == false){
+                if(confirm('Are you sure, you want go back?')){
+                    this.$router.push({ name: 'routeAndSectorList' })
+                }
+            }
+            else{
+                this.$router.push({ name: 'routeAndSectorList' })
+            }
+        },
+    }
   }
-}
 </script>
 
 // sport climbing 1

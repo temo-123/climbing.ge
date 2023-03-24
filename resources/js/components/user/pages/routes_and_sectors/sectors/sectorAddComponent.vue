@@ -99,7 +99,7 @@
             <div class="form-group clearfix row">
                 <label class="col-md-2 control-label"> Text </label>
                 <div class="col-md-10">
-                    <ckeditor v-model="data.text" :config="this.$editorConfig"></ckeditor>
+                    <ckeditor v-model="data.text" :config="description_editor"></ckeditor>
                 </div>
             </div>
 
@@ -404,150 +404,156 @@
     </div>
 </template>
 <script>
-import Uploader from "vux-uploader-component";
-import { SlickList, SlickItem } from "vue-slicksort"; //https://www.npmjs.com/package/vue-slicksort/v/2.0.0-alpha.2
+    import Uploader from "vux-uploader-component";
+    import { SlickList, SlickItem } from "vue-slicksort"; //https://www.npmjs.com/package/vue-slicksort/v/2.0.0-alpha.2
 
-export default {
-    components: {
-        Uploader,
-        SlickItem,
-        SlickList,
-    },
-    data() {
-        return {
-            fileList: [], //https://github.com/eJayYoung/vux-uploader-component
-            regions: "",
+    import { editor_config } from '../../../../../mixins/editor/editor_config_mixin.js'
 
-            // myModal: false,
+    export default {
+        mixins: [
+            editor_config
+        ],
+        components: {
+            Uploader,
+            SlickItem,
+            SlickList,
+        },
+        data() {
+            return {
+            description_editor: editor_config.get_small_editor_config(),
+                fileList: [], //https://github.com/eJayYoung/vux-uploader-component
+                regions: "",
 
-            editorConfig: {},
+                // myModal: false,
 
-            errors: [],
-            // image_errors: [],
+                editorConfig: {},
 
-            data: {
-                published: 0,
-                name: "",
-                image: "",
-                success: "",
+                errors: [],
+                // image_errors: [],
 
-                article_id: "",
-                name: "",
-                text: "",
+                data: {
+                    published: 0,
+                    name: "",
+                    image: "",
+                    success: "",
 
-                all_day_in_shade: null,
-                all_day_in_sun: null,
-                in_the_shade_afternoon: null,
-                in_the_shade_befornoon: null,
-                in_shade_after_10: null,
-                in_shade_after_15: null,
+                    article_id: "",
+                    name: "",
+                    text: "",
 
-                slabby: null,
-                vertical: null,
-                overhang: null,
-                roof: null,
+                    all_day_in_shade: null,
+                    all_day_in_sun: null,
+                    in_the_shade_afternoon: null,
+                    in_the_shade_befornoon: null,
+                    in_shade_after_10: null,
+                    in_shade_after_15: null,
 
-                for_family: null,
-                for_kids: null,
-                wolking_time: null,
+                    slabby: null,
+                    vertical: null,
+                    overhang: null,
+                    roof: null,
+
+                    for_family: null,
+                    for_kids: null,
+                    wolking_time: null,
+                },
+
+                sector_images: [],
+            };
+        },
+        mounted() {
+            this.get_region_data();
+        },
+        methods: {
+            add_sector_new_image_value(){
+                var new_item_id = this.sector_images.length+1
+                this.sector_images.push(
+                    {
+                        id: new_item_id,
+                        image: '',
+                    }
+                );
+            },
+            onFileChange(event, item_id){
+                let image = event.target.files[0]
+                let id = item_id - 1 
+                this.sector_images[id]['image'] = image
+            },
+            del_sector_image(id){
+                this.removeObjectWithId(this.sector_images, id);
+            },
+            removeObjectWithId(arr, id) {
+                const objWithIdIndex = arr.findIndex((obj) => obj.id === id);
+                arr.splice(objWithIdIndex, 1);
+
+                return arr;
             },
 
-            sector_images: [],
-        };
-    },
-    mounted() {
-        this.get_region_data();
-    },
-    methods: {
-        add_sector_new_image_value(){
-            var new_item_id = this.sector_images.length+1
-            this.sector_images.push(
-                {
-                    id: new_item_id,
-                    image: '',
-                }
-            );
-        },
-        onFileChange(event, item_id){
-            let image = event.target.files[0]
-            let id = item_id - 1 
-            this.sector_images[id]['image'] = image
-        },
-        del_sector_image(id){
-            this.removeObjectWithId(this.sector_images, id);
-        },
-        removeObjectWithId(arr, id) {
-            const objWithIdIndex = arr.findIndex((obj) => obj.id === id);
-            arr.splice(objWithIdIndex, 1);
-
-            return arr;
-        },
-
-        get_region_data: function () {
-            axios
-            .get('../../api/articles/outdoor/us')
-            .then(response => {
-                this.regions = response.data
-            })
-            .catch(error =>{
-            })
-        },
-
-        save: function () {
-            let formData = new FormData();
-
-            var loop_num = 0
-            this.sector_images.forEach(image => {
-                formData.append('sector_images['+loop_num+']', image.image)
-                loop_num++
-            });
-            loop_num = 0
-
-            formData.append('data', JSON.stringify(this.data))
-
-            axios
-                .post("../../api/sector/add_sector/", formData)
+            get_region_data: function () {
+                axios
+                .get('../../api/articles/outdoor/us')
                 .then(response => {
-                    if(confirm('Do you want send notification about editing sector?')){
-                        this.sand_notification()
-                    }
-                    else{
-                        this.go_back(true)
-                    }
+                    this.regions = response.data
                 })
-                .catch((error) => {
-                    if (error.response.status == 422) {
-                        this.errors = error.response.data.errors;
-                    }
+                .catch(error =>{
+                })
+            },
+
+            save: function () {
+                let formData = new FormData();
+
+                var loop_num = 0
+                this.sector_images.forEach(image => {
+                    formData.append('sector_images['+loop_num+']', image.image)
+                    loop_num++
                 });
-        },
+                loop_num = 0
 
-        sand_notification() {
-            this.is_mail_sending_procesing = true
+                formData.append('data', JSON.stringify(this.data))
 
-            axios
-            .post('../../../api/user/notifications/send_sector_adding_notification')
-            .then(response => {
-                this.go_back(true)
-            })
-            .catch(err => {
-                console.log(err);
-            })
-            .finally(() => this.is_mail_sending_procesing = false);
-        },
+                axios
+                    .post("../../api/sector/add_sector/", formData)
+                    .then(response => {
+                        if(confirm('Do you want send notification about editing sector?')){
+                            this.sand_notification()
+                        }
+                        else{
+                            this.go_back(true)
+                        }
+                    })
+                    .catch((error) => {
+                        if (error.response.status == 422) {
+                            this.errors = error.response.data.errors;
+                        }
+                    });
+            },
 
-        go_back(back_action = false) {
-            if(back_action == false){
-                if(confirm('Are you sure, you want go back?')){
+            sand_notification() {
+                this.is_mail_sending_procesing = true
+
+                axios
+                .post('../../../api/user/notifications/send_sector_adding_notification')
+                .then(response => {
+                    this.go_back(true)
+                })
+                .catch(err => {
+                    console.log(err);
+                })
+                .finally(() => this.is_mail_sending_procesing = false);
+            },
+
+            go_back(back_action = false) {
+                if(back_action == false){
+                    if(confirm('Are you sure, you want go back?')){
+                        this.$router.push({ name: 'routeAndSectorList' })
+                    }
+                }
+                else{
                     this.$router.push({ name: 'routeAndSectorList' })
                 }
-            }
-            else{
-                this.$router.push({ name: 'routeAndSectorList' })
-            }
+            },
         },
-    },
-};
+    };
 </script>
 
 <style scoped>

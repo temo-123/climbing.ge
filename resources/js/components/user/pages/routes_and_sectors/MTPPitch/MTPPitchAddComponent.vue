@@ -124,7 +124,7 @@
             <div class="form-group clearfix row">
                 <label for="name" class='col-md-2 control-label'> Description (Text) </label>
                 <div class="col-md-10">
-                    <ckeditor v-model="data.text" :config="this.$editorConfig"></ckeditor>
+                    <ckeditor v-model="data.text" :config="description_editor"></ckeditor>
                 </div>
             </div>
     
@@ -171,12 +171,18 @@
     
 <script>
     import Editor from '../../../items/canvas/EditorComponent.vue'
+    import { editor_config } from '../../../../../mixins/editor/editor_config_mixin.js'
+
     export default {
+        mixins: [
+            editor_config
+        ],
         components: {
             Editor,
         },
         data() {
             return {
+                description_editor: editor_config.get_small_editor_config(),
                 errors: [],
         
                 regions: [],
