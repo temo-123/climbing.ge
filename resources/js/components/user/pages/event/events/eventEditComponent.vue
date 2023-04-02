@@ -21,6 +21,9 @@
                 <div class="alert alert-danger" role="alert" v-if="error.global_info_validation.end_data">
                     End data - {{ error.global_info_validation.end_data[0] }}
                 </div>
+                <div class="alert alert-danger" role="alert" v-if="error.global_info_validation.global_info_validation">
+                    English title - {{ error.global_info_validation.global_info_validation[0] }}
+                </div>
 
                 <div class="alert alert-danger" role="alert" v-if="error.us_info_validation.title">
                     English title - {{ error.us_info_validation.title[0] }}
@@ -402,6 +405,9 @@
                 .catch(error => {
                     if (error.response.status == 422) {
                         this.error = error.response.data.validation
+                    }
+                    else{
+                        alert(this.error)
                     }
                 });
             },

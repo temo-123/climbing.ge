@@ -19463,7 +19463,7 @@ var render = function () {
                 ],
                 staticClass: "form-control",
                 attrs: {
-                  type: "date",
+                  type: "text",
                   name: "title",
                   placeholder: "First ascent",
                 },

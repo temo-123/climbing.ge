@@ -148,7 +148,7 @@ __webpack_require__.r(__webpack_exports__);
     get_event: function get_event() {
       var _this = this;
 
-      axios.get('../api/event/get_event_on_site_list/' + localStorage.getItem('lang')).then(function (response) {
+      axios.get('../api/event/get_event_on_index_page/' + localStorage.getItem('lang')).then(function (response) {
         _this.events = response.data;
       })["catch"](function (error) {});
     }
@@ -3263,7 +3263,7 @@ var render = function () {
           ])
         : _vm._e(),
       _vm._v(" "),
-      _vm.lastNews.length
+      _vm.lastNews.length > 0
         ? _c("div", { staticClass: "h-recent-work" }, [
             _c("div", { staticClass: "container" }, [
               _c("h2", { staticClass: "index_h2", attrs: { id: "news" } }, [

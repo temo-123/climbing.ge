@@ -247,6 +247,36 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
  // https://www.npmjs.com/package/vue-moment
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
@@ -259,37 +289,37 @@ __webpack_require__.r(__webpack_exports__);
       start_day: 0,
       end_day: 0,
       start_month: 0,
+      start_month_num: 0,
       start_year: 0,
       end_month: 0,
-      end_year: 0,
-      start_time: 0,
-      end_time: 0,
-      start_time_for_check: 0,
-      end_time_for_check: 0,
-      time: ''
+      // end_year: 0,
+      start_time: 0 // end_time: 0,
+      // start_time_for_check: 0,
+      // end_time_for_check: 0,
+      // time: ''
+
     };
   },
   mounted: function mounted() {
     this.start_day = moment__WEBPACK_IMPORTED_MODULE_0___default()(this.event.global_event.start_data).format("D");
     this.end_day = moment__WEBPACK_IMPORTED_MODULE_0___default()(this.event.global_event.end_data).format("D");
     this.start_month = moment__WEBPACK_IMPORTED_MODULE_0___default()(this.event.global_event.start_data).format("MMM");
-    this.end_month = moment__WEBPACK_IMPORTED_MODULE_0___default()(this.event.global_event.end_data).format("MMM");
-    this.start_year = moment__WEBPACK_IMPORTED_MODULE_0___default()(this.event.global_event.start_data).format("Y");
-    this.end_year = moment__WEBPACK_IMPORTED_MODULE_0___default()(this.event.global_event.end_data).format("Y");
-    this.start_time = moment__WEBPACK_IMPORTED_MODULE_0___default()(this.event.global_event.start_data).format("H:MM A");
-    this.end_time = moment__WEBPACK_IMPORTED_MODULE_0___default()(this.event.global_event.end_data).format("H:MM A");
-    this.start_time_for_check = moment__WEBPACK_IMPORTED_MODULE_0___default()(this.event.global_event.start_data).format("H:MM");
-    this.end_time_for_check = moment__WEBPACK_IMPORTED_MODULE_0___default()(this.event.global_event.end_data).format("H:MM");
-    this.realy_time();
+    this.start_month_num = moment__WEBPACK_IMPORTED_MODULE_0___default()(this.event.global_event.start_data).format("M");
+    this.end_month = moment__WEBPACK_IMPORTED_MODULE_0___default()(this.event.global_event.end_data).format("MMM"); // this.start_year = moment(this.event.global_event.start_data).format("Y")
+    // this.end_year = moment(this.event.global_event.end_data).format("Y")
+
+    this.start_time = moment__WEBPACK_IMPORTED_MODULE_0___default()(this.event.global_event.start_data).format("H:MM A"); // this.end_time = moment(this.event.global_event.end_data).format( "H:MM A")
+    // this.start_time_for_check = moment(this.event.global_event.start_data).format("H:MM")
+    // this.end_time_for_check = moment(this.event.global_event.end_data).format( "H:MM")
+    // this.realy_time()
   },
-  methods: {
-    realy_time: function realy_time() {
-      var d = new Date();
-      var s = d.getSeconds();
-      var m = d.getMinutes();
-      var h = d.getHours();
-      this.time = h + ":" + m;
-    }
+  methods: {// realy_time(){
+    //     var d = new Date();
+    //     var s = d.getSeconds();
+    //     var m = d.getMinutes();
+    //     var h = d.getHours();
+    //     this.time = h + ":" + m
+    // }
   }
 });
 
@@ -308,6 +338,27 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _items_MetaDataComponent__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../items/MetaDataComponent */ "./resources/js/components/site/items/MetaDataComponent.vue");
 /* harmony import */ var _global_components_EmptyPageComponent__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../global_components/EmptyPageComponent */ "./resources/js/components/global_components/EmptyPageComponent.vue");
 /* harmony import */ var _items_cards_EventListCardComponent__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../items/cards/EventListCardComponent */ "./resources/js/components/site/items/cards/EventListCardComponent.vue");
+/* harmony import */ var moment__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! moment */ "./node_modules/moment/moment.js");
+/* harmony import */ var moment__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(moment__WEBPACK_IMPORTED_MODULE_3__);
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -341,15 +392,20 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
+ // https://www.npmjs.com/package/vue-moment
+
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   components: {
+    moment: (moment__WEBPACK_IMPORTED_MODULE_3___default()),
     metaData: _items_MetaDataComponent__WEBPACK_IMPORTED_MODULE_0__["default"],
     eventListCard: _items_cards_EventListCardComponent__WEBPACK_IMPORTED_MODULE_2__["default"],
     emptyPageComponent: _global_components_EmptyPageComponent__WEBPACK_IMPORTED_MODULE_1__["default"]
   },
   data: function data() {
     return {
-      events: []
+      events: [],
+      filtred_events: [],
+      event_filtrs: 'next'
     };
   },
   mounted: function mounted() {
@@ -366,7 +422,26 @@ __webpack_require__.r(__webpack_exports__);
 
       axios.get('../../api/event/get_event_on_site_list/' + localStorage.getItem('lang')).then(function (response) {
         _this.events = response.data;
+
+        _this.sortByTime();
       })["catch"](function (error) {});
+    },
+    sortByTime: function sortByTime() {
+      var vm = this;
+
+      if (vm.event_filtrs == 'all') {
+        this.filtred_events = this.events;
+      } else if (vm.event_filtrs == 'next') {
+        this.filtred_events = [];
+        this.filtred_events = this.events.filter(function (item) {
+          return moment__WEBPACK_IMPORTED_MODULE_3___default()(item.global_event.start_data).format("D") > new Date().getDate() && moment__WEBPACK_IMPORTED_MODULE_3___default()(item.global_event.end_data).format("M") - 1 > new Date().getMonth() || moment__WEBPACK_IMPORTED_MODULE_3___default()(item.global_event.start_data).format("D") == new Date().getDate() && moment__WEBPACK_IMPORTED_MODULE_3___default()(item.global_event.end_data).format("M") - 1 == new Date().getMonth();
+        });
+      } else if (vm.event_filtrs == 'now') {
+        this.filtred_events = [];
+        this.filtred_events = this.events.filter(function (item) {
+          return moment__WEBPACK_IMPORTED_MODULE_3___default()(item.global_event.start_data).format("D") == new Date().getDate() && moment__WEBPACK_IMPORTED_MODULE_3___default()(item.global_event.end_data).format("M") - 1 == new Date().getMonth();
+        });
+      }
     }
   }
 });
@@ -848,12 +923,13 @@ var render = function () {
           _c("div", { staticClass: "flag-wrapper" }, [
             _c("span", { staticClass: "hexa" }),
             _vm._v(" "),
-            _c("span", { staticClass: "flag" }, [_vm._v("Event / festival.")]),
+            _c("span", { staticClass: "flag" }, [_vm._v("Event / festival")]),
             _vm._v(" "),
-            new Date().getFullYear() == this.end_year &&
-            new Date().getDate() >= this.start_day &&
-            new Date().getDate() <= this.end_day &&
-            this.start_time_for_check <= this.start_time
+            (new Date().getDate() == this.start_day &&
+              new Date().getMonth() == this.start_month_num - 1) ||
+            (new Date().getDate() < this.start_day &&
+              new Date().getDate() > this.end_day &&
+              new Date().getMonth() == this.start_month_num - 1)
               ? _c("span", { staticClass: "time-wrapper" }, [
                   _c("span", { staticClass: "time naw_time" }, [_vm._v("Now")]),
                   _vm._v(" "),
@@ -866,9 +942,10 @@ var render = function () {
                     ),
                   ]),
                 ])
-              : new Date().getFullYear() == this.end_year &&
-                new Date().getDate() < this.end_day &&
-                new Date().getDate() == this.end_day
+              : (new Date().getDate() > this.end_day &&
+                  new Date().getMonth() > this.start_month_num - 1) ||
+                (new Date().getDate() > this.end_day &&
+                  new Date().getMonth() == this.start_month_num - 1)
               ? _c("span", { staticClass: "time-wrapper" }, [
                   _c("span", { staticClass: "time finished_time" }, [
                     _vm._v("Finished"),
@@ -965,29 +1042,54 @@ var render = function () {
           _c("div", { staticClass: "flag-wrapper" }, [
             _c("span", { staticClass: "hexa" }),
             _vm._v(" "),
-            _c("span", { staticClass: "flag" }, [_vm._v("Competition.")]),
+            _c("span", { staticClass: "flag" }, [_vm._v("Competition")]),
             _vm._v(" "),
-            _c("span", { staticClass: "time-wrapper" }, [
-              new Date().getFullYear() != this.start_year
-                ? _c("span", { staticClass: "time" }, [
+            new Date().getDate() == this.start_day &&
+            new Date().getMonth() == this.start_month_num - 1
+              ? _c("span", { staticClass: "time-wrapper" }, [
+                  _c("span", { staticClass: "time naw_time" }, [_vm._v("Now")]),
+                  _vm._v(" "),
+                  _c("span", { staticClass: "time naw_time" }, [
                     _vm._v(
-                      _vm._s(this.start_day) +
+                      "Finish at - " +
+                        _vm._s(this.end_day) +
                         " " +
-                        _vm._s(this.start_month) +
-                        " " +
-                        _vm._s(this.start_year)
-                    ),
-                  ])
-                : _c("span", { staticClass: "time" }, [
-                    _vm._v(
-                      _vm._s(this.start_day) + " " + _vm._s(this.start_month)
+                        _vm._s(this.end_month)
                     ),
                   ]),
-              _vm._v(" "),
-              _c("span", { staticClass: "time" }, [
-                _vm._v(_vm._s(this.start_time)),
-              ]),
-            ]),
+                ])
+              : (new Date().getDate() > this.end_day &&
+                  new Date().getMonth() > this.start_month_num - 1) ||
+                (new Date().getDate() > this.end_day &&
+                  new Date().getMonth() == this.start_month_num - 1)
+              ? _c("span", { staticClass: "time-wrapper" }, [
+                  _c("span", { staticClass: "time finished_time" }, [
+                    _vm._v("Finished"),
+                  ]),
+                ])
+              : _c("span", { staticClass: "time-wrapper" }, [
+                  new Date().getFullYear() != this.start_year
+                    ? _c("span", { staticClass: "time" }, [
+                        _vm._v(
+                          _vm._s(this.start_day) +
+                            " " +
+                            _vm._s(this.start_month) +
+                            " " +
+                            _vm._s(this.start_year)
+                        ),
+                      ])
+                    : _c("span", { staticClass: "time" }, [
+                        _vm._v(
+                          _vm._s(this.start_day) +
+                            " " +
+                            _vm._s(this.start_month)
+                        ),
+                      ]),
+                  _vm._v(" "),
+                  _c("span", { staticClass: "time" }, [
+                    _vm._v(_vm._s(this.start_time)),
+                  ]),
+                ]),
           ]),
           _vm._v(" "),
           _c(
@@ -1089,11 +1191,71 @@ var render = function () {
         ),
       ]),
       _vm._v(" "),
-      _vm.events.length
+      _c("div", {}, [
+        _c("div", { staticClass: "row" }, [
+          _c("div", { staticClass: "container articles_filter_bar" }, [
+            _c("div", { staticClass: "col-md-6 col-sm-6" }, [
+              _vm._v(
+                "\n                    Select region and filtred spots by region\n                "
+              ),
+            ]),
+            _vm._v(" "),
+            _c("div", { staticClass: "col-md-6 col-sm-6" }, [
+              _c(
+                "select",
+                {
+                  directives: [
+                    {
+                      name: "model",
+                      rawName: "v-model",
+                      value: _vm.event_filtrs,
+                      expression: "event_filtrs",
+                    },
+                  ],
+                  staticClass: "form-control",
+                  on: {
+                    click: function ($event) {
+                      return _vm.sortByTime()
+                    },
+                    change: function ($event) {
+                      var $$selectedVal = Array.prototype.filter
+                        .call($event.target.options, function (o) {
+                          return o.selected
+                        })
+                        .map(function (o) {
+                          var val = "_value" in o ? o._value : o.value
+                          return val
+                        })
+                      _vm.event_filtrs = $event.target.multiple
+                        ? $$selectedVal
+                        : $$selectedVal[0]
+                    },
+                  },
+                },
+                [
+                  _c("option", { attrs: { value: "next" } }, [
+                    _vm._v("In future"),
+                  ]),
+                  _vm._v(" "),
+                  _c("option", { attrs: { value: "now" } }, [
+                    _vm._v("At the moment"),
+                  ]),
+                  _vm._v(" "),
+                  _c("option", { attrs: { value: "all" } }, [_vm._v("All")]),
+                ]
+              ),
+            ]),
+          ]),
+        ]),
+      ]),
+      _vm._v(" "),
+      _vm._m(0),
+      _vm._v(" "),
+      _vm.filtred_events.length
         ? _c(
             "ul",
             { staticClass: "timeline" },
-            _vm._l(_vm.events, function (event) {
+            _vm._l(_vm.filtred_events, function (event) {
               return _c("eventListCard", {
                 key: event.id,
                 attrs: { event: event },
@@ -1105,7 +1267,7 @@ var render = function () {
       _vm._v(" "),
       _c("metaData", {
         attrs: {
-          title: _vm.$t("title events"),
+          title: _vm.$t("guide.meta.events"),
           description: this.$siteData.event_description,
           image: "../../../../public/images/meta_img/competition.jpg",
         },
@@ -1114,7 +1276,16 @@ var render = function () {
     1
   )
 }
-var staticRenderFns = []
+var staticRenderFns = [
+  function () {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "bar" }, [
+      _c("i", { staticClass: "fa fa-calendar" }),
+    ])
+  },
+]
 render._withStripped = true
 
 

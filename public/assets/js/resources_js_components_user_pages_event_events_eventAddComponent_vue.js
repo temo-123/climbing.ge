@@ -273,6 +273,9 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   mixins: [_mixins_editor_editor_config_mixin_js__WEBPACK_IMPORTED_MODULE_0__.editor_config],
@@ -346,22 +349,23 @@ __webpack_require__.r(__webpack_exports__);
       })["catch"](function (error) {
         if (error.response.status == 422) {
           _this.error = error.response.data.validation;
+        } else {
+          alert(_this.error);
         }
       });
     },
-    sand_notification: function sand_notification() {
-      var _this2 = this;
-
-      this.is_mail_sending_procesing = true;
-      axios.post('../../../api/user/notifications/send_article_notification', {
-        notification_category: this.category
-      }).then(function (response) {
-        _this2.go_back(true);
-      })["catch"](function (err) {
-        console.log(err);
-      })["finally"](function () {
-        return _this2.is_mail_sending_procesing = false;
-      });
+    sand_notification: function sand_notification() {// this.is_mail_sending_procesing = true
+      // axios
+      // .post('../../../api/user/notifications/send_event_adding_notification',{
+      //     notification_category: this.category
+      // } )
+      // .then(response => {
+      //     this.go_back(true)
+      // })
+      // .catch(err => {
+      //     console.log(err);
+      // })
+      // .finally(() => this.is_mail_sending_procesing = false);
     },
     go_back: function go_back() {
       var back_action = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : false;
@@ -585,6 +589,26 @@ var render = function () {
                     _vm._v(
                       "\n                End data - " +
                         _vm._s(_vm.error.global_info_validation.end_data[0]) +
+                        "\n            "
+                    ),
+                  ]
+                )
+              : _vm._e(),
+            _vm._v(" "),
+            _vm.error.global_info_validation.us_title_for_url_title
+              ? _c(
+                  "div",
+                  {
+                    staticClass: "alert alert-danger",
+                    attrs: { role: "alert" },
+                  },
+                  [
+                    _vm._v(
+                      "\n                English title - " +
+                        _vm._s(
+                          _vm.error.global_info_validation
+                            .us_title_for_url_title[0]
+                        ) +
                         "\n            "
                     ),
                   ]

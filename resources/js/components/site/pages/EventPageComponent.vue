@@ -1,20 +1,23 @@
 <template>
     <div class="container">
-        <div class='row'>
-            <div class="col-md-12">
-                
-                <breadcrumb />
-
-                <p class="calendar" v-if="start_day != 0 && start_month != 0">
+        <div class="row">
+            <div class="offset-md-3 col-md-offset-3">
+                <p class="calendar start_calendar">
                     {{ start_day }}
                     <span class="calendar_monthe">{{ start_month }}</span>
                     <em>Start</em>
                 </p>
-                <!-- <p class="calendar" v-if="end_day != 0 && end_month != 0">
+                <p class="calendar end_calendar">
                     {{ end_day }}
                     <span class="calendar_monthe">{{ end_month }}</span>
                     <em>Finish</em>
-                </p> -->
+                </p>
+            </div>
+        </div>
+        <div class='row'>
+            <div class="col-md-12">
+                
+                <breadcrumb />
                 
                 <h1>{{ event.locale_event.title }} <span @click="add_to_interestid_event(event.global_event.id)"> <i class="fa fa-heart-o favorite_icon add_to_favorite" ></i> </span></h1>
                                             
@@ -24,6 +27,7 @@
         <!-- </div>
 
         <div class='row'> -->
+            
             <div class="col-md-12">
 
                 <span v-if="this.event.global_event.map != null && this.event.global_event.map != ''">
@@ -61,6 +65,7 @@
     import commentForm from '../items/CommentFormComponent'
     import metaData from '../items/MetaDataComponent'
     import breadcrumb from '../items/BreadcrumbComponent.vue'
+    import moment from "moment"; // https://www.npmjs.com/package/vue-moment
 
     export default {
         props: [
@@ -84,9 +89,17 @@
             metaData,
             commentForm,
             breadcrumb,
+            moment
         },
         mounted() {
             this.get_event()
+
+            this.start_day = moment(this.event.global_event.start_data).format("D")
+            this.end_day = moment(this.event.global_event.end_data).format("D")
+
+            this.start_month = moment(this.event.global_event.start_data).format("MMM")
+            this.end_month = moment(this.event.global_event.end_data).format("MMM")
+
         },
         watch: {
             '$route' (to, from) {
@@ -140,5 +153,13 @@
         margin-top: -48%;
         margin-bottom: -15%;
         font-size: 60%;
+    }
+
+    .start_calendar{
+
+    }
+    .end_calendar{
+        float: right;
+        margin-right: 25%;
     }
 </style>

@@ -83,8 +83,8 @@
                     <div class="jumbotron width_100">
                         <div class="row">
                             <div class="col-md-12">
-                                <h2 class="display-4"><span>Event global information</span></h2>
-                                <p class="lead">Event global information.</p>
+                                <h2 class="display-4"><span>Competition global information</span></h2>
+                                <p class="lead">Competition global information.</p>
                             </div>
                         </div>
                     </div>
@@ -105,13 +105,13 @@
                             <label for="name" class='col-xs-2 control-label'> Category </label>
                             <div class="col-xs-8">
                                 <select class="form-control" v-model="data.global_data.category" name="published" > 
-                                    <option value="event">Event</option> 
+                                    <option value="event">Competition</option> 
                                     <option value="competition" disabled>Competition</option> 
                                 </select>
                             </div>
                         </div> -->
                         <div class="form-group clearfix">
-                            <label for="name" class='col-xs-2 control-label'> Event location </label>
+                            <label for="name" class='col-xs-2 control-label'> Competition location </label>
                             <div class="col-xs-8">
                                 <input type="text" name="name" v-model="data.global_data.map"  class="form-control"> 
                             </div>
@@ -147,8 +147,8 @@
                 <div class="row" v-show="tab_num == 2">
                     <div class="width_100 jumbotron jumbotron-fluid">
                         <div class="container">
-                            <h2 class="display-4">Event english version</h2>
-                            <p class="lead">Event english version for site localisation.</p>
+                            <h2 class="display-4">Competition english version</h2>
+                            <p class="lead">Competition english version for site localisation.</p>
                         </div>
                     </div>
                     <form class="width_100" name="contact-form" method="POST" style="margin-top: 5%;" enctyp ="multipart/form-data">
@@ -172,14 +172,14 @@
                                 <ckeditor v-model="data.us_data.short_description" :config="us_short_description_text_editor"></ckeditor>
                             </div>
                         </div>
-    
+
                         <div class="form-group clearfix">
                             <label for="name" class='col-xs-2 control-label'> text </label>
                             <div class="col-xs-8">
                                 <ckeditor v-model="data.us_data.text" :config="us_text_editor_config"></ckeditor>
                             </div>
                         </div>
-    
+
                         <div class="form-group clearfix">
                             <label for="name" class='col-xs-2 control-label'> contact info </label>
                             <div class="col-xs-8">
@@ -191,8 +191,8 @@
                 <div class="row" v-show="tab_num == 3">
                     <div class="width_100 jumbotron jumbotron-fluid">
                         <div class="container">
-                            <h2 class="display-4">Event rusion version</h2>
-                            <p class="lead">Event rusion version for site localisation.</p>
+                            <h2 class="display-4">Competition rusion version</h2>
+                            <p class="lead">Competition rusion version for site localisation.</p>
                         </div>
                     </div>
     
@@ -211,14 +211,14 @@
                                 <ckeditor v-model="data.ru_data.short_description" :config="ru_short_description_text_editor"></ckeditor>
                             </div>
                         </div>
-    
+
                         <div class="form-group clearfix">
                             <label for="name" class='col-xs-2 control-label'> text </label>
                             <div class="col-xs-8">
                                 <ckeditor v-model="data.ru_data.text" :config="ru_text_editor_config"></ckeditor>
                             </div>
                         </div>
-    
+
                         <div class="form-group clearfix">
                             <label for="name" class='col-xs-2 control-label'> contact info </label>
                             <div class="col-xs-8">
@@ -230,8 +230,8 @@
                 <div class="row" v-show="tab_num == 4">
                     <div class="width_100 jumbotron jumbotron-fluid">
                         <div class="container">
-                            <h2 class="display-4">Event georgian version</h2>
-                            <p class="lead">Event georgian version for site localisation.</p>
+                            <h2 class="display-4">Competition georgian version</h2>
+                            <p class="lead">Competition georgian version for site localisation.</p>
                         </div>
                     </div>
     
@@ -288,8 +288,6 @@
                 images: [],
                 editorConfig: '',
 
-                change_url_title: false,
-
                 us_short_description_text_editor: editor_config.get_small_editor_config(),
                 us_text_editor_config: editor_config.get_big_editor_config(),
                 us_info_editor_config: editor_config.get_big_editor_config(),
@@ -300,6 +298,10 @@
                 ka_text_editor_config: editor_config.get_big_editor_config(),
                 ka_info_editor_config: editor_config.get_big_editor_config(),
 
+                error: [],
+
+                change_url_title: false,
+
                 data: {
                     global_data: {
                         us_title_for_url_title: '',
@@ -307,7 +309,7 @@
                         start_data: '',
                         end_data: '',
 
-                        category: 'event',
+                        category: 'competition',
                         map: '',
 
                         change_url_title: '',
@@ -387,6 +389,8 @@
 
                 formData.append('image', this.image)
                 formData.append('data', JSON.stringify(this.data))
+
+                this.error = []
 
                 axios
                 .post('../../api/event/edit_event/'+this.$route.params.id, 

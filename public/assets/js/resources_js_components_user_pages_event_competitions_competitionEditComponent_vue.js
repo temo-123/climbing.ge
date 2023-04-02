@@ -296,7 +296,6 @@ __webpack_require__.r(__webpack_exports__);
       tab_num: 1,
       images: [],
       editorConfig: '',
-      change_url_title: false,
       us_short_description_text_editor: _mixins_editor_editor_config_mixin_js__WEBPACK_IMPORTED_MODULE_0__.editor_config.get_small_editor_config(),
       us_text_editor_config: _mixins_editor_editor_config_mixin_js__WEBPACK_IMPORTED_MODULE_0__.editor_config.get_big_editor_config(),
       us_info_editor_config: _mixins_editor_editor_config_mixin_js__WEBPACK_IMPORTED_MODULE_0__.editor_config.get_big_editor_config(),
@@ -306,12 +305,14 @@ __webpack_require__.r(__webpack_exports__);
       ka_short_description_text_editor: _mixins_editor_editor_config_mixin_js__WEBPACK_IMPORTED_MODULE_0__.editor_config.get_small_editor_config(),
       ka_text_editor_config: _mixins_editor_editor_config_mixin_js__WEBPACK_IMPORTED_MODULE_0__.editor_config.get_big_editor_config(),
       ka_info_editor_config: _mixins_editor_editor_config_mixin_js__WEBPACK_IMPORTED_MODULE_0__.editor_config.get_big_editor_config(),
+      error: [],
+      change_url_title: false,
       data: {
         global_data: {
           us_title_for_url_title: '',
           start_data: '',
           end_data: '',
-          category: 'event',
+          category: 'competition',
           map: '',
           change_url_title: '',
           published: 0
@@ -380,6 +381,7 @@ __webpack_require__.r(__webpack_exports__);
       var formData = new FormData();
       formData.append('image', this.image);
       formData.append('data', JSON.stringify(this.data));
+      this.error = [];
       axios.post('../../api/event/edit_event/' + this.$route.params.id, formData).then(function (response) {
         _this2.go_back(true);
       })["catch"](function (error) {
@@ -966,7 +968,7 @@ var render = function () {
                       staticClass: "col-xs-2 control-label",
                       attrs: { for: "name" },
                     },
-                    [_vm._v(" Event location ")]
+                    [_vm._v(" Competition location ")]
                   ),
                   _vm._v(" "),
                   _c("div", { staticClass: "col-xs-8" }, [
@@ -1641,11 +1643,11 @@ var staticRenderFns = [
       _c("div", { staticClass: "row" }, [
         _c("div", { staticClass: "col-md-12" }, [
           _c("h2", { staticClass: "display-4" }, [
-            _c("span", [_vm._v("Event global information")]),
+            _c("span", [_vm._v("Competition global information")]),
           ]),
           _vm._v(" "),
           _c("p", { staticClass: "lead" }, [
-            _vm._v("Event global information."),
+            _vm._v("Competition global information."),
           ]),
         ]),
       ]),
@@ -1658,11 +1660,11 @@ var staticRenderFns = [
     return _c("div", { staticClass: "width_100 jumbotron jumbotron-fluid" }, [
       _c("div", { staticClass: "container" }, [
         _c("h2", { staticClass: "display-4" }, [
-          _vm._v("Event english version"),
+          _vm._v("Competition english version"),
         ]),
         _vm._v(" "),
         _c("p", { staticClass: "lead" }, [
-          _vm._v("Event english version for site localisation."),
+          _vm._v("Competition english version for site localisation."),
         ]),
       ]),
     ])
@@ -1674,11 +1676,11 @@ var staticRenderFns = [
     return _c("div", { staticClass: "width_100 jumbotron jumbotron-fluid" }, [
       _c("div", { staticClass: "container" }, [
         _c("h2", { staticClass: "display-4" }, [
-          _vm._v("Event rusion version"),
+          _vm._v("Competition rusion version"),
         ]),
         _vm._v(" "),
         _c("p", { staticClass: "lead" }, [
-          _vm._v("Event rusion version for site localisation."),
+          _vm._v("Competition rusion version for site localisation."),
         ]),
       ]),
     ])
@@ -1690,11 +1692,11 @@ var staticRenderFns = [
     return _c("div", { staticClass: "width_100 jumbotron jumbotron-fluid" }, [
       _c("div", { staticClass: "container" }, [
         _c("h2", { staticClass: "display-4" }, [
-          _vm._v("Event georgian version"),
+          _vm._v("Competition georgian version"),
         ]),
         _vm._v(" "),
         _c("p", { staticClass: "lead" }, [
-          _vm._v("Event georgian version for site localisation."),
+          _vm._v("Competition georgian version for site localisation."),
         ]),
       ]),
     ])

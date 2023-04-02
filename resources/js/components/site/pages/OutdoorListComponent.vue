@@ -153,6 +153,10 @@
         mounted() {
             this.get_outdoor_articles()
             this.get_regions()
+
+            if(location.hash != ''){
+                this.create_url(location.hash)
+            }
         },
 
         watch: {
@@ -189,6 +193,8 @@
             get_outdoor_articles(){
                 if (this.filter_spot === 'all' || this.filter_spot === 'All') {
                     this.get_unfilted_articles()
+
+                    this.delete_url_hash()
                 }
                 else{
                     this.get_filtred_articles(this.filter_spot) 
@@ -196,28 +202,16 @@
                 }
             },
 
-            // get_outdoor_articles(){
-            //     axios
-            //     .get('../api/articles/outdoor/'+localStorage.getItem('lang'))
-            //     .then(response => {
-            //         this.outdoors = response.data
-            //         this.filter_spots_by_region()
-            //     })
-            //     .catch(error =>{
-            //     })
-            //     .finally(() => this.oudoor_loading = false)
-            // },
+            delete_url_hash(){
+                // https://gist.github.com/azu/36ba5a80feb857c77a3a
+                var noHashURL = location.href.replace(/#.*$/, '');
+                history.replaceState('', document.title, noHashURL) 
+            },
 
-            // filter_spots_by_region(){
-            //     let vm = this;
-            //     if (vm.filter_spot === 'All') {
-            //         this.filtred_spots = this.outdoors
-            //     }else{
-            //         this.filtred_spots = this.outdoors.filter(function (item){
-            //             return item.area.region_id == vm.filter_spot
-            //         })
-            //     }
-            // },
+            create_url_hash (category) {	
+                // https://www.tutorialsplane.com/vue-js-set-hash-url/	
+                location.hash = "#" + category;
+            },
 
             get_regions(){
                 axios
@@ -243,6 +237,8 @@
                     .get('../api/region/'+localStorage.getItem('lang')+'/'+region_id)
                     .then(response => {
                         this.selected_region_data = response.data[0]
+
+                        this.create_url_hash(this.selected_region_data.name)
                     })
                     .catch(error =>{
                     })

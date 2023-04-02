@@ -507,6 +507,12 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _items_CommentFormComponent__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../items/CommentFormComponent */ "./resources/js/components/site/items/CommentFormComponent.vue");
 /* harmony import */ var _items_MetaDataComponent__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../items/MetaDataComponent */ "./resources/js/components/site/items/MetaDataComponent.vue");
 /* harmony import */ var _items_BreadcrumbComponent_vue__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../items/BreadcrumbComponent.vue */ "./resources/js/components/site/items/BreadcrumbComponent.vue");
+/* harmony import */ var moment__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! moment */ "./node_modules/moment/moment.js");
+/* harmony import */ var moment__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(moment__WEBPACK_IMPORTED_MODULE_3__);
+//
+//
+//
+//
 //
 //
 //
@@ -568,6 +574,8 @@ __webpack_require__.r(__webpack_exports__);
 //
 
 
+
+ // https://www.npmjs.com/package/vue-moment
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   props: [// 'article',
@@ -586,10 +594,15 @@ __webpack_require__.r(__webpack_exports__);
   components: {
     metaData: _items_MetaDataComponent__WEBPACK_IMPORTED_MODULE_1__["default"],
     commentForm: _items_CommentFormComponent__WEBPACK_IMPORTED_MODULE_0__["default"],
-    breadcrumb: _items_BreadcrumbComponent_vue__WEBPACK_IMPORTED_MODULE_2__["default"]
+    breadcrumb: _items_BreadcrumbComponent_vue__WEBPACK_IMPORTED_MODULE_2__["default"],
+    moment: (moment__WEBPACK_IMPORTED_MODULE_3___default())
   },
   mounted: function mounted() {
     this.get_event();
+    this.start_day = moment__WEBPACK_IMPORTED_MODULE_3___default()(this.event.global_event.start_data).format("D");
+    this.end_day = moment__WEBPACK_IMPORTED_MODULE_3___default()(this.event.global_event.end_data).format("D");
+    this.start_month = moment__WEBPACK_IMPORTED_MODULE_3___default()(this.event.global_event.start_data).format("MMM");
+    this.end_month = moment__WEBPACK_IMPORTED_MODULE_3___default()(this.event.global_event.end_data).format("MMM");
   },
   watch: {
     '$route': function $route(to, from) {
@@ -602,12 +615,12 @@ __webpack_require__.r(__webpack_exports__);
 
       axios.get('../../api/event/get_event_on_site_page/' + localStorage.getItem('lang') + '/' + this.$route.params.url_title).then(function (response) {
         _this.event = response.data;
-        _this.start_day = moment(response.data.global_event.start_data).format("D");
-        _this.end_day = moment(response.data.global_event.end_data).format("D");
-        _this.start_month = moment(response.data.global_event.start_data).format("MMM");
-        _this.end_month = moment(response.data.global_event.end_data).format("MMM");
-        _this.start_year = moment(response.data.global_event.start_data).format("Y");
-        _this.end_year = moment(response.data.global_event.end_data).format("Y");
+        _this.start_day = moment__WEBPACK_IMPORTED_MODULE_3___default()(response.data.global_event.start_data).format("D");
+        _this.end_day = moment__WEBPACK_IMPORTED_MODULE_3___default()(response.data.global_event.end_data).format("D");
+        _this.start_month = moment__WEBPACK_IMPORTED_MODULE_3___default()(response.data.global_event.start_data).format("MMM");
+        _this.end_month = moment__WEBPACK_IMPORTED_MODULE_3___default()(response.data.global_event.end_data).format("MMM");
+        _this.start_year = moment__WEBPACK_IMPORTED_MODULE_3___default()(response.data.global_event.start_data).format("Y");
+        _this.end_year = moment__WEBPACK_IMPORTED_MODULE_3___default()(response.data.global_event.end_data).format("Y");
       })["catch"](function (error) {});
     },
     add_to_interestid_event: function add_to_interestid_event(article_id) {
@@ -661,7 +674,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_laravel_mix_node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, "\n.add_to_favorite[data-v-ee2129e8]{\n    float: right; \n    cursor: pointer;\n}\n.calendar_monthe[data-v-ee2129e8]{\n    display: block;\n    margin-top: -48%;\n    margin-bottom: -15%;\n    font-size: 60%;\n}\n", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, "\n.add_to_favorite[data-v-ee2129e8]{\n    float: right; \n    cursor: pointer;\n}\n.calendar_monthe[data-v-ee2129e8]{\n    display: block;\n    margin-top: -48%;\n    margin-bottom: -15%;\n    font-size: 60%;\n}\n.start_calendar[data-v-ee2129e8]{\n}\n.end_calendar[data-v-ee2129e8]{\n    float: right;\n    margin-right: 25%;\n}\n", ""]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
@@ -1720,26 +1733,39 @@ var render = function () {
     { staticClass: "container" },
     [
       _c("div", { staticClass: "row" }, [
+        _c("div", { staticClass: "offset-md-3 col-md-offset-3" }, [
+          _c("p", { staticClass: "calendar start_calendar" }, [
+            _vm._v(
+              "\n                " +
+                _vm._s(_vm.start_day) +
+                "\n                "
+            ),
+            _c("span", { staticClass: "calendar_monthe" }, [
+              _vm._v(_vm._s(_vm.start_month)),
+            ]),
+            _vm._v(" "),
+            _c("em", [_vm._v("Start")]),
+          ]),
+          _vm._v(" "),
+          _c("p", { staticClass: "calendar end_calendar" }, [
+            _vm._v(
+              "\n                " + _vm._s(_vm.end_day) + "\n                "
+            ),
+            _c("span", { staticClass: "calendar_monthe" }, [
+              _vm._v(_vm._s(_vm.end_month)),
+            ]),
+            _vm._v(" "),
+            _c("em", [_vm._v("Finish")]),
+          ]),
+        ]),
+      ]),
+      _vm._v(" "),
+      _c("div", { staticClass: "row" }, [
         _c(
           "div",
           { staticClass: "col-md-12" },
           [
             _c("breadcrumb"),
-            _vm._v(" "),
-            _vm.start_day != 0 && _vm.start_month != 0
-              ? _c("p", { staticClass: "calendar" }, [
-                  _vm._v(
-                    "\n                " +
-                      _vm._s(_vm.start_day) +
-                      "\n                "
-                  ),
-                  _c("span", { staticClass: "calendar_monthe" }, [
-                    _vm._v(_vm._s(_vm.start_month)),
-                  ]),
-                  _vm._v(" "),
-                  _c("em", [_vm._v("Start")]),
-                ])
-              : _vm._e(),
             _vm._v(" "),
             _c("h1", [
               _vm._v(_vm._s(_vm.event.locale_event.title) + " "),

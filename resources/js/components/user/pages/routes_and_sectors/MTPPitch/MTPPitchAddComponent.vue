@@ -160,7 +160,7 @@
             <div class="form-group clearfix row">
                 <label for="name" class='col-md-2 control-label'>Firs Ascent </label>
                 <div class="col-md-5">
-                    <input type="date" name="title" class="form-control" v-model="data.first_ascent" placeholder="First ascent"> 
+                    <input type="text" name="title" class="form-control" v-model="data.first_ascent" placeholder="First ascent"> 
                 </div>
             </div>
     

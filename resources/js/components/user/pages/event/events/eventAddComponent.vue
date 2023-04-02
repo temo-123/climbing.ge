@@ -21,6 +21,9 @@
                 <div class="alert alert-danger" role="alert" v-if="error.global_info_validation.end_data">
                     End data - {{ error.global_info_validation.end_data[0] }}
                 </div>
+                <div class="alert alert-danger" role="alert" v-if="error.global_info_validation.us_title_for_url_title">
+                    English title - {{ error.global_info_validation.us_title_for_url_title[0] }}
+                </div>
 
                 <div class="alert alert-danger" role="alert" v-if="error.us_info_validation.title">
                     English title - {{ error.us_info_validation.title[0] }}
@@ -356,23 +359,26 @@
                     if (error.response.status == 422) {
                         this.error = error.response.data.validation
                     }
+                    else{
+                        alert(this.error)
+                    }
                 });
             },
 
             sand_notification() {
-                this.is_mail_sending_procesing = true
+                // this.is_mail_sending_procesing = true
 
-                axios
-                .post('../../../api/user/notifications/send_article_notification',{
-                    notification_category: this.category
-                } )
-                .then(response => {
-                    this.go_back(true)
-                })
-                .catch(err => {
-                    console.log(err);
-                })
-                .finally(() => this.is_mail_sending_procesing = false);
+                // axios
+                // .post('../../../api/user/notifications/send_event_adding_notification',{
+                //     notification_category: this.category
+                // } )
+                // .then(response => {
+                //     this.go_back(true)
+                // })
+                // .catch(err => {
+                //     console.log(err);
+                // })
+                // .finally(() => this.is_mail_sending_procesing = false);
             },
 
             go_back: function(back_action = false) {

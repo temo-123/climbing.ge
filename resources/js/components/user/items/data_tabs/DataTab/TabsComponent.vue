@@ -452,6 +452,15 @@
                                     @restart="update"
                                 />
                             </tbody>
+                            <tbody v-else-if="data.table_name == 'Competitions'">
+                                <competitionTab
+                                    v-for="table_info in data.data"
+                                    :key="table_info.id"
+                                    :table_info="table_info"
+                                    
+                                    @restart="update"
+                                />
+                            </tbody>
                             <tbody v-else>
                                 <articlesTab
                                     v-for="table_info in data.data"
@@ -531,6 +540,7 @@ import countryTab from './tabs/CountryTabComponent.vue'
 import categoryTab from "./tabs/CategoriesTabComponent.vue";
 import postTopicTab from "./tabs/PostTopicTabComponent.vue";
 import postTab from "./tabs/PostTabComponent.vue";
+import competitionTab from "./tabs/CompetitionTabComponent.vue";
 
 //import sectorModal from "./tab_modals/SectorsModalComponent.vue";
 // import editOrderStatusModal from "./tab_modals/EditOrderStatusსModalComponent.vue";
@@ -543,6 +553,8 @@ export default {
     components: {
         tabHeader,
         functionalBattoms,
+
+        competitionTab,
 
         tableFilter,
 

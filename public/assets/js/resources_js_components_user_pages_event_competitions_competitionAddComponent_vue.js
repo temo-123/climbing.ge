@@ -281,6 +281,7 @@ __webpack_require__.r(__webpack_exports__);
   data: function data() {
     return {
       tab_num: 1,
+      error: [],
       images: [],
       editorConfig: '',
       us_short_description_text_editor: _mixins_editor_editor_config_mixin_js__WEBPACK_IMPORTED_MODULE_0__.editor_config.get_small_editor_config(),
@@ -335,6 +336,7 @@ __webpack_require__.r(__webpack_exports__);
       var formData = new FormData();
       formData.append('image', this.image);
       formData.append('data', JSON.stringify(this.data));
+      this.error = [];
       axios.post('../api/event/add_event', formData).then(function (response) {
         if (confirm('Do you want send notification about editing article?')) {
           _this.sand_notification();
@@ -347,19 +349,18 @@ __webpack_require__.r(__webpack_exports__);
         }
       });
     },
-    sand_notification: function sand_notification() {
-      var _this2 = this;
-
-      this.is_mail_sending_procesing = true;
-      axios.post('../../../api/user/notifications/send_article_notification', {
-        notification_category: this.category
-      }).then(function (response) {
-        _this2.go_back(true);
-      })["catch"](function (err) {
-        console.log(err);
-      })["finally"](function () {
-        return _this2.is_mail_sending_procesing = false;
-      });
+    sand_notification: function sand_notification() {// this.is_mail_sending_procesing = true
+      // axios
+      // .post('../../../api/user/notifications/send_event_adding_notification',{
+      //     notification_category: this.category
+      // } )
+      // .then(response => {
+      //     this.go_back(true)
+      // })
+      // .catch(err => {
+      //     console.log(err);
+      // })
+      // .finally(() => this.is_mail_sending_procesing = false);
     },
     go_back: function go_back() {
       var back_action = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : false;
@@ -939,7 +940,7 @@ var render = function () {
                       staticClass: "col-xs-2 control-label",
                       attrs: { for: "name" },
                     },
-                    [_vm._v(" Event location ")]
+                    [_vm._v(" Competition location ")]
                   ),
                   _vm._v(" "),
                   _c("div", { staticClass: "col-xs-8" }, [
@@ -948,19 +949,23 @@ var render = function () {
                         {
                           name: "model",
                           rawName: "v-model",
-                          value: _vm.data.us_data.map,
-                          expression: "data.us_data.map",
+                          value: _vm.data.global_data.map,
+                          expression: "data.global_data.map",
                         },
                       ],
                       staticClass: "form-control",
                       attrs: { type: "text", name: "name" },
-                      domProps: { value: _vm.data.us_data.map },
+                      domProps: { value: _vm.data.global_data.map },
                       on: {
                         input: function ($event) {
                           if ($event.target.composing) {
                             return
                           }
-                          _vm.$set(_vm.data.us_data, "map", $event.target.value)
+                          _vm.$set(
+                            _vm.data.global_data,
+                            "map",
+                            $event.target.value
+                          )
                         },
                       },
                     }),
@@ -985,8 +990,8 @@ var render = function () {
                             {
                               name: "model",
                               rawName: "v-model",
-                              value: _vm.data.start_data,
-                              expression: "data.start_data",
+                              value: _vm.data.global_data.start_data,
+                              expression: "data.global_data.start_data",
                             },
                           ],
                           staticClass: "form-control",
@@ -995,14 +1000,14 @@ var render = function () {
                             name: "start_datatle",
                             placeholder: "Start data/time",
                           },
-                          domProps: { value: _vm.data.start_data },
+                          domProps: { value: _vm.data.global_data.start_data },
                           on: {
                             input: function ($event) {
                               if ($event.target.composing) {
                                 return
                               }
                               _vm.$set(
-                                _vm.data,
+                                _vm.data.global_data,
                                 "start_data",
                                 $event.target.value
                               )
@@ -1017,8 +1022,8 @@ var render = function () {
                             {
                               name: "model",
                               rawName: "v-model",
-                              value: _vm.data.end_data,
-                              expression: "data.end_data",
+                              value: _vm.data.global_data.end_data,
+                              expression: "data.global_data.end_data",
                             },
                           ],
                           staticClass: "form-control",
@@ -1027,14 +1032,14 @@ var render = function () {
                             name: "end_data",
                             placeholder: "End data/time",
                           },
-                          domProps: { value: _vm.data.end_data },
+                          domProps: { value: _vm.data.global_data.end_data },
                           on: {
                             input: function ($event) {
                               if ($event.target.composing) {
                                 return
                               }
                               _vm.$set(
-                                _vm.data,
+                                _vm.data.global_data,
                                 "end_data",
                                 $event.target.value
                               )
@@ -1565,11 +1570,11 @@ var staticRenderFns = [
       _c("div", { staticClass: "row" }, [
         _c("div", { staticClass: "col-md-12" }, [
           _c("h2", { staticClass: "display-4" }, [
-            _c("span", [_vm._v("Event global information")]),
+            _c("span", [_vm._v("Competition global information")]),
           ]),
           _vm._v(" "),
           _c("p", { staticClass: "lead" }, [
-            _vm._v("Event global information."),
+            _vm._v("Competition global information."),
           ]),
         ]),
       ]),
@@ -1582,11 +1587,11 @@ var staticRenderFns = [
     return _c("div", { staticClass: "width_100 jumbotron jumbotron-fluid" }, [
       _c("div", { staticClass: "container" }, [
         _c("h2", { staticClass: "display-4" }, [
-          _vm._v("Event english version"),
+          _vm._v("Competition english version"),
         ]),
         _vm._v(" "),
         _c("p", { staticClass: "lead" }, [
-          _vm._v("Event english version for site localisation."),
+          _vm._v("Competition english version for site localisation."),
         ]),
       ]),
     ])
@@ -1598,11 +1603,11 @@ var staticRenderFns = [
     return _c("div", { staticClass: "width_100 jumbotron jumbotron-fluid" }, [
       _c("div", { staticClass: "container" }, [
         _c("h2", { staticClass: "display-4" }, [
-          _vm._v("Event rusion version"),
+          _vm._v("Competition rusion version"),
         ]),
         _vm._v(" "),
         _c("p", { staticClass: "lead" }, [
-          _vm._v("Event rusion version for site localisation."),
+          _vm._v("Competition rusion version for site localisation."),
         ]),
       ]),
     ])
@@ -1614,11 +1619,11 @@ var staticRenderFns = [
     return _c("div", { staticClass: "width_100 jumbotron jumbotron-fluid" }, [
       _c("div", { staticClass: "container" }, [
         _c("h2", { staticClass: "display-4" }, [
-          _vm._v("Event georgian version"),
+          _vm._v("Competition georgian version"),
         ]),
         _vm._v(" "),
         _c("p", { staticClass: "lead" }, [
-          _vm._v("Event georgian version for site localisation."),
+          _vm._v("Competition georgian version for site localisation."),
         ]),
       ]),
     ])

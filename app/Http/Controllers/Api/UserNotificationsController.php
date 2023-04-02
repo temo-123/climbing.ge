@@ -349,4 +349,46 @@ class UserNotificationsController extends Controller
         }
     }
     
+
+    public function send_event_adding_notification(Request $request)
+    {
+        $product = Event::latest('id')->first();
+
+        $notifictions = user_notification::where('add_new_product', '=', 1)->get();
+
+        foreach ($notifictions as $notifiction) {
+            $user = $notifiction->user;
+
+            if($user->lang == 'ka'){
+                $locale_product = $product->ka_product;
+                $url = config('app.base_url_ssh').'/ka/product/'.$product->url_title;
+                $text = 'ჩვენი ახალი პროდუქტი სპეციალურად თქვენთვის. (' . $locale_product->title . ') ეწვიეთ ჩვენ მაღაზიაში რომ იხილოთ მეტი.';
+                $subject = $locale_product->title;
+            }
+            else if($user->lang == 'ru'){
+                $locale_product = $product->ru_product;
+                $url = config('app.base_url_ssh').'/ru/product/'.$product->url_title;
+                $text = 'Наш новый продукт специально для вас. (' . $locale_product->title . ') Посетите наш магазин, чтобы увидеть больше.';
+                $subject = $locale_product->title;
+            }
+            else{
+                $locale_product = $product->us_product;
+                $url = config('app.base_url_ssh').'/product/'.$product->url_title;
+                $text = 'Our new product is specially for you. (' . $locale_product->title . ') Visit our store to see more.';
+                $subject = $locale_product->title;
+            }
+
+            UserNotifications::dispatch($url, $text, $subject, $user->email)->onQueue('emails');
+        }
+
+        foreach (Service_follower::where('service', '=', 'shop')->get() as $folewer) {
+
+            $locale_product = $product->us_product;
+            $url = config('app.base_url_ssh') . '/product/' . $product->url_title;
+            $text = 'Our new product is specially for you. (' . $locale_product->title . ') Visit our store to see more.';
+            $subject = $locale_product->title;
+
+            UserNotifications::dispatch($url, $text, $subject, $folewer->email)->onQueue('emails');
+        }
+    }
 }

@@ -92,6 +92,8 @@ Route::group(['namespace'=>'Api'], function() {
     *   Events
     */
     Route::controller(EventController::class)->prefix('event')->group( function() {
+        Route::get('/get_event_on_index_page/{lang}', 'get_event_on_index_page');
+
         Route::get('/get_events_for_site', 'get_events_for_site');
         Route::get('/get_all_events', 'get_all_events');
         Route::post('/add_event', 'add_event');
@@ -403,6 +405,7 @@ Route::group(['namespace'=>'Api'], function() {
 
         Route::controller(UserNotificationsController::class)->prefix('notifications')->group( function() {
             Route::post('/send_article_adding_notification', 'send_article_adding_notification');
+            Route::post('/send_event_adding_notification', 'send_event_adding_notification');
             Route::post('/send_product_adding_notification', 'send_product_adding_notification');
             Route::post('/send_sector_adding_notification', 'send_sector_adding_notification');
             Route::post('/send_service_adding_notification', 'send_service_adding_notification');

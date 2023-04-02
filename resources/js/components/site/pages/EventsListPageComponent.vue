@@ -6,9 +6,28 @@
             {{this.$siteData.event_description}}
         </h2>
 
-        <ul class="timeline" v-if="events.length">
+        <div class="">
+            <div class="row">
+                <div class="container articles_filter_bar">
+                    <div class="col-md-6 col-sm-6">
+                        Select region and filtred spots by region
+                    </div>
+                    <div class="col-md-6 col-sm-6">
+                        <select class="form-control" v-model="event_filtrs" @click="sortByTime()">
+                            <option value="next">In future</option>
+                            <option value="now">At the moment</option>
+                            <option value="all">All</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="bar"><i class="fa fa-calendar"></i></div>
+
+        <ul class="timeline" v-if="filtred_events.length">
             <eventListCard 
-                v-for="event in events"
+                v-for="event in filtred_events"
                 :key='event.id'
                 :event="event"
             />
@@ -19,7 +38,7 @@
         </div>
         
         <metaData 
-            :title = "$t('title events')"
+            :title = "$t('guide.meta.events')"
             :description = "this.$siteData.event_description"
             :image = "'../../../../public/images/meta_img/competition.jpg'"
         />
@@ -36,8 +55,10 @@ import emptyPageComponent from '../../global_components/EmptyPageComponent'
 
 import eventListCard from '../items/cards/EventListCardComponent'
 
-export default {
-    components: {
+import moment from "moment"; // https://www.npmjs.com/package/vue-moment
+    export default {
+        components: {
+            moment,
         metaData,
         eventListCard,
         emptyPageComponent,
@@ -45,6 +66,8 @@ export default {
     data(){
         return {
             events: [],
+            filtred_events: [],
+            event_filtrs: 'next'
         }
     },
     mounted() {
@@ -61,21 +84,47 @@ export default {
             .get('../../api/event/get_event_on_site_list/'+localStorage.getItem('lang'))
             .then(response => {
                 this.events = response.data
+
+                this.sortByTime()
             })
             .catch(error =>{
             })
         },
+
+        sortByTime(){
+                let vm = this;
+                if (vm.event_filtrs == 'all') {  
+                  this.filtred_events = this.events
+                }
+                else if (vm.event_filtrs == 'next') {  
+                  this.filtred_events = []
+                    this.filtred_events = this.events.filter(function (item){
+                        return (
+                            (
+                              moment(item.global_event.start_data).format("D") > new Date().getDate() &&
+                              moment(item.global_event.end_data).format("M")-1 > new Date().getMonth()
+                            )
+                          ||
+                            (
+                              moment(item.global_event.start_data).format("D") == new Date().getDate() &&
+                              moment(item.global_event.end_data).format("M")-1 == new Date().getMonth()
+                            )
+                        )
+                    })
+                }
+                else if (vm.event_filtrs == 'now') {  
+                  this.filtred_events = []
+                    this.filtred_events = this.events.filter(function (item){
+                        return   moment(item.global_event.start_data).format("D") == new Date().getDate() 
+                            &&   moment(item.global_event.end_data).format("M")-1 == new Date().getMonth()
+                    })
+                }
+            },
     }
 }
 </script>
 
 <style lang="scss">
-// @import url(https://fonts.googleapis.com/css?family=Raleway:400,900);
-
-// body{
-//   font-family: 'Raleway', sans-serif;
-//   color: #333;
-// }
 
 header h1{
   text-align: center;

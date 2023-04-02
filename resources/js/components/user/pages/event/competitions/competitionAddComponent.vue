@@ -83,8 +83,8 @@
                     <div class="jumbotron width_100">
                         <div class="row">
                             <div class="col-md-12">
-                                <h2 class="display-4"><span>Event global information</span></h2>
-                                <p class="lead">Event global information.</p>
+                                <h2 class="display-4"><span>Competition global information</span></h2>
+                                <p class="lead">Competition global information.</p>
                             </div>
                         </div>
                     </div>
@@ -105,15 +105,15 @@
                             <label for="name" class='col-xs-2 control-label'> Category </label>
                             <div class="col-xs-8">
                                 <select class="form-control" v-model="data.global_data.category" name="published" > 
-                                    <option value="event">Event</option> 
+                                    <option value="event">Competition</option> 
                                     <option value="competition" disabled>Competition</option> 
                                 </select>
                             </div>
                         </div> -->
                         <div class="form-group clearfix">
-                            <label for="name" class='col-xs-2 control-label'> Event location </label>
+                            <label for="name" class='col-xs-2 control-label'> Competition location </label>
                             <div class="col-xs-8">
-                                <input type="text" name="name" v-model="data.us_data.map"  class="form-control"> 
+                                <input type="text" name="name" v-model="data.global_data.map"  class="form-control"> 
                             </div>
                         </div>
                         <div class="form-group clearfix">
@@ -121,10 +121,10 @@
                             <div class="col-xs-8">
                                 <div class="row">
                                     <div class="col-md-6">
-                                        <input type="datetime-local" name="start_datatle" class="form-control" v-model="data.start_data" placeholder="Start data/time"> 
+                                        <input type="datetime-local" name="start_datatle" class="form-control" v-model="data.global_data.start_data" placeholder="Start data/time"> 
                                     </div>
                                     <div class="col-md-6">
-                                        <input type="datetime-local" name="end_data" class="form-control" v-model="data.end_data" placeholder="End data/time"> 
+                                        <input type="datetime-local" name="end_data" class="form-control" v-model="data.global_data.end_data" placeholder="End data/time"> 
                                     </div>
                                 </div>
                             </div>
@@ -141,8 +141,8 @@
                 <div class="row" v-show="tab_num == 2">
                     <div class="width_100 jumbotron jumbotron-fluid">
                         <div class="container">
-                            <h2 class="display-4">Event english version</h2>
-                            <p class="lead">Event english version for site localisation.</p>
+                            <h2 class="display-4">Competition english version</h2>
+                            <p class="lead">Competition english version for site localisation.</p>
                         </div>
                     </div>
                     <form class="width_100" name="contact-form" method="POST" style="margin-top: 5%;" enctyp ="multipart/form-data">
@@ -156,21 +156,21 @@
                         <div class="form-group clearfix">
                             <label for="name" class='col-xs-2 control-label'> Short description </label>
                             <div class="col-xs-8">
-                                <ckeditor v-model="data.us_data.short_description"  :config="us_short_description_text_editor"></ckeditor>
+                                <ckeditor v-model="data.us_data.short_description" :config="us_short_description_text_editor"></ckeditor>
                             </div>
                         </div>
-    
+
                         <div class="form-group clearfix">
                             <label for="name" class='col-xs-2 control-label'> text </label>
                             <div class="col-xs-8">
-                                <ckeditor v-model="data.us_data.text"  :config="us_text_editor_config"></ckeditor>
+                                <ckeditor v-model="data.us_data.text" :config="us_text_editor_config"></ckeditor>
                             </div>
                         </div>
-    
+
                         <div class="form-group clearfix">
                             <label for="name" class='col-xs-2 control-label'> contact info </label>
                             <div class="col-xs-8">
-                                <ckeditor v-model="data.us_data.info"  :config="us_info_editor_config"></ckeditor>
+                                <ckeditor v-model="data.us_data.info" :config="us_info_editor_config"></ckeditor>
                             </div>
                         </div>
                     </form>
@@ -178,8 +178,8 @@
                 <div class="row" v-show="tab_num == 3">
                     <div class="width_100 jumbotron jumbotron-fluid">
                         <div class="container">
-                            <h2 class="display-4">Event rusion version</h2>
-                            <p class="lead">Event rusion version for site localisation.</p>
+                            <h2 class="display-4">Competition rusion version</h2>
+                            <p class="lead">Competition rusion version for site localisation.</p>
                         </div>
                     </div>
     
@@ -198,18 +198,18 @@
                                 <ckeditor v-model="data.ru_data.short_description" :config="ru_short_description_text_editor"></ckeditor>
                             </div>
                         </div>
-    
+
                         <div class="form-group clearfix">
                             <label for="name" class='col-xs-2 control-label'> text </label>
                             <div class="col-xs-8">
-                                <ckeditor v-model="data.ru_data.text"  :config="ru_text_editor_config"></ckeditor>
+                                <ckeditor v-model="data.ru_data.text" :config="ru_text_editor_config"></ckeditor>
                             </div>
                         </div>
-    
+
                         <div class="form-group clearfix">
                             <label for="name" class='col-xs-2 control-label'> contact info </label>
                             <div class="col-xs-8">
-                                <ckeditor v-model="data.ru_data.info"  :config="ru_info_editor_config"></ckeditor>
+                                <ckeditor v-model="data.ru_data.info" :config="ru_info_editor_config"></ckeditor>
                             </div>
                         </div>
                     </form>
@@ -217,8 +217,8 @@
                 <div class="row" v-show="tab_num == 4">
                     <div class="width_100 jumbotron jumbotron-fluid">
                         <div class="container">
-                            <h2 class="display-4">Event georgian version</h2>
-                            <p class="lead">Event georgian version for site localisation.</p>
+                            <h2 class="display-4">Competition georgian version</h2>
+                            <p class="lead">Competition georgian version for site localisation.</p>
                         </div>
                     </div>
     
@@ -237,18 +237,18 @@
                                 <ckeditor v-model="data.ka_data.short_description" :config="ka_short_description_text_editor"></ckeditor>
                             </div>
                         </div>
-    
+
                         <div class="form-group clearfix">
                             <label for="name" class='col-xs-2 control-label'> text </label>
                             <div class="col-xs-8">
-                                <ckeditor v-model="data.ka_data.text"  :config="ka_text_editor_config"></ckeditor>
+                                <ckeditor v-model="data.ka_data.text" :config="ka_text_editor_config"></ckeditor>
                             </div>
                         </div>
-    
+
                         <div class="form-group clearfix">
                             <label for="name" class='col-xs-2 control-label'> contact info </label>
                             <div class="col-xs-8">
-                                <ckeditor v-model="data.ka_data.info"  :config="ka_info_editor_config"></ckeditor>
+                                <ckeditor v-model="data.ka_data.info" :config="ka_info_editor_config"></ckeditor>
                             </div>
                         </div>
                     </form>
@@ -271,6 +271,8 @@
         data(){
             return {
                 tab_num: 1,
+
+                error: [],
 
                 images: [],
                 editorConfig: '',
@@ -336,6 +338,8 @@
 
                 formData.append('data', JSON.stringify(this.data))
 
+                this.error = []
+
                 axios
                 .post('../api/event/add_event', 
                     formData
@@ -356,19 +360,19 @@
             },
 
             sand_notification() {
-                this.is_mail_sending_procesing = true
+                // this.is_mail_sending_procesing = true
 
-                axios
-                .post('../../../api/user/notifications/send_article_notification',{
-                    notification_category: this.category
-                } )
-                .then(response => {
-                    this.go_back(true)
-                })
-                .catch(err => {
-                    console.log(err);
-                })
-                .finally(() => this.is_mail_sending_procesing = false);
+                // axios
+                // .post('../../../api/user/notifications/send_event_adding_notification',{
+                //     notification_category: this.category
+                // } )
+                // .then(response => {
+                //     this.go_back(true)
+                // })
+                // .catch(err => {
+                //     console.log(err);
+                // })
+                // .finally(() => this.is_mail_sending_procesing = false);
             },
 
             go_back: function(back_action = false) {

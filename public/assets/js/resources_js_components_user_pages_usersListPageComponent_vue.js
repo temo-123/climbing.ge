@@ -99,9 +99,19 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _tabs_CategoriesTabComponent_vue__WEBPACK_IMPORTED_MODULE_32__ = __webpack_require__(/*! ./tabs/CategoriesTabComponent.vue */ "./resources/js/components/user/items/data_tabs/DataTab/tabs/CategoriesTabComponent.vue");
 /* harmony import */ var _tabs_PostTopicTabComponent_vue__WEBPACK_IMPORTED_MODULE_33__ = __webpack_require__(/*! ./tabs/PostTopicTabComponent.vue */ "./resources/js/components/user/items/data_tabs/DataTab/tabs/PostTopicTabComponent.vue");
 /* harmony import */ var _tabs_PostTabComponent_vue__WEBPACK_IMPORTED_MODULE_34__ = __webpack_require__(/*! ./tabs/PostTabComponent.vue */ "./resources/js/components/user/items/data_tabs/DataTab/tabs/PostTabComponent.vue");
-/* harmony import */ var _tab_modals_RolesAddModalComponent_vue__WEBPACK_IMPORTED_MODULE_35__ = __webpack_require__(/*! ./tab_modals/RolesAddModalComponent.vue */ "./resources/js/components/user/items/data_tabs/DataTab/tab_modals/RolesAddModalComponent.vue");
-/* harmony import */ var _tab_modals_AddCountryModalComponent_vue__WEBPACK_IMPORTED_MODULE_36__ = __webpack_require__(/*! ./tab_modals/AddCountryModalComponent.vue */ "./resources/js/components/user/items/data_tabs/DataTab/tab_modals/AddCountryModalComponent.vue");
-/* harmony import */ var _tab_modals_UserAddModalComponent_vue__WEBPACK_IMPORTED_MODULE_37__ = __webpack_require__(/*! ./tab_modals/UserAddModalComponent.vue */ "./resources/js/components/user/items/data_tabs/DataTab/tab_modals/UserAddModalComponent.vue");
+/* harmony import */ var _tabs_CompetitionTabComponent_vue__WEBPACK_IMPORTED_MODULE_35__ = __webpack_require__(/*! ./tabs/CompetitionTabComponent.vue */ "./resources/js/components/user/items/data_tabs/DataTab/tabs/CompetitionTabComponent.vue");
+/* harmony import */ var _tab_modals_RolesAddModalComponent_vue__WEBPACK_IMPORTED_MODULE_36__ = __webpack_require__(/*! ./tab_modals/RolesAddModalComponent.vue */ "./resources/js/components/user/items/data_tabs/DataTab/tab_modals/RolesAddModalComponent.vue");
+/* harmony import */ var _tab_modals_AddCountryModalComponent_vue__WEBPACK_IMPORTED_MODULE_37__ = __webpack_require__(/*! ./tab_modals/AddCountryModalComponent.vue */ "./resources/js/components/user/items/data_tabs/DataTab/tab_modals/AddCountryModalComponent.vue");
+/* harmony import */ var _tab_modals_UserAddModalComponent_vue__WEBPACK_IMPORTED_MODULE_38__ = __webpack_require__(/*! ./tab_modals/UserAddModalComponent.vue */ "./resources/js/components/user/items/data_tabs/DataTab/tab_modals/UserAddModalComponent.vue");
+//
+//
+//
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -629,6 +639,7 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
+
  //import sectorModal from "./tab_modals/SectorsModalComponent.vue";
 // import editOrderStatusModal from "./tab_modals/EditOrderStatusსModalComponent.vue";
 
@@ -640,6 +651,7 @@ __webpack_require__.r(__webpack_exports__);
   components: {
     tabHeader: _tabs_components_TabHeaderComponent_vue__WEBPACK_IMPORTED_MODULE_1__["default"],
     functionalBattoms: _tabs_components_TabFunctionalBottomsComponent_vue__WEBPACK_IMPORTED_MODULE_0__["default"],
+    competitionTab: _tabs_CompetitionTabComponent_vue__WEBPACK_IMPORTED_MODULE_35__["default"],
     tableFilter: _filters_FiltersComponent_vue__WEBPACK_IMPORTED_MODULE_2__["default"],
     orderTabHeader: _tab_header_OrderTabHeaderComponent_vue__WEBPACK_IMPORTED_MODULE_3__["default"],
     articleTabHeader: _tab_header_ArticleTabHeaderComponent_vue__WEBPACK_IMPORTED_MODULE_4__["default"],
@@ -674,9 +686,9 @@ __webpack_require__.r(__webpack_exports__);
     saleCodesTab: _tabs_SaleCodesTabComponent_vue__WEBPACK_IMPORTED_MODULE_29__["default"],
     eventTab: _tabs_EventTabComponent_vue__WEBPACK_IMPORTED_MODULE_12__["default"],
     // sectorModal,
-    countryAddModal: _tab_modals_AddCountryModalComponent_vue__WEBPACK_IMPORTED_MODULE_36__["default"],
-    addRoleModal: _tab_modals_RolesAddModalComponent_vue__WEBPACK_IMPORTED_MODULE_35__["default"],
-    addUserModal: _tab_modals_UserAddModalComponent_vue__WEBPACK_IMPORTED_MODULE_37__["default"] // articleQuickViewModal,
+    countryAddModal: _tab_modals_AddCountryModalComponent_vue__WEBPACK_IMPORTED_MODULE_37__["default"],
+    addRoleModal: _tab_modals_RolesAddModalComponent_vue__WEBPACK_IMPORTED_MODULE_36__["default"],
+    addUserModal: _tab_modals_UserAddModalComponent_vue__WEBPACK_IMPORTED_MODULE_38__["default"] // articleQuickViewModal,
 
   },
   props: ["table_data"],
@@ -2181,6 +2193,62 @@ __webpack_require__.r(__webpack_exports__);
     },
     edit_coment: function edit_coment(comment_id) {
       alert('Edit comment ( article ID - ' + comment_id + ')');
+    }
+  }
+});
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/user/items/data_tabs/DataTab/tabs/CompetitionTabComponent.vue?vue&type=script&lang=js&":
+/*!****************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/user/items/data_tabs/DataTab/tabs/CompetitionTabComponent.vue?vue&type=script&lang=js& ***!
+  \****************************************************************************************************************************************************************************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
+  props: ['table_info'],
+  mountid: function mountid() {// console.log(this.table_info)
+  },
+  methods: {
+    del_event: function del_event(id) {
+      var _this = this;
+
+      if (confirm('Are you sure, you want delite it?')) {
+        axios.post('../../api/event/del_event/' + id, {
+          _method: 'DELETE'
+        }).then(function (Response) {
+          _this.$emit('restart');
+        })["catch"](function (error) {
+          return console.log(error);
+        });
+      }
     }
   }
 });
@@ -6626,6 +6694,44 @@ component.options.__file = "resources/js/components/user/items/data_tabs/DataTab
 
 /***/ }),
 
+/***/ "./resources/js/components/user/items/data_tabs/DataTab/tabs/CompetitionTabComponent.vue":
+/*!***********************************************************************************************!*\
+  !*** ./resources/js/components/user/items/data_tabs/DataTab/tabs/CompetitionTabComponent.vue ***!
+  \***********************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _CompetitionTabComponent_vue_vue_type_template_id_a24c87e4___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./CompetitionTabComponent.vue?vue&type=template&id=a24c87e4& */ "./resources/js/components/user/items/data_tabs/DataTab/tabs/CompetitionTabComponent.vue?vue&type=template&id=a24c87e4&");
+/* harmony import */ var _CompetitionTabComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./CompetitionTabComponent.vue?vue&type=script&lang=js& */ "./resources/js/components/user/items/data_tabs/DataTab/tabs/CompetitionTabComponent.vue?vue&type=script&lang=js&");
+/* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! !../../../../../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+/* normalize component */
+;
+var component = (0,_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+  _CompetitionTabComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _CompetitionTabComponent_vue_vue_type_template_id_a24c87e4___WEBPACK_IMPORTED_MODULE_0__.render,
+  _CompetitionTabComponent_vue_vue_type_template_id_a24c87e4___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns,
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/components/user/items/data_tabs/DataTab/tabs/CompetitionTabComponent.vue"
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (component.exports);
+
+/***/ }),
+
 /***/ "./resources/js/components/user/items/data_tabs/DataTab/tabs/CountryTabComponent.vue":
 /*!*******************************************************************************************!*\
   !*** ./resources/js/components/user/items/data_tabs/DataTab/tabs/CountryTabComponent.vue ***!
@@ -8099,6 +8205,21 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
+/***/ "./resources/js/components/user/items/data_tabs/DataTab/tabs/CompetitionTabComponent.vue?vue&type=script&lang=js&":
+/*!************************************************************************************************************************!*\
+  !*** ./resources/js/components/user/items/data_tabs/DataTab/tabs/CompetitionTabComponent.vue?vue&type=script&lang=js& ***!
+  \************************************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_0_rules_0_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_CompetitionTabComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../../../../node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!../../../../../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./CompetitionTabComponent.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/user/items/data_tabs/DataTab/tabs/CompetitionTabComponent.vue?vue&type=script&lang=js&");
+ /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (_node_modules_babel_loader_lib_index_js_clonedRuleSet_5_0_rules_0_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_CompetitionTabComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
 /***/ "./resources/js/components/user/items/data_tabs/DataTab/tabs/CountryTabComponent.vue?vue&type=script&lang=js&":
 /*!********************************************************************************************************************!*\
   !*** ./resources/js/components/user/items/data_tabs/DataTab/tabs/CountryTabComponent.vue?vue&type=script&lang=js& ***!
@@ -8972,6 +9093,22 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "staticRenderFns": () => (/* reexport safe */ _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_CommentsTabComponent_vue_vue_type_template_id_4a013345___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns)
 /* harmony export */ });
 /* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_CommentsTabComponent_vue_vue_type_template_id_4a013345___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./CommentsTabComponent.vue?vue&type=template&id=4a013345& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/user/items/data_tabs/DataTab/tabs/CommentsTabComponent.vue?vue&type=template&id=4a013345&");
+
+
+/***/ }),
+
+/***/ "./resources/js/components/user/items/data_tabs/DataTab/tabs/CompetitionTabComponent.vue?vue&type=template&id=a24c87e4&":
+/*!******************************************************************************************************************************!*\
+  !*** ./resources/js/components/user/items/data_tabs/DataTab/tabs/CompetitionTabComponent.vue?vue&type=template&id=a24c87e4& ***!
+  \******************************************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "render": () => (/* reexport safe */ _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_CompetitionTabComponent_vue_vue_type_template_id_a24c87e4___WEBPACK_IMPORTED_MODULE_0__.render),
+/* harmony export */   "staticRenderFns": () => (/* reexport safe */ _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_CompetitionTabComponent_vue_vue_type_template_id_a24c87e4___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns)
+/* harmony export */ });
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_CompetitionTabComponent_vue_vue_type_template_id_a24c87e4___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./CompetitionTabComponent.vue?vue&type=template&id=a24c87e4& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/user/items/data_tabs/DataTab/tabs/CompetitionTabComponent.vue?vue&type=template&id=a24c87e4&");
 
 
 /***/ }),
@@ -10210,6 +10347,18 @@ var render = function () {
                               "tbody",
                               _vm._l(data.data, function (table_info) {
                                 return _c("postTopicTab", {
+                                  key: table_info.id,
+                                  attrs: { table_info: table_info },
+                                  on: { restart: _vm.update },
+                                })
+                              }),
+                              1
+                            )
+                          : data.table_name == "Competitions"
+                          ? _c(
+                              "tbody",
+                              _vm._l(data.data, function (table_info) {
+                                return _c("competitionTab", {
                                   key: table_info.id,
                                   attrs: { table_info: table_info },
                                   on: { restart: _vm.update },
@@ -12527,6 +12676,102 @@ var render = function () {
     ],
     1
   )
+}
+var staticRenderFns = []
+render._withStripped = true
+
+
+
+/***/ }),
+
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/user/items/data_tabs/DataTab/tabs/CompetitionTabComponent.vue?vue&type=template&id=a24c87e4&":
+/*!*********************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/user/items/data_tabs/DataTab/tabs/CompetitionTabComponent.vue?vue&type=template&id=a24c87e4& ***!
+  \*********************************************************************************************************************************************************************************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "render": () => (/* binding */ render),
+/* harmony export */   "staticRenderFns": () => (/* binding */ staticRenderFns)
+/* harmony export */ });
+var render = function () {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("tr", [
+    _c("td", { style: "text-align: center;" }, [
+      _c("input", { attrs: { type: "checkbox" } }),
+    ]),
+    _vm._v(" "),
+    _c("td", [_vm._v("|")]),
+    _vm._v(" "),
+    _c("td", [_vm._v(_vm._s(_vm.table_info.id))]),
+    _vm._v(" "),
+    _c("td", [_vm._v("|")]),
+    _vm._v(" "),
+    _c("td", [_vm._v(_vm._s(_vm.table_info.url_title) + " ")]),
+    _vm._v(" "),
+    _c("td", [_vm._v("|")]),
+    _vm._v(" "),
+    _c("td", { style: "text-align: center;" }, [
+      _vm._v(_vm._s(_vm.table_info.published)),
+    ]),
+    _vm._v(" "),
+    _c("td", [_vm._v("|")]),
+    _vm._v(" "),
+    _c(
+      "td",
+      [
+        _vm.$can("edit", "event")
+          ? _c(
+              "router-link",
+              {
+                staticClass: "btn btn-primary",
+                attrs: {
+                  to: {
+                    name: "competitionEdit",
+                    params: { id: _vm.table_info.id },
+                  },
+                },
+              },
+              [
+                _c("i", {
+                  staticClass: "fa fa-pencil",
+                  attrs: { "aria-hidden": "true" },
+                }),
+              ]
+            )
+          : _vm._e(),
+      ],
+      1
+    ),
+    _vm._v(" "),
+    _c("td", [_vm._v("|")]),
+    _vm._v(" "),
+    _c("td", [
+      _vm.$can("del", "event")
+        ? _c(
+            "button",
+            {
+              staticClass: "btn btn-danger",
+              attrs: { type: "button" },
+              on: {
+                click: function ($event) {
+                  return _vm.del_event(_vm.table_info.id)
+                },
+              },
+            },
+            [
+              _c("i", {
+                staticClass: "fa fa-trash",
+                attrs: { "aria-hidden": "true" },
+              }),
+            ]
+          )
+        : _vm._e(),
+    ]),
+  ])
 }
 var staticRenderFns = []
 render._withStripped = true

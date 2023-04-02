@@ -286,6 +286,9 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   mixins: [_mixins_editor_editor_config_mixin_js__WEBPACK_IMPORTED_MODULE_0__.editor_config],
@@ -387,6 +390,8 @@ __webpack_require__.r(__webpack_exports__);
       })["catch"](function (error) {
         if (error.response.status == 422) {
           _this2.error = error.response.data.validation;
+        } else {
+          alert(_this2.error);
         }
       });
     },
@@ -612,6 +617,26 @@ var render = function () {
                     _vm._v(
                       "\n                End data - " +
                         _vm._s(_vm.error.global_info_validation.end_data[0]) +
+                        "\n            "
+                    ),
+                  ]
+                )
+              : _vm._e(),
+            _vm._v(" "),
+            _vm.error.global_info_validation.global_info_validation
+              ? _c(
+                  "div",
+                  {
+                    staticClass: "alert alert-danger",
+                    attrs: { role: "alert" },
+                  },
+                  [
+                    _vm._v(
+                      "\n                English title - " +
+                        _vm._s(
+                          _vm.error.global_info_validation
+                            .global_info_validation[0]
+                        ) +
                         "\n            "
                     ),
                   ]

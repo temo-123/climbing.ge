@@ -546,6 +546,10 @@ __webpack_require__.r(__webpack_exports__);
   mounted: function mounted() {
     this.get_outdoor_articles();
     this.get_regions();
+
+    if (location.hash != '') {
+      this.create_url(location.hash);
+    }
   },
   watch: {
     '$route': function $route(to, from) {
@@ -578,32 +582,21 @@ __webpack_require__.r(__webpack_exports__);
     get_outdoor_articles: function get_outdoor_articles() {
       if (this.filter_spot === 'all' || this.filter_spot === 'All') {
         this.get_unfilted_articles();
+        this.delete_url_hash();
       } else {
         this.get_filtred_articles(this.filter_spot);
         this.get_region_selected_data(this.filter_spot);
       }
     },
-    // get_outdoor_articles(){
-    //     axios
-    //     .get('../api/articles/outdoor/'+localStorage.getItem('lang'))
-    //     .then(response => {
-    //         this.outdoors = response.data
-    //         this.filter_spots_by_region()
-    //     })
-    //     .catch(error =>{
-    //     })
-    //     .finally(() => this.oudoor_loading = false)
-    // },
-    // filter_spots_by_region(){
-    //     let vm = this;
-    //     if (vm.filter_spot === 'All') {
-    //         this.filtred_spots = this.outdoors
-    //     }else{
-    //         this.filtred_spots = this.outdoors.filter(function (item){
-    //             return item.area.region_id == vm.filter_spot
-    //         })
-    //     }
-    // },
+    delete_url_hash: function delete_url_hash() {
+      // https://gist.github.com/azu/36ba5a80feb857c77a3a
+      var noHashURL = location.href.replace(/#.*$/, '');
+      history.replaceState('', document.title, noHashURL);
+    },
+    create_url_hash: function create_url_hash(category) {
+      // https://www.tutorialsplane.com/vue-js-set-hash-url/	
+      location.hash = "#" + category;
+    },
     get_regions: function get_regions() {
       var _this3 = this;
 
@@ -624,6 +617,8 @@ __webpack_require__.r(__webpack_exports__);
         this.selected_region_data = [];
         axios.get('../api/region/' + localStorage.getItem('lang') + '/' + region_id).then(function (response) {
           _this4.selected_region_data = response.data[0];
+
+          _this4.create_url_hash(_this4.selected_region_data.name);
         })["catch"](function (error) {});
       } else {
         this.selected_region_data = [];

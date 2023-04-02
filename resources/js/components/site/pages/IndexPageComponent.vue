@@ -19,7 +19,7 @@
             </div>
         </div>
 
-        <div class="h-recent-work" v-if="lastNews.length">
+        <div class="h-recent-work" v-if="lastNews.length > 0">
             <div class="container">
                 <h2 class='index_h2' id="news">{{ $t('guide.title.news') }}</h2>
                 <div class="bar"><i class="fa fa-newspaper-o"></i></div>
