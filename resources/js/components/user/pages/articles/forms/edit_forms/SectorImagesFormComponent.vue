@@ -107,7 +107,7 @@
         methods: {
             get_old_sector_images(){
                 axios
-                .get("../../../api/spot_rock_images/get_spot_rock_images/"+this.$route.params.id)
+                .get("/spot_rock_images/get_spot_rock_images/"+this.$route.params.id)
                 .then(response => {
                     this.spot_rocks_old_images = response.data
                 })
@@ -118,7 +118,7 @@
             del_old_sector_image_from_db(image_id){
                 if(confirm('Are you sure, you want delite this image?')){
                     axios
-                    .delete("../../../api/spot_rock_images/del_spot_rock_image/"+image_id)
+                    .delete("/spot_rock_images/del_spot_rock_image/"+image_id)
                     .then(response => {
                         this.get_old_sector_images()
                     })

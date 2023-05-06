@@ -19,13 +19,13 @@
             </div>
         </div>
 
-        <div class="h-recent-work" v-if="lastNews.length > 0">
+        <div class="h-recent-work" v-if="lastNews != [] && lastNews">
             <div class="container">
                 <h2 class='index_h2' id="news">{{ $t('guide.title.news') }}</h2>
                 <div class="bar"><i class="fa fa-newspaper-o"></i></div>
                 <h3> {{ this.$siteData.news_description }} </h3>
 
-                <span v-if="lastNews" >
+                <span v-if="lastNews != []">
                     <bigNewsCard 
                         :news="lastNews"
                     />

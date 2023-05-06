@@ -7,7 +7,7 @@
         <div class="col-md-4 ">
             <select v-model="value_mount_id" @click="return_data(value_mount_id)">
                 <option :value="'all'">All</option>
-                <option v-for="mount in mounts" :key="mount" :value="mount.global_mount.id">{{ mount.locale_mount.title }}</option>
+                <option v-for="mount in mounts" :key="mount" :value="mount.global_mount.id">{{ mount.global_mount.name }}</option>
             </select>
         </div>
     </div>
@@ -27,7 +27,7 @@
         methods: {
             get_mounts(){
                 axios
-                .get("../api/mount/")
+                .get("../api/mount/mount")
                 .then(response => {
                     this.mounts = response.data
                 })

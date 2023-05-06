@@ -73,9 +73,13 @@
             },
 
             get_unfilted_articles(){
-                axios
+                // axios
                 // .get('../api/articles/mount_route/'+localStorage.getItem('lang'))
-                .get('../api/articles/mount_route/us')
+                // .get('../api/articles/mount_route/us')
+                axios
+                .post("/article/", {
+                    category: 'mount_route',
+                })
                 .then(response => {
                     // this.mount_routes = response.data
                     // this.filter_mount_routes()
@@ -111,7 +115,7 @@
 
             get_mounts(){
                 axios
-                .get("../api/mount/")
+                .get("../api/mount/mount")
                 .then(response => {
                     this.data_for_tab.push({'id': 2,
                                             'data': response.data, 

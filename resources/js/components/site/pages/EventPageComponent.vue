@@ -35,10 +35,31 @@
                     <span v-html="event.global_event.map"></span>
                 </span>
 
-                <span v-if="this.event.locale_event.info != null && this.event.locale_event.info != null">
+                <!-- <span v-if="this.event.locale_event.info != null && this.event.locale_event.info != null">
                     <h2 id="info">{{ $t('guide.article.title.info')}}</h2>
                     <span v-html="event.locale_event.info"></span>
-                </span>
+                </span> -->
+
+
+                <div v-if="this.event.locale_event.info || this.event.general_info.info_block.length != 0">
+                    <h2 id="how_to_get_there">{{ $t('guide.article.title.info')}}</h2>
+                    <span v-if="this.event.general_info.info_block.length == 0">
+                        <span v-html="this.event.locale_event.info"></span>
+                    </span>
+                    <span v-else>
+                        <span v-if="this.event.general_info.info_block.block_action == 'befor'">
+                            <span v-html="this.event.general_info.info_block.text"></span>
+                            <span v-html="this.event.locale_event.info"></span>
+                        </span>
+                        <span v-if="this.event.general_info.info_block.block_action == 'after'">
+                            <span v-html="this.event.locale_event.info"></span>
+                            <span v-html="this.event.general_info.info_block.text"></span>
+                        </span>
+                        <span v-if="this.event.general_info.info_block.block_action == 'instead'">
+                            <span v-html="this.event.general_info.info_block.text"></span>
+                        </span>
+                    </span>
+                </div>
 
             </div>
         </div>
@@ -155,9 +176,9 @@
         font-size: 60%;
     }
 
-    .start_calendar{
+    /* .start_calendar{
 
-    }
+    } */
     .end_calendar{
         float: right;
         margin-right: 25%;

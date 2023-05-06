@@ -44,6 +44,7 @@
           path: '',
           db_images: [],
           active_img: [],
+          active_index: 0,
           open_img: false
         };
       },
@@ -53,17 +54,25 @@
       },
       methods: {
           open_image(db_img){
-            this.active_img = db_img
-            this.open_img = true
-            
-            document.body.classList.add('body_hiden') // off page scroling
-  
-            let that = this;
-            document.addEventListener('keyup', function (evt) {
+              this.active_img = db_img
+              this.active_index = this.db_images.indexOf(db_img) // set the index of the active image
+              this.open_img = true
+              
+              document.body.classList.add('body_hiden') // off page scroling
+
+              this.add_image_keybord_actions()
+          },
+          add_image_keybord_actions(){
+              let that = this;
+              document.addEventListener('keydown', function (evt) {
                 if (evt.keyCode === 27) {
                   that.close_image();
+                } else if (evt.keyCode === 37) {
+                  that.previes_image();
+                } else if (evt.keyCode === 39) {
+                  that.next_image();
                 }
-            }, { once: true });
+              }, { once: true });
           },
           close_image(){
             this.active_img = []
@@ -71,49 +80,56 @@
   
             document.body.classList.remove('body_hiden') // on page scroling
           },
-          previes_image(){
-            console.log('previes');
+          previes_image() {
+            if (this.active_index === 0) {
+              this.active_index = this.db_images.length - 1;
+            } else {
+              this.active_index--;
+            }
+            this.active_img = this.db_images[this.active_index];
+
+            this.add_image_keybord_actions()
           },
-          next_image(){
-            console.log('next');
-          }
+          next_image() {
+            if (this.active_index === this.db_images.length - 1) {
+              this.active_index = 0;
+            } else {
+              this.active_index++;
+            }
+            this.active_img = this.db_images[this.active_index];
+            
+            this.add_image_keybord_actions()
+          },
       },
     }
   </script>
   
   <style scoped>
-  .close_bottom{
-    float: right;
-    cursor: pointer; 
-    color: #b3b2b2d9;
-    font-size: 2em;
-    margin-right: 0.4em;
-    margin-top: 0.4em;
-  }
-  .gallery_img{
-    max-width: 100%;
-  }
-  .gallery_images{
-    cursor: pointer;
-  }
-  /* .image_moving{
-  
-  } */
-  .previes_img_bottom{
-    float: left;
-    margin-left: 0.1em;
-  }
-  .next_img_bottom{
-    float: right;
-    margin-right: -0.6em;
-  }
-  .previes_img_bottom, .next_img_bottom{
-    cursor: pointer; 
-    color: #b3b2b2d9;
-    font-size: 3.5em;
-    margin-top: 7em;
-  }
-  .open_img{
+    .close_bottom{
+      float: right;
+      cursor: pointer; 
+      color: #b3b2b2d9;
+      font-size: 2em;
+      margin-right: 0.4em;
+      margin-top: 0.4em;
+    }
+    .gallery_img{
+      max-width: 100%;
+    }
+    .gallery_images{
+      cursor: pointer;
+      padding-top: 15px;
+    }
+    /* .image_moving{
+    
+    } */
+    .previes_img_bottom{
+      float: left;
+    }
+    .next_img_bottom{
+      float: right;
+    }
+    .open_img{
       position: fixed;
       top: 0;
       right: 0;
@@ -124,13 +140,40 @@
   
       transition: opacity .15s linear;
   }
-  .gallery_big_img{
-    position: relative;
-    top: 5%;
-    width: 80%;
+
+  .gallery_big_img {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+
+    transform: translate(-50%, -50%);
+    width: 90%;
+    max-width: 90%;
     max-height: 90%;
     display: block;
-    margin-left: auto;
-    margin-right: auto;
+  }
+
+  .image_moving {
+      position: absolute;
+      top: 50%;
+      left: 0;
+      right: 0;
+      transform: translateY(-50%);
+      display: flex;
+      justify-content: space-between;
+      width: 100%;
+      z-index: 1;
+  }
+
+  .previes_img_bottom, .next_img_bottom {
+      background-color: transparent;
+      border: none;
+      cursor: pointer;
+      font-size: 3.5em;
+      color: #b3b2b2d9;
+  }
+
+  .previes_img_bottom:hover, .next_img_bottom:hover {
+      color: #ffffff;
   }
   </style>

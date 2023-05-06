@@ -6,7 +6,7 @@
         <div class="col-md-4 ">
             <select v-model="value_region_id" @click="return_data(value_region_id)">
                 <option :value="'all'">All</option>
-                <option v-for="region in regions" :key="region.id" :value="region.id">{{ region.name }}</option>
+                <option v-for="region in regions" :key="region.id" :value="region.id">{{ region.us_name }}</option>
             </select>
         </div>
     </div>
@@ -16,7 +16,7 @@
     export default {
         mounted() {
             this.get_regions();
-            this.$emit('filtred_id', value_region_id)
+            // this.$emit('filtred_id', value_region_id)
         },
         data(){
             return {
@@ -27,7 +27,7 @@
         methods: {
             get_regions(){
                 axios
-                .get('../api/regions/en')
+                .get("../api/outdoor/region/")
                 .then(response => {
                     this.regions = response.data
                 })

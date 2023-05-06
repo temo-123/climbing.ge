@@ -38,7 +38,7 @@ class GalleryController extends Controller
         // }
         // return response()->json($gallery);
 
-        return Gallery_image::limit(8)->where('image_type', '=', 'Index gallery images')->where('published', '=', 1)->get();
+        return Gallery_image::limit(8)->where('image_type', '=', 'Index gallery image')->where('published', '=', 1)->get();
     }
 
     public function get_swiper_images()
@@ -59,7 +59,7 @@ class GalleryController extends Controller
         // return response()->json($gallery);
 
         // return Gallery_image::where('image_type', '=', 1)->where('published', '=', 1)->get();
-        return Gallery_image::limit(1)->latest('id')->where('image_type', '=', 'Index head slider images')->where('published', '=', 1)->get();
+        return Gallery_image::limit(5)->latest('id')->where('image_type', '=', 'Index head slider image')->where('published', '=', 1)->get();
     }
 
     /**
@@ -92,6 +92,7 @@ class GalleryController extends Controller
     public function show($id)
     {
         $article = Article::where('id', '=', $id)->where('published', '=', 1)->first();
+        // return $article;
         
         return $article->gallery_images;
     }
@@ -149,12 +150,18 @@ class GalleryController extends Controller
                             $edit_active_conaction['article_id'] = $data["article_id"];
                             $edit_active_conaction->save();
                         }
-                    }
-                    else if($data["image_type"] != 'Article image') {
-                        if (Gallery_image_article::where('image_id', '=', $edit_gallery_image->id)->count() > 0) {
-                            $deliting_conection_item = Gallery_image_article::where('image_id', '=', $edit_gallery_image->id)->first();
-                            $deliting_conection_item -> delete();
+                        else if(!isset($galery_image_article)){
+                            $new_relatione = new Gallery_image_article;
+                            $new_relatione['article_id'] = $data["article_id"];
+                            $new_relatione['image_id'] = $edit_gallery_image->id;
+                            $new_relatione->save();
                         }
+                    }
+                }
+                else if($data["image_type"] != 'Article image') {
+                    if (Gallery_image_article::where('image_id', '=', $edit_gallery_image->id)->count() > 0) {
+                        $deliting_conection_item = Gallery_image_article::where('image_id', '=', $edit_gallery_image->id)->first();
+                        $deliting_conection_item -> delete();
                     }
                 }
             }
@@ -182,6 +189,11 @@ class GalleryController extends Controller
     public function destroy($id)
     {
         $gallery = Gallery_image::where('id',strip_tags($id))->first();
+        
+        if(Gallery_image_article::where("image_id", '=', $gallery->id)->first()){
+            $gallery_article_relatione = Gallery_image_article::where("image_id", '=', $gallery->id)->first();
+            $gallery_article_relatione -> delete();
+        }
 
         // delete article file
         ImageControllService::image_delete('images/gallery_img/', $gallery, 'image');
@@ -241,7 +253,7 @@ class GalleryController extends Controller
         $validator = Validator::make($data, [
             'published' => 'required',
             'category_id' => 'required',
-            'title' => 'required|max:25',
+            'title' => 'required|max:35',
             'text' => 'required|max:225',
         ]);
         if ($validator->fails()) {

@@ -33,7 +33,7 @@
                             <div class="col-md-12">
                                 <tableFilter
                                     :table_name="filtr_data.table_name"
-                                    @filtred="filtr"
+                                    @filtred="filtring"
                                 />
                             </div>
                         </div>
@@ -632,20 +632,12 @@ export default {
             this.$refs.add_user_modal.open_user_add_modal()
         },
 
-        filtr(event) {
+        filtring(event) {
             this.$emit("filtr", event);
         },
-        // update(id) {
-        //     this.$emit("update-data", [id]);
-        // },
         update() {
             this.$emit("update-data");
         },
-
-        // sector_modal(event) {
-        //     console.log(event);
-            // this.show_sector_modal = event
-        // },
     },
 };
 </script>

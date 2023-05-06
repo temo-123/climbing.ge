@@ -66,8 +66,10 @@
                 this.mount_route_images[id]['image'] = image
                 this.upload_img()
             },
-            upload_img(event){
-                this.$emit("upload_img", this.mount_route_images);
+            upload_img(){
+            // upload_img(event){
+                // this.$emit("upload_img", this.mount_route_images);
+                this.$emit("mount_route_img", this.mount_route_images);
             },
             add_new_mount_route_image_value(){
                 var new_item_id = this.mount_route_images.length+1

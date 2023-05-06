@@ -4,7 +4,7 @@
             <div class="panel-heading">
                 <span class="index_event_category_flag" v-if="event.global_event.category == 'event'">Event / Festival</span>
                 <span class="index_event_category_flag" v-else-if="event.global_event.category == 'competition'">Competition</span>
-                <h2>
+                <h2 style="font-size: 1.8em">
                     <router-link :to="'event/'+event.global_event.url_title">
                         {{ event.locale_event.title }}
                     </router-link>

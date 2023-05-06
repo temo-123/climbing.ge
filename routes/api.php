@@ -60,9 +60,10 @@ Route::group(['namespace'=>'Api'], function() {
         Route::delete('/del_article/{article_id}', 'del_article');
         Route::post('/add_article/{category}', 'add_article');
         Route::post('/edit_article/{article_id}', 'edit_article');
+
         Route::get('/{category}/{lang}/{url_title}', 'get_locale_article_on_page');
         Route::get('/get_article/for_bisnes_page/{lang}/{bisnes_url_title}', 'get_article_on_bisnes_page');
-        Route::post('/edit_article/{article_id}', 'edit_article');
+        // Route::post('/edit_article/{article_id}', 'edit_article');
     });
 
     Route::post('/similar_article/{lang}', 'ArticleController@get_similar_locale_article');
@@ -86,6 +87,13 @@ Route::group(['namespace'=>'Api'], function() {
         Route::get('/get_editing_spot_data/{id}', 'get_editing_spot_data');
         Route::post('/edit_spot/{id}', 'edit_spot');
         Route::delete('/del_spot/{id}', 'del_spot');
+
+        Route::prefix('region')->group( function() {
+            Route::get('/', 'get_all');
+            // Route::get('/', 'index');
+            Route::get('/{lang}/{region_id}', 'locale_region');
+        });
+        Route::get('/regions/{lang}', 'locale_regions');
     });
 
     /*
@@ -127,21 +135,25 @@ Route::group(['namespace'=>'Api'], function() {
     });
 
     /*
-    *   Mountain (mount routes) regions
+    *   Mount routes
     */
     Route::controller(MountRouteController::class)->prefix('mount_route')->group( function() {
         Route::get('/get_filtred_mount_route_for_admin/{filter_id}', 'get_filtred_mount_route_for_admin');
         Route::get('/get_filtred_mount_route_for_user/{lang}/{filter_id}', 'get_filtred_mount_route_for_user');
 
         Route::get('/get_mount_routes_images/{article_id}', 'get_mount_routes_images');
-        Route::delete('/del_mount_routes_images/{image_id}', 'del_mount_routes_images');
+        Route::delete('/del_mount_route_image/{image_id}', 'del_mount_route_image');
     });
 
     /*
-    *   Mount (mountain system) routes
+    *   Mount system
     */
     Route::controller(MountController::class)->prefix('mount')->group( function() {
         Route::apiResource('/mount', 'MountController');
+        Route::get('/get_editing_mount_data/{mount_id}', 'get_editing_mount_data');
+        Route::post('/edit_mount_massive/{mount_id}', 'edit_mount_massive');
+        Route::post('/create_mount_massive', 'create_mount_massive');
+        Route::get('/{lang}/{mount_id}', 'get_locale_mount');
         Route::get('/{lang}/{mount_id}', 'get_locale_mount');
         Route::get('/on_page/{lang}/{mount_route_id}', 'get_locale_mount_on_route_page');
     });
@@ -150,7 +162,11 @@ Route::group(['namespace'=>'Api'], function() {
     /*
     *   Product and product categories routes
     */
-    Route::apiResource('/product', 'ProductController');
+    Route::controller(ProductController::class)->prefix('product')->group( function() {
+        Route::apiResource('/', 'ProductController');
+        Route::get('/get_all_products', 'get_all_products');
+    });
+    // Route::apiResource('/product', 'ProductController');
     Route::post('/edit_product_data/{product_id}', 'ProductController@edit_product_data');
     Route::get('/products/{land}', 'ProductController@get_local_products');
     Route::get('/page_product/{land}/{url_title}', 'ProductController@get_local_product_in_page');
@@ -467,22 +483,13 @@ Route::group(['namespace'=>'Api'], function() {
     Route::get('/parmisions_list', 'RolesController@get_parmisions_list');
 
     /*
-    *   Climbing regions routes
+    *   Permissions
     */
 
     Route::controller(PermissionsController::class)->prefix('permission')->group(function() {
         Route::get('get_parmisions_for_role/{role_id}', 'get_parmisions_for_role');
     });
-    
 
-    /*
-    *   Climbing regions routes
-    */
-    Route::controller(RegionController::class)->prefix('region')->group( function() {
-        Route::apiResource('/', 'RegionController');
-        Route::get('/{lang}/{region_id}', 'locale_region');
-    });
-    Route::get('/regions/{lang}', 'RegionController@locale_regions');
 
     /*
     *   Forum posts routes

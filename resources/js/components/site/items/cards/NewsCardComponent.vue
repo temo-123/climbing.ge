@@ -14,7 +14,7 @@
                                 <!-- <source sizes="320px" :src="'images/news_img/'+news.image"> -->
                                 <!-- <img class="m-card--image-element" sizes="320px" :src="'images/news_img/'+news.image" :alt="news[0][0].title"> -->
                                 
-                                <site-img v-if="news.image != NULL" :src="'images/news_img/'+news.image" :img_class="'m-image-hero--image'" :alt='news[0][0].title'/>
+                                <site-img v-if="news.image != NULL" :src="'/public/images/news_img/'+news.image" :img_class="'m-image-hero--image'" :alt='news[0][0].title'/>
                                 <site-img v-else :src="'/public/images/site_img/image.png'" :img_class="'m-image-hero--image'" :alt='news[0][0].title'/>
 
                             </picture>

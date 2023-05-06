@@ -1,9 +1,9 @@
 (self["webpackChunkclimbing_loc"] = self["webpackChunkclimbing_loc"] || []).push([["resources_js_components_user_pages_routes_and_sectors_sectors_sectorEditComponent_vue"],{
 
-/***/ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/user/pages/routes_and_sectors/sectors/sectorEditComponent.vue?vue&type=script&lang=js&":
-/*!****************************************************************************************************************************************************************************************************************************************************************!*\
-  !*** ./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/user/pages/routes_and_sectors/sectors/sectorEditComponent.vue?vue&type=script&lang=js& ***!
-  \****************************************************************************************************************************************************************************************************************************************************************/
+/***/ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/user/pages/routes_and_sectors/sectors/sectorEditComponent.vue?vue&type=script&lang=js&":
+/*!****************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/user/pages/routes_and_sectors/sectors/sectorEditComponent.vue?vue&type=script&lang=js& ***!
+  \****************************************************************************************************************************************************************************************************************************************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
@@ -16,453 +16,10 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var vue_slicksort__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! vue-slicksort */ "./node_modules/vue-slicksort/dist/vue-slicksort.umd.js");
 /* harmony import */ var vue_slicksort__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(vue_slicksort__WEBPACK_IMPORTED_MODULE_1__);
 /* harmony import */ var _mixins_editor_editor_config_mixin_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../../../mixins/editor/editor_config_mixin.js */ "./resources/js/mixins/editor/editor_config_mixin.js");
-function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
-
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
+function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (obj) { return typeof obj; } : function (obj) { return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }, _typeof(obj); }
+function _defineProperty(obj, key, value) { key = _toPropertyKey(key); if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+function _toPropertyKey(arg) { var key = _toPrimitive(arg, "string"); return _typeof(key) === "symbol" ? key : String(key); }
+function _toPrimitive(input, hint) { if (_typeof(input) !== "object" || input === null) return input; var prim = input[Symbol.toPrimitive]; if (prim !== undefined) { var res = prim.call(input, hint || "default"); if (_typeof(res) !== "object") return res; throw new TypeError("@@toPrimitive must return a primitive value."); } return (hint === "string" ? String : Number)(input); }
 
  //https://www.npmjs.com/package/vue-slicksort/v/2.0.0-alpha.2
 
@@ -476,7 +33,6 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
   },
   data: function data() {
     var _data;
-
     return {
       description_editor: _mixins_editor_editor_config_mixin_js__WEBPACK_IMPORTED_MODULE_2__.editor_config.get_small_editor_config(),
       fileList: [],
@@ -486,6 +42,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       editorConfig: {},
       errors: [],
       // image_errors: [],
+
       data: (_data = {
         published: 0,
         name: "",
@@ -494,8 +51,10 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         article_id: ""
       }, _defineProperty(_data, "name", ""), _defineProperty(_data, "text", ""), _defineProperty(_data, "all_day_in_shade", null), _defineProperty(_data, "all_day_in_sun", null), _defineProperty(_data, "in_the_shade_afternoon", null), _defineProperty(_data, "in_the_shade_befornoon", null), _defineProperty(_data, "in_shade_after_10", null), _defineProperty(_data, "in_shade_after_15", null), _defineProperty(_data, "slabby", null), _defineProperty(_data, "vertical", null), _defineProperty(_data, "overhang", null), _defineProperty(_data, "roof", null), _defineProperty(_data, "for_family", null), _defineProperty(_data, "for_kids", null), _defineProperty(_data, "wolking_time", null), _data),
       // temporary_sector_id: 0,
+
       // image_is_refresh: false,
       // image_reset_id: 0,
+
       // sector_new_images: ['Item 1', 'Item 2', 'Item 3', 'Item 4', 'Item 5', 'Item 6', 'Item 7', 'Item 10'],
       sector_new_images: [],
       sector_old_images: []
@@ -533,7 +92,6 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     },
     del_sector_image_from_db: function del_sector_image_from_db(image_id) {
       var _this = this;
-
       if (confirm('Are you sure, you want delite this image?')) {
         axios["delete"]("../../../api/sector/del_sector_image_from_db/" + image_id).then(function (response) {
           _this.get_sector_images();
@@ -544,19 +102,18 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     },
     get_region_data: function get_region_data() {
       var _this2 = this;
-
       axios.get('../../api/articles/outdoor/us').then(function (response) {
         _this2.regions = response.data;
-      })["catch"](function (error) {}); // .finally(() => this.oudoor_loading = false)
+      })["catch"](function (error) {});
+      // .finally(() => this.oudoor_loading = false)
     },
+
     get_editing_sector_data: function get_editing_sector_data() {
       var _this3 = this;
-
       axios.get("../../api/sector/get_sector_editing_data/" + this.$route.params.id).then(function (response) {
         _this3.data = response.data.sector;
-
-        _this3.get_sector_images(); // this.sector_old_images = response.data.images
-
+        _this3.get_sector_images();
+        // this.sector_old_images = response.data.images
       })["catch"](function (error) {
         return console.log(error);
       })["finally"](function () {
@@ -565,7 +122,6 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     },
     get_sector_images: function get_sector_images() {
       var _this4 = this;
-
       axios.get("../../api/sector/get_sector_images/" + this.$route.params.id).then(function (response) {
         _this4.sector_old_images = response.data;
       })["catch"](function (error) {
@@ -574,7 +130,6 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     },
     edit_sector: function edit_sector() {
       var _this5 = this;
-
       var formData = new FormData();
       var loop_num = 0;
       this.sector_new_images.forEach(function (image) {
@@ -586,14 +141,14 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       axios.post("../../api/sector/edit_sector/" + this.$route.params.id, formData).then(function (response) {
         _this5.go_back(true);
       })["catch"](function (error) {
-        console.log(error); // if (error.response.status == 422) {
+        console.log(error);
+        // if (error.response.status == 422) {
         //     this.errors = error.response.data.errors;
         // }
       });
     },
     go_back: function go_back() {
       var back_action = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : false;
-
       if (back_action == false) {
         if (confirm('Are you sure, you want go back?')) {
           // this.$router.go(-1)
@@ -613,48 +168,945 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
 /***/ }),
 
-/***/ "./resources/js/mixins/editor/editor_config_mixin.js":
-/*!***********************************************************!*\
-  !*** ./resources/js/mixins/editor/editor_config_mixin.js ***!
-  \***********************************************************/
+/***/ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/lib/loaders/templateLoader.js??ruleSet[1].rules[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/user/pages/routes_and_sectors/sectors/sectorEditComponent.vue?vue&type=template&id=0128acc0&scoped=true&":
+/*!***************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/lib/loaders/templateLoader.js??ruleSet[1].rules[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/user/pages/routes_and_sectors/sectors/sectorEditComponent.vue?vue&type=template&id=0128acc0&scoped=true& ***!
+  \***************************************************************************************************************************************************************************************************************************************************************************************************************************************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "editor_config": () => (/* binding */ editor_config)
+/* harmony export */   "render": () => (/* binding */ render),
+/* harmony export */   "staticRenderFns": () => (/* binding */ staticRenderFns)
 /* harmony export */ });
-var editor_config = {
-  //Editor configuration description -> https://ckeditor.com/latest/samples/toolbarconfigurator/#basic
-  get_big_editor_config: function get_big_editor_config() {
-    return {
-      // https://www.tutsmake.com/laravel-8-ckeditor-image-upload-tutorial-example/
-      filebrowserUploadUrl: "../../../../api/ckeditor/upload",
-      // https://ckeditor.com/docs/ckeditor4/latest/examples/mediaembed.html
-      extraPlugins: 'embed,autoembed',
-      // contentsCss: [
-      //     'http://cdn.ckeditor.com/4.20.2/full-all/contents.css',
-      //     'https://ckeditor.com/docs/ckeditor4/4.20.2/examples/assets/css/widgetstyles.css'
-      // ],
-      embed_provider: '//ckeditor.iframe.ly/api/oembed?url={url}&callback={callback}',
-      image2_alignClasses: ['image-align-left', 'image-align-center', 'image-align-right'],
-      image2_disableResizer: true,
-      removeButtons: 'PasteFromWord'
-    };
-  },
-  get_small_editor_config: function get_small_editor_config() {
-    return {
-      removeButtons: 'Link,Unlink,Anchor,Image,Table,Underline,Strike,Subscript,Superscript,RemoveFormat,NumberedList,BulletedList,Outdent,Indent,Blockquote,Scayt,HorizontalRule,SpecialChar,Styles,Format,Font,FontSize,About'
-    };
-  }
+var render = function render() {
+  var _vm = this,
+    _c = _vm._self._c;
+  return _c("div", {
+    staticClass: "col-md-12"
+  }, [_c("div", {
+    staticClass: "row"
+  }, [_c("div", {
+    staticClass: "form-group"
+  }, [_c("button", {
+    staticClass: "btn btn-primary",
+    attrs: {
+      type: "submit"
+    },
+    on: {
+      click: function click($event) {
+        return _vm.go_back();
+      }
+    }
+  }, [_vm._v("\n                Beck\n            ")])])]), _vm._v(" "), !_vm.is_geting_data_isset ? _c("div", {
+    staticClass: "row"
+  }, [_vm._m(0)]) : _vm._e(), _vm._v(" "), !_vm.is_geting_data_isset ? _c("div", [_c("form", {
+    staticClass: "contact-form",
+    attrs: {
+      id: "sector_editing_form",
+      method: "POST",
+      enctype: "multipart/form-data"
+    },
+    on: {
+      submit: function submit($event) {
+        $event.preventDefault();
+        return _vm.edit_sector.apply(null, arguments);
+      }
+    }
+  }, [_c("div", {
+    staticClass: "form-group clearfix row"
+  }, [_c("label", {
+    staticClass: "col-md-2 control-label",
+    attrs: {
+      "for": "published"
+    }
+  }, [_vm._v(" Publish ")]), _vm._v(" "), _c("div", {
+    staticClass: "col-md-10"
+  }, [_c("select", {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: _vm.data.published,
+      expression: "data.published"
+    }],
+    staticClass: "form-control",
+    attrs: {
+      name: "published",
+      required: ""
+    },
+    on: {
+      change: function change($event) {
+        var $$selectedVal = Array.prototype.filter.call($event.target.options, function (o) {
+          return o.selected;
+        }).map(function (o) {
+          var val = "_value" in o ? o._value : o.value;
+          return val;
+        });
+        _vm.$set(_vm.data, "published", $event.target.multiple ? $$selectedVal : $$selectedVal[0]);
+      }
+    }
+  }, [_c("option", {
+    domProps: {
+      value: 0
+    }
+  }, [_vm._v("Not public")]), _vm._v(" "), _c("option", {
+    domProps: {
+      value: 1
+    }
+  }, [_vm._v("Public")])])])]), _vm._v(" "), _c("div", {
+    staticClass: "form-group clearfix row"
+  }, [_c("label", {
+    staticClass: "col-md-2 control-label",
+    attrs: {
+      "for": "name"
+    }
+  }, [_vm._v("\n                    Sector name\n                ")]), _vm._v(" "), _c("div", {
+    staticClass: "col-md-10"
+  }, [_c("input", {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: _vm.data.name,
+      expression: "data.name"
+    }],
+    staticClass: "form-control textarea",
+    attrs: {
+      type: "text",
+      name: "name",
+      placeholder: "Name",
+      required: ""
+    },
+    domProps: {
+      value: _vm.data.name
+    },
+    on: {
+      input: function input($event) {
+        if ($event.target.composing) return;
+        _vm.$set(_vm.data, "name", $event.target.value);
+      }
+    }
+  }), _vm._v(" "), _vm.errors.name ? _c("div", {
+    staticClass: "alert alert-danger",
+    attrs: {
+      role: "alert"
+    }
+  }, [_vm._v("\n                        " + _vm._s(_vm.errors.name[0]) + "\n                    ")]) : _vm._e()])]), _vm._v(" "), _c("div", {
+    staticClass: "form-group clearfix row"
+  }, [_c("label", {
+    staticClass: "col-md-2 control-label"
+  }, [_vm._v(" Region ")]), _vm._v(" "), _c("div", {
+    staticClass: "col-md-10"
+  }, [_c("select", {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: _vm.data.article_id,
+      expression: "data.article_id"
+    }],
+    staticClass: "form-control",
+    attrs: {
+      name: "article_id",
+      required: ""
+    },
+    on: {
+      change: function change($event) {
+        var $$selectedVal = Array.prototype.filter.call($event.target.options, function (o) {
+          return o.selected;
+        }).map(function (o) {
+          var val = "_value" in o ? o._value : o.value;
+          return val;
+        });
+        _vm.$set(_vm.data, "article_id", $event.target.multiple ? $$selectedVal : $$selectedVal[0]);
+      }
+    }
+  }, [_c("option", {
+    attrs: {
+      disabled: ""
+    },
+    domProps: {
+      value: ""
+    }
+  }, [_vm._v("\n                            Select outdoor area\n                        ")]), _vm._v(" "), _vm._l(_vm.regions, function (region) {
+    return _c("option", {
+      key: region,
+      domProps: {
+        value: region.area.id
+      }
+    }, [_vm._v("\n                            " + _vm._s(region.area.url_title) + "\n                        ")]);
+  })], 2), _vm._v(" "), _vm.errors.article_id ? _c("div", {
+    staticClass: "alert alert-danger",
+    attrs: {
+      role: "alert"
+    }
+  }, [_vm._v("\n                        " + _vm._s(_vm.errors.article_id[0]) + "\n                    ")]) : _vm._e()])]), _vm._v(" "), _c("div", {
+    staticClass: "form-group clearfix row"
+  }, [_c("label", {
+    staticClass: "col-md-2 control-label"
+  }, [_vm._v(" Text ")]), _vm._v(" "), _c("div", {
+    staticClass: "col-md-10"
+  }, [_c("ckeditor", {
+    attrs: {
+      config: _vm.description_editor
+    },
+    model: {
+      value: _vm.data.text,
+      callback: function callback($$v) {
+        _vm.$set(_vm.data, "text", $$v);
+      },
+      expression: "data.text"
+    }
+  })], 1)]), _vm._v(" "), _c("hr"), _vm._v(" "), _c("div", {
+    staticClass: "form-group clearfix row"
+  }, [_c("label", {
+    staticClass: "col-md-2 control-label",
+    attrs: {
+      "for": "name"
+    }
+  }, [_vm._v("\n                    wolking_time\n                ")]), _vm._v(" "), _c("div", {
+    staticClass: "col-md-10"
+  }, [_c("input", {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: _vm.data.wolking_time,
+      expression: "data.wolking_time"
+    }],
+    staticClass: "form-control textarea",
+    attrs: {
+      type: "text",
+      wolking_time: "wolking_time",
+      placeholder: "Wolking time"
+    },
+    domProps: {
+      value: _vm.data.wolking_time
+    },
+    on: {
+      input: function input($event) {
+        if ($event.target.composing) return;
+        _vm.$set(_vm.data, "wolking_time", $event.target.value);
+      }
+    }
+  }), _vm._v(" "), _vm.errors.wolking_time ? _c("div", {
+    staticClass: "alert alert-danger",
+    attrs: {
+      role: "alert"
+    }
+  }, [_vm._v("\n                        " + _vm._s(_vm.errors.wolking_time[0]) + "\n                    ")]) : _vm._e()])]), _vm._v(" "), _c("hr"), _vm._v(" "), _c("div", {
+    staticClass: "form-group clearfix row"
+  }, [_c("label", {
+    staticClass: "col-md-2 control-label"
+  }, [_vm._v(" Shadow time: ")]), _vm._v(" "), _c("div", {
+    staticClass: "col-md-10"
+  }, [_c("div", {
+    staticClass: "row"
+  }, [_c("div", {
+    staticClass: "col-md-4"
+  }, [_c("label", {
+    staticClass: "sector_checbox_title",
+    attrs: {
+      "for": "vehicle1"
+    }
+  }, [_vm._v("\n                                all_day_in_shade")]), _c("br"), _vm._v(" "), _c("img", {
+    staticClass: "sun_svg",
+    attrs: {
+      src: "../../images/svg/in the shade whole day.svg",
+      alt: "In the shade whole day",
+      title: "In the shade whole day"
+    }
+  }), _vm._v(" "), _c("input", {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: _vm.data.all_day_in_shade,
+      expression: "data.all_day_in_shade"
+    }],
+    staticClass: "largerCheckbox",
+    attrs: {
+      type: "checkbox",
+      name: "all_day",
+      value: "1"
+    },
+    domProps: {
+      checked: Array.isArray(_vm.data.all_day_in_shade) ? _vm._i(_vm.data.all_day_in_shade, "1") > -1 : _vm.data.all_day_in_shade
+    },
+    on: {
+      change: function change($event) {
+        var $$a = _vm.data.all_day_in_shade,
+          $$el = $event.target,
+          $$c = $$el.checked ? true : false;
+        if (Array.isArray($$a)) {
+          var $$v = "1",
+            $$i = _vm._i($$a, $$v);
+          if ($$el.checked) {
+            $$i < 0 && _vm.$set(_vm.data, "all_day_in_shade", $$a.concat([$$v]));
+          } else {
+            $$i > -1 && _vm.$set(_vm.data, "all_day_in_shade", $$a.slice(0, $$i).concat($$a.slice($$i + 1)));
+          }
+        } else {
+          _vm.$set(_vm.data, "all_day_in_shade", $$c);
+        }
+      }
+    }
+  })]), _vm._v(" "), _c("div", {
+    staticClass: "col-md-4"
+  }, [_c("label", {
+    attrs: {
+      "for": "vehicle1"
+    }
+  }, [_vm._v(" all_day_in_sun")]), _c("br"), _vm._v(" "), _c("img", {
+    staticClass: "sun_svg",
+    attrs: {
+      src: "../../images/svg/in the sun the whole day.svg",
+      alt: "In the sun the whole day",
+      title: "In the sun the whole day"
+    }
+  }), _vm._v(" "), _c("input", {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: _vm.data.all_day_in_sun,
+      expression: "data.all_day_in_sun"
+    }],
+    staticClass: "largerCheckbox",
+    attrs: {
+      type: "checkbox",
+      name: "no_sun",
+      value: "1"
+    },
+    domProps: {
+      checked: Array.isArray(_vm.data.all_day_in_sun) ? _vm._i(_vm.data.all_day_in_sun, "1") > -1 : _vm.data.all_day_in_sun
+    },
+    on: {
+      change: function change($event) {
+        var $$a = _vm.data.all_day_in_sun,
+          $$el = $event.target,
+          $$c = $$el.checked ? true : false;
+        if (Array.isArray($$a)) {
+          var $$v = "1",
+            $$i = _vm._i($$a, $$v);
+          if ($$el.checked) {
+            $$i < 0 && _vm.$set(_vm.data, "all_day_in_sun", $$a.concat([$$v]));
+          } else {
+            $$i > -1 && _vm.$set(_vm.data, "all_day_in_sun", $$a.slice(0, $$i).concat($$a.slice($$i + 1)));
+          }
+        } else {
+          _vm.$set(_vm.data, "all_day_in_sun", $$c);
+        }
+      }
+    }
+  })]), _vm._v(" "), _c("div", {
+    staticClass: "col-md-4"
+  }, [_c("label", {
+    attrs: {
+      "for": "vehicle1"
+    }
+  }, [_vm._v(" in_the_shade_afternoon")]), _c("br"), _vm._v(" "), _c("img", {
+    staticClass: "sun_svg",
+    attrs: {
+      src: "../../images/svg/in shade in the afternoon.svg",
+      alt: "In shade in the afternoon",
+      title: "In shade in the afternoon"
+    }
+  }), _vm._v(" "), _c("input", {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: _vm.data.in_the_shade_afternoon,
+      expression: "data.in_the_shade_afternoon"
+    }],
+    staticClass: "largerCheckbox",
+    attrs: {
+      type: "checkbox",
+      name: "afternoon",
+      value: "1"
+    },
+    domProps: {
+      checked: Array.isArray(_vm.data.in_the_shade_afternoon) ? _vm._i(_vm.data.in_the_shade_afternoon, "1") > -1 : _vm.data.in_the_shade_afternoon
+    },
+    on: {
+      change: function change($event) {
+        var $$a = _vm.data.in_the_shade_afternoon,
+          $$el = $event.target,
+          $$c = $$el.checked ? true : false;
+        if (Array.isArray($$a)) {
+          var $$v = "1",
+            $$i = _vm._i($$a, $$v);
+          if ($$el.checked) {
+            $$i < 0 && _vm.$set(_vm.data, "in_the_shade_afternoon", $$a.concat([$$v]));
+          } else {
+            $$i > -1 && _vm.$set(_vm.data, "in_the_shade_afternoon", $$a.slice(0, $$i).concat($$a.slice($$i + 1)));
+          }
+        } else {
+          _vm.$set(_vm.data, "in_the_shade_afternoon", $$c);
+        }
+      }
+    }
+  })])]), _vm._v(" "), _c("div", {
+    staticClass: "row"
+  }, [_c("div", {
+    staticClass: "col-md-4"
+  }, [_c("label", {
+    attrs: {
+      "for": "vehicle1"
+    }
+  }, [_vm._v(" in_the_shade_befornoon")]), _c("br"), _vm._v(" "), _c("img", {
+    staticClass: "sun_svg",
+    attrs: {
+      src: "../../images/svg/in shade befor noon.svg",
+      alt: "In shade befor noon",
+      title: "In shade befor noon"
+    }
+  }), _vm._v(" "), _c("input", {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: _vm.data.in_the_shade_befornoon,
+      expression: "data.in_the_shade_befornoon"
+    }],
+    staticClass: "largerCheckbox",
+    attrs: {
+      type: "checkbox",
+      name: "beforenoon",
+      value: "1"
+    },
+    domProps: {
+      checked: Array.isArray(_vm.data.in_the_shade_befornoon) ? _vm._i(_vm.data.in_the_shade_befornoon, "1") > -1 : _vm.data.in_the_shade_befornoon
+    },
+    on: {
+      change: function change($event) {
+        var $$a = _vm.data.in_the_shade_befornoon,
+          $$el = $event.target,
+          $$c = $$el.checked ? true : false;
+        if (Array.isArray($$a)) {
+          var $$v = "1",
+            $$i = _vm._i($$a, $$v);
+          if ($$el.checked) {
+            $$i < 0 && _vm.$set(_vm.data, "in_the_shade_befornoon", $$a.concat([$$v]));
+          } else {
+            $$i > -1 && _vm.$set(_vm.data, "in_the_shade_befornoon", $$a.slice(0, $$i).concat($$a.slice($$i + 1)));
+          }
+        } else {
+          _vm.$set(_vm.data, "in_the_shade_befornoon", $$c);
+        }
+      }
+    }
+  })]), _vm._v(" "), _c("div", {
+    staticClass: "col-md-4"
+  }, [_c("label", {
+    attrs: {
+      "for": "vehicle1"
+    }
+  }, [_vm._v(" in_shade_after_10")]), _c("br"), _vm._v(" "), _c("img", {
+    staticClass: "sun_svg",
+    attrs: {
+      src: "../../images/svg/in shade after 10.00 am.svg",
+      alt: "In shade after 10.00 am",
+      title: "In shade after 10.00 am"
+    }
+  }), _vm._v(" "), _c("input", {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: _vm.data.in_shade_after_10,
+      expression: "data.in_shade_after_10"
+    }],
+    staticClass: "largerCheckbox",
+    attrs: {
+      type: "checkbox",
+      name: "beforenoon",
+      value: "1"
+    },
+    domProps: {
+      checked: Array.isArray(_vm.data.in_shade_after_10) ? _vm._i(_vm.data.in_shade_after_10, "1") > -1 : _vm.data.in_shade_after_10
+    },
+    on: {
+      change: function change($event) {
+        var $$a = _vm.data.in_shade_after_10,
+          $$el = $event.target,
+          $$c = $$el.checked ? true : false;
+        if (Array.isArray($$a)) {
+          var $$v = "1",
+            $$i = _vm._i($$a, $$v);
+          if ($$el.checked) {
+            $$i < 0 && _vm.$set(_vm.data, "in_shade_after_10", $$a.concat([$$v]));
+          } else {
+            $$i > -1 && _vm.$set(_vm.data, "in_shade_after_10", $$a.slice(0, $$i).concat($$a.slice($$i + 1)));
+          }
+        } else {
+          _vm.$set(_vm.data, "in_shade_after_10", $$c);
+        }
+      }
+    }
+  })]), _vm._v(" "), _c("div", {
+    staticClass: "col-md-4"
+  }, [_c("label", {
+    attrs: {
+      "for": "vehicle1"
+    }
+  }, [_vm._v(" in_shade_after_15")]), _c("br"), _vm._v(" "), _c("img", {
+    staticClass: "sun_svg",
+    attrs: {
+      src: "../../images/svg/in shade after 15.00 pm.svg",
+      alt: "In shade after 15.00 pm",
+      title: "In shade after 15.00 pm"
+    }
+  }), _vm._v(" "), _c("input", {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: _vm.data.in_shade_after_15,
+      expression: "data.in_shade_after_15"
+    }],
+    staticClass: "largerCheckbox",
+    attrs: {
+      type: "checkbox",
+      name: "beforenoon",
+      value: "1"
+    },
+    domProps: {
+      checked: Array.isArray(_vm.data.in_shade_after_15) ? _vm._i(_vm.data.in_shade_after_15, "1") > -1 : _vm.data.in_shade_after_15
+    },
+    on: {
+      change: function change($event) {
+        var $$a = _vm.data.in_shade_after_15,
+          $$el = $event.target,
+          $$c = $$el.checked ? true : false;
+        if (Array.isArray($$a)) {
+          var $$v = "1",
+            $$i = _vm._i($$a, $$v);
+          if ($$el.checked) {
+            $$i < 0 && _vm.$set(_vm.data, "in_shade_after_15", $$a.concat([$$v]));
+          } else {
+            $$i > -1 && _vm.$set(_vm.data, "in_shade_after_15", $$a.slice(0, $$i).concat($$a.slice($$i + 1)));
+          }
+        } else {
+          _vm.$set(_vm.data, "in_shade_after_15", $$c);
+        }
+      }
+    }
+  })])])])]), _vm._v(" "), _c("hr"), _vm._v(" "), _c("div", {
+    staticClass: "form-group clearfix row"
+  }, [_c("label", {
+    staticClass: "col-md-2 control-label"
+  }, [_vm._v(" Sector relief: ")]), _vm._v(" "), _c("div", {
+    staticClass: "col-md-10 row"
+  }, [_c("div", {
+    staticClass: "col-md-3"
+  }, [_c("label", {
+    attrs: {
+      "for": "vehicle1"
+    }
+  }, [_vm._v(" slabby")]), _c("br"), _vm._v(" "), _c("img", {
+    staticClass: "sun_svg",
+    attrs: {
+      src: "../../images/svg/slabby.svg",
+      alt: "Slabby",
+      title: "Slabby"
+    }
+  }), _vm._v(" "), _c("input", {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: _vm.data.slabby,
+      expression: "data.slabby"
+    }],
+    staticClass: "largerCheckbox",
+    attrs: {
+      type: "checkbox",
+      name: "no_sun",
+      value: "1"
+    },
+    domProps: {
+      checked: Array.isArray(_vm.data.slabby) ? _vm._i(_vm.data.slabby, "1") > -1 : _vm.data.slabby
+    },
+    on: {
+      change: function change($event) {
+        var $$a = _vm.data.slabby,
+          $$el = $event.target,
+          $$c = $$el.checked ? true : false;
+        if (Array.isArray($$a)) {
+          var $$v = "1",
+            $$i = _vm._i($$a, $$v);
+          if ($$el.checked) {
+            $$i < 0 && _vm.$set(_vm.data, "slabby", $$a.concat([$$v]));
+          } else {
+            $$i > -1 && _vm.$set(_vm.data, "slabby", $$a.slice(0, $$i).concat($$a.slice($$i + 1)));
+          }
+        } else {
+          _vm.$set(_vm.data, "slabby", $$c);
+        }
+      }
+    }
+  })]), _vm._v(" "), _c("div", {
+    staticClass: "col-md-3"
+  }, [_c("label", {
+    attrs: {
+      "for": "vehicle1"
+    }
+  }, [_vm._v(" vertical")]), _c("br"), _vm._v(" "), _c("img", {
+    staticClass: "sun_svg",
+    attrs: {
+      src: "../../images/svg/vertical.svg",
+      alt: "Vertical",
+      title: "Vertical"
+    }
+  }), _vm._v(" "), _c("input", {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: _vm.data.vertical,
+      expression: "data.vertical"
+    }],
+    staticClass: "largerCheckbox",
+    attrs: {
+      type: "checkbox",
+      name: "afternoon",
+      value: "1"
+    },
+    domProps: {
+      checked: Array.isArray(_vm.data.vertical) ? _vm._i(_vm.data.vertical, "1") > -1 : _vm.data.vertical
+    },
+    on: {
+      change: function change($event) {
+        var $$a = _vm.data.vertical,
+          $$el = $event.target,
+          $$c = $$el.checked ? true : false;
+        if (Array.isArray($$a)) {
+          var $$v = "1",
+            $$i = _vm._i($$a, $$v);
+          if ($$el.checked) {
+            $$i < 0 && _vm.$set(_vm.data, "vertical", $$a.concat([$$v]));
+          } else {
+            $$i > -1 && _vm.$set(_vm.data, "vertical", $$a.slice(0, $$i).concat($$a.slice($$i + 1)));
+          }
+        } else {
+          _vm.$set(_vm.data, "vertical", $$c);
+        }
+      }
+    }
+  })]), _vm._v(" "), _c("div", {
+    staticClass: "col-md-3"
+  }, [_c("label", {
+    attrs: {
+      "for": "vehicle1"
+    }
+  }, [_vm._v(" overhang")]), _c("br"), _vm._v(" "), _c("img", {
+    staticClass: "sun_svg",
+    attrs: {
+      src: "../../images/svg/overhang.svg",
+      alt: "Overhang",
+      title: "Overhang"
+    }
+  }), _vm._v(" "), _c("input", {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: _vm.data.overhang,
+      expression: "data.overhang"
+    }],
+    staticClass: "largerCheckbox",
+    attrs: {
+      type: "checkbox",
+      name: "beforenoon",
+      value: "1"
+    },
+    domProps: {
+      checked: Array.isArray(_vm.data.overhang) ? _vm._i(_vm.data.overhang, "1") > -1 : _vm.data.overhang
+    },
+    on: {
+      change: function change($event) {
+        var $$a = _vm.data.overhang,
+          $$el = $event.target,
+          $$c = $$el.checked ? true : false;
+        if (Array.isArray($$a)) {
+          var $$v = "1",
+            $$i = _vm._i($$a, $$v);
+          if ($$el.checked) {
+            $$i < 0 && _vm.$set(_vm.data, "overhang", $$a.concat([$$v]));
+          } else {
+            $$i > -1 && _vm.$set(_vm.data, "overhang", $$a.slice(0, $$i).concat($$a.slice($$i + 1)));
+          }
+        } else {
+          _vm.$set(_vm.data, "overhang", $$c);
+        }
+      }
+    }
+  })]), _vm._v(" "), _c("div", {
+    staticClass: "col-md-3"
+  }, [_c("label", {
+    attrs: {
+      "for": "vehicle1"
+    }
+  }, [_vm._v(" roof")]), _c("br"), _vm._v(" "), _c("img", {
+    staticClass: "sun_svg",
+    attrs: {
+      src: "../../images/svg/roof.svg",
+      alt: "Overhang",
+      title: "Overhang"
+    }
+  }), _vm._v(" "), _c("input", {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: _vm.data.roof,
+      expression: "data.roof"
+    }],
+    staticClass: "largerCheckbox",
+    attrs: {
+      type: "checkbox",
+      name: "beforenoon",
+      value: "1"
+    },
+    domProps: {
+      checked: Array.isArray(_vm.data.roof) ? _vm._i(_vm.data.roof, "1") > -1 : _vm.data.roof
+    },
+    on: {
+      change: function change($event) {
+        var $$a = _vm.data.roof,
+          $$el = $event.target,
+          $$c = $$el.checked ? true : false;
+        if (Array.isArray($$a)) {
+          var $$v = "1",
+            $$i = _vm._i($$a, $$v);
+          if ($$el.checked) {
+            $$i < 0 && _vm.$set(_vm.data, "roof", $$a.concat([$$v]));
+          } else {
+            $$i > -1 && _vm.$set(_vm.data, "roof", $$a.slice(0, $$i).concat($$a.slice($$i + 1)));
+          }
+        } else {
+          _vm.$set(_vm.data, "roof", $$c);
+        }
+      }
+    }
+  })])])]), _vm._v(" "), _c("hr"), _vm._v(" "), _c("div", {
+    staticClass: "form-group clearfix row"
+  }, [_c("label", {
+    staticClass: "col-md-2 control-label"
+  }, [_vm._v(" Kids: ")]), _vm._v(" "), _c("div", {
+    staticClass: "col-md-10 row"
+  }, [_c("div", {
+    staticClass: "col-md-6"
+  }, [_c("label", {
+    attrs: {
+      "for": "vehicle1"
+    }
+  }, [_vm._v(" for_family")]), _c("br"), _vm._v(" "), _c("img", {
+    staticClass: "sun_svg",
+    attrs: {
+      src: "../../images/svg/for family.svg",
+      alt: "Slabby",
+      title: "Slabby"
+    }
+  }), _vm._v(" "), _c("input", {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: _vm.data.for_family,
+      expression: "data.for_family"
+    }],
+    staticClass: "largerCheckbox",
+    attrs: {
+      type: "checkbox",
+      name: "no_sun",
+      value: "1"
+    },
+    domProps: {
+      checked: Array.isArray(_vm.data.for_family) ? _vm._i(_vm.data.for_family, "1") > -1 : _vm.data.for_family
+    },
+    on: {
+      change: function change($event) {
+        var $$a = _vm.data.for_family,
+          $$el = $event.target,
+          $$c = $$el.checked ? true : false;
+        if (Array.isArray($$a)) {
+          var $$v = "1",
+            $$i = _vm._i($$a, $$v);
+          if ($$el.checked) {
+            $$i < 0 && _vm.$set(_vm.data, "for_family", $$a.concat([$$v]));
+          } else {
+            $$i > -1 && _vm.$set(_vm.data, "for_family", $$a.slice(0, $$i).concat($$a.slice($$i + 1)));
+          }
+        } else {
+          _vm.$set(_vm.data, "for_family", $$c);
+        }
+      }
+    }
+  })]), _vm._v(" "), _c("div", {
+    staticClass: "col-md-6"
+  }, [_c("label", {
+    attrs: {
+      "for": "vehicle1"
+    }
+  }, [_vm._v(" for_kids")]), _c("br"), _vm._v(" "), _c("img", {
+    staticClass: "sun_svg",
+    attrs: {
+      src: "../../images/svg/for kids.svg",
+      alt: "Vertical",
+      title: "Vertical"
+    }
+  }), _vm._v(" "), _c("input", {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: _vm.data.for_kids,
+      expression: "data.for_kids"
+    }],
+    staticClass: "largerCheckbox",
+    attrs: {
+      type: "checkbox",
+      name: "afternoon",
+      value: "1"
+    },
+    domProps: {
+      checked: Array.isArray(_vm.data.for_kids) ? _vm._i(_vm.data.for_kids, "1") > -1 : _vm.data.for_kids
+    },
+    on: {
+      change: function change($event) {
+        var $$a = _vm.data.for_kids,
+          $$el = $event.target,
+          $$c = $$el.checked ? true : false;
+        if (Array.isArray($$a)) {
+          var $$v = "1",
+            $$i = _vm._i($$a, $$v);
+          if ($$el.checked) {
+            $$i < 0 && _vm.$set(_vm.data, "for_kids", $$a.concat([$$v]));
+          } else {
+            $$i > -1 && _vm.$set(_vm.data, "for_kids", $$a.slice(0, $$i).concat($$a.slice($$i + 1)));
+          }
+        } else {
+          _vm.$set(_vm.data, "for_kids", $$c);
+        }
+      }
+    }
+  })])])]), _vm._v(" "), _c("hr")]), _vm._v(" "), _vm._m(1), _vm._v(" "), _c("div", {
+    staticClass: "col-md-12"
+  }, [_c("div", {
+    staticClass: "row"
+  }, [_c("div", {
+    staticClass: "col-md-12"
+  }, [_c("table", {
+    staticClass: "table table-hover",
+    attrs: {
+      id: "dev-table"
+    }
+  }, [_vm._m(2), _vm._v(" "), _c("tbody", _vm._l(_vm.sector_old_images, function (sector_old_image) {
+    return _c("tr", {
+      key: sector_old_image.id
+    }, [_c("td", [_c("img", {
+      staticClass: "img-responsive",
+      attrs: {
+        src: "../../../../images/sector_img/" + sector_old_image.image,
+        alt: sector_old_image.image
+      }
+    })]), _vm._v(" "), _c("td", [_c("button", {
+      staticClass: "btn btn-danger",
+      on: {
+        click: function click($event) {
+          return _vm.del_sector_image_from_db(sector_old_image.id);
+        }
+      }
+    }, [_vm._v("Delete")])])]);
+  }), 0)])])])]), _vm._v(" "), _c("div", {
+    staticClass: "row"
+  }, [_c("div", {
+    staticClass: "col-md-12"
+  }, [_c("div", {
+    staticClass: "form-groupe"
+  }, [_c("button", {
+    staticClass: "btn btn-primary float-left",
+    on: {
+      click: function click($event) {
+        return _vm.add_sector_new_image_value();
+      }
+    }
+  }, [_vm._v("Add new sector image")])])])]), _vm._v(" "), _c("div", {
+    staticClass: "container"
+  }, [_c("div", {
+    staticClass: "root"
+  }, [_c("table", {
+    style: "width: 100%",
+    attrs: {
+      tag: "table"
+    }
+  }, [_vm._m(3), _vm._v(" "), _vm._l(_vm.sector_new_images, function (image, index) {
+    return _c("tbody", {
+      key: index,
+      attrs: {
+        index: index,
+        tag: "tr"
+      }
+    }, [_c("td", [_c("form", {
+      ref: "myForm",
+      refInFor: true
+    }, [_c("input", {
+      attrs: {
+        type: "file",
+        name: "image",
+        id: "image"
+      },
+      on: {
+        change: function change($event) {
+          return _vm.onFileChange($event, image.id);
+        }
+      }
+    })])]), _vm._v(" "), _c("td", [_c("button", {
+      staticClass: "btn btn-danger",
+      on: {
+        click: function click($event) {
+          return _vm.del_sector_image(image.id);
+        }
+      }
+    }, [_vm._v("\n                                Del\n                            ")])])]);
+  })], 2)])])]) : _vm._e(), _vm._v(" "), _vm.is_geting_data_isset ? _c("div", {
+    staticClass: "row justify-content-center"
+  }, [_c("div", {
+    staticClass: "col-md-4"
+  }, [_c("img", {
+    attrs: {
+      src: "../../../../../../public/images/site_img/loading.gif",
+      alt: "loading"
+    }
+  })])]) : _vm._e()]);
 };
+var staticRenderFns = [function () {
+  var _vm = this,
+    _c = _vm._self._c;
+  return _c("div", {
+    staticClass: "form-group"
+  }, [_c("button", {
+    staticClass: "btn btn-primary",
+    attrs: {
+      type: "submit",
+      form: "sector_editing_form"
+    }
+  }, [_vm._v("\n                Save\n            ")])]);
+}, function () {
+  var _vm = this,
+    _c = _vm._self._c;
+  return _c("div", {
+    staticClass: "col-md-12"
+  }, [_c("div", {
+    staticClass: "row"
+  }, [_vm._v("\n                Olredy added\n            ")])]);
+}, function () {
+  var _vm = this,
+    _c = _vm._self._c;
+  return _c("thead", [_c("tr", [_c("th", [_vm._v("Image")]), _vm._v(" "), _c("th", [_vm._v("Delite")])])]);
+}, function () {
+  var _vm = this,
+    _c = _vm._self._c;
+  return _c("thead", [_c("tr", [_c("td", [_vm._v("Image")]), _vm._v(" "), _c("td", [_vm._v("Delete")])])]);
+}];
+render._withStripped = true;
+
 
 /***/ }),
 
-/***/ "./node_modules/laravel-mix/node_modules/css-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[1]!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/user/pages/routes_and_sectors/sectors/sectorEditComponent.vue?vue&type=style&index=0&id=0128acc0&scoped=true&lang=css&":
-/*!*************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
-  !*** ./node_modules/laravel-mix/node_modules/css-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[1]!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/user/pages/routes_and_sectors/sectors/sectorEditComponent.vue?vue&type=style&index=0&id=0128acc0&scoped=true&lang=css& ***!
-  \*************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************/
+/***/ "./node_modules/laravel-mix/node_modules/css-loader/dist/cjs.js??clonedRuleSet-9.use[1]!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-9.use[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/user/pages/routes_and_sectors/sectors/sectorEditComponent.vue?vue&type=style&index=0&id=0128acc0&scoped=true&lang=css&":
+/*!*************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/laravel-mix/node_modules/css-loader/dist/cjs.js??clonedRuleSet-9.use[1]!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-9.use[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/user/pages/routes_and_sectors/sectors/sectorEditComponent.vue?vue&type=style&index=0&id=0128acc0&scoped=true&lang=css& ***!
+  \*************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************/
 /***/ ((module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
@@ -675,10 +1127,10 @@ ___CSS_LOADER_EXPORT___.push([module.id, "\n.sector_img[data-v-0128acc0]{\n  bor
 
 /***/ }),
 
-/***/ "./node_modules/style-loader/dist/cjs.js!./node_modules/laravel-mix/node_modules/css-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[1]!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/user/pages/routes_and_sectors/sectors/sectorEditComponent.vue?vue&type=style&index=0&id=0128acc0&scoped=true&lang=css&":
-/*!*****************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
-  !*** ./node_modules/style-loader/dist/cjs.js!./node_modules/laravel-mix/node_modules/css-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[1]!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/user/pages/routes_and_sectors/sectors/sectorEditComponent.vue?vue&type=style&index=0&id=0128acc0&scoped=true&lang=css& ***!
-  \*****************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************/
+/***/ "./node_modules/style-loader/dist/cjs.js!./node_modules/laravel-mix/node_modules/css-loader/dist/cjs.js??clonedRuleSet-9.use[1]!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-9.use[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/user/pages/routes_and_sectors/sectors/sectorEditComponent.vue?vue&type=style&index=0&id=0128acc0&scoped=true&lang=css&":
+/*!*****************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/style-loader/dist/cjs.js!./node_modules/laravel-mix/node_modules/css-loader/dist/cjs.js??clonedRuleSet-9.use[1]!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-9.use[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/user/pages/routes_and_sectors/sectors/sectorEditComponent.vue?vue&type=style&index=0&id=0128acc0&scoped=true&lang=css& ***!
+  \*****************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
@@ -688,7 +1140,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var _node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! !../../../../../../../node_modules/style-loader/dist/runtime/injectStylesIntoStyleTag.js */ "./node_modules/style-loader/dist/runtime/injectStylesIntoStyleTag.js");
 /* harmony import */ var _node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var _node_modules_laravel_mix_node_modules_css_loader_dist_cjs_js_clonedRuleSet_9_0_rules_0_use_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_dist_cjs_js_clonedRuleSet_9_0_rules_0_use_2_node_modules_vue_loader_lib_index_js_vue_loader_options_sectorEditComponent_vue_vue_type_style_index_0_id_0128acc0_scoped_true_lang_css___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! !!../../../../../../../node_modules/laravel-mix/node_modules/css-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[1]!../../../../../../../node_modules/vue-loader/lib/loaders/stylePostLoader.js!../../../../../../../node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[2]!../../../../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./sectorEditComponent.vue?vue&type=style&index=0&id=0128acc0&scoped=true&lang=css& */ "./node_modules/laravel-mix/node_modules/css-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[1]!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/user/pages/routes_and_sectors/sectors/sectorEditComponent.vue?vue&type=style&index=0&id=0128acc0&scoped=true&lang=css&");
+/* harmony import */ var _node_modules_laravel_mix_node_modules_css_loader_dist_cjs_js_clonedRuleSet_9_use_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_dist_cjs_js_clonedRuleSet_9_use_2_node_modules_vue_loader_lib_index_js_vue_loader_options_sectorEditComponent_vue_vue_type_style_index_0_id_0128acc0_scoped_true_lang_css___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! !!../../../../../../../node_modules/laravel-mix/node_modules/css-loader/dist/cjs.js??clonedRuleSet-9.use[1]!../../../../../../../node_modules/vue-loader/lib/loaders/stylePostLoader.js!../../../../../../../node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-9.use[2]!../../../../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./sectorEditComponent.vue?vue&type=style&index=0&id=0128acc0&scoped=true&lang=css& */ "./node_modules/laravel-mix/node_modules/css-loader/dist/cjs.js??clonedRuleSet-9.use[1]!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-9.use[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/user/pages/routes_and_sectors/sectors/sectorEditComponent.vue?vue&type=style&index=0&id=0128acc0&scoped=true&lang=css&");
 
             
 
@@ -697,11 +1149,11 @@ var options = {};
 options.insert = "head";
 options.singleton = false;
 
-var update = _node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0___default()(_node_modules_laravel_mix_node_modules_css_loader_dist_cjs_js_clonedRuleSet_9_0_rules_0_use_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_dist_cjs_js_clonedRuleSet_9_0_rules_0_use_2_node_modules_vue_loader_lib_index_js_vue_loader_options_sectorEditComponent_vue_vue_type_style_index_0_id_0128acc0_scoped_true_lang_css___WEBPACK_IMPORTED_MODULE_1__["default"], options);
+var update = _node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0___default()(_node_modules_laravel_mix_node_modules_css_loader_dist_cjs_js_clonedRuleSet_9_use_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_dist_cjs_js_clonedRuleSet_9_use_2_node_modules_vue_loader_lib_index_js_vue_loader_options_sectorEditComponent_vue_vue_type_style_index_0_id_0128acc0_scoped_true_lang_css___WEBPACK_IMPORTED_MODULE_1__["default"], options);
 
 
 
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (_node_modules_laravel_mix_node_modules_css_loader_dist_cjs_js_clonedRuleSet_9_0_rules_0_use_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_dist_cjs_js_clonedRuleSet_9_0_rules_0_use_2_node_modules_vue_loader_lib_index_js_vue_loader_options_sectorEditComponent_vue_vue_type_style_index_0_id_0128acc0_scoped_true_lang_css___WEBPACK_IMPORTED_MODULE_1__["default"].locals || {});
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (_node_modules_laravel_mix_node_modules_css_loader_dist_cjs_js_clonedRuleSet_9_use_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_dist_cjs_js_clonedRuleSet_9_use_2_node_modules_vue_loader_lib_index_js_vue_loader_options_sectorEditComponent_vue_vue_type_style_index_0_id_0128acc0_scoped_true_lang_css___WEBPACK_IMPORTED_MODULE_1__["default"].locals || {});
 
 /***/ }),
 
@@ -757,21 +1209,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
-/* harmony import */ var _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_0_rules_0_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_sectorEditComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../../../node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!../../../../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./sectorEditComponent.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/user/pages/routes_and_sectors/sectors/sectorEditComponent.vue?vue&type=script&lang=js&");
- /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (_node_modules_babel_loader_lib_index_js_clonedRuleSet_5_0_rules_0_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_sectorEditComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
-
-/***/ }),
-
-/***/ "./resources/js/components/user/pages/routes_and_sectors/sectors/sectorEditComponent.vue?vue&type=style&index=0&id=0128acc0&scoped=true&lang=css&":
-/*!********************************************************************************************************************************************************!*\
-  !*** ./resources/js/components/user/pages/routes_and_sectors/sectors/sectorEditComponent.vue?vue&type=style&index=0&id=0128acc0&scoped=true&lang=css& ***!
-  \********************************************************************************************************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _node_modules_style_loader_dist_cjs_js_node_modules_laravel_mix_node_modules_css_loader_dist_cjs_js_clonedRuleSet_9_0_rules_0_use_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_dist_cjs_js_clonedRuleSet_9_0_rules_0_use_2_node_modules_vue_loader_lib_index_js_vue_loader_options_sectorEditComponent_vue_vue_type_style_index_0_id_0128acc0_scoped_true_lang_css___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../../../node_modules/style-loader/dist/cjs.js!../../../../../../../node_modules/laravel-mix/node_modules/css-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[1]!../../../../../../../node_modules/vue-loader/lib/loaders/stylePostLoader.js!../../../../../../../node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[2]!../../../../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./sectorEditComponent.vue?vue&type=style&index=0&id=0128acc0&scoped=true&lang=css& */ "./node_modules/style-loader/dist/cjs.js!./node_modules/laravel-mix/node_modules/css-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[1]!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/user/pages/routes_and_sectors/sectors/sectorEditComponent.vue?vue&type=style&index=0&id=0128acc0&scoped=true&lang=css&");
-
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_sectorEditComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../../../node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!../../../../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./sectorEditComponent.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/user/pages/routes_and_sectors/sectors/sectorEditComponent.vue?vue&type=script&lang=js&");
+ /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (_node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_sectorEditComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
 
 /***/ }),
 
@@ -784,1389 +1223,23 @@ __webpack_require__.r(__webpack_exports__);
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "render": () => (/* reexport safe */ _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_sectorEditComponent_vue_vue_type_template_id_0128acc0_scoped_true___WEBPACK_IMPORTED_MODULE_0__.render),
-/* harmony export */   "staticRenderFns": () => (/* reexport safe */ _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_sectorEditComponent_vue_vue_type_template_id_0128acc0_scoped_true___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns)
+/* harmony export */   "render": () => (/* reexport safe */ _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_lib_loaders_templateLoader_js_ruleSet_1_rules_2_node_modules_vue_loader_lib_index_js_vue_loader_options_sectorEditComponent_vue_vue_type_template_id_0128acc0_scoped_true___WEBPACK_IMPORTED_MODULE_0__.render),
+/* harmony export */   "staticRenderFns": () => (/* reexport safe */ _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_lib_loaders_templateLoader_js_ruleSet_1_rules_2_node_modules_vue_loader_lib_index_js_vue_loader_options_sectorEditComponent_vue_vue_type_template_id_0128acc0_scoped_true___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns)
 /* harmony export */ });
-/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_sectorEditComponent_vue_vue_type_template_id_0128acc0_scoped_true___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./sectorEditComponent.vue?vue&type=template&id=0128acc0&scoped=true& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/user/pages/routes_and_sectors/sectors/sectorEditComponent.vue?vue&type=template&id=0128acc0&scoped=true&");
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_lib_loaders_templateLoader_js_ruleSet_1_rules_2_node_modules_vue_loader_lib_index_js_vue_loader_options_sectorEditComponent_vue_vue_type_template_id_0128acc0_scoped_true___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../../../node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!../../../../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??ruleSet[1].rules[2]!../../../../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./sectorEditComponent.vue?vue&type=template&id=0128acc0&scoped=true& */ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/lib/loaders/templateLoader.js??ruleSet[1].rules[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/user/pages/routes_and_sectors/sectors/sectorEditComponent.vue?vue&type=template&id=0128acc0&scoped=true&");
 
 
 /***/ }),
 
-/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/user/pages/routes_and_sectors/sectors/sectorEditComponent.vue?vue&type=template&id=0128acc0&scoped=true&":
-/*!*********************************************************************************************************************************************************************************************************************************************************************************!*\
-  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/user/pages/routes_and_sectors/sectors/sectorEditComponent.vue?vue&type=template&id=0128acc0&scoped=true& ***!
-  \*********************************************************************************************************************************************************************************************************************************************************************************/
+/***/ "./resources/js/components/user/pages/routes_and_sectors/sectors/sectorEditComponent.vue?vue&type=style&index=0&id=0128acc0&scoped=true&lang=css&":
+/*!********************************************************************************************************************************************************!*\
+  !*** ./resources/js/components/user/pages/routes_and_sectors/sectors/sectorEditComponent.vue?vue&type=style&index=0&id=0128acc0&scoped=true&lang=css& ***!
+  \********************************************************************************************************************************************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "render": () => (/* binding */ render),
-/* harmony export */   "staticRenderFns": () => (/* binding */ staticRenderFns)
-/* harmony export */ });
-var render = function () {
-  var _vm = this
-  var _h = _vm.$createElement
-  var _c = _vm._self._c || _h
-  return _c("div", { staticClass: "col-md-12" }, [
-    _c("div", { staticClass: "row" }, [
-      _c("div", { staticClass: "form-group" }, [
-        _c(
-          "button",
-          {
-            staticClass: "btn btn-primary",
-            attrs: { type: "submit" },
-            on: {
-              click: function ($event) {
-                return _vm.go_back()
-              },
-            },
-          },
-          [_vm._v("\n                Beck\n            ")]
-        ),
-      ]),
-    ]),
-    _vm._v(" "),
-    !_vm.is_geting_data_isset
-      ? _c("div", { staticClass: "row" }, [_vm._m(0)])
-      : _vm._e(),
-    _vm._v(" "),
-    !_vm.is_geting_data_isset
-      ? _c("div", [
-          _c(
-            "form",
-            {
-              staticClass: "contact-form",
-              attrs: {
-                id: "sector_editing_form",
-                method: "POST",
-                enctype: "multipart/form-data",
-              },
-              on: {
-                submit: function ($event) {
-                  $event.preventDefault()
-                  return _vm.edit_sector.apply(null, arguments)
-                },
-              },
-            },
-            [
-              _c("div", { staticClass: "form-group clearfix row" }, [
-                _c(
-                  "label",
-                  {
-                    staticClass: "col-md-2 control-label ",
-                    attrs: { for: "published" },
-                  },
-                  [_vm._v(" Publish ")]
-                ),
-                _vm._v(" "),
-                _c("div", { staticClass: "col-md-10" }, [
-                  _c(
-                    "select",
-                    {
-                      directives: [
-                        {
-                          name: "model",
-                          rawName: "v-model",
-                          value: _vm.data.published,
-                          expression: "data.published",
-                        },
-                      ],
-                      staticClass: "form-control",
-                      attrs: { name: "published", required: "" },
-                      on: {
-                        change: function ($event) {
-                          var $$selectedVal = Array.prototype.filter
-                            .call($event.target.options, function (o) {
-                              return o.selected
-                            })
-                            .map(function (o) {
-                              var val = "_value" in o ? o._value : o.value
-                              return val
-                            })
-                          _vm.$set(
-                            _vm.data,
-                            "published",
-                            $event.target.multiple
-                              ? $$selectedVal
-                              : $$selectedVal[0]
-                          )
-                        },
-                      },
-                    },
-                    [
-                      _c("option", { domProps: { value: 0 } }, [
-                        _vm._v("Not public"),
-                      ]),
-                      _vm._v(" "),
-                      _c("option", { domProps: { value: 1 } }, [
-                        _vm._v("Public"),
-                      ]),
-                    ]
-                  ),
-                ]),
-              ]),
-              _vm._v(" "),
-              _c("div", { staticClass: "form-group clearfix row" }, [
-                _c(
-                  "label",
-                  {
-                    staticClass: "col-md-2 control-label",
-                    attrs: { for: "name" },
-                  },
-                  [
-                    _vm._v(
-                      "\n                    Sector name\n                "
-                    ),
-                  ]
-                ),
-                _vm._v(" "),
-                _c("div", { staticClass: "col-md-10" }, [
-                  _c("input", {
-                    directives: [
-                      {
-                        name: "model",
-                        rawName: "v-model",
-                        value: _vm.data.name,
-                        expression: "data.name",
-                      },
-                    ],
-                    staticClass: "form-control textarea",
-                    attrs: {
-                      type: "text",
-                      name: "name",
-                      placeholder: "Name",
-                      required: "",
-                    },
-                    domProps: { value: _vm.data.name },
-                    on: {
-                      input: function ($event) {
-                        if ($event.target.composing) {
-                          return
-                        }
-                        _vm.$set(_vm.data, "name", $event.target.value)
-                      },
-                    },
-                  }),
-                  _vm._v(" "),
-                  _vm.errors.name
-                    ? _c(
-                        "div",
-                        {
-                          staticClass: "alert alert-danger",
-                          attrs: { role: "alert" },
-                        },
-                        [
-                          _vm._v(
-                            "\n                        " +
-                              _vm._s(_vm.errors.name[0]) +
-                              "\n                    "
-                          ),
-                        ]
-                      )
-                    : _vm._e(),
-                ]),
-              ]),
-              _vm._v(" "),
-              _c("div", { staticClass: "form-group clearfix row" }, [
-                _c("label", { staticClass: "col-md-2 control-label" }, [
-                  _vm._v(" Region "),
-                ]),
-                _vm._v(" "),
-                _c("div", { staticClass: "col-md-10" }, [
-                  _c(
-                    "select",
-                    {
-                      directives: [
-                        {
-                          name: "model",
-                          rawName: "v-model",
-                          value: _vm.data.article_id,
-                          expression: "data.article_id",
-                        },
-                      ],
-                      staticClass: "form-control",
-                      attrs: { name: "article_id", required: "" },
-                      on: {
-                        change: function ($event) {
-                          var $$selectedVal = Array.prototype.filter
-                            .call($event.target.options, function (o) {
-                              return o.selected
-                            })
-                            .map(function (o) {
-                              var val = "_value" in o ? o._value : o.value
-                              return val
-                            })
-                          _vm.$set(
-                            _vm.data,
-                            "article_id",
-                            $event.target.multiple
-                              ? $$selectedVal
-                              : $$selectedVal[0]
-                          )
-                        },
-                      },
-                    },
-                    [
-                      _c(
-                        "option",
-                        { attrs: { disabled: "" }, domProps: { value: "" } },
-                        [
-                          _vm._v(
-                            "\n                            Select outdoor area\n                        "
-                          ),
-                        ]
-                      ),
-                      _vm._v(" "),
-                      _vm._l(_vm.regions, function (region) {
-                        return _c(
-                          "option",
-                          { key: region, domProps: { value: region.area.id } },
-                          [
-                            _vm._v(
-                              "\n                            " +
-                                _vm._s(region.area.url_title) +
-                                "\n                        "
-                            ),
-                          ]
-                        )
-                      }),
-                    ],
-                    2
-                  ),
-                  _vm._v(" "),
-                  _vm.errors.article_id
-                    ? _c(
-                        "div",
-                        {
-                          staticClass: "alert alert-danger",
-                          attrs: { role: "alert" },
-                        },
-                        [
-                          _vm._v(
-                            "\n                        " +
-                              _vm._s(_vm.errors.article_id[0]) +
-                              "\n                    "
-                          ),
-                        ]
-                      )
-                    : _vm._e(),
-                ]),
-              ]),
-              _vm._v(" "),
-              _c("div", { staticClass: "form-group clearfix row" }, [
-                _c("label", { staticClass: "col-md-2 control-label" }, [
-                  _vm._v(" Text "),
-                ]),
-                _vm._v(" "),
-                _c(
-                  "div",
-                  { staticClass: "col-md-10" },
-                  [
-                    _c("ckeditor", {
-                      attrs: { config: _vm.description_editor },
-                      model: {
-                        value: _vm.data.text,
-                        callback: function ($$v) {
-                          _vm.$set(_vm.data, "text", $$v)
-                        },
-                        expression: "data.text",
-                      },
-                    }),
-                  ],
-                  1
-                ),
-              ]),
-              _vm._v(" "),
-              _c("hr"),
-              _vm._v(" "),
-              _c("div", { staticClass: "form-group clearfix row" }, [
-                _c(
-                  "label",
-                  {
-                    staticClass: "col-md-2 control-label",
-                    attrs: { for: "name" },
-                  },
-                  [
-                    _vm._v(
-                      "\n                    wolking_time\n                "
-                    ),
-                  ]
-                ),
-                _vm._v(" "),
-                _c("div", { staticClass: "col-md-10" }, [
-                  _c("input", {
-                    directives: [
-                      {
-                        name: "model",
-                        rawName: "v-model",
-                        value: _vm.data.wolking_time,
-                        expression: "data.wolking_time",
-                      },
-                    ],
-                    staticClass: "form-control textarea",
-                    attrs: {
-                      type: "text",
-                      wolking_time: "wolking_time",
-                      placeholder: "Wolking time",
-                    },
-                    domProps: { value: _vm.data.wolking_time },
-                    on: {
-                      input: function ($event) {
-                        if ($event.target.composing) {
-                          return
-                        }
-                        _vm.$set(_vm.data, "wolking_time", $event.target.value)
-                      },
-                    },
-                  }),
-                  _vm._v(" "),
-                  _vm.errors.wolking_time
-                    ? _c(
-                        "div",
-                        {
-                          staticClass: "alert alert-danger",
-                          attrs: { role: "alert" },
-                        },
-                        [
-                          _vm._v(
-                            "\n                        " +
-                              _vm._s(_vm.errors.wolking_time[0]) +
-                              "\n                    "
-                          ),
-                        ]
-                      )
-                    : _vm._e(),
-                ]),
-              ]),
-              _vm._v(" "),
-              _c("hr"),
-              _vm._v(" "),
-              _c("div", { staticClass: "form-group clearfix row" }, [
-                _c("label", { staticClass: "col-md-2 control-label" }, [
-                  _vm._v(" Shadow time: "),
-                ]),
-                _vm._v(" "),
-                _c("div", { staticClass: "col-md-10" }, [
-                  _c("div", { staticClass: "row" }, [
-                    _c("div", { staticClass: "col-md-4" }, [
-                      _c(
-                        "label",
-                        {
-                          staticClass: "sector_checbox_title",
-                          attrs: { for: "vehicle1" },
-                        },
-                        [
-                          _vm._v(
-                            "\n                                all_day_in_shade"
-                          ),
-                        ]
-                      ),
-                      _c("br"),
-                      _vm._v(" "),
-                      _c("img", {
-                        staticClass: "sun_svg",
-                        attrs: {
-                          src: "../../images/svg/in the shade whole day.svg",
-                          alt: "In the shade whole day",
-                          title: "In the shade whole day",
-                        },
-                      }),
-                      _vm._v(" "),
-                      _c("input", {
-                        directives: [
-                          {
-                            name: "model",
-                            rawName: "v-model",
-                            value: _vm.data.all_day_in_shade,
-                            expression: "data.all_day_in_shade",
-                          },
-                        ],
-                        staticClass: "largerCheckbox",
-                        attrs: {
-                          type: "checkbox",
-                          name: "all_day",
-                          value: "1",
-                        },
-                        domProps: {
-                          checked: Array.isArray(_vm.data.all_day_in_shade)
-                            ? _vm._i(_vm.data.all_day_in_shade, "1") > -1
-                            : _vm.data.all_day_in_shade,
-                        },
-                        on: {
-                          change: function ($event) {
-                            var $$a = _vm.data.all_day_in_shade,
-                              $$el = $event.target,
-                              $$c = $$el.checked ? true : false
-                            if (Array.isArray($$a)) {
-                              var $$v = "1",
-                                $$i = _vm._i($$a, $$v)
-                              if ($$el.checked) {
-                                $$i < 0 &&
-                                  _vm.$set(
-                                    _vm.data,
-                                    "all_day_in_shade",
-                                    $$a.concat([$$v])
-                                  )
-                              } else {
-                                $$i > -1 &&
-                                  _vm.$set(
-                                    _vm.data,
-                                    "all_day_in_shade",
-                                    $$a.slice(0, $$i).concat($$a.slice($$i + 1))
-                                  )
-                              }
-                            } else {
-                              _vm.$set(_vm.data, "all_day_in_shade", $$c)
-                            }
-                          },
-                        },
-                      }),
-                    ]),
-                    _vm._v(" "),
-                    _c("div", { staticClass: "col-md-4" }, [
-                      _c("label", { attrs: { for: "vehicle1" } }, [
-                        _vm._v(" all_day_in_sun"),
-                      ]),
-                      _c("br"),
-                      _vm._v(" "),
-                      _c("img", {
-                        staticClass: "sun_svg",
-                        attrs: {
-                          src: "../../images/svg/in the sun the whole day.svg",
-                          alt: "In the sun the whole day",
-                          title: "In the sun the whole day",
-                        },
-                      }),
-                      _vm._v(" "),
-                      _c("input", {
-                        directives: [
-                          {
-                            name: "model",
-                            rawName: "v-model",
-                            value: _vm.data.all_day_in_sun,
-                            expression: "data.all_day_in_sun",
-                          },
-                        ],
-                        staticClass: "largerCheckbox",
-                        attrs: { type: "checkbox", name: "no_sun", value: "1" },
-                        domProps: {
-                          checked: Array.isArray(_vm.data.all_day_in_sun)
-                            ? _vm._i(_vm.data.all_day_in_sun, "1") > -1
-                            : _vm.data.all_day_in_sun,
-                        },
-                        on: {
-                          change: function ($event) {
-                            var $$a = _vm.data.all_day_in_sun,
-                              $$el = $event.target,
-                              $$c = $$el.checked ? true : false
-                            if (Array.isArray($$a)) {
-                              var $$v = "1",
-                                $$i = _vm._i($$a, $$v)
-                              if ($$el.checked) {
-                                $$i < 0 &&
-                                  _vm.$set(
-                                    _vm.data,
-                                    "all_day_in_sun",
-                                    $$a.concat([$$v])
-                                  )
-                              } else {
-                                $$i > -1 &&
-                                  _vm.$set(
-                                    _vm.data,
-                                    "all_day_in_sun",
-                                    $$a.slice(0, $$i).concat($$a.slice($$i + 1))
-                                  )
-                              }
-                            } else {
-                              _vm.$set(_vm.data, "all_day_in_sun", $$c)
-                            }
-                          },
-                        },
-                      }),
-                    ]),
-                    _vm._v(" "),
-                    _c("div", { staticClass: "col-md-4" }, [
-                      _c("label", { attrs: { for: "vehicle1" } }, [
-                        _vm._v(" in_the_shade_afternoon"),
-                      ]),
-                      _c("br"),
-                      _vm._v(" "),
-                      _c("img", {
-                        staticClass: "sun_svg",
-                        attrs: {
-                          src: "../../images/svg/in shade in the afternoon.svg",
-                          alt: "In shade in the afternoon",
-                          title: "In shade in the afternoon",
-                        },
-                      }),
-                      _vm._v(" "),
-                      _c("input", {
-                        directives: [
-                          {
-                            name: "model",
-                            rawName: "v-model",
-                            value: _vm.data.in_the_shade_afternoon,
-                            expression: "data.in_the_shade_afternoon",
-                          },
-                        ],
-                        staticClass: "largerCheckbox",
-                        attrs: {
-                          type: "checkbox",
-                          name: "afternoon",
-                          value: "1",
-                        },
-                        domProps: {
-                          checked: Array.isArray(
-                            _vm.data.in_the_shade_afternoon
-                          )
-                            ? _vm._i(_vm.data.in_the_shade_afternoon, "1") > -1
-                            : _vm.data.in_the_shade_afternoon,
-                        },
-                        on: {
-                          change: function ($event) {
-                            var $$a = _vm.data.in_the_shade_afternoon,
-                              $$el = $event.target,
-                              $$c = $$el.checked ? true : false
-                            if (Array.isArray($$a)) {
-                              var $$v = "1",
-                                $$i = _vm._i($$a, $$v)
-                              if ($$el.checked) {
-                                $$i < 0 &&
-                                  _vm.$set(
-                                    _vm.data,
-                                    "in_the_shade_afternoon",
-                                    $$a.concat([$$v])
-                                  )
-                              } else {
-                                $$i > -1 &&
-                                  _vm.$set(
-                                    _vm.data,
-                                    "in_the_shade_afternoon",
-                                    $$a.slice(0, $$i).concat($$a.slice($$i + 1))
-                                  )
-                              }
-                            } else {
-                              _vm.$set(_vm.data, "in_the_shade_afternoon", $$c)
-                            }
-                          },
-                        },
-                      }),
-                    ]),
-                  ]),
-                  _vm._v(" "),
-                  _c("div", { staticClass: "row" }, [
-                    _c("div", { staticClass: "col-md-4" }, [
-                      _c("label", { attrs: { for: "vehicle1" } }, [
-                        _vm._v(" in_the_shade_befornoon"),
-                      ]),
-                      _c("br"),
-                      _vm._v(" "),
-                      _c("img", {
-                        staticClass: "sun_svg",
-                        attrs: {
-                          src: "../../images/svg/in shade befor noon.svg",
-                          alt: "In shade befor noon",
-                          title: "In shade befor noon",
-                        },
-                      }),
-                      _vm._v(" "),
-                      _c("input", {
-                        directives: [
-                          {
-                            name: "model",
-                            rawName: "v-model",
-                            value: _vm.data.in_the_shade_befornoon,
-                            expression: "data.in_the_shade_befornoon",
-                          },
-                        ],
-                        staticClass: "largerCheckbox",
-                        attrs: {
-                          type: "checkbox",
-                          name: "beforenoon",
-                          value: "1",
-                        },
-                        domProps: {
-                          checked: Array.isArray(
-                            _vm.data.in_the_shade_befornoon
-                          )
-                            ? _vm._i(_vm.data.in_the_shade_befornoon, "1") > -1
-                            : _vm.data.in_the_shade_befornoon,
-                        },
-                        on: {
-                          change: function ($event) {
-                            var $$a = _vm.data.in_the_shade_befornoon,
-                              $$el = $event.target,
-                              $$c = $$el.checked ? true : false
-                            if (Array.isArray($$a)) {
-                              var $$v = "1",
-                                $$i = _vm._i($$a, $$v)
-                              if ($$el.checked) {
-                                $$i < 0 &&
-                                  _vm.$set(
-                                    _vm.data,
-                                    "in_the_shade_befornoon",
-                                    $$a.concat([$$v])
-                                  )
-                              } else {
-                                $$i > -1 &&
-                                  _vm.$set(
-                                    _vm.data,
-                                    "in_the_shade_befornoon",
-                                    $$a.slice(0, $$i).concat($$a.slice($$i + 1))
-                                  )
-                              }
-                            } else {
-                              _vm.$set(_vm.data, "in_the_shade_befornoon", $$c)
-                            }
-                          },
-                        },
-                      }),
-                    ]),
-                    _vm._v(" "),
-                    _c("div", { staticClass: "col-md-4" }, [
-                      _c("label", { attrs: { for: "vehicle1" } }, [
-                        _vm._v(" in_shade_after_10"),
-                      ]),
-                      _c("br"),
-                      _vm._v(" "),
-                      _c("img", {
-                        staticClass: "sun_svg",
-                        attrs: {
-                          src: "../../images/svg/in shade after 10.00 am.svg",
-                          alt: "In shade after 10.00 am",
-                          title: "In shade after 10.00 am",
-                        },
-                      }),
-                      _vm._v(" "),
-                      _c("input", {
-                        directives: [
-                          {
-                            name: "model",
-                            rawName: "v-model",
-                            value: _vm.data.in_shade_after_10,
-                            expression: "data.in_shade_after_10",
-                          },
-                        ],
-                        staticClass: "largerCheckbox",
-                        attrs: {
-                          type: "checkbox",
-                          name: "beforenoon",
-                          value: "1",
-                        },
-                        domProps: {
-                          checked: Array.isArray(_vm.data.in_shade_after_10)
-                            ? _vm._i(_vm.data.in_shade_after_10, "1") > -1
-                            : _vm.data.in_shade_after_10,
-                        },
-                        on: {
-                          change: function ($event) {
-                            var $$a = _vm.data.in_shade_after_10,
-                              $$el = $event.target,
-                              $$c = $$el.checked ? true : false
-                            if (Array.isArray($$a)) {
-                              var $$v = "1",
-                                $$i = _vm._i($$a, $$v)
-                              if ($$el.checked) {
-                                $$i < 0 &&
-                                  _vm.$set(
-                                    _vm.data,
-                                    "in_shade_after_10",
-                                    $$a.concat([$$v])
-                                  )
-                              } else {
-                                $$i > -1 &&
-                                  _vm.$set(
-                                    _vm.data,
-                                    "in_shade_after_10",
-                                    $$a.slice(0, $$i).concat($$a.slice($$i + 1))
-                                  )
-                              }
-                            } else {
-                              _vm.$set(_vm.data, "in_shade_after_10", $$c)
-                            }
-                          },
-                        },
-                      }),
-                    ]),
-                    _vm._v(" "),
-                    _c("div", { staticClass: "col-md-4" }, [
-                      _c("label", { attrs: { for: "vehicle1" } }, [
-                        _vm._v(" in_shade_after_15"),
-                      ]),
-                      _c("br"),
-                      _vm._v(" "),
-                      _c("img", {
-                        staticClass: "sun_svg",
-                        attrs: {
-                          src: "../../images/svg/in shade after 15.00 pm.svg",
-                          alt: "In shade after 15.00 pm",
-                          title: "In shade after 15.00 pm",
-                        },
-                      }),
-                      _vm._v(" "),
-                      _c("input", {
-                        directives: [
-                          {
-                            name: "model",
-                            rawName: "v-model",
-                            value: _vm.data.in_shade_after_15,
-                            expression: "data.in_shade_after_15",
-                          },
-                        ],
-                        staticClass: "largerCheckbox",
-                        attrs: {
-                          type: "checkbox",
-                          name: "beforenoon",
-                          value: "1",
-                        },
-                        domProps: {
-                          checked: Array.isArray(_vm.data.in_shade_after_15)
-                            ? _vm._i(_vm.data.in_shade_after_15, "1") > -1
-                            : _vm.data.in_shade_after_15,
-                        },
-                        on: {
-                          change: function ($event) {
-                            var $$a = _vm.data.in_shade_after_15,
-                              $$el = $event.target,
-                              $$c = $$el.checked ? true : false
-                            if (Array.isArray($$a)) {
-                              var $$v = "1",
-                                $$i = _vm._i($$a, $$v)
-                              if ($$el.checked) {
-                                $$i < 0 &&
-                                  _vm.$set(
-                                    _vm.data,
-                                    "in_shade_after_15",
-                                    $$a.concat([$$v])
-                                  )
-                              } else {
-                                $$i > -1 &&
-                                  _vm.$set(
-                                    _vm.data,
-                                    "in_shade_after_15",
-                                    $$a.slice(0, $$i).concat($$a.slice($$i + 1))
-                                  )
-                              }
-                            } else {
-                              _vm.$set(_vm.data, "in_shade_after_15", $$c)
-                            }
-                          },
-                        },
-                      }),
-                    ]),
-                  ]),
-                ]),
-              ]),
-              _vm._v(" "),
-              _c("hr"),
-              _vm._v(" "),
-              _c("div", { staticClass: "form-group clearfix row" }, [
-                _c("label", { staticClass: "col-md-2 control-label" }, [
-                  _vm._v(" Sector relief: "),
-                ]),
-                _vm._v(" "),
-                _c("div", { staticClass: "col-md-10 row" }, [
-                  _c("div", { staticClass: "col-md-3" }, [
-                    _c("label", { attrs: { for: "vehicle1" } }, [
-                      _vm._v(" slabby"),
-                    ]),
-                    _c("br"),
-                    _vm._v(" "),
-                    _c("img", {
-                      staticClass: "sun_svg",
-                      attrs: {
-                        src: "../../images/svg/slabby.svg",
-                        alt: "Slabby",
-                        title: "Slabby",
-                      },
-                    }),
-                    _vm._v(" "),
-                    _c("input", {
-                      directives: [
-                        {
-                          name: "model",
-                          rawName: "v-model",
-                          value: _vm.data.slabby,
-                          expression: "data.slabby",
-                        },
-                      ],
-                      staticClass: "largerCheckbox",
-                      attrs: { type: "checkbox", name: "no_sun", value: "1" },
-                      domProps: {
-                        checked: Array.isArray(_vm.data.slabby)
-                          ? _vm._i(_vm.data.slabby, "1") > -1
-                          : _vm.data.slabby,
-                      },
-                      on: {
-                        change: function ($event) {
-                          var $$a = _vm.data.slabby,
-                            $$el = $event.target,
-                            $$c = $$el.checked ? true : false
-                          if (Array.isArray($$a)) {
-                            var $$v = "1",
-                              $$i = _vm._i($$a, $$v)
-                            if ($$el.checked) {
-                              $$i < 0 &&
-                                _vm.$set(_vm.data, "slabby", $$a.concat([$$v]))
-                            } else {
-                              $$i > -1 &&
-                                _vm.$set(
-                                  _vm.data,
-                                  "slabby",
-                                  $$a.slice(0, $$i).concat($$a.slice($$i + 1))
-                                )
-                            }
-                          } else {
-                            _vm.$set(_vm.data, "slabby", $$c)
-                          }
-                        },
-                      },
-                    }),
-                  ]),
-                  _vm._v(" "),
-                  _c("div", { staticClass: "col-md-3" }, [
-                    _c("label", { attrs: { for: "vehicle1" } }, [
-                      _vm._v(" vertical"),
-                    ]),
-                    _c("br"),
-                    _vm._v(" "),
-                    _c("img", {
-                      staticClass: "sun_svg",
-                      attrs: {
-                        src: "../../images/svg/vertical.svg",
-                        alt: "Vertical",
-                        title: "Vertical",
-                      },
-                    }),
-                    _vm._v(" "),
-                    _c("input", {
-                      directives: [
-                        {
-                          name: "model",
-                          rawName: "v-model",
-                          value: _vm.data.vertical,
-                          expression: "data.vertical",
-                        },
-                      ],
-                      staticClass: "largerCheckbox",
-                      attrs: {
-                        type: "checkbox",
-                        name: "afternoon",
-                        value: "1",
-                      },
-                      domProps: {
-                        checked: Array.isArray(_vm.data.vertical)
-                          ? _vm._i(_vm.data.vertical, "1") > -1
-                          : _vm.data.vertical,
-                      },
-                      on: {
-                        change: function ($event) {
-                          var $$a = _vm.data.vertical,
-                            $$el = $event.target,
-                            $$c = $$el.checked ? true : false
-                          if (Array.isArray($$a)) {
-                            var $$v = "1",
-                              $$i = _vm._i($$a, $$v)
-                            if ($$el.checked) {
-                              $$i < 0 &&
-                                _vm.$set(
-                                  _vm.data,
-                                  "vertical",
-                                  $$a.concat([$$v])
-                                )
-                            } else {
-                              $$i > -1 &&
-                                _vm.$set(
-                                  _vm.data,
-                                  "vertical",
-                                  $$a.slice(0, $$i).concat($$a.slice($$i + 1))
-                                )
-                            }
-                          } else {
-                            _vm.$set(_vm.data, "vertical", $$c)
-                          }
-                        },
-                      },
-                    }),
-                  ]),
-                  _vm._v(" "),
-                  _c("div", { staticClass: "col-md-3" }, [
-                    _c("label", { attrs: { for: "vehicle1" } }, [
-                      _vm._v(" overhang"),
-                    ]),
-                    _c("br"),
-                    _vm._v(" "),
-                    _c("img", {
-                      staticClass: "sun_svg",
-                      attrs: {
-                        src: "../../images/svg/overhang.svg",
-                        alt: "Overhang",
-                        title: "Overhang",
-                      },
-                    }),
-                    _vm._v(" "),
-                    _c("input", {
-                      directives: [
-                        {
-                          name: "model",
-                          rawName: "v-model",
-                          value: _vm.data.overhang,
-                          expression: "data.overhang",
-                        },
-                      ],
-                      staticClass: "largerCheckbox",
-                      attrs: {
-                        type: "checkbox",
-                        name: "beforenoon",
-                        value: "1",
-                      },
-                      domProps: {
-                        checked: Array.isArray(_vm.data.overhang)
-                          ? _vm._i(_vm.data.overhang, "1") > -1
-                          : _vm.data.overhang,
-                      },
-                      on: {
-                        change: function ($event) {
-                          var $$a = _vm.data.overhang,
-                            $$el = $event.target,
-                            $$c = $$el.checked ? true : false
-                          if (Array.isArray($$a)) {
-                            var $$v = "1",
-                              $$i = _vm._i($$a, $$v)
-                            if ($$el.checked) {
-                              $$i < 0 &&
-                                _vm.$set(
-                                  _vm.data,
-                                  "overhang",
-                                  $$a.concat([$$v])
-                                )
-                            } else {
-                              $$i > -1 &&
-                                _vm.$set(
-                                  _vm.data,
-                                  "overhang",
-                                  $$a.slice(0, $$i).concat($$a.slice($$i + 1))
-                                )
-                            }
-                          } else {
-                            _vm.$set(_vm.data, "overhang", $$c)
-                          }
-                        },
-                      },
-                    }),
-                  ]),
-                  _vm._v(" "),
-                  _c("div", { staticClass: "col-md-3" }, [
-                    _c("label", { attrs: { for: "vehicle1" } }, [
-                      _vm._v(" roof"),
-                    ]),
-                    _c("br"),
-                    _vm._v(" "),
-                    _c("img", {
-                      staticClass: "sun_svg",
-                      attrs: {
-                        src: "../../images/svg/roof.svg",
-                        alt: "Overhang",
-                        title: "Overhang",
-                      },
-                    }),
-                    _vm._v(" "),
-                    _c("input", {
-                      directives: [
-                        {
-                          name: "model",
-                          rawName: "v-model",
-                          value: _vm.data.roof,
-                          expression: "data.roof",
-                        },
-                      ],
-                      staticClass: "largerCheckbox",
-                      attrs: {
-                        type: "checkbox",
-                        name: "beforenoon",
-                        value: "1",
-                      },
-                      domProps: {
-                        checked: Array.isArray(_vm.data.roof)
-                          ? _vm._i(_vm.data.roof, "1") > -1
-                          : _vm.data.roof,
-                      },
-                      on: {
-                        change: function ($event) {
-                          var $$a = _vm.data.roof,
-                            $$el = $event.target,
-                            $$c = $$el.checked ? true : false
-                          if (Array.isArray($$a)) {
-                            var $$v = "1",
-                              $$i = _vm._i($$a, $$v)
-                            if ($$el.checked) {
-                              $$i < 0 &&
-                                _vm.$set(_vm.data, "roof", $$a.concat([$$v]))
-                            } else {
-                              $$i > -1 &&
-                                _vm.$set(
-                                  _vm.data,
-                                  "roof",
-                                  $$a.slice(0, $$i).concat($$a.slice($$i + 1))
-                                )
-                            }
-                          } else {
-                            _vm.$set(_vm.data, "roof", $$c)
-                          }
-                        },
-                      },
-                    }),
-                  ]),
-                ]),
-              ]),
-              _vm._v(" "),
-              _c("hr"),
-              _vm._v(" "),
-              _c("div", { staticClass: "form-group clearfix row" }, [
-                _c("label", { staticClass: "col-md-2 control-label" }, [
-                  _vm._v(" Kids: "),
-                ]),
-                _vm._v(" "),
-                _c("div", { staticClass: "col-md-10 row" }, [
-                  _c("div", { staticClass: "col-md-6" }, [
-                    _c("label", { attrs: { for: "vehicle1" } }, [
-                      _vm._v(" for_family"),
-                    ]),
-                    _c("br"),
-                    _vm._v(" "),
-                    _c("img", {
-                      staticClass: "sun_svg",
-                      attrs: {
-                        src: "../../images/svg/for family.svg",
-                        alt: "Slabby",
-                        title: "Slabby",
-                      },
-                    }),
-                    _vm._v(" "),
-                    _c("input", {
-                      directives: [
-                        {
-                          name: "model",
-                          rawName: "v-model",
-                          value: _vm.data.for_family,
-                          expression: "data.for_family",
-                        },
-                      ],
-                      staticClass: "largerCheckbox",
-                      attrs: { type: "checkbox", name: "no_sun", value: "1" },
-                      domProps: {
-                        checked: Array.isArray(_vm.data.for_family)
-                          ? _vm._i(_vm.data.for_family, "1") > -1
-                          : _vm.data.for_family,
-                      },
-                      on: {
-                        change: function ($event) {
-                          var $$a = _vm.data.for_family,
-                            $$el = $event.target,
-                            $$c = $$el.checked ? true : false
-                          if (Array.isArray($$a)) {
-                            var $$v = "1",
-                              $$i = _vm._i($$a, $$v)
-                            if ($$el.checked) {
-                              $$i < 0 &&
-                                _vm.$set(
-                                  _vm.data,
-                                  "for_family",
-                                  $$a.concat([$$v])
-                                )
-                            } else {
-                              $$i > -1 &&
-                                _vm.$set(
-                                  _vm.data,
-                                  "for_family",
-                                  $$a.slice(0, $$i).concat($$a.slice($$i + 1))
-                                )
-                            }
-                          } else {
-                            _vm.$set(_vm.data, "for_family", $$c)
-                          }
-                        },
-                      },
-                    }),
-                  ]),
-                  _vm._v(" "),
-                  _c("div", { staticClass: "col-md-6" }, [
-                    _c("label", { attrs: { for: "vehicle1" } }, [
-                      _vm._v(" for_kids"),
-                    ]),
-                    _c("br"),
-                    _vm._v(" "),
-                    _c("img", {
-                      staticClass: "sun_svg",
-                      attrs: {
-                        src: "../../images/svg/for kids.svg",
-                        alt: "Vertical",
-                        title: "Vertical",
-                      },
-                    }),
-                    _vm._v(" "),
-                    _c("input", {
-                      directives: [
-                        {
-                          name: "model",
-                          rawName: "v-model",
-                          value: _vm.data.for_kids,
-                          expression: "data.for_kids",
-                        },
-                      ],
-                      staticClass: "largerCheckbox",
-                      attrs: {
-                        type: "checkbox",
-                        name: "afternoon",
-                        value: "1",
-                      },
-                      domProps: {
-                        checked: Array.isArray(_vm.data.for_kids)
-                          ? _vm._i(_vm.data.for_kids, "1") > -1
-                          : _vm.data.for_kids,
-                      },
-                      on: {
-                        change: function ($event) {
-                          var $$a = _vm.data.for_kids,
-                            $$el = $event.target,
-                            $$c = $$el.checked ? true : false
-                          if (Array.isArray($$a)) {
-                            var $$v = "1",
-                              $$i = _vm._i($$a, $$v)
-                            if ($$el.checked) {
-                              $$i < 0 &&
-                                _vm.$set(
-                                  _vm.data,
-                                  "for_kids",
-                                  $$a.concat([$$v])
-                                )
-                            } else {
-                              $$i > -1 &&
-                                _vm.$set(
-                                  _vm.data,
-                                  "for_kids",
-                                  $$a.slice(0, $$i).concat($$a.slice($$i + 1))
-                                )
-                            }
-                          } else {
-                            _vm.$set(_vm.data, "for_kids", $$c)
-                          }
-                        },
-                      },
-                    }),
-                  ]),
-                ]),
-              ]),
-              _vm._v(" "),
-              _c("hr"),
-            ]
-          ),
-          _vm._v(" "),
-          _vm._m(1),
-          _vm._v(" "),
-          _c("div", { staticClass: "col-md-12" }, [
-            _c("div", { staticClass: "row" }, [
-              _c("div", { staticClass: "col-md-12" }, [
-                _c(
-                  "table",
-                  {
-                    staticClass: "table table-hover",
-                    attrs: { id: "dev-table" },
-                  },
-                  [
-                    _vm._m(2),
-                    _vm._v(" "),
-                    _c(
-                      "tbody",
-                      _vm._l(
-                        _vm.sector_old_images,
-                        function (sector_old_image) {
-                          return _c("tr", { key: sector_old_image.id }, [
-                            _c("td", [
-                              _c("img", {
-                                staticClass: "img-responsive",
-                                attrs: {
-                                  src:
-                                    "../../../../images/sector_img/" +
-                                    sector_old_image.image,
-                                  alt: sector_old_image.image,
-                                },
-                              }),
-                            ]),
-                            _vm._v(" "),
-                            _c("td", [
-                              _c(
-                                "button",
-                                {
-                                  staticClass: "btn btn-danger",
-                                  on: {
-                                    click: function ($event) {
-                                      return _vm.del_sector_image_from_db(
-                                        sector_old_image.id
-                                      )
-                                    },
-                                  },
-                                },
-                                [_vm._v("Delete")]
-                              ),
-                            ]),
-                          ])
-                        }
-                      ),
-                      0
-                    ),
-                  ]
-                ),
-              ]),
-            ]),
-          ]),
-          _vm._v(" "),
-          _c("div", { staticClass: "row" }, [
-            _c("div", { staticClass: "col-md-12" }, [
-              _c("div", { staticClass: "form-groupe" }, [
-                _c(
-                  "button",
-                  {
-                    staticClass: "btn btn-primary float-left",
-                    on: {
-                      click: function ($event) {
-                        return _vm.add_sector_new_image_value()
-                      },
-                    },
-                  },
-                  [_vm._v("Add new sector image")]
-                ),
-              ]),
-            ]),
-          ]),
-          _vm._v(" "),
-          _c("div", { staticClass: "container" }, [
-            _c("div", { staticClass: "root" }, [
-              _c(
-                "table",
-                { style: "width: 100%", attrs: { tag: "table" } },
-                [
-                  _vm._m(3),
-                  _vm._v(" "),
-                  _vm._l(_vm.sector_new_images, function (image, index) {
-                    return _c(
-                      "tbody",
-                      { key: index, attrs: { index: index, tag: "tr" } },
-                      [
-                        _c("td", [
-                          _c("form", { ref: "myForm", refInFor: true }, [
-                            _c("input", {
-                              attrs: {
-                                type: "file",
-                                name: "image",
-                                id: "image",
-                              },
-                              on: {
-                                change: function ($event) {
-                                  return _vm.onFileChange($event, image.id)
-                                },
-                              },
-                            }),
-                          ]),
-                        ]),
-                        _vm._v(" "),
-                        _c("td", [
-                          _c(
-                            "button",
-                            {
-                              staticClass: "btn btn-danger",
-                              on: {
-                                click: function ($event) {
-                                  return _vm.del_sector_image(image.id)
-                                },
-                              },
-                            },
-                            [
-                              _vm._v(
-                                "\n                                Del\n                            "
-                              ),
-                            ]
-                          ),
-                        ]),
-                      ]
-                    )
-                  }),
-                ],
-                2
-              ),
-            ]),
-          ]),
-        ])
-      : _vm._e(),
-    _vm._v(" "),
-    _vm.is_geting_data_isset
-      ? _c("div", { staticClass: "row justify-content-center" }, [
-          _c("div", { staticClass: "col-md-4" }, [
-            _c("img", {
-              attrs: {
-                src: "../../../../../../public/images/site_img/loading.gif",
-                alt: "loading",
-              },
-            }),
-          ]),
-        ])
-      : _vm._e(),
-  ])
-}
-var staticRenderFns = [
-  function () {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "form-group" }, [
-      _c(
-        "button",
-        {
-          staticClass: "btn btn-primary",
-          attrs: { type: "submit", form: "sector_editing_form" },
-        },
-        [_vm._v("\n                Save\n            ")]
-      ),
-    ])
-  },
-  function () {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "col-md-12" }, [
-      _c("div", { staticClass: "row" }, [
-        _vm._v("\n                Olredy added\n            "),
-      ]),
-    ])
-  },
-  function () {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("thead", [
-      _c("tr", [
-        _c("th", [_vm._v("Image")]),
-        _vm._v(" "),
-        _c("th", [_vm._v("Delite")]),
-      ]),
-    ])
-  },
-  function () {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("thead", [
-      _c("tr", [
-        _c("td", [_vm._v("Image")]),
-        _vm._v(" "),
-        _c("td", [_vm._v("Delete")]),
-      ]),
-    ])
-  },
-]
-render._withStripped = true
-
+/* harmony import */ var _node_modules_style_loader_dist_cjs_js_node_modules_laravel_mix_node_modules_css_loader_dist_cjs_js_clonedRuleSet_9_use_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_dist_cjs_js_clonedRuleSet_9_use_2_node_modules_vue_loader_lib_index_js_vue_loader_options_sectorEditComponent_vue_vue_type_style_index_0_id_0128acc0_scoped_true_lang_css___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../../../node_modules/style-loader/dist/cjs.js!../../../../../../../node_modules/laravel-mix/node_modules/css-loader/dist/cjs.js??clonedRuleSet-9.use[1]!../../../../../../../node_modules/vue-loader/lib/loaders/stylePostLoader.js!../../../../../../../node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-9.use[2]!../../../../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./sectorEditComponent.vue?vue&type=style&index=0&id=0128acc0&scoped=true&lang=css& */ "./node_modules/style-loader/dist/cjs.js!./node_modules/laravel-mix/node_modules/css-loader/dist/cjs.js??clonedRuleSet-9.use[1]!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-9.use[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/user/pages/routes_and_sectors/sectors/sectorEditComponent.vue?vue&type=style&index=0&id=0128acc0&scoped=true&lang=css&");
 
 
 /***/ }),

@@ -61,7 +61,7 @@
             Remember me
           </div>
           <div class="alert alert-danger" role="alert" v-if="auth_error">
-            Password or email is not correct
+            Invalid credentials
           </div>
           <button type="button" @click.prevent="login" class="btn btn-primary">
             Login

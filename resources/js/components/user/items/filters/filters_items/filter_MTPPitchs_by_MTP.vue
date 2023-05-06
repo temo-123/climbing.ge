@@ -35,7 +35,8 @@
                 );
             },
             return_data(filtr_id){
-                this.$emit('filtred_id', filtr_id)
+                // this.$emit('filtred_id', filtr_id)
+                this.$emit('filtred_id', {'filtr_id': filtr_id, 'filtr_category': 'mtp_pitch_filtr'})
             }
         }
     }

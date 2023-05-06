@@ -26,4 +26,9 @@ class Event extends Model
 	{
 		return $this->hasOne(Locale_event::class, 'id', 'ru_event_id');
 	}
+
+	public function general_info()
+	{
+        return $this->belongsToMany(General_info::class, 'general_info_event', 'event_id', 'info_id');
+	}
 }

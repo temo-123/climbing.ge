@@ -6,7 +6,7 @@
         <td>|</td>
         <td>{{table_info.global_mount.id}}</td>
         <td>|</td>
-        <td>{{table_info.global_mount.demo_name}} </td>
+        <td>{{table_info.global_mount.name}} </td>
         <td>|</td>
         <td>
             <!-- <a :href="'../../spot_category/edit/'+table_info.id" class="btn btn-primary" type="submit">Edit</a> -->

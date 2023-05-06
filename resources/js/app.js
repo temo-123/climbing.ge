@@ -20,16 +20,10 @@ import "vue-glide-js/dist/vue-glide.css";
 import VueGtag from "vue-gtag";
 import { abilitiesPlugin } from "@casl/vue";
 import ability from "./services/ability/ability";
+import { ContentLoader } from 'vue-content-loader'
 
-// import FileManager from 'laravel-file-manager'
 
-// Vue.use(Vuex);
-
-// create Vuex store, if you don't have it
-// const store = new Vuex.Store();
-
-// Vue.use(FileManager, {store});
-
+Vue.use(ContentLoader);
 Vue.use(abilitiesPlugin, ability());
 Vue.use(VueGlide);
 Vue.use(plugin);
@@ -42,6 +36,17 @@ Vue.use(VueMeta);
 // Vue.use(Carousel3d);
 Vue.use(CKEditor);
 Vue.use(Router);
+
+/*
+ *  Mixins
+ */
+
+import { editor_config } from './mixins/editor/editor_config_mixin.js'
+import { going } from './mixins/easy_navigation_mixin.js'
+
+Vue.mixin(editor_config); 
+Vue.mixin(going); 
+
 
 /*
  *   My components
@@ -134,6 +139,9 @@ Vue.config.productionTip = false;
 Vue.prototype.$siteData = [];
 Vue.prototype.$globalSiteData = [];
 
+Vue.prototype.$going = going
+Vue.prototype.$editor_config = editor_config
+
 if(
     window.location.hostname == 'climbing.ge' &&
     window.location.hostname == 'shop.climbing.ge' &&
@@ -163,12 +171,11 @@ const app = new Vue({
 
     mounted() {
         this.get_site_data();
-        // this.get_auth_user_data()
     },
     methods: {
         get_site_data() {
             axios
-            .get("../../../../api/siteData/get_site_locale_data/"+localStorage.getItem('lang'))
+            .get("/siteData/get_site_locale_data/"+localStorage.getItem('lang'))
             .then((response) => (
                 Vue.prototype.$siteData = response.data.locale_data,
                 Vue.prototype.$globalSiteData = response.data.global_data
@@ -182,7 +189,7 @@ const app = new Vue({
             window.scrollTo(0, 0);
 
             let locale = localStorage.getItem("lang")
-            this.get_site_data();
+            // this.get_site_data();
 
             if (window.location.hostname == process.env.MIX_SITE_URL || window.location.hostname == process.env.MIX_SHOP_URL) {
                 if(locale != 'en'){

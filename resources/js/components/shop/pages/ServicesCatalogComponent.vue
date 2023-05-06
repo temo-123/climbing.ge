@@ -30,7 +30,7 @@
         </span>
 
         <metaData 
-            :title = " $t('shop.meta.products') "
+            :title = " $t('shop.meta.services') "
             :description = "'Service climbing & mountaineering.'"
             :image = "'../../../../public/images/meta_img/services.jpg'"
         />

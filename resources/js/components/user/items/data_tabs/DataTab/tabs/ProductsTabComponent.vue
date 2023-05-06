@@ -4,23 +4,23 @@
             <input type="checkbox">
         </td>
         <td>|</td>
-        <td>{{table_info.global_product.id}}</td>
+        <td>{{table_info.id}}</td>
         <td>|</td>
-        <td>{{table_info.locale_product.title}} </td>
+        <td>{{table_info.url_title}} </td>
         <td>|</td>
-        <td style='text-align: center;'>{{table_info.global_product.published}}</td>
+        <td style='text-align: center;'>{{table_info.published}}</td>
         <td>|</td>
         <td>
-            <router-link class="btn btn-primary" :to="{ name: 'productOptionsControl', params: { product_id: table_info.global_product.id } }">-></router-link>
+            <router-link class="btn btn-primary" :to="{ name: 'productOptionsControl', params: { product_id: table_info.id } }">-></router-link>
         </td>
         <td>|</td>
         <td>
-            <router-link class="btn btn-primary" :to="{ name: 'productEdit', params: { id: table_info.global_product.id } }" v-if="$can('edit', 'product')"><i class="fa fa-pencil" aria-hidden="true"></i></router-link>
+            <router-link class="btn btn-primary" :to="{ name: 'productEdit', params: { id: table_info.id } }" v-if="$can('edit', 'product')"><i class="fa fa-pencil" aria-hidden="true"></i></router-link>
         </td>
         
         <td>|</td>
         <td>
-            <button type="button" class="btn btn-danger" @click="del_products(table_info.global_product.id)" v-if="$can('del', 'product')"><i class="fa fa-trash" aria-hidden="true"></i></button>
+            <button type="button" class="btn btn-danger" @click="del_products(table_info.id)" v-if="$can('del', 'product')"><i class="fa fa-trash" aria-hidden="true"></i></button>
         </td>
     </tr>
 </template>

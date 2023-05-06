@@ -3,6 +3,7 @@
         <navbar @grade="grade_action"/>
         <div class="container top_menu_margin h-recent-work">
             <router-view />
+            <go_to_top />
         </div>
 
         <div
@@ -18,8 +19,13 @@
 import navbar from "./items/navbars/NavbarComponent";
 import footter from "./items/FooterComponent";
 import loginModal from "../global_components/LoginModalComponent.vue";
+import go_to_top from "../global_components/GoOnTopComponent.vue";
 
+// import { mapState } from 'vuex'
 export default {
+    // computed: mapState({
+    //     arrayIndex: state => state.arrayIndex
+    // }),
     data: function () {
         return {
             publicPath: window.location.protocol + '//' + window.location.hostname
@@ -28,7 +34,8 @@ export default {
     components: {
         navbar,
         footter,
-        loginModal
+        loginModal,
+        go_to_top
     },
     mounted() {
         

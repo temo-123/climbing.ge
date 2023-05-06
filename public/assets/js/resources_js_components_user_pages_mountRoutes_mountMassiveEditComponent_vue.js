@@ -1,10 +1,10 @@
 "use strict";
 (self["webpackChunkclimbing_loc"] = self["webpackChunkclimbing_loc"] || []).push([["resources_js_components_user_pages_mountRoutes_mountMassiveEditComponent_vue"],{
 
-/***/ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/user/pages/mountRoutes/mountMassiveEditComponent.vue?vue&type=script&lang=js&":
-/*!*******************************************************************************************************************************************************************************************************************************************************!*\
-  !*** ./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/user/pages/mountRoutes/mountMassiveEditComponent.vue?vue&type=script&lang=js& ***!
-  \*******************************************************************************************************************************************************************************************************************************************************/
+/***/ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/user/pages/mountRoutes/mountMassiveEditComponent.vue?vue&type=script&lang=js&":
+/*!*******************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/user/pages/mountRoutes/mountMassiveEditComponent.vue?vue&type=script&lang=js& ***!
+  \*******************************************************************************************************************************************************************************************************************************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 __webpack_require__.r(__webpack_exports__);
@@ -12,385 +12,856 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
 /* harmony import */ var _mixins_editor_editor_config_mixin_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../../../mixins/editor/editor_config_mixin.js */ "./resources/js/mixins/editor/editor_config_mixin.js");
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   mixins: [_mixins_editor_editor_config_mixin_js__WEBPACK_IMPORTED_MODULE_0__.editor_config],
-  props: ['editing_mount_id', 'back_url'],
+  props: [
+    // 'editing_mount_id',
+    // 'back_url'
+  ],
   data: function data() {
     return {
-      map: "",
-      weather: "",
-      published: "",
-      us_short_description_text_editor: _mixins_editor_editor_config_mixin_js__WEBPACK_IMPORTED_MODULE_0__.editor_config.get_small_editor_config(),
-      us_text_editor_config: _mixins_editor_editor_config_mixin_js__WEBPACK_IMPORTED_MODULE_0__.editor_config.get_big_editor_config(),
-      us_how_get_editor_config: _mixins_editor_editor_config_mixin_js__WEBPACK_IMPORTED_MODULE_0__.editor_config.get_big_editor_config(),
-      us_best_time_editor_config: _mixins_editor_editor_config_mixin_js__WEBPACK_IMPORTED_MODULE_0__.editor_config.get_big_editor_config(),
-      ka_short_description_text_editor: _mixins_editor_editor_config_mixin_js__WEBPACK_IMPORTED_MODULE_0__.editor_config.get_small_editor_config(),
-      ka_text_editor_config: _mixins_editor_editor_config_mixin_js__WEBPACK_IMPORTED_MODULE_0__.editor_config.get_big_editor_config(),
-      ka_how_get_editor_config: _mixins_editor_editor_config_mixin_js__WEBPACK_IMPORTED_MODULE_0__.editor_config.get_big_editor_config(),
-      ka_best_time_editor_config: _mixins_editor_editor_config_mixin_js__WEBPACK_IMPORTED_MODULE_0__.editor_config.get_big_editor_config(),
-      ru_short_description_text_editor: _mixins_editor_editor_config_mixin_js__WEBPACK_IMPORTED_MODULE_0__.editor_config.get_small_editor_config(),
-      ru_text_editor_config: _mixins_editor_editor_config_mixin_js__WEBPACK_IMPORTED_MODULE_0__.editor_config.get_big_editor_config(),
-      ru_how_get_editor_config: _mixins_editor_editor_config_mixin_js__WEBPACK_IMPORTED_MODULE_0__.editor_config.get_big_editor_config(),
-      ru_best_time_editor_config: _mixins_editor_editor_config_mixin_js__WEBPACK_IMPORTED_MODULE_0__.editor_config.get_big_editor_config(),
+      data: {
+        us_data: {
+          title: '',
+          short_description: '',
+          text: '',
+          route: '',
+          how_get: '',
+          best_time: ''
+        },
+        ru_data: {
+          title: '',
+          short_description: '',
+          text: '',
+          route: '',
+          how_get: '',
+          best_time: ''
+        },
+        ka_data: {
+          title: '',
+          short_description: '',
+          text: '',
+          route: '',
+          how_get: '',
+          best_time: ''
+        },
+        global_data: {
+          demo_image: "",
+          map: "",
+          weather: ""
+        }
+      },
+      editor_config: {
+        us_short_description_text_editor: _mixins_editor_editor_config_mixin_js__WEBPACK_IMPORTED_MODULE_0__.editor_config.get_small_editor_config(),
+        us_text_editor_config: _mixins_editor_editor_config_mixin_js__WEBPACK_IMPORTED_MODULE_0__.editor_config.get_big_editor_config(),
+        us_info_editor_config: _mixins_editor_editor_config_mixin_js__WEBPACK_IMPORTED_MODULE_0__.editor_config.get_big_editor_config(),
+        us_how_get_editor_config: _mixins_editor_editor_config_mixin_js__WEBPACK_IMPORTED_MODULE_0__.editor_config.get_big_editor_config(),
+        us_best_time_editor_config: _mixins_editor_editor_config_mixin_js__WEBPACK_IMPORTED_MODULE_0__.editor_config.get_big_editor_config(),
+        ka_short_description_text_editor: _mixins_editor_editor_config_mixin_js__WEBPACK_IMPORTED_MODULE_0__.editor_config.get_small_editor_config(),
+        ka_text_editor_config: _mixins_editor_editor_config_mixin_js__WEBPACK_IMPORTED_MODULE_0__.editor_config.get_big_editor_config(),
+        ka_info_editor_config: _mixins_editor_editor_config_mixin_js__WEBPACK_IMPORTED_MODULE_0__.editor_config.get_big_editor_config(),
+        ka_how_get_editor_config: _mixins_editor_editor_config_mixin_js__WEBPACK_IMPORTED_MODULE_0__.editor_config.get_big_editor_config(),
+        ka_best_time_editor_config: _mixins_editor_editor_config_mixin_js__WEBPACK_IMPORTED_MODULE_0__.editor_config.get_big_editor_config(),
+        ru_short_description_text_editor: _mixins_editor_editor_config_mixin_js__WEBPACK_IMPORTED_MODULE_0__.editor_config.get_small_editor_config(),
+        ru_text_editor_config: _mixins_editor_editor_config_mixin_js__WEBPACK_IMPORTED_MODULE_0__.editor_config.get_big_editor_config(),
+        ru_info_editor_config: _mixins_editor_editor_config_mixin_js__WEBPACK_IMPORTED_MODULE_0__.editor_config.get_big_editor_config(),
+        ru_how_get_editor_config: _mixins_editor_editor_config_mixin_js__WEBPACK_IMPORTED_MODULE_0__.editor_config.get_big_editor_config(),
+        ru_best_time_editor_config: _mixins_editor_editor_config_mixin_js__WEBPACK_IMPORTED_MODULE_0__.editor_config.get_big_editor_config()
+      },
+      is_loading: false,
+      tab_num: 1,
       errors: [],
-      name: "",
-      short_description: "",
-      text: "",
-      route: "",
-      how_get: "",
-      best_time: "",
-      name_ka: "",
-      short_description_ka: "",
-      text_ka: "",
-      route_ka: "",
-      how_get_ka: "",
-      best_time_ka: "",
-      name_ru: "",
-      short_description_ru: "",
-      text_ru: "",
-      how_get_ru: "",
-      best_time_ru: "",
-      editing_url: "/mountaineering/get_mount_editing_data/",
-      url: ""
+      is_back_action: false
     };
   },
   mounted: function mounted() {
     this.get_editing_data();
   },
+  beforeRouteLeave: function beforeRouteLeave(to, from, next) {
+    if (this.is_back_action == true) {
+      if (window.confirm('Added information will be deleted!!! Are you sure, you want go back?')) {
+        this.is_back_action = false;
+        next();
+      } else {
+        next(false);
+      }
+    } else {
+      next();
+    }
+  },
+  // created() {
+  //     // so nice
+  //     // console.log(`${this.$going.back(this.is_back_action, this, true)} is currently logged in.`);
+  //     this.$test()
+  // },
   methods: {
     edit_mount: function edit_mount() {
       var _this = this;
-
-      axios.post('/mountaineering/mount_edit/' + this.editing_mount_id, {
-        map: this.map,
-        weather: this.weather,
-        published: this.published,
-        name: this.name,
-        short_description: this.short_description,
-        text: this.text,
-        how_get: this.how_get,
-        best_time: this.best_time,
-        name_ka: this.name_ka,
-        short_description_ka: this.short_description_ka,
-        text_ka: this.text_ka,
-        how_get_ka: this.how_get_ka,
-        best_time_ka: this.best_time_ka,
-        name_ru: this.name_ru,
-        short_description_ru: this.short_description_ru,
-        text_ru: this.text_ru,
-        how_get_ru: this.how_get_ru,
-        best_time_ru: this.best_time_ru
+      axios.post('/mount/edit_mount_massive/' + this.$route.params.id, {
+        data: this.data
       }).then(function (Response) {
-        window.location.href = _this.back_url;
+        _this.go_back(true);
       })["catch"](function (error) {
         if (error.response.status == 422) {
-          _this.errors = error.response.data.errors;
+          _this.errors = error.response.data.validation;
         }
+        // else {
+        //     alert(error)
+        // }
       });
     },
+
     get_editing_data: function get_editing_data() {
       var _this2 = this;
-
-      this.url = this.editing_url + this.editing_mount_id;
-      axios.get(this.url).then(function (response) {
-        _this2.editing_data = response.data; // send data in editing form value
-
-        _this2.published = _this2.editing_data.mount['published'], _this2.map = _this2.editing_data.mount['map'], _this2.weather = _this2.editing_data.mount['weather'], _this2.name = _this2.editing_data.mount['name'], _this2.short_description = _this2.editing_data.mount['short_description'];
-        _this2.text = _this2.editing_data.mount['text'];
-        _this2.how_get = _this2.editing_data.mount['how_get'];
-        _this2.best_time = _this2.editing_data.mount['best_time'];
-        _this2.name_ka = _this2.editing_data.mount['name_ka'], _this2.short_description_ka = _this2.editing_data.mount['short_description_ka'];
-        _this2.text_ka = _this2.editing_data.mount['text_ka'];
-        _this2.how_get_ka = _this2.editing_data.mount['how_get_ka'];
-        _this2.best_time_ka = _this2.editing_data.mount['best_time_ka'];
-        _this2.name_ru = _this2.editing_data.mount['name_ru'], _this2.short_description_ru = _this2.editing_data.mount['short_description_ru'];
-        _this2.text_ru = _this2.editing_data.mount['text_ru'];
-        _this2.how_get_ru = _this2.editing_data.mount['how_get_ru'];
-        _this2.best_time_ru = _this2.editing_data.mount['best_time_ru'];
-      })["catch"](function (error) {
-        return console.log(error);
+      axios.get('/mount/get_editing_mount_data/' + this.$route.params.id).then(function (response) {
+        _this2.data = response.data;
       });
+      // .catch(
+      //     error => alert(error)
+      // );
     },
-    save_all: function save_all(Response) {
-      this.edit_mount();
+
+    go_back: function go_back() {
+      var action = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : false;
+      this.is_back_action = this.$going.back(this, action);
     }
   }
 });
 
 /***/ }),
 
-/***/ "./resources/js/mixins/editor/editor_config_mixin.js":
-/*!***********************************************************!*\
-  !*** ./resources/js/mixins/editor/editor_config_mixin.js ***!
-  \***********************************************************/
+/***/ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/lib/loaders/templateLoader.js??ruleSet[1].rules[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/user/pages/mountRoutes/mountMassiveEditComponent.vue?vue&type=template&id=2458f7f8&":
+/*!******************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/lib/loaders/templateLoader.js??ruleSet[1].rules[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/user/pages/mountRoutes/mountMassiveEditComponent.vue?vue&type=template&id=2458f7f8& ***!
+  \******************************************************************************************************************************************************************************************************************************************************************************************************************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "editor_config": () => (/* binding */ editor_config)
+/* harmony export */   "render": () => (/* binding */ render),
+/* harmony export */   "staticRenderFns": () => (/* binding */ staticRenderFns)
 /* harmony export */ });
-var editor_config = {
-  //Editor configuration description -> https://ckeditor.com/latest/samples/toolbarconfigurator/#basic
-  get_big_editor_config: function get_big_editor_config() {
-    return {
-      // https://www.tutsmake.com/laravel-8-ckeditor-image-upload-tutorial-example/
-      filebrowserUploadUrl: "../../../../api/ckeditor/upload",
-      // https://ckeditor.com/docs/ckeditor4/latest/examples/mediaembed.html
-      extraPlugins: 'embed,autoembed',
-      // contentsCss: [
-      //     'http://cdn.ckeditor.com/4.20.2/full-all/contents.css',
-      //     'https://ckeditor.com/docs/ckeditor4/4.20.2/examples/assets/css/widgetstyles.css'
-      // ],
-      embed_provider: '//ckeditor.iframe.ly/api/oembed?url={url}&callback={callback}',
-      image2_alignClasses: ['image-align-left', 'image-align-center', 'image-align-right'],
-      image2_disableResizer: true,
-      removeButtons: 'PasteFromWord'
-    };
-  },
-  get_small_editor_config: function get_small_editor_config() {
-    return {
-      removeButtons: 'Link,Unlink,Anchor,Image,Table,Underline,Strike,Subscript,Superscript,RemoveFormat,NumberedList,BulletedList,Outdent,Indent,Blockquote,Scayt,HorizontalRule,SpecialChar,Styles,Format,Font,FontSize,About'
-    };
-  }
+var render = function render() {
+  var _vm = this,
+    _c = _vm._self._c;
+  return _c("div", {
+    staticClass: "tabs"
+  }, [_vm.is_loading ? _c("div", {
+    staticClass: "row justify-content-center"
+  }, [_c("div", {
+    staticClass: "col-md-4"
+  }, [_c("img", {
+    attrs: {
+      src: "../../../../../../public/images/site_img/loading.gif",
+      alt: "loading"
+    }
+  })])]) : _vm._e(), _vm._v(" "), !_vm.is_loading ? _c("div", {
+    staticClass: "row"
+  }, [_c("div", {
+    staticClass: "form-group"
+  }, [_c("button", {
+    staticClass: "btn btn-primary",
+    attrs: {
+      type: "submit"
+    },
+    on: {
+      click: function click($event) {
+        return _vm.go_back();
+      }
+    }
+  }, [_vm._v("Beck")])])]) : _vm._e(), _vm._v(" "), !_vm.is_loading ? _c("div", {
+    staticClass: "row"
+  }, [_c("div", {
+    staticClass: "form-group"
+  }, [_c("button", {
+    staticClass: "btn btn-primary",
+    attrs: {
+      type: "submit"
+    },
+    on: {
+      click: function click($event) {
+        return _vm.edit_mount();
+      }
+    }
+  }, [_vm._v("Save")])])]) : _vm._e(), _vm._v(" "), !_vm.is_loading ? _c("div", {
+    staticClass: "row"
+  }, [_vm.errors.length != 0 ? _c("div", {
+    staticClass: "col-md-12"
+  }, [_vm.errors.global_info_validation.name ? _c("div", {
+    staticClass: "alert alert-danger",
+    attrs: {
+      role: "alert"
+    }
+  }, [_vm._v("\n                Demo name - " + _vm._s(_vm.errors.global_info_validation.name[0]) + "\n            ")]) : _vm._e(), _vm._v(" "), _vm.errors.global_info_validation.us_title_for_url_title ? _c("div", {
+    staticClass: "alert alert-danger",
+    attrs: {
+      role: "alert"
+    }
+  }, [_vm._v("\n                Us title - " + _vm._s(_vm.errors.global_info_validation.us_title_for_url_title[0]) + "\n            ")]) : _vm._e(), _vm._v(" "), _vm.errors.us_info_validation.title ? _c("div", {
+    staticClass: "alert alert-danger",
+    attrs: {
+      role: "alert"
+    }
+  }, [_vm._v("\n                English title - " + _vm._s(_vm.errors.us_info_validation.title[0]) + "\n            ")]) : _vm._e(), _vm._v(" "), _vm.errors.us_info_validation.short_description ? _c("div", {
+    staticClass: "alert alert-danger",
+    attrs: {
+      role: "alert"
+    }
+  }, [_vm._v("\n                English description - " + _vm._s(_vm.errors.us_info_validation.short_description[0]) + "\n            ")]) : _vm._e(), _vm._v(" "), _vm.errors.us_info_validation.text ? _c("div", {
+    staticClass: "alert alert-danger",
+    attrs: {
+      role: "alert"
+    }
+  }, [_vm._v("\n                English text - " + _vm._s(_vm.errors.us_info_validation.text[0]) + "\n            ")]) : _vm._e(), _vm._v(" "), _vm.errors.ka_info_validation.title ? _c("div", {
+    staticClass: "alert alert-danger",
+    attrs: {
+      role: "alert"
+    }
+  }, [_vm._v("\n                Georgian title - " + _vm._s(_vm.errors.ka_info_validation.title[0]) + "\n            ")]) : _vm._e(), _vm._v(" "), _vm.errors.ka_info_validation.short_description ? _c("div", {
+    staticClass: "alert alert-danger",
+    attrs: {
+      role: "alert"
+    }
+  }, [_vm._v("\n                Georgian description - " + _vm._s(_vm.errors.ka_info_validation.short_description[0]) + "\n            ")]) : _vm._e(), _vm._v(" "), _vm.errors.ka_info_validation.text ? _c("div", {
+    staticClass: "alert alert-danger",
+    attrs: {
+      role: "alert"
+    }
+  }, [_vm._v("\n                Georgian text - " + _vm._s(_vm.errors.ka_info_validation.text[0]) + "\n            ")]) : _vm._e(), _vm._v(" "), _vm.errors.ru_info_validation.title ? _c("div", {
+    staticClass: "alert alert-danger",
+    attrs: {
+      role: "alert"
+    }
+  }, [_vm._v("\n                Russion title - " + _vm._s(_vm.errors.ru_info_validation.title[0]) + "\n            ")]) : _vm._e(), _vm._v(" "), _vm.errors.ru_info_validation.short_description ? _c("div", {
+    staticClass: "alert alert-danger",
+    attrs: {
+      role: "alert"
+    }
+  }, [_vm._v("\n                Russiondescription - " + _vm._s(_vm.errors.ru_info_validation.short_description[0]) + "\n            ")]) : _vm._e(), _vm._v(" "), _vm.errors.ru_info_validation.text ? _c("div", {
+    staticClass: "alert alert-danger",
+    attrs: {
+      role: "alert"
+    }
+  }, [_vm._v("\n                Russion text - " + _vm._s(_vm.errors.ru_info_validation.text[0]) + "\n            ")]) : _vm._e()]) : _vm._e()]) : _vm._e(), _vm._v(" "), !_vm.is_loading ? _c("div", {
+    staticClass: "row"
+  }, [_c("div", {
+    staticClass: "col-md-12"
+  }, [_c("div", {
+    staticClass: "row"
+  }, [_c("div", {
+    staticClass: "col"
+  }, [_c("input", {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: _vm.tab_num,
+      expression: "tab_num"
+    }],
+    attrs: {
+      type: "radio",
+      id: "1"
+    },
+    domProps: {
+      value: 1,
+      checked: _vm._q(_vm.tab_num, 1)
+    },
+    on: {
+      change: function change($event) {
+        _vm.tab_num = 1;
+      }
+    }
+  }), _vm._v(" "), _c("label", {
+    attrs: {
+      "for": "1"
+    }
+  }, [_vm._v("Global info")])]), _vm._v(" "), _c("div", {
+    staticClass: "col"
+  }, [_c("input", {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: _vm.tab_num,
+      expression: "tab_num"
+    }],
+    attrs: {
+      type: "radio",
+      id: "2"
+    },
+    domProps: {
+      value: 2,
+      checked: _vm._q(_vm.tab_num, 2)
+    },
+    on: {
+      change: function change($event) {
+        _vm.tab_num = 2;
+      }
+    }
+  }), _vm._v(" "), _c("label", {
+    attrs: {
+      "for": "2"
+    }
+  }, [_vm._v("English text")])]), _vm._v(" "), _c("div", {
+    staticClass: "col"
+  }, [_c("input", {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: _vm.tab_num,
+      expression: "tab_num"
+    }],
+    attrs: {
+      type: "radio",
+      id: "4"
+    },
+    domProps: {
+      value: 4,
+      checked: _vm._q(_vm.tab_num, 4)
+    },
+    on: {
+      change: function change($event) {
+        _vm.tab_num = 4;
+      }
+    }
+  }), _vm._v(" "), _c("label", {
+    attrs: {
+      "for": "4"
+    }
+  }, [_vm._v("Georgian text")])]), _vm._v(" "), _c("div", {
+    staticClass: "col"
+  }, [_c("input", {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: _vm.tab_num,
+      expression: "tab_num"
+    }],
+    attrs: {
+      type: "radio",
+      id: "3"
+    },
+    domProps: {
+      value: 3,
+      checked: _vm._q(_vm.tab_num, 3)
+    },
+    on: {
+      change: function change($event) {
+        _vm.tab_num = 3;
+      }
+    }
+  }), _vm._v(" "), _c("label", {
+    attrs: {
+      "for": "3"
+    }
+  }, [_vm._v("Russion text")])])])]), _vm._v(" "), _c("div", {
+    staticClass: "col-md-12"
+  }, [_c("div", {
+    directives: [{
+      name: "show",
+      rawName: "v-show",
+      value: _vm.tab_num == 1,
+      expression: "tab_num == 1"
+    }],
+    staticClass: "row width_100"
+  }, [_vm._m(0), _vm._v(" "), _c("form", [_c("div", {
+    staticClass: "form-group clearfix row"
+  }, [_c("label", {
+    staticClass: "col-xs-2 control-label",
+    attrs: {
+      "for": "name"
+    }
+  }, [_vm._v(" Demo name ")]), _vm._v(" "), _c("div", {
+    staticClass: "col-xs-10"
+  }, [_c("input", {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: _vm.data.global_data.name,
+      expression: "data.global_data.name"
+    }],
+    staticClass: "form-control",
+    attrs: {
+      type: "text",
+      name: "demo name"
+    },
+    domProps: {
+      value: _vm.data.global_data.name
+    },
+    on: {
+      input: function input($event) {
+        if ($event.target.composing) return;
+        _vm.$set(_vm.data.global_data, "name", $event.target.value);
+      }
+    }
+  })])]), _vm._v(" "), _c("div", {
+    staticClass: "form-group clearfix"
+  }, [_c("label", {
+    staticClass: "col-xs-2 control-label",
+    attrs: {
+      "for": "name"
+    }
+  }, [_vm._v(" Map ")]), _vm._v(" "), _c("div", {
+    staticClass: "col-xs-10"
+  }, [_c("input", {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: _vm.data.global_data.map,
+      expression: "data.global_data.map"
+    }],
+    staticClass: "form-control",
+    attrs: {
+      type: "text",
+      name: "map"
+    },
+    domProps: {
+      value: _vm.data.global_data.map
+    },
+    on: {
+      input: function input($event) {
+        if ($event.target.composing) return;
+        _vm.$set(_vm.data.global_data, "map", $event.target.value);
+      }
+    }
+  })])]), _vm._v(" "), _c("div", {
+    staticClass: "form-group clearfix"
+  }, [_c("label", {
+    staticClass: "col-xs-2 control-label",
+    attrs: {
+      "for": "name"
+    }
+  }, [_vm._v(" Weather ")]), _vm._v(" "), _c("div", {
+    staticClass: "col-xs-10"
+  }, [_c("input", {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: _vm.data.global_data.weather,
+      expression: "data.global_data.weather"
+    }],
+    staticClass: "form-control",
+    attrs: {
+      type: "text",
+      name: "weather"
+    },
+    domProps: {
+      value: _vm.data.global_data.weather
+    },
+    on: {
+      input: function input($event) {
+        if ($event.target.composing) return;
+        _vm.$set(_vm.data.global_data, "weather", $event.target.value);
+      }
+    }
+  })])])])]), _vm._v(" "), _c("div", {
+    directives: [{
+      name: "show",
+      rawName: "v-show",
+      value: _vm.tab_num == 2,
+      expression: "tab_num == 2"
+    }],
+    staticClass: "row"
+  }, [_vm._m(1), _vm._v(" "), _c("form", [_c("div", {
+    staticClass: "form-group clearfix"
+  }, [_c("label", {
+    staticClass: "col-xs-2 control-label",
+    attrs: {
+      "for": "name"
+    }
+  }, [_vm._v(" Title english ")]), _vm._v(" "), _c("div", {
+    staticClass: "col-xs-10"
+  }, [_c("input", {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: _vm.data.us_data.title,
+      expression: "data.us_data.title"
+    }],
+    staticClass: "form-control",
+    attrs: {
+      type: "text",
+      name: "name"
+    },
+    domProps: {
+      value: _vm.data.us_data.title
+    },
+    on: {
+      input: function input($event) {
+        if ($event.target.composing) return;
+        _vm.$set(_vm.data.us_data, "title", $event.target.value);
+      }
+    }
+  })])]), _vm._v(" "), _c("hr"), _vm._v(" "), _c("div", {
+    staticClass: "form-group clearfix"
+  }, [_c("label", {
+    staticClass: "col-xs-2 control-label",
+    attrs: {
+      "for": "name"
+    }
+  }, [_vm._v(" English text ")]), _vm._v(" "), _c("div", {
+    staticClass: "col-xs-10"
+  }, [_c("ckeditor", {
+    attrs: {
+      config: _vm.editor_config.us_text_editor_config
+    },
+    model: {
+      value: _vm.data.us_data.text,
+      callback: function callback($$v) {
+        _vm.$set(_vm.data.us_data, "text", $$v);
+      },
+      expression: "data.us_data.text"
+    }
+  })], 1)]), _vm._v(" "), _c("div", {
+    staticClass: "form-group clearfix"
+  }, [_c("label", {
+    staticClass: "col-xs-2 control-label",
+    attrs: {
+      "for": "name"
+    }
+  }, [_vm._v(" English description ")]), _vm._v(" "), _c("div", {
+    staticClass: "col-xs-10"
+  }, [_c("ckeditor", {
+    attrs: {
+      config: _vm.editor_config.us_short_description_text_editor
+    },
+    model: {
+      value: _vm.data.us_data.short_description,
+      callback: function callback($$v) {
+        _vm.$set(_vm.data.us_data, "short_description", $$v);
+      },
+      expression: "data.us_data.short_description"
+    }
+  })], 1)]), _vm._v(" "), _c("div", {
+    staticClass: "form-group clearfix"
+  }, [_c("label", {
+    staticClass: "col-xs-2 control-label",
+    attrs: {
+      "for": "name"
+    }
+  }, [_vm._v(" English how get hear ")]), _vm._v(" "), _c("div", {
+    staticClass: "col-xs-10"
+  }, [_c("ckeditor", {
+    attrs: {
+      config: _vm.editor_config.us_how_get_editor_config
+    },
+    model: {
+      value: _vm.data.us_data.how_get,
+      callback: function callback($$v) {
+        _vm.$set(_vm.data.us_data, "how_get", $$v);
+      },
+      expression: "data.us_data.how_get"
+    }
+  })], 1)]), _vm._v(" "), _c("div", {
+    staticClass: "form-group clearfix"
+  }, [_c("label", {
+    staticClass: "col-xs-2 control-label",
+    attrs: {
+      "for": "name"
+    }
+  }, [_vm._v(" English best time ")]), _vm._v(" "), _c("div", {
+    staticClass: "col-xs-10"
+  }, [_c("ckeditor", {
+    attrs: {
+      config: _vm.editor_config.us_best_time_editor_config
+    },
+    model: {
+      value: _vm.data.us_data.best_time,
+      callback: function callback($$v) {
+        _vm.$set(_vm.data.us_data, "best_time", $$v);
+      },
+      expression: "data.us_data.best_time"
+    }
+  })], 1)])])]), _vm._v(" "), _c("div", {
+    directives: [{
+      name: "show",
+      rawName: "v-show",
+      value: _vm.tab_num == 3,
+      expression: "tab_num == 3"
+    }],
+    staticClass: "row"
+  }, [_vm._m(2), _vm._v(" "), _c("form", [_c("div", {
+    staticClass: "form-group clearfix"
+  }, [_c("label", {
+    staticClass: "col-xs-2 control-label",
+    attrs: {
+      "for": "name"
+    }
+  }, [_vm._v(" Title rusian ")]), _vm._v(" "), _c("div", {
+    staticClass: "col-xs-10"
+  }, [_c("input", {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: _vm.data.ru_data.title,
+      expression: "data.ru_data.title"
+    }],
+    staticClass: "form-control",
+    attrs: {
+      type: "text",
+      name: "name_ru"
+    },
+    domProps: {
+      value: _vm.data.ru_data.title
+    },
+    on: {
+      input: function input($event) {
+        if ($event.target.composing) return;
+        _vm.$set(_vm.data.ru_data, "title", $event.target.value);
+      }
+    }
+  })])]), _vm._v(" "), _c("hr"), _vm._v(" "), _c("div", {
+    staticClass: "form-group clearfix"
+  }, [_c("label", {
+    staticClass: "col-xs-2 control-label",
+    attrs: {
+      "for": "name"
+    }
+  }, [_vm._v(" Rusian text ")]), _vm._v(" "), _c("div", {
+    staticClass: "col-xs-10"
+  }, [_c("ckeditor", {
+    attrs: {
+      config: _vm.editor_config.ru_text_editor_config
+    },
+    model: {
+      value: _vm.data.ru_data.text,
+      callback: function callback($$v) {
+        _vm.$set(_vm.data.ru_data, "text", $$v);
+      },
+      expression: "data.ru_data.text"
+    }
+  })], 1)]), _vm._v(" "), _c("div", {
+    staticClass: "form-group clearfix"
+  }, [_c("label", {
+    staticClass: "col-xs-2 control-label",
+    attrs: {
+      "for": "name"
+    }
+  }, [_vm._v(" Rusian description ")]), _vm._v(" "), _c("div", {
+    staticClass: "col-xs-10"
+  }, [_c("ckeditor", {
+    attrs: {
+      config: _vm.editor_config.ru_short_description_text_editor
+    },
+    model: {
+      value: _vm.data.ru_data.short_description,
+      callback: function callback($$v) {
+        _vm.$set(_vm.data.ru_data, "short_description", $$v);
+      },
+      expression: "data.ru_data.short_description"
+    }
+  })], 1)]), _vm._v(" "), _c("div", {
+    staticClass: "form-group clearfix"
+  }, [_c("label", {
+    staticClass: "col-xs-2 control-label",
+    attrs: {
+      "for": "name"
+    }
+  }, [_vm._v(" Rusian how get hear ")]), _vm._v(" "), _c("div", {
+    staticClass: "col-xs-10"
+  }, [_c("ckeditor", {
+    attrs: {
+      config: _vm.editor_config.ru_how_get_editor_config
+    },
+    model: {
+      value: _vm.data.ru_data.how_get,
+      callback: function callback($$v) {
+        _vm.$set(_vm.data.ru_data, "how_get", $$v);
+      },
+      expression: "data.ru_data.how_get"
+    }
+  })], 1)]), _vm._v(" "), _c("div", {
+    staticClass: "form-group clearfix"
+  }, [_c("label", {
+    staticClass: "col-xs-2 control-label",
+    attrs: {
+      "for": "name"
+    }
+  }, [_vm._v(" Rusian best time ")]), _vm._v(" "), _c("div", {
+    staticClass: "col-xs-10"
+  }, [_c("ckeditor", {
+    attrs: {
+      config: _vm.editor_config.ru_best_time_editor_config
+    },
+    model: {
+      value: _vm.data.ru_data.best_time,
+      callback: function callback($$v) {
+        _vm.$set(_vm.data.ru_data, "best_time", $$v);
+      },
+      expression: "data.ru_data.best_time"
+    }
+  })], 1)])])]), _vm._v(" "), _c("div", {
+    directives: [{
+      name: "show",
+      rawName: "v-show",
+      value: _vm.tab_num == 4,
+      expression: "tab_num == 4"
+    }],
+    staticClass: "row"
+  }, [_vm._m(3), _vm._v(" "), _c("form", [_c("div", {
+    staticClass: "form-group clearfix"
+  }, [_c("label", {
+    staticClass: "col-xs-2 control-label",
+    attrs: {
+      "for": "name"
+    }
+  }, [_vm._v(" Title georgian ")]), _vm._v(" "), _c("div", {
+    staticClass: "col-xs-10"
+  }, [_c("input", {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: _vm.data.ka_data.title,
+      expression: "data.ka_data.title"
+    }],
+    staticClass: "form-control",
+    attrs: {
+      type: "text",
+      name: "name_ka"
+    },
+    domProps: {
+      value: _vm.data.ka_data.title
+    },
+    on: {
+      input: function input($event) {
+        if ($event.target.composing) return;
+        _vm.$set(_vm.data.ka_data, "title", $event.target.value);
+      }
+    }
+  })])]), _vm._v(" "), _c("hr"), _vm._v(" "), _c("div", {
+    staticClass: "form-group clearfix"
+  }, [_c("label", {
+    staticClass: "col-xs-2 control-label",
+    attrs: {
+      "for": "name"
+    }
+  }, [_vm._v(" Georgian text ")]), _vm._v(" "), _c("div", {
+    staticClass: "col-xs-10"
+  }, [_c("ckeditor", {
+    attrs: {
+      config: _vm.editor_config.ka_text_editor_config
+    },
+    model: {
+      value: _vm.data.ka_data.text,
+      callback: function callback($$v) {
+        _vm.$set(_vm.data.ka_data, "text", $$v);
+      },
+      expression: "data.ka_data.text"
+    }
+  })], 1)]), _vm._v(" "), _c("div", {
+    staticClass: "form-group clearfix"
+  }, [_c("label", {
+    staticClass: "col-xs-2 control-label",
+    attrs: {
+      "for": "name"
+    }
+  }, [_vm._v(" Georgian description ")]), _vm._v(" "), _c("div", {
+    staticClass: "col-xs-10"
+  }, [_c("ckeditor", {
+    attrs: {
+      config: _vm.editor_config.ka_short_description_text_editor
+    },
+    model: {
+      value: _vm.data.ka_data.short_description,
+      callback: function callback($$v) {
+        _vm.$set(_vm.data.ka_data, "short_description", $$v);
+      },
+      expression: "data.ka_data.short_description"
+    }
+  })], 1)]), _vm._v(" "), _c("div", {
+    staticClass: "form-group clearfix"
+  }, [_c("label", {
+    staticClass: "col-xs-2 control-label",
+    attrs: {
+      "for": "name"
+    }
+  }, [_vm._v(" Georgian how get hear ")]), _vm._v(" "), _c("div", {
+    staticClass: "col-xs-10"
+  }, [_c("ckeditor", {
+    attrs: {
+      config: _vm.editor_config.ka_how_get_editor_config
+    },
+    model: {
+      value: _vm.data.ka_data.how_get,
+      callback: function callback($$v) {
+        _vm.$set(_vm.data.ka_data, "how_get", $$v);
+      },
+      expression: "data.ka_data.how_get"
+    }
+  })], 1)]), _vm._v(" "), _c("div", {
+    staticClass: "form-group clearfix"
+  }, [_c("label", {
+    staticClass: "col-xs-2 control-label",
+    attrs: {
+      "for": "name"
+    }
+  }, [_vm._v(" Georgian best time ")]), _vm._v(" "), _c("div", {
+    staticClass: "col-xs-10"
+  }, [_c("ckeditor", {
+    attrs: {
+      config: _vm.editor_config.ka_best_time_editor_config
+    },
+    model: {
+      value: _vm.data.ka_data.best_time,
+      callback: function callback($$v) {
+        _vm.$set(_vm.data.ka_data, "best_time", $$v);
+      },
+      expression: "data.ka_data.best_time"
+    }
+  })], 1)])])])])]) : _vm._e()]);
 };
+var staticRenderFns = [function () {
+  var _vm = this,
+    _c = _vm._self._c;
+  return _c("div", {
+    staticClass: "jumbotron width_100"
+  }, [_c("div", {
+    staticClass: "row"
+  }, [_c("div", {
+    staticClass: "col-md-12"
+  }, [_c("h2", {
+    staticClass: "display-4"
+  }, [_c("span", [_vm._v("Mount masive global information")])]), _vm._v(" "), _c("p", {
+    staticClass: "lead"
+  }, [_vm._v("Mount masive global information.")])])])]);
+}, function () {
+  var _vm = this,
+    _c = _vm._self._c;
+  return _c("div", {
+    staticClass: "jumbotron width_100"
+  }, [_c("div", {
+    staticClass: "container"
+  }, [_c("h2", {
+    staticClass: "display-4"
+  }, [_c("span", [_vm._v("Mount masive English information")])]), _vm._v(" "), _c("p", {
+    staticClass: "lead"
+  }, [_vm._v("Mount masive English information.")])])]);
+}, function () {
+  var _vm = this,
+    _c = _vm._self._c;
+  return _c("div", {
+    staticClass: "jumbotron width_100"
+  }, [_c("div", {
+    staticClass: "container"
+  }, [_c("h2", {
+    staticClass: "display-4"
+  }, [_c("span", [_vm._v("Mount masive Georgian information")])]), _vm._v(" "), _c("p", {
+    staticClass: "lead"
+  }, [_vm._v("Mount masive Georgian information.")])])]);
+}, function () {
+  var _vm = this,
+    _c = _vm._self._c;
+  return _c("div", {
+    staticClass: "jumbotron width_100"
+  }, [_c("div", {
+    staticClass: "container"
+  }, [_c("h2", {
+    staticClass: "display-4"
+  }, [_c("span", [_vm._v("Mount masive Russion information")])]), _vm._v(" "), _c("p", {
+    staticClass: "lead"
+  }, [_vm._v("Mount masive Russion information.")])])]);
+}];
+render._withStripped = true;
+
 
 /***/ }),
 
@@ -442,8 +913,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
-/* harmony import */ var _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_0_rules_0_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_mountMassiveEditComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../../node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!../../../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./mountMassiveEditComponent.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/user/pages/mountRoutes/mountMassiveEditComponent.vue?vue&type=script&lang=js&");
- /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (_node_modules_babel_loader_lib_index_js_clonedRuleSet_5_0_rules_0_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_mountMassiveEditComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_mountMassiveEditComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../../node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!../../../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./mountMassiveEditComponent.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/user/pages/mountRoutes/mountMassiveEditComponent.vue?vue&type=script&lang=js&");
+ /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (_node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_mountMassiveEditComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
 
 /***/ }),
 
@@ -455,1047 +926,10 @@ __webpack_require__.r(__webpack_exports__);
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "render": () => (/* reexport safe */ _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_mountMassiveEditComponent_vue_vue_type_template_id_2458f7f8___WEBPACK_IMPORTED_MODULE_0__.render),
-/* harmony export */   "staticRenderFns": () => (/* reexport safe */ _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_mountMassiveEditComponent_vue_vue_type_template_id_2458f7f8___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns)
+/* harmony export */   "render": () => (/* reexport safe */ _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_lib_loaders_templateLoader_js_ruleSet_1_rules_2_node_modules_vue_loader_lib_index_js_vue_loader_options_mountMassiveEditComponent_vue_vue_type_template_id_2458f7f8___WEBPACK_IMPORTED_MODULE_0__.render),
+/* harmony export */   "staticRenderFns": () => (/* reexport safe */ _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_lib_loaders_templateLoader_js_ruleSet_1_rules_2_node_modules_vue_loader_lib_index_js_vue_loader_options_mountMassiveEditComponent_vue_vue_type_template_id_2458f7f8___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns)
 /* harmony export */ });
-/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_mountMassiveEditComponent_vue_vue_type_template_id_2458f7f8___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./mountMassiveEditComponent.vue?vue&type=template&id=2458f7f8& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/user/pages/mountRoutes/mountMassiveEditComponent.vue?vue&type=template&id=2458f7f8&");
-
-
-/***/ }),
-
-/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/user/pages/mountRoutes/mountMassiveEditComponent.vue?vue&type=template&id=2458f7f8&":
-/*!************************************************************************************************************************************************************************************************************************************************************!*\
-  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/user/pages/mountRoutes/mountMassiveEditComponent.vue?vue&type=template&id=2458f7f8& ***!
-  \************************************************************************************************************************************************************************************************************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "render": () => (/* binding */ render),
-/* harmony export */   "staticRenderFns": () => (/* binding */ staticRenderFns)
-/* harmony export */ });
-var render = function () {
-  var _vm = this
-  var _h = _vm.$createElement
-  var _c = _vm._self._c || _h
-  return _c("div", { staticClass: "col_md_12" }, [
-    _c("div", { staticClass: "row" }, [
-      _c("div", { staticClass: "form-group" }, [
-        _c(
-          "button",
-          {
-            staticClass: "btn btn-primary",
-            attrs: { type: "submit" },
-            on: {
-              click: function ($event) {
-                return _vm.save_all()
-              },
-            },
-          },
-          [_vm._v("Save")]
-        ),
-      ]),
-    ]),
-    _vm._v(" "),
-    _c("div", { staticClass: "row" }, [
-      _c("div", { staticClass: "tabs" }, [
-        _c("input", {
-          attrs: { type: "radio", name: "tabs", id: "1", checked: "checked" },
-        }),
-        _vm._v(" "),
-        _c("label", { attrs: { for: "1" } }, [_vm._v("georgian article")]),
-        _vm._v(" "),
-        _c("div", { staticClass: "tab" }, [
-          _c(
-            "form",
-            {
-              staticStyle: { "margin-top": "5%" },
-              attrs: {
-                name: "contact-form",
-                method: "POST",
-                action: "#",
-                enctyp: "multipart/form-data",
-              },
-            },
-            [
-              _c("div", { staticClass: "form-group clearfix" }, [
-                _c(
-                  "label",
-                  {
-                    staticClass: "col-xs-2 control-label",
-                    attrs: { for: "name" },
-                  },
-                  [_vm._v(" Publish ")]
-                ),
-                _vm._v(" "),
-                _c("div", { staticClass: "col-xs-8" }, [
-                  _c(
-                    "select",
-                    {
-                      directives: [
-                        {
-                          name: "model",
-                          rawName: "v-model",
-                          value: _vm.published,
-                          expression: "published",
-                        },
-                      ],
-                      staticClass: "form-control",
-                      attrs: { name: "published" },
-                      on: {
-                        change: function ($event) {
-                          var $$selectedVal = Array.prototype.filter
-                            .call($event.target.options, function (o) {
-                              return o.selected
-                            })
-                            .map(function (o) {
-                              var val = "_value" in o ? o._value : o.value
-                              return val
-                            })
-                          _vm.published = $event.target.multiple
-                            ? $$selectedVal
-                            : $$selectedVal[0]
-                        },
-                      },
-                    },
-                    [
-                      _c("option", { attrs: { value: "0" } }, [
-                        _vm._v("Not public"),
-                      ]),
-                      _vm._v(" "),
-                      _c("option", { attrs: { value: "1" } }, [
-                        _vm._v("Public"),
-                      ]),
-                    ]
-                  ),
-                  _vm._v(" "),
-                  _vm.errors.published
-                    ? _c(
-                        "div",
-                        {
-                          staticClass: "alert alert-danger",
-                          attrs: { role: "alert" },
-                        },
-                        [
-                          _vm._v(
-                            "\n                                " +
-                              _vm._s(_vm.errors.published[0]) +
-                              "\n                            "
-                          ),
-                        ]
-                      )
-                    : _vm._e(),
-                ]),
-              ]),
-              _vm._v(" "),
-              _c("div", { staticClass: "form-group clearfix" }, [
-                _c(
-                  "label",
-                  {
-                    staticClass: "col-xs-2 control-label",
-                    attrs: { for: "name" },
-                  },
-                  [_vm._v(" Map ")]
-                ),
-                _vm._v(" "),
-                _c("div", { staticClass: "col-xs-8" }, [
-                  _c("input", {
-                    directives: [
-                      {
-                        name: "model",
-                        rawName: "v-model",
-                        value: _vm.map,
-                        expression: "map",
-                      },
-                    ],
-                    staticClass: "form-control",
-                    attrs: { type: "text", name: "map" },
-                    domProps: { value: _vm.map },
-                    on: {
-                      input: function ($event) {
-                        if ($event.target.composing) {
-                          return
-                        }
-                        _vm.map = $event.target.value
-                      },
-                    },
-                  }),
-                  _vm._v(" "),
-                  _vm.errors.map
-                    ? _c(
-                        "div",
-                        {
-                          staticClass: "alert alert-danger",
-                          attrs: { role: "alert" },
-                        },
-                        [
-                          _vm._v(
-                            "\n                                " +
-                              _vm._s(_vm.errors.map[0]) +
-                              "\n                            "
-                          ),
-                        ]
-                      )
-                    : _vm._e(),
-                ]),
-              ]),
-              _vm._v(" "),
-              this.category != "event" ||
-              this.category != "indoor" ||
-              this.category != "partner" ||
-              this.category != "event" ||
-              this.category != "news"
-                ? _c("div", { staticClass: "form-group clearfix" }, [
-                    _c(
-                      "label",
-                      {
-                        staticClass: "col-xs-2 control-label",
-                        attrs: { for: "name" },
-                      },
-                      [_vm._v(" Weather ")]
-                    ),
-                    _vm._v(" "),
-                    _c("div", { staticClass: "col-xs-8" }, [
-                      _c("input", {
-                        directives: [
-                          {
-                            name: "model",
-                            rawName: "v-model",
-                            value: _vm.weather,
-                            expression: "weather",
-                          },
-                        ],
-                        staticClass: "form-control",
-                        attrs: { type: "text", name: "weather" },
-                        domProps: { value: _vm.weather },
-                        on: {
-                          input: function ($event) {
-                            if ($event.target.composing) {
-                              return
-                            }
-                            _vm.weather = $event.target.value
-                          },
-                        },
-                      }),
-                      _vm._v(" "),
-                      _vm.errors.weather
-                        ? _c(
-                            "div",
-                            {
-                              staticClass: "alert alert-danger",
-                              attrs: { role: "alert" },
-                            },
-                            [
-                              _vm._v(
-                                "\n                                " +
-                                  _vm._s(_vm.errors.weather[0]) +
-                                  "\n                            "
-                              ),
-                            ]
-                          )
-                        : _vm._e(),
-                    ]),
-                  ])
-                : _vm._e(),
-            ]
-          ),
-        ]),
-        _vm._v(" "),
-        _c("input", { attrs: { type: "radio", name: "tabs", id: "2" } }),
-        _vm._v(" "),
-        _c("label", { attrs: { for: "2" } }, [_vm._v("english info")]),
-        _vm._v(" "),
-        _c("div", { staticClass: "tab" }, [
-          _c(
-            "form",
-            {
-              staticStyle: { "margin-top": "5%" },
-              attrs: {
-                id: "contact-form form-horizontal",
-                name: "contact-form",
-                method: "POST",
-                action: "#",
-                enctype: "multipart/form-data",
-              },
-            },
-            [
-              _c("div", { staticClass: "form-group clearfix" }, [
-                _c(
-                  "label",
-                  {
-                    staticClass: "col-xs-2 control-label",
-                    attrs: { for: "name" },
-                  },
-                  [_vm._v(" Title english ")]
-                ),
-                _vm._v(" "),
-                _c("div", { staticClass: "col-xs-8" }, [
-                  _c("input", {
-                    directives: [
-                      {
-                        name: "model",
-                        rawName: "v-model",
-                        value: _vm.name,
-                        expression: "name",
-                      },
-                    ],
-                    staticClass: "form-control",
-                    attrs: { type: "text", name: "name" },
-                    domProps: { value: _vm.name },
-                    on: {
-                      input: function ($event) {
-                        if ($event.target.composing) {
-                          return
-                        }
-                        _vm.name = $event.target.value
-                      },
-                    },
-                  }),
-                  _vm._v(" "),
-                  _vm.errors.name
-                    ? _c(
-                        "div",
-                        {
-                          staticClass: "alert alert-danger",
-                          attrs: { role: "alert" },
-                        },
-                        [
-                          _vm._v(
-                            "\n                                " +
-                              _vm._s(_vm.errors.name[0]) +
-                              "\n                            "
-                          ),
-                        ]
-                      )
-                    : _vm._e(),
-                ]),
-              ]),
-              _vm._v(" "),
-              _c("hr"),
-              _vm._v(" "),
-              _c("div", { staticClass: "form-group clearfix" }, [
-                _c(
-                  "label",
-                  {
-                    staticClass: "col-xs-2 control-label",
-                    attrs: { for: "name" },
-                  },
-                  [_vm._v(" English text ")]
-                ),
-                _vm._v(" "),
-                _c(
-                  "div",
-                  { staticClass: "col-xs-8" },
-                  [
-                    _c("ckeditor", {
-                      attrs: { config: _vm.tus_text_editor_config },
-                      model: {
-                        value: _vm.text,
-                        callback: function ($$v) {
-                          _vm.text = $$v
-                        },
-                        expression: "text",
-                      },
-                    }),
-                    _vm._v(" "),
-                    _vm.errors.text
-                      ? _c(
-                          "div",
-                          {
-                            staticClass: "alert alert-danger",
-                            attrs: { role: "alert" },
-                          },
-                          [
-                            _vm._v(
-                              "\n                                " +
-                                _vm._s(_vm.errors.text[0]) +
-                                "\n                            "
-                            ),
-                          ]
-                        )
-                      : _vm._e(),
-                  ],
-                  1
-                ),
-              ]),
-              _vm._v(" "),
-              _c("div", { staticClass: "form-group clearfix" }, [
-                _c(
-                  "label",
-                  {
-                    staticClass: "col-xs-2 control-label",
-                    attrs: { for: "name" },
-                  },
-                  [_vm._v(" English description ")]
-                ),
-                _vm._v(" "),
-                _c(
-                  "div",
-                  { staticClass: "col-xs-8" },
-                  [
-                    _c("ckeditor", {
-                      attrs: { config: _vm.us_short_description_text_editor },
-                      model: {
-                        value: _vm.short_description,
-                        callback: function ($$v) {
-                          _vm.short_description = $$v
-                        },
-                        expression: "short_description",
-                      },
-                    }),
-                    _vm._v(" "),
-                    _vm.errors.short_description
-                      ? _c(
-                          "div",
-                          {
-                            staticClass: "alert alert-danger",
-                            attrs: { role: "alert" },
-                          },
-                          [
-                            _vm._v(
-                              "\n                                " +
-                                _vm._s(_vm.errors.short_description[0]) +
-                                "\n                            "
-                            ),
-                          ]
-                        )
-                      : _vm._e(),
-                  ],
-                  1
-                ),
-              ]),
-              _vm._v(" "),
-              _c("div", { staticClass: "form-group clearfix" }, [
-                _c(
-                  "label",
-                  {
-                    staticClass: "col-xs-2 control-label",
-                    attrs: { for: "name" },
-                  },
-                  [_vm._v(" English how get hear ")]
-                ),
-                _vm._v(" "),
-                _c(
-                  "div",
-                  { staticClass: "col-xs-8" },
-                  [
-                    _c("ckeditor", {
-                      attrs: { config: _vm.us_how_get_editor_config },
-                      model: {
-                        value: _vm.how_get,
-                        callback: function ($$v) {
-                          _vm.how_get = $$v
-                        },
-                        expression: "how_get",
-                      },
-                    }),
-                    _vm._v(" "),
-                    _vm.errors.how_get
-                      ? _c(
-                          "div",
-                          {
-                            staticClass: "alert alert-danger",
-                            attrs: { role: "alert" },
-                          },
-                          [
-                            _vm._v(
-                              "\n                                " +
-                                _vm._s(_vm.errors.how_get[0]) +
-                                "\n                            "
-                            ),
-                          ]
-                        )
-                      : _vm._e(),
-                  ],
-                  1
-                ),
-              ]),
-              _vm._v(" "),
-              _c("div", { staticClass: "form-group clearfix" }, [
-                _c(
-                  "label",
-                  {
-                    staticClass: "col-xs-2 control-label",
-                    attrs: { for: "name" },
-                  },
-                  [_vm._v(" English best time ")]
-                ),
-                _vm._v(" "),
-                _c(
-                  "div",
-                  { staticClass: "col-xs-8" },
-                  [
-                    _c("ckeditor", {
-                      attrs: { config: _vm.us_best_time_editor_config },
-                      model: {
-                        value: _vm.best_time,
-                        callback: function ($$v) {
-                          _vm.best_time = $$v
-                        },
-                        expression: "best_time",
-                      },
-                    }),
-                    _vm._v(" "),
-                    _vm.errors.best_time
-                      ? _c(
-                          "div",
-                          {
-                            staticClass: "alert alert-danger",
-                            attrs: { role: "alert" },
-                          },
-                          [
-                            _vm._v(
-                              "\n                                " +
-                                _vm._s(_vm.errors.best_time[0]) +
-                                "\n                            "
-                            ),
-                          ]
-                        )
-                      : _vm._e(),
-                  ],
-                  1
-                ),
-              ]),
-            ]
-          ),
-        ]),
-        _vm._v(" "),
-        _c("input", { attrs: { type: "radio", name: "tabs", id: "3" } }),
-        _vm._v(" "),
-        _c("label", { attrs: { for: "3" } }, [_vm._v("rusian article")]),
-        _vm._v(" "),
-        _c("div", { staticClass: "tab" }, [
-          _c(
-            "form",
-            {
-              staticStyle: { "margin-top": "5%" },
-              attrs: {
-                name: "contact-form",
-                method: "POST",
-                enctyp: "multipart/form-data",
-              },
-              on: {
-                submit: function ($event) {
-                  $event.preventDefault()
-                  return _vm.add_us_article.apply(null, arguments)
-                },
-              },
-            },
-            [
-              _c("div", { staticClass: "form-group clearfix" }, [
-                _c(
-                  "label",
-                  {
-                    staticClass: "col-xs-2 control-label",
-                    attrs: { for: "name" },
-                  },
-                  [_vm._v(" Title rusian ")]
-                ),
-                _vm._v(" "),
-                _c("div", { staticClass: "col-xs-8" }, [
-                  _c("input", {
-                    directives: [
-                      {
-                        name: "model",
-                        rawName: "v-model",
-                        value: _vm.name_ru,
-                        expression: "name_ru",
-                      },
-                    ],
-                    staticClass: "form-control",
-                    attrs: { type: "text", name: "name_ru" },
-                    domProps: { value: _vm.name_ru },
-                    on: {
-                      input: function ($event) {
-                        if ($event.target.composing) {
-                          return
-                        }
-                        _vm.name_ru = $event.target.value
-                      },
-                    },
-                  }),
-                  _vm._v(" "),
-                  _vm.errors.name_ru
-                    ? _c(
-                        "div",
-                        {
-                          staticClass: "alert alert-danger",
-                          attrs: { role: "alert" },
-                        },
-                        [
-                          _vm._v(
-                            "\n                                " +
-                              _vm._s(_vm.errors.name_ru[0]) +
-                              "\n                            "
-                          ),
-                        ]
-                      )
-                    : _vm._e(),
-                ]),
-              ]),
-              _vm._v(" "),
-              _c("hr"),
-              _vm._v(" "),
-              _c("div", { staticClass: "form-group clearfix" }, [
-                _c(
-                  "label",
-                  {
-                    staticClass: "col-xs-2 control-label",
-                    attrs: { for: "name" },
-                  },
-                  [_vm._v(" Rusian text ")]
-                ),
-                _vm._v(" "),
-                _c(
-                  "div",
-                  { staticClass: "col-xs-8" },
-                  [
-                    _c("ckeditor", {
-                      attrs: { config: _vm.ru_text_editor_config },
-                      model: {
-                        value: _vm.text_ru,
-                        callback: function ($$v) {
-                          _vm.text_ru = $$v
-                        },
-                        expression: "text_ru",
-                      },
-                    }),
-                    _vm._v(" "),
-                    _vm.errors.text_ru
-                      ? _c(
-                          "div",
-                          {
-                            staticClass: "alert alert-danger",
-                            attrs: { role: "alert" },
-                          },
-                          [
-                            _vm._v(
-                              "\n                                " +
-                                _vm._s(_vm.errors.text_ru[0]) +
-                                "\n                            "
-                            ),
-                          ]
-                        )
-                      : _vm._e(),
-                  ],
-                  1
-                ),
-              ]),
-              _vm._v(" "),
-              _c("div", { staticClass: "form-group clearfix" }, [
-                _c(
-                  "label",
-                  {
-                    staticClass: "col-xs-2 control-label",
-                    attrs: { for: "name" },
-                  },
-                  [_vm._v(" Rusian description ")]
-                ),
-                _vm._v(" "),
-                _c(
-                  "div",
-                  { staticClass: "col-xs-8" },
-                  [
-                    _c(
-                      "ckeditor",
-                      {
-                        attrs: { config: _vm.ru_short_description_text_editor },
-                        model: {
-                          value: _vm.short_description_ru,
-                          callback: function ($$v) {
-                            _vm.short_description_ru = $$v
-                          },
-                          expression: "short_description_ru",
-                        },
-                      },
-                      [_vm._v(">")]
-                    ),
-                    _vm._v(" "),
-                    _vm.errors.short_description_ru
-                      ? _c(
-                          "div",
-                          {
-                            staticClass: "alert alert-danger",
-                            attrs: { role: "alert" },
-                          },
-                          [
-                            _vm._v(
-                              "\n                                " +
-                                _vm._s(_vm.errors.short_description_ru[0]) +
-                                "\n                            "
-                            ),
-                          ]
-                        )
-                      : _vm._e(),
-                  ],
-                  1
-                ),
-              ]),
-              _vm._v(" "),
-              _c("div", { staticClass: "form-group clearfix" }, [
-                _c(
-                  "label",
-                  {
-                    staticClass: "col-xs-2 control-label",
-                    attrs: { for: "name" },
-                  },
-                  [_vm._v(" Rusian how get hear ")]
-                ),
-                _vm._v(" "),
-                _c(
-                  "div",
-                  { staticClass: "col-xs-8" },
-                  [
-                    _c("ckeditor", {
-                      attrs: { config: _vm.ru_how_get_editor_config },
-                      model: {
-                        value: _vm.how_get_ru,
-                        callback: function ($$v) {
-                          _vm.how_get_ru = $$v
-                        },
-                        expression: "how_get_ru",
-                      },
-                    }),
-                    _vm._v(" "),
-                    _vm.errors.how_get_ru
-                      ? _c(
-                          "div",
-                          {
-                            staticClass: "alert alert-danger",
-                            attrs: { role: "alert" },
-                          },
-                          [
-                            _vm._v(
-                              "\n                                " +
-                                _vm._s(_vm.errors.how_get_ru[0]) +
-                                "\n                            "
-                            ),
-                          ]
-                        )
-                      : _vm._e(),
-                  ],
-                  1
-                ),
-              ]),
-              _vm._v(" "),
-              _c("div", { staticClass: "form-group clearfix" }, [
-                _c(
-                  "label",
-                  {
-                    staticClass: "col-xs-2 control-label",
-                    attrs: { for: "name" },
-                  },
-                  [_vm._v(" Rusian best time ")]
-                ),
-                _vm._v(" "),
-                _c(
-                  "div",
-                  { staticClass: "col-xs-8" },
-                  [
-                    _c("ckeditor", {
-                      attrs: { config: _vm.ru_best_time_editor_config },
-                      model: {
-                        value: _vm.best_time_ru,
-                        callback: function ($$v) {
-                          _vm.best_time_ru = $$v
-                        },
-                        expression: "best_time_ru",
-                      },
-                    }),
-                    _vm._v(" "),
-                    _vm.errors.best_time_ru
-                      ? _c(
-                          "div",
-                          {
-                            staticClass: "alert alert-danger",
-                            attrs: { role: "alert" },
-                          },
-                          [
-                            _vm._v(
-                              "\n                                " +
-                                _vm._s(_vm.errors.best_time_ru[0]) +
-                                "\n                            "
-                            ),
-                          ]
-                        )
-                      : _vm._e(),
-                  ],
-                  1
-                ),
-              ]),
-            ]
-          ),
-        ]),
-        _vm._v(" "),
-        _c("input", { attrs: { type: "radio", name: "tabs", id: "4" } }),
-        _vm._v(" "),
-        _c("label", { attrs: { for: "4" } }, [_vm._v("georgian article")]),
-        _vm._v(" "),
-        _c("div", { staticClass: "tab" }, [
-          _c(
-            "form",
-            {
-              staticStyle: { "margin-top": "5%" },
-              attrs: {
-                name: "contact-form",
-                method: "POST",
-                enctyp: "multipart/form-data",
-              },
-              on: {
-                submit: function ($event) {
-                  $event.preventDefault()
-                  return _vm.add_ru_article.apply(null, arguments)
-                },
-              },
-            },
-            [
-              _c("div", { staticClass: "form-group clearfix" }, [
-                _c(
-                  "label",
-                  {
-                    staticClass: "col-xs-2 control-label",
-                    attrs: { for: "name" },
-                  },
-                  [_vm._v(" Title georgian ")]
-                ),
-                _vm._v(" "),
-                _c("div", { staticClass: "col-xs-8" }, [
-                  _c("input", {
-                    directives: [
-                      {
-                        name: "model",
-                        rawName: "v-model",
-                        value: _vm.name_ka,
-                        expression: "name_ka",
-                      },
-                    ],
-                    staticClass: "form-control",
-                    attrs: { type: "text", name: "name_ka" },
-                    domProps: { value: _vm.name_ka },
-                    on: {
-                      input: function ($event) {
-                        if ($event.target.composing) {
-                          return
-                        }
-                        _vm.name_ka = $event.target.value
-                      },
-                    },
-                  }),
-                  _vm._v(" "),
-                  _vm.errors.name_ka
-                    ? _c(
-                        "div",
-                        {
-                          staticClass: "alert alert-danger",
-                          attrs: { role: "alert" },
-                        },
-                        [
-                          _vm._v(
-                            "\n                                " +
-                              _vm._s(_vm.errors.name_ka[0]) +
-                              "\n                            "
-                          ),
-                        ]
-                      )
-                    : _vm._e(),
-                ]),
-              ]),
-              _vm._v(" "),
-              _c("hr"),
-              _vm._v(" "),
-              _c("div", { staticClass: "form-group clearfix" }, [
-                _c(
-                  "label",
-                  {
-                    staticClass: "col-xs-2 control-label",
-                    attrs: { for: "name" },
-                  },
-                  [_vm._v(" Georgian text ")]
-                ),
-                _vm._v(" "),
-                _c(
-                  "div",
-                  { staticClass: "col-xs-8" },
-                  [
-                    _c("ckeditor", {
-                      attrs: { config: _vm.ka_text_editor_config },
-                      model: {
-                        value: _vm.text_ka,
-                        callback: function ($$v) {
-                          _vm.text_ka = $$v
-                        },
-                        expression: "text_ka",
-                      },
-                    }),
-                    _vm._v(" "),
-                    _vm.errors.text_ka
-                      ? _c(
-                          "div",
-                          {
-                            staticClass: "alert alert-danger",
-                            attrs: { role: "alert" },
-                          },
-                          [
-                            _vm._v(
-                              "\n                                " +
-                                _vm._s(_vm.errors.text_ka[0]) +
-                                "\n                            "
-                            ),
-                          ]
-                        )
-                      : _vm._e(),
-                  ],
-                  1
-                ),
-              ]),
-              _vm._v(" "),
-              _c("div", { staticClass: "form-group clearfix" }, [
-                _c(
-                  "label",
-                  {
-                    staticClass: "col-xs-2 control-label",
-                    attrs: { for: "name" },
-                  },
-                  [_vm._v(" Georgian description ")]
-                ),
-                _vm._v(" "),
-                _c(
-                  "div",
-                  { staticClass: "col-xs-8" },
-                  [
-                    _c("ckeditor", {
-                      attrs: { config: _vm.ka_short_description_text_editor },
-                      model: {
-                        value: _vm.short_description_ka,
-                        callback: function ($$v) {
-                          _vm.short_description_ka = $$v
-                        },
-                        expression: "short_description_ka",
-                      },
-                    }),
-                    _vm._v(" "),
-                    _vm.errors.short_description_ka
-                      ? _c(
-                          "div",
-                          {
-                            staticClass: "alert alert-danger",
-                            attrs: { role: "alert" },
-                          },
-                          [
-                            _vm._v(
-                              "\n                                " +
-                                _vm._s(_vm.errors.short_description_ka[0]) +
-                                "\n                            "
-                            ),
-                          ]
-                        )
-                      : _vm._e(),
-                  ],
-                  1
-                ),
-              ]),
-              _vm._v(" "),
-              _c("div", { staticClass: "form-group clearfix" }, [
-                _c(
-                  "label",
-                  {
-                    staticClass: "col-xs-2 control-label",
-                    attrs: { for: "name" },
-                  },
-                  [_vm._v(" Georgian how get hear ")]
-                ),
-                _vm._v(" "),
-                _c(
-                  "div",
-                  { staticClass: "col-xs-8" },
-                  [
-                    _c("ckeditor", {
-                      attrs: { config: _vm.ka_how_get_editor_config },
-                      model: {
-                        value: _vm.how_get_ka,
-                        callback: function ($$v) {
-                          _vm.how_get_ka = $$v
-                        },
-                        expression: "how_get_ka",
-                      },
-                    }),
-                    _vm._v(" "),
-                    _vm.errors.how_get_ka
-                      ? _c(
-                          "div",
-                          {
-                            staticClass: "alert alert-danger",
-                            attrs: { role: "alert" },
-                          },
-                          [
-                            _vm._v(
-                              "\n                                " +
-                                _vm._s(_vm.errors.how_get_ka[0]) +
-                                "\n                            "
-                            ),
-                          ]
-                        )
-                      : _vm._e(),
-                  ],
-                  1
-                ),
-              ]),
-              _vm._v(" "),
-              _c("div", { staticClass: "form-group clearfix" }, [
-                _c(
-                  "label",
-                  {
-                    staticClass: "col-xs-2 control-label",
-                    attrs: { for: "name" },
-                  },
-                  [_vm._v(" Georgian best time ")]
-                ),
-                _vm._v(" "),
-                _c(
-                  "div",
-                  { staticClass: "col-xs-8" },
-                  [
-                    _c("ckeditor", {
-                      attrs: { config: _vm.ka_best_time_editor_config },
-                      model: {
-                        value: _vm.best_time_ka,
-                        callback: function ($$v) {
-                          _vm.best_time_ka = $$v
-                        },
-                        expression: "best_time_ka",
-                      },
-                    }),
-                    _vm._v(" "),
-                    _vm.errors.best_time_ka
-                      ? _c(
-                          "div",
-                          {
-                            staticClass: "alert alert-danger",
-                            attrs: { role: "alert" },
-                          },
-                          [
-                            _vm._v(
-                              "\n                                " +
-                                _vm._s(_vm.errors.best_time_ka[0]) +
-                                "\n                            "
-                            ),
-                          ]
-                        )
-                      : _vm._e(),
-                  ],
-                  1
-                ),
-              ]),
-            ]
-          ),
-        ]),
-      ]),
-    ]),
-  ])
-}
-var staticRenderFns = []
-render._withStripped = true
-
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_lib_loaders_templateLoader_js_ruleSet_1_rules_2_node_modules_vue_loader_lib_index_js_vue_loader_options_mountMassiveEditComponent_vue_vue_type_template_id_2458f7f8___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../../node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!../../../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??ruleSet[1].rules[2]!../../../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./mountMassiveEditComponent.vue?vue&type=template&id=2458f7f8& */ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/lib/loaders/templateLoader.js??ruleSet[1].rules[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/user/pages/mountRoutes/mountMassiveEditComponent.vue?vue&type=template&id=2458f7f8&");
 
 
 /***/ })

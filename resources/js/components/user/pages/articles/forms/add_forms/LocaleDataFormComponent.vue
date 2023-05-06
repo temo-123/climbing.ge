@@ -1,16 +1,13 @@
 <template>
-    <div class="col-md-12" >
+    <!-- <div class="col-md-12" > -->
         <!-- <div class="row"> -->
-            <div class="col-md-12">
-                <div class="jumbotron width_100">
-                    <div class="container">
-                        <h2 class="display-4"><span style="text-transform: capitalize">{{this.category}}</span> {{ this.title }}</h2>
-                        <p class="lead">{{ this.description }}</p>
-                    </div>
+        <div class="col-md-12">
+            <div class="jumbotron width_100">
+                <div class="container">
+                    <h2 class="display-4"><span style="text-transform: capitalize">{{this.category}}</span> {{ this.title }}</h2>
+                    <p class="lead">{{ this.description }}</p>
                 </div>
-
-                <!-- {{this.shortDescriptionEditorConfig}} -->
-                <!-- {{this.$editorConfig}} -->
+            </div>
 
             <div class="wrapper container-fluid container">
                 <form method="POST" @submit.prevent="add_article">
@@ -48,9 +45,17 @@
                         </div>
                     </div>
 
+                    <div class="form-group clearfix row" v-if="this.category != 'mount_route'">
+                        <label for="name" class='col-md-2 control-label'> How to get hear </label>
+                        <div class="col-md-10">
+                            <!-- <ckeditor v-model="data.how_get" :config="editorConfig" :config="this.$editorConfig"></ckeditor> -->
+                            <ckeditor v-model="data.how_get" :config="this.$editorConfig"></ckeditor>
+                        </div>
+                    </div>
+
                     <hr v-if="this.category == 'outdoor'">
 
-                    <div  v-if="general_infos.length">
+                    <!-- <div  v-if="general_infos.length">
                         <div class="row" v-if="this.category == 'outdoor'">
                             <div class="col-md-2">
                                 <input type="radio" id="routes_new_info" name="fav_language" value="new_info" @click="routes_action('new_info')">
@@ -90,14 +95,6 @@
                                     <option v-for="general_info in general_infos" :key="general_info.id" :value="general_info.id">{{ general_info.title }}</option>
                                 </select> 
                             </div>
-                        </div>
-                    </div>
-
-                    <div class="form-group clearfix row" v-if="this.category != 'mount_route'">
-                        <label for="name" class='col-md-2 control-label'> How to get hear </label>
-                        <div class="col-md-10">
-                            <!-- <ckeditor v-model="data.how_get" :config="editorConfig" :config="this.$editorConfig"></ckeditor> -->
-                            <ckeditor v-model="data.how_get" :config="this.$editorConfig"></ckeditor>
                         </div>
                     </div>
 
@@ -233,7 +230,79 @@
                                 </select> 
                             </div>
                         </div>
-                    </div>
+                    </div> -->
+
+                    <GlobalInfoFormBlock 
+                        :title_prop="'Routes description'" 
+                        :form_value_name_prop="'route'"
+                        :form_data_prop=data.route 
+                        :locale_prop="locale_prop"
+                        :block_action_prop="global_blocks.routes_info"
+                        :block_id_prop="global_blocks.routes_info_id"
+                        :value_name_prop="'routes_info'"
+
+                        :global_data_array_prop="general_infos"
+                        :get_data_in_component_prop="false"
+
+                        @get_form_data="get_value_insert_text"
+                        @get_global_blocks_status="get_global_blocks_status_action"
+                        @get_global_blocks_id="get_global_blocks_id"
+                    />
+
+                    <GlobalInfoFormBlock
+                        :title_prop="'Best time for climbing'" 
+                        :form_value_name_prop="'best_time'"
+                        :form_data_prop=data.best_time 
+                        :locale_prop="locale_prop"
+                        :block_action_prop="global_blocks.best_time"
+                        :block_id_prop="global_blocks.best_time_id"
+                        :value_name_prop="'best_time'"
+
+                        :global_data_array_prop="general_infos"
+                        :get_data_in_component_prop="false"
+
+                        @get_form_data="get_value_insert_text"
+                        @get_global_blocks_status="get_global_blocks_status_action"
+                        @get_global_blocks_id="get_global_blocks_id"
+                    />
+
+                    <hr v-if="this.category == 'outdoor' || this.category == 'ice' || this.category == 'mount_route' ">
+
+                    <GlobalInfoFormBlock
+                        :title_prop="'What you need'" 
+                        :form_value_name_prop="'what_need'"
+                        :form_data_prop=data.what_need 
+                        :locale_prop="locale_prop"
+                        :block_action_prop="global_blocks.what_need_info"
+                        :block_id_prop="global_blocks.what_need_info_id"
+                        :value_name_prop="'what_need_info'"
+
+                        :global_data_array_prop="general_infos"
+                        :get_data_in_component_prop="false"
+
+                        @get_form_data="get_value_insert_text"
+                        @get_global_blocks_status="get_global_blocks_status_action"
+                        @get_global_blocks_id="get_global_blocks_id"
+                    />
+
+                    <hr>
+
+                    <GlobalInfoFormBlock
+                        :title_prop="'Contact info'" 
+                        :form_value_name_prop="'info'"
+                        :form_data_prop=data.info 
+                        :locale_prop="locale_prop"
+                        :block_action_prop="global_blocks.info_block"
+                        :block_id_prop="global_blocks.info_block_id"
+                        :value_name_prop="'info_block'"
+
+                        :global_data_array_prop="general_infos"
+                        :get_data_in_component_prop="false"
+
+                        @get_form_data="get_value_insert_text"
+                        @get_global_blocks_status="get_global_blocks_status_action"
+                        @get_global_blocks_id="get_global_blocks_id"
+                    />
                     
 
                     <div class="form-group clearfix row" v-if="this.category == 'indoor'">
@@ -245,7 +314,7 @@
 
                 </form>
             </div>
-        </div>
+        <!-- </div> -->
     </div>
 </template>
 
@@ -253,16 +322,18 @@
     // import { SlickList, SlickItem } from 'vue-slicksort';
     import StackModal from '@innologica/vue-stackable-modal'  //https://innologica.github.io/vue-stackable-modal/#sample-css
 
-    import { editor_config } from '../../../../../../mixins/editor/editor_config_mixin.js'
+    import GlobalInfoFormBlock from '../../../../items/GlobalInfoFormBlockComponent.vue'
+    // import { editor_config } from '../../../../../../mixins/editor/editor_config_mixin.js'
 
     export default {
         components: {
             StackModal,
+            GlobalInfoFormBlock,
             // SlickItem,
             // SlickList,
         },
         mixins: [
-            editor_config
+            // editor_config
         ],
         props: [
             // 'info_block_prop',
@@ -280,18 +351,15 @@
                 // category: 'this.$route.params.article_category',
                 category: this.$route.params.article_category,
 
-                general_infos: [],
-
                 errors: [],
                 error: [],
                 
-                short_description_text_editor: editor_config.get_small_editor_config(),
-                text_editor_config: editor_config.get_big_editor_config(),
-                route_description_editor_config: editor_config.get_big_editor_config(), 
-                how_get_editor_config: editor_config.get_big_editor_config(),
-                best_time_editor_config: editor_config.get_big_editor_config(),
-                what_need_editor_config: editor_config.get_big_editor_config(),
-                price_text_editor_config: editor_config.get_big_editor_config(),
+                editor_config: {
+                    short_description_text: this.$editor_config.get_small_editor_config(),
+                    text: this.$editor_config.get_big_editor_config(),
+                    how_get: this.$editor_config.get_big_editor_config(),
+                    price_text: this.$editor_config.get_big_editor_config(),
+                },
 
                 data: {
                     title: '',
@@ -304,6 +372,8 @@
                     info: '',
                     time: '',
                 },
+
+                general_infos: [],
 
                 global_blocks: {
                     info_block: '',

@@ -44,7 +44,8 @@
             get_products_data: function(){
                 this.data_for_tab = []
                 axios
-                .get("../api/products/en/")
+                .get("../api/product/get_all_products")
+                // .get("../api/products/en/")
                 .then(response => {
                     this.data_for_tab.push({'id': 1,
                                             'data': response.data, 

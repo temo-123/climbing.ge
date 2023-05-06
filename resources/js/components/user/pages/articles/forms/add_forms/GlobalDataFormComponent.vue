@@ -27,6 +27,7 @@
                         <div class="col-md-10">
                             <select class="form-control" v-model="data.region_id" name="region" > 
                                 <option :value="'select_region'" disabled>Select region</option> 
+                                <option :value="null" style="color:red">Whithout Region</option> 
                                 <option  v-for="region in regions" :key="region.id" :value="region.id">{{ region.us_name }}</option>
                             </select> 
                         </div>
@@ -37,7 +38,8 @@
                         <div class="col-md-10">
                             <select class="form-control" v-model="data.mount_id" name="mount_id"> 
                                 <option :value="'select_mount'" disabled>Select mount</option> 
-                                <option v-for="mount in mount_masive" :key="mount.id" v-bind:value="mount.id">{{mount.name}}</option> 
+                                <option :value="null" style="color:red">Whithout Mount</option> 
+                                <option v-for="mount in mount_masive" :key="mount.id" :value="mount.global_mount.id">{{mount.global_mount.name}}</option> 
                             </select> 
                         </div>
                     </div>
@@ -79,60 +81,14 @@
                     <div class="form-group clearfix row" v-if="this.category == 'indoor'">
                         <label for="name" class='col-md-2 control-label'> Working time </label>
                         <div class="col-md-10">
-                            <input type="text" name="open_timen" v-model="data.open_timen" class="form-control"> 
-                        </div>
-                    </div>
-                    <div class="form-group clearfix row" v-if="this.category == 'indoor'">
-                        <label for="name" class='col-md-2 control-label'> Working time </label>
-                        <div class="col-md-10">
-                            <input type="text" name="closed_time" v-model="data.closed_time" class="form-control"> 
-                        </div>
-                    </div>
-
-
-                    <hr v-if="this.category == 'event'">
-
-                    <div class="form-group clearfix row" v-if="this.category == 'indoor'">
-                        <label for="name" class='col-md-2 control-label'> Start_data </label>
-                        <div class="col-md-10">
-                            <input type="text" name="start_data" v-model="data.start_data" class="form-control"> 
-                        </div>
-                    </div>
-
-                    <div class="form-group clearfix row" v-if="this.category == 'indoor'">
-                        <label for="name" class='col-md-2 control-label'> End data </label>
-                        <div class="col-md-10">
-                            <input type="text" name="end_data" v-model="data.end_data" class="form-control"> 
-                        </div>
-                    </div>
-
-                    <hr v-if="this.category == 'partner' || this.category == 'indoor'">
-
-                    <div class="form-group clearfix row"  v-if="this.category == 'partner' || this.category == 'indoor'">
-                        <label for="name" class='col-md-2 control-label'> facebook / twitter </label>
-                        <div class="col-md-4">
-                            <input type="text" v-model="data.fb_link" name="fb_link" class="form-control"> 
-                        </div>
-                        <div class="col-md-4">
-                            <input type="text" v-model="data.twit_link" name="twit_link" class="form-control"> 
-                        </div>
-                    </div>
-
-                    <div class="form-group clearfix row" v-if="this.category == 'partner' || this.category == 'indoor'">
-                        <label for="name" class='col-md-2 control-label'> google / instagram </label>
-                        <div class="col-md-4">
-                            <input type="text" v-model="data.google_link" name="google_link" class="form-control"> 
-                        </div>
-                        <div class="col-md-4">
-                            <input type="text" v-model="data.inst_link" name="inst_link" class="form-control"> 
-                        </div>
-                    </div>
-
-                    <div class="form-group clearfix row" v-if="this.category == 'partner' || this.category == 'indoor'">
-                        <label for="name" class='col-md-2 control-label'> website </label>
-                        <div class="col-md-10">
-                            <!-- <input type="text" v-model="data.name" name="value name" value="old data" class="form-control"> -->
-                            <input type="text" v-model="data.web_link" name="web_link" class="form-control"> 
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <input type="time" name="open_time" class="form-control" v-model="data.open_time" placeholder="Start data/time"> 
+                                </div>
+                                <div class="col-md-6">
+                                    <input type="time" name="closed_time" class="form-control" v-model="data.closed_time" placeholder="End data/time"> 
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </form>
@@ -204,7 +160,7 @@
             get_mount_massive_data: function(category){
                 if(category == 'mount_route'){
                     axios
-                    .get("../../../api/mountaineering/get_mount_data/")
+                    .get("/mount/mount/")
                     .then(response => {
                         this.mount_masive = response.data
                     })
@@ -217,7 +173,7 @@
             get_regions(category){
                 if(category == 'outdoor'){
                     axios
-                    .get("../../../api/region/")
+                    .get("/outdoor/region/")
                     .then(response => {
                         this.regions = response.data
                     })

@@ -2,7 +2,7 @@
     <div class="h-recent-work" id="other" v-if="other_articles.length > 0">
         <div class="container">
 
-            <h2 class='index_h2'>{{ $t('title other') }}</h2>
+            <h2 class='index_h2'>{{ $t('guide.title.other') }}</h2>
 
             <div class="bar"><i class="fa fa-dribbble"></i></div>
             <h3> <span v-html="$siteData.other_activity_description"></span> </h3>

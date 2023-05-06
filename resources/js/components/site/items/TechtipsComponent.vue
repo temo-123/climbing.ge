@@ -9,17 +9,12 @@
                     
             <div class="container">
                 <div class="row">
-                    
-                    <!-- <div class="tips_list">
-                        <div class="tips"> -->
 
-                            <div class="col-xs-6 col-sm-6 col-md-3" v-for="tip in techtips" :key="tip.id">
+                            <div class="col-xs-6 col-sm-6 col-md-4" v-for="tip in techtips" :key="tip.id">
                                 <div class="product-image" v-if="tip.new_flag">
                                     <div class="discount-percent-badge discount_percent_badge_for_techtip discount-badge-fourty">NEW</div>
                                 </div>
-                                <!-- {{ tip_num+=1 }} -->
                                 <div class="thumbnail">
-                                    <!-- <site-img :src="'./public/images/site_img/image.png'" :img_class="'img-responsive'" :alt='tip[0][0].title'/> -->
                                     <router-link :to="'tech_tip/'+tip.url_title" class="info">
                                         <site-img v-if="tip.image != null" :src="'/public/images/tech_tip_img/'+tip.image" :img_class="'img-responsive'" :alt='tip[0][0].title'/>
                                         <site-img v-else :src="'/public/images/site_img/image.png'" :img_class="'img-responsive'" :alt='tip[0][0].title'/>
@@ -28,26 +23,21 @@
                                         <router-link :to="'tech_tip/'+tip.url_title" class="info">
                                             <h3>{{ tip[0][0].title }}</h3>
                                         </router-link>
-                                        <!-- <p>{{ tip[0][0].short_description }}</p> -->
                                         <hr>
                                         <span class="text-center" v-html="tip[0][0].short_description"></span>
                                     </div>
                                 </div>
                                 
-                                <!-- <div v-if="tip_num % 2 == 0" class="clearfix visible-xs-block"></div> -->
                             </div>
 
 
-                        <!-- </div>
+                    <!-- // <div class="previes_tip_bottom" v-if="techtips.length > 3">
+                    //     <i class="fa fa-chevron-left" aria-hidden="true"></i>
+                    // </div>
+
+                    // <div class="next_tip_bottom" v-if="techtips.length > 3">
+                    //     <i class="fa fa-chevron-right" aria-hidden="true"></i>
                     </div> -->
-
-                    <div class="previes_tip_bottom" v-if="techtips.length > 4">
-                        <i class="fa fa-chevron-left" aria-hidden="true"></i>
-                    </div>
-
-                    <div class="next_tip_bottom" v-if="techtips.length > 4">
-                        <i class="fa fa-chevron-right" aria-hidden="true"></i>
-                    </div>
 
                 </div>
             </div>

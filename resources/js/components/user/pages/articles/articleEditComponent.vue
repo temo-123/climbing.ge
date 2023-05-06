@@ -1,12 +1,17 @@
 <template>
   <div class="tabs"> 
-        <div class="row">
+        <div class="row justify-content-center" v-if="is_loading">
+            <div class="col-md-4">
+                <img :src="'../../../../../../public/images/site_img/loading.gif'" alt="loading">
+            </div>
+        </div>
+        <div class="row" v-if="!is_loading">
             <div class="form-group">
                 <button type="submit" class="btn btn-primary" @click="go_back()">Beck</button>
             </div>
         </div>
 
-        <div class="row">
+        <div class="row" v-if="!is_loading">
             <div class="form-group">  
                 <button type="submit" class="btn btn-primary" v-on:click="edit_article()" >Save</button>
             </div>
@@ -48,7 +53,7 @@
                 </div>
             </div>
         </div>
-        <div class="row" >
+        <div class="row" v-if="!is_loading">
             <div class="col-md-12">
                 <div class="row">
                     <div class="col" >
@@ -80,7 +85,6 @@
             </div>
             <div class="col-md-12" v-show="tab_num == 1">
                 <GlobalDataForm 
-                    @global_form_data="article_data.global_data = $event" 
 
                     :global_data_prop="editing_data.global_article"
                     :category_prop="this.category"
@@ -109,14 +113,14 @@
                 <MountRouteImagesForm
                     v-if="this.category == 'mount_route'"
 
-                    @mount_route_images="article_image = $event" 
+                    @mount_route_img="mount_route_images = $event" 
                 />
                
             </div>
             <div class="col-md-12" v-show="tab_num == 2">
                 <LocaleDataForm 
-                    @locale_form_data="article_data.us_data = $event"
                     @global_blocks="global_blocks_action"
+                    @send_data="get_locale_data"
 
                     :global_blocks_prop="global_blocks"
                     :locale_data_prop="editing_data.us_article"
@@ -130,7 +134,6 @@
             </div>
             <div class="col-md-12" v-show="tab_num == 3">
                 <LocaleDataForm 
-                    @locale_form_data="article_data.ka_data = $event"
                     @global_blocks="global_blocks_action"
 
                     :global_blocks_prop="global_blocks"
@@ -145,7 +148,6 @@
             </div>
             <div class="col-md-12" v-show="tab_num == 4">
                 <LocaleDataForm 
-                    @locale_form_data="article_data.ru_data = $event"
                     @global_blocks="global_blocks_action"
 
                     :global_blocks_prop="global_blocks"
@@ -198,10 +200,14 @@
 
                 region_id: 0,
                 mount_id: 0,
+                
+                is_back_action: false,
 
                 article_old_image: '',
 
                 is_dala_geting: true,
+
+                is_loading: false,
 
                 global_blocks: {
                     info_block: 'new_info',
@@ -216,13 +222,26 @@
                 }
             }
         },
+        beforeRouteLeave (to, from, next) {
+            if(this.is_back_action == true){
+                if (window.confirm('Added information will be deleted!!! Are you sure, you want go back?')) {
+                    this.is_back_action = false;
+                    next()
+                } else {
+                    next(false)
+                }
+            }else {
+                next()
+            }
+        },
         mounted() {
             this.get_editing_data()
         },
         methods: {
             get_editing_data() {
+                this.is_loading = true
                 axios
-                .get('../../../api/articles/get_editing_data/'+this.$route.params.id)
+                .get('/articles/get_editing_data/'+this.$route.params.id)
                 .then(response => {
                     this.editing_data = response.data
                     this.category = response.data.global_article.category
@@ -253,10 +272,10 @@
                         }
                     });
                 })
-                .catch(
-                    error => console.log(error)
-                )
-                .finally(() => this.is_dala_geting = false);
+                // .catch(
+                //     error => console.log(error)
+                // )
+                .finally(() => this.is_loading = false);
             },
 
             edit_article() {
@@ -281,16 +300,15 @@
                     if(this.mount_route_images){
                         var loop_num = 0
                         this.mount_route_images.forEach(mount_route_image => {
-                            formData.append('mountain_route_images['+loop_num+']', mount_route_image.image)
+                            formData.append('mount_route_images['+loop_num+']', mount_route_image.image)
                             loop_num++
                         });
                         loop_num = 0
                     }
                 }
-
+                
                 axios
-                // .post('/api/article/add_article/' + this.category, 
-                .post('../../../api/article/edit_article/' + this.article_id, 
+                .post('/article/edit_article/' + this.article_id, 
                     formData,
                 )
                 .then(response => {
@@ -301,21 +319,19 @@
                         this.error = error.response.data.validation
                     }
                 })
+                .finally(() => this.is_loading = false);
             },
 
             global_blocks_action(event){
                 this.global_blocks = event
             },
 
-            go_back: function(back_action = false) {
-                if(back_action == false){
-                    if(confirm('Are you sure, you want go back?')){
-                        this.$router.go(-1)
-                    }
-                }
-                else{
-                    this.$router.go(-1)
-                }
+            get_locale_data({locale, data}){
+                this.editing_data[locale+'_article'] = data
+            },
+
+            go_back: function(action = false) {
+                this.is_back_action = this.$going.back(this, action)
             },
         },
     }

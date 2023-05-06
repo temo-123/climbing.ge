@@ -29,6 +29,7 @@ window.axios.interceptors.response.use({}, err => {
         return Promise.reject(err)
     }
     else{
+        alert("Error log -> {" + err + "}")
         return Promise.reject(err)
     }
 })

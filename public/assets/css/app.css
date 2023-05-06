@@ -212,14 +212,12 @@ hr {
   .top_menu_margin {
     margin-top: 37%;
   }
-
   .mobile_nav_menu {
     height: auto;
     /* margin-top: 15%; */
     float: left;
     width: 100%;
   }
-
   .top_menu_buttons {
     float: left !important;
   }
@@ -869,49 +867,41 @@ time > .month {
     height: 120px;
     padding: 0px;
   }
-
   .event-list > li > time,
-.event-list > li > img {
+  .event-list > li > img {
     display: inline-block;
   }
-
   .event-list > li > time,
-.event-list > li > img {
+  .event-list > li > img {
     width: 120px;
     float: left;
   }
-
   .event-list > li > .info {
     background-color: rgb(245, 245, 245);
     overflow: hidden;
   }
-
   .event-list > li > time,
-.event-list > li > img {
+  .event-list > li > img {
     width: 120px;
     height: 120px;
     padding: 0px;
     margin: 0px;
   }
-
   .event-list > li > .info {
     position: relative;
     height: 120px;
     text-align: left;
     padding-right: 40px;
   }
-
   .event-list > li > .info > .title,
-.event-list > li > .info > .desc {
+  .event-list > li > .info > .desc {
     padding: 0px 10px;
   }
-
   .event-list > li > .info > ul {
     position: absolute;
     left: 0px;
     bottom: 0px;
   }
-
   .event-list > li > .social {
     position: absolute;
     top: 0px;
@@ -919,16 +909,13 @@ time > .month {
     display: block;
     width: 40px;
   }
-
   .event-list > li > .social > ul {
     border-left: 1px solid rgb(230, 230, 230);
   }
-
   .event-list > li > .social > ul > li {
     display: block;
     padding: 0px;
   }
-
   .event-list > li > .social > ul > li > a {
     display: block;
     width: 40px;
@@ -1493,17 +1480,14 @@ a.socialIcon:hover,
   .pnl-wrapper {
     height: 70px;
   }
-
   .pnl-label,
-.pnl-price {
+  .pnl-price {
     font-size: 1em;
     line-height: 20px;
   }
-
   .pnl-ic-wrapper {
     transform: scale(0.75);
   }
-
   .pnl-description {
     padding-left: 1em;
   }
@@ -1512,7 +1496,6 @@ a.socialIcon:hover,
   .pnl-description {
     padding-left: 1.5em;
   }
-
   .pnl-wrapper {
     height: 70px;
   }
@@ -1523,25 +1506,20 @@ a.socialIcon:hover,
   .grid-tile {
     width: 50%;
   }
-
   .pnl-wrapper {
     height: 60px;
   }
-
   .pnl-description {
     padding-left: 0.5em;
   }
-
   .pnl-label,
-.pnl-price {
+  .pnl-price {
     font-size: 0.75em;
     line-height: 18px;
   }
-
   .pnl-ic-wrapper {
     transform: scale(0.5);
   }
-
   /*.pnl-favorites, .pnl-tocart { width: 40px }*/
 }
 /* LANDSCAPE MOBILE MODE (~416px)
@@ -1550,21 +1528,17 @@ a.socialIcon:hover,
   .pnl-wrapper {
     height: 48px;
   }
-
   .grid-tile {
     width: 33.3333%;
   }
-
   .pnl-label {
     font-size: 0.7em;
     line-height: 14px;
   }
-
   .pnl-price {
     font-size: 0.7em;
     line-height: 14px;
   }
-
   /*.pnl-favorites { position: absolute; width: 40px; height: 40px; top:0; right: 0 }*/
   .pnl-ic-wrapper {
     transform: scale(0.5);
@@ -1574,17 +1548,14 @@ a.socialIcon:hover,
   .pnl-wrapper {
     height: 70px;
   }
-
   .pnl-label,
-.pnl-price {
+  .pnl-price {
     font-size: 1em;
     line-height: 20px;
   }
-
   .pnl-ic-wrapper {
     transform: scale(0.75);
   }
-
   .pnl-description {
     padding-left: 1em;
   }
@@ -1656,23 +1627,19 @@ a.socialIcon:hover,
     margin: 25px 0 2px;
     text-align: center;
   }
-
   .old_price_page p {
     text-decoration: line-through;
     color: #696969;
   }
-
   .old_price_page {
     font-size: 75%;
     color: #696969;
   }
-
   .price_page p {
     margin-top: 12%;
     text-decoration: line-through;
     color: #696969;
   }
-
   .price_page {
     font-size: 20em;
     margin-top: -25%;
@@ -1723,8 +1690,7 @@ a.socialIcon:hover,
   text-align: center;
   transition: all 0.5s ease;
   background-color: #474747;
-  -webkit-backface-visibility: hidden;
-          backface-visibility: hidden;
+  backface-visibility: hidden;
   transform-style: preserve-3d;
   transform: translateY(110px) rotateX(-90deg);
 }
@@ -1793,7 +1759,6 @@ a.socialIcon:hover,
   .service-icon {
     height: 215px;
   }
-
   .service-box .service-icon .front-content {
     top: 55px;
   }
@@ -1853,7 +1818,6 @@ a.socialIcon:hover,
   .clearfix_big {
     display: none;
   }
-
   .indoot_text_for_mobile {
     margin-left: 10%;
   }
@@ -2320,7 +2284,6 @@ select:focus {
   .galery_page_big {
     width: 100%;
   }
-
   .galery_page_smal {
     width: 100%;
   }
@@ -2540,7 +2503,6 @@ select:focus {
   .modal-content {
     margin-top: 75% !important;
   }
-
   .modal-dialog {
     width: 90% !important;
     max-width: 100% !important;
@@ -2564,7 +2526,6 @@ select:focus {
   .isotope-item-dtls h3 {
     font-size: 25px;
   }
-
   .isotope-item-dtls p {
     font-size: 18px;
   }
@@ -2579,11 +2540,9 @@ select:focus {
   .m-component-stack .m-component-stack--header {
     margin-bottom: 20px;
   }
-
   .m-component-stack .m-component-stack--header + .m-component-stack {
     padding-top: 0;
   }
-
   .m-component-stack .m-component-stack--footer {
     padding-bottom: 0;
     padding-top: 20px;
@@ -2594,15 +2553,12 @@ select:focus {
     padding-bottom: 20px;
     padding-top: 20px;
   }
-
   .m-component-stack .m-component-stack--header {
     margin-bottom: 20px;
   }
-
   .m-component-stack .m-component-stack--header + .m-component-stack {
     padding-top: 0;
   }
-
   .m-component-stack .m-component-stack--footer {
     padding-bottom: 0;
     padding-top: 20px;
@@ -2613,15 +2569,12 @@ select:focus {
     padding-bottom: 20px;
     padding-top: 20px;
   }
-
   .m-component-stack .m-component-stack--header {
     margin-bottom: 20px;
   }
-
   .m-component-stack .m-component-stack--header + .m-component-stack {
     padding-top: 0;
   }
-
   .m-component-stack .m-component-stack--footer {
     padding-bottom: 0;
     padding-top: 20px;
@@ -2632,15 +2585,12 @@ select:focus {
     padding-bottom: 20px;
     padding-top: 20px;
   }
-
   .m-component-stack .m-component-stack--header {
     margin-bottom: 20px;
   }
-
   .m-component-stack .m-component-stack--header + .m-component-stack {
     padding-top: 0;
   }
-
   .m-component-stack .m-component-stack--footer {
     padding-bottom: 0;
     padding-top: 20px;
@@ -2955,13 +2905,13 @@ select:focus {
 
 @media only screen {
   .m-image-hero--container.is-fullbleed,
-.m-image-hero--container.mm-image-hero--full-bleed {
+  .m-image-hero--container.mm-image-hero--full-bleed {
     width: 100%;
   }
 }
 @media only screen and (min-width: 675px) and (max-width: 1239px), print {
   .m-image-hero--container.is-fullbleed,
-.m-image-hero--container.mm-image-hero--full-bleed {
+  .m-image-hero--container.mm-image-hero--full-bleed {
     margin-left: auto;
     margin-right: auto;
     width: calc(100% - 40px);
@@ -2969,7 +2919,7 @@ select:focus {
 }
 @media only screen and (min-width: 1240px) {
   .m-image-hero--container.is-fullbleed,
-.m-image-hero--container.mm-image-hero--full-bleed {
+  .m-image-hero--container.mm-image-hero--full-bleed {
     margin-left: auto;
     margin-right: auto;
     width: 1100px;
@@ -2977,7 +2927,7 @@ select:focus {
 }
 @media only screen and (min-width: 1240px) {
   .m-image-hero--container.is-fullbleed,
-.m-image-hero--container.mm-image-hero--full-bleed {
+  .m-image-hero--container.mm-image-hero--full-bleed {
     margin-left: auto;
     margin-right: auto;
     width: 1100px;
@@ -3020,7 +2970,7 @@ select:focus {
 }
 @media only screen {
   .m-image-hero--label.is-fullbleed,
-.m-image-hero--label.mm-image-hero--full-bleed {
+  .m-image-hero--label.mm-image-hero--full-bleed {
     width: 100%;
     padding-right: calc(0% + 20px + 20px);
     padding-left: 10px;
@@ -3028,7 +2978,7 @@ select:focus {
 }
 @media only screen and (min-width: 675px) and (max-width: 1239px), print {
   .m-image-hero--label.is-fullbleed,
-.m-image-hero--label.mm-image-hero--full-bleed {
+  .m-image-hero--label.mm-image-hero--full-bleed {
     padding: 20px;
     width: calc(100% - 40px);
     padding-left: 0;
@@ -3036,7 +2986,7 @@ select:focus {
 }
 @media only screen and (min-width: 1240px) {
   .m-image-hero--label.is-fullbleed,
-.m-image-hero--label.mm-image-hero--full-bleed {
+  .m-image-hero--label.mm-image-hero--full-bleed {
     padding: 20px;
     width: 1100px;
     padding-left: 0;
@@ -3044,7 +2994,7 @@ select:focus {
 }
 @media only screen and (min-width: 1240px) {
   .m-image-hero--label.is-fullbleed,
-.m-image-hero--label.mm-image-hero--full-bleed {
+  .m-image-hero--label.mm-image-hero--full-bleed {
     padding: 20px;
     width: 1100px;
     padding-left: 0;
@@ -3097,40 +3047,37 @@ select:focus {
 }
 @media only screen {
   .m-image-hero--text-panel.is-fullbleed,
-.m-image-hero--text-panel.mm-image-hero--full-bleed {
+  .m-image-hero--text-panel.mm-image-hero--full-bleed {
     width: 100%;
   }
 }
 @media only screen and (min-width: 675px) and (max-width: 1239px), print {
   .m-image-hero--text-panel.is-fullbleed,
-.m-image-hero--text-panel.mm-image-hero--full-bleed {
+  .m-image-hero--text-panel.mm-image-hero--full-bleed {
     max-width: calc((100% + 20px) * 0.91667 - 20px);
   }
-
   .m-image-hero--text-panel.is-fullbleed.mm-image-hero--no-background,
-.m-image-hero--text-panel.mm-image-hero--full-bleed.mm-image-hero--no-background {
+  .m-image-hero--text-panel.mm-image-hero--full-bleed.mm-image-hero--no-background {
     padding-left: 0;
   }
 }
 @media only screen and (min-width: 1240px) {
   .m-image-hero--text-panel.is-fullbleed,
-.m-image-hero--text-panel.mm-image-hero--full-bleed {
+  .m-image-hero--text-panel.mm-image-hero--full-bleed {
     max-width: calc((100% + 20px) * 0.91667 - 20px);
   }
-
   .m-image-hero--text-panel.is-fullbleed.mm-image-hero--no-background,
-.m-image-hero--text-panel.mm-image-hero--full-bleed.mm-image-hero--no-background {
+  .m-image-hero--text-panel.mm-image-hero--full-bleed.mm-image-hero--no-background {
     padding-left: 0;
   }
 }
 @media only screen and (min-width: 1240px) {
   .m-image-hero--text-panel.is-fullbleed,
-.m-image-hero--text-panel.mm-image-hero--full-bleed {
+  .m-image-hero--text-panel.mm-image-hero--full-bleed {
     max-width: calc((100% + 20px) * 0.91667 - 20px);
   }
-
   .m-image-hero--text-panel.is-fullbleed.mm-image-hero--no-background,
-.m-image-hero--text-panel.mm-image-hero--full-bleed.mm-image-hero--no-background {
+  .m-image-hero--text-panel.mm-image-hero--full-bleed.mm-image-hero--no-background {
     padding-left: 0;
   }
 }
@@ -3167,13 +3114,13 @@ select:focus {
 }
 @media only screen and (min-width: 1240px) {
   .m-image-hero--body.is-fullbleed,
-.m-image-hero--body.mm-image-hero--full-bleed {
+  .m-image-hero--body.mm-image-hero--full-bleed {
     width: 1100px;
   }
 }
 @media only screen and (min-width: 1240px) {
   .m-image-hero--body.is-fullbleed,
-.m-image-hero--body.mm-image-hero--full-bleed {
+  .m-image-hero--body.mm-image-hero--full-bleed {
     width: 1100px;
   }
 }
@@ -3201,14 +3148,13 @@ select:focus {
   .m-image-hero--header-text {
     max-height: 440px;
   }
-
   .m-image-hero--header-text.is-fullbleed {
     max-height: 30vw;
   }
 }
 @media only screen and (min-width: 1240px) {
   .m-image-hero--header-text.is-fullbleed,
-.m-image-hero--header-text.mm-image-hero--full-bleed {
+  .m-image-hero--header-text.mm-image-hero--full-bleed {
     font-size: 48px;
     line-height: 1em;
   }
@@ -3241,7 +3187,7 @@ select:focus {
 
 @media only screen and (min-width: 675px), print {
   .m-image-hero--header-text.mm-image-hero--no-background.is-fullbleed,
-.m-image-hero--header-text.mm-image-hero--no-background.mm-image-hero--full-bleed {
+  .m-image-hero--header-text.mm-image-hero--no-background.mm-image-hero--full-bleed {
     margin-left: -10px;
   }
 }
@@ -3276,7 +3222,7 @@ select:focus {
 
 @media only screen and (min-width: 675px), print {
   .m-image-hero--metadata-a,
-.m-image-hero--metadata-b {
+  .m-image-hero--metadata-b {
     font-size: 14px;
     line-height: 1.5em;
   }
@@ -3461,7 +3407,6 @@ select:focus {
     padding-left: 10px;
     padding-right: 10px;
   }
-
   .mm-collection-strip--is-stretched .m-collection-strip--tile:first-child {
     margin-left: 10px;
     padding-left: 10px;
@@ -3475,7 +3420,6 @@ select:focus {
     padding-left: 10px;
     padding-right: 10px;
   }
-
   .mm-collection-strip--is-stretched .m-collection-strip--tile:first-child {
     margin-left: 10px;
     padding-left: 10px;
@@ -3483,18 +3427,16 @@ select:focus {
 }
 @media only screen and (min-width: 675px) and (max-width: 1239px), print {
   .mm-collection-strip--is-stretched .m-collection-strip--tile:nth-last-child(-n+6):first-child,
-.mm-collection-strip--is-stretched .m-collection-strip--tile:nth-last-child(-n+6):first-child ~ .m-collection-strip--tile {
+  .mm-collection-strip--is-stretched .m-collection-strip--tile:nth-last-child(-n+6):first-child ~ .m-collection-strip--tile {
     -moz-flex-grow: 1;
     flex-grow: 1;
     -ms-flex-positive: 1;
     flex-shrink: 0;
     -ms-flex-negative: 0;
   }
-
   .mm-collection-strip--is-stretched .m-collection-strip--tile:first-child {
     margin-left: 20px;
   }
-
   .mm-collection-strip--is-stretched .m-collection-strip--tile:nth-last-child(-n+6):last-child {
     margin-right: 20px;
   }
@@ -3507,17 +3449,14 @@ select:focus {
     padding-left: 10px;
     padding-right: 10px;
   }
-
   .mm-collection-strip--is-stretched .m-collection-strip--tile:first-child {
     margin-left: 0;
   }
-
   .mm-collection-strip--is-stretched .m-collection-strip--tile:nth-last-child(-n+6):last-child {
     margin-right: 0;
   }
-
   .mm-collection-strip--is-stretched .m-collection-strip--tile:nth-last-child(-n+6):first-child,
-.mm-collection-strip--is-stretched .m-collection-strip--tile:nth-last-child(-n+6):first-child ~ .m-collection-strip--tile {
+  .mm-collection-strip--is-stretched .m-collection-strip--tile:nth-last-child(-n+6):first-child ~ .m-collection-strip--tile {
     box-flex: 1;
     -moz-flex: 1;
     flex: 1;
@@ -3531,17 +3470,14 @@ select:focus {
     padding-left: 10px;
     padding-right: 10px;
   }
-
   .mm-collection-strip--is-stretched .m-collection-strip--tile:first-child {
     margin-left: 0;
   }
-
   .mm-collection-strip--is-stretched .m-collection-strip--tile:nth-last-child(-n+6):last-child {
     margin-right: 0;
   }
-
   .mm-collection-strip--is-stretched .m-collection-strip--tile:nth-last-child(-n+6):first-child,
-.mm-collection-strip--is-stretched .m-collection-strip--tile:nth-last-child(-n+6):first-child ~ .m-collection-strip--tile {
+  .mm-collection-strip--is-stretched .m-collection-strip--tile:nth-last-child(-n+6):first-child ~ .m-collection-strip--tile {
     box-flex: 1;
     -moz-flex: 1;
     flex: 1;
@@ -3680,8 +3616,7 @@ select:focus {
 }
 
 .tabs {
-  flex-wrap: wrap;
-  /* make sure it wraps */
+  flex-wrap: wrap; /* make sure it wraps */
 }
 
 .tabs label {
@@ -3694,8 +3629,7 @@ select:focus {
 }
 
 .tabs .tab {
-  order: 99;
-  /* Put the tabs last */
+  order: 99; /* Put the tabs last */
   flex-grow: 1;
   width: 100%;
   display: none;
@@ -3705,10 +3639,9 @@ select:focus {
 
 @media (max-width: 45em) {
   .tabs .tab,
-.tabs label {
+  .tabs label {
     order: initial;
   }
-
   .tabs label {
     width: 100%;
     margin-right: 0;
@@ -3903,14 +3836,10 @@ a:active {
 }
 
 .size {
-  white-space: nowrap;
-  /* Отменяем перенос текста */
-  overflow: hidden;
-  /* Обрезаем содержимое */
-  padding: 5px;
-  /* Поля */
-  text-overflow: ellipsis;
-  /* Многоточие */
+  white-space: nowrap; /* Отменяем перенос текста */
+  overflow: hidden; /* Обрезаем содержимое */
+  padding: 5px; /* Поля */
+  text-overflow: ellipsis; /* Многоточие */
   /*http://htmlbook.ru/blog/obrezaem-dlinnuyu-stro*/
 }
 
@@ -3921,7 +3850,7 @@ a:active {
 
 @media (max-width: 720px) {
   .news_size,
-p {
+  p {
     font-size: 18px;
   }
 }
@@ -3936,7 +3865,7 @@ p {
 
 @media (max-width: 720px) {
   .article_size,
-p {
+  p {
     font-size: 20px;
     /*width: 80%;*/
     /*text-align: center;*/
@@ -3952,7 +3881,7 @@ p {
 
 @media (max-width: 720px) {
   .event_size,
-p {
+  p {
     font-size: 20px;
     /*text-align: center;*/
   }
@@ -4307,14 +4236,10 @@ a:active {
 }
 
 .size {
-  white-space: nowrap;
-  /* Отменяем перенос текста */
-  overflow: hidden;
-  /* Обрезаем содержимое */
-  padding: 5px;
-  /* Поля */
-  text-overflow: ellipsis;
-  /* Многоточие */
+  white-space: nowrap; /* Отменяем перенос текста */
+  overflow: hidden; /* Обрезаем содержимое */
+  padding: 5px; /* Поля */
+  text-overflow: ellipsis; /* Многоточие */
   /*http://htmlbook.ru/blog/obrezaem-dlinnuyu-stro*/
 }
 
@@ -4325,7 +4250,7 @@ a:active {
 
 @media (max-width: 720px) {
   .news_size,
-p {
+  p {
     font-size: 18px;
   }
 }
@@ -4340,7 +4265,7 @@ p {
 
 @media (max-width: 720px) {
   .article_size,
-p {
+  p {
     font-size: 20px;
     /*width: 80%;*/
     /*text-align: center;*/
@@ -4356,7 +4281,7 @@ p {
 
 @media (max-width: 720px) {
   .event_size,
-p {
+  p {
     font-size: 20px;
     /*text-align: center;*/
   }
@@ -4371,12 +4296,10 @@ p {
     color: #fff;
     font-size: 120%;
   }
-
   .abc {
     margin-top: 30px;
     margin-bottom: 15px;
   }
-
   .efg {
     margin-top: 15px;
     margin-bottom: 30px;

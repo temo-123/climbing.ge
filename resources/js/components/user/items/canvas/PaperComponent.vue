@@ -5,15 +5,11 @@
             class="canvas-style" 
             v-on:mousedown="mouseDown"
         />
+        <button v-on:click="saveCanvasData">Save Canvas Data</button>
     </div>
 </template>
 
 <script>
-    // import "https://sasensi.github.io/paperjs-layers-panel/build/paperjs-layers-panel.js"
-    // import { Raster } from 'paper/dist/paper-core';
-    // TODO: move all of this logic to master
-    // https://noahkreiger.medium.com/vuejs-paperjs-a-canvas-story-c412dc161b1f
-    // packages
     const paper = require('paper');
     export default {
         name: "Canvas",
@@ -24,6 +20,7 @@
         data: () => ({
             path: null,
             scope: null,
+            canvasData: null, // store canvas data
         }),
         methods: {
             reset() {
@@ -58,13 +55,6 @@
                 this.tool = this.createTool(this.scope);
 
                 this.tool.onMouseDown = (event) => {
-
-                    // new paper.Path.Circle({
-                    //     center   : event.point,
-                    //     radius   : 50,
-                    //     fillColor: paper.Color.random()
-                    // });
-
                     if (self.action == 1) {
                         self.add_line();
                     }
@@ -87,6 +77,21 @@
                     // self.path.add(event.point);
                     self.path = []
                 }
+            },
+            saveCanvasData() {
+                // get JSON representation of paper.project
+                const canvasData = JSON.stringify(paper.project.exportJSON());
+
+                // send data to server
+                axios.post('/canvas-data', {
+                    data: canvasData
+                })
+                .then((response) => {
+                    console.log('Canvas data saved successfully');
+                })
+                .catch((error) => {
+                    console.log('Error saving canvas data');
+                });
             }
         },
         mounted() {
@@ -114,7 +119,6 @@
             console.log(paper.project.activeLayer == firstLayer); // true
 
             paperjsLayersPanel.create();
-
         }
     }
 </script>

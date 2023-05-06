@@ -5,6 +5,8 @@ namespace Database\Seeders;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
+use Illuminate\Support\Facades\DB;
+
 class User_notificationsTableSeeder extends Seeder
 {
     /**
@@ -26,7 +28,7 @@ class User_notificationsTableSeeder extends Seeder
             'add_new_techtip' => 1,
             'add_new_gym' => 1,
             'add_new_product' => 1,
-            '1add_new_service' => 1,
+            'add_new_service' => 1,
             
             'user_id' => 1,
         ]);

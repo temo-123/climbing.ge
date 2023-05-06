@@ -1,16 +1,22 @@
 <template>
-    <div class="tabs"> 
-        <div class="row" v-if="!is_mail_sending_procesing">
+    <div class="tabs">
+        <div class="row justify-content-center" v-if="is_loading">
+            <div class="col-md-4">
+                <img :src="'../../../../../../public/images/site_img/loading.gif'" alt="loading">
+            </div>
+        </div>
+
+        <div class="row" v-if="!is_loading">
             <div class="form-group">
                 <button type="submit" class="btn btn-primary" @click="go_back()">Beck</button>
             </div>
         </div>
-        <div class="row" v-if="!is_mail_sending_procesing">
+        <div class="row" v-if="!is_loading">
             <div class="form-group">  
                 <button type="submit" class="btn btn-primary" v-on:click="save()" >Save</button>
             </div>
         </div>
-        <div class="row" v-if="!is_mail_sending_procesing">
+        <div class="row" v-if="!is_loading">
             <div class="col-md-12" v-if="error.length != 0">
                 <div class="alert alert-danger" role="alert" v-if="error.global_info_validation.published">
                     Published - {{ error.global_info_validation.published[0] }}
@@ -50,7 +56,7 @@
                 </div>
             </div>
         </div>
-        <div class="row" v-if="!is_mail_sending_procesing">
+        <div class="row" v-if="!is_loading">
             <div class="col-md-12">
                 <div class="row">
                     <div class="col" >
@@ -75,7 +81,7 @@
                     </div>
                 </div>
             </div>
-            <div class="col-md-12" v-show="tab_num == 1">
+            <div v-show="tab_num == 1">
                 <GlobalDataForm 
                     @global_form_data="article_data.global_data = $event" 
                 />
@@ -84,10 +90,22 @@
                     <ArticleImage ref="ArticleImage" @upload_img="upload_adticle_image"/>
                 </div>
 
-                <SectorsImagesForm      v-if="this.category == 'outdoor'"       :category="this.category" @upload_img="upload_area_images"/>
-                <MountRouteImagesForm   v-if="this.category == 'mount_route'"   :category="this.category" @upload_img="upload_mount_route_images"/>
+                <SectorsImagesForm      
+                    v-if="this.category == 'outdoor'"  
+
+                    :category="this.category" 
+
+                    @upload_img="upload_area_images"
+                />
+                
+                <!-- <MountRouteImagesForm   v-if="this.category == 'mount_route'"   :category="this.category" @upload_img="upload_mount_route_images"/> -->
+                <MountRouteImagesForm
+                    v-if="this.category == 'mount_route'"
+
+                    @mount_route_img="mount_route_images = $event" 
+                />
             </div>
-            <div class="col-md-12" v-show="tab_num == 2">
+            <div v-show="tab_num == 2">
                 <LocaleDataForm 
                     @locale_form_data="article_data.en_data = $event"
                     @global_blocks="global_blocks_action"
@@ -98,7 +116,7 @@
                     :description="$t('user add en article description')"
                 />
             </div>
-            <div class="col-md-12" v-show="tab_num == 3">
+            <div v-show="tab_num == 3">
                 <LocaleDataForm 
                     @locale_form_data="article_data.ka_data = $event"
                     @global_blocks="global_blocks_action"
@@ -109,7 +127,7 @@
                     :description="$t('user add ka article description')"
                 />
             </div>
-            <div class="col-md-12" v-show="tab_num == 4">
+            <div v-show="tab_num == 4">
                 <LocaleDataForm 
                     @locale_form_data="article_data.ru_data = $event"
                     @global_blocks="global_blocks_action"
@@ -122,7 +140,7 @@
             </div>
         </div>
 
-        <div class="row justify-content-center" v-if="is_mail_sending_procesing">
+        <div class="row justify-content-center" v-if="is_loading">
             <div class="col-md-4">
                 <img :src="'../../../../../../public/images/site_img/loading.gif'" alt="loading">
                 <p>Pless wait! sanding notifications</p>
@@ -158,7 +176,7 @@
                 error: [],
 
                 is_back_action: false,
-                is_mail_sending_procesing: false,
+                is_loading: false,
 
                 article_data: {
                     global_data: [],
@@ -188,14 +206,15 @@
             //
         },
         beforeRouteLeave (to, from, next) {
-            if(this.is_back_action){
+            if(this.is_back_action == true){
+                if (window.confirm('Added information will be deleted!!! Are you sure, you want go back?')) {
+                    this.is_back_action = false;
+                    next()
+                } else {
+                    next(false)
+                }
+            }else {
                 next()
-            }
-            else if (window.confirm('Added information will be deleted!!! Are you sure, you want go back?')) {
-                next()
-            } 
-            else {
-                next(false)
             }
         },
         methods: {
@@ -234,16 +253,18 @@
                     loop_num = 0
                 }
                 else if(this.category == 'mount_route'){
-                    let loop_num = 0
-                    this.mount_route_images.forEach(mount_image => {
-                        formData.append('mountain_route_images['+loop_num+']', mount_image.image)
-                        loop_num++
-                    });
-                    loop_num = 0
+                    if(this.mount_route_images){
+                        var loop_num = 0
+                        this.mount_route_images.forEach(mount_route_image => {
+                            formData.append('mount_route_images['+loop_num+']', mount_route_image.image)
+                            loop_num++
+                        });
+                        loop_num = 0
+                    }
                 }
 
                 axios
-                .post('/api/article/add_article/' + this.category, 
+                .post('/article/add_article/' + this.category, 
                     formData,
                 )
                 .then(response => {
@@ -263,14 +284,18 @@
                     if (error.response.status == 422) {
                         this.error = error.response.data.validation
                     }
+                    else{
+                        alert(error)
+                    }
                 })
+                .finally(() => this.is_loading = false);
             },
 
             sand_notification() {
-                this.is_mail_sending_procesing = true
+                this.is_loading = true
 
                 axios
-                .post('../../../api/user/notifications/send_article_adding_notification',{
+                .post('/user/notifications/send_article_adding_notification',{
                     notification_category: this.category
                 } )
                 .then(response => {
@@ -279,19 +304,11 @@
                 .catch(err => {
                     console.log(err);
                 })
-                .finally(() => this.is_mail_sending_procesing = false);
+                .finally(() => this.is_loading = false);
             },
             
-            go_back: function(back_action = false) {
-                this.is_back_action = true
-                if(back_action == false){
-                    if(confirm('Are you sure, you want go back?')){
-                        this.$router.go(-1)
-                    }
-                }
-                else{
-                    this.$router.go(-1)
-                }
+            go_back: function(action = false) {
+                this.is_back_action = this.$going.back(this, action)
             },
         }
     }

@@ -23,7 +23,7 @@
                             <tbody>
                                 <tr v-for="image in mount_route_old_images" :key="image.id">
                                     <td>
-                                        <img class="img-responsive" :src="'../../../../images/suport_local_bisnes_img/'+image.image" :alt="image.image">
+                                        <img class="img-responsive" :src="'../../../../images/mount_route_description_img/'+image.image" :alt="image.image">
                                     </td>
                                     <td>|</td>
                                     <td>
@@ -100,9 +100,9 @@
         methods: {
             get_old_mount_routes_images(){
                 axios
-                .get("../../../api/mount_route/get_mount_routes_images/"+this.$route.params.id)
+                .get("/mount_route/get_mount_routes_images/"+this.$route.params.id)
                 .then(response => {
-                    this.mount_route_old_images = response.data.mount_route_images
+                    this.mount_route_old_images = response.data
                 })
                 .catch(
                     error => console.log(error)
@@ -111,7 +111,7 @@
             del_old_mount_routes_image_from_db(image_id){
                 if(confirm('Are you sure, you want delite this image?')){
                     axios
-                    .delete("../../../api/mount_route/del_mount_routes_images/"+image_id)
+                    .delete("/mount_route/del_mount_route_image/"+image_id)
                     .then(response => {
                         this.get_old_mount_routes_images()
                     })
@@ -128,7 +128,7 @@
                 this.upload_img()
             },
             upload_img(event){
-                this.$emit("upload_img", this.mount_route_images);
+                this.$emit("mount_route_img", this.mount_route_images);
             },
             add_new_mount_route_image_value(){
                 var new_item_id = this.mount_route_images.length+1

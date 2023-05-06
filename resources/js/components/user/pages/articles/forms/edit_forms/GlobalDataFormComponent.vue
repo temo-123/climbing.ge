@@ -28,6 +28,7 @@
                         <div class="col-md-10">
                             <select class="form-control" v-model="data.region_id" name="region" > 
                                 <option :value="'select_region'" disabled>Select region</option> 
+                                <option :value="null" style="color:red">Whithout Region</option> 
                                 <option  v-for="region in regions" :key="region.id" :value="region.id">{{ region.us_name }}</option>
                             </select> 
                         </div>
@@ -38,7 +39,9 @@
                         <div class="col-md-10">
                             <select class="form-control" v-model="data.mount_id" name="mount_id"> 
                                 <option :value="'select_mount'" disabled>Select mount</option> 
-                                <option v-for="mount in mount_masive" :key="mount.id" v-bind:value="mount.id">{{mount.name}}</option> 
+                                <option :value="null" style="color:red">Whithout Mount</option> 
+                                <!-- <option :value="'select_mount'">Select mount</option>  -->
+                                <option v-for="mount in mount_masive" :key="mount.global_mount.id" v-bind:value="mount.global_mount.id">{{mount.global_mount.name}}</option> 
                             </select> 
                         </div>
                     </div>
@@ -76,35 +79,14 @@
                     <div class="form-group clearfix row" v-if="this.category == 'indoor'">
                         <label for="name" class='col-md-2 control-label'> Working time </label>
                         <div class="col-md-10">
-                            <input type="text" name="time" v-model="data.working_time" class="form-control"> 
-                        </div>
-                    </div>
-
-                    <hr v-if="this.category == 'partner' || this.category == 'indoor'">
-
-                    <div class="form-group clearfix row" v-if="this.category == 'partner' || this.category == 'indoor'">
-                        <label for="name" class='col-md-2 control-label'> facebook / twitter </label>
-                        <div class="col-md-4">
-                            <input type="text" name="fb_link"  v-model="data.fb_link" class="form-control"> 
-                        </div>
-                        <div class="col-md-4">
-                            <input type="text" name="twit_link"  v-model="data.twit_link" class="form-control"> 
-                        </div>
-                    </div>
-                    <div class="form-group clearfix row" v-if="this.category == 'partner' || this.category == 'indoor'">
-                        <label for="name" class='col-md-2 control-label'> google / instagram </label>
-                        <div class="col-md-4">
-                            <input type="text" name="google_link"  v-model="data.google_link" class="form-control"> 
-                        </div>
-                        <div class="col-md-4">
-                            <input type="text" name="inst_link"  v-model="data.inst_link" class="form-control"> 
-                        </div>
-                    </div>
-                    <div class="form-group clearfix row" v-if="this.category == 'partner' || this.category == 'indoor'">
-                        <label for="name" class='col-md-2 control-label'> website </label>
-                        <div class="col-md-10">
-                            <!-- <input type="text" name="value name" value="old data" class="form-control"> -->
-                            <input type="text" name="web_link" v-model="data.web_link" class="form-control"> 
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <input type="time" name="open_time" class="form-control" v-model="data.open_time" placeholder="Start data/time"> 
+                                </div>
+                                <div class="col-md-6">
+                                    <input type="time" name="closed_time" class="form-control" v-model="data.closed_time" placeholder="End data/time"> 
+                                </div>
+                            </div>
                         </div>
                     </div>
 
@@ -135,15 +117,15 @@
         ],
         data(){
             return {
-                editorConfig: {
-                    // toolbar: [ [ 'Bold' ] ]
-                },
-                data: [],
+                // editorConfig: {
+                //     // toolbar: [ [ 'Bold' ] ]
+                // },
+                data: this.global_data_prop,
 
                 region_id: 'select_region',
                 mount_id: 'select_mount',
 
-                category: '',
+                category: this.category_prop,
 
                 error: [],
 
@@ -192,7 +174,7 @@
         methods: {
             get_mount_massive_data(){
                 axios
-                .get("../../../api/mountaineering/get_mount_data/")
+                .get("/mount/mount/")
                 .then(response => {
                     this.mount_masive = response.data
                 })
@@ -203,7 +185,8 @@
 
             get_regions(){
                 axios
-                .get("../../../api/region/")
+                // .get('/outdoor/regions/'+localStorage.getItem('lang'))
+                .get("/outdoor/region/")
                 .then(response => {
                     this.regions = response.data
                 })

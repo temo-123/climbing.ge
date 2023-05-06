@@ -46,7 +46,6 @@
                         <mountCard 
                             v-for="mount_route in mount_routes"
                             :key='mount_route.id'
-                            :image_dir="'images/mount_route_img/'"
                             :mount="mount_route"
                             :route="'mountaineering/'+mount_route.url_title"
                         />
@@ -60,7 +59,7 @@
         </div>
         
         <metaData 
-            :title = "$t('site.meta.mountaineering')"
+            :title = "$t('guide.meta.mountaineering')"
             :description = "this.$siteData.mount_description"
             :image = "'../../../../public/images/meta_img/mount.jpg'"
         />
@@ -107,7 +106,7 @@
         methods: {
             get_filtred_articles(id){
                 axios
-                .get("../api/mount_route/get_filtred_mount_route_for_user/" + localStorage.getItem('lang') + '/' + id)
+                .get("/mount_route/get_filtred_mount_route_for_user/" + localStorage.getItem('lang') + '/' + id)
                 .then(response => {
                     this.mount_routes = response.data
                 })
@@ -119,7 +118,7 @@
 
             get_unfilted_articles(){
                 axios
-                .get('../api/articles/mount_route/'+localStorage.getItem('lang'))
+                .get('/articles/mount_route/'+localStorage.getItem('lang'))
                 .then(response => {
                     this.mount_routes = response.data
                     // this.filter_mount_routes()
@@ -152,7 +151,7 @@
 
             // get_mount_routes(){
             //     axios
-            //     .get('../api/articles/mount_route/'+localStorage.getItem('lang'))
+            //     .get('/articles/mount_route/'+localStorage.getItem('lang'))
             //     .then(response => {
             //         this.mount_routes = response.data,
             //         this.filter_mount_routes()
@@ -163,7 +162,7 @@
 
             get_mounts(){
                 axios
-                .get('../api/mounts/'+localStorage.getItem('lang'))
+                .get('/mounts/'+localStorage.getItem('lang'))
                 .then(response => {
                     this.mounts = response.data
                 })
@@ -176,7 +175,7 @@
                 if (this.filter_mount != 'all' || this.filter_mount != 'All') {
                     this.selected_mount_data = []
                     axios 
-                    .get('../api/mount/'+localStorage.getItem('lang')+'/'+mount_masiv_id)
+                    .get('/mount/'+localStorage.getItem('lang')+'/'+mount_masiv_id)
                     .then(response => {
                         this.selected_mount_data = response.data[0]
                     })

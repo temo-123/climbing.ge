@@ -79,7 +79,7 @@
             get_regions(category){
                 if(category == 'outdoor'){
                     axios
-                    .get("../api/region/")
+                    .get("../api/outdoor/region/")
                     .then(response => {
                         this.data_for_tab.push({'id': 2,
                                                 'data': response.data, 

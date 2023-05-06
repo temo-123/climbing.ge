@@ -4,15 +4,6 @@
 
         <div class="container top_menu_margin">
             <div class="container bootstrap snippet mt-5">
-                <div v-if="$can('read', 'Article')">
-                    <a >read Article</a>
-                </div>
-                <div v-if="$can('create', 'Article')">
-                    <a >create Article</a>
-                </div>
-                <div v-if="$can('del', 'Article')">
-                    <a >del Article</a>
-                </div>
                 <router-view />
             </div>
         </div>
@@ -22,7 +13,12 @@
 <script>
 import navbar from "./items/navbars/NavbarComponent.vue";
 
+import { mapState } from 'vuex'
 export default {
+    computed: mapState({
+        arrayIndex: state => state.arrayIndex
+    }),
+
     data: function () {
         return {
             // search_query: '',
@@ -39,7 +35,7 @@ export default {
     methods: {
         get_user_data: function(){
         axios
-            .get("../../../api/user/get_auth_user_permissions/")
+            .get("/user/get_auth_user_permissions/")
             .then(response => {
                 this.$ability.update(
                     response.data

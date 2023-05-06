@@ -7,12 +7,12 @@ APP_NAME=climbing.ge
 APP_ENV=local
 APP_KEY=base64:qygS4cqGiBheDWRI6QwJkVNn+QyONvhcvgBRJ9NluQ8=
 APP_DEBUG=true
-APP_URL=https://climbing.loc
+APP_URL=http://climbing.loc
 
-BASE_URL_SSH=https://climbing.loc
+BASE_URL_SSH=http://climbing.loc
 BASE_URL=climbing.loc
 
-MIX_BASE_URL_SSH=https://climbing.loc
+MIX_BASE_URL_SSH=http://climbing.loc
 MIX_BASE_URL=climbing.loc
 
 LOG_CHANNEL=stack
@@ -26,8 +26,8 @@ TIMEZONE=Asia/Tbilisi
 #
 #
  
-FRONTPAGE_VERIFY_URL=https://user.climbing.loc/api/email/verify/
-# VUE_APP_API_URL=https://api.test/api/
+FRONTPAGE_VERIFY_URL=http://user.climbing.loc/api/email/verify/
+# VUE_APP_API_URL=http://api.test/api/
 
 
 
@@ -66,7 +66,7 @@ REDIS_PORT=6379
 
 SANCTUM_STATEFUL_DOMAINS=climbing.loc,user.climbing.loc,shop.climbing.loc,forum.climbing.loc
 SESSION_DOMAIN=.climbing.loc
-SPA_URL=https://climbing.loc
+SPA_URL=http://climbing.loc
 
 
 
@@ -76,7 +76,7 @@ SPA_URL=https://climbing.loc
 #
 #
 
-APP_SSH=https://
+APP_SSH=http://
 MIX_APP_SSH="${APP_SSH}"
 
 
@@ -130,9 +130,9 @@ MAIL_FROM_NAME="${APP_NAME}"
 DB_CONNECTION=mysql
 DB_HOST=localhost
 DB_PORT=3306
-DB_DATABASE=climbing,loc_test_1
-DB_USERNAME=temo
-DB_PASSWORD=Root-1234
+DB_DATABASE=climbing,loc_test_1_db
+DB_USERNAME=root
+DB_PASSWORD=123
 
 
 
@@ -144,7 +144,8 @@ DB_PASSWORD=Root-1234
 
 VUE_APP_I18N_LOCALE=en
 VUE_APP_I18N_FALLBACK_LOCALE=ka
-VUE_APP_I18N_SUPORTED_LOCALE=en,ka,ru,/
+# VUE_APP_I18N_SUPORTED_LOCALE=en,ka,ru,/
+VUE_APP_I18N_SUPORTED_LOCALE=en|ka|ru|/
 
 MIX_VUE_APP_I18N_LOCALE="${VUE_APP_I18N_LOCALE}"
 MIX_VUE_APP_I18N_FALLBACK_LOCALE="${VUE_APP_I18N_FALLBACK_LOCALE}"
@@ -186,13 +187,13 @@ MIX_GOOGLE_CAPTCHA_SECRET_KEY="${GOOGLE_CAPTCHA_SECRET_KEY}"
 #
 #
 
-# -> https://developers.facebook.com/?no_redirect=1
+# -> http://developers.facebook.com/?no_redirect=1
 FACEBOOK_CLIENT_ID=281211606832235
 FACEBOOK_CLIENT_SECRET=8147083e796c035af88dceb467d35afd
-FACEBOOK_URL=https://user.climbing.loc/login/facebook/callback
+FACEBOOK_URL=http://user.climbing.loc/login/facebook/callback
 
 
-# -> https://console.cloud.google.com/apis/dashboard?hl=ru&project=climbing-loc-374622
+# -> http://console.cloud.google.com/apis/dashboard?hl=ru&project=climbing-loc-374622
 GOOGLE_CLIENT_ID=1060302637690-v6ld46eefl4dkognavtr5bvpfc24dnpp.apps.googleusercontent.com
 GOOGLE_CLIENT_SECRET=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
-GOOGLE_URL=https://user.climbing.loc/login/google/callback
+GOOGLE_URL=http://user.climbing.loc/login/google/callback

@@ -10,6 +10,11 @@
             'alt',
             'img_class',
         ],
+        watch: {
+            src: function(newVal, oldVal) { 
+                this.image_src = this.src
+            },
+        },
         data(){
             return {
                 content: '',

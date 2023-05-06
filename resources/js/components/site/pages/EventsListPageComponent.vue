@@ -6,7 +6,15 @@
             {{this.$siteData.event_description}}
         </h2>
 
-        <div class="">
+        <div v-if="events == []">
+            <content-loader
+                viewBox="0 0"
+                primaryColor="#f3f3f3"
+                secondaryColor="#279fbbb0"
+            />
+        </div>
+
+        <div class="" v-if="events != []">
             <div class="row">
                 <div class="container articles_filter_bar">
                     <div class="col-md-6 col-sm-6">
@@ -14,18 +22,18 @@
                     </div>
                     <div class="col-md-6 col-sm-6">
                         <select class="form-control" v-model="event_filtrs" @click="sortByTime()">
-                            <option value="next">In future</option>
-                            <option value="now">At the moment</option>
                             <option value="all">All</option>
+                            <option value="next" disabled>In future</option>
+                            <option value="now" disabled>At the moment</option>
                         </select>
                     </div>
                 </div>
             </div>
         </div>
 
-        <div class="bar"><i class="fa fa-calendar"></i></div>
+        <div class="bar" v-if="events != []"><i class="fa fa-calendar"></i></div>
 
-        <ul class="timeline" v-if="filtred_events.length">
+        <ul class="timeline" v-if="filtred_events.length && events != []">
             <eventListCard 
                 v-for="event in filtred_events"
                 :key='event.id'
@@ -67,7 +75,7 @@ import moment from "moment"; // https://www.npmjs.com/package/vue-moment
         return {
             events: [],
             filtred_events: [],
-            event_filtrs: 'next'
+            event_filtrs: 'all'
         }
     },
     mounted() {

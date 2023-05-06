@@ -10,7 +10,7 @@
                 {{this.$siteData.indoor_description}}
             </h2>
 
-            <div class="row featurette" style='margin-bottom: 7%' v-if="this.indoors.length > 0">
+            <div class="row" v-if="this.indoors.length > 0">
                 <div v-if="indoor_article_loading">
                     <content-loader
                         viewBox="0 0"
@@ -19,13 +19,13 @@
                     />
                 </div>
                 <div v-else>
-                    <div>
+                    <!-- <div> -->
                         <indoorCard 
                             v-for="indoor in indoors"
                             :key='indoor.id'
                             :indoor="indoor"
                         />
-                    </div>
+                    <!-- </div> -->
                 </div>
             </div>
             <div v-else>

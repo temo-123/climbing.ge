@@ -1,23 +1,58 @@
 <template>
     <div class="tabs"> 
-        <div class="row">
+        <div class="row justify-content-center" v-if="is_loading">
+            <div class="col-md-4">
+                <img :src="'../../../../../../public/images/site_img/loading.gif'" alt="loading">
+            </div>
+        </div>
+        <div class="row" v-if="!is_loading">
             <div class="form-group">
                 <button type="submit" class="btn btn-primary" @click="go_back()">Beck</button>
             </div>
         </div>
-        <div class="row">
+        <div class="row" v-if="!is_loading">
             <div class="form-group">  
                 <button type="submit" class="btn btn-primary" v-on:click="add_mount_massive_region()" >Save</button>
             </div>
         </div>
-        <!-- <div class="row">
-            <div class="col-md-12">
-                <div class="alert alert-danger" role="alert" v-if="error.mount_massive_error.map">
-                    {{ error.mount_massive_error.map[0] }}
+        <div class="row" v-if="!is_loading">
+            <div class="col-md-12" v-if="errors.length != 0">
+                <div class="alert alert-danger" role="alert" v-if="errors.global_info_validation.name">
+                    Demo name - {{ errors.global_info_validation.name[0] }}
+                </div>
+
+                <div class="alert alert-danger" role="alert" v-if="errors.us_info_validation.title">
+                    English title - {{ errors.us_info_validation.title[0] }}
+                </div>
+                <div class="alert alert-danger" role="alert" v-if="errors.us_info_validation.short_description">
+                    English description - {{ errors.us_info_validation.short_description[0] }}
+                </div>
+                <div class="alert alert-danger" role="alert" v-if="errors.us_info_validation.text">
+                    English text - {{ errors.us_info_validation.text[0] }}
+                </div>
+
+                <div class="alert alert-danger" role="alert" v-if="errors.ka_info_validation.title">
+                    Georgian title - {{ errors.ka_info_validation.title[0] }}
+                </div>
+                <div class="alert alert-danger" role="alert" v-if="errors.ka_info_validation.short_description">
+                    Georgian description - {{ errors.ka_info_validation.short_description[0] }}
+                </div>
+                <div class="alert alert-danger" role="alert" v-if="errors.ka_info_validation.text">
+                    Georgian text - {{ errors.ka_info_validation.text[0] }}
+                </div>
+
+                <div class="alert alert-danger" role="alert" v-if="errors.ru_info_validation.title">
+                    Russion title - {{ errors.ru_info_validation.title[0] }}
+                </div>
+                <div class="alert alert-danger" role="alert" v-if="errors.ru_info_validation.short_description">
+                    Russiondescription - {{ errors.ru_info_validation.short_description[0] }}
+                </div>
+                <div class="alert alert-danger" role="alert" v-if="errors.ru_info_validation.text">
+                    Russion text - {{ errors.ru_info_validation.text[0] }}
                 </div>
             </div>
-        </div> -->
-        <div class="row">
+        </div>
+        <div class="row" v-if="!is_loading">
             <div class="col-md-12">
                 <div class="row">
                     <div class="col" >
@@ -31,14 +66,14 @@
                         <label for="2" >English text</label>
                     </div>
                     <div class="col" >
-                        <input type="radio" id="3" :value="3" v-model="tab_num">
-                        
-                        <label for="3" >Georgian text</label>
-                    </div>
-                    <div class="col" >
                         <input type="radio" id="4" :value="4" v-model="tab_num">
                         
-                        <label for="4" >Russion text</label>
+                        <label for="4" >Georgian text</label>
+                    </div>
+                    <div class="col" >
+                        <input type="radio" id="3" :value="3" v-model="tab_num">
+                        
+                        <label for="3" >Russion text</label>
                     </div>
                 </div>
             </div>
@@ -56,7 +91,7 @@
                         <div class="form-group clearfix row" >
                             <label for="name" class='col-xs-2 control-label'> Demo name </label>
                             <div class="col-xs-10">
-                                <input type="text" v-model="data.global_data.demo_name" name="demo name" class="form-control"> 
+                                <input type="text" v-model="data.global_data.name" name="demo name" class="form-control"> 
                             </div>
                         </div>
 
@@ -94,7 +129,7 @@
                         <div class="form-group clearfix">
                             <label for="name" class='col-xs-2 control-label'> Title english </label>
                             <div class="col-xs-10">
-                                <input type="text" name="name" v-model="data.us_data.name" class="form-control">
+                                <input type="text" name="name" v-model="data.us_data.title" class="form-control">
                                 <!-- <div class="alert alert-danger" role="alert" v-if="errors.name">
                                     {{ errors.name[0] }}
                                 </div> -->
@@ -105,28 +140,28 @@
                             <label for="name" class='col-xs-2 control-label'> English text </label>
                             <div class="col-xs-10">
                                     <!-- <textarea type="text"  name="text" rows="15" class="form-cotrol md-textarea form-control"></textarea> -->
-                                <ckeditor v-model="data.us_data.text" :config="tus_text_editor_config"></ckeditor>
+                                <ckeditor v-model="data.us_data.text" :config="editor_config.us_text_editor_config"></ckeditor>
                             </div>
                         </div>
                         <div class="form-group clearfix">
                             <label for="name" class='col-xs-2 control-label'> English description </label>
                             <div class="col-xs-10">
                                 <!-- <textarea type="text"  name="description" rows="15" class="form-cotrol md-textarea form-control"></textarea> -->
-                                <ckeditor v-model="data.us_data.short_description" :config="us_short_description_text_editor"></ckeditor>
+                                <ckeditor v-model="data.us_data.short_description" :config="editor_config.us_short_description_text_editor"></ckeditor>
                             </div>
                         </div>
                         <div class="form-group clearfix">
                             <label for="name" class='col-xs-2 control-label'> English how get hear </label>
                             <div class="col-xs-10">
                                 <!-- <textarea type="text"  name="how_get" rows="15" class="form-cotrol md-textarea form-control"></textarea> -->
-                                <ckeditor v-model="data.us_data.how_get" :config="us_how_get_editor_config"></ckeditor>
+                                <ckeditor v-model="data.us_data.how_get" :config="editor_config.us_how_get_editor_config"></ckeditor>
                             </div>
                         </div>
                         <div class="form-group clearfix">
                             <label for="name" class='col-xs-2 control-label'> English best time </label>
                             <div class="col-xs-10">
                                 <!-- <textarea type="text" name="best_time" rows="15" class="form-cotrol md-textarea form-control"></textarea> -->
-                                <ckeditor v-model="data.us_data.best_time" :config="us_best_time_editor_config"></ckeditor>
+                                <ckeditor v-model="data.us_data.best_time" :config="editor_config.us_best_time_editor_config"></ckeditor>
                             </div>
                         </div>
                     </form>
@@ -142,7 +177,7 @@
                         <div class="form-group clearfix">
                             <label for="name" class='col-xs-2 control-label'> Title rusian </label>
                             <div class="col-xs-10">
-                                <input type="text" name="name_ru" v-model="data.ru_data.name" class="form-control">
+                                <input type="text" name="name_ru" v-model="data.ru_data.title" class="form-control">
                             </div>
                         </div>
                         <hr>
@@ -150,28 +185,28 @@
                             <label for="name" class='col-xs-2 control-label'> Rusian text </label>
                             <div class="col-xs-10">
                                 <!-- <textarea type="text"  name="text_ru" rows="15" class="form-cotrol md-textarea form-control"></textarea> -->
-                                <ckeditor v-model="data.ru_data.text" :config="ru_text_editor_config"></ckeditor>
+                                <ckeditor v-model="data.ru_data.text" :config="editor_config.ru_text_editor_config"></ckeditor>
                             </div>
                         </div>
                         <div class="form-group clearfix">
                             <label for="name" class='col-xs-2 control-label'> Rusian description </label>
                             <div class="col-xs-10">
                                 <!-- <textarea type="text"  name="description" rows="15" class="form-cotrol md-textarea form-control"></textarea> -->
-                                <ckeditor v-model="data.ru_data.short_description" :config="ru_short_description_text_editor"></ckeditor>
+                                <ckeditor v-model="data.ru_data.short_description" :config="editor_config.ru_short_description_text_editor"></ckeditor>
                             </div>
                         </div>
                         <div class="form-group clearfix">
                             <label for="name" class='col-xs-2 control-label'> Rusian how get hear </label>
                             <div class="col-xs-10">
                                 <!-- <textarea type="text"  name="how_get" rows="15" class="form-cotrol md-textarea form-control"></textarea> -->
-                                <ckeditor v-model="data.ru_data.how_get" :config="ru_how_get_editor_config"></ckeditor>
+                                <ckeditor v-model="data.ru_data.how_get" :config="editor_config.ru_how_get_editor_config"></ckeditor>
                             </div>
                         </div>
                         <div class="form-group clearfix">
                             <label for="name" class='col-xs-2 control-label'> Rusian best time </label>
                             <div class="col-xs-10">
                                 <!-- <textarea type="text"  name="best_time_ru" rows="15" class="form-cotrol md-textarea form-control"></textarea> -->
-                                <ckeditor v-model="data.ru_data.best_time" :config="ru_best_time_editor_config"></ckeditor>
+                                <ckeditor v-model="data.ru_data.best_time" :config="editor_config.ru_best_time_editor_config"></ckeditor>
                             </div>
                         </div>
                     </form>
@@ -187,7 +222,7 @@
                         <div class="form-group clearfix">
                             <label for="name" class='col-xs-2 control-label'> Title georgian </label>
                             <div class="col-xs-10">
-                                <input type="text" name="name_ka" v-model="data.ka_data.name" class="form-control"> 
+                                <input type="text" name="name_ka" v-model="data.ka_data.title" class="form-control"> 
                             </div>
                         </div>
                         <hr>
@@ -195,28 +230,28 @@
                             <label for="name" class='col-xs-2 control-label'> Georgian text </label>
                             <div class="col-xs-10">
                                 <!-- <textarea type="text"  name="text_ka" rows="15" class="form-cotrol md-textarea form-control"></textarea> -->
-                                <ckeditor v-model="data.ka_data.text" :config="ka_text_editor_config"></ckeditor>
+                                <ckeditor v-model="data.ka_data.text" :config="editor_config.ka_text_editor_config"></ckeditor>
                             </div>
                         </div>
                         <div class="form-group clearfix">
                             <label for="name" class='col-xs-2 control-label'> Georgian description </label>
                             <div class="col-xs-10">
                                 <!-- <textarea type="text"  name="description_ka" rows="15" class="form-cotrol md-textarea form-control"></textarea> -->
-                                <ckeditor v-model="data.ka_data.short_description" :config="ka_short_description_text_editor"></ckeditor>
+                                <ckeditor v-model="data.ka_data.short_description" :config="editor_config.ka_short_description_text_editor"></ckeditor>
                             </div>
                         </div>
                         <div class="form-group clearfix">
                             <label for="name" class='col-xs-2 control-label'> Georgian how get hear </label>
                             <div class="col-xs-10">
                                 <!-- <textarea type="text"  name="how_get_ka" rows="15" class="form-cotrol md-textarea form-control"></textarea> -->
-                                <ckeditor v-model="data.ka_data.how_get" :config="ka_how_get_editor_config"></ckeditor>
+                                <ckeditor v-model="data.ka_data.how_get" :config="editor_config.ka_how_get_editor_config"></ckeditor>
                             </div>
                         </div>
                         <div class="form-group clearfix">
                             <label for="name" class='col-xs-2 control-label'> Georgian best time </label>
                             <div class="col-xs-10">
                                 <!-- <textarea type="text"  name="best_time_ka" rows="15" class="form-cotrol md-textarea form-control"></textarea> -->
-                                <ckeditor v-model="data.ka_data.best_time" :config="ka_best_time_editor_config"></ckeditor>
+                                <ckeditor v-model="data.ka_data.best_time" :config="editor_config.ka_best_time_editor_config"></ckeditor>
                             </div>
                         </div>
                     </form>
@@ -228,10 +263,10 @@
 </template>
 
 <script>
-    import { editor_config } from '../../../../mixins/editor/editor_config_mixin.js'
+    // import { editor_config } from '../../../../mixins/editor/editor_config_mixin.js'
     export default {
         mixins: [
-            editor_config
+            // editor_config
         ],
         components: {
             // StackModal,
@@ -272,46 +307,50 @@
                         map: "",
                         weather: "",
                     },
-
-                    us_short_description_text_editor: editor_config.get_small_editor_config(),
-                    us_text_editor_config: editor_config.get_big_editor_config(),
-                    us_info_editor_config: editor_config.get_big_editor_config(),
-                    us_how_get_editor_config: editor_config.get_big_editor_config(),
-                    us_best_time_editor_config: editor_config.get_big_editor_config(),
-
-                    ka_short_description_text_editor: editor_config.get_small_editor_config(),
-                    ka_text_editor_config: editor_config.get_big_editor_config(),
-                    ka_info_editor_config: editor_config.get_big_editor_config(),
-                    ka_how_get_editor_config: editor_config.get_big_editor_config(),
-                    ka_best_time_editor_config: editor_config.get_big_editor_config(),
-
-                    ru_short_description_text_editor: editor_config.get_small_editor_config(),
-                    ru_text_editor_config: editor_config.get_big_editor_config(),
-                    ru_info_editor_config: editor_config.get_big_editor_config(),
-                    ru_how_get_editor_config: editor_config.get_big_editor_config(),
-                    ru_best_time_editor_config: editor_config.get_big_editor_config(),
-
                 },
+
+                editor_config: {
+                    us_short_description_text_editor: this.$editor_config.get_small_editor_config(),
+                    us_text_editor_config: this.$editor_config.get_big_editor_config(),
+                    us_info_editor_config: this.$editor_config.get_big_editor_config(),
+                    us_how_get_editor_config: this.$editor_config.get_big_editor_config(),
+                    us_best_time_editor_config: this.$editor_config.get_big_editor_config(),
+
+                    ka_short_description_text_editor: this.$editor_config.get_small_editor_config(),
+                    ka_text_editor_config: this.$editor_config.get_big_editor_config(),
+                    ka_info_editor_config: this.$editor_config.get_big_editor_config(),
+                    ka_how_get_editor_config: this.$editor_config.get_big_editor_config(),
+                    ka_best_time_editor_config: this.$editor_config.get_big_editor_config(),
+
+                    ru_short_description_text_editor: this.$editor_config.get_small_editor_config(),
+                    ru_text_editor_config: this.$editor_config.get_big_editor_config(),
+                    ru_info_editor_config: this.$editor_config.get_big_editor_config(),
+                    ru_how_get_editor_config: this.$editor_config.get_big_editor_config(),
+                    ru_best_time_editor_config: this.$editor_config.get_big_editor_config(),
+                },
+
+                is_loading: false,
 
                 tab_num: 1,
 
-                error: [],
+                errors: [],
 
                 is_back_action: false,
-
             }
         },
         mounted() {
 
         },
         beforeRouteLeave (to, from, next) {
-            if(this.is_back_action = true){
+            if(this.is_back_action == true){
                 if (window.confirm('Added information will be deleted!!! Are you sure, you want go back?')) {
                     this.is_back_action = false;
                     next()
                 } else {
                     next(false)
                 }
+            }else {
+                next()
             }
         },
         methods: {
@@ -321,25 +360,29 @@
 
             add_mount_massive_region() {
                 axios
-                .post('../../api/mount/', {        
+                .post('/mount/create_mount_massive', {        
                     data: this.data,
 
                     _method: 'post'
                 })
                 .then(response => {
-                    this.$router.go(-1)
+                    this.go_back(true)
                 })
                 .catch(err => {
-                    console.log(err);
+                        // alert(err)
+                    if (err.response.status == 422) {
+                        this.errors = err.response.data.validation
+                    }
+                    // else{
+                    //     alert(err)
+                    // }
+                    // this.errors = err;
                 })
             },
             
-            go_back: function() {
-                this.is_back_action = true
-
-                this.$router.go(-1)
+            go_back: function(action = false) {
+                this.is_back_action = this.$going.back(this, action)
             },
-
         }
     }
 </script>

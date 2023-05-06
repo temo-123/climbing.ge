@@ -56,7 +56,7 @@
         margin-top: 0.4em;
     }
     .smal_img img{
-        width: 100%;
+        height: 100%;
         cursor: zoom-in;
     }
     .open_img{
@@ -85,7 +85,8 @@
         
         position: relative;
         top: 5%;
-        width: 80%;
+        /* width: 80%; */
+        height: 100%;
         max-height: 90%;
         display: block;
         margin-left: auto;

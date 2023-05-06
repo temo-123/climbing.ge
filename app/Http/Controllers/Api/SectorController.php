@@ -104,7 +104,7 @@ class SectorController extends Controller
     {
         foreach ($images as $image) {
             $file_new_name;
-            $file_new_name = ImageControllService::upload_loop_image('images/sector_img/', $image, 1);
+            $file_new_name = ImageControllService::upload_loop_image('images/sector_img/', $image, 0);
             if(file_exists(public_path('images/sector_img/') . $file_new_name)){
                 $new_option_image = new Sector_image;
 

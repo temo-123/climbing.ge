@@ -4,7 +4,7 @@ namespace App\Services;
 
 use App\Models\Locale_article;
 use App\Models\General_info;
-// use App\Models\Ru_article;
+use App\Models\General_info_article;
 use App\Models\Mount;
 
 use Carbon\Carbon;
@@ -164,7 +164,7 @@ class GetArticlesService
     {
         $locale_article = array();
 
-        // dd($loc_article);
+        // dd($article->general_info);
 
         array_push($locale_article, 
             [
@@ -200,31 +200,35 @@ class GetArticlesService
         );
         
         foreach($article->general_info as $info){
-            if($info->block == 'info_block'){
+            // dd($info);
+            $info_article_relatione = General_info_article::where('article_id', '=', $article->id)->where('info_id', '=', $info->id)->first();
+
+            if($info_article_relatione->block == 'info_block'){
                 $locale_article[0]['global_info']['info_block'] = [
-                    "block_action" => $info->block_action,
-                    "text"=>General_info::where('id', '=', $info->info_id)->first('text_us')->text_us
+                    "block_action" => $info_article_relatione->block_action,
+                    "text"=>General_info::where('id', '=', $info_article_relatione->info_id)->first('text_us')->text_us
                 ];
             }
-            if($info->block == 'what_need_info'){
+            if($info_article_relatione->block == 'what_need_info'){
                 $locale_article[0]['global_info']['what_need_info'] = [
-                    "block_action" => $info->block_action,
-                    "text"=>General_info::where('id', '=', $info->info_id)->first('text_us')->text_us
+                    "block_action" => $info_article_relatione->block_action,
+                    "text"=>General_info::where('id', '=', $info_article_relatione->info_id)->first('text_us')->text_us
                 ];
             }
-            if($info->block == 'best_time'){
+            if($info_article_relatione->block == 'best_time'){
                 $locale_article[0]['global_info']['best_time'] = [
-                    "block_action" => $info->block_action,
-                    "text"=>General_info::where('id', '=', $info->info_id)->first('text_us')->text_us
+                    "block_action" => $info_article_relatione->block_action,
+                    "text"=>General_info::where('id', '=', $info_article_relatione->info_id)->first('text_us')->text_us
                 ];
             }
-            if($info->block == 'routes_info'){
+            if($info_article_relatione->block == 'routes_info'){
                 $locale_article[0]['global_info']['routes_info'] = [
-                    "block_action" => $info->block_action,
-                    "text"=>General_info::where('id', '=', $info->info_id)->first('text_us')->text_us
+                    "block_action" => $info_article_relatione->block_action,
+                    "text"=>General_info::where('id', '=', $info_article_relatione->info_id)->first('text_us')->text_us
                 ];
             }
         }
+        // dd($locale_article);
         return $locale_article;
     }
 }

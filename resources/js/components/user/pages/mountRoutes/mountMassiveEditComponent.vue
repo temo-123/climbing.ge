@@ -1,238 +1,268 @@
 <template>
-<div class="col_md_12">
-    <div class="row">
-        <div class="form-group">  
-            <button type="submit" class="btn btn-primary" v-on:click="save_all()" >Save</button>
+    <div class="tabs"> 
+        <div class="row justify-content-center" v-if="is_loading">
+            <div class="col-md-4">
+                <img :src="'../../../../../../public/images/site_img/loading.gif'" alt="loading">
+            </div>
         </div>
-    </div>
-    <div class="row">
-        <div class="tabs">
-
-            <input type="radio" name="tabs" id="1" checked="checked">
-            <label for="1" >georgian article</label>
-            <div class="tab">
-
-                <form name="contact-form" method="POST" action="#" style="margin-top: 5%;" enctyp ="multipart/form-data">
-                    <div class="form-group clearfix">
-                        <label for="name" class='col-xs-2 control-label'> Publish </label>
-                        <div class="col-xs-8">
-                            <select class="form-control" v-model="published" name="published" > 
-                                <option value="0">Not public</option> 
-                                <option value="1">Public</option> 
-                            </select> 
-                            <div class="alert alert-danger" role="alert" v-if="errors.published">
-                                {{ errors.published[0] }}
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="form-group clearfix">
-                        <label for="name" class='col-xs-2 control-label'> Map </label>
-                        <div class="col-xs-8">
-                            <input type="text" v-model="map" name="map" class="form-control"> 
-                            <div class="alert alert-danger" role="alert" v-if="errors.map">
-                                {{ errors.map[0] }}
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="form-group clearfix"  v-if="this.category != 'event' || this.category != 'indoor' || this.category != 'partner' || this.category != 'event' || this.category != 'news'">
-                        <label for="name" class='col-xs-2 control-label'> Weather </label>
-                        <div class="col-xs-8">
-                            <input type="text" v-model="weather" name="weather" class="form-control"> 
-                            <div class="alert alert-danger" role="alert" v-if="errors.weather">
-                                {{ errors.weather[0] }}
-                            </div>
-                        </div>
-                    </div>
-                </form>
+        <div class="row" v-if="!is_loading">
+            <div class="form-group">
+                <button type="submit" class="btn btn-primary" @click="go_back()">Beck</button>
             </div>
-            
-            <input type="radio" name="tabs" id="2">
-            <label for="2" >english info</label>
-            <div class="tab" >
-                <form id="contact-form form-horizontal" name="contact-form" method="POST" action="#" style="margin-top: 5%;" enctype ="multipart/form-data">
-
-                    
-                    <div class="form-group clearfix">
-                        <label for="name" class='col-xs-2 control-label'> Title english </label>
-                        <div class="col-xs-8">
-                            <input type="text" name="name" v-model="name" class="form-control">
-                            <div class="alert alert-danger" role="alert" v-if="errors.name">
-                                {{ errors.name[0] }}
-                            </div>
-                        </div>
-                    </div>
-                    <hr>
-                    <div class="form-group clearfix">
-                        <label for="name" class='col-xs-2 control-label'> English text </label>
-                        <div class="col-xs-8">
-                                <!-- <textarea type="text"  name="text" rows="15" class="form-cotrol md-textarea form-control"></textarea> -->
-                            <ckeditor v-model="text" :config="tus_text_editor_config"></ckeditor>
-                            <div class="alert alert-danger" role="alert" v-if="errors.text">
-                                {{ errors.text[0] }}
-                            </div>
-                        </div>
-                    </div>
-                    <div class="form-group clearfix">
-                        <label for="name" class='col-xs-2 control-label'> English description </label>
-                        <div class="col-xs-8">
-                            <!-- <textarea type="text"  name="description" rows="15" class="form-cotrol md-textarea form-control"></textarea> -->
-                            <ckeditor v-model="short_description" :config="us_short_description_text_editor"></ckeditor>
-                            <div class="alert alert-danger" role="alert" v-if="errors.short_description">
-                                {{ errors.short_description[0] }}
-                            </div>
-                        </div>
-                    </div>
-                    <div class="form-group clearfix">
-                        <label for="name" class='col-xs-2 control-label'> English how get hear </label>
-                        <div class="col-xs-8">
-                            <!-- <textarea type="text"  name="how_get" rows="15" class="form-cotrol md-textarea form-control"></textarea> -->
-                            <ckeditor v-model="how_get" :config="us_how_get_editor_config"></ckeditor>
-                            <div class="alert alert-danger" role="alert" v-if="errors.how_get">
-                                {{ errors.how_get[0] }}
-                            </div>
-                        </div>
-                    </div>
-                    <div class="form-group clearfix">
-                        <label for="name" class='col-xs-2 control-label'> English best time </label>
-                        <div class="col-xs-8">
-                            <!-- <textarea type="text" name="best_time" rows="15" class="form-cotrol md-textarea form-control"></textarea> -->
-                            <ckeditor v-model="best_time" :config="us_best_time_editor_config"></ckeditor>
-                            <div class="alert alert-danger" role="alert" v-if="errors.best_time">
-                                {{ errors.best_time[0] }}
-                            </div>
-                        </div>
-                    </div>
-
-                </form>
-
-
-            </div>
-
-            <input type="radio" name="tabs" id="3">
-            <label for="3" >rusian article</label>
-            <div class="tab" >
-
-                <form name="contact-form" method="POST" @submit.prevent="add_us_article" style="margin-top: 5%;" enctyp ="multipart/form-data">
-                    
-                    <div class="form-group clearfix">
-                        <label for="name" class='col-xs-2 control-label'> Title rusian </label>
-                        <div class="col-xs-8">
-                            <input type="text" name="name_ru" v-model="name_ru" class="form-control">
-                            <div class="alert alert-danger" role="alert" v-if="errors.name_ru">
-                                {{ errors.name_ru[0] }}
-                            </div>
-                        </div>
-                    </div>
-                    <hr>
-                    <div class="form-group clearfix">
-                        <label for="name" class='col-xs-2 control-label'> Rusian text </label>
-                        <div class="col-xs-8">
-                            <!-- <textarea type="text"  name="text_ru" rows="15" class="form-cotrol md-textarea form-control"></textarea> -->
-                            <ckeditor v-model="text_ru" :config="ru_text_editor_config"></ckeditor>
-                            <div class="alert alert-danger" role="alert" v-if="errors.text_ru">
-                                {{ errors.text_ru[0] }}
-                            </div>
-                        </div>
-                    </div>
-                    <div class="form-group clearfix">
-                        <label for="name" class='col-xs-2 control-label'> Rusian description </label>
-                        <div class="col-xs-8">
-                            <!-- <textarea type="text"  name="description_ru" rows="15" class="form-cotrol md-textarea form-control"></textarea> -->
-                            <ckeditor v-model="short_description_ru" :config="ru_short_description_text_editor">></ckeditor>
-                            <div class="alert alert-danger" role="alert" v-if="errors.short_description_ru">
-                                {{ errors.short_description_ru[0] }}
-                            </div>
-                        </div>
-                    </div>
-                    <div class="form-group clearfix">
-                        <label for="name" class='col-xs-2 control-label'> Rusian how get hear </label>
-                        <div class="col-xs-8">
-                            <!-- <textarea type="text"  name="how_get_ru" rows="15" class="form-cotrol md-textarea form-control"></textarea> -->
-                            <ckeditor v-model="how_get_ru" :config="ru_how_get_editor_config"></ckeditor>
-                            <div class="alert alert-danger" role="alert" v-if="errors.how_get_ru">
-                                {{ errors.how_get_ru[0] }}
-                            </div>
-                        </div>
-                    </div>
-                    <div class="form-group clearfix">
-                        <label for="name" class='col-xs-2 control-label'> Rusian best time </label>
-                        <div class="col-xs-8">
-                            <!-- <textarea type="text"  name="best_time_ru" rows="15" class="form-cotrol md-textarea form-control"></textarea> -->
-                            <ckeditor v-model="best_time_ru" :config="ru_best_time_editor_config"></ckeditor>
-                            <div class="alert alert-danger" role="alert" v-if="errors.best_time_ru">
-                                {{ errors.best_time_ru[0] }}
-                            </div>
-                        </div>
-                    </div>
-
-                </form>
-            </div>
-
-            <input type="radio" name="tabs" id="4">
-            <label for="4" >georgian article</label>
-            <div class="tab">
-
-                <form name="contact-form" method="POST" @submit.prevent="add_ru_article" style="margin-top: 5%;" enctyp ="multipart/form-data">
-                    
-                    <div class="form-group clearfix">
-                        <label for="name" class='col-xs-2 control-label'> Title georgian </label>
-                        <div class="col-xs-8">
-                            <input type="text" name="name_ka" v-model="name_ka" class="form-control"> 
-                            <div class="alert alert-danger" role="alert" v-if="errors.name_ka">
-                                {{ errors.name_ka[0] }}
-                            </div>
-                        </div>
-                    </div>
-                    <hr>
-                    <div class="form-group clearfix">
-                        <label for="name" class='col-xs-2 control-label'> Georgian text </label>
-                        <div class="col-xs-8">
-                            <!-- <textarea type="text"  name="text_ka" rows="15" class="form-cotrol md-textarea form-control"></textarea> -->
-                            <ckeditor v-model="text_ka" :config="ka_text_editor_config"></ckeditor>
-                            <div class="alert alert-danger" role="alert" v-if="errors.text_ka">
-                                {{ errors.text_ka[0] }}
-                            </div>
-                        </div>
-                    </div>
-                    <div class="form-group clearfix">
-                        <label for="name" class='col-xs-2 control-label'> Georgian description </label>
-                        <div class="col-xs-8">
-                            <!-- <textarea type="text"  name="description_ka" rows="15" class="form-cotrol md-textarea form-control"></textarea> -->
-                            <ckeditor v-model="short_description_ka" :config="ka_short_description_text_editor"></ckeditor>
-                            <div class="alert alert-danger" role="alert" v-if="errors.short_description_ka">
-                                {{ errors.short_description_ka[0] }}
-                            </div>
-                        </div>
-                    </div>
-                    <div class="form-group clearfix">
-                        <label for="name" class='col-xs-2 control-label'> Georgian how get hear </label>
-                        <div class="col-xs-8">
-                            <!-- <textarea type="text"  name="how_get_ka" rows="15" class="form-cotrol md-textarea form-control"></textarea> -->
-                            <ckeditor v-model="how_get_ka" :config="ka_how_get_editor_config"></ckeditor>
-                            <div class="alert alert-danger" role="alert" v-if="errors.how_get_ka">
-                                {{ errors.how_get_ka[0] }}
-                            </div>
-                        </div>
-                    </div>
-                    <div class="form-group clearfix">
-                        <label for="name" class='col-xs-2 control-label'> Georgian best time </label>
-                        <div class="col-xs-8">
-                            <!-- <textarea type="text"  name="best_time_ka" rows="15" class="form-cotrol md-textarea form-control"></textarea> -->
-                            <ckeditor v-model="best_time_ka" :config="ka_best_time_editor_config"></ckeditor>
-                            <div class="alert alert-danger" role="alert" v-if="errors.best_time_ka">
-                                {{ errors.best_time_ka[0] }}
-                            </div>
-                        </div>
-                    </div>
-
-                </form>
-            </div>
-            
         </div>
+        <div class="row" v-if="!is_loading">
+            <div class="form-group">  
+                <button type="submit" class="btn btn-primary" v-on:click="edit_mount()" >Save</button>
+            </div>
+        </div>
+        <div class="row" v-if="!is_loading">
+            <div class="col-md-12" v-if="errors.length != 0">
+                <div class="alert alert-danger" role="alert" v-if="errors.global_info_validation.name">
+                    Demo name - {{ errors.global_info_validation.name[0] }}
+                </div>
+                <div class="alert alert-danger" role="alert" v-if="errors.global_info_validation.us_title_for_url_title">
+                    Us title - {{ errors.global_info_validation.us_title_for_url_title[0] }}
+                </div>
+
+                <div class="alert alert-danger" role="alert" v-if="errors.us_info_validation.title">
+                    English title - {{ errors.us_info_validation.title[0] }}
+                </div>
+                <div class="alert alert-danger" role="alert" v-if="errors.us_info_validation.short_description">
+                    English description - {{ errors.us_info_validation.short_description[0] }}
+                </div>
+                <div class="alert alert-danger" role="alert" v-if="errors.us_info_validation.text">
+                    English text - {{ errors.us_info_validation.text[0] }}
+                </div>
+
+                <div class="alert alert-danger" role="alert" v-if="errors.ka_info_validation.title">
+                    Georgian title - {{ errors.ka_info_validation.title[0] }}
+                </div>
+                <div class="alert alert-danger" role="alert" v-if="errors.ka_info_validation.short_description">
+                    Georgian description - {{ errors.ka_info_validation.short_description[0] }}
+                </div>
+                <div class="alert alert-danger" role="alert" v-if="errors.ka_info_validation.text">
+                    Georgian text - {{ errors.ka_info_validation.text[0] }}
+                </div>
+
+                <div class="alert alert-danger" role="alert" v-if="errors.ru_info_validation.title">
+                    Russion title - {{ errors.ru_info_validation.title[0] }}
+                </div>
+                <div class="alert alert-danger" role="alert" v-if="errors.ru_info_validation.short_description">
+                    Russiondescription - {{ errors.ru_info_validation.short_description[0] }}
+                </div>
+                <div class="alert alert-danger" role="alert" v-if="errors.ru_info_validation.text">
+                    Russion text - {{ errors.ru_info_validation.text[0] }}
+                </div>
+            </div>
+        </div>
+        <div class="row" v-if="!is_loading">
+            <div class="col-md-12">
+                <div class="row">
+                    <div class="col" >
+                        <input type="radio" id="1" :value="1" v-model="tab_num">
+                        
+                        <label for="1" >Global info</label>
+                    </div>
+                    <div class="col" >
+                        <input type="radio" id="2" :value="2" v-model="tab_num">
+                        
+                        <label for="2" >English text</label>
+                    </div>
+                    <div class="col" >
+                        <input type="radio" id="4" :value="4" v-model="tab_num">
+                        
+                        <label for="4" >Georgian text</label>
+                    </div>
+                    <div class="col" >
+                        <input type="radio" id="3" :value="3" v-model="tab_num">
+                        
+                        <label for="3" >Russion text</label>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-12">
+                <div class="row width_100" v-show="tab_num == 1">
+                    <div class="jumbotron width_100">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <h2 class="display-4"><span>Mount masive global information</span></h2>
+                                <p class="lead">Mount masive global information.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <form >
+                        <div class="form-group clearfix row" >
+                            <label for="name" class='col-xs-2 control-label'> Demo name </label>
+                            <div class="col-xs-10">
+                                <input type="text" v-model="data.global_data.name" name="demo name" class="form-control"> 
+                            </div>
+                        </div>
+
+                        <div class="form-group clearfix">
+                            <label for="name" class='col-xs-2 control-label'> Map </label>
+                            <div class="col-xs-10">
+                                <input type="text" v-model="data.global_data.map" name="map" class="form-control"> 
+                                <!-- <div class="alert alert-danger" role="alert" v-if="errors.map">
+                                    {{ errors.map[0] }}
+                                </div> -->
+                            </div>
+                        </div>
+    
+                        <div class="form-group clearfix" >
+                            <label for="name" class='col-xs-2 control-label'> Weather </label>
+                            <div class="col-xs-10">
+                                <input type="text" v-model="data.global_data.weather" name="weather" class="form-control"> 
+                                <!-- <div class="alert alert-danger" role="alert" v-if="errors.weather">
+                                    {{ errors.weather[0] }}
+                                </div> -->
+                            </div>
+                        </div>
+                    </form>
+
+                </div>
+                <div class="row" v-show="tab_num == 2">
+                    <div class="jumbotron width_100">
+                        <div class="container">
+                            <h2 class="display-4"><span>Mount masive English information</span></h2>
+                            <p class="lead">Mount masive English information.</p>
+                        </div>
+                    </div>
+                    <form >
+                        
+                        <div class="form-group clearfix">
+                            <label for="name" class='col-xs-2 control-label'> Title english </label>
+                            <div class="col-xs-10">
+                                <input type="text" name="name" v-model="data.us_data.title" class="form-control">
+                                <!-- <div class="alert alert-danger" role="alert" v-if="errors.name">
+                                    {{ errors.name[0] }}
+                                </div> -->
+                            </div>
+                        </div>
+                        <hr>
+                        <div class="form-group clearfix">
+                            <label for="name" class='col-xs-2 control-label'> English text </label>
+                            <div class="col-xs-10">
+                                    <!-- <textarea type="text"  name="text" rows="15" class="form-cotrol md-textarea form-control"></textarea> -->
+                                <ckeditor v-model="data.us_data.text" :config="editor_config.us_text_editor_config"></ckeditor>
+                            </div>
+                        </div>
+                        <div class="form-group clearfix">
+                            <label for="name" class='col-xs-2 control-label'> English description </label>
+                            <div class="col-xs-10">
+                                <!-- <textarea type="text"  name="description" rows="15" class="form-cotrol md-textarea form-control"></textarea> -->
+                                <ckeditor v-model="data.us_data.short_description" :config="editor_config.us_short_description_text_editor"></ckeditor>
+                            </div>
+                        </div>
+                        <div class="form-group clearfix">
+                            <label for="name" class='col-xs-2 control-label'> English how get hear </label>
+                            <div class="col-xs-10">
+                                <!-- <textarea type="text"  name="how_get" rows="15" class="form-cotrol md-textarea form-control"></textarea> -->
+                                <ckeditor v-model="data.us_data.how_get" :config="editor_config.us_how_get_editor_config"></ckeditor>
+                            </div>
+                        </div>
+                        <div class="form-group clearfix">
+                            <label for="name" class='col-xs-2 control-label'> English best time </label>
+                            <div class="col-xs-10">
+                                <!-- <textarea type="text" name="best_time" rows="15" class="form-cotrol md-textarea form-control"></textarea> -->
+                                <ckeditor v-model="data.us_data.best_time" :config="editor_config.us_best_time_editor_config"></ckeditor>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="row" v-show="tab_num == 3">
+                    <div class="jumbotron width_100">
+                        <div class="container">
+                            <h2 class="display-4"><span>Mount masive Georgian information</span></h2>
+                            <p class="lead">Mount masive Georgian information.</p>
+                        </div>
+                    </div>
+                    <form >
+                        <div class="form-group clearfix">
+                            <label for="name" class='col-xs-2 control-label'> Title rusian </label>
+                            <div class="col-xs-10">
+                                <input type="text" name="name_ru" v-model="data.ru_data.title" class="form-control">
+                            </div>
+                        </div>
+                        <hr>
+                        <div class="form-group clearfix">
+                            <label for="name" class='col-xs-2 control-label'> Rusian text </label>
+                            <div class="col-xs-10">
+                                <!-- <textarea type="text"  name="text_ru" rows="15" class="form-cotrol md-textarea form-control"></textarea> -->
+                                <ckeditor v-model="data.ru_data.text" :config="editor_config.ru_text_editor_config"></ckeditor>
+                            </div>
+                        </div>
+                        <div class="form-group clearfix">
+                            <label for="name" class='col-xs-2 control-label'> Rusian description </label>
+                            <div class="col-xs-10">
+                                <!-- <textarea type="text"  name="description" rows="15" class="form-cotrol md-textarea form-control"></textarea> -->
+                                <ckeditor v-model="data.ru_data.short_description" :config="editor_config.ru_short_description_text_editor"></ckeditor>
+                            </div>
+                        </div>
+                        <div class="form-group clearfix">
+                            <label for="name" class='col-xs-2 control-label'> Rusian how get hear </label>
+                            <div class="col-xs-10">
+                                <!-- <textarea type="text"  name="how_get" rows="15" class="form-cotrol md-textarea form-control"></textarea> -->
+                                <ckeditor v-model="data.ru_data.how_get" :config="editor_config.ru_how_get_editor_config"></ckeditor>
+                            </div>
+                        </div>
+                        <div class="form-group clearfix">
+                            <label for="name" class='col-xs-2 control-label'> Rusian best time </label>
+                            <div class="col-xs-10">
+                                <!-- <textarea type="text"  name="best_time_ru" rows="15" class="form-cotrol md-textarea form-control"></textarea> -->
+                                <ckeditor v-model="data.ru_data.best_time" :config="editor_config.ru_best_time_editor_config"></ckeditor>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="row" v-show="tab_num == 4">
+                    <div class="jumbotron width_100">
+                        <div class="container">
+                            <h2 class="display-4"><span>Mount masive Russion information</span></h2>
+                            <p class="lead">Mount masive Russion information.</p>
+                        </div>
+                    </div>
+                    <form>
+                        <div class="form-group clearfix">
+                            <label for="name" class='col-xs-2 control-label'> Title georgian </label>
+                            <div class="col-xs-10">
+                                <input type="text" name="name_ka" v-model="data.ka_data.title" class="form-control"> 
+                            </div>
+                        </div>
+                        <hr>
+                        <div class="form-group clearfix">
+                            <label for="name" class='col-xs-2 control-label'> Georgian text </label>
+                            <div class="col-xs-10">
+                                <!-- <textarea type="text"  name="text_ka" rows="15" class="form-cotrol md-textarea form-control"></textarea> -->
+                                <ckeditor v-model="data.ka_data.text" :config="editor_config.ka_text_editor_config"></ckeditor>
+                            </div>
+                        </div>
+                        <div class="form-group clearfix">
+                            <label for="name" class='col-xs-2 control-label'> Georgian description </label>
+                            <div class="col-xs-10">
+                                <!-- <textarea type="text"  name="description_ka" rows="15" class="form-cotrol md-textarea form-control"></textarea> -->
+                                <ckeditor v-model="data.ka_data.short_description" :config="editor_config.ka_short_description_text_editor"></ckeditor>
+                            </div>
+                        </div>
+                        <div class="form-group clearfix">
+                            <label for="name" class='col-xs-2 control-label'> Georgian how get hear </label>
+                            <div class="col-xs-10">
+                                <!-- <textarea type="text"  name="how_get_ka" rows="15" class="form-cotrol md-textarea form-control"></textarea> -->
+                                <ckeditor v-model="data.ka_data.how_get" :config="editor_config.ka_how_get_editor_config"></ckeditor>
+                            </div>
+                        </div>
+                        <div class="form-group clearfix">
+                            <label for="name" class='col-xs-2 control-label'> Georgian best time </label>
+                            <div class="col-xs-10">
+                                <!-- <textarea type="text"  name="best_time_ka" rows="15" class="form-cotrol md-textarea form-control"></textarea> -->
+                                <ckeditor v-model="data.ka_data.best_time" :config="editor_config.ka_best_time_editor_config"></ckeditor>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
     </div>
-</div>
 </template>
 
 <script>
@@ -242,134 +272,125 @@
             editor_config
         ],
         props: [
-            'editing_mount_id',
-            'back_url'
+            // 'editing_mount_id',
+            // 'back_url'
         ],
         data(){
             return {
-                map: "",
-                weather: "",
-                published: "",
+                data: {
+                    us_data: {
+                        title: '',
+                        short_description: '',
+                        text: '',
+                        route: '',
+                        how_get: '',
+                        best_time: '',
+                    },
+                    ru_data: {
+                        title: '',
+                        short_description: '',
+                        text: '',
+                        route: '',
+                        how_get: '',
+                        best_time: '',
+                    },
+                    ka_data: {
+                        title: '',
+                        short_description: '',
+                        text: '',
+                        route: '',
+                        how_get: '',
+                        best_time: '',
+                    },
+                    global_data: {
+                        demo_image: "",
+                        map: "",
+                        weather: "",
+                    },
+                },
 
-                us_short_description_text_editor: editor_config.get_small_editor_config(),
-                us_text_editor_config: editor_config.get_big_editor_config(),
-                us_how_get_editor_config: editor_config.get_big_editor_config(),
-                us_best_time_editor_config: editor_config.get_big_editor_config(),
+                editor_config: {
+                    us_short_description_text_editor: editor_config.get_small_editor_config(),
+                    us_text_editor_config: editor_config.get_big_editor_config(),
+                    us_info_editor_config: editor_config.get_big_editor_config(),
+                    us_how_get_editor_config: editor_config.get_big_editor_config(),
+                    us_best_time_editor_config: editor_config.get_big_editor_config(),
 
-                ka_short_description_text_editor: editor_config.get_small_editor_config(),
-                ka_text_editor_config: editor_config.get_big_editor_config(),
-                ka_how_get_editor_config: editor_config.get_big_editor_config(),
-                ka_best_time_editor_config: editor_config.get_big_editor_config(),
+                    ka_short_description_text_editor: editor_config.get_small_editor_config(),
+                    ka_text_editor_config: editor_config.get_big_editor_config(),
+                    ka_info_editor_config: editor_config.get_big_editor_config(),
+                    ka_how_get_editor_config: editor_config.get_big_editor_config(),
+                    ka_best_time_editor_config: editor_config.get_big_editor_config(),
 
-                ru_short_description_text_editor: editor_config.get_small_editor_config(),
-                ru_text_editor_config: editor_config.get_big_editor_config(),
-                ru_how_get_editor_config: editor_config.get_big_editor_config(),
-                ru_best_time_editor_config: editor_config.get_big_editor_config(),
+                    ru_short_description_text_editor: editor_config.get_small_editor_config(),
+                    ru_text_editor_config: editor_config.get_big_editor_config(),
+                    ru_info_editor_config: editor_config.get_big_editor_config(),
+                    ru_how_get_editor_config: editor_config.get_big_editor_config(),
+                    ru_best_time_editor_config: editor_config.get_big_editor_config(),
+                },
+
+                is_loading: false,
+
+                tab_num: 1,
 
                 errors: [],
 
-                name: "",
-                short_description: "",
-                text: "",
-                route: "",
-                how_get: "",
-                best_time: "",
-
-                name_ka: "",
-                short_description_ka: "",
-                text_ka: "",
-                route_ka: "",
-                how_get_ka: "",
-                best_time_ka: "",
-
-                name_ru: "",
-                short_description_ru: "",
-                text_ru: "",
-                how_get_ru: "",
-                best_time_ru: "",
-
-                editing_url: "/mountaineering/get_mount_editing_data/",
-                url: ""
+                is_back_action: false,
             }
         },
         mounted() {
             this.get_editing_data()
         },
+        beforeRouteLeave (to, from, next) {
+            if(this.is_back_action == true){
+                if (window.confirm('Added information will be deleted!!! Are you sure, you want go back?')) {
+                    this.is_back_action = false;
+                    next()
+                } else {
+                    next(false)
+                }
+            }else {
+                next()
+            }
+        },
+        // created() {
+        //     // so nice
+        //     // console.log(`${this.$going.back(this.is_back_action, this, true)} is currently logged in.`);
+        //     this.$test()
+        // },
         methods: {
             edit_mount: function () {
                 axios
-                .post('/mountaineering/mount_edit/' + this.editing_mount_id, {
-                    map: this.map,
-                    weather: this.weather,
-                    published: this.published,
-
-                    name: this.name,
-                    short_description: this.short_description,
-                    text: this.text,
-                    how_get: this.how_get,
-                    best_time: this.best_time,
-
-                    name_ka: this.name_ka,
-                    short_description_ka: this.short_description_ka,
-                    text_ka: this.text_ka,
-                    how_get_ka: this.how_get_ka,
-                    best_time_ka: this.best_time_ka,
-
-                    name_ru: this.name_ru,
-                    short_description_ru: this.short_description_ru,
-                    text_ru: this.text_ru,
-                    how_get_ru: this.how_get_ru,
-                    best_time_ru: this.best_time_ru,
+                .post('/mount/edit_mount_massive/' + this.$route.params.id, {
+                    data: this.data,
                 })
                 .then(Response => { 
-                    window.location.href = this.back_url;
+                    this.go_back(true)
                 })
                 .catch(error =>{
                     if (error.response.status == 422) {
-                        this.errors = error.response.data.errors
+                        this.errors = error.response.data.validation
                     }
+                    // else {
+                    //     alert(error)
+                    // }
                 })
             },
 
             get_editing_data: function() {
-                this.url = this.editing_url + this.editing_mount_id
-
                 axios
-                .get(this.url)
+                .get('/mount/get_editing_mount_data/'+this.$route.params.id)
                 .then(response => {
-                    this.editing_data = response.data
-                    
-                    // send data in editing form value
-                    this.published = this.editing_data.mount['published'],
-                    this.map = this.editing_data.mount['map'],
-                    this.weather = this.editing_data.mount['weather'],
-
-                    this.name = this.editing_data.mount['name'],
-                    this.short_description = this.editing_data.mount['short_description']
-                    this.text = this.editing_data.mount['text']
-                    this.how_get = this.editing_data.mount['how_get']
-                    this.best_time = this.editing_data.mount['best_time']
-
-                    this.name_ka = this.editing_data.mount['name_ka'],
-                    this.short_description_ka = this.editing_data.mount['short_description_ka']
-                    this.text_ka = this.editing_data.mount['text_ka']
-                    this.how_get_ka = this.editing_data.mount['how_get_ka']
-                    this.best_time_ka = this.editing_data.mount['best_time_ka']
-
-                    this.name_ru = this.editing_data.mount['name_ru'],
-                    this.short_description_ru = this.editing_data.mount['short_description_ru']
-                    this.text_ru = this.editing_data.mount['text_ru']
-                    this.how_get_ru = this.editing_data.mount['how_get_ru']
-                    this.best_time_ru = this.editing_data.mount['best_time_ru']
+                    this.data = response.data
                 })
-                .catch(
-                    error => console.log(error)
-                );
+                // .catch(
+                //     error => alert(error)
+                // );
             },
 
-            save_all(Response) {
-                this.edit_mount();
-            }
+            go_back: function(action = false) {
+                this.is_back_action = this.$going.back(this, action)
+            },
         }
     }
 </script>

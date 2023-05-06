@@ -10,13 +10,21 @@
                 <button type="submit" class="btn btn-primary" v-on:click="edit_spot_region()" >Save</button>
             </div>
         </div>
-        <!-- <div class="row">
+        <div class="row" v-if="errors.length != 0">
             <div class="col-md-12">
-                <div class="alert alert-danger" role="alert" v-if="error.global_article_error.published">
-                    {{ error.global_article_error.published[0] }}
+                <div class="alert alert-danger" role="alert" v-if="errors.us_name">
+                    English name - {{ errors.us_name[0] }}
+                </div>
+
+                <div class="alert alert-danger" role="alert" v-if="errors.ka_name">
+                    Georgian name - {{ errors.ka_name[0] }}
+                </div>
+
+                <div class="alert alert-danger" role="alert" v-if="errors.ru_name">
+                    Russion name - {{ errors.ru_name[0] }}
                 </div>
             </div>
-        </div> -->
+        </div>
         <div class="row">
             <div class="col-md-12">
                 <div class="row">
@@ -130,11 +138,14 @@
 </template>
 
 <script>
-    import { editor_config } from '../../../../mixins/editor/editor_config_mixin.js'
+    // import { editor_config } from '../../../../mixins/editor/editor_config_mixin.js'
+
+    // import { going } from '../../../../mixins/easy_navigation_mixin.js'
     export default {
-        mixins: [
-            editor_config
-        ],
+        // mixins: [
+        //     going,
+        //     editor_config
+        // ],
         components: {
             // StackModal,
         },
@@ -156,71 +167,70 @@
                     map: '',
                 },
 
-                us_text_editor_config: editor_config.get_big_editor_config(),
-                ru_text_editor_config: editor_config.get_big_editor_config(),
-                ka_text_editor_config: editor_config.get_big_editor_config(),
+                us_text_editor_config: this.$editor_config.get_big_editor_config(),
+                ru_text_editor_config: this.$editor_config.get_big_editor_config(),
+                ka_text_editor_config: this.$editor_config.get_big_editor_config(),
 
                 tab_num: 1,
 
-                error: {
-                    global_article_error: [],
-                    ka_article_error: [],
-                    ru_article_error: [],
-                    us_article_error: [],
-                },
+                errors: [],
 
-                is_back_action: false,
+                is_back_action: true,
 
             }
         },
         mounted() {
             this.get_editing_spot_data()
         },
-        // beforeRouteLeave (to, from, next) {
-        //     if(this.is_back_action = true){
-        //         if (window.confirm('Added information will be deleted!!! Are you sure, you want go back?')) {
-        //             this.is_back_action = false;
-        //             next()
-        //         } else {
-        //             next(false)
-        //         }
-        //     }
-        // },
+        beforeRouteLeave (to, from, next) {
+            if(this.is_back_action == true){
+                if (window.confirm('Added information will be deleted!!! Are you sure, you want go back?')) {
+                    this.is_back_action = false;
+                    next()
+                } else {
+                    next(false)
+                }
+            } else {
+                next()
+            }
+        },
         methods: {
             get_editing_spot_data(){
                 axios
-                .get('../../../api/outdoor/get_editing_spot_data/'+this.$route.params.id, {
+                .get('/outdoor/get_editing_spot_data/'+this.$route.params.id, {
                     _method: 'GET'
                 })
                 .then(response => {
                     this.data = response.data
                 })
-                .catch(err => {
-                    //
-                })
+                // .catch(err => {
+                //     alert("get_editing_spot_data error => "+err)
+                // })
             },
 
             edit_spot_region() {
                 axios
-                .post('../../../api/outdoor/edit_spot/'+this.$route.params.id, {        
+                .post('/outdoor/edit_spot/'+this.$route.params.id, {        
                     data: this.data,
 
                     _method: 'POST'
                 })
                 .then(response => {
-                    this.$router.go(-1)
+                    this.go_back(true)
                 })
                 .catch(err => {
-                    //
+                    if (err.response.status == 422) {
+                        this.errors = err.response.data.validation
+                    }
+                    // else{
+                    //     alert("edit_spot_region error => "+err)
+                    // }
                 })
             },
-            
-            go_back: function() {
-                this.is_back_action = true
 
-                this.$router.go(-1)
+            go_back: function(action = false) {
+                this.is_back_action = this.$going.back(this, action)
             },
-
         }
     }
 </script>

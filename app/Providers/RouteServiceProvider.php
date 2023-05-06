@@ -5,6 +5,8 @@ namespace App\Providers;
 use Illuminate\Foundation\Support\Providers\RouteServiceProvider as ServiceProvider;
 use Illuminate\Support\Facades\Route;
 
+use Illuminate\Support\Facades\RateLimiter;
+
 class RouteServiceProvider extends ServiceProvider
 {
     /**
@@ -30,9 +32,17 @@ class RouteServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        //
+        $this->configureRateLimiting();
 
         parent::boot();
+    }
+
+    protected function configureRateLimiting()
+    {
+        // https://stackoverflow.com/questions/65406206/laravel-8-rate-limiter-not-working-for-routes
+        RateLimiter::for('api', function (Request $request) {
+            return Limit::perMinute(160)->by(optional($request->user())->id ?: $request->ip());
+        });
     }
 
     /**

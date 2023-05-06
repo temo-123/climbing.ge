@@ -1,11 +1,17 @@
 <template>
     <div class="tabs"> 
-        <div class="row">
+        <div class="row justify-content-center" v-if="is_loading">
+            <div class="col-md-4">
+                <img :src="'../../../../../../public/images/site_img/loading.gif'" alt="loading">
+            </div>
+        </div>
+
+        <div class="row" v-if="!is_loading">
             <div class="form-group">
                 <button type="submit" class="btn btn-primary" @click="go_back()">Beck</button>
             </div>
         </div>
-        <div class="row">
+        <div class="row" v-if="!is_loading">
             <div class="form-group">  
                 <button type="submit" class="btn btn-primary" v-on:click="add_event()" >Save</button>
             </div>
@@ -56,7 +62,7 @@
                 </div>
             </div>
         </div>
-        <div class="row">
+        <div class="row" v-if="!is_loading">
             <div class="col-md-12">
                 <div class="row">
                     <div class="col" >
@@ -70,14 +76,14 @@
                         <label for="2" >English text</label>
                     </div>
                     <div class="col" >
-                        <input type="radio" id="3" :value="3" v-model="tab_num">
-                        
-                        <label for="3" >Georgian text</label>
-                    </div>
-                    <div class="col" >
                         <input type="radio" id="4" :value="4" v-model="tab_num">
                         
-                        <label for="4" >Russion text</label>
+                        <label for="4" >Georgian text</label>
+                    </div>
+                    <div class="col" >
+                        <input type="radio" id="3" :value="3" v-model="tab_num">
+                        
+                        <label for="3" >Russion text</label>
                     </div>
                 </div>
             </div>
@@ -170,12 +176,26 @@
                             </div>
                         </div>
 
-                        <div class="form-group clearfix">
+                        <!-- <div class="form-group clearfix">
                             <label for="name" class='col-xs-2 control-label'> contact info </label>
                             <div class="col-xs-8">
                                 <ckeditor v-model="data.us_data.info" :config="us_info_editor_config"></ckeditor>
                             </div>
-                        </div>
+                        </div> -->
+
+                        <GlobalInfoFormBlock 
+                            :title_prop="'Contact info'" 
+                            :form_value_name_prop="'info'"
+                            :form_data_prop=data.us_data.info 
+                            :genaral_info_block_name_prop="'info_block'"
+                            :locale_prop="'us'"
+                            :block_action_prop="global_blocks.info_block"
+                            :block_id_prop="global_blocks.info_block_id"
+
+                            @get_form_data="get_value_insert_text"
+                            @get_global_blocks_status="get_global_blocks_status_action"
+                            @get_global_blocks_id="get_global_blocks_id"
+                        />
                     </form>
                 </div>
                 <div class="row" v-show="tab_num == 3">
@@ -209,12 +229,26 @@
                             </div>
                         </div>
 
-                        <div class="form-group clearfix">
+                        <!-- <div class="form-group clearfix">
                             <label for="name" class='col-xs-2 control-label'> contact info </label>
                             <div class="col-xs-8">
                                 <ckeditor v-model="data.ru_data.info" :config="ru_info_editor_config"></ckeditor>
                             </div>
-                        </div>
+                        </div> -->
+
+                        <GlobalInfoFormBlock 
+                            :title_prop="'Contact info'" 
+                            :form_value_name_prop="'info'"
+                            :form_data_prop=data.ru_data.info 
+                            :genaral_info_block_name_prop="'info_block'"
+                            :locale_prop="'ru'"
+                            :block_action_prop="global_blocks.info_block"
+                            :block_id_prop="global_blocks.info_block_id"
+
+                            @get_form_data="get_value_insert_text"
+                            @get_global_blocks_status="get_global_blocks_status_action"
+                            @get_global_blocks_id="get_global_blocks_id"
+                        />
                     </form>
                 </div>
                 <div class="row" v-show="tab_num == 4">
@@ -248,12 +282,26 @@
                             </div>
                         </div>
 
-                        <div class="form-group clearfix">
+                        <!-- <div class="form-group clearfix">
                             <label for="name" class='col-xs-2 control-label'> contact info </label>
                             <div class="col-xs-8">
                                 <ckeditor v-model="data.ka_data.info" :config="ka_info_editor_config"></ckeditor>
                             </div>
-                        </div>
+                        </div> -->
+
+                        <GlobalInfoFormBlock 
+                            :title_prop="'Contact info'" 
+                            :form_value_name_prop="'info'"
+                            :form_data_prop=data.ka_data.info 
+                            :genaral_info_block_name_prop="'info_block'"
+                            :locale_prop="'ka'"
+                            :block_action_prop="global_blocks.info_block"
+                            :block_id_prop="global_blocks.info_block_id"
+
+                            @get_form_data="get_value_insert_text"
+                            @get_global_blocks_status="get_global_blocks_status_action"
+                            @get_global_blocks_id="get_global_blocks_id"
+                        />
                     </form>
                 </div>
             </div>
@@ -264,6 +312,7 @@
 
 <script>
     import { editor_config } from '../../../../../mixins/editor/editor_config_mixin.js'
+    import GlobalInfoFormBlock from '../../../items/GlobalInfoFormBlockComponent.vue'
     export default {
         mixins: [
             editor_config
@@ -271,6 +320,9 @@
         props: [
             // 'back_url',
         ],
+        components: {
+            GlobalInfoFormBlock
+        },
         data(){
             return {
                 tab_num: 1,
@@ -279,6 +331,8 @@
 
                 images: [],
                 editorConfig: '',
+
+                is_loading: false,
 
                 us_short_description_text_editor: editor_config.get_small_editor_config(),
                 us_text_editor_config: editor_config.get_big_editor_config(),
@@ -324,22 +378,41 @@
                         info: "",
                     }
                 },
+
+                global_blocks: {
+                    info_block: 'new_info',
+
+                    info_block_id: 0,
+                }
             }
         },
         mounted() {
             // this.get_event_category_data()
         },
         methods: {
+            get_value_insert_text({locale, form_data, form_value_name}) {
+                this.data[locale+"_data"][form_value_name] = form_data
+            },
+            get_global_blocks_status_action({value_name, block_action}) {
+                this.global_blocks[value_name] = block_action
+            },
+            get_global_blocks_id({value_name, block_id}) {
+                this.global_blocks[value_name+"_id"] = block_id
+            },
+
             onFileChange(event){
                 this.image = event.target.files[0];
             },
             add_event() {
+                this.is_loading = true
+
                 this.data.global_data.us_title_for_url_title = this.data.us_data.title
                 let formData = new FormData();
 
                 formData.append('image', this.image)
 
                 formData.append('data', JSON.stringify(this.data))
+                formData.append('global_blocks', JSON.stringify(this.global_blocks))
 
                 this.error = []
 
@@ -360,9 +433,10 @@
                         this.error = error.response.data.validation
                     }
                     else{
-                        alert(this.error)
+                        alert(error)
                     }
-                });
+                })
+                .finally(() => this.is_loading = false);
             },
 
             sand_notification() {

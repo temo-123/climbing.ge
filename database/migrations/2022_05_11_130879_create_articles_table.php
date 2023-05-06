@@ -19,18 +19,18 @@ return new class extends Migration
             $table->string('category')->nullable();
             $table->string('url_title')->unique();
 
-            $table->string('fb_link')->nullable();
-            $table->string('inst_link')->nullable();
-            $table->string('google_link')->nullable();
-            $table->string('twit_link')->nullable();
-            $table->string('web_link')->nullable();
+            // $table->string('fb_link')->nullable();
+            // $table->string('inst_link')->nullable();
+            // $table->string('google_link')->nullable();
+            // $table->string('twit_link')->nullable();
+            // $table->string('web_link')->nullable();
 
             // $table->string('star')->nullable();
 
             $table->string('price_from')->nullable();
 
-            $table->string('open_time')->nullable();
-            $table->string('closed_time')->nullable();
+            $table->timestamp('open_time')->nullable();
+            $table->timestamp('closed_time')->nullable();
 
             $table->text('weather')->nullable();
             $table->text('map')->nullable();

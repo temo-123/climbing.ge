@@ -1,11 +1,11 @@
 <template>
    <div class="row cms_filters">
-        <div class="col-md-8">
+        <div class="col-md-7">
             <h3>Filter sectors By outdoor regions</h3>
         </div>
-        <div class="col-md-4 ">
+        <div class="col-md-5">
             <select v-model="value_outdoor_id" @click="return_data(value_outdoor_id)">
-                <option :value="'all'">All</option>
+                <option :value="0">All</option>
                 <option v-for="outdoor in outdoor_areas" :key="outdoor" :value="outdoor.id">{{ outdoor.url_title }}</option>
             </select>
         </div>
@@ -20,7 +20,7 @@
         data(){
             return {
                 outdoor_areas: [],
-                value_outdoor_id: 'all'
+                value_outdoor_id: 0
             }
         },
         methods: {
@@ -37,7 +37,7 @@
                 );
             },
             return_data(filtr_id){
-                this.$emit('filtred_id', filtr_id)
+                this.$emit('filtred_id', {'filtr_id': filtr_id, 'filtr_category': 'sector_filtr'})
             }
         }
     }

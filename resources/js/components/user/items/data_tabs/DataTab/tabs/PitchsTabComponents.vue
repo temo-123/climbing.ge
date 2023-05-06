@@ -11,12 +11,6 @@
         <td>
             {{table_info.name}}
         </td>
-        
-        <td>|</td>
-        <td>
-            <div v-if="table_info.or_grade != NULL">{{table_info.grade}} / {{ table_info.or_grade }}</div>
-            <div v-else>{{table_info.grade}}</div>
-        </td>
 
         <td>|</td>
         <td>

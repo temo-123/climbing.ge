@@ -145,7 +145,7 @@ class LocalBisnesController extends Controller
         }
         else{            
             return response()->json([
-                'Data validation' => $validation_issets
+                'validation' => $validation_issets
             ], 422);
         }
     }
@@ -307,7 +307,7 @@ class LocalBisnesController extends Controller
         }
         else{            
             return response()->json([
-                'Data validation' => $validation_issets
+                'validation' => $validation_issets
             ], 422);
         }
     }

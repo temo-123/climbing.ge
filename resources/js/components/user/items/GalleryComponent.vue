@@ -8,27 +8,28 @@
                 </div>
             </div>
             <div class="row">
-                <div class="col-md-4">
+                <!-- <div class="col-md-4">
                     <select class="form-control" v-model="filter_articles" @click="filtr_images()"  v-if="filter_type == 'All' || filter_type == 'Select image type' || filter_type == 'Article images'">
                         <option disabled>Select article</option> 
                         <option>All</option>
                         <option v-for="article in articles" :key='article.id' :value="article.id">{{ article.url_title }}</option> 
                     </select>
-                </div>
+                </div> -->
+                <div class="col-md-4"></div>
                 <div class="col-md-4">
-                    <select class="form-control" v-model="filter_category" @click="filtr_images()">
+                    <select class="form-control" v-model="filter_category_id" @click="filtr_images('filter_category')">
                         <option disabled>Select category</option> 
                         <option>All</option>
                         <option v-for="categorie in categories" :key='categorie.id' :value="categorie.id">{{ categorie.us_name }}</option> 
                     </select>
                 </div>
                 <div class="col-md-4" >
-                    <select class="form-control" v-model="filter_type" @click="filtr_images()" v-if="filter_articles == 'All' || filter_articles == 'Select article' || (filter_type == 'Article images' && filter_articles != 'All' || filter_articles != 'Select article')">
+                    <select class="form-control" v-model="filter_type" @click="filtr_images('filter_type')" v-if="filter_articles == 'All' || filter_articles == 'Select article' || (filter_type == 'Article images' && filter_articles != 'All' || filter_articles != 'Select article')">
                         <option disabled>Select image type</option> 
                         <option>All</option>
-                        <option>Article images</option> 
-                        <option>Index gallery images</option> 
-                        <option>Index head slider images</option> 
+                        <option>Article image</option> 
+                        <option>Index gallery image</option> 
+                        <option>Index head slider image</option> 
                     </select>
                 </div>
             </div>
@@ -48,7 +49,7 @@
                     <img @click="add_image_modal()" alt="Add image" src="images/site_img/function_imgs/add_image.png">
                 </div>
             </div>
-            <div class="col-md-4 mt-3" v-for="image in images" :key="image.id">
+            <div class="col-md-4 mt-3" v-for="image in filtred_gallery_images" :key="image.id">
                 <div class="thumbnail">
 
                     <img @click="show_image_modal(image)" :alt="image.title" :src="'/images/gallery_img/'+image.image" class="cursor_pointr">
@@ -122,8 +123,8 @@
                                 <select class="form-control" name="image_type" id="image_type" v-model="form_data.image_type" required>
                                     <option disabled>Select image type</option> 
                                     <option>Article image</option> 
-                                    <option>Index gallery images</option> 
-                                    <option>Index head slider images</option> 
+                                    <option>Index gallery image</option> 
+                                    <option>Index head slider image</option> 
                                 </select> 
                             </div>
                         </div>
@@ -191,82 +192,84 @@
                 :cancelButton="{ visible: false, title: 'Close', btnClass: { 'btn btn-danger': true } }"
             >
             <pre class="language-vue">
-                <form ref="editingForm" id="gallery_iamge_edit_form" v-on:submit.prevent="edit_image(editing_image.id)">
-                    <div class="container">
-                        
-                        <div class="row">
-                            <img :src="'/images/gallery_img/' + editing_data.image" :alt="editing_data.title">
-                        </div>
-                        
-                        <div class="form-group clearfix row">
-                            <input type="file" name="image" id="image" value="image" v-on:change="onEditImageChange">
-                        </div>
+                <span v-if="loading_editing_data">
+                    <img :src="'../../../public/images/site_img/loading.gif'" alt="loading">
+                </span>
+                <span v-if="!loading_editing_data">
+                    <form ref="editingForm" id="gallery_iamge_edit_form" v-on:submit.prevent="edit_image(editing_image.id)">
+                        <div class="container">
+                            
+                            <div class="row">
+                                <img :src="'/images/gallery_img/' + editing_data.image" :alt="editing_data.title">
+                            </div>
+                            
+                            <div class="form-group clearfix row">
+                                <input type="file" name="image" id="image" value="image" v-on:change="onEditImageChange">
+                            </div>
 
-                        <div class="form-group clearfix row">
-                            <div class="col-md-12 image_add_modal_form">
-                                <select class="form-control" name="published" id="published" v-model="editing_data.published" required>
-                                        <option value="0">Not public</option> 
-                                        <option value="1">Public</option>
-                                </select> 
+                            <div class="form-group clearfix row">
+                                <div class="col-md-12 image_add_modal_form">
+                                    <select class="form-control" name="published" id="published" v-model="editing_data.published" required>
+                                            <option value="0">Not public</option> 
+                                            <option value="1">Public</option>
+                                    </select> 
+                                </div>
+                            </div>
+
+                            <div class="form-group clearfix row">
+                                <div class="col-md-12 image_add_modal_form">
+                                    <select class="form-control" name="category" id="category" v-model="editing_data.image_type" required>
+                                        <option disabled>Select image type</option> 
+                                        <option>Article image</option> 
+                                        <option>Index gallery image</option> 
+                                        <option>Index head slider image</option> 
+                                    </select> 
+                                </div>
+                            </div>
+                            
+                            <div class="form-group clearfix row" v-if="editing_data.image_type == 'Article image'">
+                                <div class="col-md-12 image_add_modal_form">
+                                    <select class="form-control" name="article_id" v-model="editing_data.article_id" required> 
+                                        <option disabled>Select article</option> 
+                                        <option v-for="article in articles" :key='article.id' :value="article.id">{{ article.url_title }}</option> 
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="alert alert-danger" role="alert" v-if="category_error">
+                                {{ category_error }}
+                            </div>
+
+                            <div class="form-group clearfix row">
+                                <div class="col-md-12 image_add_modal_form">
+                                    <select class="form-control" name="filter" v-model="editing_data.category_id" required>
+                                        <option disabled>Select image category</option> 
+                                        <option v-for="categorie in categories" :key='categorie.id' :value="categorie.id">{{ categorie.us_name }}</option> 
+                                    </select> 
+                                </div>
+                            </div>
+
+                            <div class="form-group clearfix row">
+                                <div class="col-md-12 image_add_modal_form">
+                                    <input type="text" name="title" class="form-control" placeholder="Title" v-model="editing_data.title" required>
+                                </div>
+                            </div>
+
+
+                            <div class="form-group clearfix row">
+                                <div class="col-md-12">
+                                    <textarea type="text" v-model="editing_data.text" name="text" rows="15" class="form-cotrol md-textarea form-control" required></textarea>
+                                </div>
+                            </div>
+
+                            <div class="form-group clearfix row">
+                                <div class="col-md-12 image_add_modal_form">
+                                    <input type="text" name="link" class="form-control" placeholder="Article Link" v-model="editing_data.link">
+                                </div>
                             </div>
                         </div>
-
-                        <div class="form-group clearfix row">
-                            <div class="col-md-12 image_add_modal_form">
-                                <select class="form-control" name="category" id="category" v-model="editing_data.image_type" required>
-                                    <option disabled>Select image type</option> 
-                                    <option>Article image</option> 
-                                    <option>Index gallery images</option> 
-                                    <option>Index head slider images</option> 
-                                </select> 
-                            </div>
-                        </div>
-                        
-                        <div class="form-group clearfix row" v-if="editing_data.image_type == 'Article image'">
-                            <div class="col-md-12 image_add_modal_form">
-                                <select class="form-control" name="article_id" v-model="editing_data.article_id" required> 
-                                    <option disabled>Select article</option> 
-                                    <option v-for="article in articles" :key='article.id' :value="article.id">{{ article.url_title }}</option> 
-                                </select> 
-                                <!-- <select class="form-control" name="article_id" v-model="editing_data.article[0].id"> required 
-                                    <option disabled>Select article</option> 
-                                    <option v-for="article in articles" :key='article.id' :value="article.id">{{ article.url_title }}</option> 
-                                </select>  -->
-                            </div>
-                        </div>
-                        <div class="alert alert-danger" role="alert" v-if="category_error">
-                            {{ category_error }}
-                        </div>
-
-                        <div class="form-group clearfix row">
-                            <div class="col-md-12 image_add_modal_form">
-                                <select class="form-control" name="filter" v-model="editing_data.category_id" required>
-                                    <option disabled>Select image category</option> 
-                                    <option v-for="categorie in categories" :key='categorie.id' :value="categorie.id">{{ categorie.us_name }}</option> 
-                                </select> 
-                            </div>
-                        </div>
-
-                        <div class="form-group clearfix row">
-                            <div class="col-md-12 image_add_modal_form">
-                                <input type="text" name="title" class="form-control" placeholder="Title" v-model="editing_data.title" required>
-                            </div>
-                        </div>
-
-
-                        <div class="form-group clearfix row">
-                            <div class="col-md-12">
-                                <textarea type="text" v-model="editing_data.text" name="text" rows="15" class="form-cotrol md-textarea form-control" required></textarea>
-                            </div>
-                        </div>
-
-                        <div class="form-group clearfix row">
-                            <div class="col-md-12 image_add_modal_form">
-                                <input type="text" name="link" class="form-control" placeholder="Article Link" v-model="editing_data.link">
-                            </div>
-                        </div>
-                    </div>
-                </form>
+                    </form>
+                </span>
             </pre>
             <div slot="modal-footer">
                 <div class="modal-footer">
@@ -299,16 +302,20 @@
         data(){
             return {
                 images: [],
+                filtred_gallery_images: [],
                 articles: [],
 
                 is_show_image: false,
                 is_add_image: false,
                 is_edit_image: false,
+                loading_editing_data: false,
 
                 modal_image: '',
 
-                filter_category: 'Select category',
-                filter_type: 'Select image type',
+                filter_category_id: 'All',
+                // filter_category_id: 'Select category',
+                filter_type: 'All',
+                // filter_type: 'Select image type',
                 filter_articles: 'Select article',
 
                 reset_id: 0,
@@ -346,9 +353,10 @@
         methods: {
             get_gallery_data: function(){
                 axios
-                .post("../api/gallery_image/")
+                .post("/gallery_image/")
                 .then(response => {
                     this.images = response.data
+                    this.filtred_gallery_images = response.data
                     this.is_refresh = false
                     this.reset_id++
                 })
@@ -359,7 +367,7 @@
 
             get_articles(){
                 axios
-                .get("../api/article/")
+                .get("/article/")
                 .then(response => {
                     this.articles = response.data
                 })
@@ -397,7 +405,7 @@
                 }
                 else{
                     axios
-                    .post('../api/gallery_image_add', 
+                    .post('/gallery_image_add', 
                         formData,
                     )
                     .then(response => {
@@ -442,16 +450,21 @@
                 this.editing_image = e.target.files[0];
             },
             get_editing_image_data(image_id){
+                this.loading_editing_data = true
                 axios
-                .get("../api/get_editing_image/"+image_id)
+                .get("/get_editing_image/"+image_id)
                 .then(response => {
                     this.editing_data = response.data
-                    this.editing_data.article_id = response.data.article[0].id
+                    // alert('/'+response.data.article+'/')
+                    if(response.data.article != [] && response.data.article != ''){
+                        this.editing_data.article_id = response.data.article[0].id
+                    }
                     this.editing_image.id = response.data.id
                 })
                 .catch(error => {
-                    alert(error)
-                });
+                    alert("get_editing_image_data function error => " + error)
+                })
+                .finally(() => this.loading_editing_data = false);
             },
             edit_image_modal(editing_image_id){
                 this.is_edit_image = true
@@ -462,6 +475,8 @@
                 this.clear_input_data()
             },
             edit_image(){
+                this.loading_editing_data = true
+
                 this.category_id = ''
 
                 let formData = new FormData();
@@ -474,7 +489,7 @@
                 }
                 else{
                     axios
-                    .post('../api/gallery_image_edit/'+this.editing_data.id, 
+                    .post('/gallery_image_edit/'+this.editing_data.id, 
                         formData,
                     )
                     .then(response => {
@@ -487,14 +502,15 @@
                     })
                     .catch(error => {
                         alert(error)
-                    });
+                    })
+                    .finally(() => this.loading_editing_data = false);
                 }
             },
 
             del_image(image_id) {
                 if (window.confirm('Added information will be deleted!!! Are you sure, you want go back?')) {
                     axios
-                    .delete('../api/gallery_image/' + image_id, {
+                    .delete('/gallery_image/' + image_id, {
                         id: image_id,
                     })
                     .then(Response => {
@@ -506,9 +522,32 @@
                 }
             },
 
+            filtr_images(filtring_type){
+                let then = this
 
-            filtr_images(){
-                // alert('test')
+                // this.filtred_gallery_images = this.images
+                if(filtring_type == 'filter_category'){
+                    if(this.filter_category_id == "All"){
+                        this.filtred_gallery_images = this.images
+                    }
+                    else{
+                        this.filter_type = "All"
+                        this.filtred_gallery_images = this.images.filter(function (item){
+                            return item.category_id == then.filter_category_id
+                        })
+                    }
+                }
+                else if(filtring_type == 'filter_type'){
+                    if(this.filter_type == "All"){
+                        this.filtred_gallery_images = this.images
+                    }
+                    else{
+                        this.filter_category_id = "All"
+                        this.filtred_gallery_images = this.images.filter(function (item){
+                            return item.image_type == then.filter_type
+                        })
+                    }
+                }
             },
         }
     }

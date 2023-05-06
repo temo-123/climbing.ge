@@ -10,6 +10,49 @@
                 <button type="submit" class="btn btn-primary" v-on:click="edit_bisnes()" >Save update</button>
             </div>
         </div>
+        <div class="row" v-if="validation_errors.length != 0">
+            <div class="col-md-12">
+                <div class="alert alert-danger" role="alert" v-if="validation_errors.global_info_validation.published">
+                    Published - {{ validation_errors.global_info_validation.published[0] }}
+                </div>
+                <div class="alert alert-danger" role="alert" v-if="validation_errors.global_info_validation.start_data">
+                    Start data - {{ validation_errors.global_info_validation.start_data[0] }}
+                </div>
+                <div class="alert alert-danger" role="alert" v-if="validation_errors.global_info_validation.end_data">
+                    End data - {{ validation_errors.global_info_validation.end_data[0] }}
+                </div>
+
+                <div class="alert alert-danger" role="alert" v-if="validation_errors.us_info_validation.title">
+                    English title - {{ validation_errors.us_info_validation.title[0] }}
+                </div>
+                <div class="alert alert-danger" role="alert" v-if="validation_errors.us_info_validation.short_description">
+                    English description - {{ validation_errors.us_info_validation.short_description[0] }}
+                </div>
+                <div class="alert alert-danger" role="alert" v-if="validation_errors.us_info_validation.text">
+                    English text - {{ validation_errors.us_info_validation.text[0] }}
+                </div>
+
+                <div class="alert alert-danger" role="alert" v-if="validation_errors.ka_info_validation.title">
+                    Georgian title - {{ validation_errors.ka_info_validation.title[0] }}
+                </div>
+                <div class="alert alert-danger" role="alert" v-if="validation_errors.ka_info_validation.short_description">
+                    Georgian description - {{ validation_errors.ka_info_validation.short_description[0] }}
+                </div>
+                <div class="alert alert-danger" role="alert" v-if="validation_errors.ka_info_validation.text">
+                    Georgian text - {{ validation_errors.ka_info_validation.text[0] }}
+                </div>
+
+                <div class="alert alert-danger" role="alert" v-if="validation_errors.ru_info_validation.title">
+                    Russion title - {{ validation_errors.ru_info_validation.title[0] }}
+                </div>
+                <div class="alert alert-danger" role="alert" v-if="validation_errors.ru_info_validation.short_description">
+                    Russion description - {{ validation_errors.ru_info_validation.short_description[0] }}
+                </div>
+                <div class="alert alert-danger" role="alert" v-if="validation_errors.ru_info_validation.text">
+                    Russion text - {{ validation_errors.ru_info_validation.text[0] }}
+                </div>
+            </div>
+        </div>
         <div class="row">
             <div class="col-md-12">
                 <div class="row">
@@ -24,14 +67,14 @@
                         <label for="2" >English text</label>
                     </div>
                     <div class="col" >
-                        <input type="radio" id="3" :value="3" v-model="tab_num">
-                        
-                        <label for="3" >Georgian text</label>
-                    </div>
-                    <div class="col" >
                         <input type="radio" id="4" :value="4" v-model="tab_num">
                         
-                        <label for="4" >Russion text</label>
+                        <label for="4" >Georgian text</label>
+                    </div>
+                    <div class="col" >
+                        <input type="radio" id="3" :value="3" v-model="tab_num">
+                        
+                        <label for="3" >Russion text</label>
                     </div>
                 </div>
             </div>
@@ -279,6 +322,8 @@
                 bisnes_old_images: [],
                 regions: [],
 
+                validation_errors: [],
+
                 us_short_description_text_editor: editor_config.get_small_editor_config(),
                 us_text_editor_config: editor_config.get_big_editor_config(),
                 us_info_editor_config: editor_config.get_big_editor_config(),
@@ -445,9 +490,14 @@
                 .then(response => {
                     this.go_back(true)
                 })
-                .catch(
-                    error => console.log(error)
-                );
+                .catch(error => {
+                    if (error.response.status == 422) {
+                        this.validation_errors = error.response.data.validation
+                    }
+                    else{
+                        alert(error)
+                    }
+                });
             },
 
             go_back: function(back_action = false) {

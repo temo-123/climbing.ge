@@ -7,8 +7,11 @@ use Illuminate\Http\Request;
 
 use App\Models\Event;
 use App\Models\Locale_event;
+use App\Models\General_info_event;
+use App\Models\General_info;
 
 use App\Services\ImageControllService;
+use App\Services\GeneralInfoService;
 use App\Services\URLTitleService;
 
 use Validator;
@@ -27,8 +30,10 @@ class EventController extends Controller
         $events_array = [];
 
         foreach ($events as $event) {
-            // if(date('Y/m/d H:i:s', strtotime($event->end_data)) < $plas_3_day){
-            if(date('Y', strtotime($events[0]->end_data)) == date('Y', strtotime($action_data))){
+            if(
+                date('m', strtotime($event->end_data)) > date('m', strtotime($action_data)) &&
+                date('Y', strtotime($event->end_data)) == date('Y', strtotime($action_data))
+            ){
                 $global_event = $event;
 
                 if($request->lang == 'ka'){
@@ -55,15 +60,21 @@ class EventController extends Controller
     {
         $action_data = date("Y/m/d H:i:s");
 
-        $events = Event::where('published', '=', 1)->orderBy('start_data')->limit(3)->get();
+        // $events = Event::where('published', '=', 1)->orderBy('start_data')->limit(3)->get();
+        $events = Event::where('published', '=', 1)->orderBy('start_data')->get();
 
         $events_array = [];
 
         foreach ($events as $event) {
-            if(date('Y', strtotime($events[0]->end_data)) == date('Y', strtotime($action_data))){
-                if(date('m', strtotime($events[0]->end_data)) <= date('m', strtotime($action_data))){
-                    return (date('d', strtotime($events[0]->end_data)) . " / " . date('d', strtotime($action_data)));
-                    if(date('d', strtotime($events[0]->end_data)) > date('d', strtotime($action_data))){
+
+            if(
+                date('m', strtotime($event->end_data)) > date('m', strtotime($action_data)) &&
+                date('Y', strtotime($event->end_data)) == date('Y', strtotime($action_data))
+            ){
+            // if(date('Y', strtotime($events[0]->end_data)) == date('Y', strtotime($action_data))){
+                // if(date('m', strtotime($events[0]->end_data)) <= date('m', strtotime($action_data))){
+                    // if(date('d', strtotime($events[0]->end_data)) > date('d', strtotime($action_data))){
+                    if(count($events_array) < 3){
                         $global_event = $event;
 
                         if($request->lang == 'ka'){
@@ -81,9 +92,10 @@ class EventController extends Controller
                             'locale_event' => $local_event,
                         ]);
                     }
-                }
+            //     }
             }
         }
+        // dd(count($events_array));
 
         return $events_array;
     }
@@ -93,7 +105,7 @@ class EventController extends Controller
         $global_event = Event::where('url_title', '=', $request->url_title)->first();
 
         if($request->lang == 'ka'){
-            $local_event = $global_event->us_event;
+            $local_event = $global_event->ka_event;
         }
         else if($request->lang == 'ru'){
             $local_event = $global_event->ru_event;
@@ -102,7 +114,32 @@ class EventController extends Controller
             $local_event = $global_event->us_event;
         }
 
+        if(General_info_event::where('event_id', '=', $global_event->id)->count() > 0){
+            $info_article_relatione = General_info_event::where('event_id', '=', $global_event->id)->first();
+            $general_info = General_info::where('id', '=', $info_article_relatione->info_id)->first();
+            
+            $text = '';
+
+            if($request->lang == 'ka'){
+                $text = $general_info->text_ka;
+            }
+            else if($request->lang == 'ru'){
+                $text = $general_info->text_ru;
+            }
+            else{
+                $text = $general_info->text_us;
+            }
+
+            $global_info = [
+                "block_action" => $info_article_relatione->block_action,
+                "text"=>$text,
+            ];
+        }
+
         return $data = [
+            "general_info"=>[
+                "info_block" => $global_info,
+            ],
             'global_event' => $global_event,
             'locale_event' => $local_event,
         ];
@@ -115,6 +152,9 @@ class EventController extends Controller
 
     public function edit_event(Request $request)
     {
+
+        // dd($request->global_blocks);
+
         $validation_issets = [];
 
         $data = json_decode($request->data, true );
@@ -156,6 +196,7 @@ class EventController extends Controller
             !$validation_issets['ka_info_validation'] && 
             !$validation_issets['us_info_validation']
         ) {
+            // dd($data);
             $locale_event_values = $this->edit_global_event(
                 $data['global_data'],  
                 $request->event_id,
@@ -193,8 +234,18 @@ class EventController extends Controller
             $editing_local_event['image'] = ImageControllService::image_update('images/event_img/', $editing_local_event, $request, 'image', 'image', 1);
         }
         
+        if($global_data['change_event_category']){
+            if($editing_local_event['category'] == "competition"){
+                $editing_local_event['category']="event";
+            }
+            else if($editing_local_event['category'] == "event"){
+                $editing_local_event['category']="competition";
+            }
+        }
+        else{
+            $editing_local_event['category']=$global_data["category"];
+        }
 
-        $editing_local_event['category']=$global_data["category"];
         $editing_local_event['published']=$global_data["published"];
         $editing_local_event['map']=$global_data["map"];
 
@@ -206,6 +257,8 @@ class EventController extends Controller
         }
         
         $saved = $editing_local_event -> save();
+
+        GeneralInfoService::edit_general_info_relatione(json_decode($request->global_blocks, true), $id, "event");
         
         if(!$saved){
             App::abort(500, 'Error');
@@ -245,11 +298,24 @@ class EventController extends Controller
     {
         $global_event = Event::where('id',strip_tags($request->event_id))->first();
 
+        $blobal_data = [];
+        if($global_event->general_info){
+            foreach ($global_event->general_info as $info) {
+                $info_position = General_info_event::where('event_id',strip_tags($info->pivot->event_id))->where('info_id',strip_tags($info->pivot->info_id))->first();
+
+                array_push($blobal_data, [
+                    'data' => $info,
+                    'position' => $info_position
+                ]);
+            }
+        }
+
         return $data = [
             'global_data' => $global_event,
             'us_data' => $global_event->us_event,
             'ru_data' => $global_event->ru_event,
             'ka_data' => $global_event->ka_event,
+            'general_info' => $blobal_data
         ];
 
         // return $data;
@@ -257,6 +323,8 @@ class EventController extends Controller
 
     public function del_event(Request $request)
     {
+        $global_global_info_relatione = General_info_event::where('event_id', '=', $request->event_id)->first();
+
         $global_event = Event::where('id',strip_tags($request->event_id))->first();
         $us_event = Locale_event::where('id',strip_tags($global_event->us_event_id))->first();
         $ru_event = Locale_event::where('id',strip_tags($global_event->ru_event_id))->first();
@@ -266,6 +334,7 @@ class EventController extends Controller
         ImageControllService::image_delete('images/event_img/', $global_event, 'image');
 
         // delete event from db
+        $global_global_info_relatione ->delete();
         $global_event ->delete();
         $us_event ->delete();
         $ru_event ->delete();
@@ -276,6 +345,8 @@ class EventController extends Controller
     public function add_event(Request $request)
     {
         $validation_issets = [];
+
+        // dd($request);
 
         $data = json_decode($request->data, true );
         $global_blocks = json_decode($request->global_blocks, true );
@@ -397,6 +468,10 @@ class EventController extends Controller
         $event['ru_event_id']=$local_ru;
         
         $event -> save();
+
+        // $this->add_general_info_relatione($global_blocks);
+
+        GeneralInfoService::add_general_info_relatione($global_blocks, $event->id, 'eventGlobalInfoFormBlock');
 
         return $event->id;
     }
