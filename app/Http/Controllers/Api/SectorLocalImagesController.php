@@ -143,9 +143,19 @@ class SectorLocalImagesController extends Controller
      */
     public function destroy($id)
     {
-        $deleted_product_category = Sector_local_image::where("id", "=", $id)->first();
-        ImageControllService::image_delete('images/sector_local_img/', $deleted_product_category, 'image');
-        $deleted_product_category -> delete();
+        $deleting_sector_local_images = Sector_local_image::where("id", "=", $id)->first();
+
+        $image_sector_relations = Sector_local_image_sector::where("image_id", "=", $deleting_sector_local_images->id)->get();
+
+        if (count($image_sector_relations) > 0) {
+            foreach ($image_sector_relations as $image_sector_relation) {
+                $image_sector_relation ->delete();
+            }
+        }
+        
+        ImageControllService::image_delete('images/sector_local_img/', $deleting_sector_local_images, 'image');
+
+        $deleting_sector_local_images -> delete();
     }
 
     public function del_image_sector_from_db(Request $request)

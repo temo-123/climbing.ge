@@ -20,42 +20,50 @@ __webpack_require__.r(__webpack_exports__);
     return {
       tab_num: 1,
       categories: [],
-      editorConfig: '',
-      us_short_description_text_editor: _mixins_editor_editor_config_mixin_js__WEBPACK_IMPORTED_MODULE_0__.editor_config.get_small_editor_config(),
-      us_text_editor_config: _mixins_editor_editor_config_mixin_js__WEBPACK_IMPORTED_MODULE_0__.editor_config.get_big_editor_config(),
-      us_info_editor_config: _mixins_editor_editor_config_mixin_js__WEBPACK_IMPORTED_MODULE_0__.editor_config.get_big_editor_config(),
-      ru_short_description_text_editor: _mixins_editor_editor_config_mixin_js__WEBPACK_IMPORTED_MODULE_0__.editor_config.get_small_editor_config(),
-      ru_text_editor_config: _mixins_editor_editor_config_mixin_js__WEBPACK_IMPORTED_MODULE_0__.editor_config.get_big_editor_config(),
-      ru_info_editor_config: _mixins_editor_editor_config_mixin_js__WEBPACK_IMPORTED_MODULE_0__.editor_config.get_big_editor_config(),
-      ka_short_description_text_editor: _mixins_editor_editor_config_mixin_js__WEBPACK_IMPORTED_MODULE_0__.editor_config.get_small_editor_config(),
-      ka_text_editor_config: _mixins_editor_editor_config_mixin_js__WEBPACK_IMPORTED_MODULE_0__.editor_config.get_big_editor_config(),
-      ka_info_editor_config: _mixins_editor_editor_config_mixin_js__WEBPACK_IMPORTED_MODULE_0__.editor_config.get_big_editor_config(),
-      data: {
-        global_data: {
-          us_title_for_url_title: '',
-          published: 0,
-          category_id: "Select category",
-          material: "",
-          discount: "",
-          sale_type: "Custom production",
-          mead_in_georgia: ""
-        },
-        us_data: {
-          title: "",
-          short_description: "",
-          text: ""
-        },
-        ka_data: {
-          title: "",
-          short_description: "",
-          text: ""
-        },
-        ru_data: {
-          title: "",
-          short_description: "",
-          text: ""
-        }
+      editorConfig: {
+        us_short_description_text_editor: _mixins_editor_editor_config_mixin_js__WEBPACK_IMPORTED_MODULE_0__.editor_config.get_small_editor_config(),
+        us_text_editor_config: _mixins_editor_editor_config_mixin_js__WEBPACK_IMPORTED_MODULE_0__.editor_config.get_big_editor_config(),
+        us_info_editor_config: _mixins_editor_editor_config_mixin_js__WEBPACK_IMPORTED_MODULE_0__.editor_config.get_big_editor_config(),
+        ru_short_description_text_editor: _mixins_editor_editor_config_mixin_js__WEBPACK_IMPORTED_MODULE_0__.editor_config.get_small_editor_config(),
+        ru_text_editor_config: _mixins_editor_editor_config_mixin_js__WEBPACK_IMPORTED_MODULE_0__.editor_config.get_big_editor_config(),
+        ru_info_editor_config: _mixins_editor_editor_config_mixin_js__WEBPACK_IMPORTED_MODULE_0__.editor_config.get_big_editor_config(),
+        ka_short_description_text_editor: _mixins_editor_editor_config_mixin_js__WEBPACK_IMPORTED_MODULE_0__.editor_config.get_small_editor_config(),
+        ka_text_editor_config: _mixins_editor_editor_config_mixin_js__WEBPACK_IMPORTED_MODULE_0__.editor_config.get_big_editor_config(),
+        ka_info_editor_config: _mixins_editor_editor_config_mixin_js__WEBPACK_IMPORTED_MODULE_0__.editor_config.get_big_editor_config()
       },
+      data: [],
+      // data: {
+      //     global_data: {
+      //         us_title_for_url_title: '',
+
+      //         published: 0,
+      //         category_id: "Select category",
+      //         material: "",
+      //         discount: "",
+      //         sale_type: "Custom production",
+      //         mead_in_georgia: "",
+      //     },
+
+      //     us_data: {
+      //         title: "",
+      //         short_description: "",
+      //         text: "",
+      //     },
+
+      //     ka_data: {
+      //         title: "",
+      //         short_description: "",
+      //         text: "",
+      //     },
+
+      //     ru_data: {
+      //         title: "",
+      //         short_description: "",
+      //         text: "",
+      //     }
+      // },
+
+      is_loading: false,
       myModal: false
     };
   },
@@ -68,8 +76,8 @@ __webpack_require__.r(__webpack_exports__);
     },
     add_product: function add_product() {
       var _this = this;
-      this.data.global_data.us_title_for_url_title = this.data.us_data.title;
-      axios.post('../api/product', {
+      this.data.global_product.us_title_for_url_title = this.data.us_product.title;
+      axios.post('/product/add_product/', {
         data: this.data
       }).then(function (response) {
         if (confirm('Do you want send notification about editing article?')) {
@@ -85,22 +93,26 @@ __webpack_require__.r(__webpack_exports__);
     },
     sand_notification: function sand_notification() {
       var _this2 = this;
-      this.is_mail_sending_procesing = true;
-      axios.post('../../../api/user/notifications/send_product_adding_notification').then(function (response) {
+      this.is_loading = true;
+      axios.post('/user/notifications/send_product_adding_notification').then(function (response) {
         _this2.go_back(true);
       })["catch"](function (err) {
         console.log(err);
       })["finally"](function () {
-        return _this2.is_mail_sending_procesing = false;
+        return _this2.is_loading = false;
       });
     },
     get_product_category_data: function get_product_category_data() {
       var _this3 = this;
-      axios.get("../api/product_category/").then(function (response) {
+      this.is_loading = true;
+      axios.get("/product_category/").then(function (response) {
         _this3.categories = response.data;
       })["catch"](function (error) {
         return console.log(error);
+      })["finally"](function () {
+        return _this3.is_loading = false;
       });
+      ;
     },
     go_back: function go_back() {
       var back_action = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : false;
@@ -134,6 +146,21 @@ var render = function render() {
   return _c("div", {
     staticClass: "tabs"
   }, [_c("div", {
+    directives: [{
+      name: "show",
+      rawName: "v-show",
+      value: _vm.is_loading,
+      expression: "is_loading"
+    }],
+    staticClass: "row justify-content-center"
+  }, [_c("div", {
+    staticClass: "col-md-4"
+  }, [_c("img", {
+    attrs: {
+      src: "../../../../../../public/images/site_img/loading.gif",
+      alt: "loading"
+    }
+  })])]), _vm._v(" "), _c("div", {
     staticClass: "row"
   }, [_c("div", {
     staticClass: "form-group"
@@ -161,7 +188,56 @@ var render = function render() {
         return _vm.add_product();
       }
     }
-  }, [_vm._v("Save")])])]), _vm._v(" "), _c("div", {
+  }, [_vm._v("Save")])])]), _vm._v(" "), _vm.error.length != 0 ? _c("div", {
+    staticClass: "row"
+  }, [_c("div", {
+    staticClass: "col-md-12"
+  }, [_vm.error.us_info_validation.title ? _c("div", {
+    staticClass: "alert alert-danger",
+    attrs: {
+      role: "alert"
+    }
+  }, [_vm._v("\n                English title - " + _vm._s(_vm.error.us_info_validation.title[0]) + "\n            ")]) : _vm._e(), _vm._v(" "), _vm.error.us_info_validation.short_description ? _c("div", {
+    staticClass: "alert alert-danger",
+    attrs: {
+      role: "alert"
+    }
+  }, [_vm._v("\n                English description - " + _vm._s(_vm.error.us_info_validation.short_description[0]) + "\n            ")]) : _vm._e(), _vm._v(" "), _vm.error.us_info_validation.text ? _c("div", {
+    staticClass: "alert alert-danger",
+    attrs: {
+      role: "alert"
+    }
+  }, [_vm._v("\n                English text - " + _vm._s(_vm.error.us_info_validation.text[0]) + "\n            ")]) : _vm._e(), _vm._v(" "), _vm.error.ka_info_validation.title ? _c("div", {
+    staticClass: "alert alert-danger",
+    attrs: {
+      role: "alert"
+    }
+  }, [_vm._v("\n                Georgian title - " + _vm._s(_vm.error.ka_info_validation.title[0]) + "\n            ")]) : _vm._e(), _vm._v(" "), _vm.error.ka_info_validation.short_description ? _c("div", {
+    staticClass: "alert alert-danger",
+    attrs: {
+      role: "alert"
+    }
+  }, [_vm._v("\n                Georgian description - " + _vm._s(_vm.error.ka_info_validation.short_description[0]) + "\n            ")]) : _vm._e(), _vm._v(" "), _vm.error.ka_info_validation.text ? _c("div", {
+    staticClass: "alert alert-danger",
+    attrs: {
+      role: "alert"
+    }
+  }, [_vm._v("\n                Georgian text - " + _vm._s(_vm.error.ka_info_validation.text[0]) + "\n            ")]) : _vm._e(), _vm._v(" "), _vm.error.ru_info_validation.title ? _c("div", {
+    staticClass: "alert alert-danger",
+    attrs: {
+      role: "alert"
+    }
+  }, [_vm._v("\n                Russion title - " + _vm._s(_vm.error.ru_info_validation.title[0]) + "\n            ")]) : _vm._e(), _vm._v(" "), _vm.error.ru_info_validation.short_description ? _c("div", {
+    staticClass: "alert alert-danger",
+    attrs: {
+      role: "alert"
+    }
+  }, [_vm._v("\n                Russiondescription - " + _vm._s(_vm.error.ru_info_validation.short_description[0]) + "\n            ")]) : _vm._e(), _vm._v(" "), _vm.error.ru_info_validation.text ? _c("div", {
+    staticClass: "alert alert-danger",
+    attrs: {
+      role: "alert"
+    }
+  }, [_vm._v("\n                Russion text - " + _vm._s(_vm.error.ru_info_validation.text[0]) + "\n            ")]) : _vm._e()])]) : _vm._e(), _vm._v(" "), _c("div", {
     staticClass: "row"
   }, [_c("div", {
     staticClass: "col-md-12"
@@ -306,8 +382,8 @@ var render = function render() {
     directives: [{
       name: "model",
       rawName: "v-model",
-      value: _vm.data.global_data.published,
-      expression: "data.global_data.published"
+      value: _vm.data.global_product.published,
+      expression: "data.global_product.published"
     }],
     staticClass: "form-control",
     attrs: {
@@ -321,7 +397,7 @@ var render = function render() {
           var val = "_value" in o ? o._value : o.value;
           return val;
         });
-        _vm.$set(_vm.data.global_data, "published", $event.target.multiple ? $$selectedVal : $$selectedVal[0]);
+        _vm.$set(_vm.data.global_product, "published", $event.target.multiple ? $$selectedVal : $$selectedVal[0]);
       }
     }
   }, [_c("option", {
@@ -345,8 +421,8 @@ var render = function render() {
     directives: [{
       name: "model",
       rawName: "v-model",
-      value: _vm.data.global_data.sale_type,
-      expression: "data.global_data.sale_type"
+      value: _vm.data.global_product.sale_type,
+      expression: "data.global_product.sale_type"
     }],
     staticClass: "form-control",
     attrs: {
@@ -360,7 +436,7 @@ var render = function render() {
           var val = "_value" in o ? o._value : o.value;
           return val;
         });
-        _vm.$set(_vm.data.global_data, "sale_type", $event.target.multiple ? $$selectedVal : $$selectedVal[0]);
+        _vm.$set(_vm.data.global_product, "sale_type", $event.target.multiple ? $$selectedVal : $$selectedVal[0]);
       }
     }
   }, [_c("option", {
@@ -384,8 +460,8 @@ var render = function render() {
     directives: [{
       name: "model",
       rawName: "v-model",
-      value: _vm.data.global_data.mead_in_georgia,
-      expression: "data.global_data.mead_in_georgia"
+      value: _vm.data.global_product.mead_in_georgia,
+      expression: "data.global_product.mead_in_georgia"
     }],
     attrs: {
       type: "checkbox",
@@ -393,23 +469,23 @@ var render = function render() {
       name: "scales"
     },
     domProps: {
-      checked: Array.isArray(_vm.data.global_data.mead_in_georgia) ? _vm._i(_vm.data.global_data.mead_in_georgia, null) > -1 : _vm.data.global_data.mead_in_georgia
+      checked: Array.isArray(_vm.data.global_product.mead_in_georgia) ? _vm._i(_vm.data.global_product.mead_in_georgia, null) > -1 : _vm.data.global_product.mead_in_georgia
     },
     on: {
       change: function change($event) {
-        var $$a = _vm.data.global_data.mead_in_georgia,
+        var $$a = _vm.data.global_product.mead_in_georgia,
           $$el = $event.target,
           $$c = $$el.checked ? true : false;
         if (Array.isArray($$a)) {
           var $$v = null,
             $$i = _vm._i($$a, $$v);
           if ($$el.checked) {
-            $$i < 0 && _vm.$set(_vm.data.global_data, "mead_in_georgia", $$a.concat([$$v]));
+            $$i < 0 && _vm.$set(_vm.data.global_product, "mead_in_georgia", $$a.concat([$$v]));
           } else {
-            $$i > -1 && _vm.$set(_vm.data.global_data, "mead_in_georgia", $$a.slice(0, $$i).concat($$a.slice($$i + 1)));
+            $$i > -1 && _vm.$set(_vm.data.global_product, "mead_in_georgia", $$a.slice(0, $$i).concat($$a.slice($$i + 1)));
           }
         } else {
-          _vm.$set(_vm.data.global_data, "mead_in_georgia", $$c);
+          _vm.$set(_vm.data.global_product, "mead_in_georgia", $$c);
         }
       }
     }
@@ -426,8 +502,8 @@ var render = function render() {
     directives: [{
       name: "model",
       rawName: "v-model",
-      value: _vm.data.global_data.discount,
-      expression: "data.global_data.discount"
+      value: _vm.data.global_product.discount,
+      expression: "data.global_product.discount"
     }],
     staticClass: "form-control",
     attrs: {
@@ -435,12 +511,12 @@ var render = function render() {
       name: "discount"
     },
     domProps: {
-      value: _vm.data.global_data.discount
+      value: _vm.data.global_product.discount
     },
     on: {
       input: function input($event) {
         if ($event.target.composing) return;
-        _vm.$set(_vm.data.global_data, "discount", $event.target.value);
+        _vm.$set(_vm.data.global_product, "discount", $event.target.value);
       }
     }
   })])]), _vm._v(" "), _c("div", {
@@ -456,8 +532,8 @@ var render = function render() {
     directives: [{
       name: "model",
       rawName: "v-model",
-      value: _vm.data.global_data.material,
-      expression: "data.global_data.material"
+      value: _vm.data.global_product.material,
+      expression: "data.global_product.material"
     }],
     staticClass: "form-control",
     attrs: {
@@ -465,12 +541,12 @@ var render = function render() {
       name: "material"
     },
     domProps: {
-      value: _vm.data.global_data.material
+      value: _vm.data.global_product.material
     },
     on: {
       input: function input($event) {
         if ($event.target.composing) return;
-        _vm.$set(_vm.data.global_data, "material", $event.target.value);
+        _vm.$set(_vm.data.global_product, "material", $event.target.value);
       }
     }
   })])]), _vm._v(" "), _c("div", {
@@ -486,8 +562,8 @@ var render = function render() {
     directives: [{
       name: "model",
       rawName: "v-model",
-      value: _vm.data.global_data.category_id,
-      expression: "data.global_data.category_id"
+      value: _vm.data.global_product.category_id,
+      expression: "data.global_product.category_id"
     }],
     staticClass: "form-control",
     attrs: {
@@ -501,7 +577,7 @@ var render = function render() {
           var val = "_value" in o ? o._value : o.value;
           return val;
         });
-        _vm.$set(_vm.data.global_data, "category_id", $event.target.multiple ? $$selectedVal : $$selectedVal[0]);
+        _vm.$set(_vm.data.global_product, "category_id", $event.target.multiple ? $$selectedVal : $$selectedVal[0]);
       }
     }
   }, [_c("option", {
@@ -546,8 +622,8 @@ var render = function render() {
     directives: [{
       name: "model",
       rawName: "v-model",
-      value: _vm.data.us_data.title,
-      expression: "data.us_data.title"
+      value: _vm.data.us_product.title,
+      expression: "data.us_product.title"
     }],
     staticClass: "form-control",
     attrs: {
@@ -555,12 +631,12 @@ var render = function render() {
       name: "name"
     },
     domProps: {
-      value: _vm.data.us_data.title
+      value: _vm.data.us_product.title
     },
     on: {
       input: function input($event) {
         if ($event.target.composing) return;
-        _vm.$set(_vm.data.us_data, "title", $event.target.value);
+        _vm.$set(_vm.data.us_product, "title", $event.target.value);
       }
     }
   })])]), _vm._v(" "), _c("div", {
@@ -574,14 +650,14 @@ var render = function render() {
     staticClass: "col-xs-8"
   }, [_c("ckeditor", {
     attrs: {
-      config: _vm.us_short_description_text_editor
+      config: _vm.editorConfig.us_short_description_text_editor
     },
     model: {
-      value: _vm.data.us_data.short_description,
+      value: _vm.data.us_product.short_description,
       callback: function callback($$v) {
-        _vm.$set(_vm.data.us_data, "short_description", $$v);
+        _vm.$set(_vm.data.us_product, "short_description", $$v);
       },
-      expression: "data.us_data.short_description"
+      expression: "data.us_product.short_description"
     }
   })], 1)]), _vm._v(" "), _c("div", {
     staticClass: "form-group clearfix"
@@ -594,14 +670,14 @@ var render = function render() {
     staticClass: "col-xs-8"
   }, [_c("ckeditor", {
     attrs: {
-      config: _vm.us_text_editor_config
+      config: _vm.editorConfig.us_text_editor_config
     },
     model: {
-      value: _vm.data.us_data.text,
+      value: _vm.data.us_product.text,
       callback: function callback($$v) {
-        _vm.$set(_vm.data.us_data, "text", $$v);
+        _vm.$set(_vm.data.us_product, "text", $$v);
       },
-      expression: "data.us_data.text"
+      expression: "data.us_product.text"
     }
   })], 1)])])]), _vm._v(" "), _c("div", {
     directives: [{
@@ -634,8 +710,8 @@ var render = function render() {
     directives: [{
       name: "model",
       rawName: "v-model",
-      value: _vm.data.ru_data.title,
-      expression: "data.ru_data.title"
+      value: _vm.data.ru_product.title,
+      expression: "data.ru_product.title"
     }],
     staticClass: "form-control",
     attrs: {
@@ -643,12 +719,12 @@ var render = function render() {
       name: "title"
     },
     domProps: {
-      value: _vm.data.ru_data.title
+      value: _vm.data.ru_product.title
     },
     on: {
       input: function input($event) {
         if ($event.target.composing) return;
-        _vm.$set(_vm.data.ru_data, "title", $event.target.value);
+        _vm.$set(_vm.data.ru_product, "title", $event.target.value);
       }
     }
   })])]), _vm._v(" "), _c("div", {
@@ -662,14 +738,14 @@ var render = function render() {
     staticClass: "col-xs-8"
   }, [_c("ckeditor", {
     attrs: {
-      config: _vm.ru_short_description_text_editor
+      config: _vm.editorConfig.ru_short_description_text_editor
     },
     model: {
-      value: _vm.data.ru_data.short_description,
+      value: _vm.data.ru_product.short_description,
       callback: function callback($$v) {
-        _vm.$set(_vm.data.ru_data, "short_description", $$v);
+        _vm.$set(_vm.data.ru_product, "short_description", $$v);
       },
-      expression: "data.ru_data.short_description"
+      expression: "data.ru_product.short_description"
     }
   })], 1)]), _vm._v(" "), _c("div", {
     staticClass: "form-group clearfix"
@@ -682,14 +758,14 @@ var render = function render() {
     staticClass: "col-xs-8"
   }, [_c("ckeditor", {
     attrs: {
-      config: _vm.ru_text_editor_config
+      config: _vm.editorConfig.ru_text_editor_config
     },
     model: {
-      value: _vm.data.ru_data.text,
+      value: _vm.data.ru_product.text,
       callback: function callback($$v) {
-        _vm.$set(_vm.data.ru_data, "text", $$v);
+        _vm.$set(_vm.data.ru_product, "text", $$v);
       },
-      expression: "data.ru_data.text"
+      expression: "data.ru_product.text"
     }
   })], 1)])])]), _vm._v(" "), _c("div", {
     directives: [{
@@ -728,8 +804,8 @@ var render = function render() {
     directives: [{
       name: "model",
       rawName: "v-model",
-      value: _vm.data.ka_data.title,
-      expression: "data.ka_data.title"
+      value: _vm.data.ka_product.title,
+      expression: "data.ka_product.title"
     }],
     staticClass: "form-control",
     attrs: {
@@ -737,12 +813,12 @@ var render = function render() {
       name: "value name"
     },
     domProps: {
-      value: _vm.data.ka_data.title
+      value: _vm.data.ka_product.title
     },
     on: {
       input: function input($event) {
         if ($event.target.composing) return;
-        _vm.$set(_vm.data.ka_data, "title", $event.target.value);
+        _vm.$set(_vm.data.ka_product, "title", $event.target.value);
       }
     }
   })])]), _vm._v(" "), _c("div", {
@@ -756,14 +832,14 @@ var render = function render() {
     staticClass: "col-xs-8"
   }, [_c("ckeditor", {
     attrs: {
-      config: _vm.ka_short_description_text_editor
+      config: _vm.editorConfig.ka_short_description_text_editor
     },
     model: {
-      value: _vm.data.ka_data.short_description,
+      value: _vm.data.ka_product.short_description,
       callback: function callback($$v) {
-        _vm.$set(_vm.data.ka_data, "short_description", $$v);
+        _vm.$set(_vm.data.ka_product, "short_description", $$v);
       },
-      expression: "data.ka_data.short_description"
+      expression: "data.ka_product.short_description"
     }
   })], 1)]), _vm._v(" "), _c("div", {
     staticClass: "form-group clearfix"
@@ -776,14 +852,14 @@ var render = function render() {
     staticClass: "col-xs-8"
   }, [_c("ckeditor", {
     attrs: {
-      config: _vm.ka_text_editor_config
+      config: _vm.editorConfig.ka_text_editor_config
     },
     model: {
-      value: _vm.data.ka_data.text,
+      value: _vm.data.ka_product.text,
       callback: function callback($$v) {
-        _vm.$set(_vm.data.ka_data, "text", $$v);
+        _vm.$set(_vm.data.ka_product, "text", $$v);
       },
-      expression: "data.ka_data.text"
+      expression: "data.ka_product.text"
     }
   })], 1)])])])])])]);
 };

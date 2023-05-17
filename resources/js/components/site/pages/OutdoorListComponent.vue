@@ -6,7 +6,7 @@
                         
             <div class="bar"><i class="fa fa-exclamation-triangle"></i></div>
 
-            <h2 class="article_list_short_descriptio">
+            <h2 class="article_list_short_description">
                 {{this.$siteData.outdoor_description}}
             </h2>
             
@@ -204,13 +204,15 @@
 
             delete_url_hash(){
                 // https://gist.github.com/azu/36ba5a80feb857c77a3a
-                var noHashURL = location.href.replace(/#.*$/, '');
-                history.replaceState('', document.title, noHashURL) 
+
+                // var noHashURL = location.href.replace(/#.*$/, '');
+                // history.replaceState('', document.title, noHashURL) 
             },
 
             create_url_hash (category) {	
                 // https://www.tutorialsplane.com/vue-js-set-hash-url/	
-                location.hash = "#" + category;
+
+                // location.hash = "#" + category;
             },
 
             get_regions(){

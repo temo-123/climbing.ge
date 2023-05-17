@@ -311,12 +311,14 @@ __webpack_require__.r(__webpack_exports__);
     },
     delete_url_hash: function delete_url_hash() {
       // https://gist.github.com/azu/36ba5a80feb857c77a3a
-      var noHashURL = location.href.replace(/#.*$/, '');
-      history.replaceState('', document.title, noHashURL);
+
+      // var noHashURL = location.href.replace(/#.*$/, '');
+      // history.replaceState('', document.title, noHashURL) 
     },
     create_url_hash: function create_url_hash(category) {
       // https://www.tutorialsplane.com/vue-js-set-hash-url/	
-      location.hash = "#" + category;
+
+      // location.hash = "#" + category;
     },
     get_regions: function get_regions() {
       var _this3 = this;
@@ -431,16 +433,14 @@ var render = function render() {
       width: "100%",
       height: "6"
     }
-  })])], 1) : _c("div", [_c("i18n", [_c("p", {
-    attrs: {
-      placeholder: "sectors"
-    }
-  }, [_vm._v("666")])]), _vm._v(" "), _vm.sectors ? _c("h3", [_vm._v("\n            " + _vm._s(_vm.$t("guide.article.route_quantyty", {
+  })])], 1) : _c("div", [_vm.sectors ? _c("h3", {
+    staticClass: "article_list_short_description"
+  }, [_vm._v("\n            " + _vm._s(_vm.$t("guide.article.route_quantyty", {
     sectors: _vm.sectors,
     sport_routes: _vm.sport_routes,
     boulder_routes: _vm.boulder_routes,
     mtps: _vm.mtps
-  })) + "\n            ")]) : _vm._e()], 1)]);
+  })) + "\n            ")]) : _vm._e()])]);
 };
 var staticRenderFns = [];
 render._withStripped = true;
@@ -540,7 +540,7 @@ var render = function render() {
   }, [_c("h1", {
     staticClass: "page_title index_h2"
   }, [_vm._v(_vm._s(_vm.$t("guide.title.outdoor climbing")))]), _vm._v(" "), _vm._m(0), _vm._v(" "), _c("h2", {
-    staticClass: "article_list_short_descriptio"
+    staticClass: "article_list_short_description"
   }, [_vm._v("\n            " + _vm._s(this.$siteData.outdoor_description) + "\n        ")]), _vm._v(" "), _c("sectorQuantyt"), _vm._v(" "), _vm.region_loading ? _c("div", [_c("content-loader", {
     attrs: {
       width: 100,

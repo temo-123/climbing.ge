@@ -99,7 +99,7 @@ class ProductController extends Controller
             $validation_issets['ka_info_validation'] = false;
         }
 
-        $us_validate = $this->local_product_validation($data['us_data']);
+        $us_validate = $this->local_product_validation($data['us_product']);
         if ($us_validate != null) {
             $validation_issets['us_info_validation'] = $us_validate;
         }
@@ -107,7 +107,7 @@ class ProductController extends Controller
             $validation_issets['us_info_validation'] = false;
         }
 
-        $ru_validate = $this->local_product_validation($data['ru_data']);
+        $ru_validate = $this->local_product_validation($data['ru_product']);
         if ($ru_validate != null) {
             $validation_issets['ru_info_validation'] = $ru_validate;
         }
@@ -115,7 +115,7 @@ class ProductController extends Controller
             $validation_issets['ru_info_validation'] = false;
         }
 
-        $global_validate = $this->global_product_validation($data['global_data']);
+        $global_validate = $this->global_product_validation($data['global_product']);
         if ($global_validate != null) {
             $validation_issets['global_info_validation'] = $global_validate;
         }
@@ -130,9 +130,9 @@ class ProductController extends Controller
             !$validation_issets['ka_info_validation'] && 
             !$validation_issets['us_info_validation']
         ) {
-            $saiving_issets['ka_info_status'] = $this->add_locale_product($data['ka_data'], 'ka');
-            $saiving_issets['ru_info_status'] = $this->add_locale_product($data['ru_data'], 'ru');
-            $saiving_issets['us_info_status'] = $this->add_locale_product($data['us_data'], 'us');
+            $saiving_issets['ka_info_status'] = $this->add_locale_product($data['ka_product'], 'ka');
+            $saiving_issets['ru_info_status'] = $this->add_locale_product($data['ru_product'], 'ru');
+            $saiving_issets['us_info_status'] = $this->add_locale_product($data['us_product'], 'us');
 
             if (
                 $saiving_issets['ka_info_status'] != 'Error' &&
@@ -140,7 +140,7 @@ class ProductController extends Controller
                 $saiving_issets['us_info_status'] != 'Error'
             ) {
                 $action_article_id = $this->addGlobalProduct(
-                    $data['global_data'],
+                    $data['global_product'],
 
                     $saiving_issets['ka_info_status'],
                     $saiving_issets['ru_info_status'],
@@ -150,7 +150,7 @@ class ProductController extends Controller
         }
         else{            
             return response()->json([
-                'Data validation' => $validation_issets
+                'validation' => $validation_issets
             ], 422);
         }
     }
@@ -206,9 +206,9 @@ class ProductController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function get_product_editing_data(Request $request)
     {
-        $product = product::where('id', '=', $id)->first();
+        $product = product::where('id', '=', $request->product_id)->first();
         $us_product = $product->us_product;
         $ru_product = $product->ru_product;
         $ka_product = $product->ka_product;
@@ -257,7 +257,7 @@ class ProductController extends Controller
 
         $data = $request->data;
 
-        $ka_validate = $this->local_product_validation($data['ka_data']);
+        $ka_validate = $this->local_product_validation($data['ka_product']);
         if ($ka_validate != null) {
             $validation_issets['ka_info_validation'] = $ka_validate;
         }
@@ -265,7 +265,7 @@ class ProductController extends Controller
             $validation_issets['ka_info_validation'] = false;
         }
 
-        $us_validate = $this->local_product_validation($data['us_data']);
+        $us_validate = $this->local_product_validation($data['us_product']);
         if ($us_validate != null) {
             $validation_issets['us_info_validation'] = $us_validate;
         }
@@ -273,7 +273,7 @@ class ProductController extends Controller
             $validation_issets['us_info_validation'] = false;
         }
 
-        $ru_validate = $this->local_product_validation($data['ru_data']);
+        $ru_validate = $this->local_product_validation($data['ru_product']);
         if ($ru_validate != null) {
             $validation_issets['ru_info_validation'] = $ru_validate;
         }
@@ -288,22 +288,22 @@ class ProductController extends Controller
             !$validation_issets['us_info_validation']
         ) {
             $local_products_id = $this->editGlobalProduct(
-                $data['global_data'],  
+                $data['global_product'],  
                 $request->product_id,              
                 $request['change_url_title'],  
-                $data['us_data']['title']              
+                $data['us_product']['title']              
             );
 
             // dd($data['ka_data'], $local_products_id['ka_product_id']);
             if ($local_products_id != 'Error') {
-                $this->edit_locale_product($data['ka_data'], $local_products_id['ka_product_id']);
-                $this->edit_locale_product($data['us_data'], $local_products_id['us_product_id']);
-                $this->edit_locale_product($data['ru_data'], $local_products_id['ru_product_id']);
+                $this->edit_locale_product($data['ka_product'], $local_products_id['ka_product_id']);
+                $this->edit_locale_product($data['us_product'], $local_products_id['us_product_id']);
+                $this->edit_locale_product($data['ru_product'], $local_products_id['ru_product_id']);
             }
         }
         else{            
             return response()->json([
-                'Data validation' => $validation_issets
+                'validation' => $validation_issets
             ], 422);
         }
     }
@@ -407,7 +407,7 @@ class ProductController extends Controller
         // dd($data);
         $validator = Validator::make($data, [
             'title' => 'required | max:190',
-            // 'short_description' => 'required',
+            'short_description' => 'required',
             'text' => 'required',
         ]);
         if ($validator->fails()) {

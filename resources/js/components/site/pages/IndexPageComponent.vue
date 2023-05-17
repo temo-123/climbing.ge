@@ -12,7 +12,7 @@
 
             <div class="bar"><i class="fa fa-map-marker"></i></div>
             
-            <h3> {{this.$siteData.topo_description}} </h3>
+            <h3 class="article_list_short_description"> {{this.$siteData.topo_description}} </h3>
 
             <div :style='"margin-bottom: 7%"'>
                 <span v-html="this.$globalSiteData.map"></span>
@@ -23,7 +23,7 @@
             <div class="container">
                 <h2 class='index_h2' id="news">{{ $t('guide.title.news') }}</h2>
                 <div class="bar"><i class="fa fa-newspaper-o"></i></div>
-                <h3> {{ this.$siteData.news_description }} </h3>
+                <h3 class="article_list_short_description"> {{ this.$siteData.news_description }} </h3>
 
                 <span v-if="lastNews != []">
                     <bigNewsCard 

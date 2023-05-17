@@ -796,7 +796,7 @@ var render = function render() {
     _c = _vm._self._c;
   return _c("div", [this.article[0].text != _vm.NUll ? _c("span", {
     attrs: {
-      id: "descripton"
+      id: "description"
     },
     domProps: {
       innerHTML: _vm._s(this.article[0].text)

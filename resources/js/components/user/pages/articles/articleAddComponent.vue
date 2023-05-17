@@ -1,22 +1,22 @@
 <template>
     <div class="tabs">
-        <div class="row justify-content-center" v-if="is_loading">
+        <div class="row justify-content-center" v-show="is_loading">
             <div class="col-md-4">
                 <img :src="'../../../../../../public/images/site_img/loading.gif'" alt="loading">
             </div>
         </div>
 
-        <div class="row" v-if="!is_loading">
+        <div class="row" v-show="!is_loading">
             <div class="form-group">
                 <button type="submit" class="btn btn-primary" @click="go_back()">Beck</button>
             </div>
         </div>
-        <div class="row" v-if="!is_loading">
+        <div class="row" v-show="!is_loading">
             <div class="form-group">  
                 <button type="submit" class="btn btn-primary" v-on:click="save()" >Save</button>
             </div>
         </div>
-        <div class="row" v-if="!is_loading">
+        <div class="row" v-show="!is_loading">
             <div class="col-md-12" v-if="error.length != 0">
                 <div class="alert alert-danger" role="alert" v-if="error.global_info_validation.published">
                     Published - {{ error.global_info_validation.published[0] }}
@@ -56,7 +56,7 @@
                 </div>
             </div>
         </div>
-        <div class="row" v-if="!is_loading">
+        <div class="row" v-show="!is_loading">
             <div class="col-md-12">
                 <div class="row">
                     <div class="col" >
@@ -175,7 +175,7 @@
 
                 error: [],
 
-                is_back_action: false,
+                is_back_action_query: true,
                 is_loading: false,
 
                 article_data: {
@@ -206,9 +206,9 @@
             //
         },
         beforeRouteLeave (to, from, next) {
-            if(this.is_back_action == true){
+            if(this.is_back_action_query == true){
                 if (window.confirm('Added information will be deleted!!! Are you sure, you want go back?')) {
-                    this.is_back_action = false;
+                    this.is_back_action_query = false;
                     next()
                 } else {
                     next(false)
@@ -308,7 +308,7 @@
             },
             
             go_back: function(action = false) {
-                this.is_back_action = this.$going.back(this, action)
+                this.is_back_action_query = this.$going.back(this, action)
             },
         }
     }

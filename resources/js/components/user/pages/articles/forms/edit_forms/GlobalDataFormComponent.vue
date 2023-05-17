@@ -112,8 +112,8 @@
             'title_prop',
             'description_prop',
 
-            'region_id_prop',
-            'mount_id_prop'
+            // 'region_id_prop',
+            // 'mount_id_prop'
         ],
         data(){
             return {
@@ -147,12 +147,12 @@
                     this.get_mount_massive_data()
                 }
             },
-            region_id_prop: function(newVal, oldVal) { 
-                this.data.region_id = this.region_id_prop
-            },
-            mount_id_prop: function(newVal, oldVal) { 
-                this.data.mount_id = this.mount_id_prop
-            },
+            // region_id_prop: function(newVal, oldVal) { 
+            //     this.data.region_id = this.region_id_prop
+            // },
+            // mount_id_prop: function(newVal, oldVal) { 
+            //     this.data.mount_id = this.mount_id_prop
+            // },
         },
         mounted() {
             if (this.category == 'outdoor') {

@@ -6,7 +6,7 @@
 
             <div class="bar"><i class="fa fa-book"></i></div>
 
-            <h3 class="article_list_short_descriptio">
+            <h3 class="article_list_short_description">
                 {{ this.$siteData.what_we_do_description }}
             </h3>
                 

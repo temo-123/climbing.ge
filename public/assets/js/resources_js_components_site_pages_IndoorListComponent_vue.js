@@ -427,7 +427,7 @@ var render = function render() {
   }, [_c("h1", {
     staticClass: "page_title index_h2"
   }, [_vm._v(_vm._s(_vm.$t("guide.title.indoor climbing")))]), _vm._v(" "), _vm._m(0), _vm._v(" "), _c("h2", {
-    staticClass: "article_list_short_descriptio"
+    staticClass: "article_list_short_description"
   }, [_vm._v("\n            " + _vm._s(this.$siteData.indoor_description) + "\n        ")]), _vm._v(" "), this.indoors.length > 0 ? _c("div", {
     staticClass: "row"
   }, [_vm.indoor_article_loading ? _c("div", [_c("content-loader", {

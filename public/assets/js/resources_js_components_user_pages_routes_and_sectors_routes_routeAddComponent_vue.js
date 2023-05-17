@@ -220,34 +220,27 @@ __webpack_require__.r(__webpack_exports__);
         anchor_type: "",
         category: ""
       },
-      go_back_action: false,
+      is_loading: false,
+      is_back_action_query: false,
       sport_route_grade: ["4", "5a", "5b", "5c", "5c+", "6a", "6a+", "6b", "6b+", "6c", "6c+", "7a", "7a+", "7b", "7b+", "7c", "7c+", "8a", "8a+", "8b", "8b+", "8c", "8c+", "9a", "9a+", "9b", "9b+", "9c", "9c+"],
       boulder_route_grade: ["V1", "V2", "V3", "V4", "V5", "V6", "V7", "V8", "V9", "V10", "V11", "V12", "V13", "V14", "V15", "V16", "V17", "V18"]
-      // boulder_route_grade: [
-      //   "V1", "V1+",
-      //   "V2", "V2+",
-      //   "V3", "V3+",
-      //   "V4", "V4+",
-      //   "V5", "V5+",
-      //   "V6", "V6+",
-      //   "V7", "V7+",
-      //   "V8", "V8+",
-      //   "V9", "V9+",
-      //   "V10", "V10+",
-      //   "V11", "V11+",
-      //   "V12", "V12+",
-      //   "V13", "V13+",
-      //   "V14", "V14+",
-      //   "V15", "V15+",
-      //   "V16", "V16+",
-      //   "V17", "V17+",
-      //   "V18", "V18+",
-      // ],
     };
   },
   mounted: function mounted() {
     this.get_region_data();
     this.get_sectors_data();
+  },
+  beforeRouteLeave: function beforeRouteLeave(to, from, next) {
+    if (this.is_back_action_query == true) {
+      if (window.confirm('Added information will be deleted!!! Are you sure, you want go back?')) {
+        this.is_back_action_query = false;
+        next();
+      } else {
+        next(false);
+      }
+    } else {
+      next();
+    }
   },
   methods: {
     get_region_data: function get_region_data() {
@@ -274,12 +267,13 @@ __webpack_require__.r(__webpack_exports__);
         return item.article_id == vm.data.article_id;
       });
     },
-    save_new_route: function save_new_route(go_back_action) {
+    save_new_route: function save_new_route() {
       var _this3 = this;
+      this.is_loading = true;
       axios.post('../../api/route/add_route/', {
         data: this.data
       }).then(function (response) {
-        if (!_this3.go_back_action) {
+        if (!_this3.is_back_action_query) {
           alert('Saving completed');
           _this3.clear_form();
         } else {
@@ -287,6 +281,8 @@ __webpack_require__.r(__webpack_exports__);
         }
       })["catch"](function (error) {
         _this3.status = "error";
+      })["finally"](function () {
+        return _this3.is_loading = false;
       });
     },
     clear_form: function clear_form() {
@@ -308,17 +304,7 @@ __webpack_require__.r(__webpack_exports__);
     },
     go_back: function go_back() {
       var back_action = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : false;
-      if (back_action == false) {
-        if (confirm('Are you sure, you want go back?')) {
-          this.$router.push({
-            name: 'routeAndSectorList'
-          });
-        }
-      } else {
-        this.$router.push({
-          name: 'routeAndSectorList'
-        });
-      }
+      this.is_back_action_query = this.$going.back(this, back_action);
     }
   }
 });
@@ -552,7 +538,16 @@ var render = function render() {
     _c = _vm._self._c;
   return _c("div", {
     staticClass: "col-md-12"
+  }, [_vm.is_loading ? _c("div", {
+    staticClass: "row justify-content-center"
   }, [_c("div", {
+    staticClass: "col-md-4"
+  }, [_c("img", {
+    attrs: {
+      src: "../../../../../../public/images/site_img/loading.gif",
+      alt: "loading"
+    }
+  })])]) : _vm._e(), _vm._v(" "), !_vm.is_loading ? _c("div", {
     staticClass: "row"
   }, [_c("div", {
     staticClass: "form-group"
@@ -566,7 +561,7 @@ var render = function render() {
         return _vm.go_back();
       }
     }
-  }, [_vm._v("Beck")])])]), _vm._v(" "), _vm.problem_status != "" ? _c("div", {
+  }, [_vm._v("Beck")])])]) : _vm._e(), _vm._v(" "), _vm.problem_status != "" ? _c("div", {
     staticClass: "form-group clearfix row"
   }, [_c("div", {
     staticClass: "col-md-12"
@@ -575,7 +570,7 @@ var render = function render() {
     attrs: {
       role: "alert"
     }
-  }, [_vm._v("\n          " + _vm._s(_vm.problem_status) + "\n        ")])])]) : _vm._e(), _vm._v(" "), _c("div", {
+  }, [_vm._v("\n          " + _vm._s(_vm.problem_status) + "\n        ")])])]) : _vm._e(), _vm._v(" "), !_vm.is_loading ? _c("div", {
     staticClass: "row"
   }, [_c("div", {
     staticClass: "form-group"
@@ -587,10 +582,10 @@ var render = function render() {
     },
     on: {
       click: function click($event) {
-        _vm.go_back_action = true;
+        _vm.is_back_action_query = true;
       }
     }
-  }, [_vm._v("Save and go back")]), _vm._v(" "), _c("p", [_vm._v("Save and go to route tab page")])])]), _vm._v(" "), _c("div", {
+  }, [_vm._v("Save and go back")]), _vm._v(" "), _c("p", [_vm._v("Save and go to route tab page")])])]) : _vm._e(), _vm._v(" "), !_vm.is_loading ? _c("div", {
     staticClass: "row"
   }, [_c("div", {
     staticClass: "form-group"
@@ -602,10 +597,10 @@ var render = function render() {
     },
     on: {
       click: function click($event) {
-        _vm.go_back_action = false;
+        _vm.is_back_action_query = false;
       }
     }
-  }, [_vm._v("Save and add more reoute")]), _vm._v(" "), _c("p", [_vm._v("Save and add more route")])])]), _vm._v(" "), _c("div", {
+  }, [_vm._v("Save and add more reoute")]), _vm._v(" "), _c("p", [_vm._v("Save and add more route")])])]) : _vm._e(), _vm._v(" "), !_vm.is_loading ? _c("div", {
     staticClass: "wrapper container-fluid container"
   }, [_c("form", {
     attrs: {
@@ -1115,7 +1110,7 @@ var render = function render() {
     staticClass: "form-control",
     attrs: {
       type: "text",
-      name: "title",
+      name: "auther",
       placeholder: "Bolter"
     },
     domProps: {
@@ -1139,7 +1134,7 @@ var render = function render() {
     staticClass: "form-control",
     attrs: {
       type: "date",
-      name: "title",
+      name: "creating_data",
       placeholder: "Bolting Data"
     },
     domProps: {
@@ -1169,8 +1164,8 @@ var render = function render() {
     }],
     staticClass: "form-control",
     attrs: {
-      type: "date",
-      name: "title",
+      type: "text",
+      name: "first_ascent",
       placeholder: "First ascent"
     },
     domProps: {
@@ -1182,7 +1177,7 @@ var render = function render() {
         _vm.$set(_vm.data, "first_ascent", $event.target.value);
       }
     }
-  })])])])])]);
+  })])])])]) : _vm._e()]);
 };
 var staticRenderFns = [function () {
   var _vm = this,

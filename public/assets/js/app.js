@@ -5401,6 +5401,7 @@ __webpack_require__.r(__webpack_exports__);
       email: null,
       password: null,
       remember: false,
+      is_loading: false,
       error: [],
       auth_error: '',
       MIX_USER_PAGE_URL: "user.climbing.loc",
@@ -5414,8 +5415,10 @@ __webpack_require__.r(__webpack_exports__);
   // },
   methods: {
     social_login: function social_login(service) {
+      var _this = this;
       // window.location.href = this.MIX_APP_SSH + this.MIX_USER_PAGE_URL + '/api/login/' + service
 
+      this.is_loading = true;
       axios.get('../../../api/login/' + service).then(function (response) {
         console.log(response.data);
         if (response.data.url) {
@@ -5423,38 +5426,46 @@ __webpack_require__.r(__webpack_exports__);
         }
       })["catch"](function (err) {
         console.log(err.data);
+      })["finally"](function () {
+        return _this.is_loading = false;
       });
     },
     login: function login() {
-      var _this = this;
+      var _this2 = this;
+      this.is_loading = true;
       axios.get('/sanctum/csrf-cookie').then(function (response) {
-        _this.login_action();
+        _this2.login_action();
       })["catch"](function (error) {
         alert(error);
         window.location.reload();
+      })["finally"](function () {
+        return _this2.is_loading = false;
       });
     },
     login_action: function login_action() {
-      var _this2 = this;
+      var _this3 = this;
       this.error = [];
       this.auth_error = '';
+      this.is_loading = true;
       axios.post("http://" + "user.climbing.loc" + '/login', {
         email: this.email,
         password: this.password,
         remember: this.remember
       }).then(function (response) {
         localStorage.setItem('x_xsrf_token', response.config.headers['X-XSRF-TOKEN']);
-        _this2.$router.push({
+        _this3.$router.push({
           name: "home"
         });
       })["catch"](function (error) {
         if (error.response.status === 422) {
           if (error.response.data.message == 'auth.failed') {
-            _this2.auth_error = 'Email or password is not corect';
+            _this3.auth_error = 'Email or password is not corect';
           } else {
-            _this2.error = error.response.data.errors;
+            _this3.error = error.response.data.errors;
           }
         }
+      })["finally"](function () {
+        return _this3.is_loading = false;
       });
     }
   }
@@ -7829,6 +7840,27 @@ var render = function render() {
   }, [_c("div", {
     staticClass: "card"
   }, [_vm._m(0), _vm._v(" "), _c("div", {
+    directives: [{
+      name: "show",
+      rawName: "v-show",
+      value: _vm.is_loading,
+      expression: "is_loading"
+    }],
+    staticClass: "row justify-content-center"
+  }, [_c("div", {
+    staticClass: "col-md-4"
+  }, [_c("img", {
+    attrs: {
+      src: "../../../../../../public/images/site_img/loading.gif",
+      alt: "loading"
+    }
+  })])]), _vm._v(" "), _c("div", {
+    directives: [{
+      name: "show",
+      rawName: "v-show",
+      value: !_vm.is_loading,
+      expression: "!is_loading"
+    }],
     staticClass: "row mt-2"
   }, [_c("div", {
     staticClass: "col-6 text-center"
@@ -7865,6 +7897,12 @@ var render = function render() {
       "aria-hidden": "true"
     }
   })])])]), _vm._v(" "), _c("div", {
+    directives: [{
+      name: "show",
+      rawName: "v-show",
+      value: !_vm.is_loading,
+      expression: "!is_loading"
+    }],
     staticClass: "card-body"
   }, [_c("form", {
     attrs: {
@@ -11340,7 +11378,9 @@ var render = function render() {
     staticClass: "row"
   }, [_c("h2", {
     staticClass: "index_h2"
-  }, [_vm._v(_vm._s(_vm.$t("global.services")))]), _vm._v(" "), _vm._m(0), _vm._v(" "), _c("h3", [_c("span", {
+  }, [_vm._v(_vm._s(_vm.$t("global.services")))]), _vm._v(" "), _vm._m(0), _vm._v(" "), _c("h3", {
+    staticClass: "article_list_short_descriptio"
+  }, [_c("span", {
     domProps: {
       innerHTML: _vm._s(this.$siteData.services)
     }
@@ -13198,7 +13238,7 @@ var editor_config = {
   get_big_editor_config: function get_big_editor_config() {
     return {
       // https://www.tutsmake.com/laravel-8-ckeditor-image-upload-tutorial-example/
-      filebrowserUploadUrl: "../../../../api/ckeditor/upload",
+      filebrowserUploadUrl: "../../../../../../../../../../api/ckeditor/upload",
       // https://ckeditor.com/docs/ckeditor4/latest/examples/mediaembed.html
       extraPlugins: 'embed,autoembed',
       // contentsCss: [

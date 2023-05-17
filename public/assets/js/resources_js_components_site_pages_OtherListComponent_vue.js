@@ -368,7 +368,7 @@ var render = function render() {
   }, [_c("h2", {
     staticClass: "index_h2"
   }, [_vm._v(_vm._s(_vm.$t("guide.title.other")))]), _vm._v(" "), _vm._m(0), _vm._v(" "), _c("h2", {
-    staticClass: "article_list_short_descriptio"
+    staticClass: "article_list_short_description"
   }, [_vm._v("\n            " + _vm._s(this.$siteData.other_activity_description) + "\n        ")]), _vm._v(" "), _vm.other_article_loading ? _c("div", [_c("content-loader", {
     attrs: {
       viewBox: "0 0",

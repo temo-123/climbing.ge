@@ -72,6 +72,7 @@ __webpack_require__.r(__webpack_exports__);
     }
     this.global_blocks.block_action = this.block_action_prop;
     this.global_blocks.block_id = this.block_id_prop;
+    this.general_infos = this.global_data_array_prop;
   },
   watch: {
     // form_data_prop: function(){

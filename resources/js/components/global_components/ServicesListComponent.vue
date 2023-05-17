@@ -4,7 +4,7 @@
             <div class="row">
                 <h2 class='index_h2'>{{ $t('global.services') }}</h2>
                 <div class="bar"><i class="fa fa-window-restore" aria-hidden="true"></i></div>
-                <h3> <span v-html="this.$siteData.services"></span> </h3>
+                <h3 class="article_list_short_descriptio"> <span v-html="this.$siteData.services"></span> </h3>
 
             </div>
         </div>

@@ -1,27 +1,33 @@
 <template>
   <div class="col-md-12">
 
-    <div class="row">
+    <div class="row justify-content-center" v-if="is_loading">
+        <div class="col-md-4">
+            <img :src="'../../../../../../public/images/site_img/loading.gif'" alt="loading">
+        </div>
+    </div>
+
+    <div class="row" v-if="!is_loading">
         <div class="form-group">
             <button type="submit" class="btn btn-primary" @click="go_back()">Beck</button>
         </div>
     </div>
 
-    <div class="row">
+    <div class="row" v-if="!is_loading">
         <div class="form-group">  
             <button form='route_add_form' type="submit" class="btn btn-primary" @click="go_back_action = true" >Save and go back</button>
             <p>Save and go to route tab page</p>
         </div>
     </div>
 
-    <div class="row">
+    <div class="row" v-if="!is_loading">
         <div class="form-group">  
             <button form='route_add_form' type="submit" class="btn btn-primary" @click="go_back_action = false" >Save and add more reoute</button>
             <p>Save and add more route</p>
         </div>
     </div>
 
-    <div class="wrapper container-fluid container">
+    <div class="wrapper container-fluid container" v-if="!is_loading">
       <form id="route_add_form" @submit.prevent="add_mtp()">
         <div class="form-group clearfix row">
           <label for="name" class='col-md-2 control-label'> Region </label>
@@ -114,7 +120,8 @@
           author: '',
         },
 
-        // published: "",
+        is_loading: false,
+        is_back_action_query: true,
 
         go_back_action: false,
       }
@@ -123,6 +130,19 @@
     mounted() {
       this.get_region_data()
       this.get_sectors_data()
+    },
+
+    beforeRouteLeave (to, from, next) {
+        if(this.is_back_action_query == true){
+            if (window.confirm('Added information will be deleted!!! Are you sure, you want go back?')) {
+                this.is_back_action_query = false;
+                next()
+            } else {
+                next(false)
+            }
+        }else {
+            next()
+        }
     },
 
     methods: {
@@ -156,6 +176,7 @@
       },
 
       add_mtp: function () {
+        this.is_loading = true
         axios
         .post('../api/mtp/mtp_add', {
             data: this.data,
@@ -174,6 +195,9 @@
               this.errors = error.response.data.errors
             }
         })
+        .finally(() => {
+            this.is_loading = false
+        })
       },
 
       clear_form(){
@@ -189,14 +213,7 @@
       },
 
       go_back(back_action = false) {
-          if(back_action == false){
-              if(confirm('Are you sure, you want go back?')){
-                  this.$router.push({ name: 'routeAndSectorList' })
-              }
-          }
-          else{
-              this.$router.push({ name: 'routeAndSectorList' })
-          }
+        this.is_back_action_query = this.$going.back(this, back_action)
       },
 
     }

@@ -72,6 +72,7 @@ __webpack_require__.r(__webpack_exports__);
     }
     this.global_blocks.block_action = this.block_action_prop;
     this.global_blocks.block_id = this.block_id_prop;
+    this.general_infos = this.global_data_array_prop;
   },
   watch: {
     // form_data_prop: function(){
@@ -161,7 +162,7 @@ __webpack_require__.r(__webpack_exports__);
       tab_num: 1,
       category: this.$route.params.article_category,
       error: [],
-      is_back_action: false,
+      is_back_action_query: true,
       is_loading: false,
       article_data: {
         global_data: [],
@@ -188,9 +189,9 @@ __webpack_require__.r(__webpack_exports__);
     //
   },
   beforeRouteLeave: function beforeRouteLeave(to, from, next) {
-    if (this.is_back_action == true) {
+    if (this.is_back_action_query == true) {
       if (window.confirm('Added information will be deleted!!! Are you sure, you want go back?')) {
-        this.is_back_action = false;
+        this.is_back_action_query = false;
         next();
       } else {
         next(false);
@@ -271,7 +272,7 @@ __webpack_require__.r(__webpack_exports__);
     },
     go_back: function go_back() {
       var action = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : false;
-      this.is_back_action = this.$going.back(this, action);
+      this.is_back_action_query = this.$going.back(this, action);
     }
   }
 });
@@ -910,7 +911,13 @@ var render = function render() {
     _c = _vm._self._c;
   return _c("div", {
     staticClass: "tabs"
-  }, [_vm.is_loading ? _c("div", {
+  }, [_c("div", {
+    directives: [{
+      name: "show",
+      rawName: "v-show",
+      value: _vm.is_loading,
+      expression: "is_loading"
+    }],
     staticClass: "row justify-content-center"
   }, [_c("div", {
     staticClass: "col-md-4"
@@ -919,7 +926,13 @@ var render = function render() {
       src: "../../../../../../public/images/site_img/loading.gif",
       alt: "loading"
     }
-  })])]) : _vm._e(), _vm._v(" "), !_vm.is_loading ? _c("div", {
+  })])]), _vm._v(" "), _c("div", {
+    directives: [{
+      name: "show",
+      rawName: "v-show",
+      value: !_vm.is_loading,
+      expression: "!is_loading"
+    }],
     staticClass: "row"
   }, [_c("div", {
     staticClass: "form-group"
@@ -933,7 +946,13 @@ var render = function render() {
         return _vm.go_back();
       }
     }
-  }, [_vm._v("Beck")])])]) : _vm._e(), _vm._v(" "), !_vm.is_loading ? _c("div", {
+  }, [_vm._v("Beck")])])]), _vm._v(" "), _c("div", {
+    directives: [{
+      name: "show",
+      rawName: "v-show",
+      value: !_vm.is_loading,
+      expression: "!is_loading"
+    }],
     staticClass: "row"
   }, [_c("div", {
     staticClass: "form-group"
@@ -947,7 +966,13 @@ var render = function render() {
         return _vm.save();
       }
     }
-  }, [_vm._v("Save")])])]) : _vm._e(), _vm._v(" "), !_vm.is_loading ? _c("div", {
+  }, [_vm._v("Save")])])]), _vm._v(" "), _c("div", {
+    directives: [{
+      name: "show",
+      rawName: "v-show",
+      value: !_vm.is_loading,
+      expression: "!is_loading"
+    }],
     staticClass: "row"
   }, [_vm.error.length != 0 ? _c("div", {
     staticClass: "col-md-12"
@@ -1006,7 +1031,13 @@ var render = function render() {
     attrs: {
       role: "alert"
     }
-  }, [_vm._v("\n                Russion text - " + _vm._s(_vm.error.ru_info_validation.text[0]) + "\n            ")]) : _vm._e()]) : _vm._e()]) : _vm._e(), _vm._v(" "), !_vm.is_loading ? _c("div", {
+  }, [_vm._v("\n                Russion text - " + _vm._s(_vm.error.ru_info_validation.text[0]) + "\n            ")]) : _vm._e()]) : _vm._e()]), _vm._v(" "), _c("div", {
+    directives: [{
+      name: "show",
+      rawName: "v-show",
+      value: !_vm.is_loading,
+      expression: "!is_loading"
+    }],
     staticClass: "row"
   }, [_c("div", {
     staticClass: "col-md-12"
@@ -1206,7 +1237,7 @@ var render = function render() {
       },
       global_blocks: _vm.global_blocks_action
     }
-  })], 1)]) : _vm._e(), _vm._v(" "), _vm.is_loading ? _c("div", {
+  })], 1)]), _vm._v(" "), _vm.is_loading ? _c("div", {
     staticClass: "row justify-content-center"
   }, [_c("div", {
     staticClass: "col-md-4"

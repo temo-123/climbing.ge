@@ -24,7 +24,11 @@ __webpack_require__.r(__webpack_exports__);
     SlickItem: vue_slicksort__WEBPACK_IMPORTED_MODULE_0__.SlickItem,
     SlickList: vue_slicksort__WEBPACK_IMPORTED_MODULE_0__.SlickList
   },
-  props: ['global_data_prop', 'category_prop', 'title_prop', 'description_prop', 'region_id_prop', 'mount_id_prop'],
+  props: ['global_data_prop', 'category_prop', 'title_prop', 'description_prop'
+
+  // 'region_id_prop',
+  // 'mount_id_prop'
+  ],
   data: function data() {
     return {
       // editorConfig: {
@@ -52,13 +56,13 @@ __webpack_require__.r(__webpack_exports__);
       if (this.category == 'mount_route') {
         this.get_mount_massive_data();
       }
-    },
-    region_id_prop: function region_id_prop(newVal, oldVal) {
-      this.data.region_id = this.region_id_prop;
-    },
-    mount_id_prop: function mount_id_prop(newVal, oldVal) {
-      this.data.mount_id = this.mount_id_prop;
     }
+    // region_id_prop: function(newVal, oldVal) { 
+    //     this.data.region_id = this.region_id_prop
+    // },
+    // mount_id_prop: function(newVal, oldVal) { 
+    //     this.data.mount_id = this.mount_id_prop
+    // },
   },
   mounted: function mounted() {
     if (this.category == 'outdoor') {

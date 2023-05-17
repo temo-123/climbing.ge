@@ -729,7 +729,9 @@ var render = function render() {
     staticClass: "container"
   }, [_c("h2", {
     staticClass: "index_h2"
-  }, [_vm._v(_vm._s(_vm.$t("guide.title.events")))]), _vm._v(" "), _vm._m(0), _vm._v(" "), _c("h3", [_vm._v(" " + _vm._s(this.$siteData.event_description))]), _vm._v(" "), _c("div", {
+  }, [_vm._v(_vm._s(_vm.$t("guide.title.events")))]), _vm._v(" "), _vm._m(0), _vm._v(" "), _c("h3", {
+    staticClass: "article_list_short_description"
+  }, [_vm._v(" " + _vm._s(this.$siteData.event_description))]), _vm._v(" "), _c("div", {
     staticClass: "container"
   }, [_c("div", {
     staticClass: "row event-list"
@@ -779,7 +781,9 @@ var render = function render() {
     staticClass: "container"
   }, [_c("h2", {
     staticClass: "index_h2"
-  }, [_vm._v(_vm._s(_vm.$t("guide.title.other")))]), _vm._v(" "), _vm._m(0), _vm._v(" "), _c("h3", [_c("span", {
+  }, [_vm._v(_vm._s(_vm.$t("guide.title.other")))]), _vm._v(" "), _vm._m(0), _vm._v(" "), _c("h3", {
+    staticClass: "article_list_short_description"
+  }, [_c("span", {
     domProps: {
       innerHTML: _vm._s(_vm.$siteData.other_activity_description)
     }
@@ -893,7 +897,9 @@ var render = function render() {
     staticClass: "container"
   }, [_c("h2", {
     staticClass: "index_h2"
-  }, [_vm._v(_vm._s(_vm.$t("guide.title.tech tips")))]), _vm._v(" "), _vm._m(0), _vm._v(" "), _c("h3", [_vm._v(" " + _vm._s(this.$siteData.tech_tips_description) + " ")]), _vm._v(" "), _c("div", {
+  }, [_vm._v(_vm._s(_vm.$t("guide.title.tech tips")))]), _vm._v(" "), _vm._m(0), _vm._v(" "), _c("h3", {
+    staticClass: "article_list_short_description"
+  }, [_vm._v(" " + _vm._s(this.$siteData.tech_tips_description) + " ")]), _vm._v(" "), _c("div", {
     staticClass: "container"
   }, [_c("div", {
     staticClass: "row"
@@ -974,7 +980,7 @@ var render = function render() {
   }, [_c("h2", {
     staticClass: "index_h2"
   }, [_vm._v(_vm._s(_vm.$t("guide.title.what we do")))]), _vm._v(" "), _vm._m(0), _vm._v(" "), _c("h3", {
-    staticClass: "article_list_short_descriptio"
+    staticClass: "article_list_short_description"
   }, [_vm._v("\n            " + _vm._s(this.$siteData.what_we_do_description) + "\n        ")]), _vm._v(" "), _c("div", {
     staticClass: "row"
   }, [_c("div", {
@@ -1320,7 +1326,9 @@ var render = function render() {
     staticClass: "container"
   }, [_vm.db_images.length > 0 ? _c("span", [_c("h2", {
     staticClass: "index_h2"
-  }, [_vm._v(_vm._s(_vm.$t("guide.title.gallery")))]), _vm._v(" "), _vm._m(0), _vm._v(" "), _c("h3", [_vm._v(" " + _vm._s(this.$siteData.index_gallery_description) + " ")]), _vm._v(" "), _c("galleryComponrnt", {
+  }, [_vm._v(_vm._s(_vm.$t("guide.title.gallery")))]), _vm._v(" "), _vm._m(0), _vm._v(" "), _c("h3", {
+    staticClass: "article_list_short_description"
+  }, [_vm._v(" " + _vm._s(this.$siteData.index_gallery_description) + " ")]), _vm._v(" "), _c("galleryComponrnt", {
     attrs: {
       images_prop: this.db_images,
       image_path_prop: this.images_path
@@ -1373,7 +1381,9 @@ var render = function render() {
     staticClass: "container h-recent-work"
   }, [_c("h2", {
     staticClass: "index_h2"
-  }, [_vm._v(_vm._s(_vm.$t("guide.title.topo")))]), _vm._v(" "), _vm._m(0), _vm._v(" "), _c("h3", [_vm._v(" " + _vm._s(this.$siteData.topo_description) + " ")]), _vm._v(" "), _c("div", {
+  }, [_vm._v(_vm._s(_vm.$t("guide.title.topo")))]), _vm._v(" "), _vm._m(0), _vm._v(" "), _c("h3", {
+    staticClass: "article_list_short_description"
+  }, [_vm._v(" " + _vm._s(this.$siteData.topo_description) + " ")]), _vm._v(" "), _c("div", {
     style: "margin-bottom: 7%"
   }, [_c("span", {
     domProps: {
@@ -1388,7 +1398,9 @@ var render = function render() {
     attrs: {
       id: "news"
     }
-  }, [_vm._v(_vm._s(_vm.$t("guide.title.news")))]), _vm._v(" "), _vm._m(1), _vm._v(" "), _c("h3", [_vm._v(" " + _vm._s(this.$siteData.news_description) + " ")]), _vm._v(" "), _vm.lastNews != [] ? _c("span", [_c("bigNewsCard", {
+  }, [_vm._v(_vm._s(_vm.$t("guide.title.news")))]), _vm._v(" "), _vm._m(1), _vm._v(" "), _c("h3", {
+    staticClass: "article_list_short_description"
+  }, [_vm._v(" " + _vm._s(this.$siteData.news_description) + " ")]), _vm._v(" "), _vm.lastNews != [] ? _c("span", [_c("bigNewsCard", {
     attrs: {
       news: _vm.lastNews
     }

@@ -2,13 +2,16 @@
     <stack-modal
         :show="is_show_sector_modal"
         title="Sector"
-        @close="is_show_sector_modal=false"
+        @close="close_sector_model()"
         :modal-class="{ [SectorModalClass]: true }"
         :saveButton="{ visible: true }"
         :cancelButton="{ title: 'Close', btnClass: { 'btn btn-primary': true } }">
         <pre class="language-vue">
             <div class="root">
                 <div class="col-md-12">
+                    <div class="row">
+                        <router-link class="btn btn-primary" :to="{ name: 'sectorEdit', params: { id: activ_sector_id } }" v-if="$can('edit', 'sector')" >Edit This Sector</router-link>
+                    </div>
                     <div class="row">
                         <!-- <img v-for="image in sector_images" :key="image.id" :src="'/public/images/sector_img/'+image.image" alt="image"> -->
                         <SlickList lockAxis="y" v-model="sector_images" v-if="sector_images.length > 0" tag="table" style="width: 100%">
@@ -71,7 +74,7 @@
                         :class="{'btn btn-primary': true}"
                         @click="save_routes_sequence()"
                     >
-                Save
+                Save sequence
                 </button>
             </div>
         </div>
@@ -102,6 +105,8 @@
                 sector_routes: [],
                 sector_mtps: [],
                 sector_images: [],
+
+                activ_sector_id: 0,
             }
         },
 
@@ -113,9 +118,11 @@
             show_sector_modal(sector_id){
                 this.is_show_sector_modal=true
 
+                this.activ_sector_id = sector_id
+
                 if (this.is_show_sector_modal==true) {
                     axios
-                    .get('../../api/sector/get_sector_data_for_model/'+ sector_id)
+                    .get('/sector/get_sector_data_for_model/'+ sector_id)
                     .then(response => {
                         this.sector = response.data
                         
@@ -134,15 +141,20 @@
                 }
             },
 
+            close_sector_model(){
+                this.is_show_sector_modal = false
+                this.activ_sector_id = 0
+            },
+
             save_routes_sequence(){
                 axios
-                .post('../api/sector/routes_sequence/', {
+                .post('/sector/routes_sequence/', {
                     routes_sequence: this.sector_routes,
                     mtp_sequence: this.sector_mtps,
                     sector_images_sequence: this.sector_images,
                 })
                 .then((response)=> { 
-                    this.is_show_sector_modal = false
+                    this.close_sector_model
                 })
                 .catch(error =>{
                 })

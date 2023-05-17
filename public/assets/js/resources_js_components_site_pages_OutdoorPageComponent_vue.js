@@ -1153,6 +1153,17 @@ __webpack_require__.r(__webpack_exports__);
     }
   },
   methods: {
+    scrollToSection: function scrollToSection(sectionId) {
+      var targetElement = document.getElementById(sectionId);
+      if (targetElement) {
+        var yOffset = -80; // adjust this value to control the offset from the top
+        var y = targetElement.getBoundingClientRect().top + window.pageYOffset + yOffset;
+        window.scrollTo({
+          top: y,
+          behavior: 'smooth'
+        });
+      }
+    },
     get_local_bisnes_for_article: function get_local_bisnes_for_article() {
       var _this = this;
       axios.get('../api/bisnes/get_local_bisnes_for_article/' + this.$route.params.url_title + '/' + localStorage.getItem('lang'), {}).then(function (response) {
@@ -1338,7 +1349,7 @@ var render = function render() {
     _c = _vm._self._c;
   return _c("div", [this.article[0].text != _vm.NUll ? _c("span", {
     attrs: {
-      id: "descripton"
+      id: "description"
     },
     domProps: {
       innerHTML: _vm._s(this.article[0].text)
@@ -2669,10 +2680,11 @@ var render = function render() {
     return _c("div", {
       key: spot_image,
       "class": "sector_images sector_images_" + _vm.sectors_and_images.local_images.length
-    }, [_c("openImg", {
+    }, [_c("h3", [_vm._v(_vm._s(spot_image.title))]), _vm._v(" "), _c("openImg", {
       attrs: {
         img: "/public/images/sector_local_img/" + spot_image.image,
-        img_alt: spot_image.title
+        img_alt: spot_image.title,
+        img_class: "sector_local_images"
       }
     })], 1);
   }), 0) : _vm._e(), _vm._v(" "), _vm.sectors_and_images.sectors.length > 0 ? _c("div", {
@@ -2907,32 +2919,47 @@ var render = function render() {
   }, [_c("ul", {
     staticClass: "list-unstyled"
   }, [_c("li", [_c("a", {
-    attrs: {
-      href: "#description"
+    on: {
+      click: function click($event) {
+        $event.preventDefault();
+        return _vm.scrollToSection("description");
+      }
     }
   }, [_c("span", {
     staticClass: "text-primary"
-  }, [_vm._v(_vm._s(_vm.$t("guide.article_right_nabar.description")))])])]), _vm._v(" "), _c("li", [_c("a", {
-    attrs: {
-      href: "#sectors"
+  }, [_vm._v(_vm._s(_vm.$t("guide.article_right_nabar.description")))])])]), _vm._v(" "), this.$route.name == "outdoor" ? _c("li", [_c("a", {
+    on: {
+      click: function click($event) {
+        $event.preventDefault();
+        return _vm.scrollToSection("routes");
+      }
     }
   }, [_c("span", {
     staticClass: "text-primary"
-  }, [_vm._v(_vm._s(_vm.$t("guide.article_right_nabar.sectors")))])])]), _vm._v(" "), _c("li", [_c("a", {
-    attrs: {
-      href: "#gallery"
+  }, [_vm._v(_vm._s(_vm.$t("guide.article_right_nabar.sectors")))])])]) : _vm._e(), _vm._v(" "), _c("li", [_c("a", {
+    on: {
+      click: function click($event) {
+        $event.preventDefault();
+        return _vm.scrollToSection("gallery");
+      }
     }
   }, [_c("span", {
     staticClass: "text-primary"
   }, [_vm._v(_vm._s(_vm.$t("guide.article_right_nabar.gallery")))])])]), _vm._v(" "), _c("li", [_c("a", {
-    attrs: {
-      href: "#comments"
+    on: {
+      click: function click($event) {
+        $event.preventDefault();
+        return _vm.scrollToSection("comments");
+      }
     }
   }, [_c("span", {
     staticClass: "text-primary"
   }, [_vm._v(_vm._s(_vm.$t("guide.article_right_nabar.comments")))])])]), _vm._v(" "), _c("li", [_c("a", {
-    attrs: {
-      href: "#other"
+    on: {
+      click: function click($event) {
+        $event.preventDefault();
+        return _vm.scrollToSection("other");
+      }
     }
   }, [_c("span", {
     staticClass: "text-primary"
@@ -3233,7 +3260,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_laravel_mix_node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, "\n.sector_images[data-v-805b6b16] {\n    float: left;\n    margin: 0.25%;\n}\n.sector_images_1[data-v-805b6b16] {\n    width: 99%;\n}\n.sector_images_2[data-v-805b6b16] {\n    width: 49%;\n}\n.sector_images_3[data-v-805b6b16] {\n    width: 32.6%;\n}\n.sector_images_4[data-v-805b6b16] {\n    width: 24.1%;\n}\n.sector_images_5[data-v-805b6b16] {\n    width: 19.5%;\n}\n.sector_images_6[data-v-805b6b16] {\n    width: 16%;\n}\n.sector_images_7[data-v-805b6b16] {\n    width: 14, 0%;\n}\n.sector_images_8[data-v-805b6b16] {\n    width: 12%;\n}\n.sector_images_9[data-v-805b6b16] {\n    width: 10.5%;\n}\n", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, "\n/* .sector_images {\n    float: left;\n    margin: 0.25%;\n}\n.sector_images_1 {\n    width: 99%;\n}\n.sector_images_2 {\n    width: 49%;\n}\n.sector_images_3 {\n    width: 32.6%;\n}\n.sector_images_4 {\n    width: 24.1%;\n}\n.sector_images_5 {\n    width: 19.5%;\n}\n.sector_images_6 {\n    width: 16%;\n}\n.sector_images_7 {\n    width: 14, 0%;\n}\n.sector_images_8 {\n    width: 12%;\n}\n.sector_images_9 {\n    width: 10.5%;\n} */\n", ""]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 

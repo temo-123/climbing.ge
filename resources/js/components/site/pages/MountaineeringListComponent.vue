@@ -6,7 +6,7 @@
 
             <div class="bar"><i class="fa fa-dribbble"></i></div>
 
-            <h2 class="article_list_short_descriptio">
+            <h2 class="article_list_short_description">
                 {{this.$siteData.mount_description}}
             </h2>
 

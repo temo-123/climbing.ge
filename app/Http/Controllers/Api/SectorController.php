@@ -141,72 +141,39 @@ class SectorController extends Controller
     {
         $sectors = Sector::where('article_id','=', $request->article_id)->where('published', '=', 1)->get();
         $area_info = array();
-        // $test_arr = array();
-
-        $sector_action = 0;
 
         if(count($sectors)){
 
-            $test_arr = $this->get_area_local_images($sectors);
+            $area_local_images = $this->get_area_local_images($sectors);
 
-            if(count($test_arr)){
+            if(count($area_local_images)){
+                foreach ($area_local_images as $area_local_image) {
+                    array_push($area_info, 
+                        array(
+                            "local_images" => [$area_local_image],
+                            "sectors" => []
+                        )
+                    );
+                    foreach ($area_local_image->sectors as $area_local_image_sectors) {
+                        array_push($area_info[count($area_info)-1]["sectors"], 
+                            $this->get_sector_data($area_local_image_sectors->id)
+                        );
+                    }
+                }
                 foreach($sectors as $sector){
-                    $sector_action = 0;
-                    for ($i=0; $i < count($test_arr); $i++) { 
-                        $images = $test_arr[$i]['local_images'];
-                            
-                        for ($j=0; $j < count($images); $j++) { 
-                            if($images[$j]->sector_id == $sector->id){
-                                if(count($area_info) > 0){
-                                    // if array is not empty, add new value.
-                                    // dd($images[$j]->sector_id, end($area_info)['local_images'][0]->image_sector->where('sector_id','=', $images[$j]->sector_id)->first()->image_id);
-                                    $last_image = end($area_info)['local_images'][0]->image_sector->where('sector_id','=', $images[$j]->sector_id)->first();
-                                    // dd(optional($last_image)->image_id);
-                                    if(optional($last_image)->image_id == $images[$j] -> image_id){
-                                    // if(end($area_info)['local_images'][0]->image_id == $images[$j] -> image_id){
-                                        // create new image 2D array.
-                                        // dd($images[$j]->image->id);
-                                        // dd(end($area_info[count($area_info) - 1]['local_images'])->id);
-                                        if($images[$j]->image->id != end($area_info[count($area_info) - 1]['local_images'])->id){
-                                            array_push($area_info[count($area_info) - 1]['local_images'], 
-                                                $images[$j]->image
-                                            );
-                                        }
-
-                                        array_push($area_info[count($area_info) - 1]['sectors'], 
-                                            $this->get_sector_data($sector->id)
-                                        );
-                                        $sector_action++;
-                                    }
-                                    else{
-                                        // create new image 1D array.
-                                        array_push($area_info, 
-                                            array(
-                                                "local_images" => [$images[$j]->image],
-                                                "sectors" => [$this->get_sector_data($sector->id)],
-                                            )
-                                        );
-                                        $sector_action++;
-                                    }
-                                }
-                                else{
-                                    // if array is empty, create first value.
-                                    array_push($area_info, 
-                                        array(
-                                            "local_images" => [$images[$j]->image],
-                                            "sectors" => [$this->get_sector_data($sector->id)],
-                                        )
-                                    );
-                                    $sector_action++;
+                    $found = false;
+                    foreach ($area_info as $area) {
+                        if(isset($area["sectors"])){
+                            foreach ($area["sectors"] as $area_sector) {
+                                if ($sector->id == $area_sector['sector']['id']) {
+                                    $found = true;
+                                    break;
                                 }
                             }
                         }
                     }
-                    
-                    if($sector_action == 0){
-                        array_push($area_info, 
-                            $this->get_sector_data($sector->id)
-                        );
+                    if (!$found) {
+                        array_push($area_info, $this->get_sector_data($sector->id) );
                     }
                 }
             }
@@ -217,65 +184,39 @@ class SectorController extends Controller
                     );
                 }
             }
-
-            // foreach($sectors as $sector){
-            //     array_push($area_info, 
-            //         $this->get_sector_data($sector->id)
-            //     );
-            // }
         }
 
-        // dd($test_arr, $area_info);
+        // dd($area_info);
 
         return $area_info;
     }
 
     public function get_area_local_images($sector_model)
     {
-        $area_local_images = array();
-        $local_images_arr = array();
+        $area_local_images_relationes = array();
+        $images = array();
 
         if(count($sector_model)){
             foreach($sector_model as $sector){
                 $area_local_image = Sector_local_image_sector::where('sector_id', '=', $sector->id)->first();
                 if($area_local_image){
-                    array_push($area_local_images, 
+                    array_push($area_local_images_relationes, 
                         $area_local_image
                     );
                 }
             }
-            
-            foreach ($area_local_images as $image_sector) {
-                if(count($local_images_arr) > 0){
-                    // if array is not empty, add new value.
-                    if(end($local_images_arr)['local_images'][0]->image_id == $image_sector -> image_id){
-                        // create new image 2D array.
-                        array_push($local_images_arr[count($local_images_arr) - 1]['local_images'], 
-                            $image_sector
-                        );
-                    }
-                    else{
-                        // create new image 1D array.
-                        array_push($local_images_arr, 
-                            array(
-                                "local_images" => [$image_sector],
-                                // "sectors" => [],
-                            )
-                        );
-                    }
-                }
-                else{
-                    // if array is empty, create first value.
-                    array_push($local_images_arr, 
-                        array(
-                            "local_images" => [$image_sector],
-                            // "sectors" => [],
-                        )
-                    );
-                }
+        }
+
+        foreach ($area_local_images_relationes as $area_local_images_relatione) {
+            if (count($images) == 0) {
+                array_push($images, Sector_local_image::where('id', '=', $area_local_images_relatione->image_id)->first());
+            }
+            else if (count($images) != 0 && !in_array($area_local_images_relatione->image_id, array_column($images, 'id'))) {
+                array_push($images, Sector_local_image::where('id', '=', $area_local_images_relatione->image_id)->first());
             }
         }
-        return $local_images_arr;
+
+        return $images;
     }
 
     public function get_sector_data($sector_id)

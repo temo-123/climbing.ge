@@ -643,6 +643,17 @@ __webpack_require__.r(__webpack_exports__);
     }
   },
   methods: {
+    scrollToSection: function scrollToSection(sectionId) {
+      var targetElement = document.getElementById(sectionId);
+      if (targetElement) {
+        var yOffset = -80; // adjust this value to control the offset from the top
+        var y = targetElement.getBoundingClientRect().top + window.pageYOffset + yOffset;
+        window.scrollTo({
+          top: y,
+          behavior: 'smooth'
+        });
+      }
+    },
     get_local_bisnes_for_article: function get_local_bisnes_for_article() {
       var _this = this;
       axios.get('../api/bisnes/get_local_bisnes_for_article/' + this.$route.params.url_title + '/' + localStorage.getItem('lang'), {}).then(function (response) {
@@ -882,7 +893,7 @@ var render = function render() {
     _c = _vm._self._c;
   return _c("div", [this.article[0].text != _vm.NUll ? _c("span", {
     attrs: {
-      id: "descripton"
+      id: "description"
     },
     domProps: {
       innerHTML: _vm._s(this.article[0].text)
@@ -1715,32 +1726,47 @@ var render = function render() {
   }, [_c("ul", {
     staticClass: "list-unstyled"
   }, [_c("li", [_c("a", {
-    attrs: {
-      href: "#description"
+    on: {
+      click: function click($event) {
+        $event.preventDefault();
+        return _vm.scrollToSection("description");
+      }
     }
   }, [_c("span", {
     staticClass: "text-primary"
-  }, [_vm._v(_vm._s(_vm.$t("guide.article_right_nabar.description")))])])]), _vm._v(" "), _c("li", [_c("a", {
-    attrs: {
-      href: "#sectors"
+  }, [_vm._v(_vm._s(_vm.$t("guide.article_right_nabar.description")))])])]), _vm._v(" "), this.$route.name == "outdoor" ? _c("li", [_c("a", {
+    on: {
+      click: function click($event) {
+        $event.preventDefault();
+        return _vm.scrollToSection("routes");
+      }
     }
   }, [_c("span", {
     staticClass: "text-primary"
-  }, [_vm._v(_vm._s(_vm.$t("guide.article_right_nabar.sectors")))])])]), _vm._v(" "), _c("li", [_c("a", {
-    attrs: {
-      href: "#gallery"
+  }, [_vm._v(_vm._s(_vm.$t("guide.article_right_nabar.sectors")))])])]) : _vm._e(), _vm._v(" "), _c("li", [_c("a", {
+    on: {
+      click: function click($event) {
+        $event.preventDefault();
+        return _vm.scrollToSection("gallery");
+      }
     }
   }, [_c("span", {
     staticClass: "text-primary"
   }, [_vm._v(_vm._s(_vm.$t("guide.article_right_nabar.gallery")))])])]), _vm._v(" "), _c("li", [_c("a", {
-    attrs: {
-      href: "#comments"
+    on: {
+      click: function click($event) {
+        $event.preventDefault();
+        return _vm.scrollToSection("comments");
+      }
     }
   }, [_c("span", {
     staticClass: "text-primary"
   }, [_vm._v(_vm._s(_vm.$t("guide.article_right_nabar.comments")))])])]), _vm._v(" "), _c("li", [_c("a", {
-    attrs: {
-      href: "#other"
+    on: {
+      click: function click($event) {
+        $event.preventDefault();
+        return _vm.scrollToSection("other");
+      }
     }
   }, [_c("span", {
     staticClass: "text-primary"

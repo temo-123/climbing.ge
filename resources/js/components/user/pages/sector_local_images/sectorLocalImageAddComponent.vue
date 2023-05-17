@@ -1,6 +1,12 @@
 <template>
     <div class="row">
-        <div class="col-md-12">
+        <div class="row justify-content-center" v-show="is_loading">
+            <div class="col-md-4">
+                <img :src="'../../../../../../public/images/site_img/loading.gif'" alt="loading">
+            </div>
+        </div>
+
+        <div class="col-md-12" v-show="!is_loading">
             <div class="row">
                 <div class="col-md-6">
                     <div class="form-groupe">
@@ -15,7 +21,7 @@
             </div>
         </div>
         
-        <div class="col-md-12">
+        <div class="col-md-12" v-show="!is_loading">
             <form ref="myForm" id="myForm" enctype="multipart/form-data" v-on:submit.prevent="save">
                 <div class="form-group clearfix row">
                     <label for="name" class='col-md-2 control-label'> Title </label>
@@ -109,6 +115,8 @@
 
                 image_sectors: [],
 
+                is_loading: false,
+
                 data: {
                     title: '',
                     image: ''
@@ -144,6 +152,7 @@
                 this.data.image = e.target.files[0];
             },
             save(){
+                this.is_loading = true
                 const config = {
                     headers: { 'content-type': 'multipart/form-data' }
                 }
@@ -162,7 +171,8 @@
                 })
                 .catch(
                     //
-                );
+                )
+                .finally(()=>{this.is_loading = false});
             },
             go_back(){
                 if (window.confirm('Added information will be deleted!!! Are you sure, you want go back?')) {

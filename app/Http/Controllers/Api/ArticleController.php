@@ -1019,6 +1019,8 @@ class ArticleController extends Controller
         //         "ru_article" => $ru_article,
         //     ];
         // }
+
+        // dd($data);
         
         return $data;
     }

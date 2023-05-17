@@ -220,7 +220,8 @@ __webpack_require__.r(__webpack_exports__);
         anchor_type: "",
         category: ""
       },
-      is_geting_data_isset: true,
+      is_loading: false,
+      is_back_action_query: true,
       sport_route_grade: ["4", "5a", "5b", "5c", "5c+", "6a", "6a+", "6b", "6b+", "6c", "6c+", "7a", "7a+", "7b", "7b+", "7c", "7c+", "8a", "8a+", "8b", "8b+", "8c", "8c+", "9a", "9a+", "9b", "9b+", "9c", "9c+"],
       boulder_route_grade: ["V1", "V2", "V3", "V4", "V5", "V6", "V7", "V8", "V9", "V10", "V11", "V12", "V13", "V14", "V15", "V16", "V17", "V18"]
     };
@@ -231,7 +232,18 @@ __webpack_require__.r(__webpack_exports__);
     this.get_region_data();
     // this.get_sectors_data()
   },
-
+  beforeRouteLeave: function beforeRouteLeave(to, from, next) {
+    if (this.is_back_action_query == true) {
+      if (window.confirm('Added information will be deleted!!! Are you sure, you want go back?')) {
+        this.is_back_action_query = false;
+        next();
+      } else {
+        next(false);
+      }
+    } else {
+      next();
+    }
+  },
   methods: {
     get_region_data: function get_region_data() {
       var _this = this;
@@ -255,6 +267,7 @@ __webpack_require__.r(__webpack_exports__);
     },
     get_route_editing_data: function get_route_editing_data() {
       var _this3 = this;
+      this.is_loading = true;
       axios.get("../../api/route/get_route_editing_data/" + this.$route.params.id).then(function (response) {
         _this3.data = response.data;
         var sector = _this3.all_sectors.find(function (item) {
@@ -271,7 +284,7 @@ __webpack_require__.r(__webpack_exports__);
       })["catch"](function (error) {
         return console.log(error);
       })["finally"](function () {
-        return _this3.is_geting_data_isset = false;
+        return _this3.is_loading = false;
       });
     },
     filter_sectors: function filter_sectors() {
@@ -292,17 +305,7 @@ __webpack_require__.r(__webpack_exports__);
     },
     go_back: function go_back() {
       var back_action = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : false;
-      if (back_action == false) {
-        if (confirm('Are you sure, you want go back?')) {
-          this.$router.push({
-            name: 'routeAndSectorList'
-          });
-        }
-      } else {
-        this.$router.push({
-          name: 'routeAndSectorList'
-        });
-      }
+      this.is_back_action_query = this.$going.back(this, back_action);
     }
   }
 });
@@ -536,7 +539,16 @@ var render = function render() {
     _c = _vm._self._c;
   return _c("div", {
     staticClass: "col-md-12"
+  }, [_vm.is_loading ? _c("div", {
+    staticClass: "row justify-content-center"
   }, [_c("div", {
+    staticClass: "col-md-4"
+  }, [_c("img", {
+    attrs: {
+      src: "../../../../../../public/images/site_img/loading.gif",
+      alt: "loading"
+    }
+  })])]) : _vm._e(), _vm._v(" "), !_vm.is_loading ? _c("div", {
     staticClass: "row"
   }, [_c("div", {
     staticClass: "form-group"
@@ -550,7 +562,7 @@ var render = function render() {
         return _vm.go_back();
       }
     }
-  }, [_vm._v("Beck")])])]), _vm._v(" "), _vm.problem_status != "" ? _c("div", {
+  }, [_vm._v("Beck")])])]) : _vm._e(), _vm._v(" "), _vm.problem_status != "" ? _c("div", {
     staticClass: "form-group clearfix row"
   }, [_c("div", {
     staticClass: "col-md-12"
@@ -559,9 +571,9 @@ var render = function render() {
     attrs: {
       role: "alert"
     }
-  }, [_vm._v("\n          " + _vm._s(_vm.problem_status) + "\n        ")])])]) : _vm._e(), _vm._v(" "), !_vm.is_geting_data_isset ? _c("div", {
+  }, [_vm._v("\n          " + _vm._s(_vm.problem_status) + "\n        ")])])]) : _vm._e(), _vm._v(" "), !_vm.is_loading ? _c("div", {
     staticClass: "row"
-  }, [_vm._m(0)]) : _vm._e(), _vm._v(" "), !_vm.is_geting_data_isset ? _c("div", {
+  }, [_vm._m(0)]) : _vm._e(), _vm._v(" "), !_vm.is_loading ? _c("div", {
     staticClass: "wrapper container-fluid container"
   }, [_c("form", {
     attrs: {
@@ -1071,7 +1083,7 @@ var render = function render() {
     staticClass: "form-control",
     attrs: {
       type: "text",
-      name: "title",
+      name: "auther",
       placeholder: "Bolter"
     },
     domProps: {
@@ -1095,7 +1107,7 @@ var render = function render() {
     staticClass: "form-control",
     attrs: {
       type: "date",
-      name: "title",
+      name: "creating_data",
       placeholder: "Bolting Data"
     },
     domProps: {
@@ -1125,8 +1137,8 @@ var render = function render() {
     }],
     staticClass: "form-control",
     attrs: {
-      type: "date",
-      name: "title",
+      type: "text",
+      name: "first_ascent",
       placeholder: "First ascent"
     },
     domProps: {
@@ -1138,16 +1150,7 @@ var render = function render() {
         _vm.$set(_vm.data, "first_ascent", $event.target.value);
       }
     }
-  })])])])]) : _vm._e(), _vm._v(" "), _vm.is_geting_data_isset ? _c("div", {
-    staticClass: "row justify-content-center"
-  }, [_c("div", {
-    staticClass: "col-md-4"
-  }, [_c("img", {
-    attrs: {
-      src: "../../../../../../public/images/site_img/loading.gif",
-      alt: "loading"
-    }
-  })])]) : _vm._e()]);
+  })])])])]) : _vm._e()]);
 };
 var staticRenderFns = [function () {
   var _vm = this,

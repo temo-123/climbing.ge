@@ -7,35 +7,35 @@
             <ul class="list-unstyled">
 
                 <li>
-                    <a href="#description">
+                    <a @click.prevent="scrollToSection('description')">
                         <span class="text-primary">{{ $t('guide.article_right_nabar.description') }}</span>
                     </a>
                 </li>
 
-                <li>
-                    <a href="#sectors">
+                <li v-if="this.$route.name == 'outdoor'">
+                    <a @click.prevent="scrollToSection('routes')">
                         <span class="text-primary">{{ $t('guide.article_right_nabar.sectors') }}</span>
                     </a>
                 </li>
 
                 <li>
-                    <a href="#gallery">
+                    <a @click.prevent="scrollToSection('gallery')">
                         <span class="text-primary">{{ $t('guide.article_right_nabar.gallery') }}</span>
                     </a>
                 </li>
-            
+
                 <li>
-                    <a href="#comments">
+                    <a @click.prevent="scrollToSection('comments')">
                         <span class="text-primary">{{ $t('guide.article_right_nabar.comments') }}</span>
                     </a>
                 </li>
-            
+
                 <li>
-                    <a href="#other">
+                    <a @click.prevent="scrollToSection('other')">
                         <span class="text-primary">{{ $t('guide.article_right_nabar.similar articles') }}</span>
                     </a>
                 </li>
-            
+
             </ul>
         </nav>
 
@@ -97,6 +97,15 @@
             }
         },
         methods: {
+            scrollToSection(sectionId) {
+                const targetElement = document.getElementById(sectionId);
+                if (targetElement) {
+                    const yOffset = -80; // adjust this value to control the offset from the top
+                    const y = targetElement.getBoundingClientRect().top + window.pageYOffset + yOffset;
+                    window.scrollTo({ top: y, behavior: 'smooth' });
+                }
+            },
+
             get_local_bisnes_for_article(){
                 axios
                 .get('../api/bisnes/get_local_bisnes_for_article/' + this.$route.params.url_title + '/' + localStorage.getItem('lang'), {
@@ -109,6 +118,7 @@
                 .catch(error =>{
                 })
             },
+
             handleScroll (event) {
                 this.margin_bottom_position = document.body.offsetHeight - window.scrollY
                 

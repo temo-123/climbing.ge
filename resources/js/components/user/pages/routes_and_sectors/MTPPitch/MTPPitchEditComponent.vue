@@ -1,7 +1,13 @@
 <template>
   <div class="col-md-12">
   
-      <div class="row">
+        <div class="row justify-content-center" v-if="is_loading">
+            <div class="col-md-4">
+                <img :src="'../../../../../../public/images/site_img/loading.gif'" alt="loading">
+            </div>
+        </div>
+
+      <div class="row" v-if="!is_loading">
           <div class="form-group">
               <button type="submit" class="btn btn-primary" @click="go_back()">Beck</button>
           </div>
@@ -15,14 +21,14 @@
           </div>
       </div>
   
-      <div class="row" v-if="!is_geting_data_isset">
+      <div class="row" v-if="!is_loading">
           <div class="form-group">  
-              <button form='mtp_add_form' type="submit" class="btn btn-primary" @click="go_back_action = true" >Save and go back</button>
+              <button form='mtp_add_form' type="submit" class="btn btn-primary" >Save and go back</button>
               <p>Save and go to pitch tab page</p>
           </div>
       </div>
   
-      <div class="wrapper container-fluid container"  v-if="!is_geting_data_isset">
+      <div class="wrapper container-fluid container"  v-if="!is_loading">
           <form id="mtp_add_form" @submit.prevent="save_editing_pitch()">
           <div class="form-group clearfix row">
               <label for="name" class='col-md-2 control-label'> Region </label>
@@ -159,12 +165,6 @@
   
           </form>
       </div>
-
-      <div class="row justify-content-center" v-if="is_geting_data_isset">
-          <div class="col-md-4">
-              <img :src="'../../../../../../public/images/site_img/loading.gif'" alt="loading">
-          </div>
-      </div>
   </div>
 </template>
   
@@ -217,7 +217,8 @@
                     category: "",
                 },
         
-                is_geting_data_isset: true,
+                is_loading: false,
+                is_back_action_query: true,
 
                 sport_route_grade: [
                     "4",
@@ -235,6 +236,18 @@
             this.get_sectors_data()
         },
     
+        beforeRouteLeave (to, from, next) {
+            if(this.is_back_action_query == true){
+                if (window.confirm('Added information will be deleted!!! Are you sure, you want go back?')) {
+                    this.is_back_action_query = false;
+                    next()
+                } else {
+                    next(false)
+                }
+            }else {
+                next()
+            }
+        },
         methods: {
             get_region_data: function(){
                 axios
@@ -290,7 +303,7 @@
                 .catch(
                     error => console.log(error)
                 )
-                .finally(() => this.is_geting_data_isset = false);
+                .finally(() => this.is_loading = false);
             },
         
             filter_sectors(){
@@ -309,17 +322,19 @@
                 })
             },
         
-            save_editing_pitch: function (go_back_action) {
+            save_editing_pitch: function () {
+                this.is_loading = true
                 axios
                 .post('../../api/mtp/mtp_pitch/mtp_pitch_edit/'+this.$route.params.id, {
                     data: this.data,
                 })
                 .then(response => {
-                        this.go_back(true)
+                    this.go_back(true)
                 })
                 .catch(error =>{
                     this.status = "error"
                 })
+                .finally(() => this.is_loading = false);
             },
         
             clear_form(){
@@ -345,14 +360,7 @@
             },
     
             go_back(back_action = false) {
-                if(back_action == false){
-                    if(confirm('Are you sure, you want go back?')){
-                        this.$router.push({ name: 'routeAndSectorList' })
-                    }
-                }
-                else{
-                    this.$router.push({ name: 'routeAndSectorList' })
-                }
+                this.is_back_action_query = this.$going.back(this, back_action)
             },
         }
     }

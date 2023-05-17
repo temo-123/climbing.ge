@@ -139,8 +139,10 @@ hr {
 *   Article cards list head title
 *
 */
-.article_list_short_descriptio {
+.article_list_short_description {
   text-align: center;
+  margin-top: 2%;
+  margin-bottom: 5%;
 }
 
 /*
@@ -2466,6 +2468,10 @@ select:focus {
   width: 9.5% !important;
 }
 
+.sector_local_images {
+  width: 100% !important;
+}
+
 /*
 *
 *	Page 404
@@ -4324,10 +4330,7 @@ a:active {
 
 .h-recent-work h3 {
   font-size: 22px;
-  color: #666;
-  text-align: center;
   margin-top: 40px;
-  margin-bottom: 50px;
 }
 
 .container {

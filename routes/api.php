@@ -165,6 +165,8 @@ Route::group(['namespace'=>'Api'], function() {
     Route::controller(ProductController::class)->prefix('product')->group( function() {
         Route::apiResource('/', 'ProductController');
         Route::get('/get_all_products', 'get_all_products');
+        Route::get('/get_product_editing_data/{product_id}', 'get_product_editing_data');
+        Route::get('/add_product', 'add_product');
     });
     // Route::apiResource('/product', 'ProductController');
     Route::post('/edit_product_data/{product_id}', 'ProductController@edit_product_data');
@@ -538,6 +540,6 @@ Route::group(['namespace'=>'Api'], function() {
     */
     Route::controller(CKEditorController::class)->prefix('ckeditor')->group( function() {
         // Route::get('', 'index');
-        Route::post('/upload', 'upload');
+        Route::match(['get', 'post'], '/upload', 'upload');
     });
 });

@@ -11,10 +11,10 @@
             </content-loader>
         </div>
         <div v-else>
-            <i18n>
+            <!-- <i18n>
                 <p placeholder="sectors">666</p>
-            </i18n>
-            <h3 v-if='sectors'>
+            </i18n> -->
+            <h3 class="article_list_short_description" v-if='sectors'>
                 {{ 
                     $t('guide.article.route_quantyty', { 
                         sectors: sectors,

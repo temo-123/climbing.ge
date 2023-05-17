@@ -77,7 +77,8 @@
                                 <td>{{ option.name }} </td>
                                 <td>|</td>
                                 <td>
-                                    <button type="submit" class="btn btn-primary" @click="edit_option_modal(option.id)">Edit</button>
+                                    <button v-if="!is_loading_editing_modal" type="submit" class="btn btn-primary" @click="edit_option_modal(option.id)">Edit</button>
+                                    <img v-if="is_loading_editing_modal" :src="'../../../../../../public/images/site_img/loading.gif'" alt="loading" style="width: 20%;">
                                 </td>
                                 <td>|</td>
                                 <td>
@@ -98,7 +99,13 @@
             :cancelButton="{ visible: false, title: 'Close', btnClass: { 'btn btn-danger': true } }"
         >
             <pre class="language-vue">
-                <form v-on:submit.prevent="add_option" id="add_new_option">
+                <div class="row justify-content-center" v-show="is_loading">
+                    <div class="col-md-4">
+                        <img :src="'../../../../../../public/images/site_img/loading.gif'" alt="loading">
+                    </div>
+                </div>
+
+                <form v-on:submit.prevent="add_option" id="add_new_option"  v-show="!is_loading">
                     Name
                     <input type="text" v-model="adding_data.name" class="form-control" name="name" placeholder="Name" title="enter your name" required>
                     Price
@@ -113,30 +120,32 @@
                     <input type="text" v-model="adding_data.quantity" class="form-control" name="name" placeholder="quantity" title="enter your name" required>
                 </form>
 
-                <button class="btn btn-primary float-left" @click="add_new_option_image_value()">Add new mount route image</button>
-                <table class="table table-hover" id="dev-table">
-                    <thead>
-                        <tr>
-                            <th>Image</th>
-                            <th>|</th>
-                            <th>Delite</th>
-                        </tr>
-                    </thead>
+                <span v-show="!is_loading">
+                    <button class="btn btn-primary float-left" @click="add_new_option_image_value()">Add new mount route image</button>
+                    <table class="table table-hover" id="dev-table">
+                        <thead>
+                            <tr>
+                                <th>Image</th>
+                                <th>|</th>
+                                <th>Delite</th>
+                            </tr>
+                        </thead>
 
-                    <tbody>
-                        <tr v-for="option_image in adding_option_images" :key="option_image.id">
-                            <td>
-                                <form ref="myForm">
-                                    <input type="file" name="image" id="image" v-on:change="onFileChange($event, option_image.id)">
-                                </form> 
-                            </td>
-                            <td>|</td>
-                            <td>
-                                <button class="btn btn-danger" @click="del_option_image(option_image.id)">Delete</button>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
+                        <tbody>
+                            <tr v-for="option_image in adding_option_images" :key="option_image.id">
+                                <td>
+                                    <form ref="myForm">
+                                        <input type="file" name="image" id="image" v-on:change="onFileChange($event, option_image.id)">
+                                    </form> 
+                                </td>
+                                <td>|</td>
+                                <td>
+                                    <button class="btn btn-danger" @click="del_option_image(option_image.id)">Delete</button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </span>
             </pre>
             <div slot="modal-footer">
                 <div class="modal-footer">
@@ -154,7 +163,13 @@
             :cancelButton="{ visible: false, title: 'Close', btnClass: { 'btn btn-danger': true } }"
         >
             <pre class="language-vue">
-                <form v-on:submit.prevent="edit_option" id="edit_new_option">
+                <div class="row justify-content-center" v-show="is_loading">
+                    <div class="col-md-4">
+                        <img :src="'../../../../../../public/images/site_img/loading.gif'" alt="loading">
+                    </div>
+                </div>
+
+                <form v-on:submit.prevent="edit_option" id="edit_new_option" v-show="!is_loading">
                     Name
                     <input type="text" v-model="editing_data.name" class="form-control" name="name" placeholder="Name" title="enter your name" required>
                     Price
@@ -169,65 +184,67 @@
                     <input type="text" v-model="editing_data.quantity" class="form-control" name="name" placeholder="quantity" title="enter your name" required>
                 </form>
 
-                <table class="table table-hover" id="dev-table" v-if="editing_option_images != []">
-                    <thead>
-                        <tr>
-                            <th>Image</th>
-                            <th>|</th>
-                            <th>Delite</th>
-                        </tr>
-                    </thead>
+                <span v-show="!is_loading">
+                    <table class="table table-hover" id="dev-table" v-if="editing_option_images != []">
+                        <thead>
+                            <tr>
+                                <th>Image</th>
+                                <th>|</th>
+                                <th>Delite</th>
+                            </tr>
+                        </thead>
 
-                    <tbody >
-                        <tr v-for="option_image in editing_option_images" :key="option_image.id">
-                            <td>
-                                <!-- <form ref="myForm"> -->
-                                    <img class="img-responsive" :src="'../../../../images/product_option_img/'+option_image.image" :alt="option_image.title">
-                                <!-- </form>  -->
-                            </td>
-                            <td>|</td>
-                            <td>
+                        <tbody >
+                            <tr v-for="option_image in editing_option_images" :key="option_image.id">
+                                <td>
+                                    <!-- <form ref="myForm"> -->
+                                        <img class="img-responsive" :src="'../../../../images/product_option_img/'+option_image.image" :alt="option_image.title">
+                                    <!-- </form>  -->
+                                </td>
+                                <td>|</td>
+                                <td>
                                 <button class="btn btn-danger" @click="del_option_image_from_db(option_image.id)">Delete</button>
                             </td>
                         </tr>
                     </tbody>
                 </table>
 
-                <button class="btn btn-primary float-left" @click="add_new_option_image_value()">Add new mount route image</button>
-                <table class="table table-hover" id="dev-table" v-if="editing_option_images">
-                    <thead>
-                        <tr>
-                            <th>Image</th>
-                            <th>|</th>
-                            <th>Delite</th>
-                        </tr>
-                    </thead>
+                    <button class="btn btn-primary float-left" @click="add_new_option_image_value()">Add new mount route image</button>
+                    <table class="table table-hover" id="dev-table" v-if="editing_option_images">
+                        <thead>
+                            <tr>
+                                <th>Image</th>
+                                <th>|</th>
+                                <th>Delite</th>
+                            </tr>
+                        </thead>
 
-                    <tbody >
-                        <tr v-for="option_image in adding_option_images" :key="option_image.id">
-                            <td>
-                                <form ref="myForm">
-                                    <input type="file" name="image" id="image" v-on:change="onFileChange($event, option_image.id)">
-                                </form> 
-                            </td>
-                            <td>|</td>
-                            <td>
-                                <button class="btn btn-danger" @click="del_option_image(option_image.id)">Delete</button>
-                            </td>
-                        </tr>
-                        <!-- <tr v-for="image in adding_option_images" :key="image.id">
-                            <td>
-                                <form ref="myForm">
-                                    <img class="img-responsive" :src="'../../../../images/product_option_img/'+image.image" :alt="image.title">
-                                </form> 
-                            </td>
-                            <td>|</td>
-                            <td>
-                                <button class="btn btn-danger" >Delete</button>
-                            </td>
-                        </tr> -->
-                    </tbody>
-                </table>
+                        <tbody >
+                            <tr v-for="option_image in adding_option_images" :key="option_image.id">
+                                <td>
+                                    <form ref="myForm">
+                                        <input type="file" name="image" id="image" v-on:change="onFileChange($event, option_image.id)">
+                                    </form> 
+                                </td>
+                                <td>|</td>
+                                <td>
+                                    <button class="btn btn-danger" @click="del_option_image(option_image.id)">Delete</button>
+                                </td>
+                            </tr>
+                            <!-- <tr v-for="image in adding_option_images" :key="image.id">
+                                <td>
+                                    <form ref="myForm">
+                                        <img class="img-responsive" :src="'../../../../images/product_option_img/'+image.image" :alt="image.title">
+                                    </form> 
+                                </td>
+                                <td>|</td>
+                                <td>
+                                    <button class="btn btn-danger" >Delete</button>
+                                </td>
+                            </tr> -->
+                        </tbody>
+                    </table>
+                </span>
             </pre>
             <div slot="modal-footer">
                 <div class="modal-footer">
@@ -261,6 +278,9 @@
                 is_add_option_modal: false,
 
                 adding_option_images: [],
+
+                is_loading: false,
+                is_loading_editing_modal: false,
 
                 adding_data: {
                     currency: '₾',
@@ -317,6 +337,8 @@
                 return arr;
             },
             get_editing_option(option_id){
+                this.is_loading_editing_modal = true
+
                 axios
                 .get("../../../api/product_option/get_editing_option/"+option_id)
                 .then(response => {
@@ -335,12 +357,17 @@
                 })
                 .catch(
                     error => console.log(error)
-                );
+                )
+                .finally(()=>{
+                    this.is_loading_editing_modal = false
+                });
             },
             edit_option_modal(option_id){
                 this.get_editing_option(option_id)
             },
             edit_option(){
+                this.is_loading = true
+
                 let formData = new FormData();
 
                 var loop_num = 0
@@ -362,7 +389,10 @@
                 })
                 .catch(
                     error => console.log(error)
-                );
+                )
+                .finally(()=>{
+                    this.is_loading = false
+                });
             },
             close_option_edit_model(){
                 this.is_edit_option_modal = false,
@@ -403,6 +433,8 @@
                 }
             },
             add_option(){
+                this.is_loading = true
+
                 let formData = new FormData();
 
                 var loop_num = 0
@@ -425,7 +457,10 @@
                 })
                 .catch(
                     error => console.log(error)
-                );
+                )
+                .finally(()=>{
+                    this.is_loading = false
+                });
             },
             close_option_add_model(){
                 this.is_add_option_modal = false

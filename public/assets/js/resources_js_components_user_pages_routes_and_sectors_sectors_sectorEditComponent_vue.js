@@ -38,7 +38,7 @@ function _toPrimitive(input, hint) { if (_typeof(input) !== "object" || input ==
       fileList: [],
       //https://github.com/eJayYoung/vux-uploader-component
       regions: "",
-      is_geting_data_isset: true,
+      is_loading: false,
       editorConfig: {},
       errors: [],
       // image_errors: [],
@@ -52,7 +52,7 @@ function _toPrimitive(input, hint) { if (_typeof(input) !== "object" || input ==
       }, _defineProperty(_data, "name", ""), _defineProperty(_data, "text", ""), _defineProperty(_data, "all_day_in_shade", null), _defineProperty(_data, "all_day_in_sun", null), _defineProperty(_data, "in_the_shade_afternoon", null), _defineProperty(_data, "in_the_shade_befornoon", null), _defineProperty(_data, "in_shade_after_10", null), _defineProperty(_data, "in_shade_after_15", null), _defineProperty(_data, "slabby", null), _defineProperty(_data, "vertical", null), _defineProperty(_data, "overhang", null), _defineProperty(_data, "roof", null), _defineProperty(_data, "for_family", null), _defineProperty(_data, "for_kids", null), _defineProperty(_data, "wolking_time", null), _data),
       // temporary_sector_id: 0,
 
-      // image_is_refresh: false,
+      is_back_action_query: true,
       // image_reset_id: 0,
 
       // sector_new_images: ['Item 1', 'Item 2', 'Item 3', 'Item 4', 'Item 5', 'Item 6', 'Item 7', 'Item 10'],
@@ -67,6 +67,18 @@ function _toPrimitive(input, hint) { if (_typeof(input) !== "object" || input ==
   // beforeRouteLeave (to, from, next) {
   //     this.go_back()
   // },
+  beforeRouteLeave: function beforeRouteLeave(to, from, next) {
+    if (this.is_back_action_query == true) {
+      if (window.confirm('Added information will be deleted!!! Are you sure, you want go back?')) {
+        this.is_back_action_query = false;
+        next();
+      } else {
+        next(false);
+      }
+    } else {
+      next();
+    }
+  },
   methods: {
     add_sector_new_image_value: function add_sector_new_image_value() {
       var new_item_id = this.sector_new_images.length + 1;
@@ -93,7 +105,7 @@ function _toPrimitive(input, hint) { if (_typeof(input) !== "object" || input ==
     del_sector_image_from_db: function del_sector_image_from_db(image_id) {
       var _this = this;
       if (confirm('Are you sure, you want delite this image?')) {
-        axios["delete"]("../../../api/sector/del_sector_image_from_db/" + image_id).then(function (response) {
+        axios["delete"]("/sector/del_sector_image_from_db/" + image_id).then(function (response) {
           _this.get_sector_images();
         })["catch"](function (error) {
           return console.log(error);
@@ -102,7 +114,9 @@ function _toPrimitive(input, hint) { if (_typeof(input) !== "object" || input ==
     },
     get_region_data: function get_region_data() {
       var _this2 = this;
-      axios.get('../../api/articles/outdoor/us').then(function (response) {
+      axios.post('/article/', {
+        category: 'outdoor'
+      }).then(function (response) {
         _this2.regions = response.data;
       })["catch"](function (error) {});
       // .finally(() => this.oudoor_loading = false)
@@ -110,19 +124,20 @@ function _toPrimitive(input, hint) { if (_typeof(input) !== "object" || input ==
 
     get_editing_sector_data: function get_editing_sector_data() {
       var _this3 = this;
-      axios.get("../../api/sector/get_sector_editing_data/" + this.$route.params.id).then(function (response) {
+      this.is_loading = true;
+      axios.get("/sector/get_sector_editing_data/" + this.$route.params.id).then(function (response) {
         _this3.data = response.data.sector;
         _this3.get_sector_images();
         // this.sector_old_images = response.data.images
       })["catch"](function (error) {
         return console.log(error);
       })["finally"](function () {
-        return _this3.is_geting_data_isset = false;
+        return _this3.is_loading = false;
       });
     },
     get_sector_images: function get_sector_images() {
       var _this4 = this;
-      axios.get("../../api/sector/get_sector_images/" + this.$route.params.id).then(function (response) {
+      axios.get("/sector/get_sector_images/" + this.$route.params.id).then(function (response) {
         _this4.sector_old_images = response.data;
       })["catch"](function (error) {
         return console.log(error);
@@ -130,6 +145,7 @@ function _toPrimitive(input, hint) { if (_typeof(input) !== "object" || input ==
     },
     edit_sector: function edit_sector() {
       var _this5 = this;
+      this.is_loading = true;
       var formData = new FormData();
       var loop_num = 0;
       this.sector_new_images.forEach(function (image) {
@@ -138,30 +154,21 @@ function _toPrimitive(input, hint) { if (_typeof(input) !== "object" || input ==
       });
       loop_num = 0;
       formData.append('data', JSON.stringify(this.data));
-      axios.post("../../api/sector/edit_sector/" + this.$route.params.id, formData).then(function (response) {
+      axios.post("/sector/edit_sector/" + this.$route.params.id, formData).then(function (response) {
         _this5.go_back(true);
       })["catch"](function (error) {
         console.log(error);
         // if (error.response.status == 422) {
         //     this.errors = error.response.data.errors;
         // }
+      })["finally"](function () {
+        return _this5.is_loading = false;
       });
     },
     go_back: function go_back() {
       var back_action = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : false;
-      if (back_action == false) {
-        if (confirm('Are you sure, you want go back?')) {
-          // this.$router.go(-1)
-          this.$router.push({
-            name: 'routeAndSectorList'
-          });
-        }
-      } else {
-        // this.$router.go(-1)
-        this.$router.push({
-          name: 'routeAndSectorList'
-        });
-      }
+      this.is_back_action_query = this.$going.back(this, back_action);
+      // this.$going.back(this, back_action)
     }
   }
 });
@@ -185,7 +192,16 @@ var render = function render() {
     _c = _vm._self._c;
   return _c("div", {
     staticClass: "col-md-12"
+  }, [_vm.is_loading ? _c("div", {
+    staticClass: "row justify-content-center"
   }, [_c("div", {
+    staticClass: "col-md-4"
+  }, [_c("img", {
+    attrs: {
+      src: "../../../../../../public/images/site_img/loading.gif",
+      alt: "loading"
+    }
+  })])]) : _vm._e(), _vm._v(" "), !_vm.is_loading ? _c("div", {
     staticClass: "row"
   }, [_c("div", {
     staticClass: "form-group"
@@ -196,12 +212,12 @@ var render = function render() {
     },
     on: {
       click: function click($event) {
-        return _vm.go_back();
+        return _vm.go_back(false);
       }
     }
-  }, [_vm._v("\n                Beck\n            ")])])]), _vm._v(" "), !_vm.is_geting_data_isset ? _c("div", {
+  }, [_vm._v("\n                Beck\n            ")])])]) : _vm._e(), _vm._v(" "), !_vm.is_loading ? _c("div", {
     staticClass: "row"
-  }, [_vm._m(0)]) : _vm._e(), _vm._v(" "), !_vm.is_geting_data_isset ? _c("div", [_c("form", {
+  }, [_vm._m(0)]) : _vm._e(), _vm._v(" "), !_vm.is_loading ? _c("div", [_c("form", {
     staticClass: "contact-form",
     attrs: {
       id: "sector_editing_form",
@@ -331,9 +347,9 @@ var render = function render() {
     return _c("option", {
       key: region,
       domProps: {
-        value: region.area.id
+        value: region.id
       }
-    }, [_vm._v("\n                            " + _vm._s(region.area.url_title) + "\n                        ")]);
+    }, [_vm._v("\n                            " + _vm._s(region.url_title) + "\n                        ")]);
   })], 2), _vm._v(" "), _vm.errors.article_id ? _c("div", {
     staticClass: "alert alert-danger",
     attrs: {
@@ -1058,16 +1074,7 @@ var render = function render() {
         }
       }
     }, [_vm._v("\n                                Del\n                            ")])])]);
-  })], 2)])])]) : _vm._e(), _vm._v(" "), _vm.is_geting_data_isset ? _c("div", {
-    staticClass: "row justify-content-center"
-  }, [_c("div", {
-    staticClass: "col-md-4"
-  }, [_c("img", {
-    attrs: {
-      src: "../../../../../../public/images/site_img/loading.gif",
-      alt: "loading"
-    }
-  })])]) : _vm._e()]);
+  })], 2)])])]) : _vm._e()]);
 };
 var staticRenderFns = [function () {
   var _vm = this,

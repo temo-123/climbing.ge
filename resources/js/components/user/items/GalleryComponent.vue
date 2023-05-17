@@ -88,7 +88,6 @@
                 <div class="container">
                     <div class="row">
                         <img :src="'/images/gallery_img/' + modal_image.image" :alt="modal_image.title">
-                        <!-- {{ modal_image.image }} -->
                     </div>
                 </div>
             </pre>
@@ -97,7 +96,7 @@
         <stack-modal
             :show="is_add_image"
             title="Add image"
-            @close="is_add_image=false"
+            @close="close_add_image_modal()"
             :saveButton="{ visible: true, title: 'Save', btnClass: { 'btn btn-primary': true } }"
             :cancelButton="{ visible: false, title: 'Close', btnClass: { 'btn btn-danger': true } }"
         >
@@ -187,7 +186,7 @@
         <stack-modal
                 :show="is_edit_image"
                 title="Edit image"
-                @close="close_edit_image_modal"
+                @close="close_edit_image_modal()"
                 :saveButton="{ visible: true, title: 'Save', btnClass: { 'btn btn-primary': true } }"
                 :cancelButton="{ visible: false, title: 'Close', btnClass: { 'btn btn-danger': true } }"
             >
@@ -376,6 +375,20 @@
                 });
             },
 
+            close_add_image_modal(action = false){
+                if(!action){
+                    if (window.confirm('Added information will be deleted!!! Are you sure, you want close modal?')) {
+                        this.is_add_image = false
+                        this.clear_input_data()
+                    }
+                }
+                else{
+                    this.is_add_image = false
+                    this.clear_input_data()
+                }
+            },
+
+
             show_image_modal(active_img){
                 this.is_show_image = true
                 this.modal_image = active_img
@@ -383,7 +396,6 @@
 
             add_image_modal(){
                 this.clear_input_data()
-
                 this.is_add_image = true
             },
 
@@ -411,7 +423,7 @@
                     .then(response => {
                         this.is_add_image = false
                         this.get_gallery_data()
-                        this.clear_input_data()
+                        this.close_add_image_modal(true)
                     })
                     .catch(error => {
                         alert(error)
@@ -449,6 +461,7 @@
             onEditImageChange(e){
                 this.editing_image = e.target.files[0];
             },
+
             get_editing_image_data(image_id){
                 this.loading_editing_data = true
                 axios
@@ -466,14 +479,25 @@
                 })
                 .finally(() => this.loading_editing_data = false);
             },
+
             edit_image_modal(editing_image_id){
                 this.is_edit_image = true
                 this.get_editing_image_data(editing_image_id)
             },
-            close_edit_image_modal(){
-                this.is_edit_image = false
-                this.clear_input_data()
+
+            close_edit_image_modal(action = false){
+                if(!action){
+                    if (window.confirm('Added information will be deleted!!! Are you sure, you want close modal?')) {
+                        this.is_edit_image = false
+                        this.clear_input_data()
+                    }
+                }
+                else{
+                    this.is_edit_image = false
+                    this.clear_input_data()
+                }
             },
+
             edit_image(){
                 this.loading_editing_data = true
 
@@ -496,7 +520,7 @@
                         this.is_add_image = false
 
                         this.get_gallery_data()
-                        this.close_edit_image_modal()
+                        this.close_edit_image_modal(true)
 
                         this.editing_image = []
                     })

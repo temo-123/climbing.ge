@@ -166,8 +166,10 @@ hr {
 *
 */
 
-.article_list_short_descriptio{
+.article_list_short_description{
     text-align: center;
+    margin-top: 2%;
+    margin-bottom: 5%;
 }
 
 /*
@@ -2472,6 +2474,9 @@ select:focus {
 .sector_images_10 {
     width: 9.5% !important;
 }
+.sector_local_images{
+    width: 100% !important;
+}
 
 /*
 *
@@ -4587,12 +4592,19 @@ a:active {
 //
 
 // .h-recent-work h6 {
+// .h-recent-work h3 {
+//     font-size: 22px;
+//     color: #666;
+//     text-align: center;
+//     margin-top: 40px;
+//     margin-bottom: 50px;
+// }
 .h-recent-work h3 {
     font-size: 22px;
-    color: #666;
-    text-align: center;
+    // color: #666;
+    // text-align: center;
     margin-top: 40px;
-    margin-bottom: 50px;
+    // margin-bottom: 50px;
 }
 .container {
     max-width: 1200px;

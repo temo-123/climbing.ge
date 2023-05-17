@@ -196,7 +196,9 @@ var render = function render() {
     staticClass: "container"
   }, [_c("h2", {
     staticClass: "index_h2"
-  }, [_vm._v(_vm._s(_vm.$t("guide.title.partner")))]), _vm._v(" "), _vm._m(0), _vm._v(" "), _c("h3", [_c("span", {
+  }, [_vm._v(_vm._s(_vm.$t("guide.title.partner")))]), _vm._v(" "), _vm._m(0), _vm._v(" "), _c("h3", {
+    staticClass: "article_list_short_description"
+  }, [_c("span", {
     domProps: {
       innerHTML: _vm._s(this.$siteData.partners)
     }

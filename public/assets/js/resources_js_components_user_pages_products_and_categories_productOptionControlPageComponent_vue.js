@@ -35,6 +35,8 @@ __webpack_require__.r(__webpack_exports__);
       product: [],
       is_add_option_modal: false,
       adding_option_images: [],
+      is_loading: false,
+      is_loading_editing_modal: false,
       adding_data: {
         currency: '₾',
         name: '',
@@ -85,6 +87,7 @@ __webpack_require__.r(__webpack_exports__);
     },
     get_editing_option: function get_editing_option(option_id) {
       var _this2 = this;
+      this.is_loading_editing_modal = true;
       axios.get("../../../api/product_option/get_editing_option/" + option_id).then(function (response) {
         _this2.is_edit_option_modal = true;
         _this2.editing_option_images = response.data.option_images, _this2.editing_data = {
@@ -96,6 +99,8 @@ __webpack_require__.r(__webpack_exports__);
         _this2.editing_option_id = option_id;
       })["catch"](function (error) {
         return console.log(error);
+      })["finally"](function () {
+        _this2.is_loading_editing_modal = false;
       });
     },
     edit_option_modal: function edit_option_modal(option_id) {
@@ -103,6 +108,7 @@ __webpack_require__.r(__webpack_exports__);
     },
     edit_option: function edit_option() {
       var _this3 = this;
+      this.is_loading = true;
       var formData = new FormData();
       var loop_num = 0;
       this.adding_option_images.forEach(function (image) {
@@ -116,6 +122,8 @@ __webpack_require__.r(__webpack_exports__);
         _this3.get_activ_product_options();
       })["catch"](function (error) {
         return console.log(error);
+      })["finally"](function () {
+        _this3.is_loading = false;
       });
     },
     close_option_edit_model: function close_option_edit_model() {
@@ -149,6 +157,7 @@ __webpack_require__.r(__webpack_exports__);
     },
     add_option: function add_option() {
       var _this6 = this;
+      this.is_loading = true;
       var formData = new FormData();
       var loop_num = 0;
       this.adding_option_images.forEach(function (image) {
@@ -163,6 +172,8 @@ __webpack_require__.r(__webpack_exports__);
         _this6.get_activ_product_options();
       })["catch"](function (error) {
         return console.log(error);
+      })["finally"](function () {
+        _this6.is_loading = false;
       });
     },
     close_option_add_model: function close_option_add_model() {
@@ -280,7 +291,7 @@ var render = function render() {
   }, [_vm._m(2), _vm._v(" "), _vm.product_options != [] ? _c("tbody", _vm._l(_vm.product_options, function (option) {
     return _c("tr", {
       key: option.id
-    }, [_c("td", [_vm._v(_vm._s(option.id))]), _vm._v(" "), _c("td", [_vm._v("|")]), _vm._v(" "), _c("td", [_vm._v(_vm._s(option.name) + " ")]), _vm._v(" "), _c("td", [_vm._v("|")]), _vm._v(" "), _c("td", [_c("button", {
+    }, [_c("td", [_vm._v(_vm._s(option.id))]), _vm._v(" "), _c("td", [_vm._v("|")]), _vm._v(" "), _c("td", [_vm._v(_vm._s(option.name) + " ")]), _vm._v(" "), _c("td", [_vm._v("|")]), _vm._v(" "), _c("td", [!_vm.is_loading_editing_modal ? _c("button", {
       staticClass: "btn btn-primary",
       attrs: {
         type: "submit"
@@ -290,7 +301,15 @@ var render = function render() {
           return _vm.edit_option_modal(option.id);
         }
       }
-    }, [_vm._v("Edit")])]), _vm._v(" "), _c("td", [_vm._v("|")]), _vm._v(" "), _c("td", [_c("button", {
+    }, [_vm._v("Edit")]) : _vm._e(), _vm._v(" "), _vm.is_loading_editing_modal ? _c("img", {
+      staticStyle: {
+        width: "20%"
+      },
+      attrs: {
+        src: "../../../../../../public/images/site_img/loading.gif",
+        alt: "loading"
+      }
+    }) : _vm._e()]), _vm._v(" "), _c("td", [_vm._v("|")]), _vm._v(" "), _c("td", [_c("button", {
       staticClass: "btn btn-danger",
       attrs: {
         type: "submit"
@@ -325,7 +344,28 @@ var render = function render() {
     }
   }, [_c("pre", {
     staticClass: "language-vue"
-  }, [_vm._v("            "), _c("form", {
+  }, [_vm._v("            "), _c("div", {
+    directives: [{
+      name: "show",
+      rawName: "v-show",
+      value: _vm.is_loading,
+      expression: "is_loading"
+    }],
+    staticClass: "row justify-content-center"
+  }, [_vm._v("\n                "), _c("div", {
+    staticClass: "col-md-4"
+  }, [_vm._v("\n                    "), _c("img", {
+    attrs: {
+      src: "../../../../../../public/images/site_img/loading.gif",
+      alt: "loading"
+    }
+  }), _vm._v("\n                ")]), _vm._v("\n            ")]), _vm._v("\n\n            "), _c("form", {
+    directives: [{
+      name: "show",
+      rawName: "v-show",
+      value: !_vm.is_loading,
+      expression: "!is_loading"
+    }],
     attrs: {
       id: "add_new_option"
     },
@@ -443,25 +483,32 @@ var render = function render() {
         _vm.$set(_vm.adding_data, "quantity", $event.target.value);
       }
     }
-  }), _vm._v("\n            ")]), _vm._v("\n\n            "), _c("button", {
+  }), _vm._v("\n            ")]), _vm._v("\n\n            "), _c("span", {
+    directives: [{
+      name: "show",
+      rawName: "v-show",
+      value: !_vm.is_loading,
+      expression: "!is_loading"
+    }]
+  }, [_vm._v("\n                "), _c("button", {
     staticClass: "btn btn-primary float-left",
     on: {
       click: function click($event) {
         return _vm.add_new_option_image_value();
       }
     }
-  }, [_vm._v("Add new mount route image")]), _vm._v("\n            "), _c("table", {
+  }, [_vm._v("Add new mount route image")]), _vm._v("\n                "), _c("table", {
     staticClass: "table table-hover",
     attrs: {
       id: "dev-table"
     }
-  }, [_vm._v("\n                "), _c("thead", [_vm._v("\n                    "), _c("tr", [_vm._v("\n                        "), _c("th", [_vm._v("Image")]), _vm._v("\n                        "), _c("th", [_vm._v("|")]), _vm._v("\n                        "), _c("th", [_vm._v("Delite")]), _vm._v("\n                    ")]), _vm._v("\n                ")]), _vm._v("\n\n                "), _c("tbody", [_vm._v("\n                    "), _vm._l(_vm.adding_option_images, function (option_image) {
+  }, [_vm._v("\n                    "), _c("thead", [_vm._v("\n                        "), _c("tr", [_vm._v("\n                            "), _c("th", [_vm._v("Image")]), _vm._v("\n                            "), _c("th", [_vm._v("|")]), _vm._v("\n                            "), _c("th", [_vm._v("Delite")]), _vm._v("\n                        ")]), _vm._v("\n                    ")]), _vm._v("\n\n                    "), _c("tbody", [_vm._v("\n                        "), _vm._l(_vm.adding_option_images, function (option_image) {
     return _c("tr", {
       key: option_image.id
-    }, [_vm._v("\n                        "), _c("td", [_vm._v("\n                            "), _c("form", {
+    }, [_vm._v("\n                            "), _c("td", [_vm._v("\n                                "), _c("form", {
       ref: "myForm",
       refInFor: true
-    }, [_vm._v("\n                                "), _c("input", {
+    }, [_vm._v("\n                                    "), _c("input", {
       attrs: {
         type: "file",
         name: "image",
@@ -472,15 +519,15 @@ var render = function render() {
           return _vm.onFileChange($event, option_image.id);
         }
       }
-    }), _vm._v("\n                            ")]), _vm._v(" \n                        ")]), _vm._v("\n                        "), _c("td", [_vm._v("|")]), _vm._v("\n                        "), _c("td", [_vm._v("\n                            "), _c("button", {
+    }), _vm._v("\n                                ")]), _vm._v(" \n                            ")]), _vm._v("\n                            "), _c("td", [_vm._v("|")]), _vm._v("\n                            "), _c("td", [_vm._v("\n                                "), _c("button", {
       staticClass: "btn btn-danger",
       on: {
         click: function click($event) {
           return _vm.del_option_image(option_image.id);
         }
       }
-    }, [_vm._v("Delete")]), _vm._v("\n                        ")]), _vm._v("\n                    ")]);
-  }), _vm._v("\n                ")], 2), _vm._v("\n            ")]), _vm._v("\n        ")]), _vm._v(" "), _c("div", {
+    }, [_vm._v("Delete")]), _vm._v("\n                            ")]), _vm._v("\n                        ")]);
+  }), _vm._v("\n                    ")], 2), _vm._v("\n                ")]), _vm._v("\n            ")]), _vm._v("\n        ")]), _vm._v(" "), _c("div", {
     attrs: {
       slot: "modal-footer"
     },
@@ -517,7 +564,28 @@ var render = function render() {
     }
   }, [_c("pre", {
     staticClass: "language-vue"
-  }, [_vm._v("            "), _c("form", {
+  }, [_vm._v("            "), _c("div", {
+    directives: [{
+      name: "show",
+      rawName: "v-show",
+      value: _vm.is_loading,
+      expression: "is_loading"
+    }],
+    staticClass: "row justify-content-center"
+  }, [_vm._v("\n                "), _c("div", {
+    staticClass: "col-md-4"
+  }, [_vm._v("\n                    "), _c("img", {
+    attrs: {
+      src: "../../../../../../public/images/site_img/loading.gif",
+      alt: "loading"
+    }
+  }), _vm._v("\n                ")]), _vm._v("\n            ")]), _vm._v("\n\n            "), _c("form", {
+    directives: [{
+      name: "show",
+      rawName: "v-show",
+      value: !_vm.is_loading,
+      expression: "!is_loading"
+    }],
     attrs: {
       id: "edit_new_option"
     },
@@ -635,21 +703,28 @@ var render = function render() {
         _vm.$set(_vm.editing_data, "quantity", $event.target.value);
       }
     }
-  }), _vm._v("\n            ")]), _vm._v("\n\n            "), _vm.editing_option_images != [] ? _c("table", {
+  }), _vm._v("\n            ")]), _vm._v("\n\n            "), _c("span", {
+    directives: [{
+      name: "show",
+      rawName: "v-show",
+      value: !_vm.is_loading,
+      expression: "!is_loading"
+    }]
+  }, [_vm._v("\n                "), _vm.editing_option_images != [] ? _c("table", {
     staticClass: "table table-hover",
     attrs: {
       id: "dev-table"
     }
-  }, [_vm._v("\n                "), _c("thead", [_vm._v("\n                    "), _c("tr", [_vm._v("\n                        "), _c("th", [_vm._v("Image")]), _vm._v("\n                        "), _c("th", [_vm._v("|")]), _vm._v("\n                        "), _c("th", [_vm._v("Delite")]), _vm._v("\n                    ")]), _vm._v("\n                ")]), _vm._v("\n\n                "), _c("tbody", [_vm._v("\n                    "), _vm._l(_vm.editing_option_images, function (option_image) {
+  }, [_vm._v("\n                    "), _c("thead", [_vm._v("\n                        "), _c("tr", [_vm._v("\n                            "), _c("th", [_vm._v("Image")]), _vm._v("\n                            "), _c("th", [_vm._v("|")]), _vm._v("\n                            "), _c("th", [_vm._v("Delite")]), _vm._v("\n                        ")]), _vm._v("\n                    ")]), _vm._v("\n\n                    "), _c("tbody", [_vm._v("\n                        "), _vm._l(_vm.editing_option_images, function (option_image) {
     return _c("tr", {
       key: option_image.id
-    }, [_vm._v("\n                        "), _c("td", [_vm._v("\n                            "), _vm._v("\n                                "), _c("img", {
+    }, [_vm._v("\n                            "), _c("td", [_vm._v("\n                                "), _vm._v("\n                                    "), _c("img", {
       staticClass: "img-responsive",
       attrs: {
         src: "../../../../images/product_option_img/" + option_image.image,
         alt: option_image.title
       }
-    }), _vm._v("\n                            "), _vm._v("\n                        ")]), _vm._v("\n                        "), _c("td", [_vm._v("|")]), _vm._v("\n                        "), _c("td", [_vm._v("\n                            "), _c("button", {
+    }), _vm._v("\n                                "), _vm._v("\n                            ")]), _vm._v("\n                            "), _c("td", [_vm._v("|")]), _vm._v("\n                            "), _c("td", [_vm._v("\n                            "), _c("button", {
       staticClass: "btn btn-danger",
       on: {
         click: function click($event) {
@@ -657,25 +732,25 @@ var render = function render() {
         }
       }
     }, [_vm._v("Delete")]), _vm._v("\n                        ")]), _vm._v("\n                    ")]);
-  }), _vm._v("\n                ")], 2), _vm._v("\n            ")]) : _vm._e(), _vm._v("\n\n            "), _c("button", {
+  }), _vm._v("\n                ")], 2), _vm._v("\n            ")]) : _vm._e(), _vm._v("\n\n                "), _c("button", {
     staticClass: "btn btn-primary float-left",
     on: {
       click: function click($event) {
         return _vm.add_new_option_image_value();
       }
     }
-  }, [_vm._v("Add new mount route image")]), _vm._v("\n            "), _vm.editing_option_images ? _c("table", {
+  }, [_vm._v("Add new mount route image")]), _vm._v("\n                "), _vm.editing_option_images ? _c("table", {
     staticClass: "table table-hover",
     attrs: {
       id: "dev-table"
     }
-  }, [_vm._v("\n                "), _c("thead", [_vm._v("\n                    "), _c("tr", [_vm._v("\n                        "), _c("th", [_vm._v("Image")]), _vm._v("\n                        "), _c("th", [_vm._v("|")]), _vm._v("\n                        "), _c("th", [_vm._v("Delite")]), _vm._v("\n                    ")]), _vm._v("\n                ")]), _vm._v("\n\n                "), _c("tbody", [_vm._v("\n                    "), _vm._l(_vm.adding_option_images, function (option_image) {
+  }, [_vm._v("\n                    "), _c("thead", [_vm._v("\n                        "), _c("tr", [_vm._v("\n                            "), _c("th", [_vm._v("Image")]), _vm._v("\n                            "), _c("th", [_vm._v("|")]), _vm._v("\n                            "), _c("th", [_vm._v("Delite")]), _vm._v("\n                        ")]), _vm._v("\n                    ")]), _vm._v("\n\n                    "), _c("tbody", [_vm._v("\n                        "), _vm._l(_vm.adding_option_images, function (option_image) {
     return _c("tr", {
       key: option_image.id
-    }, [_vm._v("\n                        "), _c("td", [_vm._v("\n                            "), _c("form", {
+    }, [_vm._v("\n                            "), _c("td", [_vm._v("\n                                "), _c("form", {
       ref: "myForm",
       refInFor: true
-    }, [_vm._v("\n                                "), _c("input", {
+    }, [_vm._v("\n                                    "), _c("input", {
       attrs: {
         type: "file",
         name: "image",
@@ -686,15 +761,15 @@ var render = function render() {
           return _vm.onFileChange($event, option_image.id);
         }
       }
-    }), _vm._v("\n                            ")]), _vm._v(" \n                        ")]), _vm._v("\n                        "), _c("td", [_vm._v("|")]), _vm._v("\n                        "), _c("td", [_vm._v("\n                            "), _c("button", {
+    }), _vm._v("\n                                ")]), _vm._v(" \n                            ")]), _vm._v("\n                            "), _c("td", [_vm._v("|")]), _vm._v("\n                            "), _c("td", [_vm._v("\n                                "), _c("button", {
       staticClass: "btn btn-danger",
       on: {
         click: function click($event) {
           return _vm.del_option_image(option_image.id);
         }
       }
-    }, [_vm._v("Delete")]), _vm._v("\n                        ")]), _vm._v("\n                    ")]);
-  }), _vm._v("\n                    "), _vm._v("\n                ")], 2), _vm._v("\n            ")]) : _vm._e(), _vm._v("\n        ")]), _vm._v(" "), _c("div", {
+    }, [_vm._v("Delete")]), _vm._v("\n                            ")]), _vm._v("\n                        ")]);
+  }), _vm._v("\n                        "), _vm._v("\n                    ")], 2), _vm._v("\n                ")]) : _vm._e(), _vm._v("\n            ")]), _vm._v("\n        ")]), _vm._v(" "), _c("div", {
     attrs: {
       slot: "modal-footer"
     },

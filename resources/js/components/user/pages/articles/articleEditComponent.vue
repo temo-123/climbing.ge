@@ -1,17 +1,17 @@
 <template>
   <div class="tabs"> 
-        <div class="row justify-content-center" v-if="is_loading">
+        <div class="row justify-content-center" v-show="is_loading">
             <div class="col-md-4">
                 <img :src="'../../../../../../public/images/site_img/loading.gif'" alt="loading">
             </div>
         </div>
-        <div class="row" v-if="!is_loading">
+        <div class="row" v-show="!is_loading">
             <div class="form-group">
                 <button type="submit" class="btn btn-primary" @click="go_back()">Beck</button>
             </div>
         </div>
 
-        <div class="row" v-if="!is_loading">
+        <div class="row" v-show="!is_loading">
             <div class="form-group">  
                 <button type="submit" class="btn btn-primary" v-on:click="edit_article()" >Save</button>
             </div>
@@ -53,7 +53,7 @@
                 </div>
             </div>
         </div>
-        <div class="row" v-if="!is_loading">
+        <div class="row" v-show="!is_loading">
             <div class="col-md-12">
                 <div class="row">
                     <div class="col" >
@@ -88,9 +88,6 @@
 
                     :global_data_prop="editing_data.global_article"
                     :category_prop="this.category"
-
-                    :region_id_prop="region_id"
-                    :mount_id_prop="mount_id"
 
                     :title_prop="$t('user edit en article title')"
                     :description_prop="$t('user edit en article description')"
@@ -198,10 +195,10 @@
                 area_rocks_images: [],
                 mount_route_images: [],
 
-                region_id: 0,
-                mount_id: 0,
+                // region_id: 0,
+                // mount_id: 0,
                 
-                is_back_action: false,
+                is_back_action_query: true,
 
                 article_old_image: '',
 
@@ -219,13 +216,13 @@
                     routes_info_id: 0,
                     what_need_info_id: 0,
                     best_time_id: 0,
-                }
+                },
             }
         },
         beforeRouteLeave (to, from, next) {
-            if(this.is_back_action == true){
+            if(this.is_back_action_query == true){
                 if (window.confirm('Added information will be deleted!!! Are you sure, you want go back?')) {
-                    this.is_back_action = false;
+                    this.is_back_action_query = false;
                     next()
                 } else {
                     next(false)
@@ -247,8 +244,8 @@
                     this.category = response.data.global_article.category
                     this.article_old_image = this.editing_data.global_article.image
 
-                    this.region_id = this.editing_data.region_id
-                    this.mount_id = this.editing_data.mount_id
+                    // this.region_id = this.editing_data.region_id
+                    // this.mount_id = this.editing_data.mount_id
 
                     this.editing_data.general_data.forEach(general_text => {
                         if(general_text.position.block == 'info_block'){
@@ -331,7 +328,7 @@
             },
 
             go_back: function(action = false) {
-                this.is_back_action = this.$going.back(this, action)
+                this.is_back_action_query = this.$going.back(this, action)
             },
         },
     }

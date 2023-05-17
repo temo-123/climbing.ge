@@ -1,17 +1,23 @@
 <template>
     <div class="col-md-12">
-        <div class="row">
+        <div class="row justify-content-center" v-if="is_loading">
+            <div class="col-md-4">
+                <img :src="'../../../../../../public/images/site_img/loading.gif'" alt="loading">
+            </div>
+        </div>
+
+        <div class="row" v-if="!is_loading">
             <div class="form-group">
                 <button
                     type="submit"
                     class="btn btn-primary"
-                    v-on:click="go_back()"
+                    v-on:click="go_back(false)"
                 >
                     Beck
                 </button>
             </div>
         </div>
-        <div class="row" v-if="!is_geting_data_isset">
+        <div class="row" v-if="!is_loading">
             <div class="form-group">
                 <button
                     type="submit"
@@ -22,7 +28,7 @@
                 </button>
             </div>
         </div>
-        <div v-if="!is_geting_data_isset">
+        <div v-if="!is_loading">
             <form
                 @submit.prevent="edit_sector"
                 id="sector_editing_form"
@@ -82,9 +88,9 @@
                             <option
                                 v-for="region in regions"
                                 :key="region"
-                                v-bind:value="region.area.id"
+                                v-bind:value="region.id"
                             >
-                                {{ region.area.url_title }}
+                                {{ region.url_title }}
                             </option>
                         </select>
                         <div
@@ -435,12 +441,6 @@
                 </div>
             </div>
         </div>
-
-        <div class="row justify-content-center" v-if="is_geting_data_isset">
-            <div class="col-md-4">
-                <img :src="'../../../../../../public/images/site_img/loading.gif'" alt="loading">
-            </div>
-        </div>
     </div>
 </template>
 <script>
@@ -464,7 +464,7 @@
                 fileList: [], //https://github.com/eJayYoung/vux-uploader-component
                 regions: "",
 
-                is_geting_data_isset: true,
+                is_loading: false,
 
                 editorConfig: {},
 
@@ -500,7 +500,7 @@
 
                 // temporary_sector_id: 0,
 
-                // image_is_refresh: false,
+                is_back_action_query: true,
                 // image_reset_id: 0,
 
                 // sector_new_images: ['Item 1', 'Item 2', 'Item 3', 'Item 4', 'Item 5', 'Item 6', 'Item 7', 'Item 10'],
@@ -515,6 +515,18 @@
         // beforeRouteLeave (to, from, next) {
         //     this.go_back()
         // },
+        beforeRouteLeave (to, from, next) {
+            if(this.is_back_action_query == true){
+                if (window.confirm('Added information will be deleted!!! Are you sure, you want go back?')) {
+                    this.is_back_action_query = false;
+                    next()
+                } else {
+                    next(false)
+                }
+            }else {
+                next()
+            }
+        },
         methods: {
             add_sector_new_image_value(){
                 var new_item_id = this.sector_new_images.length+1
@@ -543,7 +555,7 @@
             del_sector_image_from_db(image_id) {
                 if(confirm('Are you sure, you want delite this image?')){
                     axios
-                    .delete("../../../api/sector/del_sector_image_from_db/"+image_id)
+                    .delete("/sector/del_sector_image_from_db/"+image_id)
                     .then(response => {
                         this.get_sector_images()
                     })
@@ -555,7 +567,9 @@
 
             get_region_data: function () {
                 axios
-                    .get('../../api/articles/outdoor/us')
+                    .post('/article/', {
+                        category: 'outdoor',
+                    })
                     .then(response => {
                         this.regions = response.data
                     })
@@ -565,8 +579,9 @@
             },
 
             get_editing_sector_data: function(){
+                this.is_loading = true
                 axios
-                .get("../../api/sector/get_sector_editing_data/"+this.$route.params.id)
+                .get("/sector/get_sector_editing_data/"+this.$route.params.id)
                 .then(response => {
                     this.data = response.data.sector
                     this.get_sector_images()
@@ -575,12 +590,12 @@
                 .catch(
                 error => console.log(error)
                 )
-                .finally(() => this.is_geting_data_isset = false);
+                .finally(() => this.is_loading = false);
             },
 
             get_sector_images: function(){
                 axios
-                .get("../../api/sector/get_sector_images/"+this.$route.params.id)
+                .get("/sector/get_sector_images/"+this.$route.params.id)
                 .then(response => {
                     this.sector_old_images = response.data
                 })
@@ -590,6 +605,7 @@
             },
 
             edit_sector: function () {
+                this.is_loading = true
                 let formData = new FormData();
 
                 var loop_num = 0
@@ -602,7 +618,7 @@
                 formData.append('data', JSON.stringify(this.data))
 
                 axios
-                .post("../../api/sector/edit_sector/"+this.$route.params.id, formData)
+                .post("/sector/edit_sector/"+this.$route.params.id, formData)
                 .then(response => {
                     this.go_back(true)
                 })
@@ -611,20 +627,13 @@
                     // if (error.response.status == 422) {
                     //     this.errors = error.response.data.errors;
                     // }
-                });
+                })
+                .finally(() => this.is_loading = false);
             },
 
             go_back(back_action = false) {
-                if(back_action == false){
-                    if(confirm('Are you sure, you want go back?')){
-                        // this.$router.go(-1)
-                        this.$router.push({ name: 'routeAndSectorList' })
-                    }
-                }
-                else{
-                    // this.$router.go(-1)
-                    this.$router.push({ name: 'routeAndSectorList' })
-                }
+                this.is_back_action_query = this.$going.back(this, back_action)
+                // this.$going.back(this, back_action)
             },
         },
     }

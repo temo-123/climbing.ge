@@ -48,7 +48,7 @@ class Sector extends Model
 
     public function images()
     {
-        return $this->hasMany(Sector_image::class)->latest('num');
+        return $this->hasMany(Sector_image::class)->orderBy('num');
     }
 
     public function mtps()
@@ -65,5 +65,10 @@ class Sector extends Model
 	{
 		// return $this->hasOhe(Spot_rocks_image_sector::class, 'sector_id');
         return $this->belongsToMany(Sector_local_image::class, 'sector_local_image_sector', 'sector_id', 'image_id');
+	}
+
+	public function sector_local_image_relation()
+	{
+        return $this->hasMany(sector_local_image_sector::class, 'sector_id', 'id');
 	}
 }

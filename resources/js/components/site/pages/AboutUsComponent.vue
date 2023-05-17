@@ -23,7 +23,7 @@
                 <h2 class='index_h2'>{{ $t('guide.title.partner') }}</h2>
 
                 <div class="bar"><i class="fa fa-handshake-o" aria-hidden="true"></i></div>
-                <h3> <span v-html="this.$siteData.partners"></span> </h3>
+                <h3 class="article_list_short_description"> <span v-html="this.$siteData.partners"></span> </h3>
                 
                 <div class="row"  v-for="partner in partners" :key="partner.id">
                     <div class="partners">

@@ -626,7 +626,8 @@ __webpack_require__.r(__webpack_exports__);
       SectorModalClass: 'modal-xxxl',
       sector_routes: [],
       sector_mtps: [],
-      sector_images: []
+      sector_images: [],
+      activ_sector_id: 0
     };
   },
   mounted: function mounted() {
@@ -636,8 +637,9 @@ __webpack_require__.r(__webpack_exports__);
     show_sector_modal: function show_sector_modal(sector_id) {
       var _this = this;
       this.is_show_sector_modal = true;
+      this.activ_sector_id = sector_id;
       if (this.is_show_sector_modal == true) {
-        axios.get('../../api/sector/get_sector_data_for_model/' + sector_id).then(function (response) {
+        axios.get('/sector/get_sector_data_for_model/' + sector_id).then(function (response) {
           _this.sector = response.data;
           _this.sector_images = _this.sector.images;
           _this.sector_routes = _this.sector.routes;
@@ -651,14 +653,18 @@ __webpack_require__.r(__webpack_exports__);
         this.sector_mtp = "";
       }
     },
+    close_sector_model: function close_sector_model() {
+      this.is_show_sector_modal = false;
+      this.activ_sector_id = 0;
+    },
     save_routes_sequence: function save_routes_sequence() {
       var _this2 = this;
-      axios.post('../api/sector/routes_sequence/', {
+      axios.post('/sector/routes_sequence/', {
         routes_sequence: this.sector_routes,
         mtp_sequence: this.sector_mtps,
         sector_images_sequence: this.sector_images
       }).then(function (response) {
-        _this2.is_show_sector_modal = false;
+        _this2.close_sector_model;
       })["catch"](function (error) {});
     }
   }
@@ -4028,7 +4034,7 @@ var render = function render() {
     },
     on: {
       close: function close($event) {
-        _vm.is_show_sector_modal = false;
+        return _vm.close_sector_model();
       }
     }
   }, [_c("pre", {
@@ -4038,6 +4044,18 @@ var render = function render() {
   }, [_vm._v("\n            "), _c("div", {
     staticClass: "col-md-12"
   }, [_vm._v("\n                "), _c("div", {
+    staticClass: "row"
+  }, [_vm._v("\n                    "), _vm.$can("edit", "sector") ? _c("router-link", {
+    staticClass: "btn btn-primary",
+    attrs: {
+      to: {
+        name: "sectorEdit",
+        params: {
+          id: _vm.activ_sector_id
+        }
+      }
+    }
+  }, [_vm._v("Edit This Sector")]) : _vm._e(), _vm._v("\n                ")], 1), _vm._v("\n                "), _c("div", {
     staticClass: "row"
   }, [_vm._v("\n                    "), _vm._v("\n                    "), _vm.sector_images.length > 0 ? _c("SlickList", {
     staticStyle: {
@@ -4155,7 +4173,7 @@ var render = function render() {
         return _vm.save_routes_sequence();
       }
     }
-  }, [_vm._v("\n            Save\n            ")])])])]);
+  }, [_vm._v("\n            Save sequence\n            ")])])])]);
 };
 var staticRenderFns = [];
 render._withStripped = true;

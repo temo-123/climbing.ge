@@ -12,7 +12,7 @@
             </div>
 
             <div class="wrapper container-fluid container">
-                <form method="POST">
+                <form method="POST"  :headers="{'x-csrf-token': token}">
                     <div class="form-group clearfix row" >
                         <label for="name" class='col-md-2 control-label'> Title </label>
                         <div class="col-md-10">
@@ -30,7 +30,7 @@
                     <div class="form-group clearfix row">
                         <label for="name" class='col-md-2 control-label'> Short description </label>
                         <div class="col-md-10">
-                            <ckeditor v-model="data.short_description" :config="this.editor_config.short_description_text"></ckeditor>
+                            <ckeditor v-model="data.short_description" :config="editor_config.short_description_text"></ckeditor>
                             <!-- <div class="alert alert-danger" role="alert" v-if="errors.short_description">
                                 {{ errors.short_description[0] }}
                             </div> -->
@@ -47,25 +47,25 @@
 
                             <ckeditor
                                 v-model="data.text"
-                                :config="this.editor_config.text"
+                                :config="editor_config.text"
                             />
                         </div>
                     </div>
 
-                    <hr v-if="this.category == 'outdoor'">
+                    <hr v-if="category == 'outdoor'">
 
-                    <div class="form-group clearfix row" v-if="this.category != 'mount_route'">
+                    <div class="form-group clearfix row" v-if="category != 'mount_route' && ( category == 'outdoor' || category == 'ice' || category == 'indoor' ) ">
                         <label for="name" class='col-md-2 control-label'> How to get hear </label>
                         <div class="col-md-10">
                             <!-- <ckeditor v-model="data.how_get" :config="editorConfig" :config="this.editor_config.$editorConfig"></ckeditor> -->
-                            <ckeditor v-model="data.how_get" :config="this.editor_config.how_get"></ckeditor>
+                            <ckeditor v-model="data.how_get" :config="editor_config.how_get"></ckeditor>
                         </div>
                     </div>
 
-                    <hr v-if="this.category == 'outdoor' || this.category == 'ice'">
+                    <hr v-if="category == 'outdoor' || category == 'ice'">
 
                     <!-- <div  v-if="general_infos.length">
-                        <div class="row" v-if="this.category == 'outdoor'">
+                        <div class="row" v-if="category == 'outdoor'">
                             <div class="col-md-2">
                                 <input type="radio" id="routes_new_info" name="fav_language" value="new_info" @click="routes_action('new_info')">
                                 <label for="routes_new_info">New info</label><br>
@@ -85,7 +85,7 @@
                         </div>
                     </div>
 
-                    <div class="form-group clearfix row" v-if="this.category == 'outdoor'">
+                    <div class="form-group clearfix row" v-if="category == 'outdoor'">
                         <label for="name" class='col-md-2 control-label'> Routes description </label>
 
                         <div class="col-md-10">
@@ -109,7 +109,7 @@
                     </div> -->
 
                     <!-- <div  v-if="general_infos.length">
-                        <div class="row" v-if="this.category == 'outdoor' || this.category == 'ice'">
+                        <div class="row" v-if="category == 'outdoor' || category == 'ice'">
                             <div class="col-md-2">
                                 <input type="radio" id="time_new_info" name="fav_language" value="new_info" @click="best_time_action('new_info')">
                                 <label for="time_new_info">New info</label><br>
@@ -129,7 +129,7 @@
                         </div>
                     </div>
 
-                    <div class="form-group clearfix row" v-if="this.category == 'outdoor' || this.category == 'ice'">
+                    <div class="form-group clearfix row" v-if="category == 'outdoor' || category == 'ice'">
                         <label for="name" class='col-md-2 control-label'> Best time for climbing </label>
 
                         <div class="col-md-10">
@@ -152,7 +152,7 @@
                     </div> -->
 
                     <!-- <div  v-if="general_infos.length">
-                        <div class="row" v-if="this.category == 'outdoor' || this.category == 'ice' || this.category == 'mount_route' ">
+                        <div class="row" v-if="category == 'outdoor' || category == 'ice' || category == 'mount_route' ">
                             <div class="col-md-2">
                                 <input type="radio" id="need_new_info" name="fav_language" value="new_info" @click="what_need_block_action('new_info')">
                                 <label for="need_new_info">New info</label><br>
@@ -172,7 +172,7 @@
                         </div>
                     </div>
 
-                    <div class="form-group clearfix row" v-if="this.category == 'outdoor' || this.category == 'ice' || this.category == 'mount_route' ">
+                    <div class="form-group clearfix row" v-if="category == 'outdoor' || category == 'ice' || category == 'mount_route' ">
                         <label for="name" class='col-md-2 control-label'> what you need </label>
 
                         <div class="col-md-10">
@@ -225,7 +225,7 @@
                             </div>
                         
                             <div class="col-md-12" v-if="global_blocks.info_block == 'befor' || global_blocks.info_block == 'after' || global_blocks.info_block == 'new_info'">
-                                <ckeditor v-model="data.info" :config="this.editor_config.info"></ckeditor>
+                                <ckeditor v-model="data.info" :config="editor_config.info"></ckeditor>
                             </div>
 
                             <div class="col-md-12" v-if="global_blocks.info_block == 'after' || global_blocks.info_block == 'instead'">
@@ -236,8 +236,8 @@
                         </div>
                     </div> -->
 
-
-                    <GlobalInfoFormBlock 
+                    <span v-if="category == 'outdoor' || category == 'ice'">
+                    <GlobalInfoFormBlock
                         :title_prop="'Routes description'" 
                         :form_value_name_prop="'route'"
                         :form_data_prop=data.route 
@@ -253,7 +253,8 @@
                         @get_global_blocks_status="get_global_blocks_status_action"
                         @get_global_blocks_id="get_global_blocks_id"
                     />
-
+                    </span>
+                    <span v-if="category == 'outdoor' || category == 'ice'">
                     <GlobalInfoFormBlock
                         :title_prop="'Best time for climbing'" 
                         :form_value_name_prop="'best_time'"
@@ -270,9 +271,11 @@
                         @get_global_blocks_status="get_global_blocks_status_action"
                         @get_global_blocks_id="get_global_blocks_id"
                     />
+                </span>
 
-                    <hr v-if="this.category == 'outdoor' || this.category == 'ice' || this.category == 'mount_route' ">
+                    <hr v-if="category == 'outdoor' || category == 'ice' || category == 'mount_route' ">
 
+                    <span v-if="category == 'outdoor' || category == 'ice' || category == 'indoor'">
                     <GlobalInfoFormBlock
                         :title_prop="'What you need'" 
                         :form_value_name_prop="'what_need'"
@@ -289,6 +292,7 @@
                         @get_global_blocks_status="get_global_blocks_status_action"
                         @get_global_blocks_id="get_global_blocks_id"
                     />
+                    </span>
 
                     <hr>
 
@@ -311,10 +315,10 @@
 
                     <hr>
 
-                    <div class="form-group clearfix row" v-if="this.category == 'indoor'">
+                    <div class="form-group clearfix row" v-if="category == 'indoor'">
                         <label for="name" class='col-md-2 control-label'> Price description </label>
                         <div class="col-md-10">
-                            <ckeditor v-model="data.price_text" :config="this.editor_config.price_text"></ckeditor>
+                            <ckeditor v-model="data.price_text" :config="editor_config.price_text"></ckeditor>
                         </div>
                     </div>
 
@@ -351,6 +355,11 @@
             'title_prop',
             'description_prop'
         ],
+        async created(){
+            const res = await this.callApi('get','app/get_categories')
+            this.token = window.Laravel.csrfToken
+            this.categories = res.data
+        },
         watch: {
             global_blocks_prop: function(){
                 this.global_blocks = this.global_blocks_prop
@@ -380,20 +389,21 @@
                     how_get: this.$editor_config.get_big_editor_config(),
                     price_text: this.$editor_config.get_big_editor_config(),
                 },
+                token: '',
 
-                // data: this.locale_data_prop,
-                data: {
-                    is_change_url_title: false,
-                    title: this.locale_data_prop.title,
-                    short_description: this.locale_data_prop.short_description,
-                    text: this.locale_data_prop.text,
-                    route: this.locale_data_prop.route,
-                    how_get: this.locale_data_prop.how_get,
-                    best_time: this.locale_data_prop.best_time,
-                    what_need: this.locale_data_prop.what_need,
-                    info: this.locale_data_prop.info,
-                    time: this.locale_data_prop.time,
-                },
+                data: this.locale_data_prop,
+                // data: {
+                //     is_change_url_title: false,
+                //     title: this.locale_data_prop.title,
+                //     short_description: this.locale_data_prop.short_description,
+                //     text: this.locale_data_prop.text,
+                //     route: this.locale_data_prop.route,
+                //     how_get: this.locale_data_prop.how_get,
+                //     best_time: this.locale_data_prop.best_time,
+                //     what_need: this.locale_data_prop.what_need,
+                //     info: this.locale_data_prop.info,
+                //     time: this.locale_data_prop.time,
+                // },
 
                 global_blocks: {
                     info_block: '',
@@ -410,6 +420,7 @@
         },
         mounted() {
             this.global_blocks = this.global_blocks_prop
+            this.category = this.category_prop
 
             this.get_general_info()
 

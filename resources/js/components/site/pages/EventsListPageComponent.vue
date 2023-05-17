@@ -2,7 +2,7 @@
     <div>
         <h1 class='index_h2'>{{ $t('guide.title.events')}}</h1>
 
-        <h2 class="article_list_short_descriptio">
+        <h2 class="article_list_short_description">
             {{this.$siteData.event_description}}
         </h2>
 

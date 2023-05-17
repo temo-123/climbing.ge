@@ -1,6 +1,12 @@
 <template>
     <div class="col-md-12">
-        <div class="row">
+        <div class="row justify-content-center" v-if="is_loading">
+            <div class="col-md-4">
+                <img :src="'../../../../../../public/images/site_img/loading.gif'" alt="loading">
+            </div>
+        </div>
+
+        <div class="row" v-if="!is_loading">
             <div class="form-group">
                 <button
                     type="submit"
@@ -11,7 +17,7 @@
                 </button>
             </div>
         </div>
-        <div class="row">
+        <div class="row" v-if="!is_loading">
             <div class="form-group">
                 <button
                     type="submit"
@@ -28,6 +34,7 @@
             class="contact-form"
             method="POST"
             enctype="multipart/form-data"
+            v-if="!is_loading"
         >
 
             <div class="form-group clearfix row">
@@ -81,9 +88,9 @@
                         <option
                             v-for="region in regions"
                             :key="region"
-                            v-bind:value="region.area.id"
+                            v-bind:value="region.id"
                         >
-                            {{ region.area.url_title }}
+                            {{ region.url_title }}
                         </option>
                     </select>
                     <div
@@ -429,7 +436,8 @@
                 editorConfig: {},
 
                 errors: [],
-                // image_errors: [],
+                
+                is_loading: false,
 
                 data: {
                     published: 0,
@@ -458,11 +466,25 @@
                     wolking_time: null,
                 },
 
+                is_back_action_query: true,
+
                 sector_images: [],
             };
         },
         mounted() {
             this.get_region_data();
+        },
+        beforeRouteLeave (to, from, next) {
+            if(this.is_back_action_query == true){
+                if (window.confirm('Added information will be deleted!!! Are you sure, you want go back?')) {
+                    this.is_back_action_query = false;
+                    next()
+                } else {
+                    next(false)
+                }
+            }else {
+                next()
+            }
         },
         methods: {
             add_sector_new_image_value(){
@@ -491,7 +513,9 @@
 
             get_region_data: function () {
                 axios
-                .get('../../api/articles/outdoor/us')
+                .post('/article/', {
+                    category: 'outdoor',
+                })
                 .then(response => {
                     this.regions = response.data
                 })
@@ -512,7 +536,7 @@
                 formData.append('data', JSON.stringify(this.data))
 
                 axios
-                    .post("../../api/sector/add_sector/", formData)
+                    .post("/sector/add_sector/", formData)
                     .then(response => {
                         if(confirm('Do you want send notification about editing sector?')){
                             this.sand_notification()
@@ -525,14 +549,15 @@
                         if (error.response.status == 422) {
                             this.errors = error.response.data.errors;
                         }
-                    });
+                    })
+                    .finally(() => this.is_loading = false);
             },
 
             sand_notification() {
                 this.is_mail_sending_procesing = true
 
                 axios
-                .post('../../../api/user/notifications/send_sector_adding_notification')
+                .post('/user/notifications/send_sector_adding_notification')
                 .then(response => {
                     this.go_back(true)
                 })
@@ -543,14 +568,7 @@
             },
 
             go_back(back_action = false) {
-                if(back_action == false){
-                    if(confirm('Are you sure, you want go back?')){
-                        this.$router.push({ name: 'routeAndSectorList' })
-                    }
-                }
-                else{
-                    this.$router.push({ name: 'routeAndSectorList' })
-                }
+                this.is_back_action_query = this.$going.back(this, back_action)
             },
         },
     };

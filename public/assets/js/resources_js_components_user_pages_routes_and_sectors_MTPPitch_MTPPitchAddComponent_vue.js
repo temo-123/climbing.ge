@@ -207,6 +207,8 @@ __webpack_require__.r(__webpack_exports__);
       mtps: [],
       status: "",
       problem_status: "",
+      is_loading: false,
+      is_back_action_query: true,
       data: {
         article_id: "",
         sector_id: "",
@@ -230,6 +232,18 @@ __webpack_require__.r(__webpack_exports__);
   mounted: function mounted() {
     this.get_region_data();
     this.get_sectors_data();
+  },
+  beforeRouteLeave: function beforeRouteLeave(to, from, next) {
+    if (this.is_back_action_query == true) {
+      if (window.confirm('Added information will be deleted!!! Are you sure, you want go back?')) {
+        this.is_back_action_query = false;
+        next();
+      } else {
+        next(false);
+      }
+    } else {
+      next();
+    }
   },
   methods: {
     get_region_data: function get_region_data() {
@@ -275,6 +289,7 @@ __webpack_require__.r(__webpack_exports__);
     },
     save_new_pitch: function save_new_pitch(go_back_action) {
       var _this4 = this;
+      this.is_loading = true;
       axios.post('../../api/mtp/mtp_pitch/mtp_pitch_add/', {
         data: this.data
       }).then(function (response) {
@@ -286,6 +301,8 @@ __webpack_require__.r(__webpack_exports__);
         }
       })["catch"](function (error) {
         _this4.status = "error";
+      })["finally"](function () {
+        _this4.is_loading = false;
       });
     },
     clear_form: function clear_form() {
@@ -307,17 +324,7 @@ __webpack_require__.r(__webpack_exports__);
     },
     go_back: function go_back() {
       var back_action = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : false;
-      if (back_action == false) {
-        if (confirm('Are you sure, you want go back?')) {
-          this.$router.push({
-            name: 'routeAndSectorList'
-          });
-        }
-      } else {
-        this.$router.push({
-          name: 'routeAndSectorList'
-        });
-      }
+      this.is_back_action_query = this.$going.back(this, back_action);
     }
   }
 });
@@ -551,7 +558,16 @@ var render = function render() {
     _c = _vm._self._c;
   return _c("div", {
     staticClass: "col-md-12"
+  }, [_vm.is_loading ? _c("div", {
+    staticClass: "row justify-content-center"
   }, [_c("div", {
+    staticClass: "col-md-4"
+  }, [_c("img", {
+    attrs: {
+      src: "../../../../../../public/images/site_img/loading.gif",
+      alt: "loading"
+    }
+  })])]) : _vm._e(), _vm._v(" "), !_vm.is_loading ? _c("div", {
     staticClass: "row"
   }, [_c("div", {
     staticClass: "form-group"
@@ -565,7 +581,7 @@ var render = function render() {
         return _vm.go_back();
       }
     }
-  }, [_vm._v("Beck")])])]), _vm._v(" "), _vm.problem_status != "" ? _c("div", {
+  }, [_vm._v("Beck")])])]) : _vm._e(), _vm._v(" "), _vm.problem_status != "" ? _c("div", {
     staticClass: "form-group clearfix row"
   }, [_c("div", {
     staticClass: "col-md-12"
@@ -574,7 +590,7 @@ var render = function render() {
     attrs: {
       role: "alert"
     }
-  }, [_vm._v("\n                " + _vm._s(_vm.problem_status) + "\n            ")])])]) : _vm._e(), _vm._v(" "), _c("div", {
+  }, [_vm._v("\n                " + _vm._s(_vm.problem_status) + "\n            ")])])]) : _vm._e(), _vm._v(" "), !_vm.is_loading ? _c("div", {
     staticClass: "row"
   }, [_c("div", {
     staticClass: "form-group"
@@ -589,7 +605,7 @@ var render = function render() {
         _vm.go_back_action = true;
       }
     }
-  }, [_vm._v("Save and go back")]), _vm._v(" "), _c("p", [_vm._v("Save and go to pitch tab page")])])]), _vm._v(" "), _c("div", {
+  }, [_vm._v("Save and go back")]), _vm._v(" "), _c("p", [_vm._v("Save and go to pitch tab page")])])]) : _vm._e(), _vm._v(" "), !_vm.is_loading ? _c("div", {
     staticClass: "row"
   }, [_c("div", {
     staticClass: "form-group"
@@ -604,7 +620,7 @@ var render = function render() {
         _vm.go_back_action = false;
       }
     }
-  }, [_vm._v("Save and add more reoute")]), _vm._v(" "), _c("p", [_vm._v("Save and add more pitch")])])]), _vm._v(" "), _c("div", {
+  }, [_vm._v("Save and add more reoute")]), _vm._v(" "), _c("p", [_vm._v("Save and add more pitch")])])]) : _vm._e(), _vm._v(" "), !_vm.is_loading ? _c("div", {
     staticClass: "wrapper container-fluid container"
   }, [_c("form", {
     attrs: {
@@ -1092,7 +1108,7 @@ var render = function render() {
         _vm.$set(_vm.data, "first_ascent", $event.target.value);
       }
     }
-  })])])])])]);
+  })])])])]) : _vm._e()]);
 };
 var staticRenderFns = [function () {
   var _vm = this,

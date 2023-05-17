@@ -1,20 +1,26 @@
 <template>
   <div class="col-md-12">
 
-    <div class="row">
+    <div class="row justify-content-center" v-if="is_loading">
+        <div class="col-md-4">
+            <img :src="'../../../../../../public/images/site_img/loading.gif'" alt="loading">
+        </div>
+    </div>
+
+    <div class="row" v-if="!is_loading">
         <div class="form-group">
             <button type="submit" class="btn btn-primary" @click="go_back()">Beck</button>
         </div>
     </div>
 
-    <div class="row" v-if="!is_geting_data_isset">
+    <div class="row" v-if="!is_loading">
         <div class="form-group">  
             <button form='route_edit_form' type="submit" class="btn btn-primary">Save and go back</button>
             <p>Save and go to route tab page</p>
         </div>
     </div>
 
-    <div class="wrapper container-fluid container" v-if="!is_geting_data_isset">
+    <div class="wrapper container-fluid container" v-if="!is_loading">
       <form id="route_edit_form" @submit.prevent="edit_mtp()">
         <div class="form-group clearfix row">
           <label for="name" class='col-md-2 control-label'> Region </label>
@@ -79,7 +85,7 @@
       </form>
     </div>
 
-    <div class="row justify-content-center" v-if="is_geting_data_isset">
+    <div class="row justify-content-center" v-if="is_loading">
         <div class="col-md-4">
             <img :src="'../../../../../../public/images/site_img/loading.gif'" alt="loading">
         </div>
@@ -113,7 +119,8 @@
           author: '',
         },
 
-        is_geting_data_isset: true,
+        is_loading: false,
+        is_back_action_query: true,
 
         go_back_action: false,
       }
@@ -121,6 +128,19 @@
 
     mounted() {
       this.get_region_data()
+    },
+
+    beforeRouteLeave (to, from, next) {
+        if(this.is_back_action_query == true){
+            if (window.confirm('Added information will be deleted!!! Are you sure, you want go back?')) {
+                this.is_back_action_query = false;
+                next()
+            } else {
+                next(false)
+            }
+        }else {
+            next()
+        }
     },
 
     methods: {
@@ -133,7 +153,8 @@
         })
         .catch(
           error => console.log(error)
-        );
+        )
+        .finally(() => this.is_loading = false);
       },
 
       get_sectors_data: function(){
@@ -145,10 +166,12 @@
         })
         .catch(
           error => console.log(error)
-        );
+        )
+        .finally(() => this.is_loading = false);
       },
 
       get_mtp_editing_data: function(){
+        this.is_loading = true
         axios
         .get("../../api/mtp/get_editing_mtp/"+this.$route.params.id)
         .then(response => {
@@ -162,7 +185,7 @@
         .catch(
           error => console.log(error)
         )
-        .finally(() => this.is_geting_data_isset = false);
+        .finally(() => this.is_loading = false);
       },
 
       filter_sectors(){
@@ -185,17 +208,11 @@
               this.errors = error.response.data.errors
             }
         })
+        .finally(() => this.is_loading = false);
       },
 
       go_back(back_action = false) {
-          if(back_action == false){
-              if(confirm('Are you sure, you want go back?')){
-                  this.$router.push({ name: 'routeAndSectorList' })
-              }
-          }
-          else{
-              this.$router.push({ name: 'routeAndSectorList' })
-          }
+        this.is_back_action_query = this.$going.back(this, back_action)
       },
 
     }

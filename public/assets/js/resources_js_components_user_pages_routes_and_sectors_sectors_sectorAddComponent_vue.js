@@ -42,8 +42,7 @@ function _toPrimitive(input, hint) { if (_typeof(input) !== "object" || input ==
 
       editorConfig: {},
       errors: [],
-      // image_errors: [],
-
+      is_loading: false,
       data: (_data = {
         published: 0,
         name: "",
@@ -51,11 +50,24 @@ function _toPrimitive(input, hint) { if (_typeof(input) !== "object" || input ==
         success: "",
         article_id: ""
       }, _defineProperty(_data, "name", ""), _defineProperty(_data, "text", ""), _defineProperty(_data, "all_day_in_shade", null), _defineProperty(_data, "all_day_in_sun", null), _defineProperty(_data, "in_the_shade_afternoon", null), _defineProperty(_data, "in_the_shade_befornoon", null), _defineProperty(_data, "in_shade_after_10", null), _defineProperty(_data, "in_shade_after_15", null), _defineProperty(_data, "slabby", null), _defineProperty(_data, "vertical", null), _defineProperty(_data, "overhang", null), _defineProperty(_data, "roof", null), _defineProperty(_data, "for_family", null), _defineProperty(_data, "for_kids", null), _defineProperty(_data, "wolking_time", null), _data),
+      is_back_action_query: true,
       sector_images: []
     };
   },
   mounted: function mounted() {
     this.get_region_data();
+  },
+  beforeRouteLeave: function beforeRouteLeave(to, from, next) {
+    if (this.is_back_action_query == true) {
+      if (window.confirm('Added information will be deleted!!! Are you sure, you want go back?')) {
+        this.is_back_action_query = false;
+        next();
+      } else {
+        next(false);
+      }
+    } else {
+      next();
+    }
   },
   methods: {
     add_sector_new_image_value: function add_sector_new_image_value() {
@@ -82,7 +94,9 @@ function _toPrimitive(input, hint) { if (_typeof(input) !== "object" || input ==
     },
     get_region_data: function get_region_data() {
       var _this = this;
-      axios.get('../../api/articles/outdoor/us').then(function (response) {
+      axios.post('/article/', {
+        category: 'outdoor'
+      }).then(function (response) {
         _this.regions = response.data;
       })["catch"](function (error) {});
     },
@@ -96,7 +110,7 @@ function _toPrimitive(input, hint) { if (_typeof(input) !== "object" || input ==
       });
       loop_num = 0;
       formData.append('data', JSON.stringify(this.data));
-      axios.post("../../api/sector/add_sector/", formData).then(function (response) {
+      axios.post("/sector/add_sector/", formData).then(function (response) {
         if (confirm('Do you want send notification about editing sector?')) {
           _this2.sand_notification();
         } else {
@@ -106,12 +120,14 @@ function _toPrimitive(input, hint) { if (_typeof(input) !== "object" || input ==
         if (error.response.status == 422) {
           _this2.errors = error.response.data.errors;
         }
+      })["finally"](function () {
+        return _this2.is_loading = false;
       });
     },
     sand_notification: function sand_notification() {
       var _this3 = this;
       this.is_mail_sending_procesing = true;
-      axios.post('../../../api/user/notifications/send_sector_adding_notification').then(function (response) {
+      axios.post('/user/notifications/send_sector_adding_notification').then(function (response) {
         _this3.go_back(true);
       })["catch"](function (err) {
         console.log(err);
@@ -121,17 +137,7 @@ function _toPrimitive(input, hint) { if (_typeof(input) !== "object" || input ==
     },
     go_back: function go_back() {
       var back_action = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : false;
-      if (back_action == false) {
-        if (confirm('Are you sure, you want go back?')) {
-          this.$router.push({
-            name: 'routeAndSectorList'
-          });
-        }
-      } else {
-        this.$router.push({
-          name: 'routeAndSectorList'
-        });
-      }
+      this.is_back_action_query = this.$going.back(this, back_action);
     }
   }
 });
@@ -155,7 +161,16 @@ var render = function render() {
     _c = _vm._self._c;
   return _c("div", {
     staticClass: "col-md-12"
+  }, [_vm.is_loading ? _c("div", {
+    staticClass: "row justify-content-center"
   }, [_c("div", {
+    staticClass: "col-md-4"
+  }, [_c("img", {
+    attrs: {
+      src: "../../../../../../public/images/site_img/loading.gif",
+      alt: "loading"
+    }
+  })])]) : _vm._e(), _vm._v(" "), !_vm.is_loading ? _c("div", {
     staticClass: "row"
   }, [_c("div", {
     staticClass: "form-group"
@@ -169,7 +184,9 @@ var render = function render() {
         return _vm.go_back();
       }
     }
-  }, [_vm._v("\n                Beck\n            ")])])]), _vm._v(" "), _vm._m(0), _vm._v(" "), _c("form", {
+  }, [_vm._v("\n                Beck\n            ")])])]) : _vm._e(), _vm._v(" "), !_vm.is_loading ? _c("div", {
+    staticClass: "row"
+  }, [_vm._m(0)]) : _vm._e(), _vm._v(" "), !_vm.is_loading ? _c("form", {
     staticClass: "contact-form",
     attrs: {
       id: "sector_adding_form",
@@ -299,9 +316,9 @@ var render = function render() {
     return _c("option", {
       key: region,
       domProps: {
-        value: region.area.id
+        value: region.id
       }
-    }, [_vm._v("\n                        " + _vm._s(region.area.url_title) + "\n                    ")]);
+    }, [_vm._v("\n                        " + _vm._s(region.url_title) + "\n                    ")]);
   })], 2), _vm._v(" "), _vm.errors.article_id ? _c("div", {
     staticClass: "alert alert-danger",
     attrs: {
@@ -947,7 +964,7 @@ var render = function render() {
         }
       }
     }
-  })])])]), _vm._v(" "), _c("hr")]), _vm._v(" "), _c("div", {
+  })])])]), _vm._v(" "), _c("hr")]) : _vm._e(), _vm._v(" "), _c("div", {
     staticClass: "row"
   }, [_c("div", {
     staticClass: "col-md-12"
@@ -1004,8 +1021,6 @@ var staticRenderFns = [function () {
   var _vm = this,
     _c = _vm._self._c;
   return _c("div", {
-    staticClass: "row"
-  }, [_c("div", {
     staticClass: "form-group"
   }, [_c("button", {
     staticClass: "btn btn-primary",
@@ -1013,7 +1028,7 @@ var staticRenderFns = [function () {
       type: "submit",
       form: "sector_adding_form"
     }
-  }, [_vm._v("\n                Save\n            ")])])]);
+  }, [_vm._v("\n                Save\n            ")])]);
 }, function () {
   var _vm = this,
     _c = _vm._self._c;

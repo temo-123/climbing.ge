@@ -125,6 +125,7 @@ __webpack_require__.r(__webpack_exports__);
         image: ''
       },
       image: '',
+      is_loading: false,
       sectors_refresh: false
     };
   },
@@ -135,6 +136,7 @@ __webpack_require__.r(__webpack_exports__);
   methods: {
     get_editing_image: function get_editing_image() {
       var _this = this;
+      this.is_loading = true;
       axios.get('../../api/sector_local_images/' + this.$route.params.id).then(function (response) {
         _this.data.title = response.data.sector_local_image.title;
         _this.data.image = response.data.sector_local_image.image;
@@ -142,7 +144,9 @@ __webpack_require__.r(__webpack_exports__);
       })["catch"](
 
         //
-      );
+      )["finally"](function () {
+        _this.is_loading = false;
+      });
     },
     get_editing_sectors: function get_editing_sectors() {
       var _this2 = this;
@@ -192,6 +196,7 @@ __webpack_require__.r(__webpack_exports__);
     },
     update: function update() {
       var _this4 = this;
+      this.is_loading = true;
       var config = {
         headers: {
           'content-type': 'multipart/form-data'
@@ -208,7 +213,9 @@ __webpack_require__.r(__webpack_exports__);
       })["catch"](
 
         //
-      );
+      )["finally"](function () {
+        _this4.is_loading = false;
+      });
     },
     go_back: function go_back() {
       if (window.confirm('Added information will be deleted!!! Are you sure, you want go back?')) {
@@ -390,6 +397,27 @@ var render = function render() {
   return _c("div", {
     staticClass: "row"
   }, [_c("div", {
+    directives: [{
+      name: "show",
+      rawName: "v-show",
+      value: _vm.is_loading,
+      expression: "is_loading"
+    }],
+    staticClass: "row justify-content-center"
+  }, [_c("div", {
+    staticClass: "col-md-4"
+  }, [_c("img", {
+    attrs: {
+      src: "../../../../../../public/images/site_img/loading.gif",
+      alt: "loading"
+    }
+  })])]), _vm._v(" "), _c("div", {
+    directives: [{
+      name: "show",
+      rawName: "v-show",
+      value: !_vm.is_loading,
+      expression: "!is_loading"
+    }],
     staticClass: "col-md-12"
   }, [_c("div", {
     staticClass: "row"
@@ -405,6 +433,12 @@ var render = function render() {
       }
     }
   }, [_vm._v("Go back")])])])])]), _vm._v(" "), _c("div", {
+    directives: [{
+      name: "show",
+      rawName: "v-show",
+      value: !_vm.is_loading,
+      expression: "!is_loading"
+    }],
     staticClass: "col-md-12"
   }, [_c("form", {
     ref: "myForm",

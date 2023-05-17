@@ -1,7 +1,13 @@
 <template>
   <div class="col-md-12">
 
-    <div class="row">
+    <div class="row justify-content-center" v-if="is_loading">
+        <div class="col-md-4">
+            <img :src="'../../../../../../public/images/site_img/loading.gif'" alt="loading">
+        </div>
+    </div>
+
+    <div class="row"  v-if="!is_loading">
         <div class="form-group">
             <button type="submit" class="btn btn-primary" @click="go_back()">Beck</button>
         </div>
@@ -15,21 +21,21 @@
         </div>
     </div>
 
-    <div class="row">
+    <div class="row" v-if="!is_loading">
         <div class="form-group">  
-            <button form='route_add_form' type="submit" class="btn btn-primary" @click="go_back_action = true" >Save and go back</button>
+            <button form='route_add_form' type="submit" class="btn btn-primary" @click="is_back_action_query = true" >Save and go back</button>
             <p>Save and go to route tab page</p>
         </div>
     </div>
 
-    <div class="row">
+    <div class="row" v-if="!is_loading">
         <div class="form-group">  
-            <button form='route_add_form' type="submit" class="btn btn-primary" @click="go_back_action = false" >Save and add more reoute</button>
+            <button form='route_add_form' type="submit" class="btn btn-primary" @click="is_back_action_query = false" >Save and add more reoute</button>
             <p>Save and add more route</p>
         </div>
     </div>
 
-    <div class="wrapper container-fluid container">
+    <div class="wrapper container-fluid container" v-if="!is_loading">
       <form id="route_add_form" @submit.prevent="save_new_route()">
         <div class="form-group clearfix row">
           <label for="name" class='col-md-2 control-label'> Region </label>
@@ -175,17 +181,17 @@
         <div class="form-group clearfix row">
           <label for="name" class='col-md-2 control-label'> Author & Creation date </label>
           <div class="col-md-5">
-            <input type="text" name="title" class="form-control" v-model="data.author" placeholder="Bolter"> 
+            <input type="text" name="auther" class="form-control" v-model="data.author" placeholder="Bolter"> 
           </div>
           <div class="col-md-5">
-            <input type="date" name="title" class="form-control" v-model="data.creation_data" placeholder="Bolting Data"> 
+            <input type="date" name="creating_data" class="form-control" v-model="data.creation_data" placeholder="Bolting Data"> 
           </div>
         </div>
 
         <div class="form-group clearfix row">
           <label for="name" class='col-md-2 control-label'>Firs Ascent </label>
           <div class="col-md-5">
-            <input type="date" name="title" class="form-control" v-model="data.first_ascent" placeholder="First ascent"> 
+            <input type="text" name="first_ascent" class="form-control" v-model="data.first_ascent" placeholder="First ascent"> 
           </div>
         </div>
 
@@ -238,7 +244,9 @@
           category: "",
         },
 
-        go_back_action: false,
+        is_loading: false,
+
+        is_back_action_query: false,
 
         sport_route_grade: [
           "4",
@@ -268,26 +276,6 @@
           "V17", 
           "V18", 
         ],
-        // boulder_route_grade: [
-        //   "V1", "V1+",
-        //   "V2", "V2+",
-        //   "V3", "V3+",
-        //   "V4", "V4+",
-        //   "V5", "V5+",
-        //   "V6", "V6+",
-        //   "V7", "V7+",
-        //   "V8", "V8+",
-        //   "V9", "V9+",
-        //   "V10", "V10+",
-        //   "V11", "V11+",
-        //   "V12", "V12+",
-        //   "V13", "V13+",
-        //   "V14", "V14+",
-        //   "V15", "V15+",
-        //   "V16", "V16+",
-        //   "V17", "V17+",
-        //   "V18", "V18+",
-        // ],
       }
     },
 
@@ -296,6 +284,18 @@
       this.get_sectors_data()
     },
 
+    beforeRouteLeave (to, from, next) {
+        if(this.is_back_action_query == true){
+            if (window.confirm('Added information will be deleted!!! Are you sure, you want go back?')) {
+                this.is_back_action_query = false;
+                next()
+            } else {
+                next(false)
+            }
+        }else {
+            next()
+        }
+    },
     methods: {
       get_region_data: function(){
         axios
@@ -326,13 +326,15 @@
         })
       },
 
-      save_new_route: function (go_back_action) {
+      save_new_route: function () {
+        this.is_loading = true
+
         axios
         .post('../../api/route/add_route/', {
             data: this.data,
         })
         .then(response => {
-          if(!this.go_back_action){
+          if(!this.is_back_action_query){
             alert('Saving completed')
             this.clear_form()
           }
@@ -343,6 +345,7 @@
         .catch(error =>{
             this.status = "error"
         })
+        .finally(() => this.is_loading = false);
       },
 
       clear_form(){
@@ -369,14 +372,7 @@
       },
 
         go_back(back_action = false) {
-            if(back_action == false){
-                if(confirm('Are you sure, you want go back?')){
-                    this.$router.push({ name: 'routeAndSectorList' })
-                }
-            }
-            else{
-                this.$router.push({ name: 'routeAndSectorList' })
-            }
+          this.is_back_action_query = this.$going.back(this, back_action)
         },
     }
   }

@@ -30,12 +30,25 @@ __webpack_require__.r(__webpack_exports__);
         first_ascent: "",
         author: ''
       },
-      is_geting_data_isset: true,
+      is_loading: false,
+      is_back_action_query: true,
       go_back_action: false
     };
   },
   mounted: function mounted() {
     this.get_region_data();
+  },
+  beforeRouteLeave: function beforeRouteLeave(to, from, next) {
+    if (this.is_back_action_query == true) {
+      if (window.confirm('Added information will be deleted!!! Are you sure, you want go back?')) {
+        this.is_back_action_query = false;
+        next();
+      } else {
+        next(false);
+      }
+    } else {
+      next();
+    }
   },
   methods: {
     get_region_data: function get_region_data() {
@@ -47,6 +60,8 @@ __webpack_require__.r(__webpack_exports__);
         _this.get_sectors_data();
       })["catch"](function (error) {
         return console.log(error);
+      })["finally"](function () {
+        return _this.is_loading = false;
       });
     },
     get_sectors_data: function get_sectors_data() {
@@ -56,10 +71,13 @@ __webpack_require__.r(__webpack_exports__);
         _this2.get_mtp_editing_data();
       })["catch"](function (error) {
         return console.log(error);
+      })["finally"](function () {
+        return _this2.is_loading = false;
       });
     },
     get_mtp_editing_data: function get_mtp_editing_data() {
       var _this3 = this;
+      this.is_loading = true;
       axios.get("../../api/mtp/get_editing_mtp/" + this.$route.params.id).then(function (response) {
         _this3.data = response.data;
         var sector = _this3.all_sectors.find(function (item) {
@@ -73,7 +91,7 @@ __webpack_require__.r(__webpack_exports__);
       })["catch"](function (error) {
         return console.log(error);
       })["finally"](function () {
-        return _this3.is_geting_data_isset = false;
+        return _this3.is_loading = false;
       });
     },
     filter_sectors: function filter_sectors() {
@@ -92,21 +110,13 @@ __webpack_require__.r(__webpack_exports__);
         if (error.response.status == 422) {
           _this4.errors = error.response.data.errors;
         }
+      })["finally"](function () {
+        return _this4.is_loading = false;
       });
     },
     go_back: function go_back() {
       var back_action = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : false;
-      if (back_action == false) {
-        if (confirm('Are you sure, you want go back?')) {
-          this.$router.push({
-            name: 'routeAndSectorList'
-          });
-        }
-      } else {
-        this.$router.push({
-          name: 'routeAndSectorList'
-        });
-      }
+      this.is_back_action_query = this.$going.back(this, back_action);
     }
   }
 });
@@ -129,7 +139,16 @@ var render = function render() {
     _c = _vm._self._c;
   return _c("div", {
     staticClass: "col-md-12"
+  }, [_vm.is_loading ? _c("div", {
+    staticClass: "row justify-content-center"
   }, [_c("div", {
+    staticClass: "col-md-4"
+  }, [_c("img", {
+    attrs: {
+      src: "../../../../../../public/images/site_img/loading.gif",
+      alt: "loading"
+    }
+  })])]) : _vm._e(), _vm._v(" "), !_vm.is_loading ? _c("div", {
     staticClass: "row"
   }, [_c("div", {
     staticClass: "form-group"
@@ -143,9 +162,9 @@ var render = function render() {
         return _vm.go_back();
       }
     }
-  }, [_vm._v("Beck")])])]), _vm._v(" "), !_vm.is_geting_data_isset ? _c("div", {
+  }, [_vm._v("Beck")])])]) : _vm._e(), _vm._v(" "), !_vm.is_loading ? _c("div", {
     staticClass: "row"
-  }, [_vm._m(0)]) : _vm._e(), _vm._v(" "), !_vm.is_geting_data_isset ? _c("div", {
+  }, [_vm._m(0)]) : _vm._e(), _vm._v(" "), !_vm.is_loading ? _c("div", {
     staticClass: "wrapper container-fluid container"
   }, [_c("form", {
     attrs: {
@@ -396,7 +415,7 @@ var render = function render() {
         _vm.$set(_vm.data, "author", $event.target.value);
       }
     }
-  })])])])]) : _vm._e(), _vm._v(" "), _vm.is_geting_data_isset ? _c("div", {
+  })])])])]) : _vm._e(), _vm._v(" "), _vm.is_loading ? _c("div", {
     staticClass: "row justify-content-center"
   }, [_c("div", {
     staticClass: "col-md-4"

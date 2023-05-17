@@ -1,6 +1,6 @@
 <template>
     <div>
-        <span v-html="this.article[0].text" id="descripton" v-if="this.article[0].text != NUll"></span>
+        <span v-html="this.article[0].text" id="description" v-if="this.article[0].text != NUll"></span>
 
         <!-- Best time for climbing block -->
         <div v-if="this.article[0].weather || this.article.global_info.best_time.length != 0">

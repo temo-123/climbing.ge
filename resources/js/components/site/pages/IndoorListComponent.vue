@@ -6,7 +6,7 @@
 
             <div class="bar"><i class="fa fa-exclamation-triangle"></i></div>
             
-            <h2 class="article_list_short_descriptio">
+            <h2 class="article_list_short_description">
                 {{this.$siteData.indoor_description}}
             </h2>
 

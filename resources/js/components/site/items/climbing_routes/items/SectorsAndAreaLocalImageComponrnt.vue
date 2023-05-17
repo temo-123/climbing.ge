@@ -7,9 +7,12 @@
 
                 :class="'sector_images sector_images_' + sectors_and_images.local_images.length"
             >
+                <h3>{{spot_image.title}}</h3>
+                
                 <openImg
                     :img="'/public/images/sector_local_img/' + spot_image.image"
                     :img_alt="spot_image.title"
+                    :img_class="'sector_local_images'"
                 />
             </div>
         </div>
@@ -60,7 +63,7 @@ export default {
 </script>
 
 <style scoped>
-    .sector_images {
+    /* .sector_images {
         float: left;
         margin: 0.25%;
     }
@@ -90,5 +93,5 @@ export default {
     }
     .sector_images_9 {
         width: 10.5%;
-    }
+    } */
 </style>

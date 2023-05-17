@@ -133,6 +133,18 @@ __webpack_require__.r(__webpack_exports__);
         alert(error);
       });
     },
+    close_add_image_modal: function close_add_image_modal() {
+      var action = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : false;
+      if (!action) {
+        if (window.confirm('Added information will be deleted!!! Are you sure, you want close modal?')) {
+          this.is_add_image = false;
+          this.clear_input_data();
+        }
+      } else {
+        this.is_add_image = false;
+        this.clear_input_data();
+      }
+    },
     show_image_modal: function show_image_modal(active_img) {
       this.is_show_image = true;
       this.modal_image = active_img;
@@ -160,7 +172,7 @@ __webpack_require__.r(__webpack_exports__);
         axios.post('/gallery_image_add', formData).then(function (response) {
           _this3.is_add_image = false;
           _this3.get_gallery_data();
-          _this3.clear_input_data();
+          _this3.close_add_image_modal(true);
         })["catch"](function (error) {
           alert(error);
           if (error.response.status == 422) {
@@ -215,8 +227,16 @@ __webpack_require__.r(__webpack_exports__);
       this.get_editing_image_data(editing_image_id);
     },
     close_edit_image_modal: function close_edit_image_modal() {
-      this.is_edit_image = false;
-      this.clear_input_data();
+      var action = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : false;
+      if (!action) {
+        if (window.confirm('Added information will be deleted!!! Are you sure, you want close modal?')) {
+          this.is_edit_image = false;
+          this.clear_input_data();
+        }
+      } else {
+        this.is_edit_image = false;
+        this.clear_input_data();
+      }
     },
     edit_image: function edit_image() {
       var _this5 = this;
@@ -233,7 +253,7 @@ __webpack_require__.r(__webpack_exports__);
         axios.post('/gallery_image_edit/' + this.editing_data.id, formData).then(function (response) {
           _this5.is_add_image = false;
           _this5.get_gallery_data();
-          _this5.close_edit_image_modal();
+          _this5.close_edit_image_modal(true);
           _this5.editing_image = [];
         })["catch"](function (error) {
           alert(error);
@@ -724,7 +744,7 @@ var render = function render() {
       src: "/images/gallery_img/" + _vm.modal_image.image,
       alt: _vm.modal_image.title
     }
-  }), _vm._v("\n                    "), _vm._v("\n                ")]), _vm._v("\n            ")]), _vm._v("\n        ")])]), _vm._v(" "), _c("stack-modal", {
+  }), _vm._v("\n                ")]), _vm._v("\n            ")]), _vm._v("\n        ")])]), _vm._v(" "), _c("stack-modal", {
     attrs: {
       show: _vm.is_add_image,
       title: "Add image",
@@ -745,7 +765,7 @@ var render = function render() {
     },
     on: {
       close: function close($event) {
-        _vm.is_add_image = false;
+        return _vm.close_add_image_modal();
       }
     }
   }, [_c("pre", {
@@ -1040,7 +1060,9 @@ var render = function render() {
       }
     },
     on: {
-      close: _vm.close_edit_image_modal
+      close: function close($event) {
+        return _vm.close_edit_image_modal();
+      }
     }
   }, [_c("pre", {
     staticClass: "language-vue"

@@ -5,7 +5,7 @@
             <h2 class='index_h2'>{{ $t('guide.title.other') }}</h2>
 
             <div class="bar"><i class="fa fa-dribbble"></i></div>
-            <h3> <span v-html="$siteData.other_activity_description"></span> </h3>
+            <h3 class="article_list_short_description"> <span v-html="$siteData.other_activity_description"></span> </h3>
 
             <articleCardComponent 
                 v-for="other_article in other_articles"
