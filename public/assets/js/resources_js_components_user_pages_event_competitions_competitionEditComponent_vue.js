@@ -138,15 +138,19 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var _mixins_editor_editor_config_mixin_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../../../../mixins/editor/editor_config_mixin.js */ "./resources/js/mixins/editor/editor_config_mixin.js");
 /* harmony import */ var _items_GlobalInfoFormBlockComponent_vue__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../../items/GlobalInfoFormBlockComponent.vue */ "./resources/js/components/user/items/GlobalInfoFormBlockComponent.vue");
+/* harmony import */ var moment__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! moment */ "./node_modules/moment/moment.js");
+/* harmony import */ var moment__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(moment__WEBPACK_IMPORTED_MODULE_2__);
 
 
+ // https://www.npmjs.com/package/vue-moment
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   mixins: [_mixins_editor_editor_config_mixin_js__WEBPACK_IMPORTED_MODULE_0__.editor_config],
   props: [
     // 'back_url',
   ],
   components: {
-    GlobalInfoFormBlock: _items_GlobalInfoFormBlockComponent_vue__WEBPACK_IMPORTED_MODULE_1__["default"]
+    GlobalInfoFormBlock: _items_GlobalInfoFormBlockComponent_vue__WEBPACK_IMPORTED_MODULE_1__["default"],
+    moment: (moment__WEBPACK_IMPORTED_MODULE_2___default())
   },
   data: function data() {
     return {
@@ -156,14 +160,15 @@ __webpack_require__.r(__webpack_exports__);
       editor_config: {
         us_short_description: _mixins_editor_editor_config_mixin_js__WEBPACK_IMPORTED_MODULE_0__.editor_config.get_small_editor_config(),
         us_text: _mixins_editor_editor_config_mixin_js__WEBPACK_IMPORTED_MODULE_0__.editor_config.get_big_editor_config(),
-        us_info: _mixins_editor_editor_config_mixin_js__WEBPACK_IMPORTED_MODULE_0__.editor_config.get_big_editor_config(),
+        // us_info: editor_config.get_big_editor_config(),
         ru_short_description: _mixins_editor_editor_config_mixin_js__WEBPACK_IMPORTED_MODULE_0__.editor_config.get_small_editor_config(),
         ru_text: _mixins_editor_editor_config_mixin_js__WEBPACK_IMPORTED_MODULE_0__.editor_config.get_big_editor_config(),
-        ru_info: _mixins_editor_editor_config_mixin_js__WEBPACK_IMPORTED_MODULE_0__.editor_config.get_big_editor_config(),
+        // ru_info: editor_config.get_big_editor_config(),
         ka_short_description: _mixins_editor_editor_config_mixin_js__WEBPACK_IMPORTED_MODULE_0__.editor_config.get_small_editor_config(),
-        ka_text: _mixins_editor_editor_config_mixin_js__WEBPACK_IMPORTED_MODULE_0__.editor_config.get_big_editor_config(),
-        ka_info: _mixins_editor_editor_config_mixin_js__WEBPACK_IMPORTED_MODULE_0__.editor_config.get_big_editor_config()
+        ka_text: _mixins_editor_editor_config_mixin_js__WEBPACK_IMPORTED_MODULE_0__.editor_config.get_big_editor_config()
+        // ka_info: editor_config.get_big_editor_config(),
       },
+
       error: [],
       is_change_event_category: false,
       change_url_title: false,
@@ -201,6 +206,7 @@ __webpack_require__.r(__webpack_exports__);
         info_block: 'new_info',
         info_block_id: 0
       },
+      start_time_h: 0,
       is_event_whithout_day: false,
       is_event_whithout_day_button: false
     };
@@ -251,6 +257,14 @@ __webpack_require__.r(__webpack_exports__);
         _this.data.us_data = response.data.us_data;
         _this.data.ru_data = response.data.ru_data;
         _this.data.ka_data = response.data.ka_data;
+        _this.start_time_h = moment__WEBPACK_IMPORTED_MODULE_2___default()(response.data.global_data.start_data).format("H");
+        if (_this.start_time_h > 0) {
+          _this.is_event_whithout_day = false, _this.is_event_whithout_day_button = false;
+        } else {
+          _this.is_event_whithout_day = true, _this.is_event_whithout_day_button = true;
+          _this.data.global_data.start_data = moment__WEBPACK_IMPORTED_MODULE_2___default()(_this.data.global_data.start_data).format('YYYY-MM');
+          _this.data.global_data.end_data = moment__WEBPACK_IMPORTED_MODULE_2___default()(_this.data.global_data.end_data).format('YYYY-MM');
+        }
         _this.global_blocks.info_block = response.data.general_info[0].position.block_action;
         _this.global_blocks.info_block_id = response.data.general_info[0].position.info_id;
       })["catch"](function (error) {
@@ -1130,7 +1144,7 @@ var render = function render() {
     staticClass: "col-xs-8"
   }, [_c("ckeditor", {
     attrs: {
-      config: _vm.us_short_description_text_editor
+      config: _vm.editor_config.us_short_description
     },
     model: {
       value: _vm.data.us_data.short_description,
@@ -1150,7 +1164,7 @@ var render = function render() {
     staticClass: "col-xs-8"
   }, [_c("ckeditor", {
     attrs: {
-      config: _vm.us_text_editor_config
+      config: _vm.editor_config.us_text
     },
     model: {
       value: _vm.data.us_data.text,
@@ -1233,7 +1247,7 @@ var render = function render() {
     staticClass: "col-xs-8"
   }, [_c("ckeditor", {
     attrs: {
-      config: _vm.ru_short_description_text_editor
+      config: _vm.editor_config.ru_short_description
     },
     model: {
       value: _vm.data.ru_data.short_description,
@@ -1253,7 +1267,7 @@ var render = function render() {
     staticClass: "col-xs-8"
   }, [_c("ckeditor", {
     attrs: {
-      config: _vm.ru_text_editor_config
+      config: _vm.editor_config.ru_text
     },
     model: {
       value: _vm.data.ru_data.text,
@@ -1342,7 +1356,7 @@ var render = function render() {
     staticClass: "col-xs-8"
   }, [_c("ckeditor", {
     attrs: {
-      config: _vm.ka_short_description_text_editor
+      config: _vm.editor_config.ka_short_description
     },
     model: {
       value: _vm.data.ka_data.short_description,
@@ -1362,7 +1376,7 @@ var render = function render() {
     staticClass: "col-xs-8"
   }, [_c("ckeditor", {
     attrs: {
-      config: _vm.ka_text_editor_config
+      config: _vm.editor_config.ka_text
     },
     model: {
       value: _vm.data.ka_data.text,

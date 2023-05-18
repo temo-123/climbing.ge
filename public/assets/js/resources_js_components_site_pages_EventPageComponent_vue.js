@@ -358,6 +358,9 @@ __webpack_require__.r(__webpack_exports__);
         _this.end_month = moment__WEBPACK_IMPORTED_MODULE_3___default()(response.data.global_event.end_data).format("MMM");
         _this.start_year = moment__WEBPACK_IMPORTED_MODULE_3___default()(response.data.global_event.start_data).format("Y");
         _this.end_year = moment__WEBPACK_IMPORTED_MODULE_3___default()(response.data.global_event.end_data).format("Y");
+        _this.start_time = moment__WEBPACK_IMPORTED_MODULE_3___default()(_this.event.global_event.start_data).format("H:MM A");
+        _this.end_time = moment__WEBPACK_IMPORTED_MODULE_3___default()(response.data.global_event.end_data).format("H:MM A");
+        _this.start_time_h = moment__WEBPACK_IMPORTED_MODULE_3___default()(_this.event.global_event.start_data).format("H");
       })["catch"](function (error) {});
     },
     add_to_interestid_event: function add_to_interestid_event(article_id) {
@@ -832,17 +835,27 @@ var render = function render() {
     staticClass: "container"
   }, [_c("div", {
     staticClass: "row"
-  }, [_c("div", {
+  }, [!!_vm.end_day && _vm.start_time_h > 0 ? _c("div", {
     staticClass: "offset-md-3 col-md-offset-3"
   }, [_c("p", {
     staticClass: "calendar start_calendar"
   }, [_vm._v("\n                " + _vm._s(_vm.start_day) + "\n                "), _c("span", {
     staticClass: "calendar_monthe"
-  }, [_vm._v(_vm._s(_vm.start_month))]), _vm._v(" "), _c("em", [_vm._v("Start")])]), _vm._v(" "), _c("p", {
+  }, [_vm._v(_vm._s(_vm.start_month))]), _vm._v(" "), _c("span", {
+    staticClass: "calendar_monthe"
+  }, [_vm._v(_vm._s(_vm.start_time))]), _vm._v(" "), _c("em", [_vm._v("Start")])]), _vm._v(" "), _c("p", {
     staticClass: "calendar end_calendar"
   }, [_vm._v("\n                " + _vm._s(_vm.end_day) + "\n                "), _c("span", {
     staticClass: "calendar_monthe"
-  }, [_vm._v(_vm._s(_vm.end_month))]), _vm._v(" "), _c("em", [_vm._v("Finish")])])])]), _vm._v(" "), _c("div", {
+  }, [_vm._v(_vm._s(_vm.end_month))]), _vm._v(" "), _c("span", {
+    staticClass: "calendar_monthe"
+  }, [_vm._v(_vm._s(_vm.end_time))]), _vm._v(" "), _c("em", [_vm._v("Finish")])])]) : _c("div", {
+    staticClass: "offset-md-6 col-md-offset-6"
+  }, [_c("p", {
+    staticClass: "calendar start_calendar"
+  }, [_vm._v("\n                " + _vm._s(_vm.start_month) + "\n                "), _c("span", {
+    staticClass: "calendar_monthe"
+  }, [_vm._v(_vm._s(_vm.start_year))]), _vm._v(" "), _c("em", [_vm._v("Start")])])])]), _vm._v(" "), _c("div", {
     staticClass: "row"
   }, [_c("div", {
     staticClass: "col-md-12"
@@ -864,7 +877,7 @@ var render = function render() {
     attrs: {
       id: "map"
     }
-  }, [_vm._v(_vm._s(_vm.$t("guide.article.title.map")))]), _vm._v(" "), _c("span", {
+  }, [_vm._v(_vm._s(_vm.$t("guide.article.title.location")))]), _vm._v(" "), _c("span", {
     domProps: {
       innerHTML: _vm._s(_vm.event.global_event.map)
     }

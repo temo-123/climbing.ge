@@ -1,16 +1,25 @@
 <template>
     <div class="container">
         <div class="row">
-            <div class="offset-md-3 col-md-offset-3">
+            <div class="offset-md-3 col-md-offset-3" v-if="!(!end_day) && start_time_h > 0">
                 <p class="calendar start_calendar">
                     {{ start_day }}
                     <span class="calendar_monthe">{{ start_month }}</span>
+                    <span class="calendar_monthe">{{ start_time }}</span>
                     <em>Start</em>
                 </p>
                 <p class="calendar end_calendar">
                     {{ end_day }}
                     <span class="calendar_monthe">{{ end_month }}</span>
+                    <span class="calendar_monthe">{{ end_time }}</span>
                     <em>Finish</em>
+                </p>
+            </div>
+            <div class="offset-md-6 col-md-offset-6" v-else>
+                <p class="calendar start_calendar">
+                    {{ start_month }}
+                    <span class="calendar_monthe">{{ start_year }}</span>
+                    <em>Start</em>
                 </p>
             </div>
         </div>
@@ -31,7 +40,7 @@
             <div class="col-md-12">
 
                 <span v-if="this.event.global_event.map != null && this.event.global_event.map != ''">
-                    <h2 id="map">{{ $t('guide.article.title.map')}}</h2>
+                    <h2 id="map">{{ $t('guide.article.title.location')}}</h2>
                     <span v-html="event.global_event.map"></span>
                 </span>
 
@@ -143,6 +152,11 @@
 
                     this.start_year = moment(response.data.global_event.start_data).format("Y")
                     this.end_year = moment(response.data.global_event.end_data).format("Y")
+
+                    this.start_time = moment(this.event.global_event.start_data).format("H:MM A")
+                    this.end_time = moment(response.data.global_event.end_data).format("H:MM A")
+
+                    this.start_time_h = moment(this.event.global_event.start_data).format("H")
                 })
                 .catch(error =>{
                 })

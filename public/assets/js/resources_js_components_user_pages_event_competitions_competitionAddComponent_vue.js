@@ -157,14 +157,15 @@ __webpack_require__.r(__webpack_exports__);
       editor_config: {
         us_short_description: _mixins_editor_editor_config_mixin_js__WEBPACK_IMPORTED_MODULE_0__.editor_config.get_small_editor_config(),
         us_text: _mixins_editor_editor_config_mixin_js__WEBPACK_IMPORTED_MODULE_0__.editor_config.get_big_editor_config(),
-        us_info: _mixins_editor_editor_config_mixin_js__WEBPACK_IMPORTED_MODULE_0__.editor_config.get_big_editor_config(),
+        // us_info: editor_config.get_big_editor_config(),
         ru_short_description: _mixins_editor_editor_config_mixin_js__WEBPACK_IMPORTED_MODULE_0__.editor_config.get_small_editor_config(),
         ru_text: _mixins_editor_editor_config_mixin_js__WEBPACK_IMPORTED_MODULE_0__.editor_config.get_big_editor_config(),
-        ru_info: _mixins_editor_editor_config_mixin_js__WEBPACK_IMPORTED_MODULE_0__.editor_config.get_big_editor_config(),
+        // ru_info: editor_config.get_big_editor_config(),
         ka_short_description: _mixins_editor_editor_config_mixin_js__WEBPACK_IMPORTED_MODULE_0__.editor_config.get_small_editor_config(),
-        ka_text: _mixins_editor_editor_config_mixin_js__WEBPACK_IMPORTED_MODULE_0__.editor_config.get_big_editor_config(),
-        ka_info: _mixins_editor_editor_config_mixin_js__WEBPACK_IMPORTED_MODULE_0__.editor_config.get_big_editor_config()
+        ka_text: _mixins_editor_editor_config_mixin_js__WEBPACK_IMPORTED_MODULE_0__.editor_config.get_big_editor_config()
+        // ka_info: editor_config.get_big_editor_config(),    
       },
+
       data: {
         global_data: {
           us_title_for_url_title: '',
@@ -193,6 +194,7 @@ __webpack_require__.r(__webpack_exports__);
           info: ""
         }
       },
+      is_loading: false,
       // general_infos: [],
 
       global_blocks: {
@@ -1043,7 +1045,7 @@ var render = function render() {
     staticClass: "col-xs-8"
   }, [_c("ckeditor", {
     attrs: {
-      config: _vm.us_short_description_text_editor
+      config: _vm.editor_config.us_short_description
     },
     model: {
       value: _vm.data.us_data.short_description,
@@ -1063,7 +1065,7 @@ var render = function render() {
     staticClass: "col-xs-8"
   }, [_c("ckeditor", {
     attrs: {
-      config: _vm.us_text_editor_config
+      config: _vm.editor_config.us_text
     },
     model: {
       value: _vm.data.us_data.text,
@@ -1075,14 +1077,14 @@ var render = function render() {
   })], 1)]), _vm._v(" "), _c("GlobalInfoFormBlock", {
     attrs: {
       title_prop: "Contact info",
-      form_data_prop: _vm.data.ka_data.info,
-      locale_prop: "ka",
+      form_data_prop: _vm.data.us_data.info,
+      locale_prop: "us",
       block_action_prop: _vm.global_blocks.info_block,
       block_id_prop: _vm.global_blocks.info_block_id,
       value_name_prop: "info_block"
     },
     on: {
-      get_form_data: _vm.get_ka_info_insert_text,
+      get_form_data: _vm.get_us_info_insert_text,
       get_global_blocks_status: _vm.get_global_blocks_status_action,
       get_global_blocks_id: _vm.get_global_blocks_id
     }
@@ -1145,7 +1147,7 @@ var render = function render() {
     staticClass: "col-xs-8"
   }, [_c("ckeditor", {
     attrs: {
-      config: _vm.ru_short_description_text_editor
+      config: _vm.editor_config.ru_short_description
     },
     model: {
       value: _vm.data.ru_data.short_description,
@@ -1165,7 +1167,7 @@ var render = function render() {
     staticClass: "col-xs-8"
   }, [_c("ckeditor", {
     attrs: {
-      config: _vm.ru_text_editor_config
+      config: _vm.editor_config.ru_text
     },
     model: {
       value: _vm.data.ru_data.text,
@@ -1177,14 +1179,14 @@ var render = function render() {
   })], 1)]), _vm._v(" "), _c("GlobalInfoFormBlock", {
     attrs: {
       title_prop: "Contact info",
-      form_data_prop: _vm.data.ka_data.info,
-      locale_prop: "ka",
+      form_data_prop: _vm.data.ru_data.info,
+      locale_prop: "ru",
       block_action_prop: _vm.global_blocks.info_block,
       block_id_prop: _vm.global_blocks.info_block_id,
       value_name_prop: "info_block"
     },
     on: {
-      get_form_data: _vm.get_ka_info_insert_text,
+      get_form_data: _vm.get_ru_info_insert_text,
       get_global_blocks_status: _vm.get_global_blocks_status_action,
       get_global_blocks_id: _vm.get_global_blocks_id
     }
@@ -1253,7 +1255,7 @@ var render = function render() {
     staticClass: "col-xs-8"
   }, [_c("ckeditor", {
     attrs: {
-      config: _vm.ka_short_description_text_editor
+      config: _vm.editor_config.ka_short_description
     },
     model: {
       value: _vm.data.ka_data.short_description,
@@ -1273,7 +1275,7 @@ var render = function render() {
     staticClass: "col-xs-8"
   }, [_c("ckeditor", {
     attrs: {
-      config: _vm.ka_text_editor_config
+      config: _vm.editor_config.ka_text
     },
     model: {
       value: _vm.data.ka_data.text,

@@ -197,26 +197,26 @@
                         <div class="form-group clearfix">
                             <label for="name" class='col-xs-2 control-label'> Short description </label>
                             <div class="col-xs-8">
-                                <ckeditor v-model="data.us_data.short_description" :config="us_short_description_text_editor"></ckeditor>
+                                <ckeditor v-model="data.us_data.short_description" :config="editor_config.us_short_description"></ckeditor>
                             </div>
                         </div>
 
                         <div class="form-group clearfix">
                             <label for="name" class='col-xs-2 control-label'> text </label>
                             <div class="col-xs-8">
-                                <ckeditor v-model="data.us_data.text" :config="us_text_editor_config"></ckeditor>
+                                <ckeditor v-model="data.us_data.text" :config="editor_config.us_text"></ckeditor>
                             </div>
                         </div>
 
                         <GlobalInfoFormBlock 
                             :title_prop="'Contact info'" 
-                            :form_data_prop=data.ka_data.info 
-                            :locale_prop="'ka'"
+                            :form_data_prop=data.us_data.info 
+                            :locale_prop="'us'"
                             :block_action_prop="global_blocks.info_block"
                             :block_id_prop="global_blocks.info_block_id"
                             :value_name_prop="'info_block'"
 
-                            @get_form_data="get_ka_info_insert_text"
+                            @get_form_data="get_us_info_insert_text"
                             @get_global_blocks_status="get_global_blocks_status_action"
                             @get_global_blocks_id="get_global_blocks_id"
                         />
@@ -243,26 +243,26 @@
                             <label for="name" class='col-xs-2 control-label'> Short description </label>
                             <div class="col-xs-8">
                                 <!-- <textarea type="text"  name="short_description" v-model="data.ru_data.short_description"  rows="15" class="form-cotrol md-textarea form-control"></textarea> -->
-                                <ckeditor v-model="data.ru_data.short_description" :config="ru_short_description_text_editor"></ckeditor>
+                                <ckeditor v-model="data.ru_data.short_description" :config="editor_config.ru_short_description"></ckeditor>
                             </div>
                         </div>
 
                         <div class="form-group clearfix">
                             <label for="name" class='col-xs-2 control-label'> text </label>
                             <div class="col-xs-8">
-                                <ckeditor v-model="data.ru_data.text" :config="ru_text_editor_config"></ckeditor>
+                                <ckeditor v-model="data.ru_data.text" :config="editor_config.ru_text"></ckeditor>
                             </div>
                         </div>
 
                         <GlobalInfoFormBlock 
                             :title_prop="'Contact info'" 
-                            :form_data_prop=data.ka_data.info 
-                            :locale_prop="'ka'"
+                            :form_data_prop=data.ru_data.info 
+                            :locale_prop="'ru'"
                             :block_action_prop="global_blocks.info_block"
                             :block_id_prop="global_blocks.info_block_id"
                             :value_name_prop="'info_block'"
 
-                            @get_form_data="get_ka_info_insert_text"
+                            @get_form_data="get_ru_info_insert_text"
                             @get_global_blocks_status="get_global_blocks_status_action"
                             @get_global_blocks_id="get_global_blocks_id"
                         />
@@ -289,14 +289,14 @@
                             <label for="name" class='col-xs-2 control-label'> Short description </label>
                             <div class="col-xs-8">
                                 <!-- <textarea type="text"  name="short_description"  v-model="data.ka_data.short_description" rows="15" class="form-cotrol md-textarea form-control"></textarea> -->
-                                <ckeditor v-model="data.ka_data.short_description" :config="ka_short_description_text_editor"></ckeditor>
+                                <ckeditor v-model="data.ka_data.short_description" :config="editor_config.ka_short_description"></ckeditor>
                             </div>
                         </div>
 
                         <div class="form-group clearfix">
                             <label for="name" class='col-xs-2 control-label'> text </label>
                             <div class="col-xs-8">
-                                <ckeditor v-model="data.ka_data.text" :config="ka_text_editor_config"></ckeditor>
+                                <ckeditor v-model="data.ka_data.text" :config="editor_config.ka_text"></ckeditor>
                             </div>
                         </div>
 
@@ -346,13 +346,13 @@
                 editor_config: {
                     us_short_description: editor_config.get_small_editor_config(),
                     us_text: editor_config.get_big_editor_config(),
-                    us_info: editor_config.get_big_editor_config(),
+                    // us_info: editor_config.get_big_editor_config(),
                     ru_short_description: editor_config.get_small_editor_config(),
                     ru_text: editor_config.get_big_editor_config(),
-                    ru_info: editor_config.get_big_editor_config(),
+                    // ru_info: editor_config.get_big_editor_config(),
                     ka_short_description: editor_config.get_small_editor_config(),
                     ka_text: editor_config.get_big_editor_config(),
-                    ka_info: editor_config.get_big_editor_config(),    
+                    // ka_info: editor_config.get_big_editor_config(),    
                 },
 
                 data: {
@@ -389,6 +389,8 @@
                         info: "",
                     }
                 },
+
+                is_loading: false,
 
                 // general_infos: [],
 

@@ -210,21 +210,21 @@
                         <div class="form-group clearfix">
                             <label for="name" class='col-xs-2 control-label'> Short description </label>
                             <div class="col-xs-8">
-                                <ckeditor v-model="data.us_data.short_description" :config="us_short_description_text_editor"></ckeditor>
+                                <ckeditor v-model="data.us_data.short_description" :config="editor_config.us_short_description"></ckeditor>
                             </div>
                         </div>
 
                         <div class="form-group clearfix">
                             <label for="name" class='col-xs-2 control-label'> text </label>
                             <div class="col-xs-8">
-                                <ckeditor v-model="data.us_data.text" :config="us_text_editor_config"></ckeditor>
+                                <ckeditor v-model="data.us_data.text" :config="editor_config.us_text"></ckeditor>
                             </div>
                         </div>
 
                         <!-- <div class="form-group clearfix">
                             <label for="name" class='col-xs-2 control-label'> contact info </label>
                             <div class="col-xs-8">
-                                <ckeditor v-model="data.us_data.info" :config="us_info_editor_config"></ckeditor>
+                                <ckeditor v-model="data.us_data.info" :config="editor_config.us_info"></ckeditor>
                             </div>
                         </div> -->
 
@@ -263,21 +263,21 @@
                             <label for="name" class='col-xs-2 control-label'> Short description </label>
                             <div class="col-xs-8">
                                 <!-- <textarea type="text"  name="short_description" v-model="data.ru_data.short_description"  rows="15" class="form-cotrol md-textarea form-control"></textarea> -->
-                                <ckeditor v-model="data.ru_data.short_description" :config="ru_short_description_text_editor"></ckeditor>
+                                <ckeditor v-model="data.ru_data.short_description" :config="editor_config.ru_short_description"></ckeditor>
                             </div>
                         </div>
 
                         <div class="form-group clearfix">
                             <label for="name" class='col-xs-2 control-label'> text </label>
                             <div class="col-xs-8">
-                                <ckeditor v-model="data.ru_data.text" :config="ru_text_editor_config"></ckeditor>
+                                <ckeditor v-model="data.ru_data.text" :config="editor_config.ru_text"></ckeditor>
                             </div>
                         </div>
 
                         <!-- <div class="form-group clearfix">
                             <label for="name" class='col-xs-2 control-label'> contact info </label>
                             <div class="col-xs-8">
-                                <ckeditor v-model="data.ru_data.info" :config="ru_info_editor_config"></ckeditor>
+                                <ckeditor v-model="data.ru_data.info" :config="editor_config.ru_info"></ckeditor>
                             </div>
                         </div> -->
 
@@ -316,21 +316,21 @@
                             <label for="name" class='col-xs-2 control-label'> Short description </label>
                             <div class="col-xs-8">
                                 <!-- <textarea type="text"  name="short_description"  v-model="data.ka_data.short_description" rows="15" class="form-cotrol md-textarea form-control"></textarea> -->
-                                <ckeditor v-model="data.ka_data.short_description" :config="ka_short_description_text_editor"></ckeditor>
+                                <ckeditor v-model="data.ka_data.short_description" :config="editor_config.ka_short_description"></ckeditor>
                             </div>
                         </div>
     
                         <div class="form-group clearfix">
                             <label for="name" class='col-xs-2 control-label'> text </label>
                             <div class="col-xs-8">
-                                <ckeditor v-model="data.ka_data.text" :config="ka_text_editor_config"></ckeditor>
+                                <ckeditor v-model="data.ka_data.text" :config="editor_config.ka_text"></ckeditor>
                             </div>
                         </div>
     
                         <!-- <div class="form-group clearfix">
                             <label for="name" class='col-xs-2 control-label'> contact info </label>
                             <div class="col-xs-8">
-                                <ckeditor v-model="data.ka_data.info" :config="ka_info_editor_config"></ckeditor>
+                                <ckeditor v-model="data.ka_data.info" :config="editor_config.ka_info"></ckeditor>
                             </div>
                         </div> -->
 
@@ -358,6 +358,7 @@
 <script>
     import { editor_config } from '../../../../../mixins/editor/editor_config_mixin.js'
     import GlobalInfoFormBlock from '../../../items/GlobalInfoFormBlockComponent.vue'
+    import moment from "moment"; // https://www.npmjs.com/package/vue-moment
     export default {
         mixins: [
             editor_config
@@ -366,7 +367,8 @@
             // 'back_url',
         ],
         components: {
-            GlobalInfoFormBlock
+            GlobalInfoFormBlock,
+            moment
         },
         data(){
             return {
@@ -378,13 +380,13 @@
                 editor_config: {
                     us_short_description: editor_config.get_small_editor_config(),
                     us_text: editor_config.get_big_editor_config(),
-                    us_info: editor_config.get_big_editor_config(),
+                    // us_info: editor_config.get_big_editor_config(),
                     ru_short_description: editor_config.get_small_editor_config(),
                     ru_text: editor_config.get_big_editor_config(),
-                    ru_info: editor_config.get_big_editor_config(),
+                    // ru_info: editor_config.get_big_editor_config(),
                     ka_short_description: editor_config.get_small_editor_config(),
                     ka_text: editor_config.get_big_editor_config(),
-                    ka_info: editor_config.get_big_editor_config(),
+                    // ka_info: editor_config.get_big_editor_config(),
                 },
 
                 error: [],
@@ -438,6 +440,8 @@
                     info_block_id: 0,
                 },
 
+                start_time_h: 0,
+
                 is_event_whithout_day: false,
                 is_event_whithout_day_button: false
             }
@@ -489,6 +493,20 @@
                     this.data.us_data = response.data.us_data
                     this.data.ru_data = response.data.ru_data
                     this.data.ka_data = response.data.ka_data
+
+                    this.start_time_h = moment(response.data.global_data.start_data).format("H")
+
+                    if(this.start_time_h > 0){
+                        this.is_event_whithout_day = false,
+                        this.is_event_whithout_day_button = false
+                    }
+                    else{
+                        this.is_event_whithout_day = true,
+                        this.is_event_whithout_day_button = true
+
+                        this.data.global_data.start_data = moment(this.data.global_data.start_data).format('YYYY-MM')
+                        this.data.global_data.end_data = moment(this.data.global_data.end_data).format('YYYY-MM')
+                    }
 
                     this.global_blocks.info_block = response.data.general_info[0].position.block_action
                     this.global_blocks.info_block_id = response.data.general_info[0].position.info_id
