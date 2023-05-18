@@ -153,15 +153,17 @@ __webpack_require__.r(__webpack_exports__);
       tab_num: 1,
       images: [],
       editorConfig: '',
-      us_short_description_text_editor: _mixins_editor_editor_config_mixin_js__WEBPACK_IMPORTED_MODULE_0__.editor_config.get_small_editor_config(),
-      us_text_editor_config: _mixins_editor_editor_config_mixin_js__WEBPACK_IMPORTED_MODULE_0__.editor_config.get_big_editor_config(),
-      us_info_editor_config: _mixins_editor_editor_config_mixin_js__WEBPACK_IMPORTED_MODULE_0__.editor_config.get_big_editor_config(),
-      ru_short_description_text_editor: _mixins_editor_editor_config_mixin_js__WEBPACK_IMPORTED_MODULE_0__.editor_config.get_small_editor_config(),
-      ru_text_editor_config: _mixins_editor_editor_config_mixin_js__WEBPACK_IMPORTED_MODULE_0__.editor_config.get_big_editor_config(),
-      ru_info_editor_config: _mixins_editor_editor_config_mixin_js__WEBPACK_IMPORTED_MODULE_0__.editor_config.get_big_editor_config(),
-      ka_short_description_text_editor: _mixins_editor_editor_config_mixin_js__WEBPACK_IMPORTED_MODULE_0__.editor_config.get_small_editor_config(),
-      ka_text_editor_config: _mixins_editor_editor_config_mixin_js__WEBPACK_IMPORTED_MODULE_0__.editor_config.get_big_editor_config(),
-      ka_info_editor_config: _mixins_editor_editor_config_mixin_js__WEBPACK_IMPORTED_MODULE_0__.editor_config.get_big_editor_config(),
+      editor_config: {
+        us_short_description: _mixins_editor_editor_config_mixin_js__WEBPACK_IMPORTED_MODULE_0__.editor_config.get_small_editor_config(),
+        us_text: _mixins_editor_editor_config_mixin_js__WEBPACK_IMPORTED_MODULE_0__.editor_config.get_big_editor_config(),
+        us_info: _mixins_editor_editor_config_mixin_js__WEBPACK_IMPORTED_MODULE_0__.editor_config.get_big_editor_config(),
+        ru_short_description: _mixins_editor_editor_config_mixin_js__WEBPACK_IMPORTED_MODULE_0__.editor_config.get_small_editor_config(),
+        ru_text: _mixins_editor_editor_config_mixin_js__WEBPACK_IMPORTED_MODULE_0__.editor_config.get_big_editor_config(),
+        ru_info: _mixins_editor_editor_config_mixin_js__WEBPACK_IMPORTED_MODULE_0__.editor_config.get_big_editor_config(),
+        ka_short_description: _mixins_editor_editor_config_mixin_js__WEBPACK_IMPORTED_MODULE_0__.editor_config.get_small_editor_config(),
+        ka_text: _mixins_editor_editor_config_mixin_js__WEBPACK_IMPORTED_MODULE_0__.editor_config.get_big_editor_config(),
+        ka_info: _mixins_editor_editor_config_mixin_js__WEBPACK_IMPORTED_MODULE_0__.editor_config.get_big_editor_config()
+      },
       error: [],
       is_change_event_category: false,
       change_url_title: false,
@@ -198,7 +200,9 @@ __webpack_require__.r(__webpack_exports__);
       global_blocks: {
         info_block: 'new_info',
         info_block_id: 0
-      }
+      },
+      is_event_whithout_day: false,
+      is_event_whithout_day_button: false
     };
   },
   mounted: function mounted() {
@@ -223,6 +227,9 @@ __webpack_require__.r(__webpack_exports__);
     },
     onFileChange: function onFileChange(event) {
       this.image = event.target.files[0];
+    },
+    event_whithout_day: function event_whithout_day() {
+      this.is_event_whithout_day = !this.is_event_whithout_day_button;
     },
     change_event_category: function change_event_category() {
       if (!this.is_change_event_category) {
@@ -848,36 +855,110 @@ var render = function render() {
       }
     }
   })])]), _vm._v(" "), _c("div", {
-    staticClass: "form-group clearfix"
+    staticClass: "form-group clearfix row"
   }, [_c("label", {
-    staticClass: "col-xs-2 control-label",
+    staticClass: "col-md-4 control-label",
     attrs: {
       "for": "name"
     }
-  }, [_vm._v(" Competition location ")]), _vm._v(" "), _c("div", {
-    staticClass: "col-xs-8"
+  }, [_vm._v("This event does`not have concrete day (Insert data without day)")]), _vm._v(" "), _c("div", {
+    staticClass: "col-md-8"
   }, [_c("input", {
     directives: [{
       name: "model",
       rawName: "v-model",
-      value: _vm.data.global_data.map,
-      expression: "data.global_data.map"
+      value: _vm.is_event_whithout_day_button,
+      expression: "is_event_whithout_day_button"
+    }],
+    attrs: {
+      type: "checkbox",
+      id: "scales",
+      name: "scales"
+    },
+    domProps: {
+      checked: Array.isArray(_vm.is_event_whithout_day_button) ? _vm._i(_vm.is_event_whithout_day_button, null) > -1 : _vm.is_event_whithout_day_button
+    },
+    on: {
+      click: function click($event) {
+        return _vm.event_whithout_day();
+      },
+      change: function change($event) {
+        var $$a = _vm.is_event_whithout_day_button,
+          $$el = $event.target,
+          $$c = $$el.checked ? true : false;
+        if (Array.isArray($$a)) {
+          var $$v = null,
+            $$i = _vm._i($$a, $$v);
+          if ($$el.checked) {
+            $$i < 0 && (_vm.is_event_whithout_day_button = $$a.concat([$$v]));
+          } else {
+            $$i > -1 && (_vm.is_event_whithout_day_button = $$a.slice(0, $$i).concat($$a.slice($$i + 1)));
+          }
+        } else {
+          _vm.is_event_whithout_day_button = $$c;
+        }
+      }
+    }
+  })])]), _vm._v(" "), _vm.is_event_whithout_day ? _c("div", {
+    staticClass: "form-group clearfix"
+  }, [_c("label", {
+    staticClass: "col-xs-2 control-label",
+    attrs: {
+      "for": "start_datatle"
+    }
+  }, [_vm._v(" Start and end data ")]), _vm._v(" "), _c("div", {
+    staticClass: "col-xs-8"
+  }, [_c("div", {
+    staticClass: "row"
+  }, [_c("div", {
+    staticClass: "col-md-6"
+  }, [_c("input", {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: _vm.data.global_data.start_data,
+      expression: "data.global_data.start_data"
     }],
     staticClass: "form-control",
     attrs: {
-      type: "text",
-      name: "name"
+      type: "month",
+      name: "start_datatle",
+      placeholder: "Start data/time"
     },
     domProps: {
-      value: _vm.data.global_data.map
+      value: _vm.data.global_data.start_data
     },
     on: {
       input: function input($event) {
         if ($event.target.composing) return;
-        _vm.$set(_vm.data.global_data, "map", $event.target.value);
+        _vm.$set(_vm.data.global_data, "start_data", $event.target.value);
       }
     }
-  })])]), _vm._v(" "), _c("div", {
+  })]), _vm._v(" "), _c("div", {
+    staticClass: "col-md-6"
+  }, [_c("input", {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: _vm.data.global_data.end_data,
+      expression: "data.global_data.end_data"
+    }],
+    staticClass: "form-control",
+    attrs: {
+      type: "month",
+      name: "end_data",
+      placeholder: "End data/time"
+    },
+    domProps: {
+      value: _vm.data.global_data.end_data
+    },
+    on: {
+      input: function input($event) {
+        if ($event.target.composing) return;
+        _vm.$set(_vm.data.global_data, "end_data", $event.target.value);
+      }
+    }
+  })])])])]) : _vm._e(), _vm._v(" "), !_vm.is_event_whithout_day ? _c("div", {
     staticClass: "form-group clearfix"
   }, [_c("label", {
     staticClass: "col-xs-2 control-label",
@@ -936,7 +1017,7 @@ var render = function render() {
         _vm.$set(_vm.data.global_data, "end_data", $event.target.value);
       }
     }
-  })])])])]), _vm._v(" "), _c("div", {
+  })])])])]) : _vm._e(), _vm._v(" "), _c("div", {
     staticClass: "form-group clearfix"
   }, [_c("label", {
     staticClass: "col-xs-6 control-label",

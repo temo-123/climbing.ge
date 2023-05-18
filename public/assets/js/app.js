@@ -7528,7 +7528,8 @@ __webpack_require__.r(__webpack_exports__);
       end_time: 0,
       start_time_for_check: 0,
       end_time_for_check: 0,
-      time: ''
+      time: '',
+      start_time_h: 0
     };
   },
   mounted: function mounted() {
@@ -7542,6 +7543,7 @@ __webpack_require__.r(__webpack_exports__);
     this.end_time = moment__WEBPACK_IMPORTED_MODULE_0___default()(this.event.global_event.end_data).format("H:MM A");
     this.start_time_for_check = moment__WEBPACK_IMPORTED_MODULE_0___default()(this.event.global_event.start_data).format("H:MM");
     this.end_time_for_check = moment__WEBPACK_IMPORTED_MODULE_0___default()(this.event.global_event.end_data).format("H:MM");
+    this.start_time_h = moment__WEBPACK_IMPORTED_MODULE_0___default()(this.event.global_event.end_data).format("H");
     this.realy_time();
   },
   methods: {
@@ -12103,7 +12105,7 @@ var render = function render() {
       img_class: "img-responsive",
       alt: _vm.event.locale_event.title
     }
-  })], 1), _vm._v(" "), new Date().getFullYear() == this.end_year && new Date().getDate() >= this.start_day && new Date().getDate() <= this.end_day && this.start_time_for_check <= this.start_time ? _c("div", {
+  })], 1), _vm._v(" "), !!_vm.end_day && _vm.start_time_h > 0 ? _c("span", [new Date().getFullYear() == this.end_year && new Date().getDate() >= this.start_day && new Date().getDate() <= this.end_day && this.start_time_for_check <= this.start_time ? _c("div", {
     staticClass: "row nopadding"
   }, [_c("div", {
     staticClass: "col-sm-12 col-xs-12 nopadding"
@@ -12125,7 +12127,7 @@ var render = function render() {
     staticClass: "col-sm-6 col-xs-6 nopadding"
   }, [_c("time", {
     staticClass: "end green"
-  }, [_vm._v("\n                        Start \n                        "), _c("span", {
+  }, [_vm._v("\n                            Start \n                            "), _c("span", {
     staticClass: "day"
   }, [_vm._v(_vm._s(this.start_day))]), _vm._v(" "), _c("span", {
     staticClass: "month"
@@ -12137,7 +12139,7 @@ var render = function render() {
     staticClass: "col-lg-6 col-md-6 col-sm-6 col-xs-6 nopadding"
   }, [_c("time", {
     staticClass: "end blue_green"
-  }, [_vm._v("\n                        End \n                        "), _c("span", {
+  }, [_vm._v("\n                            End \n                            "), _c("span", {
     staticClass: "day"
   }, [_vm._v(_vm._s(this.end_day))]), _vm._v(" "), _c("span", {
     staticClass: "month"
@@ -12145,7 +12147,17 @@ var render = function render() {
     staticClass: "month"
   }, [_vm._v(_vm._s(this.end_year))]) : _vm._e(), _vm._v(" "), _c("span", {
     staticClass: "month"
-  }, [_vm._v(_vm._s(this.end_time))])])])])], 1), _vm._v(" "), _c("div", {
+  }, [_vm._v(_vm._s(this.end_time))])])])])]) : _c("span", [_c("div", {
+    staticClass: "row nopadding"
+  }, [_c("div", {
+    staticClass: "col-sm-12 col-xs-12 nopadding"
+  }, [_c("time", {
+    staticClass: "end green"
+  }, [_vm._v("\n                            Start \n                            "), _vm._v(" "), _c("span", {
+    staticClass: "day"
+  }, [_vm._v(_vm._s(this.start_month))]), _vm._v(" "), _c("span", {
+    staticClass: "month"
+  }, [_vm._v(_vm._s(this.start_year))])])])])])], 1), _vm._v(" "), _c("div", {
     staticClass: "panel-footer panel-primary"
   }, [_vm.event.locale_event.short_description != null ? _c("div", {
     staticClass: "event_size"

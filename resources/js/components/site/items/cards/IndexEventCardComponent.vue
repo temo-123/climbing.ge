@@ -17,58 +17,73 @@
                     <site-img v-else :src="'/public/images/site_img/image.png'" :img_class="'img-responsive'" :alt='event.locale_event.title'/>
 
                 </router-link>
-                <div class="row nopadding"
-                    v-if="
-                            new Date().getFullYear() == this.end_year &&
-                            new Date().getDate() >= this.start_day &&
-                            new Date().getDate() <= this.end_day &&
-                            this.start_time_for_check <= this.start_time
-                        "
-                >
-                    <div class="col-sm-12 col-xs-12 nopadding" >
-                        <time class="end orange_red">
-                            <span class="day underway_now">Underway now</span>
-                            <span class="month">Finish at - {{this.end_day}} {{this.end_month}} {{this.end_time}}</span>
-                            <span class="month"></span>
-                            <span class="month"></span>
-                        </time>
+                <span v-if="!(!end_day) && start_time_h > 0">
+                    <div class="row nopadding"
+                        v-if="
+                                new Date().getFullYear() == this.end_year &&
+                                new Date().getDate() >= this.start_day &&
+                                new Date().getDate() <= this.end_day &&
+                                this.start_time_for_check <= this.start_time
+                            "
+                    >
+                        <div class="col-sm-12 col-xs-12 nopadding" >
+                            <time class="end orange_red">
+                                <span class="day underway_now">Underway now</span>
+                                <span class="month">Finish at - {{this.end_day}} {{this.end_month}} {{this.end_time}}</span>
+                                <span class="month"></span>
+                                <span class="month"></span>
+                            </time>
+                        </div>
                     </div>
-                </div>
-                <div class="row nopadding"
-                    v-else-if="
-                            new Date().getFullYear() == this.end_year &&
-                            new Date().getDate() < this.end_day &&
-                            new Date().getDate() == this.end_day
-                        "
-                >
-                    <div class="col-sm-12 col-xs-12 nopadding" >
-                        <time class="end orange_red">
-                            <span class="day underway_now">Finished</span>
-                        </time>
-                    </div>
-                </div>
-
-                <div class="row nopadding" v-else>
-                    <div class="col-sm-6 col-xs-6 nopadding">
-                        <time class="end green">
-                            Start 
-                            <span class="day">{{this.start_day}}</span>
-                            <span class="month">{{this.start_month}}</span>
-                            <span class="month" v-if="new Date().getFullYear() != this.start_year">{{this.start_year}}</span>
-                            <span class="month">{{this.start_time}}</span>
-                        </time>
-                    </div>
-                    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 nopadding">
-                        <time class="end blue_green">
-                            End 
-                            <span class="day">{{this.end_day}}</span>
-                            <span class="month">{{this.end_month}}</span>
-                            <span class="month" v-if="new Date().getFullYear() != this.end_year">{{this.end_year}}</span>
-                            <span class="month">{{this.end_time}}</span>
-                        </time>
+                    <div class="row nopadding"
+                        v-else-if="
+                                new Date().getFullYear() == this.end_year &&
+                                new Date().getDate() < this.end_day &&
+                                new Date().getDate() == this.end_day
+                            "
+                    >
+                        <div class="col-sm-12 col-xs-12 nopadding" >
+                            <time class="end orange_red">
+                                <span class="day underway_now">Finished</span>
+                            </time>
+                        </div>
                     </div>
 
-                </div>
+                    <div class="row nopadding" v-else>
+                        <div class="col-sm-6 col-xs-6 nopadding">
+                            <time class="end green">
+                                Start 
+                                <span class="day">{{this.start_day}}</span>
+                                <span class="month">{{this.start_month}}</span>
+                                <span class="month" v-if="new Date().getFullYear() != this.start_year">{{this.start_year}}</span>
+                                <span class="month">{{this.start_time}}</span>
+                            </time>
+                        </div>
+                        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 nopadding">
+                            <time class="end blue_green">
+                                End 
+                                <span class="day">{{this.end_day}}</span>
+                                <span class="month">{{this.end_month}}</span>
+                                <span class="month" v-if="new Date().getFullYear() != this.end_year">{{this.end_year}}</span>
+                                <span class="month">{{this.end_time}}</span>
+                            </time>
+                        </div>
+
+                    </div>
+                </span>
+                <span v-else>
+                    <div class="row nopadding">
+                        <div class="col-sm-12 col-xs-12 nopadding">
+                            <time class="end green">
+                                Start 
+                                <!-- <span class="day">{{this.start_day}}</span> -->
+                                <span class="day">{{this.start_month}}</span>
+                                <span class="month">{{this.start_year}}</span>
+                                <!-- <span class="month">{{this.start_time}}</span> -->
+                            </time>
+                        </div>
+                    </div>
+                </span>
             </div>
             <div class="panel-footer panel-primary">
                 <div class="event_size" v-if="event.locale_event.short_description != null">
@@ -105,7 +120,8 @@
                 end_time: 0,
                 start_time_for_check: 0,
                 end_time_for_check: 0,
-                time: ''
+                time: '',
+                start_time_h: 0
             };
         },
         mounted() {
@@ -122,7 +138,9 @@
             this.end_time = moment(this.event.global_event.end_data).format( "H:MM A")
 
             this.start_time_for_check = moment(this.event.global_event.start_data).format("H:MM")
-            this.end_time_for_check = moment(this.event.global_event.end_data).format( "H:MM")
+            this.end_time_for_check = moment(this.event.global_event.end_data).format("H:MM")
+
+            this.start_time_h = moment(this.event.global_event.end_data).format("H")
 
             this.realy_time()
         },

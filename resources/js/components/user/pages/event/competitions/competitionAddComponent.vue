@@ -116,7 +116,7 @@
                                 </select>
                             </div>
                         </div> -->
-                        <div class="form-group clearfix">
+                        <!-- <div class="form-group clearfix">
                             <label for="name" class='col-xs-2 control-label'> Competition location </label>
                             <div class="col-xs-8">
                                 <input type="text" name="name" v-model="data.global_data.map"  class="form-control"> 
@@ -134,7 +134,42 @@
                                     </div>
                                 </div>
                             </div>
+                        </div> -->
+                        <div class="form-group clearfix row">
+                            <label for="name" class='col-md-4 control-label'>This event does`not have concrete day (Insert data without day)</label>
+                            <div class="col-md-8">
+                                <input type="checkbox" id="scales" name="scales" v-model="is_event_whithout_day_button" @click="event_whithout_day()">
+                            </div>
                         </div>
+
+                        <div class="form-group clearfix" v-if="is_event_whithout_day">
+                            <label for="start_datatle" class='col-xs-2 control-label'> Start and end data </label>
+                            <div class="col-xs-8">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <input type="month" name="start_datatle" class="form-control" v-model="data.global_data.start_data" placeholder="Start data/time"> 
+                                    </div>
+                                    <div class="col-md-6">
+                                        <input type="month" name="end_data" class="form-control" v-model="data.global_data.end_data" placeholder="End data/time"> 
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group clearfix" v-if="!is_event_whithout_day">
+                            <label for="start_datatle" class='col-xs-2 control-label'> Start and end data </label>
+                            <div class="col-xs-8">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <input type="datetime-local" name="start_datatle" class="form-control" v-model="data.global_data.start_data" placeholder="Start data/time"> 
+                                    </div>
+                                    <div class="col-md-6">
+                                        <input type="datetime-local" name="end_data" class="form-control" v-model="data.global_data.end_data" placeholder="End data/time"> 
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
                         <div class="form-group clearfix">
                             <label for="image" class='col-xs-6 control-label'>Upload article image:</label>
                             <div class="col-xs-6">
@@ -308,15 +343,17 @@
                 images: [],
                 editorConfig: '',
 
-                us_short_description_text_editor: editor_config.get_small_editor_config(),
-                us_text_editor_config: editor_config.get_big_editor_config(),
-                us_info_editor_config: editor_config.get_big_editor_config(),
-                ru_short_description_text_editor: editor_config.get_small_editor_config(),
-                ru_text_editor_config: editor_config.get_big_editor_config(),
-                ru_info_editor_config: editor_config.get_big_editor_config(),
-                ka_short_description_text_editor: editor_config.get_small_editor_config(),
-                ka_text_editor_config: editor_config.get_big_editor_config(),
-                ka_info_editor_config: editor_config.get_big_editor_config(),
+                editor_config: {
+                    us_short_description: editor_config.get_small_editor_config(),
+                    us_text: editor_config.get_big_editor_config(),
+                    us_info: editor_config.get_big_editor_config(),
+                    ru_short_description: editor_config.get_small_editor_config(),
+                    ru_text: editor_config.get_big_editor_config(),
+                    ru_info: editor_config.get_big_editor_config(),
+                    ka_short_description: editor_config.get_small_editor_config(),
+                    ka_text: editor_config.get_big_editor_config(),
+                    ka_info: editor_config.get_big_editor_config(),    
+                },
 
                 data: {
                     global_data: {
@@ -359,7 +396,10 @@
                     info_block: 'new_info',
 
                     info_block_id: 0,
-                }
+                },
+
+                is_event_whithout_day: false,
+                is_event_whithout_day_button: false
             }
         },
         mounted() {
@@ -380,6 +420,10 @@
 
             onFileChange(event){
                 this.image = event.target.files[0];
+            },
+
+            event_whithout_day(){
+                this.is_event_whithout_day = !this.is_event_whithout_day_button
             },
             
             add_event() {

@@ -3,7 +3,11 @@
         <div class="row">
             <div class="container">
 
-                <h2 class='index_h2'>{{ $t('guide.title.events') }}</h2>
+                <h2 class='index_h2 functional_block_title'>
+                    <router-link :to="{name: 'events', params: {lang: this.$i18n.locale}}">
+                        {{ $t('guide.title.events') }}
+                    </router-link>
+                </h2>
 
                 <div class="bar"><i class="fa fa-calendar"></i></div>
                 <h3 class='article_list_short_description'> {{this.$siteData.event_description}}</h3>

@@ -176,7 +176,7 @@ __webpack_require__.r(__webpack_exports__);
       start_month_num: 0,
       start_year: 0,
       end_month: 0,
-      // end_year: 0,
+      start_time_h: 0,
       start_time: 0
       // end_time: 0,
       // start_time_for_check: 0,
@@ -190,11 +190,11 @@ __webpack_require__.r(__webpack_exports__);
     this.start_month = moment__WEBPACK_IMPORTED_MODULE_0___default()(this.event.global_event.start_data).format("MMM");
     this.start_month_num = moment__WEBPACK_IMPORTED_MODULE_0___default()(this.event.global_event.start_data).format("M");
     this.end_month = moment__WEBPACK_IMPORTED_MODULE_0___default()(this.event.global_event.end_data).format("MMM");
-
-    // this.start_year = moment(this.event.global_event.start_data).format("Y")
+    this.start_year = moment__WEBPACK_IMPORTED_MODULE_0___default()(this.event.global_event.start_data).format("Y");
     // this.end_year = moment(this.event.global_event.end_data).format("Y")
 
     this.start_time = moment__WEBPACK_IMPORTED_MODULE_0___default()(this.event.global_event.start_data).format("H:MM A");
+    this.start_time_h = moment__WEBPACK_IMPORTED_MODULE_0___default()(this.event.global_event.start_data).format("H");
     // this.end_time = moment(this.event.global_event.end_data).format( "H:MM A")
 
     // this.start_time_for_check = moment(this.event.global_event.start_data).format("H:MM")
@@ -362,7 +362,7 @@ var render = function render() {
     staticClass: "hexa"
   }), _vm._v(" "), _c("span", {
     staticClass: "flag"
-  }, [_vm._v("Event / festival")]), _vm._v(" "), new Date().getDate() == this.start_day && new Date().getMonth() == this.start_month_num - 1 || new Date().getDate() < this.start_day && new Date().getDate() > this.end_day && new Date().getMonth() == this.start_month_num - 1 ? _c("span", {
+  }, [_vm._v("Event / festival")]), _vm._v(" "), !!_vm.end_day && _vm.start_time_h > 0 ? _c("span", [new Date().getDate() == this.start_day && new Date().getMonth() == this.start_month_num - 1 || new Date().getDate() < this.start_day && new Date().getDate() > this.end_day && new Date().getMonth() == this.start_month_num - 1 ? _c("span", {
     staticClass: "time-wrapper"
   }, [_c("span", {
     staticClass: "time naw_time"
@@ -380,7 +380,11 @@ var render = function render() {
     staticClass: "time"
   }, [_vm._v(_vm._s(this.start_day) + " " + _vm._s(this.start_month))]), _vm._v(" "), _c("span", {
     staticClass: "time"
-  }, [_vm._v(_vm._s(this.start_time))])])]), _vm._v(" "), _c("div", {
+  }, [_vm._v(_vm._s(this.start_time))])])]) : _c("span", [_c("span", {
+    staticClass: "time-wrapper"
+  }, [_c("span", {
+    staticClass: "time"
+  }, [_vm._v(_vm._s(this.start_month) + " " + _vm._s(this.start_year))])])])]), _vm._v(" "), _c("div", {
     staticClass: "desc"
   }, [_c("router-link", {
     attrs: {
@@ -416,7 +420,7 @@ var render = function render() {
     staticClass: "hexa"
   }), _vm._v(" "), _c("span", {
     staticClass: "flag"
-  }, [_vm._v("Competition")]), _vm._v(" "), new Date().getDate() == this.start_day && new Date().getMonth() == this.start_month_num - 1 ? _c("span", {
+  }, [_vm._v("Competition")]), _vm._v(" "), !!_vm.end_day && _vm.start_time_h > 0 ? _c("span", [new Date().getDate() == this.start_day && new Date().getMonth() == this.start_month_num - 1 || new Date().getDate() < this.start_day && new Date().getDate() > this.end_day && new Date().getMonth() == this.start_month_num - 1 ? _c("span", {
     staticClass: "time-wrapper"
   }, [_c("span", {
     staticClass: "time naw_time"
@@ -434,7 +438,11 @@ var render = function render() {
     staticClass: "time"
   }, [_vm._v(_vm._s(this.start_day) + " " + _vm._s(this.start_month))]), _vm._v(" "), _c("span", {
     staticClass: "time"
-  }, [_vm._v(_vm._s(this.start_time))])])]), _vm._v(" "), _c("div", {
+  }, [_vm._v(_vm._s(this.start_time))])])]) : _c("span", [_c("span", {
+    staticClass: "time-wrapper"
+  }, [_c("span", {
+    staticClass: "time"
+  }, [_vm._v(_vm._s(this.start_month) + " " + _vm._s(this.start_year))])])])]), _vm._v(" "), _c("div", {
     staticClass: "desc"
   }, [_c("router-link", {
     attrs: {

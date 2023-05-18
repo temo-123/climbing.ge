@@ -4,41 +4,49 @@
             <div class="flag-wrapper">
                 <span class="hexa"></span>
                 <span class="flag">Event / festival</span>
-                <span class="time-wrapper"
-                    v-if="
-                        (
-                            new Date().getDate() == this.start_day &&
-                            new Date().getMonth() == this.start_month_num-1
-                        )
-                        ||
-                        (
-                            new Date().getDate() < this.start_day &&
-                            new Date().getDate() > this.end_day &&
-                            new Date().getMonth() == this.start_month_num-1
-                        )
-                    ">
-                    <span class="time naw_time">Now</span>
-                    <span class="time naw_time">Finish at - {{this.end_day}} {{this.end_month}}</span>
-                </span>
-                <span class="time-wrapper"
-                    v-else-if="
-                        (
-                            new Date().getDate() > this.end_day &&
-                            new Date().getMonth() > this.start_month_num-1
-                        )
-                        ||
-                        (
-                            new Date().getDate() > this.end_day &&
-                            new Date().getMonth() == this.start_month_num-1
-                        )
-                    ">
-                    <span class="time finished_time">Finished</span>
-                </span>
-                <span class="time-wrapper" v-else>
-                    <span class="time" v-if="new Date().getFullYear() != this.start_year">{{this.start_day}} {{this.start_month}} {{this.start_year}}</span>
-                    <span class="time" v-else>{{this.start_day}} {{this.start_month}}</span>
+                
+                <span v-if="!(!end_day) && start_time_h > 0">
+                    <span class="time-wrapper"
+                        v-if="
+                            (
+                                new Date().getDate() == this.start_day &&
+                                new Date().getMonth() == this.start_month_num-1
+                            )
+                            ||
+                            (
+                                new Date().getDate() < this.start_day &&
+                                new Date().getDate() > this.end_day &&
+                                new Date().getMonth() == this.start_month_num-1
+                            )
+                        ">
+                        <span class="time naw_time">Now</span>
+                        <span class="time naw_time">Finish at - {{this.end_day}} {{this.end_month}}</span>
+                    </span>
+                    <span class="time-wrapper"
+                        v-else-if="
+                            (
+                                new Date().getDate() > this.end_day &&
+                                new Date().getMonth() > this.start_month_num-1
+                            )
+                            ||
+                            (
+                                new Date().getDate() > this.end_day &&
+                                new Date().getMonth() == this.start_month_num-1
+                            )
+                        ">
+                        <span class="time finished_time">Finished</span>
+                    </span>
+                    <span class="time-wrapper" v-else>
+                        <span class="time" v-if="new Date().getFullYear() != this.start_year">{{this.start_day}} {{this.start_month}} {{this.start_year}}</span>
+                        <span class="time" v-else>{{this.start_day}} {{this.start_month}}</span>
 
-                    <span class="time">{{this.start_time}}</span>
+                        <span class="time">{{this.start_time}}</span>
+                    </span>
+                </span>
+                <span v-else>
+                    <span class="time-wrapper">
+                        <span class="time">{{this.start_month}} {{this.start_year}}</span>
+                    </span>
                 </span>
             </div>
 
@@ -62,33 +70,49 @@
             <div class="flag-wrapper">
                 <span class="hexa"></span>
                 <span class="flag">Competition</span>
-                <span class="time-wrapper"
-                    v-if="
-                        new Date().getDate() == this.start_day &&
-                        new Date().getMonth() == this.start_month_num-1
-                    ">
-                    <span class="time naw_time">Now</span>
-                    <span class="time naw_time">Finish at - {{this.end_day}} {{this.end_month}}</span>
-                </span>
-                <span class="time-wrapper"
-                    v-else-if="
-                        (
-                            new Date().getDate() > this.end_day &&
-                            new Date().getMonth() > this.start_month_num-1
-                        )
-                        ||
-                        (
-                            new Date().getDate() > this.end_day &&
-                            new Date().getMonth() == this.start_month_num-1
-                        )
-                    ">
-                    <span class="time finished_time">Finished</span>
-                </span>
-                <span class="time-wrapper" v-else>
-                    <span class="time" v-if="new Date().getFullYear() != this.start_year">{{this.start_day}} {{this.start_month}} {{this.start_year}}</span>
-                    <span class="time" v-else>{{this.start_day}} {{this.start_month}}</span>
+                
+                <span v-if="!(!end_day) && start_time_h > 0">
+                    <span class="time-wrapper"
+                        v-if="
+                            (
+                                new Date().getDate() == this.start_day &&
+                                new Date().getMonth() == this.start_month_num-1
+                            )
+                            ||
+                            (
+                                new Date().getDate() < this.start_day &&
+                                new Date().getDate() > this.end_day &&
+                                new Date().getMonth() == this.start_month_num-1
+                            )
+                        ">
+                        <span class="time naw_time">Now</span>
+                        <span class="time naw_time">Finish at - {{this.end_day}} {{this.end_month}}</span>
+                    </span>
+                    <span class="time-wrapper"
+                        v-else-if="
+                            (
+                                new Date().getDate() > this.end_day &&
+                                new Date().getMonth() > this.start_month_num-1
+                            )
+                            ||
+                            (
+                                new Date().getDate() > this.end_day &&
+                                new Date().getMonth() == this.start_month_num-1
+                            )
+                        ">
+                        <span class="time finished_time">Finished</span>
+                    </span>
+                    <span class="time-wrapper" v-else>
+                        <span class="time" v-if="new Date().getFullYear() != this.start_year">{{this.start_day}} {{this.start_month}} {{this.start_year}}</span>
+                        <span class="time" v-else>{{this.start_day}} {{this.start_month}}</span>
 
-                    <span class="time">{{this.start_time}}</span>
+                        <span class="time">{{this.start_time}}</span>
+                    </span>
+                </span>
+                <span v-else>
+                    <span class="time-wrapper">
+                        <span class="time">{{this.start_month}} {{this.start_year}}</span>
+                    </span>
                 </span>
             </div>
             <div class="desc">
@@ -127,7 +151,7 @@
                 start_month_num: 0,
                 start_year: 0,
                 end_month: 0,
-                // end_year: 0,
+                start_time_h: 0,
                 start_time: 0,
                 // end_time: 0,
                 // start_time_for_check: 0,
@@ -143,10 +167,11 @@
             this.start_month_num = moment(this.event.global_event.start_data).format("M")
             this.end_month = moment(this.event.global_event.end_data).format("MMM")
 
-            // this.start_year = moment(this.event.global_event.start_data).format("Y")
+            this.start_year = moment(this.event.global_event.start_data).format("Y")
             // this.end_year = moment(this.event.global_event.end_data).format("Y")
 
             this.start_time = moment(this.event.global_event.start_data).format("H:MM A")
+            this.start_time_h = moment(this.event.global_event.start_data).format("H")
             // this.end_time = moment(this.event.global_event.end_data).format( "H:MM A")
 
             // this.start_time_for_check = moment(this.event.global_event.start_data).format("H:MM")

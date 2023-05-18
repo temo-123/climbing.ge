@@ -2,7 +2,11 @@
     <div class="h-recent-work" id="other" v-if="other_articles.length > 0">
         <div class="container">
 
-            <h2 class='index_h2'>{{ $t('guide.title.other') }}</h2>
+            <h2 class='index_h2 functional_block_title'>
+                <router-link :to="{name: 'others', params: {lang: this.$i18n.locale}}">
+                    {{ $t('guide.title.other') }}
+                </router-link>
+            </h2>
 
             <div class="bar"><i class="fa fa-dribbble"></i></div>
             <h3 class="article_list_short_description"> <span v-html="$siteData.other_activity_description"></span> </h3>

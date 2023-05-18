@@ -17,6 +17,21 @@
 *
 */
 
+.functional_block_title {
+    color: #333;
+}
+.functional_block_title :hover{
+    color: #1689a0;
+}
+.functional_block_title a{
+    color: #333;
+}
+.functional_block_title a :hover{
+    color: #1689a0;
+}
+
+
+
 html {
     font-family: sans-serif;
     -ms-text-size-adjust: 100%;
