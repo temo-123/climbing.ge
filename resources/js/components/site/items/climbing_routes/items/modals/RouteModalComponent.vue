@@ -27,12 +27,12 @@
 
                             <p>{{ $t("guide.route.bolts") }} - {{ route.bolts }}</p>
 
-                            <p class="route_detal" v-if="route.auther">
-                                {{ $t("guide.route.auther") }} - {{ route.auther }}
+                            <p class="route_detal" v-if="route.author">
+                                {{ $t("guide.route.author") }} - {{ route.author }}
                             </p>
 
-                            <p class="route_detal" v-if="route.creating_data">
-                                {{ $t("guide.route.creating data") }} - {{ route.creating_data }}
+                            <p class="route_detal" v-if="route.creation_data">
+                                {{ $t("guide.route.creating_data") }} - {{ route.creation_data }}
                             </p>
 
                             <p class="route_detal" v-if="route.first_ascent">

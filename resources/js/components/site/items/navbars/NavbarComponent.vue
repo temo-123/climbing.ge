@@ -69,12 +69,12 @@
                         </a>
 
                         <ul class="dropdown-menu shadows" role="menu">
-                            <li v-if="activ_grade == 'UIAA'">
+                            <li v-if="activ_grade == 'UIAA' || activ_grade == 'uiaa'">
                                 <a class="grade_chart" @click=" activ_grade = 'yds', grade_charts('yds')">
                                     YDS
                                 </a>
                             </li>
-                            <li v-if="activ_grade == 'yds'">
+                            <li v-if="activ_grade == 'YDS' || activ_grade == 'yds'">
                                 <a class="grade_chart" @click="activ_grade = 'UIAA', grade_charts('UIAA')">
                                     UIAA
                                 </a>
@@ -135,6 +135,10 @@
         },
         mounted() {
             this.navbar_class = this.navbar_general_class
+            
+            if(!localStorage.getItem('grade')){
+                this.grade_charts("YDS")
+            }
         },
         watch: {
         //     $route(to) {

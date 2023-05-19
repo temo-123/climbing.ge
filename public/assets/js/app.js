@@ -5404,9 +5404,9 @@ __webpack_require__.r(__webpack_exports__);
       is_loading: false,
       error: [],
       auth_error: '',
-      MIX_USER_PAGE_URL: "user.climbing.ge",
-      MIX_APP_SSH: "https://",
-      MIX_BASE_URL_SSH: "https://climbing.loc"
+      MIX_USER_PAGE_URL: "user.climbing.loc",
+      MIX_APP_SSH: "http://",
+      MIX_BASE_URL_SSH: "http://climbing.loc"
     };
   },
   mounted: function mounted() {},
@@ -5447,7 +5447,7 @@ __webpack_require__.r(__webpack_exports__);
       this.error = [];
       this.auth_error = '';
       this.is_loading = true;
-      axios.post("https://" + "user.climbing.ge" + '/login', {
+      axios.post("http://" + "user.climbing.loc" + '/login', {
         email: this.email,
         password: this.password,
         remember: this.remember
@@ -5577,9 +5577,9 @@ __webpack_require__.r(__webpack_exports__);
     return {
       email: null,
       error: '',
-      MIX_USER_PAGE_URL: "user.climbing.ge",
-      MIX_APP_SSH: "https://",
-      MIX_BASE_URL_SSH: "https://climbing.loc",
+      MIX_USER_PAGE_URL: "user.climbing.loc",
+      MIX_APP_SSH: "http://",
+      MIX_BASE_URL_SSH: "http://climbing.loc",
       is_mail_sending: false
     };
   },
@@ -5632,9 +5632,9 @@ __webpack_require__.r(__webpack_exports__);
         id: this.$route.params.user_id
       },
       error: '',
-      MIX_USER_PAGE_URL: "user.climbing.ge",
-      MIX_APP_SSH: "https://",
-      MIX_BASE_URL_SSH: "https://climbing.loc",
+      MIX_USER_PAGE_URL: "user.climbing.loc",
+      MIX_APP_SSH: "http://",
+      MIX_BASE_URL_SSH: "http://climbing.loc",
       is_pass_updeating_loader: false,
       is_back_action: false
     };
@@ -5757,9 +5757,9 @@ __webpack_require__.r(__webpack_exports__);
       },
 
       error: '',
-      MIX_USER_PAGE_URL: "user.climbing.ge",
-      MIX_APP_SSH: "https://",
-      MIX_BASE_URL_SSH: "https://climbing.loc",
+      MIX_USER_PAGE_URL: "user.climbing.loc",
+      MIX_APP_SSH: "http://",
+      MIX_BASE_URL_SSH: "http://climbing.loc",
       is_pass_updeating_loader: false,
       is_back_action: false
     };
@@ -5942,8 +5942,8 @@ __webpack_require__.r(__webpack_exports__);
   data: function data() {
     return {
       search_query: '',
-      MIX_SITE_URL: "climbing.ge",
-      MIX_APP_SSH: "https://",
+      MIX_SITE_URL: "climbing.loc",
+      MIX_APP_SSH: "http://",
       navbar_general_class: 'collapse navbar-collapse mobile_nav_menu',
       navbar_class: 'collapse navbar-collapse mobile_nav_menu',
       navbar_open_class: 'collapse navbar-collapse mobile_nav_menu show',
@@ -6652,9 +6652,9 @@ __webpack_require__.r(__webpack_exports__);
   methods: {
     follow: function follow() {
       var _this = this;
-      if (window.location.hostname == "climbing.ge") {
+      if (window.location.hostname == "climbing.loc") {
         this.service = 'guid';
-      } else if (window.location.hostname == "shop.climbing.ge") {
+      } else if (window.location.hostname == "shop.climbing.loc") {
         this.service = 'shop';
       } else if (window.location.hostname == process.env.FILMS_URL) {
         this.service = 'cinema';
@@ -6776,8 +6776,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
     return {
-      MIX_SITE_URL: "climbing.ge",
-      MIX_APP_SSH: "https://"
+      MIX_SITE_URL: "climbing.loc",
+      MIX_APP_SSH: "http://"
     };
   },
   props: ['go_to_page'],
@@ -6931,7 +6931,7 @@ __webpack_require__.r(__webpack_exports__);
     },
     login_action: function login_action() {
       var _this2 = this;
-      axios.post("https://" + "climbing.ge" + '/login', {
+      axios.post("http://" + "climbing.loc" + '/login', {
         email: this.email,
         password: this.password
       }).then(function (res) {
@@ -7069,8 +7069,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
     return {
-      MIX_SITE_URL: "climbing.ge",
-      MIX_APP_SSH: "https://"
+      MIX_SITE_URL: "climbing.loc",
+      MIX_APP_SSH: "http://"
     };
   },
   methods: {
@@ -7279,8 +7279,8 @@ __webpack_require__.r(__webpack_exports__);
   data: function data() {
     return {
       search_query: '',
-      MIX_SITE_URL: "climbing.ge",
-      MIX_APP_SSH: "https://",
+      MIX_SITE_URL: "climbing.loc",
+      MIX_APP_SSH: "http://",
       navbar_general_class: 'collapse navbar-collapse mobile_nav_menu',
       navbar_class: 'collapse navbar-collapse mobile_nav_menu',
       navbar_open_class: 'collapse navbar-collapse mobile_nav_menu show',
@@ -7441,7 +7441,7 @@ var _require = __webpack_require__(/*! qrcanvas-vue */ "./node_modules/qrcanvas-
       var _this = this;
       this.options.data = window.location.href;
       var image = new Image();
-      image.src = "https://" + "user.climbing.ge" + "/public/images/site_img/x.png";
+      image.src = "http://" + "user.climbing.loc" + "/public/images/site_img/x.png";
       image.onload = function () {
         _this.options = _objectSpread(_objectSpread({}, _this.options), {}, {
           logo: {
@@ -7602,6 +7602,9 @@ __webpack_require__.r(__webpack_exports__);
   },
   mounted: function mounted() {
     this.navbar_class = this.navbar_general_class;
+    if (!localStorage.getItem('grade')) {
+      this.grade_charts("YDS");
+    }
   },
   watch: {
     //     $route(to) {
@@ -7739,7 +7742,7 @@ __webpack_require__.r(__webpack_exports__);
   methods: {
     logout: function logout() {
       var _this = this;
-      axios.post("https://" + "user.climbing.ge" + '/logout').then(function () {
+      axios.post("http://" + "user.climbing.loc" + '/logout').then(function () {
         // window.location.href = "http://climibng.loc";
         localStorage.removeItem('x_xsrf_token');
         _this.$router.push({
@@ -12393,7 +12396,7 @@ var render = function render() {
     attrs: {
       role: "menu"
     }
-  }, [_vm.activ_grade == "UIAA" ? _c("li", [_c("a", {
+  }, [_vm.activ_grade == "UIAA" || _vm.activ_grade == "uiaa" ? _c("li", [_c("a", {
     staticClass: "grade_chart",
     on: {
       click: function click($event) {
@@ -12401,7 +12404,7 @@ var render = function render() {
         _vm.activ_grade = "yds", _vm.grade_charts("yds");
       }
     }
-  }, [_vm._v("\n                                YDS\n                            ")])]) : _vm._e(), _vm._v(" "), _vm.activ_grade == "yds" ? _c("li", [_c("a", {
+  }, [_vm._v("\n                                YDS\n                            ")])]) : _vm._e(), _vm._v(" "), _vm.activ_grade == "YDS" || _vm.activ_grade == "yds" ? _c("li", [_c("a", {
     staticClass: "grade_chart",
     on: {
       click: function click($event) {
@@ -13062,33 +13065,33 @@ vue__WEBPACK_IMPORTED_MODULE_12__["default"].component("forum-component", (__web
 var serviceRoutes = [];
 var homeComponent = [];
 var analytic_id = "";
-if (window.location.hostname == "climbing.ge") {
+if (window.location.hostname == "climbing.loc") {
   homeComponent = _components_site_IndexComponent_vue__WEBPACK_IMPORTED_MODULE_25__["default"];
   serviceRoutes = _routes_SiteRoutes__WEBPACK_IMPORTED_MODULE_30__["default"];
   analytic_id = "G-B7KZEJ6CLW";
-  (axios__WEBPACK_IMPORTED_MODULE_3___default().defaults.baseURL) = "https://" + "climbing.ge" + '/api';
-} else if (window.location.hostname == "shop.climbing.ge") {
+  (axios__WEBPACK_IMPORTED_MODULE_3___default().defaults.baseURL) = "http://" + "climbing.loc" + '/api';
+} else if (window.location.hostname == "shop.climbing.loc") {
   homeComponent = _components_shop_MainWrapperComponent_vue__WEBPACK_IMPORTED_MODULE_24__["default"];
   serviceRoutes = _routes_ShopRoutes__WEBPACK_IMPORTED_MODULE_29__["default"];
   analytic_id = "G-6D3TLP4Z36";
-  (axios__WEBPACK_IMPORTED_MODULE_3___default().defaults.baseURL) = "https://" + "shop.climbing.ge" + '/api';
-} else if (window.location.hostname == "user.climbing.ge") {
+  (axios__WEBPACK_IMPORTED_MODULE_3___default().defaults.baseURL) = "http://" + "shop.climbing.loc" + '/api';
+} else if (window.location.hostname == "user.climbing.loc") {
   homeComponent = _components_user_HomeComponent_vue__WEBPACK_IMPORTED_MODULE_26__["default"];
   serviceRoutes = _routes_UserRoutes__WEBPACK_IMPORTED_MODULE_31__["default"];
   analytic_id = "G-TDWCRT2C8S";
-  (axios__WEBPACK_IMPORTED_MODULE_3___default().defaults.baseURL) = "https://" + "user.climbing.ge" + '/api';
-} else if (window.location.hostname == "films.climbing.ge") {
+  (axios__WEBPACK_IMPORTED_MODULE_3___default().defaults.baseURL) = "http://" + "user.climbing.loc" + '/api';
+} else if (window.location.hostname == "films.climbing.loc") {
   homeComponent = _components_films_StudiaComponent_vue__WEBPACK_IMPORTED_MODULE_27__["default"];
   serviceRoutes = _routes_FilmsRoutes__WEBPACK_IMPORTED_MODULE_32__["default"];
   analytic_id = "G-1BRWRTLD87";
   // axios.defaults.baseURL = process.env.MIX_FILMS_URL
-} else if (window.location.hostname == "forum.climbing.ge") {
+} else if (window.location.hostname == "forum.climbing.loc") {
   homeComponent = _components_forum_ForumComponent_vue__WEBPACK_IMPORTED_MODULE_28__["default"];
   serviceRoutes = _routes_ForumRoutes__WEBPACK_IMPORTED_MODULE_33__["default"];
   analytic_id = "";
   // axios.defaults.baseURL = process.env.MIX_FORUM_URL
 } else {
-  //window.location.href = "/404";
+  window.location.href = "/404";
 }
 vue__WEBPACK_IMPORTED_MODULE_12__["default"].use(vue_gtag__WEBPACK_IMPORTED_MODULE_9__["default"], {
   config: {
@@ -13134,7 +13137,7 @@ var app = new vue__WEBPACK_IMPORTED_MODULE_12__["default"]({
       var locale = localStorage.getItem("lang");
       // this.get_site_data();
 
-      if (window.location.hostname == "climbing.ge" || window.location.hostname == "shop.climbing.ge") {
+      if (window.location.hostname == "climbing.loc" || window.location.hostname == "shop.climbing.loc") {
         if (locale != 'en') {
           localStorage.setItem('lang', locale);
           this.$i18n.locale = locale;
@@ -95812,7 +95815,7 @@ module.exports = JSON.parse('{"name":"axios","version":"0.21.4","description":"P
 /***/ ((module) => {
 
 "use strict";
-module.exports = JSON.parse('{"guide":{"name":"Climbing Guidebook","meta":{"index":"Climbing in georgia","indoor climbing":"Indoor climbing","outdoor climbing":"Outdoor climbing","ice climbing":"Ice and mix climbing","events":"Events & competitions","mountaineering":"Mountaineering","other":"Other","about us":"About us","search":"Search climbing spots in Georgia"},"menu":{"climbing":"Rock climbing","indoor climbing":"Indoor climbing","outdoor climbing":"Outdoor climbing","ice climbing":"Ice & mix","events":"Events & competitions","mountaineering":"Mountaineering","other":"Other","about us":"About us","login":"Login","sitemap":"Sitemap"},"article_right_nabar":{"menu title":"Navigation Menu","similar articles":"Similar Articles","gallery":"Gallery","comments":"Comments","description":"Description","sectors":"Climbing sectors & routes"},"title":{"news":"News","topo":"Topo","what we do":"What we do","gallery":"Gallery","tech tips":"Tech tips","events":"Events and Cometitions","climbing":"Climbing","indoor climbing":"Indoor climbing","outdoor climbing":"Outdoor climbing","ice climbing":"Ice and mix climbing","mountaineering":"Mountaineering","other":"Other","about us":"About us","partner":"Partners","message":"Send message"},"route":{"name":"Name","height":"Height","bolts":"Bolts","grade fr":"Grade FR","grade yds":"Grade YDS","grade uiaa":"Grade UIAA","mtp name":"Multy-pitch name","auther":"Auther","creating data":"Creating data","first ascent":"First ascent","top rope":"Top Rope","tred":"Tred Gear","more":"More","route detals":"Routes detals","mtp detals":"Multy-pitch detals"},"sector":{"name":"Sector name","shade after 10.00 am":"In shade after 10.00 am","shade after 15.00 pm":"In shade after 15.00 pm","shade befor noon":"In shade befor noon","shade in the afternoon":"In shade in the afternoon","shade whole day":"In the shade whole day","sun the whole day":"In the sun the whole day","overhang":"Overhang","slabby":"Slabby","vertical":"Vertical","roof":"Roof","for_family":"This sector recomendidi family climbing. It`s seifty for kids","for_kids":"This sector recomendidi family climbing. It`s seifty for kids","walking":"Wolging time from car stoping to climbin sector"},"article":{"title":{"mount massive":"Mountain Massive","best time":"Best time to climb","how_get":"How to get there","what need":"What you need","comments":"Comments","gallery":"Gallery","info":"Info","map":"Map","locatione":"Location","interested event":"Interested","similar articles":"Similar Articles","sector name":"Sector name","address":"Address","price":"Price","route":"Routes","back":"Go Back","all articles":"All Articles"},"route_quantyty":"In Georgia are {sectors} outdoor climbing sectors, {sport_routes} sport climbing routes, {boulder_routes} boulder routes, {mtps} multy pitch. You can see all outdoor climbing arias info on this page.","prices from":"Prices from","working time":"Working hours","closed":"Temporarily closed"},"breadcrumb home":"Home","serch":""},"shop":{"name":"Climbng shop","meta":{"products":"Products list","services":"Services list","categories":"Categories","about us":"About us","search":"Search product"},"menu":{"products":"Products","services":"Services","categories":"Categories","about us":"About us"},"title":{"services":"Ouer services","products":"Products","search":"Search products","gallery":"Gallery","similar":{"products":"You might also like","services":"Other services"}},"product desc":{"category":"Category","material":"Material","weight":"Weight"},"seller":{"seller contact":"Contacts","email":"Email","phone":"Phone number"},"limited quantity":"Limited quantity ","out of stock":"Out of stock","product description":"Description","add to cart":"Add to cart","all products":"All products","max products":"This is maximal quantyty for this product!!!","add successful":"Product add successful!!!","custom product":"Custom production"},"user":{"name":"User panel","menu":{"favorite products":"My favorite products","favorite films":"My favorite films","admin dashboard":"Admin dashboard","home":"My page","cart":"My cart","orders":"Orders","my orders":"My Orders","total orders":"All orders","films":"Films list","my interested events":"Interested events","followers":"Followers & following","products & category":"Products & Category","services":"Services","all comments":"All comments","my comments":"My comments","my posts":"My posts","all posts":"All posts","users":"Users & Parmissions","options":"Options","indoor climbing":"Indoor climbing","outdoor climbing":"Outdoor climbing","ice climbing":"Ice & Mix","mountaineering":"Mountaineering","other":"Other","security":"Security (Tech tips)","partners":"Partners","events":"Events","news":"News","gallery":"Gallery","about":"About us","login":"Login","logout":"Logout","sectors & routes":"Sectors & Routes","sectors local images":"Sectors local images","local bisnes":"Suport local bisnes","my favorite outdoor area":"My favorite outdoor areas"}},"global":{"footer":{"links":"Links","share":"Share","more":"More","about us":"About us","follow":"Follow us","qr":"QR Code"},"message":{"title":"Message","form":{"name":"Name *","surname":"Surname *","email":"E_mail *","number":"Phone number","country":"Yout country","message text":"Your message"},"send":"Send"},"login":"Login","comments":"Comments","page is empty":"Page is empty","services":"Services"},"error":{"404":{"title":"Oops! Error 404! Page Not Found","description":"Sorry, an error has occured, Requested page not found!","go_homehome":"Go to home page"}}}');
+module.exports = JSON.parse('{"guide":{"name":"Climbing Guidebook","meta":{"index":"Climbing in georgia","indoor climbing":"Indoor climbing","outdoor climbing":"Outdoor climbing","ice climbing":"Ice and mix climbing","events":"Events & competitions","mountaineering":"Mountaineering","other":"Other","about us":"About us","search":"Search climbing spots in Georgia"},"menu":{"climbing":"Rock climbing","indoor climbing":"Indoor climbing","outdoor climbing":"Outdoor climbing","ice climbing":"Ice & mix","events":"Events & competitions","mountaineering":"Mountaineering","other":"Other","about us":"About us","login":"Login","sitemap":"Sitemap"},"article_right_nabar":{"menu title":"Navigation Menu","similar articles":"Similar Articles","gallery":"Gallery","comments":"Comments","description":"Description","sectors":"Climbing sectors & routes"},"title":{"news":"News","topo":"Topo","what we do":"What we do","gallery":"Gallery","tech tips":"Tech tips","events":"Events and Cometitions","climbing":"Climbing","indoor climbing":"Indoor climbing","outdoor climbing":"Outdoor climbing","ice climbing":"Ice and mix climbing","mountaineering":"Mountaineering","other":"Other","about us":"About us","partner":"Partners","message":"Send message"},"route":{"name":"Name","height":"Height","bolts":"Bolts","grade fr":"Grade FR","grade yds":"Grade YDS","grade uiaa":"Grade UIAA","mtp name":"Multy-pitch name","author":"Author","creating_data":"Creating data","first_ascent":"First ascent","top rope":"Top Rope","tred":"Tred Gear","more":"More","route detals":"Routes detals","mtp detals":"Multy-pitch detals"},"sector":{"name":"Sector name","shade after 10.00 am":"In shade after 10.00 am","shade after 15.00 pm":"In shade after 15.00 pm","shade befor noon":"In shade befor noon","shade in the afternoon":"In shade in the afternoon","shade whole day":"In the shade whole day","sun the whole day":"In the sun the whole day","overhang":"Overhang","slabby":"Slabby","vertical":"Vertical","roof":"Roof","for_family":"This sector recomendidi family climbing. It`s seifty for kids","for_kids":"This sector recomendidi family climbing. It`s seifty for kids","walking":"Wolging time from car stoping to climbin sector"},"article":{"title":{"mount massive":"Mountain Massive","best time":"Best time to climb","how_get":"How to get there","what need":"What you need","comments":"Comments","gallery":"Gallery","info":"Info","map":"Map","locatione":"Location","interested event":"Interested","similar articles":"Similar Articles","sector name":"Sector name","address":"Address","price":"Price","route":"Routes","back":"Go Back","all articles":"All Articles"},"route_quantyty":"In Georgia are {sectors} outdoor climbing sectors, {sport_routes} sport climbing routes, {boulder_routes} boulder routes, {mtps} multy pitch. You can see all outdoor climbing arias info on this page.","prices from":"Prices from","working time":"Working hours","closed":"Temporarily closed"},"breadcrumb home":"Home","serch":""},"shop":{"name":"Climbng shop","meta":{"products":"Products list","services":"Services list","categories":"Categories","about us":"About us","search":"Search product"},"menu":{"products":"Products","services":"Services","categories":"Categories","about us":"About us"},"title":{"services":"Ouer services","products":"Products","search":"Search products","gallery":"Gallery","similar":{"products":"You might also like","services":"Other services"}},"product desc":{"category":"Category","material":"Material","weight":"Weight"},"seller":{"seller contact":"Contacts","email":"Email","phone":"Phone number"},"limited quantity":"Limited quantity ","out of stock":"Out of stock","product description":"Description","add to cart":"Add to cart","all products":"All products","max products":"This is maximal quantyty for this product!!!","add successful":"Product add successful!!!","custom product":"Custom production"},"user":{"name":"User panel","menu":{"favorite products":"My favorite products","favorite films":"My favorite films","admin dashboard":"Admin dashboard","home":"My page","cart":"My cart","orders":"Orders","my orders":"My Orders","total orders":"All orders","films":"Films list","my interested events":"Interested events","followers":"Followers & following","products & category":"Products & Category","services":"Services","all comments":"All comments","my comments":"My comments","my posts":"My posts","all posts":"All posts","users":"Users & Parmissions","options":"Options","indoor climbing":"Indoor climbing","outdoor climbing":"Outdoor climbing","ice climbing":"Ice & Mix","mountaineering":"Mountaineering","other":"Other","security":"Security (Tech tips)","partners":"Partners","events":"Events","news":"News","gallery":"Gallery","about":"About us","login":"Login","logout":"Logout","sectors & routes":"Sectors & Routes","sectors local images":"Sectors local images","local bisnes":"Suport local bisnes","my favorite outdoor area":"My favorite outdoor areas"}},"global":{"footer":{"links":"Links","share":"Share","more":"More","about us":"About us","follow":"Follow us","qr":"QR Code"},"message":{"title":"Message","form":{"name":"Name *","surname":"Surname *","email":"E_mail *","number":"Phone number","country":"Yout country","message text":"Your message"},"send":"Send"},"login":"Login","comments":"Comments","page is empty":"Page is empty","services":"Services"},"error":{"404":{"title":"Oops! Error 404! Page Not Found","description":"Sorry, an error has occured, Requested page not found!","go_homehome":"Go to home page"}}}');
 
 /***/ }),
 

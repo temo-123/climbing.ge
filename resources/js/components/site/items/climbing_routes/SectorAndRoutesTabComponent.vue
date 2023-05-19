@@ -81,7 +81,7 @@ export default {
 
         lead_grade_chart(grade_fr) {
             var grad = "";
-            if (localStorage.getItem("grade") == "yds") {
+            if (localStorage.getItem("grade") == "yds" || localStorage.getItem("grade") == "YDS") {
                 if (grade_fr == "4") grad = "5.6";
                 else if (grade_fr == "5a" || grade_fr == "5a+") grad = "5.7";
                 else if (grade_fr == "5b" || grade_fr == "5b+") grad = "5.8";
@@ -112,7 +112,7 @@ export default {
                 else if (grade_fr == "9c+") grad = "5.16a";
                 else if (grade_fr == "Project") grad = "Project";
                 else grad = "?";
-            } else if (localStorage.getItem("grade") == "UIAA") {
+            } else if (localStorage.getItem("grade") == "uiaa" || localStorage.getItem("grade") == "UIAA") {
                 // console.log(localStorage.getItem("grade"))
                 if (grade_fr == "4") grad = "IV";
                 else if (grade_fr == "5a" || grade_fr == "5a+") grad = "V+";
@@ -150,7 +150,7 @@ export default {
         },
         boulder_grade_chart(grade_fr) {
             var grade = "";
-            if (localStorage.getItem("grade") == "yds") {
+            if (localStorage.getItem("grade") == "yds" || localStorage.getItem("grade") == "YDS") {
                 if (grade_fr == "VB") grade = "4-";
                 else if (grade_fr == "V0-") grade = "4";
                 else if (grade_fr == "V0") grade = "4+";
@@ -174,7 +174,7 @@ export default {
                 else if (grade_fr == "V17") grade = "9a";
                 else if (grade_fr == "Project") grad = "Project";
                 else grade = "?";
-            } else if (localStorage.getItem("grade") == "UIAA") {
+            } else if (localStorage.getItem("grade") == "uiaa" || localStorage.getItem("grade") == "UIAA") {
                 if (grade_fr == "VB") grade = "4-";
                 else if (grade_fr == "V0-") grade = "VI+";
                 else if (grade_fr == "V0") grade = "VII-";
