@@ -6,7 +6,7 @@ use Illuminate\Support\Facades\Route;
 
     // Route::get('/redirect', 'Auth\SocialAuthFacebookController@redirectFacebook');
     // Route::get('/callback', 'Auth\SocialAuthFacebookController@facebookCallback');
-    
+    // dd(config('app.url'));
     Route::domain(config('app.url'))->group(function () {
         Route::group(['namespace'=>'Site'], function() {
             Route::get('/{any}', 'IndexController@index')->where('any', '(.*)')->name('index');

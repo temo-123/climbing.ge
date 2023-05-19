@@ -64,8 +64,8 @@ __webpack_require__.r(__webpack_exports__);
   data: function data() {
     return {
       spots: [],
-      MIX_SITE_URL: "climbing.loc",
-      MIX_APP_SSH: "http://"
+      MIX_SITE_URL: "climbing.ge",
+      MIX_APP_SSH: "https://"
     };
   },
   mounted: function mounted() {

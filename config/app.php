@@ -15,16 +15,16 @@ return [
 
     'name' => env('APP_NAME', 'climbing.ge'),
 
-    'base_url' => env('BASE_URL', 'climbing.loc'),
-    'base_url_ssh' => env('BASE_URL_SSH', 'http://climbing.loc'),
+    'base_url' => env('BASE_URL', 'climbing.ge'),
+    'base_url_ssh' => env('BASE_URL_SSH', 'https://climbing.ge'),
 
     'app_ssh' => env('APP_SSH' , 'https://'),
 
-    'site_url' => env('SITE_URL', 'climbing.loc'),
-    'shop_url' => env('SHOP_URL', 'shop.climbing.loc'),
-    'forum_url' => env('FORUM_URL', 'forum.climbing.loc'),
-    'films_url' => env('FILMS_URL', 'films.climbing.loc'),
-    'user_page_url' => env('USER_PAGE_URL', 'user.climbing.loc'),
+    'site_url' => env('SITE_URL', 'climbing.ge'),
+    'shop_url' => env('SHOP_URL', 'shop.climbing.ge'),
+    'forum_url' => env('FORUM_URL', 'forum.climbing.ge'),
+    'films_url' => env('FILMS_URL', 'films.climbing.ge'),
+    'user_page_url' => env('USER_PAGE_URL', 'user.climbing.ge'),
 
     'default' => env('QUEUE_DRIVER', 'database'),
 
@@ -64,7 +64,7 @@ return [
     | your application so that it is used when running Artisan tasks.
     |
     */
-    'url' => env('APP_URL', 'climbing.loc'),
+    'url' => env('APP_URL', 'climbing.ge'),
 
     'asset_url' => env('ASSET_URL', null),
 
