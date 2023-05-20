@@ -143,10 +143,10 @@ Vue.prototype.$going = going
 Vue.prototype.$editor_config = editor_config
 
 if(
-    window.location.hostname == 'climbing.ge' &&
-    window.location.hostname == 'shop.climbing.ge' &&
-    window.location.hostname == 'user.climbing.ge' &&
-    window.location.hostname == 'films.climbing.ge' &&
+    window.location.hostname == 'climbing.ge' ||
+    window.location.hostname == 'shop.climbing.ge' ||
+    window.location.hostname == 'user.climbing.ge' ||
+    window.location.hostname == 'films.climbing.ge' ||
     window.location.hostname == 'forum.climbing.ge'
 ){
     Vue.config.devtools = false

@@ -5404,9 +5404,9 @@ __webpack_require__.r(__webpack_exports__);
       is_loading: false,
       error: [],
       auth_error: '',
-      MIX_USER_PAGE_URL: "user.climbing.loc",
-      MIX_APP_SSH: "http://",
-      MIX_BASE_URL_SSH: "http://climbing.loc"
+      MIX_USER_PAGE_URL: "user.climbing.ge",
+      MIX_APP_SSH: "https://",
+      MIX_BASE_URL_SSH: "https://climbing.ge"
     };
   },
   mounted: function mounted() {},
@@ -5447,7 +5447,7 @@ __webpack_require__.r(__webpack_exports__);
       this.error = [];
       this.auth_error = '';
       this.is_loading = true;
-      axios.post("http://" + "user.climbing.loc" + '/login', {
+      axios.post("https://" + "user.climbing.ge" + '/login', {
         email: this.email,
         password: this.password,
         remember: this.remember
@@ -5509,7 +5509,7 @@ __webpack_require__.r(__webpack_exports__);
       is_verify_isset: false,
       terms_of_use: false,
       error: [],
-      MIX_GOOGLE_CAPTCHA_SITE_KEY: "6LfDFkMcAAAAAFh9-1TUlmGPx83715KTD79j0iwF",
+      MIX_GOOGLE_CAPTCHA_SITE_KEY: "6LdjgdYUAAAAAGp6kFHzEDbTr3ObVY58lLDzko8A",
       is_term_of_use_modal: false
     };
   },
@@ -5577,9 +5577,9 @@ __webpack_require__.r(__webpack_exports__);
     return {
       email: null,
       error: '',
-      MIX_USER_PAGE_URL: "user.climbing.loc",
-      MIX_APP_SSH: "http://",
-      MIX_BASE_URL_SSH: "http://climbing.loc",
+      MIX_USER_PAGE_URL: "user.climbing.ge",
+      MIX_APP_SSH: "https://",
+      MIX_BASE_URL_SSH: "https://climbing.ge",
       is_mail_sending: false
     };
   },
@@ -5632,9 +5632,9 @@ __webpack_require__.r(__webpack_exports__);
         id: this.$route.params.user_id
       },
       error: '',
-      MIX_USER_PAGE_URL: "user.climbing.loc",
-      MIX_APP_SSH: "http://",
-      MIX_BASE_URL_SSH: "http://climbing.loc",
+      MIX_USER_PAGE_URL: "user.climbing.ge",
+      MIX_APP_SSH: "https://",
+      MIX_BASE_URL_SSH: "https://climbing.ge",
       is_pass_updeating_loader: false,
       is_back_action: false
     };
@@ -5757,9 +5757,9 @@ __webpack_require__.r(__webpack_exports__);
       },
 
       error: '',
-      MIX_USER_PAGE_URL: "user.climbing.loc",
-      MIX_APP_SSH: "http://",
-      MIX_BASE_URL_SSH: "http://climbing.loc",
+      MIX_USER_PAGE_URL: "user.climbing.ge",
+      MIX_APP_SSH: "https://",
+      MIX_BASE_URL_SSH: "https://climbing.ge",
       is_pass_updeating_loader: false,
       is_back_action: false
     };
@@ -5942,8 +5942,8 @@ __webpack_require__.r(__webpack_exports__);
   data: function data() {
     return {
       search_query: '',
-      MIX_SITE_URL: "climbing.loc",
-      MIX_APP_SSH: "http://",
+      MIX_SITE_URL: "climbing.ge",
+      MIX_APP_SSH: "https://",
       navbar_general_class: 'collapse navbar-collapse mobile_nav_menu',
       navbar_class: 'collapse navbar-collapse mobile_nav_menu',
       navbar_open_class: 'collapse navbar-collapse mobile_nav_menu show',
@@ -6085,7 +6085,7 @@ function _toPrimitive(input, hint) { if (_typeof(input) !== "object" || input ==
       selected_mtp: '',
       route_type: '',
       is_verify_isset: false,
-      MIX_GOOGLE_CAPTCHA_SITE_KEY: "6LfDFkMcAAAAAFh9-1TUlmGPx83715KTD79j0iwF"
+      MIX_GOOGLE_CAPTCHA_SITE_KEY: "6LdjgdYUAAAAAGp6kFHzEDbTr3ObVY58lLDzko8A"
     };
   },
   mounted: function mounted() {
@@ -6640,7 +6640,7 @@ __webpack_require__.r(__webpack_exports__);
     return {
       service: 0,
       email: '',
-      MIX_GOOGLE_CAPTCHA_SITE_KEY: "6LfDFkMcAAAAAFh9-1TUlmGPx83715KTD79j0iwF",
+      MIX_GOOGLE_CAPTCHA_SITE_KEY: "6LdjgdYUAAAAAGp6kFHzEDbTr3ObVY58lLDzko8A",
       is_verify_isset: false,
       loading: false
     };
@@ -6652,9 +6652,9 @@ __webpack_require__.r(__webpack_exports__);
   methods: {
     follow: function follow() {
       var _this = this;
-      if (window.location.hostname == "climbing.loc") {
+      if (window.location.hostname == "climbing.ge") {
         this.service = 'guid';
-      } else if (window.location.hostname == "shop.climbing.loc") {
+      } else if (window.location.hostname == "shop.climbing.ge") {
         this.service = 'shop';
       } else if (window.location.hostname == process.env.FILMS_URL) {
         this.service = 'cinema';
@@ -6776,8 +6776,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
     return {
-      MIX_SITE_URL: "climbing.loc",
-      MIX_APP_SSH: "http://"
+      MIX_SITE_URL: "climbing.ge",
+      MIX_APP_SSH: "https://"
     };
   },
   props: ['go_to_page'],
@@ -6931,7 +6931,7 @@ __webpack_require__.r(__webpack_exports__);
     },
     login_action: function login_action() {
       var _this2 = this;
-      axios.post("http://" + "climbing.loc" + '/login', {
+      axios.post("https://" + "climbing.ge" + '/login', {
         email: this.email,
         password: this.password
       }).then(function (res) {
@@ -6998,7 +6998,7 @@ __webpack_require__.r(__webpack_exports__);
       error: [],
       fatal_error: false,
       // MIX_APP_NAME: process.env.MIX_APP_NAME,
-      MIX_GOOGLE_CAPTCHA_SITE_KEY: "6LfDFkMcAAAAAFh9-1TUlmGPx83715KTD79j0iwF",
+      MIX_GOOGLE_CAPTCHA_SITE_KEY: "6LdjgdYUAAAAAGp6kFHzEDbTr3ObVY58lLDzko8A",
       // MIX_GOOGLE_CAPTCHA_SECRET_KEY: process.env.MIX_GOOGLE_CAPTCHA_SECRET_KEY,
 
       isLoading: false,
@@ -7069,8 +7069,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
     return {
-      MIX_SITE_URL: "climbing.loc",
-      MIX_APP_SSH: "http://"
+      MIX_SITE_URL: "climbing.ge",
+      MIX_APP_SSH: "https://"
     };
   },
   methods: {
@@ -7279,8 +7279,8 @@ __webpack_require__.r(__webpack_exports__);
   data: function data() {
     return {
       search_query: '',
-      MIX_SITE_URL: "climbing.loc",
-      MIX_APP_SSH: "http://",
+      MIX_SITE_URL: "climbing.ge",
+      MIX_APP_SSH: "https://",
       navbar_general_class: 'collapse navbar-collapse mobile_nav_menu',
       navbar_class: 'collapse navbar-collapse mobile_nav_menu',
       navbar_open_class: 'collapse navbar-collapse mobile_nav_menu show',
@@ -7441,7 +7441,7 @@ var _require = __webpack_require__(/*! qrcanvas-vue */ "./node_modules/qrcanvas-
       var _this = this;
       this.options.data = window.location.href;
       var image = new Image();
-      image.src = "http://" + "user.climbing.loc" + "/public/images/site_img/x.png";
+      image.src = "https://" + "user.climbing.ge" + "/public/images/site_img/x.png";
       image.onload = function () {
         _this.options = _objectSpread(_objectSpread({}, _this.options), {}, {
           logo: {
@@ -7742,7 +7742,7 @@ __webpack_require__.r(__webpack_exports__);
   methods: {
     logout: function logout() {
       var _this = this;
-      axios.post("http://" + "user.climbing.loc" + '/logout').then(function () {
+      axios.post("https://" + "user.climbing.ge" + '/logout').then(function () {
         // window.location.href = "http://climibng.loc";
         localStorage.removeItem('x_xsrf_token');
         _this.$router.push({
@@ -13065,27 +13065,27 @@ vue__WEBPACK_IMPORTED_MODULE_12__["default"].component("forum-component", (__web
 var serviceRoutes = [];
 var homeComponent = [];
 var analytic_id = "";
-if (window.location.hostname == "climbing.loc") {
+if (window.location.hostname == "climbing.ge") {
   homeComponent = _components_site_IndexComponent_vue__WEBPACK_IMPORTED_MODULE_25__["default"];
   serviceRoutes = _routes_SiteRoutes__WEBPACK_IMPORTED_MODULE_30__["default"];
-  analytic_id = "G-B7KZEJ6CLW";
-  (axios__WEBPACK_IMPORTED_MODULE_3___default().defaults.baseURL) = "http://" + "climbing.loc" + '/api';
-} else if (window.location.hostname == "shop.climbing.loc") {
+  analytic_id = "G-KX8BD5FWTN";
+  (axios__WEBPACK_IMPORTED_MODULE_3___default().defaults.baseURL) = "https://" + "climbing.ge" + '/api';
+} else if (window.location.hostname == "shop.climbing.ge") {
   homeComponent = _components_shop_MainWrapperComponent_vue__WEBPACK_IMPORTED_MODULE_24__["default"];
   serviceRoutes = _routes_ShopRoutes__WEBPACK_IMPORTED_MODULE_29__["default"];
-  analytic_id = "G-6D3TLP4Z36";
-  (axios__WEBPACK_IMPORTED_MODULE_3___default().defaults.baseURL) = "http://" + "shop.climbing.loc" + '/api';
-} else if (window.location.hostname == "user.climbing.loc") {
+  analytic_id = "G-T3F0E2PQ4E";
+  (axios__WEBPACK_IMPORTED_MODULE_3___default().defaults.baseURL) = "https://" + "shop.climbing.ge" + '/api';
+} else if (window.location.hostname == "user.climbing.ge") {
   homeComponent = _components_user_HomeComponent_vue__WEBPACK_IMPORTED_MODULE_26__["default"];
   serviceRoutes = _routes_UserRoutes__WEBPACK_IMPORTED_MODULE_31__["default"];
-  analytic_id = "G-TDWCRT2C8S";
-  (axios__WEBPACK_IMPORTED_MODULE_3___default().defaults.baseURL) = "http://" + "user.climbing.loc" + '/api';
-} else if (window.location.hostname == "films.climbing.loc") {
+  analytic_id = "G-1E78550J3F";
+  (axios__WEBPACK_IMPORTED_MODULE_3___default().defaults.baseURL) = "https://" + "user.climbing.ge" + '/api';
+} else if (window.location.hostname == "films.climbing.ge") {
   homeComponent = _components_films_StudiaComponent_vue__WEBPACK_IMPORTED_MODULE_27__["default"];
   serviceRoutes = _routes_FilmsRoutes__WEBPACK_IMPORTED_MODULE_32__["default"];
-  analytic_id = "G-1BRWRTLD87";
+  analytic_id = "";
   // axios.defaults.baseURL = process.env.MIX_FILMS_URL
-} else if (window.location.hostname == "forum.climbing.loc") {
+} else if (window.location.hostname == "forum.climbing.ge") {
   homeComponent = _components_forum_ForumComponent_vue__WEBPACK_IMPORTED_MODULE_28__["default"];
   serviceRoutes = _routes_ForumRoutes__WEBPACK_IMPORTED_MODULE_33__["default"];
   analytic_id = "";
@@ -13103,7 +13103,7 @@ vue__WEBPACK_IMPORTED_MODULE_12__["default"].prototype.$siteData = [];
 vue__WEBPACK_IMPORTED_MODULE_12__["default"].prototype.$globalSiteData = [];
 vue__WEBPACK_IMPORTED_MODULE_12__["default"].prototype.$going = _mixins_easy_navigation_mixin_js__WEBPACK_IMPORTED_MODULE_17__.going;
 vue__WEBPACK_IMPORTED_MODULE_12__["default"].prototype.$editor_config = _mixins_editor_editor_config_mixin_js__WEBPACK_IMPORTED_MODULE_16__.editor_config;
-if (window.location.hostname == 'climbing.ge' && window.location.hostname == 'shop.climbing.ge' && window.location.hostname == 'user.climbing.ge' && window.location.hostname == 'films.climbing.ge' && window.location.hostname == 'forum.climbing.ge') {
+if (window.location.hostname == 'climbing.ge' || window.location.hostname == 'shop.climbing.ge' || window.location.hostname == 'user.climbing.ge' || window.location.hostname == 'films.climbing.ge' || window.location.hostname == 'forum.climbing.ge') {
   vue__WEBPACK_IMPORTED_MODULE_12__["default"].config.devtools = false;
   vue__WEBPACK_IMPORTED_MODULE_12__["default"].config.debug = false;
   vue__WEBPACK_IMPORTED_MODULE_12__["default"].config.select = false;
@@ -13137,7 +13137,7 @@ var app = new vue__WEBPACK_IMPORTED_MODULE_12__["default"]({
       var locale = localStorage.getItem("lang");
       // this.get_site_data();
 
-      if (window.location.hostname == "climbing.loc" || window.location.hostname == "shop.climbing.loc") {
+      if (window.location.hostname == "climbing.ge" || window.location.hostname == "shop.climbing.ge") {
         if (locale != 'en') {
           localStorage.setItem('lang', locale);
           this.$i18n.locale = locale;
