@@ -85,7 +85,7 @@ function _toPrimitive(input, hint) { if (_typeof(input) !== "object" || input ==
       complaint_comment_id: 0,
       selected_comment_complaint: 'Hostile remarks',
       is_user_comment_complaint_model: false,
-      MIX_GOOGLE_CAPTCHA_SITE_KEY: "6LdjgdYUAAAAAGp6kFHzEDbTr3ObVY58lLDzko8A",
+      MIX_GOOGLE_CAPTCHA_SITE_KEY: "6LfDFkMcAAAAAFh9-1TUlmGPx83715KTD79j0iwF",
       complainter_email: '',
       complaint_loader: false
     }, "id", this.article_id);
@@ -195,9 +195,10 @@ __webpack_require__.r(__webpack_exports__);
   data: function data() {
     return {
       locale: localStorage.getItem('lang'),
-      mix_site_url: "climbing.ge",
-      mix_app_ssh: "https://",
-      mix_site_name: "climbing.ge"
+      mix_site_url: "climbing.loc",
+      mix_app_ssh: "http://",
+      mix_site_name: "climbing.ge",
+      action_image: "http://" + '' + "climbing.loc" + '/' + this.image
     };
   },
   metaInfo: function metaInfo() {
@@ -248,7 +249,7 @@ __webpack_require__.r(__webpack_exports__);
         content: this.mix_app_ssh + this.mix_site_url
       }, {
         property: 'og:image',
-        content: this.image
+        content: this.action_image
       },
       // Often the same as your meta description, but not always.
       {
@@ -275,7 +276,7 @@ __webpack_require__.r(__webpack_exports__);
         content: '@alligatorio'
       }, {
         name: 'twitter:image:src',
-        content: this.image
+        content: this.action_image
       },
       // Google / Schema.org markup:
       {
@@ -286,7 +287,7 @@ __webpack_require__.r(__webpack_exports__);
         content: this.description
       }, {
         itemprop: 'image',
-        content: this.image
+        content: this.action_image
       }]
     };
   }
