@@ -67,8 +67,8 @@ __webpack_require__.r(__webpack_exports__);
   data: function data() {
     return {
       products: [],
-      MIX_SITE_URL: "climbing.ge",
-      MIX_APP_SSH: "https://"
+      MIX_SITE_URL: "climbing.loc",
+      MIX_APP_SSH: "http://"
       // filtred_products: [],
       // // site_data: [],
       // min_price: 0,

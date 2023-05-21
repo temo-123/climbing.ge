@@ -16,7 +16,7 @@
             <metaData 
                 :title = "other[0].title"
                 :description = "other[0].description"
-                :image = "'../../../../public/images/other_img/'+other.image"
+                :image = "'/public/images/other_img/'+other.image"
             />
         </span>
     </div>

@@ -5,7 +5,7 @@
         <metaData 
             :title = "news[0].title"
             :description = "news[0].description"
-            :image = "'../../../../public/images/news_img/'+news.image"
+            :image = "'/public/images/news_img/'+news.image"
         />
     </div>
 </template>

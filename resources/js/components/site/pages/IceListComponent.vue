@@ -36,7 +36,7 @@
         <metaData 
             :title = "$t('guide.meta.ice climbing')"
             :description = "this.$siteData.ice_description"
-            :image = "'../../../../public/images/meta_img/ice.jpg'"
+            :image = "'/public/images/meta_img/ice.jpg'"
         />
     </div>
 </template>

@@ -61,7 +61,7 @@
         <metaData 
             :title = " $t('guide.meta.index') "
             :description = "'Rock climbing, mountaineering and other outdoor actyvity in Georgia'"
-            :image = "'../../../../public/images/meta_img/outdoor.jpg'"
+            :image = "'/public/images/meta_img/outdoor.jpg'"
         />
     </div>  
 </template>

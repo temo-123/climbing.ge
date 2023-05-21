@@ -48,7 +48,7 @@
         <metaData 
             :title = "$t('guide.meta.events')"
             :description = "this.$siteData.event_description"
-            :image = "'../../../../public/images/meta_img/competition.jpg'"
+            :image = "'/public/images/meta_img/competition.jpg'"
         />
     </div>
 </template>

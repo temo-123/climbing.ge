@@ -16,7 +16,7 @@
             <metaData 
                 :title = "tech_tips[0].title"
                 :description = "tech_tips[0].description"
-                :image = "'../../../../public/images/security_img/'+tech_tips.image"
+                :image = "'/public/images/security_img/'+tech_tips.image"
             />
         </span>
     </div>

@@ -166,10 +166,10 @@ __webpack_require__.r(__webpack_exports__);
   data: function data() {
     return {
       locale: localStorage.getItem('lang'),
-      mix_site_url: "climbing.ge",
-      mix_app_ssh: "https://",
+      mix_site_url: "climbing.loc",
+      mix_app_ssh: "http://",
       mix_site_name: "climbing.ge",
-      action_image: "https://" + '' + "climbing.ge" + '/' + this.image
+      action_image: "http://" + '' + "climbing.loc" + '/' + this.image
     };
   },
   metaInfo: function metaInfo() {
@@ -634,7 +634,7 @@ var render = function render() {
     attrs: {
       title: _vm.service.local_service.title,
       description: _vm.service.local_service.short_description,
-      image: "../../images/service_img/" + _vm.service.service_images[0].image
+      image: "/images/service_img/" + _vm.service.service_images[0].image
     }
   })], 1);
 };

@@ -85,7 +85,7 @@
         <metaData 
             :title = "event.locale_event.title"
             :description = "event.locale_event.description"
-            :image = "'../../../../public/images/event_img/'+event.image"
+            :image = "'/public/images/event_img/'+event.image"
         />
 
     </div>

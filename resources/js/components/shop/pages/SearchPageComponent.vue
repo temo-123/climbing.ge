@@ -72,7 +72,7 @@
         <metaData 
             :title = " $t('shop.meta.search') "
             :description = "'Search product. All products made in Georgia.'"
-            :image = "'../../../../public/images/meta_img/shop.jpg'"
+            :image = "'/public/images/meta_img/shop.jpg'"
         />
     </div>
 </template>

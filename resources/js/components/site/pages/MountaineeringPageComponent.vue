@@ -141,7 +141,7 @@
         <metaData 
             :title = "mount_route[0].title"
             :description = "mount_route[0].description"
-            :image = "'../../../../public/images/mount_route_img/'+mount_route.image"
+            :image = "'/public/images/mount_route_img/'+mount_route.image"
         />
     </div> 
 </template>

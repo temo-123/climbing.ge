@@ -112,7 +112,7 @@
         <metaData 
             :title = "$t('guide.meta.outdoor climbing')"
             :description = "this.$siteData.outdoor_description"
-            :image = "'../../../../public/images/meta_img/outdoor.jpg'"
+            :image = "'/public/images/meta_img/outdoor.jpg'"
         />
     </div>
 </template>

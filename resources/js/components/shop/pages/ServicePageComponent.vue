@@ -30,7 +30,7 @@
         <metaData 
             :title = "service.local_service.title"
             :description = "service.local_service.short_description"
-            :image = "'../../images/service_img/'+service.service_images[0].image"
+            :image = "'/images/service_img/'+service.service_images[0].image"
         />
     </div>
 </template>

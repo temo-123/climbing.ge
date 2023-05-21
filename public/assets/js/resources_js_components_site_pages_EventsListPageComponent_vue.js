@@ -51,10 +51,10 @@ __webpack_require__.r(__webpack_exports__);
   data: function data() {
     return {
       locale: localStorage.getItem('lang'),
-      mix_site_url: "climbing.ge",
-      mix_app_ssh: "https://",
+      mix_site_url: "climbing.loc",
+      mix_app_ssh: "http://",
       mix_site_name: "climbing.ge",
-      action_image: "https://" + '' + "climbing.ge" + '/' + this.image
+      action_image: "http://" + '' + "climbing.loc" + '/' + this.image
     };
   },
   metaInfo: function metaInfo() {
@@ -564,7 +564,7 @@ var render = function render() {
     attrs: {
       title: _vm.$t("guide.meta.events"),
       description: this.$siteData.event_description,
-      image: "../../../../public/images/meta_img/competition.jpg"
+      image: "/public/images/meta_img/competition.jpg"
     }
   })], 1);
 };

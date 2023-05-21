@@ -36,7 +36,7 @@
         <metaData 
             :title = "$t('guide.meta.indoor climbing')"
             :description = "this.$siteData.indoor_description"
-            :image = "'../../../../public/images/meta_images/indoor.jpg'"
+            :image = "'/public/images/meta_images/indoor.jpg'"
         />
     </div>
 </template>

@@ -48,7 +48,7 @@
         <metaData 
             :title = " $t('guid.meta.search') "
             :description = "'Search climbing spots in Georgia. Query - ' + this.$route.query.query"
-            :image = "'../../../../public/images/meta_img/outdoor.jpg'"
+            :image = "'/public/images/meta_img/outdoor.jpg'"
         />
     </div>
 </template>

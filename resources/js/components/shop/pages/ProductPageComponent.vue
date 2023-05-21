@@ -148,7 +148,7 @@
         <metaData 
             :title = "product.local_product[0].title"
             :description = "product.local_product[0].short_description"
-            :image = "'../../../../public/images/meta_img/shop.jpg'"
+            :image = "'/public/images/meta_img/shop.jpg'"
         />
     </div>
 </template>

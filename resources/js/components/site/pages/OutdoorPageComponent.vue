@@ -16,7 +16,7 @@
             <metaData 
                 :title = "outdoor[0].title"
                 :description = "outdoor[0].description"
-                :image = "'../../../../public/images/outdoor_img/'+outdoor.image"
+                :image = "'/public/images/outdoor_img/'+outdoor.image"
             />
         </span>
     </div>

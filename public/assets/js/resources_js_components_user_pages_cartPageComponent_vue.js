@@ -71,8 +71,8 @@ __webpack_require__.r(__webpack_exports__);
       total_price: 0,
       price: 0,
       user_id: 0,
-      MIX_SHOP_URL: "shop.climbing.ge",
-      MIX_APP_SSH: "https://",
+      MIX_SHOP_URL: "shop.climbing.loc",
+      MIX_APP_SSH: "http://",
       is_quantity_updating: false
     };
   },

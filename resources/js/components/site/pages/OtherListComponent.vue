@@ -38,7 +38,7 @@
         <metaData 
             :title = "$t('guide.meta.other')"
             :description = "this.$siteData.other_activity_description"
-            :image = "'../../../../public/images/meta_img/other.jpg'"
+            :image = "'/public/images/meta_img/other.jpg'"
         />
     </div>
 </template>
