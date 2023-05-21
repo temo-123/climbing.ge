@@ -121,14 +121,14 @@ if (window.location.hostname == process.env.MIX_SITE_URL) {
     homeComponent = Films;
     serviceRoutes = films_routes;
     analytic_id = process.env.MIX_FILMS_ANALITICS_ID;
-    // axios.defaults.baseURL = process.env.MIX_FILMS_URL
+    axios.defaults.baseURL = process.env.MIX_FILMS_URL
 } else if (window.location.hostname == process.env.MIX_FORUM_URL) {
     homeComponent = Forum;
     serviceRoutes = forum_routes;
     analytic_id = process.env.MIX_FORUM_ANALITICS_ID;
-    // axios.defaults.baseURL = process.env.MIX_FORUM_URL
+    axios.defaults.baseURL = process.env.MIX_FORUM_URL
 } else {
-    window.location.href = "/404";
+    // window.location.href = "/404";
 }
 
 Vue.use(VueGtag, {
