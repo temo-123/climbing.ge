@@ -24,3 +24,7 @@ mix.webpackConfig({
 //     children: true
 //     }
 // });
+
+if (mix.inProduction()) {
+    mix.version();
+}
