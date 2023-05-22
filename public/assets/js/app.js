@@ -5851,6 +5851,42 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
+/***/ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/errors/global_errors/error.vue?vue&type=script&lang=js&":
+/*!*********************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/errors/global_errors/error.vue?vue&type=script&lang=js& ***!
+  \*********************************************************************************************************************************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+// import navbar from './items/NavbarComponent'
+// import footter from './items/FooterComponent'
+// import loginModal from "../global_components/LoginModalComponent.vue";
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
+  data: function data() {
+    return {
+      // cart_products: [],
+    };
+  },
+  components: {
+    // navbar,
+    // footter,
+    // loginModal
+  },
+  mounted: function mounted() {
+    //
+  },
+  methods: {
+    //
+  }
+});
+
+/***/ }),
+
 /***/ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/films/StudiaComponent.vue?vue&type=script&lang=js&":
 /*!****************************************************************************************************************************************************************************************************************!*\
   !*** ./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/films/StudiaComponent.vue?vue&type=script&lang=js& ***!
@@ -8947,6 +8983,31 @@ var render = function render() {
   }, [_c("span", {
     staticClass: "glyphicon glyphicon-home"
   }), _vm._v("\n                        " + _vm._s(_vm.$t("error.404.go_home")) + "\n                    ")])], 1), _vm._v(" "), _c("h2", [_vm._v("By Climbing.ge")])])])])]);
+};
+var staticRenderFns = [];
+render._withStripped = true;
+
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/lib/loaders/templateLoader.js??ruleSet[1].rules[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/errors/global_errors/error.vue?vue&type=template&id=48303532&":
+/*!********************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/lib/loaders/templateLoader.js??ruleSet[1].rules[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/errors/global_errors/error.vue?vue&type=template&id=48303532& ***!
+  \********************************************************************************************************************************************************************************************************************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "render": () => (/* binding */ render),
+/* harmony export */   "staticRenderFns": () => (/* binding */ staticRenderFns)
+/* harmony export */ });
+var render = function render() {
+  var _vm = this,
+    _c = _vm._self._c;
+  return _c("div", [_c("div", {
+    staticClass: "container top_menu_margin h-recent-work"
+  }, [_c("router-view")], 1)]);
 };
 var staticRenderFns = [];
 render._withStripped = true;
@@ -12981,11 +13042,13 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _components_user_HomeComponent_vue__WEBPACK_IMPORTED_MODULE_26__ = __webpack_require__(/*! ./components/user/HomeComponent.vue */ "./resources/js/components/user/HomeComponent.vue");
 /* harmony import */ var _components_films_StudiaComponent_vue__WEBPACK_IMPORTED_MODULE_27__ = __webpack_require__(/*! ./components/films/StudiaComponent.vue */ "./resources/js/components/films/StudiaComponent.vue");
 /* harmony import */ var _components_forum_ForumComponent_vue__WEBPACK_IMPORTED_MODULE_28__ = __webpack_require__(/*! ./components/forum/ForumComponent.vue */ "./resources/js/components/forum/ForumComponent.vue");
-/* harmony import */ var _routes_ShopRoutes__WEBPACK_IMPORTED_MODULE_29__ = __webpack_require__(/*! ./routes/ShopRoutes */ "./resources/js/routes/ShopRoutes.js");
-/* harmony import */ var _routes_SiteRoutes__WEBPACK_IMPORTED_MODULE_30__ = __webpack_require__(/*! ./routes/SiteRoutes */ "./resources/js/routes/SiteRoutes.js");
-/* harmony import */ var _routes_UserRoutes__WEBPACK_IMPORTED_MODULE_31__ = __webpack_require__(/*! ./routes/UserRoutes */ "./resources/js/routes/UserRoutes.js");
-/* harmony import */ var _routes_FilmsRoutes__WEBPACK_IMPORTED_MODULE_32__ = __webpack_require__(/*! ./routes/FilmsRoutes */ "./resources/js/routes/FilmsRoutes.js");
-/* harmony import */ var _routes_ForumRoutes__WEBPACK_IMPORTED_MODULE_33__ = __webpack_require__(/*! ./routes/ForumRoutes */ "./resources/js/routes/ForumRoutes.js");
+/* harmony import */ var _components_errors_global_errors_error_vue__WEBPACK_IMPORTED_MODULE_29__ = __webpack_require__(/*! ./components/errors/global_errors/error.vue */ "./resources/js/components/errors/global_errors/error.vue");
+/* harmony import */ var _routes_ShopRoutes__WEBPACK_IMPORTED_MODULE_30__ = __webpack_require__(/*! ./routes/ShopRoutes */ "./resources/js/routes/ShopRoutes.js");
+/* harmony import */ var _routes_SiteRoutes__WEBPACK_IMPORTED_MODULE_31__ = __webpack_require__(/*! ./routes/SiteRoutes */ "./resources/js/routes/SiteRoutes.js");
+/* harmony import */ var _routes_UserRoutes__WEBPACK_IMPORTED_MODULE_32__ = __webpack_require__(/*! ./routes/UserRoutes */ "./resources/js/routes/UserRoutes.js");
+/* harmony import */ var _routes_FilmsRoutes__WEBPACK_IMPORTED_MODULE_33__ = __webpack_require__(/*! ./routes/FilmsRoutes */ "./resources/js/routes/FilmsRoutes.js");
+/* harmony import */ var _routes_ForumRoutes__WEBPACK_IMPORTED_MODULE_34__ = __webpack_require__(/*! ./routes/ForumRoutes */ "./resources/js/routes/ForumRoutes.js");
+/* harmony import */ var _routes_ErrorRoutes__WEBPACK_IMPORTED_MODULE_35__ = __webpack_require__(/*! ./routes/ErrorRoutes */ "./resources/js/routes/ErrorRoutes.js");
 
 __webpack_require__(/*! ./bootstrap */ "./resources/js/bootstrap.js");
 
@@ -13057,6 +13120,8 @@ vue__WEBPACK_IMPORTED_MODULE_12__["default"].component("goTo", _components_globa
 
 
 
+
+
 vue__WEBPACK_IMPORTED_MODULE_12__["default"].component("main-wrapper-component", (__webpack_require__(/*! ./components/shop/MainWrapperComponent.vue */ "./resources/js/components/shop/MainWrapperComponent.vue")["default"]));
 vue__WEBPACK_IMPORTED_MODULE_12__["default"].component("index-component", (__webpack_require__(/*! ./components/site/IndexComponent.vue */ "./resources/js/components/site/IndexComponent.vue")["default"]));
 vue__WEBPACK_IMPORTED_MODULE_12__["default"].component("home-component", (__webpack_require__(/*! ./components/user/HomeComponent.vue */ "./resources/js/components/user/HomeComponent.vue")["default"]));
@@ -13067,31 +13132,33 @@ var homeComponent = [];
 var analytic_id = "";
 if (window.location.hostname == "climbing.loc") {
   homeComponent = _components_site_IndexComponent_vue__WEBPACK_IMPORTED_MODULE_25__["default"];
-  serviceRoutes = _routes_SiteRoutes__WEBPACK_IMPORTED_MODULE_30__["default"];
+  serviceRoutes = _routes_SiteRoutes__WEBPACK_IMPORTED_MODULE_31__["default"];
   analytic_id = "G-B7KZEJ6CLW";
   (axios__WEBPACK_IMPORTED_MODULE_3___default().defaults.baseURL) = "http://" + "climbing.loc" + '/api';
 } else if (window.location.hostname == "shop.climbing.loc") {
   homeComponent = _components_shop_MainWrapperComponent_vue__WEBPACK_IMPORTED_MODULE_24__["default"];
-  serviceRoutes = _routes_ShopRoutes__WEBPACK_IMPORTED_MODULE_29__["default"];
+  serviceRoutes = _routes_ShopRoutes__WEBPACK_IMPORTED_MODULE_30__["default"];
   analytic_id = "G-6D3TLP4Z36";
   (axios__WEBPACK_IMPORTED_MODULE_3___default().defaults.baseURL) = "http://" + "shop.climbing.loc" + '/api';
 } else if (window.location.hostname == "user.climbing.loc") {
   homeComponent = _components_user_HomeComponent_vue__WEBPACK_IMPORTED_MODULE_26__["default"];
-  serviceRoutes = _routes_UserRoutes__WEBPACK_IMPORTED_MODULE_31__["default"];
+  serviceRoutes = _routes_UserRoutes__WEBPACK_IMPORTED_MODULE_32__["default"];
   analytic_id = "G-TDWCRT2C8S";
   (axios__WEBPACK_IMPORTED_MODULE_3___default().defaults.baseURL) = "http://" + "user.climbing.loc" + '/api';
 } else if (window.location.hostname == "films.climbing.loc") {
   homeComponent = _components_films_StudiaComponent_vue__WEBPACK_IMPORTED_MODULE_27__["default"];
-  serviceRoutes = _routes_FilmsRoutes__WEBPACK_IMPORTED_MODULE_32__["default"];
+  serviceRoutes = _routes_FilmsRoutes__WEBPACK_IMPORTED_MODULE_33__["default"];
   analytic_id = "G-1BRWRTLD87";
   (axios__WEBPACK_IMPORTED_MODULE_3___default().defaults.baseURL) = "films.climbing.loc";
 } else if (window.location.hostname == "forum.climbing.loc") {
   homeComponent = _components_forum_ForumComponent_vue__WEBPACK_IMPORTED_MODULE_28__["default"];
-  serviceRoutes = _routes_ForumRoutes__WEBPACK_IMPORTED_MODULE_33__["default"];
+  serviceRoutes = _routes_ForumRoutes__WEBPACK_IMPORTED_MODULE_34__["default"];
   analytic_id = "";
   (axios__WEBPACK_IMPORTED_MODULE_3___default().defaults.baseURL) = "forum.climbing.loc";
 } else {
-  // window.location.href = "/404";
+  homeComponent = _components_errors_global_errors_error_vue__WEBPACK_IMPORTED_MODULE_29__["default"];
+  serviceRoutes = _routes_ErrorRoutes__WEBPACK_IMPORTED_MODULE_35__["default"];
+  analytic_id = "G-B7KZEJ6CLW";
 }
 vue__WEBPACK_IMPORTED_MODULE_12__["default"].use(vue_gtag__WEBPACK_IMPORTED_MODULE_9__["default"], {
   config: {
@@ -13272,6 +13339,36 @@ var editor_config = {
     };
   }
 };
+
+/***/ }),
+
+/***/ "./resources/js/routes/ErrorRoutes.js":
+/*!********************************************!*\
+  !*** ./resources/js/routes/ErrorRoutes.js ***!
+  \********************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var vue_router__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vue-router */ "./node_modules/vue-router/dist/vue-router.esm.js");
+
+function load(component) {
+  return function () {
+    return __webpack_require__("./resources/js/components/errors/global_errors/pages lazy recursive ^\\.\\/.*\\.vue$")("./".concat(component, ".vue"));
+  };
+}
+var router = new vue_router__WEBPACK_IMPORTED_MODULE_0__["default"]({
+  routes: [{
+    path: '/',
+    name: 'host_error',
+    component: load('host_error_component')
+  }],
+  mode: 'history'
+});
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (router);
 
 /***/ }),
 
@@ -71783,6 +71880,45 @@ component.options.__file = "resources/js/components/errors/404Component.vue"
 
 /***/ }),
 
+/***/ "./resources/js/components/errors/global_errors/error.vue":
+/*!****************************************************************!*\
+  !*** ./resources/js/components/errors/global_errors/error.vue ***!
+  \****************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _error_vue_vue_type_template_id_48303532___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./error.vue?vue&type=template&id=48303532& */ "./resources/js/components/errors/global_errors/error.vue?vue&type=template&id=48303532&");
+/* harmony import */ var _error_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./error.vue?vue&type=script&lang=js& */ "./resources/js/components/errors/global_errors/error.vue?vue&type=script&lang=js&");
+/* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! !../../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+/* normalize component */
+;
+var component = (0,_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+  _error_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _error_vue_vue_type_template_id_48303532___WEBPACK_IMPORTED_MODULE_0__.render,
+  _error_vue_vue_type_template_id_48303532___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns,
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/components/errors/global_errors/error.vue"
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (component.exports);
+
+/***/ }),
+
 /***/ "./resources/js/components/films/StudiaComponent.vue":
 /*!***********************************************************!*\
   !*** ./resources/js/components/films/StudiaComponent.vue ***!
@@ -73448,6 +73584,22 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
+/***/ "./resources/js/components/errors/global_errors/error.vue?vue&type=script&lang=js&":
+/*!*****************************************************************************************!*\
+  !*** ./resources/js/components/errors/global_errors/error.vue?vue&type=script&lang=js& ***!
+  \*****************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_error_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!../../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./error.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/errors/global_errors/error.vue?vue&type=script&lang=js&");
+ /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (_node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_error_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
 /***/ "./resources/js/components/films/StudiaComponent.vue?vue&type=script&lang=js&":
 /*!************************************************************************************!*\
   !*** ./resources/js/components/films/StudiaComponent.vue?vue&type=script&lang=js& ***!
@@ -74187,6 +74339,23 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "staticRenderFns": () => (/* reexport safe */ _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_lib_loaders_templateLoader_js_ruleSet_1_rules_2_node_modules_vue_loader_lib_index_js_vue_loader_options_404Component_vue_vue_type_template_id_ae7a9764___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns)
 /* harmony export */ });
 /* harmony import */ var _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_lib_loaders_templateLoader_js_ruleSet_1_rules_2_node_modules_vue_loader_lib_index_js_vue_loader_options_404Component_vue_vue_type_template_id_ae7a9764___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??ruleSet[1].rules[2]!../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./404Component.vue?vue&type=template&id=ae7a9764& */ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/lib/loaders/templateLoader.js??ruleSet[1].rules[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/errors/404Component.vue?vue&type=template&id=ae7a9764&");
+
+
+/***/ }),
+
+/***/ "./resources/js/components/errors/global_errors/error.vue?vue&type=template&id=48303532&":
+/*!***********************************************************************************************!*\
+  !*** ./resources/js/components/errors/global_errors/error.vue?vue&type=template&id=48303532& ***!
+  \***********************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "render": () => (/* reexport safe */ _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_lib_loaders_templateLoader_js_ruleSet_1_rules_2_node_modules_vue_loader_lib_index_js_vue_loader_options_error_vue_vue_type_template_id_48303532___WEBPACK_IMPORTED_MODULE_0__.render),
+/* harmony export */   "staticRenderFns": () => (/* reexport safe */ _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_lib_loaders_templateLoader_js_ruleSet_1_rules_2_node_modules_vue_loader_lib_index_js_vue_loader_options_error_vue_vue_type_template_id_48303532___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns)
+/* harmony export */ });
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_lib_loaders_templateLoader_js_ruleSet_1_rules_2_node_modules_vue_loader_lib_index_js_vue_loader_options_error_vue_vue_type_template_id_48303532___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!../../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??ruleSet[1].rules[2]!../../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./error.vue?vue&type=template&id=48303532& */ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/lib/loaders/templateLoader.js??ruleSet[1].rules[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/errors/global_errors/error.vue?vue&type=template&id=48303532&");
 
 
 /***/ }),
@@ -94914,6 +95083,38 @@ var index = {
 
 /***/ }),
 
+/***/ "./resources/js/components/errors/global_errors/pages lazy recursive ^\\.\\/.*\\.vue$":
+/*!*************************************************************************************************!*\
+  !*** ./resources/js/components/errors/global_errors/pages/ lazy ^\.\/.*\.vue$ namespace object ***!
+  \*************************************************************************************************/
+/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
+
+var map = {
+	"./host_error_component.vue": [
+		"./resources/js/components/errors/global_errors/pages/host_error_component.vue",
+		"resources_js_components_errors_global_errors_pages_host_error_component_vue"
+	]
+};
+function webpackAsyncContext(req) {
+	if(!__webpack_require__.o(map, req)) {
+		return Promise.resolve().then(() => {
+			var e = new Error("Cannot find module '" + req + "'");
+			e.code = 'MODULE_NOT_FOUND';
+			throw e;
+		});
+	}
+
+	var ids = map[req], id = ids[0];
+	return __webpack_require__.e(ids[1]).then(() => {
+		return __webpack_require__(id);
+	});
+}
+webpackAsyncContext.keys = () => (Object.keys(map));
+webpackAsyncContext.id = "./resources/js/components/errors/global_errors/pages lazy recursive ^\\.\\/.*\\.vue$";
+module.exports = webpackAsyncContext;
+
+/***/ }),
+
 /***/ "./resources/js/components/films/pages lazy recursive ^\\.\\/.*\\.vue$":
 /*!**********************************************************************************!*\
   !*** ./resources/js/components/films/pages/ lazy ^\.\/.*\.vue$ namespace object ***!
@@ -95815,7 +96016,7 @@ module.exports = JSON.parse('{"name":"axios","version":"0.21.4","description":"P
 /***/ ((module) => {
 
 "use strict";
-module.exports = JSON.parse('{"guide":{"name":"Climbing Guidebook","meta":{"index":"Climbing in georgia","indoor climbing":"Indoor climbing","outdoor climbing":"Outdoor climbing","ice climbing":"Ice and mix climbing","events":"Events & competitions","mountaineering":"Mountaineering","other":"Other","about us":"About us","search":"Search climbing spots in Georgia"},"menu":{"climbing":"Rock climbing","indoor climbing":"Indoor climbing","outdoor climbing":"Outdoor climbing","ice climbing":"Ice & mix","events":"Events & competitions","mountaineering":"Mountaineering","other":"Other","about us":"About us","login":"Login","sitemap":"Sitemap"},"article_right_nabar":{"menu title":"Navigation Menu","similar articles":"Similar Articles","gallery":"Gallery","comments":"Comments","description":"Description","sectors":"Climbing sectors & routes"},"title":{"news":"News","topo":"Topo","what we do":"What we do","gallery":"Gallery","tech tips":"Tech tips","events":"Events and Cometitions","climbing":"Climbing","indoor climbing":"Indoor climbing","outdoor climbing":"Outdoor climbing","ice climbing":"Ice and mix climbing","mountaineering":"Mountaineering","other":"Other","about us":"About us","partner":"Partners","message":"Send message"},"route":{"name":"Name","height":"Height","bolts":"Bolts","grade fr":"Grade FR","grade yds":"Grade YDS","grade uiaa":"Grade UIAA","mtp name":"Multy-pitch name","author":"Author","creating_data":"Creating data","first_ascent":"First ascent","top rope":"Top Rope","tred":"Tred Gear","more":"More","route detals":"Routes detals","mtp detals":"Multy-pitch detals"},"sector":{"name":"Sector name","shade after 10.00 am":"In shade after 10.00 am","shade after 15.00 pm":"In shade after 15.00 pm","shade befor noon":"In shade befor noon","shade in the afternoon":"In shade in the afternoon","shade whole day":"In the shade whole day","sun the whole day":"In the sun the whole day","overhang":"Overhang","slabby":"Slabby","vertical":"Vertical","roof":"Roof","for_family":"This sector recomendidi family climbing. It`s seifty for kids","for_kids":"This sector recomendidi family climbing. It`s seifty for kids","walking":"Wolging time from car stoping to climbin sector"},"article":{"title":{"mount massive":"Mountain Massive","best time":"Best time to climb","how_get":"How to get there","what need":"What you need","comments":"Comments","gallery":"Gallery","info":"Info","map":"Map","locatione":"Location","interested event":"Interested","similar articles":"Similar Articles","sector name":"Sector name","address":"Address","price":"Price","route":"Routes","back":"Go Back","all articles":"All Articles"},"route_quantyty":"In Georgia are {sectors} outdoor climbing sectors, {sport_routes} sport climbing routes, {boulder_routes} boulder routes, {mtps} multy pitch. You can see all outdoor climbing arias info on this page.","prices from":"Prices from","working time":"Working hours","closed":"Temporarily closed"},"breadcrumb home":"Home","serch":""},"shop":{"name":"Climbng shop","meta":{"products":"Products list","services":"Services list","categories":"Categories","about us":"About us","search":"Search product"},"menu":{"products":"Products","services":"Services","categories":"Categories","about us":"About us"},"title":{"services":"Ouer services","products":"Products","search":"Search products","gallery":"Gallery","similar":{"products":"You might also like","services":"Other services"}},"product desc":{"category":"Category","material":"Material","weight":"Weight"},"seller":{"seller contact":"Contacts","email":"Email","phone":"Phone number"},"limited quantity":"Limited quantity ","out of stock":"Out of stock","product description":"Description","add to cart":"Add to cart","all products":"All products","max products":"This is maximal quantyty for this product!!!","add successful":"Product add successful!!!","custom product":"Custom production"},"user":{"name":"User panel","menu":{"favorite products":"My favorite products","favorite films":"My favorite films","admin dashboard":"Admin dashboard","home":"My page","cart":"My cart","orders":"Orders","my orders":"My Orders","total orders":"All orders","films":"Films list","my interested events":"Interested events","followers":"Followers & following","products & category":"Products & Category","services":"Services","all comments":"All comments","my comments":"My comments","my posts":"My posts","all posts":"All posts","users":"Users & Parmissions","options":"Options","indoor climbing":"Indoor climbing","outdoor climbing":"Outdoor climbing","ice climbing":"Ice & Mix","mountaineering":"Mountaineering","other":"Other","security":"Security (Tech tips)","partners":"Partners","events":"Events","news":"News","gallery":"Gallery","about":"About us","login":"Login","logout":"Logout","sectors & routes":"Sectors & Routes","sectors local images":"Sectors local images","local bisnes":"Suport local bisnes","my favorite outdoor area":"My favorite outdoor areas"}},"global":{"footer":{"links":"Links","share":"Share","more":"More","about us":"About us","follow":"Follow us","qr":"QR Code"},"message":{"title":"Message","form":{"name":"Name *","surname":"Surname *","email":"E_mail *","number":"Phone number","country":"Yout country","message text":"Your message"},"send":"Send"},"login":"Login","comments":"Comments","page is empty":"Page is empty","services":"Services"},"error":{"404":{"title":"Oops! Error 404! Page Not Found","description":"Sorry, an error has occured, Requested page not found!","go_homehome":"Go to home page"}}}');
+module.exports = JSON.parse('{"guide":{"name":"Climbing Guidebook","meta":{"index":"Climbing in georgia","indoor climbing":"Indoor climbing","outdoor climbing":"Outdoor climbing","ice climbing":"Ice and mix climbing","events":"Events & competitions","mountaineering":"Mountaineering","other":"Other","about us":"About us","search":"Search climbing spots in Georgia"},"menu":{"climbing":"Rock climbing","indoor climbing":"Indoor climbing","outdoor climbing":"Outdoor climbing","ice climbing":"Ice & mix","events":"Events & competitions","mountaineering":"Mountaineering","other":"Other","about us":"About us","login":"Login","sitemap":"Sitemap"},"article_right_nabar":{"menu title":"Navigation Menu","similar articles":"Similar Articles","gallery":"Gallery","comments":"Comments","description":"Description","sectors":"Climbing sectors & routes"},"title":{"news":"News","topo":"Topo","what we do":"What we do","gallery":"Gallery","tech tips":"Tech tips","events":"Events and Cometitions","climbing":"Climbing","indoor climbing":"Indoor climbing","outdoor climbing":"Outdoor climbing","ice climbing":"Ice and mix climbing","mountaineering":"Mountaineering","other":"Other","about us":"About us","partner":"Partners","message":"Send message"},"route":{"name":"Name","height":"Height","bolts":"Bolts","grade fr":"Grade FR","grade yds":"Grade YDS","grade uiaa":"Grade UIAA","mtp name":"Multy-pitch name","author":"Author","creating_data":"Creating data","first_ascent":"First ascent","top rope":"Top Rope","tred":"Tred Gear","more":"More","route detals":"Routes detals","mtp detals":"Multy-pitch detals"},"sector":{"name":"Sector name","shade after 10.00 am":"In shade after 10.00 am","shade after 15.00 pm":"In shade after 15.00 pm","shade befor noon":"In shade befor noon","shade in the afternoon":"In shade in the afternoon","shade whole day":"In the shade whole day","sun the whole day":"In the sun the whole day","overhang":"Overhang","slabby":"Slabby","vertical":"Vertical","roof":"Roof","for_family":"This sector recomendidi family climbing. It`s seifty for kids","for_kids":"This sector recomendidi family climbing. It`s seifty for kids","walking":"Wolging time from car stoping to climbin sector"},"article":{"title":{"mount massive":"Mountain Massive","best time":"Best time to climb","how_get":"How to get there","what need":"What you need","comments":"Comments","gallery":"Gallery","info":"Info","map":"Map","locatione":"Location","interested event":"Interested","similar articles":"Similar Articles","sector name":"Sector name","address":"Address","price":"Price","route":"Routes","back":"Go Back","all articles":"All Articles"},"route_quantyty":"In Georgia are {sectors} outdoor climbing sectors, {sport_routes} sport climbing routes, {boulder_routes} boulder routes, {mtps} multy pitch. You can see all outdoor climbing arias info on this page.","prices from":"Prices from","working time":"Working hours","closed":"Temporarily closed"},"breadcrumb home":"Home","serch":""},"shop":{"name":"Climbng shop","meta":{"products":"Products list","services":"Services list","categories":"Categories","about us":"About us","search":"Search product"},"menu":{"products":"Products","services":"Services","categories":"Categories","about us":"About us"},"title":{"services":"Ouer services","products":"Products","search":"Search products","gallery":"Gallery","similar":{"products":"You might also like","services":"Other services"}},"product desc":{"category":"Category","material":"Material","weight":"Weight"},"seller":{"seller contact":"Contacts","email":"Email","phone":"Phone number"},"limited quantity":"Limited quantity ","out of stock":"Out of stock","product description":"Description","add to cart":"Add to cart","all products":"All products","max products":"This is maximal quantyty for this product!!!","add successful":"Product add successful!!!","custom product":"Custom production"},"user":{"name":"User panel","menu":{"favorite products":"My favorite products","favorite films":"My favorite films","admin dashboard":"Admin dashboard","home":"My page","cart":"My cart","orders":"Orders","my orders":"My Orders","total orders":"All orders","films":"Films list","my interested events":"Interested events","followers":"Followers & following","products & category":"Products & Category","services":"Services","all comments":"All comments","my comments":"My comments","my posts":"My posts","all posts":"All posts","users":"Users & Parmissions","options":"Options","indoor climbing":"Indoor climbing","outdoor climbing":"Outdoor climbing","ice climbing":"Ice & Mix","mountaineering":"Mountaineering","other":"Other","security":"Security (Tech tips)","partners":"Partners","events":"Events","news":"News","gallery":"Gallery","about":"About us","login":"Login","logout":"Logout","sectors & routes":"Sectors & Routes","sectors local images":"Sectors local images","local bisnes":"Suport local bisnes","my favorite outdoor area":"My favorite outdoor areas"}},"global":{"footer":{"links":"Links","share":"Share","more":"More","about us":"About us","follow":"Follow us","qr":"QR Code"},"message":{"title":"Message","form":{"name":"Name *","surname":"Surname *","email":"E_mail *","number":"Phone number","country":"Yout country","message text":"Your message"},"send":"Send"},"login":"Login","comments":"Comments","page is empty":"Page is empty","services":"Services"},"error":{"404":{"title":"Oops! Error 404! Page Not Found","description":"Sorry, an error has occured, Requested page not found!","go_homehome":"Go to home page"},"host_error":{"title":"Oops! Site configuratuion or hoste have some error!!!","description":"Sorry, an error has occured, Site configuratuion or hoste have some error! Contact to suport!"}}}');
 
 /***/ }),
 
@@ -95948,7 +96149,7 @@ module.exports = JSON.parse('{"guide":{"name":"Climbing guidebook","meta":{"indo
 /******/ 		// This function allow to reference async chunks
 /******/ 		__webpack_require__.u = (chunkId) => {
 /******/ 			// return url for filenames not based on template
-/******/ 			if ({"resources_js_components_shop_pages_AboutUsComponent_vue":1,"resources_js_components_shop_pages_CatalogComponent_vue":1,"resources_js_components_shop_pages_ProductPageComponent_vue":1,"resources_js_components_shop_pages_SearchPageComponent_vue":1,"resources_js_components_shop_pages_ServicePageComponent_vue":1,"resources_js_components_shop_pages_ServicesCatalogComponent_vue":1,"resources_js_components_site_pages_AboutUsComponent_vue":1,"resources_js_components_site_pages_EventPageComponent_vue":1,"resources_js_components_site_pages_EventsListPageComponent_vue":1,"resources_js_components_site_pages_IceListComponent_vue":1,"resources_js_components_site_pages_IcePageComponent_vue":1,"resources_js_components_site_pages_IndexPageComponent_vue":1,"resources_js_components_site_pages_IndoorListComponent_vue":1,"resources_js_components_site_pages_IndoorPageComponent_vue":1,"resources_js_components_site_pages_LocalBisnesPageComponent_vue":1,"resources_js_components_site_pages_MountaineeringListComponent_vue":1,"resources_js_components_site_pages_MountaineeringPageComponent_vue":1,"resources_js_components_site_pages_NewsPageComponent_vue":1,"resources_js_components_site_pages_OtherListComponent_vue":1,"resources_js_components_site_pages_OtherPageComponent_vue":1,"resources_js_components_site_pages_OutdoorListComponent_vue":1,"resources_js_components_site_pages_OutdoorPageComponent_vue":1,"resources_js_components_site_pages_PartnerPageComponent_vue":1,"resources_js_components_site_pages_SerchPageComponent_vue":1,"resources_js_components_site_pages_TechTipPageComponent_vue":1,"resources_js_components_user_pages_AdminPageComponent_vue":1,"resources_js_components_user_pages_GalleryPageComponent_vue":1,"resources_js_components_user_pages_HomePageComponent_vue":1,"resources_js_components_user_pages_articles_articleAddComponent_vue":1,"resources_js_components_user_pages_articles_articleEditComponent_vue":1,"resources_js_components_user_pages_articles_articleListComponent_vue":1,"resources_js_components_user_pages_articles_forms_add_forms_ArticleImageFormComponent_vue":1,"resources_js_components_user_pages_articles_forms_add_forms_GlobalDataFormComponent_vue":1,"resources_js_components_user_pages_articles_forms_add_forms_LocaleDataFormComponent_vue":1,"resources_js_components_user_pages_articles_forms_add_forms_MountRouteImageFormComponent_vue":1,"resources_js_components_user_pages_articles_forms_add_forms_SectorImagesFormComponent_vue":1,"resources_js_components_user_pages_articles_forms_edit_forms_ArticleImageFormComponent_vue":1,"resources_js_components_user_pages_articles_forms_edit_forms_GlobalDataFormComponent_vue":1,"resources_js_components_user_pages_articles_forms_edit_forms_LocaleDataFormComponent_vue":1,"resources_js_components_user_pages_articles_forms_edit_forms_MountRouteImageFormComponent_vue":1,"resources_js_components_user_pages_articles_forms_edit_forms_SectorImagesFormComponent_vue":1,"resources_js_components_user_pages_cartPageComponent_vue":1,"resources_js_components_user_pages_comments_CommentsPageComponent_vue":1,"resources_js_components_user_pages_comments_MyCommentsPageComponent_vue":1,"resources_js_components_user_pages_event_competitions_competitionAddComponent_vue":1,"resources_js_components_user_pages_event_competitions_competitionEditComponent_vue":1,"resources_js_components_user_pages_event_events_eventAddComponent_vue":1,"resources_js_components_user_pages_event_events_eventEditComponent_vue":1,"resources_js_components_user_pages_event_eventsAndCompetitionsListComponent_vue":1,"resources_js_components_user_pages_favorites_FavoriteFilmsPageComponent_vue":1,"resources_js_components_user_pages_favorites_FavoriteOutdoorAreaPageComponent_vue":1,"resources_js_components_user_pages_favorites_FavoriteProductsPageComponent_vue":1,"resources_js_components_user_pages_favorites_FollowersPageComponent_vue":1,"resources_js_components_user_pages_favorites_InterestedEventsPageComponent_vue":1,"resources_js_components_user_pages_films_filmsAddComponent_vue":1,"resources_js_components_user_pages_films_filmsEditComponent_vue":1,"resources_js_components_user_pages_films_filmsListComponent_vue":1,"resources_js_components_user_pages_local_bisnes_localBisnesAddComponent_vue":1,"resources_js_components_user_pages_local_bisnes_localBisnesEditComponent_vue":1,"resources_js_components_user_pages_local_bisnes_localBisnesListComponent_vue":1,"resources_js_components_user_pages_mountRoutes_mountListComponent_vue":1,"resources_js_components_user_pages_mountRoutes_mountMassiveAddComponent_vue":1,"resources_js_components_user_pages_mountRoutes_mountMassiveEditComponent_vue":1,"resources_js_components_user_pages_multimedia_MediaFilesListPageComponent_vue":1,"resources_js_components_user_pages_optionsPageComponent_vue":1,"resources_js_components_user_pages_orders_allOrderPageComponent_vue":1,"resources_js_components_user_pages_orders_decloration_confirmOrderPageComponent_vue":1,"resources_js_components_user_pages_orders_decloration_items_BreadcrumbComponent_vue":1,"resources_js_components_user_pages_orders_decloration_mailOrderConfirmComponent_vue":1,"resources_js_components_user_pages_orders_decloration_orderDeclorationPageComponent_vue":1,"resources_js_components_user_pages_orders_decloration_orderPaymentPageComponent_vue":1,"resources_js_components_user_pages_orders_myOrderComponent_vue":1,"resources_js_components_user_pages_posts_AllPostsPageComponent_vue":1,"resources_js_components_user_pages_posts_MyPostsPageCompoents_vue":1,"resources_js_components_user_pages_products_and_categories_categories_productCategoryAddCompo-6c462b":1,"resources_js_components_user_pages_products_and_categories_categories_productCategoryEditComp-b66cd8":1,"resources_js_components_user_pages_products_and_categories_productOptionControlPageComponent_vue":1,"resources_js_components_user_pages_products_and_categories_products_productAddComponent_vue":1,"resources_js_components_user_pages_products_and_categories_products_productEditComponent_vue":1,"resources_js_components_user_pages_products_and_categories_productsAndCatgoriesListComponent_vue":1,"resources_js_components_user_pages_routes_and_sectors_MTP_MTPAddComponent_vue":1,"resources_js_components_user_pages_routes_and_sectors_MTP_MTPEditComponent_vue":1,"resources_js_components_user_pages_routes_and_sectors_MTPPitch_MTPPitchAddComponent_vue":1,"resources_js_components_user_pages_routes_and_sectors_MTPPitch_MTPPitchEditComponent_vue":1,"resources_js_components_user_pages_routes_and_sectors_routeAndSectorListComponent_vue":1,"resources_js_components_user_pages_routes_and_sectors_routes_routeAddComponent_vue":1,"resources_js_components_user_pages_routes_and_sectors_routes_routeEditComponent_vue":1,"resources_js_components_user_pages_routes_and_sectors_sectors_sectorAddComponent_vue":1,"resources_js_components_user_pages_routes_and_sectors_sectors_sectorEditComponent_vue":1,"resources_js_components_user_pages_sector_local_images_addSectorModalComponent_vue":1,"resources_js_components_user_pages_sector_local_images_sectorLocalImageAddComponent_vue":1,"resources_js_components_user_pages_sector_local_images_sectorLocalImageEditComponent_vue":1,"resources_js_components_user_pages_sector_local_images_sectorLocalImagesListComponent_vue":1,"resources_js_components_user_pages_services_serviceAddComponent_vue":1,"resources_js_components_user_pages_services_serviceEditComponent_vue":1,"resources_js_components_user_pages_services_servicesListComponent_vue":1,"resources_js_components_user_pages_siteInfo_GeneralInfo_GlobalInfoAddFormComponent_vue":1,"resources_js_components_user_pages_siteInfo_GeneralInfo_GlobalInfoEditFormComponent_vue":1,"resources_js_components_user_pages_siteInfo_SiteData_SiteGlobalInfoEditComponent_vue":1,"resources_js_components_user_pages_siteInfo_SiteData_SiteInfoEditComponent_vue":1,"resources_js_components_user_pages_siteInfo_SiteData_SiteKaInfoEditComponent_vue":1,"resources_js_components_user_pages_siteInfo_SiteData_SiteRuInfoEditComponent_vue":1,"resources_js_components_user_pages_siteInfo_SiteData_SiteUsInfoEditComponent_vue":1,"resources_js_components_user_pages_siteInfo_SiteData_forms_SiteGlobalDataEditComponent_vue":1,"resources_js_components_user_pages_siteInfo_SiteData_forms_SiteLocaleDataEditComponent_vue":1,"resources_js_components_user_pages_siteInfo_SiteData_tabs_LocaleDataTabComponent_vue":1,"resources_js_components_user_pages_siteInfo_siteInfoPageComponent_vue":1,"resources_js_components_user_pages_spots_categories_SpotsCategoriesAddPageComponent_vue":1,"resources_js_components_user_pages_spots_categories_SpotsCategoriesEditPageComponent_vue":1,"resources_js_components_user_pages_usersListPageComponent_vue":1,"resources_js_components_films_pages_AboutUsComponent_vue":1,"resources_js_components_films_pages_FilmPageComponent_vue":1,"resources_js_components_films_pages_PortalPageComponent_vue":1,"resources_js_components_films_pages_SerchPageComponent_vue":1}[chunkId]) return "assets/js/" + chunkId + ".js";
+/******/ 			if ({"resources_js_components_shop_pages_AboutUsComponent_vue":1,"resources_js_components_shop_pages_CatalogComponent_vue":1,"resources_js_components_shop_pages_ProductPageComponent_vue":1,"resources_js_components_shop_pages_SearchPageComponent_vue":1,"resources_js_components_shop_pages_ServicePageComponent_vue":1,"resources_js_components_shop_pages_ServicesCatalogComponent_vue":1,"resources_js_components_site_pages_AboutUsComponent_vue":1,"resources_js_components_site_pages_EventPageComponent_vue":1,"resources_js_components_site_pages_EventsListPageComponent_vue":1,"resources_js_components_site_pages_IceListComponent_vue":1,"resources_js_components_site_pages_IcePageComponent_vue":1,"resources_js_components_site_pages_IndexPageComponent_vue":1,"resources_js_components_site_pages_IndoorListComponent_vue":1,"resources_js_components_site_pages_IndoorPageComponent_vue":1,"resources_js_components_site_pages_LocalBisnesPageComponent_vue":1,"resources_js_components_site_pages_MountaineeringListComponent_vue":1,"resources_js_components_site_pages_MountaineeringPageComponent_vue":1,"resources_js_components_site_pages_NewsPageComponent_vue":1,"resources_js_components_site_pages_OtherListComponent_vue":1,"resources_js_components_site_pages_OtherPageComponent_vue":1,"resources_js_components_site_pages_OutdoorListComponent_vue":1,"resources_js_components_site_pages_OutdoorPageComponent_vue":1,"resources_js_components_site_pages_PartnerPageComponent_vue":1,"resources_js_components_site_pages_SerchPageComponent_vue":1,"resources_js_components_site_pages_TechTipPageComponent_vue":1,"resources_js_components_user_pages_AdminPageComponent_vue":1,"resources_js_components_user_pages_GalleryPageComponent_vue":1,"resources_js_components_user_pages_HomePageComponent_vue":1,"resources_js_components_user_pages_articles_articleAddComponent_vue":1,"resources_js_components_user_pages_articles_articleEditComponent_vue":1,"resources_js_components_user_pages_articles_articleListComponent_vue":1,"resources_js_components_user_pages_articles_forms_add_forms_ArticleImageFormComponent_vue":1,"resources_js_components_user_pages_articles_forms_add_forms_GlobalDataFormComponent_vue":1,"resources_js_components_user_pages_articles_forms_add_forms_LocaleDataFormComponent_vue":1,"resources_js_components_user_pages_articles_forms_add_forms_MountRouteImageFormComponent_vue":1,"resources_js_components_user_pages_articles_forms_add_forms_SectorImagesFormComponent_vue":1,"resources_js_components_user_pages_articles_forms_edit_forms_ArticleImageFormComponent_vue":1,"resources_js_components_user_pages_articles_forms_edit_forms_GlobalDataFormComponent_vue":1,"resources_js_components_user_pages_articles_forms_edit_forms_LocaleDataFormComponent_vue":1,"resources_js_components_user_pages_articles_forms_edit_forms_MountRouteImageFormComponent_vue":1,"resources_js_components_user_pages_articles_forms_edit_forms_SectorImagesFormComponent_vue":1,"resources_js_components_user_pages_cartPageComponent_vue":1,"resources_js_components_user_pages_comments_CommentsPageComponent_vue":1,"resources_js_components_user_pages_comments_MyCommentsPageComponent_vue":1,"resources_js_components_user_pages_event_competitions_competitionAddComponent_vue":1,"resources_js_components_user_pages_event_competitions_competitionEditComponent_vue":1,"resources_js_components_user_pages_event_events_eventAddComponent_vue":1,"resources_js_components_user_pages_event_events_eventEditComponent_vue":1,"resources_js_components_user_pages_event_eventsAndCompetitionsListComponent_vue":1,"resources_js_components_user_pages_favorites_FavoriteFilmsPageComponent_vue":1,"resources_js_components_user_pages_favorites_FavoriteOutdoorAreaPageComponent_vue":1,"resources_js_components_user_pages_favorites_FavoriteProductsPageComponent_vue":1,"resources_js_components_user_pages_favorites_FollowersPageComponent_vue":1,"resources_js_components_user_pages_favorites_InterestedEventsPageComponent_vue":1,"resources_js_components_user_pages_films_filmsAddComponent_vue":1,"resources_js_components_user_pages_films_filmsEditComponent_vue":1,"resources_js_components_user_pages_films_filmsListComponent_vue":1,"resources_js_components_user_pages_local_bisnes_localBisnesAddComponent_vue":1,"resources_js_components_user_pages_local_bisnes_localBisnesEditComponent_vue":1,"resources_js_components_user_pages_local_bisnes_localBisnesListComponent_vue":1,"resources_js_components_user_pages_mountRoutes_mountListComponent_vue":1,"resources_js_components_user_pages_mountRoutes_mountMassiveAddComponent_vue":1,"resources_js_components_user_pages_mountRoutes_mountMassiveEditComponent_vue":1,"resources_js_components_user_pages_multimedia_MediaFilesListPageComponent_vue":1,"resources_js_components_user_pages_optionsPageComponent_vue":1,"resources_js_components_user_pages_orders_allOrderPageComponent_vue":1,"resources_js_components_user_pages_orders_decloration_confirmOrderPageComponent_vue":1,"resources_js_components_user_pages_orders_decloration_items_BreadcrumbComponent_vue":1,"resources_js_components_user_pages_orders_decloration_mailOrderConfirmComponent_vue":1,"resources_js_components_user_pages_orders_decloration_orderDeclorationPageComponent_vue":1,"resources_js_components_user_pages_orders_decloration_orderPaymentPageComponent_vue":1,"resources_js_components_user_pages_orders_myOrderComponent_vue":1,"resources_js_components_user_pages_posts_AllPostsPageComponent_vue":1,"resources_js_components_user_pages_posts_MyPostsPageCompoents_vue":1,"resources_js_components_user_pages_products_and_categories_categories_productCategoryAddCompo-6c462b":1,"resources_js_components_user_pages_products_and_categories_categories_productCategoryEditComp-b66cd8":1,"resources_js_components_user_pages_products_and_categories_productOptionControlPageComponent_vue":1,"resources_js_components_user_pages_products_and_categories_products_productAddComponent_vue":1,"resources_js_components_user_pages_products_and_categories_products_productEditComponent_vue":1,"resources_js_components_user_pages_products_and_categories_productsAndCatgoriesListComponent_vue":1,"resources_js_components_user_pages_routes_and_sectors_MTP_MTPAddComponent_vue":1,"resources_js_components_user_pages_routes_and_sectors_MTP_MTPEditComponent_vue":1,"resources_js_components_user_pages_routes_and_sectors_MTPPitch_MTPPitchAddComponent_vue":1,"resources_js_components_user_pages_routes_and_sectors_MTPPitch_MTPPitchEditComponent_vue":1,"resources_js_components_user_pages_routes_and_sectors_routeAndSectorListComponent_vue":1,"resources_js_components_user_pages_routes_and_sectors_routes_routeAddComponent_vue":1,"resources_js_components_user_pages_routes_and_sectors_routes_routeEditComponent_vue":1,"resources_js_components_user_pages_routes_and_sectors_sectors_sectorAddComponent_vue":1,"resources_js_components_user_pages_routes_and_sectors_sectors_sectorEditComponent_vue":1,"resources_js_components_user_pages_sector_local_images_addSectorModalComponent_vue":1,"resources_js_components_user_pages_sector_local_images_sectorLocalImageAddComponent_vue":1,"resources_js_components_user_pages_sector_local_images_sectorLocalImageEditComponent_vue":1,"resources_js_components_user_pages_sector_local_images_sectorLocalImagesListComponent_vue":1,"resources_js_components_user_pages_services_serviceAddComponent_vue":1,"resources_js_components_user_pages_services_serviceEditComponent_vue":1,"resources_js_components_user_pages_services_servicesListComponent_vue":1,"resources_js_components_user_pages_siteInfo_GeneralInfo_GlobalInfoAddFormComponent_vue":1,"resources_js_components_user_pages_siteInfo_GeneralInfo_GlobalInfoEditFormComponent_vue":1,"resources_js_components_user_pages_siteInfo_SiteData_SiteGlobalInfoEditComponent_vue":1,"resources_js_components_user_pages_siteInfo_SiteData_SiteInfoEditComponent_vue":1,"resources_js_components_user_pages_siteInfo_SiteData_SiteKaInfoEditComponent_vue":1,"resources_js_components_user_pages_siteInfo_SiteData_SiteRuInfoEditComponent_vue":1,"resources_js_components_user_pages_siteInfo_SiteData_SiteUsInfoEditComponent_vue":1,"resources_js_components_user_pages_siteInfo_SiteData_forms_SiteGlobalDataEditComponent_vue":1,"resources_js_components_user_pages_siteInfo_SiteData_forms_SiteLocaleDataEditComponent_vue":1,"resources_js_components_user_pages_siteInfo_SiteData_tabs_LocaleDataTabComponent_vue":1,"resources_js_components_user_pages_siteInfo_siteInfoPageComponent_vue":1,"resources_js_components_user_pages_spots_categories_SpotsCategoriesAddPageComponent_vue":1,"resources_js_components_user_pages_spots_categories_SpotsCategoriesEditPageComponent_vue":1,"resources_js_components_user_pages_usersListPageComponent_vue":1,"resources_js_components_films_pages_AboutUsComponent_vue":1,"resources_js_components_films_pages_FilmPageComponent_vue":1,"resources_js_components_films_pages_PortalPageComponent_vue":1,"resources_js_components_films_pages_SerchPageComponent_vue":1,"resources_js_components_errors_global_errors_pages_host_error_component_vue":1}[chunkId]) return "assets/js/" + chunkId + ".js";
 /******/ 			// return url for filenames based on template
 /******/ 			return undefined;
 /******/ 		};

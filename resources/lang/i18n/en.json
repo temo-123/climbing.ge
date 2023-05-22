@@ -259,6 +259,10 @@
             "title": "Oops! Error 404! Page Not Found",
             "description": "Sorry, an error has occured, Requested page not found!",
             "go_homehome": "Go to home page"
+        },
+        "host_error": {
+            "title": "Oops! Site configuratuion or hoste have some error!!!",
+            "description": "Sorry, an error has occured, Site configuratuion or hoste have some error! Contact to suport!"
         }
     }
 }

@@ -70,12 +70,14 @@ import Index from "./components/site/IndexComponent.vue";
 import Home from "./components/user/HomeComponent.vue";
 import Films from "./components/films/StudiaComponent.vue";
 import Forum from "./components/forum/ForumComponent.vue";
+import Error from "./components/errors/global_errors/error.vue";
 
 import shop_routes from "./routes/ShopRoutes";
 import site_routes from "./routes/SiteRoutes";
 import user_routes from "./routes/UserRoutes";
 import films_routes from "./routes/FilmsRoutes";
 import forum_routes from "./routes/ForumRoutes";
+import error_routes from "./routes/ErrorRoutes";
 
 Vue.component(
     "main-wrapper-component",
@@ -128,7 +130,9 @@ if (window.location.hostname == process.env.MIX_SITE_URL) {
     analytic_id = process.env.MIX_FORUM_ANALITICS_ID;
     axios.defaults.baseURL = process.env.MIX_FORUM_URL
 } else {
-    // window.location.href = "/404";
+    homeComponent = Error;
+    serviceRoutes = error_routes;
+    analytic_id = process.env.MIX_CLIMBING_GUIDBOOK_ANALITICS_ID;
 }
 
 Vue.use(VueGtag, {
@@ -210,7 +214,6 @@ const app = new Vue({
                     this.$router.push({ path: '/' + activ_path_without_locale })
                 }
             }
-            
         },
     },
 });
