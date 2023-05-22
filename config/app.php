@@ -28,6 +28,8 @@ return [
 
     'default' => env('QUEUE_DRIVER', 'database'),
 
+    'mix_url' => env('MIX_ASSET_URL', 'localhost'),
+
     /*
     |--------------------------------------------------------------------------
     | Application Environment
