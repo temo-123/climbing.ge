@@ -104,6 +104,15 @@ var serviceRoutes = [];
 var homeComponent = [];
 var analytic_id = "";
 
+console.log("=================================================")
+console.log(window.location.hostname)
+console.log(process.env.MIX_SITE_URL)
+console.log(process.env.MIX_SHOP_URL)
+console.log(process.env.MIX_USER_PAGE_URL)
+console.log(process.env.MIX_FILMS_URL)
+console.log(process.env.MIX_FORUM_ANALITICS_ID)
+console.log("==================================================")
+
 if (window.location.hostname == process.env.MIX_SITE_URL) {
     homeComponent = Index;
     serviceRoutes = site_routes;

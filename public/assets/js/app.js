@@ -13130,6 +13130,14 @@ vue__WEBPACK_IMPORTED_MODULE_12__["default"].component("forum-component", (__web
 var serviceRoutes = [];
 var homeComponent = [];
 var analytic_id = "";
+console.log("=================================================");
+console.log(window.location.hostname);
+console.log("climbing.loc");
+console.log("shop.climbing.loc");
+console.log("user.climbing.loc");
+console.log("films.climbing.loc");
+console.log("");
+console.log("==================================================");
 if (window.location.hostname == "climbing.loc") {
   homeComponent = _components_site_IndexComponent_vue__WEBPACK_IMPORTED_MODULE_25__["default"];
   serviceRoutes = _routes_SiteRoutes__WEBPACK_IMPORTED_MODULE_31__["default"];
