@@ -13,7 +13,10 @@
 
     <title>climbing.ge user</title>
 
-    <link rel="stylesheet" href="{{ asset('assets/css/app.css') }}">
+    <!-- <link rel="stylesheet" href="{{ asset('assets/css/app.css') }}"> -->
+
+    <link rel="stylesheet" href="{{ mix('assets/css/app.css') }}">
+
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
     <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
 
@@ -74,7 +77,8 @@
 
     </div>
 
-    <script src="{{ asset('assets/js/app.js') }}"></script>
+    <!-- <script src="{{ asset('assets/js/app.js') }}"></script> -->
+    <script src="{{ mix('assets/js/app.js') }}"></script>
 
     <!-- My JS -->
     <script src="{{ asset('assets/js/my_js/my_scripts.js') }}" type="text/javascript" ></script>
