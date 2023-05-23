@@ -195,9 +195,11 @@
     </script> --}}
     
     <script src="https://netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>
-    <!-- <script src="{{ asset('assets/js/app.js') }}"></script> -->
+    {{-- <!-- <script src="{{ asset('assets/js/app.js') }}"></script> -->     --}}
+    <script src="{{ asset('assets/main_js/my_scripts.js') }}" type="text/javascript" ></script>
+
     <script src="{{ mix('assets/js/app.js') }}"></script>
-    <script src="{{ asset('assets/js/my_js/my_scripts.js') }}" type="text/javascript" ></script>
+    {{-- <script src="{{ asset('assets/js/my_js/my_scripts.js') }}" type="text/javascript" ></script> --}}
     
 </body>
 </html>
