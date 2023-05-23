@@ -316,7 +316,7 @@
             get_user_data: function(){
                 this.user_is_refresh = true
                 axios
-                .get("./api/options/get_user_data/")
+                .get("/options/get_user_data/")
                 .then(response => {
                     this.user = response.data
 
@@ -331,7 +331,7 @@
             },
             user_data_update() {
                 axios
-                .post('../api/options/user_info_update/' + this.user.id, {
+                .post('/options/user_info_update/' + this.user.id, {
                     data: this.edit_data,
                 })
                 .then(Response => {
@@ -369,7 +369,7 @@
                 if(this.password_edit_data.new_pass === this.password_edit_data.confirm_new_pass){
                     if(confirm('Are you sure, you want edit your password?')){
                         axios
-                        .post("../../api/user/update_password/",{
+                        .post("/user/update_password/",{
                             data: this.password_edit_data,
                         })
                         .then(response => {
@@ -399,7 +399,7 @@
                 var myFormData = new FormData(this.$refs.myForm)
                 axios({
                     method: 'post',
-                    url: './api/user_image_update/'+this.user.id,
+                    url: '/user_image_update/'+this.user.id,
                     data: myFormData,
                     config: { 
                         headers: {'Content-Type': 'multipart/form-data' },
@@ -429,7 +429,7 @@
 
             get_user_sites() {
                 axios
-                .get("./api/user_site/")
+                .get("/user_site/")
                 .then(response => {
                     this.user_sites = response.data
 
@@ -449,7 +449,7 @@
 
             add_user_site(){
                 axios
-                .post('../api/user_site/', {
+                .post('/user_site/', {
                     data: this.user_site_form_data,
                     _method: 'POST'
                 })
@@ -468,7 +468,7 @@
             },
             edit_user_site(){
                 axios
-                .post('../api/user_site/' + this.editing_site_id, {        
+                .post('/user_site/' + this.editing_site_id, {        
                     editing_data: this.user_site_form_data,
                     _method: 'PATCH'
                 })
@@ -483,7 +483,7 @@
             },
             get_editing_user_site(site_id){
                 axios
-                .get("../api/user_site/"+site_id)
+                .get("/user_site/"+site_id)
                 .then(response => {
                     this.user_site_form_data.url = response.data.url
                     this.is_edit_user_site = true
@@ -496,7 +496,7 @@
             del_user_site(site_id){
                 if(confirm('Are you sure, you want delite it?')){
                     axios
-                    .post('../../api/user_site/'+site_id, {
+                    .post('..//user_site/'+site_id, {
                         _method: 'DELETE'
                     })
                     .then(Response => {

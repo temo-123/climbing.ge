@@ -189,7 +189,7 @@
             get_user_notification_data: function(){
                 this.notification_is_refresh = true
                 axios
-                .get("../../api/options/get_user_notification_data/")
+                .get("/options/get_user_notification_data/")
                 .then(response => {
                     // this.action_id = response.data.id
                     // this.data = {
@@ -219,7 +219,7 @@
             update_user_notification_data: function(){
                 this.user_is_refresh = true
                 axios
-                .post("../../api/options/update_user_notification_data/", {
+                .post("/options/update_user_notification_data/", {
                     data: this.data,
 
                     _method: 'POST'

@@ -281,7 +281,7 @@
         methods: {
             get_user_data(){
                 axios
-                .get('/api/auth_user')
+                .get('/auth_user')
                 .then((response)=>{
                     this.user = response.data
                     this.get_user_queries(this.user.id)
@@ -290,7 +290,7 @@
             send_mail_confirm_notificatione(){
                 this.is_email_sending_loader = true
                 axios
-                .get('/api/email/resend')
+                .get('/email/resend')
                 .then((response)=>{
                     alert('New verification message is sended. Please check your email for verification!')
                 })
@@ -312,7 +312,7 @@
             },
             get_user_queries(user_id){
                 axios
-                .get('../api/get_user_queries/'+user_id)
+                .get('/get_user_queries/'+user_id)
                 .then((response)=>{
                     this.user_queries = response.data
                 })
@@ -320,7 +320,7 @@
             make_complaint(){
                 this.complaint_loader = true
                 axios
-                .post('../api/add_comment_complaint/',{
+                .post('/add_comment_complaint/',{
                     comment_id: this.complaint_comment_id,
                     comment_complaint: this.selected_comment_complaint,
                     email: this.complainter_email,
@@ -335,7 +335,7 @@
             },
             query_response(response, query_id, comment_id){
                 axios
-                .post('../api/query_response/', {
+                .post('/query_response/', {
                     query_id, 
                     comment_id, 
                     response
@@ -369,7 +369,7 @@
             get_action_comment(comment_id){
                 this.quick_comment = []
                 axios
-                .get("../api/get_quick_comment/"+comment_id)
+                .get("/get_quick_comment/"+comment_id)
                 .then(response => {
                     this.quick_comment = response.data
                 })
@@ -380,7 +380,7 @@
             },
             get_comments_complaints(){
                 axios
-                .get('../api/get_comments_complaints')
+                .get('/get_comments_complaints')
                 .then(response => {
                     this.complaints = response.data
                 })
@@ -392,7 +392,7 @@
                 else{
                     this.decision_loader = true
                     axios
-                    .post('./api/make_decision',{
+                    .post('/make_decision',{
                         decision: this.comment_decision,
                         comment_id: this.action_comment_id,
                         complaint_id: this.complaint_id,

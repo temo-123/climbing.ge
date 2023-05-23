@@ -140,7 +140,7 @@
             get_general_info(){
                 if(this.get_data_in_component_prop == true){
                     axios
-                    .get('../../../api/general_info/')
+                    .get('/general_info/')
                     .then(response => {
                         this.general_infos = response.data                
                     })

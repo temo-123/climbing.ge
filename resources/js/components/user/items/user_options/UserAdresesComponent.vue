@@ -294,7 +294,7 @@
         methods: {
             get_shipd_countries(){
                 axios
-                .get("../api/get_countries/")
+                .get("/get_countries/")
                 .then(response => {
                     this.qounties = response.data
                 })
@@ -305,7 +305,7 @@
             get_adres() {                    
                 this.is_adres_refresh = true
                 axios
-                .get('../api/get_user_adreses/')
+                .get('/get_user_adreses/')
                 .then(Response => {
                     this.adreses = Response.data,
 
@@ -317,7 +317,7 @@
 
             // add_new_adres() {
             //     axios
-            //     .post('../api/add_user_adreses/',{
+            //     .post('/add_user_adreses/',{
             //         adding_data: this.adding_data,
 
             //         _method: 'POST'
@@ -346,7 +346,7 @@
                     this.adding_data.floor
                 ){
                     axios
-                    .post('../../../api/add_user_adreses/',{
+                    .post('/add_user_adreses/',{
                         adding_data: this.adding_data,
 
                         _method: 'POST'
@@ -407,7 +407,7 @@
                     this.edit_data.floor
                 ){
                     axios
-                    .post('../api/edit_adres/'+this.editing_adres_id,{
+                    .post('/edit_adres/'+this.editing_adres_id,{
                         data: this.edit_data,
                         // editing_adres_id: this.editing_adres_id,
 
@@ -447,7 +447,7 @@
             },
             get_activ_adres(adres_id){
                 axios
-                .get('../api/get_activ_adres/'+adres_id)
+                .get('/get_activ_adres/'+adres_id)
                 .then(Response => {
                     this.quick_adres = Response.data
                     this.is_quick_viwe_adres_model = true
@@ -470,7 +470,7 @@
                 this.editing_adres_id = ''
 
                 axios
-                .post('../api/get_editing_adres/'+adres_id)
+                .post('/get_editing_adres/'+adres_id)
                 .then(Response => {
                     this.editing_adres_id = Response.data.id
 
@@ -494,7 +494,7 @@
             del_adres(id) {
                 if(confirm('Are you sure, you want delite it?')){
                     axios
-                    .delete('../api/del_user_adreses/'+id)
+                    .delete('/del_user_adreses/'+id)
                     .then(Response => {
                         this.get_adres()
                     })

@@ -1,5 +1,8 @@
 /node_modules
 
+/public/css/app.css
+/public/js
+
 /public/images/event_img
 /public/images/gallery_img
 /public/images/ice_img
