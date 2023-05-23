@@ -1,0 +1,43 @@
+<VirtualHost *:80>
+	ServerName climbing.loc
+
+	ServerAdmin webmaster@localhost
+	DocumentRoot /var/www/climbing.loc/
+
+	ErrorLog ${APACHE_LOG_DIR}/error.log
+	CustomLog ${APACHE_LOG_DIR}/access.log combined
+</VirtualHost>
+
+<VirtualHost *:80>
+	DocumentRoot /var/www/climbing.loc
+	ServerName user.climbing.loc
+
+	<Directory /var/www/climbing.loc/user/>
+		AllowOverride FileInfo Options
+		Order allow,deny
+		allow from all
+	</Directory>
+</VirtualHost>
+
+<VirtualHost *:80>
+	DocumentRoot /var/www/climbing.loc
+	ServerName shop.climbing.loc
+
+	<Directory /var/www/climbing.loc/shop/>
+		AllowOverride FileInfo Options
+		Order allow,deny
+		allow from all
+	</Directory>
+</VirtualHost>
+
+<VirtualHost *:80>
+	DocumentRoot /var/www/climbing.loc
+	ServerName films.climbing.loc
+
+	<Directory /var/www/climbing.loc/film/>
+		AllowOverride All
+		Order allow,deny
+		allow from all
+	</Directory>
+</VirtualHost>
+

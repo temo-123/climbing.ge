@@ -1,0 +1,96 @@
+<template>
+    <div class="tabs"> 
+        <div class="row">
+            <div class="form-group">
+                <button type="submit" class="btn btn-primary" @click="go_back()">Beck</button>
+            </div>
+        </div>
+        <div class="row">
+            <div class="form-group">  
+                <button type="submit" class="btn btn-primary" v-on:click="update()" >Save updatid info</button>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="row">
+                    <div class="col" >
+                        <input type="radio" id="2" :value="2" v-model="tab_num">
+                        
+                        <label for="2" >English text</label>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-12">
+                <div class="row" v-show="tab_num == 2">
+                    <div class="width_100 jumbotron jumbotron-fluid">
+                        <div class="container">
+                            <h2 class="display-4">Site english version</h2>
+                            <p class="lead">Site english version for site localisation.</p>
+                        </div>
+                    </div>
+                    <localeInfoForm :locale_data_prop=site_us_info />
+                </div>
+            </div>
+        </div>
+
+    </div>
+</template>
+
+<script>
+import localeInfoForm from './forms/SiteLocaleDataEditComponent.vue'
+
+export default {
+    // props: [
+    //     'locale_data_prop',
+    // ],
+    components: {
+        localeInfoForm,
+    },
+    data(){
+        return {
+            tab_num: 2,
+            site_us_info: []
+        }
+    },
+    mounted() {
+        this.get_site_us_data()
+    },
+    methods: {
+        update(){
+            axios
+            .post('../../api/siteData/edit_site_us_data',{
+                site_us_info: this.site_us_info
+            })
+            .then(response => {
+                // this.site_us_info = response.data
+                this.go_back()
+            })
+            .catch(
+                error => console.log(error)
+            );
+        },
+
+        get_site_us_data: function(){
+            axios
+            .get('../../api/siteData/get_site_us_data')
+            .then(response => {
+                this.site_us_info = response.data
+            })
+            .catch(
+                error => console.log(error)
+            );
+        },
+
+        go_back: function(back_action = false) {
+            if(back_action == false){
+                if(confirm('Are you sure, you want go back?')){
+                    this.$router.go(-1)
+                }
+            }
+            else{
+                this.$router.go(-1)
+            }
+        },
+    }
+}
+</script>
