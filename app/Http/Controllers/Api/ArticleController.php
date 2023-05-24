@@ -241,33 +241,35 @@ class ArticleController extends Controller
         
         $saved = $editing_article -> save();
         
-        // $this->edit_general_info_relatione($global_blocks, $request->article_id, $model);
         GeneralInfoService::edit_general_info_relatione($global_blocks, $request->article_id, 'article');
-
         if(isset($global_data['region_id']) && $global_data["category"] == 'outdoor'){
-                $article_region = Article_region::where('article_id', '=', $request->article_id)->first();
-                if($article_region){
-                    if($article_region['region_id'] != $global_data['region_id']){
-                        $article_region['article_id'] = $request->article_id;
-                        $article_region['region_id'] = $global_data['region_id'];
-                        $article_region -> save();
-                    }
-                }
-                else{
-                    $new_mount = new Article_region;
-                    $new_mount['article_id'] = $request->article_id;
-                    $new_mount['region_id'] = $global_data['region_id'];
-                    $new_mount -> save();
-                }
-        }
-// dd($global_data, $global_data["category"] == 'mount_route');
-        if(isset($global_data['mount_id']) && $global_data["category"] == 'mount_route'){
-            $article_region = Article_mount::where('article_id', '=', $request->article_id)->first();
+            $article_region = Article_region::where('article_id', '=', $request->article_id)->first();
             if($article_region){
-                if($article_region['mount_id'] != $global_data['mount_id']){
+                if($article_region['region_id'] != $global_data['region_id']){
                     $article_region['article_id'] = $request->article_id;
-                    $article_region['mount_id'] = $global_data['mount_id'];
+                    $article_region['region_id'] = $global_data['region_id'];
                     $article_region -> save();
+                }
+            }
+            else{
+                $new_mount = new Article_region;
+                $new_mount['article_id'] = $request->article_id;
+                $new_mount['region_id'] = $global_data['region_id'];
+                $new_mount -> save();
+            }
+        }
+        else if($global_data['region_id'] == null ){
+            $article_region = Article_region::where('article_id', '=', $request->article_id)->first();
+            $article_region -> delete();
+        }
+        
+        if(isset($global_data['mount_id']) && $global_data["category"] == 'mount_route'){
+            $article_mount = Article_mount::where('article_id', '=', $request->article_id)->first();
+            if($article_mount){
+                if($article_mount['mount_id'] != $global_data['mount_id']){
+                    $article_mount['article_id'] = $request->article_id;
+                    $article_mount['mount_id'] = $global_data['mount_id'];
+                    $article_mount -> save();
                 }
             }
             else{
@@ -276,6 +278,10 @@ class ArticleController extends Controller
                 $new_mount['mount_id'] = $global_data['mount_id'];
                 $new_mount -> save();
             }
+        }
+        else if($global_data['mount_id'] == null ){
+            $article_mount = Article_mount::where('article_id', '=', $request->article_id)->first();
+            $article_mount -> delete();
         }
 
         if(!$saved){
