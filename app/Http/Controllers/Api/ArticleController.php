@@ -258,9 +258,10 @@ class ArticleController extends Controller
                 $new_mount -> save();
             }
         }
-        else if($global_data['region_id'] == null ){
-            $article_region = Article_region::where('article_id', '=', $request->article_id)->first();
-            $article_region -> delete();
+        else if(isset($global_data['region_id']) && $global_data['region_id'] == null ){
+            $deliting_article_region = Article_region::where('article_id', '=', $request->article_id)->first();
+            dd($deliting_article_region);
+            $deliting_article_region -> delete();
         }
         
         if(isset($global_data['mount_id']) && $global_data["category"] == 'mount_route'){
@@ -279,9 +280,9 @@ class ArticleController extends Controller
                 $new_mount -> save();
             }
         }
-        else if($global_data['mount_id'] == null ){
-            $article_mount = Article_mount::where('article_id', '=', $request->article_id)->first();
-            $article_mount -> delete();
+        else if(isset($global_data['mount_id']) && $global_data['mount_id'] == null ){
+            $deliting_article_mount = Article_mount::where('article_id', '=', $request->article_id)->first();
+            $deliting_article_mount -> delete();
         }
 
         if(!$saved){
