@@ -249,7 +249,7 @@ export default {
         .get('/sanctum/csrf-cookie')
         .then(response => {
           axios
-            .post('/register',{
+            .post(process.env.MIX_APP_SSH + process.env.MIX_USER_PAGE_URL + '/register',{
               name: this.name,
               surname: this.surname,
               email: this.email,

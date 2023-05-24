@@ -111,7 +111,7 @@
 
         this.is_loading = true
         
-        axios.get('../../../api/login/' + service)
+        axios.get('/login/' + service)
         .then(response => {
           console.log(response.data)
           if(response.data.url){

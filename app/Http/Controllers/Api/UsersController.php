@@ -156,21 +156,18 @@ class UsersController extends Controller
                 }
             }
 
-
-            // $user_role = Role::first();
             $user_role = $user->role->first();
 
-            $user_role_perissions = $user_role->permissions;
-
-            if ($user_role_perissions) {
-                foreach ($user_role_perissions as $user_role_perission) {
-                    array_push($user_all_permissions, 
-                        ['subject' => $user_role_perission->subject,  'action' => $user_role_perission->action]
-                    );
+            if ($user_role) {
+                $user_role_perissions = $user_role->permissions;
+                if ($user_role_perissions) {
+                    foreach ($user_role_perissions as $user_role_perission) {
+                        array_push($user_all_permissions, 
+                            ['subject' => $user_role_perission->subject,  'action' => $user_role_perission->action]
+                        );
+                    }
                 }
             }
-
-            // dd($user_role, $user_role->permissions);
 
             return $user_all_permissions;
         }
