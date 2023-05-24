@@ -21,9 +21,6 @@ class EventController extends Controller
     public function get_event_on_site_list(Request $request)
     {
         $action_data = date("Y/m/d H:i:s");
-        // echo $action_data;
-        // $plas_3_day = date('Y/m/d H:i:s', strtotime($action_data. ' + 3 days'));
-        // echo $plas_3_day;
 
         $events = Event::where('published', '=', 1)->orderBy('start_data')->get();
 
@@ -35,9 +32,9 @@ class EventController extends Controller
                 date('Y', strtotime($event->end_data)) == date('Y', strtotime($action_data))
             ){
                 $global_event = $event;
-
+                
                 if($request->lang == 'ka'){
-                    $local_event = $event->us_event;
+                    $local_event = $event->ka_event;
                 }
                 else if($request->lang == 'ru'){
                     $local_event = $event->ru_event;
@@ -60,7 +57,6 @@ class EventController extends Controller
     {
         $action_data = date("Y/m/d H:i:s");
 
-        // $events = Event::where('published', '=', 1)->orderBy('start_data')->limit(3)->get();
         $events = Event::where('published', '=', 1)->orderBy('start_data')->get();
 
         $events_array = [];
@@ -71,31 +67,26 @@ class EventController extends Controller
                 date('m', strtotime($event->end_data)) > date('m', strtotime($action_data)) &&
                 date('Y', strtotime($event->end_data)) == date('Y', strtotime($action_data))
             ){
-            // if(date('Y', strtotime($events[0]->end_data)) == date('Y', strtotime($action_data))){
-                // if(date('m', strtotime($events[0]->end_data)) <= date('m', strtotime($action_data))){
-                    // if(date('d', strtotime($events[0]->end_data)) > date('d', strtotime($action_data))){
-                    if(count($events_array) < 3){
-                        $global_event = $event;
+            if(count($events_array) < 3){
+                    $global_event = $event;
 
-                        if($request->lang == 'ka'){
-                            $local_event = $event->us_event;
-                        }
-                        else if($request->lang == 'ru'){
-                            $local_event = $event->ru_event;
-                        }
-                        else{
-                            $local_event = $event->us_event;
-                        }
-
-                        array_push($events_array, [
-                            'global_event' => $global_event,
-                            'locale_event' => $local_event,
-                        ]);
+                    if($request->lang == 'ka'){
+                        $local_event = $event->ka_event;
                     }
-            //     }
+                    else if($request->lang == 'ru'){
+                        $local_event = $event->ru_event;
+                    }
+                    else{
+                        $local_event = $event->us_event;
+                    }
+
+                    array_push($events_array, [
+                        'global_event' => $global_event,
+                        'locale_event' => $local_event,
+                    ]);
+                }
             }
         }
-        // dd(count($events_array));
 
         return $events_array;
     }

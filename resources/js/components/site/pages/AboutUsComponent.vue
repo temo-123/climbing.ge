@@ -17,7 +17,7 @@
         
         <messageComponent />
 
-        <div class="h-recent-work services" id="services" v-if="partners != []">
+        <div class="h-recent-work services" id="services" v-if="partners.length != 0">
             <div class="container">
 
                 <h2 class='index_h2'>{{ $t('guide.title.partner') }}</h2>
