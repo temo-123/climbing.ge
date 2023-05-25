@@ -43,7 +43,7 @@ Vue.use(Router);
 
 import { editor_config } from './mixins/editor/editor_config_mixin.js'
 import { going } from './mixins/easy_navigation_mixin.js'
-import { site_data } from './mixins/site_data_mixin.js'
+import  site_data  from './mixins/site_data_mixin.js'
 
 Vue.mixin(site_data); 
 Vue.mixin(editor_config); 
@@ -106,15 +106,6 @@ var serviceRoutes = [];
 var homeComponent = [];
 var analytic_id = "";
 
-// console.log("=================================================")
-// console.log(window.location.hostname)
-// console.log(process.env.MIX_SITE_URL)
-// console.log(process.env.MIX_SHOP_URL)
-// console.log(process.env.MIX_USER_PAGE_URL)
-// console.log(process.env.MIX_FILMS_URL)
-// console.log(process.env.MIX_FORUM_ANALITICS_ID)
-// console.log("==================================================")
-
 if (window.location.hostname == process.env.MIX_SITE_URL) {
     homeComponent = Index;
     serviceRoutes = site_routes;
@@ -156,7 +147,7 @@ Vue.prototype.$globalSiteData = [];
 
 Vue.prototype.$going = going
 Vue.prototype.$editor_config = editor_config
-Vue.prototype.$site_data = site_data
+Vue.prototype.$get_site_data = site_data
 
 if(
     window.location.hostname == 'climbing.ge' ||
@@ -220,7 +211,7 @@ const app = new Vue({
 
                     let activ_path_without_locale = this.$router.history.pending.path.split("/").splice(2).join("/")
 
-                    this.get_site_data();
+                    // this.get_site_data();
 
                     this.$router.push({ path: '/' + activ_path_without_locale })
                 }

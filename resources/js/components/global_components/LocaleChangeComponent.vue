@@ -13,14 +13,14 @@
 
             <li v-if="activ_lang == 'ka' || activ_lang == 'ru'"><a class="localizatione_flag" @click="activ_lang = 'en', localization('en')"><countryFlag country='usa' size='big'/></a></li>
             <li v-if="activ_lang == 'en' || activ_lang == 'ru'"><a class="localizatione_flag"  @click="activ_lang = 'ka', localization('ka')"><countryFlag country='geo' size='big'/></a></li>
-            <li v-if="activ_lang == 'ka' || activ_lang == 'en'"><a class="localizatione_flag"  @click="activ_lang = 'ru', localization('ru')"><countryFlag country='rus' size='big'/></a></li>
+            <!-- <li v-if="activ_lang == 'ka' || activ_lang == 'en'"><a class="localizatione_flag"  @click="activ_lang = 'ru', localization('ru')"><countryFlag country='rus' size='big'/></a></li> -->
         </ul>
     </li>
 </template>
 
 <script>
     import countryFlag from 'vue-country-flag' // https://www.npmjs.com/package/vue-country-flag
-
+    import Vue from "vue";
     export default {
         data: function () {
             return {
@@ -46,6 +46,9 @@
         },
         mounted() {
             // console.log(this.$route.params.locale || 'en');
+            if(!localStorage.getItem('lang')){
+                this.grade_charts("en")
+            }
         },
         watch: {
             '$route' (to, from) {
@@ -89,8 +92,20 @@
                         
                         this.$router.push( '/' + activ_path_without_locale )
                     }
+
+                    location.reload();
                 }
             },
+
+            // get_site_data(locale) {
+            //     axios
+            //     .get("/siteData/get_site_locale_data/"+locale)
+            //     .then((response) => (
+            //         this.$siteData = response.data.locale_data,
+            //         console.log("🚀 ~ file: LocaleChangeComponent.vue:105 ~ get_site_data ~ response.data.locale_data:", response.data.locale_data),
+            //         console.log("🚀 ~ file: LocaleChangeComponent.vue:106 ~ get_site_data ~ this:", this.$siteData)
+            //     ));
+            // },
         }
     }
 </script>
