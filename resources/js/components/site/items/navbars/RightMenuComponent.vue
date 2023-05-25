@@ -63,7 +63,7 @@
 
 <script>
     export default {
-        name: "Article Right Navigation Menu",
+        // name: "Article Right Navigation Menu",
         data(){
             return{
                 right_navbar_class: '',

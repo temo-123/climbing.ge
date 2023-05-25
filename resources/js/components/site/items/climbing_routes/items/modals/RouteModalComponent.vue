@@ -52,8 +52,12 @@
 
 <script>
 import StackModal from '@innologica/vue-stackable-modal'  //https://innologica.github.io/vue-stackable-modal/#sample-css
-    
+import  grade_chart  from '../../../../../../mixins/grade_chart_mixin.js'
+
 export default {
+    mixins: [
+        grade_chart,
+    ],
     components: {
         StackModal,
     },
