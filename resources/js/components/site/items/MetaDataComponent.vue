@@ -25,7 +25,7 @@
                 },
                 link: [
                     // { rel: 'stylesheet', href: '/css/index.css' },
-                    { rel: 'canonical', href: '/' }
+                    { rel: 'canonical', href: window.location.pathname }
                 ],
                 meta: [
                     {name: 'viewport', content: 'width=device-width, initial-scale=1'},
