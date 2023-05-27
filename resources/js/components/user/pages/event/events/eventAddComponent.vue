@@ -138,6 +138,12 @@
                                 </div>
                             </div>
                         </div> -->
+                        <div class="form-group clearfix">
+                            <label for="name" class='col-xs-2 control-label'> Event location </label>
+                            <div class="col-xs-8">
+                                <input type="text" name="name" v-model="data.global_data.map"  class="form-control"> 
+                            </div>
+                        </div>
     
                         <div class="form-group clearfix row">
                             <label for="name" class='col-md-4 control-label'>This event does`not have concrete day (Insert data without day)</label>

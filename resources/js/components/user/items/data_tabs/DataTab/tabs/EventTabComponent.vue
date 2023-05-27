@@ -1,5 +1,5 @@
 <template>
-    <tr>
+    <tr :class="action_color">
         <td :style='"text-align: center;"'>
             <input type="checkbox">
         </td>
@@ -22,14 +22,37 @@
 </template>
 
 <script>
+import moment from "moment"; // https://www.npmjs.com/package/vue-moment
     export default {
+        components: {
+            moment
+        },
         props: [
             'table_info',
         ],
         mountid(){
-            // console.log(this.table_info)
+            this.end_day = moment(this.event.global_event.end_data).format("D")
+            this.end_month = moment(this.event.global_event.end_data).format("MMM")
+        },
+        data(){
+            return {
+                action_color: '',
+
+                end_day: 0,
+                end_month: 0
+            }
+        },
+        watch: {
+            table_info: function(){
+                this.row_action()
+            },
         },
         methods: {
+            row_action(){
+                if( new Date().getDate() >= this.end_day && new Date().getMonth() >= this.end_month){
+                    this.table_info.end_data
+                }
+            },
             del_event(id){
                 if(confirm('Are you sure, you want delite it?')){
                     axios
@@ -47,5 +70,7 @@
 </script>
 
 <style>
-
+.completed_event td {
+    background-color: #fb9b9b;
+}
 </style>

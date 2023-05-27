@@ -402,15 +402,6 @@
             global_block: function(){
                 this.global_blocks = this.global_blocks_prop
             },
-            // routes_info_prop: function(){
-            //     this.routes_info = this.routes_info_prop
-            // },
-            // what_need_info_prop: function(){
-            //     this.what_need_info_prop = this.what_need_info_prop
-            // },
-            // best_time_prop: function(){
-            //     this.best_time = this.best_time_prop
-            // }
         },
         methods: {
             uploader(editor)

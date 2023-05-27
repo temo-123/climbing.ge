@@ -18,7 +18,7 @@ class Comment extends Model
         'email',
         'text',
 
-        'user_id',
+        // 'user_id',
         'article_id',
 
         'comment_deleted_reason'
@@ -31,7 +31,8 @@ class Comment extends Model
 
     public function user()
     {
-      return $this->hasOne(Article_comment_user::class, 'coment_id');
-      // return $this->belongsTo(Article_comment_user::class, 'coment_id');
+      // return $this->hasOne(Article_comment_user::class, 'comment_id');
+      // return $this->hasOne(Article_comment_user::class, 'comment_id', 'id');
+      return $this->belongsToMany(User::class, 'article_comment_user', 'comment_id', 'user_id');
     }
 }

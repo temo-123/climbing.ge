@@ -170,6 +170,14 @@
                                 </div>
                             </div>
                         </div> -->
+
+                        <div class="form-group clearfix">
+                            <label for="name" class='col-xs-2 control-label'> Event location </label>
+                            <div class="col-xs-8">
+                                <input type="text" name="name" v-model="data.global_data.map"  class="form-control"> 
+                            </div>
+                        </div>
+                        
                         <div class="form-group clearfix">
                             <label for="image" class='col-xs-6 control-label'>Olredi uploaded image:</label>
                             <div class="col-md-6">

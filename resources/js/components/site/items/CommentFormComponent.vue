@@ -9,12 +9,6 @@
                             <h2 id='comments'>{{ $t('guide.article.title.comments')}}</h2>
                         </div>
                     </div>
-                    
-                    <!-- <div style='display: none;' v-if="user.user_status == 'user'">
-                        <input type="name" :value="name" name="name" autocomplete="off" id="name" placeholder="Name">
-                        <input type="surname" :value="surname" name="surname" autocomplete="off" id="surname" placeholder="Surname">
-                        <input type="email" :value="email" name="email" autocomplete="off" id="email" placeholder="E-mail">
-                    </div> -->
 
                     <div v-if="user.length == 0">
                         <div class="row" >
@@ -22,7 +16,7 @@
                                 <div class="form-group">
                                     <input type="text" name="name" v-model="name" class="form-control textarea" placeholder="Name"><br>
                                     <div class="alert alert-danger" role="alert" v-if="errors.name">
-                                        {{ errors.name[0] }}
+                                        Name is validation
                                     </div>
                                 </div>
                             </div>
@@ -30,7 +24,7 @@
                                 <div class="form-group">
                                     <input type="text" name="surname" v-model="surname" class="form-control textarea" placeholder="Surname"><br>
                                     <div class="alert alert-danger" role="alert" v-if="errors.surname">
-                                        {{ errors.surname[0] }}
+                                        Surname is validation
                                     </div>
                                 </div>
                             </div>
@@ -41,19 +35,34 @@
                                 <div class="form-group">
                                     <input type="email" name="email" v-model="email" class="form-control textarea" placeholder="E_mail"><br>
                                     <div class="alert alert-danger" role="alert" v-if="errors.email">
-                                        {{ errors.email[0] }}
+                                        Email is validation
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
+                    <div v-else>
+                        <div class="alert alert-danger" role="alert" v-if="errors.name">
+                            Name is validation
+                        </div>
+                        <div class="alert alert-danger" role="alert" v-if="errors.surname">
+                            Surname is validation
+                        </div>
+                        <div class="alert alert-danger" role="alert" v-if="errors.email">
+                            Email is validation
+                        </div>
+                        <div class="alert alert-danger" role="alert" v-if="errors.email || errors.surname || errors.name">
+                            If you use automatically data pres reload page and try again!
+                        </div>
+                    </div>
+                    
 
                     <div class="row">
                         <div class="col-md-12">
                             <div class="form-group">
                                 <textarea rows="6" name="text" v-model="text" id="text" maxlength="500" placeholder="Your comment (Write comments only in English, no more than 500 characters!)" class="form-control textarea"></textarea>
                                 <div class="alert alert-danger" role="alert" v-if="errors.text">
-                                    {{ errors.text[0] }}
+                                    Comment text is validation
                                 </div>
                             </div>
                         </div>
@@ -63,14 +72,6 @@
                         <div class="col-md-6">
                             <div class="form-group">
                                 <div class="form-group form_left">
-                                    <!-- <div class="g-recaptcha" :data-sitekey="'6LfDFkMcAAAAAFh9-1TUlmGPx83715KTD79j0iwF'"></div> -->
-                                    <!-- <vue-recaptcha 
-                                        :sitekey="'6LfDFkMcAAAAAFh9-1TUlmGPx83715KTD79j0iwF'" 
-                                        :loadRecaptchaScript="true"
-                                        :size="'100%'"
-                                        @verify="verifyMethod"
-                                    >
-                                    </vue-recaptcha> -->
 
                                     <vue-recaptcha
                                         :sitekey="MIX_GOOGLE_CAPTCHA_SITE_KEY"
@@ -110,28 +111,26 @@
                         <li v-for="comment in this.comments" :key="comment.id">
                             <div class="row">
                                 <hr>
-                                <div @click="show_complaint_modal(comment.id)" v-if="user.length != [] && comment.user_id != user.id" >
-                                    <i class="fa fa-ellipsis-v complaint_icon" aria-hidden="true"></i>
-                                </div>
-                                    <div class="row">
-                                        <h3 class="comentator_name"><strong>{{comment.name}} {{comment.surname}}</strong> <!-- [ {{comment.email}} ] --> </h3>
+                                <span v-if="user.length != 0">
+                                    <div @click="show_complaint_modal(comment.comment.id)" v-if="!comment.user || comment.user.id != user.id" >
+                                        <i class="fa fa-ellipsis-v complaint_icon" aria-hidden="true"></i>
                                     </div>
+                                    <button @click="del_comment(comment.comment.id)" v-else onclick="return confirm('Are you sure? Do you want to delete this comment?')" class="btn btn-danger pull-right">
+                                        del
+                                    </button>
+                                </span>
 
-                                <!-- <a @click="show_complaint_modal(comment.id)" v-if="comment.user_id != user.id" class="complaint_icon">
-                                    <i class="fa fa-ellipsis-v" aria-hidden="true"></i>
-                                </a> -->
+                                <div class="row">
+                                    <h3 class="comentator_name"><strong>{{comment.comment.name}} {{comment.comment.surname}}</strong> </h3>
+                                </div>
 
                                 <div class="col-xs-2 col-md-2">
                                     <img :src="'/public/images/site_img/user_demo_img.gif'" />
                                 </div>
+
                                 <div class="col-xs-10 col-md-10">
                                     <div class="row">
-                                        <p>{{comment.text}}</p>
-                                    </div>
-                                    <div v-if="user.length != []">
-                                        <button @click="del_comment(comment.id)" v-if="comment.user_id == user.id" onclick="return confirm('Are you sure? Do you want to delete this comment?')" class="btn btn-danger pull-right">
-                                            del
-                                        </button>
+                                        <p>{{comment.comment.text}}</p>
                                     </div>
                                 </div>
                             </div>
@@ -237,6 +236,12 @@
                 id: this.article_id
             }
         },
+        watch: {
+            article_id: function(){
+                this.id = this.article_id
+                this.get_comments()
+            },
+        },
         mounted() {
             this.get_comments()
             this.get_user_info()
@@ -269,7 +274,7 @@
                 this.email = ''
                 
                 axios
-                .get('../../api/auth_user/')
+                .get('/auth_user/')
                 .then(response => {
                     this.user = response.data,
                     
@@ -291,7 +296,7 @@
             make_complaint(){
                 this.complaint_loader = true
                 axios
-                .post('../../api/add_comment_complaint/',{
+                .post('/add_comment_complaint/',{
                     comment_id: this.complaint_comment_id,
                     comment_complaint: this.selected_comment_complaint,
                     email: this.complainter_email,
@@ -307,7 +312,7 @@
 
             add_comment() {
                 axios
-                .put('../../api/comment/' + this.id, {
+                .put('/comment/' + this.id, {
                     name: this.name,
                     is_verify_isset: this.is_verify_isset,
                     surname: this.surname,
@@ -320,21 +325,23 @@
                     // alert(response.data['message'])
                     this.errors = []
 
-                    this.name = "",
-                    this.surname = "",
-                    this.email = "",
-                    this.text = "",
+                    // this.name = "",
+                    // this.surname = "",
+                    // this.email = "",
+                    this.text = ""
 
-                    this.is_verify_isset = false
+                    // this.is_verify_isset = false
                 })
-                .catch(function(error) {
-                    console.log(error);
+                .catch(error => {
+                    if (error.response.status == 422) {
+                        this.errors = error.response.data.errors
+                    }
                 })
             },
 
             del_comment(id) {
                 axios
-                .delete('../../api/comment/'+ id, {
+                .delete('/comment/'+ id, {
                     id: id,
                 })
                 .then(Response => {
@@ -346,7 +353,7 @@
             get_comments: function(){
                 this.is_refresh = true
                 axios
-                .get('../../api/comment/' + this.id)
+                .get('/comment/' + this.id)
                 .then(response => {
                     this.comments = response.data
                     this.is_refresh = false

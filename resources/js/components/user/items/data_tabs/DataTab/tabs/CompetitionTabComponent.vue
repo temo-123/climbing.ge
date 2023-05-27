@@ -22,14 +22,56 @@
 </template>
 
 <script>
+    import moment from "moment"; // https://www.npmjs.com/package/vue-moment
     export default {
+        components: {
+            moment
+        },
         props: [
             'table_info',
         ],
         mountid(){
-            // console.log(this.table_info)
+        },
+        data(){
+            return {
+                action_color: '',
+                active_info: this.table_info,
+
+                end_day: 0,
+                end_month: 0,
+                end_yare: 0 
+            }
+        },
+        watch: {
+            table_info: function(){
+                this.active_info = this.table_info,
+
+                console.log('====================================');
+                console.log(this.active_info);
+                console.log('====================================');
+
+                this.end_day = moment(this.active_info.end_data).format("D")
+                this.end_month = moment(this.active_info.end_data).format("MMM")
+                this.end_yare = moment(this.active_info.end_data).format("YYYY")
+
+                this.row_action()
+            },
         },
         methods: {
+            row_action(){
+                console.log('====================================');
+                console.log(this.table_info);
+                console.log('====================================');
+                this.end_day = moment(this.table_info.end_data).format("D")
+                this.end_month = moment(this.table_info.end_data).format("MMM")
+                this.end_yare = moment(this.table_info.end_data).format("YYYY")
+
+                if( new Date().getDate() >= this.end_day && new Date().getMonth() >= this.end_month && new Date().getDate() >= this.end_yare){
+                    alert('finishef' + this.table_info.url_title)
+
+                    this.action_color = 'completed_event'
+                }
+            },
             del_event(id){
                 if(confirm('Are you sure, you want delite it?')){
                     axios
@@ -47,5 +89,7 @@
 </script>
 
 <style>
-
+.completed_event td {
+    background-color: #fb9b9b;
+}
 </style>

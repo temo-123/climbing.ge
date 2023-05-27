@@ -25,11 +25,24 @@
           images_path: '/public/images/gallery_img/'
         };
       },
+      watch: {
+        '$route' (to, from) {
+          this.get_article_images();
+        }
+      },
+
+      watch: {
+          article_id: function(){
+            this.id = this.article_id
+            this.get_article_images();
+          },
+      },
       mounted() {
           this.get_article_images();
       },
       methods: {
           get_article_images() {
+              this.db_images = []
               axios
               .get('../../api/gallery_image/' + this.id)
               .then(response => {

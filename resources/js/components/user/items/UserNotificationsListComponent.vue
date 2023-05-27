@@ -346,6 +346,8 @@
                     if(this.is_coment_model == true){
                         this.is_coment_model = false
                     }
+                    
+                    this.refresh()
                 })
             },
             show_complaint_modal(comment_id){

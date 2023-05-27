@@ -11,6 +11,6 @@ class CompetitionController extends Controller
 {
     public function get_all_competitions(Request $request)
     {
-        return Event::where("category", "=", "competition")->get();
+        return Event::where("category", "=", "competition")->latest('end_data')->get();
     }
 }

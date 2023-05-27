@@ -69,7 +69,19 @@ class CommentController extends Controller
      */
     public function show($id)
     {
-        return Comment::where("article_id", '=', $id)->where("deleted_reason", '=', null)->get();
+        $comments = Comment::where("article_id", '=', $id)->where("deleted_reason", '=', null)->latest()->get();
+        $comment_array = [];
+
+        foreach ($comments as $comment) {
+            if($comment->user->first() != []){
+                array_push($comment_array, ["comment" => $comment, "user" => $comment->user->first()]);
+            }
+            else {
+                array_push($comment_array, ["comment" => $comment]);
+            }
+        }
+
+        return $comment_array;
     }
 
     /**
@@ -92,18 +104,16 @@ class CommentController extends Controller
      */
     public function update(Request $request, $id)
     {
+        // dd(Auth::user());
         $this->comment_validate($request);
 
         $is_verify_isset = $request->input('is_verify_isset');
-        $user_id = 0;
+
+        // $user_id = 0;
+        //  dd(Auth::user()->id);
 
         if($is_verify_isset){
-
-            // Comment::create($request->all());
-
             $comment = new Comment;
-
-            // $comment->user_id = $user_id;
             $comment->name = $request->name;
             $comment->surname = $request->surname;
             $comment->email = $request->email;
@@ -111,27 +121,24 @@ class CommentController extends Controller
             $comment->article_id = $request->article_id;
             $comment->save();
 
-            if (auth()->user()) {
-                $user_id = auth()->user() -> id;
-            }
+            if (Auth::user()) {
+                // $user_id = auth()->user() -> id;
 
-            if (!Auth::user()) {
+                $comment_article = new Article_comment_user;
+                $comment_article['comment_id'] = $comment->id;
+                $comment_article['user_id'] = Auth::user()->id;
+                $comment_article->save();
+            }
+            else if (!Auth::user()) {
                 $users = User::get();
                 foreach ($users as $user) {        
                     if($request->email == $user->email){
                         $comment_query = new Article_comment_query;
                         $comment_query->comment_id = $comment->id;
-                        $comment_query->comment_user_id = $user->id;
+                        $comment_query->user_id = $user->id;
+                        $comment_query -> save();
                     }
                 }
-            }
-
-            if(User::where('email',strip_tags($request->email))->count()){
-                $queryd_user = User::where('email',strip_tags($request->email))->first();
-                $query = new Article_comment_query;
-                $query['comment_id'] = $comment->id;
-                $query['user_id'] = $queryd_user->id;
-                $query->save();
             }
 
             return (['message' => "Tenk you for comment ".$request->name]);
@@ -152,10 +159,14 @@ class CommentController extends Controller
      */
     public function destroy($id)
     {
-        if ($id) {
-            $comment = Comment::where('id',strip_tags($id))->first();
-            $comment ->delete();
+        $comment = Comment::where('id',strip_tags($id))->first();
+        $comment_user_count = Article_comment_user::where('comment_id', '=', $comment->id)->count();
+        if($comment_user_count > 0){
+            $comment_user = Article_comment_user::where('comment_id', '=', $comment->id)->first();
+            $comment_user ->delete();
         }
+
+        $comment ->delete();
     }
 
     public function del_my_comment(Request $request)
@@ -269,13 +280,14 @@ class CommentController extends Controller
     {
         if($request->response == true){
             $comment_article = new Article_comment_user;
-            $comment_article['comment_id'] = $request->coment_id;
+            $comment_article['comment_id'] = $request->comment_id;
             $comment_article['user_id'] = Auth::user()->id;
             $comment_article->save();
         }
 
         $query = Article_comment_query::where('id', '=', $request->query_id)->first();
         $query -> delete();
+
     }
 
     public function comment_delete_notification($cause, $data_time, $email, $article_id)

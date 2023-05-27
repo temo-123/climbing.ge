@@ -127,18 +127,38 @@ class EventController extends Controller
             ];
         }
 
-        return $data = [
-            "general_info"=>[
-                "info_block" => $global_info,
-            ],
-            'global_event' => $global_event,
-            'locale_event' => $local_event,
-        ];
+        $data = [];
+
+        if(isset($global_info)){
+            $data = [
+                "general_info"=>[
+                    "info_block" => $global_info,
+                ],
+                'global_event' => $global_event,
+                'locale_event' => $local_event,
+            ];
+        }
+        else{
+            $data = [
+                'global_event' => $global_event,
+                'locale_event' => $local_event,
+            ];
+        }
+
+        // return $data = [
+        //     "general_info"=>[
+        //         "info_block" => $global_info,
+        //     ],
+        //     'global_event' => $global_event,
+        //     'locale_event' => $local_event,
+        // ];
+
+        return $data;
     }
 
     public function get_all_events(Request $request)
     {
-        return Event::where("category", "=", "event")->get();
+        return Event::where("category", "=", "event")->latest('end_data')->get();
     }
 
     public function edit_event(Request $request)
@@ -248,8 +268,10 @@ class EventController extends Controller
         }
         
         $saved = $editing_local_event -> save();
-
+// dd(json_decode($request->global_blocks, true));
+        // GeneralInfoService::edit_general_info_relatione($global_blocks, $request->article_id, 'article');
         GeneralInfoService::edit_general_info_relatione(json_decode($request->global_blocks, true), $id, "event");
+        // GeneralInfoService::edit_general_info_relatione($request->global_blocks, $id, "event");
         
         if(!$saved){
             App::abort(500, 'Error');
