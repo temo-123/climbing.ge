@@ -60,7 +60,7 @@
         
         <metaData 
             :title = " $t('guide.meta.index') "
-            :description = "'Rock climbing, mountaineering and other outdoor actyvity in Georgia'"
+            :description = "this.$siteData.ice_description"
             :image = "'/public/images/meta_img/outdoor.jpg'"
         />
     </div>  
