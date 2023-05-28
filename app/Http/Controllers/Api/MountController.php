@@ -45,8 +45,7 @@ class MountController extends Controller
         $mount_sys = $m_system->mount_masiv;
 
         if(count($mount_sys) > 0){
-            // dd();
-            $mounts_system = Mount::where('id', '=', $mount_sys[0]->mount_id)->first();
+            $mounts_system = Mount::where('id', '=', $mount_sys[0]->id)->first();
 
             $system = GetMountSystemService::get_local_mount_use_locale($mounts_system->id, $request->lang);
 

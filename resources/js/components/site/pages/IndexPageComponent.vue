@@ -60,7 +60,7 @@
         
         <metaData 
             :title = " $t('guide.meta.index') "
-            :description = "this.$siteData.ice_description"
+            :description = "this.$siteData.guid_short_description"
             :image = "'/public/images/meta_img/outdoor.jpg'"
         />
     </div>  

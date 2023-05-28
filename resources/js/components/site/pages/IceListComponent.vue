@@ -18,7 +18,7 @@
                 />
             </div>
             <div v-else>
-                <div v-if="this.ices.length > 0">
+                <div class="article_card_container" v-if="this.ices.length > 0">
                     <articleComponent 
                         v-for="ice in ices"
                         :key='ice.id'

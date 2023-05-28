@@ -145,14 +145,6 @@ class EventController extends Controller
             ];
         }
 
-        // return $data = [
-        //     "general_info"=>[
-        //         "info_block" => $global_info,
-        //     ],
-        //     'global_event' => $global_event,
-        //     'locale_event' => $local_event,
-        // ];
-
         return $data;
     }
 

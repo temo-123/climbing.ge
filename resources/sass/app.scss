@@ -187,6 +187,11 @@ hr {
     margin-bottom: 5%;
 }
 
+.article_card_container {
+    display: flex;
+    flex-flow: row wrap;
+}
+
 /*
 *
 *   Navbar styles navbar

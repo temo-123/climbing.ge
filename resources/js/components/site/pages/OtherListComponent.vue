@@ -20,7 +20,7 @@
                 </content-loader>
             </div>
             <div v-else>
-                <div v-if="this.other_articles.length > 0">
+                <div v-if="this.other_articles.length > 0" class="article_card_container">
                     <articleComponent 
                         v-for="other_article in other_articles"
                         :key='other_article.id'

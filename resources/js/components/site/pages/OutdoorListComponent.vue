@@ -67,7 +67,7 @@
                             </div>
 
                             <div v-else>
-                                <div v-if="this.outdoors.length > 0">
+                                <div v-if="this.outdoors.length > 0" class="article_card_container">
                                     <outdoorCard 
                                         v-for="outdoor in outdoors"
                                         :key='outdoor.id'

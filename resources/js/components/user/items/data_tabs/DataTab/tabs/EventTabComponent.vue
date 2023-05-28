@@ -1,5 +1,5 @@
 <template>
-    <tr :class="action_color">
+    <tr :class='row_action(table_info.end_data)'>
         <td :style='"text-align: center;"'>
             <input type="checkbox">
         </td>
@@ -10,7 +10,10 @@
         <td>|</td>
         <td :style='"text-align: center;"'>{{table_info.published}}</td>
         <td>|</td>
-        <td>
+        <td v-if="table_info.category == 'competition'">
+            <router-link class="btn btn-primary" :to="{ name: 'competitionEdit', params: { id: table_info.id } }" v-if="$can('edit', 'event')"><i class="fa fa-pencil" aria-hidden="true"></i></router-link>
+        </td>
+        <td v-else-if="table_info.category == 'event'">
             <router-link class="btn btn-primary" :to="{ name: 'eventEdit', params: { id: table_info.id } }" v-if="$can('edit', 'event')"><i class="fa fa-pencil" aria-hidden="true"></i></router-link>
         </td>
         
@@ -22,7 +25,7 @@
 </template>
 
 <script>
-import moment from "moment"; // https://www.npmjs.com/package/vue-moment
+    import moment from "moment"; // https://www.npmjs.com/package/vue-moment
     export default {
         components: {
             moment
@@ -31,26 +34,28 @@ import moment from "moment"; // https://www.npmjs.com/package/vue-moment
             'table_info',
         ],
         mountid(){
-            this.end_day = moment(this.event.global_event.end_data).format("D")
-            this.end_month = moment(this.event.global_event.end_data).format("MMM")
+            //
         },
         data(){
             return {
-                action_color: '',
-
-                end_day: 0,
-                end_month: 0
+                // 
             }
         },
-        watch: {
-            table_info: function(){
-                this.row_action()
-            },
-        },
         methods: {
-            row_action(){
-                if( new Date().getDate() >= this.end_day && new Date().getMonth() >= this.end_month){
-                    this.table_info.end_data
+            row_action(end_data){
+                let end_houre = Number(moment(end_data).format("H"))
+
+                if(end_houre != 0){
+                    let end_day = Number(moment(end_data).format("D"))
+                    let end_month = Number(moment(end_data).format("MM"))
+                    let end_year = Number(moment(end_data).format("YYYY"))
+
+                    if( new Date().getDate() < end_day && 
+                        new Date().getMonth() >= end_month && 
+                        new Date().getFullYear() >= end_year
+                    ){
+                        return 'completed_event'
+                    }
                 }
             },
             del_event(id){

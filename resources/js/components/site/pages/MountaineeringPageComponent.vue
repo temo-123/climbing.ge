@@ -21,17 +21,17 @@
 
                         <p style="float: right;" v-show="masiv_desc" @click="masiv_desc = !masiv_desc">X</p>
                         <p style="float: right;" v-show="!masiv_desc" @click="masiv_desc = !masiv_desc">Read more</p>
-                        <h2>{{ $t('guide.article.mount massive')}} - <strong>{{this.mounts_system.locale_mount.title}}</strong></h2>
+                        <h2>{{ $t('guide.article.title.mount massive')}} - <strong>{{this.mounts_system.locale_mount.title}}</strong></h2>
 
                         <span v-show="masiv_desc">
                             <span v-html="this.mounts_system.locale_mount.text"></span>
 
                             <div v-if="this.mounts_system.global_mount[0].weather == NULL && this.mounts_system.locale_mount.best_time != NULL">
-                                <h2 id="best_time_to_climb">{{ $t('guide.article.best time')}}</h2>
+                                <h2 id="best_time_to_climb">{{ $t('guide.article.title.best time')}}</h2>
                                 <span v-html="this.mounts_system.locale_mount.best_time"></span>
                             </div>  
                             <div v-else-if="this.mounts_system.global_mount[0].weather != NULL && this.mounts_system.locale_mount.best_time != NULL">
-                                <h2 id="best_time_to_climb">{{ $t('guide.article.best time')}}</h2>
+                                <h2 id="best_time_to_climb">{{ $t('guide.article.title.best time')}}</h2>
 
                                 <div class="row">
                                     <div class="col-md-6" style="margin-top: 5%;">
@@ -45,7 +45,7 @@
 
                             <!-- how get -->
                             <div v-if="this.mounts_system.locale_mount.how_get != NUll">
-                                <h2 id="how_to_get_there">{{ $t('guide.article.how get')}}</h2>
+                                <h2 id="how_to_get_there">{{ $t('guide.article.title.how get')}}</h2>
                                 <span v-html="this.mounts_system.locale_mount.how_get"></span>
                             </div>
 
@@ -63,11 +63,11 @@
 
                 <!-- Best time for climbing block -->
                 <div v-if="this.mount_route[0].weather == NULL && this.mount_route[0].best_time != NULL">
-                    <h2 id="best_time_to_climb">{{ $t('guide.article.best time')}}</h2>
+                    <h2 id="best_time_to_climb">{{ $t('guide.article.title.best time')}}</h2>
                     <span v-html="this.mount_route[0].best_time"></span>
                 </div>  
                 <div v-else-if="this.mount_route[0].weather != NULL && this.mount_route[0].best_time != NULL">
-                    <h2 id="best_time_to_climb">{{ $t('guide.article.best time')}}</h2>
+                    <h2 id="best_time_to_climb">{{ $t('guide.article.title.best time')}}</h2>
 
                     <div class="row">
                         <div class="col-md-6" style="margin-top: 5%;">
@@ -81,13 +81,13 @@
 
                 <!-- addres -->
                 <div v-if="this.mount_route[0].address != NUll">
-                    <h2 id="how_to_get_there">{{ $t('guide.article.address')}}</h2>
+                    <h2 id="how_to_get_there">{{ $t('guide.article.title.address')}}</h2>
                     <span v-html="this.mount_route[0].address"></span>
                 </div>
 
                 <!-- how get -->
                 <div v-if="this.mount_route[0].how_get != NUll">
-                    <h2 id="how_to_get_there">{{ $t('guide.article.how get')}}</h2>
+                    <h2 id="how_to_get_there">{{ $t('guide.article.title.how get')}}</h2>
                     <span v-html="this.mount_route[0].how_get"></span>
                 </div>
 
@@ -100,25 +100,25 @@
 
                 <!-- price -->
                 <div v-if="this.mount_route[0].prices_text != NUll">
-                    <h2 id="how_to_get_there">{{ $t('guide.article.price')}}</h2>
+                    <h2 id="how_to_get_there">{{ $t('guide.article.title.price')}}</h2>
                     <span v-html="this.mount_route[0].prices_text"></span>
                 </div>
 
                 <!-- info -->
                 <div v-if="this.mount_route[0].info != NUll">
-                    <h2 id="how_to_get_there">{{ $t('guide.article.info')}}</h2>
+                    <h2 id="how_to_get_there">{{ $t('guide.article.title.info')}}</h2>
                     <span v-html="this.mount_route[0].info"></span>
                 </div>
 
                 <!-- what need -->
                 <div v-if="this.mount_route[0].what_need != NUll">
-                    <h2 id="what_you_need">{{ $t('guide.article.what need')}}</h2>
+                    <h2 id="what_you_need">{{ $t('guide.article.title.what need')}}</h2>
                     <span v-html="this.mount_route[0].what_need"></span>
                 </div>
 
                 <!-- news -->
                 <div v-if="this.mount_route[0].route">
-                    <h2 id="routes">{{ $t('guide.article.route')}}</h2>
+                    <h2 id="routes">{{ $t('guide.article.title.route')}}</h2>
                     <span v-html="this.mount_route [0].route"></span>
                 </div>
                 

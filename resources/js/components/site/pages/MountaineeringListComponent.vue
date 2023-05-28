@@ -27,7 +27,7 @@
             <div class="row articles_filter_bar" v-if="filter_mount != 'All'">
                 <div class="col-md-12" style="text-align: center;">
                     <h4>{{selected_mount_data.locale_mount.title}}</h4>
-                    <p>{{selected_mount_data.locale_mount.text}}</p>
+                    <span v-html="selected_mount_data.locale_mount.text"></span>
                 </div>
             </div>
 
@@ -42,7 +42,7 @@
                     </content-loader>
                 </div>
                 <div v-else>
-                    <div v-if="this.mount_routes.length > 0">
+                    <div v-if="this.mount_routes.length > 0" class="article_card_container">
                         <mountCard 
                             v-for="mount_route in mount_routes"
                             :key='mount_route.id'

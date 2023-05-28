@@ -10,14 +10,16 @@
 
             <div class="bar"><i class="fa fa-dribbble"></i></div>
             <h3 class="article_list_short_description"> <span v-html="$siteData.other_activity_description"></span> </h3>
-
-            <articleCardComponent 
-                v-for="other_article in other_articles"
-                    :key='other_article.id'
-                    :image_dir="'images/other_img/'"
-                    :article="other_article"
-                    :route="'other/'+other_article.url_title"
-            />
+            
+            <div class="article_card_container">
+                <articleCardComponent 
+                    v-for="other_article in other_articles"
+                        :key='other_article.id'
+                        :image_dir="'images/other_img/'"
+                        :article="other_article"
+                        :route="'other/'+other_article.url_title"
+                />
+            </div>
         </div>  
     </div>
 </template>
@@ -56,5 +58,8 @@
 </script>
 
 <style>
-
+/* .article_card_container {
+    display: flex;
+    flex-flow: row wrap;
+} */
 </style>

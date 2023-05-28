@@ -6,6 +6,7 @@
                 <div class="row">
                     <div class="col-md-12 col-sm-12 col-xs-12">
                         <div class="aboutus">
+                            <h1 v-html="this.$siteData.guid_short_description"></h1>
                             <span v-html="this.$siteData.guid_description"></span>
                         </div>
                     </div>
@@ -54,7 +55,7 @@
         
         <metaData 
             :title = " $t('guide.meta.about us') "
-            :description = "'Rock climbing, mountaineering and other outdoor actyvity in Georgia'"
+            :description = "this.$siteData.guid_short_description"
             :image = "'/public/images/meta_img/outdoor.jpg'"
         />
 
