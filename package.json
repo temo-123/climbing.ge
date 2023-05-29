@@ -72,6 +72,7 @@
         "stream": "^0.0.2",
         "vue-axios": "^3.5.2",
         "vue-carousel-3d": "^1.0.1",
+        "vue-cli-plugin-sitemap": "^2.3.0",
         "vue-content-loader": "^0.2.3",
         "vue-country-flag": "^2.3.2",
         "vue-expandable-image": "^0.1.0",
