@@ -23,42 +23,18 @@ class GalleryController extends Controller
      */
     public function index()
     {
-        // $gallery = array();
-        // $full_image = '';
-        // $image = '';
+        $index_gallery_count = Gallery_image::where('image_type', '=', 'Index gallery image')->where('published', '=', 1)->count();
 
-        // $gallery_images = Gallery_image::limit(8)->get();
-        // $image_url = config('app.url').'/images/gallery_img/';
-
-        // foreach ($gallery_images as $gallery_img) {
-        //     $image = $gallery_img->image;
-        //     $image = strval($image);
-        //     $full_image = $image_url . $image;
-        //     array_push($gallery, $full_image);
-        // }
-        // return response()->json($gallery);
-
-        return Gallery_image::limit(8)->where('image_type', '=', 'Index gallery image')->where('published', '=', 1)->get();
+        if($index_gallery_count < 13){
+            Gallery_image::limit(12)->where('image_type', '=', 'Index gallery image')->where('published', '=', 1)->inRandomOrder()>get();
+        }
+        else if($index_gallery_count > 13){
+            Gallery_image::limit(12)->where('image_type', '=', 'Index gallery image')->where('published', '=', 1)->get();
+        }
     }
 
     public function get_swiper_images()
     {
-        // $gallery = array();
-        // $full_image = '';
-        // $image = '';
-
-        // $gallery_images = Gallery_image::where('image_type', '=', 1)->where('published', '=', 1)->get();
-        // $image_url = config('app.url').'/images/gallery_img/';
-
-        // foreach ($gallery_images as $gallery_img) {
-        //     $image = $gallery_img->image;
-        //     $image = strval($image);
-        //     $full_image = $image_url . $image;
-        //     array_push($gallery, ['id'=> $gallery_img->id, 'image'=> $full_image]);
-        // }
-        // return response()->json($gallery);
-
-        // return Gallery_image::where('image_type', '=', 1)->where('published', '=', 1)->get();
         return Gallery_image::limit(5)->latest('id')->where('image_type', '=', 'Index head slider image')->where('published', '=', 1)->get();
     }
 
