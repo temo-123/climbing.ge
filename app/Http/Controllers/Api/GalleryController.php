@@ -26,7 +26,7 @@ class GalleryController extends Controller
         $index_gallery_count = Gallery_image::where('image_type', '=', 'Index gallery image')->where('published', '=', 1)->count();
 
         if($index_gallery_count < 13){
-            Gallery_image::limit(12)->where('image_type', '=', 'Index gallery image')->where('published', '=', 1)->inRandomOrder()>get();
+            Gallery_image::limit(12)->where('image_type', '=', 'Index gallery image')->where('published', '=', 1)->inRandomOrder()->get();
         }
         else if($index_gallery_count > 13){
             Gallery_image::limit(12)->where('image_type', '=', 'Index gallery image')->where('published', '=', 1)->get();
