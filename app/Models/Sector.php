@@ -33,17 +33,17 @@ class Sector extends Model
 
     public function routes()
     {
-        return $this->hasMany(Route::class)->latest('num');
+        return $this->hasMany(Route::class)->orderBy('num');
     }
 
     public function sport_routes()
     {
-        return $this->hasMany(Route::class)->where('category', '=', 'sport climbing')->latest('num');
+        return $this->hasMany(Route::class)->where('category', '=', 'sport climbing')->orderBy('num');
     }
 
     public function boulder_routes()
     {
-        return $this->hasMany(Route::class)->where('category', '=', 'bouldering')->latest('num');
+        return $this->hasMany(Route::class)->where('category', '=', 'bouldering')->orderBy('num');
     }
 
     public function images()
@@ -53,7 +53,7 @@ class Sector extends Model
 
     public function mtps()
     {
-        return $this->hasMany(Mtp::class)->latest('num');
+        return $this->hasMany(Mtp::class)->orderBy('num');
     }
 
 	// public function sector_rocks_images()

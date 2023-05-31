@@ -24,13 +24,16 @@ class GalleryController extends Controller
     public function index()
     {
         $index_gallery_count = Gallery_image::where('image_type', '=', 'Index gallery image')->where('published', '=', 1)->count();
+        $gallery_images = [];
 
         if($index_gallery_count < 13){
-            Gallery_image::limit(12)->where('image_type', '=', 'Index gallery image')->where('published', '=', 1)->inRandomOrder()->get();
+            $gallery_images = Gallery_image::limit(12)->where('image_type', '=', 'Index gallery image')->where('published', '=', 1)->get();
         }
         else if($index_gallery_count > 13){
-            Gallery_image::limit(12)->where('image_type', '=', 'Index gallery image')->where('published', '=', 1)->get();
+            $gallery_images = Gallery_image::limit(12)->where('image_type', '=', 'Index gallery image')->where('published', '=', 1)->inRandomOrder()->get();
         }
+
+        return $gallery_images;
     }
 
     public function get_swiper_images()

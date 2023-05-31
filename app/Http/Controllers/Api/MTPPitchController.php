@@ -21,7 +21,7 @@ class MTPPitchController extends Controller
      */
     public function index()
     {
-        return Mtp_pitch::get();
+        return Mtp_pitch::latest('id')->get();
     }
 
     /**

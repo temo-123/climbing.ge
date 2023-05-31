@@ -23,7 +23,7 @@ class RouteController extends Controller
      */
     public function index()
     {
-        return Route::get();
+        return Route::latest('id')->get();
     }
 
     public function get_routes_for_forum($sector_id)

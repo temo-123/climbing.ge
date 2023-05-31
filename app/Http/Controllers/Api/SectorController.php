@@ -28,12 +28,12 @@ class SectorController extends Controller
      */
     public function index()
     {
-        return Sector::get();
+        return Sector::latest('id')->get();
     }
 
     public function get_sectors_for_forum($article_id)
     {
-        return Sector::where('article_id','=', $article_id)->get();
+        return Sector::where('article_id','=', $article_id)->latest('id')->get();
     }
 
     /**
@@ -230,6 +230,7 @@ class SectorController extends Controller
 
         $sector = Sector::where('id', '=', $sector_id)->first();
                 
+        // $sector_imgs = $sector->images->take(6);
         $sector_imgs = $sector->images->take(6);
         if ($sector_imgs) {
             $sector_imgs = $sector_imgs;

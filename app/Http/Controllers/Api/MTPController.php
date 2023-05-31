@@ -21,7 +21,7 @@ class MTPController extends Controller
      */
     public function index()
     {
-        return MTP::get();
+        return MTP::latest('id')->get();
     }
 
     public function get_mtps_for_forum($sector_id)
