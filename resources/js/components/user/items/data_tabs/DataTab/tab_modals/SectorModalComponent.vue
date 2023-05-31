@@ -154,7 +154,7 @@
                     sector_images_sequence: this.sector_images,
                 })
                 .then((response)=> { 
-                    this.close_sector_model
+                    this.close_sector_model()
                 })
                 .catch(error =>{
                 })
