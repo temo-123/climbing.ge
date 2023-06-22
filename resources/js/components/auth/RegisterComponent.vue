@@ -226,8 +226,10 @@ export default {
       is_term_of_use_modal: false,
     };
   },
-  mounted() {
-  },
+    mounted() {
+      document.querySelector('body').style.marginLeft = '0';
+      document.querySelector('.admin_page_header_navbar').style.marginLeft = '0';
+    },
   methods: {
 
     onCaptchaVerified() {

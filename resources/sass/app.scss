@@ -4,13 +4,6 @@
 // Variables
 @import "variables";
 
-// Bootstrap
-// @import '~bootstrap/scss/bootstrap';
-// @import url(http://netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css);
-
-// @import 'node_modules/bootstrap/scss/bootstrap.scss';
-// @import 'node_modules/bootstrap-vue/src/index.scss';
-
 /*
 *
 *   Site global styles
@@ -58,6 +51,9 @@ body {
 
     background: #fff;
     font-family: "Lora", serif;
+
+    height: 100vh;
+    transition: all .5s;
 }
 
 // @media (max-width: 720px) {
@@ -247,14 +243,23 @@ hr {
 .top_menu_margin {
     margin-top: 9%;
 }
+.destroy_top_menu_margin {
+    margin-top: -9%;
+}
 @media (max-width: 756px) {
     .top_menu_margin {
         margin-top: 18% !important;
+    }
+    .destroy_top_menu_margin {
+        margin-top: -18% !important;
     }
 }
 @media (max-width: 756px) {
     .top_menu_margin {
         margin-top: 37%;
+    }
+    .destroy_top_menu_margin {
+        margin-top: -37%;
     }
     .mobile_nav_menu {
         height: auto;

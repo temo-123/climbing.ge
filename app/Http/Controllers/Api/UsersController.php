@@ -86,6 +86,7 @@ class UsersController extends Controller
             $new_user -> save();
 
             $this->create_user_notifications($new_user->id);
+            $this->create_user_permissions($new_user->id);
         }
     }
 
@@ -291,6 +292,20 @@ class UsersController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+
+
+    private function create_user_permissions(int $user_id)
+    {
+        if(User_role::where('user_id', '=', $user_id)->count() == 0){
+            $new_permission_item =  new User_role();
+
+            $new_permission_item['user_id'] = $user_id;
+            $new_permission_item['role_id'] = Role::where('slug', '=', 'user')->first()->id; // ID 1 in role tab is a user
+
+            $new_permission_item -> save();
+        }
+    }
+
     public function create_user_notifications($user_id)
     {
         $new_notification =  new user_notification();

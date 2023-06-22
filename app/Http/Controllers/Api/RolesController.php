@@ -32,16 +32,23 @@ class RolesController extends Controller
     public function get_user_permissions(Request $request)
     {
         $user = User::where("id", "=", $request->user_id)->first();
-        $user_role = $user->roles;
+        $user_role = array();
+        if($user->role->count() > 0){
+            $role = $user->role;
+            $user_role = $role[0];
+        }
+        else{
+            $user_role = [];
+        }
         $user_permissions = $user->permissions;
 
         $data = [
             'user' => $user,
-            'role' => $user_role[0],
+            'role' => $user_role,
             'permissions' => $user_permissions
         ];
-        return $data;
         // dd($data);
+        return $data;
     }
 
     public function del_user_pemisino(Request $request)
@@ -54,9 +61,6 @@ class RolesController extends Controller
     {       
         if ($request->role) {
             $user_role = User_role::where("user_id", "=", $request->user_id)->first();
-            // dd(count($user_role));
-            // dd('user_role');
-            // dd($user_role);
             if($user_role){
                 $user_role['role_id'] = $request->role;
                 $user_role->save();

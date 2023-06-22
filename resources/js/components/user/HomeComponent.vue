@@ -3,7 +3,7 @@
         <navbar />
 
         <div class="container top_menu_margin">
-            <div class="container bootstrap snippet mt-5">
+            <div class="bootstrap snippet mt-5">
                 <router-view />
             </div>
         </div>

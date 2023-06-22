@@ -263,6 +263,7 @@
                 admin_refresh_id: 0,
                 decision_loader: false,
                 user_queries: [],
+                complainter_email: '',
 
                 is_coment_model: false,
 

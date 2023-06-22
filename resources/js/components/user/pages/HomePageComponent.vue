@@ -1,10 +1,10 @@
 <template>
     <div class="row">
-        <div class="col-sm-3">
+        <!-- <div class="col-sm-3"> -->
             <left-menu />
-        </div>
+        <!-- </div> -->
 
-        <div class="col-sm-9">
+        <div class="col-sm-12">
 
             <div class="row justify-content-center">
                 <div class="col-md-12">

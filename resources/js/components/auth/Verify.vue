@@ -25,7 +25,10 @@ export default {
         console.log(error.response);
         this.error = "Error verifying email";
       });
-  },
+      
+      document.querySelector('body').style.marginLeft = '0';
+      document.querySelector('.admin_page_header_navbar').style.marginLeft = '0';
+    },
   computed: {
     ...mapGetters("auth", ["user"])
   },

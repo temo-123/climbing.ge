@@ -39,6 +39,9 @@
         },
         mounted() {
             this.select_image()
+
+            document.querySelector('body').style.marginLeft = '0';
+            document.querySelector('.admin_page_header_navbar').style.marginLeft = '0';
         },
         watch: {
             '$route' (to, from) {

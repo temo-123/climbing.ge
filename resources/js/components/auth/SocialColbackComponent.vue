@@ -18,7 +18,9 @@
             .catch( (e)=> {
                 return this.$routr.push('/auth/register?error=Your token appered to be invalid, please try again.'); 
             })
-        }
+      document.querySelector('body').style.marginLeft = '0';
+      document.querySelector('.admin_page_header_navbar').style.marginLeft = '0';
+    },
     }
 </script>
 

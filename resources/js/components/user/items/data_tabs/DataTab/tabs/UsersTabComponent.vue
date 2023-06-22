@@ -38,14 +38,21 @@
             <pre class="language-vue">
                 <h2>User role</h2>
 
-                <select class="form-control" v-model="user_role"> 
+                <select class="form-control" v-model="user_role" v-if="!role_loading"> 
+                    <option value="no_role" disabled>Select user role</option> 
                     <option v-for="role in roles" :key="role.id" :value="role.id">{{ role.name }}</option> 
                 </select>
 
+                <div class="row justify-content-center" v-if="role_loading">
+                    <div class="col-md-4">
+                        <img :src="'../../../public/images/site_img/loading.gif'" alt="loading">
+                    </div>
+                </div>
+
                 <h2>Additional permissions</h2>
 
-                <h3>Alredy addid</h3>
-                <table class="table table-hover" id="dev-table">
+                <h3 v-if="user_permissions.length != 0">Alredy addid</h3>
+                <table v-if="user_permissions.length != 0" class="table table-hover" id="dev-table">
                     <thead>
                         <tr>
                             <th>Image</th>
@@ -57,7 +64,7 @@
                     <tbody>
                         <tr v-for="permission in user_permissions" :key="permission.id">
                             <td>
-                                {{ permission.name }}
+                                {{ permission.subject }} {{ permission.action }}
                             </td>
                             <td>|</td>
                             <td>
@@ -67,11 +74,11 @@
                     </tbody>
                 </table>
 
-                <h3>Add New</h3>
+                <h3>Add More Permissions</h3>
 
                 <button type="button" class="btn btn-primary float-left" @click="add_permission_value()">Add new permission</button>
 
-                <table class="table table-hover" id="dev-table">
+                <table class="table table-hover" id="dev-table" v-if="!perm_loading">
                     <thead>
                         <tr>
                             <th>Image</th>
@@ -86,7 +93,7 @@
                                 <form ref="myForm">
                                     <select class="form-control" v-on:change="onFileChange($event, permission.id)">> 
                                         <option disabled selected>Select permission</option> 
-                                        <option v-for="permission in permissions" :key="permission.id" :value="permission.id">{{ permission.name }}</option> 
+                                        <option v-for="permission in permissions" :key="permission.id" :value="permission.id">{{ permission.subject }} {{ permission.action }}</option> 
                                     </select>
                                 </form> 
                             </td>
@@ -97,6 +104,11 @@
                         </tr>
                     </tbody>
                 </table>
+                <div class="row justify-content-center" v-if="perm_loading">
+                    <div class="col-md-4">
+                        <img :src="'../../../public/images/site_img/loading.gif'" alt="loading">
+                    </div>
+                </div>
             </pre>
             <div slot="modal-footer">
                 <div class="modal-footer">
@@ -155,7 +167,10 @@
                 is_ban_modal: false,
                 is_role_editing_modal: false,
 
-                user_role: '',
+                perm_loading: false,
+                role_loading: false,
+
+                user_role: 'no_role',
                 user_permissions: [],
 
                 roles: [],
@@ -202,7 +217,7 @@
                 this.action_user = ''
                 this.roles = []
                 this.permissions_array = []
-                this.user_role = ''
+                this.user_role = 'no_role'
             },
 
             del_user(user_id){
@@ -239,14 +254,11 @@
 
             edit_permissions(){
                 axios
-                .post("../api/role/edit_permissions_and_role/"+this.action_user, {
+                .post("/role/edit_permissions_and_role/"+this.action_user, {
                     new_permissions: this.permissions_array,
                     role: this.user_role,
                 })
                 .then(response => {
-                    // this.user_role  = response.data.role[0].name
-                    // this.user_permissions = response.data.permissions
-                    // this.roles = response.data
                     this.close_role_editing_modal()
                 })
                 .catch(
@@ -256,13 +268,14 @@
 
             get_user_permissions_and_roles(){
                 axios
-                .get("../api/role/get_user_permissions/"+this.action_user)
+                .get("/role/get_user_permissions/"+this.action_user)
                 .then(response => {
-                    // alert(response.data.role.name)
-                    if(response.data.role){
+                    
+                    if(response.data.role.length != 0){
                         this.user_role  = response.data.role.id
                     }
-                    if(response.data.permissions.length > 0){
+
+                    if(response.data.permissions.length != 0){
                         this.user_permissions = response.data.permissions
                     }
                 })
@@ -270,32 +283,37 @@
                     error => console.log(error)
                 );
             },
-
+                
             get_roles(){
+                this.role_loading = true
+
                 axios
-                .get("../api/role/")
+                .get("/role/")
                 .then(response => {
                     this.roles = response.data
                 })
                 .catch(
                     error => console.log(error)
-                );
+                )
+                .finally(() => this.role_loading = false);
             },
 
             get_permissions(){
+                this.perm_loading = true
+
                 axios
-                .get("../api/parmisions_list/")
+                .get("/parmisions_list/")
                 .then(response => {
                     this.permissions = response.data
                 })
                 .catch(
                     error => console.log(error)
-                );
+                )
+                .finally(() => this.perm_loading = false);
             },
 
 
             onFileChange(event, item_id){
-                // console.log("🚀 ~ file: UsersTabComponent.vue:269 ~ onFileChange ~ event", event.target.value)
                 let permisson = event.target.value
                 let id = item_id - 1 
                 this.permissions_array[id]['permission_id'] = permisson
