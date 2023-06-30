@@ -1,12 +1,19 @@
 <template>
     <div class="col_md_12">
-        <div class="row">
+
+        <div class="row justify-content-center" v-if="is_loading">
+            <div class="col-md-4">
+                <img :src="'../../../../../../public/images/site_img/loading.gif'" alt="loading">
+            </div>
+        </div>
+
+        <div class="row" v-if="!is_loading">
             <div class="form-group">  
                 <button type="submit" class="btn btn-primary" form="edit_genral_info_form">Save</button>
                 <button type="submit" class="btn btn-primary" v-on:click="go_back()" >Go back</button>
             </div>
         </div>
-        <div class="row">
+        <div class="row" v-if="!is_loading">
             <div class="tabs">
     
                 <input type="radio" name="tabs" id="1" checked="checked">
@@ -67,7 +74,8 @@
                         ka_text: '',
                     },
     
-    
+                    is_loading: false,
+
                     errors: [],
     
                     editing_general_info_id: this.$route.params.id,
@@ -82,6 +90,7 @@
             },
             methods: {
                 get_editing_general_info_data() {
+                    this.is_loading = true
                     axios
                     .get('../../api/general_info/' + this.editing_general_info_id)
                     .then(response => {
@@ -91,8 +100,11 @@
                         this.data.ka_text = response.data['text_ka']
                     })
                     .catch(error => console.log(error))
+                    .finally(() => this.is_loading = false);
                 },
                 edit_general_info() {
+                    this.is_loading = true
+
                     axios
                     .post('../../api/general_info/' + this.editing_general_info_id, {        
                         data: this.data,
@@ -106,6 +118,7 @@
                             this.errors = error.response.data.errors
                         }
                     })
+                    .finally(() => this.is_loading = false);
                 },
     
                 go_back() {
