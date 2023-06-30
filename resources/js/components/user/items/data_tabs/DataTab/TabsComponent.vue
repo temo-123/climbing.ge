@@ -643,8 +643,7 @@ export default {
 </script>
 
 <style scoped>
-.tabs {
-    /* display: flex; */
+/* .tabs {
     flex-wrap: wrap;
 }
 .tabs label {
@@ -664,7 +663,6 @@ export default {
     display: none;
     padding: 1rem;
     background: #fff;
-    /* border: 1px solid #ccc!important; */
 }
 .tabs input[type="radio"] {
     display: none;
@@ -687,5 +685,5 @@ export default {
         margin-right: 0;
         margin-top: 0.2rem;
     }
-}
+} */
 </style>

@@ -1969,7 +1969,8 @@ button.btn:hover,
     display: none;
 }
 .tabs input[type="radio"]:checked + label {
-    background: #fff;
+    background: #f5f4f4;
+    border: 1px solid #ccc !important;
 }
 .tabs input[type="radio"]:checked + label + .tab {
     display: block;

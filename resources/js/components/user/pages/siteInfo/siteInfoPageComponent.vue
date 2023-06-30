@@ -10,12 +10,50 @@
                 </div>
             </div>
             <div class="row">
-                <div class="tabs">
-                    <div class="row">
+                <div class="col-md-12">
+                    <div class="tabs">
+
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="row">
+                                    <!-- <div class="col-md-12"> -->
+                                        <div class="col-md-3">
+                                            <input type="radio" :id="1" :value="1" v-model="action_tab" />
+
+                                            <label :for="1">Global data</label>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <input type="radio" :id="2" :value="2" v-model="action_tab" />
+
+                                            <label :for="2">Georgian data</label>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <input type="radio" :id="3" :value="3" v-model="action_tab" />
+
+                                            <label :for="3">English data</label>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <input type="radio" :id="4" :value="4" v-model="action_tab" />
+
+                                            <label :for="4">RuZZion data</label>
+                                        </div>
+                                    <!-- </div> -->
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <!-- <div class="col"> -->
+                                            <input type="radio" :id="5" :value="5" v-model="action_tab" />
+
+                                            <label :for="5">General info</label>
+                                        <!-- </div> -->
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                         
-                        <input type="radio" name="tabs" id="1" checked="checked">
-                        <label for="1">Global Data</label>
-                        <div class="tab">
+                        <!-- <input type="radio" name="tabs" id="1" checked="checked">
+                        <label for="1">Global Data</label> -->
+                        <span v-if="action_tab == 1">
                             <div class="row edit_buttom">
                                 <div class="col-md-6">
                                     <router-link class="btn btn-primary" :to="{ name: 'siteGlobalDataEdit' }">Edit Global data</router-link>
@@ -94,11 +132,11 @@
                                     </tr>
                                 </tbody>
                             </table>
-                        </div>
+                        </span>
 
-                        <input type="radio" name="tabs" id="2">
-                        <label for="2">English Data</label>
-                        <div class="tab">
+                        <!-- <input type="radio" name="tabs" id="2">
+                        <label for="2">English Data</label> -->
+                        <span v-else-if="action_tab == 2">
                             <div class="row edit_buttom">
                                 <div class="col-md-6">
                                     <!-- <button class="btn btn-primary" >Edit English data</button> -->
@@ -106,11 +144,11 @@
                                 </div>
                             </div>
                             <localeInfoForm :info = site_us_info />
-                        </div>
+                        </span>
 
-                        <input type="radio" name="tabs" id="3">
-                        <label for="3">Russion Data</label>
-                        <div class="tab">
+                        <!-- <input type="radio" name="tabs" id="3">
+                        <label for="3">Russion Data</label> -->
+                        <span v-else-if="action_tab == 3">
                             <div class="row edit_buttom">
                                 <div class="col-md-6">
                                     <!-- <button class="btn btn-primary" >Russion data</button> -->
@@ -118,11 +156,11 @@
                                 </div>
                             </div>
                             <localeInfoForm :info = site_ru_info />
-                        </div>
+                        </span>
 
-                        <input type="radio" name="tabs" id="4">
-                        <label for="4">Georgian Data</label>
-                        <div class="tab">
+                        <!-- <input type="radio" name="tabs" id="4">
+                        <label for="4">Georgian Data</label> -->
+                        <span v-else-if="action_tab == 4">
                             <div class="row edit_buttom">
                                 <div class="col-md-6">
                                     <!-- <button class="btn btn-primary" >Georgian data</button> -->
@@ -130,12 +168,12 @@
                                 </div>
                             </div>
                             <localeInfoForm :info = site_ka_info />
-                        </div>
+                        </span>
 
 
-                        <input type="radio" name="tabs" id="5">
-                        <label for="5">General info</label>
-                        <div class="tab">
+                        <!-- <input type="radio" name="tabs" id="5">
+                        <label for="5">General info</label> -->
+                        <span v-else-if="action_tab == 5">
                             <div class="row edit_buttom">
                                 <div class="col-md-6">
                                     <router-link class="btn btn-primary pull-left" :to="{ name: 'GlobalInfoAdd' }">Add General info</router-link>
@@ -147,43 +185,47 @@
                                     </div>
                                 </div>
                             </div>
-                            <table  class="table table-hover" id="dev-table" >
-                                <thead>
-                                    <tr>
-                                        <th>Id</th>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <table  class="table table-hover" id="dev-table" >
+                                        <thead>
+                                            <tr>
+                                                <th>Id</th>
 
-                                        <th>|</th>
-                                        <th>Demo title</th>
+                                                <th>|</th>
+                                                <th>Demo title</th>
 
-                                        <th>|</th>
-                                        <th>edit</th>
+                                                <th>|</th>
+                                                <th>edit</th>
 
-                                        <th>|</th>
-                                        <th>del</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr v-for="general_info in general_infos" :key="general_info.id">
-                                        <th>{{general_info.id}}</th>
+                                                <th>|</th>
+                                                <th>del</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr v-for="general_info in general_infos" :key="general_info.id">
+                                                <th>{{general_info.id}}</th>
 
-                                        <th>|</th>
-                                        <td>{{general_info.title}}</td>
+                                                <th>|</th>
+                                                <td>{{general_info.title}}</td>
 
-                                        <th>|</th>
-                                        <td>
-                                            <router-link class="btn btn-primary" :to="{ name: 'GlobalInfoEdit', params: { id: general_info.id } }" >Edit</router-link>
-                                            <!-- <a  class="btn btn-primary" type="submit">Edit</a> -->
-                                            <!-- <a :href="table_1_edit_url+table_info.id" class="btn btn-primary" type="submit">Edit</a> -->
-                                        </td>
-                                        
-                                        <td>|</td>
-                                        <td>
-                                            <button type="submit" class="btn btn-danger" @click="del_social_link(general_info.id)">Delete</button>
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
+                                                <th>|</th>
+                                                <td>
+                                                    <router-link class="btn btn-primary" :to="{ name: 'GlobalInfoEdit', params: { id: general_info.id } }" >Edit</router-link>
+                                                    <!-- <a  class="btn btn-primary" type="submit">Edit</a> -->
+                                                    <!-- <a :href="table_1_edit_url+table_info.id" class="btn btn-primary" type="submit">Edit</a> -->
+                                                </td>
+                                                
+                                                <td>|</td>
+                                                <td>
+                                                    <button type="submit" class="btn btn-danger" @click="del_social_link(general_info.id)">Delete</button>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </span>
                     </div>
                 </div>
             </div>
@@ -231,7 +273,7 @@
             SlickList,
             breadcrumb
         },
-        inject:['siteData'],
+        // inject:[siteData],
         props: [
             //
         ],
@@ -255,7 +297,9 @@
                 form_data: {
                     title: '',
                     url: ''
-                }
+                },
+
+                action_tab: 1
             }
         },
         mounted() {
@@ -388,54 +432,3 @@
         }
     }
 </script>
-
-<style scoped>
-    .edit_buttom{
-        margin-bottom: 2%;
-    }
-.tabs {
-    /* display: flex; */
-    flex-wrap: wrap;
-}
-.tabs label {
-    order: 1;
-    display: block;
-    padding: 1rem 2rem;
-    margin-right: 0.2rem;
-    cursor: pointer;
-    background: #ccced0;
-    font-weight: bold;
-    transition: background ease 0.2s;
-}
-.tabs .tab {
-    order: 99;
-    flex-grow: 1;
-    width: 100%;
-    display: none;
-    padding: 1rem;
-    background: #fff;
-    /* border: 1px solid #ccc!important; */
-}
-.tabs input[type="radio"] {
-    display: none;
-}
-.tabs input[type="radio"]:checked + label {
-    background: #fff;
-    border: 1px solid #ccc !important;
-}
-.tabs input[type="radio"]:checked + label + .tab {
-    display: block;
-}
-
-@media (max-width: 45em) {
-    .tabs .tab,
-    .tabs label {
-        order: initial;
-    }
-    .tabs label {
-        width: 100%;
-        margin-right: 0;
-        margin-top: 0.2rem;
-    }
-}
-</style>
