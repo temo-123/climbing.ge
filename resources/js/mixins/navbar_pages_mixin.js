@@ -228,7 +228,7 @@ export const navbar = {
                 routes: [
                     {
                         name: "About us",
-                        route: "site_info",
+                        route: "/site_info",
                         permissions: [
                             ['edit', 'site_data']
                         ]
@@ -246,7 +246,7 @@ export const navbar = {
             },
             {
                 title: "Events & Competitions",
-                route: "event",
+                route: "/event",
                 permissions: [
                     ['add', 'event'],
                     ['edit', 'event'],

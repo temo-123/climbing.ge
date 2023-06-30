@@ -321,6 +321,9 @@
         mounted() {
             this.get_product_category_data()
             this.get_product_editing_data()
+        
+            document.querySelector('body').style.marginLeft = '0';
+            document.querySelector('.admin_page_header_navbar').style.marginLeft = '0';
         },
         methods: {
             showModal(){

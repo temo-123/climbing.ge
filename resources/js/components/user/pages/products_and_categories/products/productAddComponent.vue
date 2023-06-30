@@ -102,11 +102,11 @@
                         </div>
 
                         <div class="form-group clearfix">
-                            <label for="name" class='col-xs-2 control-label'> Sale type </label>
+                            <label for="sale_type" class='col-xs-2 control-label'> Sale type </label>
                             <div class="col-xs-8">
-                                <select class="form-control" v-model="data.global_product.sale_type" name="published" > 
-                                    <option value="custom production">Custom production</option> 
-                                    <option value="online order">Online order</option> 
+                                <select class="form-control" v-model="data.global_product.sale_type" name="sale_type" > 
+                                    <option value="custom_production">Custom production</option> 
+                                    <option value="online_order">Online order</option> 
                                 </select>
                             </div>
                         </div>
@@ -273,38 +273,19 @@
                     ka_info_editor_config: editor_config.get_big_editor_config(),
                 },
 
+                error: [],
+
                 data: [],
-
-                // data: {
-                //     global_data: {
-                //         us_title_for_url_title: '',
-
-                //         published: 0,
-                //         category_id: "Select category",
-                //         material: "",
-                //         discount: "",
-                //         sale_type: "Custom production",
-                //         mead_in_georgia: "",
-                //     },
-
-                //     us_data: {
-                //         title: "",
-                //         short_description: "",
-                //         text: "",
-                //     },
-
-                //     ka_data: {
-                //         title: "",
-                //         short_description: "",
-                //         text: "",
-                //     },
-
-                //     ru_data: {
-                //         title: "",
-                //         short_description: "",
-                //         text: "",
-                //     }
-                // },
+                
+                data: {
+                    global_product: {
+                        published: 0,
+                        sale_type: 'custom_production'
+                    },
+                    us_product: [],
+                    ka_product: [],
+                    ru_product: [],
+                },
 
                 is_loading: false,
 
@@ -313,6 +294,9 @@
         },
         mounted() {
             this.get_product_category_data()
+        
+            document.querySelector('body').style.marginLeft = '0';
+            document.querySelector('.admin_page_header_navbar').style.marginLeft = '0';
         },
         methods: {
             showModal(){

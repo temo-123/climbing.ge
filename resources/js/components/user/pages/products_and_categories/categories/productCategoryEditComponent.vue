@@ -71,6 +71,9 @@
         },
         mounted() {
             this.get_editing_category_data()
+        
+            document.querySelector('body').style.marginLeft = '0';
+            document.querySelector('.admin_page_header_navbar').style.marginLeft = '0';
         },
         methods: {
             get_editing_category_data() {

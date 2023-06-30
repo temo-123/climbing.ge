@@ -260,6 +260,9 @@
         },
         mounted() {
             // this.get_service_category_data()
+        
+            document.querySelector('body').style.marginLeft = '0';
+            document.querySelector('.admin_page_header_navbar').style.marginLeft = '0';
         },
         methods: {
             onFileChange(event, item_id){

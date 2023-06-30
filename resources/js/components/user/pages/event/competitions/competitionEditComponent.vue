@@ -456,6 +456,9 @@
         },
         mounted() {
             this.get_editing_event()
+            
+            document.querySelector('body').style.marginLeft = '0';
+            document.querySelector('.admin_page_header_navbar').style.marginLeft = '0';
         },
         methods: {
             get_value_insert_text({locale, form_data, form_value_name}) {

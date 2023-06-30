@@ -203,7 +203,8 @@
             }
         },
         mounted() {
-            //
+            document.querySelector('body').style.marginLeft = '0';
+            document.querySelector('.admin_page_header_navbar').style.marginLeft = '0';
         },
         beforeRouteLeave (to, from, next) {
             if(this.is_back_action_query == true){

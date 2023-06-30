@@ -161,6 +161,9 @@
         mounted() {
             // this.get_all_sectors()
             this.get_editing_image()
+
+            document.querySelector('body').style.marginLeft = '0';
+            document.querySelector('.admin_page_header_navbar').style.marginLeft = '0';
         },
 
         methods: {

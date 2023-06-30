@@ -61,6 +61,9 @@ export default {
     },
     mounted() {
         this.get_site_global_data()
+        
+        document.querySelector('body').style.marginLeft = '0';
+        document.querySelector('.admin_page_header_navbar').style.marginLeft = '0';
     },
     methods: {
         // onFileChange(event, item_id){

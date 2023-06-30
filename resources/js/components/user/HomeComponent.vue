@@ -30,6 +30,8 @@ export default {
 
     mounted() {
         this.get_user_data()
+
+        document.querySelector('body').style.marginLeft = '0';
     },
 
     methods: {
