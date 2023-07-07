@@ -19,4 +19,15 @@ class General_info extends Model
 		'text_ka',
 		'text_us',
 	];
+
+
+	public function article()
+	{
+        return $this->belongsToMany(Article::class, 'general_info_article', 'info_id', 'article_id');
+	}
+
+	public function event()
+	{
+        return $this->belongsToMany(Event::class, 'general_info_article', 'info_id', 'event_id');
+	}
 }

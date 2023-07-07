@@ -404,6 +404,19 @@
             },
         },
         methods: {
+            get_value_insert_text({locale, form_data, form_value_name}) {
+                this.data[form_value_name] = form_data
+                this.send_data()
+            },
+            get_global_blocks_status_action({value_name, block_action}) {
+                this.global_blocks[value_name] = block_action
+                this.$emit('global_blocks', this.global_blocks)
+            },
+            get_global_blocks_id({value_name, block_id}) {
+                this.global_blocks[value_name+"_id"] = block_id
+                this.$emit('global_blocks', this.global_blocks)
+            },
+            
             uploader(editor)
             {
                 editor.plugins.get( 'FileRepository' ).createUploadAdapter = ( loader ) => {

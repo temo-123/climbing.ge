@@ -25,7 +25,11 @@
                   </ul>
                 </li>
 
-                <li v-else-if="menu_item.route">
+                <li v-else-if="menu_item.route && menu_item.hasOwnProperty('permissions') && haveMenuButPermission(menu_item.permissions)">
+                  <router-link :to="{path: menu_item.route}" >{{menu_item.title}}</router-link>
+                </li>
+
+                <li v-else-if="menu_item.route && !menu_item.hasOwnProperty('permissions')">
                   <router-link :to="{path: menu_item.route}" >{{menu_item.title}}</router-link>
                 </li>
             </ul>

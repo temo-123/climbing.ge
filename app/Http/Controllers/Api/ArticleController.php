@@ -243,8 +243,6 @@ class ArticleController extends Controller
         
         GeneralInfoService::edit_general_info_relatione($global_blocks, $request->article_id, 'article');
 
-// dd($global_data['region_id']);
-
         if($global_data["category"] == 'outdoor'){
             if(isset($global_data['region_id'])){
                 $article_region = Article_region::where('article_id', '=', $request->article_id)->first();
@@ -262,7 +260,7 @@ class ArticleController extends Controller
                     $new_mount -> save();
                 }
             }
-            else if($global_data['region_id'] == null ){
+            else if(!$global_data['region_id']){
                 $deliting_article_region = Article_region::where('article_id', '=', $request->article_id)->first();
                 if($deliting_article_region){
                     $deliting_article_region -> delete();
@@ -287,7 +285,7 @@ class ArticleController extends Controller
                     $new_mount -> save();
                 }
             }
-            else if($global_data['mount_id'] == null ){
+            else if(!$global_data['mount_id']){
                 $deliting_article_mount = Article_mount::where('article_id', '=', $request->article_id)->first();
                 if($deliting_article_mount){
                     $deliting_article_mount -> delete();
@@ -339,6 +337,8 @@ class ArticleController extends Controller
 
         $data = json_decode($request->data, true );
         $global_blocks = json_decode($request->global_blocks, true );
+
+        // dd($request->global_blocks);
 
         // dd($data['global_data']);
         $ka_validate = $this->local_article_validate($data['ka_data']);
@@ -545,8 +545,9 @@ class ArticleController extends Controller
         }
         
         // $this->add_general_info_articles($global_blocks);
+        // dd($global_blocks);
 
-        GeneralInfoService::add_general_info_relatione($global_blocks, $request->article_id, 'article');
+        GeneralInfoService::add_general_info_relatione($global_blocks, $article->id, 'article');
 
         if($global_data["category"] == 'outdoor' && $global_data["region_id"] != 'select_region'){
             $this->add_regioin_articles($global_data["region_id"], $article->id);
@@ -981,7 +982,10 @@ class ArticleController extends Controller
 
         if($global_article->general_info){
             foreach ($global_article->general_info as $info) {
-                $info_position = General_info_article::where('article_id',strip_tags($info->pivot->article_id))->where('info_id',strip_tags($info->pivot->info_id))->first();
+                
+                $info_position = General_info_article::
+                                        where('article_id',strip_tags($info->pivot->article_id))->
+                                        where('info_id',strip_tags($info->pivot->info_id))->first();
 
                 array_push($blobal_data, [
                     'data' => $info,
@@ -990,7 +994,6 @@ class ArticleController extends Controller
             }
         }
 
-        // $data = [];
         $data = [
             "global_article" => $global_article,
             "general_data" => $blobal_data,
@@ -1000,44 +1003,15 @@ class ArticleController extends Controller
         ];
         
         if($global_article['category'] == 'outdoor'){
-            // $data = [
-            //     "global_article" => $global_article,
-            //     "general_data" => $blobal_data,
-            //     "us_article" => $us_article,
-            //     "ka_article" => $ka_article,
-            //     "ru_article" => $ru_article,
-            //     // "region_id" => 0
-            // ];
-
             if(isset($global_article->outdoor_region[0]->id)){
                 $data['global_article']['region_id'] = $global_article->outdoor_region[0]->id;
             }
         }
         else if($global_article['category'] == 'mount_route'){
-            // $data = [
-            //     "global_article" => $global_article,
-            //     "general_data" => $blobal_data,
-            //     "us_article" => $us_article,
-            //     "ka_article" => $ka_article,
-            //     "ru_article" => $ru_article,
-            //     // "mount_id" => 0,
-            // ];
-
             if(isset($global_article->mount_masiv[0]->id)){
                 $data['global_article']['mount_id'] = $global_article->mount_masiv[0]->id;
             }
         }
-        // else{
-        //     $data = [
-        //         "global_article" => $global_article,
-        //         "general_data" => $blobal_data,
-        //         "us_article" => $us_article,
-        //         "ka_article" => $ka_article,
-        //         "ru_article" => $ru_article,
-        //     ];
-        // }
-
-        // dd($data);
         
         return $data;
     }
@@ -1062,6 +1036,17 @@ class ArticleController extends Controller
         // delete article file
         ImageControllService::image_delete('images/'.$global_article->category.'_img/', $global_article, 'image');
         ImageControllService::image_delete('images/region_sectors_img/', $global_article, 'climbing_area_image');
+        
+        // Del general info article relatione
+        if ($global_article->general_info->count() > 0) {
+            foreach ($global_article->general_info as $del_info) {
+                $deliting_info = General_info_article::
+                                                    where('article_id',strip_tags($del_info->pivot->article_id))->
+                                                    where('info_id',strip_tags($del_info->pivot->info_id))->
+                                                    first();
+                $deliting_info -> delete();
+            }
+        }
 
         // delete article from db
         $global_article ->delete();

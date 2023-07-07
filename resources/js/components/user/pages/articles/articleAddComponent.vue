@@ -236,6 +236,7 @@
             },
             
             save(){
+                this.is_loading = true
                 this.article_data.global_data.us_title_for_url_title = this.article_data.en_data.title,
 
                 this.error = []

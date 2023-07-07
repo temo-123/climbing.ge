@@ -337,6 +337,17 @@ class EventController extends Controller
         
         // delete event file
         ImageControllService::image_delete('images/event_img/', $global_event, 'image');
+        
+        // Del general info event relatione
+        if ($global_event->general_info->count() > 0) {
+            foreach ($global_event->general_info as $del_info) {
+                $deliting_info = General_info_event::
+                                                    where('event_id',strip_tags($del_info->pivot->event_id))->
+                                                    where('info_id',strip_tags($del_info->pivot->info_id))->
+                                                    first();
+                $deliting_info -> delete();
+            }
+        }
 
         // delete event from db
         $global_global_info_relatione ->delete();

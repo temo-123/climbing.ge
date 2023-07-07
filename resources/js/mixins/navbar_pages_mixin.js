@@ -271,7 +271,7 @@ export const navbar = {
                         name: "Media (Beta)",
                         route: "/multimedia",
                         permissions: [
-                            // ['add', 'user'],
+                            ['add', 'user'],
                         ]
                     },
                     {

@@ -15,6 +15,7 @@ class GeneralInfoService
 {
     public static function add_general_info_relatione($global_blocks, $id, $category)
     {
+        // dd($global_blocks);
         if ($category == "article"){
             (new static)->create_block_relatione_for_article($global_blocks, $id, 'info_block');
             (new static)->create_block_relatione_for_article($global_blocks, $id, 'routes_info');
@@ -61,7 +62,6 @@ class GeneralInfoService
     public static function edit_general_info_relatione($global_blocks, $id, $category)
     {
         if($global_blocks['info_block'] != 'new_info'){
-
             if($category == "article"){
                 (new static)->article_relatione($global_blocks, $id, 'info_block');
                 (new static)->article_relatione($global_blocks, $id, 'routes_info');
@@ -84,18 +84,20 @@ class GeneralInfoService
                 }
             }
             else {
-                dd('Category error!');
+                dd('General info category error!');
             }
         }
     }
 
 
     private function article_relatione($global_blocks, $article_id, $block_name){
+        // dd($global_blocks);
         $general_info_article_info = General_info_article::
                                                         where('article_id', '=', $article_id)->
                                                         where('block', '=', $block_name)->
                                                         first();
-        if($global_blocks[$block_name] != 'new_info'){
+        // dd($general_info_article_info);
+        if($global_blocks[$block_name] != 'new_info' || !$general_info_article_info){
             $general_info_article_info_count = General_info_article::
                                                         where('article_id', '=', $article_id)->
                                                         where('block', '=', $block_name)->

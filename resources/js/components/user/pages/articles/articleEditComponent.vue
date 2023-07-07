@@ -247,9 +247,6 @@
                     this.category = response.data.global_article.category
                     this.article_old_image = this.editing_data.global_article.image
 
-                    // this.region_id = this.editing_data.region_id
-                    // this.mount_id = this.editing_data.mount_id
-
                     this.editing_data.general_data.forEach(general_text => {
                         if(general_text.position.block == 'info_block'){
                             this.global_blocks.info_block = general_text.position.block_action
