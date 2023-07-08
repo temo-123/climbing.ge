@@ -24,11 +24,13 @@ class EventController extends Controller
 
         $events = Event::where('published', '=', 1)->orderBy('start_data')->get();
 
+        // dd($events);
+
         $events_array = [];
 
         foreach ($events as $event) {
             if(
-                date('m', strtotime($event->end_data)) > date('m', strtotime($action_data)) &&
+                date('m', strtotime($event->end_data)) >= date('m', strtotime($action_data)) &&
                 date('Y', strtotime($event->end_data)) == date('Y', strtotime($action_data))
             ){
                 $global_event = $event;
@@ -43,10 +45,45 @@ class EventController extends Controller
                     $local_event = $event->us_event;
                 }
 
-                array_push($events_array, [
-                    'global_event' => $global_event,
-                    'locale_event' => $local_event,
-                ]);
+                if(date('d', strtotime($event->end_data)) > date('d', strtotime($action_data))){
+                    // $global_event = $event;
+                    
+                    // if($request->lang == 'ka'){
+                    //     $local_event = $event->ka_event;
+                    // }
+                    // else if($request->lang == 'ru'){
+                    //     $local_event = $event->ru_event;
+                    // }
+                    // else{
+                    //     $local_event = $event->us_event;
+                    // }
+
+                    array_push($events_array, [
+                        'global_event' => $global_event,
+                        'locale_event' => $local_event,
+                    ]);
+                }
+                elseif (
+                        date('m', strtotime($event->end_data)) > date('m', strtotime($action_data)) &&
+                        date('Y', strtotime($event->end_data)) == date('Y', strtotime($action_data))
+                    ) {
+                    // $global_event = $event;
+                    
+                    // if($request->lang == 'ka'){
+                    //     $local_event = $event->ka_event;
+                    // }
+                    // else if($request->lang == 'ru'){
+                    //     $local_event = $event->ru_event;
+                    // }
+                    // else{
+                    //     $local_event = $event->us_event;
+                    // }
+
+                    array_push($events_array, [
+                        'global_event' => $global_event,
+                        'locale_event' => $local_event,
+                    ]);
+                }
             }
         }
 
@@ -63,28 +100,66 @@ class EventController extends Controller
 
         foreach ($events as $event) {
 
-            if(
-                date('m', strtotime($event->end_data)) > date('m', strtotime($action_data)) &&
-                date('Y', strtotime($event->end_data)) == date('Y', strtotime($action_data))
-            ){
-            if(count($events_array) < 3){
-                    $global_event = $event;
+            // if(
+            //     date('d', strtotime($event->end_data)) > date('d', strtotime($action_data)) &&
+            //     date('m', strtotime($event->end_data)) >= date('m', strtotime($action_data)) &&
+            //     date('Y', strtotime($event->end_data)) == date('Y', strtotime($action_data))
+            // ){
+            //     if(count($events_array) < 3){
+                    // $global_event = $event;
 
-                    if($request->lang == 'ka'){
-                        $local_event = $event->ka_event;
-                    }
-                    else if($request->lang == 'ru'){
-                        $local_event = $event->ru_event;
-                    }
-                    else{
-                        $local_event = $event->us_event;
-                    }
+                    // if($request->lang == 'ka'){
+                    //     $local_event = $event->ka_event;
+                    // }
+                    // else if($request->lang == 'ru'){
+                    //     $local_event = $event->ru_event;
+                    // }
+                    // else{
+                    //     $local_event = $event->us_event;
+                    // }
 
-                    array_push($events_array, [
-                        'global_event' => $global_event,
-                        'locale_event' => $local_event,
-                    ]);
-                }
+                    // array_push($events_array, [
+                    //     'global_event' => $global_event,
+                    //     'locale_event' => $local_event,
+                    // ]);
+
+
+                if(
+                    date('m', strtotime($event->end_data)) >= date('m', strtotime($action_data)) &&
+                    date('Y', strtotime($event->end_data)) == date('Y', strtotime($action_data))
+                ){
+
+                    if(count($events_array) < 3){
+                        $global_event = $event;
+                        
+                        if($request->lang == 'ka'){
+                            $local_event = $event->ka_event;
+                        }
+                        else if($request->lang == 'ru'){
+                            $local_event = $event->ru_event;
+                        }
+                        else{
+                            $local_event = $event->us_event;
+                        }
+
+                        if(date('d', strtotime($event->end_data)) > date('d', strtotime($action_data))){
+                            array_push($events_array, [
+                                'global_event' => $global_event,
+                                'locale_event' => $local_event,
+                            ]);
+                        }
+                        elseif (
+                                date('m', strtotime($event->end_data)) > date('m', strtotime($action_data)) &&
+                                date('Y', strtotime($event->end_data)) == date('Y', strtotime($action_data))
+                            ) {
+
+                            array_push($events_array, [
+                                'global_event' => $global_event,
+                                'locale_event' => $local_event,
+                            ]);
+                        }
+                    }
+                
             }
         }
 
