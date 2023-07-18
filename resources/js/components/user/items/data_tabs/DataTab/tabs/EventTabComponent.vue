@@ -50,9 +50,38 @@
                     let end_month = Number(moment(end_data).format("MM"))
                     let end_year = Number(moment(end_data).format("YYYY"))
 
-                    if( new Date().getDate() < end_day && 
+                    // console.log('====================================');
+                    // console.log(new Date().getDate() == end_day);
+                    // console.log(new Date().getMonth() >= end_month);
+                    // console.log(new Date().getFullYear() >= end_year);
+                    // console.log('====================================');
+
+                    if( new Date().getDate() > end_day && 
                         new Date().getMonth() >= end_month && 
                         new Date().getFullYear() >= end_year
+                    ){
+                        return 'completed_event'
+                    }
+                    else if( 
+                        new Date().getDate() == end_day && 
+                        new Date().getMonth() >= end_month && 
+                        new Date().getFullYear() >= end_year
+                    ){
+                        return 'completed_event'
+                    }
+                    else if(
+                        new Date().getMonth() > end_month && 
+                        new Date().getFullYear() > end_year
+                    ){
+                        return 'completed_event'
+                    }
+                    else if(
+                        new Date().getMonth() > end_month
+                    ){
+                        return 'completed_event'
+                    }
+                    else if(
+                        new Date().getFullYear() > end_year
                     ){
                         return 'completed_event'
                     }

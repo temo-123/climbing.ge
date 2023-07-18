@@ -218,32 +218,11 @@
                             </div>
                         </div>
 
-                        <!-- <div class="form-group clearfix">
-                            <label for="name" class='col-xs-2 control-label'> contact info </label>
-                            <div class="col-xs-8">
-                                <ckeditor v-model="data.us_data.info" :config="editor_config.us_info"></ckeditor>
-                            </div>
-                        </div> -->
 
-                        <!-- <GlobalInfoFormBlock 
+                        <GlobalInfoFormBlock
                             :title_prop="'Contact info'" 
                             :form_value_name_prop="'info'"
                             :form_data_prop=data.us_data.info 
-                            :genaral_info_block_name_prop="'info_block'"
-                            :locale_prop="'us'"
-                            :block_action_prop="global_blocks.info_block"
-                            :block_id_prop="global_blocks.info_block_id"
-
-                            @get_form_data="get_value_insert_text"
-                            @get_global_blocks_status="get_global_blocks_status_action"
-                            @get_global_blocks_id="get_global_blocks_id"
-                        /> -->
-
-
-                        <GlobalInfoFormBlock 
-                            :title_prop="'Contact info'" 
-                            :form_value_name_prop="'info'"
-                            :form_data_prop=data.ka_data.info 
                             :locale_prop="'us'"
                             :block_action_prop="global_blocks.info_block"
                             :block_id_prop="global_blocks.info_block_id"
@@ -289,16 +268,10 @@
                             </div>
                         </div>
 
-                        <!-- <div class="form-group clearfix">
-                            <label for="name" class='col-xs-2 control-label'> contact info </label>
-                            <div class="col-xs-8">
-                                <ckeditor v-model="data.ru_data.info" :config="editor_config.ru_info"></ckeditor>
-                            </div>
-                        </div> -->
-                        <GlobalInfoFormBlock 
+                        <GlobalInfoFormBlock
                             :title_prop="'Contact info'" 
                             :form_value_name_prop="'info'"
-                            :form_data_prop=data.ka_data.info 
+                            :form_data_prop=data.ru_data.info 
                             :locale_prop="'ru'"
                             :block_action_prop="global_blocks.info_block"
                             :block_id_prop="global_blocks.info_block_id"
@@ -311,20 +284,6 @@
                             @get_global_blocks_status="get_global_blocks_status_action"
                             @get_global_blocks_id="get_global_blocks_id"
                         />
-
-                        <!-- <GlobalInfoFormBlock 
-                            :title_prop="'Contact info'" 
-                            :form_value_name_prop="'info'"
-                            :form_data_prop=data.ru_data.info 
-                            :genaral_info_block_name_prop="'info_block'"
-                            :locale_prop="'ru'"
-                            :block_action_prop="global_blocks.info_block"
-                            :block_id_prop="global_blocks.info_block_id"
-
-                            @get_form_data="get_value_insert_text"
-                            @get_global_blocks_status="get_global_blocks_status_action"
-                            @get_global_blocks_id="get_global_blocks_id"
-                        /> -->
                     </form>
                 </div>
                 <div class="row" v-show="tab_num == 4">
@@ -357,15 +316,8 @@
                                 <ckeditor v-model="data.ka_data.text" :config="editor_config.ka_text"></ckeditor>
                             </div>
                         </div>
-    
-                        <!-- <div class="form-group clearfix">
-                            <label for="name" class='col-xs-2 control-label'> contact info </label>
-                            <div class="col-xs-8">
-                                <ckeditor v-model="data.ka_data.info" :config="editor_config.ka_info"></ckeditor>
-                            </div>
-                        </div> -->
 
-                        <GlobalInfoFormBlock 
+                        <GlobalInfoFormBlock
                             :title_prop="'Contact info'" 
                             :form_value_name_prop="'info'"
                             :form_data_prop=data.ka_data.info 
@@ -391,11 +343,13 @@
 
 <script>
     import { editor_config } from '../../../../../mixins/editor/editor_config_mixin.js'
+    import { general_info } from '../../../../../mixins/general_info_mixin.js'
     import GlobalInfoFormBlock from '../../../items/GlobalInfoFormBlockComponent.vue'
     import moment from "moment"; // https://www.npmjs.com/package/vue-moment
     export default {
         mixins: [
-            editor_config
+            general_info,
+            editor_config,
         ],
         props: [
             // 'back_url',
@@ -488,6 +442,7 @@
         methods: {
             get_value_insert_text({locale, form_data, form_value_name}) {
                 this.data[locale+"_data"][form_value_name] = form_data
+                // general_info.get_value_insert_text(locale, form_data, form_value_name)
             },
             get_global_blocks_status_action({value_name, block_action}) {
                 this.global_blocks[value_name] = block_action

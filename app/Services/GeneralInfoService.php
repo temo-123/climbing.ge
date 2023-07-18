@@ -25,10 +25,10 @@ class GeneralInfoService
         else if ($category == "event"){
             $general_info_article_info = new General_info_event;
 
-            $general_info_article_info['info_id']=$global_blocks[$block_name."_id"];
+            $general_info_article_info['info_id']=$global_blocks["info_block_id"];
             $general_info_article_info['event_id']=$id;
-            $general_info_article_info['block']=$block_name;
-            $general_info_article_info['block_action']=$global_blocks[$block_name];
+            $general_info_article_info['block']="info_block";
+            $general_info_article_info['block_action']=$global_blocks["info_block"];
 
             $general_info_article_info -> save();
         }
@@ -69,6 +69,7 @@ class GeneralInfoService
                 (new static)->article_relatione($global_blocks, $id, 'best_time');
             }
             else if ($category == "event"){
+                // dd('tewst');
                 $general_info_relation_count = General_info_event::where('event_id', '=', $id)->count();
                 if($general_info_relation_count > 0){
                     $general_info_relation = General_info_event::where('event_id', '=', $id)->first();

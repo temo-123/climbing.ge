@@ -46,18 +46,6 @@ class EventController extends Controller
                 }
 
                 if(date('d', strtotime($event->end_data)) > date('d', strtotime($action_data))){
-                    // $global_event = $event;
-                    
-                    // if($request->lang == 'ka'){
-                    //     $local_event = $event->ka_event;
-                    // }
-                    // else if($request->lang == 'ru'){
-                    //     $local_event = $event->ru_event;
-                    // }
-                    // else{
-                    //     $local_event = $event->us_event;
-                    // }
-
                     array_push($events_array, [
                         'global_event' => $global_event,
                         'locale_event' => $local_event,
@@ -67,17 +55,6 @@ class EventController extends Controller
                         date('m', strtotime($event->end_data)) > date('m', strtotime($action_data)) &&
                         date('Y', strtotime($event->end_data)) == date('Y', strtotime($action_data))
                     ) {
-                    // $global_event = $event;
-                    
-                    // if($request->lang == 'ka'){
-                    //     $local_event = $event->ka_event;
-                    // }
-                    // else if($request->lang == 'ru'){
-                    //     $local_event = $event->ru_event;
-                    // }
-                    // else{
-                    //     $local_event = $event->us_event;
-                    // }
 
                     array_push($events_array, [
                         'global_event' => $global_event,
@@ -99,66 +76,41 @@ class EventController extends Controller
         $events_array = [];
 
         foreach ($events as $event) {
+            if(
+                date('m', strtotime($event->end_data)) >= date('m', strtotime($action_data)) &&
+                date('Y', strtotime($event->end_data)) == date('Y', strtotime($action_data))
+            ){
 
-            // if(
-            //     date('d', strtotime($event->end_data)) > date('d', strtotime($action_data)) &&
-            //     date('m', strtotime($event->end_data)) >= date('m', strtotime($action_data)) &&
-            //     date('Y', strtotime($event->end_data)) == date('Y', strtotime($action_data))
-            // ){
-            //     if(count($events_array) < 3){
-                    // $global_event = $event;
-
-                    // if($request->lang == 'ka'){
-                    //     $local_event = $event->ka_event;
-                    // }
-                    // else if($request->lang == 'ru'){
-                    //     $local_event = $event->ru_event;
-                    // }
-                    // else{
-                    //     $local_event = $event->us_event;
-                    // }
-
-                    // array_push($events_array, [
-                    //     'global_event' => $global_event,
-                    //     'locale_event' => $local_event,
-                    // ]);
-
-
-                if(
-                    date('m', strtotime($event->end_data)) >= date('m', strtotime($action_data)) &&
-                    date('Y', strtotime($event->end_data)) == date('Y', strtotime($action_data))
-                ){
-
-                    if(count($events_array) < 3){
-                        $global_event = $event;
-                        
-                        if($request->lang == 'ka'){
-                            $local_event = $event->ka_event;
-                        }
-                        else if($request->lang == 'ru'){
-                            $local_event = $event->ru_event;
-                        }
-                        else{
-                            $local_event = $event->us_event;
-                        }
-
-                        if(date('d', strtotime($event->end_data)) > date('d', strtotime($action_data))){
-                            array_push($events_array, [
-                                'global_event' => $global_event,
-                                'locale_event' => $local_event,
-                            ]);
-                        }
-                        elseif (
-                                date('m', strtotime($event->end_data)) > date('m', strtotime($action_data)) &&
-                                date('Y', strtotime($event->end_data)) == date('Y', strtotime($action_data))
-                            ) {
-
-                            array_push($events_array, [
-                                'global_event' => $global_event,
-                                'locale_event' => $local_event,
-                            ]);
-                        }
+                if(count($events_array) < 3){
+                    $global_event = $event;
+                    
+                    if($request->lang == 'ka'){
+                        $local_event = $event->ka_event;
                     }
+                    else if($request->lang == 'ru'){
+                        $local_event = $event->ru_event;
+                    }
+                    else{
+                        $local_event = $event->us_event;
+                    }
+
+                    if(date('d', strtotime($event->end_data)) > date('d', strtotime($action_data))){
+                        array_push($events_array, [
+                            'global_event' => $global_event,
+                            'locale_event' => $local_event,
+                        ]);
+                    }
+                    elseif (
+                            date('m', strtotime($event->end_data)) > date('m', strtotime($action_data)) &&
+                            date('Y', strtotime($event->end_data)) == date('Y', strtotime($action_data))
+                        ) {
+
+                        array_push($events_array, [
+                            'global_event' => $global_event,
+                            'locale_event' => $local_event,
+                        ]);
+                    }
+                }
                 
             }
         }
@@ -335,10 +287,11 @@ class EventController extends Controller
         }
         
         $saved = $editing_local_event -> save();
-// dd(json_decode($request->global_blocks, true));
-        // GeneralInfoService::edit_general_info_relatione($global_blocks, $request->article_id, 'article');
-        GeneralInfoService::edit_general_info_relatione(json_decode($request->global_blocks, true), $id, "event");
-        // GeneralInfoService::edit_general_info_relatione($request->global_blocks, $id, "event");
+        
+        $inf_blo = json_decode($request->global_blocks, true);
+        if($inf_blo['info_block_id'] != 0){
+            GeneralInfoService::edit_general_info_relatione(json_decode($request->global_blocks, true), $id, "event");
+        }
         
         if(!$saved){
             App::abort(500, 'Error');
@@ -414,18 +367,21 @@ class EventController extends Controller
         ImageControllService::image_delete('images/event_img/', $global_event, 'image');
         
         // Del general info event relatione
-        if ($global_event->general_info->count() > 0) {
-            foreach ($global_event->general_info as $del_info) {
-                $deliting_info = General_info_event::
-                                                    where('event_id',strip_tags($del_info->pivot->event_id))->
-                                                    where('info_id',strip_tags($del_info->pivot->info_id))->
-                                                    first();
-                $deliting_info -> delete();
-            }
-        }
+        // if ($global_event->general_info->count() > 0) {
+        //     foreach ($global_event->general_info as $del_info) {
+        //         $deliting_info = General_info_event::
+        //                                             where('event_id',strip_tags($del_info->pivot->event_id))->
+        //                                             where('info_id',strip_tags($del_info->pivot->info_id))->
+        //                                             first();
+        //         $deliting_info -> delete();
+        //     }
+        // }
 
         // delete event from db
-        $global_global_info_relatione ->delete();
+        // dd($global_global_info_relatione);
+        if($global_global_info_relatione){
+            $global_global_info_relatione ->delete();
+        }
         $global_event ->delete();
         $us_event ->delete();
         $ru_event ->delete();
@@ -560,9 +516,10 @@ class EventController extends Controller
         
         $event -> save();
 
-        // $this->add_general_info_relatione($global_blocks);
-
-        GeneralInfoService::add_general_info_relatione($global_blocks, $event->id, 'eventGlobalInfoFormBlock');
+        $inf_blo = json_decode($request->global_blocks, true);
+        if($inf_blo['info_block_id'] != 0){
+            GeneralInfoService::add_general_info_relatione($global_blocks, $event->id, 'event');
+        }
 
         return $event->id;
     }

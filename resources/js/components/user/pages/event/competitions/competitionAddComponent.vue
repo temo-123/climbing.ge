@@ -107,34 +107,7 @@
                                 </div> -->
                             </div>
                         </div>
-                        <!-- <div class="form-group clearfix">
-                            <label for="name" class='col-xs-2 control-label'> Category </label>
-                            <div class="col-xs-8">
-                                <select class="form-control" v-model="data.global_data.category" name="published" > 
-                                    <option value="event">Competition</option> 
-                                    <option value="competition" disabled>Competition</option> 
-                                </select>
-                            </div>
-                        </div> -->
-                        <!-- <div class="form-group clearfix">
-                            <label for="name" class='col-xs-2 control-label'> Competition location </label>
-                            <div class="col-xs-8">
-                                <input type="text" name="name" v-model="data.global_data.map"  class="form-control"> 
-                            </div>
-                        </div>
-                        <div class="form-group clearfix">
-                            <label for="start_datatle" class='col-xs-2 control-label'> Start and end data </label>
-                            <div class="col-xs-8">
-                                <div class="row">
-                                    <div class="col-md-6">
-                                        <input type="datetime-local" name="start_datatle" class="form-control" v-model="data.global_data.start_data" placeholder="Start data/time"> 
-                                    </div>
-                                    <div class="col-md-6">
-                                        <input type="datetime-local" name="end_data" class="form-control" v-model="data.global_data.end_data" placeholder="End data/time"> 
-                                    </div>
-                                </div>
-                            </div>
-                        </div> -->
+                        
 
                         <div class="form-group clearfix">
                             <label for="name" class='col-xs-2 control-label'> Event location </label>
@@ -216,15 +189,19 @@
                             </div>
                         </div>
 
-                        <GlobalInfoFormBlock 
+                        <GlobalInfoFormBlock
                             :title_prop="'Contact info'" 
+                            :form_value_name_prop="'info'"
                             :form_data_prop=data.us_data.info 
                             :locale_prop="'us'"
                             :block_action_prop="global_blocks.info_block"
                             :block_id_prop="global_blocks.info_block_id"
                             :value_name_prop="'info_block'"
 
-                            @get_form_data="get_us_info_insert_text"
+                            :global_data_array_prop="general_infos"
+                            :get_data_in_component_prop="false"
+
+                            @get_form_data="get_value_insert_text"
                             @get_global_blocks_status="get_global_blocks_status_action"
                             @get_global_blocks_id="get_global_blocks_id"
                         />
@@ -262,15 +239,19 @@
                             </div>
                         </div>
 
-                        <GlobalInfoFormBlock 
+                        <GlobalInfoFormBlock
                             :title_prop="'Contact info'" 
+                            :form_value_name_prop="'info'"
                             :form_data_prop=data.ru_data.info 
                             :locale_prop="'ru'"
                             :block_action_prop="global_blocks.info_block"
                             :block_id_prop="global_blocks.info_block_id"
                             :value_name_prop="'info_block'"
 
-                            @get_form_data="get_ru_info_insert_text"
+                            :global_data_array_prop="general_infos"
+                            :get_data_in_component_prop="false"
+
+                            @get_form_data="get_value_insert_text"
                             @get_global_blocks_status="get_global_blocks_status_action"
                             @get_global_blocks_id="get_global_blocks_id"
                         />
@@ -308,15 +289,19 @@
                             </div>
                         </div>
 
-                        <GlobalInfoFormBlock 
+                        <GlobalInfoFormBlock
                             :title_prop="'Contact info'" 
+                            :form_value_name_prop="'info'"
                             :form_data_prop=data.ka_data.info 
                             :locale_prop="'ka'"
                             :block_action_prop="global_blocks.info_block"
                             :block_id_prop="global_blocks.info_block_id"
                             :value_name_prop="'info_block'"
 
-                            @get_form_data="get_ka_info_insert_text"
+                            :global_data_array_prop="general_infos"
+                            :get_data_in_component_prop="false"
+
+                            @get_form_data="get_value_insert_text"
                             @get_global_blocks_status="get_global_blocks_status_action"
                             @get_global_blocks_id="get_global_blocks_id"
                         />
@@ -400,7 +385,7 @@
 
                 is_loading: false,
 
-                // general_infos: [],
+                general_infos: [],
 
                 global_blocks: {
                     info_block: 'new_info',
@@ -413,11 +398,13 @@
             }
         },
         mounted() {
+            this.get_general_info()
+
             document.querySelector('body').style.marginLeft = '0';
             document.querySelector('.admin_page_header_navbar').style.marginLeft = '0';
         },
         methods: {
-            get_ka_info_insert_text({locale, form_data}) {
+            get_value_insert_text({locale, form_data}) {
                 this.data[locale+"_data"].info = form_data
             },
 
@@ -471,6 +458,17 @@
                     }
                 })
                 .finally(() => this.is_loading = false);
+            },
+
+            get_general_info(){
+                axios
+                .get('/general_info/')
+                .then(response => {
+                    this.general_infos = response.data          
+                })
+                .catch(
+                    errors => console.log(errors)
+                );
             },
 
             sand_notification() {

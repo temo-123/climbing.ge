@@ -18,8 +18,16 @@ use App\Services\GetProductService;
 use App\Models\Film;
 use App\Models\Locale_film;
 
+use LanguageDetector\LanguageDetector;
+
 class SearchController extends Controller
 {
+    private $detector;
+
+    public function __construct(LanguageDetector $detector){
+        $this->detector = $detector;
+    }
+
     public function productSearch(Request $request)
     {
 
@@ -52,6 +60,8 @@ class SearchController extends Controller
 
     public function articleSearch(Request $request)
     {
+        $this->check_leng($request->query_request);
+
         $locale_articles = Locale_article::
             where('locale', '=', 'us')->
             when($request->query_request, function ($query, $search) {
@@ -90,5 +100,11 @@ class SearchController extends Controller
         }
 
         return $total_films;
+    }
+
+    function check_leng($text) {
+        // $text = 'test';
+        // $language = $this->detector->detect($text);
+        // dd($language);
     }
 }

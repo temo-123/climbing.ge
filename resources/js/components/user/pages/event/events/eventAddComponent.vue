@@ -218,23 +218,15 @@
                             </div>
                         </div>
 
-                        <!-- <div class="form-group clearfix">
-                            <label for="name" class='col-xs-2 control-label'> contact info </label>
-                            <div class="col-xs-8">
-                                <ckeditor v-model="data.us_data.info" :config="editor_config.us_info"></ckeditor>
-                            </div>
-                        </div> -->
-
                         <GlobalInfoFormBlock 
                             :title_prop="'Contact info'" 
-                            :form_value_name_prop="'info'"
                             :form_data_prop=data.us_data.info 
-                            :genaral_info_block_name_prop="'info_block'"
                             :locale_prop="'us'"
                             :block_action_prop="global_blocks.info_block"
                             :block_id_prop="global_blocks.info_block_id"
+                            :value_name_prop="'info_block'"
 
-                            @get_form_data="get_value_insert_text"
+                            @get_form_data="get_info_insert_text"
                             @get_global_blocks_status="get_global_blocks_status_action"
                             @get_global_blocks_id="get_global_blocks_id"
                         />
@@ -271,23 +263,16 @@
                             </div>
                         </div>
 
-                        <!-- <div class="form-group clearfix">
-                            <label for="name" class='col-xs-2 control-label'> contact info </label>
-                            <div class="col-xs-8">
-                                <ckeditor v-model="data.ru_data.info" :config="editor_config.ru_info"></ckeditor>
-                            </div>
-                        </div> -->
-
+                        
                         <GlobalInfoFormBlock 
                             :title_prop="'Contact info'" 
-                            :form_value_name_prop="'info'"
                             :form_data_prop=data.ru_data.info 
-                            :genaral_info_block_name_prop="'info_block'"
                             :locale_prop="'ru'"
                             :block_action_prop="global_blocks.info_block"
                             :block_id_prop="global_blocks.info_block_id"
+                            :value_name_prop="'info_block'"
 
-                            @get_form_data="get_value_insert_text"
+                            @get_form_data="get_info_insert_text"
                             @get_global_blocks_status="get_global_blocks_status_action"
                             @get_global_blocks_id="get_global_blocks_id"
                         />
@@ -324,23 +309,15 @@
                             </div>
                         </div>
 
-                        <!-- <div class="form-group clearfix">
-                            <label for="name" class='col-xs-2 control-label'> contact info </label>
-                            <div class="col-xs-8">
-                                <ckeditor v-model="data.ka_data.info" :config="editor_config.ka_info"></ckeditor>
-                            </div>
-                        </div> -->
-
                         <GlobalInfoFormBlock 
                             :title_prop="'Contact info'" 
-                            :form_value_name_prop="'info'"
                             :form_data_prop=data.ka_data.info 
-                            :genaral_info_block_name_prop="'info_block'"
                             :locale_prop="'ka'"
                             :block_action_prop="global_blocks.info_block"
                             :block_id_prop="global_blocks.info_block_id"
+                            :value_name_prop="'info_block'"
 
-                            @get_form_data="get_value_insert_text"
+                            @get_form_data="get_info_insert_text"
                             @get_global_blocks_status="get_global_blocks_status_action"
                             @get_global_blocks_id="get_global_blocks_id"
                         />
@@ -434,17 +411,29 @@
             }
         },
         mounted() {
+            this.get_general_info()
             
             document.querySelector('body').style.marginLeft = '0';
             document.querySelector('.admin_page_header_navbar').style.marginLeft = '0';
         },
         methods: {
-            get_value_insert_text({locale, form_data, form_value_name}) {
-                this.data[locale+"_data"][form_value_name] = form_data
+            // get_value_insert_text({locale, form_data, form_value_name}) {
+            //     this.data[locale+"_data"][form_value_name] = form_data
+            // },
+            // get_global_blocks_status_action({value_name, block_action}) {
+            //     this.global_blocks[value_name] = block_action
+            // },
+            // get_global_blocks_id({value_name, block_id}) {
+            //     this.global_blocks[value_name+"_id"] = block_id
+            // },
+            get_info_insert_text({locale, form_data}) {
+                this.data[locale+"_data"].info = form_data
             },
+
             get_global_blocks_status_action({value_name, block_action}) {
                 this.global_blocks[value_name] = block_action
             },
+
             get_global_blocks_id({value_name, block_id}) {
                 this.global_blocks[value_name+"_id"] = block_id
             },
@@ -506,6 +495,17 @@
                 //     console.log(err);
                 // })
                 // .finally(() => this.is_mail_sending_procesing = false);
+            },
+
+            get_general_info(){
+                axios
+                .get('/general_info/')
+                .then(response => {
+                    this.general_infos = response.data          
+                })
+                .catch(
+                    errors => console.log(errors)
+                );
             },
 
             go_back: function(back_action = false) {

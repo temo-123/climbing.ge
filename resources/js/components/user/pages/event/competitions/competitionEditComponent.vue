@@ -229,21 +229,17 @@
                             </div>
                         </div>
 
-                        <!-- <div class="form-group clearfix">
-                            <label for="name" class='col-xs-2 control-label'> contact info </label>
-                            <div class="col-xs-8">
-                                <ckeditor v-model="data.us_data.info" :config="editor_config.us_info"></ckeditor>
-                            </div>
-                        </div> -->
-
-                        <GlobalInfoFormBlock 
+                        <GlobalInfoFormBlock
                             :title_prop="'Contact info'" 
                             :form_value_name_prop="'info'"
                             :form_data_prop=data.us_data.info 
-                            :genaral_info_block_name_prop="'info_block'"
                             :locale_prop="'us'"
                             :block_action_prop="global_blocks.info_block"
                             :block_id_prop="global_blocks.info_block_id"
+                            :value_name_prop="'info_block'"
+
+                            :global_data_array_prop="general_infos"
+                            :get_data_in_component_prop="false"
 
                             @get_form_data="get_value_insert_text"
                             @get_global_blocks_status="get_global_blocks_status_action"
@@ -282,21 +278,17 @@
                             </div>
                         </div>
 
-                        <!-- <div class="form-group clearfix">
-                            <label for="name" class='col-xs-2 control-label'> contact info </label>
-                            <div class="col-xs-8">
-                                <ckeditor v-model="data.ru_data.info" :config="editor_config.ru_info"></ckeditor>
-                            </div>
-                        </div> -->
-
-                        <GlobalInfoFormBlock 
+                        <GlobalInfoFormBlock
                             :title_prop="'Contact info'" 
                             :form_value_name_prop="'info'"
                             :form_data_prop=data.ru_data.info 
-                            :genaral_info_block_name_prop="'info_block'"
                             :locale_prop="'ru'"
                             :block_action_prop="global_blocks.info_block"
                             :block_id_prop="global_blocks.info_block_id"
+                            :value_name_prop="'info_block'"
+
+                            :global_data_array_prop="general_infos"
+                            :get_data_in_component_prop="false"
 
                             @get_form_data="get_value_insert_text"
                             @get_global_blocks_status="get_global_blocks_status_action"
@@ -335,26 +327,23 @@
                             </div>
                         </div>
     
-                        <!-- <div class="form-group clearfix">
-                            <label for="name" class='col-xs-2 control-label'> contact info </label>
-                            <div class="col-xs-8">
-                                <ckeditor v-model="data.ka_data.info" :config="editor_config.ka_info"></ckeditor>
-                            </div>
-                        </div> -->
-
-                        <GlobalInfoFormBlock 
+                        <GlobalInfoFormBlock
                             :title_prop="'Contact info'" 
                             :form_value_name_prop="'info'"
                             :form_data_prop=data.ka_data.info 
-                            :genaral_info_block_name_prop="'info_block'"
                             :locale_prop="'ka'"
                             :block_action_prop="global_blocks.info_block"
                             :block_id_prop="global_blocks.info_block_id"
+                            :value_name_prop="'info_block'"
+
+                            :global_data_array_prop="general_infos"
+                            :get_data_in_component_prop="false"
 
                             @get_form_data="get_value_insert_text"
                             @get_global_blocks_status="get_global_blocks_status_action"
                             @get_global_blocks_id="get_global_blocks_id"
                         />
+
                     </form>
                 </div>
             </div>
@@ -388,13 +377,10 @@
                 editor_config: {
                     us_short_description: editor_config.get_small_editor_config(),
                     us_text: editor_config.get_big_editor_config(),
-                    // us_info: editor_config.get_big_editor_config(),
                     ru_short_description: editor_config.get_small_editor_config(),
                     ru_text: editor_config.get_big_editor_config(),
-                    // ru_info: editor_config.get_big_editor_config(),
                     ka_short_description: editor_config.get_small_editor_config(),
                     ka_text: editor_config.get_big_editor_config(),
-                    // ka_info: editor_config.get_big_editor_config(),
                 },
 
                 error: [],
@@ -447,6 +433,7 @@
 
                     info_block_id: 0,
                 },
+                general_infos: [],
 
                 start_time_h: 0,
 
@@ -456,6 +443,7 @@
         },
         mounted() {
             this.get_editing_event()
+            this.get_general_info()
             
             document.querySelector('body').style.marginLeft = '0';
             document.querySelector('.admin_page_header_navbar').style.marginLeft = '0';
@@ -477,6 +465,17 @@
 
             event_whithout_day(){
                 this.is_event_whithout_day = !this.is_event_whithout_day_button
+            },
+
+            get_general_info(){
+                axios
+                .get('/general_info/')
+                .then(response => {
+                    this.general_infos = response.data          
+                })
+                .catch(
+                    errors => console.log(errors)
+                );
             },
             
             change_event_category(){
