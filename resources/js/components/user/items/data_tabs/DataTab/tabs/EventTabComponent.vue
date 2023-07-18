@@ -62,6 +62,12 @@
                     ){
                         return 'completed_event'
                     }
+                    if( new Date().getDate() > end_day && 
+                        new Date().getMonth() == end_month && 
+                        new Date().getFullYear() == end_year
+                    ){
+                        return 'completed_event'
+                    }
                     else if( 
                         new Date().getDate() == end_day && 
                         new Date().getMonth() >= end_month && 
