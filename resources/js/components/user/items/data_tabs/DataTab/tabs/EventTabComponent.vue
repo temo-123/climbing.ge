@@ -91,6 +91,12 @@
                     ){
                         return 'completed_event'
                     }
+					else{
+                        return ''
+					}
+                }
+                else{
+                    return ''
                 }
             },
             del_event(id){

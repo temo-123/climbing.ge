@@ -57,73 +57,65 @@
                             </div>
                         </span>
                     </div> 
-        
 
-                <span v-html="this.mount_route[0].text"></span>
+                    <span v-html="this.mount_route[0].text"></span>
 
-                <!-- Best time for climbing block -->
-                <div v-if="this.mount_route[0].weather == NULL && this.mount_route[0].best_time != NULL">
-                    <h2 id="best_time_to_climb">{{ $t('guide.article.title.best time')}}</h2>
-                    <span v-html="this.mount_route[0].best_time"></span>
-                </div>  
-                <div v-else-if="this.mount_route[0].weather != NULL && this.mount_route[0].best_time != NULL">
-                    <h2 id="best_time_to_climb">{{ $t('guide.article.title.best time')}}</h2>
+                    <!-- Best time for climbing block -->
+                    <div v-if="this.mount_route[0].weather == NULL && this.mount_route[0].best_time != NULL">
+                        <h2 id="best_time_to_climb">{{ $t('guide.article.title.best time')}}</h2>
+                        <span v-html="this.mount_route[0].best_time"></span>
+                    </div>  
+                    <div v-else-if="this.mount_route[0].weather != NULL && this.mount_route[0].best_time != NULL">
+                        <h2 id="best_time_to_climb">{{ $t('guide.article.title.best time')}}</h2>
 
-                    <div class="row">
-                        <div class="col-md-6" style="margin-top: 5%;">
-                            <span v-html="this.mount_route[0].best_time"></span>
-                        </div>
-                        <div class="col-md-6" style="text-align: center;">
-                            <span v-html="this.mount_route.weather"></span>
+                        <div class="row">
+                            <div class="col-md-6" style="margin-top: 5%;">
+                                <span v-html="this.mount_route[0].best_time"></span>
+                            </div>
+                            <div class="col-md-6" style="text-align: center;">
+                                <span v-html="this.mount_route.weather"></span>
+                            </div>
                         </div>
                     </div>
-                </div>
 
-                <!-- addres -->
-                <div v-if="this.mount_route[0].address != NUll">
-                    <h2 id="how_to_get_there">{{ $t('guide.article.title.address')}}</h2>
-                    <span v-html="this.mount_route[0].address"></span>
-                </div>
-
-                <!-- how get -->
-                <div v-if="this.mount_route[0].how_get != NUll">
-                    <h2 id="how_to_get_there">{{ $t('guide.article.title.how get')}}</h2>
-                    <span v-html="this.mount_route[0].how_get"></span>
-                </div>
-
-                <!-- map -->
-                <div v-if="this.mount_route.map != NULL">
-                    <div class="article_map">
-                        <span v-html="this.mount_route.map"></span>
+                    <!-- how get -->
+                    <div v-if="this.mount_route[0].how_get != NUll">
+                        <h2 id="how_to_get_there">{{ $t('guide.article.title.how get')}}</h2>
+                        <span v-html="this.mount_route[0].how_get"></span>
                     </div>
-                </div>
 
-                <!-- price -->
-                <div v-if="this.mount_route[0].prices_text != NUll">
-                    <h2 id="how_to_get_there">{{ $t('guide.article.title.price')}}</h2>
-                    <span v-html="this.mount_route[0].prices_text"></span>
-                </div>
+                    <!-- map -->
+                    <div v-if="this.mount_route.map != NULL">
+                        <div class="article_map">
+                            <span v-html="this.mount_route.map"></span>
+                        </div>
+                    </div>
 
-                <!-- info -->
-                <div v-if="this.mount_route[0].info != NUll">
-                    <h2 id="how_to_get_there">{{ $t('guide.article.title.info')}}</h2>
-                    <span v-html="this.mount_route[0].info"></span>
-                </div>
+                    <!-- info -->
+                    <div v-if="this.mount_route[0].info != NUll">
+                        <h2 id="how_to_get_there">{{ $t('guide.article.title.info')}}</h2>
+                        <span v-html="this.mount_route[0].info"></span>
+                    </div>
 
-                <!-- what need -->
-                <div v-if="this.mount_route[0].what_need != NUll">
-                    <h2 id="what_you_need">{{ $t('guide.article.title.what need')}}</h2>
-                    <span v-html="this.mount_route[0].what_need"></span>
-                </div>
+                    <!-- what need -->
+                    <div v-if="this.mount_route[0].what_need != NUll">
+                        <h2 id="what_you_need">{{ $t('guide.article.title.what need')}}</h2>
+                        <span v-html="this.mount_route[0].what_need"></span>
+                    </div>
 
-                <!-- news -->
-                <div v-if="this.mount_route[0].route">
-                    <h2 id="routes">{{ $t('guide.article.title.route')}}</h2>
-                    <span v-html="this.mount_route [0].route"></span>
+                    <!-- route -->
+                    <div v-if="this.mount_route[0].route">
+                        <h2 id="routes">{{ $t('guide.article.title.route')}}</h2>
+
+                    
+                        <MountaineeringRouteImages  :article_id_prop="this.mount_route.id" />
+
+                        <span v-html="this.mount_route [0].route"></span>
+                    </div>
+                    
+                    <galleryComponent :article_id="this.mount_route.id" />
+
                 </div>
-                
-                <galleryComponent :article_id="this.mount_route.id" />
-            </div>
 
             <articleRightMenu />
             
@@ -152,6 +144,7 @@
     import articleRightMenu from '../items/navbars/RightMenuComponent'
     import metaData from '../items/MetaDataComponent'
     import SimilarArticles from '../items/SimilarArticlesComponent'
+    import MountaineeringRouteImages from '../items/MountaineeringRouteImages'
     import breadcrumb from '../items/BreadcrumbComponent.vue'
 
     export default {
@@ -172,6 +165,7 @@
             metaData,
             breadcrumb,
             SimilarArticles,
+            MountaineeringRouteImages,
         },
         
         mounted() {

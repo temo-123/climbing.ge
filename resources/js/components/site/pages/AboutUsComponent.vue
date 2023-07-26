@@ -37,7 +37,8 @@
                                 <router-link :to="'partner/'+partner.url_title" class="info">
                                     <h3>{{ partner[0][0].title }}</h3>
                                 </router-link>
-                                <p>{{ partner[0][0].short_description }}</p>
+                                <!-- <p>{{ partner[0][0].short_description }}</p> -->
+                                <span v-html="partner[0][0].short_description"></span>
                             </div>
                         </div>
                     </div>

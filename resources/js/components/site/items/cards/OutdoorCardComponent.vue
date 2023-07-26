@@ -68,8 +68,8 @@
     margin: 2%;
     border-color: #eee;
 }
-.article_card{
-    /* display: flex;
-    flex-flow: row wrap; */
-}   
+/* .article_card{
+    display: flex;
+    flex-flow: row wrap;
+}    */
 </style>

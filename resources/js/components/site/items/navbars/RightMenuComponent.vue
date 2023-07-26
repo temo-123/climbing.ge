@@ -40,7 +40,6 @@
         </nav>
 
         <div class="row local_bisnes" v-if="local_bisnes.image && local_bisnes.local_data && local_bisnes.global_data">
-            <!-- <h3>Lobal bisnes</h3> -->
             <div class="col-sm-10 col-md-10">
                 <div class="thumbnail">
                     <router-link style="font-size: 1.5em;" :to="'../local_bisnes/' + local_bisnes.global_data.url_title" exact>
@@ -72,24 +71,12 @@
                     global_data: '',
                     local_data: ''
                 },
+                margin_bottom_position: 0,
             }
         },
         mounted() {
-            this.margin_bottom_position = document.body.offsetHeight - window.scrollY
-
-            if(document.body.offsetHeight > 2000){
-                if(this.margin_bottom_position <= 1900){
-                    this.right_navbar_class = ''
-                }
-                else{
-                    this.right_navbar_class = 'right_navigarion_menu_fixed_on_scrine'
-                }
-            }
-            else{
-                this.right_navbar_class = ''
-            }
-
             this.get_local_bisnes_for_article()
+            this.handleScroll()
         },
         watch: {
             '$route' (to, from) {
@@ -122,16 +109,21 @@
             handleScroll (event) {
                 this.margin_bottom_position = document.body.offsetHeight - window.scrollY
                 
-                if(document.body.offsetHeight > 2000){
-                    if(this.margin_bottom_position <= 1900){
-                        this.right_navbar_class = ''
-                    }
-                    else{
-                        this.right_navbar_class = 'right_navigarion_menu_fixed_on_scrine'
-                    }
+                if(this.margin_bottom_position > window.scrollY){
+                    this.right_navbar_class = ''
                 }
                 else{
-                    this.right_navbar_class = ''
+                    console.log('====================================');
+                    console.log(window.scrollY);
+                    console.log(document.body.offsetHeight);
+                    console.log('====================================');
+                    // if(window.scrollY + this.margin_bottom_position < 1900){
+                    //     this.right_navbar_class = ''
+                        
+                    // }
+                    // else{
+                        this.right_navbar_class = 'right_navigarion_menu_fixed_on_scrine'
+                    // }
                 }
             }
         },

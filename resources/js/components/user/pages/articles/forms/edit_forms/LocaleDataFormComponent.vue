@@ -54,7 +54,7 @@
 
                     <hr v-if="category == 'outdoor'">
 
-                    <div class="form-group clearfix row" v-if="category != 'mount_route' && ( category == 'outdoor' || category == 'ice' || category == 'indoor' ) ">
+                    <div class="form-group clearfix row" v-if="category != 'mount_route' && category != 'partners' && ( category == 'outdoor' || category == 'ice' || category == 'indoor' ) ">
                         <label for="name" class='col-md-2 control-label'> How to get hear </label>
                         <div class="col-md-10">
                             <!-- <ckeditor v-model="data.how_get" :config="editorConfig" :config="this.editor_config.$editorConfig"></ckeditor> -->
@@ -62,181 +62,9 @@
                         </div>
                     </div>
 
-                    <hr v-if="category == 'outdoor' || category == 'ice'">
+                    <hr v-if="category != 'partners' && category == 'mount_route' || category == 'outdoor' || category == 'ice'">
 
-                    <!-- <div  v-if="general_infos.length">
-                        <div class="row" v-if="category == 'outdoor'">
-                            <div class="col-md-2">
-                                <input type="radio" id="routes_new_info" name="fav_language" value="new_info" @click="routes_action('new_info')">
-                                <label for="routes_new_info">New info</label><br>
-                            </div>
-                            <div class="col-md-2">
-                                <input type="radio" id="routes_befor" name="fav_language" value="befor" @click="routes_action('befor')">
-                                <label for="routes_befor">Befor</label><br>
-                            </div>
-                            <div class="col-md-2">
-                                <input type="radio" id="routes_after" name="fav_language" value="after" @click="routes_action('after')">
-                                <label for="routes_after">After</label><br>
-                            </div>
-                            <div class="col-md-2">
-                                <input type="radio" id="routes_instead" name="fav_language" value="instead" @click="routes_action('instead')">
-                                <label for="routes_instead">Instead</label>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="form-group clearfix row" v-if="category == 'outdoor'">
-                        <label for="name" class='col-md-2 control-label'> Routes description </label>
-
-                        <div class="col-md-10">
-                            <div class="col-md-12" v-if="global_blocks.routes_info == 'befor'" >
-                                <select class="form-control"  v-model="global_blocks.routes_info_id" > 
-                                    <option v-for="general_info in general_infos" :key="general_info.id" :value="general_info.id">{{ general_info.title }}</option>
-                                </select> 
-                            </div>
-                        
-                            <div class="col-md-12" v-if="global_blocks.routes_info == 'befor' || global_blocks.routes_info == 'after' || global_blocks.routes_info == 'new_info'">
-                                <ckeditor v-model="data.route" 
-                                :config="route_description_editor_config"></ckeditor>
-                            </div>
-
-                            <div class="col-md-12" v-if="global_blocks.routes_info == 'after' || global_blocks.routes_info == 'instead'">
-                                <select class="form-control"  v-model="global_blocks.routes_info_id" > 
-                                    <option v-for="general_info in general_infos" :key="general_info.id" :value="general_info.id">{{ general_info.title }}</option>
-                                </select> 
-                            </div>
-                        </div>
-                    </div> -->
-
-                    <!-- <div  v-if="general_infos.length">
-                        <div class="row" v-if="category == 'outdoor' || category == 'ice'">
-                            <div class="col-md-2">
-                                <input type="radio" id="time_new_info" name="fav_language" value="new_info" @click="best_time_action('new_info')">
-                                <label for="time_new_info">New info</label><br>
-                            </div>
-                            <div class="col-md-2">
-                                <input type="radio" id="time_befor" name="fav_language" value="befor" @click="best_time_action('befor')">
-                                <label for="time_befor">Befor</label><br>
-                            </div>
-                            <div class="col-md-2">
-                                <input type="radio" id="time_after" name="fav_language" value="after" @click="best_time_action('after')">
-                                <label for="time_after">After</label><br>
-                            </div>
-                            <div class="col-md-2">
-                                <input type="radio" id="time_instead" name="fav_language" value="instead" @click="best_time_action('instead')">
-                                <label for="time_instead">Instead</label>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="form-group clearfix row" v-if="category == 'outdoor' || category == 'ice'">
-                        <label for="name" class='col-md-2 control-label'> Best time for climbing </label>
-
-                        <div class="col-md-10">
-                            <div class="col-md-12" v-if="global_blocks.best_time == 'befor'">
-                                <select class="form-control"  v-model="global_blocks.best_time_id" >
-                                    <option v-for="general_info in general_infos" :key="general_info.id" :value="general_info.id">{{ general_info.title }}</option>
-                                </select> 
-                            </div>
-                        
-                            <div class="col-md-12" v-if="global_blocks.best_time == 'befor' || global_blocks.best_time == 'after' || global_blocks.best_time == 'new_info'">
-                                <ckeditor v-model="data.best_time" :config="best_time"></ckeditor>
-                            </div>
-
-                            <div class="col-md-12" v-if="global_blocks.best_time == 'after' || global_blocks.best_time == 'instead'">
-                                <select class="form-control"  v-model="global_blocks.best_time_id" >
-                                    <option v-for="general_info in general_infos" :key="general_info.id" :value="general_info.id">{{ general_info.title }}</option>
-                                </select> 
-                            </div>
-                        </div>
-                    </div> -->
-
-                    <!-- <div  v-if="general_infos.length">
-                        <div class="row" v-if="category == 'outdoor' || category == 'ice' || category == 'mount_route' ">
-                            <div class="col-md-2">
-                                <input type="radio" id="need_new_info" name="fav_language" value="new_info" @click="what_need_block_action('new_info')">
-                                <label for="need_new_info">New info</label><br>
-                            </div>
-                            <div class="col-md-2">
-                                <input type="radio" id="need_befor" name="fav_language" value="befor" @click="what_need_block_action('befor')">
-                                <label for="need_befor">Befor</label><br>
-                            </div>
-                            <div class="col-md-2">
-                                <input type="radio" id="need_after" name="fav_language" value="after" @click="what_need_block_action('after')">
-                                <label for="need_after">After</label><br>
-                            </div>
-                            <div class="col-md-2">
-                                <input type="radio" id="need_instead" name="fav_language" value="instead" @click="what_need_block_action('instead')">
-                                <label for="need_instead">Instead</label>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="form-group clearfix row" v-if="category == 'outdoor' || category == 'ice' || category == 'mount_route' ">
-                        <label for="name" class='col-md-2 control-label'> what you need </label>
-
-                        <div class="col-md-10">
-                            <div class="col-md-12" v-if="global_blocks.what_need_info == 'befor'">
-                                <select class="form-control"  v-model="global_blocks.what_need_info_id" > 
-                                    <option v-for="general_info in general_infos" :key="general_info.id" :value="general_info.id">{{ general_info.title }}</option>
-                                </select> 
-                            </div>
-                        
-                            <div class="col-md-12" v-if="global_blocks.what_need_info == 'befor' || global_blocks.what_need_info == 'after' || global_blocks.what_need_info == 'new_info'">
-                                <ckeditor v-model="data.what_need" :config="what_need"></ckeditor>
-                            </div>
-
-                            <div class="col-md-12" v-if="global_blocks.what_need_info == 'after' || global_blocks.what_need_info == 'instead'">
-                                <select class="form-control"  v-model="global_blocks.what_need_info_id" > 
-                                    <option v-for="general_info in general_infos" :key="general_info.id" :value="general_info.id">{{ general_info.title }}</option>
-                                </select> 
-                            </div>
-                        </div>
-                    </div> -->
-
-                    <!-- <div  v-if="general_infos.length">
-                        <div class="row">
-                            <div class="col-md-2">
-                                <input type="radio" id="new_info" name="fav_language" value="new_info" @click="info_block_action('new_info')">
-                                <label for="new_info">New info</label><br>
-                            </div>
-                            <div class="col-md-2">
-                                <input type="radio" id="befor" name="fav_language" value="befor" @click="info_block_action('befor')">
-                                <label for="befor">Befor</label><br>
-                            </div>
-                            <div class="col-md-2">
-                                <input type="radio" id="after" name="fav_language" value="after" @click="info_block_action('after')">
-                                <label for="after">After</label><br>
-                            </div>
-                            <div class="col-md-2">
-                                <input type="radio" id="instead" name="fav_language" value="instead" @click="info_block_action('instead')">
-                                <label for="instead">Instead</label>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="form-group clearfix row">
-                        <label for="name" class='col-md-2 control-label'> Info / contact </label>
-                        <div class="col-md-10">
-                            <div class="col-md-12" v-if="global_blocks.info_block == 'befor'">
-                                <select v-model="global_blocks.info_block_id"  class="form-control"> 
-                                    <option v-for="general_info in general_infos" :key="general_info.id" :value="general_info.id">{{ general_info.title }}</option>
-                                </select> 
-                            </div>
-                        
-                            <div class="col-md-12" v-if="global_blocks.info_block == 'befor' || global_blocks.info_block == 'after' || global_blocks.info_block == 'new_info'">
-                                <ckeditor v-model="data.info" :config="editor_config.info"></ckeditor>
-                            </div>
-
-                            <div class="col-md-12" v-if="global_blocks.info_block == 'after' || global_blocks.info_block == 'instead'">
-                                <select v-model="global_blocks.info_block_id"  class="form-control"> 
-                                    <option v-for="general_info in general_infos" :key="general_info.id" :value="general_info.id">{{ general_info.title }}</option>
-                                </select> 
-                            </div>
-                        </div>
-                    </div> -->
-
-                    <span v-if="category == 'outdoor' || category == 'ice'">
+                    <span v-if="category != 'partners' && category == 'mount_route' || category == 'outdoor' || category == 'ice'">
                     <GlobalInfoFormBlock
                         :title_prop="'Routes description'" 
                         :form_value_name_prop="'route'"
@@ -254,7 +82,7 @@
                         @get_global_blocks_id="get_global_blocks_id"
                     />
                     </span>
-                    <span v-if="category == 'outdoor' || category == 'ice'">
+                    <span v-if="category != 'partners' && category == 'outdoor' || category == 'ice'">
                     <GlobalInfoFormBlock
                         :title_prop="'Best time for climbing'" 
                         :form_value_name_prop="'best_time'"
@@ -273,9 +101,9 @@
                     />
                 </span>
 
-                    <hr v-if="category == 'outdoor' || category == 'ice' || category == 'mount_route' ">
+                    <hr v-if="category != 'partners' && category == 'mount_route' || category == 'outdoor' || category == 'ice' || category == 'mount_route' ">
 
-                    <span v-if="category == 'outdoor' || category == 'ice' || category == 'indoor'">
+                    <span v-if="category != 'partners' && category == 'mount_route' || category == 'outdoor' || category == 'ice' || category == 'indoor'">
                     <GlobalInfoFormBlock
                         :title_prop="'What you need'" 
                         :form_value_name_prop="'what_need'"
@@ -296,6 +124,7 @@
 
                     <hr>
 
+                    <span v-if="category != 'partners'">
                     <GlobalInfoFormBlock
                         :title_prop="'Contact info'" 
                         :form_value_name_prop="'info'"
@@ -312,6 +141,17 @@
                         @get_global_blocks_status="get_global_blocks_status_action"
                         @get_global_blocks_id="get_global_blocks_id"
                     />
+                    </span>
+                    <span v-else>
+                        <div class="form-group clearfix row">
+                            <label for="name" class='col-md-2 control-label'> Info / contact </label>
+                            <div class="col-md-10">
+                                <div class="col-md-12" >
+                                    <ckeditor v-model="data.info" :config="this.$editorConfig"></ckeditor>
+                                </div>
+                            </div>
+                        </div>
+                    </span>
 
                     <hr>
 

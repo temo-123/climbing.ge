@@ -36,6 +36,6 @@ class Mount extends Model
 	public function articles()
 	{
 		// return $this->belongsToMany(Article::class,);
-        return $this->belongsToMany(Article::class, 'article_mount', 'mount_id', 'article_id');
+        return $this->belongsToMany(Article::class, 'article_mount', 'mount_id', 'article_id')->where('published', '=', 1);
 	}
 }

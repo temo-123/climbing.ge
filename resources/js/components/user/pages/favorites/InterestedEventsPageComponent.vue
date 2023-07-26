@@ -39,9 +39,9 @@
 
 							<li v-for="event in events" :key="event.id">
 								<time datetime="2014-07-20">
-									<span class="day">4</span>
-									<span class="month">Jul</span>
-									<span class="year">2014</span>
+									<span class="day">{{ show_d(event.start_data) }}</span>
+									<span class="month">{{ show_m(event.start_data) }}</span>
+									<span class="year">{{ show_y(event.start_data) }}</span>
 									<!-- <span class="time">ALL DAY</span> -->
 								</time>
 
@@ -51,12 +51,12 @@
 								<!-- </span> -->
 
 								<!-- <img alt="Independence Day" src="https://farm4.staticflickr.com/3100/2693171833_3545fb852c_q.jpg" /> -->
-								<div class="info">
-									<h2 class="title">
+								<div :class='"info " + row_action(event.end_data)'>
+									<h2 class="title cursor_pointer">
 										<a @click="go_to_events_list('/event/'+event.url_title)">{{ event.url_title }}</a>
-										<span @click="del_interested_event(event.id)" class="float-right">X</span>
 									</h2>
-									<!-- <p class="desc">United States Holiday</p> -->
+									<span @click="del_interested_event(event.id)" class="float-right">X</span>
+									<p class="desc" v-if="row_action(event.end_data) == 'completed_event'">Finished</p>
 								</div>
 							</li>
 
@@ -74,9 +74,12 @@
 
 <script>
 	import breadcrumb from '../../items/BreadcrumbComponent.vue'
+    import moment from "moment"; // https://www.npmjs.com/package/vue-moment
+
 	export default {
 		components: {
 			breadcrumb,
+            moment
 		},
         data: function () {
             return {
@@ -89,6 +92,60 @@
             this.get_interestid_events()
         },
         methods: {
+			row_action(end_data){
+                let end_houre = Number(moment(end_data).format("H"))
+
+                if(end_houre != 0){
+                    let end_day = Number(moment(end_data).format("D"))
+                    let end_month = Number(moment(end_data).format("MM"))
+                    let end_year = Number(moment(end_data).format("YYYY"))
+
+                    if( new Date().getDate() > end_day && 
+                        new Date().getMonth() >= end_month && 
+                        new Date().getFullYear() >= end_year
+                    ){
+                        return 'completed_event'
+                    }
+                    if( new Date().getDate() > end_day && 
+                        new Date().getMonth() == end_month && 
+                        new Date().getFullYear() == end_year
+                    ){
+                        return 'completed_event'
+                    }
+                    else if( 
+                        new Date().getDate() == end_day && 
+                        new Date().getMonth() >= end_month && 
+                        new Date().getFullYear() >= end_year
+                    ){
+                        return 'completed_event'
+                    }
+                    else if(
+                        new Date().getMonth() > end_month && 
+                        new Date().getFullYear() > end_year
+                    ){
+                        return 'completed_event'
+                    }
+                    else if(
+                        new Date().getMonth() > end_month
+                    ){
+                        return 'completed_event'
+                    }
+                    else if(
+                        new Date().getFullYear() > end_year
+                    ){
+                        return 'completed_event'
+                    }
+					else{
+                        return ''
+					}
+                }
+				else{
+					return ''
+				}
+            },
+			show_y(data){return moment(data).format("Y")},
+			show_m(data){return moment(data).format("MMM")},
+			show_d(data){return moment(data).format("D")},
             get_interestid_events(){
                 axios
                 .get('../api/event/get_interested_events')
@@ -124,6 +181,10 @@
 </script>
 
 <style scoped>
+
+.completed_event{
+    background-color: #fb9b9b !important;
+}
 .event-list {
 		list-style: none;
 		font-family: 'Lato', sans-serif;
@@ -160,7 +221,13 @@
 	}
 	.event-list > li time > .month {
 		display: block;
-		font-size: 24pt;
+		font-size: 20pt;
+		font-weight: 900;
+		line-height: 1;
+	}
+	.event-list > li time > .year {
+		display: block;
+		font-size: 14pt;
 		font-weight: 900;
 		line-height: 1;
 	}

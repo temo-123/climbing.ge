@@ -18,7 +18,7 @@ return new class extends Migration
             
             $table->string('url_title')->unique();
 
-            $table->integer('published_data')->nullable();
+            $table->timestamp('published_data')->nullable();
             $table->integer('public_totaly')->nullable();
             
             $table->foreignId('article_id')->constrained();

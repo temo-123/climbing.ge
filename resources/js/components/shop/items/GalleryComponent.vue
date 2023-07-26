@@ -30,6 +30,9 @@
           this.db_images = this.images_prop
     },
     watch: {
+      '$route' (to, from) {
+          this.db_images = this.images_prop
+      },
       images_prop: function(newVal, oldVal){
           this.db_images = this.images_prop
       },

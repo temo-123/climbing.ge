@@ -52,6 +52,20 @@
           this.path = this.image_path_prop
           this.db_images = this.images_prop
       },
+    watch: {
+      '$route' (to, from) {
+          this.path = this.image_path_prop
+          this.db_images = this.images_prop
+      },
+      images_prop: function(newVal, oldVal){
+          this.path = this.image_path_prop
+          this.db_images = this.images_prop
+      },
+      image_path_prop: function(newVal, oldVal){
+          this.path = this.image_path_prop
+          this.db_images = this.images_prop
+      },
+    },
       methods: {
           open_image(db_img){
               this.active_img = db_img

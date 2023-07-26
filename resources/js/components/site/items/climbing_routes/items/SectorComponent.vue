@@ -296,7 +296,7 @@ import route_modal from "./modals/RouteModalComponent.vue";
 import mtp_modal from "./modals/MTPModalComponent.vue";
 
 import openImg from "../../ImageOpenComponent.vue";
-import  grade_chart  from '../../../../../mixins/grade_chart_mixin.js'
+import grade_chart  from '../../../../../mixins/grade_chart_mixin.js'
 
 export default {
     mixins: [

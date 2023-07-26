@@ -19,28 +19,56 @@ class LocalBisnesController extends Controller
 {
     public function get_local_bisnes_for_article(Request $request)
     {
+        $action_data = date("Y/m/d H:i:s");
+
         $article = Article::where('url_title', '=', $request->article_url_title)->first();
         $article_bisnes_global_data = $article->bisnes;
 
         if($article_bisnes_global_data){
-            if($request->locale == 'ka'){
-                $article_bisnes_local_data = $article_bisnes_global_data->ka_bisnes;
-            }
-            else if($request->locale == 'ru'){
-                $article_bisnes_local_data = $article_bisnes_global_data->ru_bisnes;
-            }
-            else{
-                $article_bisnes_local_data = $article_bisnes_global_data->us_bisnes;
-            }
 
-            $bisnes_images = $article_bisnes_global_data->bisnes_images[0];
+            $pulic_year = $article_bisnes_global_data->published_data;
+            $public_month = $article_bisnes_global_data->published_data;
+            $pulic_day = $article_bisnes_global_data->published_data;
 
-            $data = [
-                'global_data' => $article_bisnes_global_data,
-                'local_data' => $article_bisnes_local_data,
-                'image' => $bisnes_images
-            ];
-            return $data;
+            if(
+                date('m', strtotime($public_month)) >= date('m', strtotime($action_data)) &&
+                date('Y', strtotime($pulic_year)) == date('Y', strtotime($action_data))
+            ){
+
+                if($request->locale == 'ka'){
+                    $article_bisnes_local_data = $article_bisnes_global_data->ka_bisnes;
+                }
+                else if($request->locale == 'ru'){
+                    $article_bisnes_local_data = $article_bisnes_global_data->ru_bisnes;
+                }
+                else{
+                    $article_bisnes_local_data = $article_bisnes_global_data->us_bisnes;
+                }
+
+                if(date('d', strtotime($pulic_day)) > date('d', strtotime($action_data))){
+                    $bisnes_images = $article_bisnes_global_data->bisnes_images[0];
+
+                    $data = [
+                        'global_data' => $article_bisnes_global_data,
+                        'local_data' => $article_bisnes_local_data,
+                        'image' => $bisnes_images
+                    ];
+                }
+                elseif (
+                        date('m', strtotime($pulic_day)) > date('m', strtotime($action_data)) &&
+                        date('Y', strtotime($pulic_day)) == date('Y', strtotime($action_data))
+                    ) {
+
+                    $bisnes_images = $article_bisnes_global_data->bisnes_images[0];
+
+                    $data = [
+                        'global_data' => $article_bisnes_global_data,
+                        'local_data' => $article_bisnes_local_data,
+                        'image' => $bisnes_images
+                    ];
+                }
+                return $data;
+            }
         }
     }
 

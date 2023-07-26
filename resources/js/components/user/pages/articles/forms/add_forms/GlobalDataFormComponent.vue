@@ -55,7 +55,7 @@
                     </div> -->
 
 
-                    <div class="form-group clearfix row" v-if="this.category != 'mount_route'">
+                    <div class="form-group clearfix row" v-if="this.category != 'mount_route' && category != 'partners'">
                         <label for="name" class='col-md-2 control-label'> Map </label>
                         <div class="col-md-10">
                             <input type="text" v-model="data.map" name="map" class="form-control"> 

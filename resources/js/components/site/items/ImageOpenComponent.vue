@@ -55,6 +55,20 @@
         margin-right: 0.4em;
         margin-top: 0.4em;
     }
+
+    @media (max-width: 756px) {
+        .close_bottom{
+            position: absolute;
+            left: 50%;
+            right: 0;
+            /* float: right; */
+            cursor: pointer;
+            color: #b3b2b2d9;
+            font-size: 2em;
+            margin-right: 0.4em;
+            margin-top: 0.4em;
+        }
+    }
     .smal_img img{
         height: 100%;
         cursor: zoom-in;
@@ -91,5 +105,17 @@
         display: block;
         margin-left: auto;
         margin-right: auto;
+    }
+    @media (max-width: 756px){
+        .gallery_big_img{
+            position: relative;
+            top: 10%;
+            width: 99%;
+            height: auto;
+            max-height: 90%;
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
+        }
     }
 </style>

@@ -1,5 +1,5 @@
 <template>
-    <tr>
+    <tr :class='row_action(table_info.published_data)'>
         <td :style='"text-align: center;"'>
             <input type="checkbox">
         </td>
@@ -28,7 +28,11 @@
 </template>
 
 <script>
+    import moment from "moment"; // https://www.npmjs.com/package/vue-moment
     export default {
+        components: {
+            moment
+        },
         props: [
             'table_info',
         ],
@@ -36,6 +40,47 @@
             // console.log(this.table_info)
         },
         methods: {
+            row_action(data){
+                    let end_day = Number(moment(data).format("D"))
+                    let end_month = Number(moment(data).format("MM"))
+                    let end_year = Number(moment(data).format("YYYY"))
+
+                    if( new Date().getDate() > end_day && 
+                        new Date().getMonth() >= end_month && 
+                        new Date().getFullYear() >= end_year
+                    ){
+                        return 'completed_event'
+                    }
+                    if( new Date().getDate() > end_day && 
+                        new Date().getMonth() == end_month && 
+                        new Date().getFullYear() == end_year
+                    ){
+                        return 'completed_event'
+                    }
+                    else if( 
+                        new Date().getDate() == end_day && 
+                        new Date().getMonth() >= end_month && 
+                        new Date().getFullYear() >= end_year
+                    ){
+                        return 'completed_event'
+                    }
+                    else if(
+                        new Date().getMonth() > end_month && 
+                        new Date().getFullYear() > end_year
+                    ){
+                        return 'completed_event'
+                    }
+                    else if(
+                        new Date().getMonth() > end_month
+                    ){
+                        return 'completed_event'
+                    }
+                    else if(
+                        new Date().getFullYear() > end_year
+                    ){
+                        return 'completed_event'
+                    }
+            },
             del_bisnes(id){
                 if(confirm('Are you sure, you want delite it?')){
                     axios
@@ -53,5 +98,7 @@
 </script>
 
 <style>
-
+.completed_event td {
+    background-color: #fb9b9b;
+}
 </style>

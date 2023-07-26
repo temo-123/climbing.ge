@@ -105,6 +105,7 @@
         
         methods: {
             get_filtred_articles(id){
+                this.mount_routes = []
                 axios
                 .get("/mount_route/get_filtred_mount_route_for_user/" + localStorage.getItem('lang') + '/' + id)
                 .then(response => {
