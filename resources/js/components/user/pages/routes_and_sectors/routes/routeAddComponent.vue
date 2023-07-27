@@ -162,11 +162,11 @@
             <input type="number" name="title" class="form-control" v-model="data.height" placeholder="Height"> 
           </div>
 
-          <div class="col-md-1" v-if="data.category != '' && data.category == 'sport climbing'">
-            <label for="name" class='col-md-1 control-label'> Chain: </label>
+          <div class="col-md-1" v-if="data.category != '' && data.category != 'bouldering'">
+            <label for="name" class='col-md-1 control-label'> Anchor: </label>
           </div>
 
-          <div class="col-md-3" v-if="data.category != '' && data.category == 'sport climbing'">
+          <div class="col-md-3" v-if="data.category != '' && data.category != 'bouldering'">
             <select class="form-control" v-model="data.anchor_type">
               <option value="" disabled>Anchor type</option>
               <option value="Chain">Chain</option>
