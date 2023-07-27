@@ -162,7 +162,7 @@
             <input type="number" name="title" class="form-control" v-model="data.height" placeholder="Height"> 
           </div>
 
-          <div class="col-md-1">
+          <div class="col-md-1" v-if="data.category != '' && data.category == 'sport climbing'">
             <label for="name" class='col-md-1 control-label'> Chain: </label>
           </div>
 
@@ -174,6 +174,7 @@
               <option value="Chain with ring">Chain with ring</option>
               <option value="2 independent chains">2 independent chains</option>
               <option value="2 bolts with carabiner">2 bolts with carabiner</option>
+              <option value="2 bolts only">2 bolts only</option>
             </select>
           </div>
         </div>

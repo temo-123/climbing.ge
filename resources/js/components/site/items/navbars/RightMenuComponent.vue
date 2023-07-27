@@ -113,10 +113,10 @@
                     this.right_navbar_class = ''
                 }
                 else{
-                    console.log('====================================');
-                    console.log(window.scrollY);
-                    console.log(document.body.offsetHeight);
-                    console.log('====================================');
+                    // console.log('====================================');
+                    // console.log(window.scrollY);
+                    // console.log(document.body.offsetHeight);
+                    // console.log('====================================');
                     // if(window.scrollY + this.margin_bottom_position < 1900){
                     //     this.right_navbar_class = ''
                         

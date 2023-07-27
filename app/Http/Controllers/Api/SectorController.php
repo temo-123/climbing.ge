@@ -230,7 +230,6 @@ class SectorController extends Controller
 
         $sector = Sector::where('id', '=', $sector_id)->first();
                 
-        // $sector_imgs = $sector->images->take(6);
         $sector_imgs = $sector->images->take(6);
         if ($sector_imgs) {
             $sector_imgs = $sector_imgs;
@@ -468,9 +467,29 @@ class SectorController extends Controller
 
 	public function get_sector_data_for_model(Request $request)
     {
-        $mtps = Mtp::where('sector_id',strip_tags($request->sector_id))->orderBy('num')->get();
-        $routes = Route::where('sector_id',strip_tags($request->sector_id))->orderBy('num')->get();
-        $images = Sector_image::where('sector_id',strip_tags($request->sector_id))->orderBy('num')->get();
+        $sector = Sector::where('id', '=', $request->sector_id)->first();
+                
+        $images = $sector->images->take(6);
+        if ($images) {
+            $images = $images;
+        }
+        else $images = array();
+
+        $routes = $sector->routes;
+        if ($routes){
+            $sport_route_info = $routes;
+        }
+        else $sport_route_info = array();
+
+        $mtps = $sector->mtps;
+        if ($mtps){
+            $mtps = $mtps;
+        }
+
+        // $mtps = [];
+        // $mtps = Mtp::where('sector_id',strip_tags($request->sector_id))->orderBy('num')->get();
+        // $routes = Route::where('sector_id',strip_tags($request->sector_id))->orderBy('num')->get();
+        // $images = Sector_image::where('sector_id',strip_tags($request->sector_id))->orderBy('num')->get();
         $data = [
             'images' => $images,
             'routes' => $routes,

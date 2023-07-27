@@ -146,7 +146,18 @@
                     <td>{{ route.num }}</td>
                     <td @click="show_route_modal()">{{ route.name }}</td>
                     <td>{{ route.height }}</td>
-                    <td>{{ route.bolts }}</td>
+
+                    <td v-if="route.category == 'tred'">Tred</td>
+                    <td v-else-if="route.category == 'top'">Top Rope</td>
+                    <td v-else-if="route.category == 'sport climbing'">
+                        <span v-if="route.bolts">
+                            {{ route.bolts }}
+                        </span>
+                        <span v-else>
+                            ?
+                        </span>
+                    </td>
+                    <td v-else >?</td>
 
                     <td v-if="route.or_grade != NULL">
                         {{ route.grade }} / {{ route.or_grade }}
@@ -261,7 +272,19 @@
                         <td>{{ pitch.num }}</td>
                         <td>{{ pitch.name }}</td>
                         <td>{{ pitch.height }}</td>
-                        <td>{{ pitch.bolts }}</td>
+                        <!-- <td>{{ pitch.bolts }}</td> -->
+
+                        <td v-if="pitch.category == 'tred'">Tred</td>
+                        <td v-else-if="pitch.category == 'sport climbing'">
+                            <!-- {{ pitch.bolts }} -->
+                            <span v-if="pitch.bolts">
+                                {{ pitch.bolts }}
+                            </span>
+                            <span v-else>
+                                ?
+                            </span>
+                        </td>
+                        <td v-else>?</td>
 
                         <td v-if="pitch.or_grade != NULL">
                             {{ pitch.grade }} /

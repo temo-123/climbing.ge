@@ -21,11 +21,15 @@
                         >
                             <p class="route_detal">{{ $t("guide.route.name") }} - {{ route.name }}</p>
 
-                            <p class="route_detal">
+                            <p class="route_detal" v-if="route.height">
                                 {{ $t("guide.route.height") }} - {{ route.height }}
                             </p>
 
-                            <p>{{ $t("guide.route.bolts") }} - {{ route.bolts }}</p>
+                            <p v-if="route.category == 'tred'">{{ $t("guide.route.bolts") }} - Tred climbing</p>
+                            <p v-else-if="route.category == 'top'">{{ $t("guide.route.bolts") }} - Top rope</p>
+                            <p v-else-if="route.category == 'boulder'"></p>
+                            <p v-else-if="route.category == 'sport climbing'">{{ $t("guide.route.bolts") }} - {{ route.bolts }}</p>
+                            <!-- <p v-else>{{ $t("guide.route.bolts") }} - {{ route.bolts }}</p> -->
 
                             <p>{{ $t("guide.route.grade fr") }} - 
                                 <span v-if="route.or_grade != NULL">

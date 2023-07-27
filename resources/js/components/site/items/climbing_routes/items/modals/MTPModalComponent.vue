@@ -48,7 +48,18 @@
                                 <td>{{ pitch.num }}</td>
                                 <td>{{ pitch.name }}</td>
                                 <td>{{ pitch.height }}</td>
-                                <td>{{ pitch.bolts }}</td>
+
+                                <td v-if="pitch.category == 'tred'">Tred climbing</td>
+                                <td v-else-if="pitch.category == 'sport climbing'">
+                                    <!-- {{ pitch.bolts }} -->
+                                    <span v-if="pitch.bolts">
+                                        {{ pitch.bolts }}
+                                    </span>
+                                    <span v-else>
+                                        ?
+                                    </span>
+                                </td>
+                                <td v-else>?</td>
 
                                 <td v-if="pitch.or_grade != NULL">
                                     {{ pitch.grade }} /

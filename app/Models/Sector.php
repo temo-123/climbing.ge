@@ -38,7 +38,7 @@ class Sector extends Model
 
     public function sport_routes()
     {
-        return $this->hasMany(Route::class)->where('category', '=', 'sport climbing')->orderBy('num');
+        return $this->hasMany(Route::class,)->where('category', '!=', 'bouldering')->orderBy('num');
     }
 
     public function boulder_routes()
