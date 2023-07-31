@@ -5,9 +5,9 @@
                 <h1 class="blog-title">
                     {{ this.article[0].title  }}
 
-                    <span @click="add_to_favorite_outdoor_area(article.id)"> 
+                    <!-- <span @click="add_to_favorite_outdoor_area(article.id)"> 
                         <i class="fa fa-heart-o favorite_icon add_to_favorite" ></i> 
-                    </span>
+                    </span> -->
                 </h1>
             </div>
         </div>
@@ -25,13 +25,8 @@
                 <articleTextBlocks :article="this.article"/>
 
                 <!-- routes -->
-                <div v-if="this.article[0].route || this.article.global_info.routes_info != []">
+                <div v-if="this.article[0].route != '' || this.article[0].route || this.article.global_info.routes_info != []">
                     <h2 id="routes">{{ $t('guide.article.title.route')}}</h2>
-
-                    <routeQuanDiogram 
-                        :outdoor_region_article_id="this.article.id"
-                        ref="route_quan_diogram"
-                    />
 
                     <span v-if="this.article.global_info.routes_info.length == 0">
                         <span v-html="this.article[0].route"></span>
@@ -51,7 +46,7 @@
                     </span>
                 </div>
 
-                <routesTab 
+                <iceSectors 
                     :article_id="this.article.id" 
                     ref="routes_tab"
                 />
@@ -76,8 +71,8 @@
         <SimilarArticles 
             :article_id="this.article.id" 
             :article_category="this.article.category" 
-            :route="'outdoor/'"
-            :img_dir="'outdoor_img/'"
+            :route="'ice/'"
+            :img_dir="'ice_img/'"
 
             ref="similar_articles"
         />
@@ -86,7 +81,7 @@
 </template>
 
 <script>
-    import routesTab from './climbing_routes/SectorAndRoutesTabComponent'
+    import iceSectors from './ice_climbing_routes/IceSectorComponent'
     import commentForm from './CommentFormComponent'
     // import postsList from './PostsListComponent'
     import galleryComponent from './galleries/GalleryComponent'
@@ -95,7 +90,7 @@
     import breadcrumb from './BreadcrumbComponent.vue'
     import articleTextBlocks from './ArticleTextBlocksComponent'
 
-    import routeQuanDiogram from '../items/climbing_routes/RoutesQuantityComponent.vue'
+    // import routeQuanDiogram from '../items/climbing_routes/RoutesQuantityComponent.vue'
 
     export default {
         props: [
@@ -106,9 +101,9 @@
             galleryComponent,
             articleRightMenu,
             SimilarArticles,
-            routesTab,
+            iceSectors,
             breadcrumb,
-            routeQuanDiogram,
+            // routeQuanDiogram,
             articleTextBlocks,
             // postsList
         },
@@ -135,24 +130,24 @@
                 this.$refs.comments.update(id)
             },
 
-            add_to_favorite_outdoor_area(article_id){
-                axios
-                .post('../api/outdoor/add_to_favorite_outdoor_area/'+article_id)
-                .then(response => {
-                    alert(response.data)
-                })
-                .catch(error =>{
-                    if(error.response.status === 401) {
-                        if(confirm('You are not login. Do you want log in?')){
-                            this.$router.go(-1)
-                        }
-                    }
-                    else{
-                        alert(error)
-                        console.log(error);
-                    }
-                })
-            }
+            // add_to_favorite_outdoor_area(article_id){
+            //     axios
+            //     .post('../api/outdoor/add_to_favorite_outdoor_area/'+article_id)
+            //     .then(response => {
+            //         alert(response.data)
+            //     })
+            //     .catch(error =>{
+            //         if(error.response.status === 401) {
+            //             if(confirm('You are not login. Do you want log in?')){
+            //                 this.$router.go(-1)
+            //             }
+            //         }
+            //         else{
+            //             alert(error)
+            //             console.log(error);
+            //         }
+            //     })
+            // }
             
         }
     }

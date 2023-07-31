@@ -28,10 +28,7 @@
       watch: {
         '$route' (to, from) {
           this.get_article_images();
-        }
-      },
-
-      watch: {
+        },
           article_id: function(){
             this.id = this.article_id
             this.get_article_images();

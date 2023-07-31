@@ -104,12 +104,7 @@ export const navbar = {
                             ['add', 'article'],
                             ['edit', 'article'],
                             ['del', 'article'],
-                        ]
-                    },
-                    {
-                        name: "Ice routes",
-                        route: "/ice_routes",
-                        permissions: [
+
                             ['add', 'article'],
                             ['edit', 'article'],
                             ['del', 'article'],

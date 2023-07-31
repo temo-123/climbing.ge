@@ -17,7 +17,9 @@ export const editor_config = {
             
             image2_alignClasses: ['image-align-left', 'image-align-center', 'image-align-right'],
             image2_disableResizer: true,
-            removeButtons: 'PasteFromWord'
+            removeButtons: 'PasteFromWord',
+            // colorButton: 'CF5D4E,454545,FFF,DDD,CCEAEE,66AB16',
+            // toolbar: []
         }
 
         
@@ -25,7 +27,8 @@ export const editor_config = {
 
     get_small_editor_config(){
         return {
-            removeButtons: 'Link,Unlink,Anchor,Image,Table,Underline,Strike,Subscript,Superscript,RemoveFormat,NumberedList,BulletedList,Outdent,Indent,Blockquote,Scayt,HorizontalRule,SpecialChar,Styles,Format,Font,FontSize,About'
+            removeButtons: 'Link,Unlink,Anchor,Image,Table,Underline,Strike,Subscript,Superscript,RemoveFormat,NumberedList,BulletedList,Outdent,Indent,Blockquote,Scayt,HorizontalRule,SpecialChar,Styles,Format,Font,FontSize',
+            // colorButton_colors: 'CF5D4E,454545,FFF,DDD,CCEAEE,66AB16'
         }
     },
 }

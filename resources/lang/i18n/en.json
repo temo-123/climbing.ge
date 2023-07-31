@@ -59,6 +59,8 @@
             "name": "Name",
             "height": "Height",
             "bolts": "Bolts",
+            "grade": "Grade",
+            "screws": "Ice screws",
             "grade fr": "Grade FR",
             "grade yds": "Grade YDS",
             "grade uiaa": "Grade UIAA",
@@ -72,6 +74,7 @@
 
             "more": "More",
             "route detals": "Routes detals",
+            "anchor": "Routes detals",
             "mtp detals": "Multy-pitch detals"
         },
 

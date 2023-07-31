@@ -2,7 +2,7 @@
     <stack-modal
             :show="is_show_route_modal"
             title="Route detals"
-            @close="is_show_route_modal = false"
+            @close="close_route_modal()"
             :modal-class="{ [ModalClass]: true }"
             :saveButton="{ visible: true }"
             :cancelButton="{
@@ -30,29 +30,6 @@
                             <p v-else-if="route.category == 'boulder'"></p>
                             <p v-else-if="route.category == 'sport climbing'">{{ $t("guide.route.bolts") }} - {{ route.bolts }}</p>
                             <!-- <p v-else>{{ $t("guide.route.bolts") }} - {{ route.bolts }}</p> -->
-
-                            <p>{{ $t("guide.route.grade fr") }} - 
-                                <span v-if="route.or_grade != NULL">
-                                    {{ route.grade }} / {{ route.or_grade }}
-                                </span>
-                                <span v-else>
-                                    {{ route.grade }}
-                                </span>
-                            </p>
-
-                            <p>
-                                <span v-if="activ_grade == 'UIAA' || activ_grade == 'uiaa'">{{ $t("guide.route.grade uiaa") }}</span>
-                                <span v-if="activ_grade == 'YDS' || activ_grade == 'yds'">{{ $t("guide.route.grade yds") }}</span>
-                                    -
-                                
-                                <span v-if="route.or_grade != NULL">
-                                    {{ lead_grade_chart(route.grade) }} /
-                                    {{ lead_grade_chart(route.or_grade) }}
-                                </span>
-                                <span v-else>
-                                    {{ lead_grade_chart(route.grade) }}
-                                </span>
-                            </p>
 
                             <p class="route_detal" v-if="route.author">
                                 {{ $t("guide.route.author") }} - {{ route.author }}
@@ -104,40 +81,26 @@ export default {
             is_show_route_modal: false,
 
             route: [],
-
-            get activ_grade() {
-                return localStorage.getItem('grade') || 'yds';
-            },
-            set activ_grade(value) {
-                localStorage.setItem('grade', value);
-            },
         };
     },
     mounted() {
-        // this.get_spot_rocks_images();
+        // this.show_route_modal();
     },
     methods: {
-
-        lead_grade_chart(grade_fr) {
-            return this.lead(grade_fr)
-        },
-
-        show_route_modal(id) {
-            this.is_show_route_modal = true;
+        show_ice_route_modal(id) {
             this.route = [];
 
             axios
-                .get("../../api/route/get_route_for_modal/" + id)
+                .get("/ice_routes/get_route_data_for_modal/" + id)
                 .then((response) => {
                     this.route = response.data;
-                    // this.route_post_list = true;
+                    this.is_show_route_modal = true;
                 })
                 .catch((error) => {});
         },
+        close_route_modal(){
+            this.is_show_route_modal = false
+        }
     }
 }
 </script>
-
-<style>
-
-</style>

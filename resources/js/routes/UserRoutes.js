@@ -73,6 +73,12 @@ const router = new VueRouter({
         { path: '/spot_category/edit/:id', name: 'spot_category_edit', component: load('spots_categories/SpotsCategoriesEditPageComponent') },
         { path: '/spot_category/add/', name: 'spot_category_add', component: load('spots_categories/SpotsCategoriesAddPageComponent') },
 
+        { path: '/ice_route/add', name: 'iceRouteAdd', component: load('ice/routes/add_route') },
+        { path: '/ice_route/edit/:id', name: 'iceRouteEdit', component: load('ice/routes/edit_route') },
+
+        { path: '/ice_sector/add', name: 'iceSectorAdd', component: load('ice/sectors/add_sector') },
+        { path: '/ice_sector/edit/:id', name: 'iceSectorEdit', component: load('ice/sectors/edit_sector') },
+
         { path: '/routes_and_sectors', name: 'routeAndSectorList', component: load('routes_and_sectors/routeAndSectorListComponent') },
 
         { path: '/route/add', name: 'routeAdd', component: load('routes_and_sectors/routes/routeAddComponent') },

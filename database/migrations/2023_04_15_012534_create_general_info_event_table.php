@@ -14,7 +14,7 @@ return new class extends Migration
     public function up()
     {
         Schema::create('general_info_event', function (Blueprint $table) {
-            $table->id();
+            $table->bigIncrements('id');
 
             $table->unsignedBigInteger('info_id');
             $table->foreign('info_id')->references('id')->on('general_infos');

@@ -626,10 +626,10 @@
                     this.go_back(true)
                 })
                 .catch((error) => {
-                    console.log(error);
-                    // if (error.response.status == 422) {
-                    //     this.errors = error.response.data.errors;
-                    // }
+                    // console.log(error);
+                    if (error.response.status == 422) {
+                        this.errors = error.response.data.errors;
+                    }
                 })
                 .finally(() => this.is_loading = false);
             },

@@ -260,7 +260,7 @@ class ArticleController extends Controller
                     $new_mount -> save();
                 }
             }
-            else if(!$global_data['region_id']){
+            else if(!isset($global_data['region_id'])){
                 $deliting_article_region = Article_region::where('article_id', '=', $request->article_id)->first();
                 if($deliting_article_region){
                     $deliting_article_region -> delete();
@@ -285,7 +285,7 @@ class ArticleController extends Controller
                     $new_mount -> save();
                 }
             }
-            else if(!$global_data['mount_id']){
+            else if(!isset($global_data['mount_id'])){
                 $deliting_article_mount = Article_mount::where('article_id', '=', $request->article_id)->first();
                 if($deliting_article_mount){
                     $deliting_article_mount -> delete();

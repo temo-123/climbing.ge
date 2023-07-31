@@ -19,87 +19,87 @@ class SectorImagesController extends Controller
         return Sector_image::latest('id')->get();
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
+    // /**
+    //  * Show the form for creating a new resource.
+    //  *
+    //  * @return \Illuminate\Http\Response
+    //  */
+    // public function create()
+    // {
+    //     //
+    // }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        $new_sale_adres = new Sector_image;
+    // /**
+    //  * Store a newly created resource in storage.
+    //  *
+    //  * @param  \Illuminate\Http\Request  $request
+    //  * @return \Illuminate\Http\Response
+    //  */
+    // public function store(Request $request)
+    // {
+    //     $new_sale_adres = new Sector_image;
 
-        $new_sale_adres['discount'] = $request->data['discount'];
-        $new_sale_adres['code'] = $request->data['sale_code'];
-        $new_sale_adres['action_data'] = $request->data['validity_date'];
-        $new_sale_adres['one_time_code'] = $request->data['one_time_code'];
+    //     $new_sale_adres['discount'] = $request->data['discount'];
+    //     $new_sale_adres['code'] = $request->data['sale_code'];
+    //     $new_sale_adres['action_data'] = $request->data['validity_date'];
+    //     $new_sale_adres['one_time_code'] = $request->data['one_time_code'];
 
-        $new_sale_adres -> save();
-    }
+    //     $new_sale_adres -> save();
+    // }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        return Sector_image::where("id", "=", $id)->first();
-    }
+    // /**
+    //  * Display the specified resource.
+    //  *
+    //  * @param  int  $id
+    //  * @return \Illuminate\Http\Response
+    //  */
+    // public function show($id)
+    // {
+    //     return Sector_image::where("id", "=", $id)->first();
+    // }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
+    // /**
+    //  * Show the form for editing the specified resource.
+    //  *
+    //  * @param  int  $id
+    //  * @return \Illuminate\Http\Response
+    //  */
+    // public function edit($id)
+    // {
+    //     //
+    // }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        // dd($request->editing_data['discount']);
-        $editing_product_category = Sector_image::where("id", "=", $id)->first();
+    // /**
+    //  * Update the specified resource in storage.
+    //  *
+    //  * @param  \Illuminate\Http\Request  $request
+    //  * @param  int  $id
+    //  * @return \Illuminate\Http\Response
+    //  */
+    // public function update(Request $request, $id)
+    // {
+    //     // dd($request->editing_data['discount']);
+    //     $editing_product_category = Sector_image::where("id", "=", $id)->first();
 
-        $editing_product_category['discount'] = $request->editing_data['discount'];
-        $editing_product_category['code'] = $request->editing_data['sale_code'];
-        $editing_product_category['action_data'] = $request->editing_data['validity_date'];
-        $editing_product_category['one_time_code'] = $request->editing_data['one_time_code'];
+    //     $editing_product_category['discount'] = $request->editing_data['discount'];
+    //     $editing_product_category['code'] = $request->editing_data['sale_code'];
+    //     $editing_product_category['action_data'] = $request->editing_data['validity_date'];
+    //     $editing_product_category['one_time_code'] = $request->editing_data['one_time_code'];
 
-        $editing_product_category -> save();
-    }
+    //     $editing_product_category -> save();
+    // }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        $deleted_product_category = Sector_image::where("id", "=", $id)->first();
-        $deleted_product_category -> delete();
-    }
+    // /**
+    //  * Remove the specified resource from storage.
+    //  *
+    //  * @param  int  $id
+    //  * @return \Illuminate\Http\Response
+    //  */
+    // public function destroy($id)
+    // {
+    //     $deleted_product_category = Sector_image::where("id", "=", $id)->first();
+    //     $deleted_product_category -> delete();
+    // }
 
 
 

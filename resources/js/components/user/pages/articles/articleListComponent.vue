@@ -93,6 +93,37 @@
                     );
                 }
             },
+            get_ice_sectors(category){
+                if(category == 'ice'){
+                    axios
+                    .get("../api/ice_sectors/get_all_sectors/")
+                    .then(response => {
+                        this.data_for_tab.push({'id': 2,
+                                                'data': response.data, 
+                                                'table_name': "Ice sectors",
+                                                'table_add_url': 'iceSectorAdd', 
+                                            });
+                        this.get_ice_routes()
+                    })
+                    .catch(
+                        error => console.log(error)
+                    );
+                }
+            },
+            get_ice_routes(){
+                axios
+                .get("../api/ice_routes/get_all_routes/")
+                .then(response => {
+                    this.data_for_tab.push({'id': 3,
+                                            'data': response.data, 
+                                            'table_name': "Ice routes",
+                                            'table_add_url': 'iceRouteAdd', 
+                                        });
+                })
+                .catch(
+                    error => console.log(error)
+                );
+            },
             
             filtr(event){
                 this.get_articles(event)
@@ -140,8 +171,11 @@
                                         });
 
 
-                    if(this.$route.params.article_category){
+                    if(this.$route.params.article_category == 'outdoor'){
                         this.get_regions(this.$route.params.article_category)
+                    }
+                    if(this.$route.params.article_category == 'ice'){
+                        this.get_ice_sectors(this.$route.params.article_category)
                     }
                 })
                 .catch(

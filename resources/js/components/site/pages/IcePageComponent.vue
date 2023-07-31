@@ -8,7 +8,7 @@
             </div>
         </span>
         <span v-else-if="!article_loading">
-            <articlPage 
+            <icePage 
                 :article="ice" 
                 ref="article_page"
             />
@@ -23,7 +23,7 @@
 </template>
 
 <script>
-    import articlPage from '../items/ArticleComponent'
+    import icePage from '../items/IceComponent'
     import metaData from '../items/MetaDataComponent'
 
     export default {
@@ -34,7 +34,7 @@
             }
         },
         components: {
-            articlPage,
+            icePage,
             metaData,
         },
         mounted() {
@@ -50,7 +50,7 @@
         methods: {
             get_ice(){
                 axios
-                .get('../api/article/ice/'+localStorage.getItem('lang')+'/'+this.$route.params.url_title)
+                .get('/article/ice/'+localStorage.getItem('lang')+'/'+this.$route.params.url_title)
                 .then(response => {
                     this.ice = response.data
 

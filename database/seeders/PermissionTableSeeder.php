@@ -350,6 +350,32 @@ class PermissionTableSeeder extends Seeder
                 'subject' => 'spot_region',
                 'action' => 'edit',
             ],
+
+            [
+                'subject' => 'ice_sector',
+                'action' => 'add',
+            ],
+            [
+                'subject' => 'ice_sector',
+                'action' => 'del',
+            ],
+            [
+                'subject' => 'ice_sector',
+                'action' => 'edit',
+            ],
+
+            [
+                'subject' => 'ice_route',
+                'action' => 'add',
+            ],
+            [
+                'subject' => 'ice_route',
+                'action' => 'del',
+            ],
+            [
+                'subject' => 'ice_route',
+                'action' => 'edit',
+            ],
         );
 
         foreach ($permissions as $permission) {

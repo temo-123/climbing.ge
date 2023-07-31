@@ -40,8 +40,8 @@ class SaleCodeController extends Controller
         $new_sale_adres = new Sale_code;
 
         $new_sale_adres['discount'] = $request->data['discount'];
-        $new_sale_adres['code'] = $request->data['sale_code'];
-        $new_sale_adres['action_data'] = $request->data['validity_date'];
+        $new_sale_adres['code'] = $request->data['code'];
+        $new_sale_adres['action_data'] = $request->data['action_data'];
         $new_sale_adres['one_time_code'] = $request->data['one_time_code'];
 
         $new_sale_adres -> save();

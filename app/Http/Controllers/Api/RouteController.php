@@ -65,7 +65,7 @@ class RouteController extends Controller
 
     public function get_route_for_modal(Request $request)
     {
-        return route::where('id',strip_tags($request->route_id))->get();
+        return route::where('id',strip_tags($request->route_id))->first();
     }
 
     /**
@@ -515,26 +515,26 @@ class RouteController extends Controller
     }
 
 
-    public function routes_sequence(Request $request)
-    {
-        $route_num = 0;
-        foreach ($request->routes_sequence as $route) {
-            $route_id = $route['id'];
-            $route = Route::where('id',strip_tags($route_id))->first();
-            $route_num++;
-            $route['num'] = $route_num;
-            $route->update();
-        }
+    // public function routes_sequence(Request $request)
+    // {
+    //     $route_num = 0;
+    //     foreach ($request->routes_sequence as $route) {
+    //         $route_id = $route['id'];
+    //         $route = Route::where('id',strip_tags($route_id))->first();
+    //         $route_num++;
+    //         $route['num'] = $route_num;
+    //         $route->update();
+    //     }
         
-        $mtp_num=0;
-        foreach ($request->mtp_sequence as $mtp) {
-            $mtp_id = $mtp['id'];
-            $mtp = mtp::where('id',strip_tags($mtp_id))->first();
-            $mtp_num++;
-            $mtp['num'] = $mtp_num;
-            $mtp->update();
-        }
-    }
+    //     $mtp_num=0;
+    //     foreach ($request->mtp_sequence as $mtp) {
+    //         $mtp_id = $mtp['id'];
+    //         $mtp = mtp::where('id',strip_tags($mtp_id))->first();
+    //         $mtp_num++;
+    //         $mtp['num'] = $mtp_num;
+    //         $mtp->update();
+    //     }
+    // }
 
     private function route_validate($request)
     {

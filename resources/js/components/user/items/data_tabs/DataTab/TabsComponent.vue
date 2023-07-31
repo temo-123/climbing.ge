@@ -219,7 +219,7 @@
                                     :table_name="data.table_name"
                                 />
                             </thead>
-                            <thead v-else-if="data.table_name == 'Routes'">
+                            <thead v-else-if="data.table_name == 'Routes' || data.table_name == 'Ice routes'">
                                 <routeTabHeader 
                                     :table_name="data.table_name"
                                 />
@@ -461,6 +461,24 @@
                                     @restart="update"
                                 />
                             </tbody>
+                            <tbody v-else-if="data.table_name == 'Ice sectors'">
+                                <iceSectorTab
+                                    v-for="table_info in data.data"
+                                    :key="table_info.id"
+                                    :table_info="table_info"
+                                    
+                                    @restart="update"
+                                />
+                            </tbody>
+                            <tbody v-else-if="data.table_name == 'Ice routes'">
+                                <iceRouteTab
+                                    v-for="table_info in data.data"
+                                    :key="table_info.id"
+                                    :table_info="table_info"
+                                    
+                                    @restart="update"
+                                />
+                            </tbody>
                             <tbody v-else>
                                 <articlesTab
                                     v-for="table_info in data.data"
@@ -485,12 +503,14 @@
 
         <countryAddModal ref="add_country" @restart="update"/>
 
-        <!-- <orderDetalModal
+        <saleCodeModal ref="add_sale_code" @restart="update"/>
+
+        <orderDetalModal
             v-if="table_data[tab_num - 1].table_name == 'Orders'"
         />
         <editOrderStatusModal
             v-if="table_data[tab_num - 1].table_name == 'Orders'"
-        /> -->
+        />
 
         <articleQuickViewModal
             v-if="table_data[tab_num - 1].table_name == 'Orders'"
@@ -540,6 +560,8 @@ import countryTab from './tabs/CountryTabComponent.vue'
 import categoryTab from "./tabs/CategoriesTabComponent.vue";
 import postTopicTab from "./tabs/PostTopicTabComponent.vue";
 import postTab from "./tabs/PostTabComponent.vue";
+import iceSectorTab from "./tabs/IceSectorTabComponent.vue";
+import iceRouteTab from "./tabs/IceRouteTabComponent.vue";
 // import competitionTab from "./tabs/CompetitionTabComponent.vue";
 
 //import sectorModal from "./tab_modals/SectorsModalComponent.vue";
@@ -547,7 +569,8 @@ import postTab from "./tabs/PostTabComponent.vue";
 import addRoleModal from "./tab_modals/RolesAddModalComponent.vue";
 import countryAddModal from "./tab_modals/AddCountryModalComponent.vue";
 import addUserModal from "./tab_modals/UserAddModalComponent.vue";
-// import articleQuickViewModal from "./tab_modals/ArticleQuickViewModalComponen.vue";
+import articleQuickViewModal from "./tab_modals/ArticleQuickViewModalComponen.vue";
+import saleCodeModal from "./tab_modals/AddSaleCodeModalComponen.vue";
 
 export default {
     components: {
@@ -591,12 +614,14 @@ export default {
         filmTagsTab,
         saleCodesTab,
         eventTab, 
+        iceSectorTab,
+        iceRouteTab,
 
-        // sectorModal,
+        saleCodeModal,
         countryAddModal,
         addRoleModal,
         addUserModal,
-        // articleQuickViewModal,
+        articleQuickViewModal,
     },
 
     props: [
@@ -622,7 +647,7 @@ export default {
             this.$refs.control_tag[0].tag_control_modal(action)
         },
         sale_code_modal(action){
-            this.$refs.control_sale_code[0].sale_code_control_modal(action)
+            this.$refs.add_sale_code.add_sale_code_model_open()
         },
 
         add_role(){
