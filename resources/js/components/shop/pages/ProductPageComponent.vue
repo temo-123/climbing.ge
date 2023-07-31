@@ -97,21 +97,26 @@
                     <span v-html="product.local_product[0].text"></span>
                 </div>
             </div>
+
+            <hr>
+            
             <div class="row" v-if="product.global_product.mead_in_georgia">
                 <div class="col-md-12">
                     <img class="mead_in_geo_img" :src="this.publicPath + '/public/images/site_img/mead in georgia.png'" :alt="'Mead in Georgia (' + product.local_product[0].title + ')'"/>
                 </div>
             </div>
-            <p>{{ $t('shop.product desc.category') }} - </p>
-            <p>{{ $t('shop.product desc.material') }} - </p>
-            <p>{{ $t('shop.product desc.weight') }} - </p>
+
+            <hr>
+            
+            <!-- <p v-if="product.global_product.category">{{ $t('shop.product desc.category') }} - {{ product.global_product.category }}</p> -->
+            <p v-if="product.global_product.material">{{ $t('shop.product desc.material') }} - {{ product.global_product.material }}</p>
+            <p v-if="product.global_product.weight">{{ $t('shop.product desc.weight') }} - {{ product.global_product.weight }}</p>
 
             <hr>
 
             <h3>{{ $t('shop.seller.seller contact') }}</h3>
-
-            <p>{{ $t('shop.seller.email') }} - </p>
-            <p>{{ $t('shop.seller.phone') }} - </p>
+            <p v-if="this.$globalSiteData.email">{{ $t('shop.seller.email') }} - {{ this.$globalSiteData.email }}</p>
+            <p v-if="this.$globalSiteData.number">{{ $t('shop.seller.phone') }} - {{ this.$globalSiteData.number }}</p>
         </div>
 
         <!-- <div class="container">

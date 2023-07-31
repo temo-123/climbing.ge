@@ -8,6 +8,11 @@
                         <div class="aboutus">
                             <h1 v-html="this.$siteData.guid_short_description"></h1>
                             <span v-html="this.$siteData.guid_description"></span>
+                            <hr>
+
+                            <h3>{{ $t('shop.seller.seller contact') }}</h3>
+                            <p v-if="this.$globalSiteData.email">{{ $t('shop.seller.email') }} - {{ this.$globalSiteData.email }}</p>
+                            <p v-if="this.$globalSiteData.number">{{ $t('shop.seller.phone') }} - {{ this.$globalSiteData.number }}</p>
                         </div>
                     </div>
                 </div>

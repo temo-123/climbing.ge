@@ -34,7 +34,7 @@
                                             <div class="text-sm-center col-md-5 text-md-right row">
                                                 <div class="row">
                                                     <div class="col-6 col-sm-6 col-md-6 text-md-right" style="padding-top: 5px">
-                                                        <h6><strong>Price {{ colculat_items_price(product.option.price, product.quantity) }} ₾ ({{ product.option.price }} ₾)</strong></h6>
+                                                        <h6><strong>Total price {{ colculat_items_price(product.option.price, product.quantity) }} ₾ (Single product price{{ product.option.price }} ₾)</strong></h6>
                                                     </div>
                                                     <div class="col-6 col-sm-6 col-md-6">
                                                         <div class="row">
@@ -125,7 +125,7 @@
 
             get_products_cart: function() {
                 axios
-                .get("../api/cart/")
+                .get("/cart/")
                 .then(response => {
                     this.cart_items = response.data
                     this.user_id = response.data[0]['user_id']
@@ -157,7 +157,7 @@
             update_quantity(item_id, quantity){
                 this.is_quantity_updating = true
                 axios
-                .post("./api/cart/update_quantity/" + item_id, {
+                .post("/cart/update_quantity/" + item_id, {
                     quantity: quantity,
                 })
                 .then(response => {
@@ -171,7 +171,7 @@
             del_from_cart(item_id){
                 if(confirm('Are you sure, you want delite it?')){
                     axios
-                    .delete("./api/cart/" + item_id)
+                    .delete("/cart/" + item_id)
                     .then(response => {
                         this.get_products_cart()
                     })
