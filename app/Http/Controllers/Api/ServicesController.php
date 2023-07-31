@@ -113,7 +113,7 @@ class ServicesController extends Controller
         }
         else{            
             return response()->json([
-                'Data validation' => $validation_issets
+                'validation' => $validation_issets
             ], 422);
         }
     }
@@ -246,6 +246,14 @@ class ServicesController extends Controller
             $validation_issets['ru_info_validation'] = false;
         }
 
+        $global_validate = $this->adding_global_service_validate($data['global_data']);
+        if ($global_validate != null) {
+            $validation_issets['global_info_validation'] = $global_validate;
+        }
+        else{
+            $validation_issets['global_info_validation'] = false;
+        }
+
         if (!$validation_issets['ru_info_validation'] && 
             !$validation_issets['ka_info_validation'] && 
             !$validation_issets['us_info_validation']
@@ -268,7 +276,7 @@ class ServicesController extends Controller
         }
         else{            
             return response()->json([
-                'Data validation' => $validation_issets
+                'validation' => $validation_issets
             ], 422);
         }
     }

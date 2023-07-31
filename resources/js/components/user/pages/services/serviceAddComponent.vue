@@ -1,16 +1,64 @@
 <template>
     <div class="tabs"> 
-        <div class="row">
+        <div class="row justify-content-center" v-show="is_loading">
+            <div class="col-md-4">
+                <img :src="'../../../../../../public/images/site_img/loading.gif'" alt="loading">
+            </div>
+        </div>
+
+        <div class="row"  v-show="!is_loading">
             <div class="form-group">
                 <button type="submit" class="btn btn-primary" @click="go_back()">Beck</button>
             </div>
         </div>
-        <div class="row">
+        <div class="row"  v-show="!is_loading">
             <div class="form-group">  
                 <button type="submit" class="btn btn-primary" v-on:click="add_service()" >Save</button>
             </div>
         </div>
-        <div class="row">
+
+        <div class="row" v-show="!is_loading">
+            <div class="col-md-12" v-if="error.length != 0">
+                <div class="alert alert-danger" role="alert" v-if="error.global_info_validation.published">
+                    Published - {{ error.global_info_validation.published[0] }}
+                </div>
+                <div class="alert alert-danger" role="alert" v-if="error.global_info_validation.us_title_for_url_title">
+                    Us title - {{ error.global_info_validation.us_title_for_url_title[0] }}
+                </div>
+
+                <div class="alert alert-danger" role="alert" v-if="error.us_info_validation.title">
+                    English title - {{ error.us_info_validation.title[0] }}
+                </div>
+                <div class="alert alert-danger" role="alert" v-if="error.us_info_validation.short_description">
+                    English description - {{ error.us_info_validation.short_description[0] }}
+                </div>
+                <div class="alert alert-danger" role="alert" v-if="error.us_info_validation.text">
+                    English text - {{ error.us_info_validation.text[0] }}
+                </div>
+
+                <div class="alert alert-danger" role="alert" v-if="error.ka_info_validation.title">
+                    Georgian title - {{ error.ka_info_validation.title[0] }}
+                </div>
+                <div class="alert alert-danger" role="alert" v-if="error.ka_info_validation.short_description">
+                    Georgian description - {{ error.ka_info_validation.short_description[0] }}
+                </div>
+                <div class="alert alert-danger" role="alert" v-if="error.ka_info_validation.text">
+                    Georgian text - {{ error.ka_info_validation.text[0] }}
+                </div>
+
+                <div class="alert alert-danger" role="alert" v-if="error.ru_info_validation.title">
+                    Russion title - {{ error.ru_info_validation.title[0] }}
+                </div>
+                <div class="alert alert-danger" role="alert" v-if="error.ru_info_validation.short_description">
+                    Russiondescription - {{ error.ru_info_validation.short_description[0] }}
+                </div>
+                <div class="alert alert-danger" role="alert" v-if="error.ru_info_validation.text">
+                    Russion text - {{ error.ru_info_validation.text[0] }}
+                </div>
+            </div>
+        </div>
+
+        <div class="row"  v-show="!is_loading">
             <div class="col-md-12">
                 <div class="row">
                     <div class="col" >
@@ -117,14 +165,14 @@
                         <div class="form-group clearfix">
                             <label for="name" class='col-xs-2 control-label'> Short description </label>
                             <div class="col-xs-8">
-                                <ckeditor v-model="data.us_data.short_description"  :config="us_short_description_text_editor"></ckeditor>
+                                <ckeditor v-model="data.us_data.short_description"  :config="editor_config.us_short_description_text"></ckeditor>
                             </div>
                         </div>
 
                         <div class="form-group clearfix">
                             <label for="name" class='col-xs-2 control-label'> text </label>
                             <div class="col-xs-8">
-                                <ckeditor v-model="data.us_data.text"  :config="us_text_editor_config"></ckeditor>
+                                <ckeditor v-model="data.us_data.text"  :config="editor_config.us_text"></ckeditor>
                             </div>
                         </div>
                     </form>
@@ -149,14 +197,14 @@
                             <label for="name" class='col-xs-2 control-label'> Short description </label>
                             <div class="col-xs-8">
                                 <!-- <textarea type="text"  name="short_description" v-model="data.ru_data.short_description"  rows="15" class="form-cotrol md-textarea form-control"></textarea> -->
-                                <ckeditor v-model="data.ru_data.short_description" :config="ru_short_description_text_editor"></ckeditor>
+                                <ckeditor v-model="data.ru_data.short_description" :config="editor_config.ru_short_description_text"></ckeditor>
                             </div>
                         </div>
 
                         <div class="form-group clearfix">
                             <label for="name" class='col-xs-2 control-label'> text </label>
                             <div class="col-xs-8">
-                                <ckeditor v-model="data.ru_data.text"  :config="ru_text_editor_config"></ckeditor>
+                                <ckeditor v-model="data.ru_data.text"  :config="editor_config.ru_text"></ckeditor>
                             </div>
                         </div>
                     </form>
@@ -181,14 +229,14 @@
                             <label for="name" class='col-xs-2 control-label'> Short description </label>
                             <div class="col-xs-8">
                                 <!-- <textarea type="text"  name="short_description"  v-model="data.ka_data.short_description" rows="15" class="form-cotrol md-textarea form-control"></textarea> -->
-                                <ckeditor v-model="data.ka_data.short_description" :config="ka_short_description_text_editor"></ckeditor>
+                                <ckeditor v-model="data.ka_data.short_description" :config="editor_config.ka_short_description_text"></ckeditor>
                             </div>
                         </div>
 
                         <div class="form-group clearfix">
                             <label for="name" class='col-xs-2 control-label'> text </label>
                             <div class="col-xs-8">
-                                <ckeditor v-model="data.ka_data.text"  :config="ka_text_editor_config"></ckeditor>
+                                <ckeditor v-model="data.ka_data.text"  :config="editor_config.ka_text"></ckeditor>
                             </div>
                         </div>
                     </form>
@@ -214,18 +262,21 @@
 
                 service_images: [],
                 editorConfig: '',
+                is_loading: false,
 
-                us_short_description_text_editor: editor_config.get_small_editor_config(),
-                us_text_editor_config: editor_config.get_big_editor_config(),
-                us_info_editor_config: editor_config.get_big_editor_config(),
+                editor_config: {
+                    us_short_description_text: editor_config.get_small_editor_config(),
+                    us_text: editor_config.get_big_editor_config(),
+                    // us_info: editor_config.get_big_editor_config(),
 
-                ru_short_description_text_editor: editor_config.get_small_editor_config(),
-                ru_text_editor_config: editor_config.get_big_editor_config(),
-                ru_info_editor_config: editor_config.get_big_editor_config(),
+                    ru_short_description_text: editor_config.get_small_editor_config(),
+                    ru_text: editor_config.get_big_editor_config(),
+                    // ru_info: editor_config.get_big_editor_config(),
 
-                ka_short_description_text_editor: editor_config.get_small_editor_config(),
-                ka_text_editor_config: editor_config.get_big_editor_config(),
-                ka_info_editor_config: editor_config.get_big_editor_config(),
+                    ka_short_description_text: editor_config.get_small_editor_config(),
+                    ka_text: editor_config.get_big_editor_config(),
+                    // ka_info: editor_config.get_big_editor_config(),
+                },
 
                 data: {
                     global_data: {
@@ -255,7 +306,7 @@
 
                 myModal: false,
 
-                
+                error: [],
             }
         },
         mounted() {
@@ -294,6 +345,8 @@
             // },
 
             add_service() {
+                this.is_loading = true
+
                 this.data.global_data.us_title_for_url_title = this.data.us_data.title
                 let formData = new FormData();
 
@@ -318,9 +371,17 @@
                         this.go_back(true)
                     }
                 })
-                .catch(
-                    error => console.log(error)
-                );
+                .catch(error => {
+                    if (error.response.status == 422) {
+                        this.error = error.response.data.validation
+                    }
+                    else{
+                        alert(error)
+                    }
+                })
+                .finally(
+                    this.is_loading = false
+                )
             },
 
             sand_notification() {
