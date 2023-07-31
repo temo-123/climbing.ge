@@ -6,7 +6,7 @@
         <td>|</td>
         <td>{{table_info.id}}</td>
         <td>|</td>
-        <td>{{table_info.title}} </td>
+        <td class="cursor_zoom_in" @click="show_local_image_modal(table_info.id)">{{table_info.title}} </td>
         <td>|</td>
         <td>
             <router-link :to="{name: 'sectorLocalImagesListEdit', params: { id: table_info.id } }" v-if="$can('edit', 'sector_local_images')"> 
@@ -18,14 +18,22 @@
         <td>
             <button type="submit" class="btn btn-danger" @click="del_image(table_info.id)" v-if="$can('del', 'sector_local_images')"><i class="fa fa-trash" aria-hidden="true"></i></button>
         </td>
+
+        <sectorLocalImageModal 
+            ref="sector_local_image_modal"
+        />
     </tr>
 </template>
 
 <script>
+    import sectorLocalImageModal from "../tab_modals/SectorLocalImagesModalComponent"
     export default {
         props: [
             'table_info',
         ],
+        components:{
+            sectorLocalImageModal
+        },
         mountid(){
             // console.log(this.table_info)
         },
@@ -42,6 +50,9 @@
                     .catch(error => console.log(error))
                 }
             },
+            show_local_image_modal(id){
+                this.$refs.sector_local_image_modal.show_sector_local_image_modal(id)
+            }
         }
     }
 </script>

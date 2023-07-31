@@ -32,9 +32,16 @@ class SectorLocalImagesController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function get_sector_local_img_for_modal($id)
     {
-        //
+        $sector_local_image = Sector_local_image::where("id", "=", $id)->first();
+
+        $data = [
+            "image" => $sector_local_image,
+            "sectors" => $sector_local_image->sectors
+        ];
+
+        return $data;
     }
 
     /**

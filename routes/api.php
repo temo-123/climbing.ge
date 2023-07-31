@@ -445,7 +445,9 @@ Route::group(['namespace'=>'Api'], function() {
     Route::post('/sector_local_images/update_image/{image_id}', 'SectorLocalImagesController@update_image');
     Route::get('/get_editing_sectors/{image_id}', 'SectorLocalImagesController@get_editing_sectors');
     Route::delete('/del_image_sector_from_db/{image_id}/{sector_id}', 'SectorLocalImagesController@del_image_sector_from_db');
-
+    Route::controller(SectorLocalImagesController::class)->prefix('sector_local_img')->group( function() {
+        Route::get('/get_sector_local_img_for_modal/{image_id}', 'get_sector_local_img_for_modal');
+    });
     /*
     *   Users routes
     */
