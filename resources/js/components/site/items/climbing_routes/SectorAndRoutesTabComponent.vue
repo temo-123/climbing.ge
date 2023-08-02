@@ -166,336 +166,336 @@ export default {
 </script>
 
 <style lang="scss">
-    .fade {
-        opacity: 1;
-        background: #000000a3 !important;
-    }
-    body.modal-open {
-        margin-right: 0;
-    }
-    .modal-dialog {
-        margin-top: 15em;
-    }
-    @media screen and (min-width: 768px) {
-        .modal-dialog {
-            width: 75% !important;
-        }
-    }
-    .modal-footer {
-        text-align: left;
-    }
-
-    .route_detal {
-        margin: 0 0 0px !important;
-    }
-    .mtp_name h3 {
-        margin: 0 0 0px !important;
-        text-align: left !important;
-    }
-
-    .spot_rocks_image {
-        width: 100%;
-    }
-
-    .sector_images {
-        float: left;
-        margin: 0.25%;
-    }
-    .sector_images_1 {
-        width: 99%;
-    }
-    .sector_images_2 {
-        width: 49%;
-    }
-    .sector_images_3 {
-        width: 32.6%;
-    }
-    .sector_images_4 {
-        width: 24.1%;
-    }
-    .sector_images_5 {
-        width: 19.5%;
-    }
-    .sector_images_6 {
-        width: 16%;
-    }
-    .sector_images_7 {
-        width: 14, 0%;
-    }
-    .sector_images_8 {
-        width: 12%;
-    }
-    .sector_images_9 {
-        width: 10.5%;
-    }
-    // .sector_images_1 {
-    //     width: 9.5%;
+    // .fade {
+    //     opacity: 1;
+    //     background: #000000a3 !important;
+    // }
+    // body.modal-open {
+    //     margin-right: 0;
+    // }
+    // .modal-dialog {
+    //     margin-top: 15em;
+    // }
+    // @media screen and (min-width: 768px) {
+    //     .modal-dialog {
+    //         width: 75% !important;
+    //     }
+    // }
+    // .modal-footer {
+    //     text-align: left;
     // }
 
-    /*
-    *
-    * ===========================================================
-    *     HERO SECTION  https://bootsnipp.com/snippets/VgkqV
-    * ===========================================================
-    *
-    */
-    .hero {
-        padding: 6.25rem 0px !important;
-        margin: 0px !important;
-    }
-    .cardbox {
-        border-radius: 3px;
-        margin-bottom: 20px;
-        padding: 0px !important;
-        border: 1px;
-        border-style: solid;
-        border-color: rgb(186 186 186);
-        border-radius: 1em;
-    }
+    // .route_detal {
+    //     margin: 0 0 0px !important;
+    // }
+    // .mtp_name h3 {
+    //     margin: 0 0 0px !important;
+    //     text-align: left !important;
+    // }
 
-    /* ------------------------------- */
-    /* Cardbox Heading
-    ---------------------------------- */
-    .cardbox .cardbox-heading {
-        padding: 16px 16px 16px 0;
-        margin: 0;
-    }
-    .cardbox .btn-flat.btn-flat-icon {
-        border-radius: 50%;
-        font-size: 24px;
-        height: 32px;
-        width: 32px;
-        padding: 0;
-        overflow: hidden;
-        color: #fff !important;
-        background: #b5b6b6;
+    // .spot_rocks_image {
+    //     width: 100%;
+    // }
 
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-        text-align: center;
-    }
-    .cardbox .float-right .dropdown-menu {
-        position: relative;
-        left: 13px !important;
-    }
-    .cardbox .float-right a:hover {
-        background: #f4f4f4 !important;
-    }
-    .cardbox .float-right a.dropdown-item {
-        display: block;
-        width: 100%;
-        padding: 4px 0px 4px 10px;
-        clear: both;
-        font-weight: 400;
-        font-family: "Abhaya Libre", serif;
-        font-size: 14px !important;
-        color: #848484;
-        text-align: inherit;
-        white-space: nowrap;
-        background: 0 0;
-        border: 0;
-    }
+    // .sector_images {
+    //     float: left;
+    //     margin: 0.25%;
+    // }
+    // .sector_images_1 {
+    //     width: 99%;
+    // }
+    // .sector_images_2 {
+    //     width: 49%;
+    // }
+    // .sector_images_3 {
+    //     width: 32.6%;
+    // }
+    // .sector_images_4 {
+    //     width: 24.1%;
+    // }
+    // .sector_images_5 {
+    //     width: 19.5%;
+    // }
+    // .sector_images_6 {
+    //     width: 16%;
+    // }
+    // .sector_images_7 {
+    //     width: 14, 0%;
+    // }
+    // .sector_images_8 {
+    //     width: 12%;
+    // }
+    // .sector_images_9 {
+    //     width: 10.5%;
+    // }
+    // // .sector_images_1 {
+    // //     width: 9.5%;
+    // // }
 
-    /* ------------------------------- */
-    /* Media Section
-    ---------------------------------- */
-    .media {
-        display: -ms-flexbox;
-        display: flex;
-        -ms-flex-align: start;
-        align-items: flex-start;
-    }
-    .d-flex {
-        display: -ms-flexbox !important;
-        display: flex !important;
-    }
-    .media .mr-3 {
-        margin-right: 1rem !important;
-    }
-    .media img {
-        width: 48px !important;
-        height: 48px !important;
-        padding: 2px;
-        border: 2px solid #f4f4f4;
-    }
-    .media-body {
-        -ms-flex: 1;
-        flex: 1;
-        padding: 0.4rem !important;
-    }
-    .media-body p {
-        font-family: "Rokkitt", serif;
-        font-weight: 500 !important;
-        font-size: 14px;
-        color: #88898a;
+    // /*
+    // *
+    // * ===========================================================
+    // *     HERO SECTION  https://bootsnipp.com/snippets/VgkqV
+    // * ===========================================================
+    // *
+    // */
+    // .hero {
+    //     padding: 6.25rem 0px !important;
+    //     margin: 0px !important;
+    // }
+    // .cardbox {
+    //     border-radius: 3px;
+    //     margin-bottom: 20px;
+    //     padding: 0px !important;
+    //     border: 1px;
+    //     border-style: solid;
+    //     border-color: rgb(186 186 186);
+    //     border-radius: 1em;
+    // }
 
-        float: left;
-    }
-    .media-body small span {
-        font-family: "Rokkitt", serif;
-        font-size: 12px;
-        color: #aaa;
-        margin-right: 10px;
-    }
+    // /* ------------------------------- */
+    // /* Cardbox Heading
+    // ---------------------------------- */
+    // .cardbox .cardbox-heading {
+    //     padding: 16px 16px 16px 0;
+    //     margin: 0;
+    // }
+    // .cardbox .btn-flat.btn-flat-icon {
+    //     border-radius: 50%;
+    //     font-size: 24px;
+    //     height: 32px;
+    //     width: 32px;
+    //     padding: 0;
+    //     overflow: hidden;
+    //     color: #fff !important;
+    //     background: #b5b6b6;
 
-    /* ------------------------------- */
-    /* Cardbox Item
-    ---------------------------------- */
-    .cardbox .cardbox-item {
-        position: relative;
-        display: block;
-    }
-    /* .cardbox .cardbox-item img{
-    } */
-    .img-responsive {
-        display: block;
-        max-width: 100%;
-        height: auto;
-    }
-    .fw {
-        width: 100% !important;
-        height: auto;
-    }
+    //     display: flex;
+    //     flex-direction: column;
+    //     justify-content: center;
+    //     align-items: center;
+    //     text-align: center;
+    // }
+    // .cardbox .float-right .dropdown-menu {
+    //     position: relative;
+    //     left: 13px !important;
+    // }
+    // .cardbox .float-right a:hover {
+    //     background: #f4f4f4 !important;
+    // }
+    // .cardbox .float-right a.dropdown-item {
+    //     display: block;
+    //     width: 100%;
+    //     padding: 4px 0px 4px 10px;
+    //     clear: both;
+    //     font-weight: 400;
+    //     font-family: "Abhaya Libre", serif;
+    //     font-size: 14px !important;
+    //     color: #848484;
+    //     text-align: inherit;
+    //     white-space: nowrap;
+    //     background: 0 0;
+    //     border: 0;
+    // }
 
-    /* ------------------------------- */
-    /* Cardbox Base
-    ---------------------------------- */
-    .cardbox-base {
-        border-bottom: 2px solid #f4f4f4;
-    }
-    .cardbox-base ul {
-        /* margin: 10px 0px 10px 15px!important;  */
-        padding: 10px !important;
-        font-size: 0px;
-        display: inline-block;
-    }
-    .cardbox-base li {
-        list-style: none;
-        margin: 0px 0px 0px -8px !important;
-        padding: 0px 0px 0px 0px !important;
-        display: inline-block;
-    }
+    // /* ------------------------------- */
+    // /* Media Section
+    // ---------------------------------- */
+    // .media {
+    //     display: -ms-flexbox;
+    //     display: flex;
+    //     -ms-flex-align: start;
+    //     align-items: flex-start;
+    // }
+    // .d-flex {
+    //     display: -ms-flexbox !important;
+    //     display: flex !important;
+    // }
+    // .media .mr-3 {
+    //     margin-right: 1rem !important;
+    // }
+    // .media img {
+    //     width: 48px !important;
+    //     height: 48px !important;
+    //     padding: 2px;
+    //     border: 2px solid #f4f4f4;
+    // }
+    // .media-body {
+    //     -ms-flex: 1;
+    //     flex: 1;
+    //     padding: 0.4rem !important;
+    // }
+    // .media-body p {
+    //     font-family: "Rokkitt", serif;
+    //     font-weight: 500 !important;
+    //     font-size: 14px;
+    //     color: #88898a;
 
-    .cardbox-base li a {
-        margin: 0px !important;
-        padding: 0px !important;
-    }
-    .cardbox-base li a i {
-        position: relative;
-        top: 4px;
-        font-size: 26px;
-        color: #8d8d8d;
-        margin-right: 15px;
-    }
-    .cardbox-base li a i :hover {
-        color: #00c4cf;
-        cursor: pointer;
-    }
-    .cardbox-base li a span {
-        font-family: "Rokkitt", serif;
-        font-size: 14px;
-        color: #8d8d8d;
-        /* margin-left: 20px; */
-        position: relative;
-        /* top: 5px;  */
-    }
-    .cardbox-base li a em {
-        font-family: "Rokkitt", serif;
-        font-size: 14px;
-        color: #8d8d8d;
-        position: relative;
-        top: 3px;
-    }
-    .cardbox-base li a img {
-        width: 25px;
-        height: 25px;
-        margin: 0px !important;
-        border: 2px solid #fff;
-    }
+    //     float: left;
+    // }
+    // .media-body small span {
+    //     font-family: "Rokkitt", serif;
+    //     font-size: 12px;
+    //     color: #aaa;
+    //     margin-right: 10px;
+    // }
 
-    /* ------------------------------- */
-    /* Cardbox Comments
-    ---------------------------------- */
-    .cardbox-comments {
-        padding: 10px 0 0 0 !important;
-        /* font-size: 0px;	 */
-        text-align: center;
-        display: inline-block;
-    }
-    .cardbox-comments .comment-avatar img {
-        margin-top: 1px;
-        margin-right: 10px;
-        position: relative;
-        display: inline-block;
-        text-align: center;
-        width: 40px;
-        height: 40px;
-        /* float: left; */
-    }
-    .cardbox-comments .comment-body {
-        overflow: auto;
-    }
-    .post_comment_porm {
-        position: relative;
-        right: -45px;
-        top: -40px;
-        margin-bottom: -34px;
-        border: 4px solid #f4f4f4;
-        width: 100%;
-        overflow: hidden;
-        margin-right: 68px;
-    }
-    .post_comment_porm input[type="text"] {
-        background-color: #fff;
-        line-height: 10px;
-        padding: 10px 60px 8px 10px;
-        border: none;
-        border-radius: 4px;
-        width: 350px;
-        font-family: "Rokkitt", serif;
-        font-size: 14px;
-        color: #8d8d8d;
-        height: inherit;
-        font-weight: 700;
-    }
-    .post_comment_porm button {
-        position: absolute;
-        right: 0;
-        top: 0px;
-        border: none;
-        background-color: transparent;
-        color: #bbbbbb;
-        padding: 15px 25px;
-        cursor: pointer;
+    // /* ------------------------------- */
+    // /* Cardbox Item
+    // ---------------------------------- */
+    // .cardbox .cardbox-item {
+    //     position: relative;
+    //     display: block;
+    // }
+    // /* .cardbox .cardbox-item img{
+    // } */
+    // .img-responsive {
+    //     display: block;
+    //     max-width: 100%;
+    //     height: auto;
+    // }
+    // .fw {
+    //     width: 100% !important;
+    //     height: auto;
+    // }
 
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-        text-align: center;
-    }
-    .post_comment_porm button i {
-        font-size: 20px;
-        line-height: 30px;
-        display: block;
-    }
-    .m-0 {
-        margin: 0% !important;
-    }
+    // /* ------------------------------- */
+    // /* Cardbox Base
+    // ---------------------------------- */
+    // .cardbox-base {
+    //     border-bottom: 2px solid #f4f4f4;
+    // }
+    // .cardbox-base ul {
+    //     /* margin: 10px 0px 10px 15px!important;  */
+    //     padding: 10px !important;
+    //     font-size: 0px;
+    //     display: inline-block;
+    // }
+    // .cardbox-base li {
+    //     list-style: none;
+    //     margin: 0px 0px 0px -8px !important;
+    //     padding: 0px 0px 0px 0px !important;
+    //     display: inline-block;
+    // }
 
-    /* ------------------------------- */
-    /* Author
-    ---------------------------------- */
-    .author a {
-        font-family: "Rokkitt", serif;
-        font-size: 16px;
-        color: #00c4cf;
-    }
-    .author p {
-        font-family: "Rokkitt", serif;
-        font-size: 16px;
-        color: #8d8d8d;
-    }
+    // .cardbox-base li a {
+    //     margin: 0px !important;
+    //     padding: 0px !important;
+    // }
+    // .cardbox-base li a i {
+    //     position: relative;
+    //     top: 4px;
+    //     font-size: 26px;
+    //     color: #8d8d8d;
+    //     margin-right: 15px;
+    // }
+    // .cardbox-base li a i :hover {
+    //     color: #00c4cf;
+    //     cursor: pointer;
+    // }
+    // .cardbox-base li a span {
+    //     font-family: "Rokkitt", serif;
+    //     font-size: 14px;
+    //     color: #8d8d8d;
+    //     /* margin-left: 20px; */
+    //     position: relative;
+    //     /* top: 5px;  */
+    // }
+    // .cardbox-base li a em {
+    //     font-family: "Rokkitt", serif;
+    //     font-size: 14px;
+    //     color: #8d8d8d;
+    //     position: relative;
+    //     top: 3px;
+    // }
+    // .cardbox-base li a img {
+    //     width: 25px;
+    //     height: 25px;
+    //     margin: 0px !important;
+    //     border: 2px solid #fff;
+    // }
+
+    // /* ------------------------------- */
+    // /* Cardbox Comments
+    // ---------------------------------- */
+    // .cardbox-comments {
+    //     padding: 10px 0 0 0 !important;
+    //     /* font-size: 0px;	 */
+    //     text-align: center;
+    //     display: inline-block;
+    // }
+    // .cardbox-comments .comment-avatar img {
+    //     margin-top: 1px;
+    //     margin-right: 10px;
+    //     position: relative;
+    //     display: inline-block;
+    //     text-align: center;
+    //     width: 40px;
+    //     height: 40px;
+    //     /* float: left; */
+    // }
+    // .cardbox-comments .comment-body {
+    //     overflow: auto;
+    // }
+    // .post_comment_porm {
+    //     position: relative;
+    //     right: -45px;
+    //     top: -40px;
+    //     margin-bottom: -34px;
+    //     border: 4px solid #f4f4f4;
+    //     width: 100%;
+    //     overflow: hidden;
+    //     margin-right: 68px;
+    // }
+    // .post_comment_porm input[type="text"] {
+    //     background-color: #fff;
+    //     line-height: 10px;
+    //     padding: 10px 60px 8px 10px;
+    //     border: none;
+    //     border-radius: 4px;
+    //     width: 350px;
+    //     font-family: "Rokkitt", serif;
+    //     font-size: 14px;
+    //     color: #8d8d8d;
+    //     height: inherit;
+    //     font-weight: 700;
+    // }
+    // .post_comment_porm button {
+    //     position: absolute;
+    //     right: 0;
+    //     top: 0px;
+    //     border: none;
+    //     background-color: transparent;
+    //     color: #bbbbbb;
+    //     padding: 15px 25px;
+    //     cursor: pointer;
+
+    //     display: flex;
+    //     flex-direction: column;
+    //     justify-content: center;
+    //     align-items: center;
+    //     text-align: center;
+    // }
+    // .post_comment_porm button i {
+    //     font-size: 20px;
+    //     line-height: 30px;
+    //     display: block;
+    // }
+    // .m-0 {
+    //     margin: 0% !important;
+    // }
+
+    // /* ------------------------------- */
+    // /* Author
+    // ---------------------------------- */
+    // .author a {
+    //     font-family: "Rokkitt", serif;
+    //     font-size: 16px;
+    //     color: #00c4cf;
+    // }
+    // .author p {
+    //     font-family: "Rokkitt", serif;
+    //     font-size: 16px;
+    //     color: #8d8d8d;
+    // }
 </style>

@@ -39,21 +39,48 @@
                         </thead>
 
                         <tbody>
-                            <iceRouteTab v-for="route in ice_sector.routes" :key="route.id" :ice_route_prop="route"/>
+                            <tr v-for="ice_route in ice_sector.routes" :key="ice_route.id">
+                                <td>{{ ice_route.num }}</td>
+                                <td>{{ ice_route.name }}</td>
+
+                                <td v-if="ice_route.height">{{ ice_route.height }}</td>
+                                <td v-else>?</td>
+
+                                <td v-if="ice_route.category == 'dry'">
+                                    <span v-if="ice_route.bolts">{{ ice_route.bolts }}</span>
+                                    <span v-else>?</span>
+                                </td>
+                                <td v-else-if="ice_route.category == 'ice'">{{ $t("guide.route.screws") }}</td>
+
+                                <td>{{ ice_route.grade }}</td>
+                                
+                                <td @click="show_route_modal(ice_route.id)">
+                                    <a style="margin-top: -5%; font-size: 120%">
+                                        <i class="fa fa-info" aria-hidden="true"></i>
+                                    </a>
+                                </td>
+                            </tr>
+                            <!-- <iceRouteTab v-for="route in ice_sector.routes" :key="route.id" :ice_route_prop="route"/> -->
                         </tbody>
                     </table>
                 </div>
             </span>
         </div>
 
+
+        <iceRouteModal
+            ref="ice_sector_modal"
+        />
     </div>
 </template>
 
 <script>
 import StackModal from "@innologica/vue-stackable-modal"; //https://innologica.github.io/vue-stackable-modal/#sample-css
 
-import iceRouteTab from "./items/IceRoutesTabComponent.vue"
+// import iceRouteTab from "./items/IceRoutesTabComponent.vue"
 import openImg from "../ImageOpenComponent.vue";
+
+import iceRouteModal from "./items/modals/IceRouteModalComponent.vue";
 
 export default {
     mixins: [
@@ -62,8 +89,9 @@ export default {
     ],
     components: {
         StackModal,
-        iceRouteTab,
+        // iceRouteTab,
         openImg,
+        iceRouteModal
     },
     props: ["article_id"],
     data: function () {
@@ -98,6 +126,10 @@ export default {
         update(id){
             this.id = this.article_id
             this.get_ice_sectors();
+        },
+
+        show_route_modal(ice_route_id){
+            this.$refs.ice_sector_modal.show_ice_route_modal(ice_route_id)
         },
         
         get_ice_sectors() {
