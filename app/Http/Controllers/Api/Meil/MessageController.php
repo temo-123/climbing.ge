@@ -66,7 +66,8 @@ class MessageController extends Controller
 
         $send_mail = Site::latest()->get(["email"]);
         
-        Mail::to($send_mail)->send(new Message($EmailArray));
+        // Mail::to($send_mail)->send(new Message($EmailArray));
+        Mail::to($send_mail[0]->email)->send(new Message($EmailArray));
         
         return ["status" => "Your message is sendid!"];
     }
