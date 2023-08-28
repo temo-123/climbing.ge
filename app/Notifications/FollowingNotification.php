@@ -23,6 +23,7 @@ class FollowingNotification extends Mailable
     {
         $this->email = $EmailArray['email'];
         $this->msg = $EmailArray['message'];
+        $this->unfollow_url = $EmailArray['unfollow_url'];
         $this->from_site = $EmailArray['from_site'];
     }
 
@@ -35,24 +36,25 @@ class FollowingNotification extends Mailable
     {
         $service = $this->check_site($this->from_site);
 
-        $subject = 'User message from the site '.$service;
+        $subject = 'Following '.$service;
         
-        return $this->markdown('/emails/FollowingNotificationMessage')->with([
+        return $this->markdown('emails.FollowingNotificationMessage')->with([
             'email'=>$this->email,
             'msg'=>$this->msg,
+            'unfollow_url'=>$this->unfollow_url,
             'from_site'=>$service,
         ])->subject($subject);
     }
 
     public function check_site($site_id)
     {
-        if ($site_id == 1) {
+        if ($site_id == 'guid') {
             return 'climbing.ge';
         }
-        else if ($site_id == 2) {
+        else if ($site_id == 'shop') {
             return 'shop.climbing.ge';
         } 
-        else {
+        else if ($site_id == 'cinema') {
             return 'films.climbing.ge';
         }
         

@@ -262,11 +262,17 @@
         "404": {
             "title": "Oops! Error 404! Page Not Found",
             "description": "Sorry, an error has occured, Requested page not found!",
-            "go_homehome": "Go to home page"
+            "go_home": "Go to home page"
         },
         "host_error": {
             "title": "Oops! Site configuratuion or hoste have some error!!!",
             "description": "Sorry, an error has occured, Site configuratuion or hoste have some error! Contact to suport!"
         }
+    },
+
+    "unfollow": {
+        "title": "Unfollow",
+        "description": "We are sorry that you are no longer with us!",
+        "go_home": "Go to home page"
     }
 }

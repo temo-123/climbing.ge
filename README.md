@@ -17,7 +17,6 @@
 
 [films.climbing.ge](/docs/FILMS.md) - This is a climbing films portal (Coming soon)
 
-
 <h2>Admin & user dashboard, also CMS system: user.climbing.ge</h2>
 
 [user.climbing.ge](/docs/USER_PAGE.md) - Your privat room
@@ -39,10 +38,12 @@
 ```bash
 php artisan migrate --seed 
 ```
+<h2>Worning</h2>
+<p>If server annd all component install socsesful but returning ERROR 500, check storage folder permission.</p>
 
 [climibng.ge](/docs/PLAGINS.md) - In this file you can see some plafins witch we use in this project
 
-<!-- Ctrl+Shift+V - for demo test  -->
+<!-- Ctrl+Shift+V - for demo test -->
 
 <h5>Progect version 3.5.3 (Disain version, API version, Relise version)</h5>
 <h2 align="center">Best wishes from climbing.ge</h2>

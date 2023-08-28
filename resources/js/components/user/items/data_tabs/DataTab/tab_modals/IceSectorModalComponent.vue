@@ -10,7 +10,7 @@
             <div class="root">
                 <div class="col-md-12">
                     <div class="row">
-                        <router-link class="btn btn-primary" :to="{ name: 'sectorEdit', params: { id: activ_sector_id } }" v-if="$can('edit', 'sector')" >Edit This Sector</router-link>
+                        <router-link class="btn btn-primary" :to="{ name: 'iceSectorEdit', params: { id: activ_sector_id } }" v-if="$can('edit', 'sector')" >Edit This Sector</router-link>
                     </div>
                     <div class="row">
                         <!-- <img v-for="image in sector_images" :key="image.id" :src="'/public/images/sector_img/'+image.image" alt="image"> -->

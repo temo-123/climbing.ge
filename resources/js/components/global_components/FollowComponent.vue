@@ -4,7 +4,12 @@
             <h4  class="footer_title">{{ $t("global.footer.follow") }}</h4>
         </div>
         <div class="form-group row">
-            <div class="col-md-10">
+
+            <div class="col-md-10" v-if="loading">
+                <img :src="'../../../public/images/site_img/loading.gif'" alt="loading">
+            </div>
+
+            <div class="col-md-10" v-if="!loading">
                 <form name="contact-form" method="POST" id="global_form" ref="myForm" @submit.prevent="follow" enctyp="multipart/form-data">
                     <input type="text" v-model="email" name="email" class="form-control footer_input"> 
 
@@ -86,7 +91,10 @@
                 .catch(error =>{
                     if (error.response.status == 422) {
                         this.errors = error.response.data.errors
-                        this.isLoading = false
+                        this.loading = false
+                    }
+                    else if (error.response.status == 419){
+                        alert("CSRF token mismatch. Ples reload page and try again!")
                     }
                 })
                 .finally(() => (this.loading = false));

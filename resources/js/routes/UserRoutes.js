@@ -36,6 +36,7 @@ const router = new VueRouter({
 
         { path: '/cart', name: 'cart', component: load('cartPageComponent') },
         { path: '/gallery', name: 'gallery', component: load('GalleryPageComponent') },
+        { path: '/site_folloers', name: 'site_folloers', component: load('SiteFolloersListPageComponent') },
         { path: '/options', name: 'options', component: load('optionsPageComponent') },
         { path: '/users_list', name: 'usersList', component: load('usersListPageComponent') },
 

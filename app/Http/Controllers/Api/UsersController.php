@@ -11,7 +11,7 @@ use Mail;
 use Hash;
 
 use App\Models\User;
-use App\Models\Following_users;
+// use App\Models\Following_users;
 use App\Models\Role;
 use App\Models\Permission;
 use App\Models\user_notification;
@@ -21,7 +21,7 @@ use App\Models\User_permission;
 
 use App\Services\ImageControllService;
 
-use App\Notifications\FollowingNotification;
+// use App\Notifications\FollowingNotification;
 // use App\Mail\Message;
 
 class UsersController extends Controller
@@ -37,15 +37,15 @@ class UsersController extends Controller
         return User::latest('id')->get();
     }
 
-    public function get_following_users_list()
-    {
-        return following_users::latest('id')->get();
-    }
+    // public function get_following_users_list()
+    // {
+    //     return following_users::latest('id')->get();
+    // }
 
-    public function get_followers_list()
-    {
-        return following_users::latest('id')->get();
-    }
+    // public function get_followers_list()
+    // {
+    //     return following_users::latest('id')->get();
+    // }
 
     public function create_user_by_admin(Request $request)
     {
@@ -90,39 +90,39 @@ class UsersController extends Controller
         }
     }
 
-    public function follow(Request $request)
-    {
-        if ($request -> isMethod('post')) {
-            if(Following_users::where('email','=',$request->email)->count()){
-                return("You are already subscribed");
-            }
-            else{
-                if (auth()->user() && $request->email == auth()->user()->email) {
-                    $follow = new Following_users();
-                    $follow['email']=$request->email;
-                    $follow['service']=$request->service_id;
-                    $follow['user_id']=auth()->user();
-                    $follow -> save();
-                }
-                else {
-                    $follow = new Following_users();
-                    $follow['email']=$request->email;
-                    $follow['service']=$request->service_id;
-                    $follow -> save();
-                }
+    // public function follow(Request $request)
+    // {
+    //     if ($request -> isMethod('post')) {
+    //         if(Following_users::where('email','=',$request->email)->count()){
+    //             return("You are already subscribed");
+    //         }
+    //         else{
+    //             if (auth()->user() && $request->email == auth()->user()->email) {
+    //                 $follow = new Following_users();
+    //                 $follow['email']=$request->email;
+    //                 $follow['service']=$request->service_id;
+    //                 $follow['user_id']=auth()->user();
+    //                 $follow -> save();
+    //             }
+    //             else {
+    //                 $follow = new Following_users();
+    //                 $follow['email']=$request->email;
+    //                 $follow['service']=$request->service_id;
+    //                 $follow -> save();
+    //             }
 
-                $EmailArray = array(
-                    'email' => "rrrr@ggg.ggg",
-                    'message' => 'test',
-                    'from_site' => $request->service_id,
-                );
+    //             $EmailArray = array(
+    //                 'email' => "rrrr@ggg.ggg",
+    //                 'message' => 'test',
+    //                 'from_site' => $request->service_id,
+    //             );
 
-                Mail::to($request->email)->send(new FollowingNotification($EmailArray));
+    //             Mail::to($request->email)->send(new FollowingNotification($EmailArray));
 
-                return("Tenk you for following! :) Plis check your emeil!");
-            }
-        }
-    }
+    //             return("Tenk you for following! :) Plis check your emeil!");
+    //         }
+    //     }
+    // }
 
 
     public function update_password(Request $request)

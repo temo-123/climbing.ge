@@ -153,6 +153,12 @@ const router = new VueRouter({
                     component: load("SerchPageComponent"),
                 },
 
+                {
+                    path: "unfollow/:id",
+                    name: "unfollow",
+                    component: load("UnfollowComponent"),
+                },
+
                 { path: "*", name: "NotFound", component: NotFound },
             ],
         },

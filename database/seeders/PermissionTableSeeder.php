@@ -376,6 +376,14 @@ class PermissionTableSeeder extends Seeder
                 'subject' => 'ice_route',
                 'action' => 'edit',
             ],
+            [
+                'subject' => 'site_folloers',
+                'action' => 'show',
+            ],
+            [
+                'subject' => 'site_folloers',
+                'action' => 'del',
+            ],
         );
 
         foreach ($permissions as $permission) {

@@ -229,8 +229,16 @@ export const navbar = {
                         ]
                     },
                     {
+                        name: "Site followers",
+                        route: "/site_folloers",
+                        permissions: [
+                            ['show', 'site_folloers'],
+                            ['del', 'site_folloers']
+                        ]
+                    },
+                    {
                         name: "Gallery",
-                        route: "gallery",
+                        route: "/gallery",
                         permissions: [
                             ['add', 'gallery'],
                             ['edit', 'gallery'],

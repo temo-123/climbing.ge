@@ -219,6 +219,11 @@
                                     :table_name="data.table_name"
                                 />
                             </thead>
+                            <thead v-else-if="data.table_name == 'Site Followers'">
+                                <SiteFollowersTabHeader 
+                                    :table_name="data.table_name"
+                                />
+                            </thead>
                             <thead v-else-if="data.table_name == 'Routes' || data.table_name == 'Ice routes'">
                                 <routeTabHeader 
                                     :table_name="data.table_name"
@@ -479,6 +484,15 @@
                                     @restart="update"
                                 />
                             </tbody>
+                            <tbody v-else-if="data.table_name == 'Site Followers'">
+                                <siteFollowersTab
+                                    v-for="table_info in data.data"
+                                    :key="table_info.id"
+                                    :table_info="table_info"
+                                    
+                                    @restart="update"
+                                />
+                            </tbody>
                             <tbody v-else>
                                 <articlesTab
                                     v-for="table_info in data.data"
@@ -536,6 +550,7 @@ import sectorLocalImageTabHeader from "./tab_header/SectorLocalImageTabHeaderCom
 import eventTabHeader from "./tab_header/EventTabHeaderComponent.vue"
 import regionTabHeader from "./tab_header/RegionTabHeaderComponrent.vue"
 import routeTabHeader from "./tab_header/RouteTabHeaderComponrent.vue"
+import SiteFollowersTabHeader from "./tab_header/SiteFollowersTabHeaderComponent.vue"
 
 import eventTab from "./tabs/EventTabComponent.vue";
 import sectorLocalImageTab from "./tabs/SectorLocalImageTabComponent.vue";
@@ -562,6 +577,7 @@ import postTopicTab from "./tabs/PostTopicTabComponent.vue";
 import postTab from "./tabs/PostTabComponent.vue";
 import iceSectorTab from "./tabs/IceSectorTabComponent.vue";
 import iceRouteTab from "./tabs/IceRouteTabComponent.vue";
+import siteFollowersTab from "./tabs/SiteFollowersTabComponent.vue";
 // import competitionTab from "./tabs/CompetitionTabComponent.vue";
 
 //import sectorModal from "./tab_modals/SectorsModalComponent.vue";
@@ -590,6 +606,8 @@ export default {
         eventTabHeader,
         regionTabHeader,
         routeTabHeader,
+        routeTabHeader,
+        SiteFollowersTabHeader,
 
         sectorLocalImageTab,
         routeTab,
@@ -616,6 +634,7 @@ export default {
         eventTab, 
         iceSectorTab,
         iceRouteTab,
+        siteFollowersTab,
 
         saleCodeModal,
         countryAddModal,

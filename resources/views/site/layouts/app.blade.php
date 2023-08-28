@@ -72,6 +72,7 @@
         {{-- @include('site.components.navbar') --}}
 
         @yield('content')
+        {{-- {{ url(mix('assets/js/app.js')) }} --}}
         
         {{-- @include('site.components.footer') --}}
     </div>

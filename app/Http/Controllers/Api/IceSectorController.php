@@ -48,7 +48,7 @@ class IceSectorController extends Controller
 
     public function get_article_sectors(Request $request)
     {
-        $ice_sectors = Ice_sector::where('article_id',strip_tags($request->article_id))->get();
+        $ice_sectors = Ice_sector::where('article_id',strip_tags($request->article_id))->where('published',strip_tags(1))->get();
 
         // dd($request->article_id, $ice_sectors);
 

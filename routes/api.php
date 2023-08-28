@@ -474,9 +474,12 @@ Route::group(['namespace'=>'Api'], function() {
     Route::get('/post_user/{user_id}', 'UsersController@get_post_user');
     Route::post('user_image_update/{user_id}', 'UsersController@user_image_update');
     
-    Route::get('/followers_list', 'UsersController@get_followers_list');
-    Route::get('/following_users_list', 'UsersController@get_following_users_list');
-    Route::post('/follow/{service_id}', 'UsersController@follow');
+    // Route::get('/followers_list', 'ServiceFollowing@get_followers_list');
+    Route::get('/following_users_list', 'ServiceFollowing@get_following_users_list');
+    Route::controller(ServiceFollowing::class)->prefix('follow')->group( function() {
+        Route::post('/{service_id}', 'follow');
+        Route::delete('/del_follower/{id}', 'del_follower');
+    });
 
     Route::controller(UsersController::class)->prefix('options')->group( function() {
         Route::get('/get_user_data', 'get_user_data');
