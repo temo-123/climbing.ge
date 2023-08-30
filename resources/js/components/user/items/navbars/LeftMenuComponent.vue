@@ -1,5 +1,5 @@
 <template>
-    <span>
+    <span class="left_navbar">
         <input type="checkbox" v-model="menu_position" @change="update_menu_position()" id="check">
         <!-- <label for="check">
             <span id="open_menu"> -> </span>
@@ -11,7 +11,7 @@
             <ul v-for="menu_item in menu_items" :key="menu_item.id" style="padding-left: 0px;">
 
                 <li v-if="menu_item.routes && haveMenuBlockPermission(menu_item)">
-                  <a href="#" @click="show_item(menu_item.name)">{{menu_item.title}}</a>
+                  <a href="#" @click="show_item(menu_item.name)" class="dropdown-toggle" >{{menu_item.title}}</a>
                   <ul style="background-color: #04354b; display: none; transition: .4s;" :class="menu_item.name">
                     <span v-for="menu_but in menu_item.routes" :key="menu_but.id">
 
@@ -37,17 +37,6 @@
             <ul style="padding-left: 0px;" @click="logout()">
                 <li><a>{{ $t('user.menu.logout') }}</a></li>
             </ul>
-
-            <!-- <ul style="padding-left: 0px;">
-                <li><a href="#">Home</a></li>
-                <li><a href="#">Admin Dashboard</a></li>
-                <li><a href="#" @click="show_item()">Guide</a>
-                  <ul style="background-color: #04354b; transition: .4s;" v-show="item_1">
-                    <li><a href="#">Shortcuts</a></li>
-                    <li><a href="#">Overview</a></li>
-                  </ul>
-                </li>
-            </ul> -->
 
         </div>
     </span>
@@ -77,24 +66,30 @@
         mounted() {
             this.window_size()
 
-            if(!localStorage.getItem('left_menu_position')){
-              localStorage.setItem('left_menu_position', true);
-              this.menu_position = true
+            if (window.innerWidth > 993) {
+              if(!localStorage.getItem('left_menu_position')){
+                localStorage.setItem('left_menu_position', true);
+                this.menu_position = true
 
-              document.querySelector('body').style.marginLeft = '20em';
-              document.querySelector('.admin_page_header_navbar').style.marginLeft = '20em';
-            }
-            else{
-              this.menu_position = (localStorage.getItem('left_menu_position') === 'true');
-              if(this.menu_position){
                 document.querySelector('body').style.marginLeft = '20em';
                 document.querySelector('.admin_page_header_navbar').style.marginLeft = '20em';
               }
               else{
-                document.querySelector('body').style.marginLeft = '0';
-                document.querySelector('.admin_page_header_navbar').style.marginLeft = '0';
+                this.menu_position = (localStorage.getItem('left_menu_position') === 'true');
+                if(this.menu_position){
+                  document.querySelector('body').style.marginLeft = '20em';
+                  document.querySelector('.admin_page_header_navbar').style.marginLeft = '20em';
+                }
+                else{
+                  document.querySelector('body').style.marginLeft = '0';
+                  document.querySelector('.admin_page_header_navbar').style.marginLeft = '0';
+                }
               }
+            } else {
+              document.querySelector('body').style.marginLeft = '0';
+              document.querySelector('.admin_page_header_navbar').style.marginLeft = '0';
             }
+
         },
         unmounted() {
             this.window_size()
@@ -261,5 +256,17 @@ label #open_menu,label #close_menu{
 }
 #check:checked ~ label #close_menu{
   left: 195px;
+}
+
+@media (max-width: 993px) {
+  .left_navbar{
+    margin-left: 0;
+  }
+  .admin_page_header_navbar{
+    margin-left: 0;
+  }
+  body{
+    margin-left: 0;
+  }
 }
 </style>
