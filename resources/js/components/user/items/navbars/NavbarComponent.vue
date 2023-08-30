@@ -23,6 +23,11 @@
                 <li v-else-if="menu_item.route && !menu_item.hasOwnProperty('permissions')" class="nav-item">
                     <router-link :to="{path: menu_item.route}" lass="nav-link" class="nav-link">{{menu_item.title}}</router-link>
                 </li>
+                
+                <li class="nav-item">
+                    <a>{{ $t('user.menu.logout') }}</a>
+                </li>
+            
             </ul>
             
         </div>
@@ -155,20 +160,20 @@
     
     <style>
     .admin_page_header_navbar{
-    transition: all .5s;
+        transition: all .5s;
     }
     .menu_but{
-    position: fixed;
-    font-size: 200%;
-    top: 0;
+        position: fixed;
+        font-size: 200%;
+        top: 0;
     }
     .bg-perple {
-    background-color: #7427bb !important;
+        background-color: #7427bb !important;
     }
-    @media (min-width: 993px) {
-    #navbarNav{
-    display: none !important;
-    }
+    @media (max-width: 993px) {
+        .dropdown-menu .dropdown-item{
+            color: #2b2a2a !important;
+        }
     }
     </style>
     

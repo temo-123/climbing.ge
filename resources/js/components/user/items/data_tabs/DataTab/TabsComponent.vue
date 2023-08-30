@@ -173,7 +173,7 @@
                 </div>
 
                 <div class="row">
-                    <div class="col-md-12">
+                    <div class="col-md-12 data_tab">
                         <table
                             class="table table-hover"
                             id="dev-table"
@@ -730,4 +730,8 @@ export default {
         margin-top: 0.2rem;
     }
 } */
+
+.data_tab{
+    overflow-x: scroll;
+}
 </style>
