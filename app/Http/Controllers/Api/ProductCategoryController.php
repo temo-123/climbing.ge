@@ -8,6 +8,8 @@ use Illuminate\Http\Request;
 use App\Models\Product_category;
 use App\Models\product_options;
 
+use Validator;
+
 class ProductCategoryController extends Controller
 {
     /**
@@ -38,13 +40,20 @@ class ProductCategoryController extends Controller
      */
     public function store(Request $request)
     {
-        $new_product_category = new Product_category;
+        $validate = $this->validation($request);
 
-        $new_product_category['us_name'] = $request->data['us_name'];
-        $new_product_category['ka_name'] = $request->data['ka_name'];
-        $new_product_category['ru_name'] = $request->data['ru_name'];
+        if ($validate != null) {
+            return($validate);
+        }
+        else{
+            $new_product_category = new Product_category;
 
-        $new_product_category -> save();
+            $new_product_category['us_name'] = $request->data['us_name'];
+            $new_product_category['ka_name'] = $request->data['ka_name'];
+            $new_product_category['ru_name'] = $request->data['ru_name'];
+
+            $new_product_category -> save();
+        }
     }
 
     /**
@@ -78,14 +87,21 @@ class ProductCategoryController extends Controller
      */
     public function update(Request $request, $id)
     {
-        // dd($request->editing_data['us_name']);
-        $editing_product_category = Product_category::where("id", "=", $id)->first();
+        $validate = $this->validation($request);
 
-        $editing_product_category['us_name'] = $request->editing_data['us_name'];
-        $editing_product_category['ka_name'] = $request->editing_data['ka_name'];
-        $editing_product_category['ru_name'] = $request->editing_data['ru_name'];
+        if ($validate != null) {
+            return($validate);
+        }
+        else{
+            // dd($request->editing_data['us_name']);
+            $editing_product_category = Product_category::where("id", "=", $id)->first();
 
-        $editing_product_category -> save();
+            $editing_product_category['us_name'] = $request->data['us_name'];
+            $editing_product_category['ka_name'] = $request->data['ka_name'];
+            $editing_product_category['ru_name'] = $request->data['ru_name'];
+
+            $editing_product_category -> save();
+        }
     }
 
     /**
@@ -98,5 +114,20 @@ class ProductCategoryController extends Controller
     {
         $deleted_product_category = Product_category::where("id", "=", $id)->first();
         $deleted_product_category -> delete();
+    }
+
+    public function validation($request)
+    {
+        $validator = validator($data = $request->data, [
+            'us_name' => 'required',
+            'ru_name' => 'required',
+            'ka_name' => 'required',
+        ]);
+    
+        if ($validator->fails()) {
+            return response()->json([
+                'errors' => $validator->messages(),
+            ], 422);
+        }
     }
 }

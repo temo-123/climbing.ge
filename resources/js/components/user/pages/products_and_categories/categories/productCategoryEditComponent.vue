@@ -1,64 +1,67 @@
 <template>
-<div class="col_md_12">
-    <div class="row">
-        <div class="form-group">  
-            <button type="submit" class="btn btn-primary" v-on:click="edit_category()" >Save</button>
-        </div>
-    </div>
-    <div class="row">
-        <div class="tabs">
+    <div class="tabs"> 
+        <div class="col_md_12">
+            <div class="row">
+                <div class="form-group">  
+                    <button type="submit" class="btn btn-primary"  form="edi_product_category" >Save</button>
+                    <button type="submit" class="btn btn-primary" v-on:click="go_back()" >Go back</button>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+        
+                    <input type="radio" name="tabs" id="1" checked="checked">
+                    <label for="1" >Global info</label>
+                    <div class="tab" >
+                        <div class="jumbotron jumbotron-fluid">
+                            <div class="container">
+                                <h2 class="display-4">Edit Product Category</h2>
+                                <!-- <p class="lead">Article global information.</p> -->
+                            </div>
+                        </div>
 
-            <input type="radio" name="tabs" id="1" checked="checked">
-            <label for="1" >Global info</label>
-            <div class="tab" >
-                <div class="jumbotron jumbotron-fluid">
-                    <div class="container">
-                        <h2 class="display-4">Edit Product Category</h2>
-                        <!-- <p class="lead">Article global information.</p> -->
+                        <form v-on:submit.prevent="edit_category" id="edi_product_category" class="form">
+                            <div class="form-group clearfix">
+                                <label for="name" class='col-xs-2 control-label'> us name </label>
+                                <div class="col-xs-10">
+                                    <input type="text" v-model="data.us_name" name="us_name" class="form-control" required> 
+                                    <div class="alert alert-danger" role="alert" v-if="errors.us_name">
+                                        {{ errors.us_name[0] }}
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group clearfix">
+                                <label for="name" class='col-xs-2 control-label'> ru name </label>
+                                <div class="col-xs-10">
+                                    <input type="text" v-model="data.ru_name" name="ru_name" class="form-control" required> 
+                                    <div class="alert alert-danger" role="alert" v-if="errors.ru_name">
+                                        {{ errors.ru_name[0] }}
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group clearfix">
+                                <label for="name" class='col-xs-2 control-label'> ka name </label>
+                                <div class="col-xs-10">
+                                    <input type="text" v-model="data.ka_name" name="ka_name" class="form-control" required> 
+                                    <div class="alert alert-danger" role="alert" v-if="errors.ka_name">
+                                        {{ errors.ka_name[0] }}
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+        
                     </div>
                 </div>
-
-                <form name="contact-form" method="POST" id="global_form" ref="myForm" @submit.prevent="edit_category"  style="margin-top: 5%;" enctyp ="multipart/form-data">
-                    <div class="form-group clearfix">
-                        <label for="name" class='col-xs-2 control-label'> us name </label>
-                        <div class="col-xs-8">
-                            <input type="text" v-model="editing_data.us_name" name="us_name" class="form-control"> 
-                            <div class="alert alert-danger" role="alert" v-if="errors.us_name">
-                                {{ errors.us_name[0] }}
-                            </div>
-                        </div>
-                    </div>
-                    <div class="form-group clearfix">
-                        <label for="name" class='col-xs-2 control-label'> ru name </label>
-                        <div class="col-xs-8">
-                            <input type="text" v-model="editing_data.ru_name" name="ru_name" class="form-control"> 
-                            <div class="alert alert-danger" role="alert" v-if="errors.ru_name">
-                                {{ errors.ru_name[0] }}
-                            </div>
-                        </div>
-                    </div>
-                    <div class="form-group clearfix">
-                        <label for="name" class='col-xs-2 control-label'> ka name </label>
-                        <div class="col-xs-8">
-                            <input type="text" v-model="editing_data.ka_name" name="ka_name" class="form-control"> 
-                            <div class="alert alert-danger" role="alert" v-if="errors.ka_name">
-                                {{ errors.ka_name[0] }}
-                            </div>
-                        </div>
-                    </div>
-                </form>
-                
             </div>
         </div>
     </div>
-</div>
 </template>
 
 <script>
     export default {
         data(){
             return {
-                editing_data: {
+                data: {
                     us_name: '',
                     ru_name: '',
                     ka_name: '',
@@ -80,16 +83,16 @@
                 axios
                 .get('../../../api/product_category/' + this.editing_category_id)
                 .then(response => {
-                    this.editing_data.us_name = response.data['us_name'],
-                    this.editing_data.ru_name = response.data['ru_name'],
-                    this.editing_data.ka_name = response.data['ka_name']
+                    this.data.us_name = response.data['us_name'],
+                    this.data.ru_name = response.data['ru_name'],
+                    this.data.ka_name = response.data['ka_name']
                 })
                 .catch(error => console.log(error))
             },
             edit_category() {
                 axios
                 .post('../../../api/product_category/' + this.editing_category_id, {        
-                    editing_data: this.editing_data,
+                    data: this.data,
                     _method: 'PATCH'
                 })
                 .then((response)=> { 

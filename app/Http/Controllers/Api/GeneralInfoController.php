@@ -88,15 +88,22 @@ class GeneralInfoController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $editing_general_info = General_info::where("id", "=", $id)->first();
+        $validate = $this->validation($request);
 
-        $editing_general_info['title'] = $request->data['title'];
-
-        $editing_general_info['text_us'] = $request->data['us_text'];
-        $editing_general_info['text_ka'] = $request->data['ka_text'];
-        $editing_general_info['text_ru'] = $request->data['ru_text'];
-
-        $editing_general_info -> save();
+        if ($validate != null) {
+            return($validate);
+        }
+        else{
+            $editing_general_info = General_info::where("id", "=", $id)->first();
+    
+            $editing_general_info['title'] = $request->data['title'];
+    
+            $editing_general_info['text_us'] = $request->data['us_text'];
+            $editing_general_info['text_ka'] = $request->data['ka_text'];
+            $editing_general_info['text_ru'] = $request->data['ru_text'];
+    
+            $editing_general_info -> save();
+        }
     }
 
     /**
@@ -122,7 +129,7 @@ class GeneralInfoController extends Controller
     
         if ($validator->fails()) {
             return response()->json([
-                'messages' => $validator->messages(),
+                'errors' => $validator->messages(),
             ], 422);
         }
     }
