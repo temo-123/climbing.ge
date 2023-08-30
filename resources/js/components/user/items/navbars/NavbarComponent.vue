@@ -25,20 +25,19 @@
                 </li>
                 
                 <li class="nav-item">
-                    <a>{{ $t('user.menu.logout') }}</a>
+                    <a class="nav-link">{{ $t('user.menu.logout') }}</a>
                 </li>
             
             </ul>
-            
         </div>
             
         <div class="navbar-collapse collapse w-100 order-1 order-md-0 dual-collapse2">
             <ul class="navbar-nav mr-auto">
                 <li class="nav-item">
                     <label for="check">
-                    <span id="open_menu" class="menu_but">
-                    <i class="fa fa-bars cursor_pointer" aria-hidden="true"></i>
-                    </span>
+                        <span id="open_menu" class="menu_but">
+                            <i class="fa fa-bars cursor_pointer" aria-hidden="true"></i>
+                        </span>
                     </label>
                 </li>
             </ul>
@@ -47,7 +46,7 @@
             <router-link :to="{name: 'home'}" class="navbar-brand mx-auto" exact>Hi</router-link>
         </div>
         <div class="navbar-collapse collapse w-100 order-3 dual-collapse2">
-            <ul class="navbar-nav ml-auto">
+            <!-- <ul class="navbar-nav ml-auto">
                 <li class="nav-item">
                     <router-link :to="{name: 'myComentsList'}" class="nav-link" exact>{{ $t('user.menu.my comments') }}</router-link>
                 </li>
@@ -57,7 +56,7 @@
                 <li class="nav-item">
                     <router-link :to="{name: 'cart'}" class="nav-link" exact>{{ $t('user.menu.cart') }}</router-link>
                 </li>
-            </ul>
+            </ul> -->
         </div>
     </nav>
 </template>
@@ -158,7 +157,7 @@
     }
 </script>
     
-    <style>
+<style>
     .admin_page_header_navbar{
         transition: all .5s;
     }
@@ -175,5 +174,10 @@
             color: #2b2a2a !important;
         }
     }
-    </style>
+    @media (min-width: 993px) {
+        #navbarNav{
+            display: none !important;
+        }
+    }
+</style>
     

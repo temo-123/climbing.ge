@@ -101,74 +101,86 @@
             :cancelButton="{ visible: false, title: 'Close', btnClass: { 'btn btn-danger': true } }"
         >
             <pre class="language-vue">
-                <form ref="gallery_image_add_form" id="gallery_image_add_form" v-on:submit.prevent="add_image">
-                    <div class="container">
+                <span v-show="loading_addimg_data">
+                    <img :src="'../../../public/images/site_img/loading.gif'" alt="loading">
+                </span>
+                <span v-show="!loading_addimg_data">
+                    <form ref="gallery_image_add_form" id="gallery_image_add_form" v-on:submit.prevent="add_image">
+                        <div class="container">
 
-                        <div class="form-group clearfix row">
-                            <input type="file" name="image" id="image" value="image" v-on:change="onAddImageChange" required>
-                        </div>
+                            <div class="form-group clearfix row">
+                                <input type="file" name="image" id="image" value="image" v-on:change="onAddImageChange" required>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12" v-if="error.length != 0">
+                                    <div class="alert alert-danger" role="alert" v-if="error.image">
+                                        {{ error.image[0] }}
+                                    </div>
+                                </div>
+                            </div>
 
-                        <div class="form-group clearfix row">
-                            <div class="col-md-12 image_add_modal_form">
-                                <select class="form-control" name="published" id="published" v-model="form_data.published"  required>
-                                        <option value="0">Not public</option> 
-                                        <option value="1">Public</option>
-                                </select> 
+                            <div class="form-group clearfix row">
+                                <div class="col-md-12 image_add_modal_form">
+                                    <select class="form-control" name="published" id="published" v-model="form_data.published"  required>
+                                            <option value="0">Not public</option> 
+                                            <option value="1">Public</option>
+                                    </select> 
+                                </div>
+                            </div>
+
+                            <div class="form-group clearfix row">
+                                <div class="col-md-12 image_add_modal_form">
+                                    <select class="form-control" name="image_type" id="image_type" v-model="form_data.image_type" required>
+                                        <option disabled>Select image type</option> 
+                                        <option>Article image</option> 
+                                        <option>Index gallery image</option> 
+                                        <option>Index head slider image</option> 
+                                    </select> 
+                                </div>
+                            </div>
+                            
+                            <div class="form-group clearfix row" v-if="form_data.image_type == 'Article image'">
+                                <div class="col-md-12 image_add_modal_form">
+                                    <select class="form-control" name="article_id"  v-model="form_data.article_id" required>
+                                        <option disabled>Select article</option> 
+                                        <option v-for="article in articles" :key='article.id' :value="article.id">{{ article.url_title }}</option> 
+                                    </select> 
+                                </div>
+                            </div>
+                            <div class="alert alert-danger" role="alert" v-if="category_error">
+                                {{ category_error }}
+                            </div>
+
+                            <div class="form-group clearfix row">
+                                <div class="col-md-12 image_add_modal_form">
+                                    <select class="form-control" name="filter"  v-model="form_data.category_id" required>
+                                        <option disabled>Select image category</option> 
+                                        <option v-for="categorie in categories" :key='categorie.id' :value="categorie.id">{{ categorie.us_name }}</option> 
+                                    </select> 
+                                </div>
+                            </div>
+
+                            <div class="form-group clearfix row">
+                                <div class="col-md-12 image_add_modal_form">
+                                    <input type="text" name="title" class="form-control" placeholder="Title"  v-model="form_data.title" required>
+                                </div>
+                            </div>
+
+
+                            <div class="form-group clearfix row">
+                                <div class="col-md-12">
+                                    <textarea type="text"  name="text" rows="15" class="form-cotrol md-textarea form-control"  v-model="form_data.text" required></textarea>
+                                </div>
+                            </div>
+
+                            <div class="form-group clearfix row">
+                                <div class="col-md-12 image_add_modal_form">
+                                        <input type="text" name="link" class="form-control" placeholder="Article Link"  v-model="form_data.link">
+                                </div>
                             </div>
                         </div>
-
-                        <div class="form-group clearfix row">
-                            <div class="col-md-12 image_add_modal_form">
-                                <select class="form-control" name="image_type" id="image_type" v-model="form_data.image_type" required>
-                                    <option disabled>Select image type</option> 
-                                    <option>Article image</option> 
-                                    <option>Index gallery image</option> 
-                                    <option>Index head slider image</option> 
-                                </select> 
-                            </div>
-                        </div>
-                        
-                        <div class="form-group clearfix row" v-if="form_data.image_type == 'Article image'">
-                            <div class="col-md-12 image_add_modal_form">
-                                <select class="form-control" name="article_id"  v-model="form_data.article_id" required>
-                                    <option disabled>Select article</option> 
-                                    <option v-for="article in articles" :key='article.id' :value="article.id">{{ article.url_title }}</option> 
-                                </select> 
-                            </div>
-                        </div>
-                        <div class="alert alert-danger" role="alert" v-if="category_error">
-                            {{ category_error }}
-                        </div>
-
-                        <div class="form-group clearfix row">
-                            <div class="col-md-12 image_add_modal_form">
-                                <select class="form-control" name="filter"  v-model="form_data.category_id" required>
-                                    <option disabled>Select image category</option> 
-                                    <option v-for="categorie in categories" :key='categorie.id' :value="categorie.id">{{ categorie.us_name }}</option> 
-                                </select> 
-                            </div>
-                        </div>
-
-                        <div class="form-group clearfix row">
-                            <div class="col-md-12 image_add_modal_form">
-                                <input type="text" name="title" class="form-control" placeholder="Title"  v-model="form_data.title" required>
-                            </div>
-                        </div>
-
-
-                        <div class="form-group clearfix row">
-                            <div class="col-md-12">
-                                <textarea type="text"  name="text" rows="15" class="form-cotrol md-textarea form-control"  v-model="form_data.text" required></textarea>
-                            </div>
-                        </div>
-
-                        <div class="form-group clearfix row">
-                            <div class="col-md-12 image_add_modal_form">
-                                    <input type="text" name="link" class="form-control" placeholder="Article Link"  v-model="form_data.link">
-                            </div>
-                        </div>
-                    </div>
-                </form>
+                    </form>
+                </span>
             </pre>
             <div slot="modal-footer">
                 <div class="modal-footer">
@@ -191,10 +203,10 @@
                 :cancelButton="{ visible: false, title: 'Close', btnClass: { 'btn btn-danger': true } }"
             >
             <pre class="language-vue">
-                <span v-if="loading_editing_data">
+                <span v-show="loading_editing_data">
                     <img :src="'../../../public/images/site_img/loading.gif'" alt="loading">
                 </span>
-                <span v-if="!loading_editing_data">
+                <span v-show="!loading_editing_data">
                     <form ref="editingForm" id="gallery_iamge_edit_form" v-on:submit.prevent="edit_image(editing_image.id)">
                         <div class="container">
                             
@@ -204,6 +216,14 @@
                             
                             <div class="form-group clearfix row">
                                 <input type="file" name="image" id="image" value="image" v-on:change="onEditImageChange">
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-12" v-if="error.length != 0">
+                                    <div class="alert alert-danger" role="alert" v-if="error.image">
+                                        {{ error.image[0] }}
+                                    </div>
+                                </div>
                             </div>
 
                             <div class="form-group clearfix row">
@@ -307,7 +327,9 @@
                 is_show_image: false,
                 is_add_image: false,
                 is_edit_image: false,
+
                 loading_editing_data: false,
+                loading_addimg_data: false,
 
                 modal_image: '',
 
@@ -342,7 +364,9 @@
                 },
                 editing_image: [],
 
-                category_error: ""
+                category_error: "",
+
+                error: []
             }
         },
         mounted() {
@@ -360,7 +384,7 @@
                     this.reset_id++
                 })
                 .catch(error => {
-                    alert(error)
+                    // alert(error)
                 });
             },
 
@@ -371,7 +395,7 @@
                     this.articles = response.data
                 })
                 .catch(error => {
-                    alert(error)
+                    // alert(error)
                 });
             },
 
@@ -395,6 +419,7 @@
             },
 
             add_image_modal(){
+                this.error = []
                 this.clear_input_data()
                 this.is_add_image = true
             },
@@ -412,6 +437,10 @@
                 formData.append('data', JSON.stringify(this.form_data))
                 // console.log(formData);
 
+                this.error = []
+
+                this.loading_addimg_data = true
+
                 if(this.form_data.category_id == 'Select image category'){
                     this.category_error = 'Select this category is inposeble!'
                 }
@@ -426,11 +455,14 @@
                         this.close_add_image_modal(true)
                     })
                     .catch(error => {
-                        alert(error)
+                        // alert(error)
                         if (error.response.status == 422) {
-                            this.error = error.response.data.validation
+                            this.error = error.response.data.errors
                         }
                     })
+                    .finally(() =>
+                        this.loading_addimg_data = false
+                    )
                 }
             },
 
@@ -456,10 +488,8 @@
                     link: '',
                 }
                 this.editing_image = []
-            },
 
-            onEditImageChange(e){
-                this.editing_image = e.target.files[0];
+                this.error = []
             },
 
             get_editing_image_data(image_id){
@@ -481,6 +511,7 @@
             },
 
             edit_image_modal(editing_image_id){
+                this.error = []
                 this.is_edit_image = true
                 this.get_editing_image_data(editing_image_id)
             },
@@ -498,15 +529,26 @@
                 }
             },
 
+            onEditImageChange(e){
+                if(e.target.files.length > 0){
+                    this.editing_image = e.target.files[0];
+                }
+                else if(e.target.files.length == 0){
+                    this.editing_image = [];
+                }
+            },
+
             edit_image(){
+                this.error = []
                 this.loading_editing_data = true
 
                 this.category_id = ''
 
                 let formData = new FormData();
-                formData.append('image', this.editing_image);
+                if(this.editing_image != [] || this.editing_image != null){
+                    formData.append('image', this.editing_image);
+                }
                 formData.append('data', JSON.stringify(this.editing_data))
-                // console.log(formData);
 
                 if(this.editing_data.category_id == 'Select image category'){
                     this.category_error = 'Select this category is inposeble!'
@@ -525,7 +567,9 @@
                         this.editing_image = []
                     })
                     .catch(error => {
-                        alert(error)
+                        if (error.response.status == 422) {
+                            this.error = error.response.data.errors
+                        }
                     })
                     .finally(() => this.loading_editing_data = false);
                 }
@@ -541,7 +585,7 @@
                         this.get_gallery_data()
                     })
                     .catch(error => {
-                        alert(error)
+                        // alert(error)
                     });
                 }
             },

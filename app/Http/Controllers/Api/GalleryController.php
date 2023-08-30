@@ -16,11 +16,6 @@ use Validator;
 
 class GalleryController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function index()
     {
         $index_gallery_count = Gallery_image::where('image_type', '=', 'Index gallery image')->where('published', '=', 1)->count();
@@ -41,33 +36,11 @@ class GalleryController extends Controller
         return Gallery_image::limit(5)->latest('id')->where('image_type', '=', 'Index head slider image')->where('published', '=', 1)->get();
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create($request)
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
     public function store(Request $request)
     {
-        return Gallery_image::get();
+        return Gallery_image::latest('id')->get();
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function show($id)
     {
         $article = Article::where('id', '=', $id)->where('published', '=', 1)->first();
@@ -84,12 +57,6 @@ class GalleryController extends Controller
         // return Gallery_image::limit(8)->where('article_id', '=', $id)->where('published', '=', 1)->get();
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function gallery_image_edit(Request $request, $id)
     {
         if ($request->isMethod('post')) {
@@ -97,7 +64,7 @@ class GalleryController extends Controller
 
             $data = json_decode($request->data, true );
             
-            $image_validate = $this->gallery_image_validate($data, $request);
+            $image_validate = $this->gallery_image_edit_validate($data, $request);
             if ($image_validate != null) {
                 $validation_issets['form_data_validation'] = $image_validate;
             }
@@ -159,12 +126,6 @@ class GalleryController extends Controller
         return $image;
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function destroy($id)
     {
         $gallery = Gallery_image::where('id',strip_tags($id))->first();
@@ -187,7 +148,7 @@ class GalleryController extends Controller
 
         $data = json_decode($request->data, true );
         
-        $image_validate = $this->gallery_image_validate($data, $request);
+        $image_validate = $this->gallery_image_add_validate($data, $request);
         if ($image_validate != null) {
             $validation_issets['form_data_validation'] = $image_validate;
         }
@@ -227,7 +188,7 @@ class GalleryController extends Controller
         }
     }
 
-    public function gallery_image_validate($data, $request)
+    public function gallery_image_edit_validate($data, $request)
     {
         $validator = Validator::make($data, [
             'published' => 'required',
@@ -238,5 +199,41 @@ class GalleryController extends Controller
         if ($validator->fails()) {
             return $validator->messages();
         }
+
+        $request->validate(
+            [
+                'image' => 'nullable|image|mimes:jpg,png,jpeg,gif,svg|max:2048',
+            ],
+            [
+                'image' => 'Your image is uncorect',
+                'image.max' => 'Your image is wery big. (Max size = 2048Kb)',
+                'image.mimes' => 'Your image need by in jpg, png, jpeg, gif or svg format',
+                'image.image' => 'Your file is not a image'
+            ]
+        );
+    }
+    public function gallery_image_add_validate($data, $request)
+    {
+        $validator = Validator::make($data, [
+            'published' => 'required',
+            'category_id' => 'required',
+            'title' => 'required|max:35',
+            'text' => 'required|max:225',
+        ]);
+        if ($validator->fails()) {
+            return $validator->messages();
+        }
+
+        $request->validate(
+            [
+                'image' => 'required|image|mimes:jpg,png,jpeg,gif,svg|max:2048',
+            ],
+            [
+                'image' => 'Your image is uncorect',
+                'image.max' => 'Your image is wery big. (Max size = 2048Kb)',
+                'image.mimes' => 'Your image need by in jpg, png, jpeg, gif or svg format',
+                'image.image' => 'Your file is not a image'
+            ]
+        );
     }
 }

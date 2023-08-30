@@ -287,7 +287,7 @@
                         this.error = error.response.data.validation
                     }
                     else{
-                        alert(error)
+                        // alert(error)
                     }
                 })
                 .finally(() => this.is_loading = false);
