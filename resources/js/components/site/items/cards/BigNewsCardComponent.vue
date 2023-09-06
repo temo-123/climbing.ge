@@ -31,7 +31,7 @@
                                     <h2 class="m-ellipsis m-image-hero--header-text mm-image-hero--no-background">
                                         <span class="m-ellipsis--text">{{ news[0][0].title }}</span>
                                     </h2>
-                                    <span style="text-shadow: #abababb5 1px 1px 0;" v-html="news[0][0].short_description"></span>
+                                    <span class="big_news_text" v-html="news[0][0].short_description"></span>
                                 </div>
                             <!-- </a> -->
                             </router-link>
@@ -61,3 +61,16 @@
         }
     }
 </script>
+
+<style>
+.big_news_text{
+    text-shadow: #abababb5 1px 1px 0;
+}
+
+@media (max-width: 767px){
+    .big_news_text{
+        text-shadow: #abababb5 1px 1px 0;
+        display: none;
+    }
+}
+</style>

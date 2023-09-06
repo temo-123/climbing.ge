@@ -1,7 +1,7 @@
 <template>
 
-    <!-- <div class="m-collection-strip--tile" slide-id="ci0258d58230002521" data-pos="183"> -->
-    <div class="col-md-2" slide-id="ci0258d58230002521" data-pos="183">
+    <!-- <div class="col-md-2" slide-id="ci0258d58230002521" data-pos="183"> -->
+    <div class="col-md-2 small_news">
         <!-- <div href="#"> -->
         <router-link :to="'news/'+news.url_title">
             <article class="m-card mm-card--landscape-image mm-card--type-standard mm-card--density-strip" role="article">
@@ -58,3 +58,10 @@
         }
     }
 </script>
+
+<style>
+.small_news{
+    padding-right: 5px;
+    padding-left: 5px;
+}
+</style>

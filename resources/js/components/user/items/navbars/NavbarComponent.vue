@@ -10,6 +10,7 @@
                 <li v-for="menu_item in menu_items" :key="menu_item.id" v-if="menu_item.routes && haveMenuBlockPermission(menu_item)" class="nav-item dropdown">
                     <a href="#" class="nav-link dropdown-toggle" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{{menu_item.title}}</a>
                     <div class="dropdown-menu" aria-labelledby="navbarDropdown" >
+                        test test test
                         <router-link :to="{path: menu_but.route}" lass="nav-link" class="dropdown-item" v-for="menu_but in menu_item.routes" :key="menu_but.id" v-if="menu_but.hasOwnProperty('permissions') && haveMenuButPermission(menu_but.permissions)">
                             {{menu_but.name}}
                         </router-link>
@@ -169,11 +170,11 @@
     .bg-perple {
         background-color: #7427bb !important;
     }
-    @media (max-width: 993px) {
+    /*@media (max-width: 993px) {
         .dropdown-menu .dropdown-item{
             color: #2b2a2a !important;
         }
-    }
+    }*/
     @media (min-width: 993px) {
         #navbarNav{
             display: none !important;
