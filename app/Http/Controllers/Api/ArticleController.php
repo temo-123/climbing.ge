@@ -949,26 +949,44 @@ class ArticleController extends Controller
 
     public function outdoor_page($lang, $url_title)
     {
-        $global_article = Article::where('url_title',strip_tags($url_title))->first();
-        $article = GetArticlesService::get_locale_article_in_page($global_article, $lang);
+        $global_article_count = Article::where('url_title',strip_tags($url_title))->count();
+        if ($global_article_count > 0) {
+            $global_article = Article::where('url_title',strip_tags($url_title))->first();
+            $article = GetArticlesService::get_locale_article_in_page($global_article, $lang);
 
-        return $article[0];
+            return $article[0];
+        }
+        else{
+            return abort(404);
+        }
     }
 
     public function article_page($lang, $url_title)
     {
-        $global_article = Article::where('url_title',strip_tags($url_title))->first();
-        $article = GetArticlesService::get_locale_article_in_page($global_article, $lang);
+        $global_article_count = Article::where('url_title',strip_tags($url_title))->count();
+        if ($global_article_count > 0) {
+            $global_article = Article::where('url_title',strip_tags($url_title))->first();
+            $article = GetArticlesService::get_locale_article_in_page($global_article, $lang);
 
-        return $article[0];
+            return $article[0];
+        }
+        else{
+            return abort(404);
+        }
     }
 
     public function mount_route_page($lang, $url_title)
     {
-        $global_article = Article::where('url_title',strip_tags($url_title))->first();
-        $article = GetArticlesService::get_locale_article_in_page($global_article, $lang);
+        $global_article_count = Article::where('url_title',strip_tags($url_title))->count();
+        if ($global_article_count > 0) {
+            $global_article = Article::where('url_title',strip_tags($url_title))->first();
+            $article = GetArticlesService::get_locale_article_in_page($global_article, $lang);
 
-        return $article[0];
+            return $article[0];
+        }
+        else{
+            return abort(404);
+        }
     }
 
     public function get_editing_data(Request $request)
