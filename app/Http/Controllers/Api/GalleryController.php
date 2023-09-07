@@ -43,8 +43,7 @@ class GalleryController extends Controller
 
     public function show($id)
     {
-        $article = Article::where('id', '=', $id)->where('published', '=', 1)->first();
-        // return $article;
+        $article = Article::where('id', '=', $id)->first();
         
         return $article->gallery_images;
     }
