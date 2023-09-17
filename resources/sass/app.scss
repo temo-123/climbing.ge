@@ -23,7 +23,11 @@
     color: #1689a0;
 }
 
-
+.article_loader{
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
 
 html {
     font-family: sans-serif;
@@ -2151,10 +2155,17 @@ ul {
     margin: 0;
 }
 
-li,
-ul {
+.right-text li, ul {
     list-style: none;
 }
+.right-text li, ul {
+    list-style: none;
+}
+
+// li,
+// ul {
+//     list-style: none;
+// }
 
 // dt {
 //     display: none!important;

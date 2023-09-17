@@ -58,9 +58,10 @@
                         </span>
                     </div> 
 
-                    <span v-html="this.mount_route[0].text"></span>
+                    <articleTextBlocks :article="this.mount_route"/>
 
-                    <!-- Best time for climbing block -->
+                    <!-- <span v-html="this.mount_route[0].text"></span>
+
                     <div v-if="this.mount_route[0].weather == NULL && this.mount_route[0].best_time != NULL">
                         <h2 id="best_time_to_climb">{{ $t('guide.article.title.best time')}}</h2>
                         <span v-html="this.mount_route[0].best_time"></span>
@@ -78,30 +79,26 @@
                         </div>
                     </div>
 
-                    <!-- how get -->
                     <div v-if="this.mount_route[0].how_get != NUll">
                         <h2 id="how_to_get_there">{{ $t('guide.article.title.how get')}}</h2>
                         <span v-html="this.mount_route[0].how_get"></span>
                     </div>
 
-                    <!-- map -->
                     <div v-if="this.mount_route.map != NULL">
                         <div class="article_map">
                             <span v-html="this.mount_route.map"></span>
                         </div>
                     </div>
 
-                    <!-- info -->
                     <div v-if="this.mount_route[0].info != NUll">
                         <h2 id="how_to_get_there">{{ $t('guide.article.title.info')}}</h2>
                         <span v-html="this.mount_route[0].info"></span>
                     </div>
 
-                    <!-- what need -->
                     <div v-if="this.mount_route[0].what_need != NUll">
                         <h2 id="what_you_need">{{ $t('guide.article.title.what need')}}</h2>
                         <span v-html="this.mount_route[0].what_need"></span>
-                    </div>
+                    </div> -->
 
                     <!-- route -->
                     <div v-if="this.mount_route[0].route">
@@ -146,6 +143,7 @@
     import SimilarArticles from '../items/SimilarArticlesComponent'
     import MountaineeringRouteImages from '../items/MountaineeringRouteImages'
     import breadcrumb from '../items/BreadcrumbComponent.vue'
+    import articleTextBlocks from '../items/ArticleTextBlocksComponent'
 
     export default {
         props: [
@@ -166,6 +164,8 @@
             breadcrumb,
             SimilarArticles,
             MountaineeringRouteImages,
+            articleTextBlocks,
+
         },
         
         mounted() {

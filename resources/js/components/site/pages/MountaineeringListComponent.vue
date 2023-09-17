@@ -105,6 +105,7 @@
         
         methods: {
             get_filtred_articles(id){
+                this.mount_route_loading = true
                 this.mount_routes = []
                 axios
                 .get("/mount_route/get_filtred_mount_route_for_user/" + localStorage.getItem('lang') + '/' + id)
@@ -118,6 +119,7 @@
             },
 
             get_unfilted_articles(){
+                this.mount_route_loading = true
                 axios
                 .get('/articles/mount_route/'+localStorage.getItem('lang'))
                 .then(response => {

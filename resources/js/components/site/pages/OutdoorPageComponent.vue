@@ -1,11 +1,7 @@
 <template>
     <div class="container">
         <span v-if="article_loading">
-            <div class="row">
-                <div class="col-md-4">
-                    <img :src="'../../../../../../public/images/site_img/loading.gif'" alt="loading">
-                </div>
-            </div>
+            <articlePreloader />
         </span>
         <span v-else-if="!article_loading">
             <outdoor 
@@ -23,6 +19,7 @@
 </template>
 
 <script>
+    import articlePreloader from "../items/article/ArticlePreloaderComponent.vue";
     import outdoor from '../items/OutdoorComponent'
     import metaData from '../items/MetaDataComponent'
 
@@ -34,6 +31,7 @@
             }
         },
         components: {
+            articlePreloader,
             outdoor,
             metaData
         },

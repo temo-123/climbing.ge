@@ -20,7 +20,7 @@
                 <div class="mount_size">
 
                     <!-- <p>{{ mount[0][0].short_description }}</p> -->
-                    <span v-html="mount.short_description"></span>
+                    <span v-html="mount[0][0].short_description"></span>
 
                     <div class="col text-center" v-if="mount.mount_system">
                         <div class="row">

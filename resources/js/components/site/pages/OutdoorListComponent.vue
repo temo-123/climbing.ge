@@ -168,6 +168,7 @@
         },
         methods: {
             get_filtred_articles(id){
+                this.oudoor_loading = true
                 axios
                 .get("/outdoor/get_filtred_outdoor_spots_for_gest/" + localStorage.getItem('lang') + '/' + id)
                 .then(response => {
@@ -176,10 +177,11 @@
                 .catch(
                     error => console.log(error)
                 )
-                .finally(() => this.article_loading = false);
+                .finally(() => this.oudoor_loading = false);
             },
 
             get_unfilted_articles(){
+                this.oudoor_loading = true
                 axios
                 .get('/articles/outdoor/'+localStorage.getItem('lang'))
                 .then(response => {

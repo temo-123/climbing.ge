@@ -1,6 +1,11 @@
 <template>
     <div class="container">
-        <articlPage :article="news" />
+        <span v-if="article_loading">
+            <articlePreloader />
+        </span>
+        <span v-else-if="!article_loading">
+            <articlPage :article="news" />
+        </span>
 
         <metaData 
             :title = "news[0].title"
@@ -21,6 +26,7 @@
             }
         },
         components: {
+            articlePreloader,
             articlPage,
             metaData
         },
@@ -43,6 +49,7 @@
                 })
                 .catch(error =>{
                 })
+                .finally(() => this.article_loading = false);
             },
         }
     }

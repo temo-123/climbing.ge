@@ -1,6 +1,9 @@
 <template>
     <div class="container">
-        <div class="row">
+        <span v-if="article_loading">
+            <articlePreloader />
+        </span>
+        <div class="row" v-if="!article_loading">
             <div class="offset-md-3 col-md-offset-3" v-if="!(!end_day) && start_time_h > 0">
                 <p class="calendar start_calendar">
                     {{ start_day }}
@@ -23,7 +26,7 @@
                 </p>
             </div>
         </div>
-        <div class='row'>
+        <div class='row' v-if="!article_loading">
             <div class="col-md-12">
                 
                 <breadcrumb />
@@ -66,7 +69,7 @@
 
             </div>
         </div>
-        <div class="row">
+        <div class="row" v-if="!article_loading">
             <div class="col-md-12"> 
                 <div class="row">
                     <div style="text-align: center; margin: 4% 30%;">
@@ -86,6 +89,7 @@
 </template>
 
 <script>
+    import articlePreloader from "../items/article/ArticlePreloaderComponent.vue";
     import commentForm from '../items/CommentFormComponent'
     import metaData from '../items/MetaDataComponent'
     import breadcrumb from '../items/BreadcrumbComponent.vue'
@@ -107,9 +111,12 @@
 
                 start_year: 0,
                 end_year: 0,
+
+                article_loading: false,
             };
         },
         components: {
+            articlePreloader,
             metaData,
             commentForm,
             breadcrumb,
@@ -154,6 +161,7 @@
                 })
                 .catch(error =>{
                 })
+                .finally(() => this.article_loading = false);
             },
 
             add_to_interestid_event(article_id){
