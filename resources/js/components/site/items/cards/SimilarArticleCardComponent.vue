@@ -1,5 +1,5 @@
 <template>
-    <div class="col-md-3 col-xs-6">
+    <div class="col-md-3 col-xs-3">
         <div class="similar_articles_img">
             <router-link :to="this.route">
                 <site-img v-if="article.image != null" :src="'/public/' + this.image_dir + '/' + article.image" :img_class="'img-responsive'" :alt='article[0][0].title'/>
@@ -33,36 +33,5 @@
 </script>
 
 <style>
-    .similar_article_title{
-        margin-bottom: 2%;
-        font-size: 155%;
-    }
-    .similar_article_routes_quantity{
-        color: #8b8b8b;
-        margin-top: 5%;
-        font-size: 90%;
-    }
-    .similar_articles{
-        margin-top: 2%;
-    }
-    @media only screen and (max-width: 768px)
-    {
-        .similar_articles{
-            display: none;
-        }
-    }
-    .similar_articles_img img{
-        /* // margin-left: 10%; 
-        // margin-right: 10%; 
-        // width: 80%;  */
-        border-radius: 1em;
-    }
-    .similar_articles_title{
-        /* margin-top: -15%;  */
-        text-align: center;
-    }
-    .similar_articles_title h3{
-        margin: 0;
-        font-size: 155%;
-    }
+    
 </style>

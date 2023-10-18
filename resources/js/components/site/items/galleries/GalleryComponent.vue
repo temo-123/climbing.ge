@@ -1,5 +1,5 @@
 <template>
-    <div class="row similar_articles" v-if="this.db_images.length > 0">
+    <div class="row" v-if="this.db_images.length > 0">
       <div class="container">
           <h2 id="gallery">{{ $t('guide.article.title.gallery')}}</h2>
       </div>
