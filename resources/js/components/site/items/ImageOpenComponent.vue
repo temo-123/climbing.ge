@@ -24,12 +24,15 @@
             'img_alt',
             'img_class'
         ],
+        
         data: function () {
             return {
-                open_img: false
+                open_img: false,
+                active_url: window.location.href,
             };
         },
         mounted() {
+            this.back_closing(this)
         },
         methods: {
             open_image(){
@@ -42,6 +45,14 @@
 
                 document.body.classList.remove('body_hiden') // on page scroling
             },
+            back_closing(th){
+                window.onpopstate = function(event) {
+                    
+                    if(th.open_img){
+                        th.close_image()
+                    }
+                };
+            }
         }
     }
 </script>

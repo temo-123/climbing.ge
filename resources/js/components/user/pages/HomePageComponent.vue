@@ -22,14 +22,14 @@
                         <div class="card-header">Sites index pages</div>
                         <div class="card-body">
                             <div class="row">
-                                <div class="col-sm-12 col-md-4">
+                                <div class="col-sm-12 col-md-4 text-center">
                                     <button class="btn btn_service_guid" @click="go_to_service('guid')">Climbing Guidbook</button>
                                 </div>
                                 <div class="col-sm-12 col-md-4 text-center">
                                     <button class="btn btn_service_shop" @click="go_to_service('shop')">Climbing Shop</button>
                                 </div>
-                                <div class="col-sm-12 col-md-4">
-                                    <button class="btn btn_service_films float-right" @click="go_to_service('films')">Climbing Films</button>
+                                <div class="col-sm-12 col-md-4 text-center">
+                                    <button class="btn btn_service_films" @click="go_to_service('films')">Climbing Films</button>
                                 </div>
                             </div>
                         </div>
@@ -84,6 +84,9 @@
 </script>
 
 <style>
+.btn_service_guid, .btn_service_shop, .btn_service_films{
+    margin: 2%;
+}
 .btn_service_guid{
     background-color: #279fbb;
 }

@@ -3,8 +3,8 @@
         <h1 class="page_title">{{ $t('shop.title.services') }}</h1>
 
         <div class="bar"><i class="fa fa-exclamation-triangle"></i></div>
-        
-        <h2 style="text-align: center;">
+
+        <h2 class="article_list_short_description">
             <span v-html="this.$siteData.services_description"></span>
         </h2>
 

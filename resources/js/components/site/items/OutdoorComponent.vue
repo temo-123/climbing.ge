@@ -121,10 +121,16 @@
             // this.get_posts()
             // console.log(document.querySelector('meta[name="csrf-token"]').getAttribute('content'));
         },
+
+        // onBeforeRouteLeave(to, from, next) {
+        //     alert('prevent route change');
+        //     next(false);
+        // },
+
         watch: {
-            '$route' (to, from) {
-                // $refs.semilar_articles.get_same_articles()
-            }
+            $route(to, from) {
+                // alert('prevent route change 2');
+            },
         },
         methods: {
             update_similar_articles_component(id){

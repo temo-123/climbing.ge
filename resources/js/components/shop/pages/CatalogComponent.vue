@@ -3,8 +3,10 @@
 
         <h1 class="page_title">{{ $t('shop.title.products') }}</h1>
         <div class="bar"><i class="fa fa-exclamation-triangle"></i></div>
-        <h3> <span v-html="this.$siteData.shop_short_description"></span> </h3>
 
+        <h2 class="article_list_short_description">
+            <span v-html="this.$siteData.shop_short_description"></span>
+        </h2>
         <!-- <p>{{ $n(10000, 'currency') }}</p>
         <p>{{ $n(10000, 'currency', 'en-US') }}</p>
         <p>{{ $n(10000, 'currency', 'en-US', { useGrouping: false }) }}</p>

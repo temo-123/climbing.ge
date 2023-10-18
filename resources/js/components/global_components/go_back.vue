@@ -10,7 +10,7 @@
         ],
         data(){
             return {
-                tab_num: 1
+                // tab_num: 1
             }
         },
         mounted() {
