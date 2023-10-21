@@ -123,6 +123,12 @@ img {
     margin: 0 0 10px 20px;
 }
 
+.text_shadow {
+    text-shadow:0px 1px 0 rgb(34,129,151),0px -1px 0 rgb(34,129,151),1px 0px 0 rgb(34,129,151),-1px 0px 0 rgb(34,129,151),1px 1px 0 rgb(34,129,151),1px -1px 0 rgb(34,129,151),-1px 1px 0 rgb(34,129,151),-1px -1px 0 rgb(34,129,151),0px 2px 0 rgb(34,129,151),0px -2px 0 rgb(34,129,151),2px 0px 0 rgb(34,129,151),-2px 0px 0 rgb(34,129,151),2px 2px 0 rgb(34,129,151),2px -2px 0 rgb(34,129,151),-2px 2px 0 rgb(34,129,151),-2px -2px 0 rgb(34,129,151),0px 3px 0 rgb(34,129,151),0px -3px 0 rgb(34,129,151),3px 0px 0 rgb(34,129,151),-3px 0px 0 rgb(34,129,151),3px 3px 0 rgb(34,129,151),3px -3px 0 rgb(34,129,151),-3px 3px 0 rgb(34,129,151),-3px -3px 0 rgb(34,129,151),0px 4px 0 rgb(34,129,151),0px -4px 0 rgb(34,129,151),4px 0px 0 rgb(34,129,151),-4px 0px 0 rgb(34,129,151),4px 4px 0 rgb(34,129,151),4px -4px 0 rgb(34,129,151),-4px 4px 0 rgb(34,129,151),-4px -4px 0 rgb(34,129,151),0px 5px 0 rgb(34,129,151),0px -5px 0 rgb(34,129,151),5px 0px 0 rgb(34,129,151),-5px 0px 0 rgb(34,129,151),5px 5px 0 rgb(34,129,151),5px -5px 0 rgb(34,129,151),-5px 5px 0 rgb(34,129,151),-5px -5px 0 rgb(34,129,151);
+    -webkit-text-shadow:0px 1px 0 rgb(34,129,151),0px -1px 0 rgb(34,129,151),1px 0px 0 rgb(34,129,151),-1px 0px 0 rgb(34,129,151),1px 1px 0 rgb(34,129,151),1px -1px 0 rgb(34,129,151),-1px 1px 0 rgb(34,129,151),-1px -1px 0 rgb(34,129,151),0px 2px 0 rgb(34,129,151),0px -2px 0 rgb(34,129,151),2px 0px 0 rgb(34,129,151),-2px 0px 0 rgb(34,129,151),2px 2px 0 rgb(34,129,151),2px -2px 0 rgb(34,129,151),-2px 2px 0 rgb(34,129,151),-2px -2px 0 rgb(34,129,151),0px 3px 0 rgb(34,129,151),0px -3px 0 rgb(34,129,151),3px 0px 0 rgb(34,129,151),-3px 0px 0 rgb(34,129,151),3px 3px 0 rgb(34,129,151),3px -3px 0 rgb(34,129,151),-3px 3px 0 rgb(34,129,151),-3px -3px 0 rgb(34,129,151),0px 4px 0 rgb(34,129,151),0px -4px 0 rgb(34,129,151),4px 0px 0 rgb(34,129,151),-4px 0px 0 rgb(34,129,151),4px 4px 0 rgb(34,129,151),4px -4px 0 rgb(34,129,151),-4px 4px 0 rgb(34,129,151),-4px -4px 0 rgb(34,129,151),0px 5px 0 rgb(34,129,151),0px -5px 0 rgb(34,129,151),5px 0px 0 rgb(34,129,151),-5px 0px 0 rgb(34,129,151),5px 5px 0 rgb(34,129,151),5px -5px 0 rgb(34,129,151),-5px 5px 0 rgb(34,129,151),-5px -5px 0 rgb(34,129,151);
+    -moz-text-shadow:0px 1px 0 rgb(34,129,151),0px -1px 0 rgb(34,129,151),1px 0px 0 rgb(34,129,151),-1px 0px 0 rgb(34,129,151),1px 1px 0 rgb(34,129,151),1px -1px 0 rgb(34,129,151),-1px 1px 0 rgb(34,129,151),-1px -1px 0 rgb(34,129,151),0px 2px 0 rgb(34,129,151),0px -2px 0 rgb(34,129,151),2px 0px 0 rgb(34,129,151),-2px 0px 0 rgb(34,129,151),2px 2px 0 rgb(34,129,151),2px -2px 0 rgb(34,129,151),-2px 2px 0 rgb(34,129,151),-2px -2px 0 rgb(34,129,151),0px 3px 0 rgb(34,129,151),0px -3px 0 rgb(34,129,151),3px 0px 0 rgb(34,129,151),-3px 0px 0 rgb(34,129,151),3px 3px 0 rgb(34,129,151),3px -3px 0 rgb(34,129,151),-3px 3px 0 rgb(34,129,151),-3px -3px 0 rgb(34,129,151),0px 4px 0 rgb(34,129,151),0px -4px 0 rgb(34,129,151),4px 0px 0 rgb(34,129,151),-4px 0px 0 rgb(34,129,151),4px 4px 0 rgb(34,129,151),4px -4px 0 rgb(34,129,151),-4px 4px 0 rgb(34,129,151),-4px -4px 0 rgb(34,129,151),0px 5px 0 rgb(34,129,151),0px -5px 0 rgb(34,129,151),5px 0px 0 rgb(34,129,151),-5px 0px 0 rgb(34,129,151),5px 5px 0 rgb(34,129,151),5px -5px 0 rgb(34,129,151),-5px 5px 0 rgb(34,129,151),-5px -5px 0 rgb(34,129,151);
+}
+
 a {
     font-family: "Lora", serif;
     transition: all 0.4s ease 0s;
@@ -3673,21 +3679,30 @@ body.modal-open {
     font-style: normal;
     font-weight: 700;
     letter-spacing: inherit;
-    text-transform: auto;
+    // text-transform: auto;
     font-size: 24px;
     line-height: 1.2em;
     margin-bottom: 0;
     max-height: 25vw;
     width: 100%;
 }
-
-@media only screen and (min-width: 675px), print {
+@media (max-width: 767px){
     .m-image-hero--header-text {
         max-height: 35vw;
         font-size: 36px;
         line-height: 1.1em;
+        font-size: 14px;
     }
 }
+
+// @media only screen and (min-width: 675px), print {
+//     .m-image-hero--header-text {
+//         max-height: 35vw;
+//         font-size: 36px;
+//         line-height: 1.1em;
+//         font-size: 14px;
+//     }
+// }
 
 @media only screen and (min-width: 1240px) {
     .m-image-hero--header-text {

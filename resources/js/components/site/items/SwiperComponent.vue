@@ -3,8 +3,8 @@
     <div class="swiper_sizing" :style="'margin-left: -' + (100*current_slider_index) + '%; '">
       <div v-for="(slide, index) in slides" :key="slide.id" class="head_slider" >
       <site-img :src="'/public/images/gallery_img/'+slide.image" :alt="slide.title" :img_class="'slider_img'" />
-      <div class="slide_title">{{ slide.title }}</div>
-      <div class="slide_description">{{ slide.text }}</div>
+      <div class="slide_title text_shadow">{{ slide.title }}</div>
+      <div class="slide_description text_shadow">{{ slide.text }}</div>
     </div>
 
     </div>
@@ -85,9 +85,8 @@
     transform: translate(-50%, -50%);
     font-size: 3rem;
     color: #fff;
-    text-shadow: 3px 3px 3px rgb(0 0 0);
+    /* text-shadow: 3px 3px 3px rgb(0 0 0); */
   }
-
   .slide_description {
     position: absolute;
     top: 85%;
@@ -95,7 +94,29 @@
     transform: translate(-50%, -50%);
     font-size: 2rem;
     color: #fff;
-    text-shadow: 3px 3px 3px rgb(0 0 0);
+    /* text-shadow: 3px 3px 3px rgb(0 0 0); */
+  }
+  @media(max-width: 756px){
+    .slide_title {
+      position: absolute;
+      top: 60%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      font-size: 3rem;
+      color: #fff;
+      /* text-shadow: 3px 3px 3px rgb(0 0 0); */
+      text-align: center;
+    }
+    .slide_description {
+      position: absolute;
+      top: 85%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      font-size: 2rem;
+      color: #fff;
+      /* text-shadow: 3px 3px 3px rgb(0 0 0); */
+      text-align: center;
+    }
   }
 
   .prev_slide_bottom {
