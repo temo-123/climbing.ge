@@ -8,25 +8,25 @@
 
                 <li>
                     <a @click.prevent="scrollToSection('description')">
-                        <span class="text-primary">{{ $t('guide.article_right_nabar.description') }}</span>
+                        <span class="text-primary cursor_pointer">{{ $t('guide.article_right_nabar.description') }}</span>
                     </a>
                 </li>
 
                 <li v-if="this.$route.name == 'outdoor'">
                     <a @click.prevent="scrollToSection('routes')">
-                        <span class="text-primary">{{ $t('guide.article_right_nabar.sectors') }}</span>
+                        <span class="text-primary cursor_pointer">{{ $t('guide.article_right_nabar.sectors') }}</span>
                     </a>
                 </li>
 
                 <li>
                     <a @click.prevent="scrollToSection('gallery')">
-                        <span class="text-primary">{{ $t('guide.article_right_nabar.gallery') }}</span>
+                        <span class="text-primary cursor_pointer">{{ $t('guide.article_right_nabar.gallery') }}</span>
                     </a>
                 </li>
 
                 <li>
                     <a @click.prevent="scrollToSection('comments')">
-                        <span class="text-primary">{{ $t('guide.article_right_nabar.comments') }}</span>
+                        <span class="text-primary cursor_pointer">{{ $t('guide.article_right_nabar.comments') }}</span>
                     </a>
                 </li>
 

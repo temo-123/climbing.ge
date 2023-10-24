@@ -166,9 +166,9 @@
 </template>
 
 <script>
-    import catalogItem from '../items/CatalogItemComponent'
+    import catalogItem from '../../items/CatalogItemComponent'
 
-    import emptyPageComponent from '../../global_components/EmptyPageComponent'
+    import emptyPageComponent from '../../../global_components/EmptyPageComponent'
     import { ContentLoader } from 'vue-content-loader'
 
     import { SlickList, SlickItem } from 'vue-slicksort'; //https://github.com/Jexordexan/vue-slicksort
@@ -176,7 +176,7 @@
 
     import lingallery from 'lingallery'; // https://github.com/ChristophAnastasiades/Lingallery
 
-    import metaData from '../items/MetaDataComponent'
+    import metaData from '../../items/MetaDataComponent'
     export default {
         components: {
             metaData,

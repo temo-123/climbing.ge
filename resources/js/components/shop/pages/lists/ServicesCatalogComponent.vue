@@ -38,11 +38,11 @@
 </template>
 
 <script>
-    import ServiceItem from '../items/ServiceItemComponent'
+    import ServiceItem from '../../items/ServiceItemComponent'
     import { ContentLoader } from 'vue-content-loader'
-    import emptyPageComponent from '../../global_components/EmptyPageComponent'
+    import emptyPageComponent from '../../../global_components/EmptyPageComponent'
 
-    import metaData from '../items/MetaDataComponent'
+    import metaData from '../../items/MetaDataComponent'
     export default {
         components: {
             metaData,

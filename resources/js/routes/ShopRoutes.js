@@ -49,11 +49,14 @@ const router = new VueRouter({
                 return next();
             },
             children: [
-                { path: '', name: 'catalog', component: load('CatalogComponent') },
-                { path: 'product/:url_title', name: 'product', component: load('ProductPageComponent'),},
+                { path: '', name: 'catalog', component: load('lists/CatalogComponent') },
+                { path: 'product/:url_title', name: 'product', component: load('pages/ProductPageComponent'),},
                 
-                { path: 'services', name: 'services', component: load('ServicesCatalogComponent'),},
-                { path: 'service/:url_title', name: 'service', component: load('ServicePageComponent'),},
+                { path: 'services', name: 'services', component: load('lists/ServicesCatalogComponent'),},
+                { path: 'service/:url_title', name: 'service', component: load('pages/ServicePageComponent'),},
+                
+                { path: 'tours', name: 'tours', component: load('lists/ToursCatalogComponent'),},
+                { path: 'tour/:url_title', name: 'tour', component: load('pages/ToursPageComponent'),},
 
                 { path: 'about_us', name: 'about_store', component: load('AboutUsComponent'),},
                 { path: 'search_products', name: 'search_products', component: load('SearchPageComponent'),},

@@ -162,9 +162,9 @@
     // import analogProduct from '../items/AnalogProductComponent.vue'
     import lingallery from 'lingallery'; // https://github.com/ChristophAnastasiades/Lingallery
     import VueMeta from 'vue-meta'
-    import metaData from '../items/MetaDataComponent'
-    import breadcrumb from '../items/BreadcrumbComponent.vue'
-    import similarProduct from '../items/SimilarProductComponent.vue'
+    import metaData from '../../items/MetaDataComponent'
+    import breadcrumb from '../../items/BreadcrumbComponent.vue'
+    import similarProduct from '../../items/SimilarProductComponent.vue'
     export default {
         components: {
             metaData,
