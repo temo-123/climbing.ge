@@ -18,6 +18,7 @@
 <script>
     import articlPage from '../items/ArticleComponent'
     import metaData from '../items/MetaDataComponent'
+    import articlePreloader from "../items/article/ArticlePreloaderComponent.vue";
 
     export default {
         data: function () {
@@ -42,7 +43,6 @@
         methods: {
             get_news(){
                 axios
-                // .get('../api/get_article/news/'+this.$route.params.url_title)
                 .get('../api/article/news/'+localStorage.getItem('lang')+'/'+this.$route.params.url_title)
                 .then(response => {
                     this.news = response.data

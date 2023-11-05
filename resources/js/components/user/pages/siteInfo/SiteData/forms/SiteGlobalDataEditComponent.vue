@@ -19,6 +19,12 @@
                 <input type="text" name="map" v-model="global_editing_data.map" class="form-control"> 
             </div>
         </div>
+        <div class="form-group clearfix">
+            <label for="name" class='col-xs-2 control-label'> AD block</label>
+            <div class="col-xs-8">
+                <input type="text" name="ad" v-model="global_editing_data.ad" class="form-control"> 
+            </div>
+        </div>
 
     </form>
 </template>

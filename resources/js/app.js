@@ -195,7 +195,6 @@ const app = new Vue({
             window.scrollTo(0, 0);
 
             let locale = localStorage.getItem("lang")
-            // this.get_site_data();
 
             if (window.location.hostname == process.env.MIX_SITE_URL || window.location.hostname == process.env.MIX_SHOP_URL) {
                 if(locale != 'en'){
@@ -210,8 +209,6 @@ const app = new Vue({
                     this.$i18n.locale = locale;
 
                     let activ_path_without_locale = this.$router.history.pending.path.split("/").splice(2).join("/")
-
-                    // this.get_site_data();
 
                     this.$router.push({ path: '/' + activ_path_without_locale })
                 }

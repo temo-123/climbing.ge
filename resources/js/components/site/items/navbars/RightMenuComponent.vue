@@ -1,5 +1,5 @@
 <template>
-    <div :class='"col-xs-3 col-xs-offset-1 display-none-720px "+[right_navbar_class]'>
+    <div :class='"col-xs-3 col-xs-offset-1 right_fixed_menu display-none-720px "+[right_navbar_class]'>
 
         <h3 class="navbar_title">{{ $t('guide.article_right_nabar.menu title') }}</h3>
 
@@ -39,6 +39,12 @@
             </ul>
         </nav>
 
+        <div class="row local_bisnes" v-if="this.$globalSiteData.ad">
+            <div class="col-sm-10 col-md-10">
+                <span v-html="this.$globalSiteData.ad"></span>
+            </div>
+        </div>
+
         <div class="row local_bisnes" v-if="local_bisnes.image && local_bisnes.local_data && local_bisnes.global_data">
             <div class="col-sm-10 col-md-10">
                 <div class="thumbnail">
@@ -72,6 +78,8 @@
                     local_data: ''
                 },
                 margin_bottom_position: 0,
+                document_body_offsetHeight: document.body.offsetHeight,
+                window_scrollY: window.scrollY,
             }
         },
         mounted() {
@@ -109,8 +117,19 @@
             handleScroll (event) {
                 this.margin_bottom_position = document.body.offsetHeight - window.scrollY
                 
+                const menu = document.querySelector('.right_fixed_menu');
+                const footer = document.querySelector('.footer');
+                const footer__graphic = document.querySelector('.footer__graphic');
+
+                const menuBottom = menu.getBoundingClientRect().bottom;
+                const footerTop = footer.getBoundingClientRect().top;
+                const footer__graphic_top = footer__graphic.offsetHeight;
+
                 if(this.margin_bottom_position > window.scrollY){
                     this.right_navbar_class = ''
+                }
+                else if(footerTop - footer__graphic_top - 50 < menuBottom){                    
+                    this.right_navbar_class = 'right_navigarion_menu_fixed_on_scrine_bottom'
                 }
                 else{
                     this.right_navbar_class = 'right_navigarion_menu_fixed_on_scrine'
@@ -130,16 +149,12 @@
     .right_navigarion_menu_fixed_on_scrine{
         position: fixed;
         right: 0;
-
         margin-top: -10%;
     }
-    .right_navigarion_menu_fixed_on_top{
-        /* position: fixed; */
+    .right_navigarion_menu_fixed_on_scrine_bottom{
+        position: absolute;
         right: 0;
-    }
-    .right_navigarion_menu_fixed_on_bottom{
-        /* position: fixed; */
-        right: 0;
+        bottom: 570px;
     }
     .caption h3{
         margin: 0;

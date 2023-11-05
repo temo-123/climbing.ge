@@ -97,6 +97,22 @@
                                             <span v-html="site_info.map"></span>
                                         </td>
                                     </tr>
+
+                                    <tr>
+                                        <td>AD block</td>
+                                        <td>|</td>
+                                        <td>
+                                            {{site_info.ad}}
+                                        </td>
+                                    </tr>
+
+                                    <tr>
+                                        <td>ad</td>
+                                        <td>|</td>
+                                        <td>
+                                            <span v-html="site_info.ad"></span>
+                                        </td>
+                                    </tr>
                                 </tbody>
                             </table>
 

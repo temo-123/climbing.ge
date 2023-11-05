@@ -25,6 +25,7 @@ class CreateSitesTable extends Migration
             $table->string('number')->nullable();
 
             $table->text('map')->nullable();
+            $table->text('ad')->nullable();
 
             $table->unsignedBigInteger('us_info_id');
             $table->foreign('us_info_id')->references('id')->on('locale_sites')->onDelete('cascade');

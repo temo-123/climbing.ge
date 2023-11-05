@@ -287,6 +287,7 @@ class SiteDataController extends Controller
     {
         $model['map'] = $request->site_global_info["map"];
         $model['email'] = $request->site_global_info["email"];
+        $model['ad'] = $request->site_global_info["ad"];
         $model['number'] = $request->site_global_info["number"];
 
         $model->save();
