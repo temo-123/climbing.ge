@@ -191,6 +191,15 @@ export const navbar = {
                             ['del', 'services']
                         ]
                     },
+                    // {
+                    //     name: "Tours",
+                    //     route: "/tours_list",
+                    //     permissions: [
+                    //         ['add', 'tours'],
+                    //         ['edit', 'tours'],
+                    //         ['del', 'tours']
+                    //     ]
+                    // },
                 ],
             },
             {
@@ -285,6 +294,14 @@ export const navbar = {
                             ['del_comment', 'comments'],
                         ]
                     },
+                    // {
+                    //     name: "Sport climbing routes rewiew",
+                    //     route: "/routes_rewiew",
+                    //     permissions: [
+                    //         ['show', 'routes_rewiew'],
+                    //         ['del_comment', 'routes_rewiew'],
+                    //     ]
+                    // },
                     {
                         name: "All orders",
                         route: "/order/all_orders",

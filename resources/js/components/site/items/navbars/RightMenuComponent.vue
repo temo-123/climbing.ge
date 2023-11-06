@@ -40,7 +40,7 @@
         </nav>
 
         <div class="row local_bisnes" v-if="this.$globalSiteData.ad">
-            <div class="col-sm-10 col-md-10">
+            <div class="col-sm-12 col-md-12">
                 <span v-html="this.$globalSiteData.ad"></span>
             </div>
         </div>
