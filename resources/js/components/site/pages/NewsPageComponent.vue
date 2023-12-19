@@ -8,8 +8,8 @@
         </span>
 
         <metaData 
-            :title = "news[0].title"
-            :description = "news[0].description"
+            :title = "news.locale_data.title"
+            :description = "news.locale_data.description"
             :image = "'/public/images/news_img/'+news.image"
         />
     </div>
@@ -24,6 +24,7 @@
         data: function () {
             return {
                 news: [],
+                article_loading: false
             }
         },
         components: {
@@ -42,6 +43,7 @@
         },
         methods: {
             get_news(){
+                this.article_loading = true
                 axios
                 .get('../api/article/news/'+localStorage.getItem('lang')+'/'+this.$route.params.url_title)
                 .then(response => {

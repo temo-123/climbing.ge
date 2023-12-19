@@ -27,4 +27,9 @@ class Route extends Model
 
         "first_ascent",
     ];
+
+    public function review()
+    {
+        return $this->hasMany(SportRouteReview::class);
+    }
 }

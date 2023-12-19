@@ -1,5 +1,19 @@
 // const { default: router } = require('./routes/UserRoutes');
 
+if (window.location.hostname == process.env.MIX_SITE_URL) {
+    const { default: router } = require('./routes/SiteRoutes');
+} else if (window.location.hostname == process.env.MIX_SHOP_URL) {
+    const { default: router } = require('./routes/ShopRoutes');
+} else if (window.location.hostname == process.env.MIX_USER_PAGE_URL) {
+    const { default: router } = require('./routes/UserRoutes');
+} else if (window.location.hostname == process.env.MIX_FILMS_URL) {
+    // const { default: router } = require('./routes/UserRoutes');
+} else if (window.location.hostname == process.env.MIX_FORUM_URL) {
+    // const { default: router } = require('./routes/UserRoutes');    
+} else {
+    // homeComponent = Error;
+}
+
 window._ = require('lodash');
 
 try {
@@ -23,7 +37,14 @@ window.axios.interceptors.response.use({}, err => {
         if(token){
             localStorage.removeItem('x_xsrf_token')
         }
-        router.push({name: "login"})
+        
+        // router.push({name: "login"})
+
+        if (window.location.hostname == process.env.MIX_USER_PAGE_URL) {
+            router.push({name: "login"})
+        }
+
+        return Promise.reject(err)
     }
     else if(err.response.status === 422){
         return Promise.reject(err)
@@ -32,7 +53,7 @@ window.axios.interceptors.response.use({}, err => {
         window.location.href = process.env.MIX_APP_SSH + process.env.MIX_SITE_URL + "/404";
     }
     else{
-        alert("Error log -> {" + err + "}")
+        alert("Error -> {" + err + "}")
         return Promise.reject(err)
     }
 })

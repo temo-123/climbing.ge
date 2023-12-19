@@ -24,7 +24,7 @@
                         :key='ice.id'
                         :image_dir="'images/ice_img/'"
                         :article="ice"
-                        :route="'ice/'+ice.url_title"
+                        :route="'ice/'+ice.global_data.url_title"
                     />
                 </div>
                 <div v-else>

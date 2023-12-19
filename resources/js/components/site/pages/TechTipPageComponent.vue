@@ -10,8 +10,8 @@
             />
 
             <metaData 
-                :title = "tech_tips[0].title"
-                :description = "tech_tips[0].description"
+                :title = "tech_tips.locale_data.title"
+                :description = "tech_tips.locale_data.description"
                 :image = "'/public/images/security_img/'+tech_tips.image"
             />
         </span>

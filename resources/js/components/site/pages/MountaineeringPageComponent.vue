@@ -3,7 +3,7 @@
         <div class="row">
             <div class="col-sm-8 blog-header">
                 <h1 class="blog-title">
-                    {{ this.mount_route[0].title  }}
+                    {{ this.mount_route.locale_data.title  }}
                 </h1>
             </div>
         </div>
@@ -11,7 +11,7 @@
             <div class="col-sm-8 blog-header">
                 <breadcrumb />
 
-                <p class="blog-post-meta"> {{ this.mount_route.created_at  }}</p>
+                <p class="blog-post-meta"> {{ this.mount_route.global_data.created_at  }}</p>
             </div>
         </div>
 
@@ -21,38 +21,39 @@
 
                         <p style="float: right;" v-show="masiv_desc" @click="masiv_desc = !masiv_desc">X</p>
                         <p style="float: right;" v-show="!masiv_desc" @click="masiv_desc = !masiv_desc">Read more</p>
-                        <h2>{{ $t('guide.article.title.mount massive')}} - <strong>{{this.mounts_system.locale_mount.title}}</strong></h2>
+                        
+                        <h2>{{ $t('guide.article.title.mount massive')}} - <strong>{{this.mounts_system.locale_data.title}}</strong></h2>
 
                         <span v-show="masiv_desc">
-                            <span v-html="this.mounts_system.locale_mount.text"></span>
+                            <span v-html="this.mounts_system.locale_data.text"></span>
 
-                            <div v-if="this.mounts_system.global_mount[0].weather == NULL && this.mounts_system.locale_mount.best_time != NULL">
+                            <div v-if="this.mounts_system.global_data.weather == NULL && this.mounts_system.locale_data.best_time != NULL">
                                 <h2 id="best_time_to_climb">{{ $t('guide.article.title.best time')}}</h2>
-                                <span v-html="this.mounts_system.locale_mount.best_time"></span>
+                                <span v-html="this.mounts_system.locale_data.best_time"></span>
                             </div>  
-                            <div v-else-if="this.mounts_system.global_mount[0].weather != NULL && this.mounts_system.locale_mount.best_time != NULL">
+                            <div v-else-if="this.mounts_system.global_data.weather != NULL && this.mounts_system.locale_data.best_time != NULL">
                                 <h2 id="best_time_to_climb">{{ $t('guide.article.title.best time')}}</h2>
 
                                 <div class="row">
                                     <div class="col-md-6" style="margin-top: 5%;">
-                                        <span v-html="this.mounts_system.locale_mount.best_time"></span>
+                                        <span v-html="this.mounts_system.locale_data.best_time"></span>
                                     </div>
                                     <div class="col-md-6" style="text-align: center;">
-                                        <span v-html="this.mounts_system.global_mount[0].weather"></span>
+                                        <span v-html="this.mounts_system.global_data.weather"></span>
                                     </div>
                                 </div>
                             </div>
 
                             <!-- how get -->
-                            <div v-if="this.mounts_system.locale_mount.how_get != NUll">
+                            <div v-if="this.mounts_system.locale_data.how_get != NUll">
                                 <h2 id="how_to_get_there">{{ $t('guide.article.title.how get')}}</h2>
-                                <span v-html="this.mounts_system.locale_mount.how_get"></span>
+                                <span v-html="this.mounts_system.locale_data.how_get"></span>
                             </div>
 
                             <!-- map -->
-                            <div v-if="this.mounts_system.global_mount[0].map != NULL">
+                            <div v-if="this.mounts_system.locale_data.map != NULL">
                                 <div class="article_map">
-                                    <span v-html="this.mounts_system.global_mount[0].map"></span>
+                                    <span v-html="this.mounts_system.locale_data.map"></span>
                                 </div>
                             </div>
                         </span>
@@ -60,57 +61,16 @@
 
                     <articleTextBlocks :article="this.mount_route"/>
 
-                    <!-- <span v-html="this.mount_route[0].text"></span>
-
-                    <div v-if="this.mount_route[0].weather == NULL && this.mount_route[0].best_time != NULL">
-                        <h2 id="best_time_to_climb">{{ $t('guide.article.title.best time')}}</h2>
-                        <span v-html="this.mount_route[0].best_time"></span>
-                    </div>  
-                    <div v-else-if="this.mount_route[0].weather != NULL && this.mount_route[0].best_time != NULL">
-                        <h2 id="best_time_to_climb">{{ $t('guide.article.title.best time')}}</h2>
-
-                        <div class="row">
-                            <div class="col-md-6" style="margin-top: 5%;">
-                                <span v-html="this.mount_route[0].best_time"></span>
-                            </div>
-                            <div class="col-md-6" style="text-align: center;">
-                                <span v-html="this.mount_route.weather"></span>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div v-if="this.mount_route[0].how_get != NUll">
-                        <h2 id="how_to_get_there">{{ $t('guide.article.title.how get')}}</h2>
-                        <span v-html="this.mount_route[0].how_get"></span>
-                    </div>
-
-                    <div v-if="this.mount_route.map != NULL">
-                        <div class="article_map">
-                            <span v-html="this.mount_route.map"></span>
-                        </div>
-                    </div>
-
-                    <div v-if="this.mount_route[0].info != NUll">
-                        <h2 id="how_to_get_there">{{ $t('guide.article.title.info')}}</h2>
-                        <span v-html="this.mount_route[0].info"></span>
-                    </div>
-
-                    <div v-if="this.mount_route[0].what_need != NUll">
-                        <h2 id="what_you_need">{{ $t('guide.article.title.what need')}}</h2>
-                        <span v-html="this.mount_route[0].what_need"></span>
-                    </div> -->
-
                     <!-- route -->
-                    <div v-if="this.mount_route[0].route">
+                    <div v-if="this.mount_route.locale_data.route">
                         <h2 id="routes">{{ $t('guide.article.title.route')}}</h2>
-
                     
-                        <MountaineeringRouteImages  :article_id_prop="this.mount_route.id" />
+                        <MountaineeringRouteImages  :article_id_prop="this.mount_route.global_data.id" />
 
-                        <span v-html="this.mount_route [0].route"></span>
+                        <span v-html="this.mount_route.locale_data.route"></span>
                     </div>
                     
-                    <galleryComponent :article_id="this.mount_route.id" />
+                    <galleryComponent :article_id="this.mount_route.global_data.id" />
 
                 </div>
 
@@ -118,18 +78,18 @@
             
         </div>
 
-        <commentForm :article_id="this.mount_route.id" />
+        <commentForm :article_id="this.mount_route.global_data.id" />
 
         <SimilarArticles 
-            :article_id="this.mount_route.id" 
-            :article_category="this.mount_route.category" 
+            :article_id="this.mount_route.global_data.id" 
+            :article_category="this.mount_route.global_data.category" 
             :route="'outdoor/'"
             :img_dir="'outdoor'"
         />
         
         <metaData 
-            :title = "mount_route[0].title"
-            :description = "mount_route[0].description"
+            :title = "mount_route.locale_data.title"
+            :description = "mount_route.locale_data.description"
             :image = "'/public/images/mount_route_img/'+mount_route.image"
         />
     </div> 
@@ -190,7 +150,7 @@
             },
             get_mount_masiv(){
                 axios 
-                .get('../api/mount/on_page/'+localStorage.getItem('lang')+'/'+this.mount_route.id)
+                .get('../api/mount/on_page/'+localStorage.getItem('lang')+'/'+this.mount_route.global_data.id)
                 .then(response => {
                     this.mounts_system = response.data
                 })

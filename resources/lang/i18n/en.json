@@ -74,8 +74,10 @@
 
             "more": "More",
             "route detals": "Routes detals",
-            "anchor": "Routes detals",
-            "mtp detals": "Multy-pitch detals"
+            "anchor_type": "Routes anchor",
+            "mtp detals": "Multy-pitch detals",
+
+            "make_review": "Make review"
         },
 
         "sector": {
@@ -139,14 +141,19 @@
             "services": "Services list",
             "categories": "Categories",
             "about us": "About us",
-            "search": "Search product"
+            "search": "Search product",
+            "tours": "Tours list",
+            "mein page": "Climbing.ge product, services & tours.",
+            "climbing wall": "Climbing wall price colculator"
         },
 
         "menu": {
             "products": "Products",
             "services": "Services",
             "categories": "Categories",
-            "about us": "About us"
+            "about us": "About us",
+            "climbing wall": "Climbing Wall",
+            "tours": "Tours"
         },
 
         "title": {
@@ -154,11 +161,23 @@
             "products": "Products",
             "search": "Search products",
             "gallery": "Gallery",
-            
+            "climbing wall colculator": "Climbing Wall Colculator",
+            "tours": "Tours",
+
             "similar": {
                 "products": "You might also like",
                 "services": "Other services"
             }
+        },
+
+        "wall": {
+            "height": "Wall Height",
+            "width": "Wall Hidth",
+            "depth": "Wall Depth",
+
+            "mat height": "Mat Height",
+            "mat width": "Mat Hidth",
+            "mat depth": "Mat Depth"
         },
 
         "product desc": {

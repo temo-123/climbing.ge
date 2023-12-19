@@ -90,7 +90,6 @@ class GeneralInfoService
         }
     }
 
-
     private function article_relatione($global_blocks, $article_id, $block_name){
         // dd($global_blocks);
         $general_info_article_info = General_info_article::
@@ -117,5 +116,45 @@ class GeneralInfoService
         else if ($global_blocks[$block_name] == 'new_info' && $general_info_article_info != []){
             $general_info_article_info->delete();
         }
+    }
+
+    public static function getGeneralInfoForArticle($global_info) {
+        $general_info = [];
+
+        $info_article_relatione = General_info_article::where('article_id', '=', $global_info->id)->get();
+
+        // dd($info_article_relatione);
+        foreach($info_article_relatione as $info){
+
+
+            if($info->block == 'info_block'){
+                $general_info['info_block'] = [
+                    "block_action" => $info->block_action,
+                    "text"=>General_info::where('id', '=', $info->info_id)->first('text_us')->text_us
+                ];
+            }
+            if($info->block == 'what_need_info'){
+                $general_info['what_need_info'] = [
+                    "block_action" => $info->block_action,
+                    "text"=>General_info::where('id', '=', $info->info_id)->first('text_us')->text_us
+                ];
+            }
+            if($info->block == 'best_time'){
+                $general_info['best_time'] = [
+                    "block_action" => $info->block_action,
+                    "text"=>General_info::where('id', '=', $info->info_id)->first('text_us')->text_us
+                ];
+            }
+            if($info->block == 'routes_info'){
+                $general_info['routes_info'] = [
+                    "block_action" => $info->block_action,
+                    "text"=>General_info::where('id', '=', $info->info_id)->first('text_us')->text_us
+                ];
+            }
+        }
+
+        // dd($general_info);
+
+        return $general_info;
     }
 }

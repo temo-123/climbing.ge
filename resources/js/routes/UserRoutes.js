@@ -35,13 +35,16 @@ const router = new VueRouter({
         { path: '/all_posts', name: 'allPosts', component: load('posts/AllPostsPageComponent') },
 
         { path: '/cart', name: 'cart', component: load('cartPageComponent') },
-        { path: '/gallery', name: 'gallery', component: load('GalleryPageComponent') },
+        { path: '/gallery', name: 'gallery', component: load('gallery/GalleryPageComponent') },
         { path: '/site_folloers', name: 'site_folloers', component: load('SiteFolloersListPageComponent') },
         { path: '/options', name: 'options', component: load('optionsPageComponent') },
         { path: '/users_list', name: 'usersList', component: load('usersListPageComponent') },
 
-        { path: '/comments', name: 'comentsList', component: load('comments/CommentsPageComponent') },
-        { path: '/myComments', name: 'myComentsList', component: load('comments/MyCommentsPageComponent') },
+        { path: '/comments_and_reviews', name: 'commentsAndReviewsList', component: load('comments_&_reviews/all_actions/comments_&_reviews_page') },
+        // { path: '/reviews', name: 'reviewsList', component: load('comments_&_reviews/reviews/ReviewPageComponent') },
+
+        { path: '/my_comments_and_reviews', name: 'myCommentsAndReviewsList', component: load('comments_&_reviews/my_actions/my_comments_&_reviews_page') },
+        // { path: '/myReviews', name: 'myReviewsList', component: load('comments_&_reviews/reviews/MyReviewPageComponent') },
 
         { path: '/favorite_films', name: 'favoriteFilmsPage', component: load('favorites/FavoriteFilmsPageComponent') },
         { path: '/my_favorite_outdoor_area', name: 'favoriteOutdoorArea', component: load('favorites/FavoriteOutdoorAreaPageComponent') },
@@ -112,6 +115,12 @@ const router = new VueRouter({
         { path: '/products_and_categories', name: 'productsList', component: load('products_and_categories/productsAndCatgoriesListComponent') },
         { path: '/product/edit/:id', name: 'productEdit', component: load('products_and_categories/products/productEditComponent') },
         { path: '/product/add', name: 'productAdd', component: load('products_and_categories/products/productAddComponent') },
+
+        { path: '/tours_list', name: 'toursList', component: load('toure/TouresListPage') },
+        { path: '/toure/edit/:id', name: 'toureEdit', component: load('toure/toure/EditTourePage') },
+        { path: '/toure/add', name: 'toureAdd', component: load('toure/toure/AddTourePage') },
+
+        { path: '/stor_slides_list', name: 'storSlidesList', component: load('gallery/StoreSlidesPage') },
 
         { path: '/product_option_control/product_id/:product_id', name: 'productOptionsControl', component: load('products_and_categories/productOptionControlPageComponent') },
 

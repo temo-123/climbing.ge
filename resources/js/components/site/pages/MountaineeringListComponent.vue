@@ -18,7 +18,7 @@
                     <div class="col-md-6" v-if="this.mounts.length > 0">
                         <select class="form-control" v-model="filter_mount" @click="get_mountain_route_articles()">
                             <option>All</option>
-                            <option v-for="mount in mounts" :key='mount.global_mount.id' :value="mount.global_mount.id">{{ mount.locale_mount.title }}</option> 
+                            <option v-for="mount in mounts" :key='mount.global_data.id' :value="mount.global_data.id">{{ mount.locale_data.title }}</option> 
                         </select>
                     </div>
                 </div>
@@ -26,8 +26,8 @@
 
             <div class="row articles_filter_bar" v-if="filter_mount != 'All'">
                 <div class="col-md-12" style="text-align: center;">
-                    <h4>{{selected_mount_data.locale_mount.title}}</h4>
-                    <span v-html="selected_mount_data.locale_mount.text"></span>
+                    <h4>{{selected_mount_data.locale_data.title}}</h4>
+                    <span v-html="selected_mount_data.locale_data.text"></span>
                 </div>
             </div>
 
@@ -45,9 +45,9 @@
                     <div v-if="this.mount_routes.length > 0" class="article_card_container">
                         <mountCard 
                             v-for="mount_route in mount_routes"
-                            :key='mount_route.id'
+                            :key='mount_route.global_data.id'
                             :mount="mount_route"
-                            :route="'mountaineering/'+mount_route.url_title"
+                            :route="'mountaineering/'+mount_route.global_data.url_title"
                         />
                     </div>
                     <div v-else>
@@ -174,7 +174,6 @@
             },
 
             get_selected_mount_data(mount_masiv_id){
-                console.log(this.filter_mount);
                 if (this.filter_mount != 'all' || this.filter_mount != 'All') {
                     this.selected_mount_data = []
                     axios 

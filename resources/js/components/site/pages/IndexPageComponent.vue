@@ -99,36 +99,24 @@
         },
         mounted() {
             this.get_news()
-            // this.get_last_news()
         },
         watch: {
             '$route' (to, from) {
                 this.get_news()
-                // this.get_last_news()
                 window.scrollTo(0,0)
             }
         },
         methods: {
-            async get_news(){
+            get_news(){
                 axios
-                .get('../api/articles/news/'+localStorage.getItem('lang'))
+                .get('articles/news/'+localStorage.getItem('lang'))
                 .then(response => {
                     this.newses = response.data
                     this.lastNews = response.data[0]
-                    // this.get_news()
                 })
                 .catch(error =>{
                 })
             },
-            // async get_last_news(){
-            //     axios
-            //     .get('../api/last_news/'+localStorage.getItem('lang'))
-            //     .then(response => {
-            //         this.lastNews = response.data
-            //     })
-            //     .catch(error =>{
-            //     })
-            // }
         }
     }
 </script>

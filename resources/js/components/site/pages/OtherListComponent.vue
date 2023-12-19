@@ -26,7 +26,7 @@
                         :key='other_article.id'
                         :image_dir="'images/other_img/'"
                         :article="other_article"
-                        :route="'other/'+other_article.url_title"
+                        :route="'other/'+other_article.global_data.url_title"
                     />
                 </div>
                 <div v-else>

@@ -54,8 +54,8 @@
 </template>
 
 <script>
-    import { SlickList, SlickItem } from 'vue-slicksort'; //https://github.com/Jexordexan/vue-slicksort
-    import StackModal from '@innologica/vue-stackable-modal'  //https://innologica.github.io/vue-stackable-modal/#sample-css
+    // import { SlickList, SlickItem } from 'vue-slicksort'; //https://github.com/Jexordexan/vue-slicksort
+    // import StackModal from '@innologica/vue-stackable-modal'  //https://innologica.github.io/vue-stackable-modal/#sample-css
 
     import breadcrumb from '../items/BreadcrumbComponent.vue'
 
@@ -65,9 +65,9 @@
 
     export default {
         components: {
-            StackModal,
-            SlickItem,
-            SlickList,
+            // StackModal,
+            // SlickItem,
+            // SlickList,
             adresList,
             breadcrumb,
             userOptions,

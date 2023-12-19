@@ -1,30 +1,26 @@
 <template>
   <div class="food col-md-4">
         <div class="portfolio-img view view-first">
-            <div class="product-image" v-if="mount.new_flag">
+            <div class="product-image" v-if="mount.global_data.new_flag">
                 <div class="discount-percent-badge discount-badge-fourty">NEW</div>
             </div>
-
-            <!-- <img :src="image_dir+mount.image" class="img-responsive" :alt='mount[0][0].title' /> -->
                                 
-            <site-img v-if="mount.image != NULL" :src="'/images/mount_route_img/'+mount.image" :img_class="'img-responsive'" :alt='mount[0][0].title'/>
-            <site-img v-else :src="'/public/images/site_img/image.png'" :img_class="'img-responsive'" :alt='mount[0][0].title'/>
+            <site-img v-if="mount.global_data.image != NULL" :src="'/images/mount_route_img/'+mount.global_data.mage" :img_class="'img-responsive'" :alt='mount.locale_data.title'/>
+            <site-img v-else :src="'/public/images/site_img/image.png'" :img_class="'img-responsive'" :alt='mount.locale_data.title'/>
 
             <div class="mask">
-                <!-- <a href="#" class="info"><i class="fa fa-arrow-right"></i></a> -->
                 <router-link :to="this.route" class="info"><i class="fa fa-arrow-right"></i></router-link>
             </div>
             
             <div class="isotope-item-dtls">
-                <h3>{{ mount[0][0].title }}</h3>
+                <h3>{{ mount.locale_data.title }}</h3>
                 <div class="mount_size">
 
-                    <!-- <p>{{ mount[0][0].short_description }}</p> -->
-                    <span v-html="mount[0][0].short_description"></span>
+                    <span v-html="mount.locale_data.short_description"></span>
 
-                    <div class="col text-center" v-if="mount.mount_system">
+                    <div class="col text-center" v-if="mount.mount_masive">
                         <div class="row">
-                            Mount system - {{ mount.mount_system }}
+                            Mount system - {{ mount.mount_masive }}
                         </div>
                     </div>
                 </div>

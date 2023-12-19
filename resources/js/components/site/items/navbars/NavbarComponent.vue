@@ -114,6 +114,9 @@
                 navbar_class: 'collapse navbar-collapse',
                 navbar_open_class: 'collapse navbar-collapse show',
 
+                MIX_SITE_URL: process.env.MIX_SITE_URL,
+                MIX_APP_SSH: process.env.MIX_APP_SSH,
+
                 get activ_grade() {
                     return localStorage.getItem('grade') || 'yds';
                 },
@@ -141,13 +144,6 @@
             }
         },
         watch: {
-        //     $route(to) {
-        //         if(localStorage.getItem('lang') != 'en'){
-        //             this.i18n.locale = localStorage.getItem('lang')
-        //         } else{this.i18n.locale = ''}
-        //     }
-        //     '$route' (to, from) {
-        //     }
             '$route' (to, from) {
                 this.navbar_class = this.navbar_general_class
             }

@@ -10,7 +10,7 @@ use App\Models\Mount;
 use App\Services\GetMountSystemService;
 use App\Services\ImageControllService;
 use App\Models\Mount_route_image;
-use App\Services\GetArticlesService;
+use App\Services\ArticlesService;
 
 class MountRouteController extends Controller
 {   
@@ -20,7 +20,7 @@ class MountRouteController extends Controller
         // $articles = [];
         if($mount_article_count > 0){
             $filtred_articles_by_mount = Mount::where('id', '=', $request->filter_id)->first()->articles;
-            $articles = GetArticlesService::get_locale_article_use_locale($filtred_articles_by_mount, $request->lang);
+            $articles = ArticlesService::get_locale_article_use_locale($filtred_articles_by_mount, $request->lang);
             // return $filtred_articles_by_mount;
         }
         return $articles;
@@ -31,7 +31,7 @@ class MountRouteController extends Controller
         // $articles = [];
         // if($article_count > 0){
         //     $global_articles = Article::latest('id')->where('category', '=', 'mount_route')->where('published', '=', 1)->get();
-        //     $articles = GetArticlesService::get_locale_article_use_locale($global_articles, $lang);
+        //     $articles = ArticlesService::get_locale_article_use_locale($global_articles, $lang);
         // }
         // // dd($articles);
         // return $articles;

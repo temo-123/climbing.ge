@@ -117,6 +117,13 @@
                                     </span>
                                     <span
                                         v-else-if="
+                                            filtr_data.table_name == 'Tours categories'
+                                        "
+                                    >
+                                        <button class="btn btn-primary pull-left" @click="add_toure_category()" v-if="$can('add', 'toure')">Add toure category</button>
+                                    </span>
+                                    <span
+                                        v-else-if="
                                             filtr_data.table_name == 'Products' &&
                                             filtr_data.table_category !== null
                                         "
@@ -194,6 +201,11 @@
                                     :table_name="data.table_name"
                                 />
                             </thead>
+                            <thead  v-else-if="data.table_name == 'Tours categories'">
+                                <toureCategoryTabHeader 
+                                    :table_name="data.table_name"
+                                />
+                            </thead>
                             <thead  v-else-if="data.table_name == 'Products'">
                                 <productTagsTabHeader 
                                     :table_name="data.table_name"
@@ -240,6 +252,7 @@
                                         data.table_name == 'events' || 
                                         data.table_name == 'Films' ||
                                         data.table_name == 'Mountaineering routes' || 
+                                        data.table_name == 'Toure' || 
                                         data.table_name == 'services' 
                                     ">
                                 <articleTabHeader
@@ -254,6 +267,15 @@
 
                             <tbody v-if="data.table_name == 'Products'">
                                 <productsTab
+                                    v-for="table_info in data.data"
+                                    :key="table_info.id"
+                                    :table_info="table_info"
+
+                                    @restart="update"
+                                />
+                            </tbody>
+                            <tbody v-else-if="data.table_name == 'Tours categories'">
+                                <toureCategoryTab
                                     v-for="table_info in data.data"
                                     :key="table_info.id"
                                     :table_info="table_info"
@@ -493,6 +515,15 @@
                                     @restart="update"
                                 />
                             </tbody>
+                            <tbody v-else-if="data.table_name == 'Tours'">
+                                <toureTab
+                                    v-for="table_info in data.data"
+                                    :key="table_info.id"
+                                    :table_info="table_info"
+                                    
+                                    @restart="update"
+                                />
+                            </tbody>
                             <tbody v-else>
                                 <articlesTab
                                     v-for="table_info in data.data"
@@ -514,6 +545,8 @@
         <addRoleModal ref="add_role_modal"/>
 
         <addUserModal ref="add_user_modal" @restart="update"/>
+
+        <addToureCategoryModal ref="add_toure_catebory_modal" @restart="update"/>
 
         <countryAddModal ref="add_country" @restart="update"/>
 
@@ -551,6 +584,7 @@ import eventTabHeader from "./tab_header/EventTabHeaderComponent.vue"
 import regionTabHeader from "./tab_header/RegionTabHeaderComponrent.vue"
 import routeTabHeader from "./tab_header/RouteTabHeaderComponrent.vue"
 import SiteFollowersTabHeader from "./tab_header/SiteFollowersTabHeaderComponent.vue"
+import toureCategoryTabHeader from "./tab_header/ToureCategoryTabHeaderComponent.vue"
 
 import eventTab from "./tabs/EventTabComponent.vue";
 import sectorLocalImageTab from "./tabs/SectorLocalImageTabComponent.vue";
@@ -578,10 +612,11 @@ import postTab from "./tabs/PostTabComponent.vue";
 import iceSectorTab from "./tabs/IceSectorTabComponent.vue";
 import iceRouteTab from "./tabs/IceRouteTabComponent.vue";
 import siteFollowersTab from "./tabs/SiteFollowersTabComponent.vue";
-// import competitionTab from "./tabs/CompetitionTabComponent.vue";
+import toureTab from "./tabs/ToursTabComponent.vue";
+import toureCategoryTab from "./tabs/ToureCategoriesTabComponent.vue";
 
 //import sectorModal from "./tab_modals/SectorsModalComponent.vue";
-// import editOrderStatusModal from "./tab_modals/EditOrderStatusსModalComponent.vue";
+import addToureCategoryModal from "./tab_modals/add/AddToureCategoryModal.vue";
 import addRoleModal from "./tab_modals/RolesAddModalComponent.vue";
 import countryAddModal from "./tab_modals/AddCountryModalComponent.vue";
 import addUserModal from "./tab_modals/UserAddModalComponent.vue";
@@ -593,8 +628,8 @@ export default {
         tabHeader,
         functionalBattoms,
 
-        // competitionTab,
-
+        toureCategoryTabHeader,
+        
         tableFilter,
 
         orderTabHeader,
@@ -635,12 +670,15 @@ export default {
         iceSectorTab,
         iceRouteTab,
         siteFollowersTab,
+        toureTab,
+        toureCategoryTab,
 
         saleCodeModal,
         countryAddModal,
         addRoleModal,
         addUserModal,
         articleQuickViewModal,
+        addToureCategoryModal,
     },
 
     props: [
@@ -674,6 +712,9 @@ export default {
         },
         add_user(){
             this.$refs.add_user_modal.open_user_add_modal()
+        },
+        add_toure_category(){
+            this.$refs.add_toure_catebory_modal.open_modal()
         },
 
         filtring(event) {

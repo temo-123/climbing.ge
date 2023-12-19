@@ -11,7 +11,7 @@ use App\Models\Locale_article;
 use App\Models\Region;
 use App\Models\Article_region;
 
-use App\Services\GetArticlesService;
+use App\Services\ArticlesService;
 
 use App\Models\Sector;
 use App\Models\Route;
@@ -113,7 +113,7 @@ class OutdoorController extends Controller
             $global_outdoors = $filtred_articles_by_region->where('category', '=', 'outdoor')->where('published', '=', 1);
             $article_count = $filtred_articles_by_region->where('category', '=', 'outdoor')->where('published', '=', 1)->count();
 
-            $outdoors = GetArticlesService::get_locale_article_use_locale($global_outdoors, $request->lang);
+            $outdoors = ArticlesService::get_locale_article_use_locale($global_outdoors, $request->lang);
 
             $route_num = 0;
             $mtp_num = 0;
@@ -154,7 +154,7 @@ class OutdoorController extends Controller
         
         foreach ($outdoors as $outdoor) {
             foreach ($route_quantity as $quantity) {
-                if ($quantity['article_id'] == $outdoor['id']) {
+                if ($quantity['article_id'] == $outdoor['global_data']['id']) {
                     array_push($area_data, ["route_quantyty" => $quantity, "area" => $outdoor]);
                 }
             }

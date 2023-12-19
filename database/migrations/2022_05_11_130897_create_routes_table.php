@@ -28,6 +28,7 @@ class CreateRoutesTable extends Migration
             $table->string('height')->nullable();
             $table->string('first_ascent')->nullable();
             $table->string('anchor_type')->nullable();
+            $table->string('bolts_type')->nullable();
             $table->string('category')->nullable();
             $table->string('stars')->nullable();
 

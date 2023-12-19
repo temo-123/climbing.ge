@@ -271,16 +271,16 @@ return [
 
 
         'Socialite' => Laravel\Socialite\Facades\Socialite::class, // Laravel Socialite
-        'GetArticlesService' => App\Services\GetArticlesService::class, // Get articles
-        'GetMountSystemService' => App\Services\GetMountSystemService::class, // Get MountSystem
-        'GetServicesService' => App\Services\GetServicesService::class, // Get Services
+
+        'ArticlesService' => App\Services\ArticlesService::class, // Get articles
+        'MountSystemService' => App\Services\MountSystemService::class, // Get MountSystem
+        'ServicesService' => App\Services\ServicesService::class, // Get Services
         'ImageControllService' => App\Services\ImageControllService::class, // image upload, update & delite
         'get_url_title' => App\Services\get_url_title::class, // create url_title, from us_title
+        'ProductService' => App\Services\ProductService::class, // Get products
 
-        'GetProductService' => App\Services\GetProductService::class, // Get products
-
-        'GetOrderService' => App\Services\GetOrderService::class,
-        'GetFilmService' => App\Services\GetFilmService::class,
+        'OrderService' => App\Services\OrderService::class,
+        'FilmService' => App\Services\FilmService::class,
 
         'Image' => Intervention\Image\Facades\Image::class,
     ],

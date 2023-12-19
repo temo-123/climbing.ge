@@ -73,8 +73,6 @@ class FaworitesController extends Controller
 
     public function add_to_favorite_outdoor_area(Request $request)
     {
-        // dd(Auth::user());
-
         if (Auth::user()) {
             if(Favorite_outdoor_area::where('user_id', '=', Auth::user()->id)->where('article_id', '=', $request->article_id)->count() > 0){
                 return 'This area olredy are in faworite';

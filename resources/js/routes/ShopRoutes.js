@@ -49,17 +49,21 @@ const router = new VueRouter({
                 return next();
             },
             children: [
-                { path: '', name: 'catalog', component: load('lists/CatalogComponent') },
-                { path: 'product/:url_title', name: 'product', component: load('pages/ProductPageComponent'),},
-                
-                { path: 'services', name: 'services', component: load('lists/ServicesCatalogComponent'),},
-                { path: 'service/:url_title', name: 'service', component: load('pages/ServicePageComponent'),},
-                
-                { path: 'tours', name: 'tours', component: load('lists/ToursCatalogComponent'),},
-                { path: 'tour/:url_title', name: 'tour', component: load('pages/ToursPageComponent'),},
+                { path: '/', name: 'index', component: load('MeinPage') },
 
-                { path: 'about_us', name: 'about_store', component: load('AboutUsComponent'),},
-                { path: 'search_products', name: 'search_products', component: load('SearchPageComponent'),},
+                { path: '/climbing_wall_colculator', name: 'wall_price_colculator', component: load('pages/wall_colculator/ClimbingWallPriceColculatePage') },
+
+                { path: '/products', name: 'catalog', component: load('lists/ProductsCatalog') },
+                { path: '/product/:url_title', name: 'product', component: load('pages/ProductPage'),},
+                
+                { path: '/services', name: 'services', component: load('lists/ServicesCatalog'),},
+                { path: '/service/:url_title', name: 'service', component: load('pages/ServicePage'),},
+                
+                { path: '/tours', name: 'tours', component: load('lists/ToursCatalog'),},
+                { path: '/tour/:url_title', name: 'tour', component: load('pages/TourPage'),},
+
+                { path: '/about_us', name: 'about_store', component: load('AboutUs'),},
+                { path: '/search_products', name: 'search_products', component: load('SearchPage'),},
                 
                 { path: '*', name: 'NotFound', component: NotFound }
             ]

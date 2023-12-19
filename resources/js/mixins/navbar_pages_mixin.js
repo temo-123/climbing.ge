@@ -17,8 +17,8 @@ export const navbar = {
                 route: "/cart",
             },
             {
-                title: "My Comments",
-                route: "/myComments",
+                title: "My Comments & Reviews",
+                route: "/my_comments_and_reviews",
             },
             {
                 title: "My Orders",
@@ -191,15 +191,27 @@ export const navbar = {
                             ['del', 'services']
                         ]
                     },
-                    // {
-                    //     name: "Tours",
-                    //     route: "/tours_list",
-                    //     permissions: [
-                    //         ['add', 'tours'],
-                    //         ['edit', 'tours'],
-                    //         ['del', 'tours']
-                    //     ]
-                    // },
+                    {
+                        name: "Tours",
+                        route: "/tours_list",
+                        permissions: [
+                            ['add', 'toure'],
+                            ['edit', 'toure'],
+                            ['del', 'toure'],
+                            ['add', 'toure_category'],
+                            ['edit', 'toure_category'],
+                            ['del', 'toure_category']
+                        ]
+                    },
+                    {
+                        name: "Stor slider",
+                        route: "/stor_slides_list",
+                        permissions: [
+                            ['add', 'store_slides'],
+                            ['edit', 'store_slides'],
+                            ['del', 'store_slides']
+                        ]
+                    },
                 ],
             },
             {
@@ -227,7 +239,7 @@ export const navbar = {
                 ]
             },
             {
-                title: "Global data",
+                title: "Site Global Data",
                 name: "global_data",
                 routes: [
                     {
@@ -294,19 +306,19 @@ export const navbar = {
                             ['del_comment', 'comments'],
                         ]
                     },
-                    // {
-                    //     name: "Sport climbing routes rewiew",
-                    //     route: "/routes_rewiew",
-                    //     permissions: [
-                    //         ['show', 'routes_rewiew'],
-                    //         ['del_comment', 'routes_rewiew'],
-                    //     ]
-                    // },
                     {
                         name: "All orders",
                         route: "/order/all_orders",
                         permissions: [
                             ['edit_order_status', 'order'],
+                        ]
+                    },
+                    {
+                        name: "Climbing routes rewiew",
+                        route: "/comments_and_reviews",
+                        permissions: [
+                            ['show', 'routes_rewiew'],
+                            ['del_comment', 'routes_rewiew'],
                         ]
                     },
                 ],

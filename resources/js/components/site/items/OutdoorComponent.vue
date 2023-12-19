@@ -3,9 +3,9 @@
         <div class="row">
             <div class="col-sm-8 blog-header">
                 <h1 class="blog-title">
-                    {{ this.article[0].title  }}
+                    {{ this.article.locale_data.title  }}
 
-                    <span @click="add_to_favorite_outdoor_area(article.id)"> 
+                    <span @click="add_to_favorite_outdoor_area(article.global_data.id)"> 
                         <i class="fa fa-heart-o favorite_icon add_to_favorite" ></i> 
                     </span>
                 </h1>
@@ -15,7 +15,7 @@
             <div class="col-sm-8 blog-header">
                 <breadcrumb />
 
-                <p class="blog-post-meta"> {{ this.article[0].created_at  }}</p>
+                <p class="blog-post-meta"> {{ this.article.global_data.created_at  }}</p>
             </div>
         </div>
 
@@ -25,39 +25,25 @@
                 <articleTextBlocks :article="this.article"/>
 
                 <!-- routes -->
-                <div v-if="this.article[0].route || this.article.global_info.routes_info != []">
+                <div v-if="this.article.locale_data.route || this.article.global_info.routes_info != []">
                     <h2 id="routes">{{ $t('guide.article.title.route')}}</h2>
 
                     <routeQuanDiogram 
-                        :outdoor_region_article_id="this.article.id"
+                        :outdoor_region_article_id="this.article.global_data.id"
                         ref="route_quan_diogram"
                     />
 
-                    <span v-if="this.article.global_info.routes_info.length == 0">
-                        <span v-html="this.article[0].route"></span>
-                    </span>
-                    <span v-else>
-                        <span v-if="this.article.global_info.routes_info.block_action == 'befor'">
-                            <span v-html="this.article.global_info.routes_info.text"></span>
-                            <span v-html="this.article[0].route"></span>
-                        </span>
-                        <span v-if="this.article.global_info.routes_info.block_action == 'after'">
-                            <span v-html="this.article[0].route"></span>
-                            <span v-html="this.article.global_info.routes_info.text"></span>
-                        </span>
-                        <span v-if="this.article.global_info.routes_info.block_action == 'instead'">
-                            <span v-html="this.article.global_info.routes_info.text"></span>
-                        </span>
-                    </span>
+                    <generalInfo :global_info="article.global_info.routes_info" :locale_data="article.locale_data.route"/>
+
                 </div>
 
                 <routesTab 
-                    :article_id="this.article.id" 
+                    :article_id="this.article.global_data.id" 
                     ref="routes_tab"
                 />
                 
                 <galleryComponent 
-                    :article_id="this.article.id" 
+                    :article_id="this.article.global_data.id" 
                     ref="gallery_component"
                 />
             </div>
@@ -68,14 +54,14 @@
 
         <div class="row"> 
             <commentForm 
-                :article_id="this.article.id" 
+                :article_id="this.article.global_data.id" 
                 ref="comments"
             />
         </div>
 
         <SimilarArticles 
-            :article_id="this.article.id" 
-            :article_category="this.article.category" 
+            :article_id="this.article.global_data.id" 
+            :article_category="this.article.global_data.category" 
             :route="'outdoor/'"
             :img_dir="'outdoor_img/'"
 
@@ -97,6 +83,8 @@
 
     import routeQuanDiogram from '../items/climbing_routes/RoutesQuantityComponent.vue'
 
+    import generalInfo from './article/GeneralInfoComponent'
+
     export default {
         props: [
             'article',
@@ -110,27 +98,24 @@
             breadcrumb,
             routeQuanDiogram,
             articleTextBlocks,
-            // postsList
+            generalInfo
         },
         data: function () {
             return {
                 posts: [],
+
+                MIX_SITE_URL: process.env.MIX_SITE_URL,
+                MIX_APP_SSH: process.env.MIX_APP_SSH,
             }
         },
         mounted() {
             // this.get_posts()
-            // console.log(document.querySelector('meta[name="csrf-token"]').getAttribute('content'));
         },
 
-        // onBeforeRouteLeave(to, from, next) {
-        //     alert('prevent route change');
-        //     next(false);
-        // },
-
         watch: {
-            $route(to, from) {
+            // $route(to, from) {
                 // alert('prevent route change 2');
-            },
+            // },
         },
         methods: {
             update_similar_articles_component(id){
@@ -143,19 +128,18 @@
 
             add_to_favorite_outdoor_area(article_id){
                 axios
-                .post('../api/outdoor/add_to_favorite_outdoor_area/'+article_id)
+                .post('/outdoor/add_to_favorite_outdoor_area/'+article_id)
                 .then(response => {
                     alert(response.data)
                 })
-                .catch(error =>{
+                .catch(error => {
                     if(error.response.status === 401) {
                         if(confirm('You are not login. Do you want log in?')){
-                            this.$router.go(-1)
+                            window.open(this.MIX_APP_SSH + 'user.' + this.MIX_SITE_URL);
                         }
                     }
                     else{
-                        alert(error)
-                        console.log(error);
+                        alert("Error " . error.response.status)
                     }
                 })
             }

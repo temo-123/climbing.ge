@@ -365,6 +365,45 @@ class PermissionTableSeeder extends Seeder
             ],
 
             [
+                'subject' => 'toure',
+                'action' => 'add',
+            ],
+            [
+                'subject' => 'toure',
+                'action' => 'del',
+            ],
+            [
+                'subject' => 'toure',
+                'action' => 'edit',
+            ],
+
+            [
+                'subject' => 'toure_category',
+                'action' => 'add',
+            ],
+            [
+                'subject' => 'toure_category',
+                'action' => 'del',
+            ],
+            [
+                'subject' => 'toure_category',
+                'action' => 'edit',
+            ],
+
+            [
+                'subject' => 'store_slides',
+                'action' => 'add',
+            ],
+            [
+                'subject' => 'store_slides',
+                'action' => 'del',
+            ],
+            [
+                'subject' => 'store_slides',
+                'action' => 'edit',
+            ],
+
+            [
                 'subject' => 'ice_route',
                 'action' => 'add',
             ],
@@ -382,6 +421,14 @@ class PermissionTableSeeder extends Seeder
             ],
             [
                 'subject' => 'site_folloers',
+                'action' => 'del',
+            ],
+            [
+                'subject' => 'routes_rewiew',
+                'action' => 'show',
+            ],
+            [
+                'subject' => 'routes_rewiew',
                 'action' => 'del',
             ],
         );

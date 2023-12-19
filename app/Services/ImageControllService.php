@@ -31,7 +31,7 @@ class imageControllService
 
         // if ($request->hasFile($form_value_id)){   
 
-            // rename file->;
+            // rename file
             $extension = $request->file($form_value_id)->getClientOriginalExtension();
             $file_new_name = ImageControllService::rename_image($request, $form_value_id);
             $file_new_name = $file_new_name.'.'.$extension;
@@ -156,17 +156,17 @@ class imageControllService
             File::delete($file);
             File::delete($original_file);
         } 
-        elseif(file_exists($file)){
+        if(file_exists($file)){
             File::delete($file);
         }
-        elseif(!file_exists($file)){
+        if(file_exists($original_file)){
+            File::delete($original_file);
+        }
+        if(!file_exists($file)){
             echo ('<p> Demo file does not exists.</p>');
             echo ('<p>'.$file.'</p>');
         }
-        elseif(file_exists($original_file)){
-            File::delete($original_file);
-        }
-        elseif(!file_exists($original_file)){
+        if(!file_exists($original_file)){
             echo ('<p> Origin file does not exists.</p>');
             echo ('<p>'.$original_file.'</p>');
         }

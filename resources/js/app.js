@@ -21,8 +21,9 @@ import VueGtag from "vue-gtag";
 import { abilitiesPlugin } from "@casl/vue";
 import ability from "./services/ability/ability";
 import { ContentLoader } from 'vue-content-loader'
+// import VueHtml2pdf from 'vue-html2pdf'
 
-
+// Vue.use(VueHtml2pdf)
 Vue.use(ContentLoader);
 Vue.use(abilitiesPlugin, ability());
 Vue.use(VueGlide);
@@ -67,7 +68,7 @@ Vue.component("forum-img", forum_img);
 Vue.component("left-menu", leftmenu);
 Vue.component("goTo", goTo);
 
-import MainWrapper from "./components/shop/MainWrapperComponent.vue";
+import MainWrapper from "./components/shop/MainWrapper.vue";
 import Index from "./components/site/IndexComponent.vue";
 import Home from "./components/user/HomeComponent.vue";
 import Films from "./components/films/StudiaComponent.vue";
@@ -83,7 +84,7 @@ import error_routes from "./routes/ErrorRoutes";
 
 Vue.component(
     "main-wrapper-component",
-    require("./components/shop/MainWrapperComponent.vue").default
+    require("./components/shop/MainWrapper.vue").default
 );
 Vue.component(
     "index-component",

@@ -9,7 +9,7 @@ use Illuminate\Http\Request;
 // use App\Services\ImageEditService;
 use App\Services\ImageControllService;
 use App\Services\URLTitleService;
-use App\Services\GetArticlesService;
+use App\Services\ArticlesService;
 use App\Services\GeneralInfoService;
 
 use App\Models\Article;
@@ -57,9 +57,8 @@ class ArticleController extends Controller
 
     public function get_articles_for_forum(Request $request)
     {
-        // return Article::latest('id')->where('category', '=', $request->category)->get();
-        $global_news = Article::where('category', '=', $request->category)->get();
-        $news = GetArticlesService::get_locale_article_use_locale($global_news, $request->locale);
+        $global_news = Article::where('category', '=', $request->category)->where("published", "=", 1)->get();
+        $news = ArticlesService::get_locale_article_use_locale($global_news, $request->locale);
         return $news;
     }
 
@@ -94,7 +93,7 @@ class ArticleController extends Controller
     {
         // dd($url_title);
         $global_news = Article::where('url_title',strip_tags($url_title))->first();
-        $news = GetArticlesService::get_locale_article_in_page($global_news);
+        $news = ArticlesService::get_locale_article_in_page($global_news);
 
         return $news[0];
     }
@@ -467,7 +466,7 @@ class ArticleController extends Controller
         $articles = [];
         if($article_count > 0){
             $global_articles = Article::where('id', '=', $bisnes->article_id)->where('published', '=', 1)->get();
-            $articles = GetArticlesService::get_locale_article_use_locale($global_articles, $request->lang);
+            $articles = ArticlesService::get_locale_article_use_locale($global_articles, $request->lang);
         }
         return $articles;
     }
@@ -636,14 +635,12 @@ class ArticleController extends Controller
 
     private function local_article_validate($data)
     {
-        // dd($data);
         $validator = Validator::make($data, [
             'title' => 'required | max:190',
             'short_description' => 'required',
             'text' => 'required',
         ]);
         if ($validator->fails()) {
-            // dd($validator->messages());
             return $validator->messages();
         }
     }
@@ -695,7 +692,7 @@ class ArticleController extends Controller
         $articles = [];
         if($article_count > 0){
             $global_articles = Article::where('category', '=', $category)->where('id', '!=', $article_id)->where('published', '=', 1)->simplePaginate(4);
-            $articles = GetArticlesService::get_locale_article_use_locale($global_articles, $lang);
+            $articles = ArticlesService::get_locale_article_use_locale($global_articles, $lang);
         }
         return $articles;
     }
@@ -707,7 +704,7 @@ class ArticleController extends Controller
         $articles = [];
         if($article_count > 0){
             $global_articles = Article::where('category', '=', 'mount_route')->where('id', '!=', $article_id)->where('published', '=', 1)->simplePaginate(4);
-            $articles = GetArticlesService::get_locale_article_use_locale($global_articles, $lang);
+            $articles = ArticlesService::get_locale_article_use_locale($global_articles, $lang);
         }
         return $articles;
     }
@@ -724,7 +721,7 @@ class ArticleController extends Controller
             $article_count = Article::latest('id')->where('category', '=', 'outdoor')->where('id', '!=', $article_id)->where('published', '=', 1)->count();
         }
 
-        $outdoors = GetArticlesService::get_locale_article_use_locale($global_outdoors, $lang);
+        $outdoors = ArticlesService::get_locale_article_use_locale($global_outdoors, $lang);
 
         $route_num = 0;
         $mtp_num = 0;
@@ -764,7 +761,7 @@ class ArticleController extends Controller
         
         foreach ($outdoors as $outdoor) {
             foreach ($route_quantity as $quantity) {
-                if ($quantity['article_id'] == $outdoor['id']) {
+                if ($quantity['article_id'] == $outdoor['global_data']['id']) {
                     array_push($area_data, ["route_quantyty" => $quantity, "area" => $outdoor]);
                 }
             }
@@ -829,7 +826,7 @@ class ArticleController extends Controller
             $article_count = Article::latest('id')->where('category', '=', 'outdoor')->where('id', '!=', $article_id)->where('published', '=', 1)->count();
         }
 
-        $outdoors = GetArticlesService::get_locale_article_use_locale($global_outdoors, $lang);
+        $outdoors = ArticlesService::get_locale_article_use_locale($global_outdoors, $lang);
 
         $route_num = 0;
         $mtp_num = 0;
@@ -866,10 +863,12 @@ class ArticleController extends Controller
                 $route_num = 0;
             }
         }
+
+        // dd($outdoors, $route_quantity);
         
         foreach ($outdoors as $outdoor) {
             foreach ($route_quantity as $quantity) {
-                if ($quantity['article_id'] == $outdoor['id']) {
+                if ($quantity['article_id'] == $outdoor['global_data']['id']) {
                     array_push($area_data, ["route_quantyty" => $quantity, "area" => $outdoor]);
                 }
             }
@@ -886,7 +885,7 @@ class ArticleController extends Controller
         $articles = [];
         if($article_count > 0){
             $global_articles = Article::latest('id')->where('category', '=', $category)->where('published', '=', 1)->get();
-            $articles = GetArticlesService::get_locale_article_use_locale($global_articles, $lang);
+            $articles = ArticlesService::get_locale_article_use_locale($global_articles, $lang);
         }
         // dd($articles);
         return $articles;
@@ -898,7 +897,7 @@ class ArticleController extends Controller
         $articles = [];
         if($article_count > 0){
             $global_articles = Article::latest('id')->where('category', '=', 'news')->where('published', '=', 1)->simplePaginate(6);
-            $articles = GetArticlesService::get_locale_article_use_locale($global_articles, $lang);
+            $articles = ArticlesService::get_locale_article_use_locale($global_articles, $lang);
         }
 
         return $articles;
@@ -952,9 +951,9 @@ class ArticleController extends Controller
         $global_article_count = Article::where('url_title',strip_tags($url_title))->count();
         if ($global_article_count > 0) {
             $global_article = Article::where('url_title',strip_tags($url_title))->first();
-            $article = GetArticlesService::get_locale_article_in_page($global_article, $lang);
+            $article = ArticlesService::get_locale_article_in_page($global_article, $lang);
 
-            return $article[0];
+            return $article;
         }
         else{
             return abort(404);
@@ -966,9 +965,9 @@ class ArticleController extends Controller
         $global_article_count = Article::where('url_title',strip_tags($url_title))->count();
         if ($global_article_count > 0) {
             $global_article = Article::where('url_title',strip_tags($url_title))->first();
-            $article = GetArticlesService::get_locale_article_in_page($global_article, $lang);
+            $article = ArticlesService::get_locale_article_in_page($global_article, $lang);
 
-            return $article[0];
+            return $article;
         }
         else{
             return abort(404);
@@ -980,9 +979,9 @@ class ArticleController extends Controller
         $global_article_count = Article::where('url_title',strip_tags($url_title))->count();
         if ($global_article_count > 0) {
             $global_article = Article::where('url_title',strip_tags($url_title))->first();
-            $article = GetArticlesService::get_locale_article_in_page($global_article, $lang);
+            $article = ArticlesService::get_locale_article_in_page($global_article, $lang);
 
-            return $article[0];
+            return $article;
         }
         else{
             return abort(404);

@@ -306,7 +306,14 @@
 
         <route_modal 
             ref="open_route_modal"
+            @show_route_review_modal="show_route_review_modal"
         />
+
+        <route_review_modal 
+            ref="open_route_review_modal"
+            @back_route_modal="show_route_modal"
+        />
+
         <mtp_modal 
             ref="open_mtp_modal"
         />
@@ -316,6 +323,7 @@
 
 <script>
 import route_modal from "./modals/RouteModalComponent.vue";
+import route_review_modal from "./modals/RouteReviewModal.vue";
 import mtp_modal from "./modals/MTPModalComponent.vue";
 
 import openImg from "../../ImageOpenComponent.vue";
@@ -329,6 +337,7 @@ export default {
         openImg,
         route_modal,
         mtp_modal,
+        route_review_modal,
     },
     props: [
         "sector",
@@ -357,9 +366,11 @@ export default {
             return this.boulder(grade_fr)
         },
 
+        show_route_review_modal(route_id){
+            this.$refs.open_route_review_modal.show_route_review_modal(route_id)
+        },
         show_route_modal(route_id) {
             this.$refs.open_route_modal.show_route_modal(route_id)
-            // console.log("🚀 ~ file: SectorComponent.vue:456 ~ show_route_model ~ this.$refs.route_modal", this.$refs.open_route_modal.show_route_modal)
         },
         show_mtp_madel(mtp_id) {
             this.$refs.open_mtp_modal.show_mtp_modal(mtp_id)

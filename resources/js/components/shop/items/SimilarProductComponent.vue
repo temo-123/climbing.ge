@@ -23,23 +23,23 @@
         data () {
             return {
                 samilar_products: [],
-                activ_product_id: this.activ_product_id
+                product_id: this.activ_product_id
             }
         },
         watch: {
             '$route' (to, from) {
                 this.samilar_products = [],
-                this.activ_product_id = this.activ_product_id
-                this.get_analog_products(this.activ_product_id)
+                this.product_id = this.activ_product_id
+                this.get_analog_products()
             }
         },
         mounted() {
-            this.get_analog_products(this.activ_product_id)
+            this.get_analog_products()
         },
         methods: {
-            get_analog_products(product_id){
+            get_analog_products(){
                 axios
-                .get('../api/similar_product/'+localStorage.getItem('lang')+'/'+product_id)
+                .get('../api/similar_product/'+localStorage.getItem('lang')+'/'+this.product_id)
                 .then(response => {
                     this.samilar_products = response.data
                 })

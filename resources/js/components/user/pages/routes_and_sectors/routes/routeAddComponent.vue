@@ -148,33 +148,51 @@
         <div class="form-group clearfix row">
           <label for="name" class='col-md-2 control-label'> Bolts & height </label>
 
-          <div class="col-md-1" v-if="data.category != '' && data.category == 'sport climbing'">
-            <label for="name" class='col-md-1 control-label'> Bolts: </label>
-          </div>
           <div class="col-md-2" v-if="data.category != '' && data.category == 'sport climbing'">
+            <label for="name" class='col-md-12 control-label'> Bolts: </label>
+          </div>
+          <div class="col-md-3" v-if="data.category != '' && data.category == 'sport climbing'">
               <input type="number" name="title" v-model="data.bolts" class="form-control" placeholder="Bolts"> 
           </div>
 
-          <div class="col-md-1">
-            <label for="name" class='col-md-1 control-label'> Metrs: </label>
-          </div>
           <div class="col-md-2">
+            <label for="name" class='col-md-12 control-label'> Metrs: </label>
+          </div>
+          <div class="col-md-3">
             <input type="number" name="title" class="form-control" v-model="data.height" placeholder="Height"> 
           </div>
+        </div>
 
-          <div class="col-md-1" v-if="data.category != '' && data.category != 'bouldering'">
-            <label for="name" class='col-md-1 control-label'> Anchor: </label>
+        <div class="form-group clearfix row">
+          <label for="name" class='col-md-2 control-label'> Ancher and bolt type: </label>
+
+          <div class="col-md-2" v-if="data.category != '' && data.category != 'bouldering'">
+            <label for="name" class='col-md-12 control-label'> Anchor type: </label>
           </div>
 
           <div class="col-md-3" v-if="data.category != '' && data.category != 'bouldering'">
             <select class="form-control" v-model="data.anchor_type">
-              <option value="" disabled>Anchor type</option>
+              <option value="">Anchor type</option>
+              <option :value=null>?</option>
               <option value="Chain">Chain</option>
               <option value="Chain with carabiner">Chain with carabiner</option>
               <option value="Chain with ring">Chain with ring</option>
               <option value="2 independent chains">2 independent chains</option>
               <option value="2 bolts with carabiner">2 bolts with carabiner</option>
               <option value="2 bolts only">2 bolts only</option>
+            </select>
+          </div>
+
+          <div class="col-md-2" v-if="data.category != '' && data.category != 'bouldering'">
+            <label for="name" class='col-md-12 control-label'> Bolts type: </label>
+          </div>
+
+          <div class="col-md-3" v-if="data.category != '' && data.category != 'bouldering'">
+            <select class="form-control" v-model="data.bolts_type">
+              <option value="">Bolts type</option>
+              <option :value=null>?</option>
+              <option value="glued">Glued-in bolts</option>
+              <option value="hangerr">Hangerr bolts</option>
             </select>
           </div>
         </div>
@@ -242,6 +260,8 @@
           first_ascent: "",
 
           anchor_type: "",
+          bolts_type: "",
+
           category: "",
         },
 

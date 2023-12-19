@@ -3,7 +3,7 @@
         <div class="row">
             <div class="col-sm-8 blog-header">
                 <h1 class="blog-title">
-                    {{ this.article[0].title  }}
+                    {{ this.article.locale_data.title  }}
                 </h1>
             </div>
         </div>
@@ -11,7 +11,7 @@
             <div class="col-sm-8 blog-header">
                 <breadcrumb />
 
-                <p class="blog-post-meta"> {{ this.article[0].created_at  }}</p>
+                <p class="blog-post-meta"> {{ this.article.global_data.created_at  }}</p>
             </div>
         </div>
 
@@ -21,7 +21,7 @@
                 <articleTextBlocks :article="this.article"/>
                 
                 <galleryComponent 
-                    :article_id="this.article.id" 
+                    :article_id="this.article.global_data.id" 
                     ref="gallery_component"
                 />
             </div>
@@ -31,15 +31,15 @@
         </div>
 
         <commentForm 
-            :article_id="this.article.id" 
+            :article_id="this.article.global_data.id" 
             ref="comments"
         />
 
         <SimilarArticles 
-            :article_id="this.article.id" 
-            :article_category="this.article.category" 
-            :route="this.article.category + '/'"
-            :img_dir="this.article.category"
+            :article_id="this.article.global_data.id" 
+            :article_category="this.article.global_data.category" 
+            :route="this.article.global_data.category + '/'"
+            :img_dir="this.article.global_data.category"
 
             ref="similar_articles"
         />

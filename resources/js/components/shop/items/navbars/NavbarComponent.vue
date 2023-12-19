@@ -13,7 +13,7 @@
                 </button>
 
                 <span>
-                    <router-link style="font-size: 1.5em;" :to="{name: 'catalog'}" exact class="site_title">{{ $t('shop.name') }}</router-link>
+                    <router-link style="font-size: 1.5em;" :to="{name: 'index'}" exact class="site_title">{{ $t('shop.name') }}</router-link>
                 </span>
                 <!-- <a class="navbar-brand" href="#">Your Brand</a> -->
             </div>
@@ -26,7 +26,9 @@
                 <ul class="nav navbar-nav navbar-right">
                     
                     <li><router-link :to="{name: 'catalog'}" exact> <span> {{ $t('shop.menu.products') }}  </span> </router-link></li>
+                    <li><router-link :to="{name: 'wall_price_colculator'}" exact> <span> {{ $t('shop.menu.climbing wall') }}  </span> </router-link></li>
                     <li><router-link :to="{name: 'services'}" exact> <span> {{ $t('shop.menu.services') }} </span> </router-link></li>
+                    <li><router-link :to="{name: 'tours'}" exact> <span> {{ $t('shop.menu.tours') }} </span> </router-link></li>
                     <li><router-link :to="{name: 'about_store'}" exact> <span> {{ $t('shop.menu.about us') }} </span> </router-link></li>
 
                     <li class="dropdown">

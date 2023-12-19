@@ -3,7 +3,7 @@
         <div class="row">
             <div class="col-sm-8 blog-header">
                 <h1 class="blog-title">
-                    {{ this.article[0].title  }}
+                    {{ this.article.locale_data.title  }}
 
                     <!-- <span @click="add_to_favorite_outdoor_area(article.id)"> 
                         <i class="fa fa-heart-o favorite_icon add_to_favorite" ></i> 
@@ -15,7 +15,7 @@
             <div class="col-sm-8 blog-header">
                 <breadcrumb />
 
-                <p class="blog-post-meta"> {{ this.article[0].created_at  }}</p>
+                <p class="blog-post-meta"> {{ this.article.global_data.created_at  }}</p>
             </div>
         </div>
 
@@ -25,34 +25,20 @@
                 <articleTextBlocks :article="this.article"/>
 
                 <!-- routes -->
-                <div v-if="this.article[0].route != '' || this.article[0].route || this.article.global_info.routes_info != []">
+                <div v-if="this.article.locale_data.route != '' || this.article.locale_data.route || this.article.global_info.routes_info != []">
                     <h2 id="routes">{{ $t('guide.article.title.route')}}</h2>
 
-                    <span v-if="this.article.global_info.routes_info.length == 0">
-                        <span v-html="this.article[0].route"></span>
-                    </span>
-                    <span v-else>
-                        <span v-if="this.article.global_info.routes_info.block_action == 'befor'">
-                            <span v-html="this.article.global_info.routes_info.text"></span>
-                            <span v-html="this.article[0].route"></span>
-                        </span>
-                        <span v-if="this.article.global_info.routes_info.block_action == 'after'">
-                            <span v-html="this.article[0].route"></span>
-                            <span v-html="this.article.global_info.routes_info.text"></span>
-                        </span>
-                        <span v-if="this.article.global_info.routes_info.block_action == 'instead'">
-                            <span v-html="this.article.global_info.routes_info.text"></span>
-                        </span>
-                    </span>
+                    <generalInfo :global_info="article.global_info.routes_info" :locale_data="article.locale_data.route"/>
+
                 </div>
 
                 <iceSectors 
-                    :article_id="this.article.id" 
+                    :article_id="this.article.global_data.id" 
                     ref="routes_tab"
                 />
                 
                 <galleryComponent 
-                    :article_id="this.article.id" 
+                    :article_id="this.article.global_data.id" 
                     ref="gallery_component"
                 />
             </div>
@@ -63,14 +49,14 @@
 
         <div class="row"> 
             <commentForm 
-                :article_id="this.article.id" 
+                :article_id="this.article.global_data.id" 
                 ref="comments"
             />
         </div>
 
         <SimilarArticles 
-            :article_id="this.article.id" 
-            :article_category="this.article.category" 
+            :article_id="this.article.global_data.id" 
+            :article_category="this.article.global_data.category" 
             :route="'ice/'"
             :img_dir="'ice_img/'"
 
@@ -91,6 +77,7 @@
     import articleTextBlocks from './ArticleTextBlocksComponent'
 
     // import routeQuanDiogram from '../items/climbing_routes/RoutesQuantityComponent.vue'
+    import generalInfo from './article/GeneralInfoComponent'
 
     export default {
         props: [
@@ -105,7 +92,7 @@
             breadcrumb,
             // routeQuanDiogram,
             articleTextBlocks,
-            // postsList
+            generalInfo
         },
         data: function () {
             return {

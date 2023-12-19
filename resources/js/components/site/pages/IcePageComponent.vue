@@ -10,8 +10,8 @@
             />
 
             <metaData 
-                :title = "ice[0].title"
-                :description = "ice[0].description"
+                :title = "ice.locale_data.title"
+                :description = "ice.locale_data.description"
                 :image = "'/public/images/event_img/'+ice.image"
             />
         </span>

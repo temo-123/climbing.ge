@@ -15,11 +15,14 @@
                 <button type="submit" class="btn btn-primary" @click="edit_product()" >Save updating</button>
             </div>
         </div>
-        <div class="row" v-if="errors.length != 0">
+        <div class="row" v-show="!is_loading" v-if="errors.length != 0">
             <div class="col-md-12">
-                <!-- <div class="alert alert-danger" role="alert" v-if="errors.global_info_validation.published">
-                    Published - {{ errors.global_info_validation.published[0] }}
-                </div> -->
+                <div class="alert alert-danger" role="alert" v-if="errors.global_info_validation.sale_type">
+                    Sale type - {{ errors.global_info_validation.sale_type[0] }}
+                </div>
+                <div class="alert alert-danger" role="alert" v-if="errors.global_info_validation.category_id">
+                    Category - {{ errors.global_info_validation.category_id[0] }}
+                </div>
 
                 <div class="alert alert-danger" role="alert" v-if="errors.us_info_validation.title">
                     English title - {{ errors.us_info_validation.title[0] }}
@@ -105,8 +108,9 @@
                             <label for="name" class='col-xs-2 control-label'> Sale type </label>
                             <div class="col-xs-8">
                                 <select class="form-control" v-model="data.global_product.sale_type" name="published" > 
-                                    <option value="custom production">Custom production</option> 
-                                    <option value="online order">Online order</option> 
+                                    <option value="" disabled>Select order type</option> 
+                                    <option value="custom_production">Custom production</option> 
+                                    <option value="online_order">Online order</option> 
                                 </select>
                             </div>
                         </div>
@@ -121,7 +125,7 @@
                         <div class="form-group clearfix">
                             <label for="name" class='col-xs-2 control-label'> discount (%) </label>
                             <div class="col-xs-8">
-                                <input type="text" v-model="data.global_product.discount" name="discount" class="form-control"> 
+                                <input type="number" max="100" min="1"  v-model="data.global_product.discount" name="discount" class="form-control"> 
                             </div>
                         </div>
     
@@ -136,7 +140,7 @@
                             <label for="name" class='col-xs-2 control-label'> Category </label>
                             <div class="col-xs-8">
                                 <select class="form-control" v-model="data.global_product.category_id" name="category_id" > 
-                                    <option disabled>Select category</option> 
+                                    <option v-bind:value="''" disabled>Select category</option> 
                                     <option v-for="cat in categories" :key="cat.id" v-bind:value="cat.id"> {{ cat.us_name }}</option>
                                 </select> 
                             </div>
@@ -284,36 +288,23 @@
                     ka_info_editor_config: editor_config.get_big_editor_config(),
                 },
 
-                data: [],
+                // data: [],
 
-                // data: {
-                //     global_data: {
-                //         published: 0,
-                //         category_id: "Select category",
-                //         material: "",
-                //         discount: "",
-                //         sale_type: "Custom production",
-                //         mead_in_georgia: "",
-                //     },
+                data: {
+                    global_data: {
+                        published: 0,
+                        category_id: "",
+                        sale_type: "",
 
-                //     us_data: {
-                //         title: "",
-                //         short_description: "",
-                //         text: "",
-                //     },
+                        mead_in_georgia: null,
+                        material: "",
+                        discount: "",
+                    },
 
-                //     ka_data: {
-                //         title: "",
-                //         short_description: "",
-                //         text: "",
-                //     },
-
-                //     ru_data: {
-                //         title: "",
-                //         short_description: "",
-                //         text: "",
-                //     }
-                // },
+                    us_data: [],
+                    ka_data: [],
+                    ru_data: []
+                },
 
                 myModal: false,
             }
@@ -383,7 +374,7 @@
             edit_product() {
                 this.is_loading = true
                 axios
-                .post('/edit_product_data/'+this.$route.params.id, {        
+                .post('/product/edit_product/'+this.$route.params.id, {        
                     data: this.data,
                     change_url_title: this.change_url_title,
                 })

@@ -14,6 +14,7 @@
   export default {
     props:[
         'images_prop',
+        'folder_path_prop'
     ],
 
     components: {
@@ -23,18 +24,23 @@
     data: function () {
       return {
         db_images: [],
-        images_path: '/public/images/service_img/'
+        images_path: ''
       };
     },
     mounted() {
-          this.db_images = this.images_prop
+        this.db_images = this.images_prop
+        this.images_path = this.folder_path_prop
     },
     watch: {
       '$route' (to, from) {
-          this.db_images = this.images_prop
+        this.db_images = this.images_prop
+        this.images_path = this.folder_path_prop
       },
       images_prop: function(newVal, oldVal){
           this.db_images = this.images_prop
+      },
+      folder_path_prop: function(newVal, oldVal){
+          this.images_path = this.folder_path_prop
       },
     },
     methods: {

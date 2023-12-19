@@ -31,6 +31,10 @@ class RouteController extends Controller
         return Route::where('sector_id','=', $sector_id)->get();
     }
 
+    public function routes_authers() {
+        
+    }
+
     /**
      * Show the form for creating a new resource.
      *
@@ -65,7 +69,21 @@ class RouteController extends Controller
 
     public function get_route_for_modal(Request $request)
     {
-        return route::where('id',strip_tags($request->route_id))->first();
+        $route = route::where('id',strip_tags($request->route_id))->first();
+        $revs = $route->review;
+
+        $route['reviews_count'] = $revs->count();
+
+        if($revs->count() > 0){
+            $total = 0;
+            foreach ($revs as $rev) {
+                $total = $total + $rev->stars;
+            }
+            $total = $total / $revs->count();
+            $route['reviews_stars'] = round($total, 1);
+        }
+
+        return $route;
     }
 
     /**
@@ -98,7 +116,11 @@ class RouteController extends Controller
             $route->or_grade = $request->data['or_grade'];
             $route->name = $request->data['name'];
             $route->text = $request->data['text'] ;
+
             $route->anchor_type = $request->data["anchor_type"];
+            $route->bolts_type = $request->data["bolts_type"];
+            // $route['bolts_type']=$request->data["bolts_type"];
+
             $route->height = $request->data['height'];
             $route->bolts = $request->data['bolts'];
             $route->author = $request->data["author"];
@@ -171,6 +193,7 @@ class RouteController extends Controller
             $route['text']=$request->data["text"];
 
             $route['anchor_type']=$request->data["anchor_type"];
+            $route['bolts_type']=$request->data["bolts_type"];
 
             $route['height']=$request->data["height"];
             $route['bolts']=$request->data["bolts"];

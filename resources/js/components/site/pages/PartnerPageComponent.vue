@@ -10,8 +10,8 @@
             />
 
             <metaData 
-                :title = "partner[0].title"
-                :description = "partner[0].description"
+                :title = "partner.locale_data.title"
+                :description = "partner.locale_data.description"
                 :image = "'/public/images/partner_img/'+partner.image"
             />
         </span>

@@ -17,7 +17,8 @@
                 <div class="product_quick_view" @click="product_quick_view(product_data.global_product.id)">Quick view</div>
             </div>
             <div class="item-pnl product-image">
-                <div class="discount-percent-badge discount-badge-fourty" v-if="product_data.discount">-{{ product_data.discount }}%</div>
+                <div class="new_product_pin discount-badge-fourty" v-if="product_data.global_product.discount">-{{ product_data.global_product.discount }}%</div>
+                <div class="discount-percent-badge discount-badge-fourty" v-if="product_data.global_product.new_flag">NEW</div>
                 <div class="pnl-wrapper">
                     <div class="pnl-description">
 
@@ -27,7 +28,17 @@
                             </span>
                         </router-link>
 
-                        <div class="price">
+                        <div class="price" v-if="product_data.global_product.discount != null || product_data.global_product.discount > 0">
+                            <span class="pnl-price price">
+                                <span class="pnl-price price" v-if="product_data.new_min_price != product_data.new_max_price" >{{ product_data.new_min_price }} ₾ - {{ product_data.new_max_price }} ₾</span>
+                                <span class="pnl-price price" v-else-if="product_data.new_min_price == product_data.new_max_price">{{ product_data.new_max_price }} ₾</span>
+                            </span>
+                            <span class="pnl-price old_price">
+                                <span class="pnl-price old_price" v-if="product_data.min_price != product_data.max_price" >{{ product_data.min_price }} ₾ - {{ product_data.max_price }} ₾</span>
+                                <span class="pnl-price old_price" v-else-if="product_data.min_price == product_data.max_price">{{ product_data.max_price }} ₾</span>
+                            </span>
+                        </div>
+                        <div class="price" v-else>
                             <span class="pnl-price price">
                                 <span class="pnl-price price" v-if="product_data.min_price != product_data.max_price" >{{ product_data.min_price }} ₾ - {{ product_data.max_price }} ₾</span>
                                 <span class="pnl-price price" v-else-if="product_data.min_price == product_data.max_price">{{ product_data.max_price }} ₾</span>
@@ -44,16 +55,23 @@
                     </div> -->
                 </div>
             </div>
+        <productQuickViewModel 
+            ref="quick_view_model"
+        />
         </div>
+
+
     </li>
 </template>
 
 <script>
     // import lingallery from 'lingallery'; // https://github.com/ChristophAnastasiades/Lingallery
 
+    import productQuickViewModel from './ProductQuickViewModel'
+
     export default {
         components: {
-            // lingallery,
+            productQuickViewModel,
         },
         props:[
             'product_data',
@@ -68,10 +86,9 @@
             //
         },
         methods: {
-            // add_to_cart(){
-                // this.$emit('add_to_cart', this.product_data)
-                
-            // },
+            product_quick_view(product_id){
+                this.$refs.quick_view_model.quick_view_model(product_id)
+            },
 
             favorite_product(product_id){
                 axios
@@ -107,10 +124,6 @@
                 var active_image = this.product_data.product_images[this.image_num]
                 // alert(active_image);
                 return(active_image);
-            },
-
-            product_quick_view(product_id){
-                this.$emit('quick_view', product_id)
             },
 
         }
@@ -160,5 +173,34 @@
 
     .lingalleryContainer[data-v-40681078] .lingallery figure {
         height: 100% !important;
+    }
+
+
+    .new_product_pin {
+        background: #f54d5c !important;
+    }
+    .new_product_pin {
+        z-index: 1;
+        transform: rotate(-30deg);
+        box-shadow: 0px 0px 8px 0px #c30000 inset;
+        font-size: 70%;
+        display: block;
+        line-height: 1.2;
+        color: #f5f5f5;
+        width: 45px;
+        height: 45px;
+        border-radius: 50%;
+        font-family: "Roboto", "Helvetica Neue", Helvetica, Arial, sans-serif;
+        display: flex;
+        -moz-justify-content: center;
+        -ms-justify-content: center;
+        justify-content: center;
+        -moz-align-items: center;
+        -ms-align-items: center;
+        align-items: center;
+        position: absolute;
+        left: 4px;
+        top: 0;
+        margin: 5px 5px 0 0;
     }
 </style>

@@ -9,7 +9,7 @@ use App\Models\Film;
 use App\Models\Film_category;
 use App\Models\Favorite_film;
 
-use App\Services\GetFilmService;
+use App\Services\FilmService;
 use Auth;
 
 class FilmsController extends Controller

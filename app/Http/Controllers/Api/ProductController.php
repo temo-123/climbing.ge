@@ -8,8 +8,8 @@ use Illuminate\Http\Request;
 use Validator;
 use Auth;
 
-use App\Services\GetProductsService;
-use App\Services\GetProductService;
+// use App\Services\GetProductsService;
+use App\Services\ProductService;
 use App\Services\URLTitleService;
 
 use App\Models\Product;
@@ -36,13 +36,13 @@ class ProductController extends Controller
     public function get_local_products(Request $request)
     {
         $global_products = product::latest('id')->where('published', '=', 1)->get();
-        return $products = GetProductService::get_locale_product_use_locale($global_products, $request->lang);
+        return $products = ProductService::get_locale_product_use_locale($global_products, $request->lang);
     }
 
     public function get_local_product_in_page(Request $request)
     {
         $global_product = Product::latest('id')->where('published', '=', 1)->where('url_title',strip_tags($request->url_title))->first();
-        return $product = GetProductService::get_locale_product_in_page_use_locale($global_product, $request->lang);
+        return $product = ProductService::get_locale_product_in_page_use_locale($global_product, $request->lang);
     }
 
     public function get_user_favorite_products()
@@ -52,7 +52,7 @@ class ProductController extends Controller
             $products = array();
             foreach ($fav_products as $fav_product) {
                 $global_product = Product::where('id', '=', $fav_product->product_id)->get();
-                $product = GetProductService::get_locale_product_use_locale($global_product, 'en');
+                $product = ProductService::get_locale_product_use_locale($global_product, 'en');
                 array_push($products, $product[0]);
             }
             return $products;
@@ -65,7 +65,7 @@ class ProductController extends Controller
     public function get_quick_product(Request $request)
     {
         $global_product = Product::where('id', '=', $request->product_id)->get();
-        return GetProductService::get_locale_product_use_locale($global_product, $request->lang);
+        return ProductService::get_locale_product_use_locale($global_product, $request->lang);
     }
 
 
@@ -85,7 +85,7 @@ class ProductController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function add_product(Request $request)
     {
         $validation_issets = [];
 
@@ -99,7 +99,7 @@ class ProductController extends Controller
             $validation_issets['ka_info_validation'] = false;
         }
 
-        $us_validate = $this->local_product_validation($data['us_product']);
+        $us_validate = $this->local_product_validation($data['us_data']);
         if ($us_validate != null) {
             $validation_issets['us_info_validation'] = $us_validate;
         }
@@ -107,7 +107,7 @@ class ProductController extends Controller
             $validation_issets['us_info_validation'] = false;
         }
 
-        $ru_validate = $this->local_product_validation($data['ru_product']);
+        $ru_validate = $this->local_product_validation($data['ru_data']);
         if ($ru_validate != null) {
             $validation_issets['ru_info_validation'] = $ru_validate;
         }
@@ -115,7 +115,7 @@ class ProductController extends Controller
             $validation_issets['ru_info_validation'] = false;
         }
 
-        $global_validate = $this->global_product_validation($data['global_product']);
+        $global_validate = $this->global_product_validation($data['global_data']);
         if ($global_validate != null) {
             $validation_issets['global_info_validation'] = $global_validate;
         }
@@ -130,9 +130,9 @@ class ProductController extends Controller
             !$validation_issets['ka_info_validation'] && 
             !$validation_issets['us_info_validation']
         ) {
-            $saiving_issets['ka_info_status'] = $this->add_locale_product($data['ka_product'], 'ka');
-            $saiving_issets['ru_info_status'] = $this->add_locale_product($data['ru_product'], 'ru');
-            $saiving_issets['us_info_status'] = $this->add_locale_product($data['us_product'], 'us');
+            $saiving_issets['ka_info_status'] = $this->add_locale_product($data['ka_data'], 'ka');
+            $saiving_issets['ru_info_status'] = $this->add_locale_product($data['ru_data'], 'ru');
+            $saiving_issets['us_info_status'] = $this->add_locale_product($data['us_data'], 'us');
 
             if (
                 $saiving_issets['ka_info_status'] != 'Error' &&
@@ -140,7 +140,7 @@ class ProductController extends Controller
                 $saiving_issets['us_info_status'] != 'Error'
             ) {
                 $action_article_id = $this->addGlobalProduct(
-                    $data['global_product'],
+                    $data['global_data'],
 
                     $saiving_issets['ka_info_status'],
                     $saiving_issets['ru_info_status'],
@@ -168,6 +168,7 @@ class ProductController extends Controller
         $new_global_product['sale_type']=$global_data["sale_type"];
         $new_global_product['mead_in_georgia']=$global_data["mead_in_georgia"];
         $new_global_product['material']=$global_data["material"];
+        $new_global_product['discount']=$global_data["discount"];
 
         $new_global_product['us_product_id']=$us_info_id;
         $new_global_product['ka_product_id']=$ka_info_id;
@@ -229,7 +230,7 @@ class ProductController extends Controller
 
         $global_products = product::latest('id')->where('published', '=', 1)->where('id', '!=', $request->product_id)->where('category_id', '=', $this_category->id)->limit(3)->get();
 
-        return $products = GetProductService::get_locale_product_use_locale($global_products, $request->lang);
+        return $products = ProductService::get_locale_product_use_locale($global_products, $request->lang);
     }
 
     public function get_product_price_interval()
@@ -251,7 +252,7 @@ class ProductController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit_product_data(Request $request)
+    public function edit_product(Request $request)
     {
         $validation_issets = [];
 
@@ -281,8 +282,16 @@ class ProductController extends Controller
             $validation_issets['ru_info_validation'] = false;
         }
 
+        $global_validate = $this->editing_global_product_validation($data['global_product']);
+        if ($global_validate != null) {
+            $validation_issets['global_info_validation'] = $global_validate;
+        }
+        else{
+            $validation_issets['global_info_validation'] = false;
+        }
 
         if (
+            !$validation_issets['global_info_validation'] && 
             !$validation_issets['ru_info_validation'] && 
             !$validation_issets['ka_info_validation'] && 
             !$validation_issets['us_info_validation']
@@ -294,7 +303,6 @@ class ProductController extends Controller
                 $data['us_product']['title']              
             );
 
-            // dd($data['ka_data'], $local_products_id['ka_product_id']);
             if ($local_products_id != 'Error') {
                 $this->edit_locale_product($data['ka_product'], $local_products_id['ka_product_id']);
                 $this->edit_locale_product($data['us_product'], $local_products_id['us_product_id']);
@@ -322,6 +330,7 @@ class ProductController extends Controller
         $edit_global_product['sale_type']=$global_data["sale_type"];
         $edit_global_product['mead_in_georgia']=$global_data["mead_in_georgia"];
         $edit_global_product['material']=$global_data["material"];
+        $edit_global_product['discount']=$global_data["discount"];
         
         $saved = $edit_global_product -> save();
 
@@ -376,7 +385,7 @@ class ProductController extends Controller
                             ->where('category_id', '=', $page_product->category_id)
                             ->get();
                             
-        return GetProductService::get_locale_product($global_products);
+        return ProductService::get_locale_product($global_products);
     }
 
     /**
@@ -396,6 +405,20 @@ class ProductController extends Controller
         $validator = Validator::make($global_data, [
             'published' => 'required',
             'us_title_for_url_title' => 'required|unique:products,url_title',
+            'sale_type' => 'required',
+            'category_id' => 'required',
+        ]);
+        if ($validator->fails()) {
+            return $validator->messages();
+        }
+    }
+
+    public function editing_global_product_validation($global_data)
+    {
+        $validator = Validator::make($global_data, [
+            'published' => 'required',
+            'sale_type' => 'required',
+            'category_id' => 'required',
         ]);
         if ($validator->fails()) {
             return $validator->messages();

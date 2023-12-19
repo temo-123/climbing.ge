@@ -9,7 +9,7 @@ use App\Models\Service;
 use App\Models\Locale_service;
 use App\Models\Service_image;
 
-use App\Services\GetServicesService;
+use App\Services\ServicesService;
 use App\Services\URLTitleService;
 use App\Services\ImageControllService;
 
@@ -25,19 +25,19 @@ class ServicesController extends Controller
     public function index()
     {
         return $global_services = Service::get();
-        // return $services = GetServicesService::get_locale_services_use_locale($global_services, $request->lang);
+        // return $services = ServicesService::get_locale_services_use_locale($global_services, $request->lang);
     }
 
     public function get_local_services(Request $request)
     {
         $global_services = Service::where('published', '=', 1)->get();
-        return $services = GetServicesService::get_locale_services_use_locale($global_services, $request->lang);
+        return $services = ServicesService::get_locale_services_use_locale($global_services, $request->lang);
     }
 
     public function get_similar_service(Request $request)
     {
         $global_services = Service::where('published', '=', 1)->where('id', '!=', $request->id)->get();
-        return $services = GetServicesService::get_locale_services_use_locale($global_services, $request->lang);
+        return $services = ServicesService::get_locale_services_use_locale($global_services, $request->lang);
     }
 
     /**
@@ -213,7 +213,10 @@ class ServicesController extends Controller
     {
         $service = Service::where('id', '=', $request->service_id)->first();
         
-        return $service->service_images;
+        if($service->service_images){
+            return $service->service_images;
+        }
+        return [];
     }
 
     public function edit_service(Request $request)
@@ -336,13 +339,13 @@ class ServicesController extends Controller
     {
         // dd($url_title);
         // $global_service = Service::where('published', '=', 1)->where('url_title',strip_tags($url_title))->first();
-        // return $service = GetServicesService::get_locale_service_in_page($global_service);
+        // return $service = ServicesService::get_locale_service_in_page($global_service);
     }
 
     public function get_local_service_in_page(Request $request)
-    {  
+    { 
         $global_service = Service::where('published', '=', 1)->where('url_title',strip_tags($request->url_title))->first();
-        return $service = GetServicesService::get_locale_service_in_page_use_locale($global_service, $request->lang);
+        return $service = ServicesService::get_locale_service_in_page_use_locale($global_service, $request->lang);
     }
 
     /**
@@ -377,7 +380,7 @@ class ServicesController extends Controller
                             // ->where('category_id', '=', $page_service->category_id)
                             ->get();
                             
-        return $services = GetServicesService::get_locale_services($global_services);
+        return $services = ServicesService::get_locale_services($global_services);
     }
 
     /**
@@ -406,7 +409,7 @@ class ServicesController extends Controller
     {
         $image = Service_image::where('id', '=', $request->image_id)->first();
         if($image){
-            ImageControllService::image_delete('images/product_option_img/', $image, 'image');
+            ImageControllService::image_delete('images/service_img/', $image, 'image');
             $image ->delete();
         }
     }

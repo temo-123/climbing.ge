@@ -6,9 +6,9 @@
         </div>
         <span v-if="article_category == 'outdoor'">
             <SimilarOutdoorAreaCardComponent
-                v-for="other_article in similar_article" :key='other_article.area.id'
+                v-for="other_article in similar_article" :key='other_article.area.global_data.id'
                     :article="other_article"
-                    :route="'../../../' + route + other_article.area.url_title"
+                    :route="'../../../' + route + other_article.area.global_data.url_title"
                     :image_dir="'images/' + article_category + '_img'"
                     :category = "article_category"
             />
@@ -42,8 +42,6 @@
         },
         data(){
             return {
-                // image_dir: '',
-                // route: '',
                 similar_article: [],
 
                 id: this.article_id
@@ -51,16 +49,9 @@
         },
         mounted() {
             this.get_same_articles()
-
-            // console.log(this.article_id);
-            // console.log(this.article_category);
-            // console.log(this.img_dir);
-            // console.log(this.route);
         },
         watch: {
             '$route' (to, from) {
-                // this.similar_article = []
-                // this.get_same_articles()
                 window.scrollTo(0,0)
             }
         },
@@ -68,7 +59,7 @@
             get_same_articles() {
                 console.log(this.id);
                 axios
-                .post('../api/similar_article/'+localStorage.getItem('lang'), {
+                .post('./similar_article/'+localStorage.getItem('lang'), {
                     article_id: this.id,
                     article_category: this.article_category,
                 })
@@ -84,11 +75,6 @@
             update(id){
                 this.id = id
                 this.get_same_articles()
-
-                // console.log(this.article_id);
-                // console.log(this.article_category);
-                // console.log(this.img_dir);
-                // console.log(this.route);
             }
         }
     }

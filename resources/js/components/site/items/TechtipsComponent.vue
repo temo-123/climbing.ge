@@ -10,25 +10,25 @@
             <div class="container">
                 <div class="row">
 
-                            <div class="col-xs-6 col-sm-6 col-md-4" v-for="tip in techtips" :key="tip.id">
-                                <div class="product-image" v-if="tip.new_flag">
-                                    <div class="discount-percent-badge discount_percent_badge_for_techtip discount-badge-fourty">NEW</div>
-                                </div>
-                                <div class="thumbnail">
-                                    <router-link :to="'tech_tip/'+tip.url_title" class="info">
-                                        <site-img v-if="tip.image != null" :src="'/public/images/tech_tip_img/'+tip.image" :img_class="'img-responsive'" :alt='tip[0][0].title'/>
-                                        <site-img v-else :src="'/public/images/site_img/image.png'" :img_class="'img-responsive'" :alt='tip[0][0].title'/>
-                                    </router-link>
-                                    <div class="caption">
-                                        <router-link :to="'tech_tip/'+tip.url_title" class="info">
-                                            <h3>{{ tip[0][0].title }}</h3>
-                                        </router-link>
-                                        <hr>
-                                        <span class="text-center" v-html="tip[0][0].short_description"></span>
-                                    </div>
-                                </div>
-                                
+                    <div class="col-xs-6 col-sm-6 col-md-4" v-for="tip in techtips" :key="tip.global_data.id">
+                        <div class="product-image" v-if="tip.global_data.new_flag">
+                            <div class="discount-percent-badge discount_percent_badge_for_techtip discount-badge-fourty">NEW</div>
+                        </div>
+                        <div class="thumbnail">
+                            <router-link :to="'tech_tip/'+tip.global_data.url_title" class="info">
+                                <site-img v-if="tip.global_data.image != null" :src="'/public/images/tech_tip_img/'+tip.global_data.image" :img_class="'img-responsive'" :alt='tip.locale_data.title'/>
+                                <site-img v-else :src="'/public/images/site_img/image.png'" :img_class="'img-responsive'" :alt='tip.locale_data.title'/>
+                            </router-link>
+                            <div class="caption">
+                                <router-link :to="'tech_tip/'+tip.global_data.url_title" class="info">
+                                    <h3 class="text-center text-uppercase tip_title">{{ tip.locale_data.title }}</h3>
+                                </router-link>
+                                <!-- <hr> -->
+                                <span class="text-center" v-html="tip.locale_data.short_description"></span>
                             </div>
+                        </div>
+                        
+                    </div>
 
 
                     <!-- // <div class="previes_tip_bottom" v-if="techtips.length > 3">
@@ -97,12 +97,20 @@
 </script>
 
 <style scoped>
-
+.tip_title{
+    margin: 10px;
+    color: #2d2c2c;
+    transition: 0.5s;
+}
+.tip_title:hover{
+    color: #7c7cfd;
+    transition: 0.5s;
+}
 
 @media (max-width: 990px){
     .thumbnail{
-        height: 18em;
-        max-height: 22em;
+        /* height: 18em;
+        max-height: 22em; */
         margin-top: 20px;
     }
     .thumbnail p{
@@ -112,8 +120,8 @@
 
 @media (max-width: 375px){
     .thumbnail{
-        height: 9em;
-        max-height: 22em;
+        /* height: 9em;
+        max-height: 22em; */
         margin-top: 16px;
     }
     .thumbnail p{
@@ -125,9 +133,9 @@
     height: auto;
     margin: 2%;
 }
-.caption h3{
+/* .caption h3{
     margin: 0;
-}
+} */
 .caption p{
     text-align: center;
 }

@@ -80,7 +80,7 @@
                 :cancelButton="{ visible: false, title: 'Close', btnClass: { 'btn btn-danger': true } }"
             >
             <pre class="language-vue">
-                <form class="form" method="POST" id="registrationForm">
+                <form class="form" method="POST" id="add_user_adres_form" v-on:submit.prevent="add_new_adres">
                     <input type="text" class="form-control" v-model="adding_data.demo_name" name="name" placeholder="Enter adres demo name" title="Enter adres demo name">
                     <div class="alert alert-danger" role="alert" v-if="errors.demo_name">Enter adres demo name!!!</div>
 
@@ -125,9 +125,9 @@
             <div slot="modal-footer">
                 <div class="modal-footer">
                     <button
-                        type="button"
+                        type="sumbit"
                         :class="{'btn btn-primary': true}"
-                        @click="add_new_adres()"
+                        form="add_user_adres_form"
                     >
                     Save
                     </button>
@@ -143,7 +143,7 @@
                 :cancelButton="{ visible: false, title: 'Close', btnClass: { 'btn btn-danger': true } }"
             >
             <pre class="language-vue">
-                <form class="form" method="POST" >
+                <form class="form" method="POST" id="edit_user_adres_form" v-on:submit.prevent="edit_adres" >
 
                     <input type="text" class="form-control" v-model="edit_data.demo_name" name="name" placeholder="Enter adres demo name" title="Enter adres demo name">
                     <div class="alert alert-danger" role="alert" v-if="errors.demo_name">Enter adres demo name!!!</div>
@@ -189,9 +189,9 @@
             <div slot="modal-footer">
                 <div class="modal-footer">
                     <button
-                        type="button"
+                        type="submit"
                         :class="{'btn btn-primary': true}"
-                        @click="edit_adres()"
+                        form="edit_user_adres_form"
                     >
                     Save
                     </button>

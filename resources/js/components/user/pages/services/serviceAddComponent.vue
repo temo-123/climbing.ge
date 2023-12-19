@@ -375,9 +375,9 @@
                     if (error.response.status == 422) {
                         this.error = error.response.data.validation
                     }
-                    else{
-                        alert(error)
-                    }
+                    // else{
+                    //     alert(error)
+                    // }
                 })
                 .finally(
                     this.is_loading = false
@@ -398,16 +398,8 @@
                 .finally(() => this.is_mail_sending_procesing = false);
             },
 
-
-            go_back: function(back_action = false) {
-                if(back_action == false){
-                    if(confirm('Are you sure, you want go back?')){
-                        this.$router.go(-1)
-                    }
-                }
-                else{
-                    this.$router.go(-1)
-                }
+            go_back: function(action = false) {
+                this.is_back_action_query = this.$going.back(this, action)
             },
         }
     }

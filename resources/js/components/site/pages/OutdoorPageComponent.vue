@@ -10,8 +10,8 @@
             />
 
             <metaData 
-                :title = "outdoor[0].title"
-                :description = "outdoor[0].description"
+                :title = "outdoor.locale_data.title"
+                :description = "outdoor.locale_data.description"
                 :image = "'/public/images/outdoor_img/'+outdoor.image"
             />
         </span>

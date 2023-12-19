@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 
 use App\Models\Mount;
 use App\Models\Locale_mount;
-use App\Services\GetMountSystemService;
+use App\Services\MountSystemService;
 
 use App\Models\Article_mount;
 use App\Models\Article;
@@ -24,18 +24,18 @@ class MountController extends Controller
      */
     public function index()
     {
-        return GetMountSystemService::get_local_mounts_use_locale(Mount::latest('id')->get(), 'us');
+        return MountSystemService::get_local_mounts_use_locale(Mount::latest('id')->get(), 'us');
     }
 
     public function get_locale_mounts(Request $request)
     {
         // $mounts_system = Mount::latest('id')->get();
-        return GetMountSystemService::get_local_mounts_use_locale(Mount::latest('id')->get(), $request->lang);
+        return MountSystemService::get_local_mounts_use_locale(Mount::latest('id')->get(), $request->lang);
     }
 
     public function get_locale_mount(Request $request)
     {
-        return GetMountSystemService::get_local_mount_use_locale($request->mount_id, $request->lang);
+        return MountSystemService::get_local_mount_use_locale($request->mount_id, $request->lang);
     }
 
     public function get_locale_mount_on_route_page(Request $request)
@@ -47,7 +47,7 @@ class MountController extends Controller
         if(count($mount_sys) > 0){
             $mounts_system = Mount::where('id', '=', $mount_sys[0]->id)->first();
 
-            $system = GetMountSystemService::get_local_mount_use_locale($mounts_system->id, $request->lang);
+            $system = MountSystemService::get_local_mount_use_locale($mounts_system->id, $request->lang);
 
             return $system[0];
         }
@@ -183,7 +183,7 @@ class MountController extends Controller
     // public function show($id)
     // {
     //     $mounts_system = Mount::where('id', '=', $id)->first();
-    //     $mounts_system = GetMountSystemService::get_locale_mount_system_in_page($mounts_system);
+    //     $mounts_system = MountSystemService::get_locale_mount_system_in_page($mounts_system);
     //     return $mounts_system;
     // }
 
