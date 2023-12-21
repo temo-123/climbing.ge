@@ -6,14 +6,15 @@
             :images_prop="slides"
         /> -->
 
-        <h2 class="page_title">{{ $t('shop.title.products') }}</h2>
-        <div class="bar"><i class="fa fa-exclamation-triangle"></i></div>
-
-        <h3 class="article_list_short_description">
-            <span v-html="this.$siteData.shop_short_description"></span>
-        </h3>
-
         <div class="row" v-if="products.length > 0">
+
+            <h2 class="page_title">{{ $t('shop.title.products') }}</h2>
+            <div class="bar"><i class="fa fa-exclamation-triangle"></i></div>
+
+            <h3 class="article_list_short_description">
+                <span v-html="this.$siteData.shop_short_description"></span>
+            </h3>
+
             <div class="col-sm-12">
                 <section class="portfolio inner" id="portfolio" >
                     <div class="layout">
@@ -67,6 +68,10 @@
             </div>
         </div>
 
+        <div v-if="tours.length == 0 && services.length == 0 && products.length == 0">
+            <emptyPageComponent />
+        </div>
+
         <metaData 
             :title = " $t('shop.meta.mein page') "
             :description = "'Climbing.ge product, services & tours.'"
@@ -83,6 +88,7 @@ import ToureItem from '../items/cards/ToureCardComponent'
 import swiperComponent from '../../global_components/SwiperComponent.vue'
 
 import metaData from '../items/MetaDataComponent'
+import emptyPageComponent from '../../global_components/EmptyPageComponent'
 
 export default {
     components: {
@@ -90,7 +96,8 @@ export default {
         ServiceItem,
         metaData,
         ToureItem,
-        swiperComponent
+        swiperComponent,
+        emptyPageComponent,
     },
     data: function () {
         return {

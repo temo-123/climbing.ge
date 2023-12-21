@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
-use App\Models\SportRouteReview;
+use App\Models\Sport_route_review;
 
 class RoutesReitingController extends Controller
 {
@@ -18,7 +18,7 @@ class RoutesReitingController extends Controller
     }
 
     function create_route_review(Request $request) {
-        $review = new SportRouteReview;
+        $review = new Sport_route_review;
         
         $review['route_id']=$request["route_id"];
 

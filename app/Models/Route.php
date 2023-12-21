@@ -30,6 +30,6 @@ class Route extends Model
 
     public function review()
     {
-        return $this->hasMany(SportRouteReview::class);
+        return $this->hasMany(Sport_route_review::class);
     }
 }
