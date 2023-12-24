@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 
 use Auth;
 
-use App\Services\GetArticlesService;
+use App\Services\ArticlesService;
 
 use App\Models\Interested_event;
 use App\Models\Favorite_outdoor_area;
@@ -45,7 +45,7 @@ class FaworitesController extends Controller
             $articles = [];
             foreach ($fav_area as $area) {
                 $global_events = Event::where('id', '=', $area->event_id)->get();
-                // $outdoors = GetArticlesService::get_locale_article_use_locale($global_events, $request->lang);
+                // $outdoors = ArticlesService::get_locale_article_use_locale($global_events, $request->lang);
 
                 // dd($global_events);
                 array_push($articles, $global_events[0]);
@@ -102,10 +102,10 @@ class FaworitesController extends Controller
             $articles = [];
             foreach ($fav_area as $area) {
                 $global_articles = Article::where('id', '=', $area->article_id)->get();
-                $outdoors = GetArticlesService::get_locale_article_use_locale($global_articles, $request->lang);
+                $outdoors = ArticlesService::get_locale_article_use_locale($global_articles);
                 array_push($articles, $outdoors[0]);
             }
-            
+
             return $articles;
         }
         else{

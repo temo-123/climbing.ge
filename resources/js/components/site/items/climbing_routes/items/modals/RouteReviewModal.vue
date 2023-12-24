@@ -164,6 +164,8 @@ export default {
                 text: '',
                 climbed_data: '',
             },
+            
+            this.is_verify_isset = false,
 
             this.stars = {
                 st_1: false,

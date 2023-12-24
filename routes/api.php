@@ -420,16 +420,6 @@ Route::group(['namespace'=>'Api'], function() {
     // Route::apiResource('film_categories', 'FilmCategoryController');
 
     /*
-    *   Sport climbing routes reiting routes
-    */
-    Route::controller(SectorController::class)->prefix('route_reiting')->group( function() {
-        Route::get('/get_all_reitings', 'get_reitings');
-        Route::get('/get_route_reitings/{route_id}', 'get_route_reitings');
-        Route::post('/add_route_reitings/{route_id}', 'add_route_reitings');
-        Route::delete('/del_route_reitings/{review_id}', 'del_route_reitings');
-    });
-
-    /*
     *   Guid sport sectors routes
     */
     Route::controller(SectorController::class)->prefix('sector')->group( function() {
@@ -468,9 +458,22 @@ Route::group(['namespace'=>'Api'], function() {
         Route::get('/routes_authers', 'routes_authers');
     });
 
+    /*
+    *   Sport climbing routes reiting routes
+    */
+
     Route::controller(RoutesReitingController::class)->prefix('route_review')->group( function() {
         Route::post('/create_route_review/{route_id}', 'create_route_review');
+
+        Route::get('/get_user_sport_routes_review', 'get_user_sport_routes_review');
+        Route::delete('/del_route_review/{review_id}', 'del_route_review');
     });
+    // Route::controller(SectorController::class)->prefix('route_reiting')->group( function() {
+    //     Route::get('/get_all_reitings', 'get_reitings');
+    //     Route::get('/get_route_reitings/{route_id}', 'get_route_reitings');
+    //     Route::post('/add_route_reitings/{route_id}', 'add_route_reitings');
+    //     Route::delete('/del_route_reitings/{review_id}', 'del_route_reitings');
+    // });
 
     Route::get('/get_routes_for_forum/{sector_id}', 'RouteController@get_routes_for_forum');
     Route::get('/get_routes_quantity/{article_id}', 'RouteController@get_routes_quantity');

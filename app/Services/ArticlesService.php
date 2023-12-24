@@ -15,13 +15,11 @@ use App\Services\MountSystemService;
 
 class ArticlesService extends LocaleContentService
 {
-    public static function get_locale_article_use_locale($global_article, $locale = 'en')
-    {
+    public static function get_locale_article_use_locale($global_article, $locale='en'){
         $localed_articles = (new static)->get_locale_content_use_locale($global_article, Locale_article::class, '_article_id', $locale);
 
-        $articles = (new static)->get_article_additional_content($localed_articles, $locale);
-
-        return $articles;
+        return $articles = (new static)->get_article_additional_content($localed_articles, $locale);
+        // return $articles;
     }
 
     private static function get_article_additional_content($localed_articles, $locale = 'en') {
