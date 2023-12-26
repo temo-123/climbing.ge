@@ -12,7 +12,7 @@
             <span v-html="toure.locale_data.text"></span>
         </div>
 
-        <toureMessageForm />
+        <!-- <toureMessageForm /> -->
         
         <gallery 
             :images_prop="toure.toure_images"

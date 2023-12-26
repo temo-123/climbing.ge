@@ -17,8 +17,8 @@
 
                             <hr>
 
-                            <p>Alse you can see sport climbing routes authers and them conts.</p>
-                            <routesAutersModal />
+                            <!-- <p>Alse you can see sport climbing routes authers and them conts.</p>
+                            <routesAutersModal /> -->
                         </div>
                     </div>
                 </div>
@@ -37,19 +37,19 @@
                 <div class="bar"><i class="fa fa-handshake-o" aria-hidden="true"></i></div>
                 <h3 class="article_list_short_description"> <span v-html="this.$siteData.partners"></span> </h3>
                 
-                <div class="row"  v-for="partner in partners" :key="partner.id">
+                <div class="row"  v-for="partner in partners" :key="partner.global_data.id">
                     <div class="partners">
                         <div class="col-xs-6 col-md-3">
-                            <router-link :to="'partner/'+partner.url_title" class="info">
-                                <site-img v-if="partner.image != null" :src="'/public/images/partners_img/'+partner.image" :img_class="'img-responsive'" :alt='partner[0][0].title'/>
-                                <site-img v-else :src="'/public/images/site_img/image.png'" :img_class="'img-responsive'" :alt='partner[0][0].title'/>
+                            <router-link :to="'partner/'+partner.global_data.url_title" class="info">
+                                <site-img v-if="partner.image != null" :src="'/public/images/partners_img/'+partner.global_data.image" :img_class="'img-responsive'" :alt='partner.locale_data.title'/>
+                                <site-img v-else :src="'/public/images/site_img/image.png'" :img_class="'img-responsive'" :alt='partner.locale_data.title'/>
                             </router-link>
                             <div class="row text-center">
-                                <router-link :to="'partner/'+partner.url_title" class="info">
-                                    <h3>{{ partner[0][0].title }}</h3>
+                                <router-link :to="'partner/'+partner.global_data.url_title" class="info">
+                                    <h3>{{ partner.locale_data.title }}</h3>
                                 </router-link>
-                                <!-- <p>{{ partner[0][0].short_description }}</p> -->
-                                <span v-html="partner[0][0].short_description"></span>
+                                <!-- <p>{{ partner.locale_data.short_description }}</p> -->
+                                <span v-html="partner.locale_data.short_description"></span>
                             </div>
                         </div>
                     </div>
