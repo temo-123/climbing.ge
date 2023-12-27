@@ -41,7 +41,7 @@
                     <div class="partners">
                         <div class="col-xs-6 col-md-3">
                             <router-link :to="'partner/'+partner.global_data.url_title" class="info">
-                                <site-img v-if="partner.image != null" :src="'/public/images/partners_img/'+partner.global_data.image" :img_class="'img-responsive'" :alt='partner.locale_data.title'/>
+                                <site-img v-if="partner.global_data.image != null" :src="'/public/images/partners_img/'+partner.global_data.image" :img_class="'img-responsive'" :alt='partner.locale_data.title'/>
                                 <site-img v-else :src="'/public/images/site_img/image.png'" :img_class="'img-responsive'" :alt='partner.locale_data.title'/>
                             </router-link>
                             <div class="row text-center">
