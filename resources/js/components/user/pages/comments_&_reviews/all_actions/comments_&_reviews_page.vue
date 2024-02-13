@@ -48,24 +48,6 @@
                                             'table_del_url': 'del_url', 
                                             'table_edit_url': 'edit_url'
                                         });
-                    this.get_all_shop_comments_data()
-                })
-                .catch(
-                    error => console.log(error)
-                );
-
-            },
-            get_all_shop_comments_data: function(){
-                axios
-                .get("../api/comment/")
-                .then(response => {
-                    this.data_for_tab.push({'id': 2,
-                                            'data': response.data, 
-                                            'table_name': 'Shop comments', 
-                                            // 'table_category': this.$route.params.article_category, 
-                                            'table_del_url': 'del_url', 
-                                            'table_edit_url': 'edit_url'
-                                        });
                     this.get_all_climbing_routes_review_data()
                 })
                 .catch(
@@ -77,9 +59,44 @@
                 axios
                 .get("../api/comment/")
                 .then(response => {
-                    this.data_for_tab.push({'id': 3,
+                    this.data_for_tab.push({'id': 2,
                                             'data': response.data, 
                                             'table_name': 'Climbing routes review', 
+                                            // 'table_category': this.$route.params.article_category, 
+                                            'table_del_url': 'del_url', 
+                                            'table_edit_url': 'edit_url'
+                                        });
+                    this.get_all_shop_comments_data()
+                })
+                .catch(
+                    error => console.log(error)
+                );
+            },
+            get_all_shop_comments_data: function(){
+                axios
+                .get("../api/comment/")
+                .then(response => {
+                    this.data_for_tab.push({'id': 3,
+                                            'data': response.data, 
+                                            'table_name': 'Product comments', 
+                                            // 'table_category': this.$route.params.article_category, 
+                                            'table_del_url': 'del_url', 
+                                            'table_edit_url': 'edit_url'
+                                        });
+                    this.get_all_products_review_data()
+                })
+                .catch(
+                    error => console.log(error)
+                );
+
+            },
+            get_all_products_review_data: function(){
+                axios
+                .get("../api/comment/")
+                .then(response => {
+                    this.data_for_tab.push({'id': 4,
+                                            'data': response.data, 
+                                            'table_name': 'Products review', 
                                             // 'table_category': this.$route.params.article_category, 
                                             'table_del_url': 'del_url', 
                                             'table_edit_url': 'edit_url'
@@ -88,8 +105,8 @@
                 .catch(
                     error => console.log(error)
                 );
-
             },
+
 
             // del_comment(itemId) {
             //     axios

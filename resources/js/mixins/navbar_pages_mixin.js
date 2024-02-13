@@ -300,7 +300,7 @@ export const navbar = {
                     },
                     {
                         name: "All comments",
-                        route: "/comments",
+                        route: "/comments_and_reviews",
                         permissions: [
                             ['show', 'comments'],
                             ['del_comment', 'comments'],

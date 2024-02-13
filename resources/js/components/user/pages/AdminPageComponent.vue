@@ -19,12 +19,17 @@
                                     <div class="col" >
                                         <input type="radio" id="1" :value="1" v-model="tab_num">
                                         
-                                        <label for="1" >Content</label>
+                                        <label for="1" >Tasks</label>
                                     </div>
                                     <div class="col" >
                                         <input type="radio" id="2" :value="2" v-model="tab_num">
                                         
                                         <label for="2" >Orders</label>
+                                    </div>
+                                    <div class="col" >
+                                        <input type="radio" id="3" :value="3" v-model="tab_num">
+                                        
+                                        <label for="3" >Content</label>
                                     </div>
                                     <div class="col" >
                                         <input type="radio" id="3" :value="3" v-model="tab_num">
@@ -35,7 +40,19 @@
                             </div>
                         </div>
 
+                        <div class="row" v-if="tab_num == 1">
+                            <tasks_panel />
+                        </div>
+
+                        <div class="row" v-if="tab_num == 2">
+                            <order_list />
+                        </div>
+
                         <div class="row" v-if="tab_num == 3">
+                            <data_counts_list />
+                        </div>
+                        
+                        <div class="row" v-if="tab_num == 4">
 
                             <div class="col-md-12" >
                                 <div class="card">
@@ -48,17 +65,12 @@
                             <user_notifications_list />
                         </div>
 
-                        <div class="row" v-if="tab_num == 2">
-                            <order_list />
-                        </div>
-
-                        <div class="row" v-if="tab_num == 1">
-                            <data_counts_list />
-                        </div>
 
                     </div>
 
-                    <stack-modal
+                    <user_notifications_modal />
+
+                    <!-- <stack-modal
                         :show="is_notifay_modal"
                         title="Send mail notification"
                         @close="is_notifay_modal=false"
@@ -168,7 +180,7 @@
                                 </button>
                             </div>
                         </div>
-                    </stack-modal>
+                    </stack-modal> -->
 
                 </div>
             </div>
@@ -178,142 +190,148 @@
 
 <script>
     // import Editor from '../items/canvas/EditorComponent.vue'
-    import { SlickList, SlickItem } from 'vue-slicksort'; //https://github.com/Jexordexan/vue-slicksort
-    import StackModal from '@innologica/vue-stackable-modal'  //https://innologica.github.io/vue-stackable-modal/#sample-css
+    // import { SlickList, SlickItem } from 'vue-slicksort'; //https://github.com/Jexordexan/vue-slicksort
+    // import StackModal from '@innologica/vue-stackable-modal'  //https://innologica.github.io/vue-stackable-modal/#sample-css
     import breadcrumb from '../items/BreadcrumbComponent.vue'
+
+    import user_notifications_modal from './../items/modal/notifications/UserMailNotificationModelComponent.vue'
 
     import user_notifications_list from '../items/UserNotificationsListComponent.vue'
     import order_list from '../items/dashboards/OrderDiogramComponent.vue'
     import data_counts_list from '../items/dashboards/SiteDataCountListComponent.vue'
+    import tasks_panel from './tasks/TasksControlBoardComponent.vue'
 
     export default {
         components: {
-            StackModal,
-            SlickItem,
-            SlickList,
+            // StackModal,
+            // SlickItem,
+            // SlickList,
             breadcrumb,
+
+            user_notifications_modal,
 
             user_notifications_list,
             order_list,
             data_counts_list,
+            tasks_panel,
         },
         data(){
             return{
                 tab_num: 1,
-                is_notifay_modal: false,
-                is_select_notification_type_error: false,
+                // is_notifay_modal: false,
+                // is_select_notification_type_error: false,
 
-                notification_type: 0,
-                event_notification_type: 0,
-                notification_id: 0,
+                // notification_type: 0,
+                // event_notification_type: 0,
+                // notification_id: 0,
 
-                outdoors: [],
-                events: [],
-                products: [],
-                films: [],
+                // outdoors: [],
+                // events: [],
+                // products: [],
+                // films: [],
             }
         },
         mounted(){
             // 
         },
         methods: {
-            open_notifay_modal(){
-                this.is_notifay_modal = true
-            },
+            // open_notifay_modal(){
+            //     this.is_notifay_modal = true
+            // },
 
-            close_notifay_modal(){
-                this.is_notifay_modal = false
+            // close_notifay_modal(){
+            //     this.is_notifay_modal = false
 
-                this.notification_type = 0
-                this.event_notification_type = 0
-                this.notification_id = 0
-            },
+            //     this.notification_type = 0
+            //     this.event_notification_type = 0
+            //     this.notification_id = 0
+            // },
 
-            send_mail(){
-                this.is_select_notification_type_error = false
+            // send_mail(){
+            //     this.is_select_notification_type_error = false
 
-                if(this.notification_type != 0 && this.notification_id != 0 || this.event_notification_type != 0){
-                    axios
-                    .post('../../../api/user/notifications/send_user_favorites_notification/' + this.notification_type, {
-                        id: this.notification_id,
-                        event_notification_type: this.event_notification_type
-                    })
-                    .then(response => {
-                        alert(response.data)
-                        this.close_notifay_modal()
-                    })
-                    .catch(err => {
-                        console.log(err);
-                    })
-                    .finally(() => this.is_mail_sending_procesing = false);
-                }
-                else{
-                    this.is_select_notification_type_error = true
-                }
-            },
+            //     if(this.notification_type != 0 && this.notification_id != 0 || this.event_notification_type != 0){
+            //         axios
+            //         .post('../../../api/user/notifications/send_user_favorites_notification/' + this.notification_type, {
+            //             id: this.notification_id,
+            //             event_notification_type: this.event_notification_type
+            //         })
+            //         .then(response => {
+            //             alert(response.data)
+            //             this.close_notifay_modal()
+            //         })
+            //         .catch(err => {
+            //             console.log(err);
+            //         })
+            //         .finally(() => this.is_mail_sending_procesing = false);
+            //     }
+            //     else{
+            //         this.is_select_notification_type_error = true
+            //     }
+            // },
 
-            selected_notification_action(){
-                if(this.notification_type == "favorite_outdoor"){
-                    this.get_outdoor_articles()
-                }
-                else if(this.notification_type == "favorite_product"){
-                    this.get_products()
-                }
-                else if(this.notification_type == "interested_event"){
-                    this.get_events()
-                }
-                else if(this.notification_type == "favorite_film"){
-                    this.get_films()
-                }
-            },
+            // selected_notification_action(){
+            //     if(this.notification_type == "favorite_outdoor"){
+            //         this.get_outdoor_articles()
+            //     }
+            //     else if(this.notification_type == "favorite_product"){
+            //         this.get_products()
+            //     }
+            //     else if(this.notification_type == "interested_event"){
+            //         this.get_events()
+            //     }
+            //     else if(this.notification_type == "favorite_film"){
+            //         this.get_films()
+            //     }
+            // },
 
-            get_outdoor_articles(){
-                axios
-                .post("../api/article/", {
-                    category: 'outdoor',
-                })
-                .then(response => {
-                    this.outdoors = response.data
-                })
-                .catch(
-                    error => console.log(error)
-                )
-                .finally(() => this.article_loading = false);
-            },
+            // get_outdoor_articles(){
+            //     axios
+            //     .post("../api/article/", {
+            //         category: 'outdoor',
+            //     })
+            //     .then(response => {
+            //         this.outdoors = response.data
+            //     })
+            //     .catch(
+            //         error => console.log(error)
+            //     )
+            //     .finally(() => this.article_loading = false);
+            // },
 
-            get_events(){
-                axios
-                .get("../api/event/get_all_events/")
-                .then(response => {
-                    this.events = response.data
-                })
-                .catch(
-                    error => console.log(error)
-                )
-                .finally(() => this.event_loading = false);
-            },
+            // get_events(){
+            //     axios
+            //     .get("../api/event/get_all_events/")
+            //     .then(response => {
+            //         this.events = response.data
+            //     })
+            //     .catch(
+            //         error => console.log(error)
+            //     )
+            //     .finally(() => this.event_loading = false);
+            // },
 
-            get_products(){
-                axios
-                .get("../api/products/en/")
-                .then(response => {
-                    this.products = response.data
-                })
-                .catch(
-                    error => console.log(error)
-                );
-            },
+            // get_products(){
+            //     axios
+            //     .get("../api/products/en/")
+            //     .then(response => {
+            //         this.products = response.data
+            //     })
+            //     .catch(
+            //         error => console.log(error)
+            //     );
+            // },
 
-            get_films(){
-                axios
-                .get("../api/films/")
-                .then(response => {
-                    this.events = response.data
-                })
-                .catch(
-                    error => console.log(error)
-                );
-            },
+            // get_films(){
+            //     axios
+            //     .get("../api/films/")
+            //     .then(response => {
+            //         this.events = response.data
+            //     })
+            //     .catch(
+            //         error => console.log(error)
+            //     );
+            // },
         }
     }
 </script>

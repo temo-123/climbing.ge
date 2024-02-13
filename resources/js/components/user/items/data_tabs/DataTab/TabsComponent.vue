@@ -189,8 +189,6 @@
 
                             v-if="tab_num == data.id"
                         >
-
-                        
                             <thead v-if="data.table_name == 'Orders' || data.table_name == 'My orders' ">
                                 <orderTabHeader 
                                     :table_name="data.table_name"
@@ -241,6 +239,22 @@
                                     :table_name="data.table_name"
                                 />
                             </thead>
+                            <tbody v-else-if="
+                                    data.table_name == 'Guide comments' || data.table_name == 'My goudbook comments'
+                                    || data.table_name == 'My goudbook comments' || data.table_name == 'My products comments'
+                                ">
+                                <commentTabHeader 
+                                    :table_name="data.table_name"
+                                />
+                            </tbody>
+                            <tbody v-else-if="
+                                    data.table_name == 'Guide comments' || data.table_name == 'Products comments'
+                                    || data.table_name == 'My goudbook comments' || data.table_name == 'My products comments'
+                                ">
+                                <reviewTabHeader 
+                                    :table_name="data.table_name"
+                                />
+                            </tbody>
                             <thead v-else-if="
                                         data.table_name == 'outdoor' || 
                                         data.table_name == 'indoor'  || 
@@ -319,7 +333,10 @@
                                     @restart="update"
                                 />
                             </tbody>
-                            <tbody v-else-if="data.table_name == 'Comments' || data.table_name == 'My comments'">
+                            <tbody v-else-if="
+                                            data.table_name == 'Guide comments' || data.table_name == 'My goudbook comments'
+                                            || data.table_name == 'My goudbook comments' || data.table_name == 'My products comments'
+                                        ">
                                 <commentsTab
                                     v-for="table_info in data.data"
                                     :key="table_info.id"
@@ -585,6 +602,8 @@ import regionTabHeader from "./tab_header/RegionTabHeaderComponrent.vue"
 import routeTabHeader from "./tab_header/RouteTabHeaderComponrent.vue"
 import SiteFollowersTabHeader from "./tab_header/SiteFollowersTabHeaderComponent.vue"
 import toureCategoryTabHeader from "./tab_header/ToureCategoryTabHeaderComponent.vue"
+import commentTabHeader from "./tab_header/commentsTabHeaderComponent.vue"
+import reviewTabHeader from "./tab_header/ReviewTabHeaderComponent.vue"
 
 import eventTab from "./tabs/EventTabComponent.vue";
 import sectorLocalImageTab from "./tabs/SectorLocalImageTabComponent.vue";
@@ -643,6 +662,8 @@ export default {
         routeTabHeader,
         routeTabHeader,
         SiteFollowersTabHeader,
+        commentTabHeader,
+        reviewTabHeader,
 
         sectorLocalImageTab,
         routeTab,
