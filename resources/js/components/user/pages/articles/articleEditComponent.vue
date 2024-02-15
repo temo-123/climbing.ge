@@ -269,13 +269,14 @@
                         }
                     });
                 })
-                // .catch(
+                .catch(
                 //     error => console.log(error)
-                // )
+                )
                 .finally(() => this.is_loading = false);
             },
 
             edit_article() {
+                this.is_loading = true
                 this.errors = []
 
                 let formData = new FormData();

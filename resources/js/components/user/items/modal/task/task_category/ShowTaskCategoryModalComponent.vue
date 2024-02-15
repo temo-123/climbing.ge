@@ -7,16 +7,21 @@
         :cancelButton="{ visible: false, title: 'Close', btnClass: { 'btn btn-danger': true } }"
     >
         <pre class="language-vue">
-            <div class="row">
-
+            <div class="container">
+                <div class="row"> 
+                    <div class="col-xs-12 modal_text">
+                        <p>{{ task_cat.title }}</p>
+                        <p>{{ task_cat.text }}</p>
+                    </div>
+                </div>
             </div>
         </pre>
         <div slot="modal-footer">
-            <div class="modal-footer">
+            <!-- <div class="modal-footer">
                 <button type="button" :class="{'btn btn-primary': true}" @click="finish_task">
                     Accepting the finished task
                 </button>
-            </div>
+            </div> -->
         </div>
     </stack-modal>
 </template>
@@ -30,20 +35,29 @@
         },
         data(){
             return{
-                is_modal: false
+                is_modal: false,
+
+                task_cat: []
             }
         },
         mounted(){
             // 
         },
         methods: {
-            show_modal(){
+            show_modal(task_category_id){
                 this.is_modal = true
-            },
-            finish_task(){
-                if(confirm('Are you sure, this task is fineshed?')){
 
-                }
+                this.finish_task(task_category_id)
+            },
+            finish_task(task_category_id){
+                axios
+                .get("/task/task_category/get_task_category_data/"+task_category_id)
+                .then(response => {
+                    this.task_cat = response.data
+                })
+                .catch(
+                    error => console.log(error)
+                );
             }
         }
     }

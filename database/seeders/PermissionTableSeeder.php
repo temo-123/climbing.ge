@@ -431,6 +431,22 @@ class PermissionTableSeeder extends Seeder
                 'subject' => 'routes_rewiew',
                 'action' => 'del',
             ],
+            [
+                'subject' => 'task',
+                'action' => 'show',
+            ],
+            [
+                'subject' => 'task',
+                'action' => 'add',
+            ],
+            [
+                'subject' => 'task',
+                'action' => 'edit',
+            ],
+            [
+                'subject' => 'task',
+                'action' => 'del',
+            ],
         );
 
         foreach ($permissions as $permission) {

@@ -22,6 +22,8 @@ const router = new VueRouter({
             fail: '/'
         }},
 
+        { path: '/task_panel', name: 'taskPanel', component: load('WorkerTaskPanelPageComponent') },
+
         { path: '/order/my_orders', name: 'myOrders', component: load('orders/myOrderComponent') },
         { path: '/order/all_orders', name: 'allOrders', component: load('orders/allOrderPageComponent') },
 

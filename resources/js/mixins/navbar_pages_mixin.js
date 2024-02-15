@@ -13,6 +13,13 @@ export const navbar = {
                 ]
             },
             {
+                title: "Task panel",
+                route: "/task_panel",
+                // permissions: [
+                //     ['show', 'task']
+                // ]
+            },
+            {
                 title: "Cart",
                 route: "/cart",
             },

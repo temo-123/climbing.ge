@@ -128,6 +128,8 @@
 
                 is_notifay_modal: false,
                 is_select_notification_type_error: false,
+
+                notification_type: 0
             }
         },
         mounted(){

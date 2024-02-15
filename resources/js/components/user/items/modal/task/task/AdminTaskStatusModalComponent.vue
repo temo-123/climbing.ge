@@ -7,15 +7,8 @@
         :cancelButton="{ visible: false, title: 'Close', btnClass: { 'btn btn-danger': true } }"
     >
         <pre class="language-vue">
-            <div class="container">
-                <div class="row justify-content-center" v-show="is_loading">
-                    <div class="col-md-4">
-                        <img :src="'../../../../../../public/images/site_img/loading.gif'" alt="loading">
-                    </div>
-                </div>
-            </div>
 
-            <div class="container" v-show="!is_loading">
+            <div class="container">
                
                 <div class="container">
                     <div class="row">
@@ -25,7 +18,14 @@
                     </div>
                 </div>
                 <div class="row">
-                    <form id="edit_task_status" class="modal_form" v-on:submit.prevent="edit_task_status" >
+                    <div class="container">
+                        <div class="row justify-content-center" v-show="is_loading">
+                            <div class="col-md-4">
+                                <img :src="'../../../../../../public/images/site_img/loading.gif'" alt="loading">
+                            </div>
+                        </div>
+                    </div>
+                    <form id="edit_task_status" class="modal_form" v-on:submit.prevent="edit_task_status" v-show="!is_loading">
 
                         <div class="form-group clearfix">
                             <label for="name" class='col-xs-12 control-label'> Task for worker </label>
@@ -33,9 +33,9 @@
                                 <select class="form-control" name="filter" v-model="data.status" required>
                                     <option value="" disabled>Task status</option> 
 
-                                    <option value="in_process">In the process</option> 
                                     <option value="problem">A problem has occurred</option> 
                                     <option value="finished">Finished</option> 
+                                    <option value="confirmation_completion">Confirmation completion</option> 
                                 </select> 
                             </div>
                         </div> 
@@ -50,7 +50,7 @@
                         </div>
 
                     </form>
-            </div>
+                </div>
             </div>
         </pre>
         <div slot="modal-footer">
@@ -81,6 +81,7 @@
 
                 data: {
                     status: '',
+                    worker_comment: ''
                 },
 
                 task_id: 0,
@@ -97,11 +98,15 @@
 
                 this.task_id = task_id
 
+                this.data = {
+                    status: '',
+                    worker_comment: ''
+                },
+
                 this.show_task_detals(task_id)
             },
             close_modal(){
                 this.is_modal = false
-                this.task = []
             },
             show_task_detals(task_id){
                 axios

@@ -43,7 +43,9 @@ class RoleTableSeeder extends Seeder
         $admin->save();
 
         foreach ($permissions as $permission) {
-            $admin->permissions()->attach($permission);
+            if($permission['subject'] != 'task'){
+                $admin->permissions()->attach($permission);
+            }
         }
 
         $visual_permissions = Permission:: where('subject', '=', 'gallery')->

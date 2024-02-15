@@ -2,12 +2,19 @@
     <stack-modal
         :show="is_modal"
         title="Create task for worker"
-        @close="is_modal=false"
+        @close="close_modal()"
         :saveButton="{ visible: true, title: 'Sand', btnClass: { 'btn btn-primary': true } }"
         :cancelButton="{ visible: false, title: 'Close', btnClass: { 'btn btn-danger': true } }"
     >
         <pre class="language-vue">
-            <form id="create_task" v-on:submit.prevent="create_task" >
+            <div class="container">
+                <div class="row justify-content-center" v-show="is_loading">
+                    <div class="col-md-4">
+                        <img :src="'../../../../../../public/images/site_img/loading.gif'" alt="loading">
+                    </div>
+                </div>
+            </div>
+            <form id="create_task" v-on:submit.prevent="create_task" v-show="!is_loading">
                 <div class="container">
 
                     <div class="form-group clearfix">
@@ -80,8 +87,10 @@
         data(){
             return{
                 is_modal: false,
+                is_loading: false,
 
                 data: {
+                    title: '',
                     text: '',
                     deadline: '',
                     worker_id: 0
@@ -92,12 +101,24 @@
             }
         },
         mounted(){
-            this.get_all_tasks_category()
-            this.get_users()
+            //
         },
         methods: {
             show_modal(){
                 this.is_modal = true
+
+                this.data = {
+                    title: '',
+                    text: '',
+                    deadline: '',
+                    worker_id: 0
+                },
+
+                this.get_all_tasks_category()
+                this.get_users()
+            },
+            close_modal(){
+                this.is_modal = false
             },
             get_all_tasks_category(){
                 axios
@@ -120,6 +141,7 @@
                 );
             }, 
             create_task(){
+                this.is_loading = true
                 axios
                 .post('/task/create_task/', {
                     data: this.data,
@@ -131,6 +153,7 @@
                     this.close_modal()
                 })
                 .catch(error => console.log(error))
+                .finally(() => this.is_loading = false);
             }
         }
     }

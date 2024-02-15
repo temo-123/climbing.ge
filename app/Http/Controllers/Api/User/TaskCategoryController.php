@@ -13,8 +13,8 @@ class TaskCategoryController extends Controller
         return Task_category::get();
     }
 
-    function get_editing_task_category(Request $request){
-        return Task_category::where("id", "=", $request->Task_category_id)->first();
+    function get_task_category_data(Request $request){
+        return Task_category::where("id", "=", $request->task_category_id)->first();
     }
 
     function create_task_category(Request $request){
@@ -27,16 +27,15 @@ class TaskCategoryController extends Controller
     }
 
     function update_task_category(Request $request){
-        $editing_Task_category = Task_category::where("id", "=", $request->Task_category_id)->first();
+        $editing_task_category = Task_category::where("id", "=", $request->task_category_id)->first();
 
-        $editing_Task_category['title'] = $request->data['title'];
-        $editing_Task_category['text'] = $request->data['text'];
-
-        $editing_Task_category -> save();
+        $editing_task_category['title'] = $request->data['title'];
+        $editing_task_category['text'] = $request->data['text'];
+        $editing_task_category -> save();
     }
 
     function del_task_category(Request $request){
-        $deleted_user_site = Task_category::where("id", "=", $request->Task_category_id)->first();
+        $deleted_user_site = Task_category::where("id", "=", $request->task_category_id)->first();
         $deleted_user_site -> delete();
     }
 }

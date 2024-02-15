@@ -68,14 +68,14 @@
 
                 this.editing_id = event
 
-                this.get_editing_task_category(this.editing_id)
+                this.get_task_category_data(this.editing_id)
             },
             close_modal(){
                 this.is_modal = false
             },
-            get_editing_task_category(id){
+            get_task_category_data(id){
                 axios
-                .get("/task/task_category/get_editing_task_category/"+id)
+                .get("/task/task_category/get_task_category_data/"+id)
                 .then(response => {
                     this.data = {
                         title: response.data.title,

@@ -26,15 +26,17 @@
                 </div>
                 
                 <div class="col-md-12" v-for="task in tasks" :kay="task.id">
-                    <div class="alert alert-danger" role="alert">
+                    <div :class="'alert ' + task_status_color(task.status)" role="alert">
                         <div class="row">
                             <div class="col-md-12">
-                                <strong>Danger!</strong> task 1.
+                                <strong>{{ task.status }}</strong> {{ task.title }}
+                                <p>{{ task.deadline }}</p>
                             </div>
                             <div class="col-md-12">
-                                <button class="btn btn-success float-right" @click="show_task_modal">Show detals</button>
-                                <button class="btn btn-primary float-right" @click="show_edit_task_modal">Edit</button>
-                                <button class="btn btn-danger float-right" @click="del_task">Del</button>
+                                <button class="btn btn-success float-right" @click="show_task_modal(task.id)">Show detals</button>
+                                <button class="btn btn-primary float-right" v-if="task.status != 'confirmation_completion'" @click="show_task_status_model(task.id)">Update status</button>
+                                <button class="btn btn-primary float-right" v-if="task.status != 'confirmation_completion'" @click="show_edit_task_modal(task.id)">Edit</button>
+                                <button class="btn btn-danger float-right" @click="del_task(task.id)">Del</button>
                             </div>
                         </div>
                     </div>
@@ -69,21 +71,21 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr v-for="task_type in task_types" :kay="task_type.id">
+                            <tr v-for="task_category in task_categorys" :kay="task_category.id">
                                 <td :style='"text-align: center;"'>
                                     <input type="checkbox">
                                 </td>
                                 <td>|</td>
-                                <td>{{ task_type.id }}</td>
+                                <td>{{ task_category.id }}</td>
                                 <td>|</td>
-                                <td class="cursor_pointer" @click="show_task_category_modal">{{ task_type.title }}</td>
+                                <td class="cursor_pointer" @click="show_task_category_modal(task_category.id)">{{ task_category.title }}</td>
                                 <td>|</td>
                                 <td>
-                                    <button type="submit" class="btn btn-primary" @click="show_edit_task_category_modal(task_type.id)"  v-if="$can('del', 'shiping_country')"><i class="fa fa-pencil" aria-hidden="true"></i></button>
+                                    <button type="submit" class="btn btn-primary" @click="show_edit_task_category_modal(task_category.id)"  v-if="$can('del', 'shiping_country')"><i class="fa fa-pencil" aria-hidden="true"></i></button>
                                 </td>
                                 <td>|</td>
                                 <td>
-                                    <button class="btn btn-danger" type="submit" @click="del_task_category(task_type.id)" v-if="$can('edit', 'shiping_country')"><i class="fa fa-trash" aria-hidden="true"></i></button>
+                                    <button class="btn btn-danger" type="submit" @click="del_task_category(task_category.id)" v-if="$can('edit', 'shiping_country')"><i class="fa fa-trash" aria-hidden="true"></i></button>
                                 </td>
                             </tr>
                         </tbody>
@@ -93,7 +95,8 @@
 
             <addTaskModal ref="show_add_task_modal" @restart="get_all_tasks"/>
             <editTaskModal ref="show_edit_task_modal" @restart="get_all_tasks"/>
-            <taskProcesModal ref="show_task_modal" />
+            <showTaskModal ref="show_task_modal" />
+            <adminTaskStatusModal ref="task_status_modal" @restart="get_all_tasks"/>
 
             <addTaskCategoryModal ref="show_add_task_category_modal" @restart="get_all_tasks_category"/>
             <editTaskCategoryModal ref="show_edit_task_category_modal" @restart="get_all_tasks_category"/>
@@ -104,7 +107,8 @@
 <script>
     import addTaskModal from '../../items/modal/task/task/AddTaskModalComponent.vue'
     import editTaskModal from '../../items/modal/task/task/EditTaskModalComponent.vue'
-    import taskProcesModal from '../../items/modal/task/task/TaskProcesModalComponent.vue'
+    import showTaskModal from '../../items/modal/task/task/ShowTaskModalComponent.vue'
+    import adminTaskStatusModal from '../../items/modal/task/task/AdminTaskStatusModalComponent.vue'
 
     import addTaskCategoryModal from '../../items/modal/task/task_category/AddTaskCategoryModalComponent.vue'
     import editTaskCategoryModal from '../../items/modal/task/task_category/EditTaskCategoryModalComponent.vue'
@@ -114,7 +118,8 @@
         components: {
             addTaskModal,
             editTaskModal,
-            taskProcesModal,
+            showTaskModal,
+            adminTaskStatusModal,
 
             addTaskCategoryModal,
             editTaskCategoryModal,
@@ -125,7 +130,7 @@
                 task_tab_num: 1,
 
                 tasks: [],
-                task_types: [],
+                task_categorys: [],
                 tasks_categories: [],
             }
         },
@@ -134,14 +139,17 @@
             this.get_all_tasks_category()
         },
         methods: {
+            show_task_status_model(task_id){
+                this.$refs.task_status_modal.show_modal(task_id)
+            },  
             show_add_task_modal(){
                 this.$refs.show_add_task_modal.show_modal()
             },
-            show_edit_task_modal(){
-                this.$refs.show_edit_task_modal.show_modal()
+            show_edit_task_modal(task_id){
+                this.$refs.show_edit_task_modal.show_modal(task_id)
             },
-            show_task_modal(){
-                this.$refs.show_task_modal.show_modal()
+            show_task_modal(task_id){
+                this.$refs.show_task_modal.show_modal(task_id)
             },
 
             show_add_task_category_modal(){
@@ -168,11 +176,11 @@
             del_task(task_id){
                 if(confirm('Are you sure, you want delite it?')){
                     axios
-                    .post('../../api/event/del_event/'+id, {
+                    .post('/task/del_task/'+task_id, {
                         _method: 'DELETE'
                     })
                     .then(Response => {
-                        this.$emit('restart')
+                        this.get_all_tasks()
                     })
                     .catch(error => console.log(error))
                 }
@@ -182,7 +190,7 @@
                 axios
                 .get("/task/task_category/get_all_task_categories/")
                 .then(response => {
-                    this.task_types = response.data
+                    this.task_categorys = response.data
                 })
                 .catch(
                     error => console.log(error)
@@ -201,7 +209,21 @@
                     })
                     .catch(error => console.log(error))
                 }
-            },   
+            },  
+            task_status_color(status){
+                if(status == 'in_process'){
+                    return 'alert-warning'
+                }
+                else if(status == 'finished'){
+                    return 'alert-success'
+                }
+                else if(status == 'confirmation_completion'){
+                    return 'alert-info'
+                }
+                else{
+                    return 'alert-danger'
+                } 
+            } 
         }
     }
 </script>
