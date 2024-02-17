@@ -21,8 +21,8 @@
                 <div class="alert alert-danger" role="alert" v-if="error.global_info_validation.published">
                     Published - {{ error.global_info_validation.published[0] }}
                 </div>
-                <div class="alert alert-danger" role="alert" v-if="error.global_info_validation.us_title_for_url_title">
-                    Us title - {{ error.global_info_validation.us_title_for_url_title[0] }}
+                <div class="alert alert-danger" role="alert" v-if="error.global_info_validation.url_title">
+                    Url title - {{ error.global_info_validation.url_title[0] }}
                 </div>
 
                 <div class="alert alert-danger" role="alert" v-if="error.us_info_validation.title">
@@ -83,7 +83,7 @@
             </div>
             <div v-show="tab_num == 1">
                 <GlobalDataForm 
-                    @global_form_data="article_data.global_data = $event" 
+                    @global_form_data="data.global_article = $event" 
                 />
 
                 <div class="col-md-12">
@@ -107,7 +107,7 @@
             </div>
             <div v-show="tab_num == 2">
                 <LocaleDataForm 
-                    @locale_form_data="article_data.en_data = $event"
+                    @locale_form_data="data.us_article = $event"
                     @global_blocks="global_blocks_action"
 
                     :global_blocks_prop="global_blocks"
@@ -118,7 +118,7 @@
             </div>
             <div v-show="tab_num == 3">
                 <LocaleDataForm 
-                    @locale_form_data="article_data.ka_data = $event"
+                    @locale_form_data="data.ka_article = $event"
                     @global_blocks="global_blocks_action"
 
                     :global_blocks_prop="global_blocks"
@@ -129,7 +129,7 @@
             </div>
             <div v-show="tab_num == 4">
                 <LocaleDataForm 
-                    @locale_form_data="article_data.ru_data = $event"
+                    @locale_form_data="data.ru_article = $event"
                     @global_blocks="global_blocks_action"
 
                     :global_blocks_prop="global_blocks"
@@ -137,13 +137,6 @@
                     :title="$t('user add ru article title')"
                     :description="$t('user add ru article description')"
                 />
-            </div>
-        </div>
-
-        <div class="row justify-content-center" v-if="is_loading">
-            <div class="col-md-4">
-                <img :src="'../../../../../../public/images/site_img/loading.gif'" alt="loading">
-                <p>Pless wait! sanding notifications</p>
             </div>
         </div>
     </div>
@@ -178,11 +171,11 @@
                 is_back_action_query: true,
                 is_loading: false,
 
-                article_data: {
-                    global_data: [],
-                    en_data: [],
-                    ka_data: [],
-                    ru_data: [],
+                data: {
+                    global_article: [],
+                    us_article: [],
+                    ka_article: [],
+                    ru_article: [],
                 },
                 article_image: '',
 
@@ -237,13 +230,13 @@
             
             save(){
                 this.is_loading = true
-                this.article_data.global_data.us_title_for_url_title = this.article_data.en_data.title,
+                // this.data.global_article.us_title_for_url_title = this.data.us_article.title,
 
                 this.error = []
 
                 let formData = new FormData();
                 formData.append('image', this.article_image);
-                formData.append('data', JSON.stringify(this.article_data))
+                formData.append('data', JSON.stringify(this.data))
                 formData.append('global_blocks', JSON.stringify(this.global_blocks))
 
                 if(this.category == 'outdoor'){

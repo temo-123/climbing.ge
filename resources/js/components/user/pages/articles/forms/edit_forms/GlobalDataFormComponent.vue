@@ -41,7 +41,7 @@
                                 <option :value="'select_mount'" disabled>Select mount</option> 
                                 <option :value="null" style="color:red">Whithout Mount</option> 
                                 <!-- <option :value="'select_mount'">Select mount</option>  -->
-                                <option v-for="mount in mount_masive" :key="mount.global_mount.id" v-bind:value="mount.global_mount.id">{{mount.global_mount.name}}</option> 
+                                <option v-for="mount in mount_masive" :key="mount.global_data.id" v-bind:value="mount.global_data.id">{{mount.global_data.name}}</option> 
                             </select> 
                         </div>
                     </div>

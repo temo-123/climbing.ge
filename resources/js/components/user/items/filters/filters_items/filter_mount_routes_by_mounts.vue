@@ -2,12 +2,12 @@
    <div class="row cms_filters">
         <div class="col-md-8">
             <h3>Filter Mountaineering routes areas By mount</h3>
-            <!-- {{ mounts[0].global_mount.id }} -->
+            <!-- {{ mounts[0].global_data.id }} -->
         </div>
         <div class="col-md-4 ">
             <select v-model="value_mount_id" @click="return_data(value_mount_id)">
                 <option :value="'all'">All</option>
-                <option v-for="mount in mounts" :key="mount" :value="mount.global_mount.id">{{ mount.global_mount.name }}</option>
+                <option v-for="mount in mounts" :key="mount" :value="mount.global_data.id">{{ mount.global_data.name }}</option>
             </select>
         </div>
     </div>

@@ -52,7 +52,7 @@
         methods: {
             get_filtred_articles(id){
                 axios
-                .get("../api/mount_route/get_filtred_mount_route_for_admin/" + id)
+                .get("/mount_route/get_filtred_mount_route_for_admin/" + id)
                 .then(response => {
                     this.data_for_tab = []
                     this.data_for_tab.push({'id': 1,
@@ -73,17 +73,11 @@
             },
 
             get_unfilted_articles(){
-                // axios
-                // .get('../api/articles/mount_route/'+localStorage.getItem('lang'))
-                // .get('../api/articles/mount_route/us')
                 axios
                 .post("/article/", {
                     category: 'mount_route',
                 })
                 .then(response => {
-                    // this.mount_routes = response.data
-                    // this.filter_mount_routes()
-
                     this.data_for_tab = []
                     this.data_for_tab.push({'id': 1,
                                             'data': response.data, 
@@ -115,7 +109,7 @@
 
             get_mounts(){
                 axios
-                .get("../api/mount/mount")
+                .get("/mount/mount")
                 .then(response => {
                     this.data_for_tab.push({'id': 2,
                                             'data': response.data, 

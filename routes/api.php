@@ -533,6 +533,16 @@ Route::group(['namespace'=>'Api'], function() {
     });
 
     Route::group(['namespace'=>'User'], function() {
+
+        /*
+        *   Login verify routes
+        */
+        Route::group(['middleware'=>'auth:sanctum'], function() {
+            Route::get('email/verify/{hash}', 'VerificationController@verify')->name('verification.verify');
+            Route::get('email/resend', 'VerificationController@resend')->name('verification.resend');
+            Route::get('auth_user', 'AuthenticationController@user')->name('auth_user');
+        });
+
         /*
         *   Users routes
         */
@@ -661,15 +671,6 @@ Route::group(['namespace'=>'Api'], function() {
     Route::post('/productSearch/{query_request}', 'SearchController@productSearch');
     Route::post('/articleSearch/{query_request}', 'SearchController@articleSearch');
     Route::post('/filmSearch/{query_request}', 'SearchController@filmSearch');
-
-    /*
-    *   Login verify routes
-    */
-    Route::group(['middleware'=>'auth:sanctum'], function() {
-        Route::get('email/verify/{hash}', 'VerificationController@verify')->name('verification.verify');
-        Route::get('email/resend', 'VerificationController@resend')->name('verification.resend');
-        Route::get('auth_user', 'AuthenticationController@user')->name('auth_user');
-    });
 
     /*
     *   Login verify routes

@@ -18,6 +18,9 @@
         </div>
         <div class="row" v-show="!is_loading" v-if="error.length != 0">
             <div class="col-md-12">
+                <div class="alert alert-danger" role="alert" v-if="error.global_info_validation.url_title">
+                    Url title - {{ error.global_info_validation.url_title[0] }}
+                </div>
                 <div class="alert alert-danger" role="alert" v-if="error.global_info_validation.published">
                     Published - {{ error.global_info_validation.published[0] }}
                 </div>

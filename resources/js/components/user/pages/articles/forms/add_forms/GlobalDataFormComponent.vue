@@ -25,7 +25,7 @@
                     <div class="form-group clearfix row" v-if="this.category == 'outdoor'">
                         <label for="region" class='col-md-2 control-label '> Regions </label>
                         <div class="col-md-10">
-                            <select class="form-control" v-model="data.region_id" name="region" > 
+                            <select class="form-control" v-model="region_id" name="region" > 
                                 <option :value="'select_region'" disabled>Select region</option> 
                                 <option :value="null" style="color:red">Whithout Region</option> 
                                 <option  v-for="region in regions" :key="region.id" :value="region.id">{{ region.us_name }}</option>
@@ -36,10 +36,10 @@
                     <div class="form-group clearfix row" v-if="this.category == 'mount_route'">
                         <label for="name" class='col-md-2 control-label'> Mountain </label>
                         <div class="col-md-10">
-                            <select class="form-control" v-model="data.mount_id" name="mount_id"> 
+                            <select class="form-control" v-model="mount_id" name="mount_id"> 
                                 <option :value="'select_mount'" disabled>Select mount</option> 
                                 <option :value="null" style="color:red">Whithout Mount</option> 
-                                <option v-for="mount in mount_masive" :key="mount.id" :value="mount.global_mount.id">{{mount.global_mount.name}}</option> 
+                                <option v-for="mount in mount_masive" :key="mount.id" :value="mount.global_data.id">{{mount.global_data.name}}</option> 
                             </select> 
                         </div>
                     </div>
@@ -125,25 +125,27 @@
 
                 data: {
                     category: this.$route.params.article_category,
-                    us_title_for_url_title: "",
+                    // us_title_for_url_title: "",
                     published: 0,
-                    completed: "",
-                    map: "",
-                    weather: "",
-                    open_timen: "",
-                    closed_time: "",
-                    price_from: "",
-                    start_data: "",
-                    end_data: "",
-                    fb_link: "",
-                    twit_link: "",
-                    google_link: "",
-                    inst_link: "",
-                    web_link: "",
+                    // completed: "",
+                    // map: "",
+                    // weather: "",
+                    // open_timen: "",
+                    // closed_time: "",
+                    // price_from: "",
+                    // start_data: "",
+                    // end_data: "",
+                    // fb_link: "",
+                    // twit_link: "",
+                    // google_link: "",
+                    // inst_link: "",
+                    // web_link: "",
 
-                    region_id: "select_region",
-                    mount_id: "select_mount",
+                    // region_id: "select_region",
+                    // mount_id: "select_mount",
                 },
+                region_id: "select_region",
+                mount_id: "select_mount",
             }
         },
         mounted() {

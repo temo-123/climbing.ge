@@ -16,18 +16,19 @@ class Article extends Model
 
     protected $fillable = [
 	    'published',
-		'completed',
+		'url_title',
 		'map',
 		'weather',
 
-		'start_data',
-		'end_data',
+		// 'completed',
+		// 'start_data',
+		// 'end_data',
 
-		'fb_link',
-		'twit_link',
-		'google_link',
-		'inst_link',
-		'web_link',
+		// 'fb_link',
+		// 'twit_link',
+		// 'google_link',
+		// 'inst_link',
+		// 'web_link',
 	
 		'image',
 

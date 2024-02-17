@@ -212,7 +212,7 @@
                     best_time: '',
                     what_need: '',
                     info: '',
-                    time: '',
+                    // time: '',
                 },
 
                 general_infos: [],

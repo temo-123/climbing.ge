@@ -3,10 +3,13 @@
 namespace App\Services\Abstract;
 
 use Carbon\Carbon;
+use Validator;
+
+use App\Services\ImageControllService;
+use App\Services\URLTitleService;
 
 abstract class LocaleContentControllService
 {
-
     /*
     *
     * This function get global and local content in array for content
@@ -14,13 +17,11 @@ abstract class LocaleContentControllService
     * Function get 4 parameters
     *
     */
-    public function add_service(Request $request)
+    public static function add_content($data, $global_model, $local_model, $prefix, $request, $image_path)
     {
         $validation_issets = [];
 
-        $data = json_decode($request->data, true );
-
-        $ka_validate = $this->local_service_validate($data['ka_data']);
+        $ka_validate = (new static)->local_content_validate($data['ka'.$prefix], 'ka');
         if ($ka_validate != null) {
             $validation_issets['ka_info_validation'] = $ka_validate;
         }
@@ -28,7 +29,7 @@ abstract class LocaleContentControllService
             $validation_issets['ka_info_validation'] = false;
         }
 
-        $us_validate = $this->local_service_validate($data['us_data']);
+        $us_validate = (new static)->local_content_validate($data['us'.$prefix], 'us');
         if ($us_validate != null) {
             $validation_issets['us_info_validation'] = $us_validate;
         }
@@ -36,7 +37,7 @@ abstract class LocaleContentControllService
             $validation_issets['us_info_validation'] = false;
         }
 
-        $ru_validate = $this->local_service_validate($data['ru_data']);
+        $ru_validate = (new static)->local_content_validate($data['ru'.$prefix], 'ru');
         if ($ru_validate != null) {
             $validation_issets['ru_info_validation'] = $ru_validate;
         }
@@ -44,7 +45,7 @@ abstract class LocaleContentControllService
             $validation_issets['ru_info_validation'] = false;
         }
 
-        $global_validate = $this->adding_global_service_validate($data['global_data']);
+        $global_validate = (new static)->global_content_validate($data['global'.$prefix]);
         if ($global_validate != null) {
             $validation_issets['global_info_validation'] = $global_validate;
         }
@@ -58,26 +59,51 @@ abstract class LocaleContentControllService
             !$validation_issets['ka_info_validation'] && 
             !$validation_issets['us_info_validation']
         ) {
-            $saiving_issets['ka_info_status'] = $this->add_locale_service($data['ka_data'], 'ka');
-            $saiving_issets['ru_info_status'] = $this->add_locale_service($data['ru_data'], 'ru');
-            $saiving_issets['us_info_status'] = $this->add_locale_service($data['us_data'], 'us');
+            $saiving_issets['ka_info_status'] = (new static)->add_locale_content($data['ka'.$prefix], 'ka', $local_model);
+            $saiving_issets['ru_info_status'] = (new static)->add_locale_content($data['ru'.$prefix], 'ru', $local_model);
+            $saiving_issets['us_info_status'] = (new static)->add_locale_content($data['us'.$prefix], 'us', $local_model);
 
             if (
                 $saiving_issets['ka_info_status'] != 'Error' &&
                 $saiving_issets['ru_info_status'] != 'Error' &&
                 $saiving_issets['us_info_status'] != 'Error'
             ) {
-                $action_service_id = $this->addGlobalArticle(
-                    $data['global_data'],
+                $saiving_issets['global_info_status'] = (new static)->addGlobalArticle(
+                    $data['global'.$prefix],
+                    $data['us'.$prefix],
+
+                    $request,
 
                     $saiving_issets['ka_info_status'],
                     $saiving_issets['ru_info_status'],
-                    $saiving_issets['us_info_status']                    
+                    $saiving_issets['us_info_status'],
+
+                    $global_model,
+
+                    $prefix,
+
+                    $image_path
                 );
-                
-                if($request->hasFile('service_images')){
-                    $this->add_secvice_images($request['service_images'], $action_service_id);
+
+                if (
+                    $saiving_issets['global_info_status'] != 'Error' && gettype($saiving_issets['global_info_status']) != 'object'
+                ) {
+                    $info = [
+                        'us'.$prefix.'_id' => $saiving_issets['ka_info_status'],
+                        'ka'.$prefix.'_id' => $saiving_issets['ru_info_status'],
+                        'ru'.$prefix.'_id' => $saiving_issets['us_info_status'],
+                        'global'.$prefix.'_id' => $saiving_issets['ka_info_status']
+                    ];
+                    
+                    return (object) array('original' => $info);
                 }
+                else{    
+                    $validation_issets['global_info_validation'] = $saiving_issets['global_info_status'];
+                    return response()->json([
+                        'validation' => $validation_issets
+                    ], 422);
+                }
+
             }
         }
         else{            
@@ -87,167 +113,47 @@ abstract class LocaleContentControllService
         }
     }
 
-    public function addGlobalArticle($global_data, $ka_info_id, $ru_info_id, $us_info_id)
+    private static function addGlobalArticle($global_data, $us_data, $request, $ka_info_id, $ru_info_id, $us_info_id, $global_model, $prefix, $image_path)
     {
-        $url_title = URLTitleService::get_url_title($global_data["us_title_for_url_title"]); // make url_title from us_title value
+        $global_data['url_title'] = URLTitleService::get_url_title($us_data["title"]); // make url_title from us_title value
 
-        $service = new Service;
-        
-        $service['url_title'] = $url_title;
+        $url_title_valid = (new static)->url_title_validate($global_data, $global_model);
 
-        $service['published']=$global_data["published"];
+        if ($url_title_valid != false) {
+            return $url_title_valid;
+        }
 
-        $local_us = $us_info_id;
-        $local_ka = $ka_info_id;
-        $local_ru = $ru_info_id;
+        if($request->hasFile('image')){
+            $global_data['image'] =  ImageControllService::image_upload($image_path, $request, 'image', 1);
+        }
 
-        $service['us_service_id']=$local_us;
-        $service['ka_service_id']=$local_ka;
-        $service['ru_service_id']=$local_ru;
-        
-        $saved = $service -> save();
+        $global_data['published']=$global_data["published"];
+
+        $global_data['us'.$prefix.'_id']=$us_info_id;
+        $global_data['ka'.$prefix.'_id']=$ka_info_id;
+        $global_data['ru'.$prefix.'_id']=$ru_info_id;
+
+        $saved = $global_model::insertGetId($global_data); 
 
         if(!$saved){
-            App::abort(500, 'Error');
+            // App::abort(500, 'Error');
         }
         else{
-            return $service->id;
+            return $saved;
         }
     }
 
-    public function add_locale_service($data, $locale)
+    private static function add_locale_content($data, $locale, $local_model)
     {
-        $service = new Locale_service;
-        
-        $service['title']=$data["title"];
-        $service['locale']=$locale;
-        $service['short_description']=$data["short_description"];
-        $service['text']=$data["text"];
+        $data['locale']=$locale;
 
-        $saved = $service->save();
-
-        if(!$saved){
-            App::abort(500, 'Error');
-        }
-        else{
-            return $service->id;
-        }
-    }
-    
-    
-    /*
-    *
-    * This function get global and local content in array for content
-    *
-    * Function get 4 parameters
-    *
-    */public function edit_service(Request $request)
-    {
-        $validation_issets = [];
-
-        $data = json_decode($request->data, true );
-
-        $ka_validate = $this->local_service_validate($data['ka_data']);
-        if ($ka_validate != null) {
-            $validation_issets['ka_info_validation'] = $ka_validate;
-        }
-        else{
-            $validation_issets['ka_info_validation'] = false;
-        }
-
-        $us_validate = $this->local_service_validate($data['us_data']);
-        if ($us_validate != null) {
-            $validation_issets['us_info_validation'] = $us_validate;
-        }
-        else{
-            $validation_issets['us_info_validation'] = false;
-        }
-
-        $ru_validate = $this->local_service_validate($data['ru_data']);
-        if ($ru_validate != null) {
-            $validation_issets['ru_info_validation'] = $ru_validate;
-        }
-        else{
-            $validation_issets['ru_info_validation'] = false;
-        }
-
-        $global_validate = $this->adding_global_service_validate($data['global_data']);
-        if ($global_validate != null) {
-            $validation_issets['global_info_validation'] = $global_validate;
-        }
-        else{
-            $validation_issets['global_info_validation'] = false;
-        }
-
-        if (!$validation_issets['ru_info_validation'] && 
-            !$validation_issets['ka_info_validation'] && 
-            !$validation_issets['us_info_validation']
-        ) {
-            $locale_service_values = $this->edit_global_service(
-                $data['global_data'],  
-                $request->service_id                
-            );
-            if (
-                $locale_service_values != 'Error'
-            ) {
-                $saiving_issets['ka_info_status'] = $this->edit_locale_service($data['ka_data'], $locale_service_values['ka_id']);
-                $saiving_issets['ru_info_status'] = $this->edit_locale_service($data['ru_data'], $locale_service_values['ru_id']);
-                $saiving_issets['us_info_status'] = $this->edit_locale_service($data['us_data'], $locale_service_values['us_id']);
-                
-                if($request->hasFile('service_new_images')){
-                    $this->add_secvice_images($request['service_new_images'], $locale_service_values['global_id']);
-                }
-            }
-        }
-        else{            
-            return response()->json([
-                'validation' => $validation_issets
-            ], 422);
-        }
-    }
-
-    public function edit_global_service($global_data, $id)
-    {
-        $editing_local_service = Service::where('id', '=', $id)->first();
-
-        if($global_data['change_url_title']){
-            $url_title = URLTitleService::get_url_title($global_data["us_title_for_url_title"]); // make url_title from us_title value
-            $editing_local_service['url_title'] = $url_title;
-        }
-
-        $editing_local_service['published']=$global_data["published"];
-        
-        $saved = $editing_local_service -> save();
+        $saved = $local_model::insertGetId($data);
         
         if(!$saved){
             App::abort(500, 'Error');
         }
         else{
-            $locale_tabs = [
-                'us_id' => $editing_local_service->us_service_id,
-                'ka_id' => $editing_local_service->ka_service_id,
-                'ru_id' => $editing_local_service->ru_service_id,
-                'global_id' => $editing_local_service->id
-            ];
-            return $locale_tabs;
-        }
-    }
-
-    public function edit_locale_service($data, $id)
-    {
-        $editing_locale_service = Locale_service::where('id', '=', $id)->first();
-        
-        $editing_locale_service['title']=$data["title"];
-        $editing_locale_service['short_description']=$data["short_description"];
-        $editing_locale_service['text']=$data["text"];
-
-        $saved = $editing_locale_service->save();
-
-        if(!$saved){
-            App::abort(500, 'Error');
-        }
-        else{
-            return $editing_locale_service->id;
+            return $saved;
         }
     }
     
@@ -259,19 +165,202 @@ abstract class LocaleContentControllService
     * Function get 4 parameters
     *
     */
-    public function del_service(Request $request)
+    public static function edit_content($data, $global_model, $local_model, $prefix, $request, $image_path)
     {
-        $service = Service::where('id', '=', $request->service_id)->first();
-        $service_images_count = Service_image::where('service_id', '=', $service->id)->count();
+        $validation_issets = [];
 
-        if($service_images_count > 0){
-            $service_images = Service_image::where('service_id', '=', $service->id)->get();
-            // dd($service_images);
-            foreach ($service_images as $image) {
-                ImageControllService::image_delete('images/service_img/', $image, 'image');
-                $image ->delete();
+        $data = json_decode($request->data, true );
+
+        $ka_validate = (new static)->local_content_validate($data['ka'.$prefix], 'ka');
+        if ($ka_validate != null) {
+            $validation_issets['ka_info_validation'] = $ka_validate;
+        }
+        else{
+            $validation_issets['ka_info_validation'] = false;
+        }
+
+        $us_validate = (new static)->local_content_validate($data['us'.$prefix], 'us');
+        if ($us_validate != null) {
+            $validation_issets['us_info_validation'] = $us_validate;
+        }
+        else{
+            $validation_issets['us_info_validation'] = false;
+        }
+
+        $ru_validate = (new static)->local_content_validate($data['ru'.$prefix], 'ru');
+        if ($ru_validate != null) {
+            $validation_issets['ru_info_validation'] = $ru_validate;
+        }
+        else{
+            $validation_issets['ru_info_validation'] = false;
+        }
+
+        $global_validate = (new static)->global_content_validate($data['global'.$prefix]);
+        if ($global_validate != null) {
+            $validation_issets['global_info_validation'] = $global_validate;
+        }
+        else{
+            $validation_issets['global_info_validation'] = false;
+        }
+
+        if (!$validation_issets['ru_info_validation'] && 
+            !$validation_issets['ka_info_validation'] && 
+            !$validation_issets['us_info_validation']
+        ) {
+            $locale_content_values = (new static)->edit_global_content(
+                $data['global'.$prefix],  
+                $data['us'.$prefix],
+                $data['global_article']['id'],
+                $global_model,
+                $request,
+                $image_path,
+                $prefix
+            );
+            
+            if (
+                $locale_content_values != 'Error' && gettype($locale_content_values) != 'object'
+                // $locale_content_values != 'Error' && !array_key_exists('url_title', $locale_content_values->messages())
+            ) {
+                (new static)->edit_locale_content($data['ka'.$prefix], $locale_content_values['ka'.$prefix.'_id'], $local_model);
+                (new static)->edit_locale_content($data['ru'.$prefix], $locale_content_values['ru'.$prefix.'_id'], $local_model);
+                (new static)->edit_locale_content($data['us'.$prefix], $locale_content_values['us'.$prefix.'_id'], $local_model);
+                
+                return (object) array('original' => $locale_content_values);
+            }
+            else{    
+                $validation_issets['global_info_validation'] = $locale_content_values;
+                return response()->json([
+                    'validation' => $validation_issets
+                ], 422);
             }
         }
-        $service ->delete();
+        else{            
+            return response()->json([
+                'validation' => $validation_issets
+            ], 422);
+        }
     }
+
+    private static function edit_global_content($global_data, $us_data, $id, $global_model, $request, $image_path, $prefix)
+    {
+        $editing_global_content = $global_model::where('id', '=', $id)->first();
+
+        if(array_key_exists('is_change_url_title', $us_data) ){
+            if($us_data['is_change_url_title']){
+                $global_data['url_title'] = URLTitleService::get_url_title($us_data["title"]); // make url_title from us_title value
+
+                $url_title_valid = (new static)->url_title_validate($global_data, $global_model);
+                
+                if ($url_title_valid != false) {
+                    return $url_title_valid;
+                }
+            }
+        }
+        
+        if($request->hasFile('image')){
+            $global_data['image'] =  ImageControllService::image_update($image_path, $editing_global_content, $request, 'image', 'image', 1);
+        }
+
+        $saved = $editing_global_content->update($global_data); 
+
+        if(!$saved){
+            // App::abort(500, 'Error');
+            return 'Error';
+        }
+        else{
+            return $locale_tabs = [
+                'us'.$prefix.'_id' => $editing_global_content['us'.$prefix.'_id'],
+                'ka'.$prefix.'_id' => $editing_global_content['ka'.$prefix.'_id'],
+                'ru'.$prefix.'_id' => $editing_global_content['ru'.$prefix.'_id'],
+                'global'.$prefix.'_id' => $id
+            ];
+            // return $locale_tabs;
+        }
+    }
+
+    private static function edit_locale_content($data, $id, $local_model)
+    {
+        $editing_locale_content = $local_model::where('id', '=', $id)->first();
+
+        $saved = $editing_locale_content->update($data);
+
+        if(!$saved){
+            // App::abort(500, 'Error');
+            return 'Error';
+        }
+        else{
+            return $editing_locale_content->id;
+        }
+    }
+    
+    
+    /*
+    *
+    * This function get global and local content in array for content
+    *
+    * Function get 4 parameters
+    *
+    */
+    public static function del_content($global_id, $global_model, $local_model, $content_prefix, $image_prefix, $image_path)
+    {
+        $gloal_content = $global_model::where('id', '=', $global_id)->first();
+
+        $us_content = $local_model::where('id',strip_tags($gloal_content['us'.$content_prefix.'_id']))->first();
+        $ru_content = $local_model::where('id',strip_tags($gloal_content['ru'.$content_prefix.'_id']))->first();
+        $ka_content = $local_model::where('id',strip_tags($gloal_content['ka'.$content_prefix.'_id']))->first();
+        
+        if($gloal_content->$image_prefix){
+            ImageControllService::image_delete($image_path, $gloal_content, $image_prefix);
+        }
+
+        $us_content ->delete();
+        $ru_content ->delete();
+        $ka_content ->delete();
+
+        $gloal_content ->delete();
+    }
+    
+    
+    /*
+    *
+    * Data validators
+    *
+    */
+    private static function global_content_validate($global_data)
+    {
+        $validator = Validator::make($global_data, [
+            'published' => 'required',
+        ]);
+
+// dd($validator->fails());
+        if ($validator->fails()) {
+            return $validator->messages();
+        }
+    }
+    private static function local_content_validate($data)
+    {
+        $validator = Validator::make($data, [
+            'title' => 'required | max:190',
+            'short_description' => 'required',
+            'text' => 'required',
+        ]);
+
+        if ($validator->fails()) {
+            return $validator->messages();
+        }
+    }
+    private static function url_title_validate($data, $gloal_model)
+    {
+        $databaseName = $gloal_model::first()->getTable();
+
+        $validator = Validator::make($data, [
+            'url_title' => 'required | max:190 | unique:'.$databaseName.',url_title',
+        ]);
+
+        if ($validator->fails()) {
+            return $validator->messages();
+        }
+        return false;
+    }
+
 }

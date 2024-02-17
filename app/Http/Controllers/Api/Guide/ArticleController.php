@@ -8,7 +8,7 @@ use Illuminate\Http\Request;
 
 // use App\Services\ImageEditService;
 use App\Services\ImageControllService;
-use App\Services\URLTitleService;
+// use App\Services\URLTitleService;
 use App\Services\ArticlesService;
 use App\Services\GeneralInfoService;
 
@@ -87,50 +87,45 @@ class ArticleController extends Controller
         return $news[0];
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit_article(Request $request)
-    {
-        $data = json_decode($request->data, true );
-        $global_blocks = json_decode($request->global_blocks, true );
-
-        $image_path = $data['global_article']['category'].'_img/';
-
-        $article_adding = ArticlesService::edit_content($data, Article::class, Locale_article::class, '_article', $request, $image_path);
-
-        if (!array_key_exists('validation', $article_adding->original)) {
-            GeneralInfoService::edit_general_info_relatione($global_blocks, $article_adding->original[0], 'article');
-
-            $this->description_img($article_adding->original[0], $global_blocks, $data, $request);
-        }
-        else{
-            return $article_adding;
-        }
-    }
 
     public function add_article(Request $request)
     {
         $data = json_decode($request->data, true );
         $global_blocks = json_decode($request->global_blocks, true );
         
-        $image_path = $data['global_article']['category'].'_img/';
+        $image_path = 'images/'.$data['global_article']['category'].'_img/';
 
-        $article_editing = ArticlesService::add_content($data, Article::class, Locale_article::class, '_article', $image_path, $request);
+        $article_adding = ArticlesService::add_content($data, Article::class, Locale_article::class, '_article', $request, $image_path);
+        
+        if (!array_key_exists('validation', $article_adding->original)) {
+            GeneralInfoService::add_general_info_relatione($global_blocks, $article_adding->original['global_article_id'], 'article');
 
-        if (!array_key_exists('validation', $article_editing->original)) {
-            GeneralInfoService::add_general_info_relatione($global_blocks, $article_editing->original[0], 'article');
-
-            $this->description_img($article_editing->original[0], $global_blocks, $data, $request);
+            $this->description_img($article_adding->original['global_article_id'], $global_blocks, $data, $request);
         }
         else {
-            return $article_editing;
+            return $article_adding;
         }
         
+    }
+
+
+    public function edit_article(Request $request)
+    {
+        $data = json_decode($request->data, true );
+        $global_blocks = json_decode($request->global_blocks, true );
+
+        $image_path = 'images/'.$data['global_article']['category'].'_img/';
+
+        $article_editing = ArticlesService::edit_content($data, Article::class, Locale_article::class, '_article', $request, $image_path);
+
+        if(!array_key_exists('validation', $article_editing->original)){
+            GeneralInfoService::edit_general_info_relatione($global_blocks, $article_editing->original['global_article_id'], 'article');
+
+            $this->description_img($article_editing->original['global_article_id'], $global_blocks, $data, $request);
+        }
+        else{
+            return $article_editing;
+        }
     }
 
 
@@ -686,7 +681,7 @@ class ArticleController extends Controller
 
         $global_article = Article::where('id',strip_tags($global_id))->first();
 
-        $image_path = $global_article->category.'_img/';
+        $image_path = 'images/'.$global_article->category.'_img/';
 
         if ($global_article->general_info->count() > 0) {
             foreach ($global_article->general_info as $del_info) {
@@ -698,7 +693,7 @@ class ArticleController extends Controller
             }
         }
 
-        ArticlesService::del_content($global_id, Article::class, Locale_article::class, '_article', $image_path);
+        ArticlesService::del_content($global_id, Article::class, Locale_article::class, '_article', 'image', $image_path);
 
         ImageControllService::image_delete('images/region_sectors_img/', $global_article, 'climbing_area_image');
     }

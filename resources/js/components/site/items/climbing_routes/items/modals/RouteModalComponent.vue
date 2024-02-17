@@ -73,23 +73,27 @@
                         </p>
 
                         <div class="row">
-                            <div class="col-md-2" v-if="route.bolts_type == 'glued'">
-                                <img
-                                    class=""
-                                    :src="'../../../../images/svg/glued bolt.png'"
-                                    alt="Glued-in bolt"
-                                    title="Glued-in bolt"
-                                />
-                                <p>Route have a glued-in bolts</p>
+                            <div class="col-md-6" v-if="route.bolts_type == 'glued'">
+                                <p>
+                                    Route have a glued-in bolts
+                                    <img
+                                        class="climbing_bolt_image"
+                                        :src="'../../../../images/svg/glued bolt.png'"
+                                        alt="Glued-in bolt"
+                                        title="Glued-in bolt"
+                                    />
+                                </p>
                             </div>
-                            <div class="col-md-2" v-if="route.bolts_type == 'hangerr'">
-                                <img
-                                    class=""
-                                    :src="'../../../../images/svg/hangerr bolt.svg'"
-                                    alt="Hangerr bolt"
-                                    title="Hangerr bolt"
-                                />
-                                <p>Route have a hangerr bolts</p>
+                            <div class="col-md-6" v-if="route.bolts_type == 'hangerr'">
+                                <p>
+                                    Route have a hangerr bolts
+                                    <img
+                                        class="climbing_bolt_image"
+                                        :src="'../../../../images/svg/hangerr bolt.svg'"
+                                        alt="Hangerr bolt"
+                                        title="Hangerr bolt"
+                                    />
+                                </p>
                             </div>
                         </div>
                         
@@ -259,5 +263,9 @@ export default {
     font-weight:300;
     font-size:18px;
     margin-bottom:2px;
+}
+.climbing_bolt_image{
+    height: 50px;
+    /* float: right; */
 }
 </style>
