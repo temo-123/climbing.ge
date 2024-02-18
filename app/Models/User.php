@@ -97,11 +97,6 @@ class User extends Authenticatable implements MustVerifyEmail
       return $this->belongsToMany(Permission::class, 'user_permissions', 'user_id', 'permission_id');
     }
 
-    public function comments()
-    {
-      return $this->belongsToMany(Comment::class, 'article_comment_user', 'user_id', 'comment_id');
-    }
-
     public function favorite_products()
     {
 		  return $this->hasMany(Favorite_product::class, 'user_id');
@@ -141,4 +136,25 @@ class User extends Authenticatable implements MustVerifyEmail
     {
         return $this->hasOne(Social_account::class, 'user_id');
     }
+
+
+    /*
+    *   User cooments & rewiew
+    */
+    public function guide_comments()
+    {
+      return $this->belongsToMany(Comment::class, 'article_comment_user', 'user_id', 'comment_id');
+    }
+    public function product_comments()
+    {
+      return $this->belongsToMany(Comment::class, 'article_comment_user', 'user_id', 'comment_id');
+    }
+	public function sport_route_reviews()
+	{
+		return $this->belongsToMany(Sport_route_review::class, 'sport_route_review_user', 'user_id', 'review_id');
+	}
+	public function product_review()
+	{
+		// return $this->belongsToMany(User::class, 'sport_route_review_user', 'review_id', 'user_id');
+	}
 }

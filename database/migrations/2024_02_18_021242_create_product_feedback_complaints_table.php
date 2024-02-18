@@ -13,13 +13,16 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('product_comments', function (Blueprint $table) {
-            $table->bigIncrements('id');
+        Schema::create('product_feedback_complaints', function (Blueprint $table) {
+            $table->id();
 
-            $table->text('text')->nullable();
+            $table->string('complaint')->nullable();
+            $table->string('cause')->nullable();
 
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
-            $table->foreignId('product_id')->constrained()->onDelete('cascade');
+
+            $table->unsignedBigInteger('feedback_id');
+            $table->foreign('feedback_id')->references('id')->on('product_feedbacks')->onDelete('cascade');
 
             $table->timestamps();
         });
@@ -32,6 +35,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('product_comments');
+        Schema::dropIfExists('product_feedback_complaints');
     }
 };

@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Product_comments extends Model
+class Product_feedback_complaint extends Model
 {
     use HasFactory;
 }

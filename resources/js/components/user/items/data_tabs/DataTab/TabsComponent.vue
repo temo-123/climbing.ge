@@ -239,19 +239,18 @@
                                     :table_name="data.table_name"
                                 />
                             </thead>
-                            <tbody v-else-if="
-                                    data.table_name == 'Guide comments' || data.table_name == 'My goudbook comments'
-                                    || data.table_name == 'My goudbook comments' || data.table_name == 'My products comments'
-                                ">
+                            <tbody v-else-if="data.table_name == 'Guide comments' || data.table_name == 'My goudbook comments'">
                                 <commentTabHeader 
                                     :table_name="data.table_name"
                                 />
                             </tbody>
-                            <tbody v-else-if="
-                                    data.table_name == 'Guide comments' || data.table_name == 'Products comments'
-                                    || data.table_name == 'My goudbook comments' || data.table_name == 'My products comments'
-                                ">
+                            <tbody v-else-if="data.table_name == 'Climbing routes review' || data.table_name == 'My climbing routes review'">
                                 <reviewTabHeader 
+                                    :table_name="data.table_name"
+                                />
+                            </tbody>
+                            <tbody v-else-if="data.table_name == 'Product feedbacks' || data.table_name == 'My product feedbacks'">
+                                <feedbackTabHeader 
                                     :table_name="data.table_name"
                                 />
                             </tbody>
@@ -333,14 +332,35 @@
                                     @restart="update"
                                 />
                             </tbody>
-                            <tbody v-else-if="
-                                            data.table_name == 'Guide comments' || data.table_name == 'My goudbook comments'
-                                            || data.table_name == 'My goudbook comments' || data.table_name == 'My products comments'
-                                        ">
+                            <tbody v-else-if="data.table_name == 'Guide comments' || data.table_name == 'My goudbook comments'">
                                 <commentsTab
                                     v-for="table_info in data.data"
                                     :key="table_info.id"
                                     :table_info="table_info"
+
+                                    :comments_tab_name="data.table_name"
+                                    
+                                    @restart="update"
+                                />
+                            </tbody>
+                            <tbody v-else-if="data.table_name == 'Climbing routes review' || data.table_name == 'My climbing routes review'">
+                                <reviewTab
+                                    v-for="table_info in data.data"
+                                    :key="table_info.id"
+                                    :table_info="table_info"
+                                    :table_name="data.table_name"
+
+                                    :comments_tab_name="data.table_name"
+                                    
+                                    @restart="update"
+                                />
+                            </tbody>
+                            <tbody v-else-if="data.table_name == 'Product feedbacks' || data.table_name == 'My product feedbacks'">
+                                <feedbackTab
+                                    v-for="table_info in data.data"
+                                    :key="table_info.id"
+                                    :table_info="table_info"
+                                    :table_name="data.table_name"
 
                                     :comments_tab_name="data.table_name"
                                     
@@ -602,8 +622,9 @@ import regionTabHeader from "./tab_header/RegionTabHeaderComponrent.vue"
 import routeTabHeader from "./tab_header/RouteTabHeaderComponrent.vue"
 import SiteFollowersTabHeader from "./tab_header/SiteFollowersTabHeaderComponent.vue"
 import toureCategoryTabHeader from "./tab_header/ToureCategoryTabHeaderComponent.vue"
-import commentTabHeader from "./tab_header/commentsTabHeaderComponent.vue"
+import commentTabHeader from "./tab_header/CommentsTabHeaderComponent.vue"
 import reviewTabHeader from "./tab_header/ReviewTabHeaderComponent.vue"
+import feedbackTabHeader from "./tab_header/FeedbackTabHeaderComponent.vue"
 
 import eventTab from "./tabs/EventTabComponent.vue";
 import sectorLocalImageTab from "./tabs/SectorLocalImageTabComponent.vue";
@@ -633,6 +654,8 @@ import iceRouteTab from "./tabs/IceRouteTabComponent.vue";
 import siteFollowersTab from "./tabs/SiteFollowersTabComponent.vue";
 import toureTab from "./tabs/ToursTabComponent.vue";
 import toureCategoryTab from "./tabs/ToureCategoriesTabComponent.vue";
+import reviewTab from "./tabs/ReviewTabComponent.vue";
+import feedbackTab from "./tabs/FeedbackTabComponent.vue";
 
 //import sectorModal from "./tab_modals/SectorsModalComponent.vue";
 import addToureCategoryModal from "./tab_modals/add/AddToureCategoryModal.vue";
@@ -664,6 +687,7 @@ export default {
         SiteFollowersTabHeader,
         commentTabHeader,
         reviewTabHeader,
+        feedbackTabHeader,
 
         sectorLocalImageTab,
         routeTab,
@@ -693,6 +717,8 @@ export default {
         siteFollowersTab,
         toureTab,
         toureCategoryTab,
+        reviewTab,
+        feedbackTab,
 
         saleCodeModal,
         countryAddModal,

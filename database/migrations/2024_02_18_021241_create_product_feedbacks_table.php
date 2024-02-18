@@ -13,13 +13,15 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('product_comments', function (Blueprint $table) {
-            $table->bigIncrements('id');
+        Schema::create('product_feedbacks', function (Blueprint $table) {
+            $table->id();
             
             $table->string('name')->nullable();
             $table->string('surname')->nullable();
             $table->string('email')->nullable();
             $table->text('text')->nullable();
+
+            $table->string('stars')->nullable();
 
             $table->foreignId('product_id')->constrained();
 
@@ -37,6 +39,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('product_comments');
+        Schema::dropIfExists('product_feedbacks');
     }
 };

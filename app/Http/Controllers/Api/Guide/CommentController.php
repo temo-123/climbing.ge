@@ -24,12 +24,7 @@ use App\Services\CommentService;
 
 class CommentController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
+    public function get_all_comments()
     {
         return Comment::get();
     }
@@ -42,15 +37,9 @@ class CommentController extends Controller
         return $user->comments;
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function get_article_comments($id)
+    public function get_article_comments(Request $request)
     {
-        $comments = Comment::where("article_id", '=', $id)->where("deleted_reason", '=', null)->latest()->get();
+        $comments = Comment::where("article_id", '=', $request->article_id)->where("deleted_reason", '=', null)->latest()->get();
         $comment_array = [];
 
         foreach ($comments as $comment) {
@@ -65,91 +54,15 @@ class CommentController extends Controller
         return $comment_array;
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function create_comment(Request $request, $id)
+    public function create_comment(Request $request)
     {
-        CommentService::create_comment($request, $id, Comment::class, Article_comment_user::class, Article_comment_query::class);
-
-        // // dd(Auth::user());
-        // $this->comment_validate($request);
-
-        // $is_verify_isset = $request->input('is_verify_isset');
-
-        // // $user_id = 0;
-        // //  dd(Auth::user()->id);
-
-        // if($is_verify_isset){
-        //     $comment = new Comment;
-        //     $comment->name = $request->name;
-        //     $comment->surname = $request->surname;
-        //     $comment->email = $request->email;
-        //     $comment->text = $request->text;
-        //     $comment->article_id = $request->article_id;
-        //     $comment->save();
-
-        //     if (Auth::user()) {
-        //         // $user_id = auth()->user() -> id;
-
-        //         $comment_article = new Article_comment_user;
-        //         $comment_article['comment_id'] = $comment->id;
-        //         $comment_article['user_id'] = Auth::user()->id;
-        //         $comment_article->save();
-        //     }
-        //     else if (!Auth::user()) {
-        //         $users = User::get();
-        //         foreach ($users as $user) {        
-        //             if($request->email == $user->email){
-        //                 $comment_query = new Article_comment_query;
-        //                 $comment_query->comment_id = $comment->id;
-        //                 $comment_query->user_id = $user->id;
-        //                 $comment_query -> save();
-        //             }
-        //         }
-        //     }
-
-        //     return (['message' => "Tenk you for comment ".$request->name]);
-        // }
-        // elseif($is_verify_isset == false){
-        //     return (['message' => "Varificate reCaptcha"]);
-        // }
-        // else{
-        //     return (['message' => "Please update page and add comment after pdating!"]);
-        // }
+        CommentService::create_comment($request, Comment::class, Article_comment_user::class, Article_comment_query::class, 'article');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function del_comment($id)
     {
-        // $comment = Comment::where('id',strip_tags($id))->first();
-        // $comment_user_count = Article_comment_user::where('comment_id', '=', $comment->id)->count();
-        // if($comment_user_count > 0){
-        //     $comment_user = Article_comment_user::where('comment_id', '=', $comment->id)->first();
-        //     $comment_user ->delete();
-        // }
-
-        // $comment ->delete();
-
         CommentService::del_comment($id, Comment::class, Article_comment_user::class);
     }
-
-    // public function del_my_comment(Request $request)
-    // {
-    //     if ($request->isMethod('delete')) {
-    //         $comment = Comment::where('id',strip_tags($request->comment_id))->first();
-    //         $comment ->delete();
-    //     }
-    // }
 
     public function del_user_comment(Request $request)
     {

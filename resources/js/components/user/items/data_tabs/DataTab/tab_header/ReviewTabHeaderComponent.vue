@@ -5,14 +5,18 @@
         </th>
         <th>|</th>
 
-        <th>User ID</th>
+        <th>Rewiew ID</th>
         <th>|</th>
 
-        <th v-if="table_name == 'My climbing routes review' || table_name == 'Climbing routes review'">Product stars</th>
-        <th v-if="table_name == 'My climbing routes review' || table_name == 'Climbing routes review'">|</th>
+        <th v-if="table_name == 'My climbing routes review' || table_name == 'Climbing routes review'">Climbing route</th>
+        <th v-if="table_name == 'My products review' || table_name == 'Products review'">Product</th>
+        <th>|</th>
 
-        <th v-if="table_name == 'My climbing routes review' || table_name == 'Climbing routes review'">Route stars</th>
-        <th v-if="table_name == 'My climbing routes review' || table_name == 'Climbing routes review'">|</th>
+        <th>Stars</th>
+        <th>|</th>
+
+        <th v-if="table_name == 'My climbing routes review' || table_name == 'My products review'">Edit</th>
+        <th v-if="table_name == 'My climbing routes review' || table_name == 'My products review'">|</th>
 
         <th>Delite</th>
     </tr>

@@ -101,20 +101,7 @@
 
                         <span v-html="route.text" v-if="route.text != null"></span>
 
-                        <div class="row" v-if="route.reviews_count > 0">
-                            <div class="col-md-12">
-                                <div class="d-flex justify-content-between align-items-center">
-                                    <div class="ratings">                                        
-                                        <i class="fa fa-star rating-color" v-for="i in stars.whole_stars" :key="i"></i>
-                                        <i class="fa fa-star-half-o rating-color" v-if="stars.part_stars != 0"></i>
-                                        <i class="fa fa-star" v-for="i in stars.other_stars" :key="i"></i>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-12">
-                                <h5 class="review-count">{{ route.reviews_count }} Reviews ({{ route.reviews_stars }} Stars)</h5>
-                            </div>
-                        </div>
+                        <starsReiting ref="stars_reiting_modal"/>
 
                         <button
                             class="btn btn-success"
@@ -136,7 +123,8 @@
 
 <script>
 import StackModal from '@innologica/vue-stackable-modal'  //https://innologica.github.io/vue-stackable-modal/#sample-css
-import  grade_chart  from '../../../../../../mixins/grade_chart_mixin.js'
+import grade_chart  from '../../../../../../mixins/grade_chart_mixin.js'
+import starsReiting  from '../../../../../global_components/StarReitingShowComponent.vue'
 
 export default {
     mixins: [
@@ -144,6 +132,7 @@ export default {
     ],
     components: {
         StackModal,
+        starsReiting,
     },
     props: [
         // "sector",
@@ -155,12 +144,6 @@ export default {
             is_loading: false,
 
             route: [],
-
-            stars: {
-                whole_stars: 0,
-                part_stars: 0,
-                other_stars: 0,
-            },
 
             get activ_grade() {
                 return localStorage.getItem('grade') || 'yds';
@@ -179,28 +162,9 @@ export default {
         },
 
         route_review_modal(route_id){
-            this.is_show_route_modal = false;
+            this.is_show_route_modal = false;    
 
             this.$emit('show_route_review_modal', route_id)
-        },
-
-        colculate_stars(stars){
-            if(stars % 1 == 0){
-                this.stars.part_stars = 0 // get number after comma
-                this.stars.whole_stars = Math.floor(stars) // get number befor comma
-            }
-            else{
-                this.stars.part_stars = Number((stars+' ').split(".")[1].substr(0,1)); // get number after comma
-                this.stars.whole_stars = Math.floor(stars) // get number befor comma
-            }
-
-            // colculate empty srats
-            if(this.stars.part_stars > 0){
-                this.stars.other_stars = 4 - this.stars.whole_stars
-            }
-            else{
-                this.stars.other_stars = 5 - this.stars.whole_stars
-            }
         },
 
         show_route_modal(id) {
@@ -214,7 +178,7 @@ export default {
                     this.route = response.data;
 
                     if(this.route.reviews_count > 0){
-                        this.colculate_stars(this.route.reviews_stars)
+                        this.$refs.stars_reiting_modal.colculate_stars(this.route.reviews_stars, this.route.reviews_count)
                     }
                 })
                 .catch((error) => {})
@@ -235,35 +199,6 @@ export default {
     height:280px;
 }
 
-.ratings{
-    margin-right:10px;
-}
-
-.ratings i{
-    
-    color:#cecece;
-    font-size:32px;
-}
-
-.rating-color{
-    color:#fbc634 !important;
-}
-
-.review-count{
-    font-weight:400;
-    margin-bottom:2px;
-    font-size:24px !important;
-}
-
-.small-ratings i{
-  color:#cecece;   
-}
-
-.review-stat{
-    font-weight:300;
-    font-size:18px;
-    margin-bottom:2px;
-}
 .climbing_bolt_image{
     height: 50px;
     /* float: right; */

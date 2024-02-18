@@ -7,9 +7,6 @@
 
         <th>Comment ID</th>
         <th>|</th>
-
-        <th>Comented ID</th>
-        <th>|</th>
         
         <th v-if="table_name == 'Products comments' || table_name == 'Guide comments'">Comententor</th>
         <th v-if="table_name == 'Products comments' || table_name == 'Guide comments'">|</th>

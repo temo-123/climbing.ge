@@ -8,7 +8,7 @@ use App\Models\User;
 
 class CommentService
 {   
-    public static function create_comment($request, $id, $coomment_model, $comment_user_relation_modal, $article_query_model)
+    public static function create_comment($request, $coomment_model, $comment_user_relation_modal, $article_query_model, $prefix)
     {
         (new static)->comment_validate($request);
 
@@ -20,7 +20,7 @@ class CommentService
             $comment->surname = $request->surname;
             $comment->email = $request->email;
             $comment->text = $request->text;
-            $comment->article_id = $request->article_id;
+            $comment[$prefix.'_id'] = $request[$prefix.'_id'];
             $comment->save();
 
             if (Auth::user()) {

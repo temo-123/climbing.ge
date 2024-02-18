@@ -157,6 +157,14 @@
         </div>
 
         <div class="container">
+            <div class="row">
+                <feedbackForm 
+                    :product_id="product.global_product.id"
+                />
+            </div>
+        </div>
+
+        <div class="container">
             <similarProduct :activ_product_id=product.global_product.id />
         </div>
         
@@ -189,6 +197,8 @@
     import metaData from '../../items/MetaDataComponent'
     import breadcrumb from '../../items/BreadcrumbComponent.vue'
     import similarProduct from '../../items/SimilarProductComponent.vue'
+    import feedbackForm from '../../items/FeedbacksComponent.vue'
+
     export default {
         components: {
             metaData,
@@ -196,7 +206,8 @@
             VueMeta,
             // analogProduct,
             breadcrumb,
-            similarProduct
+            similarProduct,
+            feedbackForm
         },
         data () {
             return {

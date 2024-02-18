@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api\Guide;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
+use App\Models\User;
 use App\Models\Sport_route_review;
 use App\Models\Sport_route_review_user;
 
@@ -17,7 +18,8 @@ class RoutesReitingController extends Controller
     }
 
     function get_user_review() {
-        // return Sport_route_review::get();
+        $user = auth()->user();
+        return $user->sport_route_reviews;
     }
 
     function get_user_sport_routes_review() {

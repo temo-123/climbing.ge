@@ -225,21 +225,6 @@ Route::group(['namespace'=>'Api'], function() {
         Route::post('/edit_country/{country_id}', 'ShipedCountryController@edit_country');
         Route::delete('/del_country/{country_id}', 'ShipedCountryController@del_country');
 
-        /*
-        *   Guid Coments routes
-        */
-        Route::apiResource('/comment', 'CommentController');
-        Route::get('/get_my_comment', 'CommentController@get_user_comments');
-        Route::delete('/del_my_comment/{comment_id}', 'CommentController@del_my_comment');
-        Route::post('/del_user_comment/{comment_id}', 'CommentController@del_user_comment');
-        Route::get('/get_quick_comment/{comment_id}', 'CommentController@get_quick_comment');
-
-        Route::get('/get_comments_complaints', 'CommentController@get_comments_complaints');
-        Route::get('/get_user_queries/{user_id}', 'CommentController@get_user_queries');
-        Route::post('/query_response', 'CommentController@query_response');
-
-        Route::post('/add_comment_complaint', 'CommentController@add_comment_complaint');
-        Route::post('/make_decision', 'CommentController@make_decision');
 
         /*
         *   Guid gallery images routes
@@ -321,17 +306,6 @@ Route::group(['namespace'=>'Api'], function() {
             Route::get('/routes_authers', 'routes_authers');
         });
 
-        /*
-        *   Sport climbing routes reiting routes
-        */
-
-        Route::controller(RoutesReitingController::class)->prefix('route_review')->group( function() {
-            Route::post('/create_route_review/{route_id}', 'create_route_review');
-
-            Route::get('/get_user_sport_routes_review', 'get_user_sport_routes_review');
-            Route::delete('/del_route_review/{review_id}', 'del_route_review');
-        });
-
         Route::get('/get_routes_for_forum/{sector_id}', 'RouteController@get_routes_for_forum');
         Route::get('/get_routes_quantity/{article_id}', 'RouteController@get_routes_quantity');
 
@@ -372,6 +346,42 @@ Route::group(['namespace'=>'Api'], function() {
             Route::post('/add_to_favorite_outdoor_area/{article_id}', 'add_to_favorite_outdoor_area');
             Route::get('/get_faworite_outdoor_region', 'get_faworite_outdoor_region');
             Route::delete('/del_faworite_outdoor_region/{article_id}', 'del_faworite_outdoor_region');
+        });
+
+        /*
+        *   Guid Coments routes get_article_comments
+        */
+        Route::controller(CommentController::class)->prefix('guide_comment')->group( function() {
+            // Route::apiResource('/comment', 'CommentController');
+            Route::get('/get_all_comments', 'get_all_comments');
+            Route::get('/get_user_comments', 'get_user_comments');
+            Route::get('/get_article_comments/{article_id}', 'get_article_comments');
+
+            Route::get('/get_comments_complaints', 'get_comments_complaints');
+            Route::get('/get_user_queries/{user_id}', 'get_user_queries');
+            Route::get('/get_quick_comment/{comment_id}', 'get_quick_comment');
+
+            Route::post('/create_comment/{article_id}', 'create_comment');
+            Route::post('/del_user_comment/{comment_id}', 'del_user_comment');
+            Route::post('/query_response', 'query_response');
+
+            Route::post('/add_comment_complaint', 'add_comment_complaint');
+            Route::post('/make_decision', 'make_decision');
+
+            Route::delete('/del_comment/{comment_id}', 'del_comment');
+        });
+
+        /*
+        *   Sport climbing routes reiting routes
+        */
+
+        Route::controller(RoutesReitingController::class)->prefix('route_review')->group( function() {
+            Route::get('/get_user_review', 'get_user_review');
+            Route::get('/get_all_review', 'get_all_review');
+
+            Route::post('/create_route_review/{route_id}', 'create_route_review');
+
+            Route::delete('/del_route_review/{review_id}', 'del_route_review');
         });
     });
 
@@ -489,6 +499,42 @@ Route::group(['namespace'=>'Api'], function() {
         */
         Route::post('/add_to_favorite/{product_id}', 'CartController@add_to_favorite');
         Route::post('/del_from_favorite/{product_id}', 'CartController@del_from_favorite');
+
+
+        /*
+        *   Product Coments routes
+        */
+        Route::controller(ProductFeedbackController::class)->prefix('product_feedback')->group( function() {
+            // Route::apiResource('/feedback', 'feedbackController');
+            Route::get('/get_all_feedbacks', 'get_all_feedbacks');
+            Route::get('/get_user_feedbacks', 'get_user_feedbacks');
+            Route::get('/get_product_feedbacks/{product_id}', 'get_product_feedbacks');
+
+            Route::get('/get_feedbacks_complaints', 'get_feedbacks_complaints');
+            Route::get('/get_user_queries/{user_id}', 'get_user_queries');
+            Route::get('/get_quick_feedback/{feedback_id}', 'get_quick_feedback');
+
+            Route::post('/create_feedback/{product_id}', 'create_feedback');
+            Route::post('/del_user_feedback/{feedback_id}', 'del_user_feedback');
+            Route::post('/query_response', 'query_response');
+
+            Route::post('/add_feedback_complaint', 'add_feedback_complaint');
+            Route::post('/make_decision', 'make_decision');
+
+            Route::delete('/del_feedback/{feedback_id}', 'del_feedback');
+        });
+
+        /*
+        *   Products reiting routes
+        */
+        // Route::controller(ProductReviewsController::class)->prefix('product_review')->group( function() {
+        //     Route::get('/get_user_review', 'get_user_review');
+        //     Route::get('/get_all_review', 'get_all_review');
+
+        //     Route::post('/create_product_review/{product_id}', 'create_product_review');
+
+        //     Route::delete('/del_product_review/{review_id}', 'del_product_review');
+        // });
     
     });
 
