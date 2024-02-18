@@ -21,8 +21,7 @@ class DatabaseSeeder extends Seeder
             SiteTableSeeder::class,
 
             UserTableSeeder::class,
-            User_notificationsTableSeeder::class,
-            
+            User_notificationsTableSeeder::class,            
 
             // User_roleTableSeeder::class,
             // Role_permissionsTableSeeder::class

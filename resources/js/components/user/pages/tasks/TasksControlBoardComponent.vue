@@ -21,7 +21,7 @@
             <div class="row" v-if="task_tab_num == 1">
 
                 <div class="col-md-12 mb-2">
-                    <button class="btn btn-primary pull-left" @click="show_add_task_modal">Create new tsk</button>
+                    <button v-if="$can('add', 'task')" class="btn btn-primary pull-left" @click="show_add_task_modal">Create new tsk</button>
                     <button class="btn btn-success pull-right" @click="get_all_tasks">Refresh</button>
                 </div>
                 
@@ -34,9 +34,9 @@
                             </div>
                             <div class="col-md-12">
                                 <button class="btn btn-success float-right" @click="show_task_modal(task.id)">Show detals</button>
-                                <button class="btn btn-primary float-right" v-if="task.status != 'confirmation_completion'" @click="show_task_status_model(task.id)">Update status</button>
-                                <button class="btn btn-primary float-right" v-if="task.status != 'confirmation_completion'" @click="show_edit_task_modal(task.id)">Edit</button>
-                                <button class="btn btn-danger float-right" @click="del_task(task.id)">Del</button>
+                                <button  v-if="$can('edit_status', 'task') && task.status != 'confirmation_completion'" class="btn btn-primary float-right" @click="show_task_status_model(task.id)">Update status</button>
+                                <button v-if="$can('edit', 'task') && task.status != 'confirmation_completion'" class="btn btn-primary float-right" @click="show_edit_task_modal(task.id)">Edit</button>
+                                <button v-if="$can('del', 'task')" class="btn btn-danger float-right" @click="del_task(task.id)">Del</button>
                             </div>
                         </div>
                     </div>

@@ -16,7 +16,7 @@
                         <div class="row">
                             <div class="col-md-12">
                                 <div class="row">
-                                    <div class="col" >
+                                    <div class="col">
                                         <input type="radio" id="1" :value="1" v-model="tab_num">
                                         
                                         <label for="1" >Tasks</label>

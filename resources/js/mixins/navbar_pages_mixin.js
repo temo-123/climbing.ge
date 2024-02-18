@@ -15,9 +15,9 @@ export const navbar = {
             {
                 title: "Task panel",
                 route: "/task_panel",
-                // permissions: [
-                //     ['show', 'task']
-                // ]
+                permissions: [
+                    ['show', 'worker']
+                ]
             },
             {
                 title: "Cart",

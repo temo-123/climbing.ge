@@ -43,7 +43,7 @@ class RoleTableSeeder extends Seeder
         $admin->save();
 
         foreach ($permissions as $permission) {
-            if($permission['subject'] != 'task'){
+            if($permission['subject'] != 'worker'){
                 $admin->permissions()->attach($permission);
             }
         }

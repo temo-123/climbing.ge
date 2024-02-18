@@ -26,29 +26,27 @@ use App\Services\ImageControllService;
 
 class UsersController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function index()
     {
         // dd(Auth::user());
         return User::latest('id')->get();
     }
 
-    // public function get_following_users_list()
-    // {
-    //     return following_users::latest('id')->get();
-    // }
-
-    // public function get_followers_list()
-    // {
-    //     return following_users::latest('id')->get();
-    // }
-
     public function get_worker_users() {
-        return User::get();
+        $all_users = User::get();
+        $prmishened_users = [];
+
+        foreach ($all_users as $user) {
+            $user_perms = $user->permissions;
+            // dd($user_perms);
+            foreach ($user_perms as $user_perm) {
+                if ($user_perm['subject'] == 'worker') {
+                    array_push($prmishened_users, $user);
+                }
+            }
+        }
+
+        return $prmishened_users;
     }
 
     public function create_user_by_admin(Request $request)

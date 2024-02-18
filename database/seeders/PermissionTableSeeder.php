@@ -432,6 +432,10 @@ class PermissionTableSeeder extends Seeder
                 'action' => 'del',
             ],
             [
+                'subject' => 'worker',
+                'action' => 'show',
+            ],
+            [
                 'subject' => 'task',
                 'action' => 'show',
             ],
@@ -446,6 +450,10 @@ class PermissionTableSeeder extends Seeder
             [
                 'subject' => 'task',
                 'action' => 'del',
+            ],
+            [
+                'subject' => 'task',
+                'action' => 'edit_status',
             ],
         );
 
