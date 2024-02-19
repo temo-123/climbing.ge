@@ -105,14 +105,14 @@
     </div>
 </template>
 <script>
-    import addTaskModal from '../../items/modal/task/task/AddTaskModalComponent.vue'
-    import editTaskModal from '../../items/modal/task/task/EditTaskModalComponent.vue'
-    import showTaskModal from '../../items/modal/task/task/ShowTaskModalComponent.vue'
-    import adminTaskStatusModal from '../../items/modal/task/task/AdminTaskStatusModalComponent.vue'
+    import addTaskModal from '../../../items/modal/task/task/AddTaskModalComponent.vue'
+    import editTaskModal from '../../../items/modal/task/task/EditTaskModalComponent.vue'
+    import showTaskModal from '../../../items/modal/task/task/ShowTaskModalComponent.vue'
+    import adminTaskStatusModal from '../../../items/modal/task/task/AdminTaskStatusModalComponent.vue'
 
-    import addTaskCategoryModal from '../../items/modal/task/task_category/AddTaskCategoryModalComponent.vue'
-    import editTaskCategoryModal from '../../items/modal/task/task_category/EditTaskCategoryModalComponent.vue'
-    import showTaskCategoryModal from '../../items/modal/task/task_category/ShowTaskCategoryModalComponent.vue'
+    import addTaskCategoryModal from '../../../items/modal/task/task_category/AddTaskCategoryModalComponent.vue'
+    import editTaskCategoryModal from '../../../items/modal/task/task_category/EditTaskCategoryModalComponent.vue'
+    import showTaskCategoryModal from '../../../items/modal/task/task_category/ShowTaskCategoryModalComponent.vue'
 
     export default {
         components: {

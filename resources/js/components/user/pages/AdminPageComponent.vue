@@ -29,7 +29,7 @@
                                     <div class="col" >
                                         <input type="radio" id="3" :value="3" v-model="tab_num">
                                         
-                                        <label for="3" >Workers (beta)</label>
+                                        <label for="3" >Workers</label>
                                     </div>
                                     <div class="col" >
                                         <input type="radio" id="4" :value="4" v-model="tab_num">
@@ -55,7 +55,7 @@
                         </div>
 
                         <div class="row" v-if="tab_num == 3">
-                            workers
+                            <worker_list />
                         </div>
 
                         <div class="row" v-if="tab_num == 4">
@@ -94,7 +94,9 @@
     import user_notifications_list from '../items/UserNotificationsListComponent.vue'
     import order_list from '../items/dashboards/OrderDiogramComponent.vue'
     import data_counts_list from '../items/dashboards/SiteDataCountListComponent.vue'
-    import tasks_panel from './tasks/TasksControlBoardComponent.vue'
+
+    import tasks_panel from './worker/tasks/TasksControlBoardComponent.vue'
+    import worker_list from './worker/WorkerListComponent.vue'
 
     export default {
         components: {
@@ -106,6 +108,7 @@
             order_list,
             data_counts_list,
             tasks_panel,
+            worker_list,
         },
         data(){
             return{
