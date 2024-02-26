@@ -4,42 +4,46 @@
             <input type="checkbox">
         </td>
         <td>|</td>
-        <td>{{table_info.id}}</td>
+        <td>{{table_info.review.id}}</td>
 
         <td>|</td>
-        <td v-if="table_name == 'My climbing routes review' || table_name == 'Climbing routes review'"> climbing route</td>
-        <td v-if="table_name == 'My products review' || table_name == 'Products review'">product</td>
+        <td>{{table_info.route.name}}</td>
 
         <td>|</td>
         <td>
-            <div class="ratings">                                        
-                <i class="fa fa-star rating-color"></i>
-                <i class="fa fa-star rating-color"></i>
-                <i class="fa fa-star rating-color"></i>
-                <i class="fa fa-star rating-color"></i>
-                
-                <i class="fa fa-star"></i>
-            </div>
+            <starsReiting 
+                :reviews_count_prop = 1
+                :reviews_stars_prop = table_info.review.stars
+                :rewiew_count_text_prop = false
+            />
         </td>
 
-
-        <td v-if="table_name == 'My climbing routes review' || table_name == 'My products review'">|</td>
-        <td v-if="table_name == 'My climbing routes review' || table_name == 'My products review'">
-            <button type="submit" class="btn btn-primary" @click="del_route(table_info.id)" >
+        <td>|</td>
+        <td>
+            <button type="submit" class="btn btn-primary" @click="edit_review_modal(table_info.review.id)" >
                 <i class="fa fa-pencil" aria-hidden="true"></i>
             </button>
         </td>
         
+        <!-- <td v-if="table_name == 'Climbing routes review'">|</td> -->
         <td>|</td>
         
         <td>
-            <button type="submit" class="btn btn-danger" @click="del_route(table_info.id)" ><i class="fa fa-trash" aria-hidden="true"></i></button>
+            <button type="submit" class="btn btn-danger" @click="del_review(table_info.review.id)" ><i class="fa fa-trash" aria-hidden="true"></i></button>
         </td>
+
+        <reviewEditModal ref="review_edit_modal" @restart="reset"/>
     </tr>
 </template>
 
 <script>
+    import starsReiting from '../../../../../global_components/StarReitingShowComponent.vue'
+    import reviewEditModal from '../../../modal/review/ReviewEditModal.vue'
     export default {
+        components: {
+            starsReiting,
+            reviewEditModal,
+        },
         props: [
             'table_info',
             'table_name',
@@ -48,21 +52,22 @@
             // console.log(this.table_info)
         },
         methods: {
-            del_route(id){
+            del_review(id){
                 if(confirm('Are you sure, you want delite it?')){
-                    // axios
-                    // .post('../../api/route/'+id, {
-                    //     id: id,
-                    //     _method: 'DELETE'
-                    // })
-                    // .then(Response => {
-                    //     // this.update(this.tab_num)
-
-                    //     this.$emit('restart')
-                    // })
-                    // .catch(error => console.log(error))
+                    axios
+                    .post('/route_review/del_route_review/'+id, {
+                        id: id,
+                        _method: 'DELETE'
+                    })
+                    .then(Response => {
+                        this.$emit('restart')
+                    })
+                    .catch(error => console.log(error))
                 }
             },
+            edit_review_modal(id){
+                this.$refs.review_edit_modal.show_modal(id)
+            }
         }
     }
 </script>

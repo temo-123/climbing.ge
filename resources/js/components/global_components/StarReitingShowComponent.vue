@@ -1,16 +1,16 @@
 <template>
-   <div class="row" v-if="route.reviews_count > 0">
+   <div class="row" v-if="data.reviews_count > 0">
         <div class="col-md-12">
             <div class="d-flex justify-content-between align-items-center">
                 <div class="ratings">                                        
-                    <i class="fa fa-star rating-color" v-for="i in stars.whole_stars" :key="i"></i>
+                    <i class="fa fa-star rating-color" v-for="(i, index) in stars.whole_stars" :key="index"></i>
                     <i class="fa fa-star-half-o rating-color" v-if="stars.part_stars != 0"></i>
-                    <i class="fa fa-star" v-for="i in stars.other_stars" :key="i"></i>
+                    <i class="fa fa-star" v-for="(i, index) in stars.other_stars" :key="index"></i>
                 </div>
             </div>
         </div>
-        <div class="col-md-12">
-            <h5 class="review-count">{{ route.reviews_count }} Reviews ({{ route.reviews_stars }} Stars)</h5>
+        <div class="col-md-12" v-if="data.rewiew_count_text">
+            <h5 class="review-count">{{ data.reviews_count }} Reviews ({{ data.reviews_stars }} Stars)</h5>
         </div>
     </div>
 </template>
@@ -21,9 +21,19 @@ export default {
     components: { 
         //
     },
-    props: [
-        // "sector",
-    ],
+    props: {
+        reviews_count_prop: {
+            type: [String, Number],
+        },
+        reviews_stars_prop: {
+            type: [String, Number],
+        },
+        rewiew_count_text_prop: {
+            type: Boolean,
+            default: true
+        }
+    },
+
     data: function () {
         return {
             stars: {
@@ -32,27 +42,41 @@ export default {
                 other_stars: 0,
             },
 
-            route: {
+            data: {
                 reviews_count: 0,
                 reviews_stars: 0,
-            }
+                rewiew_count_text: true
+            },
         };
     },
+    // watch: {
+    //     '$route' (to, from) {
+    //         this.data = {
+    //             reviews_count: this.reviews_count_prop,
+    //             reviews_stars: this.reviews_stars_prop,
+    //             rewiew_count_text: this.rewiew_count_text_prop
+    //         },
+
+    //         this.colculate_stars()
+    //     }
+    // },
     mounted() {
-        //
+        this.data = {
+            reviews_count: this.reviews_count_prop,
+            reviews_stars: this.reviews_stars_prop,
+            rewiew_count_text: this.rewiew_count_text_prop
+        },
+        this.colculate_stars()
     },
     methods: {
-        colculate_stars(stars, count){
-            this.route.reviews_count = count
-            this.route.reviews_stars = stars
-
-            if(stars % 1 == 0){
+        colculate_stars(){
+            if(this.data.reviews_stars % 1 == 0){
                 this.stars.part_stars = 0 // get number after comma
-                this.stars.whole_stars = Math.floor(stars) // get number befor comma
+                this.stars.whole_stars = Math.floor(this.data.reviews_stars) // get number befor comma
             }
             else{
-                this.stars.part_stars = Number((stars+' ').split(".")[1].substr(0,1)); // get number after comma
-                this.stars.whole_stars = Math.floor(stars) // get number befor comma
+                this.stars.part_stars = Number((this.data.reviews_stars+' ').split(".")[1].substr(0,1)); // get number after comma
+                this.stars.whole_stars = Math.floor(this.data.reviews_stars) // get number befor comma
             }
 
             // colculate empty srats
@@ -99,61 +123,4 @@ export default {
     font-size:18px;
     margin-bottom:2px;
 }
-
-/* .rating-header {
-    margin-top: -10px;
-    margin-bottom: 10px;
-}
-.star_review_button{
-    border: none;
-    background: none;
-    cursor: pointer;
-    margin: 0;
-    padding: 0;
-    width: 19%;
-
-    color: #51acd7;
-    display: inline-block;
-    font-weight: 500;
-    height: 36px;
-    line-height: 33px;
-    text-transform: uppercase;
-    transition: background 0.2s ease 0s, opacity 0.2s ease 0s;
-}
-.star_review_button i{
-    font-size: 45px;
-}
-.actyve_star {
-    color: rgb(245, 115, 115) !important;
-}
-
-.star_review_button:hover{
-    background-color: #fff;
-    color: rgb(245, 115, 115) !important;
-}
-.star_review_button :active {     
-    background-color:rgb(255, 255, 255); 
-    color: rgb(245, 115, 115) !important;   
-}
-
-.st_1_actyve {     
-    background-color:rgb(255, 255, 255); 
-    color: rgb(245, 115, 115) !important;   
-}
-.st_2_actyve {     
-    background-color:rgb(255, 255, 255); 
-    color: rgb(245, 115, 115) !important;   
-}
-.st_3_actyve {     
-    background-color:rgb(255, 255, 255); 
-    color: rgb(245, 115, 115) !important;   
-}
-.st_4_actyve {     
-    background-color:rgb(255, 255, 255); 
-    color: rgb(245, 115, 115) !important;   
-}
-.st_5_actyve {     
-    background-color:rgb(255, 255, 255); 
-    color: rgb(245, 115, 115) !important;   
-} */
 </style>

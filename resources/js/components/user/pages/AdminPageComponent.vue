@@ -72,7 +72,7 @@
                                 </div>
                             </div>
 
-                            <user_notifications_list />
+                            <admin_notifications_list />
                         </div>
 
 
@@ -91,7 +91,7 @@
 
     import user_notifications_modal from './../items/modal/notifications/UserMailNotificationModelComponent.vue'
 
-    import user_notifications_list from '../items/UserNotificationsListComponent.vue'
+    import admin_notifications_list from '../items/notificatione/AdminNotificationsListComponent.vue'
     import order_list from '../items/dashboards/OrderDiogramComponent.vue'
     import data_counts_list from '../items/dashboards/SiteDataCountListComponent.vue'
 
@@ -104,7 +104,7 @@
 
             user_notifications_modal,
 
-            user_notifications_list,
+            admin_notifications_list,
             order_list,
             data_counts_list,
             tasks_panel,

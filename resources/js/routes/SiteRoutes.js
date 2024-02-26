@@ -144,7 +144,6 @@ const router = new VueRouter({
                     path: "outdoor/:url_title",
                     name: "outdoor",
                     component: load("OutdoorPageComponent"),
-                    // meta: { title: "FOO" },
                 },
 
                 {
@@ -157,6 +156,12 @@ const router = new VueRouter({
                     path: "unfollow/:id",
                     name: "unfollow",
                     component: load("UnfollowComponent"),
+                },
+
+                {
+                    path: "/confirm_comment_email/:comment_id/:email",
+                    name: "confirm_comment_email",
+                    component: load("CommentEmailVerificationePage"),
                 },
 
                 { path: "*", name: "NotFound", component: NotFound },

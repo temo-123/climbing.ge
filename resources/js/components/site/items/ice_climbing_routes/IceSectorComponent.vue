@@ -77,28 +77,22 @@
 <script>
 import StackModal from "@innologica/vue-stackable-modal"; //https://innologica.github.io/vue-stackable-modal/#sample-css
 
-// import iceRouteTab from "./items/IceRoutesTabComponent.vue"
 import openImg from "../ImageOpenComponent.vue";
 
 import iceRouteModal from "./items/modals/IceRouteModalComponent.vue";
 
 export default {
     mixins: [
-        // site_data,
-        // grade_chart,
+        // 
     ],
     components: {
         StackModal,
-        // iceRouteTab,
         openImg,
         iceRouteModal
     },
     props: ["article_id"],
     data: function () {
         return {
-            // show_ice_route_modal: false,
-            // modalClass: [],
-
             ice_sectors: [],
 
             id: this.article_id
@@ -112,15 +106,6 @@ export default {
         article_id: function(){
             this.update();
         },
-
-        // $route(to, from) {
-        //     this.update();
-        //     // this.get_spot_rocks_images();
-        // },
-
-        // '$route' (to, from) {
-        //     this.update();
-        // }
     },
     methods: {
         update(id){
@@ -138,8 +123,6 @@ export default {
                 .get("/ice_sectors/get_article_sectors/" + this.id)
                 .then((response) => {
                     this.ice_sectors = response.data;
-                    // console.log("🚀 ~ file: IceSectorComponent.vue:100 ~ .then ~ this.ice_sectors:", this.ice_sectors[0].sector.name)
-                    
                 })
                 .catch((error) => {});
         },

@@ -8,29 +8,29 @@ class Product extends Model
 {
     public $table = 'products';
 
-    protected $fillable = [
-        'title', 
-        'published',
-        'url_title',
-        'category_id',
-	    'text', 
-        'description_short',
-        'price',
-        'currency',
+  //   protected $fillable = [
+  //       'title', 
+  //       'published',
+  //       'url_title',
+  //       'category_id',
+	//     'text', 
+  //       'description_short',
+  //       'price',
+  //       'currency',
 
-        'material',
-        'color',
-        'discount',
-        'quantity',
-        'size',
-        'weight',
+  //       'material',
+  //       'color',
+  //       'discount',
+  //       'quantity',
+  //       'size',
+  //       'weight',
         
-        'us_product',
-        'ru_product',
-        'ka_product',
+  //       'us_product',
+  //       'ru_product',
+  //       'ka_product',
 
-        'general_image'
-	];
+  //       'general_image'
+	// ];
 
 	public function us_product()
 	{

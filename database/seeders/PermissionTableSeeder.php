@@ -455,6 +455,22 @@ class PermissionTableSeeder extends Seeder
                 'subject' => 'task',
                 'action' => 'edit_status',
             ],
+            [
+                'subject' => 'ban',
+                'action' => 'block',
+            ],
+            [
+                'subject' => 'role',
+                'action' => 'add',
+            ],
+            [
+                'subject' => 'role',
+                'action' => 'edit',
+            ],
+            [
+                'subject' => 'role',
+                'action' => 'del',
+            ],
         );
 
         foreach ($permissions as $permission) {

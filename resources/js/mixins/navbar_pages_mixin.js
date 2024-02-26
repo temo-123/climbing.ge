@@ -21,15 +21,15 @@ export const navbar = {
             },
             {
                 title: "Cart",
-                route: "/cart",
+                route: "/cart"
             },
             {
                 title: "My Comments & Reviews",
-                route: "/my_comments_and_reviews",
+                route: "/my_comments_and_reviews"
             },
             {
                 title: "My Orders",
-                route: "/order/my_orders",
+                route: "/order/my_orders"
             },
             {
                 title: "Favorites",
@@ -38,17 +38,17 @@ export const navbar = {
                     {
                         name: "Favorite products",
                         route: "/favorite_products",
-                        permissions: []
+                        // permissions: [['ban', 'block']]
                     },
                     {
                         name: "Favorite outdoor area",
                         route: "/my_favorite_outdoor_area",
-                        permissions: []
+                        // permissions: [['ban', 'block']]
                     },
                     {
                         name: "Interested events",
                         route: "/interested_events",
-                        permissions: []
+                        // permissions: [['ban', 'block']]
                     },
                 ],
             },
@@ -291,6 +291,16 @@ export const navbar = {
                     {
                         name: "Users & Permissions",
                         route: "/users_list",
+                        permissions: [
+                            ['add', 'user'],
+                            ['del', 'user'],
+                            ['edit_permissions', 'user'],
+                            ['create_ban', 'user'],
+                        ]
+                    },
+                    {
+                        name: "Other commenters",
+                        route: "/non_registered_commenter_list",
                         permissions: [
                             ['add', 'user'],
                             ['del', 'user'],

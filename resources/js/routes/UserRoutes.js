@@ -124,6 +124,8 @@ const router = new VueRouter({
 
         { path: '/stor_slides_list', name: 'storSlidesList', component: load('gallery/StoreSlidesPage') },
 
+        { path: '/non_registered_commenter_list', name: 'nonRegisteredCommenterList', component: load('NonRegisteredCommenterListPage') },
+
         { path: '/product_option_control/product_id/:product_id', name: 'productOptionsControl', component: load('products_and_categories/productOptionControlPageComponent') },
 
         { path: '/productCategory/edit/:id', name: 'productCategoryEdit', component: load('products_and_categories/categories/productCategoryEditComponent'), },

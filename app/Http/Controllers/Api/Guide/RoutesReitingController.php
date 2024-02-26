@@ -14,12 +14,42 @@ use Auth;
 class RoutesReitingController extends Controller
 {
     function get_all_review() {
-        return Sport_route_review::get();
+        // return Sport_route_review::get();
+
+        if(Sport_route_review::count() > 0){
+            $all_reviews = Sport_route_review::get();
+
+            $reviews = [];
+            foreach ($all_reviews as $review) {
+                
+                array_push($reviews, [
+                    'review' => $review, 
+                    'route' => $review->route,
+                ]);
+            }
+            
+            return $reviews;
+        }
     }
 
     function get_user_review() {
         $user = auth()->user();
-        return $user->sport_route_reviews;
+        // return $user->sport_route_reviews;
+
+        if($user->sport_route_reviews->count() > 0){
+            $all_user_reviews = $user->sport_route_reviews;
+
+            $reviews = [];
+            foreach ($all_user_reviews as $review) {
+                
+                array_push($reviews, [
+                    'review' => $review, 
+                    'route' => $review->route,
+                ]);
+            }
+            
+            return $reviews;
+        }
     }
 
     function get_user_sport_routes_review() {
@@ -63,6 +93,20 @@ class RoutesReitingController extends Controller
             $review_user_rel['user_id'] = Auth::user()->id;
             $review_user_rel->save();
         }
+    }
+
+    function get_actyve_review(Request $request){
+        return Sport_route_review::where('id',strip_tags($request->review_id))->first();
+    }
+
+    function edit_route_review(Request $request) {
+        $review = Sport_route_review::where('id',strip_tags($request->review_id))->first();
+        $data = $request->all();
+        unset($data['_url']);
+
+        // dd($data);
+
+        $saved = $review->update($data); 
     }
 
     function del_route_review(Request $request) {

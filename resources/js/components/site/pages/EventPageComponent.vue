@@ -90,7 +90,6 @@
 
 <script>
     import articlePreloader from "../items/article/ArticlePreloaderComponent.vue";
-    import commentForm from '../items/CommentFormComponent'
     import metaData from '../items/MetaDataComponent'
     import breadcrumb from '../items/BreadcrumbComponent.vue'
     import moment from "moment"; // https://www.npmjs.com/package/vue-moment
@@ -118,7 +117,6 @@
         components: {
             articlePreloader,
             metaData,
-            commentForm,
             breadcrumb,
             moment
         },

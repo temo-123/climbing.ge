@@ -86,6 +86,13 @@
         <!-- <th v-if="data.table_name == 'Users'">
             |
         </th> -->
+        <th v-if="data.table_name == 'Users'">
+            |
+        </th>
+        <th v-if="data.table_name == 'Users'">
+            Email
+        </th>
+
 
         <th>
             |
@@ -99,17 +106,11 @@
         ">
             Edit
         </th>
-        <th v-if="data.table_name == 'Comments'
+        <!-- <th v-if="data.table_name == 'Comments'
         ">
             User
-        </th>
+        </th> -->
 
-        <th v-if="data.table_name == 'Users'">
-            |
-        </th>
-        <th v-if="data.table_name == 'Users'">
-            Ban
-        </th>
 
         <th v-if="data.table_name != 'Parmissions'&&
                 data.table_name != 'My comments'&&

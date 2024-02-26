@@ -9,6 +9,14 @@ class Sport_route_review extends Model
 {
     use HasFactory;
 
+    protected $fillable = [
+        'stars',
+        'text',
+        'climbed',
+        'climbed_data',
+        'route_id',
+	];
+
 	public function route()
 	{
 		return $this->hasOne(Route::class, 'id', 'route_id');

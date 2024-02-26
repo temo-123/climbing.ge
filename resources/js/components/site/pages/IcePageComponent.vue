@@ -5,7 +5,7 @@
         </span>
         <span v-else-if="!article_loading">
             <icePage 
-                :article="ice" 
+                :article_prop="ice" 
                 ref="article_page"
             />
 
@@ -20,7 +20,7 @@
 
 <script>
     import articlePreloader from "../items/article/ArticlePreloaderComponent.vue";
-    import icePage from '../items/IceComponent'
+    import icePage from '../items/pages_main_components/IceComponent'
     import metaData from '../items/MetaDataComponent'
 
     export default {
@@ -52,7 +52,7 @@
                 .then(response => {
                     this.ice = response.data
 
-                    this.$refs.article_page.update_similar_articles_component(this.ice.id)
+                    this.$refs.article_page.update_similar_articles_component(this.ice.global_data.id)
                 })
                 .catch(error =>{
                 })

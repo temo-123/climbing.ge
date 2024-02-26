@@ -1,15 +1,13 @@
 <?php
 
-namespace App\Notifications;
+namespace App\Notifications\comments;
 
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 
-use Auth;
-
-class DeleteCommentNotification extends Notification
+class CommentComplaintDecisionToDecisionerNotification extends Notification
 {
     use Queueable;
 
@@ -21,8 +19,14 @@ class DeleteCommentNotification extends Notification
     public function __construct($info)
     {
         $this->cause = $info['cause'];
-        $this->data_time = $info['data_time'];
-        $this->article_title = $info['article_title'];
+        $this->decision_message = '';
+
+        if($info['decision'] == 'approve_request'){
+            $this->decision_message = 'We reviewed your request and made a decision, approve request and delete this comment!';
+        }
+        else if($info['decision'] == 'reject_request'){
+            $this->decision_message = 'We reviewed your request and made a decision, reject request don`t delete this comment!';
+        }
     }
 
     /**
@@ -44,17 +48,15 @@ class DeleteCommentNotification extends Notification
      */
     public function toMail($notifiable)
     {
-        // return (new MailMessage)->markdown('emails.delete_comment__notification');
+        // return (new MailMessage)->markdown('emails.comment.comment_complaint_decision_to_decisione_notification');
 
         return (new MailMessage)
-            ->markdown('emails.comment.delete_comment_notification', 
+            ->markdown('emails.comment.comment_complaint_decision_to_decisione_notification', 
                 [
-                    'cause'=>$this->cause,
-                    'data_time'=>$this->data_time,
-                    'article_title'=>$this->article_title,
+                    'decision_message'=>$this->decision_message,
                 ]
             )
-            ->subject('Comment deliting')
+            ->subject('Comment Complaint Decision')
         ;
     }
 

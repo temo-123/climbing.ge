@@ -352,21 +352,19 @@ Route::group(['namespace'=>'Api'], function() {
         *   Guid Coments routes get_article_comments
         */
         Route::controller(CommentController::class)->prefix('guide_comment')->group( function() {
-            // Route::apiResource('/comment', 'CommentController');
             Route::get('/get_all_comments', 'get_all_comments');
             Route::get('/get_user_comments', 'get_user_comments');
             Route::get('/get_article_comments/{article_id}', 'get_article_comments');
 
             Route::get('/get_comments_complaints', 'get_comments_complaints');
-            Route::get('/get_user_queries/{user_id}', 'get_user_queries');
-            Route::get('/get_quick_comment/{comment_id}', 'get_quick_comment');
+            Route::get('/get_actyve_comment/{comment_id}', 'get_actyve_comment');
 
             Route::post('/create_comment/{article_id}', 'create_comment');
-            Route::post('/del_user_comment/{comment_id}', 'del_user_comment');
-            Route::post('/query_response', 'query_response');
-
+            Route::post('/confirm_email/{email}', 'confirm_email');
             Route::post('/add_comment_complaint', 'add_comment_complaint');
             Route::post('/make_decision', 'make_decision');
+
+            Route::post('/hide_comment/{comment_id}', 'hide_comment');
 
             Route::delete('/del_comment/{comment_id}', 'del_comment');
         });
@@ -378,8 +376,10 @@ Route::group(['namespace'=>'Api'], function() {
         Route::controller(RoutesReitingController::class)->prefix('route_review')->group( function() {
             Route::get('/get_user_review', 'get_user_review');
             Route::get('/get_all_review', 'get_all_review');
+            Route::get('/get_actyve_review/{review_id}', 'get_actyve_review');
 
             Route::post('/create_route_review/{route_id}', 'create_route_review');
+            Route::post('/edit_route_review/{review_id}', 'edit_route_review');
 
             Route::delete('/del_route_review/{review_id}', 'del_route_review');
         });
@@ -511,30 +511,18 @@ Route::group(['namespace'=>'Api'], function() {
             Route::get('/get_product_feedbacks/{product_id}', 'get_product_feedbacks');
 
             Route::get('/get_feedbacks_complaints', 'get_feedbacks_complaints');
-            Route::get('/get_user_queries/{user_id}', 'get_user_queries');
-            Route::get('/get_quick_feedback/{feedback_id}', 'get_quick_feedback');
+            Route::get('/get_actyve_feedback/{feedback_id}', 'get_actyve_feedback');
 
             Route::post('/create_feedback/{product_id}', 'create_feedback');
-            Route::post('/del_user_feedback/{feedback_id}', 'del_user_feedback');
-            Route::post('/query_response', 'query_response');
+            Route::post('/confirm_email/{email}', 'confirm_email');
 
             Route::post('/add_feedback_complaint', 'add_feedback_complaint');
             Route::post('/make_decision', 'make_decision');
 
+            Route::post('/hide_feedback/{feedback_id}', 'hide_feedback');
+
             Route::delete('/del_feedback/{feedback_id}', 'del_feedback');
         });
-
-        /*
-        *   Products reiting routes
-        */
-        // Route::controller(ProductReviewsController::class)->prefix('product_review')->group( function() {
-        //     Route::get('/get_user_review', 'get_user_review');
-        //     Route::get('/get_all_review', 'get_all_review');
-
-        //     Route::post('/create_product_review/{product_id}', 'create_product_review');
-
-        //     Route::delete('/del_product_review/{review_id}', 'del_product_review');
-        // });
     
     });
 
@@ -579,7 +567,6 @@ Route::group(['namespace'=>'Api'], function() {
     });
 
     Route::group(['namespace'=>'User'], function() {
-
         /*
         *   Login verify routes
         */
@@ -612,7 +599,6 @@ Route::group(['namespace'=>'Api'], function() {
                 Route::post('/send_user_favorites_notification/{action}', 'send_user_favorites_notification');
             });
         });
-
         
         /*
         *   Users routes
@@ -671,12 +657,9 @@ Route::group(['namespace'=>'Api'], function() {
         /*
         *   Permissions
         */
-
         Route::controller(PermissionsController::class)->prefix('permission')->group(function() {
             Route::get('get_parmisions_for_role/{role_id}', 'get_parmisions_for_role');
         });
-
-
 
         Route::prefix('task')->group( function() {
             Route::controller(TaskController::class)->group( function() {
@@ -700,6 +683,11 @@ Route::group(['namespace'=>'Api'], function() {
 
                 Route::delete('/del_task_category/{task_category_id}', 'del_task_category');
             });
+        });
+
+        Route::controller(NonRegisteredCommenterController::class)->prefix('non_registered_commenter')->group(function() {
+            Route::get('get_non_registered_commenter', 'get_non_registered_commenter');
+            Route::delete('del_non_registered_commenter/{id}', 'del_non_registered_commenter');
         });
     });
     

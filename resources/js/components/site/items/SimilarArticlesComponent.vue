@@ -17,7 +17,7 @@
             <SimilarArticleCardComponent
                 v-for="other_article in similar_article" :key='other_article.id'
                     :article="other_article"
-                    :route="'../../../' + route + other_article.url_title"
+                    :route="'../../../' + route + other_article.global_data.url_title"
                     :image_dir="'images/' + article_category + '_img'"
                     :category = "article_category"
             />
@@ -57,7 +57,7 @@
         },
         methods: {
             get_same_articles() {
-                console.log(this.id);
+                // console.log(this.id);
                 axios
                 .post('./similar_article/'+localStorage.getItem('lang'), {
                     article_id: this.id,

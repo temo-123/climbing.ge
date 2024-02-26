@@ -1,10 +1,10 @@
 <template>
     <div class="col-sm-12">
 
-        <!-- <swiperComponent 
+        <swiperComponent 
             v-if="slides.length > 0"
             :images_prop="slides"
-        /> -->
+        />
 
         <div class="row" v-if="products.length > 0">
 

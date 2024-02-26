@@ -175,7 +175,7 @@
                     this.outdoors = response.data
                 })
                 .catch(
-                    error => console.log(error)
+                    // error => console.log(error)
                 )
                 .finally(() => this.oudoor_loading = false);
             },

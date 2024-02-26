@@ -55,7 +55,9 @@
                     .then(Response => {
                         alert(Response.data)
                     })
-                    .catch(error => console.log(error))
+                    .catch((error) => {
+                        // console.log(error)
+                    })
                     .finally(() => (this.loading = false));
                 }
                 else{

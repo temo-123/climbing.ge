@@ -43,7 +43,7 @@ class RoleTableSeeder extends Seeder
         $admin->save();
 
         foreach ($permissions as $permission) {
-            if($permission['subject'] != 'worker'){
+            if($permission['subject'] != 'worker' || $permission['subject'] != 'ban'){
                 $admin->permissions()->attach($permission);
             }
         }
@@ -58,7 +58,9 @@ class RoleTableSeeder extends Seeder
         $visual_menager->save();
 
         foreach ($visual_permissions as $permission) {
-            $visual_menager->permissions()->attach($permission);
+            if($permission['subject'] != 'ban'){
+                $visual_menager->permissions()->attach($permission);
+            }
         }
 
         $mount_permissions = Permission:: where('subject', '=', 'mount_route')->
@@ -72,7 +74,9 @@ class RoleTableSeeder extends Seeder
         $mount_menager->save();
 
         foreach ($mount_permissions as $permission) {
-            $mount_menager->permissions()->attach($permission);
+            if($permission['subject'] != 'ban'){
+                $mount_menager->permissions()->attach($permission);
+            }
         }
 
         $sale_permissions = Permission:: where('subject', '=', 'product_options')->
@@ -88,7 +92,9 @@ class RoleTableSeeder extends Seeder
         $sale_menager->save();
 
         foreach ($sale_permissions as $permission) {
-            $sale_menager->permissions()->attach($permission);
+            if($permission['subject'] != 'ban'){
+                $sale_menager->permissions()->attach($permission);
+            }
         }
 
         $film_permissions = Permission:: where('subject', '=', 'film')->
@@ -103,7 +109,9 @@ class RoleTableSeeder extends Seeder
         $film_menager->save();
 
         foreach ($film_permissions as $permission) {
-            $film_menager->permissions()->attach($permission);
+            if($permission['subject'] != 'ban'){
+                $film_menager->permissions()->attach($permission);
+            }
         }
 
         $locale_bisnes_permissions = Permission:: where('subject', '=', 'locale_bisnes')->
@@ -116,7 +124,9 @@ class RoleTableSeeder extends Seeder
         $locale_bisnes_menager->save();
 
         foreach ($locale_bisnes_permissions as $permission) {
-            $locale_bisnes_menager->permissions()->attach($permission);
+            if($permission['subject'] != 'ban'){
+                $locale_bisnes_menager->permissions()->attach($permission);
+            }
         }
 
         $event_permissions = Permission:: where('subject', '=', 'event')->
@@ -129,7 +139,9 @@ class RoleTableSeeder extends Seeder
         $event_menager->save();
 
         foreach ($event_permissions as $permission) {
-            $event_menager->permissions()->attach($permission);
+            if($permission['subject'] != 'ban'){
+                $event_menager->permissions()->attach($permission);
+            }
         }
 
         $sale_and_order_permissions = Permission::  where('subject', '=', 'product_options')->
@@ -145,7 +157,9 @@ class RoleTableSeeder extends Seeder
         $sale_and_order_menager->save();
 
         foreach ($sale_and_order_permissions as $permission) {
-            $sale_and_order_menager->permissions()->attach($permission);
+            if($permission['subject'] != 'ban'){
+                $sale_and_order_menager->permissions()->attach($permission);
+            }
         }
 
         $order_permissions = Permission::   where('subject', '=', 'order')->
@@ -158,7 +172,9 @@ class RoleTableSeeder extends Seeder
         $order_menager->save();
 
         foreach ($order_permissions as $permission) {
-            $order_menager->permissions()->attach($permission);
+            if($permission['subject'] != 'ban'){
+                $order_menager->permissions()->attach($permission);
+            }
         }
 
         $content_permissions = Permission::
@@ -173,7 +189,9 @@ class RoleTableSeeder extends Seeder
         $content_menager->save();
 
         foreach ($content_permissions as $permission) {
-            $content_menager->permissions()->attach($permission);
+            if($permission['subject'] != 'ban'){
+                $content_menager->permissions()->attach($permission);
+            }
         }
 
         
@@ -182,5 +200,19 @@ class RoleTableSeeder extends Seeder
         $user->slug = 'user';
         $user->description = 'User';
         $user->save();
+
+
+        $locked_user = new Role();
+        $locked_user->name = 'Ban';
+        $locked_user->slug = 'ban';
+        $locked_user->description = 'Ban';
+        $locked_user->save();
+
+        $ban_permissions = Permission::
+                                            where('subject', '=', 'ban')->
+                                            get();
+        foreach ($ban_permissions as $permission) {
+                $locked_user->permissions()->attach($permission);
+        }
     }
 }

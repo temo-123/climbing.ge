@@ -13,30 +13,21 @@
             <div class="model-body">
                 <div class="container">
                     <div class="row">
-                        <!-- <h2>{{ $t("guide.route.route_rewiev") }}</h2> -->
-                         
+
                         <div class="row justify-content-center" v-show="is_loading">
                             <div class="col-md-4">
                                 <img :src="'../../../../../../public/images/site_img/loading.gif'" alt="loading">
                             </div>
                         </div>
 
-                    <div>
-
-                        <div class="col-md-12">
+                        <div class="col-md-12" v-show="!is_loading">
                             <form @submit.prevent="add_feedback" id="feedback_form" class="contact-form" method="POST" enctype="multipart/form-data">
-                                                
-                                <!-- <div class="row">
-                                    <div class="col-md-12">
-                                        <h2 id='feedbacks'>{{ $t('guide.article.title.feedbacks')}}</h2>
-                                    </div>
-                                </div> -->
 
                                 <div v-if="user.length == 0">
                                     <div class="row" >
                                         <div class="col-md-4">
                                             <div class="form-group">
-                                                <input type="text" name="name" v-model="name" class="form-control textarea" placeholder="Name"><br>
+                                                <input type="text" name="name" v-model="data.name" class="form-control textarea" placeholder="Name" required><br>
                                                 <div class="alert alert-danger" role="alert" v-if="errors.name">
                                                     Name is validation
                                                 </div>
@@ -44,7 +35,7 @@
                                         </div>
                                         <div class="col-md-8">
                                             <div class="form-group">
-                                                <input type="text" name="surname" v-model="surname" class="form-control textarea" placeholder="Surname"><br>
+                                                <input type="text" name="surname" v-model="data.surname" class="form-control textarea" placeholder="Surname" required><br>
                                                 <div class="alert alert-danger" role="alert" v-if="errors.surname">
                                                     Surname is validation
                                                 </div>
@@ -55,7 +46,7 @@
                                     <div class="row">
                                         <div class="col-md-12">
                                             <div class="form-group">
-                                                <input type="email" name="email" v-model="email" class="form-control textarea" placeholder="E_mail"><br>
+                                                <input type="email" name="email" v-model="data.email" class="form-control textarea" placeholder="E_mail" required><br>
                                                 <div class="alert alert-danger" role="alert" v-if="errors.email">
                                                     Email is validation
                                                 </div>
@@ -82,7 +73,7 @@
                                 <div class="row">
                                     <div class="col-md-12">
                                         <div class="form-group">
-                                            <textarea rows="6" name="text" v-model="text" id="text" maxlength="500" placeholder="Your feedback (Write feedbacks only in English, no more than 500 characters!)" class="form-control textarea"></textarea>
+                                            <textarea rows="6" name="text" v-model="data.text" id="text" maxlength="500" placeholder="Your feedback (Write feedbacks only in English, no more than 500 characters!)" class="form-control textarea" required></textarea>
                                             <div class="alert alert-danger" role="alert" v-if="errors.text">
                                                 feedback text is validation
                                             </div>
@@ -95,15 +86,10 @@
                                     <div class="col-md-12">
                                         <div class="form-group">
                                             Do you have this product?
-                                            <input type="checkbox" v-model="data.climbed" name="scales" placeholder="Did you climb this route?" title="Did you climb this route?">
+                                            <input type="checkbox" v-model="data.have_product" name="scales" placeholder="Did you climb this route?" title="Did you climb this route?">
                                         </div>
                                     </div>
                                 </div>
-
-                                <!-- <div>
-                                    <span v-if="data.climbed">Insert climb data</span>
-                                    <input type="datetime-local" class="form-control" v-model="data.climbed_data" name="climbed_data" placeholder="Climbed data" title="Climbed data" v-if="data.climbed">
-                                </div> -->
 
                                 <div class="row">
                                     <div class="col-md-12">
@@ -129,28 +115,18 @@
                         </div>
                     </div>
 
-
-                    </div>
                 </div>
             </div>
             <div slot="modal-footer">
                 <div class="modal-footer">
-
-                    <!-- <div class="col-md-6">
-                        <div class="row"> -->
-                            <div class="col-xs-6 col-md-6" v-if="is_verify_isset == false">
-                                <button class="btn btn-primary" disabled>Add feedback</button>
-                            </div>
-                            <div class="col-xs-6 col-md-6" v-else>
-                                <button type="sumit" form="feedback_form" class="btn btn-primary" >Add feedback</button>
-                            </div>
-                            <!-- <div class="col-xs-6 col-md-6">
-                                <button @click="get_feedbacks" class="btn btn-success pull-right" v-if="!is_refresh">Refresh ({{refresh_id}})</button>
-                                <span class="badge badge-primare mb-1 pull-right" v-if="is_refresh">Updating...</span>
-                            </div> -->
-                        <!-- </div>
-                    </div> -->
-
+                    <span v-show="!is_loading">
+                        <div class="col-xs-6 col-md-6" v-if="is_verify_isset == false">
+                            <button class="btn btn-primary" disabled>Add feedback</button>
+                        </div>
+                        <div class="col-xs-6 col-md-6" v-else>
+                            <button type="sumit" form="feedback_form" class="btn btn-primary" >Add feedback</button>
+                        </div>
+                    </span>
                 </div>
             </div>
         </stack-modal>
@@ -180,32 +156,41 @@ export default {
             data: {
                 stars: 0,
                 text: '',
-                climbed_data: '',
+                have_product: '',
+
+                name:'',
+                surname:'',
+                email: '',
+
+                is_verify_isset: false,
             },
-            // hover: false,
+            is_verify_isset: false,
 
             is_loading: false,
 
-
             user: [],
             errors: [],
-
-            is_verify_isset: false,
-            is_mail_sending: false,
 
             MIX_GOOGLE_CAPTCHA_SITE_KEY: process.env.MIX_GOOGLE_CAPTCHA_SITE_KEY,
         };
     },
     mounted() {
-        this.get_user_info()
+        //
     },
     methods: {
         show_modal(id){
             this.is_show_modal = true;
+            // this.is_loading = true
+            this.clear_data()
+
             this.product_id = id
+            
+            this.get_user_info()
         },
         close_model(){
             this.is_show_modal = false;
+            
+            this.is_loading = false
             
             this.clear_data()
         },
@@ -215,13 +200,20 @@ export default {
         },
 
         clear_data(){
+            this.user = []
+
             this.data = {
                 stars: 0,
                 text: '',
-                climbed_data: '',
+                have_product: '',
+
+                name:'',
+                surname:'',
+                email: '',
+                is_verify_isset: false
             },
-            
-            this.is_verify_isset = false
+
+            this.data.is_verify_isset = false
         },
 
         onCaptchaVerified() {
@@ -232,44 +224,45 @@ export default {
         },
 
         get_user_info() {
-            this.user = []
-                
-            this.name = '',
-            this.surname = '',
-            this.email = ''
-            
+            // this.is_loading = true
+
             axios
             .get('/auth_user/')
             .then(response => {
                 this.user = response.data,
                 
-                this.name = this.user.name,
-                this.surname = this.user.surname,
-                this.email = this.user.email
-
-                this.complainter_email = this.user.email
+                this.data.name = this.user.name,
+                this.data.surname = this.user.surname,
+                this.data.email = this.user.email
             })
             .catch()
+            .finally(() => this.is_loading == false);
         },
 
         add_feedback() {
+            this.data.product_id = this.product_id
+            this.data.is_verify_isset = this.is_verify_isset
+
+            this.is_loading = true
+
             axios
-            .put('/product_feedback/create_feedback/' + this.id, {
-                name: this.name,
-                is_verify_isset: this.is_verify_isset,
-                surname: this.surname,
-                email: this.email,
-                text: this.text,
-                product_id: this.id
+            .post('/product_feedback/create_feedback/' + this.product_id, {
+                data: this.data,
             })
             .then(response => {
-                // this.get_feedbacks()
+                this.close_model()
+
+                this.$emit('restart')
+
+                alert(response.data)
             })
             .catch(error => {
+                this.is_loading == false
                 if (error.response.status == 422) {
                     this.errors = error.response.data.errors
                 }
             })
+            .finally(() => this.is_loading == false);
         },
     }
 }

@@ -11,7 +11,7 @@
 </template>
 
 <script>
-    import bisnesPage from '../items/BisnesComponent'
+    import bisnesPage from '../items/pages_main_components/BisnesComponent'
     import metaData from '../items/MetaDataComponent'
 
     export default {

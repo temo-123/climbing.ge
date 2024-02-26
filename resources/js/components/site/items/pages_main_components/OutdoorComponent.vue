@@ -3,7 +3,7 @@
         <div class="row">
             <div class="col-sm-8 blog-header">
                 <h1 class="blog-title">
-                    {{ this.article.locale_data.title  }}
+                    {{ this.article_prop.locale_data.title  }}
 
                     <span @click="add_to_favorite_outdoor_area(article.global_data.id)"> 
                         <i class="fa fa-heart-o favorite_icon add_to_favorite" ></i> 
@@ -15,35 +15,35 @@
             <div class="col-sm-8 blog-header">
                 <breadcrumb />
 
-                <p class="blog-post-meta"> {{ this.article.global_data.created_at  }}</p>
+                <p class="blog-post-meta"> {{ this.article_prop.global_data.created_at  }}</p>
             </div>
         </div>
 
         <div class="row">
             <div class="col-sm-8 blog-main">
                 
-                <articleTextBlocks :article="this.article"/>
+                <articleTextBlocks :article_prop="this.article_prop"/>
 
                 <!-- routes -->
-                <div v-if="this.article.locale_data.route || this.article.global_info.routes_info != []">
+                <div v-if="this.article_prop.locale_data.route || this.article_prop.general_info.routes_info != []">
                     <h2 id="routes">{{ $t('guide.article.title.route')}}</h2>
 
                     <routeQuanDiogram 
-                        :outdoor_region_article_id="this.article.global_data.id"
+                        :outdoor_region_article_id="this.article_prop.global_data.id"
                         ref="route_quan_diogram"
                     />
 
-                    <generalInfo :global_info="article.global_info.routes_info" :locale_data="article.locale_data.route"/>
+                    <generalInfo :global_info_prop="article_prop.general_info.routes_info" :locale_data_prop="article_prop.locale_data.route"/>
 
                 </div>
 
                 <routesTab 
-                    :article_id="this.article.global_data.id" 
+                    :article_id_prop="this.article_prop.global_data.id" 
                     ref="routes_tab"
                 />
                 
                 <galleryComponent 
-                    :article_id="this.article.global_data.id" 
+                    :article_id="this.article_prop.global_data.id" 
                     ref="gallery_component"
                 />
             </div>
@@ -54,14 +54,14 @@
 
         <div class="row"> 
             <commentForm 
-                :article_id="this.article.global_data.id" 
+                :article_id="this.article_prop.global_data.id" 
                 ref="comments"
             />
         </div>
 
         <SimilarArticles 
-            :article_id="this.article.global_data.id" 
-            :article_category="this.article.global_data.category" 
+            :article_id="this.article_prop.global_data.id" 
+            :article_category="this.article_prop.global_data.category" 
             :route="'outdoor/'"
             :img_dir="'outdoor_img/'"
 
@@ -72,22 +72,21 @@
 </template>
 
 <script>
-    import routesTab from './climbing_routes/SectorAndRoutesTabComponent'
-    import commentForm from './CommentFormComponent'
-    // import postsList from './PostsListComponent'
-    import galleryComponent from './galleries/GalleryComponent'
-    import articleRightMenu from './navbars/RightMenuComponent'
-    import SimilarArticles from './SimilarArticlesComponent'
-    import breadcrumb from './BreadcrumbComponent.vue'
-    import articleTextBlocks from './ArticleTextBlocksComponent'
+    import routesTab from '../climbing_routes/SectorAndRoutesTabComponent'
+    import commentForm from '../comments/CommentFormComponent'
+    import galleryComponent from '../galleries/GalleryComponent'
+    import articleRightMenu from '../navbars/RightMenuComponent'
+    import SimilarArticles from '../SimilarArticlesComponent'
+    import breadcrumb from '../BreadcrumbComponent.vue'
+    import articleTextBlocks from '../article/ArticleTextBlocksComponent'
 
-    import routeQuanDiogram from '../items/climbing_routes/RoutesQuantityComponent.vue'
+    import routeQuanDiogram from '../climbing_routes/RoutesQuantityComponent.vue'
 
-    import generalInfo from './article/GeneralInfoComponent'
+    import generalInfo from '../article/GeneralInfoComponent'
 
     export default {
         props: [
-            'article',
+            'article_prop',
         ],
         components: {
             commentForm,
@@ -109,12 +108,16 @@
             }
         },
         mounted() {
-            // this.get_posts()
+            // 
         },
 
         watch: {
             // $route(to, from) {
-                // alert('prevent route change 2');
+            //     // alert('prevent route change 2');
+            //     update_similar_articles_component(this.article_prop.global_data.id)
+            // },
+            // article_prop: function(){
+            //     update_similar_articles_component(this.article_prop.global_data.id)
             // },
         },
         methods: {
@@ -130,7 +133,7 @@
                 axios
                 .post('/outdoor/add_to_favorite_outdoor_area/'+article_id)
                 .then(response => {
-                    alert(response.data)
+                    // alert(response.data)
                 })
                 .catch(error => {
                     if(error.response.status === 401) {

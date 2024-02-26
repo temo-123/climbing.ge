@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Notifications;
+namespace App\Notifications\comments;
 
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -45,7 +45,7 @@ class AdminComplaintNotification extends Notification
         return (new MailMessage)
             ->markdown('emails.comment.admin_complaint_notification', 
                 [
-                    'admin_panel_url'=>env('APP_SSH').env('USER_PAGE_URL'),
+                    'admin_panel_url'=>env('APP_SSH').env('USER_PAGE_URL').'/admin_page',
                 ]
             )
             ->subject('Complaint to comment')

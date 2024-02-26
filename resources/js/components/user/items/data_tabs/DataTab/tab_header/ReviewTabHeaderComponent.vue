@@ -8,16 +8,16 @@
         <th>Rewiew ID</th>
         <th>|</th>
 
-        <th v-if="table_name == 'My climbing routes review' || table_name == 'Climbing routes review'">Climbing route</th>
-        <th v-if="table_name == 'My products review' || table_name == 'Products review'">Product</th>
+        <th>Climbing route</th>
         <th>|</th>
 
         <th>Stars</th>
         <th>|</th>
 
-        <th v-if="table_name == 'My climbing routes review' || table_name == 'My products review'">Edit</th>
-        <th v-if="table_name == 'My climbing routes review' || table_name == 'My products review'">|</th>
+        <th>Edit</th>
 
+        <!-- <th v-if="table_name == 'Climbing routes review'">|</th> -->
+        <th>|</th>
         <th>Delite</th>
     </tr>
 </template>

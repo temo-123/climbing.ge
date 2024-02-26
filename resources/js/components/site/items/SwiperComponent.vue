@@ -56,7 +56,7 @@
             this.slide_count = this.slides.length;
           })
           .catch((error) => {
-            console.log(error);
+            // console.log(error);
           });
       },
     },

@@ -15,13 +15,13 @@
 
         <td>|</td>
         <td>
-            <button :class="'btn btn-primary'" @click="open_role_edit_modal(table_info.id)"> <i class="fa fa-pencil" aria-hidden="true"></i> </button>
+            <button :class="'btn btn-primary'" v-if="$can('edit', 'role')" @click="open_role_edit_modal(table_info.id)"> <i class="fa fa-pencil" aria-hidden="true"></i> </button>
         </td>
         
         <td>|</td>
         
         <td>
-            <button type="submit" class="btn btn-danger" @click="del_role(table_info.id)"><i class="fa fa-trash" aria-hidden="true"></i></button>
+            <button type="submit" class="btn btn-danger" v-if="$can('del', 'role')" @click="del_role(table_info.id)"><i class="fa fa-trash" aria-hidden="true"></i></button>
         </td>
 
         <stack-modal

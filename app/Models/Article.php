@@ -43,7 +43,6 @@ class Article extends Model
 
 	public function us_article()
 	{
-		// return $this->hasOne(Locale_article::class, 'id');
 		return $this->hasOne(Locale_article::class, 'id', 'us_article_id');
 	}
 
@@ -59,6 +58,11 @@ class Article extends Model
 		return $this->hasOne(Locale_article::class, 'id', 'ru_article_id');
 	}
 
+
+	public function comments()
+	{
+		return $this->hasMany(Comments::class, 'article_id');
+	}
 
 	public function sectors()
 	{

@@ -29,8 +29,7 @@
                             <p v-else-if="route.category == 'top'">{{ $t("guide.route.bolts") }} - Top rope</p>
                             <p v-else-if="route.category == 'boulder'"></p>
                             <p v-else-if="route.category == 'sport climbing'">{{ $t("guide.route.bolts") }} - {{ route.bolts }}</p>
-                            <!-- <p v-else>{{ $t("guide.route.bolts") }} - {{ route.bolts }}</p> -->
-
+                            
                             <p class="route_detal" v-if="route.author">
                                 {{ $t("guide.route.author") }} - {{ route.author }}
                             </p>
@@ -79,7 +78,7 @@ export default {
     data: function () {
         return {
             is_show_route_modal: false,
-
+            ModalClass: [],
             route: [],
         };
     },

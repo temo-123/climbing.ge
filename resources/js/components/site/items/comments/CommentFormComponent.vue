@@ -14,16 +14,16 @@
                         <div class="row" >
                             <div class="col-md-4">
                                 <div class="form-group">
-                                    <input type="text" name="name" v-model="name" class="form-control textarea" placeholder="Name"><br>
-                                    <div class="alert alert-danger" role="alert" v-if="errors.name">
+                                    <input type="text" name="name" v-model="data.name" class="form-control textarea" placeholder="Name"><br>
+                                    <div class="alert alert-danger" role="alert" v-if="errors['data.name']">
                                         Name is validation
                                     </div>
                                 </div>
                             </div>
                             <div class="col-md-8">
                                 <div class="form-group">
-                                    <input type="text" name="surname" v-model="surname" class="form-control textarea" placeholder="Surname"><br>
-                                    <div class="alert alert-danger" role="alert" v-if="errors.surname">
+                                    <input type="text" name="surname" v-model="data.surname" class="form-control textarea" placeholder="Surname"><br>
+                                    <div class="alert alert-danger" role="alert" v-if="errors['data.surname']">
                                         Surname is validation
                                     </div>
                                 </div>
@@ -33,8 +33,8 @@
                         <div class="row">
                             <div class="col-md-12">
                                 <div class="form-group">
-                                    <input type="email" name="email" v-model="email" class="form-control textarea" placeholder="E_mail"><br>
-                                    <div class="alert alert-danger" role="alert" v-if="errors.email">
+                                    <input type="email" name="email" v-model="data.email" class="form-control textarea" placeholder="E_mail"><br>
+                                    <div class="alert alert-danger" role="alert" v-if="errors['data.email']">
                                         Email is validation
                                     </div>
                                 </div>
@@ -42,16 +42,16 @@
                         </div>
                     </div>
                     <div v-else>
-                        <div class="alert alert-danger" role="alert" v-if="errors.name">
+                        <div class="alert alert-danger" role="alert" v-if="errors['data.name']">
                             Name is validation
                         </div>
-                        <div class="alert alert-danger" role="alert" v-if="errors.surname">
+                        <div class="alert alert-danger" role="alert" v-if="errors['data.surname']">
                             Surname is validation
                         </div>
-                        <div class="alert alert-danger" role="alert" v-if="errors.email">
+                        <div class="alert alert-danger" role="alert" v-if="errors['data.email']">
                             Email is validation
                         </div>
-                        <div class="alert alert-danger" role="alert" v-if="errors.email || errors.surname || errors.name">
+                        <div class="alert alert-danger" role="alert" v-if="errors['data.email'] || errors['data.surname'] || errors['data.name']">
                             If you use automatically data pres reload page and try again!
                         </div>
                     </div>
@@ -60,9 +60,22 @@
                     <div class="row">
                         <div class="col-md-12">
                             <div class="form-group">
-                                <textarea rows="6" name="text" v-model="text" id="text" maxlength="500" placeholder="Your comment (Write comments only in English, no more than 500 characters!)" class="form-control textarea"></textarea>
-                                <div class="alert alert-danger" role="alert" v-if="errors.text">
+                                <textarea rows="6" name="text" v-model="data.text" id="text" maxlength="500" placeholder="Your comment (Write comments only in English, no more than 500 characters!)" class="form-control textarea"></textarea>
+                                <div class="alert alert-danger" role="alert" v-if="errors['data.text']">
                                     Comment text is validation
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row" v-if="answer_array.answer">
+                        <div class="col-md-12">
+                            <div class="alert alert-warning" role="alert">
+                                <div class="row">
+                                    You whill make comment answer!
+                                </div>
+                                <div class="row">
+                                    <a @click="disable_answer()">Click here for disabled answer and make regular comment!</a>
                                 </div>
                             </div>
                         </div>
@@ -86,16 +99,21 @@
                             </div>
                         </div>
                         <div class="col-md-6">
-                            <div class="row">
+                            <div class="row" v-if="!comment_loader">
                                 <div class="col-xs-6 col-md-6" v-if="is_verify_isset == false">
-                                    <button class="btn btn-primary" disabled>Add comment</button>
+                                    <button type="submit" class="btn btn-primary" disabled>Add comment</button>
                                 </div>
                                 <div class="col-xs-6 col-md-6" v-else>
-                                    <button class="btn btn-primary" >Add comment</button>
+                                    <button type="submit" class="btn btn-primary" >Add comment</button>
                                 </div>
                                 <div class="col-xs-6 col-md-6">
-                                    <button @click="get_comments" class="btn btn-success pull-right" v-if="!is_refresh">Refresh ({{refresh_id}})</button>
+                                    <button type="button" @click="get_comments" class="btn btn-success pull-right" v-if="!is_refresh">Refresh ({{refresh_id}})</button>
                                     <span class="badge badge-primare mb-1 pull-right" v-if="is_refresh">Updating...</span>
+                                </div>
+                            </div>
+                            <div class="row" v-if="comment_loader">
+                                <div class="col-md-4 float-right">
+                                    <img :src="'../public/images/site_img/loading.gif'" alt="loading">
                                 </div>
                             </div>
                         </div>
@@ -108,32 +126,63 @@
             <div class="col-xs-12 col-md-8">
                 <div class="wrap">
                     <ul>
-                        <li v-for="comment in this.comments" :key="comment.id">
+                        <li v-for="comment in this.comments" :key="comment.comment.id" class="comment_board">
                             <div class="row">
-                                <hr>
-                                <span v-if="user.length != 0">
-                                    <div @click="show_complaint_modal(comment.comment.id)" v-if="!comment.user || comment.user.id != user.id" >
-                                        <i class="fa fa-ellipsis-v complaint_icon" aria-hidden="true"></i>
-                                    </div>
-                                    <button @click="del_comment(comment.comment.id)" v-else onclick="return confirm('Are you sure? Do you want to delete this comment?')" class="btn btn-danger pull-right">
-                                        del
-                                    </button>
-                                </span>
-
-                                <div class="row">
-                                    <h3 class="comentator_name"><strong>{{comment.comment.name}} {{comment.comment.surname}}</strong> </h3>
-                                </div>
-
                                 <div class="col-xs-2 col-md-2">
                                     <img :src="'/public/images/site_img/user_demo_img.gif'" />
                                 </div>
 
                                 <div class="col-xs-10 col-md-10">
                                     <div class="row">
+                                        <h3 class="comentator_name"><strong>{{comment.comment.name}} {{comment.comment.surname}}</strong> </h3>
+                                        
+                                        <span v-if="user.length != 0">
+                                            <div @click="show_complaint_modal(comment.comment.id)" v-if="!comment.user || comment.user.id != user.id || comment.comment.email != user.email" >
+                                                <i class="fa fa-ellipsis-v complaint_icon" aria-hidden="true"></i>
+                                            </div>
+                                            <button @click="del_comment(comment.comment.id)" v-else onclick="return confirm('Are you sure? Do you want to delete this comment?')" class="btn btn-danger pull-right">
+                                                del
+                                            </button>
+                                        </span>
+                                    </div>
+                                    <div class="row">
                                         <p>{{comment.comment.text}}</p>
                                     </div>
                                 </div>
+                                <div class="pull-right">
+                                    <a @click="crete_comment_answer(comment.comment.id)">Reply to comment</a>
+                                </div>
                             </div>
+                            <ul>
+                                <li v-for="answer in comment.answers" :key="answer.answer.id" class="comment_board">
+                                    <div class="row">
+
+                                        <div class="col-xs-2 col-md-2">
+                                            <img :src="'/public/images/site_img/user_demo_img.gif'" />
+                                        </div>
+
+                                        <div class="col-xs-10 col-md-10">
+                                            <div class="row">
+                                                <h6>Answer</h6>
+                                                <h3 class="comentator_name"><strong>{{answer.answer.name}} {{answer.answer.surname}} -> {{comment.comment.name}} {{comment.comment.surname}}</strong> </h3>
+                                                
+                                                <span v-if="user.length != 0">
+                                                    <div @click="show_complaint_modal(answer.answer.id)" v-if="!answer.user || answer.user.id != user.id || comment.comment.email != user.email" >
+                                                        <i class="fa fa-ellipsis-v complaint_icon" aria-hidden="true"></i>
+                                                    </div>
+                                                    <button @click="del_comment(answer.answer.id)" v-else onclick="return confirm('Are you sure? Do you want to delete this comment?')" class="btn btn-danger pull-right">
+                                                        del
+                                                    </button>
+                                                </span>
+                                            </div>
+                                            <div class="row">
+                                                <p>{{answer.answer.text}}</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </li>
+                            </ul>
+
                         </li>
                     </ul>
                 </div>
@@ -206,13 +255,16 @@
         ],
         data() {
             return {
-                name: "",
-                surname: "",
-                email: "",
-                text: "",
+                data: {
+                    name: "",
+                    surname: "",
+                    email: "",
+                    text: "",
+                    is_verify_isset: false,
+                },
 
                 is_verify_isset: false,
-                is_complaint_verify_isset: false,
+                // is_complaint_verify_isset: false,
 
                 comments: [],
                 is_refresh: false,
@@ -220,6 +272,11 @@
                 id: 0,
                 loadRecaptchaScript: false,
                 loadComplaintRecaptchaScript: false,
+
+                answer_array: {
+                    answer: false,
+                    comment_id: 0
+                },
 
                 errors: [],
                 user: [],
@@ -231,7 +288,9 @@
 
                 MIX_GOOGLE_CAPTCHA_SITE_KEY: process.env.MIX_GOOGLE_CAPTCHA_SITE_KEY,
                 complainter_email: '',
+
                 complaint_loader: false,
+                comment_loader: false,
 
                 id: this.article_id
             }
@@ -259,11 +318,15 @@
                 this.is_verify_isset = false
             },
 
-            onComplaintCaptchaVerified() {
-                this.is_complaint_verify_isset = true
+            crete_comment_answer(id){
+                this.answer_array = {
+                    answer: true,
+                    comment_id: id
+                }
             },
-            onComplaintCaptchaExpired(){
-                this.is_complaint_verify_isset = false
+
+            disable_answer(){
+                this.answer = false
             },
 
             get_user_info() {
@@ -278,9 +341,9 @@
                 .then(response => {
                     this.user = response.data,
                     
-                    this.name = this.user.name,
-                    this.surname = this.user.surname,
-                    this.email = this.user.email
+                    this.data.name = this.user.name,
+                    this.data.surname = this.user.surname,
+                    this.data.email = this.user.email
 
                     this.complainter_email = this.user.email
                 })
@@ -299,7 +362,7 @@
                 .post('/guide_comment/add_comment_complaint/',{
                     comment_id: this.complaint_comment_id,
                     comment_complaint: this.selected_comment_complaint,
-                    email: this.complainter_email,
+                    email: this.complainter_email
                 })
                 .then(response => {
                     this.is_user_comment_complaint_model = false
@@ -311,32 +374,31 @@
             },
 
             add_comment() {
+                this.comment_loader = true
+                this.data.is_verify_isset = this.is_verify_isset
                 axios
                 .post('/guide_comment/create_comment/' + this.id, {
-                    name: this.name,
-                    is_verify_isset: this.is_verify_isset,
-                    surname: this.surname,
-                    email: this.email,
-                    text: this.text,
-                    article_id: this.id
+                    data: this.data,
+                    answer_array: this.answer_array
                 })
                 .then(response => {
                     this.get_comments()
-                    // alert(response.data['message'])
                     this.errors = []
+                    this.data.text = ""
 
-                    // this.name = "",
-                    // this.surname = "",
-                    // this.email = "",
-                    this.text = ""
+                    this.answer_array = {
+                        answer: false,
+                        comment_id: 0
+                    }
 
-                    // this.is_verify_isset = false
+                    alert(response.data)
                 })
                 .catch(error => {
                     if (error.response.status == 422) {
                         this.errors = error.response.data.errors
                     }
                 })
+                .finally(() => this.comment_loader = false);
             },
 
             del_comment(id) {
@@ -356,11 +418,11 @@
                 .get('/guide_comment/get_article_comments/' + this.id)
                 .then(response => {
                     this.comments = response.data
-                    this.is_refresh = false
-                    this.refresh_id++ 
                 })
-                .catch(
-                );
+                .catch();
+
+                this.is_refresh = false
+                this.refresh_id++ 
             },
         }
     }
@@ -374,8 +436,20 @@
     }
     .comentator_name{
         margin: 0px;
-        margin-left: 18%;
+        /* margin-left: 18%; */
         float: left;
         color: #000;
+    }
+    .comment_board{
+        border: solid;
+            /* border-top-width: medium;
+            border-right-width: medium;
+            border-bottom-width: medium;
+            border-left-width: medium; */
+        border: 0, 1, 0;
+        border-width: 2px 0 0 2px;
+        border-radius: 3px 0 0 5px;
+
+        margin-bottom: 22px;
     }
 </style>

@@ -55,7 +55,21 @@ export default {
 
         openImg,
     },
-    props: ["article_id"],
+    props: [
+        "article_id_prop"
+    ],
+    watch: {
+        // $route(to, from) {
+        //     this.get_outdoor_routes();
+        //     this.get_spot_rocks_images();
+        // },
+        
+        article_id_prop: function(){
+            this.article_id_prop = this.id
+            this.get_outdoor_routes();
+            this.get_spot_rocks_images();
+        },
+    },
     data: function () {
         return {
             climbing_area: [],
@@ -68,20 +82,12 @@ export default {
             route_detals: [],
 
             mtp_detals: [],
-            id: this.article_id
+            id: 0
         };
     },
     mounted() {
-        this.get_outdoor_routes();
-        this.get_spot_rocks_images();
+        // this.get_outdoor_routes();
         // this.get_spot_rocks_images();
-    },
-
-    watch: {
-        $route(to, from) {
-            this.get_outdoor_routes();
-            this.get_spot_rocks_images();
-        },
     },
     methods: {
         update(id){

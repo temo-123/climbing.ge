@@ -19,6 +19,8 @@ return new class extends Migration
             $table->string('stars')->nullable();
 
             $table->string('text')->nullable();
+            
+            $table->string('integer')->nullable();
             $table->string('climbed_data')->nullable();
 
             $table->unsignedBigInteger('route_id');

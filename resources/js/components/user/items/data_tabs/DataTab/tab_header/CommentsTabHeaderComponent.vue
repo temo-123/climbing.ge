@@ -3,21 +3,27 @@
         <th style="text-align: center">
             <input type="checkbox" class="all" />
         </th>
-        <th>|</th>
-
-        <th>Comment ID</th>
-        <th>|</th>
         
-        <th v-if="table_name == 'Products comments' || table_name == 'Guide comments'">Comententor</th>
-        <th v-if="table_name == 'Products comments' || table_name == 'Guide comments'">|</th>
+        <th>|</th>
+        <th>Comment ID</th>
 
-        <th v-if="table_name == 'Products comments' || table_name == 'Guide comments'">Comententor Email</th>
-        <th v-if="table_name == 'Products comments' || table_name == 'Guide comments'">|</th>
+        <th v-if="table_name == 'Guidebook comments'">|</th>
+        <th v-if="table_name == 'Guidebook comments'">Published</th>
 
-        <th>Delite</th>
+        <th>|</th>
+        <th>Article</th>
+        
+        <th v-if="table_name == 'Guidebook comments'">|</th>
+        <th v-if="table_name == 'Guidebook comments'">Comententor</th>
 
-        <th v-if="table_name == 'Products comments' || table_name == 'Guide comments'">|</th>
-        <th v-if="table_name == 'Products comments' || table_name == 'Guide comments'">Hide</th>
+        <th v-if="table_name == 'Guidebook comments'">|</th>
+        <th v-if="table_name == 'Guidebook comments'">Comententor Email</th>
+
+        <th v-if="table_name == 'Guidebook comments'">|</th>
+        <th v-if="table_name == 'Guidebook comments'">Delite</th>
+
+        <th v-if="table_name == 'Guidebook comments'">|</th>
+        <th v-if="table_name == 'Guidebook comments'">Hide</th>
     </tr>
 </template>
 

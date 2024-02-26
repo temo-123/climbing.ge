@@ -1,13 +1,13 @@
 <?php
 
-namespace App\Notifications;
+namespace App\Notifications\comments;
 
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 
-class CommentComplaintDecisionToDecisionerNotification extends Notification
+class CommentAnswerNotification extends Notification
 {
     use Queueable;
 
@@ -18,14 +18,11 @@ class CommentComplaintDecisionToDecisionerNotification extends Notification
      */
     public function __construct($info)
     {
-        $this->cause = $info['cause'];
+        // $this->article_title -> $info->article_title;
 
-        if($info['decision'] == 'approve_request'){
-            $this->decision_message = 'We reviewed your request and made a decision, approve request and delete this comment!';
-        }
-        else if($info['decision'] == 'reject_request'){
-            $this->decision_message = 'We reviewed your request and made a decision, reject request don`t delete this comment!';
-        }
+        $this->article_title = $info['us_article_title'];
+        $this->url_title = $info['url_title'];
+        $this->category = $info['category'];
     }
 
     /**
@@ -47,17 +44,19 @@ class CommentComplaintDecisionToDecisionerNotification extends Notification
      */
     public function toMail($notifiable)
     {
-        // return (new MailMessage)->markdown('emails.comment.comment_complaint_decision_to_decisione_notification');
+        // return (new MailMessage)
+        //             ->line('The introduction to the notification.')
+        //             ->action('Notification Action', url('/'))
+        //             ->line('Thank you for using our application!');
 
         return (new MailMessage)
-            ->markdown('emails.comment.comment_complaint_decision_to_decisione_notification', 
+            ->markdown('emails.comment.comment_answer_notificatione', 
                 [
-                    'cause'=>$this->cause,
-                    'decision_message'=>$this->decision_message,
+                    'article_title'=>$this->article_title,
+                    'url'=>env('APP_SSH').env('SITE_URL').'/'.$this->category.'/'.$this->url_title,
                 ]
             )
-            ->subject('Comment Complaint Decision')
-        ;
+            ->subject('Comment Complaint Decision');
     }
 
     /**

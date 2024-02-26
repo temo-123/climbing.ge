@@ -39,9 +39,12 @@ export default {
     components: { 
         //
     },
-    props: [
-        // "sector",
-    ],
+    props: {
+        actyve_stars_prop: {
+            type: [String, Number],
+            default: 0
+        },
+    },
     data: function () {
         return {
             stars_arr: {
@@ -55,7 +58,68 @@ export default {
         };
     },
     mounted() {
-        //
+        this.stars_arr = {
+            st_1: false,
+            st_2: false,
+            st_3: false,
+            st_4: false,
+            st_5: false,
+        }
+        this.stars = 0
+    },
+
+    watch: {
+        actyve_stars_prop: function(){
+            if (this.actyve_stars_prop > 0) {
+                this.stars = this.actyve_stars_prop
+
+                if(this.stars == 1){
+                    this.stars_arr = {
+                        st_1: true,
+                        st_2: false,
+                        st_3: false,
+                        st_4: false,
+                        st_5: false,
+                    }
+                }
+                else if(this.stars == 2){
+                    this.stars_arr = {
+                        st_1: true,
+                        st_2: true,
+                        st_3: false,
+                        st_4: false,
+                        st_5: false,
+                    }
+                }
+                else if(this.stars == 3){
+                    this.stars_arr = {
+                        st_1: true,
+                        st_2: true,
+                        st_3: true,
+                        st_4: false,
+                        st_5: false,
+                    }
+                }
+                else if(this.stars == 4){
+                    this.stars_arr = {
+                        st_1: true,
+                        st_2: true,
+                        st_3: true,
+                        st_4: true,
+                        st_5: false,
+                    }
+                }
+                else if(this.stars == 5){
+                    this.stars_arr = {
+                        st_1: true,
+                        st_2: true,
+                        st_3: true,
+                        st_4: true,
+                        st_5: true,
+                    }
+                }
+            }
+        },
     },
     methods: {
         actyvate_star(st_num){

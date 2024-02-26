@@ -60,7 +60,7 @@ class ArticlesService extends LocaleContentService
             "locale_data"=>$locale_article['locale_data'], 
             "global_data"=>$locale_article['global_data'], 
 
-            "global_info"=>[
+            "general_info"=>[
                 "info_block" => [],
                 "what_need_info" => [],
                 "best_time" => [],
@@ -69,16 +69,16 @@ class ArticlesService extends LocaleContentService
         ];
 
         if(isset($general_data['info_block'])){
-            $art_array['global_info']['info_block'] = $general_data['info_block'];
+            $art_array['general_info']['info_block'] = $general_data['info_block'];
         }
         if(isset($general_data['what_need_info'])){
-            $art_array['global_info']['what_need_info'] = $general_data['what_need_info'];
+            $art_array['general_info']['what_need_info'] = $general_data['what_need_info'];
         }
         if(isset($general_data['best_time'])){
-            $art_array['global_info']['best_time'] = $general_data['best_time'];
+            $art_array['general_info']['best_time'] = $general_data['best_time'];
         }
         if(isset($general_data['routes_info'])){
-            $art_array['global_info']['routes_info'] = $general_data['routes_info'];
+            $art_array['general_info']['routes_info'] = $general_data['routes_info'];
         }
 
         return $art_array;

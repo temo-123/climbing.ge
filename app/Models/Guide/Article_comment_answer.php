@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Models;
+namespace App\Models\Guide;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Product_feedback_querie extends Model
+class Article_comment_answer extends Model
 {
     use HasFactory;
 }

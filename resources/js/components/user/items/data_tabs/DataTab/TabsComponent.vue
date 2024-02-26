@@ -239,7 +239,7 @@
                                     :table_name="data.table_name"
                                 />
                             </thead>
-                            <tbody v-else-if="data.table_name == 'Guide comments' || data.table_name == 'My goudbook comments'">
+                            <tbody v-else-if="data.table_name == 'Guidebook comments' || data.table_name == 'My guidebook comments'">
                                 <commentTabHeader 
                                     :table_name="data.table_name"
                                 />
@@ -249,8 +249,13 @@
                                     :table_name="data.table_name"
                                 />
                             </tbody>
-                            <tbody v-else-if="data.table_name == 'Product feedbacks' || data.table_name == 'My product feedbacks'">
+                            <tbody v-else-if="data.table_name == 'Product feedbacks' || data.table_name == 'My products feedbacks'">
                                 <feedbackTabHeader 
+                                    :table_name="data.table_name"
+                                />
+                            </tbody>
+                            <tbody v-else-if="data.table_name == 'Non Registered Commenter List'">
+                                <non_registered_commenter_tab_header 
                                     :table_name="data.table_name"
                                 />
                             </tbody>
@@ -332,7 +337,7 @@
                                     @restart="update"
                                 />
                             </tbody>
-                            <tbody v-else-if="data.table_name == 'Guide comments' || data.table_name == 'My goudbook comments'">
+                            <tbody v-else-if="data.table_name == 'Guidebook comments' || data.table_name == 'My guidebook comments'">
                                 <commentsTab
                                     v-for="table_info in data.data"
                                     :key="table_info.id"
@@ -355,14 +360,26 @@
                                     @restart="update"
                                 />
                             </tbody>
-                            <tbody v-else-if="data.table_name == 'Product feedbacks' || data.table_name == 'My product feedbacks'">
+                            <tbody v-else-if="data.table_name == 'Non Registered Commenter List'">
+                                <non_registered_commenter_tab
+                                    v-for="table_info in data.data"
+                                    :key="table_info.id"
+                                    :table_info="table_info"
+                                    :table_name="data.table_name"
+
+                                    :feedbacks_tab_name="data.table_name"
+                                    
+                                    @restart="update"
+                                />
+                            </tbody>
+                            <tbody v-else-if="data.table_name == 'Product feedbacks' || data.table_name == 'My products feedbacks'">
                                 <feedbackTab
                                     v-for="table_info in data.data"
                                     :key="table_info.id"
                                     :table_info="table_info"
                                     :table_name="data.table_name"
 
-                                    :comments_tab_name="data.table_name"
+                                    :feedbacks_tab_name="data.table_name"
                                     
                                     @restart="update"
                                 />
@@ -625,6 +642,7 @@ import toureCategoryTabHeader from "./tab_header/ToureCategoryTabHeaderComponent
 import commentTabHeader from "./tab_header/CommentsTabHeaderComponent.vue"
 import reviewTabHeader from "./tab_header/ReviewTabHeaderComponent.vue"
 import feedbackTabHeader from "./tab_header/FeedbackTabHeaderComponent.vue"
+import non_registered_commenter_tab_header from "./tab_header/NonRegisteredCommenterTabHeader.vue"
 
 import eventTab from "./tabs/EventTabComponent.vue";
 import sectorLocalImageTab from "./tabs/SectorLocalImageTabComponent.vue";
@@ -656,6 +674,7 @@ import toureTab from "./tabs/ToursTabComponent.vue";
 import toureCategoryTab from "./tabs/ToureCategoriesTabComponent.vue";
 import reviewTab from "./tabs/ReviewTabComponent.vue";
 import feedbackTab from "./tabs/FeedbackTabComponent.vue";
+import non_registered_commenter_tab from "./tabs/NonRegisteredCommenterTab.vue"
 
 //import sectorModal from "./tab_modals/SectorsModalComponent.vue";
 import addToureCategoryModal from "./tab_modals/add/AddToureCategoryModal.vue";
@@ -688,6 +707,7 @@ export default {
         commentTabHeader,
         reviewTabHeader,
         feedbackTabHeader,
+        non_registered_commenter_tab_header,
 
         sectorLocalImageTab,
         routeTab,
@@ -719,6 +739,7 @@ export default {
         toureCategoryTab,
         reviewTab,
         feedbackTab,
+        non_registered_commenter_tab,
 
         saleCodeModal,
         countryAddModal,

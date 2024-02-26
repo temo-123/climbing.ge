@@ -17,8 +17,8 @@
 
                             <hr>
 
-                            <!-- <p>Alse you can see sport climbing routes authers and them conts.</p>
-                            <routesAutersModal /> -->
+                            <p>Alse you can see sport climbing routes authers and them conts.</p>
+                            <routesAutersModal />
                         </div>
                     </div>
                 </div>
@@ -78,7 +78,7 @@
     import servicesListComponent from '../../global_components/ServicesListComponent.vue'
     import messageComponent from '../../global_components/MessageComponent'
     import metaData from '../items/MetaDataComponent'
-    import RoutesAutersModal from '../items/RoutesAutersModal.vue'
+    import RoutesAutersModal from '../items/climbing_routes/items/modals/RoutesAutersListModal.vue'
 
     export default {
         components: {

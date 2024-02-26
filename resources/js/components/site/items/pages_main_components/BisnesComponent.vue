@@ -32,12 +32,12 @@
 </template>
 
 <script>
-    import commentForm from './CommentFormComponent'
-    import bisnesGalleryComponent from './galleries/BisnesGalleryComponent'
-    import bisnesRightMenu from './navbars/BisnesRightMenuComponent'
-    import SimilarArticles from './SimilarArticlesComponent'
-    import breadcrumb from './BreadcrumbComponent.vue'
-    import articleTextBlocks from './ArticleTextBlocksComponent'
+    import commentForm from '../comments/CommentFormComponent'
+    import bisnesGalleryComponent from '../galleries/BisnesGalleryComponent'
+    import bisnesRightMenu from '../navbars/BisnesRightMenuComponent'
+    import SimilarArticles from '../SimilarArticlesComponent'
+    import breadcrumb from '../BreadcrumbComponent.vue'
+    import articleTextBlocks from '../article/ArticleTextBlocksComponent'
 
     export default {
         props: [

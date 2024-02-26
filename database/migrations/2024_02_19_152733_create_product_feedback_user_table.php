@@ -13,13 +13,13 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('article_comment_queries', function (Blueprint $table) {
-            $table->bigIncrements('id');
-        
-            $table->foreignId('user_id')->constrained();
+        Schema::create('product_feedback_user', function (Blueprint $table) {
+            $table->id();
 
-            $table->unsignedBigInteger('comment_id');
-            $table->foreign('comment_id')->references('id')->on('article_comments');
+            $table->foreignId('user_id')->constrained();
+            
+            $table->unsignedBigInteger('feedback_id');
+            $table->foreign('feedback_id')->references('id')->on('product_feedbacks');
 
             $table->timestamps();
         });
@@ -32,6 +32,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('article_comment_queries');
+        Schema::dropIfExists('product_feedback_user');
     }
 };

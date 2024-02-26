@@ -59,7 +59,7 @@
                         </span>
                     </div> 
 
-                    <articleTextBlocks :article="this.mount_route"/>
+                    <articleTextBlocks :article_prop="this.mount_route"/>
 
                     <!-- route -->
                     <div v-if="this.mount_route.locale_data.route">
@@ -70,7 +70,9 @@
                         <span v-html="this.mount_route.locale_data.route"></span>
                     </div>
                     
-                    <galleryComponent :article_id="this.mount_route.global_data.id" />
+                    <galleryComponent 
+                        :article_id="this.mount_route.global_data.id"
+                        ref="gallery_component" />
 
                 </div>
 
@@ -78,13 +80,18 @@
             
         </div>
 
-        <commentForm :article_id="this.mount_route.global_data.id" />
+        <commentForm 
+            :article_id="this.mount_route.global_data.id" 
+            ref="comments"
+        />
 
         <SimilarArticles 
             :article_id="this.mount_route.global_data.id" 
             :article_category="this.mount_route.global_data.category" 
-            :route="'outdoor/'"
-            :img_dir="'outdoor'"
+            :route="'mountaineering/'"
+            :img_dir="'mount_route_description_img'"
+
+            ref="similar_articles"
         />
         
         <metaData 
@@ -96,14 +103,14 @@
 </template>
 
 <script>
-    import commentForm from '../items/CommentFormComponent'
+    import commentForm from '../items/comments/CommentFormComponent'
     import galleryComponent from '../items/galleries/GalleryComponent'
     import articleRightMenu from '../items/navbars/RightMenuComponent'
     import metaData from '../items/MetaDataComponent'
     import SimilarArticles from '../items/SimilarArticlesComponent'
     import MountaineeringRouteImages from '../items/MountaineeringRouteImages'
     import breadcrumb from '../items/BreadcrumbComponent.vue'
-    import articleTextBlocks from '../items/ArticleTextBlocksComponent'
+    import articleTextBlocks from '../items/article/ArticleTextBlocksComponent'
 
     export default {
         props: [
@@ -135,14 +142,21 @@
             '$route' (to, from) {
                 this.get_mount_route(),
                 window.scrollTo(0,0)
-            }
+            },
         },
         methods: {
+            update_similar_articles_component(id){
+                this.$refs.similar_articles.update(id)
+                // this.$refs.routes_tab.update(id)
+                this.$refs.gallery_component.update(id)
+                this.$refs.comments.update(id)
+            },   
             get_mount_route(){
                 axios
                 .get('../api/article/mount_route/'+localStorage.getItem('lang')+'/'+this.$route.params.url_title)
                 .then(response => {
                     this.mount_route = response.data
+                    this.update_similar_articles_component(response.data.global_data.id)
                     this.get_mount_masiv()
                 })
                 .catch(error =>{

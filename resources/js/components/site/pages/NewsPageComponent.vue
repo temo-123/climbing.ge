@@ -4,7 +4,7 @@
             <articlePreloader />
         </span>
         <span v-else-if="!article_loading">
-            <articlPage :article="news" />
+            <articlPage :article_prop="news" />
         </span>
 
         <metaData 
@@ -16,7 +16,7 @@
 </template>
 
 <script>
-    import articlPage from '../items/ArticleComponent'
+    import articlPage from '../items/pages_main_components/ArticleComponent'
     import metaData from '../items/MetaDataComponent'
     import articlePreloader from "../items/article/ArticlePreloaderComponent.vue";
 

@@ -113,7 +113,7 @@
                     this.mount_routes = response.data
                 })
                 .catch(
-                    error => console.log(error)
+                    // error => console.log(error)
                 )
                 .finally(() => this.mount_route_loading = false)
             },
@@ -140,28 +140,6 @@
                     this.get_selected_mount_data(this.filter_mount)
                 }
             },
-
-            // filter_mount_routes(){
-            //     let vm = this;
-            //     if (vm.filter_mount === 'All') {
-            //         this.filtred_mount_routes = this.mount_routes
-            //     }else{
-            //         this.filtred_mount_routes = this.mount_routes.filter(function (item){
-            //             return item.mount_id == vm.filter_mount
-            //         })
-            //     }
-            // },
-
-            // get_mount_routes(){
-            //     axios
-            //     .get('/articles/mount_route/'+localStorage.getItem('lang'))
-            //     .then(response => {
-            //         this.mount_routes = response.data,
-            //         this.filter_mount_routes()
-            //     })
-            //     .catch(error =>{
-            //     })
-            // },
 
             get_mounts(){
                 axios

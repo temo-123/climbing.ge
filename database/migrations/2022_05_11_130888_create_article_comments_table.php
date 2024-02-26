@@ -21,10 +21,8 @@ return new class extends Migration
             $table->string('email')->nullable();
             $table->text('text')->nullable();
 
-            // $table->integer('user_id')->nullable();
-            // $table->integer('article_id')->nullable();
+            $table->bigIncrements('published')->nullable();
 
-            // $table->foreignId('user_id')->constrained()->onDelete('cascade');
             $table->foreignId('article_id')->constrained();
 
             $table->string('deleted_reason')->nullable();

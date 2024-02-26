@@ -23,6 +23,8 @@ return new class extends Migration
 
             $table->string('stars')->nullable();
 
+            $table->bigIncrements('published')->nullable();
+
             $table->foreignId('product_id')->constrained();
 
             $table->string('deleted_reason')->nullable();

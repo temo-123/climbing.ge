@@ -5,50 +5,98 @@ namespace App\Http\Controllers\Api\Guide;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
-use Validate;
 use auth;
 use Notification;
 
-use App\Models\Comment;
-use App\Models\Article_comment_complaint;
-use App\Models\Article;
-use App\Models\Article_comment_query;
 use App\Models\User;
-use App\Models\Site;
+use App\Models\Comment;
+use App\Models\Article;
+use App\Models\Guide\Article_comment_answer;
+use App\Models\Locale_article;
 use App\Models\Article_comment_user;
-use App\Notifications\DeleteCommentNotification;
-use App\Notifications\CommentComplaintDecisionToDecisionerNotification;
-use App\Notifications\AdminComplaintNotification;
+use App\Models\Article_comment_complaint;
 
 use App\Services\CommentService;
+
+use App\Notifications\comments\CommentAnswerNotification;
 
 class CommentController extends Controller
 {
     public function get_all_comments()
     {
-        return Comment::get();
+        if(Comment::count() > 0){
+            $all_comments = Comment::latest()->get();
+
+            $comments = [];
+            foreach ($all_comments as $comment) {
+                
+                array_push($comments, [
+                    'comment' => $comment, 
+                    'global_article' => $comment->article,
+                ]);
+            }
+            
+            return $comments;
+        }
     }
 
     public function get_user_comments()
     {
         $user_id = auth()->user()->id;
 
-        $user = user::where("id", "=", $user_id)->first();
-        return $user->comments;
+        if(user::where("id", "=", $user_id)->count() > 0){
+            $user = user::where("id", "=", $user_id)->latest()->first();
+
+            if($user->product_feedbacks){
+                $user_comments = $user->article_comments;
+
+                $comments = [];
+                foreach ($user_comments as $comment) {
+
+                    array_push($comments, [
+                        'comment' => $comment, 
+                        'locale_article' => $comment->article->us_article,
+                        'global_article' => $comment->article
+                    ]);
+                }
+                
+                return $comments;
+            }
+        }
     }
 
-    public function get_article_comments(Request $request)
+    public static function get_article_comments(Request $request)
     {
-        $comments = Comment::where("article_id", '=', $request->article_id)->where("deleted_reason", '=', null)->latest()->get();
+        $comments_without_answers = Comment::where("article_id", '=', $request->article_id)->where("deleted_reason", '=', null)->where("published", '=', 1)->latest('id')->get();
+        $comments_with_answers = Comment::where("article_id", '=', $request->article_id)->where("deleted_reason", '=', null)->where("published", '=', 1)->latest('id')->get();
+
         $comment_array = [];
 
-        foreach ($comments as $comment) {
-            if($comment->user->first() != []){
-                array_push($comment_array, ["comment" => $comment, "user" => $comment->user->first()]);
+        foreach ($comments_with_answers as $comment) {
+            if($comment->answers->count() > 0){
+                foreach ($comment->answers as $ans) {
+                    $comments_without_answers = $comments_without_answers->filter(fn ($item) => $item->id !== $ans->id);
+                }
             }
-            else {
-                array_push($comment_array, ["comment" => $comment]);
+        }
+
+        foreach ($comments_without_answers as $comment) {
+            $answers_array = [];
+
+            if($comment->answers->count() > 0){
+                foreach ($comment->answers as $ans) {
+                    array_push($answers_array, [
+                        'answer' => $ans,
+                        'user' => $ans->user->first(),
+                    ]);
+                }
             }
+
+            array_push($comment_array, [
+                'comment' => $comment, 
+                'user' => $comment->user->first(),
+                'answers' => $answers_array
+            ]);
         }
 
         return $comment_array;
@@ -56,73 +104,62 @@ class CommentController extends Controller
 
     public function create_comment(Request $request)
     {
-        CommentService::create_comment($request, Comment::class, Article_comment_user::class, Article_comment_query::class, 'article');
+        $return = CommentService::create_comment($request, Comment::class, Article_comment_user::class, 'article', 'comment');
+
+        if($request->answer_array['answer']){
+            $new_answer = new Article_comment_answer;
+            $new_answer['answer_id'] = $return['new_comment_id'];
+            $new_answer['comment_id'] = $request->answer_array['comment_id'];
+            $new_answer->save();
+
+            $comment = Comment::where("id", '=', $new_answer['comment_id'])->first();
+            $article = Article::where("id", '=', $comment['article_id'])->first();
+            $us_article = $article->us_article;
+            
+            $info = [
+                'us_article_title' => $us_article->title,
+                'url_title' => $article->url_title,
+                'category' => $article->category
+            ];
+            Notification::route('mail', $comment->email)->notify(new CommentAnswerNotification($info));
+        }
+
+        return $return['message'];
     }
 
     public function del_comment($id)
     {
-        CommentService::del_comment($id, Comment::class, Article_comment_user::class);
-    }
+        $comment = Comment::where("id", '=', $id)->first();
+        $answers = $comment->answers;
 
-    public function del_user_comment(Request $request)
-    {
-        if ($request->isMethod('post')) {
-            $comment = Comment::where('id', '=', $request->comment_id)->first();
-            $comment['deleted_reason'] = $request->cause;
-            $comment['deleted_at'] =  date("Y-m-d H:I:s");
-            $comment->save();
+        $comment_deliting = CommentService::del_comment($id, Comment::class, Article_comment_user::class, 'comment');
 
-            (new static)->comment_delete_notification($request->cause, $comment['deleted_at'], $comment, $comment['article_id']);
+        if($answers->count() > 0){
+            foreach ($answers as $answer) {
+                $answer_deliting = CommentService::del_comment($answer->id, Comment::class, Article_comment_user::class, 'comment');
+            }
         }
+
+        // return $comment_deliting;
     }
 
-    public function get_quick_comment(Request $request)
+    public function hide_comment(Request $request)
+    {
+        $data = $request['data'];
+
+        $actyve_comment = Comment::where("id", '=', $data['comment_id'])->first();
+        
+        return CommentService::comment_hide($data['complaint'], date("Y-m-d H:I:s"), $data['email'], $actyve_comment->id, $data['comment_id'], Comment::class, Article::class, 'article', 'comment');
+    }
+
+    public function get_actyve_comment(Request $request)
     {
         return Comment::where('id',strip_tags($request->comment_id))->first();
     }
 
-    // public function comment_validate($request)
-    // {
-    //     $request->validate([
-    //         'name' => 'required|max:25',
-    //         'surname' => 'required|max:55',
-    //         'email' => 'required|email',
-    //         'text' => 'required',
-    //         // 'is_verify_isset' => 'required|boolean|in:true',
-    //     ]);
-    // }
-
     public function add_comment_complaint(Request $request)
     {
-        if (Auth::user()) {
-            $user_complaint_count = Article_comment_complaint::where('user_id', '=', Auth::user())->where('comment_id', '=', $request->comment_id)->count();
-
-            if($user_complaint_count){
-                return('You olrede have complaint on this comment!');
-            }
-            else{
-                $comment_complaint = new Article_comment_complaint;
-        
-                $comment_complaint->comment_id = $request->comment_id;
-                $comment_complaint->complaint = $request->comment_complaint;
-                // $comment_complaint->email = $request->email;
-                $comment_complaint->user_id = Auth::user()->id;
-                
-                $comment_complaint->save();
-
-                if($request->comment_complaint == "This is my comment"){
-                    $query = Article_comment_query::where('comment_id', '=', $request->comment_id)->first();
-                    $query -> delete();
-                }
-
-                (new static)->admin_complaint_notification();
-
-                return('Thank you! We will look into your complaint and let you know!');
-            }
-        }
-        else{
-            return('Plees login');
-        }
+        return CommentService::add_complaint($request, Article_comment_complaint::class, 'article', 'comment');
     }
 
     public function get_comments_complaints(Request $request)
@@ -130,79 +167,13 @@ class CommentController extends Controller
         return Article_comment_complaint::get();
     }
 
-    public function get_user_queries(Request $request)
-    {
-        return Article_comment_query::where('user_id', '=', $request->user_id)->get();
-    }
-
     public function make_decision(Request $request)
     {
-        if($request->decision == 'approve_request'){
-            $complaint = Article_comment_complaint::where('id', '=', $request->complaint_id)->first();
-
-            $comment = Comment::where('id', '=', $request->comment_id)->first();
-            $comment['deleted_reason'] = $complaint->complaint;
-            $comment['deleted_at'] =  date("Y-m-d H:I:s");
-            $comment->save();
-
-            (new static)->comment_delete_notification($complaint->complaint, $comment['deleted_at'], $comment, $comment['article_id']);
-            (new static)->comment_complaint_decision_to_decisione_notification($request->decision, $complaint, $request->decision);
-
-            $complaint->delete();
-
-            return 'approve_request';
-        }
-        else if($request->decision == 'reject_request'){
-            $complaint = Article_comment_complaint::where('id', '=', $request->complaint_id)->first();
-
-            (new static)->comment_complaint_decision_to_decisione_notification($request->decision, $complaint, $request->decision);
-
-            $complaint->delete();
-
-            return 'reject_request';
-        }
+        return CommentService::make_decision($request, Comment::class, Article_comment_complaint::class, Article::class, 'article', 'comment');
     }
 
-    public function query_response(Request $request)
-    {
-        if($request->response == true){
-            $comment_article = new Article_comment_user;
-            $comment_article['comment_id'] = $request->comment_id;
-            $comment_article['user_id'] = Auth::user()->id;
-            $comment_article->save();
-        }
-
-        $query = Article_comment_query::where('id', '=', $request->query_id)->first();
-        $query -> delete();
-
+    public function confirm_email(Request $request) 
+    {        
+        return CommentService::confirm_email($request->email);
     }
-
-    public function comment_delete_notification($cause, $data_time, $email, $article_id)
-    {   
-        $article = Article::where('id', '=', $article_id)->first();
-        $us_article = $article->us_article;
-        
-        $info = array(  
-            'cause' => $cause,
-            'data_time' => $data_time,
-            'article_title' => $us_article->title,
-        );
-        Notification::send($email, new DeleteCommentNotification($info));
-    }
-
-    public function comment_complaint_decision_to_decisione_notification($cause, $email, $decision)
-    {
-        $info = array(  
-            'cause' => $cause,
-            'decision' => $decision,
-        );
-        Notification::send($email, new CommentComplaintDecisionToDecisionerNotification($info));
-    }
-
-    public function admin_complaint_notification()
-    {
-        $site_data = Site::first();
-        Notification::send($site_data, new AdminComplaintNotification());
-    }
-
 }

@@ -101,7 +101,12 @@
 
                         <span v-html="route.text" v-if="route.text != null"></span>
 
-                        <starsReiting ref="stars_reiting_modal"/>
+                        <!-- <starsReiting ref="stars_reiting_modal"/> -->
+
+                        <starsReiting 
+                            :reviews_count_prop = route.reviews_count
+                            :reviews_stars_prop = route.reviews_stars
+                        />
 
                         <button
                             class="btn btn-success"
@@ -178,7 +183,7 @@ export default {
                     this.route = response.data;
 
                     if(this.route.reviews_count > 0){
-                        this.$refs.stars_reiting_modal.colculate_stars(this.route.reviews_stars, this.route.reviews_count)
+                        // this.$refs.stars_reiting_modal.colculate_stars(this.route.reviews_stars, this.route.reviews_count)
                     }
                 })
                 .catch((error) => {})

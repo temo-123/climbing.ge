@@ -1,7 +1,10 @@
 <template>
     <div class="container">
 
-        <starsReiting ref="stars_reiting_modal"/>
+        <starsReiting 
+            :reviews_count_prop = 20
+            :reviews_stars_prop = 3.9
+        />
         
         <div class="row ">
             <div class="col-md-6">
@@ -24,21 +27,17 @@
             <div class="col-xs-12 col-md-8">
                 <div class="wrap">
                     <ul>
-                        <li v-for="feedback in this.feedbacks" :key="feedback.id">
+                        <li v-for="feedback in this.feedbacks" :key="feedback.feedback.id">
                             <div class="row">
                                 <hr>
                                 <span v-if="user.length != 0">
-                                    <div @click="show_complaint_modal(feedback.id)" v-if="!feedback.user || feedback.user.id != user.id" >
+                                    <div @click="show_complaint_modal(feedback.feedback.id)" v-if="!feedback.user || feedback.user.id != user.id" >
                                         <i class="fa fa-ellipsis-v complaint_icon" aria-hidden="true"></i>
                                     </div>
-                                    <button @click="del_feedback(feedback.id)" v-else onclick="return confirm('Are you sure? Do you want to delete this feedback?')" class="btn btn-danger pull-right">
+                                    <button @click="del_feedback(feedback.feedback.id)" v-else onclick="return confirm('Are you sure? Do you want to delete this feedback?')" class="btn btn-danger pull-right">
                                         del
                                     </button>
                                 </span>
-
-                                <div class="row">
-                                    <h3 class="comentator_name"><strong>{{feedback.name}} {{feedback.surname}}</strong> </h3>
-                                </div>
 
                                 <div class="col-xs-2 col-md-2">
                                     <img :src="'/public/images/site_img/user_demo_img.gif'" />
@@ -46,7 +45,17 @@
 
                                 <div class="col-xs-10 col-md-10">
                                     <div class="row">
-                                        <p>{{feedback.text}}</p>
+                                        <h3 class="comentator_name"><strong>{{feedback.feedback.name}} {{feedback.feedback.surname}}</strong> </h3>
+                                        
+                                        <starsReiting 
+                                            :reviews_count_prop = 1
+                                            :reviews_stars_prop = feedback.feedback.stars
+                                            :rewiew_count_text_prop = false
+                                        />
+                                    </div>
+
+                                    <div class="row">
+                                        <p>{{feedback.feedback.text}}</p>
                                     </div>
                                 </div>
                             </div>
@@ -69,7 +78,7 @@
     import VueRecaptcha from 'vue-recaptcha'; //https://www.npmjs.com/package/vue-recaptcha
 
     import feedbackComplaintModal from './modals/feedbacks/FeedbackComplaintModal';
-    import feadbackModal from './modals/feedbacks/FeedbackReviewModal';
+    import feadbackModal from './modals/feedbacks/FeedbackModal';
     import starsReiting from '../../global_components/StarReitingShowComponent.vue'
     
     export default {
@@ -113,7 +122,7 @@
             this.get_feedbacks()
             this.get_user_info()
 
-            this.$refs.stars_reiting_modal.colculate_stars(4.6, 6)
+            // this.$refs.stars_reiting_modal.colculate_stars(4.6, 6)
         },
         methods: {
             show_feadbacks_action(){
@@ -126,6 +135,10 @@
 
             show_complaint_modal(feedback_id){
                 this.$refs.feedback_complaint_modal.show_modal(feedback_id)
+            },
+
+            colculate_feedack_stars(stars){
+                this.$refs.feedack_stars.colculate_stars(stars, 1, false)
             },
 
             get_user_info() {
@@ -184,7 +197,7 @@
     }
     .comentator_name{
         margin: 0px;
-        margin-left: 18%;
+        /* margin-left: 18%; */
         float: left;
         color: #000;
     }

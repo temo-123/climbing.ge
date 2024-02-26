@@ -44,7 +44,7 @@
 </template>
 
 <script>
-    import user_notifications_list from '../items/UserNotificationsListComponent.vue'
+    import user_notifications_list from '../items/notificatione/UserNotificationsListComponent.vue'
     export default {
         components: {
             user_notifications_list,

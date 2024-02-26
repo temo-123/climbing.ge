@@ -10,11 +10,18 @@ use App\Services\URLTitleService;
 
 abstract class LocaleContentControllService
 {
+    
     /*
     *
-    * This function get global and local content in array for content
+    * This function upload 1 file
     *
-    * Function get 4 parameters
+    * Function get 5 parameters
+    *
+    * $image_dir            - image wai in derectory from '/public/' derectory
+    * $request              - HTTP request
+    * $form_value_id        - image value name in your form
+    * $resize               - Image resize action (defolt it null)
+    * $save_origin_image    - Save orifinal image in ./origin_img/ folder (defolt it true)
     *
     */
     public static function add_content($data, $global_model, $local_model, $prefix, $request, $image_path)
@@ -160,9 +167,15 @@ abstract class LocaleContentControllService
     
     /*
     *
-    * This function get global and local content in array for content
+    * This function upload 1 file
     *
-    * Function get 4 parameters
+    * Function get 5 parameters
+    *
+    * $image_dir            - image wai in derectory from '/public/' derectory
+    * $request              - HTTP request
+    * $form_value_id        - image value name in your form
+    * $resize               - Image resize action (defolt it null)
+    * $save_origin_image    - Save orifinal image in ./origin_img/ folder (defolt it true)
     *
     */
     public static function edit_content($data, $global_model, $local_model, $prefix, $request, $image_path)
@@ -296,9 +309,15 @@ abstract class LocaleContentControllService
     
     /*
     *
-    * This function get global and local content in array for content
+    * This function upload 1 file
     *
-    * Function get 4 parameters
+    * Function get 5 parameters
+    *
+    * $image_dir            - image wai in derectory from '/public/' derectory
+    * $request              - HTTP request
+    * $form_value_id        - image value name in your form
+    * $resize               - Image resize action (defolt it null)
+    * $save_origin_image    - Save orifinal image in ./origin_img/ folder (defolt it true)
     *
     */
     public static function del_content($global_id, $global_model, $local_model, $content_prefix, $image_prefix, $image_path)

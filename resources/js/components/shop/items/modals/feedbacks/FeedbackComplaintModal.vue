@@ -147,7 +147,7 @@
                 .catch()
             },
 
-            show_complaint_modal(feedback_id){
+            show_modal(feedback_id){
                 // alert('test')
                 this.complaint_feedback_id = feedback_id
                 this.is_user_feedback_complaint_model = true
@@ -156,7 +156,7 @@
             make_complaint(){
                 this.complaint_loader = true
                 axios
-                .post('/add_feedback_complaint/',{
+                .post('/product_feedback/add_feedback_complaint/',{
                     feedback_id: this.complaint_feedback_id,
                     feedback_complaint: this.selected_feedback_complaint,
                     email: this.complainter_email,
@@ -164,7 +164,7 @@
                 .then(response => {
                     this.is_user_feedback_complaint_model = false
                     this.selected_feedback_complaint = 'Hostile remarks'
-                    alert(response.data);
+                    // alert(response.data);
                 })
                 .catch()
                 .finally(() => this.complaint_loader = false);

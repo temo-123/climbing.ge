@@ -20,7 +20,7 @@
 
 <script>
     import articlePreloader from "../items/article/ArticlePreloaderComponent.vue";
-    import articlPage from '../items/ArticleComponent'
+    import articlPage from '../items/pages_main_components/ArticleComponent'
     import metaData from '../items/MetaDataComponent'
 
     export default {

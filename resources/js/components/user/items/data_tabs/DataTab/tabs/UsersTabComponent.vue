@@ -9,19 +9,19 @@
 
         <td>{{table_info.name}} {{table_info.surname}}</td>
 
-        <!-- <td>|</td>
-        <td>user role</td> -->
+        <td>|</td>
+        <td>{{table_info.email}}</td>
         
         <td>|</td>
-
         <td>
+            user role (beta)
             <button class="btn btn-primary" @click="open_role_editing_modal(table_info.id)" v-if="$can('edit_permissions', 'user')">Edit roles</button>
         </td>
         
-        <td>|</td>
+        <!-- <td>|</td>
         <td>
             <button type="submit" class="btn btn-warning" @click="open_create_ban_modal()" v-if="$can('create_ban', 'user')">Create Ban (beta)</button>
-        </td>
+        </td> -->
         
         <td>|</td>
         <td>

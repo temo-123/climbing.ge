@@ -38,6 +38,10 @@
           this.get_article_images();
       },
       methods: {
+          update(){
+            this.id = this.article_id
+            this.get_article_images
+          },
           get_article_images() {
               this.db_images = []
               axios

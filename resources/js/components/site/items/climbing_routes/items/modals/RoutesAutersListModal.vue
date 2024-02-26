@@ -10,7 +10,22 @@
             :cancelButton="{ visible: false, title: 'Close', btnClass: { 'btn btn-danger': true } }"
         >
             <pre class="language-vue">
-                tab
+                <table class="table table-hover" id="dev-table">
+                    <thead>
+                        <tr>
+                            <th>Author name</th>
+                            <th>|</th>
+                            <th>Routes quantity</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr v-for="(author, index) in authers" :key="index">
+                            <td>{{index}}</td>
+                            <td>|</td>
+                            <td>{{author}}</td>
+                        </tr>
+                    </tbody>
+                </table>
             </pre>
         </stack-modal>
     </span>
@@ -27,8 +42,8 @@
             return{
                 authers: [],
                 is_show_modal: false,
-                MIX_SITE_URL: process.env.MIX_SITE_URL,
-                MIX_APP_SSH: process.env.MIX_APP_SSH,
+                // MIX_SITE_URL: process.env.MIX_SITE_URL,
+                // MIX_APP_SSH: process.env.MIX_APP_SSH,
             }
         },
         mounted(){
@@ -48,3 +63,22 @@
         }
     }
 </script>
+
+<style>
+.language-vue{
+    margin: 10px 0 0 0;
+    width: 95%;
+
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    overflow-y: scroll;
+    overflow-x: hidden;
+}
+.modal-body{
+    height: 600px;
+}
+th:nth-child(2n+1) {
+  background: #d7b396;
+}
+</style>
