@@ -15,7 +15,7 @@ use App\Models\Spot_rocks_image;
 use App\Models\Sector_local_image;
 use App\Models\Sector_local_image_sector;
 
-use App\Services\ImageControllService;
+use App\Services\Abstract\ImageControllService;
 
 use Validator;
 

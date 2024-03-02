@@ -2,8 +2,8 @@
     <div class="col-sm-12">
 
         <swiperComponent 
-            v-if="slides.length > 0"
-            :images_prop="slides"
+            :category_prop="'shop'"
+            :image_path_prop="'/images/head_slider_img/shop/'"
         />
 
         <div class="row" v-if="products.length > 0">
@@ -104,14 +104,12 @@ export default {
             products: [],
             services: [],
             tours: [],
-            slides: []
         };
     },
     mounted() {
         this.get_products()
         this.get_services()
         this.get_toures()
-        this.get_swiper_slides()
     },
     methods: {
         get_products(){
@@ -142,16 +140,6 @@ export default {
             .then(response => {
                 // this.services = response.data
                 this.tours = response.data.slice(0, 3);
-            })
-            .catch(error =>{
-            })
-            // .finally(() => this.services_loading = false);
-        },
-        get_swiper_slides(){
-            axios
-            .get('/store_slides/get_slides/')
-            .then(response => {
-                this.slides = response;
             })
             .catch(error =>{
             })

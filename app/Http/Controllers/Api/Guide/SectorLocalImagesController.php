@@ -4,7 +4,8 @@ namespace App\Http\Controllers\Api\Guide;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\Services\ImageControllService;
+
+use App\Services\Abstract\ImageControllService;
 
 use App\Models\Sector_local_image;
 use App\Models\Sector_local_image_sector;

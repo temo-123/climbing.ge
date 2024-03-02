@@ -59,6 +59,7 @@ Route::group(['namespace'=>'Api'], function() {
         */
         Route::controller(ArticleController::class)->prefix('article')->group( function() {
             Route::apiResource('/', 'ArticleController');
+            Route::get('/get_category_articles/{category}', 'get_category_articles');
             Route::delete('/del_article/{article_id}', 'del_article');
             Route::post('/add_article/{category}', 'add_article');
             Route::post('/edit_article/{article_id}', 'edit_article');
@@ -225,18 +226,27 @@ Route::group(['namespace'=>'Api'], function() {
         Route::post('/edit_country/{country_id}', 'ShipedCountryController@edit_country');
         Route::delete('/del_country/{country_id}', 'ShipedCountryController@del_country');
 
-
         /*
         *   Guid gallery images routes
         */
-        Route::apiResource('/gallery_image', 'GalleryController');
-        Route::get('/swiper', 'GalleryController@get_swiper_images');
-        Route::get('/get_image/{image_id}', 'GalleryController@get_image');
-        Route::post('/gallery_image_add', 'GalleryController@gallery_image_add');
-        Route::post('/gallery_image_edit/{image_id}', 'GalleryController@gallery_image_edit');
-        Route::get('/get_editing_image/{image_id}', 'GalleryController@get_editing_image');
-
-        Route::apiResource('/gallery_image_category', 'GalleryImagesCategoryController');
+        Route::controller(ArticleGalleryController::class)->prefix('gallery_image')->group( function() {
+            // Route::get('/get_images/{article_id}', 'get_images');
+            Route::get('/get_index_gallery', 'get_index_gallery');
+            Route::get('/get_editing_images/{article_id}', 'get_editing_images');
+    
+            // Route::post('/add_image', 'add_image');
+            // Route::post('/edit_image/{image_id}', 'edit_image');
+            Route::delete('/del_image/{image_id}', 'del_image');
+        });
+        Route::controller(HeadSliderController::class)->prefix('head_slider')->group( function() {
+            Route::get('/get_slides/{slide_category}', 'get_slides');
+            Route::get('/get_all_slides', 'get_all_slides');
+            Route::get('/get_actyve_slide/{slide_id}', 'get_actyve_slide');
+    
+            Route::post('/add_slide', 'add_slide');
+            Route::post('/edit_slide/{slide_id}', 'edit_slide');
+            Route::delete('/del_slide/{slide_id}', 'del_slide');
+        });
 
         /*
         *   Site data routes
@@ -441,19 +451,6 @@ Route::group(['namespace'=>'Api'], function() {
                 Route::post('/edit_category/{category_id}', 'edit_category');
                 Route::delete('/del_category/{category_id}', 'del_category');
             });
-        });
-        
-        /*
-        *   Shop slides routes
-        */
-        Route::controller(StoreSlideController::class)->prefix('store_slides')->group( function() {
-            Route::get('/get_slides', 'get_slides');
-            Route::get('/get_all_slides', 'get_all_slides');
-            Route::get('/get_editing_slide/{slide_id}', 'get_editing_slide');
-    
-            Route::post('/add_slide', 'add_slide');
-            Route::post('/edit_slide/{slide_id}', 'edit_slide');
-            Route::delete('/del_slide/{slide_id}', 'del_slide');
         });
         
         /*

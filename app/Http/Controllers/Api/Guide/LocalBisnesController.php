@@ -11,7 +11,7 @@ use App\Models\Suport_local_bisnes;
 use App\Models\Suport_local_bisnes_image;
 
 use App\Services\URLTitleService;
-use App\Services\ImageControllService;
+use App\Services\Abstract\ImageControllService;
 
 use Validator;
 

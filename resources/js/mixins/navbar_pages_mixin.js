@@ -265,8 +265,8 @@ export const navbar = {
                         ]
                     },
                     {
-                        name: "Gallery",
-                        route: "/gallery",
+                        name: "Head Sliders",
+                        route: "/head_sliders_images",
                         permissions: [
                             ['add', 'gallery'],
                             ['edit', 'gallery'],

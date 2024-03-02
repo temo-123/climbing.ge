@@ -24,7 +24,7 @@
       data: function () {
         return {
           db_images: [],
-          images_path: '/public/images/gallery_img/',
+          images_path: '/public/images/article_gallery_img/',
         };
       },
       mounted() {
@@ -33,7 +33,7 @@
       methods: {
           get_index_gallery_image() {
               axios
-              .get('../api/gallery_image/', {
+              .get('/gallery_image/get_index_gallery/', {
               })
               .then(response => {
                   this.db_images = response.data

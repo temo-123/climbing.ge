@@ -8,7 +8,7 @@ use Illuminate\Http\Request;
 use App\Models\Article;
 use App\Models\Mount;
 use App\Services\GetMountSystemService;
-use App\Services\ImageControllService;
+use App\Services\Abstract\ImageControllService;
 use App\Models\Mount_route_image;
 use App\Services\ArticlesService;
 

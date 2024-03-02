@@ -9,7 +9,7 @@ use App\Models\Ice_route;
 use App\Models\Ice_sector;
 use App\Models\Ice_sector_image;
 use Validator;
-use App\Services\ImageControllService;
+use App\Services\Abstract\ImageControllService;
 
 class IceSectorController extends Controller
 {

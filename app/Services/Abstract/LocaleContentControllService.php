@@ -5,7 +5,7 @@ namespace App\Services\Abstract;
 use Carbon\Carbon;
 use Validator;
 
-use App\Services\ImageControllService;
+// use App\Services\ImageControllService;
 use App\Services\URLTitleService;
 
 abstract class LocaleContentControllService
@@ -99,7 +99,7 @@ abstract class LocaleContentControllService
                         'us'.$prefix.'_id' => $saiving_issets['ka_info_status'],
                         'ka'.$prefix.'_id' => $saiving_issets['ru_info_status'],
                         'ru'.$prefix.'_id' => $saiving_issets['us_info_status'],
-                        'global'.$prefix.'_id' => $saiving_issets['ka_info_status']
+                        'global'.$prefix.'_id' => $saiving_issets['global_info_status']
                     ];
                     
                     return (object) array('original' => $info);

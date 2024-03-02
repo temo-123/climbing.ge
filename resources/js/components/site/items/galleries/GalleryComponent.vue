@@ -16,41 +16,28 @@
         galleryComponrnt,
       },
       props:[
-          'article_id',
+          'images_prop',
       ],
       data: function () {
         return {
           db_images: [],
-          id: this.article_id,
-          images_path: '/public/images/gallery_img/'
+          images_path: '/public/images/article_gallery_img/'
         };
       },
       watch: {
-        '$route' (to, from) {
-          this.get_article_images();
-        },
-          article_id: function(){
-            this.id = this.article_id
-            this.get_article_images();
+        // '$route' (to, from) {
+        //   this.get_article_images();
+        // },
+        images_prop: function(){
+            this.update()
           },
       },
       mounted() {
-          this.get_article_images();
+          this.update()
       },
       methods: {
           update(){
-            this.id = this.article_id
-            this.get_article_images
-          },
-          get_article_images() {
-              this.db_images = []
-              axios
-              .get('../../api/gallery_image/' + this.id)
-              .then(response => {
-                  this.db_images = response.data
-              })
-              .catch(error =>{
-              })
+            this.db_images = this.images_prop
           },
       },
     }

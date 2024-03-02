@@ -104,6 +104,13 @@
 
                     @mount_route_img="mount_route_images = $event" 
                 />
+                
+                <gallery_images_add
+                    @update_gallery_images="update_gallery_images"
+
+                    :image_path_prop="'images/article_gallery_img/'"
+                />
+                
             </div>
             <div v-show="tab_num == 2">
                 <LocaleDataForm 
@@ -149,6 +156,8 @@
     import SectorsImagesForm from './forms/add_forms/SectorImagesFormComponent.vue'
     import MountRouteImagesForm from './forms/add_forms/MountRouteImageFormComponent.vue'
 
+    import gallery_images_add from './items/galleryImageAddComponent.vue'
+
     export default {
         components: {
 
@@ -156,7 +165,9 @@
             LocaleDataForm,
             ArticleImage,
             SectorsImagesForm,
-            MountRouteImagesForm
+            MountRouteImagesForm,
+
+            gallery_images_add
         },
         props: [
             // 'back_url',
@@ -192,7 +203,8 @@
                 },
 
                 area_images: [],
-                mount_route_images: []
+                mount_route_images: [],
+                article_gallery_image: []
             }
         },
         mounted() {
@@ -228,6 +240,10 @@
                 this.mount_route_images = event
             },
             
+            update_gallery_images(images){
+                this.article_gallery_image = images
+            },
+
             save(){
                 this.is_loading = true
                 // this.data.global_article.us_title_for_url_title = this.data.us_article.title,
@@ -238,6 +254,15 @@
                 formData.append('image', this.article_image);
                 formData.append('data', JSON.stringify(this.data))
                 formData.append('global_blocks', JSON.stringify(this.global_blocks))
+
+                if(this.article_gallery_image){
+                    var loop_num = 0
+                    this.article_gallery_image.forEach(gallery_image => {
+                        formData.append('gallery_images['+loop_num+']', gallery_image.image)
+                        loop_num++
+                    });
+                    loop_num = 0
+                }
 
                 if(this.category == 'outdoor'){
                     let loop_num = 0

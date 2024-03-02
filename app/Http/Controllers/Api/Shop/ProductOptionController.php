@@ -11,7 +11,7 @@ use Auth;
 use App\Services\GetProductsService;
 use App\Services\GetProductService;
 use App\Services\URLTitleService;
-use App\Services\ImageControllService;
+use App\Services\Abstract\ImageControllService;
 
 use App\Models\Product;
 use App\Models\Product_option;
@@ -60,33 +60,42 @@ class ProductOptionController extends Controller
             $add_option->save();
 
             if($request->hasFile('images')){
-                $this->add_images($request->images, $add_option->id);
+                // $this->add_images($request->images, $add_option->id);
+                    GalleryService::add_gallery_images(
+                        $request->images, 
+                        $add_option->id, 
+                        Option_image::class, 
+                        'image', 
+                        'option_id', 
+                        '/images/product_option_img/'
+                    );
+                
             }
         }
     }
 
-    public function add_images($images, $option_id)
-    {
-        foreach ($images as $image) {
-            $file_new_name = ImageControllService::upload_loop_image('images/product_option_img/', $image, 1);
+    // public function add_images($images, $option_id)
+    // {
+    //     foreach ($images as $image) {
+    //         $file_new_name = ImageControllService::upload_loop_image('images/product_option_img/', $image, 1);
 
-            if(file_exists(public_path('images/product_option_img/') . $file_new_name)){
-                $new_option_image = new Option_image;
+    //         if(file_exists(public_path('images/product_option_img/') . $file_new_name)){
+    //             $new_option_image = new Option_image;
         
-                $new_option_image['image'] = $file_new_name;
-                $new_option_image['option_id'] = $option_id;
+    //             $new_option_image['image'] = $file_new_name;
+    //             $new_option_image['option_id'] = $option_id;
         
-                $saiving = $new_option_image -> save();
+    //             $saiving = $new_option_image -> save();
 
-                if($saiving){
-                    echo 'Upload socsesful \n';
-                }
-            }
-            else{
-                echo 'Upload error \n';
-            }
-        }
-    }
+    //             if($saiving){
+    //                 echo 'Upload socsesful \n';
+    //             }
+    //         }
+    //         else{
+    //             echo 'Upload error \n';
+    //         }
+    //     }
+    // }
 
     public function get_editing_option(Request $request)
     {
@@ -119,7 +128,15 @@ class ProductOptionController extends Controller
             $edit_option->save();
 
             if($request->hasFile('images')){
-                $this->add_images($request->images, $edit_option->id);
+                // $this->add_images($request->images, $edit_option->id);
+                GalleryService::add_gallery_images(
+                    $request->images, 
+                    $edit_option->id, 
+                    Option_image::class, 
+                    'image', 
+                    'option_id', 
+                    '/images/product_option_img/'
+                );
             }
         }
     }

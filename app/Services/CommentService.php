@@ -2,6 +2,8 @@
 
 namespace App\Services;
 
+use App\Services\Abstract\EmailVarificationeService;
+
 use Auth;
 use Validator;
 use Notification;
@@ -15,9 +17,9 @@ use App\Models\User\Non_registered_commenter;
 use App\Notifications\comments\HideCommentNotification;
 use App\Notifications\comments\CommentComplaintDecisionToDecisionerNotification;
 use App\Notifications\comments\AdminComplaintNotification;
-use App\Notifications\comments\CommentEmailVarificationNotification;
+// use App\Notifications\comments\CommentEmailVarificationNotification;
 
-class CommentService
+class CommentService extends EmailVarificationeService
 {   
     public static function create_comment($request, $comment_model, $comment_user_relation_modal, $prefix, $relatione_prefix)
     {
@@ -328,16 +330,16 @@ class CommentService
         
     }
 
-    private static function varificate_email($email, $id) {
-        $info = [
-            "host" => $_SERVER['HTTP_HOST'],
-            "id" => $id,
-            "user_email" => $email
-        ];
-        Notification::route('mail', $email)->notify(new CommentEmailVarificationNotification($info));
+    // private static function varificate_email($email, $id) {
+    //     $info = [
+    //         "host" => $_SERVER['HTTP_HOST'],
+    //         "id" => $id,
+    //         "user_email" => $email
+    //     ];
+    //     Notification::route('mail', $email)->notify(new CommentEmailVarificationNotification($info));
 
-        return ("Tenk you for comment. Please go to your email to confirm it. Your comment will not appear until you do this!");
-    }
+    //     return ("Tenk you for comment. Please go to your email to confirm it. Your comment will not appear until you do this!");
+    // }
 
     public static function confirm_email($email) {
         /*

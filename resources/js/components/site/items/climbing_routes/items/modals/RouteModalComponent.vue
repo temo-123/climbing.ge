@@ -108,19 +108,26 @@
                             :reviews_stars_prop = route.reviews_stars
                         />
 
-                        <button
+                        <!-- <button
                             class="btn btn-success"
                             @click="route_review_modal(route.id)"
+                            v-if="user.length != 0"
                         >
                             {{ $t('guide.route.make_review') }}
-                        </button>
+                        </button> -->
                         
                     </div>
                 </div>
             </div>
             <div slot="modal-footer">
                 <div class="modal-footer">
-                    <!-- footer -->
+                    <button
+                        class="btn btn-success"
+                        @click="route_review_modal(route.id)"
+                        v-if="user.length != 0"
+                    >
+                        {{ $t('guide.route.make_review') }}
+                    </button>
                 </div>
             </div>
         </stack-modal>
@@ -149,6 +156,7 @@ export default {
             is_loading: false,
 
             route: [],
+            user: [],
 
             get activ_grade() {
                 return localStorage.getItem('grade') || 'yds';
@@ -174,21 +182,47 @@ export default {
 
         show_route_modal(id) {
             this.is_show_route_modal = true;
+
+            this.clear_data()
+
+            this.auth_user()
+            this.get_route_data(id)
+        },
+
+        clear_data(){
+            this.route = []
+            this.user = []
+        },
+
+        get_route_data(id){
             this.route = [];
             this.is_loading = true
 
             axios
-                .get("../../api/route/get_route_for_modal/" + id)
-                .then((response) => {
-                    this.route = response.data;
+            .get("../../api/route/get_route_for_modal/" + id)
+            .then((response) => {
+                this.route = response.data;
 
-                    if(this.route.reviews_count > 0){
-                        // this.$refs.stars_reiting_modal.colculate_stars(this.route.reviews_stars, this.route.reviews_count)
-                    }
-                })
-                .catch((error) => {})
-                .finally(() => this.is_loading = false);
+                if(this.route.reviews_count > 0){
+                    // this.$refs.stars_reiting_modal.colculate_stars(this.route.reviews_stars, this.route.reviews_count)
+                }
+            })
+            .catch((error) => {
+                //
+            })
+            .finally(() => {
+                this.is_loading = false
+            });
         },
+
+        auth_user(){
+            axios
+            .get('/auth_user/')
+            .then(response => {
+                this.user = response.data
+            })
+            .catch()
+        }
     }
 }
 </script>

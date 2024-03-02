@@ -7,10 +7,12 @@ use Illuminate\Http\Request;
 
 
 // use App\Services\ImageEditService;
-use App\Services\ImageControllService;
-// use App\Services\URLTitleService;
+use App\Services\Abstract\ImageControllService;
+use App\Services\GalleryService;
 use App\Services\ArticlesService;
 use App\Services\GeneralInfoService;
+
+use App\Models\Guide\Article_image;
 
 use App\Models\Article;
 use App\Models\Locale_article;
@@ -44,17 +46,6 @@ use Validator;
 
 class ArticleController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
-    {
-        return Article::get();
-    }
-
-
     public function get_articles_for_forum(Request $request)
     {
         $global_news = Article::where('category', '=', $request->category)->where("published", "=", 1)->get();
@@ -68,7 +59,7 @@ class ArticleController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function get_category_articles(Request $request)
     {
         return Article::latest('id')->where('category', '=', $request->category)->get();
     }
@@ -79,13 +70,13 @@ class ArticleController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($url_title)
-    {
-        $global_news = Article::where('url_title',strip_tags($url_title))->where('published', '=', 1)->first();
-        $news = ArticlesService::get_locale_article_in_page($global_news);
+    // public function show($url_title)
+    // {
+    //     $global_news = Article::where('url_title',strip_tags($url_title))->where('published', '=', 1)->first();
+    //     $news = ArticlesService::get_locale_article_in_page($global_news);
 
-        return $news[0];
-    }
+    //     return $news[0];
+    // }
 
 
     public function add_article(Request $request)
@@ -98,6 +89,15 @@ class ArticleController extends Controller
         $article_adding = ArticlesService::add_content($data, Article::class, Locale_article::class, '_article', $request, $image_path);
         
         if (!array_key_exists('validation', $article_adding->original)) {
+            GalleryService::add_gallery_images(
+                $request->gallery_images, 
+                $article_adding->original['global_article_id'], 
+                Article_image::class, 
+                'image', 
+                'article_id', 
+                '/images/article_gallery_img/'
+            );
+
             GeneralInfoService::add_general_info_relatione($global_blocks, $article_adding->original['global_article_id'], 'article');
 
             $this->description_img($article_adding->original['global_article_id'], $global_blocks, $data, $request);
@@ -119,6 +119,15 @@ class ArticleController extends Controller
         $article_editing = ArticlesService::edit_content($data, Article::class, Locale_article::class, '_article', $request, $image_path);
 
         if(!array_key_exists('validation', $article_editing->original)){
+            GalleryService::add_gallery_images(
+                $request->gallery_images, 
+                $article_editing->original['global_article_id'], 
+                Article_image::class, 
+                'image', 
+                'article_id', 
+                '/images/article_gallery_img/'
+            );
+
             GeneralInfoService::edit_general_info_relatione($global_blocks, $article_editing->original['global_article_id'], 'article');
 
             $this->description_img($article_editing->original['global_article_id'], $global_blocks, $data, $request);
@@ -547,73 +556,11 @@ class ArticleController extends Controller
     public function get_locale_article_on_page(Request $request)
     {
         $article = [];
-        
-        if ($request->category == "outdoor") {
-            $article = $this->outdoor_page($request->lang, $request->url_title);
-        }
-        elseif ($request->category == "indoor") {
-            $article = $this->article_page($request->lang, $request->url_title);
-        }
-        elseif ($request->category == "ice") {
-            $article = $this->article_page($request->lang, $request->url_title);
-        }
-        elseif ($request->category == "news") {
-            $article = $this->article_page($request->lang, $request->url_title);
-        }
-        elseif ($request->category == "other") {
-            $article = $this->article_page($request->lang, $request->url_title);
-        }
-        elseif ($request->category == "tech_tip") {
-            $article = $this->article_page($request->lang, $request->url_title);
-        }
-        elseif ($request->category == "partnerss") {
-            $article = $this->article_page($request->lang, $request->url_title);
-        }
-        elseif ($request->category == "event") {
-            $article = $this->article_page($request->lang, $request->url_title);
-        }
-        elseif ($request->category == "mount_route") {
-            $article = $this->mount_route_page($request->lang, $request->url_title);
-        }
 
-        return $article;
-
-    }
-
-    public function outdoor_page($lang, $url_title)
-    {
-        $global_article_count = Article::where('url_title',strip_tags($url_title))->where('published', '=', 1)->count();
+        $global_article_count = Article::where('url_title',strip_tags($request->url_title))->where('published', '=', 1)->count();
         if ($global_article_count > 0) {
-            $global_article = Article::where('url_title',strip_tags($url_title))->first();
-            $article = ArticlesService::get_locale_article_in_page($global_article, $lang);
-
-            return $article;
-        }
-        else{
-            return abort(404);
-        }
-    }
-
-    public function article_page($lang, $url_title)
-    {
-        $global_article_count = Article::where('url_title',strip_tags($url_title))->where('published', '=', 1)->count();
-        if ($global_article_count > 0) {
-            $global_article = Article::where('url_title',strip_tags($url_title))->where('published', '=', 1)->first();
-            $article = ArticlesService::get_locale_article_in_page($global_article, $lang);
-
-            return $article;
-        }
-        else{
-            return abort(404);
-        }
-    }
-
-    public function mount_route_page($lang, $url_title)
-    {
-        $global_article_count = Article::where('url_title',strip_tags($url_title))->where('published', '=', 1)->count();
-        if ($global_article_count > 0) {
-            $global_article = Article::where('url_title',strip_tags($url_title))->first();
-            $article = ArticlesService::get_locale_article_in_page($global_article, $lang);
+            $global_article = Article::where('url_title',strip_tags($request->url_title))->where('published', '=', 1)->first();
+            $article = ArticlesService::get_locale_article_in_page($global_article, $request->lang);
 
             return $article;
         }
@@ -647,6 +594,7 @@ class ArticleController extends Controller
 
         $data = [
             "global_article" => $global_article,
+            "gallery_images" => $global_article->gallery_images,
             "general_data" => $blobal_data,
             "us_article" => $us_article,
             "ka_article" => $ka_article,
@@ -690,6 +638,13 @@ class ArticleController extends Controller
                                                     where('info_id',strip_tags($del_info->pivot->info_id))->
                                                     first();
                 $deliting_info -> delete();
+            }
+        }
+
+        if ($global_article->gallery_images->count() > 0) {
+            foreach ($global_article->gallery_images as $del_img) {
+                ImageControllService::image_delete('images/article_gallery_img/', $del_img, 'image');
+                $del_img -> delete();
             }
         }
 

@@ -1,16 +1,16 @@
 <template>
     <stack-modal
-        :show="is_add_image"
+        :show="is_add_image_modal"
         title="Add image"
         @close="close_add_image_modal()"
         :saveButton="{ visible: true, title: 'Save', btnClass: { 'btn btn-primary': true } }"
         :cancelButton="{ visible: false, title: 'Close', btnClass: { 'btn btn-danger': true } }"
     >
         <pre class="language-vue">
-            <span v-show="loading_addimg_data">
+            <span v-show="is_loading">
                 <img :src="'../../../public/images/site_img/loading.gif'" alt="loading">
             </span>
-            <span v-show="!loading_addimg_data">
+            <span v-show="!is_loading">
                 <form ref="slider_image_add_form" id="slider_image_add_form" v-on:submit.prevent="add_image">
                     <div class="container">
 
@@ -18,9 +18,9 @@
                             <input type="file" name="image" id="image" value="image" v-on:change="onAddImageChange" required>
                         </div>
                         <div class="row">
-                            <div class="col-md-12" v-if="error.length != 0">
-                                <div class="alert alert-danger" role="alert" v-if="error.image">
-                                    {{ error.image[0] }}
+                            <div class="col-md-12" v-if="errors.length != 0">
+                                <div class="alert alert-danger" role="alert" v-if="errors.image">
+                                    {{ errors.image[0] }}
                                 </div>
                             </div>
                         </div>
@@ -43,7 +43,7 @@
 
                         <div class="form-group clearfix row">
                             <div class="col-md-12">
-                                <textarea type="text"  name="text" rows="15" class="form-cotrol md-textarea form-control"  v-model="form_data.text" required></textarea>
+                                <textarea type="text"  name="text" rows="15" class="form-cotrol md-textarea form-control"  v-model="form_data.text"></textarea>
                             </div>
                         </div>
 
@@ -71,35 +71,94 @@
 </template>
 
 <script>
-    // import breadcrumb from '../../items/BreadcrumbComponent.vue'
-    // import { SlickList, SlickItem } from 'vue-slicksort'; //https://github.com/Jexordexan/vue-slicksort
     import StackModal from '@innologica/vue-stackable-modal'  //https://innologica.github.io/vue-stackable-modal/#sample-css
 
     export default {
         components: {
             StackModal,
-            // SlickItem,
-            // SlickList,
         },
         data(){
             return{
                 user: [],
                 MIX_SITE_URL: process.env.MIX_SITE_URL,
                 MIX_APP_SSH: process.env.MIX_APP_SSH,
+
+                is_add_image_modal: false,
+                errors: [],
+                is_loading: false,
+
+                form_data: {
+                    published: 0,
+                    category: ''
+                }
             }
         },
         mounted(){
             // 
         },
         methods: {
-            // get_user_data(){
-            //     axios
-            //     .get('/api/auth_user')
-            //     .then((response)=>{
-            //         this.user = response.data
-            //         this.get_user_queries(this.user.id)
-            //     })
-            // },
+            close_add_image_modal(action = false){
+                if(!action){
+                    if (window.confirm('Added information will be deleted!!! Are you sure, you want close modal?')) {
+                        this.is_add_image_modal = false
+                        this.clear_input_data()
+                    }
+                }
+                else{
+                    this.is_add_image_modal = false
+                    this.clear_input_data()
+                }
+            },
+            
+            show_modal(category){
+                this.clear_input_data()
+                this.form_data.category = category
+                this.is_add_image_modal = true
+            },
+
+            clear_input_data(){
+                this.errors = []
+
+                this.form_data = {
+                    published: 0,
+                    category: '',
+
+                    title: '',
+                    text: '',
+                    link: '',
+                }
+            },
+
+            onAddImageChange(e){
+                this.image = e.target.files[0];
+            },
+
+            add_image(){
+                this.is_loading = true
+                this.errors = []
+
+                let formData = new FormData();
+                formData.append('image', this.image);
+                formData.append('data', JSON.stringify(this.form_data))
+
+
+                axios
+                .post('/head_slider/add_slide/', 
+                    formData,
+                )
+                .then(response => {
+                    this.is_add_image_modal = false
+                    this.$emit("update");
+                })
+                .catch(error => {
+                    if (error.response.status == 422) {
+                        this.errors = error.response.data
+                    }
+                })
+                .finally(() =>
+                    this.is_loading = false
+                )
+            },
         }
     }
 </script>

@@ -8,6 +8,8 @@ use Spatie\Searchable\Searchable;
 use Spatie\Searchable\SearchResult;
 use Illuminate\Notifications\Notifiable;
 
+use App\Models\Guide\Article_image;
+
 class Article extends Model
 {
     use Notifiable;
@@ -19,16 +21,6 @@ class Article extends Model
 		'url_title',
 		'map',
 		'weather',
-
-		// 'completed',
-		// 'start_data',
-		// 'end_data',
-
-		// 'fb_link',
-		// 'twit_link',
-		// 'google_link',
-		// 'inst_link',
-		// 'web_link',
 	
 		'image',
 
@@ -81,7 +73,6 @@ class Article extends Model
 	}
 
 
-
 	public function general_info()
 	{
         return $this->belongsToMany(General_info::class, 'general_info_article', 'article_id', 'info_id');
@@ -89,7 +80,8 @@ class Article extends Model
 
 	public function gallery_images()
 	{
-        return $this->belongsToMany(Gallery_image::class, 'gallery_image_article', 'article_id', 'image_id');
+        // return $this->belongsToMany(Gallery_image::class, 'gallery_image_article', 'article_id', 'image_id');
+		return $this->hasMany(Article_image::class, 'article_id', 'id');
 	}
 
 

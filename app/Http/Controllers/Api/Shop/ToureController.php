@@ -11,7 +11,7 @@ use App\Models\Toure_image;
 
 use App\Services\ToureService;
 use App\Services\URLTitleService;
-use App\Services\ImageControllService;
+use App\Services\Abstract\ImageControllService;
 
 use Validator;
 
@@ -99,7 +99,15 @@ class ToureController extends Controller
                 );
                 
                 if($request->hasFile('toure_images')){
-                    $this->add_toure_images($request['toure_images'], $toure_toure_id);
+                    // $this->add_toure_images($request['toure_images'], $toure_toure_id);
+                    GalleryService::add_gallery_images(
+                        $request['toure_images'], 
+                        $toure_toure_id, 
+                        Toure_image::class, 
+                        'image', 
+                        'toure_id', 
+                        '/images/toure_img/'
+                    );
                 }
             }
         }
@@ -161,28 +169,28 @@ class ToureController extends Controller
         return $toure->id;
     }
 
-    private function add_toure_images($images, $toure_id) {
-        foreach ($images as $image) {
-            $file_new_name = ImageControllService::upload_loop_image('images/toure_img/', $image, 1);
+    // private function add_toure_images($images, $toure_id) {
+    //     foreach ($images as $image) {
+    //         $file_new_name = ImageControllService::upload_loop_image('images/toure_img/', $image, 1);
 
-            if(file_exists(public_path('images/toure_img/') . '/' . $file_new_name)){
-                $add_toure_image = new Toure_image;
+    //         if(file_exists(public_path('images/toure_img/') . '/' . $file_new_name)){
+    //             $add_toure_image = new Toure_image;
         
-                $add_toure_image['image'] = $file_new_name;
-                $add_toure_image['toure_id'] = $toure_id;
+    //             $add_toure_image['image'] = $file_new_name;
+    //             $add_toure_image['toure_id'] = $toure_id;
         
-                $saiving = $add_toure_image -> save();
+    //             $saiving = $add_toure_image -> save();
 
-                if($saiving){
-                    echo 'Mount route Upload socsesful';
-                }
-            }
-            else{
-                // return 'Upload error';
-                echo 'Mount route Upload error';
-            }
-        }
-    }
+    //             if($saiving){
+    //                 echo 'Mount route Upload socsesful';
+    //             }
+    //         }
+    //         else{
+    //             // return 'Upload error';
+    //             echo 'Mount route Upload error';
+    //         }
+    //     }
+    // }
 
     public function edit_toure(Request $request)
     {
@@ -238,7 +246,15 @@ class ToureController extends Controller
                 $saiving_issets['us_info_status'] = $this->edit_locale_toure($data['us_data'], $locale_toure_values['us_id']);
                 
                 if($request->hasFile('toure_new_images')){
-                    $this->add_toure_images($request['toure_new_images'], $locale_toure_values['global_id']);
+                    // $this->add_toure_images($request['toure_new_images'], $locale_toure_values['global_id']);
+                    GalleryService::add_gallery_images(
+                        $request['toure_new_images'], 
+                        $locale_toure_values['global_id'], 
+                        Toure_image::class, 
+                        'image', 
+                        'toure_id', 
+                        '/images/toure_img/'
+                    );
                 }
             }
         }

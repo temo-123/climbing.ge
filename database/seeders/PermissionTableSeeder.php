@@ -431,6 +431,7 @@ class PermissionTableSeeder extends Seeder
                 'subject' => 'routes_rewiew',
                 'action' => 'del',
             ],
+            // -----------------------------------------------
             [
                 'subject' => 'worker',
                 'action' => 'show',
@@ -470,6 +471,18 @@ class PermissionTableSeeder extends Seeder
             [
                 'subject' => 'role',
                 'action' => 'del',
+            ],
+            [
+                'subject' => 'sport_team',
+                'action' => 'athlete',
+            ],
+            [
+                'subject' => 'sport_team',
+                'action' => 'staff',
+            ],
+            [
+                'subject' => 'sport_team',
+                'action' => 'athlete_candidate',
             ],
         );
 

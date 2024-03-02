@@ -13,24 +13,16 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('gallery_images', function (Blueprint $table) {
+        Schema::create('article_images', function (Blueprint $table) {
             $table->bigIncrements('id');
 
             $table->string('title')->nullable();
             $table->text('text')->nullable();
             $table->string('image')->nullable();
             $table->integer('published')->nullable();
-            $table->string('image_type')->nullable();
-            $table->string('link')->nullable();
 
-            // $table->integer('category_id')->nullable();
-            // $table->foreignId('category_id')->constrained()
-            // $table->unsignedBigInteger('category_id');
-            $table->unsignedBigInteger('category_id');
-            $table->foreign('category_id')->references('id')->on('gallery_categories');
-
-            // $table->integer('article_id')->nullable();
-            // $table->foreignId('article_id')->constrained()->onDelete('cascade');
+            $table->unsignedBigInteger('article_id');
+            $table->foreign('article_id')->references('id')->on('articles');
 
             $table->timestamps();
         });
@@ -43,6 +35,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('galleries');
+        Schema::dropIfExists('article_images');
     }
 };

@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Models;
+namespace App\Models\Guide;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Store_slide extends Model
+class Article_image extends Model
 {
     use HasFactory;
 }

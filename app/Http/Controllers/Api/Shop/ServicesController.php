@@ -11,7 +11,8 @@ use App\Models\Service_image;
 
 use App\Services\ServicesService;
 use App\Services\URLTitleService;
-use App\Services\ImageControllService;
+use App\Services\GalleryService;
+use App\Services\Abstract\ImageControllService;
 
 use Validator;
 
@@ -111,7 +112,15 @@ class ServicesController extends Controller
                 );
                 
                 if($request->hasFile('service_images')){
-                    $this->add_secvice_images($request['service_images'], $action_service_id);
+                    // $this->add_secvice_images($request['service_images'], $action_service_id);
+                    GalleryService::add_gallery_images(
+                        $request['service_images'], 
+                        $action_service_id, 
+                        Service_image::class, 
+                        'image', 
+                        'service_id', 
+                        '/images/service_img/'
+                    );
                 }
             }
         }
@@ -168,28 +177,28 @@ class ServicesController extends Controller
             return $service->id;
         }
     }
-    public function add_secvice_images($images, $service_id)
-    {
-        foreach ($images as $image) {
-            $file_new_name = ImageControllService::upload_loop_image('images/service_img/', $image, 1);
+    // public function add_secvice_images($images, $service_id)
+    // {
+        // foreach ($images as $image) {
+        //     $file_new_name = ImageControllService::upload_loop_image('images/service_img/', $image, 1);
             
-            if(file_exists(public_path('images/service_img/') . $file_new_name)){
-                $new_option_image = new Service_image;
+        //     if(file_exists(public_path('images/service_img/') . $file_new_name)){
+        //         $new_option_image = new Service_image;
         
-                $new_option_image['image'] = $file_new_name;
-                $new_option_image['service_id'] = $service_id;
+        //         $new_option_image['image'] = $file_new_name;
+        //         $new_option_image['service_id'] = $service_id;
         
-                $saiving = $new_option_image -> save();
+        //         $saiving = $new_option_image -> save();
 
-                if($saiving){
-                    echo 'Upload socsesful \n';
-                }
-            }
-            else{
-                echo 'Upload error \n';
-            }
-        }
-    }
+        //         if($saiving){
+        //             echo 'Upload socsesful \n';
+        //         }
+        //     }
+        //     else{
+        //         echo 'Upload error \n';
+        //     }
+        // }
+    // }
 
     /**
      * Store a newly created resource in storage.
@@ -277,7 +286,16 @@ class ServicesController extends Controller
                 $saiving_issets['us_info_status'] = $this->edit_locale_service($data['us_data'], $locale_service_values['us_id']);
                 
                 if($request->hasFile('service_new_images')){
-                    $this->add_secvice_images($request['service_new_images'], $locale_service_values['global_id']);
+                    // $this->add_secvice_images($request['service_new_images'], $locale_service_values['global_id']);
+
+                    GalleryService::add_gallery_images(
+                        $request['service_images'], 
+                        $locale_service_values['global_id'], 
+                        Service_image::class, 
+                        'image', 
+                        'service_id', 
+                        '/images/service_img/'
+                    );
                 }
             }
         }

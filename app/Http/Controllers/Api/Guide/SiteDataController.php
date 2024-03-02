@@ -5,7 +5,8 @@ namespace App\Http\Controllers\Api\Guide;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
-use App\Models\Gallery_image;
+use App\Models\Header_image;
+use App\Models\Article_images;
 
 use App\Models\Article;
 use App\Models\Locale_article;
@@ -55,10 +56,8 @@ class SiteDataController extends Controller
     {
         $counts = [];
 
-        $counts['gallery_images'] = Gallery_image::count();
-        $counts['index_header_images'] = Gallery_image::where("image_type", "=", 2)->count();
-        $counts['index_gallery_images'] = Gallery_image::where("image_type", "=", 1)->count();
-        $counts['article_gallery_images'] = Gallery_image::where("image_type", "=", 1)->count();
+        $counts['index_header_images'] = Header_image::count();
+        $counts['article_gallery_images'] = Article_images::where("image_type", "=", 1)->count();
 
         $counts['mount_masives'] = Mount::count();
         $counts['mountaineering_route'] = Article::where("category", "=", 'mount_route')->count();

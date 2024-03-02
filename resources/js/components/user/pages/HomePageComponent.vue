@@ -18,6 +18,16 @@
 
             <div class="row justify-content-center">
                 <div class="col-md-12">
+                    <div class="alert alert-danger" role="alert">
+                        <h1>Hi {{ this.user['name'] }}. Your account has been baned! You will no longer be able to use the features of the Service. You will also be able to register soon.</h1>
+
+                        <img src="../../../../../public/images/site_img/Banned.png" alt="Baned"/>
+                    </div>    
+                </div>
+            </div>
+
+            <div class="row justify-content-center">
+                <div class="col-md-12">
                     <div class="card">
                         <div class="card-header">Sites index pages</div>
                         <div class="card-body">

@@ -29,7 +29,7 @@
         ],
         data(){
             return {
-                image: ''
+                // image: ''
             }
         },
         mounted() {
@@ -38,12 +38,13 @@
         methods: {
             onFileChange(e){
                 // this.image = e.target.files[0];
+                // this.upload_img(e.target.files[0])
 
-                this.upload_img(e.target.files[0])
+                this.$emit("upload_img", e.target.files[0])
             },
-            upload_img(event){
-                this.$emit("upload_img", event);
-            },
+            // upload_img(event){
+            //     this.$emit("upload_img", event);
+            // },
         }
     }
 </script>

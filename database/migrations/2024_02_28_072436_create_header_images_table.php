@@ -13,12 +13,15 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('gallery_categories', function (Blueprint $table) {
+        Schema::create('header_images', function (Blueprint $table) {
             $table->bigIncrements('id');
 
-            $table->string('us_name')->nullable();
-            $table->string('ru_name')->nullable();
-            $table->string('ka_name')->nullable();
+            $table->string('title')->nullable();
+            $table->text('text')->nullable();
+            $table->string('image')->nullable();
+            $table->integer('published')->nullable();
+            $table->string('link')->nullable();
+            $table->string('category')->nullable();
 
             $table->timestamps();
         });
@@ -31,6 +34,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('gallery_categoryes');
+        Schema::dropIfExists('galleries');
     }
 };

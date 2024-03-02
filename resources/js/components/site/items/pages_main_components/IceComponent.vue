@@ -38,8 +38,7 @@
                 />
                 
                 <galleryComponent 
-                    :article_id="this.article_prop.global_data.id" 
-                    ref="gallery_component"
+                    :images_prop="this.article_prop.gallery_images" 
                 />
             </div>
 
@@ -113,7 +112,7 @@
                 this.$refs.similar_articles.update(id)
                 // this.$refs.route_quan_diogram.update(id)
                 this.$refs.routes_tab.update(id)
-                this.$refs.gallery_component.update(id)
+                // this.$refs.gallery_component.update(id)
                 this.$refs.comments.update(id)
             },            
         }

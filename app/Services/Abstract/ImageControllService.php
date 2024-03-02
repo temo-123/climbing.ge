@@ -1,6 +1,8 @@
 <?php
 
-namespace App\Services;
+namespace App\Services\Abstract;
+
+use Illuminate\Http\Request;
 
 use Storage;
 use Carbon\Carbon;
@@ -94,7 +96,7 @@ class imageControllService
         }
     }
 
-    public static function image_update($image_dir, $model, $request, $form_value_id, $db_value, $resize = 0,)
+    public static function image_update($image_dir, $editing_model_value, $request, $form_value_id, $db_value, $resize = 0)
     {
         /*
         *
@@ -103,18 +105,18 @@ class imageControllService
         * Function get 6 parameters
         *
         * $image_dir            - image wai in derectory from '/public/' derectory
-        * $model                - updated model in copntroller
+        * $editing_model_value  - updated model in copntroller
         * $request              - HTTP request
         * $form_value_id        - image value name in your form
         * $db_value             - Database value name
         * $resize               - Image resize action (defolt it null)
         *
         */
-
+        
         if ($request->hasFile($form_value_id)){ 
             // delete old image
-            ImageControllService::image_delete($image_dir, $model, $db_value);
-            // ImageControllService::image_delete($image_dir, $model, $db_value);
+            ImageControllService::image_delete($image_dir, $editing_model_value, $db_value);
+            // ImageControllService::image_delete($image_dir, $editing_model_value, $db_value);
 
             // rename file
             $extension = $request->file($form_value_id)->getClientOriginalExtension();
@@ -132,7 +134,7 @@ class imageControllService
         }
     }
 
-    public static function image_delete($image_dir, $model, $db_value)
+    public static function image_delete($image_dir, $editing_model_value, $db_value)
     {
         /*
         *
@@ -142,13 +144,13 @@ class imageControllService
         * function get 3 parameters
         *
         * $image_dir            - image derectory from '/public/'
-        * $model                - updated model in copntroller
+        * $editing_model_value  - updated model in copntroller
         * $db_value             - Database value name
         *
         */
         
         // delete product file
-        $fileName = $model->$db_value;
+        $fileName = $editing_model_value->$db_value;
         $file = public_path($image_dir.$fileName);
         $original_file = public_path($image_dir.'origin_img/'.$fileName);
         

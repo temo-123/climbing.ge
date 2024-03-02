@@ -10,7 +10,7 @@ use App\Models\Locale_event;
 use App\Models\General_info_event;
 use App\Models\General_info;
 
-use App\Services\ImageControllService;
+use App\Services\Abstract\ImageControllService;
 use App\Services\GeneralInfoService;
 use App\Services\URLTitleService;
 

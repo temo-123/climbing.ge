@@ -12,7 +12,7 @@
             <span v-html="toure.locale_data.text"></span>
         </div>
 
-        <!-- <toureMessageForm /> -->
+        <toureMessageForm />
         
         <gallery 
             :images_prop="toure.toure_images"
@@ -65,12 +65,13 @@
         },
         watch: {
             '$route' (to, from) {
-                // this.get_tours()
+                this.get_tours()
                 this.get_toure()
                 window.scrollTo(0,0);
             }
         },
         mounted() {
+            this.get_tours()
             this.get_toure()
         },
         methods: {

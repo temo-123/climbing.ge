@@ -6,7 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
 use App\Models\Ice_sector_image;
-use App\Services\ImageControllService;
+use App\Services\Abstract\ImageControllService;
 
 class IceSectorImagesController extends Controller
 {

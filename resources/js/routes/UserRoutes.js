@@ -37,7 +37,7 @@ const router = new VueRouter({
         { path: '/all_posts', name: 'allPosts', component: load('posts/AllPostsPageComponent') },
 
         { path: '/cart', name: 'cart', component: load('cartPageComponent') },
-        { path: '/gallery', name: 'gallery', component: load('gallery/GalleryPageComponent') },
+        { path: '/head_sliders_images', name: 'head_sliders_images', component: load('gallery/HeadSlidersPage') },
         { path: '/site_folloers', name: 'site_folloers', component: load('SiteFolloersListPageComponent') },
         { path: '/options', name: 'options', component: load('optionsPageComponent') },
         { path: '/users_list', name: 'usersList', component: load('usersListPageComponent') },

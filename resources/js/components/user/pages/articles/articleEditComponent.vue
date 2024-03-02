@@ -96,8 +96,6 @@
                     :description_prop="$t('user edit en article description')"
                 />
 
-                <!-- ref="ArticleImage" -->
-
                 <ArticleImage 
                     @upload_img="article_image = $event" 
 
@@ -114,6 +112,14 @@
                     v-if="this.category == 'mount_route'"
 
                     @mount_route_img="mount_route_images = $event" 
+                />
+
+                <gallery_images_edit 
+                    @update_gallery_images="update_gallery_images"
+
+                    :image_path_prop="'images/article_gallery_img/'"
+                    :image_del_route_prop="'gallery_image/del_image/'"
+                    :get_images_route_prop="'gallery_image/get_editing_images/'"
                 />
                
             </div>
@@ -172,6 +178,8 @@
     import SectorsImagesForm from './forms/edit_forms/SectorImagesFormComponent.vue'
     import MountRouteImagesForm from './forms/edit_forms/MountRouteImageFormComponent.vue'
 
+    import gallery_images_edit from './items/galleryImageEditComponent.vue'
+
     export default {
         props: [
             // 'back_url',
@@ -183,7 +191,9 @@
             LocaleDataForm,
             ArticleImage,
             SectorsImagesForm,
-            MountRouteImagesForm
+            MountRouteImagesForm,
+
+            gallery_images_edit
         },
         data(){
             return {
@@ -195,6 +205,7 @@
                 editing_data: [],
 
                 article_image: '',
+                article_gallery_image: [],
                 area_rocks_images: [],
                 mount_route_images: [],
 
@@ -278,14 +289,29 @@
                 .finally(() => this.is_loading = false);
             },
 
+            update_gallery_images(images){
+                this.article_gallery_image = images
+            },
+
             edit_article() {
                 this.is_loading = true
                 this.errors = []
 
                 let formData = new FormData();
+
+                // formData.append('gallery_images', this.article_gallery_image);
                 formData.append('image', this.article_image);
                 formData.append('data', JSON.stringify(this.editing_data))
                 formData.append('global_blocks', JSON.stringify(this.global_blocks))
+
+                if(this.article_gallery_image){
+                    var loop_num = 0
+                    this.article_gallery_image.forEach(gallery_image => {
+                        formData.append('gallery_images['+loop_num+']', gallery_image.image)
+                        loop_num++
+                    });
+                    loop_num = 0
+                }
 
                 if(this.category == 'outdoor'){
                     if(this.area_rocks_images){

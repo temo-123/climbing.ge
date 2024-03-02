@@ -79,7 +79,7 @@
             get_regions(category){
                 if(category == 'outdoor'){
                     axios
-                    .get("../api/outdoor/region/")
+                    .get("/outdoor/region/")
                     .then(response => {
                         this.data_for_tab.push({'id': 2,
                                                 'data': response.data, 
@@ -96,7 +96,7 @@
             get_ice_sectors(category){
                 if(category == 'ice'){
                     axios
-                    .get("../api/ice_sectors/get_all_sectors/")
+                    .get("/ice_sectors/get_all_sectors/")
                     .then(response => {
                         this.data_for_tab.push({'id': 2,
                                                 'data': response.data, 
@@ -112,7 +112,7 @@
             },
             get_ice_routes(){
                 axios
-                .get("../api/ice_routes/get_all_routes/")
+                .get("/ice_routes/get_all_routes/")
                 .then(response => {
                     this.data_for_tab.push({'id': 3,
                                             'data': response.data, 
@@ -131,7 +131,7 @@
 
             get_filtred_articles(id){
                 axios
-                .get("../api/outdoor/get_filtred_outdoor_spots_for_admin/"+id, {
+                .get("/outdoor/get_filtred_outdoor_spots_for_admin/"+id, {
                     category: this.$route.params.article_category,
                 })
                 .then(response => {
@@ -157,9 +157,7 @@
 
             get_unfilted_articles(){
                 axios
-                .post("/article/", {
-                    category: this.$route.params.article_category,
-                })
+                .get("/article/get_category_articles/"+this.$route.params.article_category)
                 .then(response => {
                     this.data_for_tab = []
                     this.data_for_tab.push({'id': 1,

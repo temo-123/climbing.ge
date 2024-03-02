@@ -1,22 +1,22 @@
 
 <template>
     <stack-modal
-            :show="is_edit_image"
+            :show="is_edit_image_modal"
             title="Edit image"
             @close="close_edit_image_modal()"
             :saveButton="{ visible: true, title: 'Save', btnClass: { 'btn btn-primary': true } }"
             :cancelButton="{ visible: false, title: 'Close', btnClass: { 'btn btn-danger': true } }"
         >
         <pre class="language-vue">
-            <span v-show="loading_editing_data">
+            <span v-show="is_loading">
                 <img :src="'../../../public/images/site_img/loading.gif'" alt="loading">
             </span>
-            <span v-show="!loading_editing_data">
-                <form ref="editingForm" id="slider_iamge_edit_form" v-on:submit.prevent="edit_image(editing_image.id)">
+            <span v-show="!is_loading">
+                <form ref="editingForm" id="slider_iamge_edit_form" v-on:submit.prevent="edit_image(editing_data.id)">
                     <div class="container">
                         
                         <div class="row">
-                            <img :src="'/images/slider_img/' + editing_data.image" :alt="editing_data.title">
+                            <img :src="image_path_prop + editing_data.image" :alt="editing_data.title">
                         </div>
                         
                         <div class="form-group clearfix row">
@@ -24,9 +24,9 @@
                         </div>
 
                         <div class="row">
-                            <div class="col-md-12" v-if="error.length != 0">
-                                <div class="alert alert-danger" role="alert" v-if="error.image">
-                                    {{ error.image[0] }}
+                            <div class="col-md-12" v-if="errors.length != 0">
+                                <div class="alert alert-danger" role="alert" v-if="errors.image">
+                                    {{ errors.image[0] }}
                                 </div>
                             </div>
                         </div>
@@ -77,35 +77,98 @@
 </template>
 
 <script>
-    // import breadcrumb from '../../items/BreadcrumbComponent.vue'
-    // import { SlickList, SlickItem } from 'vue-slicksort'; //https://github.com/Jexordexan/vue-slicksort
     import StackModal from '@innologica/vue-stackable-modal'  //https://innologica.github.io/vue-stackable-modal/#sample-css
 
     export default {
         components: {
             StackModal,
-            // SlickItem,
-            // SlickList,
         },
+        props: [
+            'image_path_prop',
+        ],
         data(){
             return{
-                user: [],
-                MIX_SITE_URL: process.env.MIX_SITE_URL,
-                MIX_APP_SSH: process.env.MIX_APP_SSH,
+                editing_data: [],
+                errors: [],
+                is_edit_image_modal: false,
+                editing_image: [],
+                is_loading: false
             }
         },
         mounted(){
             // 
         },
         methods: {
-            // get_user_data(){
-            //     axios
-            //     .get('/api/auth_user')
-            //     .then((response)=>{
-            //         this.user = response.data
-            //         this.get_user_queries(this.user.id)
-            //     })
-            // },
+            show_modal(image_id){
+                this.is_edit_image_modal = true
+                
+                this.get_actyve_image(image_id)
+            },
+            get_actyve_image(id){
+                this.is_loading = true
+                axios
+                .get("/head_slider/get_actyve_slide/"+id)
+                .then(response => {
+                    this.editing_data = response.data
+                })
+                .catch(
+                    // error => console.log(error)
+                )
+                .finally(() =>
+                    this.is_loading = false
+                );
+            },
+
+            close_edit_image_modal(action = false){
+                if(!action){
+                    if (window.confirm('Added information will be deleted!!! Are you sure, you want close modal?')) {
+                        this.is_edit_image_modal = false
+                        this.clear_input_data()
+                    }
+                }
+                else{
+                    this.is_edit_image_modal = false
+                    this.clear_input_data()
+                }
+            },
+
+            onEditImageChange(e){
+                if(e.target.files.length > 0){
+                    this.editing_image = e.target.files[0];
+                }
+                else if(e.target.files.length == 0){
+                    this.editing_image = [];
+                }
+            },
+
+            edit_image(id){
+                this.errors = []
+                this.is_loading = true
+
+                this.category_id = ''
+
+                let formData = new FormData();
+                if(this.editing_image != [] || this.editing_image != null){
+                    formData.append('image', this.editing_image);
+                }
+                formData.append('data', JSON.stringify(this.editing_data))
+
+                axios
+                .post('/head_slider/edit_slide/' + id, 
+                    formData,
+                )
+                .then(response => {
+                    this.is_edit_image_modal = false
+
+                    this.$emit("update");
+                })
+                .catch(error => {
+                    if (error.response.status == 422) {
+                        this.errors = error.response.data
+                    }
+                })
+                .finally(() => this.is_loading = false);
+            },
         }
     }
 </script>

@@ -2,7 +2,10 @@
     <div>
         <h1 style="display: none;"><span v-html="this.$siteData.guid_title"></span></h1>
 
-        <swiperComponent />
+        <swiperComponent 
+            :category_prop="'guide'"
+            :image_path_prop="'/images/head_slider_img/guide/'"
+        />
 
         <whatWeDoComponent />
 
@@ -71,7 +74,8 @@
     import techtipsComponent from '../items/TechtipsComponent'
     import otherArticlesComponent from '../items/OtherArticlesComponent'
     import eventComponent from '../items/EventComponent'
-    import swiperComponent from '../items/SwiperComponent'
+    // import swiperComponent from '../items/SwiperComponent'
+    import swiperComponent from '../../global_components/SwiperComponent.vue'
     import whatWeDoComponent from '../items/WhatWeDoComponent'
 
     import newsCard from '../items/cards/NewsCardComponent'
