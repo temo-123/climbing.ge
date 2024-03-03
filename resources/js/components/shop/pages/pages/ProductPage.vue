@@ -160,6 +160,9 @@
             <div class="row">
                 <feedbackForm 
                     :product_id="product.global_product.id"
+
+                    :reviews_count_prop = "product.reviews.count"
+                    :reviews_stars_prop = "product.reviews.stars"
                 />
             </div>
         </div>

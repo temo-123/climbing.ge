@@ -97,25 +97,15 @@ export default {
     ],
     components: {
         StackModal,
-        // route_modal,
-        // mtp_model,
     },
     props: [
         // "sector",
     ],
     data: function () {
         return {
-            // climbing_sector: [],
-            // spot_images: [],
-
-            // show_route_modal: false,
             is_show_mtp_modal: false,
-            // modalClass: [],
-
-            // route_detals: [],
-
             mtp_detals: [],
-            // id: this.article_id
+            ModalClass: '',
         };
     },
     mounted() {

@@ -153,6 +153,8 @@ export default {
 
             product_id: 0,
 
+            ModalClass: "",
+
             data: {
                 stars: 0,
                 text: '',

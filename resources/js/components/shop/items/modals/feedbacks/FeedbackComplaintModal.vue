@@ -64,6 +64,8 @@
                 surname: "",
                 email: "",
                 text: "",
+                
+                ModalClass: "",
 
                 show_feadbacks: false,
 

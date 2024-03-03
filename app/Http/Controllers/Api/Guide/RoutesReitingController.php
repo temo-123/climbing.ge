@@ -70,20 +70,35 @@ class RoutesReitingController extends Controller
     }
 
     function create_route_review(Request $request) {
-        $review = new Sport_route_review;
-        
-        $review['route_id']=$request["route_id"];
+        if (Auth::user()) {
+            // $user_review_count = Sport_route_review::where('user_id', '=', Auth::user()->id)->where('route_id', '=', $request["route_id"])->count();
+            $user_review_count = Auth::user()->sport_route_reviews->where('route_id', '=', $request["route_id"])->count();
+            if($user_review_count == 0){
+                $review = new Sport_route_review;
+                
+                $review['route_id']=$request["route_id"];
+                $review['ascent_style']=$request["ascent_style"];
 
-        $review['text']=$request["text"];
-        $review['stars']=$request["stars"];
+                $review['text']=$request["text"];
+                $review['stars']=$request["stars"];
 
-        if (isset($request['climbed']) && $request['climbed']) {
-            $review['climbed_data']=$request["climbed_data"];
+                if (isset($request['climbed']) && $request['climbed']) {
+                    $review['climbed_data']=$request["climbed_data"];
+                }
+
+                $review->save();
+
+                $this->create_user_review_relatione($review->id);
+
+                return 'Thank you for review!';
+            }
+            else{
+                return "You already have review for this route, you don't can add more review for this route!";
+            }
         }
-
-        $review->save();
-
-        $this->create_user_review_relatione($review->id);
+        else{
+            return "Ples login!";
+        }
     }
 
     private function create_user_review_relatione($review_id){

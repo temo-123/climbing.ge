@@ -22,12 +22,26 @@
                         </div>
 
                         <form method="POST" id="route_review_form" v-on:submit.prevent="add_route_review" v-show="!is_loading">
-                            Did you climb this route?
-                            <input type="checkbox" v-model="data.climbed" name="scales" placeholder="Did you climb this route?" title="Did you climb this route?">
-
                             <div>
-                                <span v-if="data.climbed">Insert climb data</span>
-                                <input type="datetime-local" class="form-control" v-model="data.climbed_data" name="climbed_data" placeholder="Climbed data" title="Climbed data" v-if="data.climbed">
+                                Did you climb this route?
+                                <input type="checkbox" v-model="data.climbed" name="scales" placeholder="Did you climb this route?" title="Did you climb this route?">
+                            </div>
+
+                            <div v-if="data.climbed">
+                                <span>Insert climb data</span>
+                                <input type="date" class="form-control" v-model="data.climbed_data" name="climbed_data" placeholder="Climbed data" title="Climbed data">
+                            </div>
+
+                            <div v-if="data.climbed">
+                                <span >Route ascent style</span>
+                                <select class="form-control" v-model="data.ascent_style" name="comment delete cause" required> 
+                                    <option value="" disabled>Select ascent style</option>
+                                    <option value="onsite">Onsite</option>
+                                    <option value="flesh">Flesh</option>
+                                    <option value="second_go">Second go</option>
+                                    <option value="redpoint">Redpoint</option>
+                                    <option value="top_rope">Top rope</option>
+                                </select>
                             </div>
 
                             <div>
@@ -94,7 +108,9 @@ export default {
                 stars: 0,
                 text: '',
                 climbed_data: '',
+                ascent_style: ''
             },
+            ModalClass: '',
 
             is_loading: false,
 
@@ -148,6 +164,7 @@ export default {
             axios
                 .post("/route_review/create_route_review/" + this.route_id, this.data)
                 .then((response) => {
+                    alert(response.data)
                     this.close_route_review_modal(this.route_id)
                 })
                 .catch((error) => {

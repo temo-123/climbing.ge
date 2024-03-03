@@ -101,20 +101,10 @@
 
                         <span v-html="route.text" v-if="route.text != null"></span>
 
-                        <!-- <starsReiting ref="stars_reiting_modal"/> -->
-
                         <starsReiting 
                             :reviews_count_prop = route.reviews_count
                             :reviews_stars_prop = route.reviews_stars
                         />
-
-                        <!-- <button
-                            class="btn btn-success"
-                            @click="route_review_modal(route.id)"
-                            v-if="user.length != 0"
-                        >
-                            {{ $t('guide.route.make_review') }}
-                        </button> -->
                         
                     </div>
                 </div>
@@ -128,6 +118,7 @@
                     >
                         {{ $t('guide.route.make_review') }}
                     </button>
+                    <p v-else>Ples login for add route feedback!</p>
                 </div>
             </div>
         </stack-modal>
@@ -157,6 +148,7 @@ export default {
 
             route: [],
             user: [],
+            ModalClass: '',
 
             get activ_grade() {
                 return localStorage.getItem('grade') || 'yds';

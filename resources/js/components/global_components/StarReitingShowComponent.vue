@@ -1,5 +1,5 @@
 <template>
-   <div class="row" v-if="data.reviews_count > 0">
+   <div class="row" v-if="reviews_count_prop > 0">
         <div class="col-md-12">
             <div class="d-flex justify-content-between align-items-center">
                 <div class="ratings">                                        
@@ -9,8 +9,8 @@
                 </div>
             </div>
         </div>
-        <div class="col-md-12" v-if="data.rewiew_count_text">
-            <h5 class="review-count">{{ data.reviews_count }} Reviews ({{ data.reviews_stars }} Stars)</h5>
+        <div class="col-md-12" v-if="rewiew_count_text_prop">
+            <h5 class="review-count">{{ reviews_count_prop }} Reviews ({{ reviews_stars_prop }} Stars)</h5>
         </div>
     </div>
 </template>
@@ -42,41 +42,42 @@ export default {
                 other_stars: 0,
             },
 
-            data: {
-                reviews_count: 0,
-                reviews_stars: 0,
-                rewiew_count_text: true
-            },
+            // data: {
+            //     reviews_count: 0,
+            //     reviews_stars: 0,
+            //     rewiew_count_text: true
+            // },
         };
     },
-    // watch: {
-    //     '$route' (to, from) {
-    //         this.data = {
-    //             reviews_count: this.reviews_count_prop,
-    //             reviews_stars: this.reviews_stars_prop,
-    //             rewiew_count_text: this.rewiew_count_text_prop
-    //         },
-
-    //         this.colculate_stars()
-    //     }
-    // },
-    mounted() {
-        this.data = {
-            reviews_count: this.reviews_count_prop,
-            reviews_stars: this.reviews_stars_prop,
-            rewiew_count_text: this.rewiew_count_text_prop
+    watch: {
+        // '$route' (to, from) {
+            // this.update()
+        // },
+        reviews_stars_prop: function(){
+            this.colculate_stars()
         },
+    },
+    mounted() {
+        // this.update()
         this.colculate_stars()
     },
     methods: {
+        // update(){
+        //     this.data = {
+        //         reviews_count: this.reviews_count_prop,
+        //         reviews_stars: this.reviews_stars_prop,
+        //         rewiew_count_text: this.rewiew_count_text_prop
+        //     },
+        //     this.colculate_stars()
+        // },
         colculate_stars(){
-            if(this.data.reviews_stars % 1 == 0){
+            if(Number(this.reviews_stars_prop) % 1 == 0){
                 this.stars.part_stars = 0 // get number after comma
-                this.stars.whole_stars = Math.floor(this.data.reviews_stars) // get number befor comma
+                this.stars.whole_stars = Math.floor(this.reviews_stars_prop) // get number befor comma
             }
             else{
-                this.stars.part_stars = Number((this.data.reviews_stars+' ').split(".")[1].substr(0,1)); // get number after comma
-                this.stars.whole_stars = Math.floor(this.data.reviews_stars) // get number befor comma
+                this.stars.part_stars = Number((this.reviews_stars_prop+' ').split(".")[1].substr(0,1)); // get number after comma
+                this.stars.whole_stars = Math.floor(this.reviews_stars_prop) // get number befor comma
             }
 
             // colculate empty srats

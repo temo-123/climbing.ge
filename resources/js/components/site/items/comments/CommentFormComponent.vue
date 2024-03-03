@@ -211,7 +211,8 @@
                     <form v-on:submit.prevent="make_complaint" id="make_complaint" class="form">
                         <input v-if="user.length == 0" type="email" name="complainter email" v-model="complainter_email" class="form-control textarea" placeholder="Your email">
 
-                        <select class="form-control" v-model="selected_comment_complaint" name="comment delete cause" > 
+                        <select class="form-control" v-model="selected_comment_complaint" name="comment delete cause" required> 
+                            <option value="" disabled>Select complaint cause</option>
                             <option value="Hostile remarks">Hostile remarks</option>
                             <option value="Does not match the theme of the site">Does not match the theme of the site</option>
                             <option value="Spam">Spam</option>
@@ -283,7 +284,7 @@
                 user_id: 0,
 
                 complaint_comment_id: 0,
-                selected_comment_complaint: 'Hostile remarks',
+                selected_comment_complaint: '',
                 is_user_comment_complaint_model: false,
 
                 MIX_GOOGLE_CAPTCHA_SITE_KEY: process.env.MIX_GOOGLE_CAPTCHA_SITE_KEY,
@@ -366,7 +367,7 @@
                 })
                 .then(response => {
                     this.is_user_comment_complaint_model = false
-                    this.selected_comment_complaint = 'Hostile remarks'
+                    this.selected_comment_complaint = ''
                     alert(response.data);
                 })
                 .catch()

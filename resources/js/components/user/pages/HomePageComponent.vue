@@ -8,11 +8,39 @@
 
             <div class="row justify-content-center">
                 <div class="col-md-12">
-
                     <div class="alert alert-success" role="alert">
                         <h1>Hi {{ this.user['name'] }}</h1>
                     </div>
-                            
+                </div>
+            </div>
+
+            <div class="row justify-content-center">
+                <div class="col-md-12">
+                    <div class="alert alert-secondary" role="alert">
+                        <h1>Hi {{ this.user['name'] }}. Let's start work. Check task panel!</h1>
+
+                        <img src="/public/images/site_img/worker.png" alt="Baned"/>
+                    </div>    
+                </div>
+            </div>
+
+            <div class="row justify-content-center">
+                <div class="col-md-12">
+                    <div class="alert alert-secondary" role="alert">
+                        <h1>Hi {{ this.user['name'] }}. Let's start work with our team.</h1>
+
+                        <img src="/public/images/site_img/team staff.png" alt="Baned"/>
+                    </div>    
+                </div>
+            </div>
+
+            <div class="row justify-content-center">
+                <div class="col-md-12">
+                    <div class="alert alert-secondary" role="alert">
+                        <h1>Hi {{ this.user['name'] }}. let's start doing projects together.</h1>
+
+                        <img src="/public/images/site_img/team logo.png" alt="Baned"/>
+                    </div>    
                 </div>
             </div>
 
@@ -21,7 +49,7 @@
                     <div class="alert alert-danger" role="alert">
                         <h1>Hi {{ this.user['name'] }}. Your account has been baned! You will no longer be able to use the features of the Service. You will also be able to register soon.</h1>
 
-                        <img src="../../../../../public/images/site_img/Banned.png" alt="Baned"/>
+                        <img src="/public/images/site_img/Banned.png" alt="Baned"/>
                     </div>    
                 </div>
             </div>

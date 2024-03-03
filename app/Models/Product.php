@@ -56,4 +56,9 @@ class Product extends Model
   {
     return $this->hasMany(Product_option::class, 'product_id');
   }
+
+  public function feedbacks()
+  {
+    return $this->hasMany(Product_feedback::class, 'product_id', 'id');
+  }
 }

@@ -2,8 +2,8 @@
     <div class="container">
 
         <starsReiting 
-            :reviews_count_prop = 20
-            :reviews_stars_prop = 3.9
+            :reviews_count_prop = reviews_count_prop
+            :reviews_stars_prop = reviews_stars_prop
         />
         
         <div class="row ">
@@ -90,6 +90,8 @@
         },
         props: [
             "product_id",
+            "reviews_count_prop",
+            "reviews_stars_prop"
         ],
         data() {
             return {
