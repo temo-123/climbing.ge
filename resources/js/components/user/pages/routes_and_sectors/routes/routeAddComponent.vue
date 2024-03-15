@@ -323,7 +323,7 @@
     methods: {
       get_region_data: function(){
         axios
-        .post("../api/article/",{category: 'outdoor'})
+        .get("/article/get_category_articles/outdoor")
         .then(response => {
           this.regions = response.data
         })
@@ -390,6 +390,9 @@
           author: "",
           creation_data: "",
           first_ascent: "",
+
+          anchor_type: "",
+          bolts_type: "",
 
           anchor_type: "",
         }

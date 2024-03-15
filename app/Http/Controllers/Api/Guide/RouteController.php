@@ -18,7 +18,7 @@ use App\Services\SportClimbingRoutesService;
 
 class RouteController extends Controller
 {
-    public function index()
+    public function get_all_routes()
     {
         return Route::latest('id')->get();
     }
@@ -107,11 +107,10 @@ class RouteController extends Controller
         }
     }
 
-    public function destroy($id)
+    public function del_route(Request $request)
     {
-        $route_id=$id;
-        $route = Route::where('id',strip_tags($route_id))->first();
-        $route ->delete();
+        $route = Route::where('id',strip_tags($request->route_id))->first();
+        $route -> delete();
     }
 
     public function add_route(Request $request)

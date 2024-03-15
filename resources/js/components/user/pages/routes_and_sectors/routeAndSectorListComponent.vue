@@ -116,7 +116,7 @@
             },
             get_routes(){
                 axios
-                .get("../api/route/")
+                .get("route/get_all_routes/")
                 .then(response => {
                     this.routes = response.data
 

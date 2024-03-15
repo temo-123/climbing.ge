@@ -44,7 +44,7 @@
             del_multi_pitch(id){
                 if(confirm('Are you sure, you want delite it?')){
                     axios
-                    .post('../../api/mtp/del_mtp/'+id, {
+                    .post('mtp/del_mtp/'+id, {
                         _method: 'DELETE'
                     })
                     .then(Response => {

@@ -34,6 +34,7 @@
                         <ul class="dropdown-menu " role="menu" style="background-color: #278da5;">
                             <li><router-link style="font-size: 1.5em;" :to="{name: 'indoors', params: {lang: this.$i18n.locale}}" exact>  <span> {{ $t('guide.menu.indoor climbing') }}  </span> </router-link></li>
                             <li><router-link style="font-size: 1.5em;" :to="{name: 'outdoors', params: {lang: this.$i18n.locale}}" exact> <span> {{ $t('guide.menu.outdoor climbing') }} </span> </router-link></li>
+                            <li><router-link style="font-size: 1.5em;" :to="{name: 'spot_projects', params: {lang: this.$i18n.locale}}" exact> <span> {{ $t('guide.menu.spots projects') }} </span> </router-link></li>
                         </ul>
                     </li>
 

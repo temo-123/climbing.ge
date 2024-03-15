@@ -14,7 +14,7 @@ import Vuex from "vuex";
 import axios from "axios";
 import i18n from "./services/localization/i18n";
 import VueSocialSharing from "vue-social-sharing";
-import plugin from "@serializedowen/vue-img-watermark";
+// import plugin from "@serializedowen/vue-img-watermark"; //https://www.vuescript.com/custom-watermarks/
 import VueGlide from "vue-glide-js";
 import "vue-glide-js/dist/vue-glide.css";
 import VueGtag from "vue-gtag";
@@ -27,7 +27,7 @@ import { ContentLoader } from 'vue-content-loader'
 Vue.use(ContentLoader);
 Vue.use(abilitiesPlugin, ability());
 Vue.use(VueGlide);
-Vue.use(plugin);
+// Vue.use(plugin);
 Vue.use(VueSocialSharing);
 Vue.use(i18n);
 Vue.use(Vuex);

@@ -26,9 +26,7 @@
         methods: {
             get_outdoor_areas(){
                 axios
-                .post("../api/article/", {
-                    category: 'outdoor',
-                })
+                .get("/article/get_category_articles/outdoor")
                 .then(response => {
                     this.outdoor_areas = response.data
                 })

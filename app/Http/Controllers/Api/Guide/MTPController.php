@@ -160,10 +160,12 @@ class MTPController extends Controller
     public function del_mtp(Request $request)
     {
         $mtp = Mtp::where('id',strip_tags($request->mtp_id))->first();
-        $mtp_pitch_count = Mtp_pitch::where('mtp_id',strip_tags($mtp->id))->count();
-        if ($mtp_pitch_count > 0) {
-            $mtp_pitch = Mtp_pitch::where('mtp_id',strip_tags($mtp->id))->get();
-            $mtp_pitch ->delete();
+        $mtp_pitchs_count = Mtp_pitch::where('mtp_id',strip_tags($mtp->id))->count();
+        if ($mtp_pitchs_count > 0) {
+            $mtp_pitchs = Mtp_pitch::where('mtp_id',strip_tags($mtp->id))->get();
+            foreach ($mtp_pitchs as $pitch) {
+                $pitch ->delete();
+            }
         }
         $mtp ->delete();
     }

@@ -9,8 +9,15 @@
             <h2 class="article_list_short_description">
                 {{this.$siteData.outdoor_description}}
             </h2>
-            
+
             <sectorQuantyt />
+
+            <div class="row">
+                <div class="col-md-12">
+                    <p>Alse you can see sport climbing routes authers and them conts.</p>
+                    <routesAutersModal />
+                </div>
+            </div>
 
             <div v-if="region_loading">
                 <content-loader
@@ -126,6 +133,8 @@
     import metaData from '../items/MetaDataComponent'
     import { ContentLoader } from 'vue-content-loader'
 
+    import RoutesAutersModal from '../items/climbing_routes/items/modals/RoutesAutersListModal.vue'
+
     export default {
         data: function () {
             return {
@@ -148,7 +157,8 @@
             sectorQuantyt,
             StackModal,
             metaData,
-            ContentLoader
+            ContentLoader,
+            RoutesAutersModal
         },
         mounted() {
             this.get_outdoor_articles()

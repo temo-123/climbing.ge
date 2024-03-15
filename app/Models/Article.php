@@ -9,6 +9,7 @@ use Spatie\Searchable\SearchResult;
 use Illuminate\Notifications\Notifiable;
 
 use App\Models\Guide\Article_image;
+use App\Models\Guide\Suport_local_bisnes;
 
 class Article extends Model
 {
@@ -40,7 +41,6 @@ class Article extends Model
 
 	public function ka_article()
 	{
-		// return $this->hasOne(Locale_article::class, 'id');
 		return $this->hasOne(Locale_article::class, 'id', 'ka_article_id');
 	}
 
@@ -69,7 +69,7 @@ class Article extends Model
 
 	public function bisnes()
 	{
-		return $this->hasOne(Suport_local_bisnes::class, 'article_id', 'id');
+        return $this->belongsToMany(Suport_local_bisnes::class, 'suport_local_bisnes_articles', 'article_id', 'bisnes_id');
 	}
 
 
@@ -80,7 +80,6 @@ class Article extends Model
 
 	public function gallery_images()
 	{
-        // return $this->belongsToMany(Gallery_image::class, 'gallery_image_article', 'article_id', 'image_id');
 		return $this->hasMany(Article_image::class, 'article_id', 'id');
 	}
 

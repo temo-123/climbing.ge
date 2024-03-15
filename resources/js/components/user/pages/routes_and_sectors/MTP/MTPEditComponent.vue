@@ -149,7 +149,7 @@
     methods: {
       get_region_data: function(){
         axios
-        .post("../../api/article/",{category: 'outdoor'})
+        .get("/article/get_category_articles/outdoor")
         .then(response => {
           this.regions = response.data
           this.get_sectors_data()

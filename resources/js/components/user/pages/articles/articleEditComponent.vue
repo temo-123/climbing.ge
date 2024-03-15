@@ -178,7 +178,7 @@
     import SectorsImagesForm from './forms/edit_forms/SectorImagesFormComponent.vue'
     import MountRouteImagesForm from './forms/edit_forms/MountRouteImageFormComponent.vue'
 
-    import gallery_images_edit from './items/galleryImageEditComponent.vue'
+    import gallery_images_edit from '../../items/gallery/galleryImageEditComponent.vue'
 
     export default {
         props: [

@@ -118,9 +118,10 @@ const router = new VueRouter({
         { path: '/product/edit/:id', name: 'productEdit', component: load('products_and_categories/products/productEditComponent') },
         { path: '/product/add', name: 'productAdd', component: load('products_and_categories/products/productAddComponent') },
 
-        { path: '/tours_list', name: 'toursList', component: load('toure/TouresListPage') },
-        { path: '/toure/edit/:id', name: 'toureEdit', component: load('toure/toure/EditTourePage') },
-        { path: '/toure/add', name: 'toureAdd', component: load('toure/toure/AddTourePage') },
+        { path: '/tours_reservations_list', name: 'toursReservations', component: load('tour/ToursReservationsPage') },
+        { path: '/tours_list', name: 'toursList', component: load('tour/ToursListPage') },
+        { path: '/tour/edit/:id', name: 'tourEdit', component: load('tour/tour/EditTourPage') },
+        { path: '/tour/add', name: 'tourAdd', component: load('tour/tour/AddTourPage') },
 
         { path: '/stor_slides_list', name: 'storSlidesList', component: load('gallery/StoreSlidesPage') },
 

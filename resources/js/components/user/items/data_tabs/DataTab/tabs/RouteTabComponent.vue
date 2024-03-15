@@ -39,7 +39,7 @@
             del_route(id){
                 if(confirm('Are you sure, you want delite it?')){
                     axios
-                    .post('../../api/route/'+id, {
+                    .post('/route/del_route/'+id, {
                         id: id,
                         _method: 'DELETE'
                     })

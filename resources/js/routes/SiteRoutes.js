@@ -101,6 +101,21 @@ const router = new VueRouter({
                     name: "ice",
                     component: load("IcePageComponent"),
                 },
+                {
+                    path: "spot_projects",
+                    name: "spot_projects",
+                    component: load("ProjectsList"),
+                },
+                {
+                    path: "spot_project/:url_title",
+                    name: "project",
+                    component: load("ProjectPage"),
+                },
+                {
+                    path: "special_article/:url_title",
+                    name: "special_article",
+                    component: load("SpecialAericlePage"),
+                },
 
                 {
                     path: "other",

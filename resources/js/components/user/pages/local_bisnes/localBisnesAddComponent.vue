@@ -15,11 +15,8 @@
                 <div class="alert alert-danger" role="alert" v-if="error.global_info_validation.published">
                     Published - {{ error.global_info_validation.published[0] }}
                 </div>
-                <div class="alert alert-danger" role="alert" v-if="error.global_info_validation.start_data">
-                    Start data - {{ error.global_info_validation.start_data[0] }}
-                </div>
-                <div class="alert alert-danger" role="alert" v-if="error.global_info_validation.end_data">
-                    End data - {{ error.global_info_validation.end_data[0] }}
+                <div class="alert alert-danger" role="alert" v-if="error.global_info_validation.url_title">
+                    Url title - {{ error.global_info_validation.url_title[0] }}
                 </div>
 
                 <div class="alert alert-danger" role="alert" v-if="error.us_info_validation.title">
@@ -89,66 +86,39 @@
                         </div>
                     </div>
                     <form class="width_100" name="contact-form" method="POST" id="global_form" ref="myForm" style="margin-top: 5%;" enctyp ="multipart/form-data">
-                        <div class="form-group clearfix" v-if="!data.global_data.public_totaly">
+                        <div class="form-group clearfix row">
+                            <label for="published" class='col-md-2 control-label '> Publish </label>
+                            <div class="col-md-10">
+                                <select class="form-control" v-model="data.global_bisnes.published" name="published" > 
+                                    <option value="0">Not public</option> 
+                                    <option value="1">Public</option> 
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group clearfix" v-if="!data.global_bisnes.public_totaly">
                             <label for="name" class='col-xs-2 control-label'> Published befor (After this data it`s whil by not public`) </label>
                             <div class="col-xs-8">
-                                <input type="datetime-local" class="form-control" id="datemin" name="datemin" min="2000-01-02" v-model="data.global_data.published_data" >
+                                <input type="date" class="form-control" id="datemin" name="datemin" min="2000-01-02" v-model="data.global_bisnes.published_data" >
                             </div>
                         </div>
                         <div class="form-group clearfix">
                             <label for="scales" class='col-xs-2 control-label'> Totaly public </label>
                             <div class="col-xs-8">
-                                <input type="checkbox" id="scales" name="scales" v-model="data.global_data.public_totaly" >
-                            </div>
-                        </div>
-                        <div class="form-group clearfix">
-                            <label for="article_id" class="col-xs-2 control-label"> Article </label>
-                            <div class="col-xs-8">
-                                <select class="form-control" name="article_id" v-model="data.global_data.article_id" >
-                                    <option v-for="region in regions" :key="region" v-bind:value="region.id"> {{ region.url_title }} </option>
-                                </select>
+                                <input type="checkbox" id="scales" name="scales" @click="clear_published_time()" v-model="data.global_bisnes.public_totaly" >
                             </div>
                         </div>
                     </form>
 
-                    <div class="col-md-12">
-                        <div class="row">
-                            <div class="col-md-12">
-                                <div class="form-groupe">
-                                    <button class="btn btn-primary float-left" @click="add_bisnes_new_image_value()" v-if="(bisnes_images.length < 8)">Add new bisnes image</button>
-                                </div>
-                            </div>
-                        </div>
+                    <article_bisnes_add_relatione_tab
+                        @update_article_relations="update_article_relations"
+                    /> 
+                    
+                    <gallery_images_add
+                        @update_gallery_images="update_gallery_images"
 
-                        <div class="row">
-                            <div class="col-md-12">
-                                <table class="table table-hover" id="dev-table">
-                                    <thead>
-                                        <tr>
-                                            <th>Image</th>
-                                            <th>|</th>
-                                            <th>Delite</th>
-                                        </tr>
-                                    </thead>
-
-                                    <tbody>
-                                        <tr v-for="bisnes_image in bisnes_images" :key="bisnes_image.id">
-                                            <td>
-                                                <form ref="myForm">
-                                                    <input type="file" name="image" id="image" v-on:change="onFileChange($event, bisnes_image.id)">
-                                                </form> 
-                                            </td>
-                                            <td>|</td>
-                                            <td>
-                                                <button class="btn btn-danger" @click="del_bisnes_image(bisnes_image.id)">Delete</button>
-                                            </td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-                    </div>
-
+                        :image_path_prop="'images/local_bisnes_img/'"
+                    />
+                   
                 </div>
                 <div class="row" v-show="tab_num == 2">
                     <div class="width_100 jumbotron jumbotron-fluid">
@@ -161,21 +131,21 @@
                         <div class="form-group clearfix">
                             <label for="name" class='col-xs-2 control-label'> Title </label>
                             <div class="col-xs-8">
-                                <input type="text" name="name" v-model="data.us_data.title"  class="form-control"> 
+                                <input type="text" name="name" v-model="data.us_bisnes.title"  class="form-control"> 
                             </div>
                         </div>
     
                         <div class="form-group clearfix">
                             <label for="name" class='col-xs-2 control-label'> Short description </label>
                             <div class="col-xs-8">
-                                <ckeditor v-model="data.us_data.short_description"  :config="us_short_description_text_editor"></ckeditor>
+                                <ckeditor v-model="data.us_bisnes.short_description"  :config="editor_config.us_short_description"></ckeditor>
                             </div>
                         </div>
 
                         <div class="form-group clearfix">
                             <label for="name" class='col-xs-2 control-label'> text </label>
                             <div class="col-xs-8">
-                                <ckeditor v-model="data.us_data.text"  :config="us_text_editor_config"></ckeditor>
+                                <ckeditor v-model="data.us_bisnes.text"  :config="editor_config.us_text"></ckeditor>
                             </div>
                         </div>
                     </form>
@@ -192,22 +162,22 @@
                         <div class="form-group clearfix">
                             <label for="name" class='col-xs-2 control-label'> Title </label>
                             <div class="col-xs-8">
-                                <input type="text" name="title" v-model="data.ru_data.title" class="form-control"> 
+                                <input type="text" name="title" v-model="data.ru_bisnes.title" class="form-control"> 
                             </div>
                         </div>
     
                         <div class="form-group clearfix">
                             <label for="name" class='col-xs-2 control-label'> Short description </label>
                             <div class="col-xs-8">
-                                <!-- <textarea type="text"  name="short_description" v-model="data.ru_data.short_description"  rows="15" class="form-cotrol md-textarea form-control"></textarea> -->
-                                <ckeditor v-model="data.ru_data.short_description" :config="ru_short_description_text_editor"></ckeditor>
+                                <!-- <textarea type="text"  name="short_description" v-model="data.ru_bisnes.short_description"  rows="15" class="form-cotrol md-textarea form-control"></textarea> -->
+                                <ckeditor v-model="data.ru_bisnes.short_description" :config="editor_config.ru_short_description"></ckeditor>
                             </div>
                         </div>
 
                         <div class="form-group clearfix">
                             <label for="name" class='col-xs-2 control-label'> text </label>
                             <div class="col-xs-8">
-                                <ckeditor v-model="data.ru_data.text"  :config="ru_text_editor_config"></ckeditor>
+                                <ckeditor v-model="data.ru_bisnes.text"  :config="editor_config.ru_text"></ckeditor>
                             </div>
                         </div>
                     </form>
@@ -224,22 +194,22 @@
                         <div class="form-group clearfix">
                             <label for="name" class='col-xs-2 control-label'> Title </label>
                             <div class="col-xs-8">
-                                <input type="text" name="value name"  v-model="data.ka_data.title" class="form-control"> 
+                                <input type="text" name="value name"  v-model="data.ka_bisnes.title" class="form-control"> 
                             </div>
                         </div>
     
                         <div class="form-group clearfix">
                             <label for="name" class='col-xs-2 control-label'> Short description </label>
                             <div class="col-xs-8">
-                                <!-- <textarea type="text"  name="short_description"  v-model="data.ka_data.short_description" rows="15" class="form-cotrol md-textarea form-control"></textarea> -->
-                                <ckeditor v-model="data.ka_data.short_description" :config="ka_short_description_text_editor"></ckeditor>
+                                <!-- <textarea type="text"  name="short_description"  v-model="data.ka_bisnes.short_description" rows="15" class="form-cotrol md-textarea form-control"></textarea> -->
+                                <ckeditor v-model="data.ka_bisnes.short_description" :config="editor_config.ka_short_description"></ckeditor>
                             </div>
                         </div>
 
                         <div class="form-group clearfix">
                             <label for="name" class='col-xs-2 control-label'> text </label>
                             <div class="col-xs-8">
-                                <ckeditor v-model="data.ka_data.text"  :config="ka_text_editor_config"></ckeditor>
+                                <ckeditor v-model="data.ka_bisnes.text"  :config="editor_config.ka_text"></ckeditor>
                             </div>
                         </div>
                     </form>
@@ -252,10 +222,16 @@
 
 <script>
     import { editor_config } from '../../../../mixins/editor/editor_config_mixin.js'
+    import gallery_images_add from '../../items//gallery/galleryImageAddComponent.vue'
+    import article_bisnes_add_relatione_tab from './items/articleBisnesAddRelationeTabComponent.vue'
     export default {
         mixins: [
-            editor_config
+            editor_config,
         ],
+        components: {
+            gallery_images_add,
+            article_bisnes_add_relatione_tab
+        },
         props: [
             // 'back_url',
         ],
@@ -269,39 +245,40 @@
 
                 error: [],
 
-                us_short_description_text_editor: editor_config.get_small_editor_config(),
-                us_text_editor_config: editor_config.get_big_editor_config(),
-                us_info_editor_config: editor_config.get_big_editor_config(),
-
-                ru_short_description_text_editor: editor_config.get_small_editor_config(),
-                ru_text_editor_config: editor_config.get_big_editor_config(),
-                ru_info_editor_config: editor_config.get_big_editor_config(),
-                
-                ka_short_description_text_editor: editor_config.get_small_editor_config(),
-                ka_text_editor_config: editor_config.get_big_editor_config(),
-                ka_info_editor_config: editor_config.get_big_editor_config(),
+                editor_config: {
+                    us_short_description: editor_config.get_small_editor_config(),
+                    us_text: editor_config.get_big_editor_config(),
+                    // us_info: editor_config.get_big_editor_config(),
+                    ru_short_description: editor_config.get_small_editor_config(),
+                    ru_text: editor_config.get_big_editor_config(),
+                    // ru_info: editor_config.get_big_editor_config(),
+                    ka_short_description: editor_config.get_small_editor_config(),
+                    ka_text: editor_config.get_big_editor_config(),
+                    // ka_info: editor_config.get_big_editor_config()
+                },
 
                 data: {
-                    global_data: {
-                        us_title_for_url_title: '',
+                    global_bisnes: {
+                        url_title: '',
 
+                        published: 0,
                         published_data: '',
                         public_totaly: 0,
                     },
 
-                    us_data: {
+                    us_bisnes: {
                         title: "",
                         short_description: "",
                         text: "",
                     },
 
-                    ka_data: {
+                    ka_bisnes: {
                         title: "",
                         short_description: "",
                         text: "",
                     },
 
-                    ru_data: {
+                    ru_bisnes: {
                         title: "",
                         short_description: "",
                         text: "",
@@ -314,14 +291,17 @@
             }
         },
         mounted() {
-            // this.get_bisnes_category_data()
-            this.get_region_data()
+            // this.get_bisnes_category_bisnes()
+            this.get_region_bisnes()
             
             document.querySelector('body').style.marginLeft = '0';
             document.querySelector('.admin_page_header_navbar').style.marginLeft = '0';
         },
         methods: {
-            get_region_data: function () {
+            clear_published_time(){
+                this.data.global_bisnes.published_data = null
+            },
+            get_region_bisnes: function () {
                 axios
                     .get("../api/article/")
                     .then((response) => {
@@ -329,36 +309,16 @@
                     })
                     .catch((error) => console.log(error));
             },
-            onFileChange(event, item_id){
-                let image = event.target.files[0]
-                let id = item_id - 1 
-                this.bisnes_images[id]['image'] = image
-            },
-            add_bisnes_new_image_value(){
-                var new_item_id = this.bisnes_images.length+1
-                this.bisnes_images.push(
-                    {
-                        id: new_item_id,
-                        image: '',
-                    }
-                );
-            },
-            del_bisnes_image(id){
-                this.removeObjectWithId(this.bisnes_images, id);
-            },
-            removeObjectWithId(arr, id) {
-                const objWithIdIndex = arr.findIndex((obj) => obj.id === id);
-                arr.splice(objWithIdIndex, 1);
 
-                return arr;
+            update_article_relations(articles){
+                this.bisnes_new_article_relations = articles
             },
 
-            // showModal(){
-            //     this.myModal = !this.myModal
-            // },
-
+            update_gallery_images(images){
+                this.bisnes_images = images
+            },
             add_bisnes() {
-                this.data.global_data.us_title_for_url_title = this.data.us_data.title
+                this.data.global_bisnes.url_title = this.data.us_bisnes.title
                 let formData = new FormData();
 
                 var loop_num = 0
@@ -368,6 +328,13 @@
                 });
                 loop_num = 0
 
+                var relation_loop_num = 0
+                this.bisnes_new_article_relations.forEach(relation => {
+                    formData.append('bisnes_new_article_relations['+relation_loop_num+']', relation.article_id)
+                    relation_loop_num++
+                });
+                relation_loop_num = 0
+                
                 formData.append('data', JSON.stringify(this.data))
 
                 axios

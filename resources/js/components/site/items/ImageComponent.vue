@@ -1,9 +1,12 @@
 <template>
-    <img :src="this.image_src"  :class="this.img_class" :alt="this.alt" v-watermark='config = option'/>
+    <div id="image">
+        <img :src="this.image_src" class="opening_image_resolution" :class="this.img_class " :alt="this.alt" />
+
+        <!-- <div id="watermark"></div> -->
+    </div>
 </template>
 
 <script>
-    //https://www.vuescript.com/custom-watermarks/
     export default {
         props:[
             'src',
@@ -18,15 +21,6 @@
         data(){
             return {
                 content: '',
-                option: {
-                    // "bottomleft", "bottomright", "topleft", "topright", "center", "fill"
-                    mode: "bottomright",
-                    textBaseline: "middle",
-                    font: "20px Arial",
-                    fillStyle: "crimson",
-                    content: 'CLIMBING.GE',
-                    rotate: 30
-                },
 
                 image_src: '',
 
@@ -38,3 +32,30 @@
         }
     }
 </script>
+
+<style scss>
+#watermark{
+    background: url("/images/header logo.png?fea6f86127b293ea8ea3713c2847dc21") no-repeat;
+    background-repeat: no-repeat;
+    background-size: 80% 80%;
+
+    width: 22%;
+    height: 40px;
+
+    /* position: relative;
+    left: 82%;
+    bottom: 6%; */
+
+    position: absolute;
+    left: 75%;
+    /* bottom: 10%; */
+
+}
+/* #image{
+   width: 100%;
+   height: 100%;
+   position: relative;
+   top: 0;
+   left: 0;
+} */
+</style>

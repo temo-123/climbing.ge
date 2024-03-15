@@ -120,6 +120,10 @@
                                 <div class="row">
                                     <div class="col-md-12">
                                         <h3 style="margin-bottom: 0; float: left;">{{ $t('custom product') }}</h3>
+
+                                        <ProductProdaction
+                                            :product_id_prop = roduct.global_product.id
+                                        />
                                     </div>
                                 </div>
                             </div>
@@ -201,6 +205,7 @@
     import breadcrumb from '../../items/BreadcrumbComponent.vue'
     import similarProduct from '../../items/SimilarProductComponent.vue'
     import feedbackForm from '../../items/FeedbacksComponent.vue'
+    import ProductProdaction from '../../items/reservation_forms/ProductProdactionFormComponent.vue'
 
     export default {
         components: {
@@ -210,7 +215,8 @@
             // analogProduct,
             breadcrumb,
             similarProduct,
-            feedbackForm
+            feedbackForm,
+            ProductProdaction,
         },
         data () {
             return {

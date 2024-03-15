@@ -8,23 +8,25 @@ use Validator;
 // use App\Services\ImageControllService;
 use App\Services\URLTitleService;
 
-abstract class LocaleContentControllService
+// abstract class LocaleContentControllService
+class LocaleContentControllService
 {
     
     /*
     *
-    * This function upload 1 file
+    * This function create new locale and global dataase value
     *
-    * Function get 5 parameters
+    * Function get 6 parameters
     *
-    * $image_dir            - image wai in derectory from '/public/' derectory
-    * $request              - HTTP request
-    * $form_value_id        - image value name in your form
-    * $resize               - Image resize action (defolt it null)
-    * $save_origin_image    - Save orifinal image in ./origin_img/ folder (defolt it true)
+    * $data             - locale and global data
+    * $global_model     - gloal data model
+    * $local_model      - local data model
+    * $prefix           - content prefix (It is necessary that the prefix be common both for the database and for the content of the form!)
+    * $request          - $request
+    * $image_path       - article images dir path (parameter is optional, if image value in db tab not exist)
     *
     */
-    public static function add_content($data, $global_model, $local_model, $prefix, $request, $image_path)
+    public static function add_content($data, $global_model, $local_model, $prefix, $request, $image_path = false)
     {
         $validation_issets = [];
 
@@ -124,13 +126,13 @@ abstract class LocaleContentControllService
     {
         $global_data['url_title'] = URLTitleService::get_url_title($us_data["title"]); // make url_title from us_title value
 
-        $url_title_valid = (new static)->url_title_validate($global_data, $global_model);
-
+        $url_title_valid = (new static)->adding_url_title_validate($global_data, $global_model);
+        
         if ($url_title_valid != false) {
             return $url_title_valid;
         }
 
-        if($request->hasFile('image')){
+        if($request->hasFile('image') && $image_path){
             $global_data['image'] =  ImageControllService::image_upload($image_path, $request, 'image', 1);
         }
 
@@ -165,20 +167,22 @@ abstract class LocaleContentControllService
     }
     
     
+    
     /*
     *
-    * This function upload 1 file
+    * This function edit new locale and global dataase value
     *
-    * Function get 5 parameters
+    * Function get 6 parameters
     *
-    * $image_dir            - image wai in derectory from '/public/' derectory
-    * $request              - HTTP request
-    * $form_value_id        - image value name in your form
-    * $resize               - Image resize action (defolt it null)
-    * $save_origin_image    - Save orifinal image in ./origin_img/ folder (defolt it true)
+    * $data             - locale and global data
+    * $global_model     - gloal data model
+    * $local_model      - local data model
+    * $prefix           - content prefix (It is necessary that the prefix be common both for the database and for the content of the form!)
+    * $request          - $request
+    * $image_path       - article images dir path (parameter is optional, if image value in db tab not exist)
     *
     */
-    public static function edit_content($data, $global_model, $local_model, $prefix, $request, $image_path)
+    public static function edit_content($data, $global_model, $local_model, $prefix, $request, $image_path = false)
     {
         $validation_issets = [];
 
@@ -223,7 +227,7 @@ abstract class LocaleContentControllService
             $locale_content_values = (new static)->edit_global_content(
                 $data['global'.$prefix],  
                 $data['us'.$prefix],
-                $data['global_article']['id'],
+                $data['global'.$prefix]['id'],
                 $global_model,
                 $request,
                 $image_path,
@@ -262,7 +266,7 @@ abstract class LocaleContentControllService
             if($us_data['is_change_url_title']){
                 $global_data['url_title'] = URLTitleService::get_url_title($us_data["title"]); // make url_title from us_title value
 
-                $url_title_valid = (new static)->url_title_validate($global_data, $global_model);
+                $url_title_valid = (new static)->editing_url_title_validate($global_data, $global_model);
                 
                 if ($url_title_valid != false) {
                     return $url_title_valid;
@@ -270,7 +274,7 @@ abstract class LocaleContentControllService
             }
         }
         
-        if($request->hasFile('image')){
+        if($request->hasFile('image') && $image_path){
             $global_data['image'] =  ImageControllService::image_update($image_path, $editing_global_content, $request, 'image', 'image', 1);
         }
 
@@ -294,7 +298,7 @@ abstract class LocaleContentControllService
     private static function edit_locale_content($data, $id, $local_model)
     {
         $editing_locale_content = $local_model::where('id', '=', $id)->first();
-
+        
         $saved = $editing_locale_content->update($data);
 
         if(!$saved){
@@ -307,28 +311,30 @@ abstract class LocaleContentControllService
     }
     
     
+    
     /*
     *
-    * This function upload 1 file
+    * This function edit new locale and global dataase value
     *
-    * Function get 5 parameters
+    * Function get 6 parameters
     *
-    * $image_dir            - image wai in derectory from '/public/' derectory
-    * $request              - HTTP request
-    * $form_value_id        - image value name in your form
-    * $resize               - Image resize action (defolt it null)
-    * $save_origin_image    - Save orifinal image in ./origin_img/ folder (defolt it true)
+    * $global_id        - deliting global data value ID
+    * $global_model     - gloal data model
+    * $local_model      - local data model
+    * $prefix           - content prefix (It is necessary that the prefix be common both for the database and for the content of the form!)
+    * $image_prefix     - image value name in db
+    * $image_path       - article images dir path (parameter is optional, if image value in db tab not exist)
     *
     */
-    public static function del_content($global_id, $global_model, $local_model, $content_prefix, $image_prefix, $image_path)
+    public static function del_content($global_id, $global_model, $local_model, $prefix, $image_prefix, $image_path = false)
     {
         $gloal_content = $global_model::where('id', '=', $global_id)->first();
 
-        $us_content = $local_model::where('id',strip_tags($gloal_content['us'.$content_prefix.'_id']))->first();
-        $ru_content = $local_model::where('id',strip_tags($gloal_content['ru'.$content_prefix.'_id']))->first();
-        $ka_content = $local_model::where('id',strip_tags($gloal_content['ka'.$content_prefix.'_id']))->first();
+        $us_content = $local_model::where('id',strip_tags($gloal_content['us'.$prefix.'_id']))->first();
+        $ru_content = $local_model::where('id',strip_tags($gloal_content['ru'.$prefix.'_id']))->first();
+        $ka_content = $local_model::where('id',strip_tags($gloal_content['ka'.$prefix.'_id']))->first();
         
-        if($gloal_content->$image_prefix){
+        if($gloal_content->$image_prefix && $image_path){
             ImageControllService::image_delete($image_path, $gloal_content, $image_prefix);
         }
 
@@ -351,7 +357,6 @@ abstract class LocaleContentControllService
             'published' => 'required',
         ]);
 
-// dd($validator->fails());
         if ($validator->fails()) {
             return $validator->messages();
         }
@@ -368,7 +373,8 @@ abstract class LocaleContentControllService
             return $validator->messages();
         }
     }
-    private static function url_title_validate($data, $gloal_model)
+
+    private static function editing_url_title_validate($data, $gloal_model)
     {
         $databaseName = $gloal_model::first()->getTable();
 
@@ -381,5 +387,21 @@ abstract class LocaleContentControllService
         }
         return false;
     }
+
+    private static function adding_url_title_validate($data, $gloal_model)
+    {
+        $gloal_model = new $gloal_model;
+        $databaseName = $gloal_model->getTable();
+        
+        $validator = Validator::make($data, [
+            'url_title' => 'required | max:190 | unique:'.$databaseName.',url_title',
+        ]);
+
+        if ($validator->fails()) {
+            return $validator->messages();
+        }
+        return false;
+    }
+
 
 }

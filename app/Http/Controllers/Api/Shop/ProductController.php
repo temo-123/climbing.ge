@@ -156,6 +156,8 @@ class ProductController extends Controller
                     $saiving_issets['ru_info_status'],
                     $saiving_issets['us_info_status']                    
                 );
+
+                $this->create_product_user_relations($action_article_id);
             }
         }
         else{            
@@ -206,10 +208,12 @@ class ProductController extends Controller
         }
     }
 
-    // public function data()
-    // {
-    //     # code...
-    // }
+    public function create_product_user_relations($tout_id) {
+        $new_user_relatione = new Users_tour;
+        $new_user_relatione = $tout_id;
+        $new_user_relatione = Auth::user()->id;
+        $new_user_relatione -> save();
+    }
 
     /**
      * Display the specified resource.

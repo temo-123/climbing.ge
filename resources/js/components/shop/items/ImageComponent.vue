@@ -1,5 +1,9 @@
 <template>
-    <img :src="this.image_src" :class="this.img_class" :alt="this.alt" v-watermark='config = option'/>
+    <div id="image">
+        <img :src="this.image_src" class="opening_image_resolution" :class="this.img_class " :alt="this.alt" />
+
+        <!-- <div id="watermark"></div> -->
+    </div>
 </template>
 
 <script>
@@ -9,24 +13,14 @@
             'alt',
             'img_class',
         ],
-
         watch: {
-            src: function(newVal, oldVal){
+            src: function(newVal, oldVal) { 
                 this.image_src = this.src
             },
         },
         data(){
             return {
                 content: '',
-                option: {
-                    // "bottomleft", "bottomright", "topleft", "topright", "center", "fill"
-                    mode: "bottomleft",
-                    textBaseline: "middle",
-                    font: "20px Arial",
-                    fillStyle: "crimson",
-                    content: 'SHOP.CLIMBING.GE',
-                    rotate: 30
-                },
 
                 image_src: '',
 
@@ -38,3 +32,30 @@
         }
     }
 </script>
+
+<style scss>
+#watermark{
+    background: url("/images/header logo.png?fea6f86127b293ea8ea3713c2847dc21") no-repeat;
+    background-repeat: no-repeat;
+    background-size: 80% 80%;
+
+    width: 22%;
+    height: 40px;
+
+    /* position: relative;
+    left: 82%;
+    bottom: 6%; */
+
+    position: absolute;
+    left: 75%;
+    /* bottom: 10%; */
+
+}
+/* #image{
+   width: 100%;
+   height: 100%;
+   position: relative;
+   top: 0;
+   left: 0;
+} */
+</style>

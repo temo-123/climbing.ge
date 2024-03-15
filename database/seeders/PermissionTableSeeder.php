@@ -365,32 +365,6 @@ class PermissionTableSeeder extends Seeder
             ],
 
             [
-                'subject' => 'toure',
-                'action' => 'add',
-            ],
-            [
-                'subject' => 'toure',
-                'action' => 'del',
-            ],
-            [
-                'subject' => 'toure',
-                'action' => 'edit',
-            ],
-
-            [
-                'subject' => 'toure_category',
-                'action' => 'add',
-            ],
-            [
-                'subject' => 'toure_category',
-                'action' => 'del',
-            ],
-            [
-                'subject' => 'toure_category',
-                'action' => 'edit',
-            ],
-
-            [
                 'subject' => 'store_slides',
                 'action' => 'add',
             ],
@@ -483,6 +457,41 @@ class PermissionTableSeeder extends Seeder
             [
                 'subject' => 'sport_team',
                 'action' => 'athlete_candidate',
+            ],
+
+            [
+                'subject' => 'tour_reservation',
+                'action' => 'del',
+            ],
+            [
+                'subject' => 'tour_reservation',
+                'action' => 'show',
+            ],
+
+            [
+                'subject' => 'tour',
+                'action' => 'add',
+            ],
+            [
+                'subject' => 'tour',
+                'action' => 'del',
+            ],
+            [
+                'subject' => 'tour',
+                'action' => 'edit',
+            ],
+
+            [
+                'subject' => 'tour_category',
+                'action' => 'add',
+            ],
+            [
+                'subject' => 'tour_category',
+                'action' => 'del',
+            ],
+            [
+                'subject' => 'tour_category',
+                'action' => 'edit',
             ],
         );
 

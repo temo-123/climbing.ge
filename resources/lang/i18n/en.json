@@ -11,7 +11,8 @@
             "mountaineering": "Mountaineering",
             "other": "Other",
             "about us": "About us",
-            "search": "Search climbing spots in Georgia"
+            "search": "Search climbing spots in Georgia",
+            "spots projects": "New outdoor spots project"
         },
 
         "menu": {
@@ -24,7 +25,8 @@
             "other": "Other",
             "about us": "About us",
             "login" :"Login",
-            "sitemap": "Sitemap"
+            "sitemap": "Sitemap",
+            "spots projects": "Spots project"
         },
 
         "article_right_nabar": {
@@ -46,6 +48,7 @@
             "climbing": "Climbing",
             "indoor climbing": "Indoor climbing",
             "outdoor climbing": "Outdoor climbing",
+            "spots projects": "New outdoor spots project",
             "ice climbing": "Ice and mix climbing",
             "mountaineering": "Mountaineering",
             "other": "Other",

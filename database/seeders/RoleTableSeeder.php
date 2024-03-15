@@ -194,6 +194,24 @@ class RoleTableSeeder extends Seeder
             }
         }
 
+        $tour_permissions = Permission::
+                                            where('subject', '=', 'tour_reservation')->
+                                            orWhere('subject', '=', 'tour')->
+                                            orWhere('subject', '=', 'tour_category')->
+                                            get();
+
+        $tour_menager = new Role();
+        $tour_menager->name = 'tour menager';
+        $tour_menager->slug = 'tour_menager';
+        $tour_menager->description = 'tour menager';
+        $tour_menager->save();
+
+        foreach ($tour_permissions as $permission) {
+            if($permission['subject'] != 'ban'){
+                $tour_menager->permissions()->attach($permission);
+            }
+        }
+
         
         $user = new Role();
         $user->name = 'User';

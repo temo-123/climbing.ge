@@ -5,11 +5,11 @@
         <div class="bar"><i class="fa fa-exclamation-triangle"></i></div>
 
         <h2 class="article_list_short_description">
-            <span v-html="this.$siteData.toure_description"></span>
+            <span v-html="this.$siteData.tour_description"></span>
         </h2>
 
         <span v-if="tours.length">
-            <div class="row" v-if="toure_loading">
+            <div class="row" v-if="tour_loading">
                 <content-loader
                     viewBox="0 0"
                     primaryColor="#f3f3f3"
@@ -17,11 +17,11 @@
                 />
             </div>
             <div class="row" v-else>
-                <ToureItem
-                    v-for="toure in tours"
-                    :key='toure.id'
-                    :toure_data="toure">
-                </ToureItem>
+                <TourItem
+                    v-for="tour in tours"
+                    :key='tour.id'
+                    :tour_data_prop="tour">
+                </TourItem>
             </div>
         </span>
 
@@ -32,13 +32,13 @@
         <metaData 
             :title = " $t('shop.meta.tours') "
             :description = "'Service climbing & mountaineering.'"
-            :image = "'/public/images/meta_img/toure.jpg'"
+            :image = "'/public/images/meta_img/tour.jpg'"
         />
     </div>
 </template>
 
 <script>
-    import ToureItem from '../../items/cards/ToureCardComponent'
+    import TourItem from '../../items/cards/TourCardComponent'
     import { ContentLoader } from 'vue-content-loader'
     import emptyPageComponent from '../../../global_components/EmptyPageComponent'
 
@@ -48,7 +48,7 @@
             metaData,
             ContentLoader,
             emptyPageComponent,
-            ToureItem
+            TourItem
         },
         data: function () {
             return {
@@ -58,12 +58,12 @@
             };
         },
         mounted() {
-            this.get_toures()
+            this.get_tours()
         },
         methods: {
-            get_toures(){
+            get_tours(){
                 axios
-                .get('/toure/get_tours/'+localStorage.getItem('lang'))
+                .get('/tour/get_tours/'+localStorage.getItem('lang'))
                 .then(response => {
                     this.tours = response.data
                 })

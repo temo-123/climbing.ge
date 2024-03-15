@@ -49,7 +49,7 @@
             <div class="col-sm-10 col-md-10">
                 <div class="thumbnail">
                     <router-link style="font-size: 1.5em;" :to="'../local_bisnes/' + local_bisnes.global_data.url_title" exact>
-                        <img :src="'../../../images/suport_local_bisnes_img/' + local_bisnes.image.image" alt="...">
+                        <img :src="'../../../images/suport_local_bisnes_img/' + local_bisnes.image.image" :alt="local_bisnes.local_data.title">
                     </router-link>
                     <div class="caption">
                         <router-link style="font-size: 1.5em;" :to="'../local_bisnes/' + local_bisnes.global_data.url_title" exact>
@@ -103,8 +103,7 @@
 
             get_local_bisnes_for_article(){
                 axios
-                .get('../api/bisnes/get_local_bisnes_for_article/' + this.$route.params.url_title + '/' + localStorage.getItem('lang'), {
-                })
+                .get('/bisnes/get_local_bisnes_for_article/' + this.$route.params.url_title + '/' + localStorage.getItem('lang'))
                 .then(response => {
                     this.local_bisnes.image = response.data.image
                     this.local_bisnes.local_data = response.data.local_data

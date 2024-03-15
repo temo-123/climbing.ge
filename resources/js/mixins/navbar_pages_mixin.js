@@ -24,32 +24,83 @@ export const navbar = {
                 route: "/cart"
             },
             {
-                title: "My Comments & Reviews",
-                route: "/my_comments_and_reviews"
-            },
-            {
-                title: "My Orders",
-                route: "/order/my_orders"
-            },
-            {
                 title: "Favorites",
                 name: "favorites",
                 routes: [
                     {
                         name: "Favorite products",
                         route: "/favorite_products",
-                        // permissions: [['ban', 'block']]
+                        permissions: [
+                        //     ['show', 'worker']
+                        ]
                     },
                     {
                         name: "Favorite outdoor area",
                         route: "/my_favorite_outdoor_area",
-                        // permissions: [['ban', 'block']]
+                        permissions: [
+                        //     ['show', 'worker']
+                        ]
                     },
                     {
                         name: "Interested events",
                         route: "/interested_events",
-                        // permissions: [['ban', 'block']]
+                        permissions: [
+                        //     ['show', 'worker']
+                        ]
                     },
+                ],
+            },
+            {
+                title: "My products",
+                name: "my_products",
+                routes: [
+                    {
+                        name: "My products",
+                        route: "/tours_list",
+                        permissions: [
+                            ['add', 'product'],
+                            ['edit', 'product'],
+                            ['del', 'product'],
+                        ]
+                    },
+                    {
+                        name: "My Orders",
+                        route: "/order/my_orders",
+                        permissions: [
+                            ['edit_order_status', 'order'],
+                        ]
+                        
+                    },
+                ],
+            },
+            {
+                title: "My Comments & Reviews",
+                route: "/my_comments_and_reviews"
+            },
+            {
+                title: "My tours",
+                name: "my_tours",
+                routes: [
+                    {
+                        name: "My tours",
+                        route: "/tours_list",
+                        permissions: [
+                            ['add', 'tour'],
+                            ['edit', 'tour'],
+                            ['del', 'tour'],
+                            ['add', 'tour_category'],
+                            ['edit', 'tour_category'],
+                            ['del', 'tour_category']
+                        ]
+                    },
+                    {
+                        name: "Tours reservations",
+                        route: "/tours_list",
+                        permissions: [
+                            ['show', 'tour_reservation'],
+                            ['del', 'tour_reservation'],
+                        ]
+                    }
                 ],
             },
             {
@@ -118,6 +169,15 @@ export const navbar = {
                         ]
                     },
                     {
+                        name: "Spot projects",
+                        route: "/article/spot_projects",
+                        permissions: [
+                            ['add', 'article'],
+                            ['edit', 'article'],
+                            ['del', 'article'],
+                        ]
+                    },
+                    {
                         name: "Mountaineering",
                         route: "/mount_routes/mount_routes_list",
                         permissions: [
@@ -165,6 +225,15 @@ export const navbar = {
                             ['del', 'article'],
                         ]
                     },
+                    {
+                        name: "Special article",
+                        route: "/article/special",
+                        permissions: [
+                            ['add', 'article'],
+                            ['edit', 'article'],
+                            ['del', 'article'],
+                        ]
+                    },
                 ]
             },
             {
@@ -175,9 +244,10 @@ export const navbar = {
                         name: "Products & categoryes",
                         route: "/products_and_categories",
                         permissions: [
-                            ['add', 'product'],
-                            ['edit', 'product'],
-                            ['del', 'product'],
+                            ['show_all', 'product'],
+                            // ['add', 'product'],
+                            // ['edit', 'product'],
+                            // ['del', 'product'],
                             ['add', 'product_category'],
                             ['edit', 'product_category'],
                             ['del', 'product_category'],
@@ -187,6 +257,13 @@ export const navbar = {
                             ['add', 'sale_code'],
                             ['edit', 'sale_code'],
                             ['del', 'sale_code']
+                        ]
+                    },
+                    {
+                        name: "All orders",
+                        route: "/order/all_orders",
+                        permissions: [
+                            ['edit_order_status', 'order'],
                         ]
                     },
                     {
@@ -202,12 +279,15 @@ export const navbar = {
                         name: "Tours",
                         route: "/tours_list",
                         permissions: [
-                            ['add', 'toure'],
-                            ['edit', 'toure'],
-                            ['del', 'toure'],
-                            ['add', 'toure_category'],
-                            ['edit', 'toure_category'],
-                            ['del', 'toure_category']
+                            ['show_all', 'tour'],
+                            ['show_all', 'tour_category']
+                        ]
+                    },
+                    {
+                        name: "Tours reservations",
+                        route: "/tours_reservations_list",
+                        permissions: [
+                            ['show_all', 'tour_reservation'],
                         ]
                     },
                     {
@@ -321,13 +401,6 @@ export const navbar = {
                         permissions: [
                             ['show', 'comments'],
                             ['del_comment', 'comments'],
-                        ]
-                    },
-                    {
-                        name: "All orders",
-                        route: "/order/all_orders",
-                        permissions: [
-                            ['edit_order_status', 'order'],
                         ]
                     },
                     {

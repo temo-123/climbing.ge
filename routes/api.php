@@ -58,14 +58,17 @@ Route::group(['namespace'=>'Api'], function() {
         *   Article routes
         */
         Route::controller(ArticleController::class)->prefix('article')->group( function() {
-            Route::apiResource('/', 'ArticleController');
+            // Route::apiResource('/', 'ArticleController');
             Route::get('/get_category_articles/{category}', 'get_category_articles');
-            Route::delete('/del_article/{article_id}', 'del_article');
+            Route::get('/get_articles_for_bisnes_suport', 'get_articles_for_bisnes_suport');
+            Route::get('/get_article_for_bisnes_page/{lang}/{bisnes_url_title}', 'get_article_for_bisnes_page');
+            Route::get('/{category}/{lang}/{url_title}', 'get_locale_article_on_page');
+
             Route::post('/add_article/{category}', 'add_article');
             Route::post('/edit_article/{article_id}', 'edit_article');
 
-            Route::get('/{category}/{lang}/{url_title}', 'get_locale_article_on_page');
-            Route::get('/get_article/for_bisnes_page/{lang}/{bisnes_url_title}', 'get_article_on_bisnes_page');
+            Route::delete('/del_article/{article_id}', 'del_article');
+
             // Route::post('/edit_article/{article_id}', 'edit_article');
         });
 
@@ -190,14 +193,14 @@ Route::group(['namespace'=>'Api'], function() {
         Route::controller(MountController::class)->prefix('mount')->group( function() {
             Route::apiResource('/mount', 'MountController');
             Route::get('/get_editing_mount_data/{mount_id}', 'get_editing_mount_data');
-            Route::post('/edit_mount_massive/{mount_id}', 'edit_mount_massive');
-            Route::post('/create_mount_massive', 'create_mount_massive');
             Route::get('/{lang}/{mount_id}', 'get_locale_mount');
             Route::get('/{lang}/{mount_id}', 'get_locale_mount');
             Route::get('/on_page/{lang}/{mount_route_id}', 'get_locale_mount_on_route_page');
+
+            Route::post('/edit_mount_massive/{mount_id}', 'edit_mount_massive');
+            Route::post('/create_mount_massive', 'create_mount_massive');
         });
         Route::get('/mounts/{lang}', 'MountController@get_locale_mounts');
-    
 
         /*
         *   Local bisnes routes
@@ -206,36 +209,28 @@ Route::group(['namespace'=>'Api'], function() {
             Route::get('/get_local_bisneses', 'get_local_bisneses');
             Route::get('/get_local_bisnes_for_article/{article_url_title}/{locale}', 'get_local_bisnes_for_article');
             Route::get('/get_local_bisnes_in_page/{url_title}/{locale}', 'get_local_bisnes_in_page');
-            Route::post('/add_local_bisnes', 'add_local_bisnes');
             Route::get('/get_editing_local_bisnes_info/{bisnes_id}', 'get_editing_local_bisnes_info');
+
             Route::get('/get_bisnes_images/{bisnes_id}', 'get_bisnes_images');
+            Route::get('/get_local_bisneses_images/{bisnes_id}', 'get_local_bisneses_images');
+            Route::get('/get_bisnes_article_relation/{bisnes_id}', 'get_bisnes_article_relation');
+
             Route::post('/edit_local_bisnes/{bisnes_id}', 'edit_local_bisnes');
+            Route::post('/add_local_bisnes', 'add_local_bisnes');
+
             Route::delete('/del_local_bisnes/{bisnes_id}', 'del_local_bisnes');
+            Route::delete('/del_bisnes_article_relation/{article_id}/{bisnes_id}', 'del_bisnes_article_relation');
             Route::delete('/del_local_bisnes_image/{image_id}', 'del_local_bisnes_image');
 
-            Route::get('/get_local_bisneses_images/{bisnes_id}', 'get_local_bisneses_images');
-            // Route::delete('/del_local_bisneses_images/{bisnes_id}', 'del_local_bisneses_images');
         });
-
-        /*
-        *   Cart and orders routes
-        */
-        Route::get('/get_countries', 'ShipedCountryController@get_countries');
-        Route::get('/get_activ_country/{country_id}', 'ShipedCountryController@get_activ_country');
-        Route::post('/add_country', 'ShipedCountryController@add_country');
-        Route::post('/edit_country/{country_id}', 'ShipedCountryController@edit_country');
-        Route::delete('/del_country/{country_id}', 'ShipedCountryController@del_country');
 
         /*
         *   Guid gallery images routes
         */
         Route::controller(ArticleGalleryController::class)->prefix('gallery_image')->group( function() {
-            // Route::get('/get_images/{article_id}', 'get_images');
             Route::get('/get_index_gallery', 'get_index_gallery');
             Route::get('/get_editing_images/{article_id}', 'get_editing_images');
     
-            // Route::post('/add_image', 'add_image');
-            // Route::post('/edit_image/{image_id}', 'edit_image');
             Route::delete('/del_image/{image_id}', 'del_image');
         });
         Route::controller(HeadSliderController::class)->prefix('head_slider')->group( function() {
@@ -245,6 +240,7 @@ Route::group(['namespace'=>'Api'], function() {
     
             Route::post('/add_slide', 'add_slide');
             Route::post('/edit_slide/{slide_id}', 'edit_slide');
+
             Route::delete('/del_slide/{slide_id}', 'del_slide');
         });
 
@@ -306,14 +302,16 @@ Route::group(['namespace'=>'Api'], function() {
         });
 
         Route::controller(RouteController::class)->prefix('route')->group( function() {
-            Route::apiResource('/', 'RouteController');
-            Route::post('/add_route', 'add_route');
+            // Route::apiResource('/', 'RouteController');
+            Route::get('/get_all_routes', 'get_all_routes');
             Route::get('/get_route_editing_data/{route_id}', 'get_route_editing_data');
-            Route::post('/edit_route/{route_id}', 'edit_route');
-            
             Route::get('/get_route_for_modal/{route_id}', 'get_route_for_modal');
-
             Route::get('/routes_authers', 'routes_authers');
+
+            Route::post('/add_route', 'add_route');
+            Route::post('/edit_route/{route_id}', 'edit_route');
+
+            Route::delete('/del_route/{route_id}', 'del_route');
         });
 
         Route::get('/get_routes_for_forum/{sector_id}', 'RouteController@get_routes_for_forum');
@@ -321,24 +319,25 @@ Route::group(['namespace'=>'Api'], function() {
 
         Route::controller(MTPController::class)->prefix('mtp')->group( function() {
             Route::get('/', 'index');
+            Route::get('/get_editing_mtp/{mtp_id}', 'get_editing_mtp');
+            Route::get('/get_mtp_for_modal/{mtp_id}', 'get_mtp_for_modal');
+            Route::get('/get_mtps_for_forum/{sector_id}', 'get_mtps_for_forum');
+
             Route::post('/mtp_add', 'mtp_add');
             Route::post('/mtp_edit/{mtp_id}', 'mtp_edit');
-            Route::get('/get_editing_mtp/{mtp_id}', 'get_editing_mtp');
+
             Route::delete('/del_mtp/{mtp_id}', 'del_mtp');
-
-            Route::get('/get_mtp_for_modal/{mtp_id}', 'get_mtp_for_modal');
-
-            Route::get('/get_mtps_for_forum/{sector_id}', 'get_mtps_for_forum');
 
             Route::controller(MTPPitchController::class)->prefix('mtp_pitch')->group( function() {
                 Route::get('/', 'index');
+                Route::get('/get_editin_pitch/{pitch_id}', 'get_editin_pitch');
+                Route::get('/get_mtp_pitchs_for_model/{mtp_id}', 'get_mtp_pitchs_for_model');
+
                 Route::post('/mtp_pitch_add', 'mtp_pitch_add');
                 Route::post('/mtp_pitch_edit/{pitch_id}', 'mtp_pitch_edit');
-                Route::get('/get_editin_pitch/{pitch_id}', 'get_editin_pitch');
-                Route::delete('/del_pitch/{pitch_id}', 'del_pitch');
-
-                Route::get('/get_mtp_pitchs_for_model/{mtp_id}', 'get_mtp_pitchs_for_model');
                 Route::post('/pitchs_sequence', 'pitchs_sequence');
+
+                Route::delete('/del_pitch/{pitch_id}', 'del_pitch');
             });
         });
         
@@ -408,13 +407,15 @@ Route::group(['namespace'=>'Api'], function() {
             Route::post('/edit_product/{product_id}', 'edit_product');
             Route::post('/add_product', 'add_product'); 
         });
-        // Route::apiResource('/product', 'ProductController');
-        Route::get('/products/{lang}', 'ProductController@get_local_products');
-        Route::get('/page_product/{lang}/{url_title}', 'ProductController@get_local_product_in_page');
-        Route::get('similar_product/{lang}/{product_id}', 'ProductController@get_similar_product');
-        Route::get('product_price_interval', 'ProductController@get_product_price_interval');
-        Route::get('/get_user_favorite_products', 'ProductController@get_user_favorite_products');
-        Route::get('/get_quick_product/{lang}/{product_id}', 'ProductController@get_quick_product');
+        Route::controller(ProductController::class)->group( function() {
+            // Route::apiResource('/product', 'ProductController');
+            Route::get('/products/{lang}', 'get_local_products');
+            Route::get('/page_product/{lang}/{url_title}', 'get_local_product_in_page');
+            Route::get('similar_product/{lang}/{product_id}', 'get_similar_product');
+            Route::get('product_price_interval', 'get_product_price_interval');
+            Route::get('/get_user_favorite_products', 'get_user_favorite_products');
+            Route::get('/get_quick_product/{lang}/{product_id}', 'get_quick_product');
+        });
 
         Route::apiResource('/product_category', 'ProductCategoryController');
 
@@ -428,28 +429,37 @@ Route::group(['namespace'=>'Api'], function() {
         });
 
         /*
-        *   Tours and toure categories routes
+        *   Tours and tour categories routes
         */
-        Route::controller(ToureController::class)->prefix('toure')->group( function() {
+        Route::controller(TourController::class)->prefix('tour')->group( function() {
             Route::get('/get_tours/{lang}', 'get_tours');
             Route::get('/get_all_tours', 'get_all_tours');
-            Route::get('/get_similar_tours', 'get_similar_tours');
+            Route::get('/get_similar_tours/{lang}/{tour_id}', 'get_similar_tours');
             Route::get('/get_tour/{lang}/{url_title}', 'get_tour');
     
-            Route::get('/get_editing_toure/{toure_id}', 'get_editing_toure');
-            Route::get('/get_toure_images/{toure_id}', 'get_toure_images');
-            Route::post('/add_toure', 'add_toure');
-            Route::post('/edit_toure/{toure_id}', 'edit_toure');
-            Route::delete('/del_toure_image/{image_id}', 'del_toure_image');
-            Route::delete('/del_toure/{toure_id}', 'del_toure');
+            Route::get('/get_editing_tour/{tour_id}', 'get_editing_tour');
+            Route::get('/get_tour_images/{tour_id}', 'get_tour_images');
+            Route::post('/add_tour', 'add_tour');
+            Route::post('/edit_tour/{tour_id}', 'edit_tour');
+            Route::delete('/del_tour_image/{image_id}', 'del_tour_image');
+            Route::delete('/del_tour/{tour_id}', 'del_tour');
     
-            Route::controller(ToureCategoryController::class)->prefix('category')->group( function() {
+            Route::controller(TourCategoryController::class)->prefix('category')->group( function() {
                 Route::get('/get_all_categories', 'get_all_categories');
     
                 Route::get('/get_editing_category/{category_id}', 'get_editing_category');
                 Route::post('/add_category', 'add_category');
                 Route::post('/edit_category/{category_id}', 'edit_category');
                 Route::delete('/del_category/{category_id}', 'del_category');
+            });
+
+            Route::controller(TourReservationController::class)->prefix('reservation')->group( function() {
+                Route::get('/get_reservations', 'get_reservations');
+    
+                Route::post('/create_reservation', 'create_reservation');
+                Route::post('/verifiation/{reservation_id}', 'verifiation');
+                
+                Route::delete('/del_reservation/{reservation_id}', 'del_reservation');
             });
         });
         
@@ -474,29 +484,43 @@ Route::group(['namespace'=>'Api'], function() {
         /*
         *   Cart and orders routes
         */
-        Route::apiResource('/cart', 'CartController');
-        Route::post('/cart/update_quantity/{item_id}', 'CartController@update_quantity');
+        Route::controller(CartController::class)->group( function() {
+            Route::apiResource('/cart', 'CartController');
+            Route::post('/cart/update_quantity/{item_id}', 'update_quantity');
+
+            /*
+            *   Favorites control
+            */
+            Route::post('/add_to_favorite/{product_id}', 'add_to_favorite');
+            Route::post('/del_from_favorite/{product_id}', 'del_from_favorite');
+        });
     
-        Route::apiResource('/order', 'OrderController');
-        Route::get('/order/get_order_status/{order_id}', 'OrderController@get_order_status');
-        Route::get('/my_order', 'OrderController@get_my_orders');
-        Route::get('/get_activ_order/{order_id}', 'OrderController@get_activ_order');
-        Route::post('/edit_order_status/{order_id}', 'OrderController@edit_order_status');
-        Route::get('/get_order_detals/{order_id}', 'OrderController@get_order_detals');
-        Route::get('/get_order_products/{order_id}', 'OrderController@get_order_products');
-    
-        Route::post('/order_is_confirm/{order_id}', 'OrderController@order_is_confirm');
-        Route::get('/is_order_confirm/{order_id}', 'OrderController@is_order_confirm');
-    
+        Route::controller(OrderController::class)->group( function() {
+            Route::apiResource('/order', 'OrderController');
+            Route::get('/order/get_order_status/{order_id}', 'get_order_status');
+            Route::get('/my_order', 'get_my_orders');
+            Route::get('/get_activ_order/{order_id}', 'get_activ_order');
+            Route::post('/edit_order_status/{order_id}', 'edit_order_status');
+            Route::get('/get_order_detals/{order_id}', 'get_order_detals');
+            Route::get('/get_order_products/{order_id}', 'get_order_products');
+        
+            Route::post('/order_is_confirm/{order_id}', 'order_is_confirm');
+            Route::get('/is_order_confirm/{order_id}', 'is_order_confirm');
+        
+            Route::post('/check_sale_code', 'check_sale_code');
+        });
         Route::apiResource('/sale_code', 'SaleCodeController');
-        Route::post('/check_sale_code', 'OrderController@check_sale_code');
 
         /*
-        *   Faforites control
+        *   Cart and orders routes
         */
-        Route::post('/add_to_favorite/{product_id}', 'CartController@add_to_favorite');
-        Route::post('/del_from_favorite/{product_id}', 'CartController@del_from_favorite');
-
+        Route::controller(ShipedCountryController::class)->group( function() {
+            Route::get('/get_countries', 'get_countries');
+            Route::get('/get_activ_country/{country_id}', 'get_activ_country');
+            Route::post('/add_country', 'add_country');
+            Route::post('/edit_country/{country_id}', 'edit_country');
+            Route::delete('/del_country/{country_id}', 'del_country');
+        });
 
         /*
         *   Product Coments routes
@@ -624,12 +648,14 @@ Route::group(['namespace'=>'Api'], function() {
         /*
         *   User adresses
         */
-        Route::get('/get_user_adreses', 'CartController@get_user_adreses');
-        Route::post('/add_user_adreses', 'CartController@add_user_adreses');
-        Route::post('/edit_adres/{adres_id}', 'CartController@edit_adres');
-        Route::post('/get_editing_adres/{adres_id}', 'CartController@get_editing_adres');
-        Route::get('/get_activ_adres/{adres_id}', 'CartController@get_activ_adres');
-        Route::delete('/del_user_adreses/{adres_id}', 'CartController@del_user_adreses');
+        Route::controller(UserAdresesController::class)->group( function() {
+            Route::get('/get_user_adreses', 'get_user_adreses');
+            Route::post('/add_user_adreses', 'add_user_adreses');
+            Route::post('/edit_adres/{adres_id}', 'edit_adres');
+            Route::post('/get_editing_adres/{adres_id}', 'get_editing_adres');
+            Route::get('/get_activ_adres/{adres_id}', 'get_activ_adres');
+            Route::delete('/del_user_adreses/{adres_id}', 'del_user_adreses');
+        });
 
         /*
         *   User roles and pormisions routes

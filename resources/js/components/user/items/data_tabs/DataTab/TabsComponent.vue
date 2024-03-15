@@ -120,7 +120,7 @@
                                             filtr_data.table_name == 'Tours categories'
                                         "
                                     >
-                                        <button class="btn btn-primary pull-left" @click="add_toure_category()" v-if="$can('add', 'toure')">Add toure category</button>
+                                        <button class="btn btn-primary pull-left" @click="add_tour_category()" v-if="$can('add', 'tour')">Add tour category</button>
                                     </span>
                                     <span
                                         v-else-if="
@@ -200,7 +200,7 @@
                                 />
                             </thead>
                             <thead  v-else-if="data.table_name == 'Tours categories'">
-                                <toureCategoryTabHeader 
+                                <tourCategoryTabHeader 
                                     :table_name="data.table_name"
                                 />
                             </thead>
@@ -270,7 +270,7 @@
                                         data.table_name == 'events' || 
                                         data.table_name == 'Films' ||
                                         data.table_name == 'Mountaineering routes' || 
-                                        data.table_name == 'Toure' || 
+                                        data.table_name == 'Tour' || 
                                         data.table_name == 'services' 
                                     ">
                                 <articleTabHeader
@@ -293,7 +293,7 @@
                                 />
                             </tbody>
                             <tbody v-else-if="data.table_name == 'Tours categories'">
-                                <toureCategoryTab
+                                <tourCategoryTab
                                     v-for="table_info in data.data"
                                     :key="table_info.id"
                                     :table_info="table_info"
@@ -570,7 +570,7 @@
                                 />
                             </tbody>
                             <tbody v-else-if="data.table_name == 'Tours'">
-                                <toureTab
+                                <tourTab
                                     v-for="table_info in data.data"
                                     :key="table_info.id"
                                     :table_info="table_info"
@@ -600,7 +600,7 @@
 
         <addUserModal ref="add_user_modal" @restart="update"/>
 
-        <addToureCategoryModal ref="add_toure_catebory_modal" @restart="update"/>
+        <addTourCategoryModal ref="add_tour_catebory_modal" @restart="update"/>
 
         <countryAddModal ref="add_country" @restart="update"/>
 
@@ -638,7 +638,7 @@ import eventTabHeader from "./tab_header/EventTabHeaderComponent.vue"
 import regionTabHeader from "./tab_header/RegionTabHeaderComponrent.vue"
 import routeTabHeader from "./tab_header/RouteTabHeaderComponrent.vue"
 import SiteFollowersTabHeader from "./tab_header/SiteFollowersTabHeaderComponent.vue"
-import toureCategoryTabHeader from "./tab_header/ToureCategoryTabHeaderComponent.vue"
+import tourCategoryTabHeader from "./tab_header/TourCategoryTabHeaderComponent.vue"
 import commentTabHeader from "./tab_header/CommentsTabHeaderComponent.vue"
 import reviewTabHeader from "./tab_header/ReviewTabHeaderComponent.vue"
 import feedbackTabHeader from "./tab_header/FeedbackTabHeaderComponent.vue"
@@ -670,14 +670,14 @@ import postTab from "./tabs/PostTabComponent.vue";
 import iceSectorTab from "./tabs/IceSectorTabComponent.vue";
 import iceRouteTab from "./tabs/IceRouteTabComponent.vue";
 import siteFollowersTab from "./tabs/SiteFollowersTabComponent.vue";
-import toureTab from "./tabs/ToursTabComponent.vue";
-import toureCategoryTab from "./tabs/ToureCategoriesTabComponent.vue";
+import tourTab from "./tabs/ToursTabComponent.vue";
+import tourCategoryTab from "./tabs/TourCategoriesTabComponent.vue";
 import reviewTab from "./tabs/ReviewTabComponent.vue";
 import feedbackTab from "./tabs/FeedbackTabComponent.vue";
 import non_registered_commenter_tab from "./tabs/NonRegisteredCommenterTab.vue"
 
 //import sectorModal from "./tab_modals/SectorsModalComponent.vue";
-import addToureCategoryModal from "./tab_modals/add/AddToureCategoryModal.vue";
+import addTourCategoryModal from "./tab_modals/add/AddTourCategoryModal.vue";
 import addRoleModal from "./tab_modals/RolesAddModalComponent.vue";
 import countryAddModal from "./tab_modals/AddCountryModalComponent.vue";
 import addUserModal from "./tab_modals/UserAddModalComponent.vue";
@@ -689,7 +689,7 @@ export default {
         tabHeader,
         functionalBattoms,
 
-        toureCategoryTabHeader,
+        tourCategoryTabHeader,
         
         tableFilter,
 
@@ -735,8 +735,8 @@ export default {
         iceSectorTab,
         iceRouteTab,
         siteFollowersTab,
-        toureTab,
-        toureCategoryTab,
+        tourTab,
+        tourCategoryTab,
         reviewTab,
         feedbackTab,
         non_registered_commenter_tab,
@@ -746,7 +746,7 @@ export default {
         addRoleModal,
         addUserModal,
         articleQuickViewModal,
-        addToureCategoryModal,
+        addTourCategoryModal,
     },
 
     props: [
@@ -781,8 +781,8 @@ export default {
         add_user(){
             this.$refs.add_user_modal.open_user_add_modal()
         },
-        add_toure_category(){
-            this.$refs.add_toure_catebory_modal.open_modal()
+        add_tour_category(){
+            this.$refs.add_tour_catebory_modal.open_modal()
         },
 
         filtring(event) {

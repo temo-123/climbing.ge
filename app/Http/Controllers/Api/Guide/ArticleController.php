@@ -5,8 +5,6 @@ namespace App\Http\Controllers\Api\Guide;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
-
-// use App\Services\ImageEditService;
 use App\Services\Abstract\ImageControllService;
 use App\Services\GalleryService;
 use App\Services\ArticlesService;
@@ -37,7 +35,7 @@ use App\Models\Region;
 use App\Models\Article_mount;
 use App\Models\Article_region;
 
-use App\Models\Suport_local_bisnes;
+use App\Models\Guide\Suport_local_bisnes;
 // use App\Models\Favorite_outdoor_area;
 
 use Auth;
@@ -53,31 +51,18 @@ class ArticleController extends Controller
         return $news;
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
     public function get_category_articles(Request $request)
     {
         return Article::latest('id')->where('category', '=', $request->category)->get();
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    // public function show($url_title)
-    // {
-    //     $global_news = Article::where('url_title',strip_tags($url_title))->where('published', '=', 1)->first();
-    //     $news = ArticlesService::get_locale_article_in_page($global_news);
-
-    //     return $news[0];
-    // }
-
+    public function get_articles_for_bisnes_suport(Request $request)
+    {
+        return Article::latest('id')->
+                        where('category', '!=', 'news')->
+                        where('category', '!=', 'partner')->
+            get();
+    }
 
     public function add_article(Request $request)
     {
@@ -203,11 +188,6 @@ class ArticleController extends Controller
     }
 
 
-    // public function images_array_validate($images)
-    // {
-    //     // 
-    // }
-
     public function add_outdoor_area_images($images, $article_id)
     {
         foreach ($images as $image) {
@@ -232,17 +212,16 @@ class ArticleController extends Controller
         }
     }
 
-    public function get_article_on_bisnes_page(Request $request)
+    public function get_article_for_bisnes_page(Request $request)
     {
         $bisnes = Suport_local_bisnes::where('url_title', '=', $request->bisnes_url_title)->first();
 
-        $article_count =Article::where('id', '=', $bisnes->article_id)->where('published', '=', 1)->count();
-        $articles = [];
-        if($article_count > 0){
-            $global_articles = Article::where('id', '=', $bisnes->article_id)->where('published', '=', 1)->get();
-            $articles = ArticlesService::get_locale_article_use_locale($global_articles, $request->lang);
+        $article = $bisnes->bisnes_article->first();
+
+        if($article->count() > 0){
+            $global_articles = Article::where('id', '=', $article->id)->where('published', '=', 1)->get();
+            return ArticlesService::get_locale_article_use_locale($global_articles, $request->lang);
         }
-        return $articles;
     }
 
     public function add_mount_route_images($images, $article_id)
@@ -300,29 +279,11 @@ class ArticleController extends Controller
         if ($request->article_category == "outdoor") {
             $articles = $this->similar_outdoor_list($request->lang, $request->article_id);
         }
-        elseif ($request->article_category == "indoor") {
-            $articles = $this->similar_article_list($request->article_category, $request->lang, $request->article_id);
-        }
-        elseif ($request->article_category == "ice") {
-            $articles = $this->similar_article_list($request->article_category, $request->lang, $request->article_id);
-        }
-        elseif ($request->article_category == "news") {
-            $articles = $this->similar_article_list($request->article_category, $request->lang, $request->article_id);
-        }
-        elseif ($request->article_category == "other") {
-            $articles = $this->similar_article_list($request->article_category, $request->lang, $request->article_id);
-        }
-        elseif ($request->article_category == "tech_tip" || $request->article_category == 'security') {
-            $articles = $this->similar_article_list($request->article_category, $request->lang, $request->article_id);
-        }
-        elseif ($request->article_category == "partners") {
-            $articles = $this->similar_article_list($request->article_category, $request->lang, $request->article_id);
-        }
-        elseif ($request->article_category == "event") {
-            $articles = $this->similar_article_list($request->article_category, $request->lang, $request->article_id);
-        }
         elseif ($request->article_category == "mount_route") {
             $articles = $this->similar_mount_route_list($request->lang, $request->article_id);
+        }
+        else {
+            $articles = $this->similar_article_list($request->article_category, $request->lang, $request->article_id);
         }
 
         return $articles;
@@ -428,29 +389,7 @@ class ArticleController extends Controller
         if ($request->category == "outdoor") {
             $articles = $this->outdoor_list($request->lang);
         }
-        elseif ($request->category == "indoor") {
-            $articles = $this->article_list($request->category, $request->lang);
-        }
-        elseif ($request->category == "ice") {
-            $articles = $this->article_list($request->category, $request->lang);
-        }
-        elseif ($request->category == "news") {
-            $articles = $this->news_list($request->lang);
-        }
-        elseif ($request->category == "other") {
-            $articles = $this->article_list($request->category, $request->lang);
-        }
-        elseif ($request->category == "tech_tip" || $request->article_category == 'security') {
-            $articles = $this->article_list($request->category, $request->lang);
-        }
-        elseif ($request->category == "partners") {
-            $articles = $this->article_list($request->category, $request->lang);
-        }
-        elseif ($request->category == "event") {
-            $articles = $this->article_list($request->category, $request->lang);
-        }
-        elseif ($request->category == "mount_route") {
-            // $articles = $this->mount_route_list($request->lang);
+        else {
             $articles = $this->article_list($request->category, $request->lang);
         }
 

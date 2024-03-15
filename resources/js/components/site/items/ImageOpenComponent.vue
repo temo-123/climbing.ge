@@ -1,20 +1,18 @@
 <template>
-    <div class="opening_img">
+    <span>
         <div class="smal_img" @click="open_image()" >
-            <site-img :src="img" :alt="img_alt" :img_class="img_class" />
+            <site-img :src="img" :alt="img_alt" :img_class="img_class + ' cursor_pointer'" />
         </div>
 
         <div class="big_img">
             <div class="open_img" v-if="open_img" >
-                <div class="close_bottom">
-                    <bottom @click="close_image()">X</bottom>
-                </div>
+                <div class="close_bottom cursor_zoom_out" @click="close_image()"> X </div>
 
-                <site-img :src="img" :alt="img_alt" :img_class="'gallery_big_img'" />
+                <site-img :src="img" :alt="img_alt" :img_class="'gallery_big_img cursor_zoom_in zoom'" />
 
             </div>
         </div>
-    </div>
+    </span>
 </template>
 
 <script>
@@ -22,7 +20,7 @@
         props:[
             'img',
             'img_alt',
-            'img_class'
+            'img_class',
         ],
         
         data: function () {
@@ -58,6 +56,7 @@
 </script>
 
 <style scoped>
+
     .close_bottom{
         float: right;
         cursor: pointer; 
@@ -72,7 +71,6 @@
             position: absolute;
             left: 50%;
             right: 0;
-            /* float: right; */
             cursor: pointer;
             color: #b3b2b2d9;
             font-size: 2em;
@@ -94,39 +92,5 @@
         background: #000000d9;
 
         transition: opacity .15s linear;
-    }
-    .gallery_big_img{
-        /* position: absolute;
-        width: 80%;
-        right: 10%;
-        left: 10%; */
-
-        /* position: relative;
-        top: 8%;
-        width: 80%;
-        display: block;
-        margin-left: auto;
-        margin-right: auto; */
-        
-        position: relative;
-        top: 5%;
-        /* width: 80%; */
-        height: 100%;
-        max-height: 90%;
-        display: block;
-        margin-left: auto;
-        margin-right: auto;
-    }
-    @media (max-width: 756px){
-        .gallery_big_img{
-            position: relative;
-            top: 10%;
-            width: 99%;
-            height: auto;
-            max-height: 90%;
-            display: block;
-            margin-left: auto;
-            margin-right: auto;
-        }
     }
 </style>

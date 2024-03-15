@@ -156,7 +156,8 @@
     import SectorsImagesForm from './forms/add_forms/SectorImagesFormComponent.vue'
     import MountRouteImagesForm from './forms/add_forms/MountRouteImageFormComponent.vue'
 
-    import gallery_images_add from './items/galleryImageAddComponent.vue'
+    // import gallery_images_add from './items/galleryImageAddComponent.vue'
+    import gallery_images_add from '../../items//gallery/galleryImageAddComponent.vue'
 
     export default {
         components: {

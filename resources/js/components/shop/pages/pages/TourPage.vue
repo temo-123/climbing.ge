@@ -1,58 +1,67 @@
 <template>
     <div class="container top_menu_margin h-recent-work">
-        <h1 class="page_title">{{ toure.locale_data.title }}</h1>
+        <h1 class="page_title">{{ tour.locale_data.title }}</h1>
 
         <!-- <breadcrumb /> -->
 
-        <div class="row" v-if="toure.toure_images.length > 0">
-            <img class="service_page_image" :src="'../../images/toure_img/'+toure.toure_images[0].image" :alt="toure.locale_data.title">
+        <div class="row" v-if="tour.tour_images.length != 0">
+            <img class="service_page_image" :src="'../../images/tour_img/'+tour.tour_images[0].image" :alt="tour.locale_data.title">
         </div>
 
         <div class="row service_page_text">
-            <span v-html="toure.locale_data.text"></span>
+            <span v-html="tour.locale_data.text"></span>
         </div>
 
-        <toureMessageForm />
+        <tourMessageForm 
+            :tour_id_prop = tour.global_data.id
+        />
         
         <gallery 
-            :images_prop="toure.toure_images"
-            :folder_path_prop="'/public/images/toure_img/'"
+            :images_prop="tour.tour_images"
+            :folder_path_prop="'/public/images/tour_img/'"
         />
 
-        <div class="row" v-if="this.tours.length > 0">
+        <div class="row" v-if="this.tours.length != 0">
             <hr>
 
             <h2 class="other_servces">{{ $t('shop.title.similar.tours') }}</h2>
 
-            <toureItem
-                v-for="toure in tours"
-                :key='toure.global_data.id'
-                :toure_data="toure">
-            </toureItem>
+            <tourItem
+                v-for="tr in tours"
+                :key='tr.global_data.id'
+                :tour_data="tr">
+            </tourItem>
         </div>
 
         <metaData 
-            :title = "toure.locale_data.title"
-            :description = "toure.locale_data.short_description"
-            :image = "'/images/toure_img/'+toure.toure_images[0].image"
+            v-if="tour.tour_images.length != 0"
+            :title = "tour.locale_data.title"
+            :description = "tour.locale_data.short_description"
+            :image = "'/images/tour_img/'+tour.tour_images[0].image"
+        />
+        <metaData 
+            v-else
+            :title = "tour.locale_data.title"
+            :description = "tour.locale_data.short_description"
+            :image = "'/'"
         />
     </div>
 </template>
 
 <script>
-    import toureItem from '../../items/cards/SimilarToureCardComponent'
+    import tourItem from '../../items/cards/SimilarTourCardComponent'
     import metaData from '../../items/MetaDataComponent'
     import breadcrumb from '../../items/BreadcrumbComponent.vue'
     import gallery from '../../items/GalleryComponent.vue'
-    import toureMessageForm from '../../items/ToureMessageFormComponent.vue'
+    import tourMessageForm from '../../items/reservation_forms/TourMessageFormComponent.vue'
 
     export default {
         components: {
             metaData,
-            toureItem,
+            tourItem,
             breadcrumb,
             gallery,
-            toureMessageForm
+            tourMessageForm
         },
         props:[
             'data'
@@ -60,36 +69,36 @@
         data: function () {
             return {
                 tours: [],
-                toure: [],
+                tour: [],
             };
         },
         watch: {
             '$route' (to, from) {
-                this.get_tours()
-                this.get_toure()
+                // this.get_tours()
+                this.get_tour()
                 window.scrollTo(0,0);
             }
         },
         mounted() {
-            this.get_tours()
-            this.get_toure()
+            // this.get_tours()
+            this.get_tour()
         },
         methods: {
-            get_tours(activ_toure_id){
+            get_tours(activ_tour_id){
                 axios
-                .get('/toure/get_similar_tours/'+localStorage.getItem('lang')+'/'+activ_toure_id)
+                .get('/tour/get_similar_tours/'+localStorage.getItem('lang')+'/'+activ_tour_id)
                 .then(response => {
                     this.tours = response.data
                 })
                 .catch(error =>{
                 })
             },
-            get_toure(){
+            get_tour(){
                 axios
-                .get('/toure/get_tour/'+localStorage.getItem('lang')+'/'+this.$route.params.url_title)
+                .get('/tour/get_tour/'+localStorage.getItem('lang')+'/'+this.$route.params.url_title)
                 .then(response => {
-                    this.toure = response.data
-                    this.get_tours(this.toure.global_data.id)
+                    this.tour = response.data
+                    this.get_tours(response.data.global_data.id)
                 })
                 .catch(error =>{
                 })

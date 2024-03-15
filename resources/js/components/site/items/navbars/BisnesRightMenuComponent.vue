@@ -2,13 +2,13 @@
     <div :class='"col-xs-3 col-xs-offset-1 blog-sidebar display-none-720px "+[right_navbar_class]'>
         <div class="row">
             <div class="col-sm-10 col-md-10">
-                <div class="thumbnail" v-for="article in bisnes_articles" :key="article.id">
-                    <router-link style="font-size: 1.5em;" :to="'../../'+article.category+'/'+article.url_title" exact >
-                        <img :src="'../../../images/'+article.category+'_img/' + article.image" :alt="article[0][0].title">
+                <div class="thumbnail" v-for="bisnes_article in bisnes_articles" :key="bisnes_article.global_data.id">
+                    <router-link style="font-size: 1.5em;" :to="'../../'+bisnes_article.global_data.category+'/'+bisnes_article.global_data.url_title" exact >
+                        <img :src="'../../../images/'+bisnes_article.global_data.category+'_img/' + bisnes_article.global_data.image" :alt="bisnes_article.global_data.title">
                     </router-link>
                     <div class="caption">
-                        <router-link style="font-size: 1.5em;" :to="'../../'+article.category+'/'+article.url_title" exact >
-                            <h3>{{ article[0][0].title }}</h3>
+                        <router-link style="font-size: 1.5em;" :to="'../../'+bisnes_article.global_data.category+'/'+bisnes_article.global_data.url_title" exact >
+                            <h3>{{ bisnes_article.locale_data.title }}</h3>
                         </router-link>
                     </div>
                 </div>
@@ -27,6 +27,8 @@
             }
         },
         mounted() {
+            this.get_bisnes_article()
+
             this.margin_bottom_position = document.body.offsetHeight - window.scrollY
 
             if(document.body.offsetHeight > 2000){
@@ -41,7 +43,6 @@
                 this.right_navbar_class = ''
             }
 
-            this.get_bisnes_article()
         },
         watch: {
             // '$route' (to, from) {
@@ -50,9 +51,8 @@
         },
         methods: {
             get_bisnes_article(){
-                // alert('ddd')
                 axios
-                .get('../../../api/article/get_article/for_bisnes_page/' + localStorage.getItem('lang') + '/' + this.$route.params.url_title)
+                .get('/article/get_article_for_bisnes_page/' + localStorage.getItem('lang') + '/' + this.$route.params.url_title)
                 .then(response => {
                     this.bisnes_articles = response.data
                 })

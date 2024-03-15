@@ -50,7 +50,7 @@ window.axios.interceptors.response.use({}, err => {
         return Promise.reject(err)
     }
     else if(err.response.status === 404){
-        window.location.href = process.env.MIX_APP_SSH + process.env.MIX_SITE_URL + "/404";
+        // window.location.href = process.env.MIX_APP_SSH + process.env.MIX_SITE_URL + "/404";
     }
     else{
         alert("Error -> {" + err + "}")

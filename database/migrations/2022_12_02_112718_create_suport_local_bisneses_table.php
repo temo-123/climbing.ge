@@ -18,10 +18,10 @@ return new class extends Migration
             
             $table->string('url_title')->unique();
 
+            $table->integer('published')->nullable();
+
             $table->timestamp('published_data')->nullable();
             $table->integer('public_totaly')->nullable();
-            
-            $table->foreignId('article_id')->constrained();
 
             $table->unsignedBigInteger('us_bisnes_id');
             $table->foreign('us_bisnes_id')->references('id')->on('locale_bisneses');

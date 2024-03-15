@@ -55,15 +55,15 @@
             <div class="bar"><i class="fa fa-exclamation-triangle"></i></div>
 
             <h3 class="article_list_short_description">
-                <span v-html="this.$siteData.toure_description"></span>
+                <span v-html="this.$siteData.tour_description"></span>
             </h3>
             <div class="col-sm-12">
                 <div class="row">
-                    <ToureItem
-                        v-for="toure in tours"
-                        :key='toure.id'
-                        :toure_data="toure">
-                    </ToureItem>
+                    <TourItem
+                        v-for="tour in tours"
+                        :key='tour.id'
+                        :tour_data="tour">
+                    </TourItem>
                 </div>
             </div>
         </div>
@@ -83,7 +83,7 @@
 <script>
 import catalogItem from '../items/CatalogItemComponent'
 import ServiceItem from '../items/ServiceItemComponent'
-import ToureItem from '../items/cards/ToureCardComponent'
+import TourItem from '../items/cards/TourCardComponent'
 
 import swiperComponent from '../../global_components/SwiperComponent.vue'
 
@@ -95,7 +95,7 @@ export default {
         catalogItem,
         ServiceItem,
         metaData,
-        ToureItem,
+        TourItem,
         swiperComponent,
         emptyPageComponent,
     },
@@ -109,7 +109,7 @@ export default {
     mounted() {
         this.get_products()
         this.get_services()
-        this.get_toures()
+        this.get_tours()
     },
     methods: {
         get_products(){
@@ -134,9 +134,9 @@ export default {
             })
             // .finally(() => this.services_loading = false);
         },
-        get_toures(){
+        get_tours(){
             axios
-            .get('/toure/get_tours/'+localStorage.getItem('lang'))
+            .get('/tour/get_tours/'+localStorage.getItem('lang'))
             .then(response => {
                 // this.services = response.data
                 this.tours = response.data.slice(0, 3);
