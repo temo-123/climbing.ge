@@ -467,7 +467,14 @@ class PermissionTableSeeder extends Seeder
                 'subject' => 'tour_reservation',
                 'action' => 'show',
             ],
-
+            [
+                'subject' => 'tour_reservation',
+                'action' => 'show_all',
+            ],
+            [
+                'subject' => 'tour',
+                'action' => 'show_all',
+            ],
             [
                 'subject' => 'tour',
                 'action' => 'add',
@@ -483,6 +490,10 @@ class PermissionTableSeeder extends Seeder
 
             [
                 'subject' => 'tour_category',
+                'action' => 'show_all',
+            ],
+            [
+                'subject' => 'tour_category',
                 'action' => 'add',
             ],
             [
@@ -492,6 +503,16 @@ class PermissionTableSeeder extends Seeder
             [
                 'subject' => 'tour_category',
                 'action' => 'edit',
+            ],
+
+
+            // [
+            //     'subject' => 'product_category',
+            //     'action' => 'show_all',
+            // ],
+            [
+                'subject' => 'product',
+                'action' => 'show_all',
             ],
         );
 

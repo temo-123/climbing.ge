@@ -29,7 +29,7 @@
             <tourItem
                 v-for="tr in tours"
                 :key='tr.global_data.id'
-                :tour_data="tr">
+                :tour_data_prop="tr">
             </tourItem>
         </div>
 
@@ -49,7 +49,7 @@
 </template>
 
 <script>
-    import tourItem from '../../items/cards/SimilarTourCardComponent'
+    import tourItem from '../../items/cards/TourCardComponent'
     import metaData from '../../items/MetaDataComponent'
     import breadcrumb from '../../items/BreadcrumbComponent.vue'
     import gallery from '../../items/GalleryComponent.vue'

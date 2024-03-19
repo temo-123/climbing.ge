@@ -15,12 +15,12 @@
         <td>|</td>
 
         <td>
-            <router-link class="btn btn-primary" :to="{ name: 'toureEdit', params: { id: table_info.id } }" v-if="$can('edit', 'toure')"><i class="fa fa-pencil" aria-hidden="true"></i></router-link>
+            <router-link class="btn btn-primary" :to="{ name: 'tourEdit', params: { id: table_info.id } }" v-if="$can('edit', 'tour')"><i class="fa fa-pencil" aria-hidden="true"></i></router-link>
         </td>
         
         <td>|</td>
         <td>
-            <button type="submit" class="btn btn-danger" @click="del_toure(table_info.id)" v-if="$can('del', 'toure')"><i class="fa fa-trash" aria-hidden="true"></i></button>
+            <button type="submit" class="btn btn-danger" @click="del_tour(table_info.id)" v-if="$can('del', 'tour')"><i class="fa fa-trash" aria-hidden="true"></i></button>
         </td>
     </tr>
 </template>
@@ -41,10 +41,10 @@
             // console.log(this.table_info)
         },
         methods: {
-            del_toure(id){
+            del_tour(id){
                 if(confirm('Are you sure, you want delite it?')){
                     axios
-                    .post('/toure/del_toure/'+id, {
+                    .post('/tour/del_tour/'+id, {
                         _method: 'DELETE'
                     })
                     .then(Response => {
@@ -53,8 +53,8 @@
                     .catch(error => console.log(error))
                 }
             },
-            quick_wiev_action(toure_id){
-                alert('it`s toure quick view window ( toure ID - '+toure_id+')')
+            quick_wiev_action(tour_id){
+                alert('it`s tour quick view window ( tour ID - '+tour_id+')')
             }
         }
     }

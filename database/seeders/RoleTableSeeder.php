@@ -86,13 +86,33 @@ class RoleTableSeeder extends Seeder
                                         get();
 
         $sale_menager = new Role();
-        $sale_menager->name = 'Sale menager';
-        $sale_menager->slug = 'sale_menager';
+        $sale_menager->name = 'Private products menager';
+        $sale_menager->slug = 'private_products_menager';
         $sale_menager->description = 'Sale menager';
         $sale_menager->save();
 
         foreach ($sale_permissions as $permission) {
-            if($permission['subject'] != 'ban'){
+            if(
+                $permission['subject'] != 'ban' && 
+                ($permission['subject'] != 'product' && $permission['action'] != 'show_all')
+            ){
+                $sale_menager->permissions()->attach($permission);
+            }
+        }
+
+        $sale_menager = new Role();
+        $sale_menager->name = 'All products menager';
+        $sale_menager->slug = 'all_products_menager';
+        $sale_menager->description = 'Sale menager';
+        $sale_menager->save();
+
+        foreach ($sale_permissions as $permission) {
+            if(
+                $permission['subject'] != 'ban' && 
+                ($permission['subject'] == 'product' && $permission['action'] == 'show_all') &&
+                ($permission['subject'] == 'sale_code')||
+                ($permission['subject'] == 'product_category')
+            ){
                 $sale_menager->permissions()->attach($permission);
             }
         }
@@ -201,13 +221,34 @@ class RoleTableSeeder extends Seeder
                                             get();
 
         $tour_menager = new Role();
-        $tour_menager->name = 'tour menager';
-        $tour_menager->slug = 'tour_menager';
+        $tour_menager->name = 'Private tour menager';
+        $tour_menager->slug = 'private_tour_menager';
         $tour_menager->description = 'tour menager';
         $tour_menager->save();
 
         foreach ($tour_permissions as $permission) {
-            if($permission['subject'] != 'ban'){
+            if(
+                $permission['subject'] != 'ban' && 
+                ($permission['subject'] != 'tour' && $permission['action'] != 'show_all')
+            ){
+                $tour_menager->permissions()->attach($permission);
+            }
+        }
+
+
+        $tour_menager = new Role();
+        $tour_menager->name = 'All tour menager';
+        $tour_menager->slug = 'all_tour_menager';
+        $tour_menager->description = 'tour menager';
+        $tour_menager->save();
+
+        foreach ($tour_permissions as $permission) {
+            if(
+                $permission['subject'] != 'ban' && 
+                ($permission['subject'] == 'tour' && $permission['action'] == 'show_all') &&
+                ($permission['subject'] == 'tour_category' && $permission['action'] == 'show_all') &&
+                ($permission['subject'] == 'tour_reservation' && $permission['action'] == 'show_all')
+            ){
                 $tour_menager->permissions()->attach($permission);
             }
         }

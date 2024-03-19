@@ -8,4 +8,15 @@ use Illuminate\Database\Eloquent\Model;
 class Tour_reservation extends Model
 {
     use HasFactory;
+
+    protected $fillable = [
+        'check_in',
+        'persons',
+        'email',
+        'phone',
+        'country',
+        'city',
+        'text',
+        'tour_id',
+	];
 }

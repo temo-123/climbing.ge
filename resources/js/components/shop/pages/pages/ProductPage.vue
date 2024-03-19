@@ -1,6 +1,11 @@
 <template>
     <div>
-        <div class="product-detail">
+        <div class="row" v-if="is_loading">
+            <div class="col-md-4">
+                <img :src="'../../../../../../../../public/images/site_img/loading.gif'" alt="loading" class="article_loader">
+            </div>
+        </div>
+        <div class="product-detail" v-if="!is_loading">
             <div class="container">
                 <div class="_cont detail-top">
                     <div class="cols">
@@ -10,7 +15,7 @@
                                     <lingallery :items="items"/>
                                 </div>
                                 <div class="container" v-else>
-                                    <shop-img :src="'/public/images/site_img/shop_demo.jpg'" :alt="product.locale_product.title" />
+                                    <shop-img :src="'/public/images/site_img/demo_imgs/shop_demo.jpg'" :alt="product.locale_product.title" />
                                 </div>
                             </div>
                         </div>
@@ -85,9 +90,6 @@
 
                             <div class="row" v-if="product.global_product.sale_type == 'online_order'">
                                 <div class="row">
-                                    <div class="col-md-12">
-                                        <h3 style="margin-bottom: 0;">{{ $t('shop.add to cart') }}</h3>
-                                    </div>
                                     <span v-if="products_quantity == select_product_max_quantyty">
                                         <div class="alert alert-danger" role="alert">
                                             {{ $t('shop.max products') }}
@@ -109,30 +111,68 @@
                                     <div class="col-sm-4 col-md-4" v-if="product_modification_for_cart != 'All'">
                                         <input type="number" class="form-control" min="1" :max="select_product_max_quantyty" v-model="products_quantity" />
                                     </div>
-                                    <div class="col-sm-2 col-md-2" v-if="product_modification_for_cart != 'All'">
-                                        <a @click="add_to_cart()" class='text-center'> 
+                                    <div class="col-sm-2 col-md-2" v-if="product_modification_for_cart != 'All' && user.length != 0">
+                                        <a @click="add_to_cart()" class='text-center' v-if="user.length != 0"> 
                                             <i class="fa fa-cart-plus" aria-hidden="true" style="font-size: 250%;"></i>
                                         </a>
                                     </div>
                                 </div>
                             </div>
                             <div class="row" v-if="product.global_product.sale_type == 'custom_production'">
-                                <div class="row">
-                                    <div class="col-md-12">
-                                        <h3 style="margin-bottom: 0; float: left;">{{ $t('custom product') }}</h3>
+                                <div class="col-sm-6 col-md-6">
+                                    <select class="form-control" v-model="product_modification_for_cart" name="product_modification_for_cart" @click="select_option()">
+                                        <option>All</option>
+                                        <option v-for="option in product.product_option" :key='option.option.id' :value="option.option.id" >{{ option.option.name }}</option> 
+                                    </select> 
+                                </div>
+                            </div>
 
-                                        <ProductProdaction
-                                            :product_id_prop = roduct.global_product.id
-                                        />
+                           <div class="row" v-if="product.global_product.sale_type == 'custom_production'">
+                                <div :class="'alert alert-success'" role="alert">
+                                    <div class="col-md-12" v-if="product.global_product.sale_type == 'custom_production'">
+                                        <p>This product is sold prior to ordering! For order you need send message us and we will contact you!</p>
+                                    </div>
+                                </div>
+
+                                <div v-if="
+                                    user.length != 0 &&
+                                    (user.name == null || user.surname == null || user.country == null || user.city == null || user.phone_number == null || user.email == null)
+                                ">
+                                    
+                                    <div :class="'alert alert-danger cursor_pointer'" @click="goTo('/options')" role="alert">
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <strong>Warning</strong>
+                                                <p>Your private information is not a complete. Please go to user option page and enter full information!</p>
+                                                <p>Before that you don't can make order!</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                 <ProductProdaction
+                                    v-else-if="user.length != 0"
+                                    :product_id_prop = product.global_product.id
+                                />
+                            </div>
+                            <!-- {{ user.length  != 0}} -->
+                            <div class="row" v-if="user.length == 0">
+                                <div v-if="user.length == 0" :class="'alert alert-danger cursor_pointer'" role="alert" @click="goTo('/login')">
+                                    <div class="col-md-12" v-if="product.global_product.sale_type == 'custom_production'">
+                                        <p>Please login or register for make castam order!</p>
+                                    </div>
+                                    <div class="col-md-12" v-if="product.global_product.sale_type == 'online_order'">
+                                        <p>Please login or register for add product in cart and create order!</p>
                                     </div>
                                 </div>
                             </div>
+
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-        <div class="container" v-if="product.locale_product">
+        <div class="container" v-if="product.locale_product && !is_loading">
             <div class="row" v-if="product.locale_product.text">
                 <div class="col-md-12">
                     <h2 class='text-center'>{{ $t('shop.product description') }}</h2>
@@ -160,7 +200,7 @@
             <p v-if="this.$globalSiteData.number">{{ $t('shop.seller.phone') }} - {{ this.$globalSiteData.number }}</p>
         </div>
 
-        <div class="container">
+        <div class="container" v-if="!is_loading">
             <div class="row">
                 <feedbackForm 
                     :product_id="product.global_product.id"
@@ -171,7 +211,7 @@
             </div>
         </div>
 
-        <div class="container">
+        <div class="container" v-if="!is_loading">
             <similarProduct :activ_product_id=product.global_product.id />
         </div>
         
@@ -221,7 +261,8 @@
         data () {
             return {
                 is_adding_in_cart_socsesful: false,
-                products: [],
+                is_loading: false,
+
                 select_product_max_quantyty: 0,
                 product_modification_for_cart: 'All',
                 products_quantity: 1,
@@ -233,9 +274,12 @@
                 },
                 prices: [],
 
+                user: [],
+
                 product: [],
 
-                samilar_products: [],
+                products: [],
+                // samilar_products: [],
 
                 publicPath: window.location.protocol + '//' + window.location.hostname
             }
@@ -245,17 +289,31 @@
                 this.clear_product_data()
 
                 this.get_product()
+            this.get_user_info()
 
                 window.scrollTo(0,0)
             }
         },
         mounted() {
             this.get_product()
+            this.get_user_info()
         },
         methods: {
+            get_user_info() {
+                axios
+                .get('/auth_user/')
+                .then(response => {
+                    this.user = response.data
+                })
+                .catch()
+            },
+            goTo(page = '/'){
+                window.open(process.env.MIX_APP_SSH + 'user.' + process.env.MIX_SITE_URL + page) ;
+            },
             clear_product_data(){
                 this.is_adding_in_cart_socsesful = false,
                 this.products = [],
+                this.user = [],
                 this.select_product_max_quantyty = 0,
                 this.product_modification_for_cart = 'All',
                 this.products_quantity = 1,
@@ -267,12 +325,13 @@
                 ],
                 this.prices = [],
 
-                this.product = [],
+                this.product = []
 
-                this.samilar_products = []
+                // this.samilar_products = []
             },
             get_product(){
                 this.product = []
+                this.is_loading = true
                 axios
                 .get('../api/page_product/'+localStorage.getItem('lang')+'/'+this.$route.params.url_title)
                 .then(response => {
@@ -282,6 +341,7 @@
                 })
                 .catch(error =>{
                 })
+                .finally( () => this.is_loading = false)
             },
 
             get_product_options_images(){

@@ -8,29 +8,24 @@ class Product extends Model
 {
     public $table = 'products';
 
-  //   protected $fillable = [
-  //       'title', 
-  //       'published',
-  //       'url_title',
-  //       'category_id',
-	//     'text', 
-  //       'description_short',
-  //       'price',
-  //       'currency',
+    protected $fillable = [
+	    'id',
+	    'published',
+      'url_title',
 
-  //       'material',
-  //       'color',
-  //       'discount',
-  //       'quantity',
-  //       'size',
-  //       'weight',
-        
-  //       'us_product',
-  //       'ru_product',
-  //       'ka_product',
+      'discount',
+      'material',
+    
+      'mead_in_georgia',
 
-  //       'general_image'
-	// ];
+      'sale_type',
+
+      'category_id',
+      
+      'us_product_id',
+      'ka_product_id',
+      'ru_product_id'
+	];
 
 	public function us_product()
 	{
@@ -60,5 +55,15 @@ class Product extends Model
   public function feedbacks()
   {
     return $this->hasMany(Product_feedback::class, 'product_id', 'id');
+  }
+
+  public function orders()
+  {
+        return $this->belongsToMany(Order::class, 'order_products', 'order_id', 'product_id');
+  }
+
+  public function user()
+  {
+        return $this->belongsToMany(User::class, 'user_products', 'user_id', 'product_id');
   }
 }

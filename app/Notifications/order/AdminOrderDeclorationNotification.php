@@ -60,19 +60,6 @@ class AdminOrderDeclorationNotification extends Notification
                 ]
             )
             ->subject('New order')
-            // ->with([
-            //     'name'=>$this->name,
-            //     'surname'=>$this->surname,
-            //     'user_id'=>$this->user_id,
-
-            //     'adres'=>$this->adres,
-            //     // 'products'=>$this->products,
-            //     'payment'=>$this->payment,
-            //     'shiping'=>$this->shiping
-            // ])
-            // ->line('Your payment details are wrong')
-            // ->action('Pay', url(env('USER_PAGE_URL', 'user.climbin.ge') . '/'))
-            // ->line('Best regards!') 
         ;
     }
 

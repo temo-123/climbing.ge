@@ -1,5 +1,5 @@
 @component('mail::message')
-# Your coment is delited!
+{{-- # Your coment is delited! --}}
 
 <p>Please go to the page and confirm your email.</p>
 

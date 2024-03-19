@@ -5,6 +5,8 @@ namespace App\Models\Shop;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
+use App\Models\User;
+
 class Tour extends Model
 {
     use HasFactory;
@@ -28,5 +30,13 @@ class Tour extends Model
 	public function tour_images()
 	{
 		return $this->hasMany(Tour_image::class, 'tour_id', 'id');
+	}
+
+    function user() {
+		return $this->belongsToMany(User::class, 'users_tours', 'tour_id', 'user_id');
+	}
+
+	function resrtvation() {
+		return $this->hasMany(Tour_reservation::class, 'tour_id', 'id');
 	}
 }

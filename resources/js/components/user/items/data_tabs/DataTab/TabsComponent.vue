@@ -204,7 +204,7 @@
                                     :table_name="data.table_name"
                                 />
                             </thead>
-                            <thead  v-else-if="data.table_name == 'Products'">
+                            <thead  v-else-if="data.table_name == 'Products' || data.table_name == 'My Products'">
                                 <productTagsTabHeader 
                                     :table_name="data.table_name"
                                 />
@@ -271,7 +271,9 @@
                                         data.table_name == 'Films' ||
                                         data.table_name == 'Mountaineering routes' || 
                                         data.table_name == 'Tour' || 
-                                        data.table_name == 'services' 
+                                        data.table_name == 'services'
+                                         
+                                        || data.table_name == 'My Tours'
                                     ">
                                 <articleTabHeader
                                     :table_name="data.table_name"
@@ -283,7 +285,7 @@
 
 
 
-                            <tbody v-if="data.table_name == 'Products'">
+                            <tbody v-if="data.table_name == 'Products' || data.table_name == 'My Products'">
                                 <productsTab
                                     v-for="table_info in data.data"
                                     :key="table_info.id"
@@ -569,7 +571,7 @@
                                     @restart="update"
                                 />
                             </tbody>
-                            <tbody v-else-if="data.table_name == 'Tours'">
+                            <tbody v-else-if="data.table_name == 'Tours' || data.table_name == 'My Tours'">
                                 <tourTab
                                     v-for="table_info in data.data"
                                     :key="table_info.id"
@@ -578,6 +580,15 @@
                                     @restart="update"
                                 />
                             </tbody>
+                            <!-- <tbody v-else-if="data.table_name == 'Tours reservations' || data.table_name == 'My tours reservations'">
+                                <tourTab
+                                    v-for="table_info in data.data"
+                                    :key="table_info.id"
+                                    :table_info="table_info"
+                                    
+                                    @restart="update"
+                                />
+                            </tbody> -->
                             <tbody v-else>
                                 <articlesTab
                                     v-for="table_info in data.data"

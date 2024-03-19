@@ -65,7 +65,8 @@ const router = new VueRouter({
                 { path: '/about_us', name: 'about_store', component: load('AboutUs'),},
                 { path: '/search_products', name: 'search_products', component: load('SearchPage'),},
 
-                { path: "confirm_comment_email/:comment_id/:email", name: "confirm_comment_email", component: load("CommentEmailVerificationePage"),},
+                { path: "confirm_comment_email/:comment_id/:email", name: "confirm_comment_email", component: load("pages/verivficatione_pages/CommentEmailVerificationePage"),},
+                { path: "confirm_reservation/:reservation_id/:email", name: "confirm_reservation", component: load("pages/verivficatione_pages/TourReservationVerificationePage"),},
                 
                 { path: '*', name: 'NotFound', component: NotFound }
             ]

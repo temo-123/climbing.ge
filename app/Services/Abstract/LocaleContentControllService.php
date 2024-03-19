@@ -182,11 +182,13 @@ class LocaleContentControllService
     * $image_path       - article images dir path (parameter is optional, if image value in db tab not exist)
     *
     */
-    public static function edit_content($data, $global_model, $local_model, $prefix, $request, $image_path = false)
+    public static function edit_content($global_model, $local_model, $prefix, $request, $image_path = false)
     {
         $validation_issets = [];
 
         $data = json_decode($request->data, true );
+
+        // dd($data);
 
         $ka_validate = (new static)->local_content_validate($data['ka'.$prefix], 'ka');
         if ($ka_validate != null) {

@@ -14,7 +14,7 @@
                 </div>
             </div>
 
-            <div class="row justify-content-center">
+            <!-- <div class="row justify-content-center">
                 <div class="col-md-12">
                     <div class="alert alert-secondary" role="alert">
                         <h1>Hi {{ this.user['name'] }}. Let's start work. Check task panel!</h1>
@@ -52,7 +52,7 @@
                         <img src="/public/images/site_img/Banned.png" alt="Baned"/>
                     </div>    
                 </div>
-            </div>
+            </div> -->
 
             <div class="row justify-content-center">
                 <div class="col-md-12">

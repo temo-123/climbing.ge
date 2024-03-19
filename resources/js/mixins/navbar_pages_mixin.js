@@ -20,8 +20,16 @@ export const navbar = {
                 ]
             },
             {
+                title: "My Comments & Reviews",
+                route: "/my_comments_and_reviews"
+            },
+            {
                 title: "Cart",
                 route: "/cart"
+            },
+            {
+                title: "My purchases",
+                route: "/purchases"
             },
             {
                 title: "Favorites",
@@ -56,7 +64,7 @@ export const navbar = {
                 routes: [
                     {
                         name: "My products",
-                        route: "/tours_list",
+                        route: "/user_product_list",
                         permissions: [
                             ['add', 'product'],
                             ['edit', 'product'],
@@ -65,7 +73,7 @@ export const navbar = {
                     },
                     {
                         name: "My Orders",
-                        route: "/order/my_orders",
+                        route: "/order/user_orders",
                         permissions: [
                             ['edit_order_status', 'order'],
                         ]
@@ -74,16 +82,12 @@ export const navbar = {
                 ],
             },
             {
-                title: "My Comments & Reviews",
-                route: "/my_comments_and_reviews"
-            },
-            {
                 title: "My tours",
                 name: "my_tours",
                 routes: [
                     {
                         name: "My tours",
-                        route: "/tours_list",
+                        route: "/user_tours_list",
                         permissions: [
                             ['add', 'tour'],
                             ['edit', 'tour'],
@@ -94,8 +98,8 @@ export const navbar = {
                         ]
                     },
                     {
-                        name: "Tours reservations",
-                        route: "/tours_list",
+                        name: "My tour reservations",
+                        route: "/user_tours_reservations_list",
                         permissions: [
                             ['show', 'tour_reservation'],
                             ['del', 'tour_reservation'],
@@ -241,19 +245,20 @@ export const navbar = {
                 name: "shop",
                 routes: [
                     {
-                        name: "Products & categoryes",
+                        name: "All products & categoryes",
                         route: "/products_and_categories",
                         permissions: [
                             ['show_all', 'product'],
                             // ['add', 'product'],
                             // ['edit', 'product'],
                             // ['del', 'product'],
-                            ['add', 'product_category'],
-                            ['edit', 'product_category'],
-                            ['del', 'product_category'],
+                            ['show_all', 'product_category'],
+                            // ['add', 'product_category'],
+                            // ['edit', 'product_category'],
+                            // ['del', 'product_category'],
                             ['add', 'product_option'],
                             ['edit', 'product_option'],
-                            ['del', 'sale_code'],
+                            ['del', 'product_option'],
                             ['add', 'sale_code'],
                             ['edit', 'sale_code'],
                             ['del', 'sale_code']
@@ -267,27 +272,27 @@ export const navbar = {
                         ]
                     },
                     {
-                        name: "Services",
-                        route: "/services_list",
-                        permissions: [
-                            ['add', 'services'],
-                            ['edit', 'services'],
-                            ['del', 'services']
-                        ]
-                    },
-                    {
-                        name: "Tours",
-                        route: "/tours_list",
+                        name: "All tours",
+                        route: "/all_tours_list",
                         permissions: [
                             ['show_all', 'tour'],
                             ['show_all', 'tour_category']
                         ]
                     },
                     {
-                        name: "Tours reservations",
-                        route: "/tours_reservations_list",
+                        name: "All tours reservations",
+                        route: "/all_tours_reservations_list",
                         permissions: [
                             ['show_all', 'tour_reservation'],
+                        ]
+                    },
+                    {
+                        name: "Services",
+                        route: "/services_list",
+                        permissions: [
+                            ['add', 'services'],
+                            ['edit', 'services'],
+                            ['del', 'services']
                         ]
                     },
                     {

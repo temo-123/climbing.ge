@@ -3,7 +3,7 @@
         <router-link :to="'../product/'+product.global_product.url_title">
             <div class="img">
                 <div v-if="product.product_images[0]" class="i first" :style="'background-image: url(../images/product_option_img/' + product.product_images[0] + ')'"></div>
-                <div v-else class="i first" :style="'background-image: url(../../../public/images/site_img/shop_demo.jpg)'"></div>
+                <div v-else class="i first" :style="'background-image: url(../../../public/images/site_img/demo_imgs/shop_demo.jpg)'"></div>
             </div>
             <div class="text">
                 <strong>{{product.locale_product.title}}</strong>

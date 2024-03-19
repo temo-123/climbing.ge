@@ -24,16 +24,15 @@ use App\Models\Product_category;
 
 class ProductController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function get_all_products()
     {
         return Product::get();
     }
 
+    public function get_user_products()
+    {
+        return Auth::user()->products;
+    }
 
     public function get_local_products(Request $request)
     {
@@ -79,132 +78,28 @@ class ProductController extends Controller
     }
 
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        dd('create');
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
     public function add_product(Request $request)
     {
-        $validation_issets = [];
+        $data = json_decode($request->data, true );
 
-        $data = $request->data;
-
-        $ka_validate = $this->local_product_validation($data['ka_data']);
-        if ($ka_validate != null) {
-            $validation_issets['ka_info_validation'] = $ka_validate;
-        }
-        else{
-            $validation_issets['ka_info_validation'] = false;
-        }
-
-        $us_validate = $this->local_product_validation($data['us_data']);
-        if ($us_validate != null) {
-            $validation_issets['us_info_validation'] = $us_validate;
-        }
-        else{
-            $validation_issets['us_info_validation'] = false;
-        }
-
-        $ru_validate = $this->local_product_validation($data['ru_data']);
-        if ($ru_validate != null) {
-            $validation_issets['ru_info_validation'] = $ru_validate;
-        }
-        else{
-            $validation_issets['ru_info_validation'] = false;
-        }
-
-        $global_validate = $this->global_product_validation($data['global_data']);
-        if ($global_validate != null) {
-            $validation_issets['global_info_validation'] = $global_validate;
-        }
-        else{
-            $validation_issets['global_info_validation'] = false;
-        }
-
-
-        if (
-            !$validation_issets['global_info_validation'] && 
-            !$validation_issets['ru_info_validation'] && 
-            !$validation_issets['ka_info_validation'] && 
-            !$validation_issets['us_info_validation']
-        ) {
-            $saiving_issets['ka_info_status'] = $this->add_locale_product($data['ka_data'], 'ka');
-            $saiving_issets['ru_info_status'] = $this->add_locale_product($data['ru_data'], 'ru');
-            $saiving_issets['us_info_status'] = $this->add_locale_product($data['us_data'], 'us');
-
-            if (
-                $saiving_issets['ka_info_status'] != 'Error' &&
-                $saiving_issets['ru_info_status'] != 'Error' &&
-                $saiving_issets['us_info_status'] != 'Error'
-            ) {
-                $action_article_id = $this->addGlobalProduct(
-                    $data['global_data'],
-
-                    $saiving_issets['ka_info_status'],
-                    $saiving_issets['ru_info_status'],
-                    $saiving_issets['us_info_status']                    
-                );
-
-                $this->create_product_user_relations($action_article_id);
-            }
-        }
-        else{            
+        $validator = Validator::make($data, [
+            'global_product.category_id' => 'required',
+        ]);
+        
+        if ($validator->fails()) {
             return response()->json([
-                'validation' => $validation_issets
+                'validation' => $validator->messages()
             ], 422);
         }
-    }
-
-    public function addGlobalProduct($global_data, $ka_info_id, $ru_info_id, $us_info_id)
-    {
-        $url_title = URLTitleService::get_url_title($global_data["us_title_for_url_title"]); // make url_title from us_title value
-
-        $new_global_product = new Product;
+    
+        // $tour_adding = ProductService::add_content($data, Tour::class, Locale_tour::class, '_product', $request);
+        $tour_adding = ProductService::add_content($data, Product::class, Locale_product::class, '_product', $request);
         
-        $new_global_product['url_title'] = $url_title;
-
-        $new_global_product['category_id']=$global_data["category_id"];
-        $new_global_product['published']=$global_data["published"];
-        $new_global_product['sale_type']=$global_data["sale_type"];
-        $new_global_product['mead_in_georgia']=$global_data["mead_in_georgia"];
-        $new_global_product['material']=$global_data["material"];
-        $new_global_product['discount']=$global_data["discount"];
-
-        $new_global_product['us_product_id']=$us_info_id;
-        $new_global_product['ka_product_id']=$ka_info_id;
-        $new_global_product['ru_product_id']=$ru_info_id;
-        
-        $new_global_product -> save();
-    }
-
-    public function add_locale_product($data, $locale)
-    {
-        $new_local_product = new Locale_product;
-        
-        $new_local_product['title']=$data["title"];
-        $new_local_product['locale']=$locale;
-        $new_local_product['short_description']=$data["short_description"];
-        $new_local_product['text']=$data["text"];
-
-        $saved = $new_local_product->save();
-
-        if(!$saved){
-            App::abort(500, 'Error');
+        if (!array_key_exists('validation', $tour_adding->original)) {
+            $this->create_product_user_relations($tour_adding);
         }
-        else{
-            return $new_local_product->id;
+        else {
+            return $tour_adding;
         }
     }
 
@@ -268,113 +163,22 @@ class ProductController extends Controller
      */
     public function edit_product(Request $request)
     {
-        $validation_issets = [];
-
         $data = $request->data;
 
-        $ka_validate = $this->local_product_validation($data['ka_product']);
-        if ($ka_validate != null) {
-            $validation_issets['ka_info_validation'] = $ka_validate;
-        }
-        else{
-            $validation_issets['ka_info_validation'] = false;
-        }
-
-        $us_validate = $this->local_product_validation($data['us_product']);
-        if ($us_validate != null) {
-            $validation_issets['us_info_validation'] = $us_validate;
-        }
-        else{
-            $validation_issets['us_info_validation'] = false;
-        }
-
-        $ru_validate = $this->local_product_validation($data['ru_product']);
-        if ($ru_validate != null) {
-            $validation_issets['ru_info_validation'] = $ru_validate;
-        }
-        else{
-            $validation_issets['ru_info_validation'] = false;
-        }
-
-        $global_validate = $this->editing_global_product_validation($data['global_product']);
-        if ($global_validate != null) {
-            $validation_issets['global_info_validation'] = $global_validate;
-        }
-        else{
-            $validation_issets['global_info_validation'] = false;
-        }
-
-        if (
-            !$validation_issets['global_info_validation'] && 
-            !$validation_issets['ru_info_validation'] && 
-            !$validation_issets['ka_info_validation'] && 
-            !$validation_issets['us_info_validation']
-        ) {
-            $local_products_id = $this->editGlobalProduct(
-                $data['global_product'],  
-                $request->product_id,              
-                $request['change_url_title'],  
-                $data['us_product']['title']              
-            );
-
-            if ($local_products_id != 'Error') {
-                $this->edit_locale_product($data['ka_product'], $local_products_id['ka_product_id']);
-                $this->edit_locale_product($data['us_product'], $local_products_id['us_product_id']);
-                $this->edit_locale_product($data['ru_product'], $local_products_id['ru_product_id']);
-            }
-        }
-        else{            
+        $validator = Validator::make($data, [
+            'global_product.category_id' => 'required',
+        ]);
+        
+        if ($validator->fails()) {
             return response()->json([
-                'validation' => $validation_issets
+                'validation' => $validator->messages()
             ], 422);
         }
-    }
 
-    public function editGlobalProduct($global_data, $id, $change_url_title, $us_title)
-    {
-        $edit_global_product = Product::where('id', '=', $id)->first();
-        
-        if($change_url_title){
-            $url_title = URLTitleService::get_url_title($us_title); // make url_title from us_title value
-            $edit_global_product['url_title'] = $url_title;
-        }
+        $article_editing = ProductService::edit_content(Product::class, Locale_product::class, '_product', $request);
 
-        $edit_global_product['category_id']=$global_data["category_id"];
-        $edit_global_product['published']=$global_data["published"];
-        $edit_global_product['sale_type']=$global_data["sale_type"];
-        $edit_global_product['mead_in_georgia']=$global_data["mead_in_georgia"];
-        $edit_global_product['material']=$global_data["material"];
-        $edit_global_product['discount']=$global_data["discount"];
-        
-        $saved = $edit_global_product -> save();
-
-        if(!$saved){
-            App::abort(500, 'Error');
-        }
-        else {
-            $data = [
-                'us_product_id' => $edit_global_product->us_product_id,
-                'ka_product_id' => $edit_global_product->ka_product_id,
-                'ru_product_id' => $edit_global_product->ru_product_id
-            ];
-            return $data;
-        }
-
-    }
-
-    public function edit_locale_product($data, $id)
-    {
-        $edit_local_product = Locale_product::where('id', '=', $id)->first();
-        
-        $edit_local_product['title']=$data["title"];
-        $edit_local_product['short_description']=$data["short_description"];
-        $edit_local_product['text']=$data["text"];
-
-        // dd($edit_local_product);
-        $saved = $edit_local_product->save();
-        
-        if(!$saved){
-            App::abort(500, 'Error');
+        if(array_key_exists('validation', $article_editing->original)){
+            return $article_editing;
         }
     }
 
@@ -441,7 +245,6 @@ class ProductController extends Controller
 
     public function local_product_validation($data)
     {
-        // dd($data);
         $validator = Validator::make($data, [
             'title' => 'required | max:190',
             'short_description' => 'required',

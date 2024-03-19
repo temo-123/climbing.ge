@@ -89,7 +89,6 @@
     import techtipsComponent from '../items/TechtipsComponent'
     import otherArticlesComponent from '../items/OtherArticlesComponent'
     import eventComponent from '../items/EventComponent'
-    // import swiperComponent from '../items/SwiperComponent'
     import swiperComponent from '../../global_components/SwiperComponent.vue'
     import whatWeDoComponent from '../items/WhatWeDoComponent'
 

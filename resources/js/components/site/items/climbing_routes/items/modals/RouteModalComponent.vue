@@ -118,7 +118,15 @@
                     >
                         {{ $t('guide.route.make_review') }}
                     </button>
-                    <p v-else>Ples login for add route feedback!</p>
+                    <!-- <p v-else>Ples login for add route feedback!</p> -->
+
+                    <!-- <div class="row" v-if="user.length == 0"> -->
+                        <div v-else :class="'alert alert-danger cursor_pointer'" role="alert" @click="goTo('/login')">
+                            <div class="col-md-12">
+                                <p>Ples login for add route feedback!</p>
+                            </div>
+                        </div>
+                    <!-- </div> -->
                 </div>
             </div>
         </stack-modal>
@@ -162,6 +170,11 @@ export default {
         // this.get_spot_rocks_images();
     },
     methods: {
+        goTo(page = '/'){
+            this.is_show_route_modal = false
+            window.open(process.env.MIX_APP_SSH + 'user.' + process.env.MIX_SITE_URL + page);
+        },
+
         lead_grade_chart(grade_fr) {
             return this.lead(grade_fr)
         },

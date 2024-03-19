@@ -238,7 +238,7 @@
         methods: {
             get_order_status(){
                 axios
-                .get("../api/order/get_order_status/" + this.activ_order_id)
+                .get("/order/get_order_status/" + this.activ_order_id)
                 .then(response => {
                     this.order_status = response.data
 
@@ -275,7 +275,7 @@
             get_activ_order(action){
                 // alert(action)
                 axios
-                .get("../api/get_activ_order/"+this.activ_order_id)
+                .get("/get_activ_order/"+this.activ_order_id)
                 .then(response => {
                     this.activ_order_status = response.data
                     // this.selected_order_status = response.data.status
@@ -317,7 +317,7 @@
                     this.order_status_updating_loader = true
 
                     axios
-                    .post("../api/edit_order_status/"+this.activ_order_id,{
+                    .post("/edit_order_status/"+this.activ_order_id,{
                         status: this.selected_order_status
                     })
                     .then(response => {
@@ -336,15 +336,12 @@
 
             get_order_detals(order_id){
                 axios
-                .get("../api/get_order_detals/"+order_id)
+                .get("/get_order_detals/"+order_id)
                 .then(response => {
                     this.activ_order_detals = response.data.order
                     // this.get_order_products(response.data.id)
 
                     this.order_product_items = response.data.order_products
-                    // this.user_id = response.data[0]['user_id']
-                    // this.is_products_refresh = false
-                    // this.products_reset_id++
                     this.colculat_total_price()
 
                     this.is_order_detals_model = true

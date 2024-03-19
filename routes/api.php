@@ -401,6 +401,7 @@ Route::group(['namespace'=>'Api'], function() {
         Route::controller(ProductController::class)->prefix('product')->group( function() {
             Route::apiResource('/', 'ProductController');
             Route::get('/get_all_products', 'get_all_products');
+            Route::get('/get_user_products', 'get_user_products');
             Route::get('/get_product_editing_data/{product_id}', 'get_product_editing_data');
             Route::get('/add_product', 'add_product');
 
@@ -434,6 +435,7 @@ Route::group(['namespace'=>'Api'], function() {
         Route::controller(TourController::class)->prefix('tour')->group( function() {
             Route::get('/get_tours/{lang}', 'get_tours');
             Route::get('/get_all_tours', 'get_all_tours');
+            Route::get('/get_user_tours', 'get_user_tours');
             Route::get('/get_similar_tours/{lang}/{tour_id}', 'get_similar_tours');
             Route::get('/get_tour/{lang}/{url_title}', 'get_tour');
     
@@ -455,9 +457,10 @@ Route::group(['namespace'=>'Api'], function() {
 
             Route::controller(TourReservationController::class)->prefix('reservation')->group( function() {
                 Route::get('/get_reservations', 'get_reservations');
+                Route::get('/get_user_reservations', 'get_user_reservations');
     
-                Route::post('/create_reservation', 'create_reservation');
-                Route::post('/verifiation/{reservation_id}', 'verifiation');
+                Route::post('/create_reservation/{tour_id}', 'create_reservation');
+                Route::post('/verifiation_reservation/{reservation_id}', 'verifiation_reservation');
                 
                 Route::delete('/del_reservation/{reservation_id}', 'del_reservation');
             });
@@ -497,17 +500,20 @@ Route::group(['namespace'=>'Api'], function() {
     
         Route::controller(OrderController::class)->group( function() {
             Route::apiResource('/order', 'OrderController');
+            
             Route::get('/order/get_order_status/{order_id}', 'get_order_status');
-            Route::get('/my_order', 'get_my_orders');
+            Route::get('/get_user_purchases', 'get_user_purchases');
+            Route::get('/get_user_orders', 'get_user_orders');
+            Route::get('/get_user_purchules', 'get_user_purchules');
             Route::get('/get_activ_order/{order_id}', 'get_activ_order');
             Route::post('/edit_order_status/{order_id}', 'edit_order_status');
             Route::get('/get_order_detals/{order_id}', 'get_order_detals');
             Route::get('/get_order_products/{order_id}', 'get_order_products');
-        
-            Route::post('/order_is_confirm/{order_id}', 'order_is_confirm');
             Route::get('/is_order_confirm/{order_id}', 'is_order_confirm');
         
+            Route::post('/order_is_confirm/{order_id}', 'order_is_confirm');
             Route::post('/check_sale_code', 'check_sale_code');
+            Route::post('/order/castam_prodaction_message/{product_id}', 'castam_prodaction_message');
         });
         Route::apiResource('/sale_code', 'SaleCodeController');
 

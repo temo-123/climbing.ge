@@ -101,7 +101,7 @@ class ArticleController extends Controller
 
         $image_path = 'images/'.$data['global_article']['category'].'_img/';
 
-        $article_editing = ArticlesService::edit_content($data, Article::class, Locale_article::class, '_article', $request, $image_path);
+        $article_editing = ArticlesService::edit_content(Article::class, Locale_article::class, '_article', $request, $image_path);
 
         if(!array_key_exists('validation', $article_editing->original)){
             GalleryService::add_gallery_images(

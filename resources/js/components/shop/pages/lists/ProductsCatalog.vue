@@ -136,7 +136,7 @@
 </template>
 
 <script>
-    import catalogItem from '../../items/CatalogItemComponent'
+    import catalogItem from '../../items/cards/CatalogItemComponent'
     import emptyPageComponent from '../../../global_components/EmptyPageComponent'
     import { ContentLoader } from 'vue-content-loader'
     import lingallery from 'lingallery'; // https://github.com/ChristophAnastasiades/Lingallery

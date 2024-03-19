@@ -17,7 +17,11 @@
             </div>
         </div>
         <div class="row" v-show="!is_loading" v-if="error.length != 0">
-            <div class="col-md-12">
+
+            <validator_alerts_component
+                :errors_prop="error"
+            />
+            <!-- <div class="col-md-12">
                 <div class="alert alert-danger" role="alert" v-if="error.global_info_validation.url_title">
                     Url title - {{ error.global_info_validation.url_title[0] }}
                 </div>
@@ -54,7 +58,7 @@
                 <div class="alert alert-danger" role="alert" v-if="error.ru_info_validation.text">
                     Russion text - {{ error.ru_info_validation.text[0] }}
                 </div>
-            </div>
+            </div> -->
         </div>
         <div class="row" v-show="!is_loading">
             <div class="col-md-12">
@@ -180,6 +184,7 @@
 
     import gallery_images_edit from '../../items/gallery/galleryImageEditComponent.vue'
 
+    import validator_alerts_component from '../../items/validator_alerts_component.vue'
     export default {
         props: [
             // 'back_url',
@@ -193,7 +198,8 @@
             SectorsImagesForm,
             MountRouteImagesForm,
 
-            gallery_images_edit
+            gallery_images_edit,
+            validator_alerts_component
         },
         data(){
             return {

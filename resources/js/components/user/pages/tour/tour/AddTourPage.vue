@@ -18,8 +18,10 @@
         </div>
 
         <div class="row" v-show="!is_loading" v-if="error.length != 0">
-
-            <div class="col-md-12" v-if="error.category_id">
+            <validator_alerts_component
+                :errors_prop="error"
+            />
+            <!-- <div class="col-md-12" v-if="error.category_id">
                 <div class="alert alert-danger" role="alert" v-if="error.category_id">
                     Category - {{ error.category_id[0] }}
                 </div>
@@ -65,7 +67,7 @@
                 <div class="alert alert-danger" role="alert" v-if="error.ru_info_validation.text">
                     Russion text - {{ error.ru_info_validation.text[0] }}
                 </div>
-            </div>
+            </div> -->
         </div>
 
         <div class="row"  v-show="!is_loading">
@@ -284,7 +286,11 @@
 
 <script>
     import { editor_config } from '../../../../../mixins/editor/editor_config_mixin.js'
+    import validator_alerts_component from '../../../items/validator_alerts_component.vue'
     export default {
+        components: {
+            validator_alerts_component
+        },
         mixins: [
             editor_config
         ],

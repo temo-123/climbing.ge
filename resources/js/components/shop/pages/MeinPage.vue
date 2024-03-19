@@ -59,11 +59,11 @@
             </h3>
             <div class="col-sm-12">
                 <div class="row">
-                    <TourItem
+                    <tourItem
                         v-for="tour in tours"
-                        :key='tour.id'
-                        :tour_data="tour">
-                    </TourItem>
+                        :key='tour.global_data.id'
+                        :tour_data_prop="tour">
+                    </tourItem>
                 </div>
             </div>
         </div>
@@ -81,9 +81,9 @@
 </template>
 
 <script>
-import catalogItem from '../items/CatalogItemComponent'
-import ServiceItem from '../items/ServiceItemComponent'
-import TourItem from '../items/cards/TourCardComponent'
+import catalogItem from '../items/cards/CatalogItemComponent'
+import ServiceItem from '../items/cards/ServiceItemComponent'
+import tourItem from '../items/cards/TourCardComponent'
 
 import swiperComponent from '../../global_components/SwiperComponent.vue'
 
@@ -95,7 +95,7 @@ export default {
         catalogItem,
         ServiceItem,
         metaData,
-        TourItem,
+        tourItem,
         swiperComponent,
         emptyPageComponent,
     },

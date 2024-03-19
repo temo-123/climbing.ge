@@ -29,6 +29,16 @@
                             <option value="Conflict with other members of the site">Conflict with other members of the site</option>
                             <option value="The language of the feedbacks does not match the requirements of the site">The language of the feedbacks does not match the requirements of the site</option>
                         </select>
+
+                        <vue-recaptcha 
+                            :sitekey="MIX_GOOGLE_CAPTCHA_SITE_KEY" 
+                            :loadRecaptchaScript="true"
+                            ref="recaptcha"
+                            type="invisible"
+                            @verify="onCaptchaVerified"
+                            @expired="onCaptchaExpired"
+                        >
+                        </vue-recaptcha>
                     </form>
                 </span>
             </pre>
@@ -38,6 +48,16 @@
                         type="submit"
                         :class="{'btn btn-primary': true}"
                         form="make_complaint"
+                        v-if="is_verify_isset == false"
+                        disabled
+                    >
+                    Submit
+                    </button> 
+                    <button
+                        type="submit"
+                        :class="{'btn btn-primary': true}"
+                        form="make_complaint"
+                        v-else
                     >
                     Submit
                     </button> 
@@ -77,7 +97,7 @@
                 refresh_id: 0,
                 id: 0,
                 loadRecaptchaScript: false,
-                loadComplaintRecaptchaScript: false,
+                // loadComplaintRecaptchaScript: false,
 
                 errors: [],
                 user: [],
@@ -107,25 +127,13 @@
         methods: {
             update(id){
                 this.id = id
-                // this.get_feedbacks();
             },
-
-            // show_feadbacks_action(){
-            //     this.show_feadbacks = !this.show_feadbacks
-            // },
 
             onCaptchaVerified() {
                 this.is_verify_isset = true
             },
             onCaptchaExpired(){
                 this.is_verify_isset = false
-            },
-
-            onComplaintCaptchaVerified() {
-                this.is_complaint_verify_isset = true
-            },
-            onComplaintCaptchaExpired(){
-                this.is_complaint_verify_isset = false
             },
 
             get_user_info() {

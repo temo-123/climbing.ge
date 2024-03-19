@@ -17,7 +17,10 @@
             </div>
         </div>
         <div class="row" v-show="!is_loading">
-            <div class="col-md-12" v-if="error.length != 0">
+            <validator_alerts_component
+                :errors_prop="error"
+            />
+            <!-- <div class="col-md-12" v-if="error.length != 0">
                 <div class="alert alert-danger" role="alert" v-if="error.global_info_validation.published">
                     Published - {{ error.global_info_validation.published[0] }}
                 </div>
@@ -54,7 +57,7 @@
                 <div class="alert alert-danger" role="alert" v-if="error.ru_info_validation.text">
                     Russion text - {{ error.ru_info_validation.text[0] }}
                 </div>
-            </div>
+            </div> -->
         </div>
         <div class="row" v-show="!is_loading">
             <div class="col-md-12">
@@ -159,8 +162,10 @@
     // import gallery_images_add from './items/galleryImageAddComponent.vue'
     import gallery_images_add from '../../items//gallery/galleryImageAddComponent.vue'
 
+    import validator_alerts_component from '../../items/validator_alerts_component.vue'
     export default {
         components: {
+            validator_alerts_component,
 
             GlobalDataForm,
             LocaleDataForm,

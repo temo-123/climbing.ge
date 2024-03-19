@@ -78,7 +78,7 @@
 </template>
 
 <script>
-    import searchCard from '../items/SearchCardComponent'
+    import searchCard from '../items/cards/SearchCardComponent'
     // import catalogItem from '../items/CatalogItemComponent'
     import { ContentLoader } from 'vue-content-loader'
     import metaData from '../items/MetaDataComponent'

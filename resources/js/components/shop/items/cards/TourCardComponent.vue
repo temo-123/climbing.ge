@@ -4,23 +4,27 @@
           <div class="tourcard">
               <figure>
                   <div class="tourpic">
-                      <shop-img width="320" height="180" v-if="tour_data_prop.image" :src="'/public/images/tour_img/'+tour_data_prop.image" :alt="tour_data_prop.global_data.url_title" />
-                      <shop-img width="320" height="180" v-else :src="'/public/images/site_img/tour_demo.jpg'" :alt="tour_data_prop.global_data.url_title" />
+                      <shop-img width="320" height="180" v-if="tour_data_prop.image.length > 0" :src="'/public/images/tour_img/'+tour_data_prop.image" :alt="tour_data_prop.global_data.url_title" />
+                      <shop-img width="320" height="180" v-else :src="'/public/images/site_img/demo_imgs/tour_demo.jpg'" :alt="tour_data_prop.global_data.url_title" />
 
-                      <span class="tourcat">{{ tour_data_prop.global_data.location }}</span>                             
-                      <span class="tourday hot">{{ tour_data_prop.global_data.min_price }} / par</span>
+                      <span class="tourcat" v-if="tour_data_prop.global_data.location">{{ tour_data_prop.global_data.location }}</span>                             
+                      <span class="tourday hot" v-if="tour_data_prop.global_data.min_price">{{ tour_data_prop.global_data.min_price }} / par</span>
                   </div>
-                  <figcaption>
-                      <h3 class="entry-title">
-                        <router-link :to="'../tour/'+tour_data_prop.global_data.url_title">{{ tour_data_prop.locale_data.title }}</router-link>
-                      </h3>
-                      <!-- <span class="description">{{ tour_data_prop.locale_data.short_description }}</span> -->
-                      <span class="description" v-html="tour_data_prop.locale_data.short_description"></span>
-                    <!-- <span class="tourprice"> -->
-                      <!-- <span class="currency">Rp. </span><span class="price">200 EUR</span> -->
-                      <!-- <span> / par</span> -->
-                    <!-- </span> -->
-                  </figcaption>
+
+                  <router-link :to="'../tour/'+tour_data_prop.global_data.url_title">
+                    <figcaption class="actyve_panel">
+                        <h3 class="entry-title">
+                          <router-link :to="'../tour/'+tour_data_prop.global_data.url_title">{{ tour_data_prop.locale_data.title }}</router-link>
+                        </h3>
+                        <!-- <span class="description">{{ tour_data_prop.locale_data.short_description }}</span> -->
+                        <span class="description" v-html="tour_data_prop.locale_data.short_description"></span>
+                      <!-- <span class="tourprice"> -->
+                        <!-- <span class="currency">Rp. </span><span class="price">200 EUR</span> -->
+                        <!-- <span> / par</span> -->
+                      <!-- </span> -->
+                    </figcaption>
+                  </router-link>
+
                   <div class="tourbtn">
                       <router-link class="btn btn-default123" :to="'../tour/'+tour_data_prop.global_data.url_title">
                           <span class="text-muted">Read more</span>
@@ -174,7 +178,7 @@ a {
   bottom: 0;
   right: 0;
   padding: 15px;
-  margin: 0 0 30px;
+  margin: 0 0 44px;
   display: flex;
   flex-flow: column nowrap;
   color: white;
@@ -182,6 +186,7 @@ a {
 figcaption h3 a {
     text-decoration: none;
     color: white;
+    background-color: #535353;
 }
 .description {
     opacity: 0;
@@ -199,9 +204,15 @@ figcaption h3 a {
     font-size: 2em;
     font-weight: 300;
 }
-.tourcard:hover figure figcaption .description,
-.tourcard:hover figure figcaption .tourprice {
+.tourcard:hover figure figcaption .description
+// , .tourcard:hover figure figcaption .tourprice 
+{   
     display: block;
     opacity: 1;
+}
+
+.actyve_panel:hover{
+    transition: all 0.5s; 
+  background-color: #000000e5;
 }
 </style>

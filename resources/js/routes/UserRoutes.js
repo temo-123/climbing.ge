@@ -24,7 +24,8 @@ const router = new VueRouter({
 
         { path: '/task_panel', name: 'taskPanel', component: load('WorkerTaskPanelPageComponent') },
 
-        { path: '/order/my_orders', name: 'myOrders', component: load('orders/myOrderComponent') },
+        { path: '/purchases', name: 'userPurchases', component: load('PurchasesPage') },
+        { path: '/order/user_orders', name: 'userOrders', component: load('orders/userOrderComponent') },
         { path: '/order/all_orders', name: 'allOrders', component: load('orders/allOrderPageComponent') },
 
         { path: '/order/decloration/order_decloration/', name: 'orderDecloration', component: load('orders/decloration/orderDeclorationPageComponent') },
@@ -114,12 +115,16 @@ const router = new VueRouter({
         { path: '/competition/add', name: 'competitionAdd', component: load('event/competitions/competitionAddComponent') },
         { path: '/competition/edit/:id', name: 'competitionEdit', component: load('event/competitions/competitionEditComponent') },
         
+        { path: '/user_product_list', name: 'userProductsList', component: load('products_and_categories/userProductsListComponent') },
         { path: '/products_and_categories', name: 'productsList', component: load('products_and_categories/productsAndCatgoriesListComponent') },
         { path: '/product/edit/:id', name: 'productEdit', component: load('products_and_categories/products/productEditComponent') },
         { path: '/product/add', name: 'productAdd', component: load('products_and_categories/products/productAddComponent') },
 
-        { path: '/tours_reservations_list', name: 'toursReservations', component: load('tour/ToursReservationsPage') },
-        { path: '/tours_list', name: 'toursList', component: load('tour/ToursListPage') },
+        { path: '/user_tours_reservations_list', name: 'userToursReservations', component: load('tour/UserToursReservations') },
+        { path: '/user_tours_list', name: 'userToursList', component: load('tour/UserToursListPage') },
+
+        { path: '/all_tours_list', name: 'allToursList', component: load('tour/AllToursListPage') },
+        { path: '/all_tours_reservations_list', name: 'allToursReservations', component: load('tour/AllToursReservationsPage') },
         { path: '/tour/edit/:id', name: 'tourEdit', component: load('tour/tour/EditTourPage') },
         { path: '/tour/add', name: 'tourAdd', component: load('tour/tour/AddTourPage') },
 

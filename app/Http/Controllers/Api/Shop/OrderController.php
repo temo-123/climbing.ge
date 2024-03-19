@@ -4,7 +4,9 @@ namespace App\Http\Controllers\Api\Shop;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+
 use Auth;
+use Notification;
 
 use App\Models\User;
 use App\Models\Order;
@@ -18,49 +20,64 @@ use App\Models\Site;
 use App\Models\User_adreses;
 use App\Models\Sale_code;
 
-// use Mail;
-// use Illuminate\Notifications\Notifiable;
-use Notification;
+use App\Services\ProductService;
+
 use App\Notifications\order\OrderConfirm;
 use App\Notifications\order\AdminOrderDeclorationNotification;
 use App\Notifications\order\OrderStatusNotification;
 
+use App\Notifications\order\castam_prodaction\SelerCastamProdactionNotification;
+use App\Notifications\order\castam_prodaction\BuyerCastamProdactionNotification;
+
 class OrderController extends Controller
 {
-    // use Notifiable;
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function index()
     {
         return Order::get();
     }
 
-    public function get_my_orders()
+    public function get_user_orders()
     {
-        if (Auth::user()) {
-            return Order::where("user_id", "=", Auth::user()->id)->get();
+        $user_products = Auth::user()->products;
+
+        if($user_products->count() > 0){
+            return $user_products->orders;
         }
+        return [];
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+    public function get_user_purchules() {
+        return Auth::user()->purchases;
+    }
+
     public function get_order_status($order_id)
     {
         return Order_status::where("order_id", "=", $order_id)->first();
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
+    public function castam_prodaction_message(Request $request) {
+        if(Auth::user()){
+            $actyve_product = Product::where('id', '=', $request->product_id)->first();
+            $actyve_product_user = $actyve_product->user->first();
+
+            $actyve_local_product = ProductService::get_locale_product_in_page_use_locale($actyve_product, 'us')['locale_product'];
+
+            $info = [
+                "product_name" => $actyve_local_product->title,
+                "messaged_user_name" => Auth::user()->name . ' ' . Auth::user()->surname,
+                "messaged_user_email" => Auth::user()->email,
+                "product_id" => $request->product_id,
+                "message" => $request->form_data['text']
+            ];
+
+            Notification::route('mail', $actyve_product_user->email)->notify(new SelerCastamProdactionNotification($info));
+            Notification::route('mail', Auth::user()->email)->notify(new BuyerCastamProdactionNotification());
+
+            return 'Thank you for message!';
+        }
+        return 'Plees login';
+    }
+
     public function store(Request $request)
     {
         // dd($request->shiping);
@@ -164,51 +181,6 @@ class OrderController extends Controller
         );
         
         Notification::send(Auth::user(), new OrderConfirm($user_order_info));
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        //
     }
 
     public function get_order_products($order_id)

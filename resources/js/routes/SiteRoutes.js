@@ -64,101 +64,101 @@ const router = new VueRouter({
                 {
                     path: "news/:url_title",
                     name: "news",
-                    component: load("NewsPageComponent"),
+                    component: load("pages/NewsPageComponent"),
                 },
                 {
                     path: "tech_tip/:url_title",
                     name: "tech_tip",
-                    component: load("TechTipPageComponent"),
+                    component: load("pages/TechTipPageComponent"),
                 },
                 {
                     path: "partner/:url_title",
                     name: "partner",
-                    component: load("PartnerPageComponent"),
+                    component: load("pages/PartnerPageComponent"),
                 },
                 {
                     path: "local_bisnes/:url_title",
                     name: "local_bisnes",
-                    component: load("LocalBisnesPageComponent"),
+                    component: load("pages/LocalBisnesPageComponent"),
                 },
                 {
                     path: "events",
                     name: "events",
-                    component: load("EventsListPageComponent"),
+                    component: load("lists/EventsListPageComponent"),
                 },
                 {
                     path: "event/:url_title",
                     name: "event",
-                    component: load("EventPageComponent"),
+                    component: load("pages/EventPageComponent"),
                 },
                 {
                     path: "ice",
                     name: "ices",
-                    component: load("IceListComponent"),
+                    component: load("lists/IceListComponent"),
                 },
                 {
                     path: "ice/:url_title",
                     name: "ice",
-                    component: load("IcePageComponent"),
+                    component: load("pages/IcePageComponent"),
                 },
                 {
                     path: "spot_projects",
                     name: "spot_projects",
-                    component: load("ProjectsList"),
+                    component: load("lists/ProjectsList"),
                 },
                 {
                     path: "spot_project/:url_title",
                     name: "project",
-                    component: load("ProjectPage"),
+                    component: load("pages/ProjectPage"),
                 },
                 {
                     path: "special_article/:url_title",
                     name: "special_article",
-                    component: load("SpecialAericlePage"),
+                    component: load("pages/SpecialAericlePage"),
                 },
 
                 {
                     path: "other",
                     name: "others",
-                    component: load("OtherListComponent"),
+                    component: load("lists/OtherListComponent"),
                 },
                 {
                     path: "other/:url_title",
                     name: "other",
-                    component: load("OtherPageComponent"),
+                    component: load("pages/OtherPageComponent"),
                 },
 
                 {
                     path: "mountaineering",
                     name: "mountaineerings",
-                    component: load("MountaineeringListComponent"),
+                    component: load("lists/MountaineeringListComponent"),
                 },
                 {
                     path: "mountaineering/:url_title",
                     name: "mountaineering",
-                    component: load("MountaineeringPageComponent"),
+                    component: load("pages/MountaineeringPageComponent"),
                 },
 
                 {
                     path: "indoor",
                     name: "indoors",
-                    component: load("IndoorListComponent"),
+                    component: load("lists/IndoorListComponent"),
                 },
                 {
                     path: "indoor/:url_title",
                     name: "indoor",
-                    component: load("IndoorPageComponent"),
+                    component: load("pages/IndoorPageComponent"),
                 },
 
                 {
                     path: "outdoor",
                     name: "outdoors",
-                    component: load("OutdoorListComponent"),
+                    component: load("lists/OutdoorListComponent"),
                 },
                 {
                     path: "outdoor/:url_title",
                     name: "outdoor",
-                    component: load("OutdoorPageComponent"),
+                    component: load("pages/OutdoorPageComponent"),
                 },
 
                 {
@@ -170,13 +170,13 @@ const router = new VueRouter({
                 {
                     path: "unfollow/:id",
                     name: "unfollow",
-                    component: load("UnfollowComponent"),
+                    component: load("pages/varification_pages/UnfollowComponent"),
                 },
 
                 {
                     path: "/confirm_comment_email/:comment_id/:email",
                     name: "confirm_comment_email",
-                    component: load("CommentEmailVerificationePage"),
+                    component: load("pages/varification_pages/CommentEmailVerificationePage"),
                 },
 
                 { path: "*", name: "NotFound", component: NotFound },

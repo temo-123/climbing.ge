@@ -16,44 +16,9 @@
             </div>
         </div>
         <div class="row" v-show="!is_loading" v-if="errors.length != 0">
-            <div class="col-md-12">
-                <div class="alert alert-danger" role="alert" v-if="errors.global_info_validation.sale_type">
-                    Sale type - {{ errors.global_info_validation.sale_type[0] }}
-                </div>
-                <div class="alert alert-danger" role="alert" v-if="errors.global_info_validation.category_id">
-                    Category - {{ errors.global_info_validation.category_id[0] }}
-                </div>
-
-                <div class="alert alert-danger" role="alert" v-if="errors.us_info_validation.title">
-                    English title - {{ errors.us_info_validation.title[0] }}
-                </div>
-                <div class="alert alert-danger" role="alert" v-if="errors.us_info_validation.short_description">
-                    English description - {{ errors.us_info_validation.short_description[0] }}
-                </div>
-                <div class="alert alert-danger" role="alert" v-if="errors.us_info_validation.text">
-                    English text - {{ errors.us_info_validation.text[0] }}
-                </div>
-
-                <div class="alert alert-danger" role="alert" v-if="errors.ka_info_validation.title">
-                    Georgian title - {{ errors.ka_info_validation.title[0] }}
-                </div>
-                <div class="alert alert-danger" role="alert" v-if="errors.ka_info_validation.short_description">
-                    Georgian description - {{ errors.ka_info_validation.short_description[0] }}
-                </div>
-                <div class="alert alert-danger" role="alert" v-if="errors.ka_info_validation.text">
-                    Georgian text - {{ errors.ka_info_validation.text[0] }}
-                </div>
-
-                <div class="alert alert-danger" role="alert" v-if="errors.ru_info_validation.title">
-                    Russion title - {{ errors.ru_info_validation.title[0] }}
-                </div>
-                <div class="alert alert-danger" role="alert" v-if="errors.ru_info_validation.short_description">
-                    Russiondescription - {{ errors.ru_info_validation.short_description[0] }}
-                </div>
-                <div class="alert alert-danger" role="alert" v-if="errors.ru_info_validation.text">
-                    Russion text - {{ errors.ru_info_validation.text[0] }}
-                </div>
-            </div>
+            <validator_alerts_component
+                :errors_prop="errors"
+            />
         </div>
         <div class="row" v-show="!is_loading">
             <div class="col-md-12">
@@ -257,7 +222,11 @@
 
 <script>
     import { editor_config } from '../../../../../mixins/editor/editor_config_mixin.js'
+    import validator_alerts_component from '../../../items/validator_alerts_component.vue'
     export default {
+        components: {
+            validator_alerts_component
+        },
         mixins: [
             editor_config
         ],
@@ -337,34 +306,6 @@
                 .get('/product/get_product_editing_data/'+this.$route.params.id)
                 .then((response)=> { 
                     this.data = response.data
-                    // this.data = {
-                    //     global_data: {
-                    //         published: response.data.global_product.published,
-                    //         category_id: response.data.global_product.category_id,
-                    //         material: response.data.global_product.material,
-                    //         discount: response.data.global_product.discount,
-                    //         sale_type: response.data.global_product.sale_type,
-                    //         mead_in_georgia: response.data.global_product.mead_in_georgia,
-                    //     },
-
-                    //     us_data: {
-                    //         title: response.data.us_product.title,
-                    //         short_description: response.data.us_product.short_description,
-                    //         text: response.data.us_product.text,
-                    //     },
-
-                    //     ka_data: {
-                    //         title: response.data.ka_product.title,
-                    //         short_description: response.data.ka_product.short_description,
-                    //         text: response.data.ka_product.text,
-                    //     },
-
-                    //     ru_data: {
-                    //         title: response.data.ru_product.title,
-                    //         short_description: response.data.ru_product.short_description,
-                    //         text: response.data.ru_product.text,
-                    //     }
-                    // }
                 })
                 .catch(error =>{
                     // 
@@ -375,7 +316,7 @@
                 this.is_loading = true
                 axios
                 .post('/product/edit_product/'+this.$route.params.id, {        
-                    data: this.data,
+                    data: JSON.stringify(this.data),
                     change_url_title: this.change_url_title,
                 })
                 .then((response)=> { 

@@ -29,6 +29,10 @@ class TourController extends Controller
         return Tour::latest('id')->get();
     }
 
+    function get_user_tours(){
+        return Auth::user()->tours;
+    }
+
     function get_similar_tours(Request $request) {
         $tour = Tour::where('id','=', $request->tour_id)->first();
 
@@ -65,7 +69,7 @@ class TourController extends Controller
         
         $image_path = 'images/tour_img/';
 
-        $tour_adding = TourService::add_content($data, Tour::class, Locale_tour::class, '_tour', $request, $image_path);
+        $tour_adding = TourService::add_content($data, Tour::class, Locale_tour::class, '_tour', $request);
         
         if (!array_key_exists('validation', $tour_adding->original)) {
             GalleryService::add_gallery_images(
@@ -86,12 +90,12 @@ class TourController extends Controller
 
     public function edit_tour(Request $request)
     {
-        $data = json_decode($request->data, true );
+        // $data = json_decode($request->data, true );
         $global_blocks = json_decode($request->global_blocks, true );
 
         $image_path = 'images/'.$data['global_article']['category'].'_img/';
 
-        $article_editing = ArticlesService::edit_content($data, Article::class, Locale_article::class, '_article', $request, $image_path);
+        $article_editing = ArticlesService::edit_content(Article::class, Locale_article::class, '_article', $request);
 
         if(!array_key_exists('validation', $article_editing->original)){
             GalleryService::add_gallery_images(

@@ -16,44 +16,9 @@
             </div>
         </div>
         <div class="row" v-show="!is_loading" v-if="errors.length != 0">
-            <div class="col-md-12">
-                <div class="alert alert-danger" role="alert" v-if="errors.global_info_validation.sale_type">
-                    Sale type - {{ errors.global_info_validation.sale_type[0] }}
-                </div>
-                <div class="alert alert-danger" role="alert" v-if="errors.global_info_validation.category_id">
-                    Category - {{ errors.global_info_validation.category_id[0] }}
-                </div>
-
-                <div class="alert alert-danger" role="alert" v-if="errors.us_info_validation.title">
-                    English title - {{ errors.us_info_validation.title[0] }}
-                </div>
-                <div class="alert alert-danger" role="alert" v-if="errors.us_info_validation.short_description">
-                    English description - {{ errors.us_info_validation.short_description[0] }}
-                </div>
-                <div class="alert alert-danger" role="alert" v-if="errors.us_info_validation.text">
-                    English text - {{ errors.us_info_validation.text[0] }}
-                </div>
-
-                <div class="alert alert-danger" role="alert" v-if="errors.ka_info_validation.title">
-                    Georgian title - {{ errors.ka_info_validation.title[0] }}
-                </div>
-                <div class="alert alert-danger" role="alert" v-if="errors.ka_info_validation.short_description">
-                    Georgian description - {{ errors.ka_info_validation.short_description[0] }}
-                </div>
-                <div class="alert alert-danger" role="alert" v-if="errors.ka_info_validation.text">
-                    Georgian text - {{ errors.ka_info_validation.text[0] }}
-                </div>
-
-                <div class="alert alert-danger" role="alert" v-if="errors.ru_info_validation.title">
-                    Russion title - {{ errors.ru_info_validation.title[0] }}
-                </div>
-                <div class="alert alert-danger" role="alert" v-if="errors.ru_info_validation.short_description">
-                    Russiondescription - {{ errors.ru_info_validation.short_description[0] }}
-                </div>
-                <div class="alert alert-danger" role="alert" v-if="errors.ru_info_validation.text">
-                    Russion text - {{ errors.ru_info_validation.text[0] }}
-                </div>
-            </div>
+            <validator_alerts_component
+                :errors_prop="errors"
+            />
         </div>
         <div class="row">
             <div class="col-md-12">
@@ -94,7 +59,7 @@
                         <div class="form-group clearfix">
                             <label for="name" class='col-xs-2 control-label'> Publish </label>
                             <div class="col-xs-8">
-                                <select class="form-control" v-model="data.global_data.published" name="published" > 
+                                <select class="form-control" v-model="data.global_product.published" name="published" > 
                                     <option value="0">Not public</option> 
                                     <option value="1">Public</option> 
                                 </select> 
@@ -107,7 +72,7 @@
                         <div class="form-group clearfix">
                             <label for="sale_type" class='col-xs-2 control-label'> Sale type </label>
                             <div class="col-xs-8">
-                                <select class="form-control" v-model="data.global_data.sale_type" name="sale_type" > 
+                                <select class="form-control" v-model="data.global_product.sale_type" name="sale_type" > 
                                     <option value="" disabled>Select order type</option> 
                                     <option value="custom_production">Custom production</option> 
                                     <option value="online_order">Online order</option> 
@@ -118,28 +83,28 @@
                         <div class="form-group clearfix">
                             <label for="name" class='col-xs-2 control-label'> Mead in Georgia </label>
                             <div class="col-xs-8">
-                                <input type="checkbox" id="scales" name="scales" v-model="data.global_data.mead_in_georgia" >
+                                <input type="checkbox" id="scales" name="scales" v-model="data.global_product.mead_in_georgia" >
                             </div>
                         </div>
     
                         <div class="form-group clearfix">
                             <label for="name" class='col-xs-2 control-label'> discount (%) </label>
                             <div class="col-xs-8">
-                                <input type="number" max="100" min="1" v-model="data.global_data.discount" name="discount" class="form-control"> 
+                                <input type="number" max="100" min="1" v-model="data.global_product.discount" name="discount" class="form-control"> 
                             </div>
                         </div>
     
                         <div class="form-group clearfix">
                             <label for="name" class='col-xs-2 control-label'> material</label>
                             <div class="col-xs-8">
-                                <input type="text" v-model="data.global_data.material" name="material" class="form-control"> 
+                                <input type="text" v-model="data.global_product.material" name="material" class="form-control"> 
                             </div>
                         </div>
     
                         <div class="form-group clearfix">
                             <label for="name" class='col-xs-2 control-label'> Category </label>
                             <div class="col-xs-8">
-                                <select class="form-control" v-model="data.global_data.category_id" name="category_id" > 
+                                <select class="form-control" v-model="data.global_product.category_id" name="category_id" > 
                                     <option v-bind:value="''" disabled>Select category</option> 
                                     <option v-for="cat in categories" :key="cat.id" v-bind:value="cat.id"> {{ cat.us_name }}</option>
                                 </select> 
@@ -159,21 +124,21 @@
                         <div class="form-group clearfix">
                             <label for="name" class='col-xs-2 control-label'> Title </label>
                             <div class="col-xs-8">
-                                <input type="text" name="name" v-model="data.us_data.title"  class="form-control"> 
+                                <input type="text" name="name" v-model="data.us_product.title"  class="form-control"> 
                             </div>
                         </div>
     
                         <div class="form-group clearfix">
                             <label for="name" class='col-xs-2 control-label'> Short description </label>
                             <div class="col-xs-8">
-                                <ckeditor v-model="data.us_data.short_description"  :config="editorConfig.us_short_description_text_editor"></ckeditor>
+                                <ckeditor v-model="data.us_product.short_description"  :config="editorConfig.us_short_description_text_editor"></ckeditor>
                             </div>
                         </div>
 
                         <div class="form-group clearfix">
                             <label for="name" class='col-xs-2 control-label'> text </label>
                             <div class="col-xs-8">
-                                <ckeditor v-model="data.us_data.text"  :config="editorConfig.us_text_editor_config"></ckeditor>
+                                <ckeditor v-model="data.us_product.text"  :config="editorConfig.us_text_editor_config"></ckeditor>
                             </div>
                         </div>
                     </form>
@@ -190,22 +155,22 @@
                         <div class="form-group clearfix">
                             <label for="name" class='col-xs-2 control-label'> Title </label>
                             <div class="col-xs-8">
-                                <input type="text" name="title" v-model="data.ru_data.title" class="form-control"> 
+                                <input type="text" name="title" v-model="data.ru_product.title" class="form-control"> 
                             </div>
                         </div>
     
                         <div class="form-group clearfix">
                             <label for="name" class='col-xs-2 control-label'> Short description </label>
                             <div class="col-xs-8">
-                                <!-- <textarea type="text"  name="short_description" v-model="data.ru_data.short_description"  rows="15" class="form-cotrol md-textarea form-control"></textarea> -->
-                                <ckeditor v-model="data.ru_data.short_description" :config="editorConfig.ru_short_description_text_editor"></ckeditor>
+                                <!-- <textarea type="text"  name="short_description" v-model="data.ru_product.short_description"  rows="15" class="form-cotrol md-textarea form-control"></textarea> -->
+                                <ckeditor v-model="data.ru_product.short_description" :config="editorConfig.ru_short_description_text_editor"></ckeditor>
                             </div>
                         </div>
 
                         <div class="form-group clearfix">
                             <label for="name" class='col-xs-2 control-label'> text </label>
                             <div class="col-xs-8">
-                                <ckeditor v-model="data.ru_data.text"  :config="editorConfig.ru_text_editor_config"></ckeditor>
+                                <ckeditor v-model="data.ru_product.text"  :config="editorConfig.ru_text_editor_config"></ckeditor>
                             </div>
                         </div>
                     </form>
@@ -222,22 +187,22 @@
                         <div class="form-group clearfix">
                             <label for="name" class='col-xs-2 control-label'> Title </label>
                             <div class="col-xs-8">
-                                <input type="text" name="value name"  v-model="data.ka_data.title" class="form-control"> 
+                                <input type="text" name="value name"  v-model="data.ka_product.title" class="form-control"> 
                             </div>
                         </div>
     
                         <div class="form-group clearfix">
                             <label for="name" class='col-xs-2 control-label'> Short description </label>
                             <div class="col-xs-8">
-                                <!-- <textarea type="text"  name="short_description"  v-model="data.ka_data.short_description" rows="15" class="form-cotrol md-textarea form-control"></textarea> -->
-                                <ckeditor v-model="data.ka_data.short_description" :config="editorConfig.ka_short_description_text_editor"></ckeditor>
+                                <!-- <textarea type="text"  name="short_description"  v-model="data.ka_product.short_description" rows="15" class="form-cotrol md-textarea form-control"></textarea> -->
+                                <ckeditor v-model="data.ka_product.short_description" :config="editorConfig.ka_short_description_text_editor"></ckeditor>
                             </div>
                         </div>
 
                         <div class="form-group clearfix">
                             <label for="name" class='col-xs-2 control-label'> text </label>
                             <div class="col-xs-8">
-                                <ckeditor v-model="data.ka_data.text"  :config="editorConfig.ka_text_editor_config"></ckeditor>
+                                <ckeditor v-model="data.ka_product.text"  :config="editorConfig.ka_text_editor_config"></ckeditor>
                             </div>
                         </div>
                     </form>
@@ -250,7 +215,11 @@
 
 <script>
     import { editor_config } from '../../../../../mixins/editor/editor_config_mixin.js'
+    import validator_alerts_component from '../../../items/validator_alerts_component.vue'
     export default {
+        components: {
+            validator_alerts_component
+        },
         mixins: [
             editor_config
         ],
@@ -282,7 +251,7 @@
                 data: [],
                 
                 data: {
-                    global_data: {
+                    global_product: {
                         published: 0,
                         category_id: "",
                         sale_type: "",
@@ -292,19 +261,19 @@
                         discount: "",
                     },
 
-                    us_data: {
+                    us_product: {
                         title: "",
                         short_description: "",
                         text: "",
                     },
 
-                    ka_data: {
+                    ka_product: {
                         title: "",
                         short_description: "",
                         text: "",
                     },
 
-                    ru_data: {
+                    ru_product: {
                         title: "",
                         short_description: "",
                         text: "",
@@ -317,7 +286,7 @@
             }
         },
         mounted() {
-            this.get_product_category_data()
+            this.get_product_category_product()
         
             document.querySelector('body').style.marginLeft = '0';
             document.querySelector('.admin_page_header_navbar').style.marginLeft = '0';
@@ -328,11 +297,11 @@
             },
 
             add_product() {
-                this.data.global_data.us_title_for_url_title = this.data.us_data.title
+                this.data.global_product.us_title_for_url_title = this.data.us_product.title
 
                 axios
                 .post('/product/add_product/', {        
-                    data: this.data,
+                    data: JSON.stringify(this.data),
                 })
                 .then((response)=> { 
                     if(confirm('Do you want send notification about editing article?')){
@@ -365,7 +334,7 @@
                 .finally(() => this.is_loading = false);
             },
 
-            get_product_category_data: function(){
+            get_product_category_product: function(){
                 this.is_loading = true
                 axios
                 .get("/product_category/")

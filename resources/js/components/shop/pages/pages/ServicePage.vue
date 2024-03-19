@@ -39,7 +39,7 @@
 </template>
 
 <script>
-    import ServiceItem from '../../items/ServiceItemComponent'
+    import ServiceItem from '../../items/cards/ServiceItemComponent'
     import metaData from '../../items/MetaDataComponent'
     import breadcrumb from '../../items/BreadcrumbComponent.vue'
     import gallery from '../../items/GalleryComponent.vue'

@@ -1,127 +1,134 @@
 <template>
-    <div class="content">
-        <div class="container">
-            <div class="row">
-                <div class="col-xl-12 col-lg-12 col-md-12 mb30 text-center">
-                    <h2>Tour Reservation Form</h2>
-                </div>
-            </div>
-            <div class="row">
+    <div>
+        <button @click="show_modal()" class="btn btn-success" >Send message</button>
 
-                <div class="col-xl-12 col-lg-12 col-md-12 mb30">
-                    <div class="tour-booking-form">
-                        <form @submit.prevent="create_reservation" id="reservation_form" class="contact-form" method="POST" enctype="multipart/form-data">
-
-                            <div class="row">
-                                <div class="col-xl-6 col-lg-6 col-md-12">
-                                    <div class="form-group">
-                                        <label class="control-label" for="check_in">Check in</label>
-                                        <div class="select">
-                                            <input id="check_in" name="check_in" type="date" placeholder="Check in" class="form-control" required>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-xl-6 col-lg-6 col-md-12">
-                                    <div class="form-group">
-                                        <label class="control-label required" for="select">Number of Persons:</label>
-                                        <div class="select">
-                                            <input id="persons" name="persons" type="number" placeholder="Persons number" class="form-control" required>
-                                        </div>
-                                    </div>
-                                </div>
-                                
-                                <div class="col-xl-6 col-lg-6 col-md-12">
-                                    <div class="form-group">
-                                        <label class="control-label" for="name">Name Surname</label>
-                                        <input id="name" type="text" placeholder="Name" class="form-control" required>
-                                    </div>
-                                </div>
-                                <div class="col-xl-6 col-lg-6 col-md-12">
-                                    <div class="form-group">
-                                        <label class="control-label" for="email"> Email</label>
-                                        <input id="email" type="text" placeholder="Your email" class="form-control" required>
-                                    </div>
-                                </div>
-                                <div class="col-xl-4 col-lg-4 col-md-12">
-                                    <div class="form-group">
-                                        <label class="control-label" for="phone"> Phone</label>
-                                        <input id="phone" type="text" placeholder="Your phone" class="form-control" required>
-                                    </div>
-                                </div>
-                                <div class="col-xl-4 col-lg-4 col-md-12">
-                                    <div class="form-group">
-                                        <label class="control-label" for="country">Country</label>
-                                        <input id="country" type="text" placeholder="Your country" class="form-control" required>
-                                    </div>
-                                </div>
-                                <div class="col-xl-4 col-lg-4 col-md-12">
-                                    <div class="form-group">
-                                        <label class="control-label" for="city">City</label>
-                                        <input id="city" type="text" placeholder="Your city" class="form-control" required>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="row">
-                                <div class="col-xl-12 col-lg-12 col-md-12">
-                                    <div class="form-group">
-                                        <label class="control-label" for="textarea">Describe Your Travel Requirements</label>
-                                        <textarea class="form-control" id="textarea" name="textarea" rows="4" placeholder="Write Your Requirements"></textarea>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="row">
-                                <div class="col-xl-12 col-lg-12 col-md-12">
-                                    <div class="form-group">
-                                        <button type="submit">Send</button>
-                                    </div>
-                                </div>
-                            </div>
-
-                        </form>
+        <stack-modal
+                :show="is_product_order_message_form_model"
+                title="Please select a reason for deleting the feedback"
+                @close="is_product_order_message_form_model=false"
+                :saveButton="{ visible: true, title: 'Save', btnClass: { 'btn btn-primary': true } }"
+                :cancelButton="{ visible: false, title: 'Close', btnClass: { 'btn btn-danger': true } }"
+            >
+            <pre class="language-vue">
+                <div class="justify-content-center" v-if="is_loader">
+                    <div class="col-md-4">
+                        <img :src="'../public/images/site_img/loading.gif'" alt="loading">
                     </div>
-                    
+                </div>
+
+                <div v-if="!is_loader">
+                    <h1>Write us a message about the desired product!</h1>
+
+                    <div :class="'alert alert-warning'" role="alert">
+                        <div class="col-md-12">
+                            <p>Please enter your product castam order message! It is preferable to indicate the product variety and quantity! We will answer you soon!</p>
+                        </div>
+                    </div>
+
+                    <form v-on:submit.prevent="send_message" id="send_order_message">
+                        <!-- <label class="control-label" for="textarea">Message</label> -->
+                        <p>Message area</p>
+                        <textarea v-model="form_data.text" class="form-control" id="textarea" name="textarea" rows="10" minlength="50" placeholder="Write Your Requirements" required></textarea>
+
+                        <!-- <vue-recaptcha 
+                            :sitekey="MIX_GOOGLE_CAPTCHA_SITE_KEY" 
+                            :loadRecaptchaScript="true"
+                            ref="recaptcha"
+                            type="invisible"
+                            @verify="onCaptchaVerified"
+                            @expired="onCaptchaExpired"
+                        >
+                        </vue-recaptcha> -->
+                    </form>
+                </div>
+            </pre>
+            <div slot="modal-footer">
+                <div class="modal-footer">
+                    <!-- <button
+                        type="submit"
+                        :class="{'btn btn-primary': true}"
+                        form="send_order_message"
+                        v-if="is_verify_isset == false"
+                        disabled
+                    >
+                    Send email
+                    </button>  -->
+                    <button
+                        type="submit"
+                        :class="{'btn btn-primary': true}"
+                        form="send_order_message"
+                    >
+                    Send email
+                    </button> 
                 </div>
             </div>
-        </div>
+        </stack-modal>
     </div>
 </template>
-
-
 <script>
-    // import metaData from '../../items/MetaDataComponent'
-
+    import StackModal from '@innologica/vue-stackable-modal'  //https://innologica.github.io/vue-stackable-modal/#sample-css
+    import VueRecaptcha from 'vue-recaptcha'; //https://www.npmjs.com/package/vue-recaptcha
     export default {
         components: {
-            // metaData,
+            StackModal,
+            VueRecaptcha,
         },
-        data () {
+        props: [
+            "product_id_prop",
+        ],
+        data() {
             return {
-                form_data: [],
+                is_verify_isset: false,
+                is_loader: false,
+                is_product_order_message_form_model: false,
+
+                loadRecaptchaScript: false,
+
+                form_data: {
+                    text: ''
+                },
+
+                MIX_GOOGLE_CAPTCHA_SITE_KEY: process.env.MIX_GOOGLE_CAPTCHA_SITE_KEY,
             }
         },
         watch: {
-            '$route' (to, from) {
-                //this.clear_product_data()
-            }
+            // product_id: function(){
+                // this.get_feedbacks()
+            // },
         },
-        props: [
-            'product_id_prop',
-        ],
         mounted() {
-            //
+            // this.get_user_info()
         },
         methods: {
-            create_reservation(){
+            onCaptchaVerified() {
+                this.is_verify_isset = true
+            },
+            onCaptchaExpired(){
+                this.is_verify_isset = false
+            },
+
+            show_modal(feedback_id){
+                this.complaint_feedback_id = feedback_id
+                this.is_product_order_message_form_model = true
+            },
+
+            close_modal(){
+                this.is_product_order_message_form_model = false
+                this.form_data.text = ''
+            },
+
+            send_message(){
+                this.is_loader = true
                 axios
-                .get('/tour/reservation/create_reservation/'+this.product_id_prop)
+                .post('/order/castam_prodaction_message/'+this.product_id_prop,{
+                    form_data: this.form_data
+                })
                 .then(response => {
-                    // this.product = response.data
-                    alert(response.data);
+                    alert(response.data)
+                    this.close_modal()
                 })
-                .catch(error =>{
-                })
+                .catch()
+                .finally(() => this.is_loader = false);
             },
         }
     }

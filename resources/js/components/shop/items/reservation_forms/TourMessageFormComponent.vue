@@ -9,15 +9,31 @@
             <div class="row">
 
                 <div class="col-xl-12 col-lg-12 col-md-12 mb30">
-                    <div class="tour-booking-form">
-                        <form @submit.prevent="create_reservation" id="reservation_form" class="contact-form" method="POST" enctype="multipart/form-data">
+                    <div class="tour-booking-form" v-if="!is_loading">
+
+                        <div v-if="
+                            user.length != 0 &&
+                            (user.name == null || user.surname == null || user.country == null || user.city == null || user.phone_number == null || user.email == null)
+                        ">
+                            <div :class="'alert alert-danger cursor_pointer'" @click="goTo('/options')" role="alert">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <strong>Warning</strong>
+                                        <p>Your private information is not a complete. Please go to user option page and enter full information!</p>
+                                        <p>Before that you don't can make reservation!</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <form v-else @submit.prevent="create_reservation" id="reservation_form" class="contact-form" method="POST" enctype="multipart/form-data">
 
                             <div class="row">
                                 <div class="col-xl-6 col-lg-6 col-md-12">
                                     <div class="form-group">
                                         <label class="control-label" for="check_in">Check in</label>
                                         <div class="select">
-                                            <input id="check_in" name="check_in" type="date" placeholder="Check in" class="form-control" required>
+                                            <input v-model="form_data.check_in" id="check_in" name="check_in" type="date" placeholder="Check in" class="form-control" required>
                                         </div>
                                     </div>
                                 </div>
@@ -25,39 +41,41 @@
                                     <div class="form-group">
                                         <label class="control-label required" for="select">Number of Persons:</label>
                                         <div class="select">
-                                            <input id="persons" name="persons" type="number" placeholder="Persons number" class="form-control" required>
+                                            <input v-model="form_data.persons" id="persons" name="persons" type="number" placeholder="Persons number" class="form-control" required>
                                         </div>
                                     </div>
                                 </div>
                                 
-                                <div class="col-xl-6 col-lg-6 col-md-12">
-                                    <div class="form-group">
-                                        <label class="control-label" for="name">Name Surname</label>
-                                        <input id="name" type="text" placeholder="Name" class="form-control" required>
+                                <div v-if="user.length == 0">
+                                    <div class="col-xl-6 col-lg-6 col-md-12">
+                                        <div class="form-group">
+                                            <label class="control-label" for="name">Name Surname</label>
+                                            <input v-model="form_data.name" id="name" type="text" placeholder="Name" class="form-control" required>
+                                        </div>
                                     </div>
-                                </div>
-                                <div class="col-xl-6 col-lg-6 col-md-12">
-                                    <div class="form-group">
-                                        <label class="control-label" for="email"> Email</label>
-                                        <input id="email" type="text" placeholder="Your email" class="form-control" required>
+                                    <div class="col-xl-6 col-lg-6 col-md-12">
+                                        <div class="form-group">
+                                            <label class="control-label" for="email"> Email</label>
+                                            <input v-model="form_data.email" id="email" type="text" placeholder="Your email" class="form-control" required>
+                                        </div>
                                     </div>
-                                </div>
-                                <div class="col-xl-4 col-lg-4 col-md-12">
-                                    <div class="form-group">
-                                        <label class="control-label" for="phone"> Phone</label>
-                                        <input id="phone" type="text" placeholder="Your phone" class="form-control" required>
+                                    <div class="col-xl-4 col-lg-4 col-md-12">
+                                        <div class="form-group">
+                                            <label class="control-label" for="phone"> Phone</label>
+                                            <input v-model="form_data.phone" id="phone" type="text" placeholder="Your phone" class="form-control" required>
+                                        </div>
                                     </div>
-                                </div>
-                                <div class="col-xl-4 col-lg-4 col-md-12">
-                                    <div class="form-group">
-                                        <label class="control-label" for="country">Country</label>
-                                        <input id="country" type="text" placeholder="Your country" class="form-control" required>
+                                    <div class="col-xl-4 col-lg-4 col-md-12">
+                                        <div class="form-group">
+                                            <label class="control-label" for="country">Country</label>
+                                            <input v-model="form_data.country" id="country" type="text" placeholder="Your country" class="form-control" required>
+                                        </div>
                                     </div>
-                                </div>
-                                <div class="col-xl-4 col-lg-4 col-md-12">
-                                    <div class="form-group">
-                                        <label class="control-label" for="city">City</label>
-                                        <input id="city" type="text" placeholder="Your city" class="form-control" required>
+                                    <div class="col-xl-4 col-lg-4 col-md-12">
+                                        <div class="form-group">
+                                            <label class="control-label" for="city">City</label>
+                                            <input v-model="form_data.city" id="city" type="text" placeholder="Your city" class="form-control" required>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -66,7 +84,7 @@
                                 <div class="col-xl-12 col-lg-12 col-md-12">
                                     <div class="form-group">
                                         <label class="control-label" for="textarea">Describe Your Travel Requirements</label>
-                                        <textarea class="form-control" id="textarea" name="textarea" rows="4" placeholder="Write Your Requirements"></textarea>
+                                        <textarea  v-model="form_data.text" class="form-control" id="textarea" name="textarea" rows="4" placeholder="Write Your Requirements"></textarea>
                                     </div>
                                 </div>
                             </div>
@@ -74,14 +92,37 @@
                             <div class="row">
                                 <div class="col-xl-12 col-lg-12 col-md-12">
                                     <div class="form-group">
-                                        <button type="submit">Send</button>
+                                        <vue-recaptcha 
+                                            :sitekey="MIX_GOOGLE_CAPTCHA_SITE_KEY" 
+                                            :loadRecaptchaScript="true"
+                                            ref="recaptcha"
+                                            type="invisible"
+                                            @verify="onCaptchaVerified"
+                                            @expired="onCaptchaExpired"
+                                        >
+                                        </vue-recaptcha>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-xl-12 col-lg-12 col-md-12">
+                                    <div class="form-group">
+                                        <button v-if="is_verify_isset == false" type="submit" class="btn btn-success" disabled>Send</button>
+                                        <button v-else type="submit" class="btn btn-success">Send</button>
                                     </div>
                                 </div>
                             </div>
 
                         </form>
                     </div>
-                    
+
+                    <div class="row" v-else-if="is_loading">
+                        <div class="col-md-4 text-center loader_margin">
+                            <img :src="'../../../../../../public/images/site_img/loading.gif'" class="img-responsive center-block" alt="loading">
+                            <p>Pless wait!</p>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -90,15 +131,24 @@
 
 
 <script>
-    // import metaData from '../../items/MetaDataComponent'
-
+    import VueRecaptcha from 'vue-recaptcha'; //https://www.npmjs.com/package/vue-recaptcha
     export default {
-        components: {
-            // metaData,
+        components: { 
+            VueRecaptcha,
         },
         data () {
             return {
-                form_data: [],
+                form_data: {},
+                user: [],
+
+                is_loading: false,
+
+                MIX_SITE_URL: process.env.MIX_SITE_URL,
+                MIX_APP_SSH: process.env.MIX_APP_SSH,
+
+                MIX_GOOGLE_CAPTCHA_SITE_KEY: process.env.MIX_GOOGLE_CAPTCHA_SITE_KEY,
+
+                is_verify_isset: false,
             }
         },
         watch: {
@@ -110,18 +160,57 @@
             'tour_id_prop',
         ],
         mounted() {
-            //
+            this.get_user_info()
         },
         methods: {
+            goTo(page = '/'){
+                window.open(process.env.MIX_APP_SSH + 'user.' + process.env.MIX_SITE_URL + page) ;
+            },
             create_reservation(){
+                this.is_loading = true
+
                 axios
-                .get('/tour/reservation/create_reservation/'+this.tour_id_prop)
+                .post('/tour/reservation/create_reservation/'+this.tour_id_prop, {
+                    form_data: this.form_data
+                })
                 .then(response => {
-                    // this.product = response.data
+                    this.form_data = []
+
                     alert(response.data);
                 })
                 .catch(error =>{
                 })
+                .finally( () => this.is_loading = false)
+            },
+            go_to_option_page(){
+                window.open(this.MIX_APP_SSH + 'user.' + this.MIX_SITE_URL + '/options') ;
+            },
+
+            onCaptchaVerified() {
+                this.is_verify_isset = true
+            },
+            onCaptchaExpired(){
+                this.is_verify_isset = false
+            },
+
+            get_user_info() {
+                this.user = []
+                this.is_loading = true
+
+                axios
+                .get('/auth_user/')
+                .then(response => {
+                    this.user = response.data,
+                    
+                    this.form_data.name = this.user.name + ' ' + this.user.surname,
+                    // this.form_data.surname = this.user.surname,
+                    this.form_data.country = this.user.country
+                    this.form_data.city = this.user.city
+                    this.form_data.phone = this.user.phone_number
+                    this.form_data.email = this.user.email
+                })
+                .catch()
+                .finally( () => this.is_loading = false)
             },
         }
     }

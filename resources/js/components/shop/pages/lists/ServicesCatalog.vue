@@ -38,7 +38,7 @@
 </template>
 
 <script>
-    import ServiceItem from '../../items/ServiceItemComponent'
+    import ServiceItem from '../../items/cards/ServiceItemComponent'
     import { ContentLoader } from 'vue-content-loader'
     import emptyPageComponent from '../../../global_components/EmptyPageComponent'
 

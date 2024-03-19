@@ -39,7 +39,7 @@
         methods: {
             get_analog_products(){
                 axios
-                .get('../api/similar_product/'+localStorage.getItem('lang')+'/'+this.product_id)
+                .get('/similar_product/'+localStorage.getItem('lang')+'/'+this.product_id)
                 .then(response => {
                     this.samilar_products = response.data
                 })

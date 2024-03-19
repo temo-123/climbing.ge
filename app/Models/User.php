@@ -10,6 +10,9 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Laravel\Sanctum\HasApiTokens;
 use Illuminate\Notifications\Notifiable;
 
+use App\Models\Shop\Tour;
+use App\Models\Shop\Tour_reservation;
+
 class User extends Authenticatable implements MustVerifyEmail
 {
     // use HasFactory;
@@ -96,41 +99,16 @@ class User extends Authenticatable implements MustVerifyEmail
       return $this->belongsToMany(Permission::class, 'user_permissions', 'user_id', 'permission_id');
     }
 
-    public function favorite_products()
-    {
-		  return $this->hasMany(Favorite_product::class, 'user_id');
-    }
 
-    public function favorite_outdoors()
-    {
-		  return $this->hasMany(Favorite_outdoor_area::class, 'user_id');
-    }
-
-    public function favorite_films()
-    {
-		  return $this->hasMany(Favorite_film::class, 'user_id');
-    }
-
-    public function interested_events()
-    {
-		  return $this->hasMany(Interested_event::class, 'user_id');
-    }
 
     public function adreses()
     {
 		  return $this->hasMany(User_adreses::class, 'user_id');
     }
-
-    public function orders()
-    {
-		  return $this->hasMany(Order::class, 'user_id');
-    }
-
     public function notification_list()
     {
 		  return $this->hasOne(user_notification::class, 'user_id');
     }
-
     public function social_acount()
     {
         return $this->hasOne(Social_account::class, 'user_id');
@@ -152,4 +130,55 @@ class User extends Authenticatable implements MustVerifyEmail
 	{
         return $this->belongsToMany(Product_feedback::class, 'product_feedback_user', 'user_id', 'feedback_id');
 	}
+
+
+    /*
+    *   User favorites
+    */
+    public function favorite_products()
+    {
+		  return $this->hasMany(Favorite_product::class, 'user_id');
+    }
+    public function favorite_outdoors()
+    {
+		  return $this->hasMany(Favorite_outdoor_area::class, 'user_id');
+    }
+    public function favorite_films()
+    {
+		  return $this->hasMany(Favorite_film::class, 'user_id');
+    }
+    public function interested_events()
+    {
+		  return $this->hasMany(Interested_event::class, 'user_id');
+    }
+
+
+    /*
+    *   User product and orders
+    */
+    public function purchases()
+    {
+        return $this->hasMany(Order::class, 'user_id', 'product_id');
+    }
+    public function orders()
+    {
+        // return $this->belongsToMany(Product::class, 'user_products', 'user_id', 'product_id');
+    }
+    public function products()
+    {
+        return $this->belongsToMany(Product::class, 'user_products', 'user_id', 'product_id');
+    }
+
+
+    /*
+    *   User tour and reservation
+    */
+    public function tours()
+    {
+        return $this->belongsToMany(Tour::class, 'user_tours', 'user_id', 'tour_id');
+    }
+    public function reservation()
+    {
+        return $this->belongsToMany(Tour_reservation::class, 'tour_reservation_users', 'user_id', 'reservation_id');
+    }
 }

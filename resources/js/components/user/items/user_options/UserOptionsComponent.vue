@@ -1,6 +1,16 @@
 <template>
     <div class="col-md-12" >
         <div class="col-md-12">
+            <div v-if="user.name == null || user.surname == null || user.country == null || user.city == null || user.phone_number == null || user.email == null">
+                <div :class="'alert alert-danger cursor_pointer'" @click="goTo('/options')" role="alert">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <strong>Warning</strong>
+                            <p>Your private information is not a complete. Please enter full information!</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
             <div class="row">
                 <div class="col-md-6 col-sm-12 img">
                     <img v-if="this.user.image == null" :src="'/public/images/site_img/user_demo_img.gif'" class="rounded mx-auto d-block user_demo_img"  :alt="this.user.name">
