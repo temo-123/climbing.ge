@@ -11,11 +11,11 @@ use App\Notifications\WelcomeEmailNotification;
 
 use Carbon\Carbon;
 
-use App\Models\User;
 use Illuminate\Auth\Events\Verified;
 use Illuminate\Support\Facades\URL;
 use Illuminate\Validation\ValidationException;
 
+use App\Models\User;
 use App\Models\user_notification;
 use App\Models\User_role;
 use App\Models\Role;
@@ -47,44 +47,36 @@ class VerificationController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('throttle:6,1')->only('verify', 'resend');
-
         // $this->middleware('auth');
         // $this->middleware('signed')->only('verify');
-        // $this->middleware('throttle:6,1')->only('verify', 'resend');
+        $this->middleware('throttle:6,1')->only('verify', 'resend');
     }
 
     /**
      * Mark the user's email address as verified.
      */
     // public function verify(Request $request, User $user)
-    public function verify(Request $request, $id)
+    public function verify(Request $request)
     {
-        // if (! URL::hasValidSignature($request)) {
-        //     return response()->json([
-        //         'status' => trans('verification.invalid'),
+        // if (!URL::hasValidSignature($request)) {
+        //     return response([
+        //         'Your request is field! Maybe email older than 10 minutes.'
         //     ], 400);
         // }
         // else{
-            $user = User::where('id', '=', $id)->first();
 
+            $user = User::where('id', '=', $request->user_id)->first();
+            
             if ($user->hasVerifiedEmail()) {
-                return redirect('/');
-                // return response()->json([
-                //     'status' => trans('verification.already_verified'),
-                // ], 400);
+                return 'Your email olredy verificated!';
             }
             else{
                 $user->markEmailAsVerified();
-        
                 event(new Verified($user));
         
-                $this -> create_user_permissions_and_notificationes($id);
+                $this -> create_user_permissions_and_notificationes($request->user_id);
 
-                return redirect('/');
-                // return response()->json([
-                //     'status' => trans('verification.verified'),
-                // ]);
+                return 'Verification socsessful!';
             }
         // }
     }

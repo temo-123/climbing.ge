@@ -18,7 +18,7 @@
                 </span>
                 <span v-if="!this.user['email_verified_at']">
                     <div class="alert alert-danger" role="alert">
-                        <span v-if="!is_email_sending_loader">
+                        <span v-if="!is_email_sending_loader" class="cursor_pointer" @click="send_mail_confirm_notificatione()">
                             <strong>Danger!</strong> We sent you an email for verification, please check your email and confirm it. If you don't got this email you can demand new message. For new message -> <span class="cursor_pointer" @click="send_mail_confirm_notificatione()">Click here</span>.
                         </span>
                         <span v-else-if="is_email_sending_loader">
@@ -43,13 +43,13 @@
 </template>
 
 <script>
-    import { SlickList, SlickItem } from 'vue-slicksort'; //https://github.com/Jexordexan/vue-slicksort
-    import StackModal from '@innologica/vue-stackable-modal'  //https://innologica.github.io/vue-stackable-modal/#sample-css
+    // import { SlickList, SlickItem } from 'vue-slicksort'; //https://github.com/Jexordexan/vue-slicksort
+    // import StackModal from '@innologica/vue-stackable-modal'  //https://innologica.github.io/vue-stackable-modal/#sample-css
     export default {
         components: {
-            StackModal,
-            SlickItem,
-            SlickList,
+            // StackModal,
+            // SlickItem,
+            // SlickList,
         },
         data(){
             return{
@@ -57,33 +57,13 @@
                 
                 complaint_loader: false,
 
-                complaints: [],
-                quick_comment: [],
-                comment_decision: 'select_decision',
-                selected_comment_complaint: 'This is my comment',
-                is_comment_decision_selected: false,
-
-                is_coment_complaint_model: false,
-                action_comment_id: 0,
                 is_admin_panel_refresh: false,
                 admin_refresh_id: 0,
-                decision_loader: false,
-                user_queries: [],
-                complainter_email: '',
-
-                is_coment_model: false,
-
-                is_user_comment_complaint_model: false,
-
                 is_email_sending_loader: false,
-
-                complaint_comment_id: 0,
-                complaint_query_id: 0,
             }
         },
         mounted(){
             this.refresh()
-            this.get_user_data()
         },
         methods: {
             get_user_data(){
@@ -91,7 +71,7 @@
                 .get('/auth_user')
                 .then((response)=>{
                     this.user = response.data
-                    this.get_user_queries(this.user.id)
+                    // this.get_user_queries(this.user.id)
                 })
             },
             send_mail_confirm_notificatione(){
@@ -103,7 +83,7 @@
                 })
                 .catch((error) => {
                     if(error.response.status === 429) {
-                        alert('The page has expired or you clicked this button too many times! Please try again later or contact support!')
+                        // alert('The page has expired or you clicked this button too many times! Please try again later or contact support!')
                     }
                     else{
                         alert('Something went wrong! Please try again later, if you encounter this problem again, contact support!')
@@ -115,46 +95,6 @@
                 this.admin_refresh_id++
 
                 this.get_user_data()
-                // this.get_comments_complaints()
-            },
-            query_response(response, query_id, comment_id){
-                axios
-                .post('/query_response/', {
-                    query_id, 
-                    comment_id, 
-                    response
-                })
-                .then((response)=>{
-                    this.refresh
-
-                    if(this.is_coment_model == true){
-                        this.is_coment_model = false
-                    }
-                    
-                    this.refresh()
-                })
-            },
-            show_complaint_modal(comment_id){
-                this.is_coment_model = false
-                this.complaint_comment_id = comment_id
-                this.is_user_comment_complaint_model = true
-            },
-            coment_model(comment_id, query_id){
-                this.get_action_comment(comment_id)
-                this.complaint_query_id = query_id
-                this.is_coment_model = true
-            },
-            get_action_comment(comment_id){
-                this.quick_comment = []
-                axios
-                .get("/get_quick_comment/"+comment_id)
-                .then(response => {
-                    this.quick_comment = response.data
-                })
-                .catch(
-                    error => console.log(error)
-                );
-
             },
         }
     }

@@ -9,6 +9,7 @@ import forget_pass from '../components/auth/reset_password/ForgetPasswordCompone
 import reset_pass from '../components/auth/reset_password/ResetPasswordComponent.vue'
 import create_password from '../components/auth/social/CreatePasswordComponent.vue'
 import callback_password from '../components/auth/social/CallbackComponent.vue'
+import verify from '../components/auth/Verify.vue'
 
 function load(component) {
     return () => import(`../components/user/pages/${component}.vue`)
@@ -149,6 +150,7 @@ const router = new VueRouter({
         { path: '/reset-password/:token/:user_id', name: 'reset_pass', component: reset_pass},
         { path: '/create_password/:email', name: 'create_pass', component: create_password},
         { path: '/login/:provaider/callback', name: 'callback', component: callback_password},
+        { path: '/email/verify/:user_id/:hash', name: 'verify', component: verify},
 
         { path: '*', name: 'NotFound', component: NotFound },
     ],

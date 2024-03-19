@@ -32,7 +32,8 @@ Route::middleware('auth:sanctum')->get('token', function () {
 
 Route::group(['namespace'=>'Auth'], function() {
     Route::controller(VerificationController::class)->prefix('email')->group( function() {
-        Route::get('/verify/{id}/{hash}', 'verify')->name('api.verification.verify');
+        Route::get('/verify/{user_id}/{hash}', 'verify');
+        // Route::get('/verify/{id}/{hash}', 'verify')->name('api.verification.verify');
         // Route::get('/resend', 'resend')->name('api.verification.resend'); // resending work on defolt laravel function
     });
 
@@ -598,7 +599,7 @@ Route::group(['namespace'=>'Api'], function() {
         *   Login verify routes
         */
         Route::group(['middleware'=>'auth:sanctum'], function() {
-            Route::get('email/verify/{hash}', 'VerificationController@verify')->name('verification.verify');
+            // Route::get('email/verify/{hash}', 'VerificationController@verify')->name('verification.verify');
             Route::get('email/resend', 'VerificationController@resend')->name('verification.resend');
             Route::get('auth_user', 'AuthenticationController@user')->name('auth_user');
         });
