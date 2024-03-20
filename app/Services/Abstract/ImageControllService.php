@@ -11,7 +11,7 @@ use App\Models\Article;
 use Illuminate\Support\Facades\File;
 use Intervention\Image\ImageManagerStatic as Image;
 
-class imageControllService
+class ImageControllService
 {
     public static function image_upload($image_dir, $request, $form_value_id, $resize = 0, $save_origin_image = 1)
     {
