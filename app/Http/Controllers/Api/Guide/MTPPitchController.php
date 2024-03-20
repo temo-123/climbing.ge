@@ -7,10 +7,10 @@ use Illuminate\Http\Request;
 
 use Validator;
 
-use App\Models\Sector;
-use App\Models\Route;
-use App\Models\Mtp;
-use App\Models\Mtp_pitch;
+use App\Models\Guide\Sector;
+use App\Models\Guide\Route;
+use App\Models\Guide\Mtp;
+use App\Models\Guide\Mtp_pitch;
 
 class MTPPitchController extends Controller
 {

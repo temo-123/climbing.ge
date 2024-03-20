@@ -121,13 +121,13 @@ const router = new VueRouter({
         { path: '/product/edit/:id', name: 'productEdit', component: load('products_and_categories/products/productEditComponent') },
         { path: '/product/add', name: 'productAdd', component: load('products_and_categories/products/productAddComponent') },
 
-        { path: '/user_tours_reservations_list', name: 'userToursReservations', component: load('tour/UserToursReservations') },
+        { path: '/user_tours_reservations_list', name: 'userToursReservations', component: load('tour/UserToursReservationsPage') },
         { path: '/user_tours_list', name: 'userToursList', component: load('tour/UserToursListPage') },
 
         { path: '/all_tours_list', name: 'allToursList', component: load('tour/AllToursListPage') },
         { path: '/all_tours_reservations_list', name: 'allToursReservations', component: load('tour/AllToursReservationsPage') },
-        { path: '/tour/edit/:id', name: 'tourEdit', component: load('tour/tour/EditTourPage') },
-        { path: '/tour/add', name: 'tourAdd', component: load('tour/tour/AddTourPage') },
+        { path: '/tour/edit/:id', name: 'tourEdit', component: load('tour/forms/EditTourPage') },
+        { path: '/tour/add', name: 'tourAdd', component: load('tour/forms/AddTourPage') },
 
         { path: '/stor_slides_list', name: 'storSlidesList', component: load('gallery/StoreSlidesPage') },
 

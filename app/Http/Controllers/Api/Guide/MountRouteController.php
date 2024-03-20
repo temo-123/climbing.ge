@@ -5,12 +5,13 @@ namespace App\Http\Controllers\Api\Guide;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
-use App\Models\Article;
-use App\Models\Mount;
+use App\Models\Guide\Article;
+use App\Models\Guide\Mount;
+use App\Models\Guide\Mount_route_image;
+
+use App\Services\ArticlesService;
 use App\Services\GetMountSystemService;
 use App\Services\Abstract\ImageControllService;
-use App\Models\Mount_route_image;
-use App\Services\ArticlesService;
 
 class MountRouteController extends Controller
 {   

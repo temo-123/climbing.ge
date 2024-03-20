@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Api\Shop;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
-use App\Models\Sale_code;
+use App\Models\Shop\Sale_code;
 
 class SaleCodeController extends Controller
 {

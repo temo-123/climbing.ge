@@ -8,7 +8,7 @@ use Illuminate\Http\Request;
 use Auth;
 use Notification;
 
-use App\Models\Task;
+use App\Models\User\Task;
 
 use App\Notifications\task\TaskConfirmationNotificatione;
 use App\Notifications\task\TaskCreateNotificatione;

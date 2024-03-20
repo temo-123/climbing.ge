@@ -6,11 +6,11 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
 use App\Models\User;
-use App\Models\Product;
-use App\Models\Product_feedback;
-use App\Models\Product_feedback_user;
-use App\Models\Product_feedback_complaint;
-use App\Models\Product_feedback_query;
+use App\Models\Shop\Product;
+use App\Models\Shop\Product_feedback;
+use App\Models\Shop\Product_feedback_user;
+use App\Models\Shop\Product_feedback_complaint;
+use App\Models\Shop\Product_feedback_query;
 
 use App\Services\CommentService;
 

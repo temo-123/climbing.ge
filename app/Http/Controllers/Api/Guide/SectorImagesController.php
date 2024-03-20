@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Api\Guide;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
-use App\Models\Sector_image;
+use App\Models\Guide\Sector_image;
 
 class SectorImagesController extends Controller
 {

@@ -5,12 +5,13 @@ namespace App\Http\Controllers\Api\Guide;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
-use App\Models\Mount;
-use App\Models\Locale_mount;
 use App\Services\MountSystemService;
 
-use App\Models\Article_mount;
-use App\Models\Article;
+use App\Models\Guide\Mount;
+use App\Models\Guide\Locale_mount;
+
+use App\Models\Guide\Article_mount;
+use App\Models\Guide\Article;
 
 use Auth;
 use Validator;

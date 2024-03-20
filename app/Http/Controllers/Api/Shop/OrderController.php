@@ -9,16 +9,16 @@ use Auth;
 use Notification;
 
 use App\Models\User;
-use App\Models\Order;
-use App\Models\Order_products;
-use App\Models\Order_status;
+use App\Models\User\User_adreses;
+use App\Models\Shop\Order;
+use App\Models\Shop\Order_products;
+use App\Models\Shop\Order_status;
 
-use App\Models\Product_option;
-use App\Models\Product;
-use App\Models\Cart;
-use App\Models\Site;
-use App\Models\User_adreses;
-use App\Models\Sale_code;
+use App\Models\Shop\Product_option;
+use App\Models\Shop\Product;
+use App\Models\Shop\Cart;
+use App\Models\Shop\Site;
+use App\Models\Shop\Sale_code;
 
 use App\Services\ProductService;
 
@@ -38,8 +38,8 @@ class OrderController extends Controller
 
     public function get_user_orders()
     {
-        $user_products = Auth::user()->products;
-
+        $user_products = Auth::user()->products->first();
+        
         if($user_products->count() > 0){
             return $user_products->orders;
         }

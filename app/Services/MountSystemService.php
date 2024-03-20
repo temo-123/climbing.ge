@@ -2,8 +2,8 @@
 
 namespace App\Services;
 
-use App\Models\Mount;
-use App\Models\Locale_mount;
+use App\Models\Guide\Mount;
+use App\Models\Guide\Locale_mount;
 
 use Carbon\Carbon;
 

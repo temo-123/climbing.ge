@@ -2,12 +2,12 @@
 
 namespace App\Services;
 
-use App\Models\Locale_article;
-use App\Models\General_info;
-use App\Models\General_info_article;
-use App\Models\General_info_event;
-// use App\Models\Mount;
-use App\Models\Event;
+use App\Models\Guide\Locale_article;
+use App\Models\Guide\General_info;
+use App\Models\Guide\General_info_article;
+use App\Models\Guide\General_info_event;
+// use App\Models\Guide\Mount;
+use App\Models\Guide\Event;
 
 use Carbon\Carbon;
 

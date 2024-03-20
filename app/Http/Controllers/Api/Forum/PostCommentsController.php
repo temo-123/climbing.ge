@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Api\Forum;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
-use App\Models\Post_comment;
+use App\Models\Forum\Post_comment;
 
 class PostCommentsController extends Controller
 {

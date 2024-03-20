@@ -4,10 +4,10 @@ namespace App\Services;
 
 // use App\Models\Us_service;
 // use App\Models\Ru_service;
-use App\Models\Locale_service;
-use App\Models\Service;
+use App\Models\Shop\Locale_service;
+use App\Models\Shop\Service;
 
-use App\Models\Service_image;
+use App\Models\Shop\Service_image;
 
 use Carbon\Carbon;
 

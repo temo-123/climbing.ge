@@ -7,8 +7,8 @@ use Illuminate\Http\Request;
 
 use App\Services\Abstract\ImageControllService;
 
-use App\Models\Sector_local_image;
-use App\Models\Sector_local_image_sector;
+use App\Models\Guide\Sector_local_image;
+use App\Models\Guide\Sector_local_image_sector;
 
 class SectorLocalImagesController extends Controller
 {

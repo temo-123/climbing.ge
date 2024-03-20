@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 
 use Validator;
 
-use App\Models\General_info;
+use App\Models\Guide\General_info;
 
 class GeneralInfoController extends Controller
 {

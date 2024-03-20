@@ -9,12 +9,12 @@ use auth;
 use Notification;
 
 use App\Models\User;
-use App\Models\Comment;
-use App\Models\Article;
+use App\Models\Guide\Comment;
+use App\Models\Guide\Article;
 use App\Models\Guide\Article_comment_answer;
-use App\Models\Locale_article;
-use App\Models\Article_comment_user;
-use App\Models\Article_comment_complaint;
+use App\Models\Guide\Locale_article;
+use App\Models\Guide\Article_comment_user;
+use App\Models\Guide\Article_comment_complaint;
 
 use App\Services\CommentService;
 

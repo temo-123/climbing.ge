@@ -5,10 +5,10 @@ namespace App\Http\Controllers\Api\Guide;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
-use App\Models\Event;
-use App\Models\Locale_event;
-use App\Models\General_info_event;
-use App\Models\General_info;
+use App\Models\Guide\Event;
+use App\Models\Guide\Locale_event;
+use App\Models\Guide\General_info_event;
+use App\Models\Guide\General_info;
 
 use App\Services\Abstract\ImageControllService;
 use App\Services\GeneralInfoService;

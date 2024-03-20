@@ -35,6 +35,8 @@ class CreateSectorsTable extends Migration
             $table->integer('overhang')->nullable();
             $table->integer('slabby')->nullable();
             $table->integer('vertical')->nullable();
+            
+            $table->integer('num')->nullable();
 
             $table->foreignId('article_id')->constrained();
             

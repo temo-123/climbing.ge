@@ -5,9 +5,9 @@ namespace App\Http\Controllers\Api\Films;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
-use App\Models\Film;
-use App\Models\Film_category;
-use App\Models\Favorite_film;
+use App\Models\Films\Film;
+use App\Models\Films\Film_category;
+use App\Models\Films\Favorite_film;
 
 use App\Services\FilmService;
 use Auth;

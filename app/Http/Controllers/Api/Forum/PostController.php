@@ -5,10 +5,10 @@ namespace App\Http\Controllers\Api\Forum;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
-use App\Models\Post;
-use App\Models\Post_comment;
-use App\Models\PostsTopics;
-use App\Models\Post_like;
+use App\Models\Forum\Post;
+use App\Models\Forum\Post_comment;
+use App\Models\Forum\PostsTopics;
+use App\Models\Forum\Post_like;
 use App\User;
 
 class PostController extends Controller

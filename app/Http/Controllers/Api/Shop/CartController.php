@@ -5,12 +5,12 @@ namespace App\Http\Controllers\Api\Shop;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
-use App\Models\Cart;
-use App\Models\Product;
-use App\Models\Option_image;
-use App\Models\Product_option;
-use App\Models\Favorite_product;
-use App\Models\User_adreses;
+use App\Models\Shop\Cart;
+use App\Models\Shop\Product;
+use App\Models\Shop\Option_image;
+use App\Models\Shop\Product_option;
+use App\Models\Shop\Favorite_product;
+use App\Models\User\User_adreses;
 use auth;
 
 class CartController extends Controller

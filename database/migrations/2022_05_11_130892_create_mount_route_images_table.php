@@ -19,6 +19,7 @@ return new class extends Migration
             $table->string('title')->nullable();
             $table->string('image')->nullable();
             
+            $table->integer('new_line')->nullable();
             $table->integer('num')->nullable();
             // $table->integer('article_id')->nullable();
 

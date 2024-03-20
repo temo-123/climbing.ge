@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Api\Guide;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
-use App\Models\Spot_rocks_image;
+use App\Models\Guide\Spot_rocks_image;
 
 use App\Services\ImageControllService;
 

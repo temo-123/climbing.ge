@@ -8,7 +8,7 @@ use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 
 use App\Models\User;
-use App\Models\Role;
+use App\Models\User\Role;
 
 class UserTableSeeder extends Seeder
 {

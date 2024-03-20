@@ -251,7 +251,7 @@ Route::group(['namespace'=>'Api'], function() {
         Route::controller(SiteDataController::class)->prefix('siteData')->group( function() {
             Route::apiResource('/', 'SiteDataController');
 
-            Route::apiResource('/site_social_links', 'SocialLinkController');
+            // Route::apiResource('/site_social_links', 'SocialLinkController');
 
             Route::get('/get_site_locale_data/{locale}', 'get_site_locale_data');
             // Route::get('/get_locale_site_data/{locale}', 'get_locale_site_data');
@@ -602,6 +602,12 @@ Route::group(['namespace'=>'Api'], function() {
             // Route::get('email/verify/{hash}', 'VerificationController@verify')->name('verification.verify');
             Route::get('email/resend', 'VerificationController@resend')->name('verification.resend');
             Route::get('auth_user', 'AuthenticationController@user')->name('auth_user');
+        });
+
+        Route::controller(SocialLinkController::class)->prefix('site_social_links')->group( function() {
+            Route::get('/get_site_social_links', 'get_site_social_links');
+            Route::post('/add_site_social_links', 'add_site_social_links');
+            Route::delete('/del_site_social_links/{link_id}', 'del_site_social_links');
         });
 
         /*

@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Api\Films;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
-use App\Models\Film_tag;
+use App\Models\Films\Film_tag;
 
 class FilmTagsController extends Controller
 {

@@ -7,12 +7,12 @@ use Illuminate\Http\Request;
 
 use Validator;
 
-use App\Models\Article;
+use App\Models\Guide\Article;
 
-use App\Models\Sector;
-use App\Models\Route;
-use App\Models\Mtp;
-use App\Models\Mtp_pitch;
+use App\Models\Guide\Sector;
+use App\Models\Guide\Route;
+use App\Models\Guide\Mtp;
+use App\Models\Guide\Mtp_pitch;
 
 use App\Services\SportClimbingRoutesService;
 

@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Api\Guide;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
-use App\Models\Article;
+use App\Models\Guide\Article;
 use App\Models\Guide\Locale_bisnes;
 use App\Models\Guide\Suport_local_bisnes;
 use App\Models\Guide\Suport_local_bisnes_image;

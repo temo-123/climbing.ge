@@ -5,8 +5,8 @@ namespace App\Http\Controllers\Api\Shop;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
-use App\Models\Product_category;
-use App\Models\product_options;
+use App\Models\Shop\Product_category;
+use App\Models\Shop\product_options;
 
 use Validator;
 

@@ -5,9 +5,9 @@ namespace App\Http\Controllers\Api\Shop;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
-use App\Models\Service;
-use App\Models\Locale_service;
-use App\Models\Service_image;
+use App\Models\Shop\Service;
+use App\Models\Shop\Locale_service;
+use App\Models\Shop\Service_image;
 
 use App\Services\ServicesService;
 use App\Services\URLTitleService;

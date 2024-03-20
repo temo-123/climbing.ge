@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Api\Guide;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
-use App\Models\Ice_sector_image;
+use App\Models\Guide\Ice_sector_image;
 use App\Services\Abstract\ImageControllService;
 
 class IceSectorImagesController extends Controller

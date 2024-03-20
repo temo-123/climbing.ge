@@ -5,24 +5,22 @@ namespace App\Http\Controllers\Api\Guide;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
-use App\Models\Article;
-use App\Models\Locale_article;
-
-use App\Models\Region;
-use App\Models\Article_region;
-
-use App\Services\ArticlesService;
-
-use App\Models\Sector;
-use App\Models\Route;
-use App\Models\Mtp;
-use App\Models\Mtp_pitch;
-
-use App\Models\Favorite_outdoor_area;
-
 use Auth;
 use Validator;
 
+use App\Services\ArticlesService;
+
+use App\Models\Guide\Sector;
+use App\Models\Guide\Route;
+use App\Models\Guide\Mtp;
+use App\Models\Guide\Mtp_pitch;
+
+use App\Models\Guide\Favorite_outdoor_area;
+use App\Models\Guide\Article;
+use App\Models\Guide\Locale_article;
+
+use App\Models\Guide\Region;
+use App\Models\Guide\Article_region;
 class OutdoorController extends Controller
 {
 

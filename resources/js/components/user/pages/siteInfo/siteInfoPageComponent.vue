@@ -337,7 +337,7 @@
 
             get_site_global_data(){
                 axios
-                .get('../../api/siteData/get_site_global_data')
+                .get('/siteData/get_site_global_data')
                 .then(response => {
                     this.site_info = response.data
                 })
@@ -347,7 +347,7 @@
             },
             get_site_ka_data(){
                 axios
-                .get('../../api/siteData/get_site_ka_data')
+                .get('/siteData/get_site_ka_data')
                 .then(response => {
                     this.site_ka_info = response.data
                 })
@@ -357,7 +357,7 @@
             },
             get_site_ru_data(){
                 axios
-                .get('../../api/siteData/get_site_ru_data')
+                .get('/siteData/get_site_ru_data')
                 .then(response => {
                     this.site_ru_info = response.data
                 })
@@ -367,7 +367,7 @@
             },
             get_site_us_data(){
                 axios
-                .get('../../api/siteData/get_site_us_data')
+                .get('/siteData/get_site_us_data')
                 .then(response => {
                     this.site_us_info = response.data
                 })
@@ -379,7 +379,7 @@
 
             get_social_links(){
                 axios
-                .get('/siteData/site_social_links')
+                .get('site_social_links/get_site_social_links')
                 .then(response => {
                     this.site_social_links = response.data
                 })
@@ -389,7 +389,7 @@
             },
             add_social_link(){
                 axios
-                .post('/siteData/site_social_links', {        
+                .post('site_social_links/add_site_social_links', {        
                     data: this.form_data,
 
                     _method: 'post'
@@ -412,7 +412,7 @@
             del_social_link(link_id){
                 if(confirm('Are you sure, you want delite it?')){
                     axios
-                    .post('../api/siteData/site_social_links/'+link_id, {
+                    .post('site_social_links/del_site_social_links/'+link_id, {
                         _method: 'DELETE'
                     })
                     .then(Response => {

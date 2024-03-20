@@ -6,8 +6,8 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
 use App\Models\User;
-use App\Models\Sport_route_review;
-use App\Models\Sport_route_review_user;
+use App\Models\Guide\Sport_route_review;
+use App\Models\Guide\Sport_route_review_user;
 
 use Auth;
 

@@ -12,31 +12,30 @@ use App\Services\GeneralInfoService;
 
 use App\Models\Guide\Article_image;
 
-use App\Models\Article;
-use App\Models\Locale_article;
-use App\Models\Comment;
+use App\Models\Guide\Article;
+use App\Models\Guide\Locale_article;
+use App\Models\Guide\Comment;
 
-use App\Models\Spot_rocks_image;
-use App\Models\Mount_route_image;
+use App\Models\Guide\Spot_rocks_image;
+use App\Models\Guide\Mount_route_image;
 
-use App\Models\Sector;
-use App\Models\Route;
-use App\Models\Mtp;
-use App\Models\Mtp_pitch;
+use App\Models\Guide\Sector;
+use App\Models\Guide\Route;
+use App\Models\Guide\Mtp;
+use App\Models\Guide\Mtp_pitch;
 
-use App\Models\Mount;
-use App\Models\Locale_mount;
+use App\Models\Guide\Mount;
+use App\Models\Guide\Locale_mount;
 
-use App\Models\General_info_article;
-use App\Models\General_info;
+use App\Models\Guide\General_info_article;
+use App\Models\Guide\General_info;
 
-use App\Models\Region;
+use App\Models\Guide\Region;
 
-use App\Models\Article_mount;
-use App\Models\Article_region;
+use App\Models\Guide\Article_mount;
+use App\Models\Guide\Article_region;
 
 use App\Models\Guide\Suport_local_bisnes;
-// use App\Models\Favorite_outdoor_area;
 
 use Auth;
 use File;

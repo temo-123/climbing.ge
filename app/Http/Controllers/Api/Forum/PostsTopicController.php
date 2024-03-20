@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Api\Forum;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
-use App\Models\PostsTopics;
+use App\Models\Forum\PostsTopics;
 
 class PostsTopicController extends Controller
 {

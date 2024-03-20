@@ -5,40 +5,40 @@ namespace App\Http\Controllers\Api\Guide;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
-use App\Models\Header_image;
-use App\Models\Article_images;
+use App\Models\Guide\Header_image;
+use App\Models\Guide\Article_image;
 
-use App\Models\Article;
-use App\Models\Locale_article;
+use App\Models\Guide\Article;
+use App\Models\Guide\Locale_article;
 
-use App\Models\Event;
-// use App\Models\Ru_article;
+use App\Models\Guide\Event;
+// use App\Models\Guide\Ru_article;
 
-use App\Models\Mount;
+use App\Models\Guide\Mount;
 
 use App\Models\Site;
 use App\Models\Locale_site;
 
-use App\Models\Sector;
-use App\Models\Route;
-use App\Models\Mtp;
-use App\Models\Mtp_pitch;
+use App\Models\Guide\Sector;
+use App\Models\Guide\Route;
+use App\Models\Guide\Mtp;
+use App\Models\Guide\Mtp_pitch;
 
 use App\Models\User;
-use App\Models\Following_users;
-use App\Models\Role;
-use App\Models\Permission;
+use App\Models\User\Following_users;
+use App\Models\User\Role;
+use App\Models\User\Permission;
 
-use App\Models\Product;
-use App\Models\Product_category;
+use App\Models\Shop\Product;
+use App\Models\Shop\Product_category;
 
-use App\Models\Service_follower;
-use App\Models\Social_account;
-use App\Models\Article_comment_complaint;
+use App\Models\User\Service_follower;
+use App\Models\User\Social_account;
+use App\Models\Guide\Article_comment_complaint;
 
-use App\Models\Comment;
+use App\Models\Guide\Comment;
 
-use App\Models\Region;
+use App\Models\Guide\Region;
 
 class SiteDataController extends Controller
 {
@@ -57,7 +57,7 @@ class SiteDataController extends Controller
         $counts = [];
 
         $counts['index_header_images'] = Header_image::count();
-        $counts['article_gallery_images'] = Article_images::where("image_type", "=", 1)->count();
+        $counts['article_gallery_images'] = Article_image::count();
 
         $counts['mount_masives'] = Mount::count();
         $counts['mountaineering_route'] = Article::where("category", "=", 'mount_route')->count();

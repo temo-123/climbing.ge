@@ -408,14 +408,14 @@ export const navbar = {
                             ['del_comment', 'comments'],
                         ]
                     },
-                    {
-                        name: "Climbing routes rewiew",
-                        route: "/comments_and_reviews",
-                        permissions: [
-                            ['show', 'routes_rewiew'],
-                            ['del_comment', 'routes_rewiew'],
-                        ]
-                    },
+                    // {
+                    //     name: "Climbing routes rewiew",
+                    //     route: "/comments_and_reviews",
+                    //     permissions: [
+                    //         ['show', 'routes_rewiew'],
+                    //         ['del_comment', 'routes_rewiew'],
+                    //     ]
+                    // },
                 ],
             },
             {

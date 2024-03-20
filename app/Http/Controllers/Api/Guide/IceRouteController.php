@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Api\Guide;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
-use App\Models\Ice_route;
+use App\Models\Guide\Ice_route;
 use Validator;
 
 class IceRouteController extends Controller

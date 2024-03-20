@@ -5,15 +5,15 @@ namespace App\Http\Controllers\Api\Guide;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
-use App\Models\Article;
-use App\Models\Sector;
-use App\Models\Route;
-use App\Models\Mtp;
-use App\Models\Mtp_pitch;
-use App\Models\Sector_image;
-use App\Models\Spot_rocks_image;
-use App\Models\Sector_local_image;
-use App\Models\Sector_local_image_sector;
+use App\Models\Guide\Article;
+use App\Models\Guide\Sector;
+use App\Models\Guide\Route;
+use App\Models\Guide\Mtp;
+use App\Models\Guide\Mtp_pitch;
+use App\Models\Guide\Sector_image;
+use App\Models\Guide\Spot_rocks_image;
+use App\Models\Guide\Sector_local_image;
+use App\Models\Guide\Sector_local_image_sector;
 
 use App\Services\Abstract\ImageControllService;
 

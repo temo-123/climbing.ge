@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Api\User;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
-use App\Models\Task_category;
+use App\Models\User\Task_category;
 
 class TaskCategoryController extends Controller
 {

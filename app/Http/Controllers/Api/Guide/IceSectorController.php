@@ -5,10 +5,12 @@ namespace App\Http\Controllers\Api\Guide;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
-use App\Models\Ice_route;
-use App\Models\Ice_sector;
-use App\Models\Ice_sector_image;
 use Validator;
+
+use App\Models\Guide\Ice_route;
+use App\Models\Guide\Ice_sector;
+use App\Models\Guide\Ice_sector_image;
+
 use App\Services\Abstract\ImageControllService;
 
 class IceSectorController extends Controller

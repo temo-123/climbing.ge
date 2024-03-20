@@ -11,13 +11,25 @@
                             
                             <hr>
 
-                            <h3>{{ $t('shop.seller.seller contact') }}</h3>
+                            <h2>{{ $t('shop.seller.seller contact') }}</h2>
                             <p v-if="this.$globalSiteData.email">{{ $t('shop.seller.email') }} - {{ this.$globalSiteData.email }}</p>
                             <p v-if="this.$globalSiteData.number">{{ $t('shop.seller.phone') }} - {{ this.$globalSiteData.number }}</p>
 
                             <hr>
+                            
+                            <h2>For more activities visit other themed websites</h2>
+                            <span v-for="link in site_social_links" :key="link.id">
+                                <p v-if="link.title">
+                                    <a :href="link.url" target="_blank">{{ link.title }}</a>
+                                </p>
+                                <p v-else>
+                                    <a :href="link.url" target="_blank">{{ from_user_site_url_get_domen(link.url) }}</a>
+                                </p>
+                            </span>
 
-                            <p>Alse you can see sport climbing routes authers and them conts.</p>
+                            <hr>
+
+                            <h2>Alse you can see sport climbing routes authers and them conts.</h2>
                             <routesAutersModal />
                         </div>
                     </div>
@@ -90,10 +102,12 @@
         data() {
             return {
                 partners: [],
+                site_social_links: [],
             }
         },
         mounted() { 
             this.get_partners()
+            this.get_social_links()
         },
         methods: {
             get_partners(){
@@ -104,7 +118,22 @@
                 })
                 .catch(error =>{
                 })
-            }
+            },
+
+            from_user_site_url_get_domen(url){
+                return new URL(url).hostname;
+            },
+
+            get_social_links(){
+                axios
+                .get('/site_social_links/get_site_social_links')
+                .then(response => {
+                    this.site_social_links = response.data
+                })
+                .catch(
+                    error => console.log(error)
+                );
+            },
         }
     }
 </script>

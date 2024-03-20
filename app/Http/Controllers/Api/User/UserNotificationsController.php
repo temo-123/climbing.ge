@@ -11,13 +11,13 @@ use App\Notifications\user_notification\ProductEventNotification;
 use App\Notifications\user_notification\ServiceEventNotification;
 use App\Notifications\user_notification\SectorEventNotification;
 
-use App\Models\Article;
-use App\Models\Product;
-use App\Models\Service;
-use App\Models\Sector;
-use App\Models\Event;
-use App\Models\Service_follower;
-use App\Models\user_notification;
+use App\Models\Guide\Article;
+use App\Models\Guide\Sector;
+use App\Models\Guide\Event;
+use App\Models\Shop\Service;
+use App\Models\Shop\Product;
+use App\Models\User\Service_follower;
+use App\Models\User\user_notification;
 
 use App\Jobs\UserNotifications;
 

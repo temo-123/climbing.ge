@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 
 use Auth;
 
-use App\Models\User_site;
+use App\Models\User\User_site;
 
 class UserSiteController extends Controller
 {

@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Api\Guide;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
-use App\Models\Event;
+use App\Models\Guide\Event;
 
 class CompetitionController extends Controller
 {

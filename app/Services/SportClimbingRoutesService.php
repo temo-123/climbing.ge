@@ -2,8 +2,8 @@
 
 namespace App\Services;
 
-use App\Models\Article;
-use App\Models\Route;
+use App\Models\Guide\Article;
+use App\Models\Guide\Route;
 
 class SportClimbingRoutesService
 {

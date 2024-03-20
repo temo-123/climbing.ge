@@ -10,8 +10,8 @@ use Notification;
 
 use App\Models\User;
 use App\Models\Site;
-use App\Models\Role;
-use App\Models\User_role;
+use App\Models\User\Role;
+use App\Models\User\User_role;
 use App\Models\User\Non_registered_commenter;
 
 use App\Notifications\comments\HideCommentNotification;

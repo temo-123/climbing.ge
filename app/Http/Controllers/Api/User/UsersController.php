@@ -12,14 +12,14 @@ use Hash;
 
 use App\Models\User;
 // use App\Models\Following_users;
-use App\Models\Role;
-use App\Models\Permission;
-use App\Models\user_notification;
+use App\Models\User\Role;
+use App\Models\User\Permission;
+use App\Models\User\user_notification;
 
-use App\Models\User_role;
-use App\Models\User_permission;
+use App\Models\User\User_role;
+use App\Models\User\User_permission;
 
-use App\Services\ImageControllService;
+use App\Services\Abstract\ImageControllService;
 
 // use App\Notifications\FollowingNotification;
 // use App\Mail\Message;

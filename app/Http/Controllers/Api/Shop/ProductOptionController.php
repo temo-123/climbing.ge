@@ -13,9 +13,9 @@ use App\Services\GetProductService;
 use App\Services\URLTitleService;
 use App\Services\Abstract\ImageControllService;
 
-use App\Models\Product;
-use App\Models\Product_option;
-use App\Models\Option_image;
+use App\Models\Shop\Product;
+use App\Models\Shop\Product_option;
+use App\Models\Shop\Option_image;
 
 
 // use Storage;

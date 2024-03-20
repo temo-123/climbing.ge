@@ -5,12 +5,12 @@ namespace App\Http\Controllers\Api\User;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
-use App\Models\Role;
-use App\Models\Role_permission;
-use App\Models\Permission;
+use App\Models\User\Role;
+use App\Models\User\Role_permission;
+use App\Models\User\Permission;
 use App\Models\User;
-use App\Models\User_permission;
-use App\Models\User_role;
+use App\Models\User\User_permission;
+use App\Models\User\User_role;
 
 class RolesController extends Controller
 {

@@ -10,8 +10,25 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Laravel\Sanctum\HasApiTokens;
 use Illuminate\Notifications\Notifiable;
 
+use App\Models\User\Role;
+use App\Models\User\Permission;
+use App\Models\User\User_adreses;
+use App\Models\User\user_notification;
+use App\Models\User\Social_account;
+
+use App\Models\Guide\Comment;
+use App\Models\Guide\Sport_route_review;
+use App\Models\Guide\Favorite_outdoor_area;
+use App\Models\Guide\Interested_event;
+
+use App\Models\Shop\Product_feedback;
+use App\Models\Shop\Favorite_product;
+use App\Models\Shop\Order;
+use App\Models\Shop\Product;
 use App\Models\Shop\Tour;
 use App\Models\Shop\Tour_reservation;
+
+use App\Models\Films\Favorite_film;
 
 class User extends Authenticatable implements MustVerifyEmail
 {
@@ -162,7 +179,7 @@ class User extends Authenticatable implements MustVerifyEmail
     }
     public function orders()
     {
-        // return $this->belongsToMany(Product::class, 'user_products', 'user_id', 'product_id');
+        return $this->belongsToMany(Product::class, 'user_products', 'user_id', 'product_id');
     }
     public function products()
     {

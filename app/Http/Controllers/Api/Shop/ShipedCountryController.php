@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Api\Shop;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
-use App\Models\Shiped_country;
+use App\Models\Shop\Shiped_country;
 
 class ShipedCountryController extends Controller
 {

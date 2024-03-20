@@ -5,7 +5,6 @@ namespace App\Models\User;
 use Illuminate\Database\Eloquent\Model;
 
 use App\Models\User;
-use App\Models\Shiped_country;
 
 class User_adreses extends Model
 {

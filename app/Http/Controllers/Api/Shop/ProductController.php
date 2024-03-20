@@ -7,20 +7,17 @@ use Illuminate\Http\Request;
 
 use Validator;
 use Auth;
-// use RedirectResponse;
-// use Illuminate\Support\Facades\Redirect;
 
-// use App\Services\GetProductsService;
 use App\Services\ProductService;
 use App\Services\URLTitleService;
 
-use App\Models\Product;
-use App\Models\Locale_product;
-use App\Models\Favorite_product;
-use App\Models\Cart;
-use App\Models\Product_option;
-use App\Models\Option_image;
-use App\Models\Product_category;
+use App\Models\Shop\Product;
+use App\Models\Shop\Locale_product;
+use App\Models\Shop\Favorite_product;
+use App\Models\Shop\Cart;
+use App\Models\Shop\Product_option;
+use App\Models\Shop\Option_image;
+use App\Models\Shop\Product_category;
 
 class ProductController extends Controller
 {

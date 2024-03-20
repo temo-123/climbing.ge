@@ -9,10 +9,10 @@ use Auth;
 
 use App\Services\ArticlesService;
 
-use App\Models\Interested_event;
-use App\Models\Favorite_outdoor_area;
-use App\Models\Article;
-use App\Models\Event;
+use App\Models\Guide\Interested_event;
+use App\Models\Guide\Favorite_outdoor_area;
+use App\Models\Guide\Article;
+use App\Models\Guide\Event;
 
 class FaworitesController extends Controller
 {
