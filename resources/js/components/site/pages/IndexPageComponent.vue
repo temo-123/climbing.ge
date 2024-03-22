@@ -53,20 +53,7 @@
             </div>
         </div>
 
-        <div class="h-recent-work" v-if="speciales != [] && speciales">
-            <div class="container">
-                <h2 class='index_h2' id="news">Special article</h2>
-                <div class="bar"><i class="fa fa-newspaper-o"></i></div>
-                <h3 class="article_list_short_description"> {{ this.$siteData.news_description }} </h3>
-
-                <span v-if="speciales != []">
-                    <specialArticleCard 
-                        :speciales_prop="speciales"
-                    />
-                </span>
-
-            </div>
-        </div>
+        <specialArticleComponent/>
 
         <eventComponent/>
 
@@ -94,7 +81,7 @@
 
     import newsCard from '../items/cards/NewsCardComponent'
     import bigNewsCard from '../items/cards/BigNewsCardComponent'
-    import specialArticleCard from '../items/cards/SpecialArticleCardComponent'
+    import specialArticleComponent from '../items/SpecialArticleComponent'
 
     import metaData from '../items/MetaDataComponent'
 
@@ -102,8 +89,7 @@
         data: function () {
             return {
                 newses: [],
-                lastNews: [],
-                speciales: []
+                lastNews: []
             };
         },
         components: {
@@ -116,16 +102,14 @@
             newsCard,
             bigNewsCard,
             whatWeDoComponent,
-            specialArticleCard
+            specialArticleComponent
         },
         mounted() {
             this.get_news()
-            this.get_special()
         },
         watch: {
             '$route' (to, from) {
                 this.get_news()
-                this.get_special()
 
                 window.scrollTo(0,0)
             }
@@ -137,16 +121,6 @@
                 .then(response => {
                     this.newses = response.data
                     this.lastNews = response.data[0]
-                })
-                .catch(error =>{
-                })
-            },
-
-            get_special(){
-                axios
-                .get('/articles/special/'+localStorage.getItem('lang'))
-                .then(response => {
-                    this.speciales = response.data[0]
                 })
                 .catch(error =>{
                 })
