@@ -14,7 +14,7 @@
                 <div class="next_image" v-if="image_num < (this.image_length - 1)">
                     <a @click="next_product_image()">></a>
                 </div>
-                <div class="product_quick_view" @click="product_quick_view(product_data.global_product.id)">Quick view</div>
+                <div class="product_quick_view" @click="product_quick_view(product_data.global_product.id)"> {{ $t('shop.product.quick_view') }}</div>
             </div>
             <div class="item-pnl product-image">
                 <div class="new_product_pin discount-badge-fourty" v-if="product_data.global_product.discount">-{{ product_data.global_product.discount }}%</div>
@@ -55,8 +55,8 @@
                     </div> -->
                 </div>
             </div>
-        <productQuickViewModel 
-            ref="quick_view_model"
+        <productQuickViewModal 
+            ref="quick_view_modal"
         />
         </div>
 
@@ -67,11 +67,11 @@
 <script>
     // import lingallery from 'lingallery'; // https://github.com/ChristophAnastasiades/Lingallery
 
-    import productQuickViewModel from '../ProductQuickViewModel'
+    import productQuickViewModal from '../modals/ProductQuickViewModal'
 
     export default {
         components: {
-            productQuickViewModel,
+            productQuickViewModal,
         },
         props:[
             'product_data',
@@ -87,7 +87,7 @@
         },
         methods: {
             product_quick_view(product_id){
-                this.$refs.quick_view_model.quick_view_model(product_id)
+                this.$refs.quick_view_modal.quick_view_modal(product_id)
             },
 
             favorite_product(product_id){

@@ -1,6 +1,7 @@
 <template>
     <span>
-        <button type="submit" class="btn btn-default btn-send main-btn" @click="show_modal">Check routes authers</button>
+        <p>{{ $t('guide.sector.authers_list') }}</p>
+        <button type="submit" class="btn btn-default btn-send main-btn" @click="show_modal">{{ $t('guide.sector.authers_list_button') }}</button>
 
         <stack-modal
             :show="is_show_modal"
@@ -13,9 +14,9 @@
                 <table class="table table-hover" id="dev-table">
                     <thead>
                         <tr>
-                            <th>Author name</th>
+                            <th>{{ $t('guide.sector.auther_name') }}</th>
                             <th>|</th>
-                            <th>Routes quantity</th>
+                            <th>{{ $t('guide.sector.auther_routes_quantity') }}</th>
                         </tr>
                     </thead>
                     <tbody>

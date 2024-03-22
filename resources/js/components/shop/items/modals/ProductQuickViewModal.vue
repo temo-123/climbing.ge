@@ -19,12 +19,13 @@
 
                 <span class="margin_bottom_top" v-html="q_product.locale_product.text"></span>
 
-                <router-link :to="'product/'+q_product.global_product.url_title" class="btn btn-primary margin_bottom_top" style="float: left;"> Open product</router-link>
+                <!-- <router-link :to="'product/'+q_product.global_product.url_title" class="btn btn-primary margin_bottom_top" style="float: left;"> Open product</router-link> -->
             </span>
         </pre>
         <div slot="modal-footer">
             <div class="modal-footer">
-                <!-- <router-link :to="'product/'+quick_product[0].global_product.url_title" class="btn btn-primary"> Open product page</router-link> -->
+
+                <router-link :to="'product/'+q_product.global_product.url_title" class="btn btn-primary margin_bottom_top" style="float: left;">{{ $t('shop.product.open_product') }}</router-link>
             </div>
         </div>
     </stack-modal>

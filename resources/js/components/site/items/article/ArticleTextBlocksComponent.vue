@@ -35,7 +35,7 @@
         
         <!-- how get -->
         <div v-if="this.article_prop.locale_data.how_get != NUll && this.article_prop.locale_data.how_get != ''">
-            <h2 id="how_to_get_there">{{ $t('guide.article.title.how_get')}}</h2>
+            <h2 id="how_to_get_there">{{ $t('guide.article.title.how get')}}</h2>
             <span v-html="this.article_prop.locale_data.how_get"></span>
         </div>
 

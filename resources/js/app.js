@@ -9,7 +9,7 @@ require("./bootstrap");
 import CKEditor from "ckeditor4-vue";
 import Router from "vue-router";
 import VueMeta from "vue-meta"; // https://www.epiloge.com/how-to-add-dynamic-meta-tags-to-your-vuejs-app-for-google-seo-0fa058
-import VueExpandableImage from "vue-expandable-image";
+// import VueExpandableImage from "vue-expandable-image";
 import Vuex from "vuex";
 import axios from "axios";
 import i18n from "./services/localization/i18n";
@@ -32,7 +32,7 @@ Vue.use(VueSocialSharing);
 Vue.use(i18n);
 Vue.use(Vuex);
 Vue.use(axios);
-Vue.use(VueExpandableImage);
+// Vue.use(VueExpandableImage);
 Vue.use(VueMeta);
 // Vue.use(Carousel3d);
 Vue.use(CKEditor);
@@ -192,27 +192,32 @@ const app = new Vue({
     },
     watch: {
         $route(to, from) {
-
             window.scrollTo(0, 0);
 
-            let locale = localStorage.getItem("lang")
-
             if (window.location.hostname == process.env.MIX_SITE_URL || window.location.hostname == process.env.MIX_SHOP_URL) {
-                if(locale != 'en'){
-                    localStorage.setItem('lang', locale)
-                    this.$i18n.locale = locale;
 
+                const firstSegment = location.pathname.split('/')[1];
+
+                let suported_locales = process.env.MIX_VUE_APP_I18N_SUPORTED_LOCALE.split("|")
+                suported_locales.forEach(s_locale => {
+                    if(s_locale == firstSegment && s_locale != this.$route.params.locale){
+                        localStorage.setItem('lang', s_locale)
+                    }
+                });
+
+                let locale = localStorage.getItem("lang")
+                localStorage.setItem('lang', locale)
+                this.$i18n.locale = locale;
+
+                if(locale == 'en'){
+                    let activ_path_without_locale = this.$router.history.pending.path.split("/").splice(2).join("/")
+                    this.$router.push({ path: '/' + activ_path_without_locale })
+                }
+                else{
                     const to = this.$router.resolve({params: {locale}})
                     this.$router.push(to.location)
                 }
-                else if(locale == 'en'){
-                    localStorage.setItem('lang', locale)
-                    this.$i18n.locale = locale;
-
-                    let activ_path_without_locale = this.$router.history.pending.path.split("/").splice(2).join("/")
-
-                    this.$router.push({ path: '/' + activ_path_without_locale })
-                }
+                
             }
         },
     },

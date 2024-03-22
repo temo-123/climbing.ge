@@ -1,7 +1,7 @@
 <template>
     <div :class='"col-xs-3 col-xs-offset-1 right_fixed_menu display-none-720px "+[right_navbar_class]'>
 
-        <h3 class="navbar_title">{{ $t('guide.article_right_nabar.menu title') }}</h3>
+        <h3 class="navbar_title">{{ $t('guide.article_right_nabar.menu_title') }}</h3>
 
         <nav class="fading-side-menu">
             <ul class="list-unstyled">
@@ -32,7 +32,7 @@
 
                 <li>
                     <a @click.prevent="scrollToSection('other')">
-                        <span class="text-primary">{{ $t('guide.article_right_nabar.similar articles') }}</span>
+                        <span class="text-primary">{{ $t('guide.article_right_nabar.similar_articles') }}</span>
                     </a>
                 </li>
 

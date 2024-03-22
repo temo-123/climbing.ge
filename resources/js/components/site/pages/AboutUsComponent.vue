@@ -11,13 +11,13 @@
                             
                             <hr>
 
-                            <h2>{{ $t('shop.seller.seller contact') }}</h2>
+                            <h2>{{ $t('shop.seller.seller_contact') }}</h2>
                             <p v-if="this.$globalSiteData.email">{{ $t('shop.seller.email') }} - {{ this.$globalSiteData.email }}</p>
                             <p v-if="this.$globalSiteData.number">{{ $t('shop.seller.phone') }} - {{ this.$globalSiteData.number }}</p>
 
                             <hr>
                             
-                            <h2>For more activities visit other themed websites</h2>
+                            <h2>{{ $t('guide.article.other_sites') }}</h2>
                             <span v-for="link in site_social_links" :key="link.id">
                                 <p v-if="link.title">
                                     <a :href="link.url" target="_blank">{{ link.title }}</a>
@@ -29,7 +29,7 @@
 
                             <hr>
 
-                            <h2>Alse you can see sport climbing routes authers and them conts.</h2>
+                            <!-- <h2>Alse you can see sport climbing routes authers and them conts.</h2> -->
                             <routesAutersModal />
                         </div>
                     </div>

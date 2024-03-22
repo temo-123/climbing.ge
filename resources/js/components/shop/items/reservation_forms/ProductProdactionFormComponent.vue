@@ -1,6 +1,6 @@
 <template>
     <div>
-        <button @click="show_modal()" class="btn btn-success" >Send message</button>
+        <button @click="show_modal()" class="btn btn-success" >{{ $t('shop.product.message.title') }}</button>
 
         <stack-modal
                 :show="is_product_order_message_form_model"
@@ -15,19 +15,22 @@
                         <img :src="'../public/images/site_img/loading.gif'" alt="loading">
                     </div>
                 </div>
-
+                
                 <div v-if="!is_loader">
-                    <h1>Write us a message about the desired product!</h1>
+                    <h1>{{ $t('shop.product.message.form_title') }}</h1>
 
                     <div :class="'alert alert-warning'" role="alert">
                         <div class="col-md-12">
-                            <p>Please enter your product castam order message! It is preferable to indicate the product variety and quantity! We will answer you soon!</p>
+                            <p>{{ $t('shop.product.message.form_alert') }}</p>
                         </div>
                     </div>
 
                     <form v-on:submit.prevent="send_message" id="send_order_message">
                         <!-- <label class="control-label" for="textarea">Message</label> -->
-                        <p>Message area</p>
+                        <p>{{ $t('shop.product.message.form_number_area') }}</p>
+                        <input type="text" name="name" v-model="form_data.number"  class="form-control"> 
+
+                        <p>{{ $t('shop.product.message.form_text_area') }}</p>
                         <textarea v-model="form_data.text" class="form-control" id="textarea" name="textarea" rows="10" minlength="50" placeholder="Write Your Requirements" required></textarea>
 
                         <!-- <vue-recaptcha 
@@ -58,7 +61,7 @@
                         :class="{'btn btn-primary': true}"
                         form="send_order_message"
                     >
-                    Send email
+                    {{ $t('shop.product.message.send') }}
                     </button> 
                 </div>
             </div>
@@ -85,7 +88,8 @@
                 loadRecaptchaScript: false,
 
                 form_data: {
-                    text: ''
+                    text: '',
+                    number: '',
                 },
 
                 MIX_GOOGLE_CAPTCHA_SITE_KEY: process.env.MIX_GOOGLE_CAPTCHA_SITE_KEY,
@@ -114,7 +118,10 @@
 
             close_modal(){
                 this.is_product_order_message_form_model = false
-                this.form_data.text = ''
+                this.form_data = {
+                    text: '',
+                    number: ''
+                }
             },
 
             send_message(){

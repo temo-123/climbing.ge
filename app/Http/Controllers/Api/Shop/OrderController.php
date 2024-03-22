@@ -67,6 +67,7 @@ class OrderController extends Controller
                 "messaged_user_name" => Auth::user()->name . ' ' . Auth::user()->surname,
                 "messaged_user_email" => Auth::user()->email,
                 "product_id" => $request->product_id,
+                "number" => $request->form_data['number'],
                 "message" => $request->form_data['text']
             ];
 

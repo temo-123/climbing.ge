@@ -16,10 +16,8 @@ function getLocaleRegex() {
 
 const router = new VueRouter({
     routes: [
-        // { path: "/en", redirect: `/` },
         {
             path: `/:locale${getLocaleRegex()}?`,
-            // path: `/:locale(ka|ru|/)`,
             component: {
                 render: (h) => h("router-view"),
             },
@@ -50,134 +48,42 @@ const router = new VueRouter({
                 return next();
             },
             children: [
-                {
-                    path: "",
-                    name: "index",
-                    component: load("IndexPageComponent"),
-                },
-                {
-                    path: "about_us",
-                    name: "about_us",
-                    component: load("AboutUsComponent"),
-                },
+                { path: "", name: "index", component: load("IndexPageComponent"),},
+                { path: "about_us", name: "about_us", component: load("AboutUsComponent"),},
 
-                {
-                    path: "news/:url_title",
-                    name: "news",
-                    component: load("pages/NewsPageComponent"),
-                },
-                {
-                    path: "tech_tip/:url_title",
-                    name: "tech_tip",
-                    component: load("pages/TechTipPageComponent"),
-                },
-                {
-                    path: "partner/:url_title",
-                    name: "partner",
-                    component: load("pages/PartnerPageComponent"),
-                },
-                {
-                    path: "local_bisnes/:url_title",
-                    name: "local_bisnes",
-                    component: load("pages/LocalBisnesPageComponent"),
-                },
-                {
-                    path: "events",
-                    name: "events",
-                    component: load("lists/EventsListPageComponent"),
-                },
-                {
-                    path: "event/:url_title",
-                    name: "event",
-                    component: load("pages/EventPageComponent"),
-                },
-                {
-                    path: "ice",
-                    name: "ices",
-                    component: load("lists/IceListComponent"),
-                },
-                {
-                    path: "ice/:url_title",
-                    name: "ice",
-                    component: load("pages/IcePageComponent"),
-                },
-                {
-                    path: "spot_projects",
-                    name: "spot_projects",
-                    component: load("lists/ProjectsList"),
-                },
-                {
-                    path: "spot_project/:url_title",
-                    name: "project",
-                    component: load("pages/ProjectPage"),
-                },
-                {
-                    path: "special_article/:url_title",
-                    name: "special_article",
-                    component: load("pages/SpecialAericlePage"),
-                },
+                { path: "tech_tip/:url_title", name: "tech_tip", component: load("pages/TechTipPageComponent"),},
+                { path: "partner/:url_title", name: "partner", component: load("pages/PartnerPageComponent"),},
+                { path: "local_bisnes/:url_title", name: "local_bisnes", component: load("pages/LocalBisnesPageComponent"),},
+                
+                { path: "news/:url_title", name: "news", component: load("pages/NewsPageComponent"),},
+                { path: "special_article/:url_title", name: "special_article", component: load("pages/SpecialAericlePage"),},
 
-                {
-                    path: "other",
-                    name: "others",
-                    component: load("lists/OtherListComponent"),
-                },
-                {
-                    path: "other/:url_title",
-                    name: "other",
-                    component: load("pages/OtherPageComponent"),
-                },
+                { path: "events", name: "events", component: load("lists/EventsListPageComponent"),},
+                { path: "event/:url_title", name: "event", component: load("pages/EventPageComponent"),},
 
-                {
-                    path: "mountaineering",
-                    name: "mountaineerings",
-                    component: load("lists/MountaineeringListComponent"),
-                },
-                {
-                    path: "mountaineering/:url_title",
-                    name: "mountaineering",
-                    component: load("pages/MountaineeringPageComponent"),
-                },
+                { path: "ice", name: "ices", component: load("lists/IceListComponent"),},
+                { path: "ice/:url_title", name: "ice", component: load("pages/IcePageComponent"),},
 
-                {
-                    path: "indoor",
-                    name: "indoors",
-                    component: load("lists/IndoorListComponent"),
-                },
-                {
-                    path: "indoor/:url_title",
-                    name: "indoor",
-                    component: load("pages/IndoorPageComponent"),
-                },
+                { path: "spot_projects", name: "spot_projects", component: load("lists/ProjectsList"),},
+                { path: "spot_project/:url_title", name: "project", component: load("pages/ProjectPage"),},
 
-                {
-                    path: "outdoor",
-                    name: "outdoors",
-                    component: load("lists/OutdoorListComponent"),
-                },
-                {
-                    path: "outdoor/:url_title",
-                    name: "outdoor",
-                    component: load("pages/OutdoorPageComponent"),
-                },
+                { path: "other", name: "others", component: load("lists/OtherListComponent"),},
+                { path: "other/:url_title", name: "other", component: load("pages/OtherPageComponent"),},
 
-                {
-                    path: "search_articles",
-                    name: "search_articles",
-                    component: load("SerchPageComponent"),
-                },
+                { path: "mountaineering", name: "mountaineerings", component: load("lists/MountaineeringListComponent"),},
+                { path: "mountaineering/:url_title", name: "mountaineering", component: load("pages/MountaineeringPageComponent"),},
 
-                {
-                    path: "unfollow/:id",
-                    name: "unfollow",
-                    component: load("pages/varification_pages/UnfollowComponent"),
-                },
+                { path: "indoor", name: "indoors", component: load("lists/IndoorListComponent"),},
+                { path: "indoor/:url_title", name: "indoor", component: load("pages/IndoorPageComponent"),},
 
-                {
-                    path: "/confirm_comment_email/:comment_id/:email",
-                    name: "confirm_comment_email",
-                    component: load("pages/varification_pages/CommentEmailVerificationePage"),
-                },
+                { path: "outdoor", name: "outdoors", component: load("lists/OutdoorListComponent"),},
+                { path: "outdoor/:url_title", name: "outdoor", component: load("pages/OutdoorPageComponent"),},
+
+                { path: "search_articles", name: "search_articles", component: load("SerchPageComponent"),},
+
+                { path: "unfollow/:id", name: "unfollow", component: load("pages/varification_pages/UnfollowComponent"),},
+
+                { path: "/confirm_comment_email/:comment_id/:email", name: "confirm_comment_email", component: load("pages/varification_pages/CommentEmailVerificationePage"),},
 
                 { path: "*", name: "NotFound", component: NotFound },
             ],
@@ -187,14 +93,6 @@ const router = new VueRouter({
 });
 
 router.beforeEach((to, from, next) => {
-    // if (!to.params.locale) {
-    //     i18n.locale = process.env.MIX_VUE_APP_I18N_LOCALE;
-    //     localStorage.setItem("lang", process.env.MIX_VUE_APP_I18N_LOCALE);
-    // }
-
-    // this.$router.resolve({params: {locale}})
-    // console.log("🚀 ~ file: SiteRoutes.js:161 ~ router.beforeEach ~  this.$router.resolve:",  resolve)
-
     to.params.locale = localStorage.getItem("lang");
 
     next();

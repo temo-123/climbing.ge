@@ -15,7 +15,7 @@
                     <div class="m-image-hero--container">
                         <div class="m-image-hero--label mm-image-hero--no-background">
                             <div class="m-image-hero--metadata-label">
-                                <div>News</div>
+                                <div>{{ $t('guide.news_flag') }}</div>
                             </div>
                         </div>
                         <div class="m-image-hero--text-panel">

@@ -13,11 +13,12 @@
             <div class="row" v-if="this.mounts.length > 0">
                 <div class="container articles_filter_bar">
                     <div class="col-md-6">
-                        Select mount System and filtred routes
+                        <!-- Select mount System and filtred routes -->
+                        {{ $t('guide.article.mount_route_filtr') }}
                     </div>
                     <div class="col-md-6" v-if="this.mounts.length > 0">
                         <select class="form-control" v-model="filter_mount" @click="get_mountain_route_articles()">
-                            <option>All</option>
+                            <option value="All">{{ $t('all') }}</option>
                             <option v-for="mount in mounts" :key='mount.global_data.id' :value="mount.global_data.id">{{ mount.locale_data.title }}</option> 
                         </select>
                     </div>

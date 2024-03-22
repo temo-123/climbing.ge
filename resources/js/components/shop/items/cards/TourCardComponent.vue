@@ -27,7 +27,7 @@
 
                   <div class="tourbtn">
                       <router-link class="btn btn-default123" :to="'../tour/'+tour_data_prop.global_data.url_title">
-                          <span class="text-muted">Read more</span>
+                          <span class="text-muted">{{ $t('shop.tour.more') }}</span>
                       </router-link>
                   </div>
               </figure>

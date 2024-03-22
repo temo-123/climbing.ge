@@ -130,7 +130,7 @@
                            <div class="row" v-if="product.global_product.sale_type == 'custom_production'">
                                 <div :class="'alert alert-success'" role="alert">
                                     <div class="col-md-12" v-if="product.global_product.sale_type == 'custom_production'">
-                                        <p>This product is sold prior to ordering! For order you need send message us and we will contact you!</p>
+                                        <p>{{ $t('shop.product.castom_prodaction') }}</p>
                                     </div>
                                 </div>
 
@@ -142,9 +142,9 @@
                                     <div :class="'alert alert-danger cursor_pointer'" @click="goTo('/options')" role="alert">
                                         <div class="row">
                                             <div class="col-md-12">
-                                                <strong>Warning</strong>
-                                                <p>Your private information is not a complete. Please go to user option page and enter full information!</p>
-                                                <p>Before that you don't can make order!</p>
+                                                <strong>{{ $t('shop.product.warning') }}</strong>
+                                                <p>{{ $t('shop.product.enter_full_information') }}</p>
+                                                <p>{{ $t('shop.product.befor_enter_full_information') }}</p>
                                             </div>
                                         </div>
                                     </div>
@@ -159,10 +159,10 @@
                             <div class="row" v-if="user.length == 0">
                                 <div v-if="user.length == 0" :class="'alert alert-danger cursor_pointer'" role="alert" @click="goTo('/login')">
                                     <div class="col-md-12" v-if="product.global_product.sale_type == 'custom_production'">
-                                        <p>Please login or register for make castam order!</p>
+                                        <p>{{ $t('shop.product.ples_castom_login') }}</p>
                                     </div>
                                     <div class="col-md-12" v-if="product.global_product.sale_type == 'online_order'">
-                                        <p>Please login or register for add product in cart and create order!</p>
+                                        <p>{{ $t('shop.product.online_order_login') }}</p>
                                     </div>
                                 </div>
                             </div>
@@ -190,14 +190,15 @@
 
             <hr>
             
-            <p v-if="product.global_product.material">{{ $t('shop.product desc.material') }} - {{ product.global_product.material }}</p>
-            <p v-if="product.global_product.weight">{{ $t('shop.product desc.weight') }} - {{ product.global_product.weight }}</p>
+            <!-- <p v-if="product.global_product.category">{{ $t('shop.product.product_desc.category') }} - {{ product.global_product.category }}</p> -->
+            <p v-if="product.global_product.material">{{ $t('shop.product.product_desc.material') }} - {{ product.global_product.material }}</p>
+            <p v-if="product.global_product.weight">{{ $t('shop.product.product_desc.weight') }} - {{ product.global_product.weight }}</p>
 
-            <hr>
+            <!-- <hr> -->
 
-            <h3>{{ $t('shop.seller.seller contact') }}</h3>
+            <!-- <h3>{{ $t('shop.seller.seller contact') }}</h3>
             <p v-if="this.$globalSiteData.email">{{ $t('shop.seller.email') }} - {{ this.$globalSiteData.email }}</p>
-            <p v-if="this.$globalSiteData.number">{{ $t('shop.seller.phone') }} - {{ this.$globalSiteData.number }}</p>
+            <p v-if="this.$globalSiteData.number">{{ $t('shop.seller.phone') }} - {{ this.$globalSiteData.number }}</p> -->
         </div>
 
         <div class="container" v-if="!is_loading">

@@ -16,7 +16,7 @@
             ref="html2Pdf"
         > -->
         
-        <h1 class="page_title">Climbing wall price colculator</h1>
+        <h1 class="page_title">{{ $t('shop.wall.title')}}</h1>
         <div class="bar"><i class="fa fa-calculator" aria-hidden="true"></i></div>
         <h3> <span v-html="this.$siteData.message"></span> </h3>
 
@@ -27,10 +27,10 @@
 
                     <form>
                         <div class="row">
-                            <p>Insert climbing wall size.</p>
+                            <p>{{ $t('shop.wall.wall_colculate_title')}}</p>
 
                             <div class="col-md-4">
-                                <p>Height</p>
+                                <p>{{ $t('shop.wall.height')}}</p>
                                 <div class="row">
                                     <div class="col-md-12">
                                         <div class="form-group">
@@ -40,7 +40,7 @@
                                 </div>
                             </div>
                             <div class="col-md-4">
-                                <p>Width</p>
+                                <p>{{ $t('shop.wall.width')}}</p>
                                 <div class="row">
                                     <div class="col-md-12">
                                         <div class="form-group">
@@ -50,7 +50,7 @@
                                 </div>
                             </div>
                             <div class="col-md-4">
-                                <p>Depth</p>
+                                <p>{{ $t('shop.wall.depth')}}</p>
                                 <div class="row">
                                     <div class="col-md-12">
                                         <div class="form-group">
@@ -62,10 +62,10 @@
                         </div>
                         <div class="row" v-if="!wall_height_for_mat">
 
-                            <p>Mat size colculate automaticly.</p>
+                            <p>{{ $t('shop.wall.mat_colculate_title')}}</p>
 
                             <div class="col-md-4">
-                                <p>Mat height</p>
+                                <p>{{ $t('shop.wall.mat_height')}}</p>
                                 <div class="row">
                                     <div class="col-md-12">
                                         <div class="form-group">
@@ -75,7 +75,7 @@
                                 </div>
                             </div>
                             <div class="col-md-4">
-                                <p>Mat width</p>
+                                <p>{{ $t('shop.wall.mat_width')}}</p>
                                 <div class="row">
                                     <div class="col-md-12">
                                         <div class="form-group">
@@ -85,7 +85,7 @@
                                 </div>
                             </div>
                             <div class="col-md-4">
-                                <p>Mat depth</p>
+                                <p>{{ $t('shop.wall.mat_depth')}}</p>
                                 <div class="row">
                                     <div class="col-md-12">
                                         <div class="form-group">
@@ -96,13 +96,13 @@
                             </div>
                         </div>
                         <div class="row" v-else>
-                            <p>wall is more then 5 meter, it is so height for mat. after 5 meters you need rops and belay system for this height.</p>
+                            <p>{{ $t('shop.wall.wall_so_height')}}</p>
                         </div>
 
                         <div class="row">
 
                             <div class="col-md-4">
-                                <p>Do you want includ holds in price?</p>
+                                <p>{{ $t('shop.wall.holds')}}</p>
 
                                 <div class="row">
                                     <div class="col-md-12">
@@ -113,8 +113,9 @@
                                 </div>
                             </div>
 
-                            <div class="col-md-4" v-if="hold_include && wall_squareness > 0">
-                                <p>How many holds you want on 1m2™ on wall?</p>
+                            <div class="col-md-4" v-if="hold_include && wall_square > 0">
+                                
+                                <p>{{ $t('shop.wall.holds_on_1m2')}}</p>
 
                                 <div class="row">
                                     <div class="col-md-12">
@@ -124,13 +125,13 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-md-4" v-else-if="wall_squareness == 0">
-                                <p>You need insert wall size!</p>
+                            <div class="col-md-4" v-else-if="wall_square == 0">
+                                <p>{{ $t('shop.wall.inser_sizes')}}</p>
                             </div>
 
                         </div>
                     </form>
-                    <button class="btn btn-default btn-send main-btn" @click="colculate_wall_price()">Colculate price</button>
+                    <button class="btn btn-default btn-send main-btn" @click="colculate_wall_price()">{{ $t('shop.wall.colculate_price')}}</button>
                 </div>
                 <div class="row">
                     <section slot="pdf-content">
@@ -144,12 +145,12 @@
                             </tbody> -->
                             <tbody>
                                 <tr>
-                                    <td>Squareness of the wall</td>
+                                    <td>{{ $t('shop.wall.wall_holds_squareness')}}</td>
                                     <td>|</td>
-                                    <td>{{wall_squareness}} (1m2™)</td>
+                                    <td>{{wall_square}} (1m2™)</td>
                                 </tr>
                                 <tr>
-                                    <td>Wall price</td>
+                                    <td>{{ $t('shop.wall.wall_price')}}</td>
                                     <td>|</td>
                                     <td>{{wall_price_sum}} $</td>
                                 </tr>
@@ -159,12 +160,12 @@
                                     <td>--</td>
                                 </tr>
                                 <tr v-if="!wall_height_for_mat">
-                                    <td>Squareness of the mat</td>
+                                    <td>{{ $t('shop.wall.wall_price')}}</td>
                                     <td>|</td>
-                                    <td>{{mat_squareness}} (1m2™)</td>
+                                    <td>{{mat_square}} (1m2™)</td>
                                 </tr>
                                 <tr v-if="!wall_height_for_mat">
-                                    <td>Mat price</td>
+                                    <td>{{ $t('shop.wall.mat_price') }}</td>
                                     <td>|</td>
                                     <td>{{mat_price_sum}} $</td>
                                 </tr>
@@ -174,26 +175,27 @@
                                     <td>--</td>
                                 </tr>
                                 <tr v-if="hold_include">
-                                    <td>Holds qouantyty for 1 m</td>
+                                    <td>{{ $t('shop.wall.mat_price') }}</td>
                                     <td>|</td>
                                     <td>{{holds_quantyty_for_meter}}</td>
                                 </tr>
                                 <tr v-if="hold_include">
-                                    <td>Holds total quantity</td>
+                                    <td>{{ $t('shop.wall.total_holds') }}</td>
                                     <td>|</td>
                                     <td>{{holds_total_quantity}}</td>
                                 </tr>
                                 <tr v-if="hold_include">
-                                    <td>Holds total price</td>
+                                    <td>{{ $t('shop.wall.total_holds_price') }}</td>
                                     <td>|</td>
                                     <td>{{holds_total_price}} $</td>
                                 </tr>
                             </tbody>
                         </table>
                     </section>
-                    <h2 v-if="total_price_sum != 0" class="float_right">Total price = {{ total_price_sum }} $</h2>
+                    <h2 v-if="total_price_sum != 0" class="float_right">{{ $t('shop.wall.total_price') }}</h2>
+                    <h2 v-if="total_price_sum != 0" class="float_right">{{ total_price_sum }} $</h2>
 
-                    <button v-if="total_price_sum != 0" @click="generateReport()" class="btn btn-default btn-send main-btn">Print</button>
+                    <!-- <button v-if="total_price_sum != 0" @click="generateReport()" class="btn btn-default btn-send main-btn">Print</button> -->
                 </div>
             </div>
             <div class="col-md-6">
@@ -240,8 +242,8 @@
                 height: 0,
                 depth: 0,
 
-                wall_squareness: 0,
-                mat_squareness: 0,
+                wall_square: 0,
+                mat_square: 0,
 
                 mat_width: 0,
                 mat_height: 0,
@@ -289,7 +291,7 @@
             },
 
             colculate_holds_price(){
-                this.holds_total_quantity = this.wall_squareness * this.holds_quantyty_for_meter
+                this.holds_total_quantity = this.wall_square * this.holds_quantyty_for_meter
                 this.holds_total_price = this.holds_total_quantity * 15
 
                 this.colculate_total_price()
@@ -297,12 +299,12 @@
 
             colculate_wall_price() {
                 if(this.depth > 0 && this.width > 0 && this.height > 0){
-                    this.wall_squareness = this.depth * this.width * this.height
-                    this.wall_price_sum = this.wall_squareness * 90
+                    this.wall_square = this.depth * this.width * this.height
+                    this.wall_price_sum = this.wall_square * 90
                 }
                 else if(this.width > 0 && this.height > 0 && this.depth == 0){
-                    this.wall_squareness = this.height * this.width
-                    this.wall_price_sum = this.wall_squareness * 100
+                    this.wall_square = this.height * this.width
+                    this.wall_price_sum = this.wall_square * 100
                 }
 
                 if(!this.wall_height_for_mat){
@@ -315,12 +317,12 @@
 
             colculate_mat_size() {
                 this.mat_width = this.width
-                this.mat_squareness = this.mat_depth * this.mat_width
-                this.mat_squareness = Math.ceil(this.mat_squareness)
+                this.mat_square = this.mat_depth * this.mat_width
+                this.mat_square = Math.ceil(this.mat_square)
 
                 if(this.depth > 0 && this.width > 0 && this.height > 0){
                     this.depth = Number(this.depth)
-                    let procent = (this.depth * 20) / 100
+                    let procent = (this.depth * 30) / 100
                     this.mat_depth = this.depth + procent
 
                     this.mat_height = this.height * 0.08

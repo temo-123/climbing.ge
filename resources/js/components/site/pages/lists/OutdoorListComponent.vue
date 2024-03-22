@@ -14,7 +14,7 @@
 
             <div class="row">
                 <div class="col-md-12">
-                    <p>Alse you can see sport climbing routes authers and them conts.</p>
+                    <!-- <p>Alse you can see sport climbing routes authers and them conts.</p> -->
                     <routesAutersModal />
                 </div>
             </div>
@@ -34,11 +34,12 @@
                 <div class="row" v-if="this.regions.length > 0">
                     <div class="container articles_filter_bar">
                         <div class="col-md-6 col-sm-6">
-                            Select region and filtred spots by region
+                            <!-- Select region and filtred spots by region -->
+                            {{ $t('guide.article.region_filtr') }}
                         </div>
                         <div class="col-md-6 col-sm-6" v-if="this.regions.length > 0">
                             <select class="form-control" v-model="filter_spot" @click="get_outdoor_articles()">
-                                <option>All</option>
+                                <option value="All">{{ $t('all') }}</option>
                                 <option v-for="region in regions" :key='region.id' :value="region.id">{{ region.name }}</option> 
                             </select>
                         </div>

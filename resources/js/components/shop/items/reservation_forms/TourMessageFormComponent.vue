@@ -3,13 +3,13 @@
         <div class="container">
             <div class="row">
                 <div class="col-xl-12 col-lg-12 col-md-12 mb30 text-center">
-                    <h2>Tour Reservation Form</h2>
+                    <h2>{{ $t('shop.tour.message.title') }}</h2>
                 </div>
             </div>
             <div class="row">
 
                 <div class="col-xl-12 col-lg-12 col-md-12 mb30">
-                    <div class="tour-booking-form" v-if="!is_loading">
+                    <div class="tour.message-booking-form" v-if="!is_loading">
 
                         <div v-if="
                             user.length != 0 &&
@@ -18,9 +18,9 @@
                             <div :class="'alert alert-danger cursor_pointer'" @click="goTo('/options')" role="alert">
                                 <div class="row">
                                     <div class="col-md-12">
-                                        <strong>Warning</strong>
-                                        <p>Your private information is not a complete. Please go to user option page and enter full information!</p>
-                                        <p>Before that you don't can make reservation!</p>
+                                        <strong>{{ $t('shop.tour.message.warning') }}</strong>
+                                        <p>{{ $t('shop.tour.message.enter_full_information') }}</p>
+                                        <p>{{ $t('shop.tour.message.befor_enter_full_information') }}</p>
                                     </div>
                                 </div>
                             </div>
@@ -31,7 +31,7 @@
                             <div class="row">
                                 <div class="col-xl-6 col-lg-6 col-md-12">
                                     <div class="form-group">
-                                        <label class="control-label" for="check_in">Check in</label>
+                                        <label class="control-label" for="check_in">{{ $t('shop.tour.message.check_in') }}</label>
                                         <div class="select">
                                             <input v-model="form_data.check_in" id="check_in" name="check_in" type="date" placeholder="Check in" class="form-control" required>
                                         </div>
@@ -39,7 +39,7 @@
                                 </div>
                                 <div class="col-xl-6 col-lg-6 col-md-12">
                                     <div class="form-group">
-                                        <label class="control-label required" for="select">Number of Persons:</label>
+                                        <label class="control-label required" for="select">{{ $t('shop.tour.message.persons') }}</label>
                                         <div class="select">
                                             <input v-model="form_data.persons" id="persons" name="persons" type="number" placeholder="Persons number" class="form-control" required>
                                         </div>
@@ -49,31 +49,31 @@
                                 <div v-if="user.length == 0">
                                     <div class="col-xl-6 col-lg-6 col-md-12">
                                         <div class="form-group">
-                                            <label class="control-label" for="name">Name Surname</label>
+                                            <label class="control-label" for="name">{{ $t('shop.tour.message.name') }}</label>
                                             <input v-model="form_data.name" id="name" type="text" placeholder="Name" class="form-control" required>
                                         </div>
                                     </div>
                                     <div class="col-xl-6 col-lg-6 col-md-12">
                                         <div class="form-group">
-                                            <label class="control-label" for="email"> Email</label>
+                                            <label class="control-label" for="email">{{ $t('shop.tour.message.email') }}</label>
                                             <input v-model="form_data.email" id="email" type="text" placeholder="Your email" class="form-control" required>
                                         </div>
                                     </div>
                                     <div class="col-xl-4 col-lg-4 col-md-12">
                                         <div class="form-group">
-                                            <label class="control-label" for="phone"> Phone</label>
+                                            <label class="control-label" for="phone"> {{ $t('shop.tour.message.phone') }}</label>
                                             <input v-model="form_data.phone" id="phone" type="text" placeholder="Your phone" class="form-control" required>
                                         </div>
                                     </div>
                                     <div class="col-xl-4 col-lg-4 col-md-12">
                                         <div class="form-group">
-                                            <label class="control-label" for="country">Country</label>
+                                            <label class="control-label" for="country">{{ $t('shop.tour.message.country') }}</label>
                                             <input v-model="form_data.country" id="country" type="text" placeholder="Your country" class="form-control" required>
                                         </div>
                                     </div>
                                     <div class="col-xl-4 col-lg-4 col-md-12">
                                         <div class="form-group">
-                                            <label class="control-label" for="city">City</label>
+                                            <label class="control-label" for="city">{{ $t('shop.tour.message.city') }}</label>
                                             <input v-model="form_data.city" id="city" type="text" placeholder="Your city" class="form-control" required>
                                         </div>
                                     </div>
@@ -83,7 +83,7 @@
                             <div class="row">
                                 <div class="col-xl-12 col-lg-12 col-md-12">
                                     <div class="form-group">
-                                        <label class="control-label" for="textarea">Describe Your Travel Requirements</label>
+                                        <label class="control-label" for="textarea">{{ $t('shop.tour.message.message') }}</label>
                                         <textarea  v-model="form_data.text" class="form-control" id="textarea" name="textarea" rows="4" placeholder="Write Your Requirements"></textarea>
                                     </div>
                                 </div>
@@ -108,8 +108,8 @@
                             <div class="row">
                                 <div class="col-xl-12 col-lg-12 col-md-12">
                                     <div class="form-group">
-                                        <button v-if="is_verify_isset == false" type="submit" class="btn btn-success" disabled>Send</button>
-                                        <button v-else type="submit" class="btn btn-success">Send</button>
+                                        <button v-if="is_verify_isset == false" type="submit" class="btn btn-success" disabled>{{ $t('shop.tour.message.send') }}</button>
+                                        <button v-else type="submit" class="btn btn-success">{{ $t('shop.tour.message.send') }}</button>
                                     </div>
                                 </div>
                             </div>
