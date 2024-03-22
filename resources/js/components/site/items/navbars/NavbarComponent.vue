@@ -50,12 +50,12 @@
                                 <i class="fa fa-search"  aria-hidden="true"></i>
                             </span>
                         </a>
-                        <ul class="dropdown-menu shadows " role="menu" style="width: 1000%;">
+                        <ul class="dropdown-menu shadows search_window" role="menu">
                             <li>
                                 <form action="/search" id="searchForm" method="POST" role="search" @submit.prevent="search" class="monail_navbar_form">
-                                    <input class="form-control" name="request" v-model="search_query" placeholder="Search climbing spot here." autocomplete="off" autofocus="autofocus" type="text" lang="en">
+                                    <input class="form-control" name="request" v-model="search_query" v-on:keypress="isLetter($event)" placeholder="Search climbing spot here. (English words only!)" autocomplete="off" autofocus="autofocus" type="text" lang="en">
                                 </form>
-                                <button type="submit" form="searchForm" class="monail_navbar_form_button"> 
+                                <button type="submit" form="searchForm" class="monail_navbar_form_button btn btn-success"> 
                                     <span class="glyphicon glyphicon-search"></span>
                                 </button>
                             </li>
@@ -155,7 +155,11 @@
                 this.$router.push({name: 'search_articles', query: { 'query': this.search_query} });
                 this.search_query = ''
             },
-
+            isLetter(e) {
+                let char = String.fromCharCode(e.keyCode); // Get the character
+                if(/^[A-Za-z]+$/.test(char)) return true; // Match with regex 
+                else e.preventDefault(); // If not match, don't add to input text
+            },
             grade_charts(grade){
                 localStorage.setItem('grade', grade)
 
@@ -198,6 +202,12 @@
 
 .navbar span{
     color: #fff;
+}
+
+.search_window{
+    width: 1500%;
+    background-color: #dfdfdf;
+    border-radius: 0 0 20px 20px;
 }
 
 /* @media (max-width:990px){

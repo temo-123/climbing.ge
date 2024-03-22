@@ -112,8 +112,6 @@
                                         v-for="product in filtred_products"
                                         :key='product.id'
                                         :product_data="product"
-
-                                        @quick_view="quick_view_model"
                                     />
 
                                 </ul>

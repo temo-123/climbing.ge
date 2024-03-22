@@ -46,7 +46,7 @@
             </div>
         </div>
         <metaData 
-            :title = " $t('guid.meta.search') "
+            :title = " $t('guide.meta.search') "
             :description = "'Search climbing spots in Georgia. Query - ' + this.$route.query.query"
             :image = "'/public/images/meta_img/outdoor.jpg'"
         />
@@ -81,7 +81,7 @@
         methods: {
             get_serching_data() {
                 axios
-                .post('../api/articleSearch/' + this.$route.query.query)
+                .post('/articleSearch/' + this.$route.query.query)
                 .then(response => {
                     this.articles = response.data
                 })

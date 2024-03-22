@@ -55,9 +55,9 @@
                     </div> -->
                 </div>
             </div>
-        <productQuickViewModal 
-            ref="quick_view_modal"
-        />
+            <productQuickViewModal 
+                ref="quick_view_modal"
+            />
         </div>
 
 

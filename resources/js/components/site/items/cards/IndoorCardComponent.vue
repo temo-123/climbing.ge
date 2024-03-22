@@ -22,22 +22,22 @@
                     <span v-html="indoor.locale_data.short_description"></span>
                 </div>
                 <div class='row'>
-                    <div class='col-sm-12 col-xs-6 col-md-6 col-lg-6 col-xl-6' v-if="indoor.price_from">
-                        <b style="font-size: 120%;">{{ $t('prices from')}}</b>
-                        <p style="font-size: 100%;"><strong>{{ indoor.price_from }} GEL </strong></p>
+                    <div class='col-sm-12 col-xs-6 col-md-6 col-lg-6 col-xl-6' v-if="indoor.global_data.price_from">
+                        <b style="font-size: 120%;">{{ $t('guide.article.prices_from')}}</b>
+                        <p style="font-size: 100%;"><strong>{{ indoor.global_data.price_from }} GEL </strong></p>
                     </div>
                     <div class='col-sm-12 col-xs-6 col-md-6 col-lg-6 col-xl-6'>
-                        <b style="font-size: 120%;">{{ $t('working time')}}</b>
-                        <span v-if="indoor.open_time && indoor.closed_time">
-                            <span v-if="!indoor.closed">
-                                <p style="font-size: 100%;"> {{ indoor.open_time }} - {{indoor.closed_time}}</p>
-                                <p  class="deanger_text">{{ status(indoor.open_time, indoor.closed_time) }}</p>
+                        <b style="font-size: 120%;">{{ $t('guide.article.working_time')}}</b>
+                        <span v-if="indoor.global_data.open_time && indoor.global_data.closed_time">
+                            <span v-if="!indoor.global_data.closed">
+                                <p style="font-size: 100%;"> {{ indoor.global_data.open_time }} - {{indoor.global_data.closed_time}}</p>
+                                <p  class="deanger_text">{{ status(indoor.global_data.open_time, indoor.global_data.closed_time) }}</p>
                             </span>
 
-                            <p class="deanger_text" v-if="indoor.closed">{{ $t('closed')}}</p>
+                            <p class="deanger_text" v-if="indoor.global_data.closed">{{ $t('guide.article.closed')}}</p>
                         </span>
                         <span v-else>
-                            <p class="deanger_text">There is no information about the work of the gym!</p>
+                            <p class="deanger_text">{{ $t('guide.article.no_info_working_time')}}</p>
                         </span>
                     </div>
                 </div>
