@@ -3,7 +3,11 @@
     <div class="alert alert-danger" role="alert" v-if="error">
       {{ error }}
     </div>
+    
     <h1 v-show="!error">Please wait..</h1>
+    <div v-show="!error" class="col-md-4">
+        <img :src="'../../../../../../public/images/site_img/loading.gif'" alt="loading">
+    </div>
   </div>
 </template>
 

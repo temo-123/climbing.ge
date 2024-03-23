@@ -40,10 +40,17 @@ class WelcomeEmailNotification extends Notification
      */
     public function toMail($notifiable)
     {
+    //     return (new MailMessage)
+    //                 ->line('Welcome on climbing.ge')
+    //                 ->action('Go to your profile', url('/'))
+    //                 ->line('ჩongratulations! You have successfully registered. Thank you for using our services!');
+        
         return (new MailMessage)
-                    ->line('Welcome on climbing.ge')
-                    ->action('Go to your profile', url('/'))
-                    ->line('Thank you for using our services!');
+        ->markdown('emails.userWelcomeMessage', [
+            'action_url'=> url(env('APP_SSH').env('USER_PAGE_URL').'/'),
+            'text'=> 'Congratulations! You have successfully registered. Thank you for using our services!',
+        ])
+        ->subject('Welcome on climbing.ge');
     }
 
     /**

@@ -8,6 +8,7 @@ use Illuminate\Foundation\Auth\VerifiesEmails;
 use Illuminate\Http\Request;
 
 use App\Notifications\WelcomeEmailNotification;
+use Notification;
 
 use Carbon\Carbon;
 
@@ -16,9 +17,9 @@ use Illuminate\Support\Facades\URL;
 use Illuminate\Validation\ValidationException;
 
 use App\Models\User;
-use App\Models\user_notification;
-use App\Models\User_role;
-use App\Models\Role;
+use App\Models\User\user_notification;
+use App\Models\User\User_role;
+use App\Models\User\Role;
 
 class VerificationController extends Controller
 {
@@ -49,7 +50,7 @@ class VerificationController extends Controller
     {
         // $this->middleware('auth');
         // $this->middleware('signed')->only('verify');
-        $this->middleware('throttle:6,1')->only('verify', 'resend');
+        // $this->middleware('throttle:6,1')->only('verify', 'resend');
     }
 
     /**
