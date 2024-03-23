@@ -12,6 +12,12 @@
         <th>|</th>
 
         <th>Public</th>
+
+        <th v-if="table_name == 'outdoor'">|</th>
+        <th v-if="table_name == 'outdoor'">
+            Sectors
+        </th>
+
         <th>|</th>
 
         <th>Edit</th>

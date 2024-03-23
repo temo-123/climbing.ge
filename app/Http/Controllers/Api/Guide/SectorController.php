@@ -36,22 +36,23 @@ class SectorController extends Controller
         return Sector::where('article_id','=', $article_id)->latest('id')->get();
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
+    public function get_spot_sectors_data_for_model(Request $request)
     {
-        //
+        return Sector::where('article_id','=', $request->article_id)->orderBy('num')->get();
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
+    public function save_sector_sequence(Request $request)
+    {
+        $sectors_num=0;
+        foreach ($request->new_sector_sequence as $sector) {
+            $sector_id = $sector['id'];
+            $sector = Sector::where('id',strip_tags($sector_id))->first();
+            $sectors_num++;
+            $sector['num'] = $sectors_num;
+            $sector->update();
+        }
+    }
+
     public function add_sector(Request $request)
     {
         $data = json_decode($request->data, true );
@@ -61,8 +62,10 @@ class SectorController extends Controller
             return response()->json($validate, 422);
         }
         else{
+            $spot_sector_count = Sector::where('article_id', '=', $data['article_id'])->count();
             $new_sector = new Sector();
 
+            $new_sector['count'] = $spot_sector_count++;
             $new_sector['published'] = $data['published'];
             $new_sector['article_id'] = $data['article_id'];
             $new_sector['name'] = $data['name'];
@@ -131,15 +134,9 @@ class SectorController extends Controller
         }
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function get_sector_and_routes(Request $request)
     {
-        $sectors = Sector::where('article_id','=', $request->article_id)->where('published', '=', 1)->get();
+        $sectors = Sector::where('article_id','=', $request->article_id)->where('published', '=', 1)->orderBy('num')->get();
         $area_info = array();
 
         if(count($sectors)){
@@ -186,8 +183,6 @@ class SectorController extends Controller
             }
         }
 
-        // dd($area_info);
-
         return $area_info;
     }
 
@@ -228,7 +223,7 @@ class SectorController extends Controller
         $mtp_info = array();
         $mtp_pitch_info = array();
 
-        $sector = Sector::where('id', '=', $sector_id)->first();
+        $sector = Sector::where('id', '=', $sector_id)->orderBy('num')->first();
                 
         $sector_imgs = $sector->images->take(6);
         if ($sector_imgs) {

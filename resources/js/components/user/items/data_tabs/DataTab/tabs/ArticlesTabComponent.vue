@@ -11,6 +11,11 @@
 
         <td>|</td>
         <td>{{table_info.published}}</td>
+
+        <td v-if="table_info.category == 'outdoor'">|</td>
+        <td v-if="table_info.category == 'outdoor'">
+            <button type="submit" class="btn btn-success" @click="show_spot_sectors_modal(table_info.id)" v-if="$can('edit', 'article')"><i class="fa fa-list-ol" aria-hidden="true"></i></button>
+        </td>
         
         <td>|</td>
 
@@ -22,17 +27,18 @@
         <td>
             <button type="submit" class="btn btn-danger" @click="del_article(table_info.id)" v-if="$can('del', 'article')"><i class="fa fa-trash" aria-hidden="true"></i></button>
         </td>
+
+        <spot_sectors_modal
+            ref="show_spot_sectors_modal"
+        />
     </tr>
 </template>
 
 <script>
-    // import { SlickList, SlickItem } from 'vue-slicksort'; //https://github.com/Jexordexan/vue-slicksort
-    // import StackModal from '@innologica/vue-stackable-modal'  //https://innologica.github.io/vue-stackable-modal/#sample-css
+    import spot_sectors_modal from "../tab_modals/ArticleSectorSequenceModalComponent.vue";
     export default {
         components: {
-            // StackModal,
-            // SlickItem,
-            // SlickList,
+            spot_sectors_modal
         },
         props: [
             'table_info',
@@ -52,6 +58,9 @@
                     })
                     .catch(error => console.log(error))
                 }
+            },
+            show_spot_sectors_modal(article_id){
+                this.$refs.show_spot_sectors_modal.show_spot_sectors_modal(article_id)
             },
             quick_wiev_action(article_id){
                 alert('it`s article quick view window ( article ID - '+article_id+')')

@@ -291,6 +291,10 @@ Route::group(['namespace'=>'Api'], function() {
             Route::get('/get_sector_editing_data/{sector_id}', 'get_sector_editing_data');
 
             Route::post('/routes_sequence', 'routes_sequence');
+
+            Route::get('/get_spot_sectors_data_for_model/{article_id}', 'get_spot_sectors_data_for_model');
+            Route::post('/save_sector_sequence', 'save_sector_sequence');
+            
         });
 
         Route::get('/get_sectors_for_forum/{article_id}', 'SectorController@get_sectors_for_forum');
