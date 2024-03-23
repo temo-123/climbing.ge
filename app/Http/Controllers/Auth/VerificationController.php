@@ -76,6 +76,8 @@ class VerificationController extends Controller
         
                 $this -> create_user_permissions_and_notificationes($request->user_id);
 
+                Notification::route('mail', $user['email'])->notify(new WelcomeEmailNotification());
+
                 return 'Verification socsessful!';
             }
         // }

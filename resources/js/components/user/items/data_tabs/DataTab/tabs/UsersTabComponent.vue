@@ -14,7 +14,7 @@
         
         <td>|</td>
         <td>
-            user role (beta)
+            <!-- user role (beta) -->
             <button class="btn btn-primary" @click="open_role_editing_modal(table_info.id)" v-if="$can('edit_permissions', 'user')">Edit roles</button>
         </td>
         
@@ -36,83 +36,91 @@
                 :cancelButton="{ visible: false, title: 'Close', btnClass: { 'btn btn-danger': true } }"
             >
             <pre class="language-vue">
-                <h2>User role</h2>
-
-                <select class="form-control" v-model="user_role" v-if="!role_loading"> 
-                    <option value="no_role" disabled>Select user role</option> 
-                    <option v-for="role in roles" :key="role.id" :value="role.id">{{ role.name }}</option> 
-                </select>
-
-                <div class="row justify-content-center" v-if="role_loading">
+                <span v-show="is_loading">
                     <div class="col-md-4">
-                        <img :src="'../../../public/images/site_img/loading.gif'" alt="loading">
+                        <img :src="'../../../../../../public/images/site_img/loading.gif'" alt="loading">
                     </div>
-                </div>
+                </span>
+                <span v-show="!is_loading">
+                    <h2>User role</h2>
 
-                <h2>Additional permissions</h2>
+                    <select class="form-control" v-model="user_role" v-if="!role_loading"> 
+                        <option value="no_role" disabled>Select user role</option> 
+                        <option v-for="role in roles" :key="role.id" :value="role.id">{{ role.name }}</option> 
+                    </select>
 
-                <h3 v-if="user_permissions.length != 0">Alredy addid</h3>
-                <table v-if="user_permissions.length != 0" class="table table-hover" id="dev-table">
-                    <thead>
-                        <tr>
-                            <th>Image</th>
-                            <th>|</th>
-                            <th>Delite</th>
-                        </tr>
-                    </thead>
-
-                    <tbody>
-                        <tr v-for="permission in user_permissions" :key="permission.id">
-                            <td>
-                                {{ permission.subject }} {{ permission.action }}
-                            </td>
-                            <td>|</td>
-                            <td>
-                                <button type="button" class="btn btn-danger" @click="del_user_pemisino_from_db(permission.id)"><i class="fa fa-trash" aria-hidden="true"></i></button>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-
-                <h3>Add More Permissions</h3>
-
-                <button type="button" class="btn btn-primary float-left" @click="add_permission_value()">Add new permission</button>
-
-                <table class="table table-hover" id="dev-table" v-if="!perm_loading">
-                    <thead>
-                        <tr>
-                            <th>Image</th>
-                            <th>|</th>
-                            <th>Delite</th>
-                        </tr>
-                    </thead>
-
-                    <tbody>
-                        <tr v-for="permission in permissions_array" :key="permission.id">
-                            <td>
-                                <form ref="myForm">
-                                    <select class="form-control" v-on:change="onFileChange($event, permission.id)">> 
-                                        <option disabled selected>Select permission</option> 
-                                        <option v-for="permission in permissions" :key="permission.id" :value="permission.id">{{ permission.subject }} {{ permission.action }}</option> 
-                                    </select>
-                                </form> 
-                            </td>
-                            <td>|</td>
-                            <td>
-                                <button type="button" class="btn btn-danger" @click="del_bisnes_value(permission.id)"><i class="fa fa-trash" aria-hidden="true"></i></button>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-                <div class="row justify-content-center" v-if="perm_loading">
-                    <div class="col-md-4">
-                        <img :src="'../../../public/images/site_img/loading.gif'" alt="loading">
+                    <div class="row justify-content-center" v-if="role_loading">
+                        <div class="col-md-4">
+                            <img :src="'../../../public/images/site_img/loading.gif'" alt="loading">
+                        </div>
                     </div>
-                </div>
+
+                    <h2>Additional permissions</h2>
+
+                    <h3 v-if="user_permissions.length != 0">Alredy addid</h3>
+                    <table v-if="user_permissions.length != 0" class="table table-hover" id="dev-table">
+                        <thead>
+                            <tr>
+                                <th>Image</th>
+                                <th>|</th>
+                                <th>Delite</th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+                            <tr v-for="permission in user_permissions" :key="permission.id">
+                                <td>
+                                    {{ permission.subject }} {{ permission.action }}
+                                </td>
+                                <td>|</td>
+                                <td>
+                                    <button type="button" class="btn btn-danger" @click="del_user_pemisino_from_db(permission.id)"><i class="fa fa-trash" aria-hidden="true"></i></button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <h3>Add More Permissions</h3>
+
+                    <button type="button" class="btn btn-primary float-left" @click="add_permission_value()">Add new permission</button>
+
+                    <table class="table table-hover" id="dev-table" v-if="!perm_loading">
+                        <thead>
+                            <tr>
+                                <th>Image</th>
+                                <th>|</th>
+                                <th>Delite</th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+                            <tr v-for="permission in permissions_array" :key="permission.id">
+                                <td>
+                                    <form ref="myForm">
+                                        <select class="form-control" v-on:change="onFileChange($event, permission.id)">> 
+                                            <option disabled selected>Select permission</option> 
+                                            <option v-for="permission in permissions" :key="permission.id" :value="permission.id">{{ permission.subject }} {{ permission.action }}</option> 
+                                        </select>
+                                    </form> 
+                                </td>
+                                <td>|</td>
+                                <td>
+                                    <button type="button" class="btn btn-danger" @click="del_bisnes_value(permission.id)"><i class="fa fa-trash" aria-hidden="true"></i></button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <div class="row justify-content-center" v-if="perm_loading">
+                        <div class="col-md-4">
+                            <img :src="'../../../public/images/site_img/loading.gif'" alt="loading">
+                        </div>
+                    </div>
+                </span>
             </pre>
             <div slot="modal-footer">
                 <div class="modal-footer">
                     <button
+                        v-show="!is_loading"
                         type="button"
                         :class="{'btn btn-primary': true}"
                         @click="edit_permissions(table_info.id)"
@@ -169,6 +177,7 @@
 
                 perm_loading: false,
                 role_loading: false,
+                is_loading: false,
 
                 user_role: 'no_role',
                 user_permissions: [],
@@ -253,6 +262,7 @@
             },
 
             edit_permissions(){
+                this.is_loading = true
                 axios
                 .post("/role/edit_permissions_and_role/"+this.action_user, {
                     new_permissions: this.permissions_array,
@@ -263,7 +273,8 @@
                 })
                 .catch(
                     error => console.log(error)
-                );
+                )
+                .finally(() => this.is_loading = false);
             },
 
             get_user_permissions_and_roles(){

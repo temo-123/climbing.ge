@@ -32,82 +32,89 @@
                 :cancelButton="{ visible: false, title: 'Close', btnClass: { 'btn btn-danger': true } }"
             >
             <pre class="language-vue">
-                <form v-on:submit.prevent="edit_role" id="edit_role_form">
-                    <input
-                        type="text"
-                        class="form-control"
-                        id="name"
-                        v-model="role_data.name"
-                        placeholder="Enter demo name"
-                        required
-                    />
-                    
-                    <input
-                        type="text"
-                        class="form-control"
-                        id="short description"
-                        v-model="role_data.description"
-                        placeholder="Enter short description"
-                        required
-                    />
-                </form>
+                <span v-show="is_loading">
+                    <div class="col-md-4">
+                        <img :src="'../../../../../../public/images/site_img/loading.gif'" alt="loading">
+                    </div>
+                </span>
+                <span v-show="!is_loading">
+                    <form v-on:submit.prevent="edit_role" id="edit_role_form">
+                        <input
+                            type="text"
+                            class="form-control"
+                            id="name"
+                            v-model="role_data.name"
+                            placeholder="Enter demo name"
+                            required
+                        />
+                        
+                        <input
+                            type="text"
+                            class="form-control"
+                            id="short description"
+                            v-model="role_data.description"
+                            placeholder="Enter short description"
+                            required
+                        />
+                    </form>
 
-                <table class="table table-hover" id="dev-table">
-                    <thead>
-                        <tr>
-                            <th>Subject</th>
-                            <th>|</th>
-                            <th>Action</th>
-                            <th>|</th>
-                            <th>Delite</th>
-                        </tr>
-                    </thead>
+                    <table class="table table-hover" id="dev-table">
+                        <thead>
+                            <tr>
+                                <th>Subject</th>
+                                <th>|</th>
+                                <th>Action</th>
+                                <th>|</th>
+                                <th>Delite</th>
+                            </tr>
+                        </thead>
 
-                    <tbody>
-                        <tr v-for="permission in role_permissions" :key="permission.id">
-                            <td>
-                                {{ permission.subject }}
-                            </td>
-                            <td>|</td>
-                            <td>
-                                {{ permission.action }}
-                            </td>
-                            <td>|</td>
-                            <td>
-                                <button type="button" class="btn btn-danger" @click="del_role_permission_from_db(permission.id)"><i class="fa fa-trash" aria-hidden="true"></i></button>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
+                        <tbody>
+                            <tr v-for="permission in role_permissions" :key="permission.id">
+                                <td>
+                                    {{ permission.subject }}
+                                </td>
+                                <td>|</td>
+                                <td>
+                                    {{ permission.action }}
+                                </td>
+                                <td>|</td>
+                                <td>
+                                    <button type="button" class="btn btn-danger" @click="del_role_permission_from_db(permission.id)"><i class="fa fa-trash" aria-hidden="true"></i></button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
 
-                <button type="button" class="btn btn-primary float-left" @click="edit_permission_value()">Add new permission</button>
+                    <button type="button" class="btn btn-primary float-left" @click="edit_permission_value()">Add new permission</button>
 
-                <table class="table table-hover" id="dev-table">
-                    <thead>
-                        <tr>
-                            <th>Image</th>
-                            <th>|</th>
-                            <th>Delite</th>
-                        </tr>
-                    </thead>
+                    <table class="table table-hover" id="dev-table">
+                        <thead>
+                            <tr>
+                                <th>Image</th>
+                                <th>|</th>
+                                <th>Delite</th>
+                            </tr>
+                        </thead>
 
-                    <tbody>
-                        <tr v-for="permission in permissions_array" :key="permission.id">
-                            <td>
-                                <form ref="myForm">
-                                    <select class="form-control" v-on:change="onFileChange($event, permission.id)">> 
-                                        <option disabled selected>Select permission</option> 
-                                        <option v-for="permission in permissions" :key="permission.id" :value="permission.id">{{ permission.subject }} {{ permission.action }}</option> 
-                                    </select>
-                                </form> 
-                            </td>
-                            <td>|</td>
-                            <td>
-                                <button type="button" class="btn btn-danger" @click="del_bisnes_value(permission.id)"><i class="fa fa-trash" aria-hidden="true"></i></button>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
+                        <tbody>
+                            <tr v-for="permission in permissions_array" :key="permission.id">
+                                <td>
+                                    <form ref="myForm">
+                                        <select class="form-control" v-on:change="onFileChange($event, permission.id)">> 
+                                            <option disabled selected>Select permission</option> 
+                                            <option v-for="permission in permissions" :key="permission.id" :value="permission.id">{{ permission.subject }} {{ permission.action }}</option> 
+                                        </select>
+                                    </form> 
+                                </td>
+                                <td>|</td>
+                                <td>
+                                    <button type="button" class="btn btn-danger" @click="del_bisnes_value(permission.id)"><i class="fa fa-trash" aria-hidden="true"></i></button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </span>
             </pre>
             <div slot="modal-footer">
                 <div class="modal-footer">
@@ -137,6 +144,7 @@
             return{
                 is_ban_modal: false,
                 is_role_edit_modal: false,
+                is_loading: false,
 
                 role: '',
                 role_permissions: [],
@@ -208,6 +216,7 @@
             },
 
             edit_role(){
+                this.is_loading = true
                 axios
                 .post("../api/role/edit_role/"+this.action_role, {
                     new_permissions: this.permissions_array,
@@ -218,7 +227,8 @@
                 })
                 .catch(
                     error => console.log(error)
-                );
+                )
+                .finally(() => this.is_loading = false);
             },
 
             get_editing_role(role_id){

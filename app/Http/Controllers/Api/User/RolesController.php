@@ -12,6 +12,9 @@ use App\Models\User;
 use App\Models\User\User_permission;
 use App\Models\User\User_role;
 
+use App\Notifications\permission\ChangePermissionNotification;
+use Notification;
+
 class RolesController extends Controller
 {
     public function index()
@@ -58,7 +61,8 @@ class RolesController extends Controller
     }
 
     public function edit_permissions_and_role(Request $request)
-    {       
+    {   
+        $message = '';
         if ($request->role) {
             $user_role = User_role::where("user_id", "=", $request->user_id)->first();
             if($user_role){
@@ -71,6 +75,8 @@ class RolesController extends Controller
                 $per['role_id'] = $request->role;
                 $per->save();
             }
+            
+            $message = 'You have new role - "' . Role::where("id", "=", $request->role)->first()->name . '".';
         }
 
         if ($request->new_permissions) {
@@ -80,8 +86,15 @@ class RolesController extends Controller
                 $per['permission_id'] = $permission['permission_id'];
                 $per->save();
             }
+            $message = "You have new permission/s. A new feature is available for you.";
         }
-        // dd($request);
+
+        $info = [
+            "message" => $message
+        ];
+        
+        $user = user::where("id", "=", $request->user_id)->first();
+        Notification::route('mail', $user['email'])->notify(new ChangePermissionNotification($info));
     }
 
     public function create_role(Request $request)
