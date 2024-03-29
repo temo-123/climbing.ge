@@ -12,7 +12,7 @@ class Locale_product extends Model
         'title',
         'short_description',
         'text',
-        'meta_keyword'
+        'material'
     ];
 
 

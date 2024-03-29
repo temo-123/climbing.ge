@@ -95,13 +95,6 @@
                         </div>
     
                         <div class="form-group clearfix">
-                            <label for="name" class='col-xs-2 control-label'> material</label>
-                            <div class="col-xs-8">
-                                <input type="text" v-model="data.global_product.material" name="material" class="form-control"> 
-                            </div>
-                        </div>
-    
-                        <div class="form-group clearfix">
                             <label for="name" class='col-xs-2 control-label'> Category </label>
                             <div class="col-xs-8">
                                 <select class="form-control" v-model="data.global_product.category_id" name="category_id" > 
@@ -148,6 +141,13 @@
                                 <ckeditor v-model="data.us_product.text"  :config="editorConfig.us_text_editor_config"></ckeditor>
                             </div>
                         </div>
+    
+                        <div class="form-group clearfix">
+                            <label for="name" class='col-xs-2 control-label'> material</label>
+                            <div class="col-xs-8">
+                                <input type="text" v-model="data.us_product.material" name="material" class="form-control"> 
+                            </div>
+                        </div>
                     </form>
                 </div>
                 <div class="row" v-show="tab_num == 3">
@@ -180,6 +180,13 @@
                                 <ckeditor v-model="data.ru_product.text"  :config="editorConfig.ru_text_editor_config"></ckeditor>
                             </div>
                         </div>
+    
+                        <div class="form-group clearfix">
+                            <label for="name" class='col-xs-2 control-label'> material</label>
+                            <div class="col-xs-8">
+                                <input type="text" v-model="data.ru_product.material" name="material" class="form-control"> 
+                            </div>
+                        </div>
                     </form>
                 </div>
                 <div class="row" v-show="tab_num == 4">
@@ -210,6 +217,13 @@
                             <label for="name" class='col-xs-2 control-label'> text </label>
                             <div class="col-xs-8">
                                 <ckeditor v-model="data.ka_product.text"  :config="editorConfig.ka_text_editor_config"></ckeditor>
+                            </div>
+                        </div>
+    
+                        <div class="form-group clearfix">
+                            <label for="name" class='col-xs-2 control-label'> material</label>
+                            <div class="col-xs-8">
+                                <input type="text" v-model="data.ka_product.material" name="material" class="form-control"> 
                             </div>
                         </div>
                     </form>

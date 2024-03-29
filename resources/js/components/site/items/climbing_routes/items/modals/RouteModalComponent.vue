@@ -1,7 +1,7 @@
 <template>
     <stack-modal
             :show="is_show_route_modal"
-            title="Route detals"
+            title=""
             @close="is_show_route_modal = false"
             :modal-class="{ [ModalClass]: true }"
             :saveButton="{ visible: true }"
@@ -19,21 +19,21 @@
 
                 <div class="container" v-show="!is_loading">
                     <div class="row">
-                        <h2>{{ $t("guide.route.route detals") }}</h2>
+                        <h2><strong>{{ $t("guide.route.route detals") }}</strong></h2>
                         
-                        <p class="route_detal">{{ $t("guide.route.name") }} - {{ route.name }}</p>
+                        <p class="route_detal"><strong>{{ $t("guide.route.name") }}</strong> - {{ route.name }}</p>
 
                         <p class="route_detal" v-if="route.height">
-                            {{ $t("guide.route.height") }} - {{ route.height }}
+                            <strong>{{ $t("guide.route.height") }}</strong> - {{ route.height }}
                         </p>
 
-                        <p v-if="route.category == 'tred'">{{ $t("guide.route.bolts") }} - Tred climbing</p>
-                        <p v-else-if="route.category == 'top'">{{ $t("guide.route.bolts") }} - Top rope</p>
+                        <p v-if="route.category == 'tred'"><strong>{{ $t("guide.route.bolts") }}</strong> - Tred climbing</p>
+                        <p v-else-if="route.category == 'top'"><strong>{{ $t("guide.route.bolts") }}</strong> - Top rope</p>
                         <p v-else-if="route.category == 'boulder'"></p>
-                        <p v-else-if="route.category == 'sport climbing'">{{ $t("guide.route.bolts") }} - {{ route.bolts }}</p>
-                        <!-- <p v-else>{{ $t("guide.route.bolts") }} - {{ route.bolts }}</p> -->
+                        <p v-else-if="route.category == 'sport climbing'"><strong>{{ $t("guide.route.bolts") }}</strong> - {{ route.bolts }}</p>
+                        <!-- <p v-else><strong>{{ $t("guide.route.bolts") }}</strong> - {{ route.bolts }}</p> -->
 
-                        <p>{{ $t("guide.route.grade fr") }} - 
+                        <p><strong>{{ $t("guide.route.grade fr") }}</strong> - 
                             <span v-if="route.or_grade != NULL">
                                 {{ route.grade }} / {{ route.or_grade }}
                             </span>
@@ -43,8 +43,8 @@
                         </p>
 
                         <p>
-                            <span v-if="activ_grade == 'UIAA' || activ_grade == 'uiaa'">{{ $t("guide.route.grade uiaa") }}</span>
-                            <span v-if="activ_grade == 'YDS' || activ_grade == 'yds'">{{ $t("guide.route.grade yds") }}</span>
+                            <span v-if="activ_grade == 'UIAA' || activ_grade == 'uiaa'"><strong>{{ $t("guide.route.grade uiaa") }}</strong></span>
+                            <span v-if="activ_grade == 'YDS' || activ_grade == 'yds'"><strong>{{ $t("guide.route.grade yds") }}</strong></span>
                                 -
                             
                             <span v-if="route.or_grade != NULL">
@@ -56,26 +56,28 @@
                             </span>
                         </p>
 
-                        <p class="route_detal" v-if="route.author">
-                            {{ $t("guide.route.author") }} - {{ route.author }}
-                        </p>
-
-                        <p class="route_detal" v-if="route.anchor_type">
-                            {{ $t("guide.route.anchor_type") }} - {{ route.anchor_type }}
+                        <p class="route_detal" strong v-if="route.author">
+                            <strong>{{ $t("guide.route.author") }}</strong> - {{ route.author }}
                         </p>
 
                         <p class="route_detal" v-if="route.creation_data">
-                            {{ $t("guide.route.creating_data") }} - {{ route.creation_data }}
+                            <strong>{{ $t("guide.route.creating_data") }}</strong> - {{ route.creation_data }}
                         </p>
 
                         <p class="route_detal" v-if="route.first_ascent">
-                            {{ $t("guide.route.first_ascent") }} - {{ route.first_ascent }}
+                            <strong>{{ $t("guide.route.first_ascent") }}</strong> - {{ route.first_ascent }}
+                        </p>
+
+                        <hr>
+
+                        <p class="route_detal" v-if="route.anchor_type">
+                            <strong>{{ $t("guide.route.anchor_type") }}</strong> - {{ route.anchor_type }}
                         </p>
 
                         <div class="row">
                             <div class="col-md-6" v-if="route.bolts_type == 'glued'">
                                 <p>
-                                    Route have a glued-in bolts
+                                    <strong>Route have a glued-in bolts</strong>
                                     <img
                                         class="climbing_bolt_image"
                                         :src="'../../../../images/svg/glued bolt.png'"
@@ -86,7 +88,7 @@
                             </div>
                             <div class="col-md-6" v-if="route.bolts_type == 'hangerr'">
                                 <p>
-                                    Route have a hangerr bolts
+                                <strong>Route have a hangerr bolts</strong>
                                     <img
                                         class="climbing_bolt_image"
                                         :src="'../../../../images/svg/hangerr bolt.svg'"
@@ -245,6 +247,11 @@ export default {
 
 .climbing_bolt_image{
     height: 50px;
-    /* float: right; */
+}
+
+@media (max-width: 756px) {
+    .climbing_bolt_image {
+        height: 35px;
+    }
 }
 </style>

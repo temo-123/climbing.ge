@@ -22,7 +22,7 @@ return new class extends Migration
 
             $table->integer('discount')->nullable();
             
-            $table->string('material')->nullable();
+            // $table->string('material')->nullable();
             
             $table->integer('mead_in_georgia')->nullable();
             $table->string('sale_type')->nullable();

@@ -14,9 +14,6 @@
         <th>Public</th>
         <th>|</th>
 
-        <th>User</th>
-        <th>|</th>
-
         <th>Options</th>
         <th>|</th>
 

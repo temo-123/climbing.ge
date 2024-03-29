@@ -18,6 +18,11 @@
             Sectors
         </th>
 
+        <th v-if="table_name == 'Tours'">|</th>
+        <th v-if="table_name == 'Tours'">
+            User
+        </th>
+
         <th>|</th>
 
         <th>Edit</th>

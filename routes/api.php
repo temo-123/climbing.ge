@@ -412,6 +412,8 @@ Route::group(['namespace'=>'Api'], function() {
 
             Route::post('/edit_product/{product_id}', 'edit_product');
             Route::post('/add_product', 'add_product'); 
+
+            Route::post('/change_user_relation', 'change_user_relation');
         });
         Route::controller(ProductController::class)->group( function() {
             // Route::apiResource('/product', 'ProductController');
@@ -448,6 +450,8 @@ Route::group(['namespace'=>'Api'], function() {
             Route::get('/get_tour_images/{tour_id}', 'get_tour_images');
             Route::post('/add_tour', 'add_tour');
             Route::post('/edit_tour/{tour_id}', 'edit_tour');
+            Route::post('/change_user_relation', 'change_user_relation');
+
             Route::delete('/del_tour_image/{image_id}', 'del_tour_image');
             Route::delete('/del_tour/{tour_id}', 'del_tour');
     

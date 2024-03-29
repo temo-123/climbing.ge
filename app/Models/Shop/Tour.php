@@ -33,7 +33,7 @@ class Tour extends Model
 	}
 
     function user() {
-		return $this->belongsToMany(User::class, 'users_tours', 'tour_id', 'user_id');
+		return $this->belongsToMany(User::class, 'user_tours', 'tour_id', 'user_id');
 	}
 
 	function resrtvation() {

@@ -204,8 +204,13 @@
                                     :table_name="data.table_name"
                                 />
                             </thead>
-                            <thead  v-else-if="data.table_name == 'Products' || data.table_name == 'My Products'">
+                            <thead  v-else-if="data.table_name == 'Products'">
                                 <productTagsTabHeader 
+                                    :table_name="data.table_name"
+                                />
+                            </thead>
+                            <thead  v-else-if="data.table_name == 'My Products'">
+                                <myProductTabTabHeader 
                                     :table_name="data.table_name"
                                 />
                             </thead>
@@ -271,9 +276,8 @@
                                         data.table_name == 'Films' ||
                                         data.table_name == 'Mountaineering routes' || 
                                         data.table_name == 'Tour' || 
-                                        data.table_name == 'services'
-                                         
-                                        || data.table_name == 'My Tours'
+                                        data.table_name == 'services' || 
+                                        data.table_name == 'My Tours'
                                     ">
                                 <articleTabHeader
                                     :table_name="data.table_name"
@@ -283,10 +287,17 @@
                                 <tabHeader :data="data"/>
                             </thead>
 
-
-
-                            <tbody v-if="data.table_name == 'Products' || data.table_name == 'My Products'">
+                            <tbody v-if="data.table_name == 'Products'">
                                 <productsTab
+                                    v-for="table_info in data.data"
+                                    :key="table_info.id"
+                                    :table_info="table_info"
+
+                                    @restart="update"
+                                />
+                            </tbody>
+                            <tbody v-if="data.table_name == 'My Products'">
+                                <myProductsTab
                                     v-for="table_info in data.data"
                                     :key="table_info.id"
                                     :table_info="table_info"
@@ -571,8 +582,17 @@
                                     @restart="update"
                                 />
                             </tbody>
-                            <tbody v-else-if="data.table_name == 'Tours' || data.table_name == 'My Tours'">
+                            <tbody v-else-if="data.table_name == 'Tours'">
                                 <tourTab
+                                    v-for="table_info in data.data"
+                                    :key="table_info.id"
+                                    :table_info="table_info"
+                                    
+                                    @restart="update"
+                                />
+                            </tbody>
+                            <tbody v-else-if="data.table_name == 'My Tours'">
+                                <myToursTabComponent
                                     v-for="table_info in data.data"
                                     :key="table_info.id"
                                     :table_info="table_info"
@@ -654,6 +674,7 @@ import commentTabHeader from "./tab_header/CommentsTabHeaderComponent.vue"
 import reviewTabHeader from "./tab_header/ReviewTabHeaderComponent.vue"
 import feedbackTabHeader from "./tab_header/FeedbackTabHeaderComponent.vue"
 import non_registered_commenter_tab_header from "./tab_header/NonRegisteredCommenterTabHeader.vue"
+import myProductTabTabHeader from "./tab_header/MyProductTabHeaderComponent.vue";
 
 import eventTab from "./tabs/EventTabComponent.vue";
 import sectorLocalImageTab from "./tabs/SectorLocalImageTabComponent.vue";
@@ -669,6 +690,8 @@ import rolesTab from "./tabs/RolesTabComponent.vue";
 import parmissionsTab from "./tabs/ParmissionsTabComponent.vue";
 import regionsTab from "./tabs/RegionsTabComponent.vue";
 import productsTab from "./tabs/ProductsTabComponent.vue";
+import myProductsTab from "./tabs/MyProductsTabComponent.vue";
+import myToursTabComponent from "./tabs/MyToursTabComponent.vue";
 import userTab from "./tabs/UsersTabComponent.vue";
 import commentsTab from './tabs/CommentsTabComponent.vue'
 import filmTagsTab from './tabs/FilmTagsTabComponent.vue'
@@ -699,6 +722,9 @@ export default {
     components: {
         tabHeader,
         functionalBattoms,
+        myProductsTab,
+        myToursTabComponent,
+        myProductTabTabHeader,
 
         tourCategoryTabHeader,
         

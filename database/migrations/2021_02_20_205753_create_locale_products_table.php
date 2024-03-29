@@ -22,6 +22,7 @@ class CreateLocaleProductsTable extends Migration
             $table->string('title')->nullable();
             $table->string('short_description')->nullable();
             $table->text('text')->nullable();
+            $table->text('material')->nullable();
 
             $table->timestamps();
         });

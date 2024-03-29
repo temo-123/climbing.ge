@@ -8,7 +8,7 @@ use Illuminate\Http\Request;
 use App\Models\Shop\Tour;
 use App\Models\Shop\Locale_tour;
 use App\Models\Shop\Tour_image;
-use App\Models\Shop\Users_tour;
+use App\Models\User\User_tour;
 
 use App\Services\TourService;
 use App\Services\URLTitleService;
@@ -25,8 +25,17 @@ class TourController extends Controller
         return $tours = TourService::get_locale_tours_use_locale($global_tours, $request->lang);
     }
 
-    function get_all_tours(){
-        return Tour::latest('id')->get();
+    public function get_all_tours()
+    {
+        $tours = Tour::get();
+        $returned_array = [];
+        foreach($tours as $tour){
+            array_push($returned_array, [
+                $tour,
+                'user' => $tour->user
+            ]);
+        }
+        return $returned_array;
     }
 
     function get_user_tours(){
@@ -116,11 +125,29 @@ class TourController extends Controller
         }   
     }
 
-    public function create_tour_user_relations($tout_id) {
-        $new_user_relatione = new Users_tour;
-        $new_user_relatione = $tout_id;
-        $new_user_relatione = Auth::user()->id;
+    public function create_tour_user_relations($tour_id, $user_id = null) {
+        $new_user_relatione = new User_tour;
+        $new_user_relatione['tour_id'] = $tour_id;
+        if($user_id == null){
+            $new_user_relatione['user_id'] = Auth::user()->id;
+        }
+        else{
+            $new_user_relatione['user_id'] = $user_id;
+        }
         $new_user_relatione -> save();
+    }
+
+    public function change_user_relation(Request $request) {
+        if($request['data']['old_user_id'] != []){
+            $user_relatione = User_tour::where('tour_id', '=', $request['data']['tour_id'])->where('user_id', '=', $request['data']['old_user_id'])->first();
+            if($user_relatione != []){
+                $user_relatione['user_id'] = $request['data']['new_user_id'];
+                $user_relatione -> save();
+            }
+        }
+        else{
+            $this->create_tour_user_relations($request['data']['tour_id'], $request['data']['new_user_id']);
+        }
     }
 
     public function get_editing_tour(Request $request)

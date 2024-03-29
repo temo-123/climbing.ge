@@ -18,12 +18,21 @@ use App\Models\Shop\Cart;
 use App\Models\Shop\Product_option;
 use App\Models\Shop\Option_image;
 use App\Models\Shop\Product_category;
+use App\Models\User\User_product;
 
 class ProductController extends Controller
 {
     public function get_all_products()
     {
-        return Product::get();
+        $products = Product::get();
+        $returned_array = [];
+        foreach($products as $product){
+            array_push($returned_array, [
+                $product,
+                'user' => $product->user
+            ]);
+        }
+        return $returned_array;
     }
 
     public function get_user_products()
@@ -89,30 +98,43 @@ class ProductController extends Controller
             ], 422);
         }
     
-        // $tour_adding = ProductService::add_content($data, Tour::class, Locale_tour::class, '_product', $request);
-        $tour_adding = ProductService::add_content($data, Product::class, Locale_product::class, '_product', $request);
+        // $product_adding = ProductService::add_content($data, product::class, Locale_product::class, '_product', $request);
+        $product_adding = ProductService::add_content($data, Product::class, Locale_product::class, '_product', $request);
         
-        if (!array_key_exists('validation', $tour_adding->original)) {
-            $this->create_product_user_relations($tour_adding);
+        if (!array_key_exists('validation', $product_adding->original)) {
+            $this->create_product_user_relations($product_adding);
         }
         else {
-            return $tour_adding;
+            return $product_adding;
         }
     }
 
-    public function create_product_user_relations($tout_id) {
-        $new_user_relatione = new Users_tour;
-        $new_user_relatione = $tout_id;
-        $new_user_relatione = Auth::user()->id;
+    public function create_product_user_relations($product_id, $user_id = null) {
+        $new_user_relatione = new User_product;
+        $new_user_relatione['product_id'] = $product_id;
+        if($user_id == null){
+            $new_user_relatione['user_id'] = Auth::user()->id;
+        }
+        else{
+            $new_user_relatione['user_id'] = $user_id;
+        }
         $new_user_relatione -> save();
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
+    public function change_user_relation(Request $request) {
+
+        if($request['data']['old_user_id'] != []){
+            $user_relatione = User_product::where('product_id', '=', $request['data']['product_id'])->where('user_id', '=', $request['data']['old_user_id'])->first();
+            if($user_relatione != []){
+                $user_relatione['user_id'] = $request['data']['new_user_id'];
+                $user_relatione -> save();
+            }
+        }
+        else{
+            $this->create_product_user_relations($request['data']['product_id'], $request['data']['new_user_id']);
+        }
+    }
+    
     public function get_product_editing_data(Request $request)
     {
         $product = product::where('id', '=', $request->product_id)->first();
@@ -152,18 +174,13 @@ class ProductController extends Controller
         return $max_price = max($option_price);
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function edit_product(Request $request)
     {
-        $data = $request->data;
+        // $data = $request->data;
+        $data = json_decode($request->data, true );
 
-        $validator = Validator::make($data, [
-            'global_product.category_id' => 'required',
+        $validator = Validator::make($data['global_product'], [
+            'category_id' => 'required',
         ]);
         
         if ($validator->fails()) {
@@ -179,13 +196,6 @@ class ProductController extends Controller
         }
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function update(Request $request, $id)
     {
         $page_product = Product::latest('id')
@@ -203,12 +213,6 @@ class ProductController extends Controller
         return ProductService::get_locale_product($global_products);
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function destroy($id)
     {
         $deleted_product = Product::where("id", "=", $id)->first();

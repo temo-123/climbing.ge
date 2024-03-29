@@ -16,7 +16,7 @@ class Product extends Model
       'url_title',
 
       'discount',
-      'material',
+      // 'material',
     
       'mead_in_georgia',
 
@@ -66,6 +66,6 @@ class Product extends Model
 
   public function user()
   {
-        return $this->belongsToMany(User::class, 'user_products', 'user_id', 'product_id');
+        return $this->belongsToMany(User::class, 'user_products', 'product_id', 'user_id');
   }
 }
