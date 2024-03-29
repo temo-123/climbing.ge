@@ -29,7 +29,6 @@ class CKEditorController extends Controller
 
     public function upload(Request $request)
     {
-        dd($request);
         if($request->hasFile('upload')) {
             //get filename with extension
             $filenamewithextension = $request->file('upload')->getClientOriginalName();

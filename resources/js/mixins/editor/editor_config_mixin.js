@@ -4,7 +4,8 @@ export const editor_config = {
     get_big_editor_config(){
         return {
             // https://www.tutsmake.com/laravel-8-ckeditor-image-upload-tutorial-example/
-            filebrowserUploadUrl: "../../../../../../../../../../api/ckeditor/upload",
+            filebrowserUploadUrl: "/api/ckeditor/upload/" + "?_token=" + document.head.querySelector('meta[name="csrf-token"]').content,
+            filebrowserUploadMethod: 'form',
 
             // https://ckeditor.com/docs/ckeditor4/latest/examples/mediaembed.html
             extraPlugins: 'embed,autoembed',
