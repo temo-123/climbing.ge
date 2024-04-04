@@ -27,7 +27,7 @@ return new class extends Migration
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
             
             $table->unsignedBigInteger('category_id');
-            $table->foreign('category_id')->references('id')->on('task_category');
+            $table->foreign('category_id')->references('id')->on('task_categories');
 
             $table->timestamps();
         });
