@@ -23,14 +23,15 @@ return new class extends Migration
 
             $table->string('stars')->nullable();
 
-            $table->bigIncrements('published')->nullable();
+            // $table->bigIncrements('published')->nullable();
+            $table->integer('published')->nullable();
+
+            $table->string('deleted_reason')->nullable();
+            $table->timestamp('deleted_at')->nullable();
 
             // $table->foreignId('product_id')->constrained();
             $table->unsignedBigInteger('product_id');
             $table->foreign('product_id')->references('id')->on('products');
-
-            $table->string('deleted_reason')->nullable();
-            $table->timestamp('deleted_at')->nullable();
 
             $table->timestamps();
         });

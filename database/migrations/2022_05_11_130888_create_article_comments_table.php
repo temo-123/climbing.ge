@@ -21,7 +21,7 @@ return new class extends Migration
             $table->string('email')->nullable();
             $table->text('text')->nullable();
 
-            $table->bigIncrements('published')->nullable();
+            $table->integer('published')->nullable();
 
             $table->foreignId('article_id')->constrained();
 
