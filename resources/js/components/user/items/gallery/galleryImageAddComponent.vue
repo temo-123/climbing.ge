@@ -1,8 +1,9 @@
 <template>
     <div class="width_100">
+        <hr>
         <div class="col-md-12">
             <div class="row">
-                <h2>Add new gallery inmages</h2>
+                <h2>Add new gallery images</h2>
             </div>
         </div>
 

@@ -37,6 +37,7 @@
         data(){
             return {
                 data_for_tab: [],
+                article_loading: false,
             }
         },
         mounted() {
@@ -74,9 +75,7 @@
 
             get_unfilted_articles(){
                 axios
-                .post("/article/", {
-                    category: 'mount_route',
-                })
+                .get("/article/get_category_articles/mount_route")
                 .then(response => {
                     this.data_for_tab = []
                     this.data_for_tab.push({'id': 1,
@@ -90,8 +89,10 @@
 
                     this.get_mounts()
                 })
-                .catch(error =>{
-                })
+                .catch(
+                    error => console.log(error)
+                )
+                .finally(() => this.article_loading = false);
             },
 
             get_articles(filtr_id = 'all'){

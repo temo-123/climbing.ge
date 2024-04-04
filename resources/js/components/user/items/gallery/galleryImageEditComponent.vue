@@ -1,8 +1,15 @@
 <template>
     <div class="width_100">
+        <hr>
         <div class="col-md-12">
             <div class="row">
-                <h2>Gallery inmages</h2>
+                <h2>Gallery images</h2>
+            </div>
+        </div>
+
+        <div class="col-md-12">
+            <div class="row">
+                <p>Olredy added</p>
             </div>
         </div>
 
@@ -36,7 +43,7 @@
 
         <div class="col-md-12">
             <div class="row">
-                <h2>Add new gallery inmages</h2>
+                <p>Add new gallery inmages</p>
             </div>
         </div>
 

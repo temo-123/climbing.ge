@@ -1,5 +1,12 @@
 <template>
-    <div class="col-md-12">
+    <div class="col-md-12">        
+        <hr>
+        <div class="col-md-12">
+            <div class="row">
+                <h2>Mount route images</h2>
+            </div>
+        </div>
+
         <div class="row">
             <div class="col-md-12">
                 <div class="form-groupe">

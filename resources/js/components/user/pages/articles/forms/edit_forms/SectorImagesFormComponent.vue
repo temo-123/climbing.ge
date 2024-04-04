@@ -1,10 +1,16 @@
 <template>
     <div class="col-md-12">
+        <hr>
         <div class="row">
+            <div class="col-md-12">
+                <div class="row">
+                    <h2>Sector images</h2>
+                </div>
+            </div>
                     
             <div class="col-md-12">
                 <div class="row">
-                    Olredy added
+                    <p>Olredy added</p>
                 </div>
             </div>
 
@@ -34,6 +40,12 @@
                         </table>
                     </div>
                 </div>
+            </div>
+        </div>
+
+        <div class="col-md-12">
+            <div class="row">
+                <p>Add new sectors inmages</p>
             </div>
         </div>
 

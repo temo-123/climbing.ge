@@ -1,6 +1,13 @@
 <template>
     <div class="col-md-12">
+        <hr>
         <div class="row">
+            <div class="col-md-12">
+                <div class="row">
+                    <h2>Sector images</h2>
+                </div>
+            </div>
+            
             <div class="col-md-12">
                 <div class="form-groupe">
                     <button class="btn btn-primary float-left" @click="add_new_sector_image_value()">Add new sector image</button>

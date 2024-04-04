@@ -1,10 +1,16 @@
 <template>
     <div class="col-md-12">
-        <div class="row">
-                    
+        <hr>
+        <div class="row">        
             <div class="col-md-12">
                 <div class="row">
-                    Olredy added
+                    <h2>Mount route images</h2>
+                </div>
+            </div>
+
+            <div class="col-md-12">
+                <div class="row">
+                    <p>Olredy added</p>
                 </div>
             </div>
 
@@ -34,6 +40,12 @@
                         </table>
                     </div>
                 </div>
+            </div>
+        </div>
+
+        <div class="col-md-12">
+            <div class="row">
+                <p>Add new mount route image inmages</p>
             </div>
         </div>
 
