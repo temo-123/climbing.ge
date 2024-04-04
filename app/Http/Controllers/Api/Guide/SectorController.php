@@ -65,7 +65,7 @@ class SectorController extends Controller
             $spot_sector_count = Sector::where('article_id', '=', $data['article_id'])->count();
             $new_sector = new Sector();
 
-            $new_sector['count'] = $spot_sector_count++;
+            $new_sector['num'] = $spot_sector_count++;
             $new_sector['published'] = $data['published'];
             $new_sector['article_id'] = $data['article_id'];
             $new_sector['name'] = $data['name'];
