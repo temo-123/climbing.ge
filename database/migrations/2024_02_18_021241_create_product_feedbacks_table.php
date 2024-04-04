@@ -25,7 +25,9 @@ return new class extends Migration
 
             $table->bigIncrements('published')->nullable();
 
-            $table->foreignId('product_id')->constrained();
+            // $table->foreignId('product_id')->constrained();
+            $table->unsignedBigInteger('product_id');
+            $table->foreign('product_id')->references('id')->on('products');
 
             $table->string('deleted_reason')->nullable();
             $table->timestamp('deleted_at')->nullable();
