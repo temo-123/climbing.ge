@@ -77,6 +77,9 @@
         components: {
             StackModal,
         },
+        props: [
+            'category_prop'
+        ],
         data(){
             return{
                 user: [],
@@ -93,8 +96,13 @@
                 }
             }
         },
+        watch: {
+            category_prop: function(){
+                this.form_data.category = this.category_prop
+            },
+        },
         mounted(){
-            // 
+            // this.form_data.category = this.category_prop
         },
         methods: {
             close_add_image_modal(action = false){
@@ -110,9 +118,10 @@
                 }
             },
             
-            show_modal(category){
+            // show_modal(category){
+            show_modal(){
                 this.clear_input_data()
-                this.form_data.category = category
+                // this.form_data.category = category
                 this.is_add_image_modal = true
             },
 
@@ -121,7 +130,7 @@
 
                 this.form_data = {
                     published: 0,
-                    category: '',
+                    category:  this.category_prop,
 
                     title: '',
                     text: '',

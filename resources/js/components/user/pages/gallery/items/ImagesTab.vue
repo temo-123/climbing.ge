@@ -45,7 +45,7 @@
         <edit_image_modal ref="show_edit_image_modal" :image_path_prop="image_path_prop" @update="update_data()"/>
         <show_image_modal ref="show_image_modal" :image_path_prop="image_path_prop"/>
 
-        <add_image_modal ref="show_add_image_modal" @update="update_data()" />
+        <add_image_modal ref="show_add_image_modal" :category_prop="category_prop" @update="update_data()" />
 
     </div>
 </template>

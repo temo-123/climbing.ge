@@ -14,7 +14,15 @@
                 <span @click="close_image()">X</span>
             </div>
 
-            <site-img :src="path + active_img.image" :alt="active_img.image" :img_class="'gallery_big_img'" />
+            <!-- <site-img :src="path + active_img.image" :alt="active_img.image" :img_class="'gallery_big_img'" /> -->
+            <img :src="path + active_img.image" :alt="active_img.image" :img_class="'gallery_big_img'" style="
+                                                                                                    max-width: 96%;
+                                                                                                    max-height: 80%;
+                                                                                                    position: absolute;
+                                                                                                    top: 50%;
+                                                                                                    left: 50%;
+                                                                                                    transform: translate(-50%, -50%);
+                                                                                                    "/>
 
             <div class="image_moving">
                 <div class="previes_img_bottom"  @click="previes_image()">
