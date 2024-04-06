@@ -12,6 +12,7 @@ use App\Services\GetProductsService;
 use App\Services\GetProductService;
 use App\Services\URLTitleService;
 use App\Services\Abstract\ImageControllService;
+use App\Services\GalleryService;
 
 use App\Models\Shop\Product;
 use App\Models\Shop\Product_option;

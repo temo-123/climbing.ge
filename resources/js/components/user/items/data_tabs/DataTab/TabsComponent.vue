@@ -296,7 +296,7 @@
                                     @restart="update"
                                 />
                             </tbody>
-                            <tbody v-if="data.table_name == 'My Products'">
+                            <tbody v-else-if="data.table_name == 'My Products'">
                                 <myProductsTab
                                     v-for="table_info in data.data"
                                     :key="table_info.id"
