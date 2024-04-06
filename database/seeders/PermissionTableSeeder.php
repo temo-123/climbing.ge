@@ -405,7 +405,6 @@ class PermissionTableSeeder extends Seeder
                 'subject' => 'routes_rewiew',
                 'action' => 'del',
             ],
-            // -----------------------------------------------
             [
                 'subject' => 'worker',
                 'action' => 'show',

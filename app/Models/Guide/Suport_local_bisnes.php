@@ -5,7 +5,7 @@ namespace App\Models\Guide;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-use App\Models\Article;
+// use App\Models\Article;
 
 class Suport_local_bisnes extends Model
 {

@@ -158,11 +158,11 @@ class LocalBisnesController extends Controller
 
     public function edit_local_bisnes(Request $request)
     {
-        $data = json_decode($request->data, true );
+        // $data = json_decode($request->data, true );
 
         $image_path = 'images/local_bisnes_img/';
 
-        $article_editing = LocaleContentControllService::edit_content($data, Suport_local_bisnes::class, Locale_bisnes::class, '_bisnes', $request, $image_path);
+        $article_editing = LocaleContentControllService::edit_content(Suport_local_bisnes::class, Locale_bisnes::class, '_bisnes', $request, $image_path);
 
         if(!array_key_exists('validation', $article_editing->original)){
             // GalleryService::add_gallery_images(
