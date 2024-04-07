@@ -19,41 +19,9 @@
         </div>
 
         <div class="row"  v-show="!is_loading" v-if="error.length != 0">
-            <div class="col-md-12">
-                <div class="alert alert-danger" role="alert" v-if="error.global_info_validation.published">
-                    Published - {{ error.global_info_validation.published[0] }}
-                </div>
-
-                <div class="alert alert-danger" role="alert" v-if="error.us_info_validation.title">
-                    English title - {{ error.us_info_validation.title[0] }}
-                </div>
-                <div class="alert alert-danger" role="alert" v-if="error.us_info_validation.short_description">
-                    English description - {{ error.us_info_validation.short_description[0] }}
-                </div>
-                <div class="alert alert-danger" role="alert" v-if="error.us_info_validation.text">
-                    English text - {{ error.us_info_validation.text[0] }}
-                </div>
-
-                <div class="alert alert-danger" role="alert" v-if="error.ka_info_validation.title">
-                    Georgian title - {{ error.ka_info_validation.title[0] }}
-                </div>
-                <div class="alert alert-danger" role="alert" v-if="error.ka_info_validation.short_description">
-                    Georgian description - {{ error.ka_info_validation.short_description[0] }}
-                </div>
-                <div class="alert alert-danger" role="alert" v-if="error.ka_info_validation.text">
-                    Georgian text - {{ error.ka_info_validation.text[0] }}
-                </div>
-
-                <div class="alert alert-danger" role="alert" v-if="error.ru_info_validation.title">
-                    Russion title - {{ error.ru_info_validation.title[0] }}
-                </div>
-                <div class="alert alert-danger" role="alert" v-if="error.ru_info_validation.short_description">
-                    Russiondescription - {{ error.ru_info_validation.short_description[0] }}
-                </div>
-                <div class="alert alert-danger" role="alert" v-if="error.ru_info_validation.text">
-                    Russion text - {{ error.ru_info_validation.text[0] }}
-                </div>
-            </div>
+            <validator_alerts_component
+                :errors_prop="error"
+            />
         </div>
 
         <div class="row" v-show="!is_loading">
@@ -95,7 +63,7 @@
                         <div class="form-group clearfix">
                             <label for="name" class='col-xs-2 control-label'> Publish </label>
                             <div class="col-xs-8">
-                                <select class="form-control" v-model="data.global_data.published" name="published" > 
+                                <select class="form-control" v-model="data.global_service.published" name="published" > 
                                     <option value="0">Not public</option> 
                                     <option value="1">Public</option> 
                                 </select>
@@ -205,7 +173,7 @@
                         <div class="form-group clearfix">
                             <label for="name" class='col-xs-2 control-label'> Title </label>
                             <div class="col-xs-8">
-                                <input type="text" name="name" v-model="data.us_data.title"  class="form-control"> 
+                                <input type="text" name="name" v-model="data.us_service.title"  class="form-control"> 
                             </div>
                         </div>
     
@@ -219,14 +187,14 @@
                         <div class="form-group clearfix">
                             <label for="name" class='col-xs-2 control-label'> Short description </label>
                             <div class="col-xs-8">
-                                <ckeditor v-model="data.us_data.short_description"  :config="editor_config.us_short_description_text"></ckeditor>
+                                <ckeditor v-model="data.us_service.short_description"  :config="editor_config.us_short_description_text"></ckeditor>
                             </div>
                         </div>
 
                         <div class="form-group clearfix">
                             <label for="name" class='col-xs-2 control-label'> text </label>
                             <div class="col-xs-8">
-                                <ckeditor v-model="data.us_data.text"  :config="editor_config.us_text"></ckeditor>
+                                <ckeditor v-model="data.us_service.text"  :config="editor_config.us_text"></ckeditor>
                             </div>
                         </div>
                     </form>
@@ -243,22 +211,22 @@
                         <div class="form-group clearfix">
                             <label for="name" class='col-xs-2 control-label'> Title </label>
                             <div class="col-xs-8">
-                                <input type="text" name="title" v-model="data.ru_data.title" class="form-control"> 
+                                <input type="text" name="title" v-model="data.ru_service.title" class="form-control"> 
                             </div>
                         </div>
     
                         <div class="form-group clearfix">
                             <label for="name" class='col-xs-2 control-label'> Short description </label>
                             <div class="col-xs-8">
-                                <!-- <textarea type="text"  name="short_description" v-model="data.ru_data.short_description"  rows="15" class="form-cotrol md-textarea form-control"></textarea> -->
-                                <ckeditor v-model="data.ru_data.short_description" :config="editor_config.ru_short_description_text"></ckeditor>
+                                <!-- <textarea type="text"  name="short_description" v-model="data.ru_service.short_description"  rows="15" class="form-cotrol md-textarea form-control"></textarea> -->
+                                <ckeditor v-model="data.ru_service.short_description" :config="editor_config.ru_short_description_text"></ckeditor>
                             </div>
                         </div>
 
                         <div class="form-group clearfix">
                             <label for="name" class='col-xs-2 control-label'> text </label>
                             <div class="col-xs-8">
-                                <ckeditor v-model="data.ru_data.text"  :config="editor_config.ru_text"></ckeditor>
+                                <ckeditor v-model="data.ru_service.text"  :config="editor_config.ru_text"></ckeditor>
                             </div>
                         </div>
                     </form>
@@ -275,22 +243,22 @@
                         <div class="form-group clearfix">
                             <label for="name" class='col-xs-2 control-label'> Title </label>
                             <div class="col-xs-8">
-                                <input type="text" name="value name"  v-model="data.ka_data.title" class="form-control"> 
+                                <input type="text" name="value name"  v-model="data.ka_service.title" class="form-control"> 
                             </div>
                         </div>
     
                         <div class="form-group clearfix">
                             <label for="name" class='col-xs-2 control-label'> Short description </label>
                             <div class="col-xs-8">
-                                <!-- <textarea type="text"  name="short_description"  v-model="data.ka_data.short_description" rows="15" class="form-cotrol md-textarea form-control"></textarea> -->
-                                <ckeditor v-model="data.ka_data.short_description" :config="editor_config.ka_short_description_text"></ckeditor>
+                                <!-- <textarea type="text"  name="short_description"  v-model="data.ka_service.short_description" rows="15" class="form-cotrol md-textarea form-control"></textarea> -->
+                                <ckeditor v-model="data.ka_service.short_description" :config="editor_config.ka_short_description_text"></ckeditor>
                             </div>
                         </div>
 
                         <div class="form-group clearfix">
                             <label for="name" class='col-xs-2 control-label'> text </label>
                             <div class="col-xs-8">
-                                <ckeditor v-model="data.ka_data.text"  :config="editor_config.ka_text"></ckeditor>
+                                <ckeditor v-model="data.ka_service.text"  :config="editor_config.ka_text"></ckeditor>
                             </div>
                         </div>
                     </form>
@@ -303,7 +271,11 @@
 
 <script>
     import { editor_config } from '../../../../mixins/editor/editor_config_mixin.js'
+    import validator_alerts_component from '../../items/validator_alerts_component.vue'
     export default {
+        components: {
+            validator_alerts_component,
+        },
         mixins: [
             editor_config
         ],
@@ -337,10 +309,10 @@
                 },
 
                 data: {
-                    global_data: {},
-                    us_data: {},
-                    ka_data: {},
-                    ru_data: {}
+                    global_service: {},
+                    us_service: {},
+                    ka_service: {},
+                    ru_service: {}
                 },
 
                 // the_date: moment().format('YYYY-MM-DD'),
@@ -358,7 +330,7 @@
         methods: {
             // get_region_data: function () {
             //     axios
-            //         .get("../../api/article/")
+            //         .get("/article/")
             //         .then((response) => {
             //             this.regions = response.data;
             //         })
@@ -399,24 +371,24 @@
                 this.data_for_tab = []
                 this.is_loading = true
                 axios
-                .get("../../api/service/get_editing_service/"+this.$route.params.id)
+                .get("/service/get_editing_service/"+this.$route.params.id)
                 .then(response => {
                     this.editing_data = response.data
 
                     this.data = {
-                        global_data: response.data.global_service,
+                        global_service: response.data.global_service,
 
-                        us_data: response.data.us_service,
-                        ru_data: response.data.ru_service,
-                        ka_data: response.data.ka_service,
+                        us_service: response.data.us_service,
+                        ru_service: response.data.ru_service,
+                        ka_service: response.data.ka_service,
                     }
 
                     this.service_old_images = response.data.service_images
 
                     this.get_service_images()
 
-                    // if(this.data.global_data.published_data != null){
-                    //     this.the_date = this.data.global_data.published_data
+                    // if(this.data.global_service.published_data != null){
+                    //     this.the_date = this.data.global_service.published_data
                     // }
                 })
                 .catch(
@@ -474,12 +446,12 @@
                 this.is_loading = true
 
                 if (this.change_url_title) {
-                    this.data.global_data.change_url_title = this.change_url_title
-                    this.data.global_data.us_title_for_url_title = this.data.us_data.title
+                    this.data.global_service.change_url_title = this.change_url_title
+                    this.data.global_service.us_title_for_url_title = this.data.us_service.title
                 }
                 else{
-                    this.data.global_data.change_url_title = false
-                    this.data.global_data.us_title_for_url_title = false
+                    this.data.global_service.change_url_title = false
+                    this.data.global_service.us_title_for_url_title = false
                 }
 
                 let formData = new FormData();
@@ -494,7 +466,7 @@
                 formData.append('data', JSON.stringify(this.data))
 
                 axios
-                .post('../../api/service/edit_service/'+this.$route.params.id, 
+                .post('/service/edit_service/'+this.$route.params.id, 
                     formData
                 )
                 .then(response => {

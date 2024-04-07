@@ -8,10 +8,11 @@ class Service extends Model
 {
     // public $table = 'services';
 
-    // protected $fillable = [
-    //     'url_title',
-    // ];
-
+    protected $fillable = [
+        'id',
+        'url_title',
+        'published',
+    ];
 
 	public function us_service()
 	{

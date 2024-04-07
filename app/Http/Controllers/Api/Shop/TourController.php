@@ -76,19 +76,21 @@ class TourController extends Controller
             ], 422);
         }
         
-        $image_path = 'images/tour_img/';
+        // $image_path = 'images/tour_img/';
 
         $tour_adding = TourService::add_content($data, Tour::class, Locale_tour::class, '_tour', $request);
         
         if (!array_key_exists('validation', $tour_adding->original)) {
-            GalleryService::add_gallery_images(
-                $request->gallery_images, 
-                $tour_adding->original['global_tour_id'], 
-                tour_image::class, 
-                'image', 
-                'tour_id', 
-                '/images/tour_img/'
-            );
+            if($request->hasFile('tour_images')){
+                GalleryService::add_gallery_images(
+                    $request->tour_images, 
+                    $tour_adding->original['global_tour_id'], 
+                    tour_image::class, 
+                    'image', 
+                    'tour_id', 
+                    '/images/tour_img/'
+                );
+            }
 
             $this->create_tour_user_relations($tour_adding->original['global_tour_id']);
         }
@@ -99,26 +101,31 @@ class TourController extends Controller
 
     public function edit_tour(Request $request)
     {
-        // $data = json_decode($request->data, true );
-        $global_blocks = json_decode($request->global_blocks, true );
+        $data = json_decode($request->data, true );
 
-        $image_path = 'images/'.$data['global_article']['category'].'_img/';
+        $validator = Validator::make($data, [
+            'global_tour.category_id' => 'required',
+        ]);
+        
+        if ($validator->fails()) {
+            return response()->json([
+                'validation' => $validator->messages()
+            ], 422);
+        }
 
-        $article_editing = ArticlesService::edit_content(Article::class, Locale_article::class, '_article', $request);
+        $tour_editing = TourService::edit_content(Tour::class, Locale_tour::class, '_tour', $request, 'images/tour_img/');
 
-        if(!array_key_exists('validation', $article_editing->original)){
-            GalleryService::add_gallery_images(
-                $request->gallery_images, 
-                $article_editing->original['global_article_id'], 
-                Article_image::class, 
-                'image', 
-                'article_id', 
-                '/images/article_gallery_img/'
-            );
-
-            GeneralInfoService::edit_general_info_relatione($global_blocks, $article_editing->original['global_article_id'], 'article');
-
-            $this->description_img($article_editing->original['global_article_id'], $global_blocks, $data, $request);
+        if(!array_key_exists('validation', $tour_editing->original)){
+            if($request->hasFile('tour_new_images')){
+                GalleryService::add_gallery_images(
+                    $request->tour_new_images, 
+                    $tour_editing->original['global_tour_id'], 
+                    tour_image::class, 
+                    'image', 
+                    'tour_id', 
+                    '/images/tour_img/'
+                );
+            }
         }
         else{
             return $article_editing;
@@ -208,50 +215,4 @@ class TourController extends Controller
             $image->delete();
         }
     }
-
-    public function global_tour_editing_validate($global_data)
-    {
-        $validator = Validator::make($global_data, [
-            'published' => 'required',
-            'category_id' => 'required',
-        ]);
-        if ($validator->fails()) {
-            return $validator->messages();
-        }
-    }
-
-    public function global_tour_adding_validate($global_data)
-    {
-        $validator = Validator::make($global_data, [
-            'published' => 'required',
-            'category_id' => 'required',
-            'us_title_for_url_title' => 'required|unique:locale_tours,title',
-        ]);
-        if ($validator->fails()) {
-            return $validator->messages();
-        }
-    }
-
-    private function local_tour_validate($data)
-    {
-        $validator = Validator::make($data, [
-            'title' => 'required | max:190',
-            'short_description' => 'required',
-            'text' => 'required',
-        ]);
-        if ($validator->fails()) {
-            return $validator->messages();
-        }
-    }
-
-    private function image_validate($request)
-    {
-        $validator = Validator::make($request->all(), [
-            'image' => 'nullable | image | mimes:jpeg,png,jpg,gif,svg | max:2048',
-        ]);
-        if ($validator->fails()) {
-            return $validator->messages();
-        }
-    }
-
 }

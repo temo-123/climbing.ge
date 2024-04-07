@@ -63,7 +63,7 @@
                         <div class="form-group clearfix">
                             <label for="name" class='col-xs-2 control-label'> Publish </label>
                             <div class="col-xs-8">
-                                <select class="form-control" v-model="data.global_data.published" name="published" > 
+                                <select class="form-control" v-model="data.global_tour.published" name="published" > 
                                     <option value="0">Not public</option> 
                                     <option value="1">Public</option> 
                                 </select> 
@@ -73,7 +73,7 @@
                         <div class="form-group clearfix">
                             <label for="category" class='col-xs-2 control-label '> Category </label>
                             <div class="col-xs-10">
-                                <select class="form-control" v-model="data.global_data.category_id" name="category" > 
+                                <select class="form-control" v-model="data.global_tour.category_id" name="category" > 
                                     <option :value="''" disabled>Select category</option> 
                                     <option  v-for="category in categories" :key="category.id" :value="category.id">{{ category.us_name }}</option>
                                 </select> 
@@ -82,19 +82,19 @@
                         <div class="form-group clearfix">
                             <label for="name" class='col-xs-2 control-label'> Location </label>
                             <div class="col-xs-8">
-                                <input type="text" name="name" v-model="data.global_data.location"  class="form-control"> 
+                                <input type="text" name="name" v-model="data.global_tour.location"  class="form-control"> 
                             </div>
                         </div>
                         <div class="form-group clearfix">
                             <label for="name" class='col-xs-2 control-label'> Duration </label>
                             <div class="col-xs-8">
-                                <input type="text" name="name" v-model="data.global_data.duration"  class="form-control"> 
+                                <input type="text" name="name" v-model="data.global_tour.duration"  class="form-control"> 
                             </div>
                         </div>
                         <div class="form-group clearfix">
                             <label for="name" class='col-xs-2 control-label'> Min price </label>
                             <div class="col-xs-8">
-                                <input type="text" name="name" v-model="data.global_data.min_price"  class="form-control"> 
+                                <input type="text" name="name" v-model="data.global_tour.min_price"  class="form-control"> 
                             </div>
                         </div>
                     </form>
@@ -201,7 +201,7 @@
                         <div class="form-group clearfix">
                             <label for="name" class='col-xs-2 control-label'> Title </label>
                             <div class="col-xs-8">
-                                <input type="text" name="name" v-model="data.us_data.title"  class="form-control"> 
+                                <input type="text" name="name" v-model="data.us_tour.title"  class="form-control"> 
                             </div>
                         </div>
     
@@ -215,14 +215,14 @@
                         <div class="form-group clearfix">
                             <label for="name" class='col-xs-2 control-label'> Short description </label>
                             <div class="col-xs-8">
-                                <ckeditor v-model="data.us_data.short_description"  :config="editor_config.us_short_description_text"></ckeditor>
+                                <ckeditor v-model="data.us_tour.short_description"  :config="editor_config.us_short_description_text"></ckeditor>
                             </div>
                         </div>
 
                         <div class="form-group clearfix">
                             <label for="name" class='col-xs-2 control-label'> text </label>
                             <div class="col-xs-8">
-                                <ckeditor v-model="data.us_data.text"  :config="editor_config.us_text"></ckeditor>
+                                <ckeditor v-model="data.us_tour.text"  :config="editor_config.us_text"></ckeditor>
                             </div>
                         </div>
                     </form>
@@ -239,22 +239,22 @@
                         <div class="form-group clearfix">
                             <label for="name" class='col-xs-2 control-label'> Title </label>
                             <div class="col-xs-8">
-                                <input type="text" name="title" v-model="data.ru_data.title" class="form-control"> 
+                                <input type="text" name="title" v-model="data.ru_tour.title" class="form-control"> 
                             </div>
                         </div>
     
                         <div class="form-group clearfix">
                             <label for="name" class='col-xs-2 control-label'> Short description </label>
                             <div class="col-xs-8">
-                                <!-- <textarea type="text"  name="short_description" v-model="data.ru_data.short_description"  rows="15" class="form-cotrol md-textarea form-control"></textarea> -->
-                                <ckeditor v-model="data.ru_data.short_description" :config="editor_config.ru_short_description_text"></ckeditor>
+                                <!-- <textarea type="text"  name="short_description" v-model="data.ru_tour.short_description"  rows="15" class="form-cotrol md-textarea form-control"></textarea> -->
+                                <ckeditor v-model="data.ru_tour.short_description" :config="editor_config.ru_short_description_text"></ckeditor>
                             </div>
                         </div>
 
                         <div class="form-group clearfix">
                             <label for="name" class='col-xs-2 control-label'> text </label>
                             <div class="col-xs-8">
-                                <ckeditor v-model="data.ru_data.text"  :config="editor_config.ru_text"></ckeditor>
+                                <ckeditor v-model="data.ru_tour.text"  :config="editor_config.ru_text"></ckeditor>
                             </div>
                         </div>
                     </form>
@@ -271,22 +271,22 @@
                         <div class="form-group clearfix">
                             <label for="name" class='col-xs-2 control-label'> Title </label>
                             <div class="col-xs-8">
-                                <input type="text" name="value name"  v-model="data.ka_data.title" class="form-control"> 
+                                <input type="text" name="value name"  v-model="data.ka_tour.title" class="form-control"> 
                             </div>
                         </div>
     
                         <div class="form-group clearfix">
                             <label for="name" class='col-xs-2 control-label'> Short description </label>
                             <div class="col-xs-8">
-                                <!-- <textarea type="text"  name="short_description"  v-model="data.ka_data.short_description" rows="15" class="form-cotrol md-textarea form-control"></textarea> -->
-                                <ckeditor v-model="data.ka_data.short_description" :config="editor_config.ka_short_description_text"></ckeditor>
+                                <!-- <textarea type="text"  name="short_description"  v-model="data.ka_tour.short_description" rows="15" class="form-cotrol md-textarea form-control"></textarea> -->
+                                <ckeditor v-model="data.ka_tour.short_description" :config="editor_config.ka_short_description_text"></ckeditor>
                             </div>
                         </div>
 
                         <div class="form-group clearfix">
                             <label for="name" class='col-xs-2 control-label'> text </label>
                             <div class="col-xs-8">
-                                <ckeditor v-model="data.ka_data.text"  :config="editor_config.ka_text"></ckeditor>
+                                <ckeditor v-model="data.ka_tour.text"  :config="editor_config.ka_text"></ckeditor>
                             </div>
                         </div>
                     </form>
@@ -337,10 +337,10 @@
                 },
 
                 data: {
-                    global_data: {},
-                    us_data: {},
-                    ka_data: {},
-                    ru_data: {}
+                    global_tour: {},
+                    us_tour: {},
+                    ka_tour: {},
+                    ru_tour: {}
                 },
 
                 // the_date: moment().format('YYYY-MM-DD'),
@@ -406,11 +406,11 @@
                     this.editing_data = response.data
 
                     this.data = {
-                        global_data: response.data.global_tour,
+                        global_tour: response.data.global_tour,
 
-                        us_data: response.data.us_tour,
-                        ru_data: response.data.ru_tour,
-                        ka_data: response.data.ka_tour,
+                        us_tour: response.data.us_tour,
+                        ru_tour: response.data.ru_tour,
+                        ka_tour: response.data.ka_tour,
                     }
 
                     this.tour_old_images = response.data.tour_images
@@ -472,12 +472,12 @@
                 this.is_loading = true
 
                 if (this.change_url_title) {
-                    this.data.global_data.change_url_title = this.change_url_title
-                    this.data.global_data.us_title_for_url_title = this.data.us_data.title
+                    this.data.global_tour.change_url_title = this.change_url_title
+                    this.data.global_tour.us_title_for_url_title = this.data.us_tour.title
                 }
                 else{
-                    this.data.global_data.change_url_title = false
-                    this.data.global_data.us_title_for_url_title = false
+                    this.data.global_tour.change_url_title = false
+                    this.data.global_tour.us_title_for_url_title = false
                 }
 
                 let formData = new FormData();

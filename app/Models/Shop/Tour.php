@@ -12,6 +12,18 @@ class Tour extends Model
     use HasFactory;
     public $table = 'tours';
 
+    protected $fillable = [
+        'id',
+        'url_title',
+        'published',
+        'min_price',
+        'location',
+        'duration',
+        // 'category_id',
+        // 'published',
+        // 'published',
+    ];
+
 	public function us_tour()
 	{
 		return $this->hasOne(Locale_tour::class, 'id', 'us_tour_id');

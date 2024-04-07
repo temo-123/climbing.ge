@@ -387,7 +387,7 @@
                     formData
                 )
                 .then(response => {
-                    this.close_option_edit_model()
+                    this.close_option_edit_model(true)
                     this.get_activ_product_options()
                 })
                 .catch(
@@ -397,19 +397,37 @@
                     this.is_loading = false
                 });
             },
-            close_option_edit_model(){
-                this.is_edit_option_modal = false,
+            close_option_edit_model(action = false){
+                if(!action){
+                    if(confirm('Are you sure, you want close this modal?')){
+                        this.is_edit_option_modal = false,
 
-                this.editing_option_images = [],
-                this.adding_option_images = [],
+                        this.editing_option_images = [],
+                        this.adding_option_images = [],
 
-                this.editing_data = {
-                    currency: '₾',
-                    name: '',
-                    price: '',
-                    quantity: 10
+                        this.editing_data = {
+                            currency: '₾',
+                            name: '',
+                            price: '',
+                            quantity: 10
+                        }
+                        this.editing_option_id = 0
+                    }
                 }
-                this.editing_option_id = 0
+                else{
+                    this.is_edit_option_modal = false,
+
+                    this.editing_option_images = [],
+                    this.adding_option_images = [],
+
+                    this.editing_data = {
+                        currency: '₾',
+                        name: '',
+                        price: '',
+                        quantity: 10
+                    }
+                    this.editing_option_id = 0
+                }
             },
             del_option(category_id){
                 if(confirm('Are you sure, you want delite this option?')){
@@ -455,7 +473,7 @@
                     formData
                 )
                 .then(response => {
-                    this.close_option_add_model()
+                    this.close_option_add_model(true)
                     this.get_activ_product_options()
                 })
                 .catch(
@@ -465,15 +483,29 @@
                     this.is_loading = false
                 });
             },
-            close_option_add_model(){
-                this.is_add_option_modal = false
-                this.adding_data = {
-                    currency: '₾',
-                    name: '',
-                    price: '',
-                    quantity: 10
+            close_option_add_model(action = false){
+                if(!action){
+                    if(confirm('Are you sure, you want close this modal?')){
+                        this.is_add_option_modal = false
+                        this.adding_data = {
+                            currency: '₾',
+                            name: '',
+                            price: '',
+                            quantity: 10
+                        }
+                        this.adding_option_images = []
+                    }
                 }
-                this.adding_option_images = []
+                else{
+                    this.is_add_option_modal = false
+                        this.adding_data = {
+                            currency: '₾',
+                            name: '',
+                            price: '',
+                            quantity: 10
+                        }
+                        this.adding_option_images = []
+                }
             },
             new_option_model(){
                 this.is_add_option_modal = true
