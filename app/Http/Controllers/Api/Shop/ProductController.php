@@ -154,7 +154,9 @@ class ProductController extends Controller
     public function get_similar_product(Request $request)
     {
         $this_product = product::where('published', '=', 1)->where('id', '=', $request->product_id)->first();
-        return $products = ProductService::get_locale_product_use_locale($this_product->product_category->products->where('published', '=', 1)->where('id', '!=', $request->product_id), $request->lang);
+        $similar_products = $this_product->product_category->products->where('published', '=', 1)->where('id', '!=', $request->product_id);
+        // dd($similar_products->all());
+        return $products = ProductService::get_locale_product_use_locale(array_slice($similar_products->all(), 0, 3), $request->lang);
     }
 
     public function get_product_price_interval()
