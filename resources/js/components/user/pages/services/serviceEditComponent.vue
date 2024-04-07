@@ -40,12 +40,12 @@
                     <div class="col" >
                         <input type="radio" id="3" :value="3" v-model="tab_num">
                         
-                        <label for="3" >Georgian text</label>
+                        <label for="3" >Russion text</label>
                     </div>
                     <div class="col" >
                         <input type="radio" id="4" :value="4" v-model="tab_num">
                         
-                        <label for="4" >Russion text</label>
+                        <label for="4" >Georgian text</label>
                     </div>
                 </div>
             </div>
