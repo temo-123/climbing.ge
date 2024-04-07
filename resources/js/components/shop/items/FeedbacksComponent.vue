@@ -88,11 +88,19 @@
             feadbackModal,
             starsReiting
         },
-        props: [
-            "product_id",
-            "reviews_count_prop",
-            "reviews_stars_prop"
-        ],
+        props: {
+            product_id_prop: {
+                type: Number,
+            },
+            reviews_stars_prop: {
+                type: Number,
+                default: 0
+            },
+            reviews_count_prop: {
+                type: Number,
+                default: 0
+            }
+        },
         data() {
             return {
                 name: "",
@@ -111,12 +119,12 @@
 
                 complainter_email: '',
 
-                id: this.product_id
+                id: this.product_id_prop
             }
         },
         watch: {
-            product_id: function(){
-                this.id = this.product_id
+            product_id_prop: function(){
+                this.id = this.product_id_prop
                 this.get_feedbacks()
             },
         },

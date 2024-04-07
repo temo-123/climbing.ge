@@ -56,7 +56,7 @@ class ProductController extends Controller
         }
         else{
             // return abort(404);
-            return redirect()->away('https://google.com/');
+            // return redirect()->away('https://google.com/');
         }
     }
 
@@ -154,11 +154,7 @@ class ProductController extends Controller
     public function get_similar_product(Request $request)
     {
         $this_product = product::where('published', '=', 1)->where('id', '=', $request->product_id)->first();
-        $this_category = Product_category::where('id', '=', $this_product->category_id)->first();
-
-        $global_products = product::latest('id')->where('published', '=', 1)->where('id', '!=', $request->product_id)->where('category_id', '=', $this_category->id)->limit(3)->get();
-
-        return $products = ProductService::get_locale_product_use_locale($global_products, $request->lang);
+        return $products = ProductService::get_locale_product_use_locale($this_product->product_category->products->where('published', '=', 1)->where('id', '!=', $request->product_id), $request->lang);
     }
 
     public function get_product_price_interval()
@@ -217,42 +213,5 @@ class ProductController extends Controller
     {
         $deleted_product = Product::where("id", "=", $id)->first();
         $deleted_product -> delete();
-    }
-
-    public function global_product_validation($global_data)
-    {
-        $validator = Validator::make($global_data, [
-            'published' => 'required',
-            'us_title_for_url_title' => 'required|unique:products,url_title',
-            'sale_type' => 'required',
-            'category_id' => 'required',
-        ]);
-        if ($validator->fails()) {
-            return $validator->messages();
-        }
-    }
-
-    public function editing_global_product_validation($global_data)
-    {
-        $validator = Validator::make($global_data, [
-            'published' => 'required',
-            'sale_type' => 'required',
-            'category_id' => 'required',
-        ]);
-        if ($validator->fails()) {
-            return $validator->messages();
-        }
-    }
-
-    public function local_product_validation($data)
-    {
-        $validator = Validator::make($data, [
-            'title' => 'required | max:190',
-            'short_description' => 'required',
-            'text' => 'required',
-        ]);
-        if ($validator->fails()) {
-            return $validator->messages();
-        }
     }
 }

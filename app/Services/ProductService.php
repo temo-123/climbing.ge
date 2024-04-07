@@ -99,6 +99,9 @@ class ProductService extends LocaleContentService
                 "locale_product"=>$product['locale_data'],
                 "max_price"=>(new static)->get_product_price($product['global_data'], 'max'),
                 "min_price"=>(new static)->get_product_price($product['global_data'], 'min'),
+
+                "reviews"=>ReitingService::colculate_stars($product['global_data']->feedbacks),
+                
                 'product_option' => $product_option,
             ]);
         }

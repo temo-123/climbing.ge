@@ -33,7 +33,7 @@
                             <div class="row">
                                 <div class="col-md-12">
                                     <div class="price-shipping" v-if="product_modification_for_cart == 'All'">
-                                        <div class="price" id="price-preview" v-if="product.global_product.discount != null || product.global_product.discount > 0">
+                                        <div class="price" id="price-preview" v-if="product.global_product.discount != null && product.global_product.discount > 0">
                                             <div class="price_pege">
                                                 <p title="price" v-if="product.new_min_price != product.new_max_price">
                                                     ₾ {{ product.new_min_price }} - {{ product.new_max_price }}
@@ -64,7 +64,7 @@
                                         </div>
                                     </div>
                                     <div class="price-shipping" v-else>
-                                        <div class="price" id="price-preview" v-if="product.global_product.discount != null || product.global_product.discount > 0">
+                                        <div class="price" id="price-preview" v-if="product.global_product.discount != null && product.global_product.discount > 0">
                                             <div class="price_pege">
                                                 <p title="price">
                                                     ₾ {{ actyve_price.new_price }} 
@@ -155,7 +155,7 @@
                                     :product_id_prop = product.global_product.id
                                 />
                             </div>
-                            <!-- {{ user.length  != 0}} -->
+                            
                             <div class="row" v-if="user.length == 0">
                                 <div v-if="user.length == 0" :class="'alert alert-danger cursor_pointer'" role="alert" @click="goTo('/login')">
                                     <div class="col-md-12" v-if="product.global_product.sale_type == 'custom_production'">
@@ -189,22 +189,15 @@
             </div>
 
             <hr>
-            
-            <!-- <p v-if="product.global_product.category">{{ $t('shop.product.product_desc.category') }} - {{ product.global_product.category }}</p> -->
             <p v-if="product.global_product.material">{{ $t('shop.product.product_desc.material') }} - {{ product.global_product.material }}</p>
             <p v-if="product.global_product.weight">{{ $t('shop.product.product_desc.weight') }} - {{ product.global_product.weight }}</p>
 
-            <!-- <hr> -->
-
-            <!-- <h3>{{ $t('shop.seller.seller contact') }}</h3>
-            <p v-if="this.$globalSiteData.email">{{ $t('shop.seller.email') }} - {{ this.$globalSiteData.email }}</p>
-            <p v-if="this.$globalSiteData.number">{{ $t('shop.seller.phone') }} - {{ this.$globalSiteData.number }}</p> -->
         </div>
 
         <div class="container" v-if="!is_loading">
             <div class="row">
                 <feedbackForm 
-                    :product_id="product.global_product.id"
+                    :product_id_prop="product.global_product.id"
 
                     :reviews_count_prop = "product.reviews.count"
                     :reviews_stars_prop = "product.reviews.stars"
@@ -213,7 +206,7 @@
         </div>
 
         <div class="container" v-if="!is_loading">
-            <similarProduct :activ_product_id=product.global_product.id />
+            <similarProduct :activ_product_id_prop=product.global_product.id />
         </div>
         
         <div class="container">
@@ -239,7 +232,6 @@
 </template>
 
 <script>
-    // import analogProduct from '../items/AnalogProductComponent.vue'
     import lingallery from 'lingallery'; // https://github.com/ChristophAnastasiades/Lingallery
     import VueMeta from 'vue-meta'
     import metaData from '../../items/MetaDataComponent'
@@ -253,7 +245,6 @@
             metaData,
             lingallery,
             VueMeta,
-            // analogProduct,
             breadcrumb,
             similarProduct,
             feedbackForm,
@@ -277,10 +268,15 @@
 
                 user: [],
 
-                product: [],
+                product: {
+                    global_product: [],
+                    locale_product: [],
+                    max_price: 0,
+                    min_price: 0,
+                    product_option: []
+                },
 
-                products: [],
-                // samilar_products: [],
+                // products: [],
 
                 publicPath: window.location.protocol + '//' + window.location.hostname
             }
@@ -290,7 +286,7 @@
                 this.clear_product_data()
 
                 this.get_product()
-            this.get_user_info()
+                this.get_user_info()
 
                 window.scrollTo(0,0)
             }
@@ -304,6 +300,7 @@
                 axios
                 .get('/auth_user/')
                 .then(response => {
+                    this.user = [],
                     this.user = response.data
                 })
                 .catch()
@@ -312,29 +309,32 @@
                 window.open(process.env.MIX_APP_SSH + 'user.' + process.env.MIX_SITE_URL + page) ;
             },
             clear_product_data(){
-                this.is_adding_in_cart_socsesful = false,
-                this.products = [],
-                this.user = [],
                 this.select_product_max_quantyty = 0,
                 this.product_modification_for_cart = 'All',
                 this.products_quantity = 1,
                 this.add_to_cart_message = '',
                 this.items = [],
-                this.actyve_price = [
-                    price = '',
-                    new_price = ''
-                ],
+                this.actyve_price = {
+                    price: '',
+                    new_price: ''
+                },
                 this.prices = [],
 
-                this.product = []
+                this.product = {
+                    global_product: [],
+                    locale_product: [],
+                    max_price: 0,
+                    min_price: 0,
+                    product_option: []
+                }
 
-                // this.samilar_products = []
+                // this.products = []
             },
             get_product(){
-                this.product = []
+                this.clear_product_data()
                 this.is_loading = true
                 axios
-                .get('../api/page_product/'+localStorage.getItem('lang')+'/'+this.$route.params.url_title)
+                .get('/page_product/'+localStorage.getItem('lang')+'/'+this.$route.params.url_title)
                 .then(response => {
                     this.product = response.data
 
@@ -350,12 +350,14 @@
                     this.prices.push(option.option.price)
                     if(option.images.length){
                         option.images.forEach(image => {
-                            this.items.push({
-                                src: this.publicPath + '/public/images/product_option_img/'+image.image,
-                                thumbnail: this.publicPath + '/public/images/product_option_img/'+image.image,
-                                caption: option.option.title,
-                                id:  option.option.id
-                            })
+                            // if(image.image != null){
+                                this.items.push({
+                                    src: this.publicPath + '/public/images/product_option_img/'+image.image,
+                                    thumbnail: this.publicPath + '/public/images/product_option_img/'+image.image,
+                                    caption: option.option.title,
+                                    id:  option.option.id
+                                })
+                            // }
                         });
                     }
                     else{
@@ -378,8 +380,12 @@
                         if (this.product_modification_for_cart == option.option.id) {
 
                             this.actyve_price.price = option.option.price
-                            this.actyve_price.new_price = this.colculate_discount_actyve_price(option.option.price, this.product.global_product.discount)
-
+                            if(this.product.global_product.discount != null){
+                                this.actyve_price.new_price = this.colculate_discount_actyve_price(option.option.price, this.product.global_product.discount)
+                            }
+                            // else{
+                            //     this.actyve_price.new_price = 0
+                            // }
                             option.images.forEach(image => {
                                 this.items.push({
                                     src: this.publicPath + '/public/images/product_option_img/'+image.image,
@@ -402,12 +408,12 @@
 
             add_to_cart(){
                 if(this.product_modification_for_cart == "All"){
-                    alert('plis select option')
+                    alert('Please select option!')
                 }
                 else{
                     this.is_adding_in_cart_socsesful = false
                     axios
-                    .put('../api/cart/'+this.product_modification_for_cart, {
+                    .put('/cart/'+this.product_modification_for_cart, {
                         modification_id: this.product_modification_for_cart,
                         quantity: this.products_quantity
                     })
@@ -423,7 +429,7 @@
 
             add_to_faworite(product_id){
                 axios
-                .post('../api/add_to_favorite/'+ product_id)
+                .post('/add_to_favorite/'+ product_id)
                 .then(response => {
                     alert("Product addid in your favorite list!");
                 })

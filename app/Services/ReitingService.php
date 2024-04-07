@@ -19,6 +19,12 @@ class ReitingService
                 "count" => $revs->count(),
             ];
         }
+        else{
+            return [
+                "stars" => 0,
+                "count" => 0,
+            ];
+        }
     }
     
 }

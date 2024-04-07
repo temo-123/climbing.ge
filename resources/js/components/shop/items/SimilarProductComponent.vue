@@ -14,7 +14,7 @@
     import analogProduct from './cards/AnalogProductCardComponent.vue'
     export default {
         props:[
-            'activ_product_id',
+            'activ_product_id_prop',
         ],
         components: {
             // metaData,
@@ -23,28 +23,36 @@
         data () {
             return {
                 samilar_products: [],
-                product_id: this.activ_product_id
+                // product_id: 0
             }
         },
         watch: {
             '$route' (to, from) {
-                this.samilar_products = [],
-                this.product_id = this.activ_product_id
-                this.get_analog_products()
-            }
+                // this.samilar_products = [],
+                // this.product_id = this.activ_product_id_prop
+                // this.get_analog_products()
+            },
+            // activ_product_id_prop: function(newVal, oldVal){
+            //     alert(newVal)
+            //     this.product_id = newVal
+            // },
         },
         mounted() {
             this.get_analog_products()
         },
         methods: {
             get_analog_products(){
-                axios
-                .get('/similar_product/'+localStorage.getItem('lang')+'/'+this.product_id)
-                .then(response => {
-                    this.samilar_products = response.data
-                })
-                .catch(error =>{
-                })
+                this.samilar_products = []
+
+                if(this.activ_product_id_prop && this.activ_product_id_prop != null && this.activ_product_id_prop != 0){
+                    axios
+                    .get('/similar_product/'+localStorage.getItem('lang')+'/'+this.activ_product_id_prop)
+                    .then(response => {
+                        this.samilar_products = response.data
+                    })
+                    .catch(error =>{
+                    })
+                }
             },
         }
     }

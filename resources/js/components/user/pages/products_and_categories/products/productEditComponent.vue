@@ -328,6 +328,9 @@
 
             edit_product() {
                 this.is_loading = true
+                if(this.data.global_product.discount == 0 || this.data.global_product.discount == ''){
+                    this.data.global_product.discount = null
+                }
                 axios
                 .post('/product/edit_product/'+this.$route.params.id, {        
                     data: JSON.stringify(this.data),
