@@ -164,7 +164,7 @@
                 formData.append('image_sectors', JSON.stringify(this.image_sectors))
                 formData.append('title', this.data.title)
    
-                axios.post('../api/sector_local_images/', 
+                axios.post('/sector_local_images/', 
                     formData,
                     config
                 )

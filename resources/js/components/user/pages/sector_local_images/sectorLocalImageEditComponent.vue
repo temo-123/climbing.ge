@@ -170,7 +170,7 @@
             get_editing_image(){
                 this.is_loading = true
                 axios
-                .get('../../api/sector_local_images/'+this.$route.params.id)
+                .get('/sector_local_images/'+this.$route.params.id)
                 .then(response => {
                     this.data.title = response.data.sector_local_image.title
                     this.data.image = response.data.sector_local_image.image
@@ -184,7 +184,7 @@
             },
             get_editing_sectors(){
                 axios
-                .get('../../api/get_editing_sectors/'+this.$route.params.id)
+                .get('/get_editing_sectors/'+this.$route.params.id)
                 .then(response => {
                     this.old_image_sectors = response.data
                 })
@@ -208,7 +208,7 @@
             del_image_sector_from_db(sector_id){
                 if(confirm('Are you sure, you want delite itt?')){
                     axios
-                    .post('../../api/del_image_sector_from_db/' + this.$route.params.id + '/' + sector_id,{
+                    .post('/del_image_sector_from_db/' + this.$route.params.id + '/' + sector_id,{
                         _method: 'delete',
                     })
                     .then(response => {
@@ -243,8 +243,8 @@
                 formData.append('image_sectors', JSON.stringify(this.new_image_sectors))
                 formData.append('title', this.data.title)
    
-                axios.post('../../api/sector_local_images/update_image/'+this.$route.params.id, 
-                // axios.put('../../api/sector_local_images/'+this.$route.params.id, 
+                axios.post('/sector_local_images/update_image/'+this.$route.params.id, 
+                // axios.put('/sector_local_images/'+this.$route.params.id, 
                     formData,
                     config
                 )
