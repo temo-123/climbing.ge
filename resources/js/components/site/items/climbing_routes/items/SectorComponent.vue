@@ -118,8 +118,7 @@
             :img="'/public/images/sector_img/' + image.image"
             :img_alt="image.image"
             :img_class="
-                'sector_images sector_images_' +
-                sector.sector_imgs.length
+                'sector_images sector_images_' + sector.sector_imgs.length
             "
         />
         <!-- {{ sector.sector_imgs[0] }} -->
@@ -383,5 +382,44 @@ export default {
 .sector_walking_time{
     float: right;
     font-size: 1.5em;
+}
+
+.spot_rocks_image {
+    width: 100%;
+}
+
+.sector_images {
+    float: left;
+    margin: 0.5%;
+}
+.sector_images_1 {
+    width: 99% !important;
+}
+.sector_images_2 {
+    width: 49% !important;
+}
+.sector_images_3 {
+    width: 32.6% !important;
+}
+.sector_images_4 {
+    width: 24.1% !important;
+}
+.sector_images_5 {
+    width: 19.5% !important;
+}
+.sector_images_6 {
+    width: 16% !important;
+}
+.sector_images_7 {
+    width: 14, 0% !important;
+}
+.sector_images_8 {
+    width: 12% !important;
+}
+.sector_images_9 {
+    width: 10.5% !important;
+}
+.sector_images_10 {
+    width: 9.5% !important;
 }
 </style>

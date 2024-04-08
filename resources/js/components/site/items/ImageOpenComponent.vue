@@ -1,16 +1,14 @@
 <template>
     <span>
         <div class="smal_img" @click="open_image()" >
-            <!-- <site-img :src="img" :alt="img_alt" :img_class="img_class + ' cursor_pointer'" /> -->
-            <img :src="img" :alt="img_alt" :img_class="img_class + ' cursor_pointer'" />
+            <img :src="img" :alt="img_alt" :class="img_class + ' cursor_pointer'" />
         </div>
 
         <div class="big_img">
             <div class="open_img" v-if="open_img" >
                 <div class="close_bottom cursor_zoom_out" @click="close_image()"> X </div>
 
-                <!-- <site-img :src="img" :alt="img_alt" :img_class="'gallery_big_img cursor_zoom_in zoom'" /> -->
-                <img :src="img" :alt="img_alt" :img_class="'big_img_position cursor_zoom_in zoom'" style="
+                <img :src="img" :alt="img_alt" :class="'big_img_position cursor_zoom_in zoom'" style="
                                                                                                         max-width: 96%;
                                                                                                         max-height: 80%;
                                                                                                         position: absolute;
