@@ -128,8 +128,11 @@
                     <ul>
                         <li v-for="comment in this.comments" :key="comment.comment.id" class="comment_board">
                             <div class="row">
-                                <div class="col-xs-2 col-md-2">
+                                <div class="col-xs-2 col-md-2" v-if="comment.user == null || comment.user.image == null">
                                     <img :src="'/public/images/site_img/demo_imgs/user_demo_img.gif'" />
+                                </div>
+                                <div class="col-xs-2 col-md-2" v-else>
+                                    <img :src="'/public/images/user_profil_img/' + comment.user.image" />
                                 </div>
 
                                 <div class="col-xs-10 col-md-10">

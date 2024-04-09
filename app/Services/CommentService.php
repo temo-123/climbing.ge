@@ -74,7 +74,7 @@ class CommentService extends EmailVarificationeService
                 $comment_article->save();
 
                 return ([
-                    "message" => "Tenk you for ".$prefix." ".$request->name,
+                    "message" => "Tenk you for comment",
                     "new_comment_id" => $activ_id
                 ]);
             }
@@ -96,7 +96,7 @@ class CommentService extends EmailVarificationeService
 
                     // return ("Tenk you for comment ".$request->name);
                     return ([
-                        "message" => "Tenk you for ".$prefix." ".$request->name,
+                        "message" => "Tenk you for comment",
                         "new_comment_id" => $activ_id
                     ]);
                 }
@@ -309,11 +309,11 @@ class CommentService extends EmailVarificationeService
         Notification::route('mail', $site_data->email)->notify(new AdminComplaintNotification());
     }
 
-    private static function created_non_registered_commenter_relation($email, $id, $comment_model,){
+    private static function created_non_registered_commenter_relation($email, $id, $comment_model){
         $non_registered_commenter_count = Non_registered_commenter::where('email', '=', $email)->count();
         $non_registered_commenter = Non_registered_commenter::where('email', '=', $email)->first();
 
-        if($non_registered_commenter_count == 0 || $non_registered_commenter->confirmed == 0){
+        if($non_registered_commenter_count == 0){
             $non_registered_commenter = new Non_registered_commenter;
             $non_registered_commenter['email'] = $email;
             $non_registered_commenter->save();
@@ -325,21 +325,10 @@ class CommentService extends EmailVarificationeService
             $comm['published'] = 1;
             $comm -> save();
 
-            return ("Tenk you for comment ".$comm->name);
+            return ("Tenk you for comment");
         }
         
     }
-
-    // private static function varificate_email($email, $id) {
-    //     $info = [
-    //         "host" => $_SERVER['HTTP_HOST'],
-    //         "id" => $id,
-    //         "user_email" => $email
-    //     ];
-    //     Notification::route('mail', $email)->notify(new CommentEmailVarificationNotification($info));
-
-    //     return ("Tenk you for comment. Please go to your email to confirm it. Your comment will not appear until you do this!");
-    // }
 
     public static function confirm_email($email) {
         /*
