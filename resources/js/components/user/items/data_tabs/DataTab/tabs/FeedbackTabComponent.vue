@@ -8,7 +8,7 @@
         <td @click="get_action_feedback(table_info.feedback.id, 'show')" class="cursor_zoom_in">{{table_info.feedback.id}}</td>
         <td>|</td>
 
-        <td v-if="feedbacks_tab_name == 'Product feedbacks'" >{{table_info.global_product.published}}</td>
+        <td v-if="feedbacks_tab_name == 'Product feedbacks'" >{{table_info.feedback.published}}</td>
         <td v-if="feedbacks_tab_name == 'Product feedbacks'" >|</td>
 
         <td @click="go_to_product_page(table_info.global_product.url_title)" class="cursor_pointer">{{table_info.locale_product.title}}</td>

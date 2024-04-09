@@ -22,7 +22,7 @@ class TourController extends Controller
 {
     function get_tours(Request $request){
         $global_tours = Tour::where("published", "=", 1)->get();
-        return $tours = TourService::get_locale_tours_use_locale($global_tours, $request->lang);
+        return $tours = TourService::get_tours_use_locale($global_tours, $request->lang);
     }
 
     public function get_all_tours()
@@ -49,7 +49,7 @@ class TourController extends Controller
 
         if($global_tours_count > 0){
             $global_tours = Tour::where('category_id',strip_tags($tour->category_id))->limit(3)->get();
-            return $tour = TourService::get_locale_tours_use_locale($global_tours, $request->lang);    
+            return $tour = TourService::get_tours_use_locale($global_tours, $request->lang);    
         }
     }
 

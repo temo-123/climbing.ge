@@ -390,7 +390,7 @@ export default {
 
 .sector_images {
     float: left;
-    margin: 0.5%;
+    margin: 0.45%;
 }
 .sector_images_1 {
     width: 99% !important;
@@ -399,27 +399,27 @@ export default {
     width: 49% !important;
 }
 .sector_images_3 {
-    width: 32.6% !important;
+    width: 32% !important;
 }
 .sector_images_4 {
-    width: 24.1% !important;
+    width: 24% !important;
 }
 .sector_images_5 {
-    width: 19.5% !important;
+    width: 19% !important;
 }
 .sector_images_6 {
     width: 16% !important;
 }
 .sector_images_7 {
-    width: 14, 0% !important;
+    width: 14% !important;
 }
 .sector_images_8 {
     width: 12% !important;
 }
 .sector_images_9 {
-    width: 10.5% !important;
+    width: 10% !important;
 }
 .sector_images_10 {
-    width: 9.5% !important;
+    width: 9% !important;
 }
 </style>

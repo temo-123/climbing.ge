@@ -8,7 +8,7 @@
         <td @click="get_comment(table_info.comment.id, 'show')" class="cursor_zoom_in">{{table_info.comment.id}}</td>
         <td>|</td>
 
-        <td v-if="comments_tab_name == 'Guidebook comments'" >{{table_info.global_article.published}}</td>
+        <td v-if="comments_tab_name == 'Guidebook comments'" >{{table_info.comment.published}}</td>
         <td v-if="comments_tab_name == 'Guidebook comments'" >|</td>
 
         <td @click="go_to_article_page(table_info.global_article.url_title, table_info.global_article.category)" class="cursor_pointer">{{table_info.global_article.url_title}}</td>

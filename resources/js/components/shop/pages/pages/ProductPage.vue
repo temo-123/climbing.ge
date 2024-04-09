@@ -179,8 +179,6 @@
                     <span v-html="product.locale_product.text"></span>
                 </div>
             </div>
-
-            <hr>
             
             <div class="row" v-if="product.global_product.mead_in_georgia">
                 <div class="col-md-12">
@@ -188,7 +186,6 @@
                 </div>
             </div>
 
-            <hr>
             <p v-if="product.global_product.material">{{ $t('shop.product.product_desc.material') }} - {{ product.global_product.material }}</p>
             <p v-if="product.global_product.weight">{{ $t('shop.product.product_desc.weight') }} - {{ product.global_product.weight }}</p>
 
