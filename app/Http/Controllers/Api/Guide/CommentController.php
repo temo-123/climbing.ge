@@ -114,10 +114,10 @@ class CommentController extends Controller
 
             $comment = Comment::where("id", '=', $new_answer['comment_id'])->first();
             $article = Article::where("id", '=', $comment['article_id'])->first();
-            $us_article = $article->us_article;
+            $us_article = $article->global_article_us;
             
             $info = [
-                'us_article_title' => $us_article->title,
+                'us_article_title' => $us_article['title'],
                 'url_title' => $article->url_title,
                 'category' => $article->category
             ];

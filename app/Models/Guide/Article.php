@@ -36,17 +36,17 @@ class Article extends Model
 
 	public function global_article_us()
 	{
-		return $this->hasOne(Locale_article::class, 'us_article_id', 'id');
+		return $this->hasOne(Locale_article::class, 'id', 'us_article_id');
 	}
 
 	public function global_article_ka()
 	{
-		return $this->hasOne(Locale_article::class, 'ka_article_id', 'id');
+		return $this->hasOne(Locale_article::class, 'id', 'ka_article_id');
 	}
 
 	public function global_article_ru()
 	{
-		return $this->hasOne(Locale_article::class, 'ru_article_id', 'id');
+		return $this->hasOne(Locale_article::class, 'id', 'ru_article_id');
 	}
 
 

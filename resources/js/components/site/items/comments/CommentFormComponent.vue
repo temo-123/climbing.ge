@@ -160,8 +160,11 @@
                                 <li v-for="answer in comment.answers" :key="answer.answer.id" class="comment_board">
                                     <div class="row">
 
-                                        <div class="col-xs-2 col-md-2">
-                                            <img :src="'/public/images/site_img/user_demo_img.gif'" />
+                                        <div class="col-xs-2 col-md-2" v-if="answer.user == null || answer.user.image == null">
+                                            <img :src="'/public/images/site_img/demo_imgs/user_demo_img.gif'" />
+                                        </div>
+                                        <div class="col-xs-2 col-md-2" v-else>
+                                            <img :src="'/public/images/user_profil_img/' + answer.user.image" />
                                         </div>
 
                                         <div class="col-xs-10 col-md-10">
@@ -170,7 +173,7 @@
                                                 <h3 class="comentator_name"><strong>{{answer.answer.name}} {{answer.answer.surname}} -> {{comment.comment.name}} {{comment.comment.surname}}</strong> </h3>
                                                 
                                                 <span v-if="user.length != 0">
-                                                    <div @click="show_complaint_modal(answer.answer.id)" v-if="!answer.user || answer.user.id != user.id || comment.comment.email != user.email" >
+                                                    <div @click="show_complaint_modal(answer.answer.id)" v-if="answer.user && answer.user.id != user.id">
                                                         <i class="fa fa-ellipsis-v complaint_icon" aria-hidden="true"></i>
                                                     </div>
                                                     <button @click="del_comment(answer.answer.id)" v-else onclick="return confirm('Are you sure? Do you want to delete this comment?')" class="btn btn-danger pull-right">
@@ -330,7 +333,10 @@
             },
 
             disable_answer(){
-                this.answer = false
+                this.answer_array = {
+                    answer: false,
+                    comment_id: 0
+                }
             },
 
             get_user_info() {
