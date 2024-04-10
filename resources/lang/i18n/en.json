@@ -168,6 +168,7 @@
 
         "menu": {
             "products": "Products",
+            "sale_products": "Sale",
             "services": "Services",
             "categories": "Categories",
             "about us": "About us",
@@ -178,6 +179,7 @@
         "title": {
             "services": "Ouer services",
             "products": "Products",
+            "sale_products": "Seled products",
             "search": "Search products",
             "gallery": "Gallery",
             "climbing wall colculator": "Climbing Wall Colculator",
@@ -275,7 +277,7 @@
         },
 
         "seller": {
-            "seller contact": "Contacts",
+            "seller_contact": "Contacts",
             "email": "Email",
             "phone": "Phone number"
         },

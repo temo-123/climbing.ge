@@ -165,6 +165,7 @@
 
         "menu": {
             "products": "პროდუქტები",
+            "sale_products": "ფასდაკლება",
             "services": "სერვისები",
             "categories": "კატეგორიები",
             "about us": "ჩვენ შესახებ",
@@ -175,6 +176,7 @@
         "title": {
             "services": "ჩვენი სერვისები",
             "products": "პროდუქტები",
+            "sale_products": "ფასდაკლებული პროდუქტები",
             "search": "პროდუქტის ძიება",
             "gallery": "გალერეა",
             "climbing wall colculator": "საცოცი კედლის კოლკულატორი",

@@ -53,6 +53,7 @@ const router = new VueRouter({
                 { path: 'climbing_wall_colculator', name: 'wall_price_colculator', component: load('pages/wall_colculator/ClimbingWallPriceColculatePage') },
 
                 { path: 'products', name: 'catalog', component: load('lists/ProductsCatalog') },
+                { path: 'sale_products', name: 'sale_products', component: load('lists/SaleProductsPage') },
                 { path: 'product/:url_title', name: 'product', component: load('pages/ProductPage'),},
                 
                 { path: 'services', name: 'services', component: load('lists/ServicesCatalog'),},

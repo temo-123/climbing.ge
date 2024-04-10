@@ -26,6 +26,7 @@
                 <ul class="nav navbar-nav navbar-right">
                     
                     <li><router-link :to="{name: 'catalog',  params: {lang: this.$i18n.locale}}" exact> <span> {{ $t('shop.menu.products') }}  </span> </router-link></li>
+                    <li><router-link :to="{name: 'sale_products',  params: {lang: this.$i18n.locale}}" exact> <span> {{ $t('shop.menu.sale_products') }}  </span> </router-link></li>
                     <li><router-link :to="{name: 'wall_price_colculator',  params: {lang: this.$i18n.locale}}" exact> <span> {{ $t('shop.menu.climbing wall') }}  </span> </router-link></li>
                     <li><router-link :to="{name: 'services',  params: {lang: this.$i18n.locale}}" exact> <span> {{ $t('shop.menu.services') }} </span> </router-link></li>
                     <li><router-link :to="{name: 'tours',  params: {lang: this.$i18n.locale}}" exact> <span> {{ $t('shop.menu.tours') }} </span> </router-link></li>
