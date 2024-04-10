@@ -40,16 +40,6 @@
                         
                         <label for="3" >Georgian text</label>
                     </div>
-                    <div class="col" >
-                        <input type="radio" id="4" :value="4" v-model="tab_num">
-                        
-                        <label for="4" >Russion text</label>
-                    </div>
-                </div>
-                <div class="row">
-                    <!-- <div class="alert alert-danger" role="alert" v-if="ka_article_error.ka_info">
-                        {{ ka_article_error.ka_info[0] }}
-                    </div> -->
                 </div>
             </div>
             <div class="col-md-12" v-show="tab_num == 1">
@@ -117,20 +107,6 @@
                     :description_prop="$t('user edit ka article description')"
                 />
                 
-            </div>
-            <div class="col-md-12" v-show="tab_num == 4">
-                <LocaleDataForm 
-                    @global_blocks="global_blocks_action"
-
-                    :global_blocks_prop="global_blocks"
-                    :locale_data_prop="editing_data.ru_article"
-                    :category_prop="this.category"
-                    :locale_prop="'ru'"
-
-                    :title_prop="$t('user edit ru article title')"
-                    :description_prop="$t('user edit ru article description')"
-                />
-               
             </div>
 
         </div>

@@ -38,8 +38,8 @@ return new class extends Migration
             $table->unsignedBigInteger('ka_mount_id');
             $table->foreign('ka_mount_id')->references('id')->on('locale_mounts')->onDelete('cascade');
 
-            $table->unsignedBigInteger('ru_mount_id');
-            $table->foreign('ru_mount_id')->references('id')->on('locale_mounts')->onDelete('cascade');
+            // $table->unsignedBigInteger('ru_mount_id');
+            // $table->foreign('ru_mount_id')->references('id')->on('locale_mounts')->onDelete('cascade');
             
             $table->timestamps();
         });

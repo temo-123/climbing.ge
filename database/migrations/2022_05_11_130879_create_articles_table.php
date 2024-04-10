@@ -45,8 +45,8 @@ return new class extends Migration
             $table->unsignedBigInteger('ka_article_id');
             $table->foreign('ka_article_id')->references('id')->on('locale_articles')->constrained()->onDelete('cascade');
 
-            $table->unsignedBigInteger('ru_article_id');
-            $table->foreign('ru_article_id')->references('id')->on('locale_articles')->constrained()->onDelete('cascade');
+            // $table->unsignedBigInteger('ru_article_id');
+            // $table->foreign('ru_article_id')->references('id')->on('locale_articles')->constrained()->onDelete('cascade');
 
             $table->timestamps();
         });

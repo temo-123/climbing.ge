@@ -30,10 +30,10 @@ class Locale_article extends Model
 		return $this->hasOne(Article::class, 'ka_article_id');
 	}
 
-	public function global_article_ru()
-	{
-		return $this->hasOne(Article::class, 'ru_article_id');
-	}
+	// public function global_article_ru()
+	// {
+	// 	return $this->hasOne(Article::class, 'ru_article_id');
+	// }
 
 	// public function global_article()
 	// {

@@ -36,8 +36,8 @@ return new class extends Migration
             $table->unsignedBigInteger('ka_product_id');
             $table->foreign('ka_product_id')->references('id')->on('locale_products')->onDelete('cascade');
 
-            $table->unsignedBigInteger('ru_product_id');
-            $table->foreign('ru_product_id')->references('id')->on('locale_products')->onDelete('cascade');
+            // $table->unsignedBigInteger('ru_product_id');
+            // $table->foreign('ru_product_id')->references('id')->on('locale_products')->onDelete('cascade');
 
             $table->timestamps();
         });

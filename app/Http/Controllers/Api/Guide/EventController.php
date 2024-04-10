@@ -38,9 +38,9 @@ class EventController extends Controller
                 if($request->lang == 'ka'){
                     $local_event = $event->ka_event;
                 }
-                else if($request->lang == 'ru'){
-                    $local_event = $event->ru_event;
-                }
+                // else if($request->lang == 'ru'){
+                //     $local_event = $event->ru_event;
+                // }
                 else{
                     $local_event = $event->us_event;
                 }
@@ -87,9 +87,9 @@ class EventController extends Controller
                     if($request->lang == 'ka'){
                         $local_event = $event->ka_event;
                     }
-                    else if($request->lang == 'ru'){
-                        $local_event = $event->ru_event;
-                    }
+                    // else if($request->lang == 'ru'){
+                    //     $local_event = $event->ru_event;
+                    // }
                     else{
                         $local_event = $event->us_event;
                     }
@@ -127,9 +127,9 @@ class EventController extends Controller
             if($request->lang == 'ka'){
                 $local_event = $global_event->ka_event;
             }
-            else if($request->lang == 'ru'){
-                $local_event = $global_event->ru_event;
-            }
+            // else if($request->lang == 'ru'){
+            //     $local_event = $global_event->ru_event;
+            // }
             else{
                 $local_event = $global_event->us_event;
             }
@@ -143,9 +143,9 @@ class EventController extends Controller
                 if($request->lang == 'ka'){
                     $text = $general_info->text_ka;
                 }
-                else if($request->lang == 'ru'){
-                    $text = $general_info->text_ru;
-                }
+                // else if($request->lang == 'ru'){
+                //     $text = $general_info->text_ru;
+                // }
                 else{
                     $text = $general_info->text_us;
                 }
@@ -211,13 +211,13 @@ class EventController extends Controller
             $validation_issets['us_info_validation'] = false;
         }
 
-        $ru_validate = $this->local_event_validate($data['ru_data']);
-        if ($ru_validate != null) {
-            $validation_issets['ru_info_validation'] = $ru_validate;
-        }
-        else{
-            $validation_issets['ru_info_validation'] = false;
-        }
+        // $ru_validate = $this->local_event_validate($data['ru_data']);
+        // if ($ru_validate != null) {
+        //     $validation_issets['ru_info_validation'] = $ru_validate;
+        // }
+        // else{
+        //     $validation_issets['ru_info_validation'] = false;
+        // }
 
         $global_validate = $this->global_event_edit_validate($data['global_data']);
         if ($global_validate != null) {
@@ -228,7 +228,7 @@ class EventController extends Controller
         }
 
         if (!$validation_issets['global_info_validation'] && 
-            !$validation_issets['ru_info_validation'] && 
+            // !$validation_issets['ru_info_validation'] && 
             !$validation_issets['ka_info_validation'] && 
             !$validation_issets['us_info_validation']
         ) {
@@ -242,7 +242,7 @@ class EventController extends Controller
                 $locale_event_values != 'Error'
             ) {
                 $saiving_issets['ka_info_status'] = $this->edit_locale_event($data['ka_data'], $locale_event_values['ka_id']);
-                $saiving_issets['ru_info_status'] = $this->edit_locale_event($data['ru_data'], $locale_event_values['ru_id']);
+                // $saiving_issets['ru_info_status'] = $this->edit_locale_event($data['ru_data'], $locale_event_values['ru_id']);
                 $saiving_issets['us_info_status'] = $this->edit_locale_event($data['us_data'], $locale_event_values['us_id']);
                 
                 if($request->hasFile('event_new_images')){
@@ -306,7 +306,7 @@ class EventController extends Controller
             $locale_tabs = [
                 'us_id' => $editing_local_event->us_event_id,
                 'ka_id' => $editing_local_event->ka_event_id,
-                'ru_id' => $editing_local_event->ru_event_id,
+                // 'ru_id' => $editing_local_event->ru_event_id,
                 'global_id' => $editing_local_event->id
             ];
             return $locale_tabs;
@@ -352,7 +352,7 @@ class EventController extends Controller
         return $data = [
             'global_data' => $global_event,
             'us_data' => $global_event->us_event,
-            'ru_data' => $global_event->ru_event,
+            // 'ru_data' => $global_event->ru_event,
             'ka_data' => $global_event->ka_event,
             'general_info' => $blobal_data
         ];
@@ -366,7 +366,7 @@ class EventController extends Controller
 
         $global_event = Event::where('id',strip_tags($request->event_id))->first();
         $us_event = Locale_event::where('id',strip_tags($global_event->us_event_id))->first();
-        $ru_event = Locale_event::where('id',strip_tags($global_event->ru_event_id))->first();
+        // $ru_event = Locale_event::where('id',strip_tags($global_event->ru_event_id))->first();
         $ka_event = Locale_event::where('id',strip_tags($global_event->ka_event_id))->first();
         
         // delete event file
@@ -390,7 +390,7 @@ class EventController extends Controller
         }
         $global_event ->delete();
         $us_event ->delete();
-        $ru_event ->delete();
+        // $ru_event ->delete();
         $ka_event ->delete();
     }
 
@@ -420,13 +420,13 @@ class EventController extends Controller
             $validation_issets['us_info_validation'] = false;
         }
 
-        $ru_validate = $this->local_event_validate($data['ru_data']);
-        if ($ru_validate != null) {
-            $validation_issets['ru_info_validation'] = $ru_validate;
-        }
-        else{
-            $validation_issets['ru_info_validation'] = false;
-        }
+        // $ru_validate = $this->local_event_validate($data['ru_data']);
+        // if ($ru_validate != null) {
+        //     $validation_issets['ru_info_validation'] = $ru_validate;
+        // }
+        // else{
+        //     $validation_issets['ru_info_validation'] = false;
+        // }
 
         $global_validate = $this->global_event_add_validate($data['global_data']);
         if ($global_validate != null) {
@@ -438,17 +438,17 @@ class EventController extends Controller
 
         if (
             !$validation_issets['global_info_validation'] && 
-            !$validation_issets['ru_info_validation'] && 
+            // !$validation_issets['ru_info_validation'] && 
             !$validation_issets['ka_info_validation'] && 
             !$validation_issets['us_info_validation']
         ) {
             $saiving_issets['ka_info_status'] = $this->add_locale_event($data['ka_data'], 'ka');
-            $saiving_issets['ru_info_status'] = $this->add_locale_event($data['ru_data'], 'ru');
+            // $saiving_issets['ru_info_status'] = $this->add_locale_event($data['ru_data'], 'ru');
             $saiving_issets['us_info_status'] = $this->add_locale_event($data['us_data'], 'us');
 
             if (
                 $saiving_issets['ka_info_status'] != 'Error' &&
-                $saiving_issets['ru_info_status'] != 'Error' &&
+                // $saiving_issets['ru_info_status'] != 'Error' &&
                 $saiving_issets['us_info_status'] != 'Error'
             ) {
                 $action_event_id = $this->add_global_event(
@@ -457,7 +457,7 @@ class EventController extends Controller
                     $request,
 
                     $saiving_issets['ka_info_status'],
-                    $saiving_issets['ru_info_status'],
+                    // $saiving_issets['ru_info_status'],
                     $saiving_issets['us_info_status']                    
                 );
             }
@@ -489,7 +489,7 @@ class EventController extends Controller
         }
     }
 
-    public function add_global_event($global_data, $global_blocks, $request, $ka_info_id, $ru_info_id, $us_info_id)
+    public function add_global_event($global_data, $global_blocks, $request, $ka_info_id, $us_info_id)
     {
         $url_title = URLTitleService::get_url_title($global_data["us_title_for_url_title"]); // make url_title from us_title value
         
@@ -514,11 +514,11 @@ class EventController extends Controller
 
         $local_us = $us_info_id;
         $local_ka = $ka_info_id;
-        $local_ru = $ru_info_id;
+        // $local_ru = $ru_info_id;
 
         $event['us_event_id']=$local_us;
         $event['ka_event_id']=$local_ka;
-        $event['ru_event_id']=$local_ru;
+        // $event['ru_event_id']=$local_ru;
         
         $event -> save();
 

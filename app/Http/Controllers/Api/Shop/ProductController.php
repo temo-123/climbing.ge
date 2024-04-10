@@ -139,12 +139,12 @@ class ProductController extends Controller
     {
         $product = product::where('id', '=', $request->product_id)->first();
         $us_product = $product->us_product;
-        $ru_product = $product->ru_product;
+        // $ru_product = $product->ru_product;
         $ka_product = $product->ka_product;
         $data = [
             'global_product' => $product,
             'us_product' => $us_product,
-            'ru_product' => $ru_product,
+            // 'ru_product' => $ru_product,
             'ka_product' => $ka_product
         ];
         return $data;

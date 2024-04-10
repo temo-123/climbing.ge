@@ -77,11 +77,6 @@
                         
                         <label for="4" >Georgian text</label>
                     </div>
-                    <div class="col" >
-                        <input type="radio" id="3" :value="3" v-model="tab_num">
-                        
-                        <label for="3" >Russion text</label>
-                    </div>
                 </div>
             </div>
             <div class="col-md-12">
@@ -194,56 +189,6 @@
                             :form_value_name_prop="'info'"
                             :form_data_prop=data.us_data.info 
                             :locale_prop="'us'"
-                            :block_action_prop="global_blocks.info_block"
-                            :block_id_prop="global_blocks.info_block_id"
-                            :value_name_prop="'info_block'"
-
-                            :global_data_array_prop="general_infos"
-                            :get_data_in_component_prop="false"
-
-                            @get_form_data="get_value_insert_text"
-                            @get_global_blocks_status="get_global_blocks_status_action"
-                            @get_global_blocks_id="get_global_blocks_id"
-                        />
-
-                    </form>
-                </div>
-                <div class="row" v-show="tab_num == 3">
-                    <div class="width_100 jumbotron jumbotron-fluid">
-                        <div class="container">
-                            <h2 class="display-4">Competition rusion version</h2>
-                            <p class="lead">Competition rusion version for site localisation.</p>
-                        </div>
-                    </div>
-    
-                    <form class="width_100" name="contact-form" method="POST" style="margin-top: 5%;" enctyp ="multipart/form-data">
-                        <div class="form-group clearfix">
-                            <label for="name" class='col-xs-2 control-label'> Title </label>
-                            <div class="col-xs-8">
-                                <input type="text" name="title" v-model="data.ru_data.title" class="form-control"> 
-                            </div>
-                        </div>
-    
-                        <div class="form-group clearfix">
-                            <label for="name" class='col-xs-2 control-label'> Short description </label>
-                            <div class="col-xs-8">
-                                <!-- <textarea type="text"  name="short_description" v-model="data.ru_data.short_description"  rows="15" class="form-cotrol md-textarea form-control"></textarea> -->
-                                <ckeditor v-model="data.ru_data.short_description" :config="editor_config.ru_short_description"></ckeditor>
-                            </div>
-                        </div>
-
-                        <div class="form-group clearfix">
-                            <label for="name" class='col-xs-2 control-label'> text </label>
-                            <div class="col-xs-8">
-                                <ckeditor v-model="data.ru_data.text" :config="editor_config.ru_text"></ckeditor>
-                            </div>
-                        </div>
-
-                        <GlobalInfoFormBlock
-                            :title_prop="'Contact info'" 
-                            :form_value_name_prop="'info'"
-                            :form_data_prop=data.ru_data.info 
-                            :locale_prop="'ru'"
                             :block_action_prop="global_blocks.info_block"
                             :block_id_prop="global_blocks.info_block_id"
                             :value_name_prop="'info_block'"

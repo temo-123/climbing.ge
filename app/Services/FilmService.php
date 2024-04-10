@@ -14,18 +14,7 @@ class FilmService extends LocaleContentService
     {
         $films = array();
 
-        if($locale == "ru"){
-            foreach ($global_films as $film) {
-                $ru_films = Locale_film::where('id', '=', $film->ru_film_id,)->get();
-                $temp_var = (new static)->create_films_array($ru_films, $film);
-                array_push(
-                    $films, 
-                    $temp_var
-                );
-                $temp_var = [];
-            }
-        }
-        elseif ($locale == "ka") {
+        if ($locale == "ka") {
             foreach ($global_films as $film) {
                 $ka_films = Locale_film::where('id', '=', $film->ka_film_id,)->get();
                 $temp_var = (new static)->create_films_array($ka_films, $film);
@@ -62,13 +51,7 @@ class FilmService extends LocaleContentService
 
     public static function get_film_on_page_use_locale($global_film, $locale = 'en')
     {
-        if($locale == "ru"){
-            $ru_film_id = $global_film->ru_film_id;
-            $loc_film = Locale_film::where('id', '=', $ru_film_id,)->get();
-            
-            return (new static)->create_page_arr($loc_film, $global_film);
-        }
-        elseif ($locale == "ka") {
+        if ($locale == "ka") {
             $ka_film_id = $global_film->ka_film_id;
             $loc_film = Locale_film::where('id', '=', $ka_film_id,)->get();
             

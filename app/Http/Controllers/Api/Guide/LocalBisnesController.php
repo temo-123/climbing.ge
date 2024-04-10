@@ -83,9 +83,9 @@ class LocalBisnesController extends Controller
         if($lang == 'ka'){
             $article_bisnes_local_data = $article_bisnes_global_data->ka_bisnes;
         }
-        else if($lang == 'ru'){
-            $article_bisnes_local_data = $article_bisnes_global_data->ru_bisnes;
-        }
+        // else if($lang == 'ru'){
+        //     $article_bisnes_local_data = $article_bisnes_global_data->ru_bisnes;
+        // }
         else{
             $article_bisnes_local_data = $article_bisnes_global_data->us_bisnes;
         }
@@ -100,9 +100,9 @@ class LocalBisnesController extends Controller
             if($request->locale == 'ka'){
                 $article_bisnes_local_data = $article_bisnes_global_data->ka_bisnes;
             }
-            else if($request->locale == 'ru'){
-                $article_bisnes_local_data = $article_bisnes_global_data->ru_bisnes;
-            }
+            // else if($request->locale == 'ru'){
+            //     $article_bisnes_local_data = $article_bisnes_global_data->ru_bisnes;
+            // }
             else{
                 $article_bisnes_local_data = $article_bisnes_global_data->us_bisnes;
             }
@@ -233,7 +233,7 @@ class LocalBisnesController extends Controller
             'global_bisnes' => $bisnes,
             'us_bisnes' => $bisnes->us_bisnes,
             'ka_bisnes' => $bisnes->ka_bisnes,
-            'ru_bisnes' => $bisnes->ru_bisnes,
+            // 'ru_bisnes' => $bisnes->ru_bisnes,
 
             // 'bisnes_images' => $bisnes->bisnes_images,
         ];

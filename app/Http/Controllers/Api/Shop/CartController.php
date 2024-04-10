@@ -127,7 +127,7 @@ class CartController extends Controller
      */
     public function create()
     {
-        $request->user()->authorizeRoles(['user', 'manager', 'admin','ka_manager','ru_manager','us_manager','seller']);
+        $request->user()->authorizeRoles(['user', 'manager', 'admin','ka_manager','us_manager','seller']);
 
         if (Auth::user()) {
             $old_cart_products = Cart::where('user_id', strip_tags(Auth::user()->id))->get();

@@ -46,12 +46,12 @@ class UserNotificationsController extends Controller
                                 $text = 'შეამოწმეთ თქვენი ართერთი საყვარელი საცოცი რეგიონი საქართველოში, (' . $locale_event->title . ') რათა გაიგოთ მეტი სიახლე მის შესახებ.';
                                 $subject = $locale_event->title;
                             }
-                            else if($user->lang == 'ru'){
-                                $locale_event = $global_event->ru_event;
-                                $url = config('app.base_url_ssh').'/ru/event/'.$global_event->url_title;
-                                $text = 'Посетите одно из ваших любимых мест для скалолазания в Грузии, (' . $locale_event->title . ') чтобы узнать, что нового.';
-                                $subject = $locale_event->title;
-                            }
+                            // else if($user->lang == 'ru'){
+                            //     $locale_event = $global_event->ru_event;
+                            //     $url = config('app.base_url_ssh').'/ru/event/'.$global_event->url_title;
+                            //     $text = 'Посетите одно из ваших любимых мест для скалолазания в Грузии, (' . $locale_event->title . ') чтобы узнать, что нового.';
+                            //     $subject = $locale_event->title;
+                            // }
                             else{
                                 $locale_event = $global_event->us_event;
                                 $url = config('app.base_url_ssh').'/event/'.$global_event->url_title;
@@ -74,12 +74,12 @@ class UserNotificationsController extends Controller
                                 $text = 'შეამოწმეთ თქვენი ართერთი საყვარელი საცოცი რეგიონი საქართველოში, (' . $locale_event->title . ') რათა გაიგოთ მეტი სიახლე მის შესახებ.';
                                 $subject = $locale_event->title;
                             }
-                            else if($user->lang == 'ru'){
-                                $locale_event = $global_event->ru_event;
-                                $url = config('app.base_url_ssh').'/ru/event/'.$global_event->url_title;
-                                $text = 'Посетите одно из ваших любимых мест для скалолазания в Грузии, (' . $locale_event->title . ') чтобы узнать, что нового.';
-                                $subject = $locale_event->title;
-                            }
+                            // else if($user->lang == 'ru'){
+                            //     $locale_event = $global_event->ru_event;
+                            //     $url = config('app.base_url_ssh').'/ru/event/'.$global_event->url_title;
+                            //     $text = 'Посетите одно из ваших любимых мест для скалолазания в Грузии, (' . $locale_event->title . ') чтобы узнать, что нового.';
+                            //     $subject = $locale_event->title;
+                            // }
                             else{
                                 $locale_event = $global_event->us_event;
                                 $url = config('app.base_url_ssh').'/event/'.$global_event->url_title;
@@ -104,12 +104,12 @@ class UserNotificationsController extends Controller
                             $text = 'შეამოწმეთ თქვენი ართერთი საყვარელი საცოცი რეგიონი საქართველოში, (' . $locale_product->title . ') რათა გაიგოთ მეტი სიახლე მის შესახებ.';
                             $subject = $locale_product->title;
                         }
-                        else if($user->lang == 'ru'){
-                            $locale_product = $global_product->ru_article;
-                            $url = config('app.base_url_ssh').'/ru/product/'.$global_product->url_title;
-                            $text = 'Посетите одно из ваших любимых мест для скалолазания в Грузии, (' . $locale_product->title . ') чтобы узнать, что нового.';
-                            $subject = $locale_product->title;
-                        }
+                        // else if($user->lang == 'ru'){
+                        //     $locale_product = $global_product->ru_article;
+                        //     $url = config('app.base_url_ssh').'/ru/product/'.$global_product->url_title;
+                        //     $text = 'Посетите одно из ваших любимых мест для скалолазания в Грузии, (' . $locale_product->title . ') чтобы узнать, что нового.';
+                        //     $subject = $locale_product->title;
+                        // }
                         else{
                             $locale_product = $global_product->us_article;
                             $url = config('app.base_url_ssh').'/product/'.$global_product->url_title;
@@ -133,12 +133,12 @@ class UserNotificationsController extends Controller
                             $text = 'შეამოწმეთ თქვენი ართერთი საყვარელი საცოცი რეგიონი საქართველოში, (' . $locale_outdoor->title . ') რათა გაიგოთ მეტი სიახლე მის შესახებ.';
                             $subject = $locale_outdoor->title;
                         }
-                        else if($user->lang == 'ru'){
-                            $locale_outdoor = $global_outdoor->ru_article;
-                            $url = config('app.base_url_ssh').'/ru/outdoor/'.$global_outdoor->url_title;
-                            $text = 'Посетите одно из ваших любимых мест для скалолазания в Грузии, (' . $locale_outdoor->title . ') чтобы узнать, что нового.';
-                            $subject = $locale_outdoor->title;
-                        }
+                        // else if($user->lang == 'ru'){
+                        //     $locale_outdoor = $global_outdoor->ru_article;
+                        //     $url = config('app.base_url_ssh').'/ru/outdoor/'.$global_outdoor->url_title;
+                        //     $text = 'Посетите одно из ваших любимых мест для скалолазания в Грузии, (' . $locale_outdoor->title . ') чтобы узнать, что нового.';
+                        //     $subject = $locale_outdoor->title;
+                        // }
                         else{
                             $locale_outdoor = $global_outdoor->us_article;
                             $url = config('app.base_url_ssh').'/outdoor/'.$global_outdoor->url_title;
@@ -193,12 +193,12 @@ class UserNotificationsController extends Controller
                 $text = 'შეამოწმეთ თქვენი ართერთი საყვარელი საცოცი რეგიონი საქართველოში, (' . $locale_article->title . ') რათა გაიგოთ მეტი სიახლე მის შესახებ.';
                 $subject = $locale_article->title;
             }
-            else if($user->lang == 'ru'){
-                $locale_article = $global_article->ru_article;
-                $url = config('app.base_url_ssh').'/ru/' . $article_category . '/'.$global_article->url_title;
-                $text = 'Посетите одно из ваших любимых мест для скалолазания в Грузии, (' . $locale_article->title . ') чтобы узнать, что нового.';
-                $subject = $locale_article->title;
-            }
+            // else if($user->lang == 'ru'){
+            //     $locale_article = $global_article->ru_article;
+            //     $url = config('app.base_url_ssh').'/ru/' . $article_category . '/'.$global_article->url_title;
+            //     $text = 'Посетите одно из ваших любимых мест для скалолазания в Грузии, (' . $locale_article->title . ') чтобы узнать, что нового.';
+            //     $subject = $locale_article->title;
+            // }
             else{
                 $locale_article = $global_article->us_article;
                 $url = config('app.base_url_ssh').'/' . $article_category . '/'.$global_article->url_title;
@@ -235,12 +235,12 @@ class UserNotificationsController extends Controller
                 $text = 'ჩვენი ახალი პროდუქტი სპეციალურად თქვენთვის. (' . $locale_product->title . ') ეწვიეთ ჩვენ მაღაზიაში რომ იხილოთ მეტი.';
                 $subject = $locale_product->title;
             }
-            else if($user->lang == 'ru'){
-                $locale_product = $product->ru_product;
-                $url = config('app.base_url_ssh').'/ru/product/'.$product->url_title;
-                $text = 'Наш новый продукт специально для вас. (' . $locale_product->title . ') Посетите наш магазин, чтобы увидеть больше.';
-                $subject = $locale_product->title;
-            }
+            // else if($user->lang == 'ru'){
+            //     $locale_product = $product->ru_product;
+            //     $url = config('app.base_url_ssh').'/ru/product/'.$product->url_title;
+            //     $text = 'Наш новый продукт специально для вас. (' . $locale_product->title . ') Посетите наш магазин, чтобы увидеть больше.';
+            //     $subject = $locale_product->title;
+            // }
             else{
                 $locale_product = $product->us_product;
                 $url = config('app.base_url_ssh').'/product/'.$product->url_title;
@@ -277,12 +277,12 @@ class UserNotificationsController extends Controller
                 $text = 'შეამოწმეთ თქვენი ართერთი საყვარელი საცოცი რეგიონი საქართველოში, (' . $locale_service->title . ') რათა გაიგოთ მეტი სიახლე მის შესახებ.';
                 $subject = $locale_service->title;
             }
-            else if($user->lang == 'ru'){
-                $locale_service = $service->ru_service;
-                $url = config('app.app_ssh') . config('app.shop_url').'/ru/service/'.$service->url_title;
-                $text = 'Посетите одно из ваших любимых мест для скалолазания в Грузии, (' . $locale_service->title . ') чтобы узнать, что нового.';
-                $subject = $locale_service->title;
-            }
+            // else if($user->lang == 'ru'){
+            //     $locale_service = $service->ru_service;
+            //     $url = config('app.app_ssh') . config('app.shop_url').'/ru/service/'.$service->url_title;
+            //     $text = 'Посетите одно из ваших любимых мест для скалолазания в Грузии, (' . $locale_service->title . ') чтобы узнать, что нового.';
+            //     $subject = $locale_service->title;
+            // }
             else{
                 $locale_service = $service->us_service;
                 $url = config('app.app_ssh') . config('app.shop_url').'/service/'.$service->url_title;
@@ -320,13 +320,13 @@ class UserNotificationsController extends Controller
                 $text = 'საცოც რეგიონში "' . $locale_article->title . '", დაემატა ახალი სექტორი ' . $last_sector->name . '. ეწვიეთ ჩვენ საიტს რომ გაიგოთ მეტი ინფორმაცია';
                 $subject = $locale_article->title;
             }
-            else if($user->lang == 'ru'){
-                $global_article = $last_sector->article;
-                $locale_article = $global_article->ka_article;
-                $url = config('app.base_url_ssh').'/ru/' . $global_article->category . '/'.$global_article->url_title;
-                $text = 'В районе скалолазания "' . $locale_article->title . '", добавлен новый сектор ' . $last_sector->name . '. Посетите наш сайт для получения дополнительной информации';
-                $subject = $locale_article->title;
-            }
+            // else if($user->lang == 'ru'){
+            //     $global_article = $last_sector->article;
+            //     $locale_article = $global_article->ka_article;
+            //     $url = config('app.base_url_ssh').'/ru/' . $global_article->category . '/'.$global_article->url_title;
+            //     $text = 'В районе скалолазания "' . $locale_article->title . '", добавлен новый сектор ' . $last_sector->name . '. Посетите наш сайт для получения дополнительной информации';
+            //     $subject = $locale_article->title;
+            // }
             else{
                 $global_article = $last_sector->article;
                 $locale_article = $global_article->ka_article;
@@ -365,12 +365,12 @@ class UserNotificationsController extends Controller
                 $text = 'ჩვენი ახალი პროდუქტი სპეციალურად თქვენთვის. (' . $locale_product->title . ') ეწვიეთ ჩვენ მაღაზიაში რომ იხილოთ მეტი.';
                 $subject = $locale_product->title;
             }
-            else if($user->lang == 'ru'){
-                $locale_product = $product->ru_product;
-                $url = config('app.base_url_ssh').'/ru/product/'.$product->url_title;
-                $text = 'Наш новый продукт специально для вас. (' . $locale_product->title . ') Посетите наш магазин, чтобы увидеть больше.';
-                $subject = $locale_product->title;
-            }
+            // else if($user->lang == 'ru'){
+            //     $locale_product = $product->ru_product;
+            //     $url = config('app.base_url_ssh').'/ru/product/'.$product->url_title;
+            //     $text = 'Наш новый продукт специально для вас. (' . $locale_product->title . ') Посетите наш магазин, чтобы увидеть больше.';
+            //     $subject = $locale_product->title;
+            // }
             else{
                 $locale_product = $product->us_product;
                 $url = config('app.base_url_ssh').'/product/'.$product->url_title;

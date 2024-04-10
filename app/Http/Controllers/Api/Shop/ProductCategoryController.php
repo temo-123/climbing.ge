@@ -50,7 +50,7 @@ class ProductCategoryController extends Controller
 
             $new_product_category['us_name'] = $request->data['us_name'];
             $new_product_category['ka_name'] = $request->data['ka_name'];
-            $new_product_category['ru_name'] = $request->data['ru_name'];
+            // $new_product_category['ru_name'] = $request->data['ru_name'];
 
             $new_product_category -> save();
         }
@@ -98,7 +98,7 @@ class ProductCategoryController extends Controller
 
             $editing_product_category['us_name'] = $request->data['us_name'];
             $editing_product_category['ka_name'] = $request->data['ka_name'];
-            $editing_product_category['ru_name'] = $request->data['ru_name'];
+            // $editing_product_category['ru_name'] = $request->data['ru_name'];
 
             $editing_product_category -> save();
         }
@@ -120,7 +120,7 @@ class ProductCategoryController extends Controller
     {
         $validator = validator($data = $request->data, [
             'us_name' => 'required',
-            'ru_name' => 'required',
+            // 'ru_name' => 'required',
             'ka_name' => 'required',
         ]);
     

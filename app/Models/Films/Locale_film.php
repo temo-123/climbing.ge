@@ -25,10 +25,10 @@ class Locale_film extends Model
       return $this->hasOne(Film::class, 'ka_film_id');
     }
   
-    public function global_film_ru()
-    {
-      return $this->hasOne(Film::class, 'ru_film_id');
-    }
+    // public function global_film_ru()
+    // {
+    //   return $this->hasOne(Film::class, 'ru_film_id');
+    // }
 
     // public function global_film()
     // {

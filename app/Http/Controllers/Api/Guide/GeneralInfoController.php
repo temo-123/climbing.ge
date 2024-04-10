@@ -51,7 +51,7 @@ class GeneralInfoController extends Controller
 
             $new_general_info['text_us'] = $request->data['us_text'];
             $new_general_info['text_ka'] = $request->data['ka_text'];
-            $new_general_info['text_ru'] = $request->data['ru_text'];
+            // $new_general_info['text_ru'] = $request->data['ru_text'];
 
             $new_general_info -> save();
         }
@@ -100,7 +100,7 @@ class GeneralInfoController extends Controller
     
             $editing_general_info['text_us'] = $request->data['us_text'];
             $editing_general_info['text_ka'] = $request->data['ka_text'];
-            $editing_general_info['text_ru'] = $request->data['ru_text'];
+            // $editing_general_info['text_ru'] = $request->data['ru_text'];
     
             $editing_general_info -> save();
         }
@@ -123,7 +123,7 @@ class GeneralInfoController extends Controller
         $validator = validator($data = $request->data, [
             'title' => 'required',
             'us_text' => 'required',
-            'ru_text' => 'required',
+            // 'ru_text' => 'required',
             'ka_text' => 'required',
         ]);
     

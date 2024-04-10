@@ -43,11 +43,6 @@
                         
                         <label for="3" >Georgian text</label>
                     </div>
-                    <div class="col" >
-                        <input type="radio" id="4" :value="4" v-model="tab_num">
-                        
-                        <label for="4" >Russion text</label>
-                    </div>
                 </div>
             </div>
             <div class="row" v-show="tab_num == 1">
@@ -107,28 +102,6 @@
                         <label for="region" class='col-md-2 control-label '> Georgian text </label>
                         
                         <ckeditor v-model="data.ka_text" :config="ka_text_editor_config"></ckeditor>
-                    </div>
-                </form>
-            </div>
-            <div class="row" v-show="tab_num == 4">
-                <div class="jumbotron width_100">
-                    <div class="container">
-                        <h2 class="display-4"><span style="text-transform: capitalize">Region Russion information</span></h2>
-                        <p class="lead">Region Russion information.</p>
-                    </div>
-                </div>
-                <form>
-                    <div class="form-group clearfix">
-                        <label for="name" class='col-xs-2 control-label'> Russion name </label>
-                        <div class="col-xs-8">
-                            <input type="text" v-model="data.ru_name" name="ka_name" class="form-control"> 
-                        </div>
-                    </div>
-
-                    <div class="form-group clearfix row">
-                        <label for="region" class='col-md-2 control-label '> Russion text </label>
-                        
-                        <ckeditor v-model="data.ru_text" :config="ru_text_editor_config"></ckeditor>
                     </div>
                 </form>
             </div>

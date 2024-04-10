@@ -25,8 +25,8 @@ class Product extends Model
       'category_id',
       
       'us_product_id',
-      'ka_product_id',
-      'ru_product_id'
+      'ka_product_id'
+      // 'ru_product_id'
 	];
 
 	public function us_product()
@@ -39,10 +39,10 @@ class Product extends Model
 		return $this->hasOne(Locale_product::class, 'id', 'ka_product_id');
 	}
 
-	public function ru_product()
-	{
-		return $this->hasOne(Locale_product::class, 'id', 'ru_product_id');
-	}
+	// public function ru_product()
+	// {
+	// 	return $this->hasOne(Locale_product::class, 'id', 'ru_product_id');
+	// }
 
   public function product_category()
   {

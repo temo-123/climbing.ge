@@ -12,7 +12,7 @@ class Film_tag extends Model
     protected $fillable = [
 	    'us_name',
 	    'ka_name',
-	    'ru_name',
+	    // 'ru_name',
 	];
 
     public function films()

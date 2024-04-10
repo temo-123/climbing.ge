@@ -31,15 +31,6 @@
                                 </div>
                             </div>
                             <div class="form-group clearfix">
-                                <label for="name" class='col-xs-2 control-label'> ru name </label>
-                                <div class="col-xs-10">
-                                    <input type="text" v-model="data.ru_name" name="ru_name" class="form-control" required> 
-                                    <div class="alert alert-danger" role="alert" v-if="errors.ru_name">
-                                        {{ errors.ru_name[0] }}
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="form-group clearfix">
                                 <label for="name" class='col-xs-2 control-label'> ka name </label>
                                 <div class="col-xs-10">
                                     <input type="text" v-model="data.ka_name" name="ka_name" class="form-control" required> 

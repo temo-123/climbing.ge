@@ -33,8 +33,8 @@ class CreateSitesTable extends Migration
             $table->unsignedBigInteger('ka_info_id');
             $table->foreign('ka_info_id')->references('id')->on('locale_sites')->onDelete('cascade');
 
-            $table->unsignedBigInteger('ru_info_id');
-            $table->foreign('ru_info_id')->references('id')->on('locale_sites')->onDelete('cascade');
+            // $table->unsignedBigInteger('ru_info_id');
+            // $table->foreign('ru_info_id')->references('id')->on('locale_sites')->onDelete('cascade');
 
             $table->timestamps();
         });

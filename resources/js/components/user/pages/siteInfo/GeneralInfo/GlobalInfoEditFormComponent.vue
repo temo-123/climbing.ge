@@ -48,15 +48,6 @@
                                     {{ errors.ka_text[0] }}
                                 </div>
                             </div>
-                            <div class="form-group clearfix">
-                                <label for="name" class='col-xs-2 control-label'> Russian name </label>
-                                <div class="col-xs-10">
-                                    <ckeditor v-model="data.ru_text" :config="this.$editorConfig"></ckeditor>
-                                </div>
-                                <div class="alert alert-danger" role="alert" v-if="errors.ru_text">
-                                    {{ errors.ru_text[0] }}
-                                </div>
-                            </div>
                         </form>
         
                     </div>

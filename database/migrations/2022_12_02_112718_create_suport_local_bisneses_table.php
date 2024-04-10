@@ -29,8 +29,8 @@ return new class extends Migration
             $table->unsignedBigInteger('ka_bisnes_id');
             $table->foreign('ka_bisnes_id')->references('id')->on('locale_bisneses');
 
-            $table->unsignedBigInteger('ru_bisnes_id');
-            $table->foreign('ru_bisnes_id')->references('id')->on('locale_bisneses');
+            // $table->unsignedBigInteger('ru_bisnes_id');
+            // $table->foreign('ru_bisnes_id')->references('id')->on('locale_bisneses');
 
             $table->timestamps();
         });

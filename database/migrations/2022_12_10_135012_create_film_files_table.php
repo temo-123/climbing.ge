@@ -18,11 +18,11 @@ return new class extends Migration
 
             $table->string('us_name')->nullable();
             $table->string('ka_name')->nullable();
-            $table->string('ru_name')->nullable();
+            // $table->string('ru_name')->nullable();
 
             $table->text('us_description')->nullable();
             $table->text('ka_description')->nullable();
-            $table->text('ru_description')->nullable();
+            // $table->text('ru_description')->nullable();
 
             $table->string('file')->nullable();
 

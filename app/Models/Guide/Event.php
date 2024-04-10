@@ -22,10 +22,10 @@ class Event extends Model
 		return $this->hasOne(Locale_event::class, 'id', 'ka_event_id');
 	}
 
-	public function ru_event()
-	{
-		return $this->hasOne(Locale_event::class, 'id', 'ru_event_id');
-	}
+	// public function ru_event()
+	// {
+	// 	return $this->hasOne(Locale_event::class, 'id', 'ru_event_id');
+	// }
 
 	public function general_info()
 	{

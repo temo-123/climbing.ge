@@ -19,10 +19,6 @@
                 <div class="alert alert-danger" role="alert" v-if="errors.ka_name">
                     Georgian name - {{ errors.ka_name[0] }}
                 </div>
-
-                <div class="alert alert-danger" role="alert" v-if="errors.ru_name">
-                    Russion name - {{ errors.ru_name[0] }}
-                </div>
             </div>
         </div>
         <div class="row">
@@ -111,28 +107,6 @@
                             <label for="region" class='col-md-2 control-label '> Georgian text </label>
                             
                             <ckeditor v-model="data.ka_text" :config="ka_text_editor_config"></ckeditor>
-                        </div>
-                    </form>
-                </div>
-                <div class="row" v-show="tab_num == 4">
-                    <div class="jumbotron width_100">
-                        <div class="container">
-                            <h2 class="display-4"><span>Region Russion information</span></h2>
-                            <p class="lead">Region Russion information.</p>
-                        </div>
-                    </div>
-                    <form>
-                        <div class="form-group clearfix">
-                            <label for="name" class='col-xs-2 control-label'> Russion name </label>
-                            <div class="col-xs-10">
-                                <input type="text" v-model="data.ru_name" name="ka_name" class="form-control"> 
-                            </div>
-                        </div>
-
-                        <div class="form-group clearfix row">
-                            <label for="region" class='col-md-2 control-label '> Russion text </label>
-                            
-                            <ckeditor v-model="data.ru_text" :config="ru_text_editor_config"></ckeditor>
                         </div>
                     </form>
                 </div>

@@ -19,8 +19,8 @@ class Site extends Model
 		return $this->hasOne(Locale_site::class, 'id', 'ka_info_id');
 	}
 
-	public function ru_site()
-	{
-		return $this->hasOne(Locale_site::class, 'id', 'ru_info_id');
-	}
+	// public function ru_site()
+	// {
+	// 	return $this->hasOne(Locale_site::class, 'id', 'ru_info_id');
+	// }
 }

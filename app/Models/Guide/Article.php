@@ -44,10 +44,10 @@ class Article extends Model
 		return $this->hasOne(Locale_article::class, 'id', 'ka_article_id');
 	}
 
-	public function global_article_ru()
-	{
-		return $this->hasOne(Locale_article::class, 'id', 'ru_article_id');
-	}
+	// public function global_article_ru()
+	// {
+	// 	return $this->hasOne(Locale_article::class, 'id', 'ru_article_id');
+	// }
 
 
 	public function comments()

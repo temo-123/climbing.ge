@@ -29,8 +29,8 @@ class Locale_mount extends Model
 		return $this->hasOne(Mount::class, 'ka_mount_id');
 	}
 
-	public function global_mount_ru()
-	{
-		return $this->hasOne(Mount::class, 'ru_mount_id');
-	}
+	// public function global_mount_ru()
+	// {
+	// 	return $this->hasOne(Mount::class, 'ru_mount_id');
+	// }
 }

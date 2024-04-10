@@ -165,7 +165,7 @@ class TourController extends Controller
             'global_tour' => $tour,
             'us_tour' => $tour->us_tour,
             'ka_tour' => $tour->ka_tour,
-            'ru_tour' => $tour->ru_tour,
+            // 'ru_tour' => $tour->ru_tour,
 
             'tour_images' => $tour->tour_images,
         ];
@@ -204,7 +204,7 @@ class TourController extends Controller
         // delete tour from db
         $global_tour ->delete();
         $us_tour ->delete();
-        $ru_tour ->delete();
+        // $ru_tour ->delete();
         $ka_tour ->delete();
     }
 

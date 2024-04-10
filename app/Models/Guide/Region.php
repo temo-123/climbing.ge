@@ -11,11 +11,11 @@ class Region extends Model
 
     protected $fillable = [
 		'us_name',
-		'ru_name',
+		// 'ru_name',
 		'ka_name',
 
 		'us_text',
-		'ru_text',
+		// 'ru_text',
 		'ka_text',
 
 		'map',

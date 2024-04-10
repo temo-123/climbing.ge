@@ -34,8 +34,8 @@ return new class extends Migration
             $table->unsignedBigInteger('ka_event_id');
             $table->foreign('ka_event_id')->references('id')->on('locale_events')->onDelete('cascade');
 
-            $table->unsignedBigInteger('ru_event_id');
-            $table->foreign('ru_event_id')->references('id')->on('locale_events')->onDelete('cascade');
+            // $table->unsignedBigInteger('ru_event_id');
+            // $table->foreign('ru_event_id')->references('id')->on('locale_events')->onDelete('cascade');
 
             $table->timestamps();
         });

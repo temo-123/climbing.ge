@@ -512,7 +512,7 @@ class ArticleController extends Controller
         $global_article = Article::where('id',strip_tags($request->id))->first();
         $us_article = Locale_article::where('id',strip_tags($global_article->us_article_id))->first();
         $ka_article = Locale_article::where('id',strip_tags($global_article->ka_article_id))->first();
-        $ru_article = Locale_article::where('id',strip_tags($global_article->ru_article_id))->first();
+        // $ru_article = Locale_article::where('id',strip_tags($global_article->ru_article_id))->first();
 
         $blobal_data = [];
 
@@ -536,7 +536,7 @@ class ArticleController extends Controller
             "general_data" => $blobal_data,
             "us_article" => $us_article,
             "ka_article" => $ka_article,
-            "ru_article" => $ru_article,
+            // "ru_article" => $ru_article,
         ];
         
         if($global_article['category'] == 'outdoor'){

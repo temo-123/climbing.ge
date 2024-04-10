@@ -24,10 +24,10 @@ class Service extends Model
 		return $this->hasOne(Locale_service::class, 'id', 'ka_service_id');
 	}
 
-	public function ru_service()
-	{
-		return $this->hasOne(Locale_service::class, 'id', 'ru_service_id');
-	}
+	// public function ru_service()
+	// {
+	// 	return $this->hasOne(Locale_service::class, 'id', 'ru_service_id');
+	// }
 
 	public function service_images()
 	{

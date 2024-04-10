@@ -38,11 +38,6 @@
                         <label for="2" >English text</label>
                     </div>
                     <div class="col" >
-                        <input type="radio" id="3" :value="3" v-model="tab_num">
-                        
-                        <label for="3" >Russion text</label>
-                    </div>
-                    <div class="col" >
                         <input type="radio" id="4" :value="4" v-model="tab_num">
                         
                         <label for="4" >Georgian text</label>
@@ -199,38 +194,7 @@
                         </div>
                     </form>
                 </div>
-                <div class="row" v-show="tab_num == 3">
-                    <div class="width_100 jumbotron jumbotron-fluid">
-                        <div class="container">
-                            <h2 class="display-4">Service rusion version</h2>
-                            <p class="lead">Service rusion version for site localisation.</p>
-                        </div>
-                    </div>
-    
-                    <form class="width_100" name="contact-form" method="POST" style="margin-top: 5%;" enctyp ="multipart/form-data">
-                        <div class="form-group clearfix">
-                            <label for="name" class='col-xs-2 control-label'> Title </label>
-                            <div class="col-xs-8">
-                                <input type="text" name="title" v-model="data.ru_service.title" class="form-control"> 
-                            </div>
-                        </div>
-    
-                        <div class="form-group clearfix">
-                            <label for="name" class='col-xs-2 control-label'> Short description </label>
-                            <div class="col-xs-8">
-                                <!-- <textarea type="text"  name="short_description" v-model="data.ru_service.short_description"  rows="15" class="form-cotrol md-textarea form-control"></textarea> -->
-                                <ckeditor v-model="data.ru_service.short_description" :config="editor_config.ru_short_description_text"></ckeditor>
-                            </div>
-                        </div>
-
-                        <div class="form-group clearfix">
-                            <label for="name" class='col-xs-2 control-label'> text </label>
-                            <div class="col-xs-8">
-                                <ckeditor v-model="data.ru_service.text"  :config="editor_config.ru_text"></ckeditor>
-                            </div>
-                        </div>
-                    </form>
-                </div>
+                
                 <div class="row" v-show="tab_num == 4">
                     <div class="width_100 jumbotron jumbotron-fluid">
                         <div class="container">

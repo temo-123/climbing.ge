@@ -25,8 +25,8 @@ class Locale_service extends Model
 		return $this->hasOne(Service::class, 'ka_service_id');
 	}
 
-	public function global_service_ru()
-	{
-		return $this->hasOne(Service::class, 'ru_service_id');
-	}
+	// public function global_service_ru()
+	// {
+	// 	return $this->hasOne(Service::class, 'ru_service_id');
+	// }
 }

@@ -31,8 +31,8 @@ class Film extends Model
         return $this->hasOne(Locale_films::class, 'ka_film_id');
     }
 
-    public function ru_film()
-    {
-        return $this->hasOne(Locale_films::class, 'ru_film_id');
-    }
+    // public function ru_film()
+    // {
+    //     return $this->hasOne(Locale_films::class, 'ru_film_id');
+    // }
 }

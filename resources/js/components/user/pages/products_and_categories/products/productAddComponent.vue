@@ -38,11 +38,6 @@
                         
                         <label for="3" >Georgian text</label>
                     </div>
-                    <div class="col" >
-                        <input type="radio" id="4" :value="4" v-model="tab_num">
-                        
-                        <label for="4" >Russion text</label>
-                    </div>
                 </div>
             </div>
             <div class="col-md-12">
@@ -139,45 +134,6 @@
                             <label for="name" class='col-xs-2 control-label'> material</label>
                             <div class="col-xs-8">
                                 <input type="text" v-model="data.us_product.material" name="material" class="form-control"> 
-                            </div>
-                        </div>
-                    </form>
-                </div>
-                <div class="row" v-show="tab_num == 3">
-                    <div class="width_100 jumbotron jumbotron-fluid">
-                        <div class="container">
-                            <h2 class="display-4">Product rusion version</h2>
-                            <p class="lead">Article rusion version for site localisation.</p>
-                        </div>
-                    </div>
-    
-                    <form class="width_100" name="contact-form" method="POST" style="margin-top: 5%;" enctyp ="multipart/form-data">
-                        <div class="form-group clearfix">
-                            <label for="name" class='col-xs-2 control-label'> Title </label>
-                            <div class="col-xs-8">
-                                <input type="text" name="title" v-model="data.ru_product.title" class="form-control"> 
-                            </div>
-                        </div>
-    
-                        <div class="form-group clearfix">
-                            <label for="name" class='col-xs-2 control-label'> Short description </label>
-                            <div class="col-xs-8">
-                                <!-- <textarea type="text"  name="short_description" v-model="data.ru_product.short_description"  rows="15" class="form-cotrol md-textarea form-control"></textarea> -->
-                                <ckeditor v-model="data.ru_product.short_description" :config="editorConfig.ru_short_description_text_editor"></ckeditor>
-                            </div>
-                        </div>
-
-                        <div class="form-group clearfix">
-                            <label for="name" class='col-xs-2 control-label'> text </label>
-                            <div class="col-xs-8">
-                                <ckeditor v-model="data.ru_product.text"  :config="editorConfig.ru_text_editor_config"></ckeditor>
-                            </div>
-                        </div>
-    
-                        <div class="form-group clearfix">
-                            <label for="name" class='col-xs-2 control-label'> material</label>
-                            <div class="col-xs-8">
-                                <input type="text" v-model="data.ru_product.material" name="material" class="form-control"> 
                             </div>
                         </div>
                     </form>

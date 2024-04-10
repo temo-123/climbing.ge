@@ -70,7 +70,7 @@ class ServicesController extends Controller
             'global_service' => $service,
             'us_service' => $service->us_service,
             'ka_service' => $service->ka_service,
-            'ru_service' => $service->ru_service,
+            // 'ru_service' => $service->ru_service,
 
             'service_images' => $service->service_images,
         ];

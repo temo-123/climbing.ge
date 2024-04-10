@@ -39,11 +39,6 @@
                         
                         <label for="3" >Georgian text</label>
                     </div>
-                    <div class="col" >
-                        <input type="radio" id="4" :value="4" v-model="tab_num">
-                        
-                        <label for="4" >Russion text</label>
-                    </div>
                 </div>
             </div>
             <div v-show="tab_num == 1">
@@ -97,17 +92,6 @@
 
                     :title="$t('user add ka article title')"
                     :description="$t('user add ka article description')"
-                />
-            </div>
-            <div v-show="tab_num == 4">
-                <LocaleDataForm 
-                    @locale_form_data="data.ru_article = $event"
-                    @global_blocks="global_blocks_action"
-
-                    :global_blocks_prop="global_blocks"
-
-                    :title="$t('user add ru article title')"
-                    :description="$t('user add ru article description')"
                 />
             </div>
         </div>

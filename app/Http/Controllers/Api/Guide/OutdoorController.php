@@ -37,14 +37,14 @@ class OutdoorController extends Controller
     public function locale_regions(Request $request)
     {
         $data = [];
-        if($request -> lang == 'ru'){
-            $regions = Region::select('id', 'ru_name', 'ru_text')->get();
+        // if($request -> lang == 'ru'){
+        //     $regions = Region::select('id', 'ru_name', 'ru_text')->get();
 
-            foreach ($regions as $region) {
-                array_push($data, ['id'=>$region->id,'name'=>$region->ru_name, 'text'=>$region->ru_text]);
-            }
-        }
-        else if($request -> lang == 'ka'){
+        //     foreach ($regions as $region) {
+        //         array_push($data, ['id'=>$region->id,'name'=>$region->ru_name, 'text'=>$region->ru_text]);
+        //     }
+        // }
+        if($request -> lang == 'ka'){
             $regions = Region::select('id', 'ka_name', 'ka_text')->get();
 
             foreach ($regions as $region) {
@@ -68,14 +68,14 @@ class OutdoorController extends Controller
         // dd($request->lang, $request->region_id);
 
         $data = [];
-        if($request -> lang == 'ru'){
-            $regions = Region::select('id', 'ru_name', 'ru_text', 'map')->where('id',strip_tags($request->region_id))->get();
+        // if($request -> lang == 'ru'){
+        //     $regions = Region::select('id', 'ru_name', 'ru_text', 'map')->where('id',strip_tags($request->region_id))->get();
 
-            foreach ($regions as $region) {
-                array_push($data, ['id'=>$region->id,'name'=>$region->ru_name, 'text'=>$region->ru_text, "map"=>$region->map]);
-            }
-        }
-        else if($request -> lang == 'ka'){
+        //     foreach ($regions as $region) {
+        //         array_push($data, ['id'=>$region->id,'name'=>$region->ru_name, 'text'=>$region->ru_text, "map"=>$region->map]);
+        //     }
+        // }
+        if($request -> lang == 'ka'){
             $regions = Region::select('id', 'ka_name', 'ka_text', 'map')->where('id',strip_tags($request->region_id))->get();
 
             foreach ($regions as $region) {
@@ -174,11 +174,11 @@ class OutdoorController extends Controller
             $spot = new Region;
 
             $spot['us_name'] = $request->data['us_name'];
-            $spot['ru_name'] = $request->data['ru_name'];
+            // $spot['ru_name'] = $request->data['ru_name'];
             $spot['ka_name'] = $request->data['ka_name'];
 
             $spot['us_text'] = $request->data['us_text'];
-            $spot['ru_text'] = $request->data['ru_text'];
+            // $spot['ru_text'] = $request->data['ru_text'];
             $spot['ka_text'] = $request->data['ka_text'];
 
             $spot['map'] = $request->data['map'];
@@ -206,11 +206,11 @@ class OutdoorController extends Controller
             $editing_region = Region::where('id',strip_tags($request->id))->first();
 
             $editing_region['us_name'] = $request->data['us_name'];
-            $editing_region['ru_name'] = $request->data['ru_name'];
+            // $editing_region['ru_name'] = $request->data['ru_name'];
             $editing_region['ka_name'] = $request->data['ka_name'];
 
             $editing_region['us_text'] = $request->data['us_text'];
-            $editing_region['ru_text'] = $request->data['ru_text'];
+            // $editing_region['ru_text'] = $request->data['ru_text'];
             $editing_region['ka_text'] = $request->data['ka_text'];
 
             $editing_region['map'] = $request->data['map'];
@@ -229,7 +229,7 @@ class OutdoorController extends Controller
     {
         $validator = Validator::make($data, [
             'us_name' => 'required',
-            'ru_name' => 'required',
+            // 'ru_name' => 'required',
             'ka_name' => 'required',
         ]);
         if ($validator->fails()) {

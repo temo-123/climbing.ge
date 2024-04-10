@@ -23,7 +23,7 @@ class Suport_local_bisnes extends Model
 	
 		'us_bisnes_id',
 		'ka_bisnes_id',
-		'ru_bisnes_id',
+		// 'ru_bisnes_id',
 	];
 
 	public function us_bisnes()
@@ -36,10 +36,10 @@ class Suport_local_bisnes extends Model
 		return $this->hasOne(Locale_bisnes::class, 'id', 'ka_bisnes_id');
 	}
 
-	public function ru_bisnes()
-	{
-		return $this->hasOne(Locale_bisnes::class, 'id', 'ru_bisnes_id');
-	}
+	// public function ru_bisnes()
+	// {
+	// 	return $this->hasOne(Locale_bisnes::class, 'id', 'ru_bisnes_id');
+	// }
 
 	public function bisnes_images()
 	{

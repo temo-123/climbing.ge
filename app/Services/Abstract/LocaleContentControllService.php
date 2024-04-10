@@ -46,13 +46,13 @@ class LocaleContentControllService
             $validation_issets['us_info_validation'] = false;
         }
 
-        $ru_validate = (new static)->local_content_validate($data['ru'.$prefix], 'ru');
-        if ($ru_validate != null) {
-            $validation_issets['ru_info_validation'] = $ru_validate;
-        }
-        else{
-            $validation_issets['ru_info_validation'] = false;
-        }
+        // $ru_validate = (new static)->local_content_validate($data['ru'.$prefix], 'ru');
+        // if ($ru_validate != null) {
+        //     $validation_issets['ru_info_validation'] = $ru_validate;
+        // }
+        // else{
+        //     $validation_issets['ru_info_validation'] = false;
+        // }
 
         $global_validate = (new static)->global_content_validate($data['global'.$prefix]);
         if ($global_validate != null) {
@@ -64,17 +64,17 @@ class LocaleContentControllService
 
         if (
             !$validation_issets['global_info_validation'] && 
-            !$validation_issets['ru_info_validation'] && 
+            // !$validation_issets['ru_info_validation'] && 
             !$validation_issets['ka_info_validation'] && 
             !$validation_issets['us_info_validation']
         ) {
             $saiving_issets['ka_info_status'] = (new static)->add_locale_content($data['ka'.$prefix], 'ka', $local_model);
-            $saiving_issets['ru_info_status'] = (new static)->add_locale_content($data['ru'.$prefix], 'ru', $local_model);
+            // $saiving_issets['ru_info_status'] = (new static)->add_locale_content($data['ru'.$prefix], 'ru', $local_model);
             $saiving_issets['us_info_status'] = (new static)->add_locale_content($data['us'.$prefix], 'us', $local_model);
 
             if (
                 $saiving_issets['ka_info_status'] != 'Error' &&
-                $saiving_issets['ru_info_status'] != 'Error' &&
+                // $saiving_issets['ru_info_status'] != 'Error' &&
                 $saiving_issets['us_info_status'] != 'Error'
             ) {
                 $saiving_issets['global_info_status'] = (new static)->addGlobalArticle(
@@ -84,7 +84,7 @@ class LocaleContentControllService
                     $request,
 
                     $saiving_issets['ka_info_status'],
-                    $saiving_issets['ru_info_status'],
+                    // $saiving_issets['ru_info_status'],
                     $saiving_issets['us_info_status'],
 
                     $global_model,
@@ -98,9 +98,9 @@ class LocaleContentControllService
                     $saiving_issets['global_info_status'] != 'Error' && gettype($saiving_issets['global_info_status']) != 'object'
                 ) {
                     $info = [
-                        'us'.$prefix.'_id' => $saiving_issets['ka_info_status'],
-                        'ka'.$prefix.'_id' => $saiving_issets['ru_info_status'],
-                        'ru'.$prefix.'_id' => $saiving_issets['us_info_status'],
+                        'us'.$prefix.'_id' => $saiving_issets['us_info_status'],
+                        'ka'.$prefix.'_id' => $saiving_issets['ka_info_status'],
+                        // 'ru'.$prefix.'_id' => $saiving_issets['us_info_status'],
                         'global'.$prefix.'_id' => $saiving_issets['global_info_status']
                     ];
                     
@@ -122,7 +122,7 @@ class LocaleContentControllService
         }
     }
 
-    private static function addGlobalArticle($global_data, $us_data, $request, $ka_info_id, $ru_info_id, $us_info_id, $global_model, $prefix, $image_path)
+    private static function addGlobalArticle($global_data, $us_data, $request, $ka_info_id, $us_info_id, $global_model, $prefix, $image_path)
     {
         $global_data['url_title'] = URLTitleService::get_url_title($us_data["title"]); // make url_title from us_title value
 
@@ -140,7 +140,7 @@ class LocaleContentControllService
 
         $global_data['us'.$prefix.'_id']=$us_info_id;
         $global_data['ka'.$prefix.'_id']=$ka_info_id;
-        $global_data['ru'.$prefix.'_id']=$ru_info_id;
+        // $global_data['ru'.$prefix.'_id']=$ru_info_id;
 
         $saved = $global_model::insertGetId($global_data); 
 
@@ -206,13 +206,13 @@ class LocaleContentControllService
             $validation_issets['us_info_validation'] = false;
         }
 
-        $ru_validate = (new static)->local_content_validate($data['ru'.$prefix], 'ru');
-        if ($ru_validate != null) {
-            $validation_issets['ru_info_validation'] = $ru_validate;
-        }
-        else{
-            $validation_issets['ru_info_validation'] = false;
-        }
+        // $ru_validate = (new static)->local_content_validate($data['ru'.$prefix], 'ru');
+        // if ($ru_validate != null) {
+        //     $validation_issets['ru_info_validation'] = $ru_validate;
+        // }
+        // else{
+        //     $validation_issets['ru_info_validation'] = false;
+        // }
 
         $global_validate = (new static)->global_content_validate($data['global'.$prefix]);
         if ($global_validate != null) {
@@ -222,7 +222,7 @@ class LocaleContentControllService
             $validation_issets['global_info_validation'] = false;
         }
 
-        if (!$validation_issets['ru_info_validation'] && 
+        if (//!$validation_issets['ru_info_validation'] && 
             !$validation_issets['ka_info_validation'] && 
             !$validation_issets['us_info_validation']
         ) {
@@ -241,7 +241,7 @@ class LocaleContentControllService
                 // $locale_content_values != 'Error' && !array_key_exists('url_title', $locale_content_values->messages())
             ) {
                 (new static)->edit_locale_content($data['ka'.$prefix], $locale_content_values['ka'.$prefix.'_id'], $local_model);
-                (new static)->edit_locale_content($data['ru'.$prefix], $locale_content_values['ru'.$prefix.'_id'], $local_model);
+                // (new static)->edit_locale_content($data['ru'.$prefix], $locale_content_values['ru'.$prefix.'_id'], $local_model);
                 (new static)->edit_locale_content($data['us'.$prefix], $locale_content_values['us'.$prefix.'_id'], $local_model);
                 
                 return (object) array('original' => $locale_content_values);
@@ -290,7 +290,7 @@ class LocaleContentControllService
             return $locale_tabs = [
                 'us'.$prefix.'_id' => $editing_global_content['us'.$prefix.'_id'],
                 'ka'.$prefix.'_id' => $editing_global_content['ka'.$prefix.'_id'],
-                'ru'.$prefix.'_id' => $editing_global_content['ru'.$prefix.'_id'],
+                // 'ru'.$prefix.'_id' => $editing_global_content['ru'.$prefix.'_id'],
                 'global'.$prefix.'_id' => $id
             ];
             // return $locale_tabs;
@@ -333,7 +333,7 @@ class LocaleContentControllService
         $gloal_content = $global_model::where('id', '=', $global_id)->first();
 
         $us_content = $local_model::where('id',strip_tags($gloal_content['us'.$prefix.'_id']))->first();
-        $ru_content = $local_model::where('id',strip_tags($gloal_content['ru'.$prefix.'_id']))->first();
+        // $ru_content = $local_model::where('id',strip_tags($gloal_content['ru'.$prefix.'_id']))->first();
         $ka_content = $local_model::where('id',strip_tags($gloal_content['ka'.$prefix.'_id']))->first();
         
         if($gloal_content->$image_prefix && $image_path){
@@ -341,7 +341,7 @@ class LocaleContentControllService
         }
 
         $us_content ->delete();
-        $ru_content ->delete();
+        // $ru_content ->delete();
         $ka_content ->delete();
 
         $gloal_content ->delete();

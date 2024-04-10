@@ -14,8 +14,8 @@ class General_info extends Model
     protected $fillable = [
         'title_us',
 		'title_ka',
-		'title_ru',
-		'text_ru',
+		// 'title_ru',
+		// 'text_ru',
 		'text_ka',
 		'text_us',
 	];

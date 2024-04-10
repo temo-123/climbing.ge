@@ -70,11 +70,6 @@
                         
                         <label for="4" >Georgian text</label>
                     </div>
-                    <div class="col-md-3" >
-                        <input type="radio" id="3" :value="3" v-model="tab_num">
-                        
-                        <label for="3" >Russion text</label>
-                    </div>
                 </div>
             <!-- </div> -->
             <!-- <div class="col-xs-12"> -->
@@ -161,51 +156,6 @@
                             <div class="col-xs-10">
                                 <!-- <textarea type="text" name="best_time" rows="15" class="form-cotrol xs-textarea form-control"></textarea> -->
                                 <ckeditor v-model="data.us_data.best_time" :config="editor_config.us_best_time_editor_config"></ckeditor>
-                            </div>
-                        </div>
-                    </form>
-                </div>
-                <div class="row" v-show="tab_num == 3">
-                    <div class="jumbotron width_100">
-                        <div class="container">
-                            <h2 class="display-4"><span>Region Georgian information</span></h2>
-                            <p class="lead">Region Georgian information.</p>
-                        </div>
-                    </div>
-                    <form class="width_100">
-                        <div class="form-group clearfix">
-                            <label for="name" class='col-xs-2 control-label'> Title rusian </label>
-                            <div class="col-xs-10">
-                                <input type="text" name="name_ru" v-model="data.ru_data.title" class="form-control">
-                            </div>
-                        </div>
-                        <hr>
-                        <div class="form-group clearfix">
-                            <label for="name" class='col-xs-2 control-label'> Rusian text </label>
-                            <div class="col-xs-10">
-                                <!-- <textarea type="text"  name="text_ru" rows="15" class="form-cotrol xs-textarea form-control"></textarea> -->
-                                <ckeditor v-model="data.ru_data.text" :config="editor_config.ru_text_editor_config"></ckeditor>
-                            </div>
-                        </div>
-                        <div class="form-group clearfix">
-                            <label for="name" class='col-xs-2 control-label'> Rusian description </label>
-                            <div class="col-xs-10">
-                                <!-- <textarea type="text"  name="description" rows="15" class="form-cotrol xs-textarea form-control"></textarea> -->
-                                <ckeditor v-model="data.ru_data.short_description" :config="editor_config.ru_short_description_text_editor"></ckeditor>
-                            </div>
-                        </div>
-                        <div class="form-group clearfix">
-                            <label for="name" class='col-xs-2 control-label'> Rusian how get hear </label>
-                            <div class="col-xs-10">
-                                <!-- <textarea type="text"  name="how_get" rows="15" class="form-cotrol xs-textarea form-control"></textarea> -->
-                                <ckeditor v-model="data.ru_data.how_get" :config="editor_config.ru_how_get_editor_config"></ckeditor>
-                            </div>
-                        </div>
-                        <div class="form-group clearfix">
-                            <label for="name" class='col-xs-2 control-label'> Rusian best time </label>
-                            <div class="col-xs-10">
-                                <!-- <textarea type="text"  name="best_time_ru" rows="15" class="form-cotrol xs-textarea form-control"></textarea> -->
-                                <ckeditor v-model="data.ru_data.best_time" :config="editor_config.ru_best_time_editor_config"></ckeditor>
                             </div>
                         </div>
                     </form>

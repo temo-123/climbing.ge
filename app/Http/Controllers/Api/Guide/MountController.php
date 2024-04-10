@@ -90,13 +90,13 @@ class MountController extends Controller
             $validation_issets['us_info_validation'] = false;
         }
 
-        $ru_validate = $this->local_mount_validate($request['data']['ru_data']);
-        if ($ru_validate != null) {
-            $validation_issets['ru_info_validation'] = $ru_validate;
-        }
-        else{
-            $validation_issets['ru_info_validation'] = false;
-        }
+        // $ru_validate = $this->local_mount_validate($request['data']['ru_data']);
+        // if ($ru_validate != null) {
+        //     $validation_issets['ru_info_validation'] = $ru_validate;
+        // }
+        // else{
+        //     $validation_issets['ru_info_validation'] = false;
+        // }
 
         $global_validate = $this->global_mount_validate($request['data']['global_data']);
         if ($global_validate != null) {
@@ -108,25 +108,25 @@ class MountController extends Controller
 
         if (
             !$validation_issets['global_info_validation'] && 
-            !$validation_issets['ru_info_validation'] && 
+            // !$validation_issets['ru_info_validation'] && 
             !$validation_issets['ka_info_validation'] && 
             !$validation_issets['us_info_validation']
         ) {
             
             $saiving_issets['ka_info_status'] = $this->add_locale_mount($request['data']['ka_data'], 'ka');
-            $saiving_issets['ru_info_status'] = $this->add_locale_mount($request['data']['ru_data'], 'ru');
+            // $saiving_issets['ru_info_status'] = $this->add_locale_mount($request['data']['ru_data'], 'ru');
             $saiving_issets['us_info_status'] = $this->add_locale_mount($request['data']['us_data'], 'us');
 
             if (
                 $saiving_issets['ka_info_status'] != 'Error' &&
-                $saiving_issets['ru_info_status'] != 'Error' &&
+                // $saiving_issets['ru_info_status'] != 'Error' &&
                 $saiving_issets['us_info_status'] != 'Error'
             ) {
                 $action_mount_id = $this->add_global_mount(
                     $request['data']['global_data'], 
 
                     $saiving_issets['ka_info_status'],
-                    $saiving_issets['ru_info_status'],
+                    // $saiving_issets['ru_info_status'],
                     $saiving_issets['us_info_status']                    
                 );
             }
@@ -160,7 +160,7 @@ class MountController extends Controller
         }
     }
 
-    public function add_global_mount($global_data, $ka_info_id, $ru_info_id, $us_info_id)
+    public function add_global_mount($global_data, $ka_info_id, $us_info_id)
     {
         $article = new Mount;
 
@@ -171,7 +171,7 @@ class MountController extends Controller
 
         $article['us_mount_id'] = $us_info_id;
         $article['ka_mount_id'] = $ka_info_id;
-        $article['ru_mount_id'] = $ru_info_id;
+        // $article['ru_mount_id'] = $ru_info_id;
         
         $article -> save();
     }
@@ -196,7 +196,7 @@ class MountController extends Controller
             "global_data" => $mounts_system,
             "us_data" => $mounts_system->us_mount,
             "ka_data" => $mounts_system->ka_mount,
-            "ru_data" => $mounts_system->ru_mount,
+            // "ru_data" => $mounts_system->ru_mount,
         ];
 
         return $data;
@@ -228,13 +228,13 @@ class MountController extends Controller
             $validation_issets['us_info_validation'] = false;
         }
 
-        $ru_validate = $this->local_mount_validate($request['data']['ru_data']);
-        if ($ru_validate != null) {
-            $validation_issets['ru_info_validation'] = $ru_validate;
-        }
-        else{
-            $validation_issets['ru_info_validation'] = false;
-        }
+        // $ru_validate = $this->local_mount_validate($request['data']['ru_data']);
+        // if ($ru_validate != null) {
+        //     $validation_issets['ru_info_validation'] = $ru_validate;
+        // }
+        // else{
+        //     $validation_issets['ru_info_validation'] = false;
+        // }
 
         $global_validate = $this->global_mount_validate($request['data']['global_data']);
         if ($global_validate != null) {
@@ -246,7 +246,7 @@ class MountController extends Controller
 
         if (
             !$validation_issets['global_info_validation'] && 
-            !$validation_issets['ru_info_validation'] && 
+            // !$validation_issets['ru_info_validation'] && 
             !$validation_issets['ka_info_validation'] && 
             !$validation_issets['us_info_validation']
         ) {
@@ -258,7 +258,7 @@ class MountController extends Controller
                 $local_mounts['ka_info_status'] != 'Error'
             ) {
                 $saiving_issets['ka_info_status'] = $this->edit_locale_mount($request['data']['ka_data'], $local_mounts['ka_mount_id']);
-                $saiving_issets['ru_info_status'] = $this->edit_locale_mount($request['data']['ru_data'], $local_mounts['ru_mount_id']);
+                // $saiving_issets['ru_info_status'] = $this->edit_locale_mount($request['data']['ru_data'], $local_mounts['ru_mount_id']);
                 $saiving_issets['us_info_status'] = $this->edit_locale_mount($request['data']['us_data'], $local_mounts['us_mount_id']);
             }
         }
@@ -307,7 +307,7 @@ class MountController extends Controller
             $locale_mount = [
                 'us_mount_id' => $editing_article['us_mount_id'],
                 'ka_mount_id' => $editing_article['ka_mount_id'],
-                'ru_mount_id' => $editing_article['ru_mount_id'],
+                // 'ru_mount_id' => $editing_article['ru_mount_id'],
             ];
     
             return $locale_mount;

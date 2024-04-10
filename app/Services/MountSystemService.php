@@ -15,22 +15,7 @@ class MountSystemService extends LocaleContentService
     {
         $locale = request()->segment(1, '');
 
-        if($locale == "ru"){
-            $ru_mount_id = $mount->id;
-            $loc_mount = Mount::where('id', '=', $ru_mount_id,)->get();
-            $locale_mount = array();
-            array_push($locale_mount, [ 
-                                        "id"=>$loc_mount[0]->id, 
-                                        "name"=>$loc_mount[0]->name_ru, 
-                                        "short_descriptio"=>$loc_mount[0]->short_description_ru, 
-                                        "text"=>$loc_mount[0]->text_ru,
-                                        "how_get"=>$loc_mount[0]->how_get_ru,
-                                        "best_time"=>$loc_mount[0]->best_time_ru, 
-                                        "weather"=>$loc_mount[0]->weather, 
-                                        "map"=>$loc_mount[0]->map, 
-                                        ]);
-        }
-        elseif ($locale == "ka") {
+        if ($locale == "ka") {
             $ka_mount_id = $mount->id;
             $loc_mount = Mount::where('id', '=', $ka_mount_id,)->get();
             $locale_mount = array();

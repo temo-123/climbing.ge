@@ -79,12 +79,12 @@ class SiteDataController extends Controller
 
         $counts['global_articles_count'] = Article::count();
         $counts['ka_articles_count'] = Locale_article::where("locale", "=", 'ka')->count();
-        $counts['ru_articles_count'] = Locale_article::where("locale", "=", 'ru')->count();
+        // $counts['ru_articles_count'] = Locale_article::where("locale", "=", 'ru')->count();
         $counts['us_articles_count'] = Locale_article::where("locale", "=", 'us')->count();
 
         $counts['us_articles_errors_count'] = 1;
         $counts['ka_articles_errors_count'] = 0;
-        $counts['ru_articles_errors_count'] = 0;
+        // $counts['ru_articles_errors_count'] = 0;
 
         $counts['bouldering_routes_count'] = Route::where("category", "=", 'bouldering')->count();
         $counts['sport_climbing_routes_count'] = Route::where("category", "=", 'sport')->count();
@@ -120,7 +120,7 @@ class SiteDataController extends Controller
 
         $conflict_us_articles = array();
         $conflict_ka_articles = array();
-        $conflict_ru_articles = array();
+        // $conflict_ru_articles = array();
 
         foreach (Locale_article::where("locale", "=", 'us')->get() as $local_article) {
             $active_global_article = $local_article->global_article_us;
@@ -136,17 +136,17 @@ class SiteDataController extends Controller
                 array_push($conflict_ka_articles, $active_global_article);
             }
         }
-        foreach (Locale_article::where("locale", "=", 'ru')->get() as $local_article) {
-            $active_global_article = $local_article->global_article_ru;
+        // foreach (Locale_article::where("locale", "=", 'ru')->get() as $local_article) {
+        //     $active_global_article = $local_article->global_article_ru;
 
-            if (!$active_global_article) {
-                array_push($conflict_ru_articles, $active_global_article);
-            }
-        }
+        //     if (!$active_global_article) {
+        //         array_push($conflict_ru_articles, $active_global_article);
+        //     }
+        // }
 
         $counts['us_article_errors'] = count($conflict_us_articles);
         $counts['ka_article_errors'] = count($conflict_ka_articles);
-        $counts['ru_article_errors'] = count($conflict_ru_articles);
+        // $counts['ru_article_errors'] = count($conflict_ru_articles);
         
         // dd(count($post_data),$conflict_ru_articles->count(), $conflict_ru_articles->count(), $conflict_ru_articles->count());
         
@@ -170,13 +170,13 @@ class SiteDataController extends Controller
                 $local_article -> delete();
             }
         }
-        foreach (Locale_article::where("locale", "=", 'ru')->get() as $local_article) {
-            $active_global_article = $local_article->global_article_ru;
+        // foreach (Locale_article::where("locale", "=", 'ru')->get() as $local_article) {
+        //     $active_global_article = $local_article->global_article_ru;
 
-            if (!$active_global_article) {
-                $local_article -> delete();
-            }
-        }
+        //     if (!$active_global_article) {
+        //         $local_article -> delete();
+        //     }
+        // }
     }
 
     public function get_site_locale_data(Request $request)
@@ -188,9 +188,9 @@ class SiteDataController extends Controller
         if($request->locale == 'ka'){
             $local_data = $site_global_data->ka_site;
         }
-        else if($request->locale == 'ru'){
-            $local_data = $site_global_data->ru_site;
-        }
+        // else if($request->locale == 'ru'){
+        //     $local_data = $site_global_data->ru_site;
+        // }
         else{
             $local_data = $site_global_data->us_site;
         }
@@ -213,9 +213,9 @@ class SiteDataController extends Controller
     public function get_site_ka_data(){
         return Locale_site::where("locale", "=", 'ka')->first();
     }
-    public function get_site_ru_data(){
-        return Locale_site::where("locale", "=", 'ru')->first();
-    }
+    // public function get_site_ru_data(){
+    //     return Locale_site::where("locale", "=", 'ru')->first();
+    // }
     public function get_site_us_data(){
         return Locale_site::where("locale", "=", 'us')->first();
     }
@@ -224,12 +224,12 @@ class SiteDataController extends Controller
     {
         $global_data = Site::first();
         $ka_data = Locale_site::where("locale", "=", 'ka')->first();
-        $ru_data = Locale_site::where("locale", "=", 'ru')->first();
+        // $ru_data = Locale_site::where("locale", "=", 'ru')->first();
         $us_data = Locale_site::where("locale", "=", 'us')->first();
 
         $this->edit_global_data($request, $global_data);
         $this->edit_local_data($request, $ka_data, 'ka');
-        $this->edit_local_data($request, $ru_data, 'ru');
+        // $this->edit_local_data($request, $ru_data, 'ru');
         $this->edit_local_data($request, $us_data, 'us');
     }
 
@@ -241,10 +241,10 @@ class SiteDataController extends Controller
         $ka_data = Locale_site::where("locale", "=", 'ka')->first();
         $this->edit_local_data($request, $ka_data, 'ka');
     }
-    public function edit_site_ru_data(Request $request){
-        $ru_data = Locale_site::where("locale", "=", 'ru')->first();
-        $this->edit_local_data($request, $ru_data, 'ru');
-    }
+    // public function edit_site_ru_data(Request $request){
+    //     $ru_data = Locale_site::where("locale", "=", 'ru')->first();
+    //     $this->edit_local_data($request, $ru_data, 'ru');
+    // }
     public function edit_site_us_data(Request $request){
         $us_data = Locale_site::where("locale", "=", 'us')->first();
         $this->edit_local_data($request, $us_data, 'us');

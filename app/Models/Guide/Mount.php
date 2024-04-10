@@ -10,7 +10,7 @@ class Mount extends Model
 
     protected $fillable = [
         'us_mount_id',
-        'ru_mount_id',
+        // 'ru_mount_id',
         'ka_mount_id',
 
 		"weather",
@@ -27,10 +27,10 @@ class Mount extends Model
 		return $this->hasOne(Locale_mount::class, 'id', 'ka_mount_id');
 	}
 
-	public function ru_mount()
-	{
-		return $this->hasOne(Locale_mount::class, 'id', 'ru_mount_id');
-	}
+	// public function ru_mount()
+	// {
+	// 	return $this->hasOne(Locale_mount::class, 'id', 'ru_mount_id');
+	// }
 
 
 	public function articles()
