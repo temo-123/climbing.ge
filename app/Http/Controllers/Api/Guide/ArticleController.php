@@ -388,6 +388,10 @@ class ArticleController extends Controller
         if ($request->category == "outdoor") {
             $articles = $this->outdoor_list($request->lang);
         }
+        else if($request->category == "news") {
+            $articles = $this->article_list($request->category, $request->lang);
+            unset($articles[7]);
+        }
         else {
             $articles = $this->article_list($request->category, $request->lang);
         }

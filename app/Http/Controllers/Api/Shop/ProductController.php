@@ -45,6 +45,11 @@ class ProductController extends Controller
         $global_products = product::latest('id')->where('published', '=', 1)->get();
         return $products = ProductService::get_locale_product_use_locale($global_products, $request->lang);
     }
+    public function get_local_saled_products(Request $request)
+    {
+        $global_products = product::latest('id')->where('discount', '!=', null)->where('published', '=', 1)->get();
+        return $products = ProductService::get_locale_product_use_locale($global_products, $request->lang);
+    }
 
     public function get_local_product_in_page(Request $request)
     {

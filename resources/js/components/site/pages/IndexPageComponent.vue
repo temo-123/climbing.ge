@@ -119,7 +119,7 @@
                 axios
                 .get('articles/news/'+localStorage.getItem('lang'))
                 .then(response => {
-                    this.newses = response.data
+                    this.newses = response.data.splice(1, 7);
                     this.lastNews = response.data[0]
                 })
                 .catch(error =>{
