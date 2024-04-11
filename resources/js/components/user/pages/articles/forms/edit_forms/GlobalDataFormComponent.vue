@@ -120,7 +120,7 @@
                 // editorConfig: {
                 //     // toolbar: [ [ 'Bold' ] ]
                 // },
-                data: this.global_data_prop,
+                data: [],
 
                 region_id: 'select_region',
                 mount_id: 'select_mount',

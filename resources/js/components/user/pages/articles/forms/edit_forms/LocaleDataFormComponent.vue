@@ -170,7 +170,7 @@
 
 <script>
     // import { SlickList, SlickItem } from 'vue-slicksort';
-    import StackModal from '@innologica/vue-stackable-modal'  //https://innologica.github.io/vue-stackable-modal/#sample-css
+    // import StackModal from '@innologica/vue-stackable-modal'  //https://innologica.github.io/vue-stackable-modal/#sample-css
 
     // import { editor_config } from '../../../../../../mixins/editor/editor_config_mixin.js'
 
@@ -178,7 +178,7 @@
 
     export default {
         components: {
-            StackModal,
+            // StackModal,
             GlobalInfoFormBlock,
             // SlickItem,
             // SlickList,
@@ -195,11 +195,11 @@
             'title_prop',
             'description_prop'
         ],
-        async created(){
-            const res = await this.callApi('get','app/get_categories')
-            this.token = window.Laravel.csrfToken
-            this.categories = res.data
-        },
+        // async created(){
+        //     const res = await this.callApi('get','app/get_categories')
+        //     this.token = window.Laravel.csrfToken
+        //     this.categories = res.data
+        // },
         watch: {
             global_blocks_prop: function(){
                 this.global_blocks = this.global_blocks_prop
@@ -231,19 +231,7 @@
                 },
                 token: '',
 
-                data: this.locale_data_prop,
-                // data: {
-                //     is_change_url_title: false,
-                //     title: this.locale_data_prop.title,
-                //     short_description: this.locale_data_prop.short_description,
-                //     text: this.locale_data_prop.text,
-                //     route: this.locale_data_prop.route,
-                //     how_get: this.locale_data_prop.how_get,
-                //     best_time: this.locale_data_prop.best_time,
-                //     what_need: this.locale_data_prop.what_need,
-                //     info: this.locale_data_prop.info,
-                //     time: this.locale_data_prop.time,
-                // },
+                data: [],
 
                 global_blocks: {
                     info_block: '',
@@ -315,23 +303,6 @@
                     data: this.data
                 })
             },
-
-            // info_block_action(status){
-            //     this.global_blocks.info_block = status
-            //     this.$emit('global_blocks', this.global_blocks)
-            // },
-            // best_time_action(status){
-            //     this.global_blocks.best_time = status
-            //     this.$emit('global_blocks', this.global_blocks)
-            // },
-            // routes_action(status){
-            //     this.global_blocks.routes_info = status
-            //     this.$emit('global_blocks', this.global_blocks)
-            // },
-            // what_need_block_action(status){
-            //     this.global_blocks.what_need_info = status
-            //     this.$emit('global_blocks', this.global_blocks)
-            // }
         }
     }
 </script>

@@ -24,7 +24,7 @@
                     <div class="form-group clearfix row">
                         <label for="name" class='col-md-2 control-label'> Short description </label>
                         <div class="col-md-10">
-                            <ckeditor v-model="data.short_description" :config="short_description_text_editor"></ckeditor>
+                            <ckeditor v-model="data.short_description" :config="editor_config.short_description_text"></ckeditor>
                             <div class="alert alert-danger" role="alert" v-if="errors.short_description">
                                 {{ errors.short_description[0] }}
                             </div>
@@ -41,7 +41,7 @@
 
                             <!-- <ckeditor v-model="data.text" /> -->
 
-                            <ckeditor id="text" :editor="'text'" v-model="data.text" :config="text_editor_config" ></ckeditor>
+                            <ckeditor id="text" :editor="'text'" v-model="data.text" :config="editor_config.text" ></ckeditor>
                         </div>
                     </div>
 
@@ -49,7 +49,7 @@
                         <label for="name" class='col-md-2 control-label'> How to get hear </label>
                         <div class="col-md-10">
                             <!-- <ckeditor v-model="data.how_get" :config="editorConfig" :config="this.$editorConfig"></ckeditor> -->
-                            <ckeditor v-model="data.how_get" :config="this.$editorConfig"></ckeditor>
+                            <ckeditor v-model="data.how_get" :config="editor_config.how_get"></ckeditor>
                         </div>
                     </div>
 
@@ -140,7 +140,7 @@
                             <label for="name" class='col-md-2 control-label'> Info / contact </label>
                             <div class="col-md-10">
                                 <div class="col-md-12" >
-                                    <ckeditor v-model="data.info" :config="this.$editorConfig"></ckeditor>
+                                    <ckeditor v-model="data.info" :config="editor_config.text"></ckeditor>
                                 </div>
                             </div>
                         </div>
@@ -150,7 +150,7 @@
                     <div class="form-group clearfix row" v-if="this.category == 'indoor'">
                         <label for="name" class='col-md-2 control-label'> Price description </label>
                         <div class="col-md-10">
-                            <ckeditor v-model="data.price_text" :config="this.$editorConfig"></ckeditor>
+                            <ckeditor v-model="data.price_text" :config="editor_config.price_text"></ckeditor>
                         </div>
                     </div>
 
@@ -162,14 +162,14 @@
 
 <script>
     // import { SlickList, SlickItem } from 'vue-slicksort';
-    import StackModal from '@innologica/vue-stackable-modal'  //https://innologica.github.io/vue-stackable-modal/#sample-css
+    // import StackModal from '@innologica/vue-stackable-modal'  //https://innologica.github.io/vue-stackable-modal/#sample-css
 
     import GlobalInfoFormBlock from '../../../../items/GlobalInfoFormBlockComponent.vue'
     // import { editor_config } from '../../../../../../mixins/editor/editor_config_mixin.js'
 
     export default {
         components: {
-            StackModal,
+            // StackModal,
             GlobalInfoFormBlock,
             // SlickItem,
             // SlickList,
@@ -182,6 +182,7 @@
             // 'routes_info_prop',
             // 'what_need_info_prop',
             // 'best_time_prop',
+            'locale_prop',
 
             'global_blocks_prop',
 

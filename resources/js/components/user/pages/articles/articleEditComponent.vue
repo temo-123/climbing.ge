@@ -153,7 +153,7 @@
                 area_rocks_images: [],
                 mount_route_images: [],
 
-                // region_id: 0,
+                category: '',
                 // mount_id: 0,
                 
                 is_back_action_query: true,

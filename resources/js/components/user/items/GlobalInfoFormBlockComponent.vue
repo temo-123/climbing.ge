@@ -32,7 +32,7 @@
                 </div>
             
                 <div class="col-md-12" v-if="global_blocks.block_action == 'befor' || global_blocks.block_action == 'after' || global_blocks.block_action == 'new_info'">
-                    <ckeditor v-model="form_data" :config="this.text_editor_config" @input="input_event"></ckeditor>
+                    <ckeditor v-model="form_data" :config="text_editor_config" @input="input_event"></ckeditor>
                 </div>
 
                 <div class="col-md-12" v-if="global_blocks.block_action == 'after' || global_blocks.block_action == 'instead'">
