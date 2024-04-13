@@ -10,7 +10,7 @@
             <div class="container">
                 <div class="row">
 
-                    <div class="col-xs-6 col-sm-6 col-md-4" v-for="tip in techtips" :key="tip.global_data.id">
+                    <div class="col-xs-12 col-sm-12 col-md-4" v-for="tip in techtips" :key="tip.global_data.id">
                         <div class="product-image" v-if="tip.global_data.new_flag">
                             <div class="discount-percent-badge discount_percent_badge_for_techtip discount-badge-fourty">NEW</div>
                         </div>
