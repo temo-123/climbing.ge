@@ -1,6 +1,6 @@
 <template>
     <section class="m-component-stack mm-component-stack--is-stacked">
-        <div class="m-image-hero mm-image-hero--ssr">
+        <div class="m-image-hero mm-image-hero--ssr" v-if="news != []">
             <router-link :to="'news/'+news.global_data.url_title">
                 <div class="m-image-hero--media">
                     <div>

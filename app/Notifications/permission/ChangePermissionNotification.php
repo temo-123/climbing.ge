@@ -38,7 +38,7 @@ class ChangePermissionNotification extends Notification
                 ->markdown('emails.permission.reservation_completed', [
                     'message'=> 'Your permission and/or role has changed! ' . $this->message . ' Please visit your profile and use the available features!',
                 ])
-                ->subject('Permission chang');
+                ->subject('Permission change');
     }
 
     /**

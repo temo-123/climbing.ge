@@ -4,39 +4,42 @@ require("./bootstrap");
 /*
  *   Using pakets
  */
-// import Carousel3d from "vue-carousel-3d";
-// import CKEditor from '@ckeditor/ckeditor5-vue2'; //dont working for updating
 import CKEditor from "ckeditor4-vue";
 import Router from "vue-router";
-import VueMeta from "vue-meta"; // https://www.epiloge.com/how-to-add-dynamic-meta-tags-to-your-vuejs-app-for-google-seo-0fa058
-// import VueExpandableImage from "vue-expandable-image";
+import VueMeta from "vue-meta";
 import Vuex from "vuex";
 import axios from "axios";
 import i18n from "./services/localization/i18n";
 import VueSocialSharing from "vue-social-sharing";
-// import plugin from "@serializedowen/vue-img-watermark"; //https://www.vuescript.com/custom-watermarks/
 import VueGlide from "vue-glide-js";
 import "vue-glide-js/dist/vue-glide.css";
 import VueGtag from "vue-gtag";
 import { abilitiesPlugin } from "@casl/vue";
 import ability from "./services/ability/ability";
 import { ContentLoader } from 'vue-content-loader'
-// import VueHtml2pdf from 'vue-html2pdf'
 
-// Vue.use(VueHtml2pdf)
+import { createHead } from '@unhead/vue' // https://unhead.unjs.io/setup/vue/installation
+import { UnheadPlugin } from '@unhead/vue/vue2'
+
+const head = createHead()
+Vue.use(UnheadPlugin)
+
 Vue.use(ContentLoader);
 Vue.use(abilitiesPlugin, ability());
 Vue.use(VueGlide);
-// Vue.use(plugin);
 Vue.use(VueSocialSharing);
 Vue.use(i18n);
 Vue.use(Vuex);
 Vue.use(axios);
-// Vue.use(VueExpandableImage);
 Vue.use(VueMeta);
-// Vue.use(Carousel3d);
 Vue.use(CKEditor);
 Vue.use(Router);
+
+
+Vue.use(VueMeta, {
+    // optional pluginOptions
+    refreshOnceOnNavigation: true
+})
 
 /*
  *  Mixins
@@ -167,6 +170,7 @@ else{
 
 const app = new Vue({
     el: "#app",
+    unhead: head,
     i18n,
     store,
     // ability,
@@ -210,8 +214,8 @@ const app = new Vue({
                 this.$i18n.locale = locale;
 
                 if(locale == 'en'){
-                    let activ_path_without_locale = this.$router.history.pending.path.split("/").splice(2).join("/")
-                    this.$router.push({ path: '/' + activ_path_without_locale })
+                    // let activ_path_without_locale = this.$router.history.pending.path.split("/").splice(2).join("/")
+                    // this.$router.push({ path: '/' + activ_path_without_locale })
                 }
                 else{
                     const to = this.$router.resolve({params: {locale}})
