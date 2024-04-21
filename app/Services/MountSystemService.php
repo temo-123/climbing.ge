@@ -57,62 +57,15 @@ class MountSystemService extends LocaleContentService
 
         $mounts = (new static)->get_locale_content_use_locale($global_mount, Locale_mount::class, '_mount_id', $locale);
 
-        // if($locale == "ru"){
-        //     foreach ($global_mount as $mount) {
-        //         array_push($mounts, [
-        //             "global_mount"=>$mount,
-        //             "locale_mount"=>mount::find($mount->id)->ru_mount,
-        //         ]);
-        //     }
-        // }
-        // elseif ($locale == "ka") {
-        //     foreach ($global_mount as $mount) {
-        //         array_push($mounts, [
-        //             "global_mount"=>$mount,
-        //             "locale_mount"=>mount::find($mount->id)->ka_mount,
-        //         ]);
-        //     }
-        // } 
-        // else {
-        //     foreach ($global_mount as $mount) {
-        //         array_push($mounts, [
-        //             "global_mount"=>$mount,
-        //             "locale_mount"=>mount::find($mount->id)->us_mount,
-        //         ]);
-        //     }
-        // }
-        // dd($mount);
         return $mounts;
     }
 
 
     public static function get_local_mount_use_locale($mount_id, $locale)
     {
-        // dd($mount_id);
-        // $mounts = [];
         $global_mount = mount::where('id', '=', $mount_id,)->get();
 
         $mounts = (new static)->get_locale_content_use_locale($global_mount, Locale_mount::class, '_mount_id', $locale);
-
-        // if($locale == "ru"){
-        //     array_push($mounts, [
-        //         "global_mount"=>mount::where('id', '=', $mount_id,)->get(),
-        //         "locale_mount"=>mount::find($mount_id)->ru_mount
-        //     ]);
-        // }
-        // elseif ($locale == "ka") {
-        //     array_push($mounts, [
-        //         "global_mount"=>mount::where('id', '=', $mount_id,)->get(),
-        //         "locale_mount"=>mount::find($mount_id)->ka_mount
-        //     ]);
-        // } 
-        // else {
-        //     array_push($mounts, [
-        //         "global_mount"=>mount::where('id', '=', $mount_id,)->get(),
-        //         "locale_mount"=>mount::find($mount_id)->us_mount
-        //     ]);
-        // }
-        // dd($mount);
 
         return $mounts;
     }

@@ -394,10 +394,12 @@ export const navbar = {
                         ]
                     },
                     {
-                        name: "Media (Beta)",
-                        route: "/multimedia",
+                        name: "Article all images (beta)",
+                        route: "/article_images",
                         permissions: [
-                            ['add', 'user'],
+                            ['add', 'gallery'],
+                            ['edit', 'gallery'],
+                            ['del', 'gallery'],
                         ]
                     },
                     {

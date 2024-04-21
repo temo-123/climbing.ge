@@ -14,15 +14,8 @@
                 <span @click="close_image()">X</span>
             </div>
 
-            <!-- <site-img :src="path + active_img.image" :alt="active_img.image" :img_class="'gallery_big_img'" /> -->
-            <img :src="path + active_img.image" :alt="active_img.image" :img_class="'gallery_big_img'" style="
-                                                                                                    max-width: 96%;
-                                                                                                    max-height: 80%;
-                                                                                                    position: absolute;
-                                                                                                    top: 50%;
-                                                                                                    left: 50%;
-                                                                                                    transform: translate(-50%, -50%);
-                                                                                                    "/>
+            <img :src="path + active_img.image" :alt="active_img.image" :img_class="'gallery_big_img'" 
+                  style="max-width: 96%; max-height: 80%; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); "/>
 
             <div class="image_moving">
                 <div class="previes_img_bottom"  @click="previes_image()">
@@ -33,6 +26,24 @@
                     <i class="fa fa-chevron-right" aria-hidden="true"></i>
                 </div>
             </div>
+            
+            <div class="open_article_button" v-if="active_img.article">
+                <span v-if="active_img.article.category == 'mount_route'" >
+                    <router-link :to="'mountaineering/' + active_img.article.url_title">
+                        <span @click="close_image()">
+                            Open Article
+                        </span>
+                    </router-link>
+                </span>
+                <span v-else>
+                    <router-link :to="active_img.article.category + '/' + active_img.article.url_title">
+                        <span @click="close_image()">
+                            Open Article
+                        </span>
+                    </router-link>
+                </span>
+            </div>
+
         </div>
 
     </div>
@@ -131,9 +142,18 @@
       float: right;
       cursor: pointer; 
       color: #b3b2b2d9;
-      font-size: 2em;
+      font-size: 2.5em;
       margin-right: 0.4em;
       margin-top: 0.4em;
+    }
+    .open_article_button{
+      color: #b3b2b2d9;
+      font-size: 1.8em;
+      position: fixed;
+      left: 50%;
+      bottom: 20px;
+      transform: translate(-50%, -50%);
+      margin: 0 auto;
     }
     .gallery_img{
       max-width: 100%;

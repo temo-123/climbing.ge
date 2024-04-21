@@ -33,12 +33,23 @@ class ArticlesService extends LocaleContentService
                 $m_system = $act_article->mount_masiv;
 
                 $local_mount = MountSystemService::get_local_mounts_use_locale($m_system, $locale);
-                
-                array_push($new_arr, [
-                    "locale_data"=>$article['locale_data'], 
-                    "global_data"=>$article['global_data'], 
-                    'mount_masive'=>$local_mount[0]['locale_data']['title']
-                ]);
+                // dd($local_mount);
+                if($local_mount){
+                    array_push($new_arr, [
+                        "locale_data"=>$article['locale_data'], 
+                        "global_data"=>$article['global_data'], 
+                        // 'mount_masive'=>$local_mount['locale_data']['title']
+                        'mount_masive'=>$local_mount[0]['locale_data']['title']
+                    ]);
+                }
+                else{
+                    array_push($new_arr, [
+                        "locale_data"=>$article['locale_data'], 
+                        "global_data"=>$article['global_data'], 
+                        // 'mount_masive'=>$local_mount['locale_data']['title']
+                        // 'mount_masive'=>$local_mount[0]['locale_data']['title']
+                    ]);
+                }
             }
         }
 

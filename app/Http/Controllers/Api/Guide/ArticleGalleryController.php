@@ -14,7 +14,13 @@ use Validator;
 class ArticleGalleryController extends Controller
 {
     public function get_index_gallery() {
-        return Article_image::inRandomOrder()->limit(16)->get();
+        $images = Article_image::inRandomOrder()->limit(16)->get();
+        $returned_images = [];
+        foreach ($images as $image) {
+            $img = $image->article;
+            array_push($returned_images, $image);
+        }
+        return $images;
     }
 
     public function get_editing_images(Request $request)

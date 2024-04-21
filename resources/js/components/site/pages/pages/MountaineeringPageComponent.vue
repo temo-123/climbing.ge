@@ -69,10 +69,10 @@
 
                         <span v-html="this.mount_route.locale_data.route"></span>
                     </div>
-                    
+
                     <galleryComponent 
-                        :article_id="this.mount_route.global_data.id"
-                        ref="gallery_component" />
+                        :images_prop="this.mount_route.gallery_images" 
+                    />
 
                 </div>
 
