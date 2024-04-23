@@ -32,7 +32,7 @@ window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 window.axios.defaults.whithCredentials = true;
 
 window.axios.interceptors.response.use({}, err => {
-    if(!err){
+    if(err && err.response){
         if(err.response.status === 401 || err.response.status === 419){
             const token = localStorage.getItem('x_xsrf_token')
             if(token){

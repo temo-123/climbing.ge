@@ -43,12 +43,12 @@ class TourController extends Controller
     }
 
     function get_similar_tours(Request $request) {
-        $tour = Tour::where('id','=', $request->tour_id)->first();
+        $tour = Tour::where('id','=', $request->tour_id)->where("published", "=", 1)->first();
 
         $global_tours_count = Tour::where('category_id',strip_tags($tour->category_id))->count();
 
         if($global_tours_count > 0){
-            $global_tours = Tour::where('category_id',strip_tags($tour->category_id))->limit(3)->get();
+            $global_tours = Tour::where('id','!=', $request->tour_id)->where('category_id',strip_tags($tour->category_id))->limit(3)->get();
             return $tour = TourService::get_tours_use_locale($global_tours, $request->lang);    
         }
     }

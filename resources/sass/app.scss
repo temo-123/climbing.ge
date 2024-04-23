@@ -1733,10 +1733,11 @@ a.socialIcon:hover,
 }
 .service-icon {
     width: 100%;
-    height: 152px;
+    height: 191px;
     padding: 20px;
     text-align: center;
     transition: all 0.5s ease;
+    max-height: 100%;
 }
 
 .services_bacground_image {

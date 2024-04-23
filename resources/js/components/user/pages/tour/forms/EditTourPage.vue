@@ -222,7 +222,7 @@
                         </div>
                     </form>
                 </div>
-                <div class="row" v-show="tab_num == 4">
+                <div class="row" v-show="tab_num == 3">
                     <div class="width_100 jumbotron jumbotron-fluid">
                         <div class="container">
                             <h2 class="display-4">Tour georgian version</h2>

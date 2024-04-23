@@ -23,9 +23,9 @@
                     <div class="alert alert-danger" role="alert" v-if="error.ka_name">
                         Georgian name - {{ error.ka_name[0] }}
                     </div>
-                    <div class="alert alert-danger" role="alert" v-if="error.ru_name">
+                    <!-- <div class="alert alert-danger" role="alert" v-if="error.ru_name">
                         Russian name - {{ error.ru_name[0] }}
-                    </div>
+                    </div> -->
                 </div>
             </div>
             <div v-show="!is_loading">
@@ -35,8 +35,8 @@
                 <p>Georgian name</p>
                 <input type="text" class="form-control" v-model="form_data.ka_name" name="English name" id="English name" placeholder="Enter English name" title="Enter English name">
                 
-                <p>Russian name</p>
-                <input type="text" class="form-control" v-model="form_data.ru_name" name="English name" id="English name" placeholder="Enter English name" title="Enter English name">
+                <!-- <p>Russian name</p>
+                <input type="text" class="form-control" v-model="form_data.ru_name" name="English name" id="English name" placeholder="Enter English name" title="Enter English name"> -->
             </div>
         </pre>
         <div slot="modal-footer">

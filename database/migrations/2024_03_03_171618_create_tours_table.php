@@ -34,8 +34,8 @@ return new class extends Migration
             $table->unsignedBigInteger('ka_tour_id');
             $table->foreign('ka_tour_id')->references('id')->on('locale_tours')->constrained()->onDelete('cascade');
 
-            $table->unsignedBigInteger('ru_tour_id');
-            $table->foreign('ru_tour_id')->references('id')->on('locale_tours')->constrained()->onDelete('cascade');
+            // $table->unsignedBigInteger('ru_tour_id');
+            // $table->foreign('ru_tour_id')->references('id')->on('locale_tours')->constrained()->onDelete('cascade');
             
             $table->timestamps();
         });

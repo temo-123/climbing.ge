@@ -16,15 +16,15 @@
             <div class="col-xs-12 col-md-12">
                 <h2>Guide</h2>
                 <div class="row">
-                    <img :src="'/public/images/site_img/demo_imgs/user_demo_img.gif'" class='guide_img' v-if='tour.user.image == null'/>
-                    <img :src="'/public/images/user_profil_img/' + tour.user.image" class='guide_img' v-else/>
+                    <div :style="'background-image: url(/public/images/site_img/demo_imgs/user_demo_img.gif);'" class='guide_img' v-if='tour.user.image == null'> </div>
+                    <div :style="'background-image: url(/public/images/user_profil_img/' + tour.user.image + ');'" class='guide_img' v-else> </div>
                 </div>
                 <div class="row">
                     <span class="guide_name">{{ tour.user.name }} {{ tour.user.surname }}</span>
                 </div>
             </div>
         </div>
-
+        
         <tourMessageForm 
             :tour_id_prop = tour.global_data.id
         />
@@ -124,7 +124,10 @@
     font-size: 1.5em;
 }
 .guide_img{
-    width: auto;
-    height: 10em;
+    width: 15em;
+    height: 15em;
+    border-radius: 50%;
+    background-repeat: no-repeat;
+    background-position: center center;
 }
 </style>
