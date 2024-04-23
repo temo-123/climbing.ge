@@ -7,8 +7,8 @@
                       <shop-img width="320" height="180" v-if="tour_data_prop.image.length > 0" :src="'/public/images/tour_img/'+tour_data_prop.image" :alt="tour_data_prop.global_data.url_title" />
                       <shop-img width="320" height="180" v-else :src="'/public/images/site_img/demo_imgs/tour_demo.jpg'" :alt="tour_data_prop.global_data.url_title" />
 
-                      <span class="tourcat" v-if="tour_data_prop.global_data.location">{{ tour_data_prop.global_data.location }}</span>                             
-                      <span class="tourday hot" v-if="tour_data_prop.global_data.min_price">{{ tour_data_prop.global_data.min_price }} / par</span>
+                      <!-- <span class="tourcat" v-if="tour_data_prop.global_data.location">{{ tour_data_prop.global_data.location }}</span>                              -->
+                      <span class="tourday hot" v-if="tour_data_prop.global_data.min_price">From {{ tour_data_prop.global_data.min_price }} / par</span>
                   </div>
 
                   <router-link :to="'../tour/'+tour_data_prop.global_data.url_title">
@@ -17,7 +17,7 @@
                           <router-link :to="'../tour/'+tour_data_prop.global_data.url_title">{{ tour_data_prop.locale_data.title }}</router-link>
                         </h3>
                         <!-- <span class="description">{{ tour_data_prop.locale_data.short_description }}</span> -->
-                        <span class="description" v-html="tour_data_prop.locale_data.short_description"></span>
+                        <!-- <span class="description" v-html="tour_data_prop.locale_data.short_description"></span> -->
                       <!-- <span class="tourprice"> -->
                         <!-- <span class="currency">Rp. </span><span class="price">200 EUR</span> -->
                         <!-- <span> / par</span> -->

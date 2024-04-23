@@ -8,6 +8,13 @@
             <img class="service_page_image" :src="'../../images/tour_img/'+tour.tour_images[0].image" :alt="tour.locale_data.title">
         </div>
 
+        <div class="row service_page_text" v-if="tour.global_data.location">
+            <strong>Location - <span v-html="tour.global_data.location"></span></strong>
+        </div>
+        <div class="row service_page_text" v-if="tour.global_data.duration">
+            <strong>Duration - <span v-html="tour.global_data.duration"></span></strong>
+        </div>
+
         <div class="row service_page_text">
             <span v-html="tour.locale_data.text"></span>
         </div>
