@@ -414,6 +414,7 @@ Route::group(['namespace'=>'Api'], function() {
             Route::post('/add_product', 'add_product'); 
 
             Route::post('/change_user_relation', 'change_user_relation');
+            Route::delete('/del_product/{product_id}', 'del_product');
         });
         Route::controller(ProductController::class)->group( function() {
             // Route::apiResource('/product', 'ProductController');
@@ -633,12 +634,13 @@ Route::group(['namespace'=>'Api'], function() {
             Route::delete('/del_user/{user_id}', 'del_user');
 
             Route::controller(UserNotificationsController::class)->prefix('notifications')->group( function() {
-                Route::post('/send_article_adding_notification', 'send_article_adding_notification');
-                Route::post('/send_event_adding_notification', 'send_event_adding_notification');
-                Route::post('/send_product_adding_notification', 'send_product_adding_notification');
-                Route::post('/send_sector_adding_notification', 'send_sector_adding_notification');
-                Route::post('/send_service_adding_notification', 'send_service_adding_notification');
+                // Route::post('/send_article_adding_notification', 'send_article_adding_notification');
+                // Route::post('/send_event_adding_notification', 'send_event_adding_notification');
+                // Route::post('/send_product_adding_notification', 'send_product_adding_notification');
+                // Route::post('/send_sector_adding_notification', 'send_sector_adding_notification');
+                // Route::post('/send_service_adding_notification', 'send_service_adding_notification');
                 
+                // Route::post('/event_reminder/{action}', 'event_reminder');
                 Route::post('/send_user_favorites_notification/{action}', 'send_user_favorites_notification');
             });
         });

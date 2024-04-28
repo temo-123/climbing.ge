@@ -293,12 +293,12 @@
                     formData
                 )
                 .then(response => {
-                    if(confirm('Do you want send notification about editing sector?')){
-                        this.sand_notification()
-                    }
-                    else{
+                    // if(confirm('Do you want send notification about editing sector?')){
+                    //     this.sand_notification()
+                    // }
+                    // else{
                         this.go_back(true)
-                    }
+                    // }
                 })
                 .catch(error => {
                     if (error.response.status == 422) {
@@ -313,19 +313,19 @@
                 )
             },
 
-            sand_notification() {
-                this.is_mail_sending_procesing = true
+            // sand_notification() {
+            //     this.is_mail_sending_procesing = true
 
-                axios
-                .post('../../../api/user/notifications/send_service_adding_notification')
-                .then(response => {
-                    this.go_back(true)
-                })
-                .catch(err => {
-                    console.log(err);
-                })
-                .finally(() => this.is_mail_sending_procesing = false);
-            },
+            //     axios
+            //     .post('../../../api/user/notifications/send_service_adding_notification')
+            //     .then(response => {
+            //         this.go_back(true)
+            //     })
+            //     .catch(err => {
+            //         console.log(err);
+            //     })
+            //     .finally(() => this.is_mail_sending_procesing = false);
+            // },
 
             go_back: function(action = false) {
                 this.is_back_action_query = this.$going.back(this, action)

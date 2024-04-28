@@ -3,6 +3,9 @@
 /public/assets/css/app.css
 /public/assets/js
 
+/public/guide-sitemap.xml
+/public/shop-sitemap.xml
+
 /public/images/special_img
 /public/images/event_img
 /public/images/gallery_img

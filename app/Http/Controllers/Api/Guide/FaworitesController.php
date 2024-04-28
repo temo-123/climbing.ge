@@ -14,6 +14,8 @@ use App\Models\Guide\Favorite_outdoor_area;
 use App\Models\Guide\Article;
 use App\Models\Guide\Event;
 
+use App\Jobs\UserNotifications;
+
 class FaworitesController extends Controller
 {
     public function add_to_interested_events(Request $request)
@@ -27,14 +29,24 @@ class FaworitesController extends Controller
             
                 $faworit['user_id'] = Auth::user()->id;
                 $faworit['event_id'] = $request->event_id;
-                // dd($faworit);
+
                 $faworit -> save();
 
-                return 'event eded socsesful';
+                $global_event = Event::where('id', '=', $request->event_id)->first();
+                if($global_event){
+                    $locale_event = $global_event->us_event;
+                    $url = config('app.base_url_ssh').'/event/'.$global_event->url_title;
+                    $text = 'Less than 1 week left until your favorite event, ' . $locale_event->title . ' Visit our website for more information.';
+                    $subject = $locale_event->title;
+                }
+
+                UserNotifications::dispatch($url, $text, $subject, Auth::user()->email)->onQueue('emails');
+
+                return 'Event added in your favorite event list successfully';
             }
         }
         else{
-            return 'ples login';
+            return 'Plees login';
         }
     }
 
@@ -61,7 +73,7 @@ class FaworitesController extends Controller
     public function del_interested_event(Request $request)
     {
         if (Auth::user()) {
-            $fav_area = Interested_event::where('user_id', '=', Auth::user()->id)->where('article_id', '=', $request->article_id)->first();
+            $fav_area = Interested_event::where('user_id', '=', Auth::user()->id)->where('event_id', '=', $request->article_id)->first();
             $fav_area ->delete();
         }
         else{

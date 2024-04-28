@@ -51,7 +51,7 @@
             del_products(id){
                 if(confirm('Are you sure, you want delite it?')){
                     axios
-                    .post('../../api/product/'+id, {
+                    .post('/product/del_product/'+id, {
                         _method: 'DELETE'
                     })
                     .then(Response => {

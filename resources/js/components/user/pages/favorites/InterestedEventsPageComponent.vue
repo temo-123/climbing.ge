@@ -45,13 +45,18 @@
 									<!-- <span class="time">ALL DAY</span> -->
 								</time>
 
-								<!-- <span @click="go_to_events_list('/event/'+event.url_title)" > -->
-									<site-img v-if="event.image != NULL" :src="'/public/images/event_img/'+event.image" :alt='event.url_title'/>
-									<site-img v-else :src="'/public/images/site_img/image.png'" :alt='event.url_title'/>
-								<!-- </span> -->
+								<!-- <span @click="go_to_events_list('/event/'+event.url_title)" >
+									<img v-if="event.image != NULL" :src="'/public/images/event_img/'+event.image" :alt='event.url_title' />
+									<img v-else :src="'/public/images/site_img/image.png'" :alt='event.url_title' />
+								</span> -->
+
+								
+								<img v-if="event.image != NULL" :src="'/public/images/event_img/'+event.image" :alt='event.url_title' />
+								<img v-else :src="'/public/images/site_img/image.png'" :alt='event.url_title' />
 
 								<!-- <img alt="Independence Day" src="https://farm4.staticflickr.com/3100/2693171833_3545fb852c_q.jpg" /> -->
 								<div :class='"info " + row_action(event.end_data)'>
+
 									<h2 class="title cursor_pointer">
 										<a @click="go_to_events_list('/event/'+event.url_title)">{{ event.url_title }}</a>
 									</h2>
@@ -172,7 +177,7 @@
                         // alert("Ewnt delited from your favorite list!");
                     })
                     .catch(error => {
-                        alert("Error");
+                        // alert("Error");
                     })
                 }
             }

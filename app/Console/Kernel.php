@@ -28,6 +28,7 @@ class Kernel extends ConsoleKernel
         // $schedule->command('inspire')->hourly();
 
         $schedule->command('send_event_notificatione:users')->everyMinute();
+        $schedule->command('sitemap:generate')->daily();
         // ->daily();
     }
 

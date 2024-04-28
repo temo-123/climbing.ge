@@ -49,8 +49,6 @@ class UserNotifications implements ShouldQueue
             'text' => $this->text,
         );
 
-        // info($emailData);
-
         Mail::to($this->email)->send(new UserNotificationeMessage($emailData));
     }
 }

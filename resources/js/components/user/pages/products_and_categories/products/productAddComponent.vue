@@ -138,7 +138,7 @@
                         </div>
                     </form>
                 </div>
-                <div class="row" v-show="tab_num == 4">
+                <div class="row" v-show="tab_num == 3">
                     <div class="width_100 jumbotron jumbotron-fluid">
                         <div class="container">
                             <h2 class="display-4">Product georgian version</h2>
@@ -227,26 +227,28 @@
                         sale_type: "",
 
                         mead_in_georgia: null,
-                        material: "",
-                        discount: "",
+                        discount: 0,
                     },
 
                     us_product: {
                         title: "",
                         short_description: "",
                         text: "",
+                        material: "",
                     },
 
                     ka_product: {
                         title: "",
                         short_description: "",
                         text: "",
+                        material: "",
                     },
 
                     ru_product: {
                         title: "",
                         short_description: "",
                         text: "",
+                        material: "",
                     }
                 },
 
@@ -267,19 +269,19 @@
             },
 
             add_product() {
-                this.data.global_product.us_title_for_url_title = this.data.us_product.title
+                // this.data.global_product.us_title_for_url_title = this.data.us_product.title
 
                 axios
                 .post('/product/add_product/', {        
                     data: JSON.stringify(this.data),
                 })
                 .then((response)=> { 
-                    if(confirm('Do you want send notification about editing article?')){
-                        this.sand_notification()
-                    }
-                    else{
+                    // if(confirm('Do you want send notification about editing article?')){
+                    //     this.sand_notification()
+                    // }
+                    // else{
                         this.go_back(true)
-                    }
+                    // }
                 })
                 .catch(error =>{
                     if (error.response.status == 422) {
@@ -290,19 +292,19 @@
                 .finally(() => this.is_loading = false);
             },
 
-            sand_notification() {
-                this.is_loading = true
+            // sand_notification() {
+            //     this.is_loading = true
 
-                axios
-                .post('/user/notifications/send_product_adding_notification')
-                .then(response => {
-                    this.go_back(true)
-                })
-                .catch(err => {
-                    console.log(err);
-                })
-                .finally(() => this.is_loading = false);
-            },
+            //     axios
+            //     .post('/user/notifications/send_product_adding_notification')
+            //     .then(response => {
+            //         this.go_back(true)
+            //     })
+            //     .catch(err => {
+            //         console.log(err);
+            //     })
+            //     .finally(() => this.is_loading = false);
+            // },
 
             get_product_category_product: function(){
                 this.is_loading = true

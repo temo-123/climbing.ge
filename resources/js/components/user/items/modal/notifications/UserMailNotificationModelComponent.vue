@@ -2,7 +2,7 @@
     <stack-modal
         :show="is_notifay_modal"
         title="Send mail notification"
-        @close="is_notifay_modal=false"
+        @close="close_modal()"
         :saveButton="{ visible: true, title: 'Sand', btnClass: { 'btn btn-primary': true } }"
         :cancelButton="{ visible: false, title: 'Close', btnClass: { 'btn btn-danger': true } }"
     >
@@ -14,13 +14,12 @@
                         <div class="col-md-12 image_add_modal_form">
                             <select class="form-control" name="filter" v-model="notification_type" @change="selected_notification_action()" required>
                                 <option value="0" disabled>Select notification type</option> 
-
-                                <option value="favorite_outdoor">favorite_outdoor</option>
-                                <option value="favorite_product">favorite_product</option>
-                                <option value="interested_event">interested_event</option>
-                                
                                 <option value="favorite_film" disabled>favorite_film</option>
 
+                                <option value="favorite_outdoor">Favorite outdoor regions</option>
+                                <option value="favorite_product">Favorite products</option>
+                                <option value="interested_event">Interested events</option>
+                                <option value="special_articles">Special articles</option>
                             </select> 
                         </div>
                     </div>
@@ -129,16 +128,20 @@
                 is_notifay_modal: false,
                 is_select_notification_type_error: false,
 
-                notification_type: 0
+                notification_type: 0,
+                notification_id: 0
             }
         },
         mounted(){
             // 
         },
         methods: {
-            open_notifay_modal(){
-                // this.is_notifay_modal = true
-                this.$refs.show_notificatione_model.open_task_add_modal()
+            show_modal(){
+                this.is_notifay_modal = true
+            },
+
+            close_modal(){
+                this.is_notifay_modal = false
             },
 
             send_mail(){
@@ -146,13 +149,13 @@
 
                 if(this.notification_type != 0 && this.notification_id != 0 || this.event_notification_type != 0){
                     axios
-                    .post('../../../api/user/notifications/send_user_favorites_notification/' + this.notification_type, {
+                    .post('/user/notifications/send_user_favorites_notification/' + this.notification_type, {
                         id: this.notification_id,
                         event_notification_type: this.event_notification_type
                     })
                     .then(response => {
                         alert(response.data)
-                        this.close_notifay_modal()
+                        this.close_modal()
                     })
                     .catch(err => {
                         console.log(err);
@@ -165,7 +168,7 @@
             },
             get_events(){
                 axios
-                .get("../api/event/get_all_events/")
+                .get("/event/get_all_events/")
                 .then(response => {
                     this.events = response.data
                 })
@@ -177,7 +180,7 @@
 
             get_products(){
                 axios
-                .get("../api/products/en/")
+                .get("/products/en/")
                 .then(response => {
                     this.products = response.data
                 })
@@ -188,7 +191,10 @@
 
             selected_notification_action(){
                 if(this.notification_type == "favorite_outdoor"){
-                    this.get_outdoor_articles()
+                    this.get_articles('outdoor')
+                }
+                if(this.notification_type == "special_articles"){
+                    this.get_articles('special')
                 }
                 else if(this.notification_type == "favorite_product"){
                     this.get_products()
@@ -201,11 +207,9 @@
                 }
             },
 
-            get_outdoor_articles(){
+            get_articles(category){
                 axios
-                .post("../api/article/", {
-                    category: 'outdoor',
-                })
+                .get("/article/get_category_articles/" + category)
                 .then(response => {
                     this.outdoors = response.data
                 })
@@ -217,7 +221,7 @@
 
             get_films(){
                 axios
-                .get("../api/films/")
+                .get("/films/")
                 .then(response => {
                     this.events = response.data
                 })

@@ -241,12 +241,12 @@
                 )
                 .then(response => {
                     if(this.category == 'outdoor' || this.category == 'news' || this.category == 'tech_tip' || this.category == 'indoor' || this.category == 'ice'){
-                        if(confirm('Do you want send notification about new article?')){
-                            this.sand_notification()
-                        }
-                        else{
+                        // if(confirm('Do you want send notification about new article?')){
+                        //     this.sand_notification()
+                        // }
+                        // else{
                             this.go_back(true)
-                        }
+                        // }
                     }
                     else{
                         this.go_back(true)
@@ -263,21 +263,21 @@
                 .finally(() => this.is_loading = false);
             },
 
-            sand_notification() {
-                this.is_loading = true
+            // sand_notification() {
+            //     this.is_loading = true
 
-                axios
-                .post('/user/notifications/send_article_adding_notification',{
-                    notification_category: this.category
-                } )
-                .then(response => {
-                    this.go_back(true)
-                })
-                .catch(err => {
-                    console.log(err);
-                })
-                .finally(() => this.is_loading = false);
-            },
+            //     axios
+            //     .post('/user/notifications/send_article_adding_notification',{
+            //         notification_category: this.category
+            //     } )
+            //     .then(response => {
+            //         this.go_back(true)
+            //     })
+            //     .catch(err => {
+            //         console.log(err);
+            //     })
+            //     .finally(() => this.is_loading = false);
+            // },
             
             go_back: function(action = false) {
                 this.is_back_action_query = this.$going.back(this, action)

@@ -17,47 +17,9 @@
             </div>
         </div>
         <div class="row" v-if="error.length != 0">
-            <div class="col-md-12">
-                <div class="alert alert-danger" role="alert" v-if="error.global_info_validation.published">
-                    Published - {{ error.global_info_validation.published[0] }}
-                </div>
-                <div class="alert alert-danger" role="alert" v-if="error.global_info_validation.start_data">
-                    Start data - {{ error.global_info_validation.start_data[0] }}
-                </div>
-                <div class="alert alert-danger" role="alert" v-if="error.global_info_validation.end_data">
-                    End data - {{ error.global_info_validation.end_data[0] }}
-                </div>
-
-                <div class="alert alert-danger" role="alert" v-if="error.us_info_validation.title">
-                    English title - {{ error.us_info_validation.title[0] }}
-                </div>
-                <div class="alert alert-danger" role="alert" v-if="error.us_info_validation.short_description">
-                    English description - {{ error.us_info_validation.short_description[0] }}
-                </div>
-                <div class="alert alert-danger" role="alert" v-if="error.us_info_validation.text">
-                    English text - {{ error.us_info_validation.text[0] }}
-                </div>
-
-                <div class="alert alert-danger" role="alert" v-if="error.ka_info_validation.title">
-                    Georgian title - {{ error.ka_info_validation.title[0] }}
-                </div>
-                <div class="alert alert-danger" role="alert" v-if="error.ka_info_validation.short_description">
-                    Georgian description - {{ error.ka_info_validation.short_description[0] }}
-                </div>
-                <div class="alert alert-danger" role="alert" v-if="error.ka_info_validation.text">
-                    Georgian text - {{ error.ka_info_validation.text[0] }}
-                </div>
-
-                <div class="alert alert-danger" role="alert" v-if="error.ru_info_validation.title">
-                    Russion title - {{ error.ru_info_validation.title[0] }}
-                </div>
-                <div class="alert alert-danger" role="alert" v-if="error.ru_info_validation.short_description">
-                    Russion description - {{ error.ru_info_validation.short_description[0] }}
-                </div>
-                <div class="alert alert-danger" role="alert" v-if="error.ru_info_validation.text">
-                    Russion text - {{ error.ru_info_validation.text[0] }}
-                </div>
-            </div>
+            <validator_alerts_component
+                :errors_prop="error"
+            />
         </div>
         <div class="row" v-if="!is_loading">
             <div class="col-md-12">
@@ -73,9 +35,9 @@
                         <label for="2" >English text</label>
                     </div>
                     <div class="col" >
-                        <input type="radio" id="4" :value="4" v-model="tab_num">
+                        <input type="radio" id="3" :value="3" v-model="tab_num">
                         
-                        <label for="4" >Georgian text</label>
+                        <label for="3" >Georgian text</label>
                     </div>
                 </div>
             </div>
@@ -203,7 +165,7 @@
 
                     </form>
                 </div>
-                <div class="row" v-show="tab_num == 4">
+                <div class="row" v-show="tab_num == 3">
                     <div class="width_100 jumbotron jumbotron-fluid">
                         <div class="container">
                             <h2 class="display-4">Competition georgian version</h2>
@@ -262,12 +224,14 @@
 <script>
     import { editor_config } from '../../../../../mixins/editor/editor_config_mixin.js'
     import GlobalInfoFormBlock from '../../../items/GlobalInfoFormBlockComponent.vue'
+    import validator_alerts_component from '../../../items/validator_alerts_component.vue'
     export default {
         mixins: [
             editor_config
         ],
         components: {
-            GlobalInfoFormBlock
+            GlobalInfoFormBlock,
+            validator_alerts_component
         },
         props: [
             // 'back_url',
@@ -319,13 +283,6 @@
                         text: "",
                         info: "",
                     },
-
-                    ru_data: {
-                        title: "",
-                        short_description: "",
-                        text: "",
-                        info: "",
-                    }
                 },
 
                 is_loading: false,
@@ -387,12 +344,12 @@
                     formData
                 )
                 .then(response => {
-                    if(confirm('Do you want send notification about editing article?')){
-                        this.sand_notification()
-                    }
-                    else{
+                    // if(confirm('Do you want send notification about editing article?')){
+                    //     // this.sand_notification()
+                    // }
+                    // else{
                         this.go_back(true)
-                    }
+                    // }
                 })
                 .catch(error => {
                     if (error.response.status == 422) {
@@ -414,22 +371,6 @@
                 .catch(
                     errors => console.log(errors)
                 );
-            },
-
-            sand_notification() {
-                // this.is_mail_sending_procesing = true
-
-                // axios
-                // .post('../../../api/user/notifications/send_event_adding_notification',{
-                //     notification_category: this.category
-                // } )
-                // .then(response => {
-                //     this.go_back(true)
-                // })
-                // .catch(err => {
-                //     console.log(err);
-                // })
-                // .finally(() => this.is_mail_sending_procesing = false);
             },
 
             go_back: function(back_action = false) {

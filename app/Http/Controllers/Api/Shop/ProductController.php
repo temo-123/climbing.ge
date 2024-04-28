@@ -107,7 +107,7 @@ class ProductController extends Controller
         $product_adding = ProductService::add_content($data, Product::class, Locale_product::class, '_product', $request);
         
         if (!array_key_exists('validation', $product_adding->original)) {
-            $this->create_product_user_relations($product_adding);
+            $this->create_product_user_relations($product_adding->original['global_product_id']);
         }
         else {
             return $product_adding;
@@ -216,9 +216,11 @@ class ProductController extends Controller
         return ProductService::get_locale_product($global_products);
     }
 
-    public function destroy($id)
+    public function del_product(Request $request)
     {
-        $deleted_product = Product::where("id", "=", $id)->first();
-        $deleted_product -> delete();
+        // $deleted_product = Product::where("id", "=", $id)->first();
+        // $deleted_product -> delete();
+
+        ProductService::del_content($request->product_id, Product::class, Locale_product::class, '_product', 'image', 'images/product_option_img/');
     }
 }

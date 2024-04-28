@@ -38,7 +38,18 @@
             // console.log(this.table_info)
         },
         methods: {
-            //
+            del_products(id){
+                if(confirm('Are you sure, you want delite it?')){
+                    axios
+                    .post('/product/del_product/'+id, {
+                        _method: 'DELETE'
+                    })
+                    .then(Response => {
+                        this.$emit('restart')
+                    })
+                    .catch(error => console.log(error))
+                }
+            },
         }
     }
 </script>

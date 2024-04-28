@@ -34,7 +34,7 @@
                         <label for="2" >English text</label>
                     </div>
                     <div class="col" >
-                        <input type="radio" id="4" :value="4" v-model="tab_num">
+                        <input type="radio" id="3" :value="3" v-model="tab_num">
                         
                         <label for="4" >Georgian text</label>
                     </div>
@@ -146,7 +146,7 @@
                     </form>
                 </div>
                 
-                <div class="row" v-show="tab_num == 4">
+                <div class="row" v-show="tab_num == 3">
                     <div class="width_100 jumbotron jumbotron-fluid">
                         <div class="container">
                             <h2 class="display-4">Product georgian version</h2>
@@ -237,8 +237,8 @@
                         sale_type: "",
 
                         mead_in_georgia: null,
-                        material: "",
-                        discount: "",
+                        // material: "",
+                        discount: 0,
                     },
 
                     us_data: [],

@@ -36,7 +36,7 @@ class ServicesController extends Controller
             $global_services = Service::where('published', '=', 1)->where('id', '!=', $request->id)->get();
             return $services = ServicesService::get_locale_services_use_locale($global_services, $request->lang);
         }
-        return abort(404);
+        // return abort(404);
     }
 
     public function add_service(Request $request)

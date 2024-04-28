@@ -4,8 +4,8 @@ namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
 
-use App\Models\Event;
-use App\Models\user_notification;
+use App\Models\Guide\Event;
+use App\Models\User\user_notification;
 
 use App\Jobs\UserNotifications;
 
@@ -56,12 +56,12 @@ class UserAutoNotificatione extends Command
                         $text = 'თქვენ ფავორიტ ღონისძიებამდე დარჩა 1 კვირა. (' . $locale_event->title . ') ეწვიეთ ღონისძიების გვერდს, რათა გაიგოთ მეტი სიახლე მის შესახებ.';
                         $subject = $locale_event->title;
                     }
-                    else if($user->lang == 'ru'){
-                        $locale_event = $global_event->ru_event;
-                        $url = config('app.base_url_ssh').'/ru/event/'.$global_event->url_title;
-                        $text = 'До любимого события осталось меньше недели. (' . $locale_event->title . ') Посетите страницу мероприятия, чтобы узнать больше новостей о нем.';
-                        $subject = $locale_event->title;
-                    }
+                    // else if($user->lang == 'ru'){
+                    //     $locale_event = $global_event->ru_event;
+                    //     $url = config('app.base_url_ssh').'/ru/event/'.$global_event->url_title;
+                    //     $text = 'До любимого события осталось меньше недели. (' . $locale_event->title . ') Посетите страницу мероприятия, чтобы узнать больше новостей о нем.';
+                    //     $subject = $locale_event->title;
+                    // }
                     else{
                         $locale_event = $global_event->us_event;
                         $url = config('app.base_url_ssh').'/event/'.$global_event->url_title;

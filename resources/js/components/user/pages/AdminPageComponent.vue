@@ -78,7 +78,7 @@
 
                     </div>
 
-                    <user_notifications_modal />
+                    <user_notifications_modal ref="user_notifications"/>
 
                 </div>
             </div>
@@ -119,7 +119,9 @@
             // 
         },
         methods: {
-            //
+            open_notifay_modal(){
+                this.$refs.user_notifications.show_modal()
+            }
         }
     }
 </script>
