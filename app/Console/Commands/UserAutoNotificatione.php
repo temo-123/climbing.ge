@@ -33,9 +33,9 @@ class UserAutoNotificatione extends Command
     public function handle()
     {
         // return Command::SUCCESS;
-        $url = '';
-        $text = '';
-        $subject = '';
+        // $url = '';
+        // $text = '';
+        // $subject = '';
 
         $user_notifictions = user_notification::where('interested_event', '=', 1)->get();
         if($user_notifictions){
@@ -50,24 +50,24 @@ class UserAutoNotificatione extends Command
 
                 if($global_event){
                     $locale_event;
-                    if($user->lang == 'ka'){
-                        $locale_event = $global_event->ka_event;
-                        $url = config('app.base_url_ssh').'/ka/event/'.$global_event->url_title;
-                        $text = 'თქვენ ფავორიტ ღონისძიებამდე დარჩა 1 კვირა. (' . $locale_event->title . ') ეწვიეთ ღონისძიების გვერდს, რათა გაიგოთ მეტი სიახლე მის შესახებ.';
-                        $subject = $locale_event->title;
-                    }
+                    // if($user->lang == 'ka'){
+                    //     $locale_event = $global_event->ka_event;
+                    //     $url = config('app.base_url_ssh').'/ka/event/'.$global_event->url_title;
+                    //     $text = 'თქვენ ფავორიტ ღონისძიებამდე დარჩა 1 კვირა. (' . $locale_event->title . ') ეწვიეთ ღონისძიების გვერდს, რათა გაიგოთ მეტი სიახლე მის შესახებ.';
+                    //     $subject = $locale_event->title;
+                    // }
                     // else if($user->lang == 'ru'){
                     //     $locale_event = $global_event->ru_event;
                     //     $url = config('app.base_url_ssh').'/ru/event/'.$global_event->url_title;
                     //     $text = 'До любимого события осталось меньше недели. (' . $locale_event->title . ') Посетите страницу мероприятия, чтобы узнать больше новостей о нем.';
                     //     $subject = $locale_event->title;
                     // }
-                    else{
+                    // else{
                         $locale_event = $global_event->us_event;
                         $url = config('app.base_url_ssh').'/event/'.$global_event->url_title;
                         $text = 'Less than 1 week left until your favorite event. (' . $locale_event->title . ') Visit the event page to find out more news about it.';
                         $subject = $locale_event->title;
-                    }
+                    // }
 
                     UserNotifications::dispatch($url, $text, $subject, $user->email)->onQueue('emails');
                 }

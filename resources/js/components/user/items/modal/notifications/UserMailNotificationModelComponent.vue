@@ -16,6 +16,7 @@
                                 <option value="0" disabled>Select notification type</option> 
                                 <option value="favorite_film" disabled>favorite_film</option>
 
+                                <option value="news">Last news notification</option>
                                 <option value="favorite_outdoor">Favorite outdoor regions</option>
                                 <option value="favorite_product">Favorite products</option>
                                 <option value="interested_event">Interested events</option>
@@ -142,6 +143,7 @@
 
             close_modal(){
                 this.is_notifay_modal = false
+                this.notification_type = false
             },
 
             send_mail(){

@@ -28,6 +28,7 @@ class UserNotificationeMessage extends Mailable
     public function __construct($data)
     {
         $this->data = $data;
+        $this->subject = $data['subject'];
     }
 
     /**
@@ -71,14 +72,9 @@ class UserNotificationeMessage extends Mailable
 
 
     public function build()
-    { 
-        $subject = 'User message from the site - ';
-
-        return $this
-        ->markdown('emails.user_notifications.article_event_notification')
-        ->with([
-            'data'=>$this->data,
-        ])
-        ->subject($subject);
+    {
+        return $this->markdown('emails.user_notifications.article_event_notification')
+        ->with(['data'=>$this->data])
+        ->subject($this->subject);
     }
 }
