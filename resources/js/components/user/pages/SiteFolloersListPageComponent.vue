@@ -59,7 +59,7 @@
             get_site_followers(){
                 this.data_for_tab = []
                 axios
-                .get("../api/following_users_list/")
+                .get("/follow/following_users_list/")
                 .then(response => {
                     this.users = response.data
                     this.data_for_tab.push({'id': 1,

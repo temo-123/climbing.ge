@@ -330,36 +330,36 @@ export const navbar = {
                     ['del', 'local_bisnes'],
                 ]
             },
-            {
-                title: "Site Global Data",
-                name: "global_data",
-                routes: [
-                    {
-                        name: "About us",
-                        route: "/site_info",
-                        permissions: [
-                            ['edit', 'site_data']
-                        ]
-                    },
-                    {
-                        name: "Site followers",
-                        route: "/site_folloers",
-                        permissions: [
-                            ['show', 'site_folloers'],
-                            ['del', 'site_folloers']
-                        ]
-                    },
-                    {
-                        name: "Head Sliders",
-                        route: "/head_sliders_images",
-                        permissions: [
-                            ['add', 'gallery'],
-                            ['edit', 'gallery'],
-                            ['del', 'gallery'],
-                        ]
-                    },
-                ],
-            },
+            // {
+            //     title: "Site Global Data",
+            //     name: "global_data",
+            //     routes: [
+            //         {
+            //             name: "About us",
+            //             route: "/site_info",
+            //             permissions: [
+            //                 ['edit', 'site_data']
+            //             ]
+            //         },
+            //         {
+            //             name: "Site followers",
+            //             route: "/site_folloers",
+            //             permissions: [
+            //                 ['show', 'site_folloers'],
+            //                 ['del', 'site_folloers']
+            //             ]
+            //         },
+            //         {
+            //             name: "Head Sliders",
+            //             route: "/head_sliders_images",
+            //             permissions: [
+            //                 ['add', 'gallery'],
+            //                 ['edit', 'gallery'],
+            //                 ['del', 'gallery'],
+            //             ]
+            //         },
+            //     ],
+            // },
             {
                 title: "Events & Competitions",
                 route: "/event",
@@ -373,6 +373,39 @@ export const navbar = {
                 title: "Site options",
                 name: "site_options",
                 routes: [
+                    {
+                        name: "About us",
+                        route: "/site_info",
+                        permissions: [
+                            ['edit', 'site_data']
+                        ]
+                    },
+                    {
+                        name: "Head Sliders",
+                        route: "/head_sliders_images",
+                        permissions: [
+                            ['add', 'gallery'],
+                            ['edit', 'gallery'],
+                            ['del', 'gallery'],
+                        ]
+                    },
+                    {
+                        name: "Site followers",
+                        route: "/site_folloers",
+                        permissions: [
+                            ['show', 'site_folloers'],
+                            ['del', 'site_folloers']
+                        ]
+                    },
+                    // {
+                    //     name: "Climbing routes rewiew",
+                    //     route: "/comments_and_reviews",
+                    //     permissions: [
+                    //         ['show', 'routes_rewiew'],
+                    //         ['del_comment', 'routes_rewiew'],
+                    //     ]
+                    // },
+
                     {
                         name: "Users & Permissions",
                         route: "/users_list",
@@ -410,14 +443,6 @@ export const navbar = {
                             ['del_comment', 'comments'],
                         ]
                     },
-                    // {
-                    //     name: "Climbing routes rewiew",
-                    //     route: "/comments_and_reviews",
-                    //     permissions: [
-                    //         ['show', 'routes_rewiew'],
-                    //         ['del_comment', 'routes_rewiew'],
-                    //     ]
-                    // },
                 ],
             },
             {
