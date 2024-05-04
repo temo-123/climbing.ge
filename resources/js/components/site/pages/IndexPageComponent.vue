@@ -62,6 +62,8 @@
         <techtipsComponent/>
 
         <indexGalleryComponent />
+
+        <!-- <instaPost /> -->
         
         <metaData 
             :title = " $t('guide.meta.index') "
@@ -83,6 +85,8 @@
     import bigNewsCard from '../items/cards/BigNewsCardComponent'
     import specialArticleComponent from '../items/SpecialArticleComponent'
 
+    // import instaPost from '../../global_components/InstaPostsComponent.vue'
+
     import metaData from '../items/MetaDataComponent'
 
     export default {
@@ -102,7 +106,8 @@
             newsCard,
             bigNewsCard,
             whatWeDoComponent,
-            specialArticleComponent
+            specialArticleComponent,
+            // instaPost
         },
         mounted() {
             this.get_news()

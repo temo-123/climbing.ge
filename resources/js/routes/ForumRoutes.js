@@ -10,7 +10,7 @@ import user_page from '../components/forum/pages/UserPageComponent.vue'
 import event_list from '../components/forum/pages/EventsListComponent.vue'
 import event_page from '../components/forum/pages/EventPageComponent.vue'
 
-import insta_posts from '../components/forum/pages/XXX InstaPostsComponent.vue'
+// import insta_posts from '../components/forum/pages/XXX InstaPostsComponent.vue'
 
 import login from '../components/auth/LoginComponent.vue'
 import register from '../components/auth/RegisterComponent.vue'
@@ -30,7 +30,7 @@ const router = new VueRouter({
         { path: '/events_list', name: 'events_list', component: event_list },
         { path: '/event/:utl_title:', name: 'event_page', component: event_page },
 
-        { path: '/instagram_posts', name: 'insta_posts', component: insta_posts },
+        // { path: '/instagram_posts', name: 'insta_posts', component: insta_posts },
 
         { path: '/about_us', name: 'about_forum', component: about_us,},
 
