@@ -6,13 +6,7 @@ if (window.location.hostname == process.env.MIX_SITE_URL) {
     const { default: router } = require('./routes/ShopRoutes');
 } else if (window.location.hostname == process.env.MIX_USER_PAGE_URL) {
     const { default: router } = require('./routes/UserRoutes');
-} else if (window.location.hostname == process.env.MIX_FILMS_URL) {
-    // const { default: router } = require('./routes/UserRoutes');
-} else if (window.location.hostname == process.env.MIX_FORUM_URL) {
-    // const { default: router } = require('./routes/UserRoutes');    
-} else {
-    // homeComponent = Error;
-}
+} 
 
 window._ = require('lodash');
 

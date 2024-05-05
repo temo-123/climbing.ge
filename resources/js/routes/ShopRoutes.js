@@ -9,7 +9,7 @@ function load(component) {
 }
 
 function getLocaleRegex() {
-    let reg = process.env.MIX_VUE_APP_I18N_SUPORTED_LOCALE
+    let reg = import.meta.env.MIX_VUE_APP_I18N_SUPORTED_LOCALE
     
     return `(${reg})`;
 }
@@ -35,7 +35,7 @@ const router = new VueRouter({
 
                 localStorage.setItem("lang", locale);
 
-                const supported_locales = process.env.MIX_VUE_APP_I18N_SUPORTED_LOCALE.split("|");
+                const supported_locales = import.meta.env.MIX_VUE_APP_I18N_SUPORTED_LOCALE.split("|");
 
                 if (!supported_locales.includes(locale)) {
                     return next("/");

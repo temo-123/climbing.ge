@@ -122,6 +122,7 @@
     import footerText from "../../global_components/FooterBottomTextComponent.vue";
 
     const { QRCanvas } = require("qrcanvas-vue"); //  https://gera2ld.github.io/qrcanvas-vue/v2/#padding
+    // import { QRCanvas } from 'qrcanvas-vue';
 
     export default {
         data: function () {

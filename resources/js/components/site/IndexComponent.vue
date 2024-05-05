@@ -16,16 +16,12 @@
 </template>
 
 <script>
-import navbar from "./items/navbars/NavbarComponent";
-import footter from "./items/FooterComponent";
+import navbar from "./items/navbars/NavbarComponent.vue";
+import footter from "./items/FooterComponent.vue";
 import loginModal from "../global_components/LoginModalComponent.vue";
 import go_to_top from "../global_components/GoOnTopComponent.vue";
 
-// import { mapState } from 'vuex'
 export default {
-    // computed: mapState({
-    //     arrayIndex: state => state.arrayIndex
-    // }),
     data: function () {
         return {
             publicPath: window.location.protocol + '//' + window.location.hostname
@@ -40,7 +36,6 @@ export default {
     mounted() {
         
     },
-
     methods: {
         grade_action(event){
             this.$emit('grade', event)

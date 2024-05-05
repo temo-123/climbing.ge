@@ -1,5 +1,8 @@
 import Vue from "vue";
-require("./bootstrap");
+
+import { resolvePageComponent } from 'laravel-vite-plugin/inertia-helpers';
+// import './bootstrap.js';
+// import '../sass/app.scss';
 
 /*
  *   Using pakets
@@ -12,7 +15,7 @@ import axios from "axios";
 import i18n from "./services/localization/i18n";
 import VueSocialSharing from "vue-social-sharing";
 import VueGlide from "vue-glide-js";
-import "vue-glide-js/dist/vue-glide.css";
+// import "vue-glide-js/dist/vue-glide.css";
 import VueGtag from "vue-gtag";
 import { abilitiesPlugin } from "@casl/vue";
 import ability from "./services/ability/ability";
@@ -57,33 +60,16 @@ Vue.mixin(going);
 /*
  *   My components
  */
-
-import leftmenu from "./components/user/items/navbars/LeftMenuComponent.vue";
 import goTo from "./components/global_components/GoToComponrnt.vue";
-import store from "./store";
-import site_img from "./components/site/items/ImageComponent.vue";
-import shop_img from "./components/shop/items/ImageComponent.vue";
-import forum_img from "./components/forum/items/ImageComponent.vue";
-
-Vue.component("site-img", site_img);
-Vue.component("shop-img", shop_img);
-Vue.component("forum-img", forum_img);
-Vue.component("left-menu", leftmenu);
 Vue.component("goTo", goTo);
 
 import MainWrapper from "./components/shop/MainWrapper.vue";
 import Index from "./components/site/IndexComponent.vue";
 import Home from "./components/user/HomeComponent.vue";
-import Films from "./components/films/StudiaComponent.vue";
-import Forum from "./components/forum/ForumComponent.vue";
-import Error from "./components/errors/global_errors/error.vue";
 
 import shop_routes from "./routes/ShopRoutes";
 import site_routes from "./routes/SiteRoutes";
 import user_routes from "./routes/UserRoutes";
-import films_routes from "./routes/FilmsRoutes";
-import forum_routes from "./routes/ForumRoutes";
-import error_routes from "./routes/ErrorRoutes";
 
 Vue.component(
     "main-wrapper-component",
@@ -96,14 +82,6 @@ Vue.component(
 Vue.component(
     "home-component",
     require("./components/user/HomeComponent.vue").default
-);
-Vue.component(
-    "studia-component",
-    require("./components/films/StudiaComponent.vue").default
-);
-Vue.component(
-    "forum-component",
-    require("./components/forum/ForumComponent.vue").default
 );
 
 var serviceRoutes = [];
@@ -125,17 +103,8 @@ if (window.location.hostname == process.env.MIX_SITE_URL) {
     serviceRoutes = user_routes;
     analytic_id = process.env.MIX_USER_ANALITICS_ID;
     axios.defaults.baseURL = process.env.MIX_APP_SSH + process.env.MIX_USER_PAGE_URL + '/api'
-} else if (window.location.hostname == process.env.MIX_FILMS_URL) {
-    homeComponent = Films;
-    serviceRoutes = films_routes;
-    analytic_id = process.env.MIX_FILMS_ANALITICS_ID;
-    axios.defaults.baseURL = process.env.MIX_FILMS_URL
-} else if (window.location.hostname == process.env.MIX_FORUM_URL) {
-    homeComponent = Forum;
-    serviceRoutes = forum_routes;
-    analytic_id = process.env.MIX_FORUM_ANALITICS_ID;
-    axios.defaults.baseURL = process.env.MIX_FORUM_URL
-} else {
+}
+else {
     homeComponent = Error;
     serviceRoutes = error_routes;
     analytic_id = process.env.MIX_CLIMBING_GUIDBOOK_ANALITICS_ID;
@@ -176,6 +145,7 @@ const app = new Vue({
     // ability,
 
     // option,
+    resolve: (name) => resolvePageComponent(`./Pages/${name}.vue`, import.meta.glob('./Pages/**/*.vue')),
     components: {
         homeComponent,
     },
