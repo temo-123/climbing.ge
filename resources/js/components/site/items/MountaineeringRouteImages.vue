@@ -31,15 +31,15 @@
         },
         
         mounted() {
-            this.article_id = this.article_id_props
+            this.article_id = this.article_id_prop
             this.get_mount_route_images()
         },
         watch: {
             '$route' (to, from) {
-                this.article_id = this.article_id_props
+                this.article_id = this.article_id_prop
                 this.get_mount_route_images()
             },
-            article_id: function(){
+            article_id_prop: function(){
                 this.article_id = this.article_id_prop
                 this.get_mount_route_images()
             },
@@ -58,10 +58,15 @@
                     );
                 }
                 else{
-                    this.article_id = this.article_id_props
+                    this.article_id = this.article_id_prop
                     this.get_mount_route_images()
                 }
             },
+
+            update(id){
+                this.article_id = id
+                this.get_mount_route_images()
+            }
         }
     }
 </script>

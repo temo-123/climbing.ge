@@ -39,7 +39,7 @@
             del_mount(id){
                 if(confirm('Are you sure, you want delite it?')){
                     axios
-                    .post('../../api/mount/'+id, {
+                    .post('/mount/mount/'+id, {
                         _method: 'DELETE'
                     })
                     .then(Response => {

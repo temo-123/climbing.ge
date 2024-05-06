@@ -65,7 +65,10 @@
                     <div v-if="this.mount_route.locale_data.route">
                         <h2 id="routes">{{ $t('guide.article.title.route')}}</h2>
                     
-                        <MountaineeringRouteImages  :article_id_prop="this.mount_route.global_data.id" />
+                        <MountaineeringRouteImages 
+                            :article_id_prop="this.mount_route.global_data.id" 
+                            ref="mountaineeringRouteImages"
+                        />
 
                         <span v-html="this.mount_route.locale_data.route"></span>
                     </div>
@@ -149,7 +152,9 @@
                 this.$refs.similar_articles.update(id)
                 this.$refs.gallery_component.update(id)
                 this.$refs.comments.update(id)
-            },   
+                this.$refs.mountaineeringRouteImages.update(id)
+            },
+
             get_mount_route(){
                 axios
                 .get('/article/mount_route/'+localStorage.getItem('lang')+'/'+this.$route.params.url_title)

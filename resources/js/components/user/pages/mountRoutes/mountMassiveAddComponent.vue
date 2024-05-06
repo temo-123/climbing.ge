@@ -15,42 +15,10 @@
                 <button type="submit" class="btn btn-primary" v-on:click="add_mount_massive_region()" >Save</button>
             </div>
         </div>
-        <div class="row" v-if="!is_loading">
-            <div class="col-md-12" v-if="errors.length != 0">
-                <div class="alert alert-danger" role="alert" v-if="errors.global_info_validation.name">
-                    Demo name - {{ errors.global_info_validation.name[0] }}
-                </div>
-
-                <div class="alert alert-danger" role="alert" v-if="errors.us_info_validation.title">
-                    English title - {{ errors.us_info_validation.title[0] }}
-                </div>
-                <div class="alert alert-danger" role="alert" v-if="errors.us_info_validation.short_description">
-                    English description - {{ errors.us_info_validation.short_description[0] }}
-                </div>
-                <div class="alert alert-danger" role="alert" v-if="errors.us_info_validation.text">
-                    English text - {{ errors.us_info_validation.text[0] }}
-                </div>
-
-                <div class="alert alert-danger" role="alert" v-if="errors.ka_info_validation.title">
-                    Georgian title - {{ errors.ka_info_validation.title[0] }}
-                </div>
-                <div class="alert alert-danger" role="alert" v-if="errors.ka_info_validation.short_description">
-                    Georgian description - {{ errors.ka_info_validation.short_description[0] }}
-                </div>
-                <div class="alert alert-danger" role="alert" v-if="errors.ka_info_validation.text">
-                    Georgian text - {{ errors.ka_info_validation.text[0] }}
-                </div>
-
-                <div class="alert alert-danger" role="alert" v-if="errors.ru_info_validation.title">
-                    Russion title - {{ errors.ru_info_validation.title[0] }}
-                </div>
-                <div class="alert alert-danger" role="alert" v-if="errors.ru_info_validation.short_description">
-                    Russiondescription - {{ errors.ru_info_validation.short_description[0] }}
-                </div>
-                <div class="alert alert-danger" role="alert" v-if="errors.ru_info_validation.text">
-                    Russion text - {{ errors.ru_info_validation.text[0] }}
-                </div>
-            </div>
+        <div class="row"  v-if="error.length != 0">
+            <validator_alerts_component
+                :errors_prop="error"
+            />
         </div>
         <div class="row" v-if="!is_loading">
             <!-- <div class="col-md-12"> -->
@@ -66,9 +34,9 @@
                         <label for="2" >English text</label>
                     </div>
                     <div class="col-md-3" >
-                        <input type="radio" id="4" :value="4" v-model="tab_num">
+                        <input type="radio" id="3" :value="3" v-model="tab_num">
                         
-                        <label for="4" >Georgian text</label>
+                        <label for="3" >Georgian text</label>
                     </div>
                 </div>
             <!-- </div> -->
@@ -160,11 +128,11 @@
                         </div>
                     </form>
                 </div>
-                <div class="row" v-show="tab_num == 4">
+                <div class="row" v-show="tab_num == 3">
                     <div class="jumbotron width_100">
                         <div class="container">
-                            <h2 class="display-4"><span>Region Russion information</span></h2>
-                            <p class="lead">Region Russion information.</p>
+                            <h2 class="display-4"><span>Georgia Russion information</span></h2>
+                            <p class="lead">Georgia Russion information.</p>
                         </div>
                     </div>
                     <form class="width_100">
@@ -212,13 +180,14 @@
 </template>
 
 <script>
-    // import { editor_config } from '../../../../mixins/editor/editor_config_mixin.js'
+    import { editor_config } from '../../../../mixins/editor/editor_config_mixin.js'
+    import validator_alerts_component from '../../items/validator_alerts_component.vue'
     export default {
         mixins: [
-            // editor_config
+            // editor_config,
         ],
         components: {
-            // StackModal,
+            validator_alerts_component
         },
         props: [
             // 'back_url',
@@ -228,14 +197,6 @@
             return {
                 data: {
                     us_data: {
-                        title: '',
-                        short_description: '',
-                        text: '',
-                        route: '',
-                        how_get: '',
-                        best_time: '',
-                    },
-                    ru_data: {
                         title: '',
                         short_description: '',
                         text: '',
@@ -270,19 +231,13 @@
                     ka_info_editor_config: this.$editor_config.get_big_editor_config(),
                     ka_how_get_editor_config: this.$editor_config.get_big_editor_config(),
                     ka_best_time_editor_config: this.$editor_config.get_big_editor_config(),
-
-                    ru_short_description_text_editor: this.$editor_config.get_small_editor_config(),
-                    ru_text_editor_config: this.$editor_config.get_big_editor_config(),
-                    ru_info_editor_config: this.$editor_config.get_big_editor_config(),
-                    ru_how_get_editor_config: this.$editor_config.get_big_editor_config(),
-                    ru_best_time_editor_config: this.$editor_config.get_big_editor_config(),
                 },
 
                 is_loading: false,
 
                 tab_num: 1,
 
-                errors: [],
+                error: [],
 
                 is_back_action: false,
             }
@@ -321,7 +276,7 @@
                 .catch(err => {
                         // alert(err)
                     if (err.response.status == 422) {
-                        this.errors = err.response.data.validation
+                        this.error = err.response.data.validation
                     }
                     // else{
                     //     alert(err)
