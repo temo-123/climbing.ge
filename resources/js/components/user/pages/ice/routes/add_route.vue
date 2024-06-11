@@ -267,7 +267,7 @@
       methods: {
         get_region_data: function(){
           axios
-          .post("/article/",{category: 'ice'})
+          .get("/article/get_category_articles/ice")
           .then(response => {
             this.regions = response.data
           })
