@@ -21,7 +21,7 @@
                     <span v-html="this.bisnes_data.locale_data.text"></span>
                 </div>
 
-                <bisnesGalleryComponent :images="this.bisnes_data.images" />
+                <bisnesGalleryComponent v-if="bisnes_data.images != []" :images="this.bisnes_data.images" />
             </div>
 
             <bisnesRightMenu />
@@ -57,18 +57,10 @@
             }
         },
         mounted() {
-            // this.get_article_global_data()
+            // 
         },
         methods: {
-            // get_article_global_data(){
-            //     axios
-            //     .get('../../api/get_article_global_data/'+localStorage.getItem('lang')+'/'+this.article.id)
-            //     .then(response => {
-            //         this.article_global_data = response.data
-            //     })
-            //     .catch(error =>{
-            //     })
-            // },
+            // 
         }
     }
 </script>

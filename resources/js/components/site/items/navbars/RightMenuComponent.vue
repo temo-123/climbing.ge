@@ -1,9 +1,9 @@
 <template>
-    <div :class='"col-xs-3 col-xs-offset-1 right_fixed_menu display-none-720px "+[right_navbar_class]'>
+    <div :class='"col-sm-12 col-md-3 col-xs-offset-1 right_fixed_menu"+[right_navbar_class]'>
 
-        <h3 class="navbar_title">{{ $t('guide.article_right_nabar.menu_title') }}</h3>
+        <h3 class="navbar_title display-none-720px">{{ $t('guide.article_right_nabar.menu_title') }}</h3>
 
-        <nav class="fading-side-menu">
+        <nav class="fading-side-menu display-none-720px ">
             <ul class="list-unstyled">
 
                 <li>
@@ -45,11 +45,11 @@
             </div>
         </div>
 
-        <div class="row local_bisnes" v-if="local_bisnes.image && local_bisnes.local_data && local_bisnes.global_data">
-            <div class="col-sm-10 col-md-10">
+        <div class="row local_bisnes" v-if="local_bisnes_image && local_bisnes.local_data && local_bisnes.global_data">
+            <div class="col-sm-12 col-md-10">
                 <div class="thumbnail">
                     <router-link style="font-size: 1.5em;" :to="'../local_bisnes/' + local_bisnes.global_data.url_title" exact>
-                        <img :src="'../../../images/suport_local_bisnes_img/' + local_bisnes.image.image" :alt="local_bisnes.local_data.title">
+                        <img :src="local_bisnes_image" :alt="local_bisnes.local_data.title">
                     </router-link>
                     <div class="caption">
                         <router-link style="font-size: 1.5em;" :to="'../local_bisnes/' + local_bisnes.global_data.url_title" exact>
@@ -77,6 +77,7 @@
                     global_data: '',
                     local_data: ''
                 },
+                local_bisnes_image: '',
                 margin_bottom_position: 0,
                 document_body_offsetHeight: document.body.offsetHeight,
                 window_scrollY: window.scrollY,
@@ -105,7 +106,13 @@
                 axios
                 .get('/bisnes/get_local_bisnes_for_article/' + this.$route.params.url_title + '/' + localStorage.getItem('lang'))
                 .then(response => {
-                    this.local_bisnes.image = response.data.image
+                    if(response.data.image == [] || response.data.image == ''){
+                        this.local_bisnes_image = '/public/images/site_img/image.png'
+                    }
+                    else{
+                        this.local_bisnes_image = '../../../images/suport_local_bisnes_img/' + response.data.image
+                    }
+
                     this.local_bisnes.local_data = response.data.local_data
                     this.local_bisnes.global_data = response.data.global_data
                 })

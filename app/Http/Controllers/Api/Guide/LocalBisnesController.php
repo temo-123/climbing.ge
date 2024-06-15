@@ -35,7 +35,15 @@ class LocalBisnesController extends Controller
 
             if ($article_bisnes_global_data->public_totaly) {
                 $article_bisnes_local_data = $this->get_article_bisnes_local_data($request->locale == 'ka', $article_bisnes_global_data);
-                $bisnes_images = $article_bisnes_global_data->bisnes_images[0];
+
+                $bisnes_images = [];
+
+                if(isset($article_bisnes_global_data->bisnes_images[0]) && 
+                    $article_bisnes_global_data->bisnes_images[0] != '' &&
+                    $article_bisnes_global_data->bisnes_images[0] != []
+                ){
+                    $bisnes_images = $article_bisnes_global_data->bisnes_images[0]->image;
+                }
 
                 $data = [
                     'global_data' => $article_bisnes_global_data,

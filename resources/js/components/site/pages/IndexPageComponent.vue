@@ -64,6 +64,33 @@
         <indexGalleryComponent />
 
         <!-- <instaPost /> -->
+
+        <div class="row" v-if="products.length > 0">
+
+            <h2 class="page_title">{{ $t('shop.title.products') }}</h2>
+
+            <div class="bar"><i class="fa fa-exclamation-triangle"></i></div>
+
+            <h3 class="article_list_short_description">
+                <span v-html="this.$siteData.shop_short_description"></span>
+            </h3>
+
+            <div class="col-sm-12">
+                <section class="portfolio inner" id="portfolio" >
+                    <div class="layout">
+                        <ul class="grid">
+                            <catalogItem
+                                v-for="product in products"
+                                :key='product.id'
+                                :product_data="product"
+
+                                @quick_view="quick_view_model"
+                            />
+                        </ul>
+                    </div>
+                </section>
+            </div>
+        </div>
         
         <metaData 
             :title = " $t('guide.meta.index') "
@@ -87,13 +114,16 @@
 
     // import instaPost from '../../global_components/InstaPostsComponent.vue'
 
+    import catalogItem from '../items/shop_items_for_guide/CatalogItemComponent'
+
     import metaData from '../items/MetaDataComponent'
 
     export default {
         data: function () {
             return {
                 newses: [],
-                lastNews: []
+                lastNews: [],
+                products: []
             };
         },
         components: {
@@ -107,10 +137,12 @@
             bigNewsCard,
             whatWeDoComponent,
             specialArticleComponent,
-            // instaPost
+            // instaPost,
+            catalogItem
         },
         mounted() {
             this.get_news()
+            this.get_products()
         },
         watch: {
             '$route' (to, from) {
@@ -129,6 +161,18 @@
                 })
                 .catch(error =>{
                 })
+            },
+
+            get_products(){
+                axios
+                .get('/products/'+localStorage.getItem('lang'))
+                .then(response => {
+                    this.products = response.data.slice(0, 3);
+                    
+                })
+                .catch(error =>{
+                })
+                // .finally(() => this.products_loading = false);
             },
         }
     }

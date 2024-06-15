@@ -38,6 +38,25 @@
         </div>
         
         <servicesListComponent />
+
+        <hr>
+
+        <div class="row" v-if="services.length > 0">
+            <!-- <h2 class="page_title">{{ $t('shop.title.services') }}</h2>
+
+            <div class="bar"><i class="fa fa-exclamation-triangle"></i></div>
+
+            <h3 class="article_list_short_description">
+                <span v-html="this.$siteData.services_description"></span>
+            </h3> -->
+            <div class="col-sm-12">
+                <ServiceItem
+                    v-for="service in services"
+                    :key='service.id'
+                    :service_data="service">
+                </ServiceItem>
+            </div>
+        </div>
         
         <messageComponent />
 
@@ -91,23 +110,28 @@
     import messageComponent from '../../global_components/MessageComponent'
     import metaData from '../items/MetaDataComponent'
     import RoutesAutersModal from '../items/climbing_routes/items/modals/RoutesAutersListModal.vue'
+    
+    import ServiceItem from '../items/shop_items_for_guide/ServiceItemComponent'
 
     export default {
         components: {
             metaData,
             messageComponent,
             servicesListComponent,
-            RoutesAutersModal
+            RoutesAutersModal,
+            ServiceItem
         },
         data() {
             return {
                 partners: [],
                 site_social_links: [],
+                services: []
             }
         },
         mounted() { 
             this.get_partners()
             this.get_social_links()
+            this.get_services()
         },
         methods: {
             get_partners(){
@@ -133,6 +157,18 @@
                 .catch(
                     error => console.log(error)
                 );
+            },
+
+            get_services(){
+                axios
+                .get('/services/'+localStorage.getItem('lang'))
+                .then(response => {
+                    // this.services = response.data
+                    this.services = response.data.slice(0, 4);
+                })
+                .catch(error =>{
+                })
+                // .finally(() => this.services_loading = false);
             },
         }
     }
