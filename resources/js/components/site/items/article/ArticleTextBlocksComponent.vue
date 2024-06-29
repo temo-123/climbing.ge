@@ -2,6 +2,29 @@
     <div>
         <span v-html="this.article_prop.locale_data.text" id="description" v-if="this.article_prop.locale_data.text != NUll"></span>
 
+        <h3 class="navbar_title display-smaller-then-768px" v-if="local_businesses.length != 0">{{ $t('guide.article_right_nabar.recomended_services') }}</h3>
+
+        <div class="row local_bisnes display-smaller-then-768px" v-if="local_businesses.length != 0">
+            <div class="col-xs-6 col-sm-6 col-md-6" v-for="bisnes in local_businesses" :kay="bisnes.global_data.id">
+                <div class="thumbnail">
+                    <router-link v-if="bisnes.image.length != 0" style="font-size: 1.5em;" :to="'../local_bisnes/' + bisnes.global_data.url_title" exact>
+                        <img :src="'../../../images/suport_local_bisnes_img/' + bisnes.image" :alt="bisnes.local_data.title">
+                    </router-link>
+                    <router-link v-else style="font-size: 1.5em;" :to="'../local_bisnes/' + bisnes.global_data.url_title" exact>
+                        <img :src="'/../public/images/site_img/image.png'" :alt="bisnes.local_data.title">
+                    </router-link>
+                    <div class="caption">
+                        <router-link style="font-size: 1.5em;" :to="'../local_bisnes/' + bisnes.global_data.url_title" exact>
+                            <h3>{{ bisnes.local_data.title }}</h3>
+                        </router-link>
+                    </div>
+                    <div class="caption">
+                        <span v-html="bisnes.local_data.short_description"></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <!-- Best time for climbing block -->
         <div v-if="this.article_prop.global_data.weather || this.article_prop.general_info.best_time.length != 0">
             <div v-if="(this.article_prop.global_data.weather == NULL && this.article_prop.locale_data.best_time != NULL)">
@@ -68,6 +91,29 @@
 
         </div>
 
+        <h3 class="navbar_title display-smaller-then-768px" v-if="local_businesses.length != 0">{{ $t('guide.article_right_nabar.recomended_services') }}</h3>
+
+        <div class="row local_bisnes display-smaller-then-768px" v-if="local_businesses.length != 0">
+            <div class="col-xs-6 col-sm-6 col-md-6" v-for="bisnes in local_businesses" :kay="bisnes.global_data.id">
+                <div class="thumbnail">
+                    <router-link v-if="bisnes.image.length != 0" style="font-size: 1.5em;" :to="'../local_bisnes/' + bisnes.global_data.url_title" exact>
+                        <img :src="'../../../images/suport_local_bisnes_img/' + bisnes.image" :alt="bisnes.local_data.title">
+                    </router-link>
+                    <router-link v-else style="font-size: 1.5em;" :to="'../local_bisnes/' + bisnes.global_data.url_title" exact>
+                        <img :src="'/../public/images/site_img/image.png'" :alt="bisnes.local_data.title">
+                    </router-link>
+                    <div class="caption">
+                        <router-link style="font-size: 1.5em;" :to="'../local_bisnes/' + bisnes.global_data.url_title" exact>
+                            <h3>{{ bisnes.local_data.title }}</h3>
+                        </router-link>
+                    </div>
+                    <div class="caption">
+                        <span v-html="bisnes.local_data.short_description"></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
     </div>
 </template>
 
@@ -80,12 +126,26 @@
         ],
         data: function () {
             return {
-                //
+                local_businesses: [],
             }
         },
         components: {
             generalInfo
         },
+        mounted() {
+            this.get_local_bisnes_for_article()
+        },
+        methods: {
+            get_local_bisnes_for_article(){
+                axios
+                .get('/bisnes/get_local_bisnes_for_article/' + this.$route.params.url_title + '/' + localStorage.getItem('lang'))
+                .then(response => {
+                    this.local_businesses = response.data
+                })
+                .catch(error =>{
+                })
+            },
+        }
     }
 </script>
 

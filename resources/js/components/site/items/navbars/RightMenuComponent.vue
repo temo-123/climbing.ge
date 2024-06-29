@@ -1,9 +1,9 @@
 <template>
-    <div :class='"col-sm-12 col-md-3 col-xs-offset-1 right_fixed_menu "+[right_navbar_class]'>
+    <div :class='"col-sm-3 col-md-3 col-xs-offset-1 display-biger-then-768px right_fixed_menu "+[right_navbar_class]'>
 
-        <h3 class="navbar_title display-none-720px">{{ $t('guide.article_right_nabar.menu_title') }}</h3>
+        <h3 class="navbar_title display-biger-then-768px">{{ $t('guide.article_right_nabar.menu_title') }}</h3>
 
-        <nav class="fading-side-menu display-none-720px ">
+        <nav class="fading-side-menu display-biger-then-768px ">
             <ul class="list-unstyled">
 
                 <li>
@@ -45,10 +45,10 @@
             </div>
         </div> -->
 
-        <h3 class="navbar_title display-none-720px">{{ $t('guide.article_right_nabar.recomended_services') }}</h3>
+        <h3 class="navbar_title display-biger-then-768px" v-if="local_businesses.length != 0">{{ $t('guide.article_right_nabar.recomended_services') }}</h3>
 
-        <div class="row local_bisnes" v-if="local_businesses != []">
-            <div class="col-sm-12 col-md-10" v-for="bisnes in local_businesses" :kay="bisnes.global_data.id">
+        <div class="row local_bisnes display-biger-then-768px" v-if="local_businesses.length != 0">
+            <div class="col-sm-10 col-md-10" v-for="bisnes in local_businesses" :kay="bisnes.global_data.id">
                 <div class="thumbnail">
                     <router-link v-if="bisnes.image.length != 0" style="font-size: 1.5em;" :to="'../local_bisnes/' + bisnes.global_data.url_title" exact>
                         <img :src="'../../../images/suport_local_bisnes_img/' + bisnes.image" :alt="bisnes.local_data.title">
