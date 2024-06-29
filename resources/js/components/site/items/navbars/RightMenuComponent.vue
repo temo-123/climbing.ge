@@ -1,5 +1,5 @@
 <template>
-    <div :class='"col-sm-12 col-md-3 col-xs-offset-1 right_fixed_menu"+[right_navbar_class]'>
+    <div :class='"col-sm-12 col-md-3 col-xs-offset-1 right_fixed_menu "+[right_navbar_class]'>
 
         <h3 class="navbar_title display-none-720px">{{ $t('guide.article_right_nabar.menu_title') }}</h3>
 
@@ -39,25 +39,30 @@
             </ul>
         </nav>
 
-        <div class="row local_bisnes" v-if="this.$globalSiteData.ad">
-            <div class="col-sm-12 col-md-12">
+        <!-- <div class="row local_bisnes" v-if="this.$globalSiteData.ad">
+            <div class="col-sm-12 col-md-10">
                 <span v-html="this.$globalSiteData.ad"></span>
             </div>
-        </div>
+        </div> -->
 
-        <div class="row local_bisnes" v-if="local_bisnes_image && local_bisnes.local_data && local_bisnes.global_data">
-            <div class="col-sm-12 col-md-10">
+        <h3 class="navbar_title display-none-720px">{{ $t('guide.article_right_nabar.recomended_services') }}</h3>
+
+        <div class="row local_bisnes" v-if="local_businesses != []">
+            <div class="col-sm-12 col-md-10" v-for="bisnes in local_businesses" :kay="bisnes.global_data.id">
                 <div class="thumbnail">
-                    <router-link style="font-size: 1.5em;" :to="'../local_bisnes/' + local_bisnes.global_data.url_title" exact>
-                        <img :src="local_bisnes_image" :alt="local_bisnes.local_data.title">
+                    <router-link v-if="bisnes.image.length != 0" style="font-size: 1.5em;" :to="'../local_bisnes/' + bisnes.global_data.url_title" exact>
+                        <img :src="'../../../images/suport_local_bisnes_img/' + bisnes.image" :alt="bisnes.local_data.title">
+                    </router-link>
+                    <router-link v-else style="font-size: 1.5em;" :to="'../local_bisnes/' + bisnes.global_data.url_title" exact>
+                        <img :src="'/../public/images/site_img/image.png'" :alt="bisnes.local_data.title">
                     </router-link>
                     <div class="caption">
-                        <router-link style="font-size: 1.5em;" :to="'../local_bisnes/' + local_bisnes.global_data.url_title" exact>
-                            <h3>{{ local_bisnes.local_data.title }}</h3>
+                        <router-link style="font-size: 1.5em;" :to="'../local_bisnes/' + bisnes.global_data.url_title" exact>
+                            <h3>{{ bisnes.local_data.title }}</h3>
                         </router-link>
                     </div>
                     <div class="caption">
-                        <span v-html="local_bisnes.local_data.short_description"></span>
+                        <span v-html="bisnes.local_data.short_description"></span>
                     </div>
                 </div>
             </div>
@@ -68,16 +73,11 @@
 
 <script>
     export default {
-        // name: "Article Right Navigation Menu",
+        name: "Article Right Navigation Menu",
         data(){
             return{
                 right_navbar_class: '',
-                local_bisnes: {
-                    image: '',
-                    global_data: '',
-                    local_data: ''
-                },
-                local_bisnes_image: '',
+                local_businesses: [],
                 margin_bottom_position: 0,
                 document_body_offsetHeight: document.body.offsetHeight,
                 window_scrollY: window.scrollY,
@@ -106,15 +106,7 @@
                 axios
                 .get('/bisnes/get_local_bisnes_for_article/' + this.$route.params.url_title + '/' + localStorage.getItem('lang'))
                 .then(response => {
-                    if(response.data.image == [] || response.data.image == ''){
-                        this.local_bisnes_image = '/public/images/site_img/image.png'
-                    }
-                    else{
-                        this.local_bisnes_image = '../../../images/suport_local_bisnes_img/' + response.data.image
-                    }
-
-                    this.local_bisnes.local_data = response.data.local_data
-                    this.local_bisnes.global_data = response.data.global_data
+                    this.local_businesses = response.data
                 })
                 .catch(error =>{
                 })
@@ -166,10 +158,14 @@
         margin: 0;
     }
     .navbar_title{
+        font-size: 20px;
         text-align: left;
         margin: 0 0 8% 0;
     }
     .local_bisnes{
         margin-top: 8%;
+    }
+    .fading-side-menu{
+        margin-bottom: 4%;
     }
 </style>

@@ -66,7 +66,7 @@ class Article extends Model
 	}
 
 
-	public function bisnes()
+	public function businesses()
 	{
         return $this->belongsToMany(Suport_local_bisnes::class, 'suport_local_bisnes_articles', 'article_id', 'bisnes_id');
 	}

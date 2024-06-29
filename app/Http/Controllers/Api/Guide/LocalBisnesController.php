@@ -23,65 +23,67 @@ class LocalBisnesController extends Controller
     public function get_local_bisnes_for_article(Request $request)
     {
         $action_data = date("Y/m/d H:i:s");
+        $data = [];
 
         $article = Article::where('url_title', '=', $request->article_url_title)->first();
-        $article_bisnes_global_data = $article->bisnes->where('published', '=', 1)->first();
+        $article_bisnes_global_data = $article->businesses->where('published', '=', 1)->take(2);
         
         if($article_bisnes_global_data){
+            foreach($article_bisnes_global_data as $article_bisne_global_data){
+                $pulic_year = $article_bisne_global_data->published_data;
+                $public_month = $article_bisne_global_data->published_data;
+                $pulic_day = $article_bisne_global_data->published_data;
 
-            $pulic_year = $article_bisnes_global_data->published_data;
-            $public_month = $article_bisnes_global_data->published_data;
-            $pulic_day = $article_bisnes_global_data->published_data;
+                if ($article_bisne_global_data->public_totaly) {
+                    $article_bisnes_local_data = $this->get_article_bisnes_local_data($request->locale == 'ka', $article_bisne_global_data);
 
-            if ($article_bisnes_global_data->public_totaly) {
-                $article_bisnes_local_data = $this->get_article_bisnes_local_data($request->locale == 'ka', $article_bisnes_global_data);
+                    $bisnes_images = [];
 
-                $bisnes_images = [];
+                    if(isset($article_bisne_global_data->bisnes_images[0]) && 
+                        $article_bisne_global_data->bisnes_images[0] != '' &&
+                        $article_bisne_global_data->bisnes_images[0] != []
+                    ){
+                        $bisnes_images = $article_bisne_global_data->bisnes_images[0]->image;
+                    }
 
-                if(isset($article_bisnes_global_data->bisnes_images[0]) && 
-                    $article_bisnes_global_data->bisnes_images[0] != '' &&
-                    $article_bisnes_global_data->bisnes_images[0] != []
+                    array_push($data,[
+                        'global_data' => $article_bisne_global_data,
+                        'local_data' => $article_bisnes_local_data,
+                        'image' => $bisnes_images
+                    ]);
+                }
+                else if(
+                    date('m', strtotime($public_month)) >= date('m', strtotime($action_data)) &&
+                    date('Y', strtotime($pulic_year)) == date('Y', strtotime($action_data))
                 ){
-                    $bisnes_images = $article_bisnes_global_data->bisnes_images[0]->image;
-                }
 
-                $data = [
-                    'global_data' => $article_bisnes_global_data,
-                    'local_data' => $article_bisnes_local_data,
-                    'image' => $bisnes_images
-                ];
-            }
-            else if(
-                date('m', strtotime($public_month)) >= date('m', strtotime($action_data)) &&
-                date('Y', strtotime($pulic_year)) == date('Y', strtotime($action_data))
-            ){
+                    $article_bisnes_local_data = $this->get_article_bisnes_local_data($request->locale == 'ka', $article_bisne_global_data);
 
-                $article_bisnes_local_data = $this->get_article_bisnes_local_data($request->locale == 'ka', $article_bisnes_global_data);
+                    if(date('d', strtotime($pulic_day)) > date('d', strtotime($action_data))){
+                        $bisnes_images = $article_bisne_global_data->bisnes_images[0];
 
-                if(date('d', strtotime($pulic_day)) > date('d', strtotime($action_data))){
-                    $bisnes_images = $article_bisnes_global_data->bisnes_images[0];
+                        array_push($data,[
+                            'global_data' => $article_bisne_global_data,
+                            'local_data' => $article_bisnes_local_data,
+                            'image' => $bisnes_images
+                        ]);
+                    }
+                    elseif (
+                            date('m', strtotime($pulic_day)) > date('m', strtotime($action_data)) &&
+                            date('Y', strtotime($pulic_day)) == date('Y', strtotime($action_data))
+                        ) {
 
-                    $data = [
-                        'global_data' => $article_bisnes_global_data,
-                        'local_data' => $article_bisnes_local_data,
-                        'image' => $bisnes_images
-                    ];
-                }
-                elseif (
-                        date('m', strtotime($pulic_day)) > date('m', strtotime($action_data)) &&
-                        date('Y', strtotime($pulic_day)) == date('Y', strtotime($action_data))
-                    ) {
+                        $bisnes_images = $article_bisne_global_data->bisnes_images[0];
 
-                    $bisnes_images = $article_bisnes_global_data->bisnes_images[0];
-
-                    $data = [
-                        'global_data' => $article_bisnes_global_data,
-                        'local_data' => $article_bisnes_local_data,
-                        'image' => $bisnes_images
-                    ];
+                        array_push($data,[
+                            'global_data' => $article_bisne_global_data,
+                            'local_data' => $article_bisnes_local_data,
+                            'image' => $bisnes_images
+                        ]);
+                    }
                 }
             }
-                return $data;
+            return $data;
         }
     }
 

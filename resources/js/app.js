@@ -113,37 +113,61 @@ var analytic_id = "";
 if (window.location.hostname == process.env.MIX_SITE_URL) {
     homeComponent = Index;
     serviceRoutes = site_routes;
-    analytic_id = process.env.MIX_CLIMBING_GUIDBOOK_ANALITICS_ID;
+    // analytic_id = process.env.MIX_CLIMBING_GUIDBOOK_ANALITICS_ID;
     axios.defaults.baseURL = process.env.MIX_APP_SSH + process.env.MIX_SITE_URL + '/api'
+
+    Vue.use(VueGtag, {
+        config: { id: process.env.MIX_CLIMBING_GUIDBOOK_ANALITICS_ID },
+    });
 } else if (window.location.hostname == process.env.MIX_SHOP_URL) {
     homeComponent = MainWrapper;
     serviceRoutes = shop_routes;
-    analytic_id = process.env.MIX_SHOP_ANALITICS_ID;
+    // analytic_id = process.env.MIX_SHOP_ANALITICS_ID;
     axios.defaults.baseURL = process.env.MIX_APP_SSH + process.env.MIX_SHOP_URL + '/api'
+
+    Vue.use(VueGtag, {
+        config: { id: process.env.MIX_SHOP_ANALITICS_ID },
+    });
 } else if (window.location.hostname == process.env.MIX_USER_PAGE_URL) {
     homeComponent = Home;
     serviceRoutes = user_routes;
-    analytic_id = process.env.MIX_USER_ANALITICS_ID;
+    // analytic_id = process.env.MIX_USER_ANALITICS_ID;
     axios.defaults.baseURL = process.env.MIX_APP_SSH + process.env.MIX_USER_PAGE_URL + '/api'
+
+    Vue.use(VueGtag, {
+        config: { id: process.env.MIX_USER_ANALITICS_ID },
+    });
 } else if (window.location.hostname == process.env.MIX_FILMS_URL) {
     homeComponent = Films;
     serviceRoutes = films_routes;
-    analytic_id = process.env.MIX_FILMS_ANALITICS_ID;
+    // analytic_id = process.env.MIX_FILMS_ANALITICS_ID;
     axios.defaults.baseURL = process.env.MIX_FILMS_URL
+
+    Vue.use(VueGtag, {
+        config: { id: process.env.MIX_FILMS_ANALITICS_ID },
+    });
 } else if (window.location.hostname == process.env.MIX_FORUM_URL) {
     homeComponent = Forum;
     serviceRoutes = forum_routes;
-    analytic_id = process.env.MIX_FORUM_ANALITICS_ID;
+    // analytic_id = process.env.MIX_FORUM_ANALITICS_ID;
     axios.defaults.baseURL = process.env.MIX_FORUM_URL
+
+    Vue.use(VueGtag, {
+        config: { id: process.env.MIX_FORUM_ANALITICS_ID },
+    });
 } else {
     homeComponent = Error;
     serviceRoutes = error_routes;
-    analytic_id = process.env.MIX_CLIMBING_GUIDBOOK_ANALITICS_ID;
+    // analytic_id = process.env.MIX_CLIMBING_GUIDBOOK_ANALITICS_ID;
+
+    Vue.use(VueGtag, {
+        config: { id: analytic_id },
+    });
 }
 
-Vue.use(VueGtag, {
-    config: { id: analytic_id },
-});
+// Vue.use(VueGtag, {
+//     config: { id: analytic_id },
+// });
 
 Vue.config.productionTip = false;
 Vue.prototype.$siteData = [];

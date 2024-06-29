@@ -37,7 +37,8 @@
             "gallery": "Gallery",
             "comments": "Comments",
             "description": "Description",
-            "sectors": "Climbing sectors & routes"
+            "sectors": "Climbing sectors & routes",
+            "recomended_services": "Recommended services"
         },
 
         "title": {
