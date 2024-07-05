@@ -20,7 +20,7 @@
         </div>
 
         <div class="row">
-            <div class="col-xs-12 col-md-12">
+            <div class="col-xs-12 col-md-12 cursor_pointer" @click="show_guide_modal(tour.user.id)">
                 <h2>Guide</h2>
                 <div class="row">
                     <div :style="'background-image: url(/public/images/site_img/demo_imgs/user_demo_img.gif);'" class='guide_img' v-if='tour.user.image == null'> </div>
@@ -65,6 +65,11 @@
             :description = "tour.locale_data.short_description"
             :image = "'/'"
         />
+
+        <guide_modal 
+            ref="open_guide_modal"
+            @show_guide_modal="show_guide_modal"
+        />
     </div>
 </template>
 
@@ -74,6 +79,7 @@
     import breadcrumb from '../../items/BreadcrumbComponent.vue'
     import gallery from '../../items/GalleryComponent.vue'
     import tourMessageForm from '../../items/reservation_forms/TourMessageFormComponent.vue'
+    import guide_modal from "../../items/modals/GuideModalComponent.vue";
 
     export default {
         components: {
@@ -81,7 +87,8 @@
             tourItem,
             breadcrumb,
             gallery,
-            tourMessageForm
+            tourMessageForm,
+            guide_modal
         },
         props:[
             'data'
@@ -104,6 +111,9 @@
             this.get_tour()
         },
         methods: {
+            show_guide_modal(user_id){
+                this.$refs.open_guide_modal.show_guide_modal(user_id)
+            },
             get_tours(activ_tour_id){
                 axios
                 .get('/tour/get_similar_tours/'+localStorage.getItem('lang')+'/'+activ_tour_id)

@@ -92,7 +92,7 @@
                         
                         <tbody>
                             <tr v-for="site in user_sites" :key="site.id">
-                                <td @click="go_to_user_site(site.url)" class="cursor_pointre">{{ from_user_site_url_get_domen(site.url) }}</td>
+                                <td @click="go_to_user_site(site.url)"><p class="cursor_pointer"><strong>{{ from_user_site_url_get_domen(site.url) }}</strong></p></td>
                                 <td>|</td>
                                 <td>
                                     <button class="btn btn-primary" @click="get_editing_user_site(site.id)">Edit</button>

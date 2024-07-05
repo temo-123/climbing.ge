@@ -88,7 +88,7 @@ a {
   transition: all .3s ease-in-out;
   background: #fff;
   box-shadow: 0 1px 3px rgba(0,0,0,.1);
-  flex: 0 1 360px;
+  flex: 0 1 100%;
   margin: 15px;
   padding: 0;
 }

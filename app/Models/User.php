@@ -14,7 +14,8 @@ use App\Models\User\Role;
 use App\Models\User\Permission;
 use App\Models\User\User_adreses;
 use App\Models\User\user_notification;
-use App\Models\User\Social_account;
+// use App\Models\User\Social_account;
+use App\Models\User\User_site;
 
 use App\Models\Guide\Comment;
 use App\Models\Guide\Sport_route_review;
@@ -122,14 +123,18 @@ class User extends Authenticatable implements MustVerifyEmail
     {
 		  return $this->hasMany(User_adreses::class, 'user_id');
     }
+    public function sites()
+    {
+		  return $this->hasMany(User_site::class, 'user_id');
+    }
     public function notification_list()
     {
 		  return $this->hasOne(user_notification::class, 'user_id');
     }
-    public function social_acount()
-    {
-        return $this->hasOne(Social_account::class, 'user_id');
-    }
+    // public function social_acount()
+    // {
+    //     return $this->hasOne(Social_account::class, 'user_id');
+    // }
 
 
     /*

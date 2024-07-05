@@ -58,14 +58,14 @@
                 <span v-html="this.$siteData.tour_description"></span>
             </h3>
             <div class="col-sm-12">
-                <div class="row">
+                <!-- <div class="row"> -->
                     <tourItem
                         v-for="tour in tours"
                         :key='tour.global_data.id'
                         :tour_data_prop="tour">
                     </tourItem>
                 </div>
-            </div>
+            <!-- </div> -->
         </div>
 
         <div v-if="tours.length == 0 && services.length == 0 && products.length == 0">

@@ -656,6 +656,7 @@ Route::group(['namespace'=>'Api'], function() {
         
         Route::controller(UsersController::class)->prefix('options')->group( function() {
             Route::get('/get_user_data', 'get_user_data');
+            Route::get('/get_selected_user_data/{user_id}', 'get_selected_user_data');
             Route::post('/user_info_update/{user_id}', 'user_info_update');
 
             Route::get('/get_user_notification_data', 'get_user_notification_data');

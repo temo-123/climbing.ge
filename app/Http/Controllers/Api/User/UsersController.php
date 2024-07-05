@@ -204,6 +204,13 @@ class UsersController extends Controller
         }
     }
 
+    function get_selected_user_data(Request $request) {
+        $user = User::where('id', '=', $request->user_id)->first();
+        // dd($user -> sites);
+        $user -> sites;
+        return $user;
+    }
+
     public function user_image_update(Request $request)
     {
         if (Auth::user()) {
