@@ -36,7 +36,7 @@ class UserAdresesController extends Controller
         $editing_item = new User_adreses;
 
         $editing_item['name'] = $request->adding_data['demo_name'];
-        $editing_item['country_id'] = $request->adding_data['country_id'];
+        $editing_item['region_id'] = $request->adding_data['region_id'];
         $editing_item['city'] = $request->adding_data['city'];
         $editing_item['strit'] = $request->adding_data['strit'];
         $editing_item['number'] = $request->adding_data['number'];
@@ -57,7 +57,7 @@ class UserAdresesController extends Controller
             $editing_item = User_adreses::where('id', '=', $request->adres_id)->first();
 
             $editing_item['name'] = $request->data['demo_name'];
-            $editing_item['country_id'] = $request->data['country_id'];
+            $editing_item['region_id'] = $request->data['region_id'];
             $editing_item['city'] = $request->data['city'];
             $editing_item['strit'] = $request->data['strit'];
             $editing_item['number'] = $request->data['number'];

@@ -447,12 +447,7 @@ export const navbar = {
             },
             {
                 title: "Options",
-                route: "/options",
-                permissions: [
-                    ['add', 'local_bisnes'],
-                    ['edit', 'local_bisnes'],
-                    ['del', 'local_bisnes'],
-                ]
+                route: "/options"
             },
         ]
     },

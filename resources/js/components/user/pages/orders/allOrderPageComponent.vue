@@ -13,6 +13,7 @@
                     <div class="col-sm-12">
                         <tabsComponent 
                             :table_data="this.data_for_tab"
+                            @update-data="get_orders"
                         />
                     </div>
                 </div>
@@ -46,8 +47,9 @@
         },
         methods: {
             get_orders(){
+                this.data_for_tab = []
                 axios
-                .get("../api/order/")
+                .get("/order/")
                 .then(response => {
                     this.data_for_tab.push({'id': 1,
                                             'data': response.data, 
@@ -56,19 +58,19 @@
                                             'table_edit': '',
                                             'table_del': ''
                                         });
-                    this.get_shipd_countries()
+                    this.get_shipd_regions()
                 })
                 .catch(
                     error => console.log(error)
                 );
             },
-            get_shipd_countries(){
+            get_shipd_regions(){
                 axios
-                .get("../api/get_countries/")
+                .get("/shiped_region/get_all_shiped_regions/")
                 .then(response => {
                     this.data_for_tab.push({'id': 2,
                                             'data': response.data, 
-                                            'table_name': 'Shiped countries', 
+                                            'table_name': 'Shiped regions', 
                                             'table_category': '', 
                                             'table_edit': '',
                                             'table_del': ''

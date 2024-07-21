@@ -54,11 +54,11 @@
                                             <input type="text" class="form-control" v-model="adding_data.demo_name" name="name" placeholder="Enter adres demo name" title="Enter adres demo name">
                                             <div class="alert alert-danger" role="alert" v-if="errors.demo_name">Enter adres demo name!!!</div>
 
-                                            <select class="form-control" v-model="adding_data.country_id" name="Currency"> 
-                                                <option :value="0" disabled>Country</option>
-                                                <option v-for="country in qounties" :key="country.id" :value="country.id" >{{ country.country }}</option>
+                                            <select class="form-control" v-model="adding_data.region_id" name="Currency"> 
+                                                <option :value="0" disabled>Select region</option>
+                                                <option v-for="region in qounties" :key="region.id" :value="region.id" >{{ region.region }}</option>
                                             </select> 
-                                            <div class="alert alert-danger" role="alert" v-if="errors.country_id">Enter country!!!</div>
+                                            <div class="alert alert-danger" role="alert" v-if="errors.region_id">Enter region!!!</div>
 
                                             <input type="text" class="form-control" v-model="adding_data.city" name="city" id="city" placeholder="Enter your city" title="Enter your city">
                                             <div class="alert alert-danger" role="alert" v-if="errors.city">Enter city!!!</div>
@@ -91,7 +91,7 @@
                                     <div class="col-md-12 col-xs-12">
                                         <div class="alert alert-secondary">
                                             <h2 class="text-center">Your adres - {{ quick_adres.name }}</h2>
-                                            <p>Country - {{ quick_adres.country_id }}</p>
+                                            <p>region - {{ quick_adres.region_id }}</p>
                                             <p>City - {{ quick_adres.city }}</p>
                                             <p>Strit - {{ quick_adres.strit }}</p>
                                             <p>Number - {{ quick_adres.number }}</p>
@@ -222,7 +222,7 @@ export default {
 
             adding_data: {
                 demo_name: null,
-                country_id: 0,
+                region_id: 0,
                 city: null,
                 strit: null,
                 number: null,
@@ -233,7 +233,7 @@ export default {
             },
             errors: {
                 demo_name: false,
-                country_id: false,
+                region_id: false,
                 city: false,
                 strit: false,
                 number: false,
@@ -262,7 +262,7 @@ export default {
             }
             else{
                 axios
-                .post("../../../api/check_sale_code/", {
+                .post("/check_sale_code/", {
                     serching_code: this.enterd_sale_code
                 })
                 .then(response => {
@@ -278,7 +278,7 @@ export default {
         },
         get_shipd_countries(){
             axios
-            .get("../../../api/get_countries/")
+            .get("/shiped_region/get_all_shiped_regions/")
             .then(response => {
                 this.qounties = response.data
             })
@@ -289,7 +289,7 @@ export default {
         get_activ_adres(adres_id){
             if(adres_id != '' && adres_id != 'new adres' && adres_id != 'your adres'){
                 axios
-                .get('../../../api/get_activ_adres/'+adres_id)
+                .get('/get_activ_adres/'+adres_id)
                 .then(Response => {
                     this.quick_adres = Response.data
                 })
@@ -302,7 +302,7 @@ export default {
 
         get_adres(last_adres = false) {
             axios
-            .get('../../../api/get_user_adreses/')
+            .get('/get_user_adreses/')
             .then(Response => {
                 this.adreses = Response.data
 
@@ -342,7 +342,7 @@ export default {
         add_new_adres() {
             this.errors = {
                 demo_name: false,
-                country_id: false,
+                region_id: false,
                 city: false,
                 strit: false,
                 number: false,
@@ -350,14 +350,14 @@ export default {
             }
             if(
                 this.adding_data.demo_name && 
-                this.adding_data.country_id &&
+                this.adding_data.region_id &&
                 this.adding_data.city &&
                 this.adding_data.strit &&
                 this.adding_data.number &&
                 this.adding_data.floor
             ){
                 axios
-                .post('../../../api/add_user_adreses/',{
+                .post('/add_user_adreses/',{
                     adding_data: this.adding_data,
 
                     _method: 'POST'
@@ -366,7 +366,7 @@ export default {
                     this.get_adres(true)
                     this.adding_data = {
                         demo_name: null,
-                        country_id: 0,
+                        region_id: 0,
                         city: null,
                         strit: null,
                         number: null,
@@ -382,8 +382,8 @@ export default {
                 if(!this.adding_data.demo_name){
                     this.errors.demo_name = true
                 }
-                if(!this.adding_data.country_id){
-                    this.errors.country_id = true
+                if(!this.adding_data.region_id){
+                    this.errors.region_id = true
                 }
                 if(!this.adding_data.city){
                     this.errors.city = true

@@ -174,7 +174,7 @@
 
                     <input type="text" class="form-control" v-model="edit_data.name" name="name" placeholder="name" title="enter your name">
                     <input type="text" class="form-control" v-model="edit_data.surname" name="surname" id="surname" placeholder="last name" title="enter your last name">
-                    <input type="text" class="form-control" v-model="edit_data.phone_number" name="phone_number" id="phone_number" placeholder="enter phone number" title="enter your phone number">
+                    <input type="tel" class="form-control" v-model="edit_data.phone_number" name="phone_number" id="phone_number" placeholder="enter phone number" title="enter your phone number">
                     <input type="email" class="form-control" v-model="edit_data.email" name="email" id="email" placeholder="email" title="enter your email.">
                     <input type="text" class="form-control" v-model="edit_data.city" name="city" id="city" placeholder="city" title="enter your city.">
                     <input type="text" class="form-control" v-model="edit_data.country" name="country" id="country" placeholder="country" title="enter a country.">

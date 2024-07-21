@@ -53,7 +53,7 @@
           <div class="form-group">
             <label for="country">country</label>
             <input
-              type="country"
+              type="text"
               class="form-control"
               id="country"
               v-model="country"
@@ -64,7 +64,7 @@
           <div class="form-group">
             <label for="city">city</label>
             <input
-              type="city"
+              type="text"
               class="form-control"
               id="city"
               v-model="city"
@@ -75,7 +75,7 @@
           <div class="form-group">
             <label for="phone_number">phone_number</label>
             <input
-              type="phone_number"
+              type="tel"
               class="form-control"
               id="phone_number"
               v-model="phone_number"

@@ -25,15 +25,15 @@ class PermissionTableSeeder extends Seeder
 
         $permissions = array(
             [
-                'subject' => 'shiping_country',
+                'subject' => 'shiping_regions',
                 'action' => 'add',
             ],
             [
-                'subject' => 'shiping_country',
+                'subject' => 'shiping_regions',
                 'action' => 'edit',
             ],
             [
-                'subject' => 'shiping_country',
+                'subject' => 'shiping_regions',
                 'action' => 'del',
             ],
 
@@ -503,12 +503,6 @@ class PermissionTableSeeder extends Seeder
                 'subject' => 'tour_category',
                 'action' => 'edit',
             ],
-
-
-            // [
-            //     'subject' => 'product_category',
-            //     'action' => 'show_all',
-            // ],
             [
                 'subject' => 'product',
                 'action' => 'show_all',

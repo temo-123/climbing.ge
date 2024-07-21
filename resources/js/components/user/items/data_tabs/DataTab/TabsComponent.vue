@@ -79,11 +79,18 @@
                                 <div class="add_buttom float-left">
                                     <span
                                         v-if="
-                                            filtr_data.table_name == 'Shiped countries' &&
+                                            filtr_data.table_name == 'Shiped regions' &&
                                             filtr_data.table_category !== null
                                         "
                                     >
-                                        <button class="btn btn-primary pull-left" @click="country_add_model" v-if="$can('add', 'shiping_country')">New Shiped countries</button>
+                                        <button class="btn btn-primary pull-left" @click="shiping_region_add_model" v-if="$can('add', 'shiping_region')">New Shiped regions</button>
+                                    </span>
+                                    <span
+                                        v-else-if="
+                                            filtr_data.table_name == 'Orders'
+                                        "
+                                    >
+                                        <button class="btn btn-primary pull-left" @click="create_costom_order()" v-if="$can('add', 'film_teg')">Create castom order</button>
                                     </span>
                                     <span
                                         v-else-if="
@@ -434,8 +441,8 @@
                                     @restart="update"
                                 />
                             </tbody>
-                            <tbody v-else-if="data.table_name == 'Shiped countries'">
-                                <countryTab
+                            <tbody v-else-if="data.table_name == 'Shiped regions'">
+                                <shipedRegionsTab
                                     v-for="table_info in data.data"
                                     :key="table_info.id"
                                     :table_info="table_info"
@@ -633,7 +640,7 @@
 
         <addTourCategoryModal ref="add_tour_catebory_modal" @restart="update"/>
 
-        <countryAddModal ref="add_country" @restart="update"/>
+        <shipedRegionAddModal ref="add_shiping_region" @restart="update"/>
 
         <saleCodeModal ref="add_sale_code" @restart="update"/>
 
@@ -697,7 +704,7 @@ import commentsTab from './tabs/CommentsTabComponent.vue'
 import filmTagsTab from './tabs/FilmTagsTabComponent.vue'
 import saleCodesTab from './tabs/SaleCodesTabComponent.vue'
 import orderTab from './tabs/OrderTabComponent.vue'
-import countryTab from './tabs/CountryTabComponent.vue'
+import shipedRegionsTab from './tabs/ShipedRegionsTabComponent.vue'
 import categoryTab from "./tabs/CategoriesTabComponent.vue";
 import postTopicTab from "./tabs/PostTopicTabComponent.vue";
 import postTab from "./tabs/PostTabComponent.vue";
@@ -713,10 +720,13 @@ import non_registered_commenter_tab from "./tabs/NonRegisteredCommenterTab.vue"
 //import sectorModal from "./tab_modals/SectorsModalComponent.vue";
 import addTourCategoryModal from "./tab_modals/add/AddTourCategoryModal.vue";
 import addRoleModal from "./tab_modals/RolesAddModalComponent.vue";
-import countryAddModal from "./tab_modals/AddCountryModalComponent.vue";
+import shipedRegionAddModal from "./tab_modals/add/AddShipingRegionModalComponent.vue";
 import addUserModal from "./tab_modals/UserAddModalComponent.vue";
 import articleQuickViewModal from "./tab_modals/ArticleQuickViewModalComponen.vue";
-import saleCodeModal from "./tab_modals/AddSaleCodeModalComponen.vue";
+import saleCodeModal from "./tab_modals/add/AddSaleCodeModalComponen.vue";
+
+import orderDetalModal from "./tab_modals/OrderDetalsModalComponent.vue";
+import editOrderStatusModal from "./tab_modals/EditOrderStatusModalComponent.vue";
 
 export default {
     components: {
@@ -765,7 +775,7 @@ export default {
         postTab,
         commentsTab,
         orderTab,
-        countryTab,
+        shipedRegionsTab,
         filmTagsTab,
         saleCodesTab,
         eventTab, 
@@ -779,11 +789,14 @@ export default {
         non_registered_commenter_tab,
 
         saleCodeModal,
-        countryAddModal,
+        shipedRegionAddModal,
         addRoleModal,
         addUserModal,
         articleQuickViewModal,
         addTourCategoryModal,
+
+        orderDetalModal,
+        editOrderStatusModal,
     },
 
     props: [
@@ -802,8 +815,8 @@ export default {
     },
 
     methods: {
-        country_add_model(){
-            this.$refs.add_country.add_country_model_open()
+        shiping_region_add_model(){
+            this.$refs.add_shiping_region.add_region_model_open()
         },
         tag_modal(action){
             this.$refs.control_tag[0].tag_control_modal(action)
@@ -828,6 +841,9 @@ export default {
         update() {
             this.$emit("update-data");
         },
+        create_costom_order(){
+            alert('comming soon')
+        }
     },
 };
 </script>

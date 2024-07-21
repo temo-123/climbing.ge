@@ -531,12 +531,12 @@ Route::group(['namespace'=>'Api'], function() {
         /*
         *   Cart and orders routes
         */
-        Route::controller(ShipedCountryController::class)->group( function() {
-            Route::get('/get_countries', 'get_countries');
-            Route::get('/get_activ_country/{country_id}', 'get_activ_country');
-            Route::post('/add_country', 'add_country');
-            Route::post('/edit_country/{country_id}', 'edit_country');
-            Route::delete('/del_country/{country_id}', 'del_country');
+        Route::controller(ShipedRegionController::class)->prefix('shiped_region')->group( function() {
+            Route::get('/get_all_shiped_regions', 'get_all_shiped_regions');
+            Route::get('/get_activ_region/{region_id}', 'get_activ_region');
+            Route::post('/add_region', 'add_region');
+            Route::post('/edit_region/{region_id}', 'edit_region');
+            Route::delete('/del_region/{region_id}', 'del_region');
         });
 
         /*
