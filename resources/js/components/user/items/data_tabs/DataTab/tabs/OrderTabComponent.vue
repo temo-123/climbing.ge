@@ -380,12 +380,10 @@
     .row_worning{
 
     } */
-
-
-    .row_deanger td{
+    /* .row_deanger td{
         background-color: #df8d8d;
     }
     .row_worning td {
         background-color: #dfad8d;
-    }
+    } */
 </style>

@@ -1,5 +1,5 @@
 <template>
-    <tr>
+    <tr :class="danger_color">
         <td :style="'text-align: center'">
             <input type="checkbox">
         </td>
@@ -7,7 +7,7 @@
         <td>{{table_info.id}}</td>
         <td>|</td>
 
-        <td>{{table_info.name}} {{table_info.surname}}</td>
+        <td @click="open_user_info_modal(table_info)" class="cursor_pointer">{{table_info.name}} {{table_info.surname}}</td>
 
         <td>|</td>
         <td>{{table_info.email}}</td>
@@ -158,14 +158,19 @@
                 </div>
             </div>
         </stack-modal>
+
+        <UserInfoModal ref="user_info_modal"/>
     </tr>
 </template>
 
 <script>
     import StackModal from '@innologica/vue-stackable-modal'  //https://innologica.github.io/vue-stackable-modal/#sample-css
+
+    import UserInfoModal from "./../tab_modals/UserInfoModalComponent.vue";
     export default {
         components: {
             StackModal,
+            UserInfoModal
         },
         props: [
             'table_info',
@@ -187,10 +192,17 @@
 
                 permissions_array: [],
 
-                action_user: ''
+                action_user: '',
+                danger_color: ''
             }
         },
-        mountid(){
+        mounted(){
+            if(this.table_info.email_verified_at == null){
+                this.danger_color = 'row_deanger'
+            }
+            else{
+                this.danger_color = ''
+            }
         },
         methods: {
             create_ban(id){
@@ -213,6 +225,9 @@
                 this.is_ban_modal = false
             },
 
+            open_user_info_modal(user_info){
+                this.$refs.user_info_modal.show_user_info(user_info)
+            },
 
             open_role_editing_modal(user_id){
                 this.is_role_editing_modal = true

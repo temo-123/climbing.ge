@@ -49,12 +49,6 @@
                 is_order_region_edit_model: false,
                 is_order_region_add_model: false,
 
-                editing_data: {
-                    region: '',
-                    shiping_price: '',
-                    free_shiping_price_after: '',
-                },
-
                 adding_data: {
                     region: '',
                     shiping_price: '',
@@ -81,6 +75,12 @@
             close_modal(){
                 if(confirm('Are you sure, you want close form? All data whil deleted!')){
                     this.is_order_region_add_model = false
+
+                    this.adding_data = {
+                        region: '',
+                        shiping_price: '',
+                        free_shiping_price_after: '',
+                    }
                 }
             }
         }
