@@ -163,15 +163,15 @@
                 }
             },
 
-            logout(){
-                axios
-                .post(process.env.MIX_APP_SSH + process.env.MIX_USER_PAGE_URL + '/logout')
-                .then(()=>{
-                    localStorage.removeItem('x_xsrf_token');
-                    this.$router.push({ name: "login" });
-                })
+            // logout(){
+            //     axios
+            //     .post(process.env.MIX_APP_SSH + process.env.MIX_USER_PAGE_URL + '/logout')
+            //     .then(()=>{
+            //         localStorage.removeItem('x_xsrf_token');
+            //         this.$router.push({ name: "login" });
+            //     })
                 
-            },
+            // },
 
             update_menu_position(){
               if(!this.menu_position){

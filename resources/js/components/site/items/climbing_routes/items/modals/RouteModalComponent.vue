@@ -115,20 +115,26 @@
                 <div class="modal-footer">
                     <button
                         class="btn btn-success"
-                        @click="route_review_modal(route.id)"
+                        @click="create_route_review_modal(route.id)"
                         v-if="user.length != 0"
                     >
                         {{ $t('guide.route.make_review') }}
                     </button>
-                    <!-- <p v-else>Ples login for add route feedback!</p> -->
-
-                    <!-- <div class="row" v-if="user.length == 0"> -->
-                        <div v-else :class="'alert alert-danger cursor_pointer'" role="alert" @click="goTo('/login')">
-                            <div class="col-md-12">
-                                <p>Ples login for add route feedback!</p>
-                            </div>
+                    
+                    <div v-else :class="'alert alert-danger cursor_pointer'" role="alert" @click="goTo('/login')">
+                        <div class="col-md-12">
+                            <p>Ples login for add route feedback!</p>
                         </div>
-                    <!-- </div> -->
+                    </div>
+
+                    <button
+                        class="btn btn-primary float-right"
+                        @click="show_route_all_review_modal(route.id)"
+
+                        v-if="route.reviews_count > 0"
+                    >
+                        {{ $t('guide.route.show_feedbacks') }}
+                    </button>
                 </div>
             </div>
         </stack-modal>
@@ -181,10 +187,16 @@ export default {
             return this.lead(grade_fr)
         },
 
-        route_review_modal(route_id){
+        create_route_review_modal(route_id){
             this.is_show_route_modal = false;    
 
             this.$emit('show_route_review_modal', route_id)
+        },
+
+        show_route_all_review_modal(route_id){
+            this.is_show_route_modal = false;    
+
+            this.$emit('show_route_all_review_modal', route_id)
         },
 
         show_route_modal(id) {

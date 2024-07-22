@@ -25,7 +25,7 @@
                 </li>
                 
                 <li class="nav-item">
-                    <a class="nav-link">{{ $t('user.menu.logout') }}</a>
+                    <a class="nav-link" @click="logout()">{{ $t('user.menu.logout') }}</a>
                 </li>
             
             </ul>
@@ -111,6 +111,16 @@
                 .catch(
                     // this.user = 'Boss'
                 );
+            },
+
+            logout(){
+                axios
+                .post(process.env.MIX_APP_SSH + process.env.MIX_USER_PAGE_URL + '/logout')
+                .then(()=>{
+                    localStorage.removeItem('x_xsrf_token');
+                    this.$router.push({ name: "login" });
+                })
+                
             },
         
             haveMenuBlockPermission(menu_section){

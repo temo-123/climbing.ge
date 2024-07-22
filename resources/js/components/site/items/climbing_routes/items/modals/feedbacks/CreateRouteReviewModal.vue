@@ -1,7 +1,7 @@
 <template>
     <stack-modal
             :show="is_show_modal"
-            title="Route detals"
+            title="Create route feedback"
             @close="close_route_review_modal(route_id)"
             :modal-class="{ [ModalClass]: true }"
             :saveButton="{ visible: true }"
@@ -73,10 +73,10 @@
             <div slot="modal-footer">
                 <div class="modal-footer">
                     <div class="form-group"  v-if="is_verify_isset == false">
-                        <button type="submit" class="btn btn-success float-right" disabled>{{ $t("global.message.save") }}</button>
+                        <button type="submit" class="btn btn-success float-right" disabled>{{ $t("global.form.save") }}</button>
                     </div>
                     <div class="form-group"  v-else>
-                        <button type="submit" form="route_review_form" class="btn btn-success float-right">{{ $t("global.message.save") }}</button>
+                        <button type="submit" form="route_review_form" class="btn btn-success float-right">{{ $t("global.form.save") }}</button>
                     </div>
                 </div>
             </div>
@@ -87,7 +87,7 @@
 import StackModal from '@innologica/vue-stackable-modal'  //https://innologica.github.io/vue-stackable-modal/#sample-css
 import VueRecaptcha from 'vue-recaptcha'; //https://www.npmjs.com/package/vue-recaptcha
 
-import starReitingInsert from '../../../../../global_components/StarReitingInsertComponent.vue'
+import starReitingInsert from '../../../../../../global_components/StarReitingInsertComponent.vue'
 
 export default {
     components: { 
@@ -162,7 +162,9 @@ export default {
         add_route_review() {
             this.is_loading = true
             axios
-                .post("/route_review/create_route_review/" + this.route_id, this.data)
+                .post("/route_review/create_route_review/" + this.route_id, 
+                    this.data
+                )
                 .then((response) => {
                     alert(response.data)
                     this.close_route_review_modal(this.route_id)

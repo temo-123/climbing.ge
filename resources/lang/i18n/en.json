@@ -85,7 +85,8 @@
             "mtp detals": "Multy-pitch detals",
 
             "make_review": "Make review",
-            "route_rewiev": "Create route rewiev"
+            "route_rewiev": "Create route rewiev",
+            "show_feedbacks": "Show route feedbacks"
         },
 
         "sector": {
@@ -347,6 +348,10 @@
             "about us": "About us",
             "follow": "Follow us",
             "qr": "QR Code"
+        },
+
+        "form": {
+            "save": "Save"
         },
 
         "message": {

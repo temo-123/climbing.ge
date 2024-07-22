@@ -384,13 +384,15 @@ Route::group(['namespace'=>'Api'], function() {
         });
 
         /*
-        *   Sport climbing routes reiting routes
+        *   Sport climbing routes reiting
         */
 
         Route::controller(RoutesReitingController::class)->prefix('route_review')->group( function() {
             Route::get('/get_user_review', 'get_user_review');
             Route::get('/get_all_review', 'get_all_review');
             Route::get('/get_actyve_review/{review_id}', 'get_actyve_review');
+
+            Route::get('/get_all_route_reviews/{route_id}', 'get_all_route_reviews');
 
             Route::post('/create_route_review/{route_id}', 'create_route_review');
             Route::post('/edit_route_review/{review_id}', 'edit_route_review');

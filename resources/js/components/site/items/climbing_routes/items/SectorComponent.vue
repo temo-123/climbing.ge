@@ -306,10 +306,16 @@
         <route_modal 
             ref="open_route_modal"
             @show_route_review_modal="show_route_review_modal"
+            @show_route_all_review_modal="show_route_all_review_modal"
         />
 
-        <route_review_modal 
+        <create_route_review_modal 
             ref="open_route_review_modal"
+            @back_route_modal="show_route_modal"
+        />
+
+        <route_all_reviews_modal
+            ref="show_route_all_review_modal"
             @back_route_modal="show_route_modal"
         />
 
@@ -322,7 +328,8 @@
 
 <script>
 import route_modal from "./modals/RouteModalComponent.vue";
-import route_review_modal from "./modals/RouteReviewModal.vue";
+import create_route_review_modal from "./modals/feedbacks/CreateRouteReviewModal.vue";
+import route_all_reviews_modal from "./modals/feedbacks/RouteAllReviewsModal.vue";
 import mtp_modal from "./modals/MTPModalComponent.vue";
 
 import openImg from "../../ImageOpenComponent.vue";
@@ -336,7 +343,8 @@ export default {
         openImg,
         route_modal,
         mtp_modal,
-        route_review_modal,
+        create_route_review_modal,
+        route_all_reviews_modal
     },
     props: [
         "sector",
@@ -365,6 +373,9 @@ export default {
             return this.boulder(grade_fr)
         },
 
+        show_route_all_review_modal(route_id){
+            this.$refs.show_route_all_review_modal.show_route_all_review_modal(route_id)
+        },
         show_route_review_modal(route_id){
             this.$refs.open_route_review_modal.show_route_review_modal(route_id)
         },

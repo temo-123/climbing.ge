@@ -7,13 +7,13 @@ use Illuminate\Http\Request;
 
 use App\Models\User;
 use App\Models\Guide\Sport_route_review;
-use App\Models\Guide\Sport_route_review_user;
+// use App\Models\Guide\Sport_route_review_user;
 
 use Auth;
 
 class RoutesReitingController extends Controller
 {
-    function get_all_review() {
+    public function get_all_review() {
         // return Sport_route_review::get();
 
         if(Sport_route_review::count() > 0){
@@ -32,7 +32,15 @@ class RoutesReitingController extends Controller
         }
     }
 
-    function get_user_review() {
+    public function get_all_route_reviews(Request $request) {
+        $rews = Sport_route_review::where('route_id', '=', $request->route_id)->get();
+        foreach ($rews as $rew) {
+            $rew -> user;
+        }
+        return $rews;
+    }
+
+    public function get_user_review() {
         $user = auth()->user();
         // return $user->sport_route_reviews;
 
@@ -52,7 +60,7 @@ class RoutesReitingController extends Controller
         }
     }
 
-    function get_user_sport_routes_review() {
+    public function get_user_sport_routes_review() {
         if (Auth::user()) {
             $user_review = Sport_route_review_user::where('user_id', '=', Auth::user()->id)->get();
 
@@ -69,7 +77,7 @@ class RoutesReitingController extends Controller
         }
     }
 
-    function create_route_review(Request $request) {
+    public function create_route_review(Request $request) {
         if (Auth::user()) {
             // $user_review_count = Sport_route_review::where('user_id', '=', Auth::user()->id)->where('route_id', '=', $request["route_id"])->count();
             $user_review_count = Auth::user()->sport_route_reviews->where('route_id', '=', $request["route_id"])->count();
@@ -82,13 +90,15 @@ class RoutesReitingController extends Controller
                 $review['text']=$request["text"];
                 $review['stars']=$request["stars"];
 
+                $review['user_id'] = Auth::user()->id;
+
                 if (isset($request['climbed']) && $request['climbed']) {
                     $review['climbed_data']=$request["climbed_data"];
                 }
 
                 $review->save();
 
-                $this->create_user_review_relatione($review->id);
+                // $this->create_user_review_relatione($review->id);
 
                 return 'Thank you for review!';
             }
@@ -101,20 +111,20 @@ class RoutesReitingController extends Controller
         }
     }
 
-    private function create_user_review_relatione($review_id){
-        if (Auth::user()) {
-            $review_user_rel = new Sport_route_review_user;
-            $review_user_rel['review_id'] = $review_id;
-            $review_user_rel['user_id'] = Auth::user()->id;
-            $review_user_rel->save();
-        }
-    }
+    // private function create_user_review_relatione($review_id){
+    //     if (Auth::user()) {
+    //         $review_user_rel = new Sport_route_review_user;
+    //         $review_user_rel['review_id'] = $review_id;
+    //         $review_user_rel['user_id'] = Auth::user()->id;
+    //         $review_user_rel->save();
+    //     }
+    // }
 
-    function get_actyve_review(Request $request){
+    public function get_actyve_review(Request $request){
         return Sport_route_review::where('id',strip_tags($request->review_id))->first();
     }
 
-    function edit_route_review(Request $request) {
+    public function edit_route_review(Request $request) {
         $review = Sport_route_review::where('id',strip_tags($request->review_id))->first();
         $data = $request->all();
         unset($data['_url']);
@@ -124,7 +134,7 @@ class RoutesReitingController extends Controller
         $saved = $review->update($data); 
     }
 
-    function del_route_review(Request $request) {
+    public function del_route_review(Request $request) {
         if ($request->isMethod('delete') && Auth::user()) {
 
             $review = Sport_route_review::where('id',strip_tags($request->review_id))->first();
