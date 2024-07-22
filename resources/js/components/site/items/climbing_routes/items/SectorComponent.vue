@@ -390,6 +390,11 @@ export default {
 </script>
 
 <style>
+table {
+    display: block;
+    overflow-x: auto;
+    white-space: nowrap;
+}
 .sector_walking_time{
     float: right;
     font-size: 1.5em;

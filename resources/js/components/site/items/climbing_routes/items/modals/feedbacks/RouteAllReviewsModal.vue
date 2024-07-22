@@ -161,7 +161,7 @@ export default {
     overflow-x: hidden;
 }
 .modal-body{
-    height: 6dvb;
+    height: 600px;
 }
 .feedback_row{
     margin-left: 15px;
