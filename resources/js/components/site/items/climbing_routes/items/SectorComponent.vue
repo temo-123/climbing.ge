@@ -390,10 +390,16 @@ export default {
 </script>
 
 <style>
-table {
-    display: block;
-    overflow-x: auto;
-    white-space: nowrap;
+@media (max-width: 767px) {
+    table {
+        display: block;
+        overflow-x: scroll;
+    }
+}
+@media (max-width: 567px) {
+    table {
+        white-space: nowrap;
+    }
 }
 .sector_walking_time{
     float: right;
