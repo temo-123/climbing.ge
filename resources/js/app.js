@@ -184,7 +184,7 @@ if(
     window.location.hostname == 'films.climbing.ge' ||
     window.location.hostname == 'forum.climbing.ge'
 ){
-    Vue.config.devtools = false
+    Vue.config.devtools = true
     Vue.config.debug = false
     Vue.config.select = false
 }

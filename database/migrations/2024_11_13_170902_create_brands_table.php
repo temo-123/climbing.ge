@@ -11,8 +11,13 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('sport_route_reviews', function (Blueprint $table) {
-            $table->foreignId('user_id')->constrained()->nullable();
+        Schema::create('brands', function (Blueprint $table) {
+            $table->id();
+
+            $table->string('us_name')->nullable();
+            $table->string('ka_name')->nullable();
+            
+            $table->timestamps();
         });
     }
 
@@ -21,8 +26,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('sport_route_reviews', function (Blueprint $table) {
-            $table->dropColumn('user_id');
-        });
+        Schema::dropIfExists('brands');
     }
 };

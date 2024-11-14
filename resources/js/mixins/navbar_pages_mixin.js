@@ -265,6 +265,15 @@ export const navbar = {
                         ]
                     },
                     {
+                        name: "Brands",
+                        route: "/product_brands",
+                        permissions: [
+                            ['add', 'product_brand'],
+                            ['edit', 'product_brand'],
+                            ['del', 'product_brand']
+                        ]
+                    },
+                    {
                         name: "All orders",
                         route: "/order/all_orders",
                         permissions: [

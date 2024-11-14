@@ -11,8 +11,10 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('sport_route_reviews', function (Blueprint $table) {
-            $table->foreignId('user_id')->constrained()->nullable();
+        Schema::table('products', function (Blueprint $table) {
+            $table->unsignedBigInteger('brands_id')->nullable();
+            $table->foreign('brands_id')->references('id')->on('brands')->constrained()->onDelete('cascade')->default(0);
+
         });
     }
 
@@ -21,8 +23,8 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('sport_route_reviews', function (Blueprint $table) {
-            $table->dropColumn('user_id');
+        Schema::table('products', function (Blueprint $table) {
+            $table->dropColumn('brands_id');
         });
     }
 };

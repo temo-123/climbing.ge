@@ -168,22 +168,11 @@ class LocalBisnesController extends Controller
 
     public function edit_local_bisnes(Request $request)
     {
-        // $data = json_decode($request->data, true );
-
         $image_path = 'images/local_bisnes_img/';
 
         $article_editing = LocaleContentControllService::edit_content(Suport_local_bisnes::class, Locale_bisnes::class, '_bisnes', $request, $image_path);
 
         if(!array_key_exists('validation', $article_editing->original)){
-            // GalleryService::add_gallery_images(
-            //     $request->gallery_images, 
-            //     $article_editing->original['global_bisnes_id'], 
-            //     Article_image::class, 
-            //     'image', 
-            //     'article_id', 
-            //     '/images/local_bisnes_img/'
-            // );
-
             if($request->hasFile('bisnes_new_images')){
                 $this->add_bisnes_images($request['bisnes_new_images'], $article_editing->original['global_bisnes_id']);
             }

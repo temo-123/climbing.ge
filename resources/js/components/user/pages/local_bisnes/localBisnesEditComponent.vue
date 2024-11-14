@@ -10,45 +10,10 @@
                 <button type="submit" class="btn btn-primary" v-on:click="edit_bisnes()" >Save update</button>
             </div>
         </div>
-        <div class="row" v-if="validation_errors.length != 0">
-            <div class="col-md-12">
-                <div class="alert alert-danger" role="alert" v-if="validation_errors.global_info_validation.published">
-                    Published - {{ validation_errors.global_info_validation.published[0] }}
-                </div>
-                <div class="alert alert-danger" role="alert" v-if="error.global_info_validation.url_title">
-                    Url title - {{ error.global_info_validation.url_title[0] }}
-                </div>
-
-                <div class="alert alert-danger" role="alert" v-if="validation_errors.us_info_validation.title">
-                    English title - {{ validation_errors.us_info_validation.title[0] }}
-                </div>
-                <div class="alert alert-danger" role="alert" v-if="validation_errors.us_info_validation.short_description">
-                    English description - {{ validation_errors.us_info_validation.short_description[0] }}
-                </div>
-                <div class="alert alert-danger" role="alert" v-if="validation_errors.us_info_validation.text">
-                    English text - {{ validation_errors.us_info_validation.text[0] }}
-                </div>
-
-                <div class="alert alert-danger" role="alert" v-if="validation_errors.ka_info_validation.title">
-                    Georgian title - {{ validation_errors.ka_info_validation.title[0] }}
-                </div>
-                <div class="alert alert-danger" role="alert" v-if="validation_errors.ka_info_validation.short_description">
-                    Georgian description - {{ validation_errors.ka_info_validation.short_description[0] }}
-                </div>
-                <div class="alert alert-danger" role="alert" v-if="validation_errors.ka_info_validation.text">
-                    Georgian text - {{ validation_errors.ka_info_validation.text[0] }}
-                </div>
-
-                <div class="alert alert-danger" role="alert" v-if="validation_errors.ru_info_validation.title">
-                    Russion title - {{ validation_errors.ru_info_validation.title[0] }}
-                </div>
-                <div class="alert alert-danger" role="alert" v-if="validation_errors.ru_info_validation.short_description">
-                    Russion description - {{ validation_errors.ru_info_validation.short_description[0] }}
-                </div>
-                <div class="alert alert-danger" role="alert" v-if="validation_errors.ru_info_validation.text">
-                    Russion text - {{ validation_errors.ru_info_validation.text[0] }}
-                </div>
-            </div>
+        <div class="row" v-show="validation_errors.length != 0">
+            <validator_alerts_component
+                :errors_prop="validation_errors"
+            />
         </div>
         <div class="row">
             <div class="col-md-12">
@@ -93,7 +58,7 @@
                         <div class="form-group clearfix" v-if="!data.global_bisnes.public_totaly">
                             <label for="name" class='col-xs-2 control-label'> Published befor (After this data it`s whil by not public`) </label>
                             <div class="col-xs-8">
-                                <input type="datetime-local" class="form-control" id="datemin" name="datemin" min="2000-01-02" v-model="data.global_bisnes.published_bisnes" >
+                                <input type="datetime-local" class="form-control" id="datemin" name="datemin" min="2000-01-02" v-model="data.global_bisnes.published_data" >
                             </div>
                         </div>
                         <div class="form-group clearfix">
@@ -198,13 +163,15 @@
     import { editor_config } from '../../../../mixins/editor/editor_config_mixin.js'
     import gallery_images_edit from '../../items/gallery/galleryImageEditComponent.vue'
     import article_bisnes_edit_relatione_tab from './items/articleBisnesEditRelationeTabComponent.vue.vue'
+    import validator_alerts_component from '../../items/validator_alerts_component.vue'
     export default {
         mixins: [
             editor_config,
         ],
         components: {
             gallery_images_edit,
-            article_bisnes_edit_relatione_tab
+            article_bisnes_edit_relatione_tab,
+            validator_alerts_component
         },
         props: [
             // 'back_url',
@@ -237,7 +204,9 @@
                 editorConfig: {},
 
                 data: {
-                    global_bisnes: {},
+                    global_bisnes: {
+                        published_data: null,
+                    },
                     us_bisnes: {},
                     ka_bisnes: {},
                     ru_bisnes: {}
@@ -304,19 +273,23 @@
 
                 let formData = new FormData();
 
-                var image_loop_num = 0
-                this.bisnes_new_images.forEach(image => {
-                    formData.append('bisnes_new_images['+image_loop_num+']', image.image)
-                    image_loop_num++
-                });
-                image_loop_num = 0
+                if(this.bisnes_new_images != []){
+                    var image_loop_num = 0
+                    this.bisnes_new_images.forEach(image => {
+                        formData.append('bisnes_new_images['+image_loop_num+']', image.image)
+                        image_loop_num++
+                    });
+                    image_loop_num = 0
+                }
 
-                var relation_loop_num = 0
-                this.bisnes_new_article_relations.forEach(relation => {
-                    formData.append('bisnes_new_article_relations['+relation_loop_num+']', relation.article_id)
-                    relation_loop_num++
-                });
-                relation_loop_num = 0
+                if(this.bisnes_new_article_relations != []){
+                    var relation_loop_num = 0
+                    this.bisnes_new_article_relations.forEach(relation => {
+                        formData.append('bisnes_new_article_relations['+relation_loop_num+']', relation.article_id)
+                        relation_loop_num++
+                    });
+                    relation_loop_num = 0
+                }
 
                 formData.append('data', JSON.stringify(this.data))
 

@@ -61,20 +61,20 @@ class RoutesReitingController extends Controller
     }
 
     public function get_user_sport_routes_review() {
-        if (Auth::user()) {
-            $user_review = Sport_route_review_user::where('user_id', '=', Auth::user()->id)->get();
+        // if (Auth::user()) {
+        //     $user_review = Sport_route_review_user::where('user_id', '=', Auth::user()->id)->get();
 
-            $routes_reiting = [];
+        //     $routes_reiting = [];
 
-            foreach ($user_review as $rev) {
-                array_push($routes_reiting, [
-                    "review" => $rev->review,
-                    "route" => $rev->review->route,
-                ]);
-            }
-            // dd($routes_reiting);
-            return $routes_reiting;
-        }
+        //     foreach ($user_review as $rev) {
+        //         array_push($routes_reiting, [
+        //             "review" => $rev->review,
+        //             "route" => $rev->review->route,
+        //         ]);
+        //     }
+        //     // dd($routes_reiting);
+        //     return $routes_reiting;
+        // }
     }
 
     public function create_route_review(Request $request) {
@@ -138,9 +138,9 @@ class RoutesReitingController extends Controller
         if ($request->isMethod('delete') && Auth::user()) {
 
             $review = Sport_route_review::where('id',strip_tags($request->review_id))->first();
-            $user_review_relation = Sport_route_review_user::where('user_id', '=', Auth::user()->id)->where('review_id', '=', $review->id)->first();
+            // $user_review_relation = Sport_route_review_user::where('user_id', '=', Auth::user()->id)->where('review_id', '=', $review->id)->first();
 
-            $user_review_relation -> delete();
+            // $user_review_relation -> delete();
             $review -> delete();
         }
     }

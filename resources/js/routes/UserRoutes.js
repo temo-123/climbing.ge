@@ -121,6 +121,8 @@ const router = new VueRouter({
         { path: '/product/edit/:id', name: 'productEdit', component: load('products_and_categories/products/productEditComponent') },
         { path: '/product/add', name: 'productAdd', component: load('products_and_categories/products/productAddComponent') },
 
+        { path: '/product_brands', name: 'product_brands', component: load('products_and_categories/brands/product_brands') },
+
         { path: '/user_tours_reservations_list', name: 'userToursReservations', component: load('tour/UserToursReservationsPage') },
         { path: '/user_tours_list', name: 'userToursList', component: load('tour/UserToursListPage') },
 

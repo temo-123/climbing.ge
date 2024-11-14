@@ -10,45 +10,10 @@
                 <button type="submit" class="btn btn-primary" v-on:click="add_bisnes()" >Save</button>
             </div>
         </div>
-        <div class="row" v-if="error.length != 0">
-            <div class="col-md-12">
-                <div class="alert alert-danger" role="alert" v-if="error.global_info_validation.published">
-                    Published - {{ error.global_info_validation.published[0] }}
-                </div>
-                <div class="alert alert-danger" role="alert" v-if="error.global_info_validation.url_title">
-                    Url title - {{ error.global_info_validation.url_title[0] }}
-                </div>
-
-                <div class="alert alert-danger" role="alert" v-if="error.us_info_validation.title">
-                    English title - {{ error.us_info_validation.title[0] }}
-                </div>
-                <div class="alert alert-danger" role="alert" v-if="error.us_info_validation.short_description">
-                    English description - {{ error.us_info_validation.short_description[0] }}
-                </div>
-                <div class="alert alert-danger" role="alert" v-if="error.us_info_validation.text">
-                    English text - {{ error.us_info_validation.text[0] }}
-                </div>
-
-                <div class="alert alert-danger" role="alert" v-if="error.ka_info_validation.title">
-                    Georgian title - {{ error.ka_info_validation.title[0] }}
-                </div>
-                <div class="alert alert-danger" role="alert" v-if="error.ka_info_validation.short_description">
-                    Georgian description - {{ error.ka_info_validation.short_description[0] }}
-                </div>
-                <div class="alert alert-danger" role="alert" v-if="error.ka_info_validation.text">
-                    Georgian text - {{ error.ka_info_validation.text[0] }}
-                </div>
-
-                <div class="alert alert-danger" role="alert" v-if="error.ru_info_validation.title">
-                    Russion title - {{ error.ru_info_validation.title[0] }}
-                </div>
-                <div class="alert alert-danger" role="alert" v-if="error.ru_info_validation.short_description">
-                    Russion description - {{ error.ru_info_validation.short_description[0] }}
-                </div>
-                <div class="alert alert-danger" role="alert" v-if="error.ru_info_validation.text">
-                    Russion text - {{ error.ru_info_validation.text[0] }}
-                </div>
-            </div>
+        <div class="row" v-show="error.length != 0">
+            <validator_alerts_component
+                :errors_prop="error"
+            />
         </div>
         <div class="row">
             <div class="col-md-12">
@@ -187,13 +152,16 @@
     import { editor_config } from '../../../../mixins/editor/editor_config_mixin.js'
     import gallery_images_add from '../../items//gallery/galleryImageAddComponent.vue'
     import article_bisnes_add_relatione_tab from './items/articleBisnesAddRelationeTabComponent.vue'
+
+    import validator_alerts_component from '../../items/validator_alerts_component.vue'
     export default {
         mixins: [
             editor_config,
         ],
         components: {
             gallery_images_add,
-            article_bisnes_add_relatione_tab
+            article_bisnes_add_relatione_tab,
+            validator_alerts_component,
         },
         props: [
             // 'back_url',
@@ -204,20 +172,16 @@
 
                 bisnes_images: [],
                 regions: [],
-                // editorConfig: '',
 
                 error: [],
 
                 editor_config: {
                     us_short_description: editor_config.get_small_editor_config(),
                     us_text: editor_config.get_big_editor_config(),
-                    // us_info: editor_config.get_big_editor_config(),
                     ru_short_description: editor_config.get_small_editor_config(),
                     ru_text: editor_config.get_big_editor_config(),
-                    // ru_info: editor_config.get_big_editor_config(),
                     ka_short_description: editor_config.get_small_editor_config(),
                     ka_text: editor_config.get_big_editor_config(),
-                    // ka_info: editor_config.get_big_editor_config()
                 },
 
                 data: {
@@ -225,7 +189,7 @@
                         url_title: '',
 
                         published: 0,
-                        published_data: '',
+                        published_data: null,
                         public_totaly: 0,
                     },
 
@@ -284,19 +248,23 @@
                 this.data.global_bisnes.url_title = this.data.us_bisnes.title
                 let formData = new FormData();
 
-                var loop_num = 0
-                this.bisnes_images.forEach(image => {
-                    formData.append('bisnes_images['+loop_num+']', image.image)
-                    loop_num++
-                });
-                loop_num = 0
+                if(this.bisnes_images){
+                    var loop_num = 0
+                    this.bisnes_images.forEach(image => {
+                        formData.append('bisnes_images['+loop_num+']', image.image)
+                        loop_num++
+                    });
+                    loop_num = 0
+                }
 
-                var relation_loop_num = 0
-                this.bisnes_new_article_relations.forEach(relation => {
-                    formData.append('bisnes_new_article_relations['+relation_loop_num+']', relation.article_id)
-                    relation_loop_num++
-                });
-                relation_loop_num = 0
+                if(this.bisnes_new_article_relations){
+                    var relation_loop_num = 0
+                    this.bisnes_new_article_relations.forEach(relation => {
+                        formData.append('bisnes_new_article_relations['+relation_loop_num+']', relation.article_id)
+                        relation_loop_num++
+                    });
+                    relation_loop_num = 0
+                }
                 
                 formData.append('data', JSON.stringify(this.data))
 
