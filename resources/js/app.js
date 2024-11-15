@@ -185,8 +185,8 @@ if(
     window.location.hostname == 'forum.climbing.ge'
 ){
     Vue.config.devtools = true
-    Vue.config.debug = false
-    Vue.config.select = false
+    Vue.config.debug = true
+    Vue.config.select = true
 }
 else{
     Vue.config.devtools = true

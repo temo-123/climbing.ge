@@ -101,6 +101,7 @@ Route::group(['namespace'=>'Api'], function() {
                 Route::get('/{lang}/{region_id}', 'locale_region');
             });
             Route::get('/regions/{lang}', 'locale_regions');
+            Route::get('/get_spots_by_regions/{lang}', 'get_spots_by_regions');
         });
 
         /*

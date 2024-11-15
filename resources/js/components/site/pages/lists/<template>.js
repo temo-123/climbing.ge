@@ -49,7 +49,7 @@
 
             <div class="row articles_filter_bar" v-if="filter_spot != 'All'">
                 <div class="col-md-12" style="text-align: center;">
-                    <h2>{{selected_region_data.name}}</h2>
+                    <h4>{{selected_region_data.name}}</h4>
                     <!-- <p>{{selected_region_data.text}}</p> -->
                     <span v-html="selected_region_data.text"></span>
                 </div>
@@ -75,31 +75,15 @@
                             </div>
 
                             <div v-else>
-                                <div v-if="this.regions_and_spots.length > 0" class="article_card_container">
-                                    <div class="row" v-for="region in regions_and_spots">
-                                        <div class="col-md-12">
-                                            <h2 v-if="region.region" class="article_list_short_description">{{region.region.us_name}}</h2>
-                                            <h2 v-else class="article_list_short_description">Other</h2>
-                                        </div>
-                                        <div class="col-md-12">
-                                            <outdoorCard  
-                                                v-for="outdoor in region.spots"
-                                                :key='outdoor.area.global_data.id'
-                                                :image_dir="'images/outdoor_img/'"
-                                                :article="outdoor"
-                                            />
-                                        </div>
-                                    </div>
-                                </div>
-                                <div v-else-if="this.filtred_spots.length > 0" class="article_card_container">
-                                    <outdoorCard  
-                                        v-for="outdoor in filtred_spots"
+                                <div v-if="this.outdoors.length > 0" class="article_card_container">
+                                    <outdoorCard 
+                                        v-for="outdoor in outdoors"
                                         :key='outdoor.id'
                                         :image_dir="'images/outdoor_img/'"
                                         :article="outdoor"
                                     />
                                 </div>
-                                <div v-else-if="this.regions_and_spots.length == 0 && this.filtred_spots.length == 0">
+                                <div v-else>
                                     <emptyPageComponent />
                                 </div>
                             </div>
@@ -154,8 +138,7 @@
     export default {
         data: function () {
             return {
-                filtred_spots: [],
-                regions_and_spots: [],
+                outdoors: [],
                 regions: [],
                 // filtred_spots: [],
                 filter_spot: 'All',
@@ -199,8 +182,7 @@
                 axios
                 .get("/outdoor/get_filtred_outdoor_spots_for_gest/" + localStorage.getItem('lang') + '/' + id)
                 .then(response => {
-                    this.regions_and_spots = []
-                    this.filtred_spots = response.data
+                    this.outdoors = response.data
                 })
                 .catch(
                     // error => console.log(error)
@@ -211,12 +193,9 @@
             get_unfilted_articles(){
                 this.oudoor_loading = true
                 axios
-                .get('/outdoor/get_spots_by_regions/'+localStorage.getItem('lang'))
+                .get('/articles/outdoor/'+localStorage.getItem('lang'))
                 .then(response => {
-                    this.filtred_spots = []
-                    this.regions_and_spots = response.data
-                    console.log(this.regions_and_spots);
-                    
+                    this.outdoors = response.data
                 })
                 .catch(error =>{
                 })
