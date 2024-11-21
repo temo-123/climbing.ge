@@ -185,6 +185,8 @@ Route::group(['namespace'=>'Api'], function() {
             Route::get('/get_filtred_mount_route_for_admin/{filter_id}', 'get_filtred_mount_route_for_admin');
             Route::get('/get_filtred_mount_route_for_user/{lang}/{filter_id}', 'get_filtred_mount_route_for_user');
 
+            Route::get('/get_mount_routes_by_maunt/{lang}', 'get_mount_routes_by_maunt');
+
             Route::get('/get_mount_routes_images/{article_id}', 'get_mount_routes_images');
             Route::delete('/del_mount_route_image/{image_id}', 'del_mount_route_image');
         });

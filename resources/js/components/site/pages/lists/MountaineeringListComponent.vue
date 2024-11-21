@@ -31,7 +31,8 @@
                     <span v-html="selected_mount_data.locale_data.text"></span>
                 </div>
             </div>
-
+<!-- {{ this.mount_routes.length > 0 }}
+{{this.mount_routes_by_masiv.length > 0}} -->
             <div class="row">
                 <div v-if="mount_route_loading">
                     <content-loader
@@ -43,10 +44,27 @@
                     </content-loader>
                 </div>
                 <div v-else>
-                    <div v-if="this.mount_routes.length > 0" class="article_card_container">
+                    <div v-if="this.mount_routes_by_masiv.length > 0" class="article_card_container">
+                        <div class="row" v-for="masiv in mount_routes_by_masiv">
+                            <div class="col-md-12">
+                                <h2 v-if="masiv.mount" class="article_list_short_description">{{masiv.mount.locale_data.title}}</h2>
+                                <h2 v-else class="article_list_short_description">Other</h2>
+                            </div>
+                            <div class="col-md-12">
+                                <!-- {{ masiv.mount.locale_data.title }} -->
+                                <mountCard 
+                                    v-for="mount_route in masiv.mount_route"
+                                    :key='mount_route.id'
+                                    :mount="mount_route"
+                                    :route="'mountaineering/'+mount_route.url_title"
+                                />
+                            </div>
+                        </div>
+                    </div>
+                    <div v-else-if="this.mount_routes.length > 0" class="article_card_container">
                         <mountCard 
                             v-for="mount_route in mount_routes"
-                            :key='mount_route.global_data.id'
+                            :key='mount_route.id'
                             :mount="mount_route"
                             :route="'mountaineering/'+mount_route.global_data.url_title"
                         />
@@ -78,11 +96,12 @@
             return {
                 mounts: [],
                 mount_routes: [],
+                mount_routes_by_masiv: [],
                 // filtred_mount_routes: [],
                 filter_mount: 'All',
 
                 selected_mount_data: [],
-                mount_route_loading: true
+                mount_route_loading: false
             };
         },
         components: {
@@ -107,7 +126,7 @@
         methods: {
             get_filtred_articles(id){
                 this.mount_route_loading = true
-                this.mount_routes = []
+                this.mount_routes_by_masiv = []
                 axios
                 .get("/mount_route/get_filtred_mount_route_for_user/" + localStorage.getItem('lang') + '/' + id)
                 .then(response => {
@@ -121,10 +140,11 @@
 
             get_unfilted_articles(){
                 this.mount_route_loading = true
+                this.mount_routes = []
                 axios
-                .get('/articles/mount_route/'+localStorage.getItem('lang'))
+                .get('/mount_route/get_mount_routes_by_maunt/'+localStorage.getItem('lang'))
                 .then(response => {
-                    this.mount_routes = response.data
+                    this.mount_routes_by_masiv = response.data
                     // this.filter_mount_routes()
                 })
                 .catch(error =>{

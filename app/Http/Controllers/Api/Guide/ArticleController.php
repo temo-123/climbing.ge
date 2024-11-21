@@ -43,12 +43,12 @@ use Validator;
 
 class ArticleController extends Controller
 {
-    public function get_articles_for_forum(Request $request)
-    {
-        $global_news = Article::where('category', '=', $request->category)->where("published", "=", 1)->get();
-        $news = ArticlesService::get_locale_article_use_locale($global_news, $request->locale);
-        return $news;
-    }
+    // public function get_articles_for_forum(Request $request)
+    // {
+    //     $global_news = Article::where('category', '=', $request->category)->where("published", "=", 1)->get();
+    //     $news = ArticlesService::get_locale_article_use_locale($global_news, $request->locale);
+    //     return $news;
+    // }
 
     public function get_category_articles(Request $request)
     {
@@ -385,10 +385,11 @@ class ArticleController extends Controller
     {   
         $articles = [];
         // dd($request->category);
-        if ($request->category == "outdoor") {
-            $articles = $this->outdoor_list($request->lang);
-        }
-        else if($request->category == "news") {
+        // if ($request->category == "outdoor") {
+        //     $articles = $this->outdoor_list($request->lang);
+        // }
+        //else 
+        if($request->category == "news") {
             $articles = $this->article_list($request->category, $request->lang);
             unset($articles[7]);
         }

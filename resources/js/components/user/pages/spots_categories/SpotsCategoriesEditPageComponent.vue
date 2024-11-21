@@ -19,10 +19,6 @@
                 <div class="alert alert-danger" role="alert" v-if="errors.ka_name">
                     Georgian name - {{ errors.ka_name[0] }}
                 </div>
-
-                <div class="alert alert-danger" role="alert" v-if="errors.ru_name">
-                    Russion name - {{ errors.ru_name[0] }}
-                </div>
             </div>
         </div>
         <div class="row">

@@ -33,6 +33,7 @@ class OutdoorController extends Controller
     {
         return Region::get();
     }
+    
     public function get_spots_by_regions(Request $request)
     {
         // $regions_data = [];
@@ -54,7 +55,10 @@ class OutdoorController extends Controller
 
         foreach($regions as $region){
             $global_article = $region->articles;
-            array_push($regions_array, ['region' => $region, 'spots' => $this->get_outdoor_data($request -> lang, $region->articles)]);
+            // dd($global_article->count());
+            if($global_article->count() > 0){
+                array_push($regions_array, ['region' => $region, 'spots' => $this->get_outdoor_data($request -> lang, $global_article)]);
+            }
         }
 
         $all_outdoors = json_decode(json_encode(Article::where('category', '=', 'outdoor')->get()), true);
@@ -71,11 +75,15 @@ class OutdoorController extends Controller
         
         $other_articles = [];
         foreach($results as $result){
-            $other_article = Article::where('id', '=', $result)->get();
-            $art = $this->get_outdoor_data($request -> lang, $other_article);
-            array_push($other_articles, $art[0]);
+            $other_article = Article::where('id', '=', $result)->where('published', '=', '1')->get();
+            if($other_article->count()){
+                $art = $this->get_outdoor_data($request -> lang, $other_article);
+                array_push($other_articles, $art[0]);
+            }
         }
-        array_push($regions_array, ['spots' => $other_articles]);
+        if(count($other_articles)){
+            array_push($regions_array, ['region' => ['name' => 'other'], 'spots' => $other_articles]);
+        }
 
         // dd($regions_array);
 
