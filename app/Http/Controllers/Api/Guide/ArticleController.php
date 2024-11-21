@@ -43,13 +43,6 @@ use Validator;
 
 class ArticleController extends Controller
 {
-    // public function get_articles_for_forum(Request $request)
-    // {
-    //     $global_news = Article::where('category', '=', $request->category)->where("published", "=", 1)->get();
-    //     $news = ArticlesService::get_locale_article_use_locale($global_news, $request->locale);
-    //     return $news;
-    // }
-
     public function get_category_articles(Request $request)
     {
         return Article::latest('id')->where('category', '=', $request->category)->get();
@@ -391,7 +384,7 @@ class ArticleController extends Controller
         //else 
         if($request->category == "news") {
             $articles = $this->article_list($request->category, $request->lang);
-            unset($articles[7]);
+            array_splice($articles, 7);
         }
         else {
             $articles = $this->article_list($request->category, $request->lang);
@@ -399,71 +392,6 @@ class ArticleController extends Controller
 
         return $articles;
     }
-
-
-    // public function outdoor_list($lang, $article_id = 0)
-    // {
-    //     if($article_id == 0){
-    //         $global_outdoors = Article::latest('id')->where('category', '=', 'outdoor')->where('published', '=', 1)->get();
-    //         $article_count = Article::latest('id')->where('category', '=', 'outdoor')->where('published', '=', 1)->count();
-    //     }
-    //     else{
-    //         $global_outdoors = Article::latest('id')->where('category', '=', 'outdoor')->where('id', '!=', $article_id)->where('published', '=', 1)->get();
-    //         $article_count = Article::latest('id')->where('category', '=', 'outdoor')->where('id', '!=', $article_id)->where('published', '=', 1)->count();
-    //     }
-
-    //     $outdoors = ArticlesService::get_locale_article_use_locale($global_outdoors, $lang);
-
-    //     $route_num = 0;
-    //     $mtp_num = 0;
-    //     $route_quantity = array();
-
-    //     $area_data = [];
-
-    //     foreach($global_outdoors as $outdoor){
-    //         $outdoor -> outdoor_region;
-    //         $sector_n = Sector::where('article_id', '=', $outdoor->id)->get();
-    //         $routes_a = array ($outdoor->title);
-    //         $boulder_routes = array ($outdoor->title);
-    //         $mtps_a = array ();
-    //         $sector_count = Sector::where('article_id', '=', $outdoor->id)->count();
-    //         foreach($sector_n as $sector){
-    //             $routes = Route::where('sector_id', '=', $sector->id)->count();
-    //             foreach((array) $routes as $route){
-    //                 $route_num++;
-    //                 array_push($routes_a, $route);
-    //             }
-    //             $mtps = MTP::where('sector_id', '=', $sector->id)->count();
-    //             if ($mtps > 0) {
-    //                 foreach((array) $mtps as $mtp){
-    //                     $mtp_num++;
-    //                     array_push($mtps_a, $mtp);
-    //                 }
-    //             }
-    //         }
-    //         if($route_num == $sector_count) {
-    //             $route_sum=array_sum($routes_a);
-    //             $mtp_sum=array_sum($mtps_a);
-    //             array_push($route_quantity, array("article_id" => $outdoor->id, "sectors" => $sector_count, "routes" => $route_sum, "mtps" => $mtp_sum) ); // push route num in last array
-    //         }
-    //         else $route_sum=0;{
-    //             $route_num = 0;
-    //         }
-    //     }
-
-    //     // dd($outdoors, $route_quantity);
-        
-    //     foreach ($outdoors as $outdoor) {
-    //         foreach ($route_quantity as $quantity) {
-    //             if ($quantity['article_id'] == $outdoor['global_data']['id']) {
-    //                 array_push($area_data, ["route_quantyty" => $quantity, "area" => $outdoor]);
-    //             }
-    //         }
-    //     }
-
-    //     // dd($area_data[0]['area']['global_data']['outdoor_region']);
-    //     return $area_data;
-    // }
 
     public function article_list($category, $lang)
     {
@@ -475,18 +403,6 @@ class ArticleController extends Controller
             $articles = ArticlesService::get_locale_article_use_locale($global_articles, $lang);
         }
         // dd($articles);
-        return $articles;
-    }
-
-    public function news_list($lang)
-    {
-        $article_count = Article::where('category', '=', 'news')->where('published', '=', 1)->count();
-        $articles = [];
-        if($article_count > 0){
-            $global_articles = Article::latest('id')->where('category', '=', 'news')->where('published', '=', 1)->simplePaginate(6);
-            $articles = ArticlesService::get_locale_article_use_locale($global_articles, $lang);
-        }
-
         return $articles;
     }
 
