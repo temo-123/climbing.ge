@@ -54,7 +54,7 @@ class OutdoorController extends Controller
         $regions_array = [];
 
         foreach($regions as $region){
-            $global_article = $region->articles;
+            $global_article = $region->articles->where('published', '=', '1');
             // dd($global_article->count());
             if($global_article->count() > 0){
                 array_push($regions_array, ['region' => $region, 'spots' => $this->get_outdoor_data($request -> lang, $global_article)]);
