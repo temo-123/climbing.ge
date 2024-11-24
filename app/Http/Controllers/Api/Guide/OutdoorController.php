@@ -61,7 +61,7 @@ class OutdoorController extends Controller
             }
         }
 
-        $all_outdoors = json_decode(json_encode(Article::where('category', '=', 'outdoor')->get()), true);
+        $all_outdoors = json_decode(json_encode(Article::where('category', '=', 'outdoor')->where('published', '=', '1')->get()), true);
         $reg_array = [];
         
         foreach ($regions_array as $region) {
