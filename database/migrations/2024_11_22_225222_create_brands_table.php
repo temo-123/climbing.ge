@@ -14,8 +14,12 @@ return new class extends Migration
         Schema::create('brands', function (Blueprint $table) {
             $table->id();
 
-            $table->string('us_name')->nullable();
-            $table->string('ka_name')->nullable();
+            $table->unsignedBigInteger('us_brand_id');
+            $table->foreign('us_brand_id')->references('id')->on('locale_brands')->constrained()->onDelete('cascade');
+
+            $table->unsignedBigInteger('ka_brand_id');
+            $table->foreign('ka_brand_id')->references('id')->on('locale_brands')->constrained()->onDelete('cascade');
+
             
             $table->timestamps();
         });

@@ -56,6 +56,7 @@
                                         });
                     this.get_categories_data()
                     this.get_sale_codes_data()
+                    this.get_all_brands_data()
                 })
                 .catch(
                     error => console.log(error)
@@ -79,11 +80,28 @@
                 );
 
             },
-            get_sale_codes_data: function(){
+            get_all_brands_data: function(){
                 axios
                 .get("../api/sale_code")
                 .then(response => {
                     this.data_for_tab.push({'id': 3,
+                                            'data': response.data, 
+                                            'table_name': 'Brands', 
+                                            // 'table_add_url': 'saleCodeAdd', 
+                                            // 'table_edit_url': 'saleCodeEdit',
+                                            // 'table_del_url': 'del_url', 
+                                        });
+                })
+                .catch(
+                    error => console.log(error)
+                );
+
+            },
+            get_sale_codes_data: function(){
+                axios
+                .get("../api/sale_code")
+                .then(response => {
+                    this.data_for_tab.push({'id': 4,
                                             'data': response.data, 
                                             'table_name': 'Sale codes', 
                                             // 'table_add_url': 'saleCodeAdd', 

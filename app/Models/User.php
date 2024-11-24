@@ -158,7 +158,9 @@ class User extends Authenticatable implements MustVerifyEmail
 	}
 	public function product_feedbacks()
 	{
-        return $this->hasMany(Product_feedback::class, 'user_id');
+        // return $this->hasMany(Product_feedback::class, 'user_id');
+        return $this->belongsToMany(Product_feedback::class, 'user_product_feedbacks', 'user_id', 'feedback_id');
+
 	}
 
 

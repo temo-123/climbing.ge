@@ -28,7 +28,7 @@
         </div>
 
         <div class="col-md-12"  v-else>
-            <div class="col-sm-10">
+            <div class="col-sm-8 ">
                 <!-- <section class="inner"> -->
                     <section class="portfolio inner" id="portfolio" v-if="products.length > 0">
 
@@ -54,7 +54,7 @@
                 <!-- </section> -->
             </div>
 
-            <articleRightMenu/>
+            <productRightMenu/>
         </div>
         
         <metaData 
@@ -72,7 +72,7 @@
     import lingallery from 'lingallery'; // https://github.com/ChristophAnastasiades/Lingallery
     import metaData from '../../items/MetaDataComponent'
 
-    import articleRightMenu from '../../items/navbars/RightMenuComponent'
+    import productRightMenu from '../../items/navbars/RightMenuComponent'
 
     export default {
         components: {
@@ -81,7 +81,7 @@
             catalogItem,
             emptyPageComponent,
             ContentLoader,
-            articleRightMenu
+            productRightMenu
         },
         data: function () {
             return {

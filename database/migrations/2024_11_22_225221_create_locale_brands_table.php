@@ -11,8 +11,15 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('sport_route_reviews', function (Blueprint $table) {
-            $table->foreignId('user_id')->constrained()->nullable();
+        Schema::create('locale_brands', function (Blueprint $table) {
+            $table->id();
+
+            $table->string('locale')->nullable();
+
+            $table->string('title')->nullable();
+            $table->string('short_description')->nullable();
+            
+            $table->timestamps();
         });
     }
 
@@ -21,8 +28,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('sport_route_reviews', function (Blueprint $table) {
-            $table->dropColumn('user_id');
-        });
+        Schema::dropIfExists('locale_brands');
     }
 };

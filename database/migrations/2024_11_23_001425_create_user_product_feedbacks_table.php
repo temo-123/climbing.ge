@@ -11,15 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::dropIfExists('product_feedback_user');
-    }
-
-    /**
-     * Reverse the migrations.
-     */
-    public function down(): void
-    {
-        Schema::create('product_feedback_user', function (Blueprint $table) {
+        Schema::create('user_product_feedbacks', function (Blueprint $table) {
             $table->id();
 
             $table->foreignId('user_id')->constrained();
@@ -29,5 +21,13 @@ return new class extends Migration
 
             $table->timestamps();
         });
+    }
+
+    /**
+     * Reverse the migrations.
+     */
+    public function down(): void
+    {
+        Schema::dropIfExists('user_product_feedbacks');
     }
 };

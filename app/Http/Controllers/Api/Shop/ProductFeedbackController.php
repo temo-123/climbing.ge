@@ -5,10 +5,12 @@ namespace App\Http\Controllers\Api\Shop;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
+use Auth;
+
 use App\Models\User;
 use App\Models\Shop\Product;
 use App\Models\Shop\Product_feedback;
-use App\Models\Shop\Product_feedback_user;
+use App\Models\Shop\User_product_feedbacks;
 use App\Models\Shop\Product_feedback_complaint;
 use App\Models\Shop\Product_feedback_query;
 
@@ -39,7 +41,7 @@ class ProductFeedbackController extends Controller
         $user_id = auth()->user()->id;
 
         if(user::where("id", "=", $user_id)->count() > 0){
-            $user = user::where("id", "=", $user_id)->first();
+            $user = auth()->user();
             
             if($user->product_feedbacks != null){
                 $user_feedbacks = $user->product_feedbacks;
@@ -75,7 +77,7 @@ class ProductFeedbackController extends Controller
         $user = Product_feedback::where("email", "=", $request['data']['email'])->count();
 
         if($user == 0){
-            return CommentService::create_comment($request, Product_feedback::class, Product_feedback_user::class, 'product', 'feedback');
+            return CommentService::create_comment($request, Product_feedback::class, User_product_feedbacks::class, 'product', 'feedback');
             // return 'Thenks for your feedback!';
         }
         else{
@@ -85,7 +87,7 @@ class ProductFeedbackController extends Controller
 
     public function del_feedback($id)
     {
-        return CommentService::del_comment($id, Product_feedback::class, Product_feedback_user::class, 'feedback');
+        return CommentService::del_comment($id, Product_feedback::class, User_product_feedbacks::class, 'feedback');
     }
 
     public function hide_feedback(Request $request)

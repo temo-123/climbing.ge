@@ -28,6 +28,7 @@ return new class extends Migration
 
             $table->string('deleted_reason')->nullable();
             $table->timestamp('deleted_at')->nullable();
+            $table->foreignId('have_product')->nullable();
 
             // $table->foreignId('product_id')->constrained();
             $table->unsignedBigInteger('product_id');

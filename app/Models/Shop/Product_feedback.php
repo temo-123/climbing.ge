@@ -18,6 +18,6 @@ class Product_feedback extends Model
 
     public function user()
     {
-        return $this->belongsToMany(User::class, 'product_feedback_user', 'feedback_id', 'user_id');
+        return $this->belongsToMany(User::class, 'user_product_feedbacks', 'feedback_id', 'user_id');
     }
 }

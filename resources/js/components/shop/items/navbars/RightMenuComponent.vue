@@ -1,11 +1,9 @@
 <template>
-    <div :class='"col-sm-3 col-md-3 col-xs-offset-1 display-biger-then-768px right_fixed_menu "+[right_navbar_class]'>
+    <div :class='"col-sm-3 col-sm-offset-1 display-biger-then-768px right_fixed_menu "+[right_navbar_class]'>
 
         <nav class="fading-side-menu display-biger-then-768px ">
-            <!-- <h2 class="fading-side-menu navbar_title display-biger-then-768px" >Filters</h2> -->
 
             <div class="row fading-side-menu local_bisnes display-biger-then-768px" >
-                <!-- <div class="bar"></div> -->
                 <div class="row">
                     <div class="col-sm-8 fading-side-menu">
                         <h3 class="fading-side-menu navbar_title display-biger-then-768px" >Filtr by category</h3>
@@ -32,62 +30,41 @@
                     </div>
 
                     <div class="col-sm-8 fading-side-menu">
-                        <div class="row">
-                            <!-- <div class="range-slider"> -->
-                                <input class='min_price_range price_range' type="range" min="0" max="999" v-model="min_price" step="10">
-                            <!-- </div> -->
-                        </div>
+                        <input class='min_price_range price_range width_100' type="range" min="0" max="999" v-model="min_price" step="10">
+
                         <div class="row price_range_text text-center">
-                            <!-- <p>Minimal price - {{min_price}}</p> -->
-                            <p>
-                                Min price -
+                            <div class="col-sm-8">Min price - </div>
+                            <div class="col-sm-2">
                                 <input
                                     type="text"
                                     v-model="min_price"
                                     maxlength ="6"
                                     :style="'border: 0;'"
                                 /> 
-                            </p>
+                            </div>
                         </div>
                     </div>
 
                     <div class="col-sm-8 fading-side-menu">
-                        <!-- <div class="range-slider"> -->
-                            <input class="max_price_range price_range" type="range" min="0" max="999" v-model='max_price' value="1000" step="10">
-                        <!-- </div> -->
-                        <div class="row price_range_text text-center">
-                            <!-- <p>Maximal price - {{max_price}}</p> -->
-                            <p>
-                                Max price -
+                        <input class="max_price_range price_range width_100" type="range" min="0" max="999" v-model='max_price' value="1000" step="10">
+
+                        <div class="row price_range_text text-center ">
+                            <div class="col-sm-8">Max price - </div>
+                            <div class="col-sm-2">
                                 <input
                                     type="text"
                                     v-model="max_price"
                                     maxlength ="6"
                                     :style="'border: 0;'"
                                 /> 
-                            </p>
+                            </div>
                         </div>
                     </div>
 
                     <div class="col-sm-8 fading-side-menu">
-                        <!-- <div class="row"> -->
-                            <button class="btn btn-primary" @click="serReangSlider()">Filtr</button>
-                        <!-- </div> -->
+                        <button class="btn btn-primary" @click="serReangSlider()">Filtr</button>
                     </div>
-                    <!-- <div class="col-md-2 col-md-offset-6 text-right">
-                        <div class="btn-group list_btn" id="status" data-toggle="buttons" style="border: 1px; border-style: solid;">
-                            <label class="btn btn-default btn-on btn-xs active">
-                            <input type="radio" value="1" name="multifeatured_module[module_id][status]" class="product_style_but" checked="checked">
-                                <i class="fa fa-table product_style_but_icon"></i>
-                            </label>
-                            <label class="btn btn-default btn-off btn-xs ">
-                            <input type="radio" value="0" name="multifeatured_module[module_id][status]" class="product_style_but">
-                                <i class="fa fa-th-list product_style_but_icon"></i>
-                            </label>
-                        </div>
-                    </div> -->
                 </div>
-                <!-- <div class="bar"></div> -->
             </div>
 
         </nav>

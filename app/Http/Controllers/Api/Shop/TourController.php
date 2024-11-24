@@ -187,7 +187,7 @@ class TourController extends Controller
 
         $global_tour = Tour::where('id',strip_tags($global_id))->first();
         $us_tour = Locale_tour::where('id',strip_tags($global_tour->us_tour_id))->first();
-        $ru_tour = Locale_tour::where('id',strip_tags($global_tour->ru_tour_id))->first();
+        // $ru_tour = Locale_tour::where('id',strip_tags($global_tour->ru_tour_id))->first();
         $ka_tour = Locale_tour::where('id',strip_tags($global_tour->ka_tour_id))->first();
         
         // delete tour file
