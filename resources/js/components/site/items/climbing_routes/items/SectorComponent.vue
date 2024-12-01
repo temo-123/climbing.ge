@@ -143,7 +143,7 @@
             <tbody>
                 <tr v-for="route in sector.sport_routes" :key="route.id">
                     <td>{{ route.num }}</td>
-                    <td @click="show_route_modal()">{{ route.name }}</td>
+                    <td @click="show_route_modal(route.id)">{{ route.name }}</td>
                     <td>{{ route.height }}</td>
 
                     <td v-if="route.category == 'tred'">Tred</td>

@@ -21,7 +21,7 @@ class TaskCategoryController extends Controller
         $new_Task_category = new Task_category;
 
         $new_Task_category['title'] = $request->data['title'];
-        $new_Task_category['text'] = $request->data['text'];
+        $new_Task_category['short_description'] = $request->data['short_description'];
 
         $new_Task_category -> save();
     }
@@ -30,7 +30,7 @@ class TaskCategoryController extends Controller
         $editing_task_category = Task_category::where("id", "=", $request->task_category_id)->first();
 
         $editing_task_category['title'] = $request->data['title'];
-        $editing_task_category['text'] = $request->data['text'];
+        $editing_task_category['short_description'] = $request->data['short_description'];
         $editing_task_category -> save();
     }
 

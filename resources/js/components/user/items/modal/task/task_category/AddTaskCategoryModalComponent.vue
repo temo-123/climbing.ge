@@ -20,7 +20,7 @@
                     <div class="form-group clearfix">
                         <label for="name" class='col-xs-12 control-label'> Short description </label>
                         <div class="col-xs-12">
-                            <textarea rows="6" name="text" v-model="data.text" id="text" maxlength="500" placeholder="Task" class="form-control textarea"></textarea>
+                            <textarea rows="6" name="text" v-model="data.short_description" id="text" maxlength="500" placeholder="Task" class="form-control textarea"></textarea>
                         </div>
                     </div>
 
@@ -54,7 +54,7 @@
 
                 data: {
                     title: '',
-                    text: '',
+                    short_description: '',
                 }
             }
         },

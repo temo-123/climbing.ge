@@ -109,8 +109,8 @@ class SiteDataController extends Controller
         $counts['guid_follovers'] = Service_follower::where("service", "=", 'shop')->count();
         $counts['shop_follovers'] = Service_follower::where("service", "=", 'shop')->count();
         
-        $counts['google_accounts_count'] = Social_account::where("provider", "=", 'google')->count();
-        $counts['facebook_accounts_count'] = Social_account::where("provider", "=", 'facebook')->count();
+        // $counts['google_accounts_count'] = Social_account::where("provider", "=", 'google')->count();
+        // $counts['facebook_accounts_count'] = Social_account::where("provider", "=", 'facebook')->count();
 
         $counts['roles'] = Role::count();
         $counts['permissions'] = Permission::count();

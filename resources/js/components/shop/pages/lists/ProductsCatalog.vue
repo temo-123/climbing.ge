@@ -28,10 +28,11 @@
         </div>
 
         <div class="col-md-12"  v-else>
-            <div class="col-sm-8 ">
+            <div class="col-sm-12 ">
                 <!-- <section class="inner"> -->
                     <section class="portfolio inner" id="portfolio" v-if="products.length > 0">
 
+                            <button type="submit" class="btn btn-default btn-send main-btn" @click="open_menu()">Filter products</button>
 
                             <div class="layout">
                                 <!-- <section class="inner"> -->
@@ -54,7 +55,7 @@
                 <!-- </section> -->
             </div>
 
-            <productRightMenu/>
+            <productRightMenu ref="left_menu"/>
         </div>
         
         <metaData 
@@ -110,7 +111,9 @@
                 })
                 .finally(() => this.products_loading = false);
             },
-
+            open_menu(){
+                this.$refs.left_menu.open_menu()
+            }
             
         }
     }
