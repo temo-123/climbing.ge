@@ -31,8 +31,7 @@
                     <span v-html="selected_mount_data.locale_data.text"></span>
                 </div>
             </div>
-<!-- {{ this.mount_routes.length > 0 }}
-{{this.mount_routes_by_masiv.length > 0}} -->
+            
             <div class="row">
                 <div v-if="mount_route_loading">
                     <content-loader
@@ -51,12 +50,11 @@
                                 <h2 v-else class="article_list_short_description">Other</h2>
                             </div>
                             <div class="col-md-12">
-                                <!-- {{ masiv.mount.locale_data.title }} -->
                                 <mountCard 
                                     v-for="mount_route in masiv.mount_route"
-                                    :key='mount_route.id'
+                                    :key='mount_route.global_data.id'
                                     :mount="mount_route"
-                                    :route="'mountaineering/'+mount_route.url_title"
+                                    :route="'mountaineering/'+mount_route.global_data.url_title"
                                 />
                             </div>
                         </div>
