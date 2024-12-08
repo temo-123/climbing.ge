@@ -1,13 +1,13 @@
 <template>
     <stack-modal
             :show="is_show_add_modal"
-            :title="'Edit tour category'"
+            :title="'Add tour category'"
             @close="close_modal()"
             :saveButton="{ visible: true, title: 'Save', btnClass: { 'btn btn-primary': true } }"
             :cancelButton="{ visible: false, title: 'Close', btnClass: { 'btn btn-danger': true } }"
         >
         <pre class="language-vue">
-            <h1>Edit tour category</h1>
+            <h1>Add tour category</h1>
 
             <div class="row justify-content-center" v-show="is_loading">
                 <div class="col-md-4">

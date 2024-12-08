@@ -90,14 +90,6 @@ class MountController extends Controller
             $validation_issets['us_info_validation'] = false;
         }
 
-        // $ru_validate = $this->local_mount_validate($request['data']['ru_data']);
-        // if ($ru_validate != null) {
-        //     $validation_issets['ru_info_validation'] = $ru_validate;
-        // }
-        // else{
-        //     $validation_issets['ru_info_validation'] = false;
-        // }
-
         $global_validate = $this->global_mount_validate($request['data']['global_data']);
         if ($global_validate != null) {
             $validation_issets['global_info_validation'] = $global_validate;

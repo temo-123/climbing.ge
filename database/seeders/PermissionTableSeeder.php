@@ -507,6 +507,18 @@ class PermissionTableSeeder extends Seeder
                 'subject' => 'product',
                 'action' => 'show_all',
             ],
+            [
+                'subject' => 'product_brand',
+                'action' => 'add',
+            ],
+            [
+                'subject' => 'product_brand',
+                'action' => 'edit',
+            ],
+            [
+                'subject' => 'product_brand',
+                'action' => 'del',
+            ],
         );
 
         foreach ($permissions as $permission) {

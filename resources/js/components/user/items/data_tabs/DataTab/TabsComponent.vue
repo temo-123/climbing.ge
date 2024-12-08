@@ -94,6 +94,13 @@
                                     </span>
                                     <span
                                         v-else-if="
+                                            filtr_data.table_name == 'Brands'
+                                        "
+                                    >
+                                        <button class="btn btn-primary pull-left" @click="create_product_brand()" v-if="$can('add', 'product_brand')">Create brand</button>
+                                    </span>
+                                    <span
+                                        v-else-if="
                                             filtr_data.table_name == 'Films tags' &&
                                             filtr_data.table_category !== null
                                         "
@@ -216,6 +223,11 @@
                                     :table_name="data.table_name"
                                 />
                             </thead>
+                            <thead  v-else-if="data.table_name == 'Brands'">
+                                <brandsTabHeader 
+                                    :table_name="data.table_name"
+                                />
+                            </thead>
                             <thead  v-else-if="data.table_name == 'My Products'">
                                 <myProductTabTabHeader 
                                     :table_name="data.table_name"
@@ -332,6 +344,15 @@
                             </tbody>
                             <tbody v-else-if="data.table_name == 'Events'">
                                 <eventTab
+                                    v-for="table_info in data.data"
+                                    :key="table_info.id"
+                                    :table_info="table_info"
+                                    
+                                    @restart="update"
+                                />
+                            </tbody>
+                            <tbody v-else-if="data.table_name == 'Brands'">
+                                <brandsTab
                                     v-for="table_info in data.data"
                                     :key="table_info.id"
                                     :table_info="table_info"
@@ -644,6 +665,8 @@
 
         <saleCodeModal ref="add_sale_code" @restart="update"/>
 
+        <AddProductBrandModal ref="add_product_brand" @restart="update"/>
+
         <orderDetalModal
             v-if="table_data[tab_num - 1].table_name == 'Orders'"
         />
@@ -682,7 +705,9 @@ import reviewTabHeader from "./tab_header/ReviewTabHeaderComponent.vue"
 import feedbackTabHeader from "./tab_header/FeedbackTabHeaderComponent.vue"
 import non_registered_commenter_tab_header from "./tab_header/NonRegisteredCommenterTabHeader.vue"
 import myProductTabTabHeader from "./tab_header/MyProductTabHeaderComponent.vue";
+import brandsTabHeader from "./tab_header/BrandsTabHeaderComponent.vue";
 
+import brandsTab from "./tabs/BrandsTabComponent.vue";
 import eventTab from "./tabs/EventTabComponent.vue";
 import sectorLocalImageTab from "./tabs/SectorLocalImageTabComponent.vue";
 import routeTab from "./tabs/RouteTabComponent.vue";
@@ -725,6 +750,9 @@ import addUserModal from "./tab_modals/UserAddModalComponent.vue";
 import articleQuickViewModal from "./tab_modals/ArticleQuickViewModalComponen.vue";
 import saleCodeModal from "./tab_modals/add/AddSaleCodeModalComponen.vue";
 
+import AddProductBrandModal from "./tab_modals/add/AddProductBrandModal.vue";
+// import EditProductBrandModal from "./tab_modals/add/EditProductBrandModal.vue";
+
 import orderDetalModal from "./tab_modals/OrderDetalsModalComponent.vue";
 import editOrderStatusModal from "./tab_modals/EditOrderStatusModalComponent.vue";
 
@@ -755,6 +783,7 @@ export default {
         reviewTabHeader,
         feedbackTabHeader,
         non_registered_commenter_tab_header,
+        brandsTabHeader,
 
         sectorLocalImageTab,
         routeTab,
@@ -787,6 +816,7 @@ export default {
         reviewTab,
         feedbackTab,
         non_registered_commenter_tab,
+        brandsTab,
 
         saleCodeModal,
         shipedRegionAddModal,
@@ -794,6 +824,9 @@ export default {
         addUserModal,
         articleQuickViewModal,
         addTourCategoryModal,
+
+        AddProductBrandModal,
+        // EditProductBrandModal,
 
         orderDetalModal,
         editOrderStatusModal,
@@ -822,7 +855,7 @@ export default {
             this.$refs.control_tag[0].tag_control_modal(action)
         },
         sale_code_modal(action){
-            this.$refs.add_sale_code.add_sale_code_model_open()
+            this.$refs.add_product_brand.add_sale_code_model_open()
         },
 
         add_role(){
@@ -843,6 +876,9 @@ export default {
         },
         create_costom_order(){
             alert('comming soon')
+        },
+        create_product_brand(){
+            this.$refs.add_product_brand.open_modal()
         }
     },
 };

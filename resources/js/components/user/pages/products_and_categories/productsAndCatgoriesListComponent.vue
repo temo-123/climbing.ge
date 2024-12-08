@@ -44,8 +44,8 @@
             get_products_data: function(){
                 this.data_for_tab = []
                 axios
-                .get("../api/product/get_all_products")
-                // .get("../api/products/en/")
+                .get("/product/get_all_products")
+                // .get("/products/en/")
                 .then(response => {
                     this.data_for_tab.push({'id': 1,
                                             'data': response.data, 
@@ -55,8 +55,6 @@
                                             'table_del_url': 'del_url', 
                                         });
                     this.get_categories_data()
-                    this.get_sale_codes_data()
-                    this.get_all_brands_data()
                 })
                 .catch(
                     error => console.log(error)
@@ -65,7 +63,7 @@
             },
             get_categories_data: function(){
                 axios
-                .get("../api/product_category")
+                .get("/product_category")
                 .then(response => {
                     this.data_for_tab.push({'id': 2,
                                             'data': response.data, 
@@ -74,6 +72,7 @@
                                             'table_edit_url': 'productCategoryEdit',
                                             'table_del_url': 'del_url', 
                                         });
+                    this.get_all_brands_data()
                 })
                 .catch(
                     error => console.log(error)
@@ -82,7 +81,7 @@
             },
             get_all_brands_data: function(){
                 axios
-                .get("../api/sale_code")
+                .get("/brand/get_all_brands")
                 .then(response => {
                     this.data_for_tab.push({'id': 3,
                                             'data': response.data, 
@@ -91,6 +90,7 @@
                                             // 'table_edit_url': 'saleCodeEdit',
                                             // 'table_del_url': 'del_url', 
                                         });
+                    this.get_sale_codes_data()
                 })
                 .catch(
                     error => console.log(error)
@@ -99,7 +99,7 @@
             },
             get_sale_codes_data: function(){
                 axios
-                .get("../api/sale_code")
+                .get("/sale_code")
                 .then(response => {
                     this.data_for_tab.push({'id': 4,
                                             'data': response.data, 
@@ -117,7 +117,7 @@
 
             product_del(itemId) {
                 axios
-                .post('../api/products/del/' + itemId, {
+                .post('/products/del/' + itemId, {
                     id: itemId,
                 })
                 .then(Response => {

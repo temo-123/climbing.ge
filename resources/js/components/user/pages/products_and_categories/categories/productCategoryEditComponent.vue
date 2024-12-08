@@ -64,6 +64,8 @@
                     ka_name: '',
                 },
 
+                is_back_action_query: true,
+
                 errors: [],
 
                 editing_category_id: this.$route.params.id,
@@ -74,6 +76,18 @@
         
             document.querySelector('body').style.marginLeft = '0';
             document.querySelector('.admin_page_header_navbar').style.marginLeft = '0';
+        },
+        beforeRouteLeave (to, from, next) {
+            if(this.is_back_action_query == true){
+                if (window.confirm('Added information will be deleted!!! Are you sure, you want go back?')) {
+                    this.is_back_action_query = false;
+                    next()
+                } else {
+                    next(false)
+                }
+            }else {
+                next()
+            }
         },
         methods: {
             get_editing_category_data() {
@@ -91,7 +105,7 @@
                     _method: 'PATCH'
                 })
                 .then((response)=> { 
-                    this.go_back()
+                    this.go_back(true)
                 })
                 .catch(error =>{
                     if (error.response.status == 422) {
@@ -100,9 +114,9 @@
                 })
             },
 
-            go_back() {
-                this.$router.go(-1)
-            }
+            go_back: function(action = false) {
+                this.is_back_action_query = this.$going.back(this, action)
+            },
         }
     }
 </script>

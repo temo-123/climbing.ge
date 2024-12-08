@@ -445,7 +445,7 @@ Route::group(['namespace'=>'Api'], function() {
 
         Route::controller(ProductBrandController::class)->prefix('brand')->group( function() {
             Route::get('/get_all_brands', 'get_all_brands');
-            Route::get('/get_brands_for_category', 'get_brands_for_category');
+            Route::get('/get_brand/{id}', 'get_brand');
             Route::post('/create_brand', 'create_brand');
             Route::post('/edit_brand/{id}', 'edit_brand');
             Route::delete('/del_brand/{id}', 'del_brand');

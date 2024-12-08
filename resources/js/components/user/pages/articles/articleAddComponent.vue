@@ -138,7 +138,7 @@
                     global_article: [],
                     us_article: [],
                     ka_article: [],
-                    ru_article: [],
+                    // ru_article: [],
                 },
                 article_image: '',
 
