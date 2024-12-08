@@ -52,7 +52,9 @@
 
                     <localeSwitcher />
 
-                    <goTo :go_to_page="'/'" />
+                    <goToAdminPage :go_to_page="'/cart'" icon='<i class="fa fa-shopping-cart" aria-hidden="true"></i>'/>
+
+                    <goToAdminPage :go_to_page="'/'" />
                 </ul>
 
                 <!-- Search -->
@@ -119,9 +121,9 @@
                 else e.preventDefault(); // If not match, don't add to input text
             },
 
-            goTo(page = ''){
-                window.open(this.MIX_APP_SSH + 'user.' + this.MIX_SITE_URL + page) ;
-            },
+            // goTo(page = ''){
+            //     window.open(this.MIX_APP_SSH + 'user.' + this.MIX_SITE_URL + page) ;
+            // },
 
             currency(){
 

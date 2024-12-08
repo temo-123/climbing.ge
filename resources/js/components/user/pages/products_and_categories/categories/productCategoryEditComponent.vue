@@ -41,6 +41,7 @@
                             </div>
                         </form>
         
+                        <subcategoryControl :category_id_prop="data.id"/>
                     </div>
                 </div>
             </div>
@@ -49,12 +50,17 @@
 </template>
 
 <script>
+    import subcategoryControl from './subcategories/subcategoryControlComponent.vue'
+
     export default {
+        components: {
+            subcategoryControl,
+        },
         data(){
             return {
                 data: {
                     us_name: '',
-                    ru_name: '',
+                    // ru_name: '',
                     ka_name: '',
                 },
 
@@ -74,9 +80,7 @@
                 axios
                 .get('../../../api/product_category/' + this.editing_category_id)
                 .then(response => {
-                    this.data.us_name = response.data['us_name'],
-                    this.data.ru_name = response.data['ru_name'],
-                    this.data.ka_name = response.data['ka_name']
+                    this.data = response.data
                 })
                 .catch(error => console.log(error))
             },

@@ -59,7 +59,7 @@ Vue.mixin(going);
  */
 
 import leftmenu from "./components/user/items/navbars/LeftMenuComponent.vue";
-import goTo from "./components/global_components/GoToComponrnt.vue";
+import goToAdminPage from "./components/global_components/GoToComponrnt.vue";
 import store from "./store";
 import site_img from "./components/site/items/ImageComponent.vue";
 import shop_img from "./components/shop/items/ImageComponent.vue";
@@ -69,7 +69,7 @@ Vue.component("site-img", site_img);
 Vue.component("shop-img", shop_img);
 Vue.component("forum-img", forum_img);
 Vue.component("left-menu", leftmenu);
-Vue.component("goTo", goTo);
+Vue.component("goToAdminPage", goToAdminPage);
 
 import MainWrapper from "./components/shop/MainWrapper.vue";
 import Index from "./components/site/IndexComponent.vue";

@@ -434,6 +434,23 @@ Route::group(['namespace'=>'Api'], function() {
 
         Route::apiResource('/product_category', 'ProductCategoryController');
 
+        Route::controller(ProductSubcategoryController::class)->prefix('subcategory')->group( function() {
+            Route::get('/get_all_subcategories', 'get_all_subcategories');
+            Route::get('/get_subcategories_for_category/{category_id}', 'get_subcategories_for_category');
+            Route::get('/get_subcategory/{id}', 'get_subcategory');
+            Route::post('/create_subcategory/{category_id}', 'create_subcategory');
+            Route::post('/edit_subcategory/{id}', 'edit_subcategory');
+            Route::delete('/del_subcategory/{id}', 'del_subcategory');
+        });
+
+        Route::controller(ProductBrandController::class)->prefix('brand')->group( function() {
+            Route::get('/get_all_brands', 'get_all_brands');
+            Route::get('/get_brands_for_category', 'get_brands_for_category');
+            Route::post('/create_brand', 'create_brand');
+            Route::post('/edit_brand/{id}', 'edit_brand');
+            Route::delete('/del_brand/{id}', 'del_brand');
+        });
+
         Route::controller(ProductOptionController::class)->prefix('product_option')->group( function() {
             Route::get('/get_activ_product_options/{product_id}', 'get_activ_product_options');
             Route::post('/add_option', 'add_option');

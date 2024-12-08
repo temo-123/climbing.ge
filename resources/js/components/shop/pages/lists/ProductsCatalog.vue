@@ -55,7 +55,7 @@
                 <!-- </section> -->
             </div>
 
-            <productRightMenu ref="left_menu"/>
+            <productLeftMenu ref="left_menu"/>
         </div>
         
         <metaData 
@@ -73,7 +73,7 @@
     import lingallery from 'lingallery'; // https://github.com/ChristophAnastasiades/Lingallery
     import metaData from '../../items/MetaDataComponent'
 
-    import productRightMenu from '../../items/navbars/RightMenuComponent'
+    import productLeftMenu from '../../items/navbars/LeftMenuComponent'
 
     export default {
         components: {
@@ -82,7 +82,7 @@
             catalogItem,
             emptyPageComponent,
             ContentLoader,
-            productRightMenu
+            productLeftMenu
         },
         data: function () {
             return {

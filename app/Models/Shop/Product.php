@@ -44,9 +44,9 @@ class Product extends Model
 	// 	return $this->hasOne(Locale_product::class, 'id', 'ru_product_id');
 	// }
 
-  public function product_category()
+  public function product_subcategory()
   {
-    return $this->hasOne(Product_category::class, 'id', 'category_id');
+    return $this->hasOne(Product_subcategory::class, 'id', 'subcategory_id');
   }
 
   public function product_options()

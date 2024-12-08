@@ -92,9 +92,19 @@
                         <div class="form-group clearfix">
                             <label for="name" class='col-xs-2 control-label'> Category </label>
                             <div class="col-xs-8">
-                                <select class="form-control" v-model="data.global_product.category_id" name="category_id" > 
+                                <select class="form-control" v-model="category_id" name="category_id" > 
                                     <option v-bind:value="''" disabled>Select category</option> 
                                     <option v-for="cat in categories" :key="cat.id" v-bind:value="cat.id"> {{ cat.us_name }}</option>
+                                </select> 
+                            </div>
+                        </div>
+
+                        <div class="form-group clearfix">
+                            <label for="name" class='col-xs-2 control-label' v-if="category_id != 0"> Subcategory </label>
+                            <div class="col-xs-8" v-if="category_id != 0">
+                                <select class="form-control" v-model="data.global_product.subcategory_id" name="category_id" > 
+                                    <option v-bind:value="''" disabled>Select category</option> 
+                                    <!-- <option v-for="cat in categories" :key="cat.id" v-bind:value="cat.id"> {{ cat.us_name }}</option> -->
                                 </select> 
                             </div>
                         </div>
@@ -217,13 +227,14 @@
                 },
 
                 errors: [],
+                category_id: 0,
 
                 data: [],
                 
                 data: {
                     global_product: {
                         published: 0,
-                        category_id: "",
+                        subcategory_id: "",
                         sale_type: "",
 
                         mead_in_georgia: null,

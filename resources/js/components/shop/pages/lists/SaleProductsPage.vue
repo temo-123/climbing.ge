@@ -8,67 +8,6 @@
             <span v-html="this.$siteData.shop_short_description"></span>
         </h2>
 
-        <div class="col-md-12"  v-if="products.length > 0">
-            <!-- <div class="bar"></div> -->
-            <div class="row">
-                <div class="col-md-4 col-sm-6">
-                    <select class="form-control" v-model="filter_category" name="product_modification_for_cart" @click="sortByCategories()">
-                        <option>All</option>
-                        <option v-for="category in categories" :key='category.id' :value="category.id">{{ category.us_name }}</option> 
-                    </select>
-                </div>
-                <div class="col-md-3 col-sm-6">
-                    <select class="form-control" name="product_modification_for_cart">
-                        <option>All</option>
-                        <option :value="'Custom production'">Custom production</option> 
-                        <option :value="'Online sale'">Online sale</option> 
-                    </select>
-                </div>
-
-                <div class="col-md-2 col-sm-6">
-                    <div class="row">
-                        <!-- <div class="range-slider"> -->
-                            <input class='min_price_range price_range' type="range" min="0" max="999" v-model="min_price" step="10">
-                        <!-- </div> -->
-                    </div>
-                    <div class="row price_range_text text-center">
-                        <!-- <p>Minimal price - {{min_price}}</p> -->
-                        <p>
-                            Min price -
-                            <input
-                                type="text"
-                                v-model="min_price"
-                                maxlength ="6"
-                                :style="'border: 0; width: 60%;'"
-                            /> 
-                        </p>
-                    </div>
-                </div>
-
-                <div class="col-md-2 col-sm-6">
-                    <!-- <div class="range-slider"> -->
-                        <input class="max_price_range price_range" type="range" min="0" max="999" v-model='max_price' value="1000" step="10">
-                    <!-- </div> -->
-                    <div class="row price_range_text text-center">
-                        <!-- <p>Maximal price - {{max_price}}</p> -->
-                        <p>
-                            Max price -
-                            <input
-                                type="text"
-                                v-model="max_price"
-                                maxlength ="6"
-                                :style="'border: 0; width: 60%;'"
-                            /> 
-                        </p>
-                    </div>
-                </div>
-
-                <div class="col-md-1 col-sm-6">
-                        <button class="btn btn-primary" @click="serReangSlider()">Filtr</button>
-                </div>
-            </div>
-        </div>
-
         <div class="col-md-12" v-if="products_loading">
             <content-loader
                 viewBox="0 0"
@@ -78,8 +17,10 @@
         </div>
         <div class="col-sm-12" v-else>
             <!-- <section class="inner"> -->
-                <section class="portfolio inner" id="portfolio" v-if="filtred_products.length > 0">
 
+                <button type="submit" class="btn btn-default btn-send main-btn" @click="open_menu()">Filter products</button>
+                
+                <section class="portfolio inner" id="portfolio" v-if="filtred_products.length > 0">
 
                         <div class="layout">
                             <!-- <section class="inner"> -->
@@ -100,6 +41,8 @@
                     <emptyPageComponent />
                 </div>
             <!-- </section> -->
+
+            <productLeftMenu ref="left_menu"/>
         </div>
         
         <metaData 
@@ -116,6 +59,7 @@
     import { ContentLoader } from 'vue-content-loader'
     import lingallery from 'lingallery'; // https://github.com/ChristophAnastasiades/Lingallery
     import metaData from '../../items/MetaDataComponent'
+    import productLeftMenu from '../../items/navbars/LeftMenuComponent'
 
     export default {
         components: {
@@ -124,6 +68,7 @@
             catalogItem,
             emptyPageComponent,
             ContentLoader,
+            productLeftMenu
         },
         data: function () {
             return {
@@ -156,6 +101,10 @@
                 .catch(error =>{
                 })
                 .finally(() => this.products_loading = false);
+            },
+
+            open_menu(){
+                this.$refs.left_menu.open_menu()
             },
 
             sortByCategories(){

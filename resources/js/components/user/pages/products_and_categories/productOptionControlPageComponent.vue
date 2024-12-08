@@ -21,7 +21,7 @@
             <p v-if="product.discount != null">Discount - <strong>{{ product.discount }} %</strong></p>
             <p v-if="product.mead_in_georgia != null">Mead in georgia - <strong>{{ product.mead_in_georgia }}</strong></p>
             <p>Sale type - <strong>{{ product.sale_type }}</strong></p>
-            <p>Category - <strong>{{ product.product_category.us_name }}</strong></p>
+            <!-- <p>Category - <strong>{{ product.product_category.us_name }}</strong></p> -->
 
             <div class="row">
                 <div class="col-md-6">
@@ -256,14 +256,14 @@
 </template>
 
 <script>
-    import { SlickList, SlickItem } from 'vue-slicksort'; //https://github.com/Jexordexan/vue-slicksort
+    // import { SlickList, SlickItem } from 'vue-slicksort'; //https://github.com/Jexordexan/vue-slicksort
     import StackModal from '@innologica/vue-stackable-modal'  //https://innologica.github.io/vue-stackable-modal/#sample-css
 
     export default {
         components: {
             StackModal,
-            SlickItem,
-            SlickList,
+            // SlickItem,
+            // SlickList,
         },
         props: [
             // 'status',

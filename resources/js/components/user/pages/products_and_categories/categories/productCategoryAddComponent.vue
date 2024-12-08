@@ -40,6 +40,8 @@
                                 </div>
                             </div>
                         </form>
+
+                        <h2>For make subcategory just create category and go to category edit page.</h2>
         
                     </div>
                 </div>
@@ -58,7 +60,7 @@
             return {
                 data: {
                     us_name: '',
-                    ru_name: '',
+                    // ru_name: '',
                     ka_name: '',
                 },
 

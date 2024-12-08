@@ -85,7 +85,7 @@
 
                     <localeSwitcher />
 
-                    <goTo :go_to_page="'/'" />
+                    <goToAdminPage :go_to_page="'/'" />
                 </ul>
 
                 <!-- Search -->

@@ -92,15 +92,26 @@
                         <div class="form-group clearfix">
                             <label for="name" class='col-xs-2 control-label'> Category </label>
                             <div class="col-xs-8">
-                                <select class="form-control" v-model="data.global_product.category_id" name="category_id" > 
-                                    <option v-bind:value="''" disabled>Select category</option> 
+                                <select class="form-control" v-model="category_id" name="category_id" > 
+                                    <option v-bind:value="0" disabled>Select category</option> 
                                     <option v-for="cat in categories" :key="cat.id" v-bind:value="cat.id"> {{ cat.us_name }}</option>
+                                </select> 
+                            </div>
+                        </div>
+
+                        <div class="form-group clearfix">
+                            <label for="name" class='col-xs-2 control-label' v-if="category_id != 0"> Subcategory </label>
+                            <div class="col-xs-8" v-if="category_id != 0">
+                                <select class="form-control" v-model="data.global_product.subcategory_id" name="category_id" > 
+                                    <option v-bind:value="''" disabled>Select subcategory</option> 
+                                    <!-- <option v-for="cat in categories" :key="cat.id" v-bind:value="cat.id"> {{ cat.us_name }}</option> -->
                                 </select> 
                             </div>
                         </div>
                     </form>
 
                 </div>
+
                 <div class="row" v-show="tab_num == 2">
                     <div class="width_100 jumbotron jumbotron-fluid">
                         <div class="container">
@@ -214,6 +225,8 @@
 
                 errors: [],
 
+                category_id: 0,
+
                 editorConfig: {
                     us_short_description_text_editor: editor_config.get_small_editor_config(),
                     us_text_editor_config: editor_config.get_big_editor_config(),
@@ -233,7 +246,7 @@
                 data: {
                     global_data: {
                         published: 0,
-                        category_id: "",
+                        subcategory_id: "",
                         sale_type: "",
 
                         mead_in_georgia: null,
