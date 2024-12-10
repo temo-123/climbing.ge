@@ -22,7 +22,8 @@ class Product extends Model
 
       'sale_type',
 
-      'category_id',
+      'subcategory_id',
+      'brand_id',
       
       'us_product_id',
       'ka_product_id'

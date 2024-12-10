@@ -90,10 +90,20 @@
                         </div>
     
                         <div class="form-group clearfix">
+                            <label for="name" class='col-xs-2 control-label'> Brand </label>
+                            <div class="col-xs-8">
+                                <select class="form-control" v-model="data.global_product.brand_id" name="brand_id"> 
+                                    <option v-bind:value="''" disabled>Select brand</option> 
+                                    <option v-for="brand in brands" :key="brand.id" v-bind:value="brand.id"> {{ brand.us_brand.title }}</option>
+                                </select> 
+                            </div>
+                        </div>
+    
+                        <div class="form-group clearfix">
                             <label for="name" class='col-xs-2 control-label'> Category </label>
                             <div class="col-xs-8">
-                                <select class="form-control" v-model="category_id" name="category_id" > 
-                                    <option v-bind:value="''" disabled>Select category</option> 
+                                <select class="form-control" v-model="category_id" name="category_id"  @click="get_category_subcategories()"> 
+                                    <option v-bind:value="0" disabled>Select category</option> 
                                     <option v-for="cat in categories" :key="cat.id" v-bind:value="cat.id"> {{ cat.us_name }}</option>
                                 </select> 
                             </div>
@@ -104,7 +114,7 @@
                             <div class="col-xs-8" v-if="category_id != 0">
                                 <select class="form-control" v-model="data.global_product.subcategory_id" name="category_id" > 
                                     <option v-bind:value="''" disabled>Select category</option> 
-                                    <!-- <option v-for="cat in categories" :key="cat.id" v-bind:value="cat.id"> {{ cat.us_name }}</option> -->
+                                    <option v-for="subcat in subcategories" :key="subcat.id" v-bind:value="subcat.id"> {{ subcat.us_name }}</option>
                                 </select> 
                             </div>
                         </div>
@@ -227,14 +237,18 @@
                 },
 
                 errors: [],
+
                 category_id: 0,
 
                 data: [],
+                subcategories: [],
+                brands: [],
                 
                 data: {
                     global_product: {
                         published: 0,
-                        subcategory_id: "",
+                        subcategory_id: '',
+                        brand_id: '',
                         sale_type: "",
 
                         mead_in_georgia: null,
@@ -269,7 +283,7 @@
             }
         },
         mounted() {
-            this.get_product_category_product()
+            this.get_product_categories()
         
             document.querySelector('body').style.marginLeft = '0';
             document.querySelector('.admin_page_header_navbar').style.marginLeft = '0';
@@ -317,19 +331,45 @@
             //     .finally(() => this.is_loading = false);
             // },
 
-            get_product_category_product: function(){
+            get_product_categories: function(){
                 this.is_loading = true
                 axios
                 .get("/product_category/")
                 .then(response => {
                     this.categories = response.data
+                    this.get_product_brabds()
                 })
                 .catch(
                     error => console.log(error)
                 )
-                .finally(() => this.is_loading = false);;
+                .finally(() => this.is_loading = false);
             },
 
+            get_product_brabds(){
+                this.is_loading = true
+                axios
+                .get("/brand/get_all_brands")
+                .then(response => {
+                    this.brands = response.data
+                })
+                .catch(
+                    error => console.log(error)
+                )
+                .finally(() => this.is_loading = false);
+            },
+
+            get_category_subcategories(){
+                this.data.global_product.subcategory_id = ''
+                axios
+                .get("/subcategory/get_subcategories_for_category/" + this.category_id)
+                .then(response => {
+                    this.subcategories = response.data
+                })
+                .catch(
+                    error => console.log(error)
+                )
+                .finally(() => this.is_loading = false);
+            },
 
             go_back: function(back_action = false) {
                 if(back_action == false){

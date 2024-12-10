@@ -92,9 +92,10 @@ class ProductController extends Controller
     public function add_product(Request $request)
     {
         $data = json_decode($request->data, true );
-
-        $validator = Validator::make($data, [
-            'global_product.category_id' => 'required',
+        
+        $validator = Validator::make($data['global_product'], [
+            'subcategory_id' => 'required',
+            'brand_id' => 'required',
         ]);
         
         if ($validator->fails()) {
@@ -183,7 +184,10 @@ class ProductController extends Controller
         $data = json_decode($request->data, true );
 
         $validator = Validator::make($data['global_product'], [
-            'category_id' => 'required',
+            // 'category_id' => 'required',
+
+            'subcategory_id' => 'required',
+            'brand_id' => 'required',
         ]);
         
         if ($validator->fails()) {

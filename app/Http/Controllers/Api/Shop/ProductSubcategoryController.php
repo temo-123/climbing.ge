@@ -11,14 +11,17 @@ use App\Models\Shop\Product_subcategory;
 class ProductSubcategoryController extends Controller
 {
     function get_all_subcategories(Request $request) {
-        
+        return Product_subcategory::get();
     }
+
     function get_subcategories_for_category(Request $request) {
         return Product_subcategory::where("category_id", "=", $request->category_id,)->get();
     }
+
     function get_subcategory(Request $request) {
         return Product_subcategory::where("id", "=", $request->id,)->first();
     }
+
     function create_subcategory(Request $request) {
         $validate = $this->validation($request);
 
@@ -36,6 +39,7 @@ class ProductSubcategoryController extends Controller
             $new_product_subcategory -> save();
         }
     }
+
     function edit_subcategory(Request $request) {
         $validate = $this->validation($request);
 
@@ -51,6 +55,7 @@ class ProductSubcategoryController extends Controller
             $editing_product_subcategory -> save();
         }
     }
+    
     function del_subcategory(Request $request) {
         $deleted_product_subcategory = Product_subcategory::where("id", "=", $request->id)->first();
         $deleted_product_subcategory -> delete();

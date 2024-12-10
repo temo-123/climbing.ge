@@ -89,10 +89,21 @@
                             </div>
                         </div>
     
+    
+                        <div class="form-group clearfix">
+                            <label for="name" class='col-xs-2 control-label'> Brand </label>
+                            <div class="col-xs-8">
+                                <select class="form-control" v-model="data.global_product.brand_id" name="brand_id"> 
+                                    <option v-bind:value="''" disabled>Select brand</option> 
+                                    <option v-for="brand in brands" :key="brand.id" v-bind:value="brand.id"> {{ brand.us_brand.title }}</option>
+                                </select> 
+                            </div>
+                        </div>
+    
                         <div class="form-group clearfix">
                             <label for="name" class='col-xs-2 control-label'> Category </label>
                             <div class="col-xs-8">
-                                <select class="form-control" v-model="category_id" name="category_id" > 
+                                <select class="form-control" v-model="category_id" name="category_id"  @click="get_category_subcategories()"> 
                                     <option v-bind:value="0" disabled>Select category</option> 
                                     <option v-for="cat in categories" :key="cat.id" v-bind:value="cat.id"> {{ cat.us_name }}</option>
                                 </select> 
@@ -103,8 +114,8 @@
                             <label for="name" class='col-xs-2 control-label' v-if="category_id != 0"> Subcategory </label>
                             <div class="col-xs-8" v-if="category_id != 0">
                                 <select class="form-control" v-model="data.global_product.subcategory_id" name="category_id" > 
-                                    <option v-bind:value="''" disabled>Select subcategory</option> 
-                                    <!-- <option v-for="cat in categories" :key="cat.id" v-bind:value="cat.id"> {{ cat.us_name }}</option> -->
+                                    <option v-bind:value="''" disabled>Select category</option> 
+                                    <option v-for="subcat in category_subcategories" :key="subcat.id" v-bind:value="subcat.id"> {{ subcat.us_name }}</option>
                                 </select> 
                             </div>
                         </div>
@@ -241,12 +252,16 @@
                     ka_info_editor_config: editor_config.get_big_editor_config(),
                 },
 
-                // data: [],
+                all_subcategories: [],
+                category_subcategories: [],
+                brands: [],
 
+                // data: [],
                 data: {
-                    global_data: {
+                    global_product: {
                         published: 0,
-                        subcategory_id: "",
+                        subcategory_id: '',
+                        brand_id: '',
                         sale_type: "",
 
                         mead_in_georgia: null,
@@ -254,18 +269,16 @@
                         discount: 0,
                     },
 
-                    us_data: [],
-                    ka_data: [],
-                    ru_data: []
+                    us_product: [],
+                    ka_product: []
                 },
 
                 myModal: false,
             }
         },
         mounted() {
-            this.get_product_category_data()
-            this.get_product_editing_data()
-        
+            this.get_product_categories()
+
             document.querySelector('body').style.marginLeft = '0';
             document.querySelector('.admin_page_header_navbar').style.marginLeft = '0';
         },
@@ -282,7 +295,6 @@
                 else{
                     this.change_url_title = false 
                 }
-
             },
 
             get_product_editing_data(){
@@ -290,6 +302,12 @@
                 .get('/product/get_product_editing_data/'+this.$route.params.id)
                 .then((response)=> { 
                     this.data = response.data
+
+                    let action_subcategory = this.all_subcategories.find(item => item.id === response.data.global_product.subcategory_id);
+                    let action_category = this.categories.find(item => item.id === action_subcategory.category_id);
+
+                    this.category_id = action_category.id;      
+                    this.get_category_subcategories()             
                 })
                 .catch(error =>{
                     // 
@@ -320,15 +338,57 @@
                 .finally(() => this.is_loading = false);
             },
 
-            get_product_category_data: function(){
+            get_product_categories: function(){
+                this.is_loading = true
                 axios
                 .get("/product_category/")
                 .then(response => {
                     this.categories = response.data
+                    this.get_product_brands()
                 })
                 .catch(
                     error => console.log(error)
-                );
+                )
+                .finally(() => this.is_loading = false);
+            },
+
+            get_product_brands(){
+                this.is_loading = true
+                axios
+                .get("/brand/get_all_brands")
+                .then(response => {
+                    this.brands = response.data
+                    this.get_all_subcategories()
+                })
+                .catch(
+                    error => console.log(error)
+                )
+                .finally(() => this.is_loading = false);
+            },
+
+            get_all_subcategories(){
+                axios
+                .get("/subcategory/get_all_subcategories/")
+                .then(response => {
+                    this.all_subcategories = response.data
+                    this.get_product_editing_data()
+                })
+                .catch(
+                    error => console.log(error)
+                )
+                .finally(() => this.is_loading = false);
+            },
+
+            get_category_subcategories(){
+                axios
+                .get("/subcategory/get_subcategories_for_category/" + this.category_id)
+                .then(response => {
+                    this.category_subcategories = response.data
+                })
+                .catch(
+                    error => console.log(error)
+                )
+                .finally(() => this.is_loading = false);
             },
 
 
