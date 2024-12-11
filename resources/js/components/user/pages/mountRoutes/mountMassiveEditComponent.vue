@@ -187,8 +187,11 @@
             editor_config,
         ],
         props: [
-            validator_alerts_component
+            //
         ],
+        components: {
+            validator_alerts_component
+        },
         data(){
             return {
                 data: {
@@ -208,14 +211,14 @@
                         how_get: '',
                         best_time: '',
                     },
-                    ka_data: {
-                        title: '',
-                        short_description: '',
-                        text: '',
-                        route: '',
-                        how_get: '',
-                        best_time: '',
-                    },
+                    // ka_data: {
+                    //     title: '',
+                    //     short_description: '',
+                    //     text: '',
+                    //     route: '',
+                    //     how_get: '',
+                    //     best_time: '',
+                    // },
                     global_data: {
                         demo_image: "",
                         map: "",

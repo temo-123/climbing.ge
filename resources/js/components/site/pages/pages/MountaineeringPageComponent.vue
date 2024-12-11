@@ -51,9 +51,9 @@
                             </div>
 
                             <!-- map -->
-                            <div v-if="this.mounts_system.locale_data.map != NULL">
+                            <div v-if="this.mounts_system.global_data.map != NULL">
                                 <div class="article_map">
-                                    <span v-html="this.mounts_system.locale_data.map"></span>
+                                    <span v-html="this.mounts_system.global_data.map"></span>
                                 </div>
                             </div>
                         </span>
