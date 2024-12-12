@@ -1,15 +1,14 @@
 <template>
-    <span class="image_z_pos">
+    <span>
         <div class="smal_img" @click="open_image()" >
             <img :src="img" :alt="img_alt" :class="img_class + ' cursor_pointer'" />
         </div>
 
-        <div class="big_img">
-            <div class="open_img" v-if="open_img" @click="close_image()">
+        <div class="big_img" @click="close_image()">
+            <div class="open_img" v-if="open_img" >
                 <div class="close_bottom cursor_zoom_out" @click="close_image()"> X </div>
 
-                <img :src="img" :alt="img_alt" :class="'big_img_position cursor_zoom_out zoom'" @click="close_image()"
-                                                                                                    style="
+                <img :src="img" :alt="img_alt" :class="'big_img_position cursor_zoom_out zoom'" style="
                                                                                                         max-width: 96%;
                                                                                                         max-height: 80%;
                                                                                                         position: absolute;
@@ -64,10 +63,7 @@
 </script>
 
 <style scoped>
-    .image_z_pos{
-        z-index: 1029;
-        position: relative;
-    }
+
     .close_bottom{
         float: right;
         cursor: pointer; 
@@ -99,10 +95,10 @@
         right: 0;
         bottom: 0;
         left: 0;
+        z-index: 1050;
         background: #000000d9;
-    }
-    .big_img{
-        z-index: 1090;
+
+        transition: opacity .15s linear;
     }
     .big_img_position{
         max-width: 96%;
