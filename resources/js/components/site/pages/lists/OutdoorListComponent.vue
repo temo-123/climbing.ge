@@ -197,7 +197,8 @@
             get_filtred_articles(id){
                 this.oudoor_loading = true
                 axios
-                .get("/outdoor/get_filtred_outdoor_spots_for_gest/" + localStorage.getItem('lang') + '/' + id)
+                // .get("/outdoor/get_filtred_outdoor_spots_for_gest/" + localStorage.getItem('lang') + '/' + id)
+                .get("/outdoor/get_filtred_outdoor_spots/" + localStorage.getItem('lang') + '/' + id + '/1')
                 .then(response => {
                     this.regions_and_spots = []
                     this.filtred_spots = response.data

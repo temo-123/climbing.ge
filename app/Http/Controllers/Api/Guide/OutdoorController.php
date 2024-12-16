@@ -23,12 +23,6 @@ use App\Models\Guide\Region;
 use App\Models\Guide\Article_region;
 class OutdoorController extends Controller
 {
-
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function get_all()
     {
         return Region::get();
@@ -36,26 +30,16 @@ class OutdoorController extends Controller
     
     public function get_spots_by_regions(Request $request)
     {
-        // $regions_data = [];
         if($request -> lang == 'ka'){
             $regions = Region::select('id', 'ka_name', 'ka_text')->get();
-
-            // foreach ($regions as $region) {
-            //     array_push($regions_data, ['id'=>$region->id,'name'=>$region->ka_name, 'text'=>$region->ka_text]);
-            // }
         }
         else{
             $regions = Region::select('id', 'us_name', 'us_text')->get();
-
-            // foreach ($regions as $region) {
-            //     array_push($regions_data, ['id'=>$region->id,'name'=>$region->us_name, 'text'=>$region->us_text]);
-            // }
         }
         $regions_array = [];
 
         foreach($regions as $region){
             $global_article = $region->articles->where('published', '=', '1');
-            // dd($global_article->count());
             if($global_article->count() > 0){
                 array_push($regions_array, ['region' => $region, 'spots' => $this->get_outdoor_data($request -> lang, $global_article)]);
             }
@@ -84,8 +68,6 @@ class OutdoorController extends Controller
         if(count($other_articles)){
             array_push($regions_array, ['region' => ['name' => 'other'], 'spots' => $other_articles]);
         }
-
-        // dd($regions_array);
 
         return $regions_array;
     }
@@ -147,13 +129,6 @@ class OutdoorController extends Controller
     public function locale_regions(Request $request)
     {
         $data = [];
-        // if($request -> lang == 'ru'){
-        //     $regions = Region::select('id', 'ru_name', 'ru_text')->get();
-
-        //     foreach ($regions as $region) {
-        //         array_push($data, ['id'=>$region->id,'name'=>$region->ru_name, 'text'=>$region->ru_text]);
-        //     }
-        // }
         if($request -> lang == 'ka'){
             $regions = Region::select('id', 'ka_name', 'ka_text')->get();
 
@@ -175,16 +150,8 @@ class OutdoorController extends Controller
 
     public function locale_region(Request $request)
     {
-        // dd($request->lang, $request->region_id);
-
         $data = [];
-        // if($request -> lang == 'ru'){
-        //     $regions = Region::select('id', 'ru_name', 'ru_text', 'map')->where('id',strip_tags($request->region_id))->get();
 
-        //     foreach ($regions as $region) {
-        //         array_push($data, ['id'=>$region->id,'name'=>$region->ru_name, 'text'=>$region->ru_text, "map"=>$region->map]);
-        //     }
-        // }
         if($request -> lang == 'ka'){
             $regions = Region::select('id', 'ka_name', 'ka_text', 'map')->where('id',strip_tags($request->region_id))->get();
 
@@ -212,16 +179,87 @@ class OutdoorController extends Controller
         }
     }
 
-    public function get_filtred_outdoor_spots_for_gest(Request $request)
+    // public function get_filtred_outdoor_spots_for_gest(Request $request)
+    // {
+    //     $region_article_count = Region::where('id', '=', $request->filter_id)->count();
+    //     if($region_article_count > 0){
+    //         $filtred_articles_by_region = Region::where('id', '=', $request->filter_id)->first()->articles;
+
+    //         $global_outdoors = $filtred_articles_by_region->where('category', '=', 'outdoor')->where('published', '=', 1);
+    //         $article_count = $filtred_articles_by_region->where('category', '=', 'outdoor')->where('published', '=', 1)->count();
+
+    //         $outdoors = ArticlesService::get_locale_article_use_locale($global_outdoors, $request->lang);
+
+    //         $route_num = 0;
+    //         $mtp_num = 0;
+    //         $route_quantity = array();
+
+    //         $area_data = [];
+
+    //         foreach($global_outdoors as $outdoor){
+    //             $sector_n = Sector::where('article_id', '=', $outdoor->id)->get();
+    //             $routes_a = array ($outdoor->title);
+    //             $boulder_routes = array ($outdoor->title);
+    //             $mtps_a = array ();
+    //             $sector_count = Sector::where('article_id', '=', $outdoor->id)->count();
+    //             foreach($sector_n as $sector){
+    //                 $routes = Route::where('sector_id', '=', $sector->id)->count();
+    //                 foreach((array) $routes as $route){
+    //                     $route_num++;
+    //                     array_push($routes_a, $route);
+    //                 }
+    //                 $mtps = MTP::where('sector_id', '=', $sector->id)->count();
+    //                 if ($mtps > 0) {
+    //                     foreach((array) $mtps as $mtp){
+    //                         $mtp_num++;
+    //                         array_push($mtps_a, $mtp);
+    //                     }
+    //                 }
+    //             }
+    //             if($route_num == $sector_count) {
+    //                 $route_sum=array_sum($routes_a);
+    //                 $mtp_sum=array_sum($mtps_a);
+    //                 array_push($route_quantity, array("article_id" => $outdoor->id, "sectors" => $sector_count, "routes" => $route_sum, "mtps" => $mtp_sum) ); // push route num in last array
+    //             }
+    //             else $route_sum=0;{
+    //                 $route_num = 0;
+    //             }
+    //         }
+    //     }
+        
+    //     foreach ($outdoors as $outdoor) {
+    //         foreach ($route_quantity as $quantity) {
+    //             if ($quantity['article_id'] == $outdoor['global_data']['id']) {
+    //                 array_push($area_data, ["route_quantyty" => $quantity, "area" => $outdoor]);
+    //             }
+    //         }
+    //     }
+
+    //     return $area_data;
+    // }
+
+
+    public function get_filtred_outdoor_spots(Request $request)
     {
         $region_article_count = Region::where('id', '=', $request->filter_id)->count();
         if($region_article_count > 0){
             $filtred_articles_by_region = Region::where('id', '=', $request->filter_id)->first()->articles;
 
-            $global_outdoors = $filtred_articles_by_region->where('category', '=', 'outdoor')->where('published', '=', 1);
-            $article_count = $filtred_articles_by_region->where('category', '=', 'outdoor')->where('published', '=', 1)->count();
+            $global_outdoors = $filtred_articles_by_region->where('category', '=', 'outdoor');
+            // $global_outdoors = $filtred_articles_by_region->where('category', '=', 'outdoor')->where('published', '=', 1);
+            // $article_count = $filtred_articles_by_region->where('category', '=', 'outdoor')->where('published', '=', 1)->count();
 
-            $outdoors = ArticlesService::get_locale_article_use_locale($global_outdoors, $request->lang);
+            if($request->published == 1){
+                $outdoors = ArticlesService::get_locale_article_use_locale($global_outdoors->where('published', '=', 1), $request->lang);
+            }
+            else if($request->published == 0){
+                $outdoors = ArticlesService::get_locale_article_use_locale($global_outdoors->where('published', '=', 0), $request->lang);
+            }
+            else{
+                $outdoors = ArticlesService::get_locale_article_use_locale($global_outdoors, $request->lang);
+            }
+
+            // $outdoors = ArticlesService::get_locale_article_use_locale($global_outdoors, $request->lang);
 
             $route_num = 0;
             $mtp_num = 0;

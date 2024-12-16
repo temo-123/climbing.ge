@@ -126,7 +126,8 @@
                 this.mount_route_loading = true
                 this.mount_routes_by_masiv = []
                 axios
-                .get("/mount_route/get_filtred_mount_route_for_user/" + localStorage.getItem('lang') + '/' + id)
+                // .get("/mount_route/get_filtred_mount_route_for_user/" + localStorage.getItem('lang') + '/' + id)
+                .get("/mount_route/get_filtred_mount_routes/" + localStorage.getItem('lang') + '/' + id + '/' + 1)
                 .then(response => {
                     this.mount_routes = response.data
                 })

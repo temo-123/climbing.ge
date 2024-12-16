@@ -66,16 +66,34 @@ class MountRouteController extends Controller
         return $mounts_array;
     }
 
-    public function get_filtred_mount_route_for_user(Request $request)
+    public function get_filtred_mount_routes(Request $request)
     {
         $mount_article_count = Mount::where('id', '=', $request->filter_id)->count();
         
         if($mount_article_count > 0){
             $filtred_articles_by_mount = Mount::where('id', '=', $request->filter_id)->first()->articles;
-            $articles = ArticlesService::get_locale_article_use_locale($filtred_articles_by_mount, $request->lang);
+            if($request->published == 1){
+                $articles = ArticlesService::get_locale_article_use_locale($filtred_articles_by_mount->where("published", "=", 1), $request->lang);
+            }
+            else if($request->published == 0){
+                $articles = ArticlesService::get_locale_article_use_locale($filtred_articles_by_mount->where("published", "=", 0), $request->lang);
+            }
+            else{
+                $articles = ArticlesService::get_locale_article_use_locale($filtred_articles_by_mount, $request->lang);
+            }
         }
         return $articles;
     }
+    // public function get_filtred_mount_route_for_user(Request $request)
+    // {
+    //     $mount_article_count = Mount::where('id', '=', $request->filter_id)->count();
+        
+    //     if($mount_article_count > 0){
+    //         $filtred_articles_by_mount = Mount::where('id', '=', $request->filter_id)->first()->articles;
+    //         $articles = ArticlesService::get_locale_article_use_locale($filtred_articles_by_mount, $request->lang);
+    //     }
+    //     return $articles;
+    // }
 
     public function get_filtred_mount_route_for_admin(Request $request)
     {
