@@ -5,25 +5,32 @@
             <header>Filtred</header>
 
             <ul  style="padding-left: 0px;">
-                <li >
-                    <a href="#" @click="show_item('category')" class="dropdown-toggle" >Filtr by category</a>
-                    <ul :class="'category menu_opening_list'" style="display: none;">
-                        <li class="menu_item">
-                            <select class="form-control" v-model="filter_category" name="product_modification_for_cart" @click="sortByCategories()">
-                                <option>All</option>
-                                <option v-for="category in categories" :key='category.id' :value="category.id">{{ category.us_name }}</option> 
-                            </select>
-                        </li>
+                <li>
+                    <a href="#" @click="show_item('category')" class="dropdown-toggle" >Categories</a>
+                    <ul :class="'category'" style="background-color: #04354b; display: none; transition: .4s;">
+                        <span >
+                            <li class="menu_item" style="height: 104px; padding-top: 35px;">
+                                <select class="form-control" v-model="filter_category" @click="get_category_subcategories()" name="sort_by_categories" >
+                                    <option>All</option>
+                                    <option v-for="category in categories" :key='category.id' :value="category.id">{{ category.us_name }}</option> 
+                                </select>
+                            </li>
+
+                            <li v-for="subcat in subcategories" :key="subcat.id" v-bind:value="subcat.id" class="menu_small_item">
+                                {{ subcat.us_name }}
+                            </li>
+
+                        </span>
                     </ul>
                 </li>
 
                 <li >
                     <a href="#" @click="show_item('brand')" class="dropdown-toggle" >Filtr by brand</a>
-                    <ul :class="'brand menu_opening_list'" style="display: none;">
+                    <ul :class="'brand menu_opening_height_list'" style="display: none;">
                         <li class="menu_item">
-                            <select class="form-control" v-model="filter_category" name="product_modification_for_cart" @click="sortByCategories()">
+                            <select class="form-control" v-model="filter_brand" name="sort_by_brand" @click="sort_by_brand()">
                                 <option>All</option>
-                                <option v-for="category in categories" :key='category.id' :value="category.id">{{ category.us_name }}</option> 
+                                <option v-for="brand in brands" :key="brand.id" v-bind:value="brand.id"> {{ brand.us_brand.title }}</option>
                             </select>
                         </li>
                     </ul>
@@ -31,9 +38,9 @@
 
                 <li >
                     <a href="#" @click="show_item('sale_type')" class="dropdown-toggle" >Filtr by sale type</a>
-                    <ul :class="'sale_type menu_opening_list'" style="display: none;">
+                    <ul :class="'sale_type menu_opening_height_list'" style="display: none;">
                         <li class="menu_item">
-                            <select class="form-control" name="product_modification_for_cart">
+                            <select class="form-control" v-model="sale_type" name="sort_by_sale_type" @click="sort_by_sale_type()">
                                 <option>All</option>
                                 <option :value="'Custom production'">Custom production</option> 
                                 <option :value="'Online sale'">Online sale</option> 
@@ -42,13 +49,13 @@
                     </ul>
                 </li>
 
-                <li >
+                <!-- <li >
                     <a href="#" @click="show_item('min_price')" class="dropdown-toggle" >Filtr by minimal price</a>
-                    <ul :class="'min_price menu_opening_list'" style="display: none;">
+                    <ul :class="'min_price menu_opening_height_list'" style="display: none;">
                         <li class="menu_item">
                             <input class='min_price_range price_range width_100' type="range" min="0" max="999" v-model="min_price" step="10">
 
-                            <div class="row price_range_text text-center">
+                            <div class="row">
                                 <div class="col-sm-10">Min price - </div>
                                 <div class="col-sm-2">
                                     <input
@@ -65,11 +72,11 @@
 
                 <li >
                     <a href="#" @click="show_item('max_price')" class="dropdown-toggle" >Filtr by maximal price</a>
-                    <ul :class="'max_price menu_opening_list'" style="display: none;">
+                    <ul :class="'max_price menu_opening_height_list'" style="display: none;">
                         <li class="menu_item">
                             <input class="max_price_range price_range width_100" type="range" min="0" max="999" v-model='max_price' value="1000" step="10">
 
-                            <div class="row price_range_text text-center ">
+                            <div class="row ">
                                 <div class="col-sm-10">Max price - </div>
                                 <div class="col-sm-2">
                                     <input
@@ -82,20 +89,13 @@
                             </div>
                         </li>
                     </ul>
-                </li>
+                </li> -->
 
             </ul>
 
             <ul style="padding-left: 0px;">
                 <li>
-                    <a @click="serReangSlider()">Filtr</a>
-                </li>
-            </ul>
-
-
-            <ul style="padding-left: 0px;" @click="open_menu()">
-                <li>
-                    <a>{{ $t('user.menu.close') }}</a>
+                    <a @click="sorting()">Filtr</a>
                 </li>
             </ul>
             
@@ -104,10 +104,10 @@
 </template>
 
 <script>
-    import { navbar } from '../../../../mixins/navbar_pages_mixin.js'
+    // import { navbar } from '../../../../mixins/navbar_pages_mixin.js'
     export default {
         mixins: [
-          navbar
+        //   navbar
         ],
 	    name: 'leftMenu',
         data(){
@@ -116,16 +116,19 @@
                 
                 min_price: 0,
                 max_price: 999,
+
                 filter_category: 'All',
+                filter_brand: 'All',
+                sale_type: 'All',
                 
                 categories: [],
-                products_loading: true,
-                product_modal: false,
-                modalClass: '',
+                brands: [],
+                subcategories: [],
             }
         },
         mounted() {
             this.open_menu()
+            this.get_product_categories()
         },
         unmounted() {
             // this.window_size()
@@ -150,53 +153,63 @@
                 document.querySelector('.'+item_class).style.display = 'none'
               }
             },
-            sortByCategories(){
-                let vm = this;
-                if (vm.filter_category == 'All') {
-                    this.filtred_products = this.products.filter(function (item){
-                        return item.max_price >= vm.min_price && item.max_price <= vm.max_price
-                    })
-                }
-                else{
-                    let f_products = this.products.filter(function (item){
-                        return item.global_product.category_id == vm.filter_category
-                    })
 
-                    this.filtred_products = f_products.filter(function (item){
-                        return item.max_price >= vm.min_price && item.max_price <= vm.max_price
-                    })
-                }
+            sort_by_brand(){
+                this.$emit('sort_by_brand')
             },
 
-            serReangSlider(){
-                if(this.min_price == 0 && this.max_price == 0){
-                    this.min_price = 0
-                    this.max_price = 1000
-                }
-                else if(this.min_price > this.max_price){
-                    let temp = this.max_price
-                    this.max_price = this.min_price
-                    this.min_price = temp
-                }
-
-                this.sortByCategories()
+            sort_by_subcategories(){
+                this.$emit('sort_by_subcategories')
             },
 
-            get_categories(){
+            sorting(){
+                this.$emit('sorting')
+            },
+
+            get_product_categories: function(){
+                // this.is_loading = true
                 axios
-                .get('../api/product_category')
+                .get("/product_category/")
                 .then(response => {
                     this.categories = response.data
+                    this.get_product_brabds()
                 })
-                .catch(error =>{
+                .catch(
+                    error => console.log(error)
+                )
+                // .finally(() => this.is_loading = false);
+            },
+
+            get_product_brabds(){
+                axios
+                .get("/brand/get_all_brands")
+                .then(response => {
+                    this.brands = response.data
                 })
+                .catch(
+                    error => console.log(error)
+                ) 
+            },
+
+            get_category_subcategories(){
+                if(this.filter_category != null && this.filter_category != "All"){
+                    axios
+                    .get("/subcategory/get_subcategories_for_category/" + this.filter_category)
+                    .then(response => {
+                        this.subcategories = response.data
+                    })
+                    .catch(
+                        error => console.log(error)
+                    )
+                    .finally(() => this.is_loading = false);
+                }
             },
 
             get_product_price_interval(){
                 axios
                 .get('../api/products/get_products_price_interval')
                 .then(response => {
-                    // this.max_price = response.data
+                    this.max_price = response.data
                 })
                 .catch(error =>{
                 })
@@ -206,7 +219,12 @@
 </script>
 
 <style scoped>
- .menu_opening_list{
+    /* .menu_opening_list{
+        background-color: #04354b; 
+        display: none; 
+        transition: .4s;
+    } */
+ .menu_opening_height_list{
     background-color: rgb(4, 53, 75);
     transition: 0.4s;
     height: 104px;
@@ -268,6 +286,22 @@
   border-bottom: 1px solid black;
   transition: .4s;
   
+}
+.menu_small_item{
+  display: block;
+  height: 100%;
+  width: 100%;
+  line-height: 35px;
+  font-size: 20px;
+  color: white;
+  padding-right: 20px;
+  padding-left: 20px;
+  box-sizing: border-box;
+  border-bottom: 1px solid black;
+  transition: .4s;
+}
+.menu_small_item:hover{
+    background: #084a69;
 }
 .sidebar ul a{
   display: block;
