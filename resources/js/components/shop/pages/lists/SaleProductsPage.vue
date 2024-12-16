@@ -18,11 +18,11 @@
         <div class="col-sm-12" v-else>
             <!-- <section class="inner"> -->
 
-                <button type="submit" class="btn btn-default btn-send main-btn" @click="open_menu()">Filter products</button>
-                
-                <section class="portfolio inner" id="portfolio" v-if="filtred_products.length > 0">
+                <section class="portfolio inner" id="portfolio">
 
-                        <div class="layout">
+                        <button type="submit" class="btn btn-default btn-send main-btn" @click="open_menu()">Filter products</button>
+
+                        <div class="layout" v-if="filtred_products.length > 0">
                             <!-- <section class="inner"> -->
                                 <ul class="grid">
 
@@ -37,12 +37,19 @@
                         </div>
                 </section>
 
-                <div v-else>
+                <div  v-if="filtred_products.length == 0">
                     <emptyPageComponent />
                 </div>
             <!-- </section> -->
 
-            <productLeftMenu ref="left_menu"/>
+            <productLeftMenu 
+                ref="left_menu"
+
+                @sort_by_sale_type="sort_by_sale_type"
+                @sort_by_brand="sort_by_brand"
+                @sort_by_subcategories="sort_by_subcategories"
+                @clear_filtrs="clear_filtrs"
+            />
         </div>
         
         <metaData 
@@ -75,19 +82,18 @@
                 products: [],
                 filtred_products: [],
                 
-                min_price: 0,
-                max_price: 999,
-                filter_category: 'All',
+                // min_price: 0,
+                // max_price: 999,
+                // filter_category: 'All',
                 
-                categories: [],
-                products_loading: true,
-                product_modal: false,
-                modalClass: '',
+                // categories: [],
+                // products_loading: true,
+                // product_modal: false,
+                // modalClass: '',
             };
         },
         mounted() {
             this.get_products()
-            this.get_categories()
         },
         methods: {
             get_products(){
@@ -96,7 +102,7 @@
                 .then(response => {
                     this.products = response.data
 
-                    this.sortByCategories()
+                    this.filtred_products = this.products
                 })
                 .catch(error =>{
                 })
@@ -106,63 +112,64 @@
             open_menu(){
                 this.$refs.left_menu.open_menu()
             },
-
-            sortByCategories(){
-                let vm = this;
-                if (vm.filter_category == 'All') {
-                    this.filtred_products = this.products.filter(function (item){
-                        return item.max_price >= vm.min_price && item.max_price <= vm.max_price
-                    })
+            
+            sort_by_sale_type(sale_type){
+                if(sale_type == 0){
+                    this.get_products()
                 }
                 else{
-                    let f_products = this.products.filter(function (item){
-                        return item.global_product.category_id == vm.filter_category
-                    })
-
-                    this.filtred_products = f_products.filter(function (item){
-                        return item.max_price >= vm.min_price && item.max_price <= vm.max_price
-                    })
+                    if(this.filtred_products.length == this.products.length){
+                        this.filtred_products = this.products.filter(function (item){
+                            return item.global_product.sale_type == sale_type
+                        })
+                    }
+                    else{
+                        this.filtred_products = this.filtred_products.filter(function (item){
+                            return item.global_product.sale_type == sale_type
+                        })
+                    }
+                }
+            },
+            
+            sort_by_brand(filter_brand){
+                if(filter_brand == 0){
+                    this.get_products()
+                }
+                else{
+                    if(this.filtred_products.length == this.products.length){
+                        this.filtred_products = this.products.filter(function (item){
+                            return item.global_product.brand_id == filter_brand
+                        })
+                    }
+                    else{
+                        this.filtred_products = this.filtred_products.filter(function (item){
+                            return item.global_product.brand_id == filter_brand
+                        })
+                    }
                 }
             },
 
-            close_product_modal(){
-                this.product_modal = false
-                this.quick_product = []
-            },
-
-            serReangSlider(){
-                if(this.min_price == 0 && this.max_price == 0){
-                    this.min_price = 0
-                    this.max_price = 1000
+            sort_by_subcategories(subcategory_id){
+                if(subcategory_id == 0){
+                    this.get_products()
                 }
-                else if(this.min_price > this.max_price){
-                    let temp = this.max_price
-                    this.max_price = this.min_price
-                    this.min_price = temp
+                else{
+                    if(this.filtred_products.length == this.products.length){
+                        this.filtred_products = this.products.filter(function (item){
+                            return item.global_product.subcategory_id == subcategory_id
+                        })
+                    }
+                    else{
+                        this.filtred_products = this.filtred_products.filter(function (item){
+                            return item.global_product.subcategory_id == subcategory_id
+                        })
+                    }
                 }
-
-                this.sortByCategories()
             },
 
-            get_categories(){
-                axios
-                .get('/product_category')
-                .then(response => {
-                    this.categories = response.data
-                })
-                .catch(error =>{
-                })
+            clear_filtrs(){
+                this.get_products()
             },
-
-            get_product_price_interval(){
-                axios
-                .get('/products/get_products_price_interval')
-                .then(response => {
-                    // this.max_price = response.data
-                })
-                .catch(error =>{
-                })
-            }
         }
     }
 </script>

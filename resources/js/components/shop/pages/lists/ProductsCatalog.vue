@@ -30,16 +30,16 @@
         <div class="col-md-12"  v-else>
             <div class="col-sm-12 ">
                 <!-- <section class="inner"> -->
-                    <section class="portfolio inner" id="portfolio" v-if="products.length > 0">
+                    <section class="portfolio inner" id="portfolio">
 
                             <button type="submit" class="btn btn-default btn-send main-btn" @click="open_menu()">Filter products</button>
 
-                            <div class="layout">
+                            <div class="layout" v-if="filtred_products.length > 0">
                                 <!-- <section class="inner"> -->
                                     <ul class="grid">
 
                                         <catalogItem
-                                            v-for="product in products"
+                                            v-for="product in filtred_products"
                                             :key='product.id'
                                             :product_data="product"
                                         />
@@ -49,13 +49,20 @@
                             </div>
                     </section>
 
-                    <div v-else>
+                    <div v-if="filtred_products.length == 0">
                         <emptyPageComponent />
                     </div>
                 <!-- </section> -->
             </div>
 
-            <productLeftMenu ref="left_menu"/>
+            <productLeftMenu 
+                ref="left_menu"
+
+                @sort_by_sale_type="sort_by_sale_type"
+                @sort_by_brand="sort_by_brand"
+                @sort_by_subcategories="sort_by_subcategories"
+                @clear_filtrs="clear_filtrs"
+            />
         </div>
         
         <metaData 
@@ -87,7 +94,7 @@
         data: function () {
             return {
                 products: [],
-                // filtred_products: [],
+                filtred_products: [],
                 
                 products_loading: true,
                 product_modal: false,
@@ -100,21 +107,81 @@
         },
         methods: {
             get_products(){
+                this.products_loading = true
                 axios
                 .get('../api/products/'+localStorage.getItem('lang'))
                 .then(response => {
                     this.products = response.data
 
+                    this.filtred_products = this.products
                     // this.sortByCategories()
                 })
                 .catch(error =>{
                 })
                 .finally(() => this.products_loading = false);
             },
+
             open_menu(){
                 this.$refs.left_menu.open_menu()
-            }
+            },
             
+            sort_by_sale_type(sale_type){
+                if(sale_type == 0){
+                    this.get_products()
+                }
+                else{
+                    if(this.filtred_products.length == this.products.length){
+                        this.filtred_products = this.products.filter(function (item){
+                            return item.global_product.sale_type == sale_type
+                        })
+                    }
+                    else{
+                        this.filtred_products = this.filtred_products.filter(function (item){
+                            return item.global_product.sale_type == sale_type
+                        })
+                    }
+                }
+            },
+            
+            sort_by_brand(filter_brand){
+                if(filter_brand == 0){
+                    this.get_products()
+                }
+                else{
+                    if(this.filtred_products.length == this.products.length){
+                        this.filtred_products = this.products.filter(function (item){
+                            return item.global_product.brand_id == filter_brand
+                        })
+                    }
+                    else{
+                        this.filtred_products = this.filtred_products.filter(function (item){
+                            return item.global_product.brand_id == filter_brand
+                        })
+                    }
+                }
+            },
+
+            sort_by_subcategories(subcategory_id){
+                if(subcategory_id == 0){
+                    this.get_products()
+                }
+                else{
+                    if(this.filtred_products.length == this.products.length){
+                        this.filtred_products = this.products.filter(function (item){
+                            return item.global_product.subcategory_id == subcategory_id
+                        })
+                    }
+                    else{
+                        this.filtred_products = this.filtred_products.filter(function (item){
+                            return item.global_product.subcategory_id == subcategory_id
+                        })
+                    }
+                }
+            },
+
+            clear_filtrs(){
+                this.get_products()
+            },
         }
     }
 </script>

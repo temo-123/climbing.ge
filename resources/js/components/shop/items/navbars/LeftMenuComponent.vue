@@ -11,12 +11,12 @@
                         <span >
                             <li class="menu_item" style="height: 104px; padding-top: 35px;">
                                 <select class="form-control" v-model="filter_category" @click="get_category_subcategories()" name="sort_by_categories" >
-                                    <option>All</option>
+                                    <option :value="0">All</option>
                                     <option v-for="category in categories" :key='category.id' :value="category.id">{{ category.us_name }}</option> 
                                 </select>
                             </li>
 
-                            <li v-for="subcat in subcategories" :key="subcat.id" v-bind:value="subcat.id" class="menu_small_item">
+                            <li v-for="subcat in subcategories" :key="subcat.id" v-bind:value="subcat.id" class="menu_small_item" @click="sort_by_subcategories(subcat.id)">
                                 {{ subcat.us_name }}
                             </li>
 
@@ -29,7 +29,7 @@
                     <ul :class="'brand menu_opening_height_list'" style="display: none;">
                         <li class="menu_item">
                             <select class="form-control" v-model="filter_brand" name="sort_by_brand" @click="sort_by_brand()">
-                                <option>All</option>
+                                <option :value="0">All</option>
                                 <option v-for="brand in brands" :key="brand.id" v-bind:value="brand.id"> {{ brand.us_brand.title }}</option>
                             </select>
                         </li>
@@ -41,9 +41,9 @@
                     <ul :class="'sale_type menu_opening_height_list'" style="display: none;">
                         <li class="menu_item">
                             <select class="form-control" v-model="sale_type" name="sort_by_sale_type" @click="sort_by_sale_type()">
-                                <option>All</option>
-                                <option :value="'Custom production'">Custom production</option> 
-                                <option :value="'Online sale'">Online sale</option> 
+                                <option :value="0">All</option>
+                                <option :value="'custom_production'">Custom production</option> 
+                                <option :value="'online_order'">Online sale</option> 
                             </select>
                         </li>
                     </ul>
@@ -95,7 +95,7 @@
 
             <ul style="padding-left: 0px;">
                 <li>
-                    <a @click="sorting()">Filtr</a>
+                    <a @click="clear_filtrs()">Clear filtrs</a>
                 </li>
             </ul>
             
@@ -117,9 +117,9 @@
                 min_price: 0,
                 max_price: 999,
 
-                filter_category: 'All',
-                filter_brand: 'All',
-                sale_type: 'All',
+                filter_category: 0,
+                filter_brand: 0,
+                sale_type: 0,
                 
                 categories: [],
                 brands: [],
@@ -155,15 +155,27 @@
             },
 
             sort_by_brand(){
-                this.$emit('sort_by_brand')
+                this.$emit('sort_by_brand', this.filter_brand)
+                this.open_menu()
             },
 
-            sort_by_subcategories(){
-                this.$emit('sort_by_subcategories')
+            sort_by_subcategories(subcat_id){
+                this.$emit('sort_by_subcategories', subcat_id)
+                this.open_menu()
             },
 
-            sorting(){
-                this.$emit('sorting')
+            sort_by_sale_type(){
+                this.$emit('sort_by_sale_type', this.sale_type)
+                this.open_menu()
+            },
+
+            clear_filtrs(){
+                this.filter_brand = 0
+                this.sale_type = 0
+                this.filter_category = 0
+
+                this.$emit('clear_filtrs')
+                this.open_menu()
             },
 
             get_product_categories: function(){
@@ -192,7 +204,7 @@
             },
 
             get_category_subcategories(){
-                if(this.filter_category != null && this.filter_category != "All"){
+                if(this.filter_category != 0){
                     axios
                     .get("/subcategory/get_subcategories_for_category/" + this.filter_category)
                     .then(response => {
@@ -202,6 +214,9 @@
                         error => console.log(error)
                     )
                     .finally(() => this.is_loading = false);
+                }
+                else if(this.filter_category == 0){
+                    this.sort_by_subcategories(0)
                 }
             },
 
