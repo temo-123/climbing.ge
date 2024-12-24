@@ -281,26 +281,4 @@ class LocalBisnesController extends Controller
         $relation_value -> delete();
     }
 
-    public function adding_global_bisnes_validate($global_data)
-    {
-        $validator = Validator::make($global_data, [
-            'us_title_for_url_title' => 'required|unique:suport_local_bisneses,url_title',
-        ]);
-        if ($validator->fails()) {
-            return $validator->messages();
-        }
-    }
-
-    public function local_bisnes_validate($data)
-    {
-        // dd($data);
-        $validator = Validator::make($data, [
-            'title' => 'required',
-            'short_description' => 'required',
-            'text' => 'required',
-        ]);
-        if ($validator->fails()) {
-            return $validator->messages();
-        }
-    }
 }

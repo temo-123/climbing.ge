@@ -367,7 +367,7 @@ class LocaleContentControllService
     {
         $validator = Validator::make($data, [
             'title' => 'required | max:190',
-            'short_description' => 'required',
+            'short_description' => 'required | max:190',
             'text' => 'required',
         ]);
 

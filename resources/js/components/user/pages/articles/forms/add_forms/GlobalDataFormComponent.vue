@@ -26,7 +26,7 @@
                         <label for="region" class='col-md-2 control-label '> Regions </label>
                         <div class="col-md-10">
                             <select class="form-control" v-model="region_id" name="region" > 
-                                <option :value="'select_region'" disabled>Select region</option> 
+                                <option :value="0" disabled>Select region</option> 
                                 <option :value="null" style="color:red">Whithout Region</option> 
                                 <option  v-for="region in regions" :key="region.id" :value="region.id">{{ region.us_name }}</option>
                             </select> 
@@ -37,7 +37,7 @@
                         <label for="name" class='col-md-2 control-label'> Mountain </label>
                         <div class="col-md-10">
                             <select class="form-control" v-model="mount_id" name="mount_id"> 
-                                <option :value="'select_mount'" disabled>Select mount</option> 
+                                <option :value="0" disabled>Select mount</option> 
                                 <option :value="null" style="color:red">Whithout Mount</option> 
                                 <option v-for="mount in mount_masive" :key="mount.id" :value="mount.global_data.id">{{mount.global_data.name}}</option> 
                             </select> 
@@ -140,12 +140,9 @@
                     // google_link: "",
                     // inst_link: "",
                     // web_link: "",
-
-                    // region_id: "select_region",
-                    // mount_id: "select_mount",
                 },
-                region_id: "select_region",
-                mount_id: "select_mount",
+                    region_id: 0,
+                    mount_id: 0,
             }
         },
         mounted() {

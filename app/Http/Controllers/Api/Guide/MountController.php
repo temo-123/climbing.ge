@@ -349,7 +349,7 @@ class MountController extends Controller
         $validator = Validator::make($data, [
             'text' => 'required',
             'title' => 'required',
-            'short_description' => 'required',
+            'short_description' => 'required | max:190',
         ]);
         if ($validator->fails()) {
             return $validator->messages();

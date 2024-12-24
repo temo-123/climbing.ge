@@ -573,7 +573,7 @@ class EventController extends Controller
     {
         $validator = Validator::make($data, [
             'title' => 'required',
-            'short_description' => 'required',
+            'short_description' => 'required | max:190',
             'text' => 'required',
         ]);
         if ($validator->fails()) {

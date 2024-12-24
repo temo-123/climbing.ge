@@ -287,7 +287,7 @@ class ArticleController extends Controller
         $article_count = Article::where('category', '=', $category)->where('id', '!=', $article_id)->where('published', '=', 1)->count();
         $articles = [];
         if($article_count > 0){
-            $global_articles = Article::where('category', '=', $category)->where('id', '!=', $article_id)->where('published', '=', 1)->simplePaginate(4);
+            $global_articles = Article::where('category', '=', $category)->where('id', '!=', $article_id)->where('published', '=', 1)->random(4);
             $articles = ArticlesService::get_locale_article_use_locale($global_articles, $lang);
         }
         return $articles;
@@ -299,7 +299,7 @@ class ArticleController extends Controller
         $article_count = Article::where('category', '=', 'mount_route')->where('id', '!=', $article_id)->where('published', '=', 1)->count();
         $articles = [];
         if($article_count > 0){
-            $global_articles = Article::where('category', '=', 'mount_route')->where('id', '!=', $article_id)->where('published', '=', 1)->simplePaginate(4);
+            $global_articles = Article::where('category', '=', 'mount_route')->where('id', '!=', $article_id)->where('published', '=', 1)->random(4);
             $articles = ArticlesService::get_locale_article_use_locale($global_articles, $lang);
         }
         return $articles;
@@ -309,11 +309,11 @@ class ArticleController extends Controller
     public function similar_outdoor_list($lang, $article_id = 0)
     {
         if($article_id == 0){
-            $global_outdoors = Article::latest('id')->where('category', '=', 'outdoor')->where('published', '=', 1)->simplePaginate(4);
+            $global_outdoors = Article::latest('id')->where('category', '=', 'outdoor')->where('published', '=', 1)->random(4);
             $article_count = Article::latest('id')->where('category', '=', 'outdoor')->where('published', '=', 1)->count();
         }
         else{
-            $global_outdoors = Article::latest('id')->where('category', '=', 'outdoor')->where('id', '!=', $article_id)->where('published', '=', 1)->simplePaginate(4);
+            $global_outdoors = Article::latest('id')->where('category', '=', 'outdoor')->where('id', '!=', $article_id)->where('published', '=', 1)->random(4);
             $article_count = Article::latest('id')->where('category', '=', 'outdoor')->where('id', '!=', $article_id)->where('published', '=', 1)->count();
         }
 

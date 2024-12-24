@@ -182,7 +182,7 @@ class MTPController extends Controller
     public function mtp_validate($request)
     {
         $validator = Validator::make($request, [
-            'name' => 'required',
+            'name' => 'required | max:190',
             'sector_id' => 'required',
         ]);
         if ($validator->fails()) {
