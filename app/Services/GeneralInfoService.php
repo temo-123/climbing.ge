@@ -118,10 +118,14 @@ class GeneralInfoService
         }
     }
 
-    public static function getGeneralInfoForArticle($global_info) {
+    public static function getGeneralInfoForArticle($global_info, $locale) {
         $general_info = [];
 
         $info_article_relatione = General_info_article::where('article_id', '=', $global_info->id)->get();
+
+        if ($locale == "us" || $locale == 'en') {
+            $locale = "us";
+        }
 
         // dd($info_article_relatione);
         foreach($info_article_relatione as $info){
@@ -130,30 +134,30 @@ class GeneralInfoService
             if($info->block == 'info_block'){
                 $general_info['info_block'] = [
                     "block_action" => $info->block_action,
-                    "text"=>General_info::where('id', '=', $info->info_id)->first('text_us')->text_us
+                    "text"=>General_info::where('id', '=', $info->info_id)->first('text_'.$locale)['text_'.$locale]
                 ];
             }
             if($info->block == 'what_need_info'){
                 $general_info['what_need_info'] = [
                     "block_action" => $info->block_action,
-                    "text"=>General_info::where('id', '=', $info->info_id)->first('text_us')->text_us
+                    "text"=>General_info::where('id', '=', $info->info_id)->first('text_'.$locale)['text_'.$locale]
                 ];
             }
             if($info->block == 'best_time'){
                 $general_info['best_time'] = [
                     "block_action" => $info->block_action,
-                    "text"=>General_info::where('id', '=', $info->info_id)->first('text_us')->text_us
+                    "text"=>General_info::where('id', '=', $info->info_id)->first('text_'.$locale)['text_'.$locale]
                 ];
             }
             if($info->block == 'routes_info'){
                 $general_info['routes_info'] = [
                     "block_action" => $info->block_action,
-                    "text"=>General_info::where('id', '=', $info->info_id)->first('text_us')->text_us
+                    "text"=>General_info::where('id', '=', $info->info_id)->first('text_'.$locale)['text_'.$locale]
                 ];
             }
         }
 
-        // dd($general_info);
+        // dd(General_info::where('id', '=', $info->info_id)->first('text_'.$locale));
 
         return $general_info;
     }

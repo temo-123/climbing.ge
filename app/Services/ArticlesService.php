@@ -65,7 +65,7 @@ class ArticlesService extends LocaleContentService
     {
         $locale_article = (new static)->get_locale_content_in_page($article, Locale_article::class, '_article_id', $locale);
 
-        $general_data = GeneralInfoService::getGeneralInfoForArticle($article);
+        $general_data = GeneralInfoService::getGeneralInfoForArticle($article, $locale);
         
         $art_array = [
             "locale_data"=>$locale_article['locale_data'], 
