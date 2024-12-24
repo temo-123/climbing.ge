@@ -78,8 +78,27 @@
                                 <div v-if="this.regions_and_spots.length > 0" class="article_card_container">
                                     <div class="row" v-for="region in regions_and_spots">
                                         <div class="col-md-12">
-                                            <h2 v-if="region.region['name'] != 'other'" class="article_list_short_description">{{region.region.us_name}}</h2>
-                                            <h2 v-else class="article_list_short_description">Other</h2>
+                                            <div class="row" v-if="region.region['name'] != 'other'">
+                                                <h2 class="article_list_short_description">{{region.region.name}}</h2>
+
+                                                <!-- <div class="col-md-12" style="text-align: right;">
+                                                    <button class="btn btn-default btn-send main-btn" >Rade More</button>
+                                                </div> -->
+
+                                                <!-- <div class="row articles_filter_bar" v-if="filter_spot != 'All'">
+                                                    <div class="col-md-12" style="text-align: center;">
+                                                        <h2>{{selected_region_data.name}}</h2>
+                                                        <span v-html="selected_region_data.text"></span>
+                                                    </div>
+
+                                                    <div class="col-md-12" style="text-align: center;" v-if="selected_region_data.map != null">
+                                                        <button class="btn btn-default btn-send main-btn" @click="map_modal()">Show map</button>
+                                                    </div>
+                                                </div> -->
+                                            </div>
+                                            <div v-else>
+                                                <h2 class="article_list_short_description">Other</h2>
+                                            </div>
                                         </div>
                                         <div class="col-md-12">
                                             <outdoorCard  

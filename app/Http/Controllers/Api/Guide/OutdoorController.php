@@ -30,12 +30,15 @@ class OutdoorController extends Controller
     
     public function get_spots_by_regions(Request $request)
     {
-        if($request -> lang == 'ka'){
-            $regions = Region::select('id', 'ka_name', 'ka_text')->get();
-        }
-        else{
-            $regions = Region::select('id', 'us_name', 'us_text')->get();
-        }
+        // if($request -> lang == 'ka'){
+        //     $regions = Region::select('id', 'ka_name', 'ka_text')->get();
+        // }
+        // else{
+        //     $regions = Region::select('id', 'us_name', 'us_text')->get();
+        // }
+
+        $regions = $this->get_region_data($request -> lang);
+        
         $regions_array = [];
 
         foreach($regions as $region){
@@ -124,6 +127,24 @@ class OutdoorController extends Controller
 
         // dd($area_data[0]['area']['global_data']['outdoor_region']);
         return $area_data;
+    }
+
+    private function get_region_data($locale) {
+        if ($locale == "us" || $locale == 'en') {
+            $locale = "us";
+        }
+
+        $regions = Region::select('id', 'map', $locale . '_text', $locale . '_name')->get();
+
+        foreach ($regions as $region) {
+            $region['text'] = $region[$locale . '_text'];
+            unset($region[$locale . '_text']);
+
+            $region['name'] = $region[$locale . '_name'];
+            unset($region[$locale . '_name']);
+        }
+
+        return $regions;
     }
 
     public function locale_regions(Request $request)
