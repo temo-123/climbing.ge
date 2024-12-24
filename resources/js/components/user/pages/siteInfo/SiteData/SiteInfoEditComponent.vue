@@ -28,11 +28,6 @@
                         
                         <label for="4" >Georgian text</label>
                     </div>
-                    <div class="col" >
-                        <input type="radio" id="3" :value="3" v-model="tab_num">
-                        
-                        <label for="3" >Russion text</label>
-                    </div>
                 </div>
             </div>
             <div class="col-md-12">
@@ -58,17 +53,6 @@
                     </div>
                     <localeInfoForm 
                         :locale_data_prop="site_us_info"
-                    />
-                </div>
-                <div class="row" v-show="tab_num == 3">
-                    <div class="width_100 jumbotron jumbotron-fluid">
-                        <div class="container">
-                            <h2 class="display-4">Site rusion version</h2>
-                            <p class="lead">Site rusion version for site localisation.</p>
-                        </div>
-                    </div>
-                    <localeInfoForm 
-                        :locale_data_prop="site_ru_info"
                     />
                 </div>
                 <div class="row" v-show="tab_num == 4">
@@ -102,7 +86,6 @@ export default {
             tab_num: 1,
             site_global_info: [],
             site_ka_info: [],
-            site_ru_info: [],
             site_us_info: [],
         }
     },
@@ -120,12 +103,11 @@ export default {
                 // site_us_info: this.site_us_info
                 site_global_info: this.site_global_info,
                 site_ka_info: this.site_ka_info,
-                site_ru_info: this.site_ru_info,
                 site_us_info: this.site_us_info,
             })
             .then(response => {
                 // this.site_us_info = response.data
-                this.go_back()
+                this.go_back(true)
             })
             .catch(
                 error => console.log(error)
@@ -135,13 +117,12 @@ export default {
         site_data(){
             this.get_site_global_data()
             this.get_site_ka_data()
-            this.get_site_ru_data()
             this.get_site_us_data()
         },
        
         get_site_global_data: function(){
             axios
-            .get('../../../api/siteData/get_site_global_data')
+            .get('siteData/get_site_global_data')
             .then(response => {
                 this.site_global_info = response.data
             })
@@ -151,7 +132,7 @@ export default {
         },
         get_site_ka_data: function(){
             axios
-            .get('../../../api/siteData/get_site_ka_data')
+            .get('siteData/get_site_ka_data')
             .then(response => {
                 this.site_ka_info = response.data
             })
@@ -159,19 +140,9 @@ export default {
                 error => console.log(error)
             );
         },
-        get_site_ru_data: function(){
-            axios
-            .get('../../../api/siteData/get_site_ru_data')
-            .then(response => {
-                this.site_ru_info = response.data
-            })
-            .catch(
-                error => console.log(error)
-            );
-        },
         get_site_us_data: function(){
             axios
-            .get('../../../api/siteData/get_site_us_data')
+            .get('siteData/get_site_us_data')
             .then(response => {
                 this.site_us_info = response.data
             })

@@ -67,7 +67,7 @@ export default {
             })
             .then(response => {
                 // this.site_us_info = response.data
-                this.go_back()
+                this.go_back(true)
             })
             .catch(
                 error => console.log(error)

@@ -23,14 +23,14 @@
                                             <label :for="1">Global data</label>
                                         </div>
                                         <div class="col-md-3">
-                                            <input type="radio" :id="2" :value="2" v-model="action_tab" />
-
-                                            <label :for="2">Georgian data</label>
-                                        </div>
-                                        <div class="col-md-3">
                                             <input type="radio" :id="3" :value="3" v-model="action_tab" />
 
-                                            <label :for="3">English data</label>
+                                            <label :for="3">Georgian data</label>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <input type="radio" :id="2" :value="2" v-model="action_tab" />
+
+                                            <label :for="2">English data</label>
                                         </div>
                                     <!-- </div> -->
                                 </div>
@@ -159,7 +159,7 @@
 
                         <!-- <input type="radio" name="tabs" id="4">
                         <label for="4">Georgian Data</label> -->
-                        <span v-else-if="action_tab == 4">
+                        <span v-else-if="action_tab == 3">
                             <div class="row edit_buttom">
                                 <div class="col-md-6">
                                     <!-- <button class="btn btn-primary" >Georgian data</button> -->
