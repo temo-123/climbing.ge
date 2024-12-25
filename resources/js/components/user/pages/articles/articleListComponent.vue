@@ -38,7 +38,7 @@
 </template>
 
 <script>
-    import tabsComponent  from '../../items/data_tabs/DataTab/TabsComponent'
+    import tabsComponent  from '../../items/data_table/TabsComponent.vue'
     import { ContentLoader } from 'vue-content-loader'
     import breadcrumb from '../../items/BreadcrumbComponent.vue'
     export default {
@@ -82,10 +82,26 @@
                     .get("/outdoor/region/")
                     .then(response => {
                         this.data_for_tab.push({'id': 2,
-                                                'data': response.data, 
+                                                'tab_data': {
+                                                    'data': response.data, 
+                                                    'tab': {
+                                                        'head': [
+                                                            'title',
+                                                            'Public',
+                                                            'Edit',
+                                                            'Delite',
+                                                    ],
+                                                        'body': {
+                                                            1: ['data', 'url_title'],
+                                                            2: ['data', 'published'],
+                                                            2: ['action_url', 'edit_url'],
+                                                            2: ['action_fun', 'del'],
+                                                        },
+                                                    }
+                                                },
                                                 'table_name': "Regions",
                                                 'table_add_url': 'spot_category_add', 
-                                                // 'table_edit_url': 'spot_category_edit',
+                                                'table_edit_url': 'spot_category_edit',
                                             });
                     })
                     .catch(
@@ -99,7 +115,23 @@
                     .get("/ice_sectors/get_all_sectors/")
                     .then(response => {
                         this.data_for_tab.push({'id': 2,
-                                                'data': response.data, 
+                                                'tab_data': {
+                                                    'data': response.data, 
+                                                    'tab': {
+                                                        'head': [
+                                                            'title',
+                                                            'Public',
+                                                            'Edit',
+                                                            'Delite',
+                                                    ],
+                                                        'body': {
+                                                            1: ['data', 'url_title'],
+                                                            2: ['data', 'published'],
+                                                            2: ['action_url', 'edit_url'],
+                                                            2: ['action_fun', 'del'],
+                                                        },
+                                                    }
+                                                },
                                                 'table_name': "Ice sectors",
                                                 'table_add_url': 'iceSectorAdd', 
                                             });
@@ -115,7 +147,23 @@
                 .get("/ice_routes/get_all_routes/")
                 .then(response => {
                     this.data_for_tab.push({'id': 3,
-                                            'data': response.data, 
+                                                'tab_data': {
+                                                    'data': response.data, 
+                                                    'tab': {
+                                                        'head': [
+                                                            'title',
+                                                            'Public',
+                                                            'Edit',
+                                                            'Delite',
+                                                    ],
+                                                        'body': {
+                                                            1: ['data', 'url_title'],
+                                                            2: ['data', 'published'],
+                                                            2: ['action_url', 'edit_url'],
+                                                            2: ['action_fun', 'del'],
+                                                        },
+                                                    }
+                                                },
                                             'table_name': "Ice routes",
                                             'table_add_url': 'iceRouteAdd', 
                                         });
@@ -136,8 +184,25 @@
                 })
                 .then(response => {
                     this.data_for_tab = []
+    
                     this.data_for_tab.push({'id': 1,
-                                            'data': response.data, 
+                                                'tab_data': {
+                                                    'data': response.data, 
+                                                    'tab': {
+                                                        'head': [
+                                                            'title',
+                                                            'Public',
+                                                            'Edit',
+                                                            'Delite',
+                                                    ],
+                                                        'body': {
+                                                            1: ['data', 'url_title'],
+                                                            2: ['data', 'published'],
+                                                            2: ['action_url', 'edit_url'],
+                                                            2: ['action_fun', 'del'],
+                                                        },
+                                                    }
+                                                },
                                             'table_name': this.$route.params.article_category, 
                                             'table_category': this.$route.params.article_category, 
                                             'table_add_url': 'articleAdd', 
@@ -161,7 +226,23 @@
                 .then(response => {
                     this.data_for_tab = []
                     this.data_for_tab.push({'id': 1,
-                                            'data': response.data, 
+                                                'tab_data': {
+                                                    'data': response.data, 
+                                                    'tab': {
+                                                        'head': [
+                                                            'title',
+                                                            'Public',
+                                                            'Edit',
+                                                            'Delite',
+                                                    ],
+                                                        'body': {
+                                                            1: ['data', 'url_title'],
+                                                            2: ['data', 'published'],
+                                                            2: ['action_url', 'edit_url'],
+                                                            2: ['action_fun', 'del'],
+                                                        },
+                                                    }
+                                                },
                                             'table_name': this.$route.params.article_category, 
                                             'table_category': this.$route.params.article_category, 
                                             'table_add_url': 'articleAdd', 

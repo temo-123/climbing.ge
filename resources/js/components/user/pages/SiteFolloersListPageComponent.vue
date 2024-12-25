@@ -26,7 +26,7 @@
 
 <script>
     import breadcrumb from '../items/BreadcrumbComponent.vue'
-    import tabsComponent  from '../items/data_tabs/DataTab/TabsComponent'
+    import tabsComponent  from '../items/data_table/TabsComponent.vue'
 
     // import galleryTab from '../items/data_tabs/GalleryTabComponent.vue';
     export default {
