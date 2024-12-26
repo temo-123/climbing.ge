@@ -21,18 +21,32 @@
                     </div>
                 </div>
 
+
+                <!-- <div class="row">
+                    <div class="col-md-12">
+                        <div class="cms_filters">
+                            <div class="input-group mb-3">
+                                <input type="text" class="form-control" placeholder="Recipient's username" aria-label="Recipient's username" aria-describedby="basic-addon2">
+                                <div class="input-group-append">
+                                    <button class="btn btn-primary" style="height: auto;" type="button">Search</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div> -->
+
                 <div class="row">
                     <div
                         class="col-md-12"
-                        v-for="first_action_data in table_data"
-                        :key="first_action_data.id"
+                        v-for="action_data in table_data"
+                        :key="action_data.id"
 
-                        v-if="tab_num == first_action_data.id"
+                        v-if="tab_num == action_data.id"
                     >
-                        <div class="row mb-2" v-if="first_action_data.list_page">
+                        <div class="row mb-2" v-if="action_data.list_page">
                             <div class="col-md-12">
-                                <a class="btn btn-primary pull-left" :href="first_action_data.list_page" target="_blank">
-                                    Go to {{ first_action_data.table_name }} list
+                                <a class="btn btn-primary pull-left" :href="action_data.list_page" target="_blank">
+                                    Go to {{ action_data.table_name }} list
                                 </a>
                             </div>
                         </div>
@@ -40,9 +54,9 @@
                         <div class="row">
                             <div class="col-md-12">
                                 <div class="add_buttom float-left">
-                                    <router-link v-if="first_action_data.add_action.action == 'route'" :to="{ name: first_action_data.add_action.link }" class="btn btn-primary pull-left">Add New</router-link>
-                                    <a v-else-if="first_action_data.add_action.action == 'url'" :href="first_action_data.add_action.link" class="btn btn-primary pull-left">Add New</a>
-                                    <button v-else-if="first_action_data.add_action.action == 'fun'" class="btn btn-primary pull-left">Add New</button>
+                                    <router-link v-if="action_data.add_action.action == 'route'" :to="{ name: action_data.add_action.link }" class="btn btn-primary pull-left">Add New</router-link>
+                                    <a v-else-if="action_data.add_action.action == 'url'" :href="action_data.add_action.link" class="btn btn-primary pull-left">Add New</a>
+                                    <button v-else-if="action_data.add_action.action == 'fun'" class="btn btn-primary pull-left">Add New</button>
                                 </div>
 
                                 <div class="form-groupe float-right">
@@ -63,6 +77,24 @@
                                     <button class="btn btn-danger" disabled>
                                         Del selected items
                                     </button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row" v-if="action_data.filter_data && action_data.filter_data.data">
+                            <div class="col-md-12">
+                                <div class="cms_filters">
+                                    <div class="col-md-7">
+                                        <h3>{{ action_data.filter_data.title }}</h3>
+                                    </div>
+                                    <div class="col-md-5">
+                                        <select v-model="filter_id" @click="$emit(action_data.filter_data.action)">
+                                            <option :value="0">All</option>
+                                            <option v-for="filter_data in action_data.filter_data.data" :key="filter_data" :value="filter_data.id">
+                                                {{ filter_data[action_data.filter_data.array_key] }}
+                                            </option>
+                                        </select>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -126,7 +158,7 @@ export default {
     data() {
         return {
             tab_num: 1,
-            // show_sector_modal: false,
+            filter_id: 0,
             danger_color: ''
         };
     },
@@ -136,7 +168,6 @@ export default {
     },
 
     methods: {
-        
         update() {
             this.$emit("update");
         },
@@ -145,7 +176,11 @@ export default {
 </script>
 
 <style scoped>
-.data_tab{
-    overflow-x: scroll;
-}
+    .data_tab{
+        overflow-x: scroll;
+    }
+    .cms_filters {
+        background-color: #c1c1c1;
+        margin-bottom: 2%;
+    }
 </style>

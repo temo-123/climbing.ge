@@ -1,0 +1,41 @@
+this.data_for_tab.push
+                    ({  
+                        'id': 1,
+                        'table_name': this.$route.params.article_category, 
+                        'list_page': process.env.MIX_BASE_URL_SSH + '/outdoor',
+                        'add_action': {
+                            'action': 'route',
+                            'link': 'articleAdd', 
+                        },
+                        'tab_data': {
+                            'data': response.data, 
+                            'tab': {
+                                'head': [
+                                    'ID',
+                                    'Title',
+                                    'Public',
+                                    'Edit',
+                                    'Delite',
+                            ],
+                                'body': [
+                                    ['data', 'id'],
+                                    ['data', 'url_title'],
+                                    ['data', 'published'],
+                                    ['action_router', 'articleEdit', 'btn btn-primary', 'Edit'],
+                                    ['action_fun', 'del_article', 'btn btn-danger', 'Del'],
+                            ],
+                                'perm': [
+                                    ['no'],
+                                    ['no'],
+                                    ['no'],
+                                    ['aricle', 'edit'],
+                                    ['aricle', 'del'],
+                                ]
+                            }
+                        },
+                        'filter_data': {
+                            'title': 'Filter by regions',
+                            'data': this.regions,
+                            'action': 'filtr_outdoors'
+                        }
+                    });

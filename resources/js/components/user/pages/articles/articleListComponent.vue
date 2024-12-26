@@ -32,6 +32,8 @@
 
                         @del_article="del_article"
                         @del_region="del_region"
+
+                        @filtr_outdoors="filtr_outdoors"
                     />
                 </div>
             </div>
@@ -114,6 +116,14 @@
                                                     }
                                                 },
                                             });
+
+                        this.data_for_tab[0].filter_data = {
+                                                    'title': 'Filter by regions',
+                                                    'data': response.data,
+                                                    'action': 'filtr_outdoors',
+                                                    'array_key': 'us_name'
+                                                }
+
                     })
                     .catch(
                         error => console.log(error)
@@ -293,6 +303,10 @@
 
             del_region(){
                 alert('del_region')
+            },
+
+            filtr_outdoors(){
+                alert('filtr_outdoors')
             }
         }
     }
