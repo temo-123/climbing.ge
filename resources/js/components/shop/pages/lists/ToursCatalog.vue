@@ -54,7 +54,7 @@
             return {
                 tours: [],
                 site_data: [],
-                loader: true,
+                tour_loading: false,
             };
         },
         mounted() {
@@ -62,6 +62,7 @@
         },
         methods: {
             get_tours(){
+                this.tour_loading = true
                 axios
                 .get('/tour/get_tours/'+localStorage.getItem('lang'))
                 .then(response => {
@@ -69,7 +70,7 @@
                 })
                 .catch(error =>{
                 })
-                .finally(() => this.loader = false);
+                .finally(() => this.tour_loading = false);
             },
         }
     }
