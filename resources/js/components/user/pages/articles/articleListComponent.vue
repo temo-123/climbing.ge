@@ -28,8 +28,10 @@
                 <div class="col-sm-12" v-else>
                     <tabsComponent 
                         :table_data="this.data_for_tab"
-                        @update-data="get_articles"
-                        @filtr="filtr"
+                        @update="get_articles"
+
+                        @del_article="del_article"
+                        @del_region="del_region"
                     />
                 </div>
             </div>
@@ -81,27 +83,36 @@
                     axios
                     .get("/outdoor/region/")
                     .then(response => {
-                        this.data_for_tab.push({'id': 2,
+                        this.data_for_tab.push({
+                                                'id': 2,
+                                                'table_name': 'Regions', 
+                                                'add_action': {
+                                                    'action': 'route',
+                                                    'link': 'spot_category_add', 
+                                                },
                                                 'tab_data': {
                                                     'data': response.data, 
                                                     'tab': {
                                                         'head': [
-                                                            'title',
-                                                            'Public',
+                                                            'ID',
+                                                            'Name',
                                                             'Edit',
                                                             'Delite',
-                                                    ],
-                                                        'body': {
-                                                            1: ['data', 'url_title'],
-                                                            2: ['data', 'published'],
-                                                            2: ['action_url', 'edit_url'],
-                                                            2: ['action_fun', 'del'],
-                                                        },
+                                                        ],
+                                                        'body': [
+                                                            ['data', 'id'],
+                                                            ['data', 'us_name'],
+                                                            ['action_router', 'spot_category_edit', 'btn btn-primary', 'Edit'],
+                                                            ['action_fun', 'del_region', 'btn btn-danger', 'Del'],
+                                                        ],
+                                                        'perm': [
+                                                            ['no'],
+                                                            ['no'],
+                                                            ['aricle', 'edit'],
+                                                            ['aricle', 'del'],
+                                                        ]
                                                     }
                                                 },
-                                                'table_name': "Regions",
-                                                'table_add_url': 'spot_category_add', 
-                                                'table_edit_url': 'spot_category_edit',
                                             });
                     })
                     .catch(
@@ -127,8 +138,8 @@
                                                         'body': {
                                                             1: ['data', 'url_title'],
                                                             2: ['data', 'published'],
-                                                            2: ['action_url', 'edit_url'],
-                                                            2: ['action_fun', 'del'],
+                                                            3: ['action_url', 'edit_url', 'btn btn-primary', 'Edit'],
+                                                            4: ['action_fun', 'del', 'btn btn-danger', 'Del'],
                                                         },
                                                     }
                                                 },
@@ -159,8 +170,8 @@
                                                         'body': {
                                                             1: ['data', 'url_title'],
                                                             2: ['data', 'published'],
-                                                            2: ['action_url', 'edit_url'],
-                                                            2: ['action_fun', 'del'],
+                                                            3: ['action_url', 'edit_url', 'btn btn-primary', 'Edit'],
+                                                            4: ['action_fun', 'del', 'btn btn-danger', 'Del'],
                                                         },
                                                     }
                                                 },
@@ -198,8 +209,8 @@
                                                         'body': {
                                                             1: ['data', 'url_title'],
                                                             2: ['data', 'published'],
-                                                            2: ['action_url', 'edit_url'],
-                                                            2: ['action_fun', 'del'],
+                                                            3: ['action_url', 'edit_url', 'btn btn-primary', 'Edit'],
+                                                            4: ['action_fun', 'del', 'btn btn-danger', 'Del'],
                                                         },
                                                     }
                                                 },
@@ -225,28 +236,41 @@
                 .get("/article/get_category_articles/"+this.$route.params.article_category)
                 .then(response => {
                     this.data_for_tab = []
-                    this.data_for_tab.push({'id': 1,
-                                                'tab_data': {
-                                                    'data': response.data, 
-                                                    'tab': {
-                                                        'head': [
-                                                            'title',
-                                                            'Public',
-                                                            'Edit',
-                                                            'Delite',
-                                                    ],
-                                                        'body': {
-                                                            1: ['data', 'url_title'],
-                                                            2: ['data', 'published'],
-                                                            2: ['action_url', 'edit_url'],
-                                                            2: ['action_fun', 'del'],
-                                                        },
-                                                    }
-                                                },
+                    this.data_for_tab.push
+                                        ({  
+                                            'id': 1,
                                             'table_name': this.$route.params.article_category, 
-                                            'table_category': this.$route.params.article_category, 
-                                            'table_add_url': 'articleAdd', 
-                                            'table_edit_url': 'articleEdit',
+                                            'list_page': process.env.MIX_BASE_URL_SSH + '/outdoor',
+                                            'add_action': {
+                                                'action': 'route',
+                                                'link': 'articleAdd', 
+                                            },
+                                            'tab_data': {
+                                                'data': response.data, 
+                                                'tab': {
+                                                    'head': [
+                                                        'ID',
+                                                        'Title',
+                                                        'Public',
+                                                        'Edit',
+                                                        'Delite',
+                                                ],
+                                                    'body': [
+                                                        ['data', 'id'],
+                                                        ['data', 'url_title'],
+                                                        ['data', 'published'],
+                                                        ['action_router', 'articleEdit', 'btn btn-primary', 'Edit'],
+                                                        ['action_fun', 'del_article', 'btn btn-danger', 'Del'],
+                                                ],
+                                                    'perm': [
+                                                        ['no'],
+                                                        ['no'],
+                                                        ['no'],
+                                                        ['aricle', 'edit'],
+                                                        ['aricle', 'del'],
+                                                    ]
+                                                }
+                                            },
                                         });
 
 
@@ -262,6 +286,14 @@
                 )
                 .finally(() => this.article_loading = false);
             },
+
+            del_article(){
+                alert('del_article')
+            },
+
+            del_region(){
+                alert('del_region')
+            }
         }
     }
 </script>
