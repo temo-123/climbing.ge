@@ -265,14 +265,10 @@ class ArticleController extends Controller
 
     public function get_similar_locale_article(Request $request)
     {
-        // dd($request->article_id, $request->article_category);
         $articles = [];
         
         if ($request->article_category == "outdoor") {
             $articles = $this->similar_outdoor_list($request->lang, $request->article_id);
-        }
-        elseif ($request->article_category == "mount_route") {
-            $articles = $this->similar_mount_route_list($request->lang, $request->article_id);
         }
         else {
             $articles = $this->similar_article_list($request->article_category, $request->lang, $request->article_id);
@@ -281,30 +277,21 @@ class ArticleController extends Controller
         return $articles;
     }
 
-
     public function similar_article_list($category, $lang, $article_id)
     {
-        $article_count = Article::where('category', '=', $category)->where('id', '!=', $article_id)->where('published', '=', 1)->count();
+        $all_articles = Article::where('category', '=', $category)->where('id', '!=', $article_id)->where('published', '=', 1)->get();
         $articles = [];
-        if($article_count > 0){
-            $global_articles = Article::where('category', '=', $category)->where('id', '!=', $article_id)->where('published', '=', 1)->get()->random(4);
+        if($all_articles->count() > 0){
+            if($all_articles->count() >= 4){
+                $global_articles = $all_articles->random(4);
+            }
+            else{
+                $global_articles = $all_articles->random($all_articles->count());
+            }
             $articles = ArticlesService::get_locale_article_use_locale($global_articles, $lang);
         }
         return $articles;
     }
-
-
-    public function similar_mount_route_list($lang, $article_id)
-    {
-        $article_count = Article::where('category', '=', 'mount_route')->where('id', '!=', $article_id)->where('published', '=', 1)->count();
-        $articles = [];
-        if($article_count > 0){
-            $global_articles = Article::where('category', '=', 'mount_route')->where('id', '!=', $article_id)->where('published', '=', 1)->get()->random(4);
-            $articles = ArticlesService::get_locale_article_use_locale($global_articles, $lang);
-        }
-        return $articles;
-    }
-
 
     public function similar_outdoor_list($lang, $article_id = 0)
     {
@@ -377,11 +364,6 @@ class ArticleController extends Controller
     public function get_locale_articles(Request $request)
     {   
         $articles = [];
-        // dd($request->category);
-        // if ($request->category == "outdoor") {
-        //     $articles = $this->outdoor_list($request->lang);
-        // }
-        //else 
         if($request->category == "news") {
             $articles = $this->article_list($request->category, $request->lang);
             array_splice($articles, 7);
