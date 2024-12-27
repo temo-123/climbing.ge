@@ -5,8 +5,8 @@
                 <div class="row">
                     <div
                         class="col"
-                        v-for="tab_action_data in table_data"
-                        :key="tab_action_data.id"
+                        v-for="(tab_action_data, tab_action_data_id) in table_data"
+                        :key="tab_action_data_id"
                     >
                         <input
                             type="radio"
@@ -38,8 +38,8 @@
                 <div class="row">
                     <div
                         class="col-md-12"
-                        v-for="action_data in table_data"
-                        :key="action_data.id"
+                        v-for="(action_data, action_data_id) in table_data"
+                        :key="action_data_id"
 
                         v-if="tab_num == action_data.id"
                     >
@@ -88,9 +88,15 @@
                                         <h3>{{ action_data.filter_data.title }}</h3>
                                     </div>
                                     <div class="col-md-5">
-                                        <select v-model="filter_id" @click="$emit(action_data.filter_data.action)">
+                                        <select v-if="action_data.filter_data.action_fun" v-model="filter_id" @click="filter_data(action_data.filter_data.action_fun)">
                                             <option :value="0">All</option>
-                                            <option v-for="filter_data in action_data.filter_data.data" :key="filter_data" :value="filter_data.id">
+                                            <option v-for="(filter_data, filter_data_key) in action_data.filter_data.data" :key="filter_data_key" :value="filter_data.id">
+                                                {{ filter_data[action_data.filter_data.array_key] }}
+                                            </option>
+                                        </select>
+                                        <select v-if="action_data.filter_data.action_fun_id" v-model="filter_id" @click="filter_data_with_id(action_data.filter_data.action_fun_id)">
+                                            <option :value="0">All</option>
+                                            <option v-for="(filter_data, filter_data_id_key) in action_data.filter_data.data" :key="filter_data_id_key" :value="filter_data.id">
                                                 {{ filter_data[action_data.filter_data.array_key] }}
                                             </option>
                                         </select>
@@ -104,7 +110,7 @@
                 <div class="row">
                     <div
                         class="col-md-12 data_tab"
-                        v-for="tab_data in table_data" :key="tab_data.id"
+                        v-for="(tab_data, tab_data_id) in table_data" :key="tab_data_id"
                         v-if="tab_num == tab_data.id"
                     >
                         <table
@@ -121,16 +127,17 @@
                                 </tr>
                             </thead>
                             <tbody>   
-                                <tr :class="danger_color" v-for="datas in tab_data.tab_data.data" :key="datas">
+                                <tr :class="danger_color" v-for="(datas, datas_key) in tab_data.tab_data.data" :key="datas_key">
                                     <td style='text-align: center;'>
                                         <input type="checkbox">
                                     </td>
                                     
-                                    <td v-for="b in tab_data.tab_data.tab.body" :key="b" >
+                                    <td v-for="(b, b_key) in tab_data.tab_data.tab.body" :key="b_key" >
                                         <span v-if="b[0] == 'data'">{{ datas[b[1]] }}</span> 
                                         <a v-else-if="b[0] == 'action_url'" :href="b[1]" :class="b[2]">{{ b[3] }}</a>
                                         <router-link v-else-if="b[0] == 'action_router'" :class="b[2]" :to="{ name: b[1], params: { id: datas.id } }" >{{ b[3] }}</router-link>
                                         <button v-else-if="b[0] == 'action_fun'"type="button" @click="$emit(b[1])" :class="b[2]">{{ b[3] }}</button>
+                                        <button v-else-if="b[0] == 'action_fun_id'"type="button" @click="$emit(b[1], datas.id)" :class="b[2]">{{ b[3] }}</button>
                                     </td>
                                 </tr>
                             </tbody>
@@ -171,6 +178,12 @@ export default {
         update() {
             this.$emit("update");
         },
+        filter_data(emit_fun){
+            this.$emit(emit_fun)
+        },
+        filter_data_with_id(emit_fun){
+            this.$emit(emit_fun, this.filter_id)
+        }
     },
 };
 </script>
