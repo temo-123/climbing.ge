@@ -101,18 +101,18 @@
                                                             'Edit',
                                                             'Delite',
                                                         ],
-                                                        'body': {
-                                                            1: ['data', 'id'],
-                                                            2: ['data', 'us_name'],
-                                                            3: ['action_router', 'spot_category_edit', 'btn btn-primary', 'Edit'],
-                                                            4: ['action_fun_id', 'del_region', 'btn btn-danger', 'Del'],
-                                                        },
-                                                        'perm': {
-                                                            1: ['no'],
-                                                            2: ['no'],
-                                                            3: ['aricle', 'edit'],
-                                                            4: ['aricle', 'del'],
-                                                        }
+                                                        'body': [
+                                                            ['data', 'id'],
+                                                            ['data', 'us_name'],
+                                                            ['action_router', 'spot_category_edit', 'btn btn-primary', 'Edit'],
+                                                            ['action_fun_id', 'del_region', 'btn btn-danger', 'Del'],
+                                                        ],
+                                                        'perm': [
+                                                            ['no'],
+                                                            ['no'],
+                                                            ['aricle', 'edit'],
+                                                            ['aricle', 'del'],
+                                                        ]
                                                     }
                                                 },
                                             });
@@ -264,22 +264,22 @@
                                                         'Public',
                                                         'Edit',
                                                         'Delite',
-                                                ],
-                                                    'body': {
-                                                        1: ['data', 'id'],
-                                                        2: ['data', 'url_title'],
-                                                        3: ['data', 'published'],
-                                                        4: ['action_router', 'articleEdit', 'btn btn-primary', 'Edit'],
-                                                        5: ['action_fun_id', 'del_article', 'btn btn-danger', 'Del'],
+                                                    ],
+                                                    'body': [
+                                                        ['data', 'id'],
+                                                        ['data', 'url_title'],
+                                                        ['data', 'published'],
+                                                        ['action_router', 'articleEdit', 'btn btn-primary', 'Edit'],
+                                                        ['action_fun_id', 'del_article', 'btn btn-danger', 'Del'],
                                                         // ['action_fun', 'del_article', 'btn btn-danger', 'Del'],
-                                                    },
-                                                    'perm': {
-                                                        1: ['no'],
-                                                        2: ['no'],
-                                                        3: ['no'],
-                                                        4: ['aricle', 'edit'],
-                                                        5: ['aricle', 'del'],
-                                                    }
+                                                    ],
+                                                    'perm': [
+                                                        ['no'],
+                                                        ['no'],
+                                                        ['no'],
+                                                        ['article', 'edit'],
+                                                        ['article', 'del'],
+                                                    ]
                                                 }
                                             },
                                         });

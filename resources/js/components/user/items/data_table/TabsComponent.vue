@@ -123,7 +123,13 @@
                                         <input type="checkbox" class="all" />
                                     </th>
 
-                                    <th v-for="h in tab_data.tab_data.tab.head" :key="h"> {{ h }} </th>
+                                    <th v-for="(h, h_key) in tab_data.tab_data.tab.head" :key="h_key" 
+                                                v-if="
+                                                    tab_data.tab_data.tab.perm[h_key][0] == 'no' || 
+                                                    $can(tab_data.tab_data.tab.perm[h_key][1],  tab_data.tab_data.tab.perm[h_key][0])
+                                                ">
+                                        {{ h }}
+                                    </th>
                                 </tr>
                             </thead>
                             <tbody>   
@@ -131,13 +137,27 @@
                                     <td style='text-align: center;'>
                                         <input type="checkbox">
                                     </td>
-                                    
-                                    <td v-for="(b, b_key) in tab_data.tab_data.tab.body" :key="b_key" >
-                                        <span v-if="b[0] == 'data'">{{ datas[b[1]] }}</span> 
-                                        <a v-else-if="b[0] == 'action_url'" :href="b[1]" :class="b[2]">{{ b[3] }}</a>
-                                        <router-link v-else-if="b[0] == 'action_router'" :class="b[2]" :to="{ name: b[1], params: { id: datas.id } }" >{{ b[3] }}</router-link>
-                                        <button v-else-if="b[0] == 'action_fun'"type="button" @click="$emit(b[1])" :class="b[2]">{{ b[3] }}</button>
-                                        <button v-else-if="b[0] == 'action_fun_id'"type="button" @click="$emit(b[1], datas.id)" :class="b[2]">{{ b[3] }}</button>
+
+                                    <td v-for="(b, b_key) in tab_data.tab_data.tab.body" :key="b_key" 
+                                                v-if="
+                                                    tab_data.tab_data.tab.perm[b_key][0] == 'no' || 
+                                                    $can(tab_data.tab_data.tab.perm[b_key][1], tab_data.tab_data.tab.perm[b_key][0])
+                                                ">
+                                        <span v-if="b[0] == 'data'">
+                                            {{ datas[b[1]] }}
+                                        </span> 
+                                        <a v-else-if="b[0] == 'action_url'" :href="b[1]" :class="b[2]">
+                                            {{ b[3] }}
+                                        </a>
+                                        <router-link v-else-if="b[0] == 'action_router'" :class="b[2]" :to="{ name: b[1], params: { id: datas.id } }" >
+                                            {{ b[3] }}
+                                        </router-link>
+                                        <button v-else-if="b[0] == 'action_fun'" type="button" @click="$emit(b[1])" :class="b[2]">
+                                            {{ b[3] }}
+                                        </button>
+                                        <button v-else-if="b[0] == 'action_fun_id'" type="button" @click="$emit(b[1], datas.id)" :class="b[2]">
+                                            {{ b[3] }}
+                                        </button>
                                     </td>
                                 </tr>
                             </tbody>
