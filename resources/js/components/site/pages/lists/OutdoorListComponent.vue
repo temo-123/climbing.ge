@@ -76,7 +76,7 @@
 
                             <div v-else>
                                 <div v-if="this.regions_and_spots.length > 0" class="article_card_container">
-                                    <div class="row" v-for="region in regions_and_spots">
+                                    <div class="row width_100" v-for="region in regions_and_spots">
                                         <div class="col-md-12">
                                             <div class="row" v-if="region.region['name'] != 'other'">
                                                 <h2 class="article_list_short_description">{{region.region.name}}</h2>

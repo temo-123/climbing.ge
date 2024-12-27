@@ -44,7 +44,7 @@
                 </div>
                 <div v-else>
                     <div v-if="this.mount_routes_by_masiv.length > 0" class="article_card_container">
-                        <div class="row" v-for="masiv in mount_routes_by_masiv">
+                        <div class="row width_100" v-for="masiv in mount_routes_by_masiv">
                             <div class="col-md-12">
                                 <h2 v-if="masiv.mount" class="article_list_short_description">{{masiv.mount.locale_data.title}}</h2>
                                 <h2 v-else class="article_list_short_description">Other</h2>
