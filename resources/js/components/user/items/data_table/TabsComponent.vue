@@ -21,8 +21,7 @@
                     </div>
                 </div>
 
-
-                <!-- <div class="row">
+                <div class="row">
                     <div class="col-md-12">
                         <div class="cms_filters">
                             <div class="input-group mb-3">
@@ -33,7 +32,7 @@
                             </div>
                         </div>
                     </div>
-                </div> -->
+                </div>
 
                 <div class="row">
                     <div
