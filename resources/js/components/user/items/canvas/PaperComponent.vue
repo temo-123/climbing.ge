@@ -80,18 +80,19 @@
             },
             saveCanvasData() {
                 // get JSON representation of paper.project
-                const canvasData = JSON.stringify(paper.project.exportJSON());
-
+                const canvasData = JSON.stringify( this.scope.project.exportJSON());
+                console.log(canvasData);
+                
                 // send data to server
-                axios.post('/canvas-data', {
-                    data: canvasData
-                })
-                .then((response) => {
-                    console.log('Canvas data saved successfully');
-                })
-                .catch((error) => {
-                    console.log('Error saving canvas data');
-                });
+                // axios.post('/canvas-data', {
+                //     data: canvasData
+                // })
+                // .then((response) => {
+                //     console.log('Canvas data saved successfully');
+                // })
+                // .catch((error) => {
+                //     console.log('Error saving canvas data');
+                // });
             }
         },
         mounted() {
