@@ -164,7 +164,8 @@
                 localStorage.setItem('grade', grade)
 
                 this.return_data(grade)
-                // this.$router.push(to)
+                
+                location.reload();
             },
             return_data(g){
                 this.$emit('grade', g)
