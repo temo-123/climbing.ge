@@ -8,4 +8,6 @@ use Illuminate\Database\Eloquent\Model;
 class Route_line extends Model
 {
     use HasFactory;
+
+    public $table = 'routes_lines';
 }

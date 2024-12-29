@@ -28,25 +28,20 @@
                      +
                      <i class="fa fa-pencil" aria-hidden="true"></i>
                 </button>
-                <button class="btn btn-primary btn-block" @click.prevent="upload">
-                    <i class="fa fa-upload" aria-hidden="true"></i>
-                </button>
                 <button class="btn btn-primary btn-block" @click.prevent="back">
                     <i class="fa fa-undo" aria-hidden="true"></i>
-                </button>
-                <button class="btn btn-primary btn-block" @click.prevent="save">
-                    <i class="fa fa-floppy-o" aria-hidden="true"></i>
                 </button>
             </div>
 
             <div class="col-md-10">
                 <Canvas 
-                    :canvas-id="'canvas-one'" 
-                    :action="action"
+                    :canvas_id_prop="'canvas-one'" 
+                    :action_prop="action"
 
                     ref="childCanvas"
+                    :style="{ backgroundImage: 'url(' + image + ')' }"
+                    @canvas_data="canvas_data"
                 />
-                    <!-- style="background-image: url(http://user.climbing.loc/images/gallery_img/2021-11-27-19-11-56.jpg);"  -->
             </div>
 
         </div>
@@ -56,15 +51,23 @@
 <script>
     import Canvas from "./PaperComponent.vue";
     export default {
-        name: "Master",
+        props: [
+            // 'image_path_prop',
+            'image_prop'
+        ],
         data: () => ({
-            buttons: ['Simple', 'Separate', 'Replicated'],
-            single: true,
-            // image: 'http://user.climbing.loc/images/gallery_img/2021-11-27-19-11-56.jpg',
+            image: '',
+
             img_h: 0,
             img_w: 0,
+
             action: 1,
+
+            // image: ''
         }),
+        components: {
+            Canvas
+        },
         methods: {
             reset() {
                 if (confirm('Do you want clear area?')) {
@@ -80,25 +83,24 @@
             number(){
                 this.action = 3
             },
-            upload(){
-                
+
+            change_image(event){
+                this.image = '/public/images/sector_img/' + event
             },
-            save() {
-                
+
+            canvas_data(event){
+                this.$emit('canvas_data', event)
             }
-        },
-        components: {
-            Canvas
         },
         mounted() {
-            var img = new Image();
-            img.src = this.image
-            img.onload = function() {
-                this.img_h = this.height/2
-                this.img_w = this.width/2
-                // alert(this.width + 'x' + this.height);
-                alert(this.img_w + 'x' + this.img_h);
-            }
+            // var img = new Image();
+            // img.src = this.image
+            // img.onload = function() {
+            //     this.img_h = this.height/2
+            //     this.img_w = this.width/2
+            //     // alert(this.width + 'x' + this.height);
+            //     alert(this.img_w + 'x' + this.img_h);
+            // }
         }
     }
 </script>

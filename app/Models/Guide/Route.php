@@ -32,4 +32,8 @@ class Route extends Model
     {
         return $this->hasMany(Sport_route_review::class);
     }
+
+    public function json() {
+        return $this->hasOne(Route_line::class);
+    }
 }

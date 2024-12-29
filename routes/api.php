@@ -327,6 +327,15 @@ Route::group(['namespace'=>'Api'], function() {
         Route::get('/get_routes_for_forum/{sector_id}', 'RouteController@get_routes_for_forum');
         Route::get('/get_routes_quantity/{article_id}', 'RouteController@get_routes_quantity');
 
+        Route::controller(RouteJsonController::class)->prefix('route_json')->group( function() {
+            Route::get('/get_editing_route_json/{route_id}', 'get_editing_route_json');
+
+            Route::post('/add_route_json', 'add_route_json');
+            Route::post('/edit_route_json/{route_id}', 'edit_route_json');
+
+            Route::delete('/del_route_json/{route_id}', 'del_route_json');
+        });
+
         Route::controller(MTPController::class)->prefix('mtp')->group( function() {
             Route::get('/', 'index');
             Route::get('/get_editing_mtp/{mtp_id}', 'get_editing_mtp');

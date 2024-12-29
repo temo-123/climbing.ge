@@ -1,11 +1,11 @@
 <template>
     <div>
         <canvas 
-            :id="canvasId" 
+            :id="canvas_id_prop" 
             class="canvas-style" 
             v-on:mousedown="mouseDown"
+            v-on:mouseup="saveCanvasData"
         />
-        <button v-on:click="saveCanvasData">Save Canvas Data</button>
     </div>
 </template>
 
@@ -14,8 +14,8 @@
     export default {
         name: "Canvas",
         props: [
-            'canvasId',
-            'action',
+            'canvas_id_prop',
+            'action_prop',
         ],
         data: () => ({
             path: null,
@@ -25,6 +25,7 @@
         methods: {
             reset() {
                 this.scope.project.activeLayer.removeChildren();
+                this.saveCanvasData()
             },
             createTool(scope) {
                 scope.activate();
@@ -46,22 +47,26 @@
                 });
             },
             add_layer(){
-                var layer = new Layer();
+                var layer = new paper.Layer({
+                    children: [path, path2],
+                    strokeColor: 'black',
+                    position: view.center
+                });
             },
             mouseDown() {
                 // in order to access functions in nested tool
-                let self = this;
+                // let self = this;
                 // create drawing tool
                 this.tool = this.createTool(this.scope);
 
                 this.tool.onMouseDown = (event) => {
-                    if (self.action == 1) {
-                        self.add_line();
+                    if (this.action_prop == 1) {
+                        this.add_line();
                     }
-                    else if (self.action == 2){
-                        self.add_point(event);
+                    else if (this.action_prop == 2){
+                        this.add_point(event);
                     }
-                    else if (self.action == 3){
+                    else if (this.action_prop == 3){
                         this.add_line()
                         this.add_point(event)
                     }
@@ -69,57 +74,25 @@
                 };
 
                 this.tool.onMouseDrag = (event) => {
-                    self.path.add(event);
+                    this.path.add(event);
                 };
                 
                 this.tool.onMouseUp = (event) => {
                     // line completed
-                    // self.path.add(event.point);
-                    self.path = []
+                    // this.path.add(event.point);
+                    this.path = []
                 }
             },
             saveCanvasData() {
-                // get JSON representation of paper.project
                 const canvasData = JSON.stringify( this.scope.project.exportJSON());
-                console.log(canvasData);
-                
-                // send data to server
-                // axios.post('/canvas-data', {
-                //     data: canvasData
-                // })
-                // .then((response) => {
-                //     console.log('Canvas data saved successfully');
-                // })
-                // .catch((error) => {
-                //     console.log('Error saving canvas data');
-                // });
+                this.$emit('canvas_data', canvasData)
             }
         },
         mounted() {
             this.scope = new paper.PaperScope();
-            this.scope.setup(this.canvasId);
+            this.scope.setup(this.canvas_id_prop);
 
-            // set active layer name
-            paper.project.activeLayer.name = 'text layer';
-
-            var text = new paper.PointText();
-            text.point = (250, 250)
-            text.justification = 'center';
-            text.fillColor = 'black';
-            text.content = 'The contents of the point text';
-
-            var layer = new Layer();
-            // var layer = new paper.Layer({name: 'circles layer'});
-            // layer.sendToBack();
-            // layer.activate();
-
-            var firstLayer = paper.project.activeLayer;
-            var secondLayer = new paper.Layer();
-            console.log(paper.project.activeLayer == secondLayer); // true
-            firstLayer.activate();
-            console.log(paper.project.activeLayer == firstLayer); // true
-
-            paperjsLayersPanel.create();
+            // paperjsLayersPanel.create();
         }
     }
 </script>
@@ -135,7 +108,6 @@
         margin: auto;
         /* box-shadow: 0 10px 8px -8px black; */
     }
-
 
     /* stylize panel */
     paperjs-layer-panel main {
