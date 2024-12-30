@@ -203,7 +203,7 @@
                         <div class="form-group clearfix">
                             <label for="name" class='col-xs-2 control-label'> Change URL title </label>
                             <div class="col-xs-8">
-                                <input type="checkbox" id="scales" name="scales" @click="change_url_title_in_global_tour()">
+                                <input type="checkbox" id="scales" name="scales" v-model="is_change_url_title" @click="change_url_title_in_global_tour()">
                             </div>
                         </div>
     
@@ -281,6 +281,8 @@
                 tour_old_images: [],
                 // regions: [],
 
+                is_change_url_title: false,
+
                 error: [],
 
                 is_loading: false,
@@ -290,8 +292,8 @@
                     us_text: editor_config.get_big_editor_config(),
                     // us_info: editor_config.get_big_editor_config(),
 
-                    ru_short_description_text: editor_config.get_small_editor_config(),
-                    ru_text: editor_config.get_big_editor_config(),
+                    // ru_short_description_text: editor_config.get_small_editor_config(),
+                    // ru_text: editor_config.get_big_editor_config(),
                     // ru_info: editor_config.get_big_editor_config(),
 
                     ka_short_description_text: editor_config.get_small_editor_config(),
@@ -303,8 +305,10 @@
                     global_tour: {},
                     us_tour: {},
                     ka_tour: {},
-                    ru_tour: {}
+                    // ru_tour: {}
                 },
+
+                categories: [],
 
                 // the_date: moment().format('YYYY-MM-DD'),
 
@@ -421,14 +425,19 @@
             },
 
             change_url_title_in_global_tour(){
-                if(!this.change_url_title){
+                if(!this.is_change_url_title){
                     if(confirm('Are you sure, you want change URL title? It vhile bad for SEO potimization')){
-                        this.change_url_title = true
+                        this.is_change_url_title = true
+                    }
+                    else{
+                        this.is_change_url_title = false 
                     }
                 }
                 else{
-                    this.change_url_title = false 
+                    this.is_change_url_title = false 
                 }
+
+                this.data.us_tour.is_change_url_title = this.is_change_url_title
             },
 
             edit_tour() {

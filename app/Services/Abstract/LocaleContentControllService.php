@@ -264,7 +264,7 @@ class LocaleContentControllService
     {
         $editing_global_content = $global_model::where('id', '=', $id)->first();
 
-        if(array_key_exists('is_change_url_title', $us_data) ){
+        if(array_key_exists('is_change_url_title', $us_data) && $us_data['is_change_url_title']){
             if($us_data['is_change_url_title']){
                 $global_data['url_title'] = URLTitleService::get_url_title($us_data["title"]); // make url_title from us_title value
 
