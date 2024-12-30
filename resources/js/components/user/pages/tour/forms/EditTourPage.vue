@@ -75,18 +75,6 @@
                             </div>
                         </div>
                         <div class="form-group clearfix">
-                            <label for="name" class='col-xs-2 control-label'> Location </label>
-                            <div class="col-xs-8">
-                                <input type="text" name="name" v-model="data.global_tour.location"  class="form-control"> 
-                            </div>
-                        </div>
-                        <div class="form-group clearfix">
-                            <label for="name" class='col-xs-2 control-label'> Duration </label>
-                            <div class="col-xs-8">
-                                <input type="text" name="name" v-model="data.global_tour.duration"  class="form-control"> 
-                            </div>
-                        </div>
-                        <div class="form-group clearfix">
                             <label for="name" class='col-xs-2 control-label'> Min price </label>
                             <div class="col-xs-8">
                                 <input type="text" name="name" v-model="data.global_tour.min_price"  class="form-control"> 
@@ -206,6 +194,19 @@
                                 <input type="checkbox" id="scales" name="scales" v-model="is_change_url_title" @click="change_url_title_in_global_tour()">
                             </div>
                         </div>
+
+                        <div class="form-group clearfix">
+                            <label for="name" class='col-xs-2 control-label'> Location </label>
+                            <div class="col-xs-8">
+                                <input type="text" name="name" v-model="data.us_tour.location"  class="form-control"> 
+                            </div>
+                        </div>
+                        <div class="form-group clearfix">
+                            <label for="name" class='col-xs-2 control-label'> Duration </label>
+                            <div class="col-xs-8">
+                                <input type="text" name="name" v-model="data.us_tour.duration"  class="form-control"> 
+                            </div>
+                        </div>
     
                         <div class="form-group clearfix">
                             <label for="name" class='col-xs-2 control-label'> Short description </label>
@@ -235,6 +236,19 @@
                             <label for="name" class='col-xs-2 control-label'> Title </label>
                             <div class="col-xs-8">
                                 <input type="text" name="value name"  v-model="data.ka_tour.title" class="form-control"> 
+                            </div>
+                        </div>
+
+                        <div class="form-group clearfix">
+                            <label for="name" class='col-xs-2 control-label'> Location </label>
+                            <div class="col-xs-8">
+                                <input type="text" name="name" v-model="data.ka_tour.location"  class="form-control"> 
+                            </div>
+                        </div>
+                        <div class="form-group clearfix">
+                            <label for="name" class='col-xs-2 control-label'> Duration </label>
+                            <div class="col-xs-8">
+                                <input type="text" name="name" v-model="data.ka_tour.duration"  class="form-control"> 
                             </div>
                         </div>
     

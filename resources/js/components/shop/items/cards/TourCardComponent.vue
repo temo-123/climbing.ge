@@ -7,7 +7,7 @@
                       <shop-img width="320" height="180" v-if="tour_data_prop.image.length > 0" :src="'/public/images/tour_img/'+tour_data_prop.image" :alt="tour_data_prop.global_data.url_title" />
                       <shop-img width="320" height="180" v-else :src="'/public/images/site_img/demo_imgs/tour_demo.jpg'" :alt="tour_data_prop.global_data.url_title" />
 
-                      <!-- <span class="tourcat" v-if="tour_data_prop.global_data.location">{{ tour_data_prop.global_data.location }}</span> -->                        
+                      <!-- <span class="tourcat hot" v-if="tour_data_prop.locale_data.location">{{ tour_data_prop.locale_data.location }}</span> -->
                       <span class="tourday hot" v-if="tour_data_prop.global_data.min_price">From {{ tour_data_prop.global_data.min_price }} / par</span>
                   </div>
 
@@ -16,12 +16,19 @@
                         <h3 class="entry-title">
                           <router-link :to="'../tour/'+tour_data_prop.global_data.url_title">{{ tour_data_prop.locale_data.title }}</router-link>
                         </h3>
-                        <span class="description" v-html="tour_data_prop.locale_data.short_description"></span>
+                        <span class="description" v-if="tour_data_prop.locale_data.description" v-html="tour_data_prop.locale_data.short_description"></span>
+
                         <span class="tourprice">
+                          <span class="currency" v-if="tour_data_prop.locale_data.location">{{ tour_data_prop.locale_data.location }}</span>
+                        </span>
+                        <span class="tourprice">
+                          <span class="currency" v-if="tour_data_prop.locale_data.duration">{{ tour_data_prop.locale_data.duration }}</span>
+                        </span>
+                        <!-- <span class="tourprice">
                           <span class="currency" v-if="tour_data_prop.global_data.min_price">From. </span>
                           <span class="price">{{ tour_data_prop.global_data.min_price }}</span>
                           <span v-if="tour_data_prop.global_data.min_price"> / par</span>
-                        </span>
+                        </span> -->
                     </figcaption>
                   </router-link>
 
