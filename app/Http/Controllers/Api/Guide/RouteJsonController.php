@@ -6,7 +6,9 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
 use App\Models\Guide\Route;
-use App\Models\Guide\Route_line;
+use App\Models\Guide\Routes_json;
+
+use Validator;
 
 class RouteJsonController extends Controller
 {
@@ -16,34 +18,74 @@ class RouteJsonController extends Controller
     }
 
     public static function add_route_json($data) {
-        $saved = Route_line::insertGetId($data);
-            
-        if(!$saved){
-            App::abort(500, 'Error');
+        $route_validate = (new static)->add_route_json_validate($data);
+        if ($route_validate != null) { 
+            return response()->json([
+                $route_validate
+            ], 422);
         }
         else{
-            return $saved;
+            $saved = Routes_json::insertGetId($data);
+                
+            if(!$saved){
+                App::abort(500, 'Error');
+            }
+            else{
+                return $saved;
+            }
         }
     }
 
     public static function edit_route_json($data) {
-        $ceck_json_count = Route_line::where('id', '=', $data['route_id'])->count();
+        $ceck_json_count = Routes_json::where('id', '=', $data['route_id'])->count();
         if($ceck_json_count >= 0){
             (new static)->add_route_json($data);
         }
         else{
-            $ceck_json = Route_line::where('id', '=', $data['route_id'])->first();
-            $saved = $ceck_json->update($request->$data); 
-
-            if(!$saved){
-                return 'Error';
+            $route_validate = (new static)->edit_route_json_validate($data);
+            if ($route_validate != null) { 
+                return response()->json([
+                    $route_validate
+                ], 422);
             }
+            else{
+                $ceck_json = Routes_json::where('id', '=', $data['route_id'])->first();
+                $saved = $ceck_json->update($request->$data); 
 
-            return $saved;
+                if(!$saved){
+                    return 'Error';
+                }
+
+                return $saved;
+            }
         }
     }
     
     public function del_route_json() {
         
+    }
+
+    public static function add_route_json_validate($data) {
+        $validator = Validator::make($data, [
+            'json' => 'required',
+            'route_id' => 'required|unique:routes_jsons,route_id',
+            'sector_image_id' => 'required',
+        ]);
+        
+        if ($validator->fails()) {
+            return response()->json($validator->errors(), 422);
+        }
+    }
+
+    public static function edit_route_json_validate($data) {
+        $validator = Validator::make($data, [
+            'json' => 'required',
+            // 'route_id' => 'required|unique:routes_jsons,route_id',
+            'sector_image_id' => 'required',
+        ]);
+        
+        if ($validator->fails()) {
+            return response()->json($validator->errors(), 422);
+        }
     }
 }

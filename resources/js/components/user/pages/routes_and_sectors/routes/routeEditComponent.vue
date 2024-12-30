@@ -20,6 +20,12 @@
         </div>
     </div>
 
+    <div class="row" v-show="!is_loading">
+        <validator_alerts_component
+            :errors_prop="error"
+        />
+    </div>
+
     <div class="wrapper container-fluid container" v-if="!is_loading">
       <form id="route_add_form" @submit.prevent="save_editing_route()">
         <div class="form-group clearfix row">
@@ -209,6 +215,7 @@
 <script>
     import Editor from '../../../items/canvas/EditorComponent.vue'
     import { editor_config } from '../../../../../mixins/editor/editor_config_mixin.js'
+    import validator_alerts_component from '../../../items/validator_alerts_component.vue'
 
     export default {
         mixins: [
@@ -216,6 +223,7 @@
         ],
         components: {
             Editor,
+            validator_alerts_component
         },
     data() {
       return {
@@ -238,7 +246,7 @@
         image_num: 0,
 
         is_loading: false,
-        // is_back_action_query: true,
+        is_back_action_query: true,
 
         sport_route_grade: [
           "4",
@@ -281,17 +289,16 @@
     },
 
     beforeRouteLeave (to, from, next) {
-        // if(this.is_back_action_query == true){
-        //     if (window.confirm('Added information will be deleted!!! Are you sure, you want go back?')) {
-        //         this.is_back_action_query = false;
-        //         next()
-        //     } else {
-        //         next(false)
-        //     }
-        // }else {
-        //     next()
-        // }
-        this.go_back();
+      if(this.is_back_action_query == true){
+          if (window.confirm('Added information will be deleted!!! Are you sure, you want go back?')) {
+              this.is_back_action_query = false;
+              next()
+          } else {
+              next(false)
+          }
+      }else {
+          next()
+      }
     },
 
     methods: {
@@ -407,9 +414,9 @@
         })
       },
 
-        go_back(back_action = false) {
-          this.is_back_action_query = this.$going.back(this, back_action)
-        },
+      go_back: function(action = false) {
+          this.is_back_action_query = this.$going.back(this, action)
+      },
     }
   }
 </script>

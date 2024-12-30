@@ -11,11 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('routes_lines', function (Blueprint $table) {
+        Schema::create('routes_jsons', function (Blueprint $table) {
             $table->id();
             $table->text('json');
 
-            $table->unsignedBigInteger('route_id');
+            $table->unsignedBigInteger('route_id')->unique();
             $table->foreign('route_id')->references('id')->on('routes');
 
             $table->unsignedBigInteger('sector_image_id');

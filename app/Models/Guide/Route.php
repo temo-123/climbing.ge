@@ -34,6 +34,6 @@ class Route extends Model
     }
 
     public function json() {
-        return $this->hasOne(Route_line::class);
+        return $this->hasOne(Routes_json::class);
     }
 }

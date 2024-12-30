@@ -70,36 +70,6 @@ class RouteController extends Controller
         return $route;
     }
 
-    public function edit_route(Request $request)
-    {
-        // dd($request->data);
-        $route_validate = $this->route_validate($request->data[0]);
-        if ($route_validate != null) { 
-            return response()->json([
-                $route_validate
-            ], 422);
-        }
-        else{
-            $route = route::where('id', '=', $request->route_id)->first();
-
-            $saved = $route->update($request->data[0]); 
-
-            RouteJsonController::edit_route_json($request->data[1]);
-
-            if(!$saved){
-                return 'Error';
-            }
-
-            return $saved;
-        }
-    }
-
-    public function del_route(Request $request)
-    {
-        $route = Route::where('id',strip_tags($request->route_id))->first();
-        $route -> delete();
-    }
-
     public function add_route(Request $request)
     {        
         $route_validate = $this->route_validate($request->data);
@@ -156,6 +126,35 @@ class RouteController extends Controller
         }
     }
 
+    public function edit_route(Request $request)
+    {
+        // dd($request->data);
+        $route_validate = $this->route_validate($request->data[0]);
+        if ($route_validate != null) { 
+            return response()->json([
+                $route_validate
+            ], 422);
+        }
+        else{
+            $route = route::where('id', '=', $request->route_id)->first();
+
+            $saved = $route->update($request->data[0]); 
+
+            if(!$saved){
+                return response()->json([
+                    'errors' => "Saving error",
+                ], 500);
+            }
+
+            return RouteJsonController::edit_route_json($request->data[1]);
+        }
+    }
+
+    public function del_route(Request $request)
+    {
+        $route = Route::where('id',strip_tags($request->route_id))->first();
+        $route -> delete();
+    }
 
     public function get_routes_quantity(Request $request)
     {
