@@ -22,15 +22,23 @@
             scope: null,
             canvasData: null, // store canvas data
         }),
+        mounted() {
+            this.scope = new paper.PaperScope();
+            this.scope.setup(this.canvas_id_prop);
+
+            // paperjsLayersPanel.create();
+        },
         methods: {
             reset() {
                 this.scope.project.activeLayer.removeChildren();
                 this.saveCanvasData()
             },
+
             createTool(scope) {
                 scope.activate();
                 return new paper.Tool();
             },
+
             add_point(event){
                 return new paper.Path.Circle({
                     center: event.point,
@@ -39,6 +47,7 @@
                     strokeColor: '#ff0000'
                 });
             },
+
             add_line(){
                 this.path = new paper.Path({
                     strokeColor: "#ff0000",
@@ -46,6 +55,7 @@
                     strokeJoin: 'round',
                 });
             },
+
             add_layer(){
                 var layer = new paper.Layer({
                     children: [path, path2],
@@ -53,10 +63,8 @@
                     position: view.center
                 });
             },
+            
             mouseDown() {
-                // in order to access functions in nested tool
-                // let self = this;
-                // create drawing tool
                 this.tool = this.createTool(this.scope);
 
                 this.tool.onMouseDown = (event) => {
@@ -78,22 +86,15 @@
                 };
                 
                 this.tool.onMouseUp = (event) => {
-                    // line completed
-                    // this.path.add(event.point);
                     this.path = []
                 }
             },
+
             saveCanvasData() {
                 const canvasData = JSON.stringify( this.scope.project.exportJSON());
                 this.$emit('canvas_data', canvasData)
             }
         },
-        mounted() {
-            this.scope = new paper.PaperScope();
-            this.scope.setup(this.canvas_id_prop);
-
-            // paperjsLayersPanel.create();
-        }
     }
 </script>
 

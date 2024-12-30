@@ -51,9 +51,11 @@
 <script>
     import Canvas from "./PaperComponent.vue";
     export default {
+        components: {
+            Canvas
+        },
         props: [
-            // 'image_path_prop',
-            'image_prop'
+            // 
         ],
         data: () => ({
             image: '',
@@ -62,11 +64,16 @@
             img_w: 0,
 
             action: 1,
-
-            // image: ''
         }),
-        components: {
-            Canvas
+        mounted() {
+            // var img = new Image();
+            // img.src = this.image
+            // img.onload = function() {
+            //     this.img_h = this.height/2
+            //     this.img_w = this.width/2
+            //     // alert(this.width + 'x' + this.height);
+            //     alert(this.img_w + 'x' + this.img_h);
+            // }
         },
         methods: {
             reset() {
@@ -74,12 +81,15 @@
                     this.$refs.childCanvas.reset();
                 }
             },
+
             point(){
                 this.action = 2
             },
+
             line(){
                 this.action = 1
             },
+
             number(){
                 this.action = 3
             },
@@ -92,16 +102,6 @@
                 this.$emit('canvas_data', event)
             }
         },
-        mounted() {
-            // var img = new Image();
-            // img.src = this.image
-            // img.onload = function() {
-            //     this.img_h = this.height/2
-            //     this.img_w = this.width/2
-            //     // alert(this.width + 'x' + this.height);
-            //     alert(this.img_w + 'x' + this.img_h);
-            // }
-        }
     }
 </script>
 

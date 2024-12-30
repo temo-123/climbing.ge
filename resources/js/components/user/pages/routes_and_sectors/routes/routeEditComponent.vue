@@ -45,7 +45,7 @@
             </div>
             <div class="row">
               <span v-for="image in sector_images" :key="image.id" :class="'sector_images sector_images_' + sector_images.length">
-                <input type="radio" :id="image.id" name="fav_language" :value=image.id @click="change_image(image.image, image.id)">
+                <input type="radio" :id="image.id" name="fav_language" :value=image.id v-model="image_num" @click="change_image(image.image, image.id)">
                 <label :for="image.id">
                   <img
                     :src="'/public/images/sector_img/' + image.image"
@@ -61,7 +61,6 @@
           <div class="col-md-12">
             <div class="row">
                 <Editor 
-                    :image_prop = "'http://user.climbing.loc/public/images/sector_img/2024-12-30-00-12-17-1735503137%7B402752%7D.jpg'"
                     ref="canvasEditor"
                     @canvas_data="update_canvas_data"
                 />
@@ -236,8 +235,10 @@
 
         sector_images: [],
 
+        image_num: 0,
+
         is_loading: false,
-        is_back_action_query: true,
+        // is_back_action_query: true,
 
         sport_route_grade: [
           "4",
@@ -280,16 +281,17 @@
     },
 
     beforeRouteLeave (to, from, next) {
-        if(this.is_back_action_query == true){
-            if (window.confirm('Added information will be deleted!!! Are you sure, you want go back?')) {
-                this.is_back_action_query = false;
-                next()
-            } else {
-                next(false)
-            }
-        }else {
-            next()
-        }
+        // if(this.is_back_action_query == true){
+        //     if (window.confirm('Added information will be deleted!!! Are you sure, you want go back?')) {
+        //         this.is_back_action_query = false;
+        //         next()
+        //     } else {
+        //         next(false)
+        //     }
+        // }else {
+        //     next()
+        // }
+        this.go_back();
     },
 
     methods: {
@@ -330,8 +332,7 @@
           this.data.article_id = action_article.id;
 
           this.filter_sectors()
-          this.get_route_json(this.data.id)
-          this.get_actyve_sector_images(this.data.sector_id)
+          this.get_actyve_sector_images(this.data.sector_id, this.data.id)
         })
         .catch(
           error => console.log(error)
@@ -346,9 +347,16 @@
         })
       },
 
-      change_image(image, image_id){
-        this.$refs.canvasEditor.change_image(image);
-        this.canvas_data.sector_image_id = image_id
+      get_actyve_sector_images(sector_img, id){
+        axios
+        .get("/sector/get_sector_images/" + sector_img)
+        .then(response => {
+          this.sector_images = response.data
+          this.get_route_json(id)
+        })
+        .catch(
+          error => console.log(error)
+        );
       },
 
       get_route_json(route_id){
@@ -363,6 +371,13 @@
             this.canvas_data.json = response.data.json
             this.canvas_data.route_id = response.data.route_id
             this.canvas_data.sector_image_id = response.data.sector_image_id
+
+            this.image_num = this.canvas_data.sector_image_id
+
+            const vm = this
+            const image = this.sector_images.find(item => item.id === vm.canvas_data.sector_image_id);
+            
+            this.change_image(image.image, this.image_num)
           }
         })
         .catch(
@@ -370,15 +385,9 @@
         );
       },
 
-      get_actyve_sector_images(sector_img){
-        axios
-        .get("/sector/get_sector_images/" + sector_img)
-        .then(response => {
-          this.sector_images = response.data
-        })
-        .catch(
-          error => console.log(error)
-        );
+      change_image(image, image_id){
+        this.$refs.canvasEditor.change_image(image);
+        this.canvas_data.sector_image_id = image_id
       },
 
       update_canvas_data(event) {
