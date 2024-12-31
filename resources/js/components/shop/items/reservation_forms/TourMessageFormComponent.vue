@@ -6,6 +6,7 @@
                     <h2>{{ $t('shop.tour.message.title') }}</h2>
                 </div>
             </div>
+            <!-- {{ new Date().toISOString().split('T')[0] }} -->
             <div class="row">
 
                 <div class="col-xl-12 col-lg-12 col-md-12 mb30">
@@ -33,7 +34,7 @@
                                     <div class="form-group">
                                         <label class="control-label" for="check_in">{{ $t('shop.tour.message.check_in') }}</label>
                                         <div class="select">
-                                            <input v-model="form_data.check_in" id="check_in" name="check_in" type="date" placeholder="Check in" class="form-control" required>
+                                            <input v-model="form_data.check_in" id="check_in" name="check_in" type="datetime-local" :min="new Date().toISOString().split('T')[0] + 'T00:00'" placeholder="Check in" class="form-control" required>
                                         </div>
                                     </div>
                                 </div>
@@ -138,7 +139,7 @@
         },
         data () {
             return {
-                form_data: {},
+                form_data: [],
                 user: [],
 
                 is_loading: false,
@@ -176,14 +177,13 @@
                 .then(response => {
                     this.form_data = []
 
+                    this.onCaptchaExpired()
+
                     alert(response.data);
                 })
                 .catch(error =>{
                 })
                 .finally( () => this.is_loading = false)
-            },
-            go_to_option_page(){
-                window.open(this.MIX_APP_SSH + 'user.' + this.MIX_SITE_URL + '/options') ;
             },
 
             onCaptchaVerified() {

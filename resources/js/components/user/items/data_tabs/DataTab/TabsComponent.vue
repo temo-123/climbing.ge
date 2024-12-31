@@ -283,6 +283,11 @@
                                     :table_name="data.table_name"
                                 />
                             </tbody>
+                            <tbody  v-else-if="data.table_name == 'Tours reservations' || data.table_name == 'My tours reservations'">
+                                <tourReservationTabHeader 
+                                    :table_name="data.table_name"
+                                />
+                            </tbody>
                             <thead v-else-if="
                                         data.table_name == 'outdoor' || 
                                         data.table_name == 'indoor'  || 
@@ -628,15 +633,15 @@
                                     @restart="update"
                                 />
                             </tbody>
-                            <!-- <tbody v-else-if="data.table_name == 'Tours reservations' || data.table_name == 'My tours reservations'">
-                                <tourTab
+                            <tbody v-else-if="data.table_name == 'Tours reservations' || data.table_name == 'My tours reservations'">
+                                <tourReservationTab
                                     v-for="table_info in data.data"
                                     :key="table_info.id"
                                     :table_info="table_info"
                                     
                                     @restart="update"
                                 />
-                            </tbody> -->
+                            </tbody>
                             <tbody v-else>
                                 <articlesTab
                                     v-for="table_info in data.data"
@@ -706,6 +711,7 @@ import feedbackTabHeader from "./tab_header/FeedbackTabHeaderComponent.vue"
 import non_registered_commenter_tab_header from "./tab_header/NonRegisteredCommenterTabHeader.vue"
 import myProductTabTabHeader from "./tab_header/MyProductTabHeaderComponent.vue";
 import brandsTabHeader from "./tab_header/BrandsTabHeaderComponent.vue";
+import tourReservationTabHeader from "./tab_header/TourReservationTabHeaderComponent.vue";
 
 import brandsTab from "./tabs/BrandsTabComponent.vue";
 import eventTab from "./tabs/EventTabComponent.vue";
@@ -741,6 +747,7 @@ import tourCategoryTab from "./tabs/TourCategoriesTabComponent.vue";
 import reviewTab from "./tabs/ReviewTabComponent.vue";
 import feedbackTab from "./tabs/FeedbackTabComponent.vue";
 import non_registered_commenter_tab from "./tabs/NonRegisteredCommenterTab.vue"
+import tourReservationTab from "./tabs/ToursReservationTabComponent.vue"
 
 //import sectorModal from "./tab_modals/SectorsModalComponent.vue";
 import addTourCategoryModal from "./tab_modals/add/AddTourCategoryModal.vue";
@@ -784,6 +791,7 @@ export default {
         feedbackTabHeader,
         non_registered_commenter_tab_header,
         brandsTabHeader,
+        tourReservationTabHeader,
 
         sectorLocalImageTab,
         routeTab,
@@ -817,6 +825,7 @@ export default {
         feedbackTab,
         non_registered_commenter_tab,
         brandsTab,
+        tourReservationTab,
 
         saleCodeModal,
         shipedRegionAddModal,
