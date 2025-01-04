@@ -55,13 +55,16 @@
               </div>
           </div>
           
-          <!-- <div class="form-group clearfix row" v-if="sector_id != ''">
-              <div class="col-md-12">
-              <div class="row">
-                  <Editor />
-              </div>
-              </div>
-          </div> -->
+            <div class="form-group clearfix row" v-if="sector_id != ''">
+                <div class="col-md-12">
+                    <div class="row">
+                        <Editor 
+                            ref="canvasEditor"
+                            @canvas_data="update_canvas_data"
+                        />
+                    </div>
+                </div>
+            </div>
   
           <div class="form-group clearfix row" v-if="errors.sector_id">
               <div class="col-md-12">

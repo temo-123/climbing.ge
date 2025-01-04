@@ -90,7 +90,9 @@ export default {
         openImg,
         iceRouteModal
     },
-    props: ["article_id"],
+    props: [
+        "article_id"
+    ],
     data: function () {
         return {
             ice_sectors: [],

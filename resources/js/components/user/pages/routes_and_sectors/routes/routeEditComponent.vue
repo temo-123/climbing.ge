@@ -22,7 +22,7 @@
 
     <div class="row" v-show="!is_loading">
         <validator_alerts_component
-            :errors_prop="error"
+            :errors_prop="errors"
         />
     </div>
 
@@ -67,8 +67,9 @@
           <div class="col-md-12">
             <div class="row">
                 <Editor 
-                    ref="canvasEditor"
                     @canvas_data="update_canvas_data"
+
+                    ref="canvasEditor"
                 />
             </div>
           </div>
@@ -280,8 +281,6 @@
     },
 
     mounted() {
-        // this.$refs.canvasEditor.change_image('', 0);
-
         this.get_region_data()
         
         document.querySelector('body').style.marginLeft = '0';
@@ -340,6 +339,8 @@
 
           this.filter_sectors()
           this.get_actyve_sector_images(this.data.sector_id, this.data.id)
+
+          this.import_json_in_editor(this.data.json.json)
         })
         .catch(
           error => console.log(error)
@@ -390,6 +391,13 @@
         .catch(
           error => console.log(error)
         );
+      },
+
+      import_json_in_editor(json){
+        // this.$refs.canvasEditor.change_image
+        console.log("🚀 ~ import_json_in_editor ~ this.$refs.canvasEditor.change_image:", this.$refs.canvasEditor)
+          // this.$refs.canvasEditor.import_json_in_editor(json)
+          // console.log("🚀 ~ import_json_in_editor ~ this.$refs.canvasEditor:", this.$refs)
       },
 
       change_image(image, image_id){

@@ -164,7 +164,9 @@ class RouteController extends Controller
 
     public function get_route_editing_data(Request $request)
     {
-        return Route::where('id',strip_tags($request->route_id))->first();
+        $route = Route::where('id',strip_tags($request->route_id))->first();
+        $route->json;
+        return $route;
     }
 
 

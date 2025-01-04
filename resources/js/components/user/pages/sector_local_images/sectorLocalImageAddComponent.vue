@@ -38,6 +38,16 @@
                 </div>
             </form>
 
+            <div class="form-group clearfix row" v-if="sector_id != ''">
+                <div class="col-md-12">
+                    <div class="row">
+                        <Editor 
+                            ref="canvasEditor"
+                            @canvas_data="update_canvas_data"
+                        />
+                    </div>
+                </div>
+            </div>
 
             <div class="row">
                 <div class="col-md-12">
@@ -100,10 +110,12 @@
 </template>
 
 <script>
+    import Editor from '../../items/canvas/EditorComponent.vue'
     import addSectorModal from './addSectorModalComponent.vue'
 
     export default {
         components: {
+            Editor,
             addSectorModal
         },
         props: [

@@ -4,24 +4,32 @@
             :id="canvas_id_prop" 
             class="canvas-style" 
             v-on:mousedown="mouseDown"
-            v-on:mouseup="saveCanvasData"
+            v-on:mouseup="mouseUp"
         />
     </div>
 </template>
 
 <script>
+    // http://paperjs.org/
     const paper = require('paper');
     export default {
         name: "Canvas",
         props: [
             'canvas_id_prop',
             'action_prop',
+            'json_prop'
         ],
         data: () => ({
             path: null,
             scope: null,
             canvasData: null, // store canvas data
+            old_json: null
         }),
+        watch: {
+            json_prop: function(){
+                this.old_json = this.json_prop
+            },
+        },
         mounted() {
             this.scope = new paper.PaperScope();
             this.scope.setup(this.canvas_id_prop);
@@ -42,8 +50,8 @@
             add_point(event){
                 return new paper.Path.Circle({
                     center: event.point,
-                    radius: 10,
-                    fillColor: 'white',
+                    radius: 7,
+                    fillColor: '#ff0000',
                     strokeColor: '#ff0000'
                 });
             },
@@ -56,13 +64,30 @@
                 });
             },
 
-            add_layer(){
-                var layer = new paper.Layer({
-                    children: [path, path2],
-                    strokeColor: 'black',
-                    position: view.center
+            add_rectangle(event){
+                return new paper.Path.Rectangle({
+                    from: [event.event.offsetX, event.event.offsetY],
+                    // to: [80, 80],
+
+                    strokeColor: '#ff0000',
+                    strokeWidth: 3,
+
+                    radius: [5, 5]
                 });
             },
+
+            import_json_in_canvas(){
+                this.scope.project.importJSON(this.old_prop)
+            },
+
+
+            // add_layer(){
+            //     var layer = new paper.Layer({
+            //         children: [path, path2],
+            //         strokeColor: 'black',
+            //         position: view.center
+            //     });
+            // },
             
             mouseDown() {
                 this.tool = this.createTool(this.scope);
@@ -75,19 +100,35 @@
                         this.add_point(event);
                     }
                     else if (this.action_prop == 3){
-                        this.add_line()
-                        this.add_point(event)
+                        this.add_line(event)
                     }
-                    else{}
+                    else if (this.action_prop == 4){
+                        this.add_rectangle(event)
+                    }
                 };
 
                 this.tool.onMouseDrag = (event) => {
                     this.path.add(event);
                 };
                 
-                this.tool.onMouseUp = (event) => {
+                this.tool.onMouseUp = () => {
                     this.path = []
                 }
+            },
+
+            mouseUp(){
+                this.tool.onMouseUp = (event) => {
+                    if (this.action_prop == 3){
+                        this.add_point(event);
+                    }
+                    else if (this.action_prop == 4){
+                        paper.Path.Rectangle({
+                            to: [event.event.offsetX, event.event.offsetY],
+                        })
+                    }
+                }
+
+                this.saveCanvasData()
             },
 
             saveCanvasData() {

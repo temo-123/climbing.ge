@@ -46,13 +46,16 @@
           </div>
         </div>
         
-        <!-- <div class="form-group clearfix row" v-if="ice_sector_id != ''">
+        <div class="form-group clearfix row" v-if="ice_sector_id != ''">
           <div class="col-md-12">
             <div class="row">
-                <Editor />
+                <Editor 
+                    ref="canvasEditor"
+                    @canvas_data="update_canvas_data"
+                />
             </div>
           </div>
-        </div> -->
+        </div>
 
         <div class="form-group clearfix row" v-if="errors.ice_sector_id">
             <div class="col-md-12">
