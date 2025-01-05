@@ -16,7 +16,8 @@
                             @update="get_orders"
 
                             @del_region="del_region"
-                            @open_editing_modal="open_editing_modal"
+                            @open_siped_region_edit_modal="open_siped_region_edit_modal"
+                            @open_siped_region_add_modal="open_siped_region_add_modal"
 
                             @open_orderDetalsModal="open_orderDetalsModal"
                             @open_orderStatusModal="open_orderStatusModal"
@@ -27,6 +28,12 @@
                     </div>
                 </div>
             </div>
+            <orderDetalsModal />
+            <orderStatusModal />
+            <orderTrackingModal />
+
+            <shipedRegionEditModal ref='shipedRegionEditModal'/>
+            <shipedRegionAddModal ref='shipedRegionAddModal'/>
         </div>
 </template>
 
@@ -39,6 +46,7 @@
     import orderTrackingModal from '../../items/modal/orders/orderTrackingModal.vue'
 
     import shipedRegionEditModal from "../../items/modal/tab_modals/edit/EditShipingRegionModalComponent.vue";
+    import shipedRegionAddModal from "../../items/modal/tab_modals/add/AddShipingRegionModalComponent.vue";
     export default {
         components: {
             breadcrumb,
@@ -48,7 +56,8 @@
             orderStatusModal,
             orderTrackingModal,
 
-            shipedRegionEditModal
+            shipedRegionEditModal,
+            shipedRegionAddModal
         },
         data(){
             return {
@@ -115,17 +124,19 @@
                     this.data_for_tab.push({
                                             'id': 2,
                                             'table_name': 'Shiped regions',
-                                            // 'add_action': {
-                                            //     'action': 'route',
-                                            //     'link': 'articleAdd', 
-                                            // },
+                                            'add_action': {
+                                                'action': 'function',
+                                                'link': 'open_siped_region_add_modal', 
+                                                'class': 'btn btn-primary'
+                                            },
                                             'tab_data': {
                                                 'data': response.data, 
                                                 'tab': {
                                                     'head': [
                                                         'ID',
                                                         'Title',
-                                                        'Public',
+                                                        'Deliver price',
+                                                        'Free after',
                                                         'Edit',
                                                         'Delite',
                                                     ],
@@ -133,10 +144,12 @@
                                                         ['data', ['id']],
                                                         ['data', ['region']],
                                                         ['data', ['shiping_price']],
-                                                        ['action_fun_id', 'open_editing_modal', 'btn btn-primary', '<i aria-hidden="true" class="fa fa-pencil"></i>'],
+                                                        ['data', ['free_shiping_price_after']],
+                                                        ['action_fun_id', 'open_siped_region_edit_modal', 'btn btn-primary', '<i aria-hidden="true" class="fa fa-pencil"></i>'],
                                                         ['action_fun_id', 'del_region', 'btn btn-danger', '<i aria-hidden="true" class="fa fa-trash"></i>'],
                                                     ],
                                                     'perm': [
+                                                        ['no'],
                                                         ['no'],
                                                         ['no'],
                                                         ['no'],
@@ -164,7 +177,10 @@
                     .catch(error => console.log(error))
                 }
             },
-            open_editing_modal(actyve_info){
+            open_siped_region_add_modal(){
+                this.$refs.shipedRegionAddModal.show_modal()
+            },
+            open_siped_region_edit_modal(actyve_info){
                 this.$refs.shipedRegionEditModal.open_editing_modal(actyve_info)
             },
             get_order_status(){

@@ -13,12 +13,51 @@ mix.webpackConfig({
     // node: {
     //   fs: "empty"
     // },
-    // resolve: {
+    resolve: {
     //     alias: {
     //         "handlebars" : "handlebars/dist/handlebars.js"
     //     }
-    // },
+        fallback: {
+            "fs": false,
+            "path": false,
+            "os": false,
+            "net": false,
+            "tls": false,
+            "dns": false,
+            "readline": false,
+            "module": false,
+            "vm": false,
+            "child_process": false,
+            "zlib": false,
+            "http": false,
+            "https": false,
+            "constants": false,
+            "worker_threads": false,
+
+            "crypto": require.resolve("crypto-browserify"),
+            "stream": require.resolve("stream-browserify"),
+        },
+    },
 });
+
+mix.extend(
+    "graphql",
+    new (class {
+        dependencies() {
+            return ["graphql", "graphql-tag"];
+        }
+
+        webpackRules() {
+            return {
+                test: /\.(js|jsx)$/,
+                exclude: /node_modules/,
+                loader: "graphql-tag/loader"
+            };
+        }
+    })()
+);
+
+mix.graphql();
 // mix.webpackConfig({
 //     stats: {
 //     children: true

@@ -73,31 +73,22 @@
                                     v-if="action_data.add_action"
                                 >
                                     <router-link
-                                        v-if="
-                                            action_data.add_action.action ==
-                                            'route'
-                                        "
-                                        :to="{
-                                            name: action_data.add_action.link,
-                                        }"
-                                        class="btn btn-primary pull-left"
-                                        >Add New</router-link
+                                        v-if="action_data.add_action.action == 'route'"
+                                        :to="{name: action_data.add_action.link,}"
+                                        :class="action_data.add_action.class"
                                     >
+                                        Add New
+                                    </router-link>
                                     <a
-                                        v-else-if="
-                                            action_data.add_action.action ==
-                                            'url'
-                                        "
+                                        v-else-if="action_data.add_action.action == 'url' "
                                         :href="action_data.add_action.link"
-                                        class="btn btn-primary pull-left"
-                                        >Add New</a
+                                        @click="$emit(action_data.add_action.link)"
+                                        >Add New {{ action_data.add_action.link }}</a
                                     >
                                     <button
-                                        v-else-if="
-                                            action_data.add_action.action ==
-                                            'fun'
-                                        "
-                                        class="btn btn-primary pull-left"
+                                        v-else-if="action_data.add_action.action == 'fun' || action_data.add_action.action == 'function'"
+                                        :class="action_data.add_action.class"
+                                        @click="action_data.add_action.link"
                                     >
                                         Add New
                                     </button>
@@ -356,6 +347,7 @@
 
 <script>
 // import { isSet } from 'lodash';
+import { emit } from "npm";
 import starsReiting from "../../../global_components/StarReitingShowComponent.vue";
 
 import tabDataItem from"./assets/DataComponent.vue";

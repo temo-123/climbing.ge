@@ -69,7 +69,7 @@
                     })
                     .catch(error => console.log(error))
             },
-            add_region_model_open(){
+            show_modal(){
                 this.is_order_region_add_model = true
             },
             close_modal(){
