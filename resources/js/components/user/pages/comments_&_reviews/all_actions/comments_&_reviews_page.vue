@@ -203,7 +203,7 @@ export default {
                                 ],
                                 body: [
                                     ["data", ["feedback", "id"]],
-                                    ["data_action", ["feedback", "published"]],
+                                    ["data", ["feedback", "published"]],
                                     ["data", ["locale_product", "title"]],
                                     ["stars", ["feedback", "stars"]],
                                     [

@@ -13,7 +13,8 @@
                 <div class="col-sm-12">
                     <tabsComponent 
                         :table_data="this.data_for_tab"
-                        @update-data="get_local_bisnes_data"
+                        @update="get_local_bisnes_data"
+                        @del_local_bisnes="del_bisnes"
                     />
                 </div>
             </div>
@@ -44,18 +45,59 @@
             get_local_bisnes_data: function(){
                 this.data_for_tab = []
                 axios
-                .get("../api/bisnes/get_local_bisneses")
+                .get("/bisnes/get_local_bisneses")
                 .then(response => {
                     this.data_for_tab.push({'id': 1,
-                                            'data': response.data, 
-                                            'table_name': 'Local bisnes', 
-                                            'table_add_url': 'localBisnesAdd', 
+                                            'table_name': 'Local bisnes' ,
+                                            'add_action': {
+                                                'action': 'route',
+                                                'link': 'localBisnesAdd', 
+                                            },
+                                            'tab_data': {
+                                                'data': response.data, 
+                                                'tab': {
+                                                    'head': [
+                                                        'ID',
+                                                        'Title',
+                                                        'Public data',
+                                                        'Total public',
+                                                        'Edit',
+                                                        'Delite',
+                                                    ],
+                                                    'body': [
+                                                        ['data', ['id']],
+                                                        ['data', ['url_title'],],
+                                                        ['data', ['published_data']],
+                                                        ['data', ['public_totaly']],
+                                                        ['action_router', 'localBisnesEdit', 'btn btn-primary', '<i aria-hidden="true" class="fa fa-pencil"></i>'],
+                                                        ['action_fun_id', 'del_local_bisnes', 'btn btn-danger', '<i aria-hidden="true" class="fa fa-trash"></i>'],
+                                                    ],
+                                                    'perm': [
+                                                        ['no'],
+                                                        ['no'],
+                                                        ['no'],
+                                                        ['local_bisnes', 'edit'],
+                                                        ['local_bisnes', 'del'],
+                                                    ]
+                                                }
+                                            },
                                         });
                 })
                 .catch(
                     error => console.log(error)
                 );
-
+            },
+            del_bisnes(id){
+                if(confirm('Are you sure, you want delite it?')){
+                    axios
+                    .post('/bisnes/del_local_bisnes/'+id, {
+                        _method: 'DELETE'
+                    })
+                    .then(Response => {
+                        this.$emit('restart')
+                    })
+                    .catch(error => console.log(error))
+                }
             },
         }
     }

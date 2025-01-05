@@ -295,6 +295,16 @@
                                             <span v-html="b[3]"></span>
                                         </a>
                                         <router-link
+                                            v-else-if="b[0] == 'action_router' && typeof b[4] == 'object'"
+                                            :class="b[2]"
+                                            :to="{
+                                                name: b[1],
+                                                params: { id: datas[b[4][0]][b[4][1]] },
+                                            }"
+                                        >
+                                            <span v-html="b[3]"></span>
+                                        </router-link>
+                                        <router-link
                                             v-else-if="b[0] == 'action_router'"
                                             :class="b[2]"
                                             :to="{
