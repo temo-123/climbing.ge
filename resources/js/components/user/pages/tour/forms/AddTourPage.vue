@@ -244,36 +244,42 @@
                     ka_text: editor_config.get_big_editor_config(),
                 },
 
+                // data: {
+                //     global_tour: {
+                //         // us_title_for_url_title: '',
+
+                //         category_id: '',
+
+                //         // location: '',
+                //         // duration: '',
+                //         min_price: '',
+
+                //         published: 0,
+                //     },
+
+                //     us_tour: {
+                //         title: "",
+                //         short_description: "",
+                //         text: "",
+                //     },
+
+                //     ka_tour: {
+                //         title: "",
+                //         short_description: "",
+                //         text: "",
+                //     },
+
+                //     ru_tour: {
+                //         title: "",
+                //         short_description: "",
+                //         text: "",
+                //     }
+                // },
+
                 data: {
-                    global_tour: {
-                        // us_title_for_url_title: '',
-
-                        category_id: '',
-
-                        location: '',
-                        duration: '',
-                        min_price: '',
-
-                        published: 0,
-                    },
-
-                    us_tour: {
-                        title: "",
-                        short_description: "",
-                        text: "",
-                    },
-
-                    ka_tour: {
-                        title: "",
-                        short_description: "",
-                        text: "",
-                    },
-
-                    ru_tour: {
-                        title: "",
-                        short_description: "",
-                        text: "",
-                    }
+                    global_tour: {},
+                    us_tour: {},
+                    ka_tour: {},
                 },
                 categories: [],
 
