@@ -101,6 +101,7 @@
                                                 'add_action': {
                                                     'action': 'route',
                                                     'link': 'spot_category_add', 
+                                                    'class': 'btn btn-primary'
                                                 },
                                                 'tab_data': {
                                                     'data': response.data, 
@@ -151,6 +152,7 @@
                                                 'add_action': {
                                                     'action': 'route',
                                                     'link': 'iceSectorAdd', 
+                                                    'class': 'btn btn-primary'
                                                 },
                                                 'tab_data': {
                                                     'data': response.data, 
@@ -196,6 +198,7 @@
                                             'add_action': {
                                                 'action': 'route',
                                                 'link': 'iceRouteAdd', 
+                                                'class': 'btn btn-primary'
                                             },
                                             'tab_data': {
                                                 'data': response.data, 
@@ -246,6 +249,7 @@
                                             'add_action': {
                                                 'action': 'route',
                                                 'link': 'articleAdd', 
+                                                'class': 'btn btn-primary'
                                             },
                                             'tab_data': {
                                                 'data': response.data, 
@@ -299,6 +303,7 @@
                                             'add_action': {
                                                 'action': 'route',
                                                 'link': 'articleAdd', 
+                                                'class': 'btn btn-primary'
                                             },
                                             'tab_data': {
                                                 'data': response.data, 

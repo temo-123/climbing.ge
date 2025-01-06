@@ -52,6 +52,7 @@
                                             'add_action': {
                                                 'action': 'route',
                                                 'link': 'localBisnesAdd', 
+                                                'class': 'btn btn-primary'
                                             },
                                             'tab_data': {
                                                 'data': response.data, 

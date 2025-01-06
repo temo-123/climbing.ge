@@ -63,8 +63,8 @@
                         adding_data: this.adding_data
                     })
                     .then(Response => {
-                        alert('region added socsesfuly')
-                        this.$emit('restart')
+                        // alert('region added socsesfuly')
+                        this.$emit('update')
                         this.is_order_region_add_model = false
                     })
                     .catch(error => console.log(error))

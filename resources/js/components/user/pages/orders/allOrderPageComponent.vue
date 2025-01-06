@@ -24,6 +24,8 @@
                             @open_orderTrackingModal="open_orderTrackingModal"
 
                             @shipedRegionEditModal="shipedRegionEditModal"
+
+                            @addCostomOrder="addCostomOrder"
                         />
                     </div>
                 </div>
@@ -32,8 +34,8 @@
             <orderStatusModal />
             <orderTrackingModal />
 
-            <shipedRegionEditModal ref='shipedRegionEditModal'/>
-            <shipedRegionAddModal ref='shipedRegionAddModal'/>
+            <shipedRegionEditModal ref='shipedRegionEditModal' @update="get_orders"/>
+            <shipedRegionAddModal ref='shipedRegionAddModal' @update="get_orders"/>
         </div>
 </template>
 
@@ -83,10 +85,11 @@
                     this.data_for_tab.push({
                                             'id': 1,
                                             'table_name': 'Orders',
-                                            // 'add_action': {
-                                            //     'action': 'route',
-                                            //     'link': 'articleAdd', 
-                                            // },
+                                            'add_action': {
+                                                'action': 'function',
+                                                'link': 'addCostomOrder', 
+                                                'class': 'btn btn-primary'
+                                            },
                                             'tab_data': {
                                                 'data': response.data, 
                                                 'tab': {
@@ -172,7 +175,7 @@
                         _method: 'DELETE'
                     })
                     .then(Response => {
-                        this.update()
+                        this.get_orders()
                     })
                     .catch(error => console.log(error))
                 }
@@ -217,6 +220,10 @@
 
             show_order_detals_model(order_id){
                 this.get_order_detals(order_id)
+            },
+
+            addCostomOrder(){
+                alert('costom function add functional')
             },
 
             get_activ_order(action){

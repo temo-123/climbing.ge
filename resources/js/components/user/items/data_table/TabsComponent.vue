@@ -83,12 +83,12 @@
                                         v-else-if="action_data.add_action.action == 'url' "
                                         :href="action_data.add_action.link"
                                         @click="$emit(action_data.add_action.link)"
-                                        >Add New {{ action_data.add_action.link }}</a
+                                        >Add New</a
                                     >
                                     <button
                                         v-else-if="action_data.add_action.action == 'fun' || action_data.add_action.action == 'function'"
                                         :class="action_data.add_action.class"
-                                        @click="action_data.add_action.link"
+                                        @click="$emit(action_data.add_action.link)"
                                     >
                                         Add New
                                     </button>

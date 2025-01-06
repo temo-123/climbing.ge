@@ -66,6 +66,7 @@
                                             'add_action': {
                                                 'action': 'route',
                                                 'link': 'articleAdd', 
+                                                'class': 'btn btn-primary'
                                             },
                                             'tab_data': {
                                                 'data': response.data, 
@@ -115,6 +116,7 @@
                                             'add_action': {
                                                 'action': 'route',
                                                 'link': 'articleAdd', 
+                                                'class': 'btn btn-primary'
                                             },
                                             'tab_data': {
                                                 'data': response.data, 
