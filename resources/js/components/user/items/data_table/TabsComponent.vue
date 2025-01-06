@@ -346,12 +346,9 @@
 </template>
 
 <script>
-// import { isSet } from 'lodash';
-import { emit } from "npm";
 import starsReiting from "../../../global_components/StarReitingShowComponent.vue";
 
 import tabDataItem from"./assets/DataComponent.vue";
-
 export default {
     components: {
         starsReiting,
