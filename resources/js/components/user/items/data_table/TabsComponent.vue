@@ -269,6 +269,16 @@
                                                 :data_prop="datas"
                                             />
                                         </span>
+                                        <span
+                                            v-else-if="b[0] == 'data_action_id'"
+                                            @click="$emit(b[2], datas['id'])"
+                                            class="cursor_pointer"
+                                        >
+                                            <tabDataItem 
+                                                :data_item_prop="b"
+                                                :data_prop="datas"
+                                            />
+                                        </span>
                                         <span v-else-if="b[0] == 'stars'">
                                             <starsReiting
                                                 :reviews_count_prop="1"

@@ -7,6 +7,7 @@
                 typeof data_item_prop[1][1] == 'object'
             "
         >
+            <!-- ['data', [['item', key], ['item_2', key]]] -->
             {{data_prop[data_item_prop[1][0][0]][data_item_prop[1][0][1]]}}
             {{data_prop[data_item_prop[1][1][0]][data_item_prop[1][1][1]]}}
         </span>
@@ -17,18 +18,21 @@
                 typeof data_item_prop[1][1] == 'string'
             "
         >
+            <!-- ['data', ['item', key]] -->
             {{ data_prop[data_item_prop[1][0]][data_item_prop[1][1]] }}
         </span>
         <span
             v-else-if="
-                typeof data_item_prop[1][0] == 'string' &&
-                typeof data_item_prop[1][1] == 'string'
+                typeof data_item_prop[1] == 'object' &&
+                typeof data_item_prop[2] == 'object'
             "
         >
+            <!-- ['data', ['item'], ['item_2']] -->
             {{ data_prop[data_item_prop[1][0]] }}
-            {{ data_prop[data_item_prop[1][1]] }}
+            {{ data_prop[data_item_prop[2][0]] }}
         </span>
         <span v-else>
+            <!-- ['data', ['item']] -->
             {{ data_prop[data_item_prop[1][0]] }}
         </span>
     </span>
