@@ -77,6 +77,7 @@
                                                         ['no'],
                                                         ['no'],
                                                         ['no'],
+                                                        ['no'],
                                                         ['local_bisnes', 'edit'],
                                                         ['local_bisnes', 'del'],
                                                     ]
@@ -87,6 +88,47 @@
                 .catch(
                     error => console.log(error)
                 );
+            },
+            row_action(data){
+                    let end_day = Number(moment(data).format("D"))
+                    let end_month = Number(moment(data).format("MM"))
+                    let end_year = Number(moment(data).format("YYYY"))
+
+                    if( new Date().getDate() > end_day && 
+                        new Date().getMonth() >= end_month && 
+                        new Date().getFullYear() >= end_year
+                    ){
+                        return 'completed_event'
+                    }
+                    if( new Date().getDate() > end_day && 
+                        new Date().getMonth() == end_month && 
+                        new Date().getFullYear() == end_year
+                    ){
+                        return 'completed_event'
+                    }
+                    else if( 
+                        new Date().getDate() == end_day && 
+                        new Date().getMonth() >= end_month && 
+                        new Date().getFullYear() >= end_year
+                    ){
+                        return 'completed_event'
+                    }
+                    else if(
+                        new Date().getMonth() > end_month && 
+                        new Date().getFullYear() > end_year
+                    ){
+                        return 'completed_event'
+                    }
+                    else if(
+                        new Date().getMonth() > end_month
+                    ){
+                        return 'completed_event'
+                    }
+                    else if(
+                        new Date().getFullYear() > end_year
+                    ){
+                        return 'completed_event'
+                    }
             },
             del_bisnes(id){
                 if(confirm('Are you sure, you want delite it?')){
