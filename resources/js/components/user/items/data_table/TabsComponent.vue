@@ -178,10 +178,10 @@ export default {
             this.$emit("update");
         },
         filter_data(emit_fun) {
-            this.$emit(emit_fun);
+            this.$emit(emit_fun[0]);
         },
         filter_data_with_id(emit_fun) {
-            this.$emit(emit_fun, this.filter_id);
+            this.$emit(emit_fun[0], emit_fun[1]);
         },
         action_for_perent_component_with_option(event){            
             this.$emit(event[0], event[1])
@@ -196,9 +196,5 @@ export default {
 <style scoped>
 .data_tab {
     overflow-x: scroll;
-}
-.cms_filters {
-    background-color: #c1c1c1;
-    margin-bottom: 2%;
 }
 </style>

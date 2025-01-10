@@ -90,12 +90,19 @@ export default {
         this.action_data = this.filtr_data_prop
     },
     methods: {
-        send_filter_to_tab_with_id(sending_id) {
-            this.$emit('send_filter_to_tab_with_id', sending_id);
+        send_filter_to_tab_with_id(option_fun) {
+            this.$emit('send_filter_to_tab_with_id', [option_fun, this.filter_id]);
         },
-        send_filter_to_tab() {
-            this.$emit('send_filter_to_tab',);
+        send_filter_to_tab(option_fun) {
+            this.$emit('send_filter_to_tab', [option_fun]);
         },
     }
 }
 </script>
+
+<style>
+.cms_filters {
+    background-color: #c1c1c1;
+    margin-bottom: 2%;
+}
+</style>
