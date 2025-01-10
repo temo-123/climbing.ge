@@ -46,10 +46,37 @@
                 axios
                 .get("/tour/get_all_tours/")
                 .then(response => {
-                    this.data_for_tab.push({'id': 1,
-                                            'data': response.data, 
+                    this.data_for_tab.push({
+                                            'id': 1,
                                             'table_name': 'Tours', 
-                                            'table_add_url': 'tourAdd', 
+                                            'add_action': {
+                                                'action': 'route',
+                                                'link': 'tourAdd', 
+                                                'class': 'btn btn-primary'
+                                            },
+                                            'tab_data': {
+                                                'data': response.data, 
+                                                'tab': {
+                                                    'head': [
+                                                        'ID',
+                                                        'Name',
+                                                        'Edit',
+                                                        'Delite',
+                                                    ],
+                                                    'body': [
+                                                        ['data', ['id']],
+                                                        ['data_action_id', ['title'], 'show_local_image_modal'],
+                                                        ['action_router', 'sectorLocalImagesListEdit', 'btn btn-primary', '<i aria-hidden="true" class="fa fa-pencil"></i>'],
+                                                        ['action_fun_id', 'del_sector_local_images', 'btn btn-danger', '<i aria-hidden="true" class="fa fa-trash"></i>'],
+                                                    ],
+                                                    'perm': [
+                                                        ['no'],
+                                                        ['no'],
+                                                        ['sector_local_images', 'edit'],
+                                                        ['sector_local_images', 'del'],
+                                                    ]
+                                                }
+                                            },
                                         });
                 this.get_all_tours_categories()
                 })
@@ -62,16 +89,37 @@
                 axios
                 .get("/tour/category/get_all_categories/")
                 .then(response => {
-                    this.data_for_tab.push({'id': 2,
-                                            'data': response.data, 
+                    this.data_for_tab.push({
+                                            'id': 2,
                                             'table_name': 'Tours categories', 
-                                            'table_add_url': 'tourCategoryAdd', 
-                                            'tab_values': [
-                                                'name',
-                                                'published',
-                                                'edit',
-                                                'del'
-                                            ]
+                                            'add_action': {
+                                                'action': 'route',
+                                                'link': 'tourCategoryAdd', 
+                                                'class': 'btn btn-primary'
+                                            },
+                                            'tab_data': {
+                                                'data': response.data, 
+                                                'tab': {
+                                                    'head': [
+                                                        'ID',
+                                                        'Name',
+                                                        'Edit',
+                                                        'Delite',
+                                                    ],
+                                                    'body': [
+                                                        ['data', ['id']],
+                                                        ['data_action_id', ['title'], 'show_local_image_modal'],
+                                                        ['action_router', 'sectorLocalImagesListEdit', 'btn btn-primary', '<i aria-hidden="true" class="fa fa-pencil"></i>'],
+                                                        ['action_fun_id', 'del_sector_local_images', 'btn btn-danger', '<i aria-hidden="true" class="fa fa-trash"></i>'],
+                                                    ],
+                                                    'perm': [
+                                                        ['no'],
+                                                        ['no'],
+                                                        ['sector_local_images', 'edit'],
+                                                        ['sector_local_images', 'del'],
+                                                    ]
+                                                }
+                                            },
                                         });
                 })
                 .catch(

@@ -23,28 +23,7 @@
                 </div>
 
                 <div class="row">
-                    <div class="col-md-12">
-                        <div class="cms_filters">
-                            <div class="input-group mb-3">
-                                <input
-                                    type="text"
-                                    class="form-control"
-                                    placeholder="Recipient's username"
-                                    aria-label="Recipient's username"
-                                    aria-describedby="basic-addon2"
-                                />
-                                <div class="input-group-append">
-                                    <button
-                                        class="btn btn-primary"
-                                        style="height: auto"
-                                        type="button"
-                                    >
-                                        Search
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                    <SearchComponent />
                 </div>
 
                 <div class="row">
@@ -122,75 +101,16 @@
                                 action_data.filter_data.data
                             "
                         >
-                            <div class="col-md-12">
-                                <div class="cms_filters">
-                                    <div class="col-md-7">
-                                        <h3>
-                                            {{ action_data.filter_data.title }}
-                                        </h3>
-                                    </div>
-                                    <div class="col-md-5">
-                                        <select
-                                            v-if="
-                                                action_data.filter_data
-                                                    .action_fun
-                                            "
-                                            v-model="filter_id"
-                                            @click="
-                                                filter_data(
-                                                    action_data.filter_data
-                                                        .action_fun
-                                                )
-                                            "
-                                        >
-                                            <option :value="0">All</option>
-                                            <option
-                                                v-for="(
-                                                    filter_data, filter_data_key
-                                                ) in action_data.filter_data
-                                                    .data"
-                                                :key="filter_data_key"
-                                                :value="filter_data.id"
-                                            >
-                                                {{
-                                                    filter_data[
-                                                        action_data.filter_data
-                                                            .array_key
-                                                    ]
-                                                }}
-                                            </option>
-                                        </select>
-                                        <select
-                                            v-if="
-                                                action_data.filter_data
-                                                    .action_fun_id
-                                            "
-                                            v-model="filter_id"
-                                            @click="
-                                                filter_data_with_id(
-                                                    action_data.filter_data
-                                                        .action_fun_id
-                                                )
-                                            "
-                                        >
-                                            <option :value="0">All</option>
-                                            <option
-                                                v-for="(filter_data, filter_data_id_key) in action_data.filter_data.data"
+                            <FilterComponent 
+                                :filtr_data_prop="action_data"
 
-                                                :key="filter_data_id_key"
-                                                :value="filter_data.id"
-                                            >
-                                                {{
-                                                    filter_data[
-                                                        action_data.filter_data
-                                                            .array_key
-                                                    ]
-                                                }}
-                                            </option>
-                                        </select>
-                                    </div>
-                                </div>
-                            </div>
+                                @send_filter_to_tab_with_id="filter_data_with_id"
+                                @send_filter_to_tab="filter_data"
+                            />
+                        </div>
+
+                        <div class="row">
+                            <PaginationComponent :pagination_data_prop="[]"/>
                         </div>
                     </div>
                 </div>
@@ -203,152 +123,21 @@
                         v-if="tab_num == tab_data.id"
                     >
                         <table class="table table-hover" id="dev-table">
-                            <thead>
-                                <tr>
-                                    <th style="text-align: center">
-                                        <input type="checkbox" class="all" />
-                                    </th>
+                            <TabHeaderComponent :head_data_prop="tab_data.tab_data"/>
+                            
+                            <TabBodyComponent 
+                                :body_data_prop="tab_data.tab_data"
 
-                                    <th
-                                        v-for="(h, h_key) in tab_data.tab_data
-                                            .tab.head"
-                                        :key="h_key"
-                                        v-if="
-                                            tab_data.tab_data.tab.perm[h_key][0] == 'no' ||
-                                            $can(tab_data.tab_data.tab.perm[h_key][1],
-                                                tab_data.tab_data.tab.perm[h_key][0]
-                                            )
-                                        "
-                                    >
-                                        {{ h }}
-                                    </th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr
-                                    :class="danger_color"
-                                    v-for="(datas, datas_key) in tab_data
-                                        .tab_data.data"
-                                    :key="datas_key"
-                                >
-                                    <td style="text-align: center">
-                                        <input type="checkbox" />
-                                    </td>
-
-                                    <td
-                                        v-for="(b, b_key) in tab_data.tab_data
-                                            .tab.body"
-                                        :key="b_key"
-                                        v-if="
-                                            tab_data.tab_data.tab.perm[
-                                                b_key
-                                            ][0] == 'no' ||
-                                            $can(
-                                                tab_data.tab_data.tab.perm[
-                                                    b_key
-                                                ][1],
-                                                tab_data.tab_data.tab.perm[
-                                                    b_key
-                                                ][0]
-                                            )
-                                        "
-                                    >
-                                        <span v-if="b[0] == 'data'">
-                                            <tabDataItem 
-                                                :data_item_prop="b"
-                                                :data_prop="datas"
-                                            />
-                                        </span>
-                                        <span
-                                            v-else-if="b[0] == 'data_action'"
-                                            @click="$emit(b[2])"
-                                            class="cursor_pointer"
-                                        >
-                                            <tabDataItem 
-                                                :data_item_prop="b"
-                                                :data_prop="datas"
-                                            />
-                                        </span>
-                                        <span
-                                            v-else-if="b[0] == 'data_action_id'"
-                                            @click="$emit(b[2], datas['id'])"
-                                            class="cursor_pointer"
-                                        >
-                                            <tabDataItem 
-                                                :data_item_prop="b"
-                                                :data_prop="datas"
-                                            />
-                                        </span>
-                                        <span v-else-if="b[0] == 'stars'">
-                                            <starsReiting
-                                                :reviews_count_prop="1"
-                                                :reviews_stars_prop="
-                                                    datas[b[1][0]][b[1][1]]
-                                                "
-                                                :rewiew_count_text_prop="false"
-                                            />
-                                        </span>
-                                        <a
-                                            v-else-if="b[0] == 'action_url'"
-                                            :href="b[1]"
-                                            :class="b[2]"
-                                        >
-                                            <span v-html="b[3]"></span>
-                                        </a>
-                                        <router-link
-                                            v-else-if="b[0] == 'action_router' && typeof b[4] == 'object'"
-                                            :class="b[2]"
-                                            :to="{
-                                                name: b[1],
-                                                params: { id: datas[b[4][0]][b[4][1]] },
-                                            }"
-                                        >
-                                            <span v-html="b[3]"></span>
-                                        </router-link>
-                                        <router-link
-                                            v-else-if="b[0] == 'action_router'"
-                                            :class="b[2]"
-                                            :to="{
-                                                name: b[1],
-                                                params: { id: datas.id },
-                                            }"
-                                        >
-                                            <span v-html="b[3]"></span>
-                                        </router-link>
-                                        <button
-                                            v-else-if="b[0] == 'action_fun'"
-                                            type="button"
-                                            @click="$emit(b[1])"
-                                            :class="b[2]"
-                                        >
-                                            <span v-html="b[3]"></span>
-                                        </button>
-                                        <button
-                                            v-else-if="b[0] == 'action_fun_id' && typeof b[4] == 'object'"
-                                            type="button"
-                                            @click="$emit(b[1], datas[b[4][0]][b[4][1]])"
-                                            :class="b[2]"
-                                        >
-                                            <span v-html="b[3]"></span>
-                                        </button>
-                                        <button
-                                            v-else-if="b[0] == 'action_fun_id'"
-                                            type="button"
-                                            @click="$emit(b[1], datas.id)"
-                                            :class="b[2]"
-                                        >
-                                            <span v-html="b[3]"></span>
-                                        </button>
-                                    </td>
-                                </tr>
-                            </tbody>
+                                @action_for_perent_component_with_option="action_for_perent_component_with_option"
+                                @action_for_perent_component="action_for_perent_component"
+                            />
                         </table>
-                        <!-- <pagination
-                            v-model="page"
-                            :records="500"
-                            @paginate="myCallback"
-                        /> -->
                     </div>
+                </div>
+
+
+                <div class="row">
+                    <PaginationComponent />
                 </div>
             </div>
         </div>
@@ -356,27 +145,27 @@
 </template>
 
 <script>
-import starsReiting from "../../../global_components/StarReitingShowComponent.vue";
-
-import tabDataItem from"./assets/DataComponent.vue";
+import FilterComponent from"./assets/FilterComponent.vue";
+import PaginationComponent from"./assets/PaginationComponent.vue";
+import SearchComponent from "./assets/SearchComponent.vue";
+import TabBodyComponent from"./assets/TabBodyComponent.vue";
+import TabHeaderComponent from"./assets/TabHeaderComponent.vue";
 export default {
     components: {
-        starsReiting,
-        tabDataItem,
-        // Pagination,
+        FilterComponent,
+        PaginationComponent,
+        TabBodyComponent,
+        TabHeaderComponent,
+        SearchComponent,
     },
 
-    props: ["table_data"],
+    props: [
+        "table_data"
+    ],
 
     data() {
         return {
             tab_num: 1,
-            filter_id: 0,
-            danger_color: "",
-
-            page: 1,
-            perPage: 20,
-            records: [[1], [1], [1], [1], [1]],
         };
     },
 
@@ -394,16 +183,11 @@ export default {
         filter_data_with_id(emit_fun) {
             this.$emit(emit_fun, this.filter_id);
         },
-        displayedRecords() {
-            const startIndex = this.perPage * (this.page - 1);
-            const endIndex = startIndex + this.perPage;
-            return this.records.slice(startIndex, endIndex);
+        action_for_perent_component_with_option(event){            
+            this.$emit(event[0], event[1])
         },
-    },
-    created() {
-        // here we simulate an api call that returns the complete list
-        for (let i = 1; i <= 500; i++) {
-            this.records.push(`Item ${i}`);
+        action_for_perent_component(event){
+            this.$emit(event[0])
         }
     },
 };
