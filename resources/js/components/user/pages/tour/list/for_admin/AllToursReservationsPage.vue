@@ -22,8 +22,8 @@
 </template>
 
 <script>
-    import tabsComponent  from '../../items/data_table/TabsComponent.vue'
-    import breadcrumb from '../../items/BreadcrumbComponent.vue'
+    import tabsComponent  from '../../../../items/data_table/TabsComponent.vue'
+    import breadcrumb from '../../../../items/BreadcrumbComponent.vue'
     export default {
         components: {
             tabsComponent ,
@@ -44,11 +44,11 @@
             get_reservations: function(){
                 this.data_for_tab = []
                 axios
-                .get("/tour/reservation/get_user_reservations/")
+                .get("/tour/reservation/get_reservations/")
                 .then(response => {
                     this.data_for_tab.push({'id': 1,
                                             'data': response.data, 
-                                            'table_name': 'My tours reservations', 
+                                            'table_name': 'Tours reservations', 
                                             // 'table_add_url': 'tourAdd', 
                                         });
                 })
