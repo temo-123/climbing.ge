@@ -18,9 +18,11 @@
             ],
             'body': [
                 ['data', ['id']],
-                ['data_action', ['url_title'], 'quick_wiev_action'],
                 ['data', ['published']],
                 ['data', ['name'], ['surname']],
+                
+                ['data_action', ['url_title'], 'quick_wiev_action'],
+
                 ['action_router', 'articleEdit', 'btn btn-primary', '<i aria-hidden="true" class="fa fa-pencil"></i>'],
                 ['action_fun_id', 'del_article', 'btn btn-danger', '<i aria-hidden="true" class="fa fa-trash"></i>'],
             ],
