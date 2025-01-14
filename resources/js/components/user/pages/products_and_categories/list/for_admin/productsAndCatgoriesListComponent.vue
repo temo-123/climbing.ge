@@ -13,7 +13,7 @@
                 <div class="col-sm-12">
                     <tabsComponent 
                         :table_data="this.data_for_tab"
-                        @update-data="get_products_data"
+                        @update="get_products_data"
                     />
                 </div>
             </div>
@@ -47,12 +47,45 @@
                 .get("/product/get_all_products")
                 // .get("/products/en/")
                 .then(response => {
-                    this.data_for_tab.push({'id': 1,
-                                            'data': response.data, 
+                    this.data_for_tab.push({
+                                            'id': 1,
                                             'table_name': 'Products', 
-                                            'table_add_url': 'productAdd', 
-                                            'table_edit_url': 'productEdit',
-                                            'table_del_url': 'del_url', 
+                                            'add_action': {
+                                                'action': 'route',
+                                                'link': 'productAdd', 
+                                                'class': 'btn btn-primary'
+                                            },
+                                            'tab_data': {
+                                                'data': response.data, 
+                                                'tab': {
+                                                    'head': [
+                                                        'ID',
+                                                        'Title',
+                                                        'Public',
+                                                        'Sale type',
+                                                        'User',
+                                                        'Options',
+                                                        'Edit',
+                                                        'Delite',
+                                                    ],
+                                                    'body': [
+                                                        ['data', ['id']],
+                                                        ['data', ['url_title']],
+                                                        ['data', ['Published']],
+                                                        ['data', ['sale_type']],
+                                                        ['data', ['sale_type']],
+                                                        ['data_action_id', ['title'], 'show_local_image_modal'],
+                                                        ['action_router', 'productEdit', 'btn btn-primary', '<i aria-hidden="true" class="fa fa-pencil"></i>'],
+                                                        ['action_fun_id', 'del_sector_local_images', 'btn btn-danger', '<i aria-hidden="true" class="fa fa-trash"></i>'],
+                                                    ],
+                                                    'perm': [
+                                                        ['no'],
+                                                        ['no'],
+                                                        ['sector_local_images', 'edit'],
+                                                        ['sector_local_images', 'del'],
+                                                    ]
+                                                }
+                                            },
                                         });
                     this.get_categories_data()
                 })
@@ -65,12 +98,37 @@
                 axios
                 .get("/product_category")
                 .then(response => {
-                    this.data_for_tab.push({'id': 2,
-                                            'data': response.data, 
+                    this.data_for_tab.push({
+                                            'id': 2,
                                             'table_name': 'Categories', 
-                                            'table_add_url': 'productCategoryAdd', 
-                                            'table_edit_url': 'productCategoryEdit',
-                                            'table_del_url': 'del_url', 
+                                            'add_action': {
+                                                'action': 'route',
+                                                'link': 'productCategoryAdd', 
+                                                'class': 'btn btn-primary'
+                                            },
+                                            'tab_data': {
+                                                'data': response.data, 
+                                                'tab': {
+                                                    'head': [
+                                                        'ID',
+                                                        'Name',
+                                                        'Edit',
+                                                        'Delite',
+                                                    ],
+                                                    'body': [
+                                                        ['data', ['id']],
+                                                        ['data_action_id', ['title'], 'show_local_image_modal'],
+                                                        ['action_router', 'productCategoryEdit', 'btn btn-primary', '<i aria-hidden="true" class="fa fa-pencil"></i>'],
+                                                        ['action_fun_id', 'del_sector_local_images', 'btn btn-danger', '<i aria-hidden="true" class="fa fa-trash"></i>'],
+                                                    ],
+                                                    'perm': [
+                                                        ['no'],
+                                                        ['no'],
+                                                        ['sector_local_images', 'edit'],
+                                                        ['sector_local_images', 'del'],
+                                                    ]
+                                                }
+                                            },
                                         });
                     this.get_all_brands_data()
                 })
@@ -83,12 +141,38 @@
                 axios
                 .get("/brand/get_all_brands")
                 .then(response => {
-                    this.data_for_tab.push({'id': 3,
-                                            'data': response.data, 
+                    this.data_for_tab.push({
+                                            'id': 3,
                                             'table_name': 'Brands', 
-                                            // 'table_add_url': 'saleCodeAdd', 
-                                            // 'table_edit_url': 'saleCodeEdit',
-                                            // 'table_del_url': 'del_url', 
+                                            'add_action': {
+                                                'action': 'route',
+                                                'link': 'productAdd', 
+                                                'class': 'btn btn-primary'
+                                            },
+                                            'tab_data': {
+                                                'data': response.data, 
+                                                'tab': {
+                                                    'head': [
+                                                        'ID',
+                                                        'Name',
+                                                        'Discout',
+                                                        'Edit',
+                                                        'Delite',
+                                                    ],
+                                                    'body': [
+                                                        ['data', ['id']],
+                                                        ['data_action_id', ['title'], 'show_local_image_modal'],
+                                                        ['action_router', 'sectorLocalImagesListEdit', 'btn btn-primary', '<i aria-hidden="true" class="fa fa-pencil"></i>'],
+                                                        ['action_fun_id', 'del_sector_local_images', 'btn btn-danger', '<i aria-hidden="true" class="fa fa-trash"></i>'],
+                                                    ],
+                                                    'perm': [
+                                                        ['no'],
+                                                        ['no'],
+                                                        ['sector_local_images', 'edit'],
+                                                        ['sector_local_images', 'del'],
+                                                    ]
+                                                }
+                                            },
                                         });
                     this.get_sale_codes_data()
                 })
@@ -101,12 +185,37 @@
                 axios
                 .get("/sale_code")
                 .then(response => {
-                    this.data_for_tab.push({'id': 4,
-                                            'data': response.data, 
+                    this.data_for_tab.push({
+                                            'id': 4,
                                             'table_name': 'Sale codes', 
-                                            // 'table_add_url': 'saleCodeAdd', 
-                                            // 'table_edit_url': 'saleCodeEdit',
-                                            // 'table_del_url': 'del_url', 
+                                            'add_action': {
+                                                'action': 'fun',
+                                                'link': 'open_sale_code_add_modal', 
+                                                'class': 'btn btn-primary'
+                                            },
+                                            'tab_data': {
+                                                'data': response.data, 
+                                                'tab': {
+                                                    'head': [
+                                                        'ID',
+                                                        'Name',
+                                                        'Edit',
+                                                        'Delite',
+                                                    ],
+                                                    'body': [
+                                                        ['data', ['id']],
+                                                        ['data_action_id', ['title'], 'show_local_image_modal'],
+                                                        ['action_router', 'sectorLocalImagesListEdit', 'btn btn-primary', '<i aria-hidden="true" class="fa fa-pencil"></i>'],
+                                                        ['action_fun_id', 'del_sector_local_images', 'btn btn-danger', '<i aria-hidden="true" class="fa fa-trash"></i>'],
+                                                    ],
+                                                    'perm': [
+                                                        ['no'],
+                                                        ['no'],
+                                                        ['sector_local_images', 'edit'],
+                                                        ['sector_local_images', 'del'],
+                                                    ]
+                                                }
+                                            },
                                         });
                 })
                 .catch(

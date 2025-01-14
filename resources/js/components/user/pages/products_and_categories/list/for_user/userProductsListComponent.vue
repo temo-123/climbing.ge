@@ -13,7 +13,7 @@
                 <div class="col-sm-12">
                     <tabsComponent 
                         :table_data="this.data_for_tab"
-                        @update-data="get_products_data"
+                        @update="get_products_data"
                     />
                 </div>
             </div>
@@ -62,52 +62,6 @@
                 );
 
             },
-            // get_categories_data: function(){
-            //     axios
-            //     .get("/product_category")
-            //     .then(response => {
-            //         this.data_for_tab.push({'id': 2,
-            //                                 'data': response.data, 
-            //                                 'table_name': 'Categories', 
-            //                                 'table_add_url': 'productCategoryAdd', 
-            //                                 'table_edit_url': 'productCategoryEdit',
-            //                                 'table_del_url': 'del_url', 
-            //                             });
-            //     })
-            //     .catch(
-            //         error => console.log(error)
-            //     );
-
-            // },
-            // get_sale_codes_data: function(){
-            //     axios
-            //     .get("/sale_code")
-            //     .then(response => {
-            //         this.data_for_tab.push({'id': 3,
-            //                                 'data': response.data, 
-            //                                 'table_name': 'Sale codes', 
-            //                                 // 'table_add_url': 'saleCodeAdd', 
-            //                                 // 'table_edit_url': 'saleCodeEdit',
-            //                                 // 'table_del_url': 'del_url', 
-            //                             });
-            //     })
-            //     .catch(
-            //         error => console.log(error)
-            //     );
-
-            // },
-
-            // product_del(itemId) {
-            //     axios
-            //     .post('/products/del/' + itemId, {
-            //         id: itemId,
-            //     })
-            //     .then(Response => {
-            //         console.log(response)
-            //         this.get_data_in_table_1()
-            //     })
-            //     .catch(error => console.log(error))
-            // },
 
             callback(id){
                 if(id == 1){

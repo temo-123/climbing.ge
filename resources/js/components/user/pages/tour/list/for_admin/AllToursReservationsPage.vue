@@ -46,10 +46,27 @@
                 axios
                 .get("/tour/reservation/get_reservations/")
                 .then(response => {
-                    this.data_for_tab.push({'id': 1,
-                                            'data': response.data, 
-                                            'table_name': 'Tours reservations', 
-                                            // 'table_add_url': 'tourAdd', 
+                    this.data_for_tab.push({
+                                            'id': 1,
+                                            'table_name': 'All Tours Reservations',
+                                            'tab_data': {
+                                                'data': response.data, 
+                                                'tab': {
+                                                    'head': [
+                                                        'ID',
+                                                        'Data',
+                                                        'Name',
+                                                    ],
+                                                    'body': [
+                                                        ['data', ['id']],
+                                                        ['data_action_id', ['title'], 'show_local_image_modal'],
+                                                    ],
+                                                    'perm': [
+                                                        ['no'],
+                                                        ['no'],
+                                                    ]
+                                                }
+                                            },
                                         });
                 })
                 .catch(
