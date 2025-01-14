@@ -165,11 +165,11 @@ class ProductController extends Controller
             $product_subcategory = $this_product->product_subcategory;
             if($product_subcategory->count() > 0){
                 if($product_subcategory->products->count() > 0){
-                    if ($product_subcategory->products->count() > 3) {
+                    if ($product_subcategory->products->count() < 3) {
                         $similar_products = $product_subcategory->products->where('published', '=', 1)->where('id', '!=', $request->product_id)->random(3);
                     }
                     else{
-                        $similar_products = $product_subcategory->products->where('published', '=', 1)->where('id', '!=', $request->product_id)->random($product_subcategory->products->count());
+                        $similar_products = $product_subcategory->products->where('published', '=', 1)->where('id', '!=', $request->product_id)->random($product_subcategory->products->count()-1);
                     }
                     return $products = ProductService::get_locale_product_use_locale(array_slice($similar_products->all(), 0, 3), $request->lang);
                 }

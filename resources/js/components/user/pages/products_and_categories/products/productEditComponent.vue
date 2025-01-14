@@ -36,7 +36,7 @@
                     <div class="col" >
                         <input type="radio" id="3" :value="3" v-model="tab_num">
                         
-                        <label for="4" >Georgian text</label>
+                        <label for="3" >Georgian text</label>
                     </div>
                 </div>
             </div>
@@ -141,7 +141,7 @@
                         <div class="form-group clearfix">
                             <label for="name" class='col-xs-2 control-label'> Change URL title </label>
                             <div class="col-xs-8">
-                                <input type="checkbox" id="scales" name="scales" @click="change_url_title_in_global_product">
+                                <input type="checkbox" id="scales" name="scales" v-model="is_change_url_title" @click="change_url_title_in_global_product">
                             </div>
                         </div>
 
@@ -231,7 +231,7 @@
                 tab_num: 1,
 
                 categories: [],
-                change_url_title: null,
+                is_change_url_title: false,
                 is_loading: false,
 
                 errors: [],
@@ -287,14 +287,19 @@
                 this.myModal = !this.myModal
             },
             change_url_title_in_global_product(){
-                if(!this.change_url_title){
+                if(!this.is_change_url_title){
                     if(confirm('Are you sure, you want change URL title? It vhile bad for SEO potimization')){
-                        this.change_url_title = true
+                        this.is_change_url_title = true
+                    }
+                    else{
+                        this.is_change_url_title = false 
                     }
                 }
                 else{
-                    this.change_url_title = false 
+                    this.is_change_url_title = false 
                 }
+
+                this.data.us_product.is_change_url_title = this.is_change_url_title
             },
 
             get_product_editing_data(){
