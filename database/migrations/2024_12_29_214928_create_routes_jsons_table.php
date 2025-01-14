@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::create('routes_jsons', function (Blueprint $table) {
             $table->id();
+            
             $table->json('json');
 
             $table->unsignedBigInteger('route_id')->unique();

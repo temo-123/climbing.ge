@@ -123,6 +123,10 @@
         />
         <!-- {{ sector.sector_imgs[0] }} -->
 
+        <route_json 
+        
+        />
+
         <table
             class="table col-md-12 table table-hover"
             v-if="sector.sport_routes.length > 0"
@@ -335,6 +339,8 @@ import mtp_modal from "./modals/MTPModalComponent.vue";
 import openImg from "../../ImageOpenComponent.vue";
 import grade_chart  from '../../../../../mixins/grade_chart_mixin.js'
 
+import route_json from './canvas/routeLinesComponent.vue'
+
 export default {
     mixins: [
         grade_chart,
@@ -344,7 +350,8 @@ export default {
         route_modal,
         mtp_modal,
         create_route_review_modal,
-        route_all_reviews_modal
+        route_all_reviews_modal,
+        route_json
     },
     props: [
         "sector",
