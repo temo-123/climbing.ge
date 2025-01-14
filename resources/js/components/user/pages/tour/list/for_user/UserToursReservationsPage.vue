@@ -13,7 +13,7 @@
                 <div class="col-sm-12">
                     <tabsComponent 
                         :table_data="this.data_for_tab"
-                        @update-data="get_reservations"
+                        @update="get_reservations"
                     />
                 </div>
             </div>
@@ -48,24 +48,36 @@
                 .then(response => {
                     this.data_for_tab.push({
                                             'id': 1,
-                                            'table_name': 'Tours Reservations',
+                                            'table_name': 'All Tours Reservations',
                                             'tab_data': {
                                                 'data': response.data, 
                                                 'tab': {
                                                     'head': [
                                                         'ID',
-                                                        'Name',
+                                                        'Persons',
+                                                        'Check In',
+                                                        'Reserver name',
+                                                        'Reserver Email',
+                                                        'Verificate',
                                                     ],
                                                     'body': [
                                                         ['data', ['id']],
-                                                        ['data_action_id', ['title'], 'show_local_image_modal'],
+                                                        ['data', ['persons']],
+                                                        ['data', ['check_in']],
+                                                        ['data', ['name'], ['surname']],
+                                                        ['data', ['email']],
+                                                        ['data', ['verificate']],
                                                     ],
                                                     'perm': [
                                                         ['no'],
                                                         ['no'],
+                                                        ['no'],
+                                                        ['no'],
+                                                        ['no'],
+                                                        ['no'],
                                                     ]
                                                 }
-                                            }, 
+                                            },
                                         });
                 })
                 .catch(

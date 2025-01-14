@@ -13,7 +13,10 @@
                 <div class="col-sm-12">
                     <tabsComponent 
                         :table_data="this.data_for_tab"
-                        @update-data="get_reservations"
+
+                        @update="get_reservations"
+
+                        @del_tour_reservation="del_tour_reservation"
                     />
                 </div>
             </div>
@@ -54,16 +57,30 @@
                                                 'tab': {
                                                     'head': [
                                                         'ID',
-                                                        'Data',
-                                                        'Name',
+                                                        'Persons',
+                                                        'Check In',
+                                                        'Reserver name',
+                                                        'Reserver Email',
+                                                        'Verificate',
+                                                        'Delete'
                                                     ],
                                                     'body': [
                                                         ['data', ['id']],
-                                                        ['data_action_id', ['title'], 'show_local_image_modal'],
+                                                        ['data', ['persons']],
+                                                        ['data', ['check_in']],
+                                                        ['data', ['name'], ['surname']],
+                                                        ['data', ['email']],
+                                                        ['data', ['verificate']],
+                                                        ['action_fun_id', 'del_tour_reservation', 'btn btn-danger', '<i aria-hidden="true" class="fa fa-trash"></i>'],
                                                     ],
                                                     'perm': [
                                                         ['no'],
                                                         ['no'],
+                                                        ['no'],
+                                                        ['no'],
+                                                        ['no'],
+                                                        ['no'],
+                                                        ['tour', 'del'],
                                                     ]
                                                 }
                                             },
@@ -72,6 +89,18 @@
                 .catch(
                     error => console.log(error)
                 );
+            },
+            del_tour_reservation(id){
+                if(confirm('Are you sure, you want delite it?')){
+                    axios
+                    .post('/tour/reservation/del_reservation/'+id, {
+                        _method: 'DELETE'
+                    })
+                    .then(Response => {
+                        this.get_reservations()
+                    })
+                    .catch(error => console.log(error))
+                }
             },
         }
     }
