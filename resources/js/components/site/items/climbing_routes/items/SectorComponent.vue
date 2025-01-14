@@ -339,7 +339,7 @@ import mtp_modal from "./modals/MTPModalComponent.vue";
 import openImg from "../../ImageOpenComponent.vue";
 import grade_chart  from '../../../../../mixins/grade_chart_mixin.js'
 
-import route_json from './canvas/routeLinesComponent.vue'
+import route_json from './canvas/RouteLinesComponent.vue'
 
 export default {
     mixins: [
