@@ -5,10 +5,10 @@
                 <div class="container purchase overflow-auto">
                     <div>
                         <div class="row">
-                            <div class="col-md-6">
+                            <div class="col">
                                 <button class="btn btn-primary pull-left" @click="go_back()">Back</button>
                             </div>
-                            <div class="col-md-6">
+                            <div class="col">
                                 <!-- <router-link :to="{name: 'confirmOrder'}" exact> -->
                                     <button class="btn btn-primary float-right" @click="go_next()">Next</button>
                                 <!-- </router-link> -->
@@ -56,7 +56,7 @@
 
                                             <select class="form-control" v-model="adding_data.region_id" name="Currency"> 
                                                 <option :value="0" disabled>Select region</option>
-                                                <option v-for="region in qounties" :key="region.id" :value="region.id" >{{ region.region }}</option>
+                                                <option v-for="region in regions" :key="region.id" :value="region.id" >{{ region.region }}</option>
                                             </select> 
                                             <div class="alert alert-danger" role="alert" v-if="errors.region_id">Enter region!!!</div>
 
@@ -240,7 +240,7 @@ export default {
                 floor: false,
             },
             quick_adres: [],
-            qounties: [],
+            regions: [],
 
             sale_code: [],
             sale_code_discount: 0,
@@ -280,7 +280,7 @@ export default {
             axios
             .get("/shiped_region/get_all_shiped_regions/")
             .then(response => {
-                this.qounties = response.data
+                this.regions = response.data
             })
             .catch(
                 error => console.log(error)

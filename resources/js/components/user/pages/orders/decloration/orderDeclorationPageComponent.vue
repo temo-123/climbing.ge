@@ -4,16 +4,11 @@
             <div class="col-sm-12">
                 <div class="container purchase overflow-auto">
                     <div class="row">
-                        <div class="col-md-6">
+                        <div class="col">
                             <button class="btn btn-primary pull-left" @click="go_back">Back</button>
                         </div>
-                        <!-- <div class="col-md-6">
-                            <router-link :to="{name: 'orderPayment'}" exact>
-                                <button class="btn btn-primary float-right" >Next</button>
-                            </router-link>
-                        </div> -->
-
-                        <div class="col-md-6">
+                        
+                        <div class="col">
                             <button class="btn btn-primary float-right" @click="create_order()">Complete order decloration</button>
                         </div>
                     </div>
@@ -90,33 +85,21 @@
                                         <td class="text-right"><button @click="del_from_cart(product.id)" class="btn btn-danger">X</button></td>
                                     </tr>
                                 </tbody>
-                                <tfoot>
+                                <tfoot >
+                                    <tr v-if="$route.params.discount">
+                                        <th colspan="3" style="background: #fff;"></th>
+                                        <th class="text-right">Discount</th>
+                                        <th class="text-right">{{ $route.params.discount }} %</th>
+                                    </tr>
                                     <tr>
                                         <th colspan="3" style="background: #fff;"></th>
-                                        <th class="text-right">Price after discounting</th>
-                                        <th class="text-right">333 ₾</th>
-                                    </tr>
-                                </tfoot>
-                                <tfoot>
-                                    <tr>
-                                        <th colspan="2" style="background: #fff;"></th>
                                         <th class="text-right">Shiping</th>
-                                        <th class="text-right"> Free shiping after - {{shiping_country.free_shiping_price_after}} ₾ </th>
                                         <th class="text-right">{{ shiping }} ₾</th>
                                     </tr>
-                                </tfoot>
-                                <tfoot>
                                     <tr>
                                         <th colspan="3" style="background: #fff;"></th>
                                         <th class="text-right">Total price</th>
                                         <th class="text-right">{{ total_price }} ₾</th>
-                                    </tr>
-                                </tfoot>
-                                <tfoot>
-                                    <tr>
-                                        <th colspan="3" style="background: #fff;"></th>
-                                        <th class="text-right">Discount</th>
-                                        <th class="text-right">{{ $route.params.discount }} %</th>
                                     </tr>
                                 </tfoot>
                             </table>
@@ -146,7 +129,7 @@
                 quantity: '',
 
                 total_price: 0,
-                price: 0,
+                // price: 0,
                 user_id: 0,
                 // test_arr: ['test 1', 'test 2'],
                 payment: '',
@@ -190,7 +173,7 @@
 
             get_products_cart: function() {
                 axios
-                .get("../../../../api/cart/")
+                .get("/cart/")
                 .then(response => {
                     this.cart_items = response.data
                     // this.order_product_list = this.cart_items
@@ -204,33 +187,29 @@
             },
             colculat_total_price() {
                 this.total_price = 0
-                this.price = 0
+                let price = 0
 
                 this.cart_items.forEach(product => {
                     if (product.quantity > 1) {
-                        this.price = product.quantity * product.option.price
+                        price = product.quantity * product.option.price
                     }
                     else{
-                        this.price = parseInt(product.option.price)
+                        price = parseInt(product.option.price)
                     }
-                    this.total_price = this.total_price + this.price
                 });
-
-                if(this.shiping_country.free_shiping_price_after && this.shiping_country.free_shiping_price_after <= this.total_price){
-                    this.shiping = 0
+                this.shiping = Number(this.colculate_shiping_price(price))
+                this.total_price = price + this.shiping
+            },
+            colculate_shiping_price(product_price){
+                if(this.shiping_country.free_shiping_price_after && (this.shiping_country.free_shiping_price_after <= product_price)){
+                    return 0
                 }
-                else if(this.shiping_country.free_shiping_price_after && this.shiping_country.free_shiping_price_after > this.total_price){
-                    this.shiping = this.shiping_country.shiping_price
-                }
-                else if(!this.shiping_country.free_shiping_price_after){
-                    this.shiping = this.shiping_country.shiping_price
+                else if(this.shiping_country.free_shiping_price_after && (this.shiping_country.free_shiping_price_after > product_price)){
+                    return this.shiping_country.shiping_price
                 }
                 else{
-                    this.shiping = this.shiping_country.shiping_price
+                    return this.shiping_country.shiping_price
                 }
-                this.shiping = Number(this.shiping)
-
-                this.total_price = this.total_price + this.shiping
             },
             colculat_items_price(price, quantyty) {
                 var colculated_price = price * quantyty
@@ -238,7 +217,7 @@
             },
             update_quantity(item_id, quantity){
                 axios
-                .post("../../../../api/cart/update_quantity/" + item_id, {
+                .post("/cart/update_quantity/" + item_id, {
                     quantity: quantity,
                 })
                 .then(response => {
@@ -251,7 +230,7 @@
             del_from_cart(item_id){
                 if(confirm('Are you sure, you want delite it?')){
                     axios
-                    .delete("../../../../api/cart/" + item_id)
+                    .delete("/cart/" + item_id)
                     .then(response => {
                         this.get_products_cart()
                     })
@@ -263,17 +242,17 @@
 
             get_activ_adres(adres_id){
                 axios
-                .get('../../../api/get_activ_adres/'+adres_id)
+                .get('/get_activ_adres/'+adres_id)
                 .then(Response => {
                     this.activ_adres = Response.data
-                    this.get_activ_country(Response.data.country_id)
+                    this.get_activ_region(Response.data.region_id)
                 })
                 .catch(error => console.log(error))
             },
 
-            get_activ_country(adres_id){
+            get_activ_region(region_id){
                 axios
-                .get('../../../api/get_activ_country/'+adres_id)
+                .get('/shiped_region/get_activ_region/'+region_id)
                 .then(Response => {
                     this.shiping_country = Response.data
                     this.colculat_total_price()
@@ -284,7 +263,7 @@
             create_order(){
                 this.create_order_loading = true
                 axios
-                .post('../../../api/order/',{
+                .post('/order/',{
                     order_product_list: this.cart_items,
                     payment_tupe: this.$route.params.payment,
                     adres: this.$route.params.adres,

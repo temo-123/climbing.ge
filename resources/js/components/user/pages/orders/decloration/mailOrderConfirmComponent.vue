@@ -11,7 +11,7 @@
 
             <div class="col-md-12 confirm_page_text" v-else-if="error_status != ''">
                 <h1>{{ error_status }}</h1>
-                <router-link :to="{name: 'myOrders'}" exact  v-if="error_status == 'Order olredy confirm!'"> 
+                <router-link :to="{name: 'userOrders'}" exact  v-if="error_status == 'Order olredy confirm!'"> 
                     <button class="btn btn-primary " >My orders</button>
                 </router-link>
             </div>
@@ -22,7 +22,7 @@
                 </div>
 
                 <div class="confirm_page_text">
-                    <router-link :to="{name: 'myOrders'}" exact> 
+                    <router-link :to="{name: 'userOrders'}" exact> 
                         <button class="btn btn-primary " >My orders</button>
                     </router-link>
                 </div>
@@ -55,7 +55,7 @@ export default {
     methods: {
         confirm_order() {
             axios
-            .post('../../../../../../api/order_is_confirm/' + this.order_id)
+            .post('/order_is_confirm/' + this.order_id)
             .then(response => { 
                 //
             })
@@ -66,7 +66,7 @@ export default {
         },
         check_order_confirm() {
             axios
-            .get('../../../../../../api/is_order_confirm/' + this.order_id)
+            .get('/is_order_confirm/' + this.order_id)
             .then(response => {
                 if(response.data){
                     this.confirm_order()
@@ -87,7 +87,7 @@ export default {
         },
         check_user_authing() {
             axios
-            .get('../../../../../../../../api/auth_user')
+            .get('/auth_user')
             .then(response => { 
                 this.check_order_confirm() 
             })
