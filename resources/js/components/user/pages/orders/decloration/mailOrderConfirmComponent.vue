@@ -55,7 +55,7 @@ export default {
     methods: {
         confirm_order() {
             axios
-            .post('../../../../../../api/order_is_confirm/' + this.order_id)
+            .post('/order/order_is_confirm/' + this.order_id)
             .then(response => { 
                 //
             })
@@ -66,7 +66,7 @@ export default {
         },
         check_order_confirm() {
             axios
-            .get('../../../../../../api/is_order_confirm/' + this.order_id)
+            .get('/order/is_order_confirm/' + this.order_id)
             .then(response => {
                 if(response.data){
                     this.confirm_order()
@@ -87,7 +87,7 @@ export default {
         },
         check_user_authing() {
             axios
-            .get('../../../../../../../../api/auth_user')
+            .get('/order/auth_user')
             .then(response => { 
                 this.check_order_confirm() 
             })

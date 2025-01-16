@@ -45,7 +45,7 @@
 
     import orderDetalsModal from '../../items/modal/orders/orderDetalsModal.vue'
     import orderStatusModal from '../../items/modal/orders/orderStatusModal.vue'
-    import orderTrackingModal from '../../items/modal/orders/orderTrackingModal.vue'
+    import editOrderStatusModal from '../../items/modal/orders/editOrderStatusModal.vue'
 
     import shipedRegionEditModal from "../../items/modal/tab_modals/edit/EditShipingRegionModalComponent.vue";
     import shipedRegionAddModal from "../../items/modal/tab_modals/add/AddShipingRegionModalComponent.vue";
@@ -56,7 +56,7 @@
 
             orderDetalsModal,
             orderStatusModal,
-            orderTrackingModal,
+            editOrderStatusModal,
 
             shipedRegionEditModal,
             shipedRegionAddModal
@@ -80,7 +80,7 @@
             get_orders(){
                 this.data_for_tab = []
                 axios
-                .get("/order/")
+                .get("/order/get_all_orders/")
                 .then(response => {
                     this.data_for_tab.push({
                                             'id': 1,
@@ -88,7 +88,8 @@
                                             'add_action': {
                                                 'action': 'function',
                                                 'link': 'addCostomOrder', 
-                                                'class': 'btn btn-primary'
+                                                'class': 'btn btn-primary',
+                                                'btn_title' : 'Add castom order'
                                             },
                                             'tab_data': {
                                                 'data': response.data, 
@@ -97,15 +98,18 @@
                                                         'ID',
                                                         'Order Status',
                                                         'Edit status',
+                                                        'Payment',
                                                         'Show detals',
                                                     ],
                                                     'body': [
                                                         ['data', ['id']],
-                                                        ['data', ['url_title']],
+                                                        ['data', ['status']],
+                                                        ['data', ['payment']],
                                                         ['action_fun_id', 'articleEdit', 'btn btn-primary', '<i aria-hidden="true" class="fa fa-pencil"></i>'],
                                                         ['action_fun_id', 'del_article', 'btn btn-primary', '<i class="fa fa-truck" aria-hidden="true"></i>'],
                                                     ],
                                                     'perm': [
+                                                        ['no'],
                                                         ['no'],
                                                         ['no'],
                                                         ['no'],
@@ -229,7 +233,7 @@
             get_activ_order(action){
                 // alert(action)
                 axios
-                .get("/get_activ_order/"+this.activ_order_id)
+                .get("/order/get_activ_order/"+this.activ_order_id)
                 .then(response => {
                     this.activ_order_status = response.data
                     // this.selected_order_status = response.data.status
@@ -271,7 +275,7 @@
                     this.order_status_updating_loader = true
 
                     axios
-                    .post("/edit_order_status/"+this.activ_order_id,{
+                    .post("/order/edit_order_status/"+this.activ_order_id,{
                         status: this.selected_order_status
                     })
                     .then(response => {
@@ -290,7 +294,7 @@
 
             get_order_detals(order_id){
                 axios
-                .get("/get_order_detals/"+order_id)
+                .get("/order/get_order_detals/"+order_id)
                 .then(response => {
                     this.activ_order_detals = response.data.order
                     // this.get_order_products(response.data.id)

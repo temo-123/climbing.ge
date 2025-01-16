@@ -1,16 +1,14 @@
 <template>
-    <stack-modal
-        :show="is_order_status_edit_model"
-        title="Edit order status"
-        @close="is_order_status_edit_model=false"
-        :saveButton="{ visible: true, title: 'Save', btnClass: { 'btn btn-primary': true } }"
-        :cancelButton="{ visible: false, title: 'Close', btnClass: { 'btn btn-danger': true } }"
-    >
-        <pre class="language-vue">
-            <h1>Active order status</h1>
-
-            <span v-if="!order_status_updating_loader">
+     <stack-modal
+                :show="is_order_status_model"
+                title="Show order status"
+                @close="is_order_status_model=false"
+                :saveButton="{ visible: true, title: 'Save', btnClass: { 'btn btn-primary': true } }"
+                :cancelButton="{ visible: false, title: 'Close', btnClass: { 'btn btn-danger': true } }"
+            >
+            <pre class="language-vue">
                 <div class="p-4">
+                    <h3>Order Tracking</h3>
                     <table class="table table-bordered track_tbl">
                         <thead>
                             <tr>
@@ -29,37 +27,13 @@
                     </table>
                 </div>
 
-                <h1>Edit order status</h1>
-                
-                <select class="form-control" v-model="selected_order_status" name="comment delete cause" > 
-                    <option value="Treatment" disabled>Treatment</option>
-                    <option value="Preparation for shipment">Preparation for shipment</option>
-                    <option value="Ready to ship">Ready to ship</option>
-                    <option value="Order has been sent">Order has been sent</option>
-                    <option value="Transferred to the delivery service">Transferred to the delivery service</option>
-                    <option value="Delivered">delivered</option>
-                </select> 
-            </span>
-            <span v-if="order_status_updating_loader">
-                <div class="justify-content-center">
-                    <div class="col-md-4">
-                        <img :src="'../../../public/images/site_img/loading.gif'" alt="loading">
-                    </div>
+            </pre>
+            <div slot="modal-footer">
+                <div class="modal-footer">
+                    <!-- // -->
                 </div>
-            </span>
-        </pre>
-        <div slot="modal-footer">
-            <div class="modal-footer">
-                <button
-                    type="button"
-                    :class="{'btn btn-primary': true}"
-                    @click="edit_order_status()"
-                >
-                Edit status
-                </button>
             </div>
-        </div>
-    </stack-modal>
+        </stack-modal>
 </template>
 
 <script>
@@ -71,7 +45,7 @@ export default {
     },
     data(){
         return {
-            is_order_status_edit_model: false
+            is_order_status_model: false
         }
     },
     mounted() {

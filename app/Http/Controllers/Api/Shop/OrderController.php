@@ -31,7 +31,7 @@ use App\Notifications\order\castam_prodaction\BuyerCastamProdactionNotification;
 
 class OrderController extends Controller
 {
-    public function index()
+    public function get_all_orders()
     {
         return Order::get();
     }
@@ -79,40 +79,35 @@ class OrderController extends Controller
         return 'Plees login';
     }
 
-    public function store(Request $request)
+    public function create_order(Request $request)
     {
-        // dd($request->shiping);
         if (Auth::user()) {
-            $new_order = new Order;
-            
-            $new_order['user_id'] = Auth::user()->id;
-            $new_order['confirm'] = null;
-            $new_order['adres_id'] = $request->adres;
-            $new_order['shiping'] = $request->shiping;
+            $data['user_id'] = Auth::user()->id;
+            $data['confirm'] = null;
+            $data['status'] = null;
+            $data['status_updating_data'] = null;
 
-            $new_order['payment'] = $request->payment_tupe;
-            $new_order -> save();
+            $saved = Order::insertGetId($data);
 
-            foreach ($request->order_product_list as $product) {
-                $new_order_product_item = new Order_products;
-                $new_order_product_item['order_id'] = $new_order->id;
-                $new_order_product_item['product_id'] = $product['product']['id'];
-                $new_order_product_item['product_option_id'] = $product['option']['id'];
-                $new_order_product_item['quantity'] = $product['quantity'];
-
-                $new_order_product_item -> save();
-
-                //subtraction number of products
-                (new static)->subtraction_products($product['option']['id'], $product['quantity']);
+            if(!$saved){
+                App::abort(500, 'Error');
             }
+            else{
+                foreach ($request->order_product_list as $product) {
+                    $new_order_product_item = new Order_products;
+                    $new_order_product_item['order_id'] = $new_order->id;
+                    $new_order_product_item['product_id'] = $product['product']['id'];
+                    $new_order_product_item['product_option_id'] = $product['option']['id'];
+                    $new_order_product_item['quantity'] = $product['quantity'];
 
-            (new static)->create_order_status($new_order->id);
+                    $new_order_product_item -> save();
 
-            //del cart items
+                    //subtraction number of products
+                    (new static)->subtraction_products($product['option']['id'], $product['quantity']);
+                }
+            }
             (new static)->del_cart_items(Auth::user()->id);
-            // dd($new_order->id);
-            // $order_id = ;
-            //send mail to orderd user
+
             (new static)->send_order_confirm_mail_to_user($new_order->id);
         }
         else{
@@ -214,12 +209,12 @@ class OrderController extends Controller
     public function get_order_detals(Request $request)
     {
         $order = Order::where("id", "=", $request->order_id)->first();
-        $order_status = Order_status::where("order_id", "=", $order->id)->first();
+        // $order_status = Order_status::where("order_id", "=", $order->id)->first();
         $order_products = (new static)->get_order_products($order->id);
 
         $order_detals = [
             'order' => $order,
-            'order_status' => $order_status,
+            // 'order_status' => $order_status,
             'order_products' => $order_products
         ];
 
@@ -250,37 +245,15 @@ class OrderController extends Controller
         return $status;
     }
 
-    public function create_order_status($order_id)
-    {
-        // dd($order_id);
-        $add_order_status = new Order_status;
-        
-        $add_order_status['order_id'] = $order_id;
-        $add_order_status['status'] = 'treatment';
-        $add_order_status['status_updating_data'] = date("Y-m-d H:I:s");
-        
-        $add_order_status->save();
-    }
-
     public function edit_order_status(Request $request)
     {
-        $editing_order_status = Order_status::where("order_id", "=", $request->order_id)->first();
-        
-        if ($editing_order_status) {
-            $editing_order_status['status'] = $request->status;
-            $editing_order_status['status_updating_data'] = date("Y-m-d H:I:s");
+        $editing_order_status = Order::where("id", "=", $request->order_id)->first();
+        $editing_order_status['status'] = $request->status;
+        $editing_order_status['status_updating_data'] = date("Y-m-d H:I:s");
+        $editing_order_status->update();
 
-            $editing_order_status->update();
-
-            $order = Order::where("id", "=", $editing_order_status->order_id)->first();
-
-            (new static)->order_status_notification($request->status, date("Y-m-d H:I:s"), $order->user_id, $editing_order_status->order_id);
-        }
-        else{
-            (new static)->create_order_status($request->order_id);
-        }
+        (new static)->order_status_notification($request->status, date("Y-m-d H:I:s"), $order->user_id, $editing_order_status->order_id);
     }
-
 
     public function order_status_notification($status, $data_time, $user_id, $order_id)
     {
@@ -298,14 +271,14 @@ class OrderController extends Controller
         return Order::where("id", "=", $request->order_id)->first();
     }
 
-    function randomString($length = 10) {
-        $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
-        $charactersLength = strlen($characters);
-        $randomString = '';
-        for ($i = 0; $i < $length; $i++) {
-            $randomString .= $characters[rand(0, $charactersLength - 1)];
-        }
-        return $randomString;
-    }
+    // function randomString($length = 10) {
+    //     $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+    //     $charactersLength = strlen($characters);
+    //     $randomString = '';
+    //     for ($i = 0; $i < $length; $i++) {
+    //         $randomString .= $characters[rand(0, $charactersLength - 1)];
+    //     }
+    //     return $randomString;
+    // }
 
 }

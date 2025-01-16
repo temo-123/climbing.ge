@@ -533,9 +533,27 @@ Route::group(['namespace'=>'Api'], function() {
             Route::post('/del_from_favorite/{product_id}', 'del_from_favorite');
         });
     
-        Route::controller(OrderController::class)->group( function() {
-            Route::apiResource('/order', 'OrderController');
+        // Route::controller(OrderController::class)->group( function() {
+        //     Route::apiResource('/order', 'OrderController');
             
+        //     Route::get('/order/get_order_status/{order_id}', 'get_order_status');
+        //     Route::get('/get_user_purchases', 'get_user_purchases');
+        //     Route::get('/get_user_orders', 'get_user_orders');
+        //     Route::get('/get_user_purchules', 'get_user_purchules');
+        //     Route::get('/get_activ_order/{order_id}', 'get_activ_order');
+        //     Route::post('/edit_order_status/{order_id}', 'edit_order_status');
+        //     Route::get('/get_order_detals/{order_id}', 'get_order_detals');
+        //     Route::get('/get_order_products/{order_id}', 'get_order_products');
+        //     Route::get('/is_order_confirm/{order_id}', 'is_order_confirm');
+        
+        //     Route::post('/order_is_confirm/{order_id}', 'order_is_confirm');
+        //     Route::post('/check_sale_code', 'check_sale_code');
+        //     Route::post('/order/castam_prodaction_message/{product_id}', 'castam_prodaction_message');
+        // });
+        Route::controller(OrderController::class)->prefix('order')->group( function() {
+            Route::get('/get_all_orders', 'get_all_orders');
+            Route::get('/create_order', 'create_order');
+
             Route::get('/order/get_order_status/{order_id}', 'get_order_status');
             Route::get('/get_user_purchases', 'get_user_purchases');
             Route::get('/get_user_orders', 'get_user_orders');

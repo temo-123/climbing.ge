@@ -56,20 +56,24 @@
                                         :to="{name: action_data.add_action.link,}"
                                         :class="action_data.add_action.class"
                                     >
-                                        Add New
+                                        <span v-if="action_data.add_action.btn_title">{{ action_data.add_action.btn_title }}</span>
+                                        <span v-else>Add New</span>
                                     </router-link>
                                     <a
                                         v-else-if="action_data.add_action.action == 'url' "
                                         :href="action_data.add_action.link"
                                         @click="$emit(action_data.add_action.link)"
-                                        >Add New</a
                                     >
+                                        <span v-if="action_data.add_action.btn_title">{{ action_data.add_action.btn_title }}</span>
+                                        <span v-else>Add New</span>
+                                    </a>
                                     <button
                                         v-else-if="action_data.add_action.action == 'fun' || action_data.add_action.action == 'function'"
                                         :class="action_data.add_action.class"
                                         @click="$emit(action_data.add_action.link)"
                                     >
-                                        Add New
+                                        <span v-if="action_data.add_action.btn_title">{{ action_data.add_action.btn_title }}</span>
+                                        <span v-else>Add New</span>
                                     </button>
                                 </div>
 

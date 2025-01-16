@@ -190,7 +190,7 @@
 
             get_products_cart: function() {
                 axios
-                .get("../../../../api/cart/")
+                .get("/cart/")
                 .then(response => {
                     this.cart_items = response.data
                     // this.order_product_list = this.cart_items
@@ -238,7 +238,7 @@
             },
             update_quantity(item_id, quantity){
                 axios
-                .post("../../../../api/cart/update_quantity/" + item_id, {
+                .post("/cart/update_quantity/" + item_id, {
                     quantity: quantity,
                 })
                 .then(response => {
@@ -251,7 +251,7 @@
             del_from_cart(item_id){
                 if(confirm('Are you sure, you want delite it?')){
                     axios
-                    .delete("../../../../api/cart/" + item_id)
+                    .delete("/cart/" + item_id)
                     .then(response => {
                         this.get_products_cart()
                     })
@@ -263,7 +263,7 @@
 
             get_activ_adres(adres_id){
                 axios
-                .get('../../../api/get_activ_adres/'+adres_id)
+                .get('/get_activ_adres/'+adres_id)
                 .then(Response => {
                     this.activ_adres = Response.data
                     this.get_activ_country(Response.data.country_id)
@@ -273,7 +273,7 @@
 
             get_activ_country(adres_id){
                 axios
-                .get('../../../api/get_activ_country/'+adres_id)
+                .get('/get_activ_country/'+adres_id)
                 .then(Response => {
                     this.shiping_country = Response.data
                     this.colculat_total_price()
@@ -284,7 +284,7 @@
             create_order(){
                 this.create_order_loading = true
                 axios
-                .post('../../../api/order/',{
+                .post('/order/create_order/',{
                     order_product_list: this.cart_items,
                     payment_tupe: this.$route.params.payment,
                     adres: this.$route.params.adres,
