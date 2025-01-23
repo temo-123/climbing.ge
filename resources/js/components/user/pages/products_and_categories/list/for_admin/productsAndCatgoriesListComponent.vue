@@ -1,5 +1,5 @@
 <template>
-<div class="row">
+    <div class="row">
         <!-- <div class="col-sm-3"> -->
             <left-menu />
         <!-- </div> -->
@@ -14,20 +14,56 @@
                     <tabsComponent 
                         :table_data="this.data_for_tab"
                         @update="get_products_data"
+
+                        @show_sale_code_add_modal="show_sale_code_add_modal"
+                        @show_sale_code_edit_modal="show_sale_code_edit_modal"
+                        @del_sale_code="del_sale_code"
+
+                        @show_product_brand_add_modal="show_product_brand_add_modal"
+                        @show_product_brand_edit_modal="show_product_brand_edit_modal"
+                        @del_product_brand="del_product_brand"
+
+                        @del_product_category="del_product_category"
+
+                        @show_user_change_modal="show_user_change_modal"
+                        @del_product="del_product"
                     />
                 </div>
             </div>
         </div>
+        <saleCodeAddModal ref="saleCodeAddModal" @update="get_products_data"/>
+        <saleCodeEditModal ref="saleCodeEditModal" @update="get_products_data"/>
+
+        <editProductBrandModal ref="editProductBrandModal" @update="get_products_data"/>
+        <addProductBrandModal ref="addProductBrandModal" @update="get_products_data"/>
+
+        <change_user_modal ref="userRelationModal" @update="get_products_data" />
     </div>
 </template>
 
 <script>
     import tabsComponent  from '../../../../items/data_table/TabsComponent.vue'
     import breadcrumb from '../../../../items/BreadcrumbComponent.vue'
+
+    import saleCodeEditModal from "../../../../items/modal/tab_modals/edit/EditSaleCodeModalComponen.vue";
+    import saleCodeAddModal from "../../../../items/modal/tab_modals/add/AddSaleCodeModalComponen.vue";
+    
+    import editProductBrandModal from "../../../../items/modal/tab_modals/edit/EditProductBrandModal.vue";
+    import addProductBrandModal from "../../../../items/modal/tab_modals/add/AddProductBrandModal.vue";
+
+    import change_user_modal from '../../../../items/modal/tab_modals/ChangeUserModalComponent.vue'
     export default {
         components: {
             tabsComponent ,
-            breadcrumb
+            breadcrumb,
+
+            saleCodeEditModal,
+            saleCodeAddModal,
+
+            editProductBrandModal,
+            addProductBrandModal,
+
+            change_user_modal,
         },
         
         data() {
@@ -62,27 +98,34 @@
                                                         'ID',
                                                         'Title',
                                                         'Public',
-                                                        'Sale type',
-                                                        'User',
                                                         'Options',
+                                                        'User',
+                                                        'Edit user',
+                                                        'Edit Options',
                                                         'Edit',
                                                         'Delite',
                                                     ],
                                                     'body': [
-                                                        ['data', ['id']],
-                                                        ['data', ['url_title']],
-                                                        ['data', ['Published']],
-                                                        ['data', ['sale_type']],
-                                                        ['data', ['sale_type']],
-                                                        ['data_action_id', ['title'], 'show_local_image_modal'],
-                                                        ['action_router', 'productEdit', 'btn btn-primary', '<i aria-hidden="true" class="fa fa-pencil"></i>'],
-                                                        ['action_fun_id', 'del_sector_local_images', 'btn btn-danger', '<i aria-hidden="true" class="fa fa-trash"></i>'],
+                                                        ['data', ['product', 'id']],
+                                                        ['data', ['product', 'url_title']],
+                                                        ['data', ['product', 'published'], 'bool'],
+                                                        ['data', ['options']],
+                                                        ['data', [['user', 'name'], ['user', 'surname']]],
+                                                        ['action_fun_id', 'show_user_change_modal', 'btn btn-secondary', '<i class="fa fa-user-plus" aria-hidden="true"></i>', [['user', 'id'], ['product', 'id']]],
+                                                        ['action_router', 'productOptionsControl', 'btn btn-success', '<i class="fa fa-list" aria-hidden="true"></i>', ['product', 'id']],
+                                                        ['action_router', 'productEdit', 'btn btn-primary', '<i aria-hidden="true" class="fa fa-pencil"></i>', ['product', 'id']],
+                                                        ['action_fun_id', 'del_product', 'btn btn-danger', '<i aria-hidden="true" class="fa fa-trash"></i>',['product', 'id']],
                                                     ],
                                                     'perm': [
                                                         ['no'],
                                                         ['no'],
-                                                        ['sector_local_images', 'edit'],
-                                                        ['sector_local_images', 'del'],
+                                                        ['no'],
+                                                        ['no'],
+                                                        ['no'],
+                                                        ['product', 'edit'],
+                                                        ['no'],
+                                                        ['product', 'edit'],
+                                                        ['product', 'del'],
                                                     ]
                                                 }
                                             },
@@ -100,7 +143,7 @@
                 .then(response => {
                     this.data_for_tab.push({
                                             'id': 2,
-                                            'table_name': 'Categories', 
+                                            'table_name': 'Product Categories', 
                                             'add_action': {
                                                 'action': 'route',
                                                 'link': 'productCategoryAdd', 
@@ -117,9 +160,9 @@
                                                     ],
                                                     'body': [
                                                         ['data', ['id']],
-                                                        ['data_action_id', ['title'], 'show_local_image_modal'],
+                                                        ['data', ['us_name']],
                                                         ['action_router', 'productCategoryEdit', 'btn btn-primary', '<i aria-hidden="true" class="fa fa-pencil"></i>'],
-                                                        ['action_fun_id', 'del_sector_local_images', 'btn btn-danger', '<i aria-hidden="true" class="fa fa-trash"></i>'],
+                                                        ['action_fun_id', 'del_product_category', 'btn btn-danger', '<i aria-hidden="true" class="fa fa-trash"></i>'],
                                                     ],
                                                     'perm': [
                                                         ['no'],
@@ -145,8 +188,8 @@
                                             'id': 3,
                                             'table_name': 'Brands', 
                                             'add_action': {
-                                                'action': 'route',
-                                                'link': 'productAdd', 
+                                                'action': 'fun',
+                                                'link': 'show_product_brand_add_modal', 
                                                 'class': 'btn btn-primary'
                                             },
                                             'tab_data': {
@@ -155,21 +198,20 @@
                                                     'head': [
                                                         'ID',
                                                         'Name',
-                                                        'Discout',
                                                         'Edit',
                                                         'Delite',
                                                     ],
                                                     'body': [
-                                                        ['data', ['id']],
-                                                        ['data_action_id', ['title'], 'show_local_image_modal'],
-                                                        ['action_router', 'sectorLocalImagesListEdit', 'btn btn-primary', '<i aria-hidden="true" class="fa fa-pencil"></i>'],
-                                                        ['action_fun_id', 'del_sector_local_images', 'btn btn-danger', '<i aria-hidden="true" class="fa fa-trash"></i>'],
+                                                        ['data', ['global_brand', 'id']],
+                                                        ['data', ['us_brand', 'title']],
+                                                        ['action_fun_id', 'show_product_brand_edit_modal', 'btn btn-primary', '<i aria-hidden="true" class="fa fa-pencil"></i>', ['global_brand', 'id']],
+                                                        ['action_fun_id', 'del_product_brand', 'btn btn-danger', '<i aria-hidden="true" class="fa fa-trash"></i>', ['global_brand', 'id']],
                                                     ],
                                                     'perm': [
                                                         ['no'],
                                                         ['no'],
-                                                        ['sector_local_images', 'edit'],
-                                                        ['sector_local_images', 'del'],
+                                                        ['product_brand', 'edit'],
+                                                        ['product_brand', 'del'],
                                                     ]
                                                 }
                                             },
@@ -190,7 +232,7 @@
                                             'table_name': 'Sale codes', 
                                             'add_action': {
                                                 'action': 'fun',
-                                                'link': 'open_sale_code_add_modal', 
+                                                'link': 'show_sale_code_add_modal', 
                                                 'class': 'btn btn-primary'
                                             },
                                             'tab_data': {
@@ -198,21 +240,30 @@
                                                 'tab': {
                                                     'head': [
                                                         'ID',
-                                                        'Name',
+                                                        'Code',
+                                                        'Discount',
+                                                        'one_time_code',
+                                                        'action_data',
                                                         'Edit',
                                                         'Delite',
                                                     ],
                                                     'body': [
                                                         ['data', ['id']],
-                                                        ['data_action_id', ['title'], 'show_local_image_modal'],
-                                                        ['action_router', 'sectorLocalImagesListEdit', 'btn btn-primary', '<i aria-hidden="true" class="fa fa-pencil"></i>'],
-                                                        ['action_fun_id', 'del_sector_local_images', 'btn btn-danger', '<i aria-hidden="true" class="fa fa-trash"></i>'],
+                                                        ['data', ['code']],
+                                                        ['data', ['discount']],
+                                                        ['data', ['one_time_code']],
+                                                        ['data', ['action_data']],
+                                                        ['action_fun_id', 'show_sale_code_edit_modal', 'btn btn-primary', '<i aria-hidden="true" class="fa fa-pencil"></i>'],
+                                                        ['action_fun_id', 'del_sale_code', 'btn btn-danger', '<i aria-hidden="true" class="fa fa-trash"></i>'],
                                                     ],
                                                     'perm': [
                                                         ['no'],
                                                         ['no'],
-                                                        ['sector_local_images', 'edit'],
-                                                        ['sector_local_images', 'del'],
+                                                        ['no'],
+                                                        ['no'],
+                                                        ['no'],
+                                                        ['sale_code', 'edit'],
+                                                        ['sale_code', 'del'],
                                                     ]
                                                 }
                                             },
@@ -224,23 +275,75 @@
 
             },
 
-            product_del(itemId) {
-                axios
-                .post('/products/del/' + itemId, {
-                    id: itemId,
-                })
-                .then(Response => {
-                    console.log(response)
-                    this.get_data_in_table_1()
-                })
-                .catch(error => console.log(error))
+            del_sale_code(id){
+                if(confirm('Are you sure, you want delite it?')){
+                    axios
+                    .post('/sale_code/'+id, {
+                        _method: 'DELETE'
+                    })
+                    .then(Response => {
+                        this.get_products_data()
+                    })
+                    .catch(error => console.log(error))
+                }
+            },
+            show_sale_code_add_modal(){
+                this.$refs.saleCodeAddModal.show_modal()
+            },
+            show_sale_code_edit_modal(id){
+                this.$refs.saleCodeEditModal.show_modal(id)
             },
 
-            callback(id){
-                if(id == 1){
-                    this.get_articles()
+            del_product_brand(id){
+                if(confirm('Are you sure, you want delite it?')){
+                    axios
+                    .post('/brand/del_brand/'+id, {
+                        _method: 'DELETE'
+                    })
+                    .then(Response => {
+                        this.get_products_data()
+                    })
+                    .catch(error => console.log(error))
                 }
-            }
+            },
+            show_product_brand_edit_modal(id){
+                this.$refs.editProductBrandModal.show_modal(id)
+            },
+            show_product_brand_add_modal(){
+                this.$refs.addProductBrandModal.show_modal()
+            },
+
+
+            del_product_category(id){
+                if(confirm('Are you sure, you want delite it?')){
+                    axios
+                    .post('/product_category/'+id, {
+                        _method: 'DELETE'
+                    })
+                    .then(Response => {
+                        this.get_products_data()
+                    })
+                    .catch(error => console.log(error))
+                }
+            },
+
+
+            del_product(id){
+                if(confirm('Are you sure, you want delite it?')){
+                    axios
+                    .post('/product/del_product/'+id, {
+                        _method: 'DELETE'
+                    })
+                    .then(Response => {
+                        this.get_products_data()
+                    })
+                    .catch(error => console.log(error))
+                }
+            },
+            show_user_change_modal(event){
+                console.log("🚀 ~ show_user_change_modal ~ event:", event)
+                this.$refs.userRelationModal.show_modal(event)
+            },
         }
     }
 </script>

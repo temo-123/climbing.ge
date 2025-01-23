@@ -8,13 +8,12 @@
             :cancelButton="{ visible: false, title: 'Close', btnClass: { 'btn btn-danger': true } }"
         >
         <pre class="language-vue">
-            <!-- {{ active_user_prop[0] }} -->
-            <div v-if='active_user_prop.length > []'>
+            <div v-if='actyve_user != []'>
                 <div class="alert alert-warning" role="alert">
-                    Actyve user - {{ active_user_prop[0].name }} {{ active_user_prop[0].surname }} (#{{ active_user_prop[0].id }})
+                    Actyve user - {{ actyve_user.name }} {{ actyve_user.surname }} (#{{ actyve_user.id }})
                 </div>
             </div>
-            <div v-if='active_user_prop.length == []'>
+            <div v-if='actyve_user.length == []'>
                 <div class="alert alert-danger" role="alert">
                     This product don`t have user relation
                 </div>
@@ -47,26 +46,25 @@
             StackModal,
         },
         props: [
-            'active_user_prop',
+            // 'actyve_user',
         ],
         data(){
             return {
                 selected_user_id: '',
                 users: [],
+                actyve_user: '',
                 modalClass: '',
                 is_modal_show: false,
+                actyve_product_id: 0
             }
         },
         mounted() {
             // 
         },
         methods: {
-            update_relation(){
-                this.$emit('update_relation', this.selected_user_id)
-            },
             grt_all_users(){
                 axios
-                .get("/users/")
+                .get("/user/get_all_users/")
                 .then(response => {
                     this.users = response.data
                 })
@@ -74,16 +72,59 @@
                     error => console.log(error)
                 );
             },
-            show_modal() {
+            get_user_actyve_data(user_id){
+                axios
+                .get("/user/get_user_data/" + user_id)
+                .then(response => {
+                    this.actyve_user = response.data
+                })
+                .catch(
+                    error => console.log(error)
+                );
+            },
+            show_modal(event) {
                 this.grt_all_users() 
-                if(this.active_user_prop.length != 0){
-                    this.selected_user_id = this.active_user_prop[0].id
+                if(event[0] != 0){
+                    this.get_user_actyve_data(event[0])
+                    this.selected_user_id = event[0]
+                    this.actyve_product_id = event[1]
+
+                    this.is_modal_show = true
                 }
-                this.is_modal_show = true
             },
             close_modal() {
-                this.selected_user_id = '',
+                this.selected_user_id = 0,
                 this.is_modal_show = false
+            },
+
+            update_relation(){
+                if(confirm('Are you sure, you want change user?')){
+                    let data
+                    if(this.actyve_user.length != 0){
+                        data = {
+                            "product_id": this.actyve_product_id,
+                            "new_user_id": this.selected_user_id,
+                            "old_user_id": this.actyve_user.id
+                        }
+                    }
+                    else{
+                        data = {
+                            "product_id": this.actyve_product_id,
+                            "new_user_id": this.selected_user_id,
+                            "old_user_id": []
+                        }
+                    }
+                    
+                    axios
+                    .post('/product/change_user_relation/',{
+                        data: data
+                    })
+                    .then(Response => {
+                        this.$emit('update')
+                        this.close_modal()
+                    })
+                    .catch(error => console.log(error))
+                }
             },
         }
     }

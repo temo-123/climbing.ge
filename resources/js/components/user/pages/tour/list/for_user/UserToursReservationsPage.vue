@@ -66,7 +66,7 @@
                                                         ['data', ['check_in']],
                                                         ['data', ['name'], ['surname']],
                                                         ['data', ['email']],
-                                                        ['data', ['verificate']],
+                                                        ['data', ['verificate'], 'bool'],
                                                     ],
                                                     'perm': [
                                                         ['no'],

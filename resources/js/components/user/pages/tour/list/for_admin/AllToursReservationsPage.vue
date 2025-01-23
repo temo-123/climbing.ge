@@ -70,7 +70,7 @@
                                                         ['data', ['check_in']],
                                                         ['data', ['name'], ['surname']],
                                                         ['data', ['email']],
-                                                        ['data', ['verificate']],
+                                                        ['data', ['verificate'], 'bool'],
                                                         ['action_fun_id', 'del_tour_reservation', 'btn btn-danger', '<i aria-hidden="true" class="fa fa-trash"></i>'],
                                                     ],
                                                     'perm': [

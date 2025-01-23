@@ -99,7 +99,7 @@ export default {
                                     ],
                                     [
                                         "data",
-                                        ["comment", "published"]
+                                        ["comment", "published"], 'bool'
                                     ],
                                     [
                                         "data_action",
@@ -203,7 +203,7 @@ export default {
                                 ],
                                 body: [
                                     ["data", ["feedback", "id"]],
-                                    ["data_action", ["feedback", "published"]],
+                                    ["data_action", ["feedback", "published"], 'bool'],
                                     ["data", ["locale_product", "title"]],
                                     ["stars", ["feedback", "stars"]],
                                     [

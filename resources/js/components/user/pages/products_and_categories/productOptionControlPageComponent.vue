@@ -313,7 +313,7 @@
         methods: {
             get_activ_product_options(){
                 axios
-                .get('../../api/product_option/get_activ_product_options/'+this.$route.params.product_id)
+                .get('/product_option/get_activ_product_options/'+this.$route.params.id)
                 .then((response)=> { 
                     this.product_options = response.data.options
                     this.product = response.data.product
@@ -343,7 +343,7 @@
                 this.is_loading_editing_modal = true
 
                 axios
-                .get("../../../api/product_option/get_editing_option/"+option_id)
+                .get("/product_option/get_editing_option/"+option_id)
                 .then(response => {
                     this.is_edit_option_modal = true
 
@@ -383,7 +383,7 @@
                 formData.append('data', JSON.stringify(this.editing_data))
                 
                 axios
-                .post("../../../api/product_option/edit_option/"+this.editing_option_id, 
+                .post("/product_option/edit_option/"+this.editing_option_id, 
                     formData
                 )
                 .then(response => {
@@ -432,7 +432,7 @@
             del_option(category_id){
                 if(confirm('Are you sure, you want delite this option?')){
                     axios
-                    .delete("../../../api/product_option/del_option/"+category_id)
+                    .delete("/product_option/del_option/"+category_id)
                     .then(response => {
                         this.get_activ_product_options()
                     })
@@ -444,7 +444,7 @@
             del_option_image_from_db(image_id){
                 if(confirm('Are you sure, you want delite this image?')){
                     axios
-                    .delete("../../../api/product_option/del_option_image/"+image_id)
+                    .delete("/product_option/del_option_image/"+image_id)
                     .then(response => {
                         this.get_editing_option(this.editing_option_id)
                     })
@@ -466,10 +466,10 @@
                 loop_num = 0
 
                 formData.append('data', JSON.stringify(this.adding_data))
-                formData.append('product_id', this.$route.params.product_id)
+                formData.append('product_id', this.$route.params.id)
                 
                 axios
-                .post("../../../api/product_option/add_option/", 
+                .post("/product_option/add_option/", 
                     formData
                 )
                 .then(response => {

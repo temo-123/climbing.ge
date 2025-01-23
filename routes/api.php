@@ -533,26 +533,9 @@ Route::group(['namespace'=>'Api'], function() {
             Route::post('/del_from_favorite/{product_id}', 'del_from_favorite');
         });
     
-        // Route::controller(OrderController::class)->group( function() {
-        //     Route::apiResource('/order', 'OrderController');
-            
-        //     Route::get('/order/get_order_status/{order_id}', 'get_order_status');
-        //     Route::get('/get_user_purchases', 'get_user_purchases');
-        //     Route::get('/get_user_orders', 'get_user_orders');
-        //     Route::get('/get_user_purchules', 'get_user_purchules');
-        //     Route::get('/get_activ_order/{order_id}', 'get_activ_order');
-        //     Route::post('/edit_order_status/{order_id}', 'edit_order_status');
-        //     Route::get('/get_order_detals/{order_id}', 'get_order_detals');
-        //     Route::get('/get_order_products/{order_id}', 'get_order_products');
-        //     Route::get('/is_order_confirm/{order_id}', 'is_order_confirm');
-        
-        //     Route::post('/order_is_confirm/{order_id}', 'order_is_confirm');
-        //     Route::post('/check_sale_code', 'check_sale_code');
-        //     Route::post('/order/castam_prodaction_message/{product_id}', 'castam_prodaction_message');
-        // });
         Route::controller(OrderController::class)->prefix('order')->group( function() {
             Route::get('/get_all_orders', 'get_all_orders');
-            Route::get('/create_order', 'create_order');
+            Route::post('/create_order', 'create_order');
 
             Route::get('/order/get_order_status/{order_id}', 'get_order_status');
             Route::get('/get_user_purchases', 'get_user_purchases');
@@ -665,9 +648,14 @@ Route::group(['namespace'=>'Api'], function() {
         /*
         *   Users routes
         */
+        Route::apiResource('/user_site', 'UserSiteController');
+
         Route::controller(UsersController::class)->prefix('user')->group( function() {
             Route::post('/update_password', 'update_password');
             Route::get('/get_auth_user_permissions', 'get_auth_user_permissions');
+            Route::get('/get_auth_user_data', 'get_auth_user_data');
+            Route::get('/get_user_data/{user_id}', 'get_user_data');
+            Route::get('/get_all_users', 'get_all_users');
 
             Route::get('/get_worker_users', 'get_worker_users');
 
@@ -675,29 +663,24 @@ Route::group(['namespace'=>'Api'], function() {
 
             Route::delete('/del_user/{user_id}', 'del_user');
 
+            Route::get('/post_user/{user_id}', 'get_post_user');
+            Route::post('/user_image_update/{user_id}', 'user_image_update');
+
             Route::controller(UserNotificationsController::class)->prefix('notifications')->group( function() {
-                // Route::post('/send_article_adding_notification', 'send_article_adding_notification');
-                // Route::post('/send_event_adding_notification', 'send_event_adding_notification');
-                // Route::post('/send_product_adding_notification', 'send_product_adding_notification');
-                // Route::post('/send_sector_adding_notification', 'send_sector_adding_notification');
-                // Route::post('/send_service_adding_notification', 'send_service_adding_notification');
-                
-                // Route::post('/event_reminder/{action}', 'event_reminder');
                 Route::post('/send_user_favorites_notification/{action}', 'send_user_favorites_notification');
             });
         });
         
         /*
-        *   Users routes
+        *   Users option routes
         */
-        Route::apiResource('/user_site', 'UserSiteController');
-        Route::apiResource('/users', 'UsersController');
-        Route::get('/post_user/{user_id}', 'UsersController@get_post_user');
-        Route::post('user_image_update/{user_id}', 'UsersController@user_image_update');
+        // Route::apiResource('/users', 'UsersController');
+        // Route::get('/post_user/{user_id}', 'UsersController@get_post_user');
+        // Route::post('user_image_update/{user_id}', 'UsersController@user_image_update');
         
         
-        Route::controller(UsersController::class)->prefix('options')->group( function() {
-            Route::get('/get_user_data', 'get_user_data');
+        Route::controller(UserOptionsController::class)->prefix('options')->group( function() {
+            // Route::get('/get_user_data', 'get_user_data');
             Route::get('/get_selected_user_data/{user_id}', 'get_selected_user_data');
             Route::post('/user_info_update/{user_id}', 'user_info_update');
 

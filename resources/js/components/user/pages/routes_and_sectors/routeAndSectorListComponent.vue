@@ -124,7 +124,7 @@
                                                     'body': [
                                                         ['data', ['id']],
                                                         ['data_action_id', ['name'], 'sector_modal'],
-                                                        ['data', ['published']],
+                                                        ['data', ['published'], 'bool'],
                                                         ['action_fun_id', 'sector_modal', 'btn btn-success', '<i aria-hidden="true" class="fa fa-list-ol"></i>'],
                                                         ['action_router', 'sectorEdit', 'btn btn-primary', '<i aria-hidden="true" class="fa fa-pencil"></i>'],
                                                         ['action_fun_id', 'del_sector', 'btn btn-danger', '<i aria-hidden="true" class="fa fa-trash"></i>'],

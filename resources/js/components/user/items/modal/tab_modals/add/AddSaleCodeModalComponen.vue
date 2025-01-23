@@ -21,7 +21,7 @@
 
                 <input type="number" max="100" min="1" class="form-control" v-model="data.discount" name="discount" placeholder="Discount" title="Discount" required> %
                 <input type="checkbox" id="scales" v-model="data.one_time_code" name="scales" placeholder="One time code" title="One time code"> One time cde
-                <input type="datetime-local" class="form-control" v-model="data.action_data" name="action_data" placeholder="Action_data" title="Action_data" v-if="!data.one_time_code" required>
+                <input type="datetime-local" class="form-control" v-model="data.action_data" name="action_data" placeholder="Action_data" title="Action_data" v-if="!data.one_time_code">
             </form>
         </pre>
         <div slot="modal-footer">
@@ -90,14 +90,11 @@
                     })
                     .then(Response => {
                         alert('Code added socsesfuly')
-                        this.$emit('restart')
+                        this.$emit('update')
                         this.is_order_sale_code_add_model = false
                         this.clear_form()
                     })
                     .catch(error => console.log(error))
-            },
-            add_sale_code_model_open(){
-                this.is_order_sale_code_add_model = true
             },
             clear_form(){
                 this.data = {
@@ -106,6 +103,9 @@
                     one_time_code: null,
                     action_data: ''
                 }
+            },
+            show_modal(){
+                this.is_order_sale_code_add_model = true
             },
             close_modal(){
                 if(confirm('Are you sure, you want close form? All data whil deleted!')){

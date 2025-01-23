@@ -167,7 +167,7 @@
                                                         'body': [
                                                             ['data', ['id']],
                                                             ['data', ['name']],
-                                                            ['data', ['published']],
+                                                            ['data', ['published'], 'bool'],
                                                             ['action_router', 'iceSectorEdit', 'btn btn-primary', '<i aria-hidden="true" class="fa fa-pencil"></i>'],
                                                             ['action_fun_id', 'del_ice_sector', 'btn btn-danger', '<i aria-hidden="true" class="fa fa-trash"></i>'],
                                                         ],
@@ -264,7 +264,7 @@
                                                     'body': [
                                                         ['data', ['id']],
                                                         ['data_action_id', ['url_title'], 'quick_wiev_action'],
-                                                        ['data', ['published']],
+                                                        ['data', ['published'], 'bool'],
                                                         ['action_router', 'articleEdit', 'btn btn-primary', '<i aria-hidden="true" class="fa fa-pencil"></i>'],
                                                         ['action_fun_id', 'del_article', 'btn btn-danger', '<i aria-hidden="true" class="fa fa-trash"></i>'],
                                                     ],
@@ -318,7 +318,7 @@
                                                     'body': [
                                                         ['data', ['id']],
                                                         ['data_action_id', ['url_title'], 'quick_wiev_action'],
-                                                        ['data', ['published']],
+                                                        ['data', ['published'], 'bool'],
                                                         ['action_router', 'articleEdit', 'btn btn-primary', '<i aria-hidden="true" class="fa fa-pencil"></i>'],
                                                         ['action_fun_id', 'del_article', 'btn btn-danger', '<i aria-hidden="true" class="fa fa-trash"></i>'],
                                                     ],

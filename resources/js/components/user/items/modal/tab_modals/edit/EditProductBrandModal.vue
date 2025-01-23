@@ -68,7 +68,7 @@
 <script>
     import StackModal from '@innologica/vue-stackable-modal'  //https://innologica.github.io/vue-stackable-modal/#sample-css
 
-    import validator_alerts_component from '../../../../../items/validator_alerts_component.vue'
+    import validator_alerts_component from '../../../validator_alerts_component.vue'
     export default {
         components: {
             StackModal,
@@ -113,7 +113,7 @@
                 }
                 
             },
-            open_modal(id){
+            show_modal(id){
                 this.get_editing_brand_data(id)
 
                 this.actyve_id = id
@@ -177,7 +177,7 @@
                 )
             },
             update(){
-                this.$emit('restart')
+                this.$emit('update')
             }
         }
     }

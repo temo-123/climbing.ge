@@ -60,20 +60,23 @@
                                                     'head': [
                                                         'ID',
                                                         'Name',
+                                                        'Public',
                                                         'Edit',
                                                         'Delite',
                                                     ],
                                                     'body': [
                                                         ['data', ['id']],
-                                                        ['data_action_id', ['title'], 'show_local_image_modal'],
-                                                        ['action_router', 'sectorLocalImagesListEdit', 'btn btn-primary', '<i aria-hidden="true" class="fa fa-pencil"></i>'],
-                                                        ['action_fun_id', 'del_sector_local_images', 'btn btn-danger', '<i aria-hidden="true" class="fa fa-trash"></i>'],
+                                                        ['data', ['url_title']],
+                                                        ['data', ['published'], 'bool'],
+                                                        ['action_router', 'tourEdit', 'btn btn-primary', '<i aria-hidden="true" class="fa fa-pencil"></i>'],
+                                                        ['action_fun_id', 'del_tour', 'btn btn-danger', '<i aria-hidden="true" class="fa fa-trash"></i>'],
                                                     ],
                                                     'perm': [
                                                         ['no'],
                                                         ['no'],
-                                                        ['sector_local_images', 'edit'],
-                                                        ['sector_local_images', 'del'],
+                                                        ['no'],
+                                                        ['tour', 'edit'],
+                                                        ['tour', 'del'],
                                                     ]
                                                 }
                                             },

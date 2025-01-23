@@ -123,7 +123,7 @@ const router = new VueRouter({
         { path: '/product/add', name: 'productAdd', component: load('products_and_categories/products/productAddComponent') },
 
         { path: '/product_brands', name: 'product_brands', component: load('products_and_categories/brands/product_brands') },
-        { path: '/product_option_control/product_id/:product_id', name: 'productOptionsControl', component: load('products_and_categories/productOptionControlPageComponent') },
+        { path: '/product_option_control/:id', name: 'productOptionsControl', component: load('products_and_categories/productOptionControlPageComponent') }, // :id => :product_id
 
         { path: '/productCategory/edit/:id', name: 'productCategoryEdit', component: load('products_and_categories/categories/productCategoryEditComponent'), },
         { path: '/productCategory/add/', name: 'productCategoryAdd', component: load('products_and_categories/categories/productCategoryAddComponent') },

@@ -68,7 +68,7 @@
 <script>
     import StackModal from '@innologica/vue-stackable-modal'  //https://innologica.github.io/vue-stackable-modal/#sample-css
 
-    import validator_alerts_component from '../../../../../items/validator_alerts_component.vue'
+    import validator_alerts_component from '../../../validator_alerts_component.vue'
     export default {
         components: {
             StackModal,
@@ -112,7 +112,7 @@
                 }
                 
             },
-            open_modal(){
+            show_modal(){
                 this.clear_form_data()
 
                 this.is_show_add_modal = true
@@ -153,7 +153,7 @@
                 )
             },
             update(){
-                this.$emit('restart')
+                this.$emit('update')
             }
         }
     }

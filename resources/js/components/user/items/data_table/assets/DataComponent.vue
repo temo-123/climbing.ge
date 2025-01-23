@@ -19,7 +19,17 @@
             "
         >
             <!-- ['data', ['item', key]] -->
-            {{ data_prop[data_item_prop[1][0]][data_item_prop[1][1]] }}
+            <span v-if="typeof data_prop[data_item_prop[1][0]][data_item_prop[1][1]] == 'boolean' || data_item_prop[2] == 'bool'">
+                <span v-if="!data_prop[data_item_prop[1][0]][data_item_prop[1][1]]">
+                    <i class="fa fa-times fa_times_color" aria-hidden="true"></i>
+                </span>
+                <span v-else>
+                    <i class="fa fa-check fa_check_color" aria-hidden="true" ></i>
+                </span>
+            </span>
+            <span v-else>
+                {{ data_prop[data_item_prop[1][0]][data_item_prop[1][1]] }}
+            </span>
         </span>
         <span
             v-else-if="
@@ -33,7 +43,17 @@
         </span>
         <span v-else>
             <!-- ['data', ['item']] -->
-            {{ data_prop[data_item_prop[1][0]] }}
+            <span v-if="typeof data_prop[data_item_prop[1][0]] == 'boolean' || data_item_prop[2] == 'bool'">
+                <span v-if="!data_prop[data_item_prop[1][0]]">
+                    <i class="fa fa-times fa_times_color" aria-hidden="true"></i>
+                </span>
+                <span v-else>
+                    <i class="fa fa-check fa_check_color" aria-hidden="true"></i>
+                </span>
+            </span>
+            <span v-else>
+                {{ data_prop[data_item_prop[1][0]] }}
+            </span>
         </span>
     </span>
 </template>
@@ -77,5 +97,13 @@ export default {
 .cms_filters {
     background-color: #c1c1c1;
     margin-bottom: 2%;
+}
+.fa_check_color{
+    color: green;
+    font-size: 250%;
+}
+.fa_times_color{
+    color: red;
+    font-size: 250%;
 }
 </style>

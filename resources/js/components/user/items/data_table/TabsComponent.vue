@@ -114,7 +114,11 @@
                         </div>
 
                         <div class="row">
-                            <PaginationComponent :pagination_data_prop="[]"/>
+                            <PaginationComponent 
+                                @next_page_pagination = next_page_pagination
+                                @privies_page_pagination = privies_page_pagination
+                                @nomber_page_pagination = nomber_page_pagination
+                            />
                         </div>
                     </div>
                 </div>
@@ -139,10 +143,17 @@
                     </div>
                 </div>
 
-
-                <div class="row">
-                    <PaginationComponent />
-                </div>
+                <!-- <div class="row"> -->
+                    <div class="col-md-12 data_tab">
+                        <div class="row">
+                            <PaginationComponent 
+                                @next_page_pagination = next_page_pagination
+                                @privies_page_pagination = privies_page_pagination
+                                @nomber_page_pagination = nomber_page_pagination
+                            />
+                        </div>
+                    </div>
+                <!-- </div> -->
             </div>
         </div>
     </div>
@@ -192,6 +203,16 @@ export default {
         },
         action_for_perent_component(event){
             this.$emit(event[0])
+        },
+
+        next_page_pagination(){
+            alert('next_page')
+        },
+        privies_page_pagination(){
+            alert('provies_page')
+        },
+        nomber_page_pagination(page_id){
+            alert(page_id + '_page')
         }
     },
 };

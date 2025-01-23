@@ -95,7 +95,7 @@
                                                     'body': [
                                                         ['data', ['id']],
                                                         ['data', ['url_title']],
-                                                        ['data', ['published']],
+                                                        ['data', ['published'], 'bool'],
                                                         ['action_fun_id', 'show_user_change_modal', 'btn btn-primary', '<i class="fa fa-user" aria-hidden="true"></i>'],
                                                         ['action_router', 'tourEdit', 'btn btn-primary', '<i aria-hidden="true" class="fa fa-pencil"></i>'],
                                                         ['action_fun_id', 'del_tour', 'btn btn-danger', '<i aria-hidden="true" class="fa fa-trash"></i>'],

@@ -63,14 +63,14 @@
                                                     'head': [
                                                         'ID',
                                                         'Name',
-                                                        'Published',
+                                                        'Public',
                                                         'Edit',
                                                         'Delite',
                                                     ],
                                                     'body': [
                                                         ['data', ['id']],
                                                         ['data', ['url_title']],
-                                                        ['data', ['published']],
+                                                        ['data', ['published'], 'bool'],
                                                         ['action_router', 'serviceEdit', 'btn btn-primary', '<i aria-hidden="true" class="fa fa-pencil"></i>'],
                                                         ['action_fun_id', 'del_service', 'btn btn-danger', '<i aria-hidden="true" class="fa fa-trash"></i>'],
                                                     ],

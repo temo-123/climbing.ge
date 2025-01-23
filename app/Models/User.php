@@ -190,7 +190,7 @@ class User extends Authenticatable implements MustVerifyEmail
     */
     public function purchases()
     {
-        return $this->hasMany(Order::class, 'user_id', 'product_id');
+        return $this->hasMany(Order::class, 'user_id');
     }
     public function orders()
     {
@@ -198,7 +198,7 @@ class User extends Authenticatable implements MustVerifyEmail
     }
     public function products()
     {
-        return $this->belongsToMany(Product::class, 'user_products', 'user_id', 'product_id');
+        return $this->belongsToMany(Product::class, 'user_products', 'user_id', 'product_id')->latest('id');
     }
 
 

@@ -9,6 +9,8 @@ use Auth;
 use Notification;
 
 use App\Models\User;
+use App\Models\Site;
+
 use App\Models\User\User_adreses;
 use App\Models\Shop\Order;
 use App\Models\Shop\Order_products;
@@ -17,7 +19,6 @@ use App\Models\Shop\Order_status;
 use App\Models\Shop\Product_option;
 use App\Models\Shop\Product;
 use App\Models\Shop\Cart;
-use App\Models\Shop\Site;
 use App\Models\Shop\Sale_code;
 
 use App\Services\ProductService;
@@ -82,12 +83,19 @@ class OrderController extends Controller
     public function create_order(Request $request)
     {
         if (Auth::user()) {
-            $data['user_id'] = Auth::user()->id;
+            $new_order = new Order;
+            
+            $new_order['user_id'] = Auth::user()->id;
+            $new_order['adres_id'] = $request->adres;
+            $new_order['shiping'] = $request->shiping;
+
+            $new_order['payment'] = $request->payment_tupe;
+
             $data['confirm'] = null;
             $data['status'] = null;
             $data['status_updating_data'] = null;
 
-            $saved = Order::insertGetId($data);
+            $saved = $new_order -> save();
 
             if(!$saved){
                 App::abort(500, 'Error');
@@ -225,6 +233,8 @@ class OrderController extends Controller
     {
         $order = Order::where("id", "=", $request->order_id)->first();
         $order['confirm'] = 1;
+        $order['status'] = 'treatment';
+        $order['status_updating_data'] = date("Y-m-d H:I:s");
         $order->update();
 
         //send mail to admin
