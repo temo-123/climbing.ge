@@ -52,7 +52,32 @@ export default {
         //
     },
     methods: {
-        //
+        show_modal(){
+            this.is_order_status_model = true
+        },
+            get_order_status(){
+                axios
+                .get("/order/get_order_status/" + this.activ_order_id)
+                .then(response => {
+                    this.order_status = response.data
+
+                    if(!this.order_status.status){
+                        this.row_color = 'row_deanger'
+                    }
+                    else if(this.order_status.status ){
+                        this.row_color = 'row_worning'
+                    }
+                    else if(this.order_status.status ){
+                        this.row_color = ''
+                    }
+                    else{
+                        this.row_color = ''
+                    }
+                })
+                .catch(
+                    error => console.log(error)
+                );
+            },
     }
 }
 </script>

@@ -143,17 +143,15 @@
                     </div>
                 </div>
 
-                <!-- <div class="row"> -->
-                    <div class="col-md-12 data_tab">
-                        <div class="row">
-                            <PaginationComponent 
-                                @next_page_pagination = next_page_pagination
-                                @privies_page_pagination = privies_page_pagination
-                                @nomber_page_pagination = nomber_page_pagination
-                            />
-                        </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <PaginationComponent 
+                            @next_page_pagination = next_page_pagination
+                            @privies_page_pagination = privies_page_pagination
+                            @nomber_page_pagination = nomber_page_pagination
+                        />
                     </div>
-                <!-- </div> -->
+                </div>
             </div>
         </div>
     </div>

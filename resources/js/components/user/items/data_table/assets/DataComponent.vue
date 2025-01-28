@@ -23,8 +23,11 @@
                 <span v-if="!data_prop[data_item_prop[1][0]][data_item_prop[1][1]]">
                     <i class="fa fa-times fa_times_color" aria-hidden="true"></i>
                 </span>
+                <span v-if="data_prop[data_item_prop[1][0]][data_item_prop[1][1]]">
+                    <i class="fa fa-times fa_times_color" aria-hidden="true"></i>
+                </span>
                 <span v-else>
-                    <i class="fa fa-check fa_check_color" aria-hidden="true" ></i>
+                    <i class="fa fa-exclamation fa_exclamation_color" aria-hidden="true"></i>
                 </span>
             </span>
             <span v-else>
@@ -47,8 +50,11 @@
                 <span v-if="!data_prop[data_item_prop[1][0]]">
                     <i class="fa fa-times fa_times_color" aria-hidden="true"></i>
                 </span>
-                <span v-else>
+                <span v-else-if="data_prop[data_item_prop[1][0]]">
                     <i class="fa fa-check fa_check_color" aria-hidden="true"></i>
+                </span>
+                <span v-else>
+                    <i class="fa fa-exclamation fa_exclamation_color" aria-hidden="true"></i>
                 </span>
             </span>
             <span v-else>
@@ -104,6 +110,10 @@ export default {
 }
 .fa_times_color{
     color: red;
+    font-size: 250%;
+}
+.fa_exclamation_color{
+    color: orange;
     font-size: 250%;
 }
 </style>

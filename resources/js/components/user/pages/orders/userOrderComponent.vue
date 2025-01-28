@@ -52,7 +52,7 @@
         methods: {
             get_orders(){
                 axios
-                .get("/get_user_orders/")
+                .get("/order/get_user_orders/")
                 .then(response => {
                     this.data_for_tab.push({ 
                                             'id': 1,

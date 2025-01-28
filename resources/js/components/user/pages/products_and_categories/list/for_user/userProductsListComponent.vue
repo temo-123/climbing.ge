@@ -69,7 +69,7 @@
                                                     'body': [
                                                         ['data', ['product', 'id']],
                                                         ['data', ['product', 'url_title']],
-                                                        ['data', ['product', 'published']],
+                                                        ['data', ['product', 'published'], 'bool'],
                                                         ['data', ['options']],
                                                         ['action_router', 'productOptionsControl', 'btn btn-success', '<i class="fa fa-list" aria-hidden="true"></i>', ['product', 'id']],
                                                         ['action_router', 'productEdit', 'btn btn-primary', '<i aria-hidden="true" class="fa fa-pencil"></i>', ['product', 'id']],

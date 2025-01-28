@@ -91,7 +91,44 @@ export default {
         //
     },
     methods: {
-        //
+        show_modal(){
+            this.is_order_status_model = true
+        },
+
+        get_order_detals(order_id){
+                axios
+                .get("/order/get_order_detals/"+order_id)
+                .then(response => {
+                    this.activ_order_detals = response.data.order
+                    // this.get_order_products(response.data.id)
+
+                    this.order_product_items = response.data.order_products
+                    this.colculat_total_price()
+
+                    this.is_order_detals_model = true
+                })
+                .catch(
+                    error => console.log(error)
+                );
+            },
+
+            colculat_total_price() {
+                this.total_price = 0
+                this.price = 0
+                this.order_product_items.forEach(product => {
+                    if (product.quantity > 1) {
+                        this.price = product.quantity * product.option.price
+                    }
+                    else{
+                        this.price = parseInt(product.option.price)
+                    }
+                    this.total_price = this.total_price + this.price
+                });
+            },
+            colculat_items_price(price, quantyty) {
+                var colculated_price = price * quantyty
+                return colculated_price
+            },
     }
 }
 </script>
