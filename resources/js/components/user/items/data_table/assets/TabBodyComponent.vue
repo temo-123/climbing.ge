@@ -20,13 +20,15 @@
                     )
                 "
             >
+                <!-- ['action_fun_id', 'fun_name', 'button class', 'title or html object', ['user', 'id']], -->
                 <span v-if="b[0] == 'data'">
                     <tabDataItem 
                         :data_item_prop="b"
                         :data_prop="datas"
                     />
                 </span>
-                
+
+                <!-- ['action_fun_id', 'fun_name', 'button class', 'title or html object', ['user', 'id']], -->
                 <span
                     v-else-if="b[0] == 'data_action_id'"
                     @click="send_action_to_tab_with_option(b[2], datas.id)"
@@ -37,6 +39,8 @@
                         :data_prop="datas"
                     />
                 </span>
+
+                <!-- ['action_fun_id', 'fun_name', 'button class', 'title or html object', ['user', 'id']], -->
                 <span
                     v-else-if="b[0] == 'data_action'"
                     @click="send_action_to_tab(b[2])"
@@ -47,6 +51,8 @@
                         :data_prop="datas"
                     />
                 </span>
+
+                <!-- ['action_fun_id', 'fun_name', 'button class', 'title or html object', ['user', 'id']], -->
                 <button
                     v-else-if="b[0] == 'action_fun'"
                     type="button"
@@ -56,6 +62,7 @@
                     <span v-html="b[3]"></span>
                 </button>
 
+                <!-- ['action_fun_id', 'fun_name', 'button class', 'title or html object', ['user', 'id']], -->
                 <span v-else-if="b[0] == 'stars'">
                     <starsReiting
                         :reviews_count_prop="1"
@@ -65,6 +72,8 @@
                         :rewiew_count_text_prop="false"
                     />
                 </span>
+
+                <!-- ['action_fun_id', 'fun_name', 'button class', 'title or html object', ['user', 'id']], -->
                 <a
                     v-else-if="b[0] == 'action_url'"
                     :href="b[1]"
@@ -72,6 +81,8 @@
                 >
                     <span v-html="b[3]"></span>
                 </a>
+
+                <!-- ['action_fun_id', 'fun_name', 'button class', 'title or html object', ['user', 'id']], -->
                 <router-link
                     v-else-if="b[0] == 'action_router' && typeof b[4] == 'object'"
                     :class="b[2]"
@@ -82,6 +93,8 @@
                 >
                     <span v-html="b[3]"></span>
                 </router-link>
+
+                <!-- ['action_fun_id', 'fun_name', 'button class', 'title or html object', ['user', 'id']], -->
                 <router-link
                     v-else-if="b[0] == 'action_router'"
                     :class="b[2]"
@@ -93,6 +106,7 @@
                     <span v-html="b[3]"></span>
                 </router-link>
 
+                <!-- ['action_fun_id', 'fun_name', 'button class', 'title or html object', ['user', 'id']], -->
                 <span
                     v-else-if="b[0] == 'data_action_id'"
                     @click="send_action_to_tab_with_option(b[2], datas['id'])"
@@ -106,7 +120,7 @@
 
                 <!-- ['action_fun_id', 'fun_name', 'button class', 'title or html object', [['user', 'id'], ['product', 'id']]], -->
                 <button
-                    v-else-if="b[0] == 'action_fun_id' && typeof b[4][0] == 'object' && typeof b[4][1] == 'object'"
+                    v-else-if="b[0] == 'action_fun_id' && typeof b[4] == 'object' && (typeof b[4][0] == 'object' && typeof b[4][1] == 'object')"
                     type="button"
                     @click="send_action_to_tab_with_option(b[1], [
                                                                 datas[b[4][0][0]][b[4][0][1]],
@@ -126,6 +140,8 @@
                 >
                     <span v-html="b[3]"></span>
                 </button>
+
+                <!-- ['action_fun_id', 'fun_name', 'button class', 'title or html object', ['user', 'id']], -->
                 <button
                     v-else-if="b[0] == 'action_fun_id'"
                     type="button"

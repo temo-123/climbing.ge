@@ -15,9 +15,12 @@
                         :table_data="this.data_for_tab"
                         @update="get_all_tours_data"
 
-                        @del_categories="del_categories"
+                        @del_category="del_category"
                         @show_edit_category_modal="show_edit_category_modal"
                         @show_add_category_modal="show_add_category_modal"
+
+                        @show_user_change_modal="show_user_change_modal"
+                        @del_tour="del_tour"
                     />
                 </div>
             </div>
@@ -59,7 +62,8 @@
     
         data() {
             return {
-                data_for_tab:[],
+                data_for_tab: [],
+                table_info: []
             }
         },
 
@@ -86,24 +90,27 @@
                                                 'tab': {
                                                     'head': [
                                                         'ID',
-                                                        'Name',
+                                                        'URL Title',
                                                         'Public',
                                                         'User',
+                                                        'Edit user',
                                                         'Edit',
                                                         'Delite',
                                                     ],
                                                     'body': [
-                                                        ['data', ['id']],
-                                                        ['data', ['url_title']],
-                                                        ['data', ['published'], 'bool'],
-                                                        ['action_fun_id', 'show_user_change_modal', 'btn btn-primary', '<i class="fa fa-user" aria-hidden="true"></i>'],
-                                                        ['action_router', 'tourEdit', 'btn btn-primary', '<i aria-hidden="true" class="fa fa-pencil"></i>'],
-                                                        ['action_fun_id', 'del_tour', 'btn btn-danger', '<i aria-hidden="true" class="fa fa-trash"></i>'],
+                                                        ['data', ['tour', 'id']],
+                                                        ['data', ['tour', 'url_title']],
+                                                        ['data', ['tour', 'published'], 'bool'],
+                                                        ['data', [['user', 'name'], ['user', 'surname']]],
+                                                        ['action_fun_id', 'show_user_change_modal', 'btn btn-secondary', '<i class="fa fa-user-plus" aria-hidden="true"></i>', [['user', 'id'], ['tour', 'id']]],
+                                                        ['action_router', 'tourEdit', 'btn btn-primary', '<i aria-hidden="true" class="fa fa-pencil"></i>', ['tour', 'id']],
+                                                        ['action_fun_id', 'del_tour', 'btn btn-danger', '<i aria-hidden="true" class="fa fa-trash"></i>', ['tour', 'id']],
                                                     ],
                                                     'perm': [
                                                         ['no'],
                                                         ['no'],
                                                         ['no'],
+                                                        ['tour', 'edit'],
                                                         ['tour', 'edit'],
                                                         ['tour', 'edit'],
                                                         ['tour', 'del'],
@@ -143,13 +150,13 @@
                                                         ['data', ['id']],
                                                         ['data', ['us_name']],
                                                         ['action_fun_id', 'show_edit_category_modal', 'btn btn-primary', '<i aria-hidden="true" class="fa fa-pencil"></i>'],
-                                                        ['action_fun_id', 'del_categories', 'btn btn-danger', '<i aria-hidden="true" class="fa fa-trash"></i>'],
+                                                        ['action_fun_id', 'del_category', 'btn btn-danger', '<i aria-hidden="true" class="fa fa-trash"></i>'],
                                                     ],
                                                     'perm': [
                                                         ['no'],
                                                         ['no'],
-                                                        ['sector_local_images', 'edit'],
-                                                        ['sector_local_images', 'del'],
+                                                        ['tour', 'edit'],
+                                                        ['tour', 'del'],
                                                     ]
                                                 }
                                             },
@@ -165,7 +172,7 @@
             show_add_category_modal(){
                 this.$refs.tour_category_add_modal.open_modal()
             },
-            del_categories(id){
+            del_category(id){
                 if(confirm('Are you sure, you want delite it?')){
                     axios
                     .post('/tour/category/del_category/'+id, {
@@ -189,8 +196,8 @@
                     .catch(error => console.log(error))
                 }
             },
-            show_user_change_modal(){
-                this.$refs.user_relation_modal.show_modal()
+            show_user_change_modal(id){
+                this.$refs.user_relation_modal.show_modal(id)
             },
             update_relation(user_id){
                 if(confirm('Are you sure, you want change user?')){

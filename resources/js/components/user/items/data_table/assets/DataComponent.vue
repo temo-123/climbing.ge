@@ -20,11 +20,11 @@
         >
             <!-- ['data', ['item', key]] -->
             <span v-if="typeof data_prop[data_item_prop[1][0]][data_item_prop[1][1]] == 'boolean' || data_item_prop[2] == 'bool'">
-                <span v-if="!data_prop[data_item_prop[1][0]][data_item_prop[1][1]]">
+                <span v-if="data_prop[data_item_prop[1][0]][data_item_prop[1][1]]  == false || data_prop[data_item_prop[1][0]][data_item_prop[1][1]] == 0">
                     <i class="fa fa-times fa_times_color" aria-hidden="true"></i>
                 </span>
-                <span v-if="data_prop[data_item_prop[1][0]][data_item_prop[1][1]]">
-                    <i class="fa fa-times fa_times_color" aria-hidden="true"></i>
+                <span v-else-if="data_prop[data_item_prop[1][0]][data_item_prop[1][1]] == true || data_prop[data_item_prop[1][0]][data_item_prop[1][1]] == 1">
+                    <i class="fa fa-check fa_check_color" aria-hidden="true"></i>
                 </span>
                 <span v-else>
                     <i class="fa fa-exclamation fa_exclamation_color" aria-hidden="true"></i>
@@ -44,13 +44,13 @@
             {{ data_prop[data_item_prop[1][0]] }}
             {{ data_prop[data_item_prop[2][0]] }}
         </span>
-        <span v-else>
+        <span v-else> 
             <!-- ['data', ['item']] -->
             <span v-if="typeof data_prop[data_item_prop[1][0]] == 'boolean' || data_item_prop[2] == 'bool'">
-                <span v-if="!data_prop[data_item_prop[1][0]]">
+                <span v-if="data_prop[data_item_prop[1][0]] == false || data_prop[data_item_prop[1][0]] == 0">
                     <i class="fa fa-times fa_times_color" aria-hidden="true"></i>
                 </span>
-                <span v-else-if="data_prop[data_item_prop[1][0]]">
+                <span v-else-if="data_prop[data_item_prop[1][0]] == true || data_prop[data_item_prop[1][0]] == 1">
                     <i class="fa fa-check fa_check_color" aria-hidden="true"></i>
                 </span>
                 <span v-else>

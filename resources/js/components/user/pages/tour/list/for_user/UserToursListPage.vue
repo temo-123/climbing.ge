@@ -13,7 +13,8 @@
                 <div class="col-sm-12">
                     <tabsComponent 
                         :table_data="this.data_for_tab"
-                        @update-data="get_all_tours_data"
+                        @update="get_user_tours"
+                        @del_tour="del_tour"
                     />
                 </div>
             </div>
@@ -37,17 +38,17 @@
         },
 
         mounted() {
-            this.get_all_tours_data();
+            this.get_user_tours();
         },
          
         methods: {
-            get_all_tours_data: function(){
+            get_user_tours: function(){
                 this.data_for_tab = []
                 axios
                 .get("/tour/get_user_tours/")
                 .then(response => {
                     this.data_for_tab.push({
-                                            'id': 1,
+                        'id': 1,
                                             'table_name': 'Tours', 
                                             'add_action': {
                                                 'action': 'route',
@@ -59,17 +60,17 @@
                                                 'tab': {
                                                     'head': [
                                                         'ID',
-                                                        'Name',
+                                                        'URL Title',
                                                         'Public',
                                                         'Edit',
                                                         'Delite',
                                                     ],
                                                     'body': [
-                                                        ['data', ['id']],
-                                                        ['data', ['url_title']],
-                                                        ['data', ['published'], 'bool'],
-                                                        ['action_router', 'tourEdit', 'btn btn-primary', '<i aria-hidden="true" class="fa fa-pencil"></i>'],
-                                                        ['action_fun_id', 'del_tour', 'btn btn-danger', '<i aria-hidden="true" class="fa fa-trash"></i>'],
+                                                        ['data', ['tour', 'id']],
+                                                        ['data', ['tour', 'url_title']],
+                                                        ['data', ['tour', 'published'], 'bool'],
+                                                        ['action_router', 'tourEdit', 'btn btn-primary', '<i aria-hidden="true" class="fa fa-pencil"></i>', ['tour', 'id']],
+                                                        ['action_fun_id', 'del_tour', 'btn btn-danger', '<i aria-hidden="true" class="fa fa-trash"></i>', ['tour', 'id']],
                                                     ],
                                                     'perm': [
                                                         ['no'],
@@ -86,7 +87,18 @@
                     error => console.log(error)
                 );
             },
-
+            del_tour(id){
+                if(confirm('Are you sure, you want delite it?')){
+                    axios
+                    .post('/tour/del_tour/'+id, {
+                        _method: 'DELETE'
+                    })
+                    .then(Response => {
+                        this.get_user_tours()
+                    })
+                    .catch(error => console.log(error))
+                }
+            },
         }
     }
 </script>
