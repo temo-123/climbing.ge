@@ -265,13 +265,17 @@ export const navbar = {
                         ]
                     },
                     {
-                        name: "Brands",
-                        route: "/product_brands",
+                        name: "Warehouses",
+                        route: "/warehousesList",
                         permissions: [
-                            ['add', 'product_brand'],
-                            ['edit', 'product_brand'],
-                            ['del', 'product_brand']
+                            ['show_all', 'tour'],
+                            ['show_all', 'tour_category']
                         ]
+                        // permissions: [
+                        //     ['add', 'warehouses'],
+                        //     ['edit', 'warehouses'],
+                        //     ['del', 'warehouses']
+                        // ]
                     },
                     {
                         name: "All orders",

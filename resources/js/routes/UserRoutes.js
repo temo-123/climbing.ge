@@ -108,6 +108,10 @@ const router = new VueRouter({
         { path: '/local_bisnes', name: 'localBisnesList', component: load('local_bisnes/localBisnesListComponent') },
         { path: '/local_bisnes/add', name: 'localBisnesAdd', component: load('local_bisnes/localBisnesAddComponent') },
         { path: '/local_bisnes/edit/:id', name: 'localBisnesEdit', component: load('local_bisnes/localBisnesEditComponent') },
+        
+        { path: '/warehouses', name: 'warehousesList', component: load('warehouse/warehousesListComponent') },
+        { path: '/warehouse/add', name: 'warehouseAdd', component: load('warehouse/warehouseAddComponent') },
+        { path: '/warehouse/edit/:id', name: 'warehouseEdit', component: load('warehouse/warehouseEditComponent') },
 
         { path: '/event', name: 'eventList', component: load('event/eventsAndCompetitionsListComponent') },
         { path: '/event/add', name: 'eventAdd', component: load('event/events/eventAddComponent') },

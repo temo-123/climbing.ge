@@ -695,6 +695,18 @@ Route::group(['namespace'=>'Api'], function() {
         });
 
         /*
+        *   Warehouse
+        */
+        Route::controller(WarehouseController::class)->prefix('warehouse')->group( function() {
+            Route::get('/get_warehouses', 'get_warehouses');
+            Route::post('/add_warehouses', 'add_warehouses');
+            Route::post('/edit_warehouse/{warehouse_id}', 'edit_warehouse');
+            Route::post('/get_editing_warehouse/{warehouse_id}', 'get_editing_warehouse');
+            Route::get('/get_activ_warehouse/{warehouse_id}', 'get_activ_warehouse');
+            Route::delete('/del_warehouse/{warehouse_id}', 'del_warehouse');
+        });
+
+        /*
         *   User adresses
         */
         Route::controller(UserAdresesController::class)->group( function() {
