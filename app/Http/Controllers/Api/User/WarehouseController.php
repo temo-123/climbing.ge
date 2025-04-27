@@ -14,7 +14,7 @@ class WarehouseController extends Controller
     }
 
     public function add_warehouses () {
-
+        
     }
 
     public function edit_warehouse () {

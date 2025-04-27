@@ -119,7 +119,7 @@
                 </span>
 
                 <!-- ['action_fun_id', 'fun_name', 'button class', 'title or html object', [['user', 'id'], ['product', 'id']]], -->
-                <button
+                <!-- <button
                     v-else-if="b[0] == 'action_fun_id' && typeof b[4] == 'object' && (typeof b[4][0] == 'object' && typeof b[4][1] == 'object')"
                     type="button"
                     @click="send_action_to_tab_with_option(b[1], [
@@ -129,7 +129,7 @@
                     :class="b[2]"
                 >
                     <span v-html="b[3]"></span>
-                </button>
+                </button> -->
 
                 <!-- ['action_fun_id', 'fun_name', 'button class', 'title or html object', ['user', 'id']], -->
                 <button

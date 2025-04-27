@@ -49,7 +49,7 @@
                 .then(response => {
                     this.data_for_tab.push({
                         'id': 1,
-                                            'table_name': 'Tours', 
+                                            'table_name': 'My Tours', 
                                             'add_action': {
                                                 'action': 'route',
                                                 'link': 'tourAdd', 
@@ -66,11 +66,11 @@
                                                         'Delite',
                                                     ],
                                                     'body': [
-                                                        ['data', ['tour', 'id']],
-                                                        ['data', ['tour', 'url_title']],
-                                                        ['data', ['tour', 'published'], 'bool'],
-                                                        ['action_router', 'tourEdit', 'btn btn-primary', '<i aria-hidden="true" class="fa fa-pencil"></i>', ['tour', 'id']],
-                                                        ['action_fun_id', 'del_tour', 'btn btn-danger', '<i aria-hidden="true" class="fa fa-trash"></i>', ['tour', 'id']],
+                                                        ['data', ['id']],
+                                                        ['data', ['url_title']],
+                                                        ['data', ['published'], 'bool'],
+                                                        ['action_router', 'tourEdit', 'btn btn-primary', '<i aria-hidden="true" class="fa fa-pencil"></i>'],
+                                                        ['action_fun_id', 'del_tour', 'btn btn-danger', '<i aria-hidden="true" class="fa fa-trash"></i>'],
                                                     ],
                                                     'perm': [
                                                         ['no'],
