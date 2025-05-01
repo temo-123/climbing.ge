@@ -679,7 +679,7 @@ Route::group(['namespace'=>'Api'], function() {
         // Route::post('user_image_update/{user_id}', 'UsersController@user_image_update');
         
         
-        Route::controller(UserOptionsController::class)->prefix('options')->group( function() {
+        Route::controller(UserOptionController::class)->prefix('options')->group( function() {
             // Route::get('/get_user_data', 'get_user_data');
             Route::get('/get_selected_user_data/{user_id}', 'get_selected_user_data');
             Route::post('/user_info_update/{user_id}', 'user_info_update');

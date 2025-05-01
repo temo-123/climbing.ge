@@ -31,7 +31,7 @@
                 <!-- ['action_fun_id', 'fun_name', 'button class', 'title or html object', ['user', 'id']], -->
                 <span
                     v-else-if="b[0] == 'data_action_id'"
-                    @click="send_action_to_tab_with_option(b[2], datas.id)"
+                    @click="send_action_to_tab_with_option(b[b.length-1], datas.id)"
                     class="cursor_pointer"
                 >
                     <tabDataItem 
@@ -39,6 +39,8 @@
                         :data_prop="datas"
                     />
                 </span>
+
+                <!-- {{ b.length-1 }} -->
 
                 <!-- ['action_fun_id', 'fun_name', 'button class', 'title or html object', ['user', 'id']], -->
                 <span
@@ -107,7 +109,7 @@
                 </router-link>
 
                 <!-- ['action_fun_id', 'fun_name', 'button class', 'title or html object', ['user', 'id']], -->
-                <span
+                <!-- <span
                     v-else-if="b[0] == 'data_action_id'"
                     @click="send_action_to_tab_with_option(b[2], datas['id'])"
                     class="cursor_pointer"
@@ -116,7 +118,7 @@
                         :data_item_prop="b"
                         :data_prop="datas"
                     />
-                </span>
+                </span> -->
 
                 <!-- ['action_fun_id', 'fun_name', 'button class', 'title or html object', [['user', 'id'], ['product', 'id']]], -->
                 <!-- <button

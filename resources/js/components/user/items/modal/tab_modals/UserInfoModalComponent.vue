@@ -9,12 +9,13 @@
         >
         <pre class="language-vue">
             <h1>{{ user.name }} {{ user.surname }}</h1>
-            <p>{{ user.country }}, {{ user.city }}</p>
-            <p>{{ user.phone_number }}</p>
-            <p>{{ user.email }}</p>
 
-            <span v-if="user.email_verified_at != null">Verification complited</span>
-            <span v-if="user.email_verified_at == null">Verification feild</span>
+            <h4>{{ user.country }}, {{ user.city }}</h4>
+            <h4>{{ user.phone_number }}</h4>
+            <h4>{{ user.email }}</h4>
+
+            <h4 v-if="user.email_verified_at != null" style="color:green;">Verification complited</h4>
+            <h4 v-if="user.email_verified_at == null" style="color:red;">Verification feild</h4>
 
             <img v-if="user.image != null" :src="'/public/images/user_profil_img/' + user.image" class="rounded mx-auto d-block"/>
         </pre>
@@ -44,6 +45,7 @@
         data(){
             return {
                 user_modal: false,
+                // user_id: 0,
                 user: [],
             }
         },
@@ -53,9 +55,22 @@
         },
 
         methods: {
-            show_user_info(user_info){
-                this.user = user_info
-                this.user_modal = true
+            show_modal(id){
+                // this.user_id = id
+
+                this.get_user(id)
+            },
+
+            get_user(user_id){
+                axios
+                .get("/options/get_selected_user_data/" + user_id)
+                .then(response => {
+                    this.user = response.data
+                    this.user_modal = true
+                })
+                .catch(
+                    error => console.log(error)
+                );
             },
         }
     }
