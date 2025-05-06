@@ -112,6 +112,7 @@ const router = new VueRouter({
         { path: '/warehouses', name: 'warehousesList', component: load('warehouse/warehousesListComponent') },
         { path: '/warehouse/add', name: 'warehouseAdd', component: load('warehouse/warehouseAddComponent') },
         { path: '/warehouse/edit/:id', name: 'warehouseEdit', component: load('warehouse/warehouseEditComponent') },
+        { path: '/warehouse/options/:id', name: 'warehouseOptions', component: load('warehouse/warehouseOptionsComponent') },
 
         { path: '/event', name: 'eventList', component: load('event/eventsAndCompetitionsListComponent') },
         { path: '/event/add', name: 'eventAdd', component: load('event/events/eventAddComponent') },

@@ -203,15 +203,29 @@ export default {
             this.$emit(event[0])
         },
 
-        next_page_pagination(){
-            alert('next_page')
-        },
+        // next_page_pagination(){
+        //     alert('next_page')
+        //     // this.$emit('pagechanged', this.totalPages);
+        // },
+        // privies_page_pagination(){
+        //     alert('provies_page')
+        // },
+        // nomber_page_pagination(page_id){
+        //     alert(page_id + '_page')
+        // },
+
         privies_page_pagination(){
             alert('provies_page')
+            this.$emit('pagechanged', this.currentPage - 1);
         },
         nomber_page_pagination(page_id){
             alert(page_id + '_page')
-        }
+            this.$emit('pagechanged', page_id);
+        }, 
+        next_page_pagination(){
+            alert('next_page')
+            this.$emit('pagechanged', this.currentPage + 1);
+        },
     },
 };
 </script>

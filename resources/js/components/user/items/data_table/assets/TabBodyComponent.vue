@@ -1,8 +1,6 @@
 <template>
     <tbody>
-        <tr :class="danger_color"
-            v-for="(datas, datas_key) in tab_data.data" :key="datas_key"
-        >
+        <tr :class="danger_color" v-for="(datas, datas_key) in tab_data.data" :key="datas_key">
             <td style="text-align: center">
                 <input type="checkbox" />
             </td>
@@ -190,6 +188,21 @@ export default {
         send_action_to_tab(emit_fun) {
             this.$emit('action_for_perent_component', [emit_fun]);
         },
+
+        // https://medium.com/@obapelumi/pagination-with-vuejs-1f505ce8d15b
+        setPages () {
+            let numberOfPages = Math.ceil(this.posts.length / this.perPage);
+            for (let index = 1; index <= numberOfPages; index++) {
+                this.pages.push(index);
+            }
+        },
+        paginate (posts) {
+            let page = this.page;
+            let perPage = this.perPage;
+            let from = (page * perPage) - perPage;
+            let to = (page * perPage);
+            return  posts.slice(from, to);
+        }
     }
 }
 </script>

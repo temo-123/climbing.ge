@@ -266,7 +266,7 @@ export const navbar = {
                     },
                     {
                         name: "Warehouses",
-                        route: "/warehousesList",
+                        route: "/warehouses",
                         permissions: [
                             ['show_all', 'tour'],
                             ['show_all', 'tour_category']
