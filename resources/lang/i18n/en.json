@@ -84,9 +84,15 @@
             "anchor_type": "Routes anchor",
             "mtp detals": "Multy-pitch detals",
 
-            "make_review": "Make review",
+            "back_to_modal": "Back",
+            "close_modal": "Close",
+
+            "make_review": "Add review",
             "route_rewiev": "Create route rewiev",
-            "show_feedbacks": "Show route feedbacks"
+            "show_feedbacks": "Feedbacks",
+
+            "pleas_login": "Pleas login for add route feedback!",
+            "no_feedbacks": "No feedbacks"
         },
 
         "sector": {

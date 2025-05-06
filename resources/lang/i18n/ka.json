@@ -82,8 +82,15 @@
             "anchor": "სადგური",
             "mtp detals": "მულტიპიჩის დეტალები",
 
-            "route_rewiev": "დაგვიტოვეღ თქვენი შეფასება",
-            "show_feedbacks": "შეფასებების ნახვა"
+            "back_to_modal": "უკან",
+            "close_modal": "დახურვა",
+
+            "make_review": "დამატება",
+            "route_rewiev": "შეფასების დამატება",
+            "show_feedbacks": "შეფასებები",
+
+            "pleas_login": "გთხოვთ შეხვიდეთ სისტემაში შეფასების დასამატებლად!",
+            "no_feedbacks": "შეფასებები არ არის!"
         },
 
         "sector": {

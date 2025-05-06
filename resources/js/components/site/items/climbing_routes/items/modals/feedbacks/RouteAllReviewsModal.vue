@@ -19,8 +19,8 @@
                             </div>
                         </div>
 
-                        <ul v-show="!is_loading">
-                            <li v-for="review in reviews" :key="review.id" v-if="review.user != null" class="comment_board">
+                        <span v-show="!is_loading">
+                            <span v-for="review in reviews" :key="review.id" v-if="review.user != null" class="">
                                 <div class="row feedback_row">
                                     <div class="col-xs-10 col-md-10">
                                         <div class="row">
@@ -41,27 +41,29 @@
                                         </div>
                                     </div>
                                 </div>
-                            </li>
-                            <h1 v-if="reviews == []">No feedbacks</h1>
-                        </ul>
+                                <hr>
+                            </span>
+                            <h1 v-if="reviews == []">{{ $t('guide.route.no_feedbacks') }}</h1>
+                        </span>
                     <!-- </div>
                 </div> -->
             </div>
             <div slot="modal-footer">
                 <div class="modal-footer">
                     <button
-                        class="btn btn-success"
-                        @click="back_to_route_madal()"
-                    >
-                        {{ $t('guide.route.back_to_route_modal') }}
-                    </button>
-            
-                    <button
-                        class="btn btn-primary float-right"
+                        class="btn btn-danger float-left"
                         @click="close_route_review_modal()"
                     >
                         {{ $t('guide.route.close_modal') }}
                     </button>
+
+                    <button
+                        class="btn btn-warning float-right"
+                        @click="back_to_route_madal()"
+                    >
+                        {{ $t('guide.route.back_to_modal') }}
+                    </button>
+            
                 </div>
             </div>
         </stack-modal>
