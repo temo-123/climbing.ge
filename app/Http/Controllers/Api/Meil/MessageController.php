@@ -6,7 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 // use Illuminate\Notifications\Messages\MailMessage;
  
-use App\Models\Guide\Site;
+use App\Models\Site;
 use App\Models\User\Service_follower;
 
 use App\Mail\Message;

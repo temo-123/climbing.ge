@@ -50,6 +50,12 @@ export default {
         // send_action_to_tab_with_option(emit_fun) {
         //     this.$emit('action_for_perent_component_with_option', [emit_fun, this.filter_id]);
         // },
+
+        //https://stackoverflow.com/questions/69843212/how-i-make-filter-search-in-vue-js-with-javascript
+        filteredProL(){
+            if(this.search === '') return this.proL; // If search input is empty then display all items
+            else return this.proL.filter(e => e.toLowerCase().indexOf(this.search) > -1) // Working logic
+        }
     }
 }
 </script>
