@@ -124,9 +124,22 @@
                                         </div>
                                     </div>
                                 </div>
-                            </div>
+                            </div> 
+
                             <div class="col-md-4" v-else-if="wall_square == 0">
                                 <p>{{ $t('shop.wall.inser_sizes')}}</p>
+                            </div>
+
+                            <div class="col-md-4">
+                                <p>{{ $t('shop.wall.vat')}}</p>
+
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            <input type="checkbox" @click="inserting_vat()" name="hold_insert"  id="hold_insert">
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
 
                         </div>
@@ -189,6 +202,16 @@
                                     <td>|</td>
                                     <td>{{holds_total_price}} $</td>
                                 </tr>
+                                <tr v-if="is_vat_include">
+                                    <td>{{ $t('shop.wall.vat') }}</td>
+                                    <td>|</td>
+                                    <td>18 %</td>
+                                </tr>
+                                <tr v-if="is_vat_include">
+                                    <td>{{ $t('shop.wall.vat_price') }}</td>
+                                    <td>|</td>
+                                    <td>{{vat_price}} $</td>
+                                </tr>
                             </tbody>
                         </table>
                     </section>
@@ -226,17 +249,26 @@
 <script>
     // import { VueHtml2pdf } from 'vue-html2pdf'
     import metaData from '../../../items/MetaDataComponent'
+    import { coepicients_mixin } from './coepicients_mixin.js';
+
     export default {
         components: {
             metaData,
             // VueHtml2pdf
         },
+        mixins: [
+            coepicients_mixin
+        ],
         data: function () {
             return {
+                coepicients: coepicients_mixin.wall(),
                 active_image: 'non',
 
                 wall_height_for_mat: false,
                 hold_include: false,
+
+                is_vat_include: false,
+                vat_price: 0,
 
                 width: 0,
                 height: 0,
@@ -290,6 +322,10 @@
                 this.hold_include = !this.hold_include
             },
 
+            inserting_vat(){
+                this.is_vat_include = !this.is_vat_include
+            },
+
             colculate_holds_price(){
                 this.holds_total_quantity = this.wall_square * this.holds_quantyty_for_meter
                 this.holds_total_price = this.holds_total_quantity * 15
@@ -300,11 +336,11 @@
             colculate_wall_price() {
                 if(this.depth > 0 && this.width > 0 && this.height > 0){
                     this.wall_square = this.depth * this.width * this.height
-                    this.wall_price_sum = this.wall_square * 90
+                    this.wall_price_sum = this.wall_square * this.coepicients.wall_squarenes_price.coepicient
                 }
                 else if(this.width > 0 && this.height > 0 && this.depth == 0){
                     this.wall_square = this.height * this.width
-                    this.wall_price_sum = this.wall_square * 100
+                    this.wall_price_sum = this.wall_square * this.coepicients.wall_squarenes_price.coepicient
                 }
 
                 if(!this.wall_height_for_mat){
@@ -340,10 +376,10 @@
 
             colculate_mat_price() {
                 if(this.mat_depth > 0 && this.mat_width > 0 && this.mat_height > 0){
-                    this.mat_price_sum = (this.mat_depth * this.mat_width * this.mat_height) * 400
+                    this.mat_price_sum = (this.mat_depth * this.mat_width * this.mat_height) * this.coepicients.mat_squarenes_price.coepicient
                 }
                 else if(this.mat_width > 0 && this.mat_height > 0){
-                    this.mat_price_sum = (this.mat_width * this.mat_height) * 400
+                    this.mat_price_sum = (this.mat_width * this.mat_height) * this.coepicients.mat_squarenes_price.coepicient
                 }
 
                 this.colculate_total_price()
@@ -353,9 +389,19 @@
                 this.wall_price_sum = Math.ceil(this.wall_price_sum)
                 this.mat_price_sum = Math.ceil(this.mat_price_sum)
 
-                this.total_price_sum = this.wall_price_sum + this.mat_price_sum + this.holds_total_price
+                if(this.is_vat_include){
+                    this.coepicients.mat_squarenes_price.coepicient
+                    this.vat_price = 666
+                    this.total_price_sum = this.wall_price_sum + this.mat_price_sum + this.holds_total_price
 
-                this.total_price_sum = Math.ceil(this.total_price_sum)
+                    this.total_price_sum = Math.ceil(this.total_price_sum)
+                }
+                else{
+                    this.total_price_sum = this.wall_price_sum + this.mat_price_sum + this.holds_total_price
+
+                    this.total_price_sum = Math.ceil(this.total_price_sum)
+                }
+
             }
         }
     }

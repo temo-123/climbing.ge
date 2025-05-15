@@ -36,7 +36,7 @@
                         <div class="flick">
                             <h4 class="footer_title">{{ $t('global.footer.share')}}</h4>
                             
-                            <share />
+                            <!-- <share /> -->
                             
                         </div>
                     </div>
@@ -50,7 +50,7 @@
 
 <script>
     import followComponent from '../../global_components/FollowComponent.vue'
-    import share from '../../global_components/ShareComponent.vue'
+    // import share from '../../global_components/ShareComponent.vue'
     import footerLogo from "../../global_components/FooterLogoBlockComponent.vue";
     import footerText from "../../global_components/FooterBottomTextComponent.vue";
 
@@ -63,7 +63,7 @@
         },
         components: {
             followComponent,
-            share,
+            // share,
             footerLogo,
             footerText
         },
