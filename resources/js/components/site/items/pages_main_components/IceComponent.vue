@@ -32,7 +32,7 @@
 
                 </div>
 
-                <iceSectors 
+                <sectors 
                     :article_id="this.article_prop.global_data.id" 
                     ref="routes_tab"
                 />
@@ -66,7 +66,8 @@
 </template>
 
 <script>
-    import iceSectors from '../ice_climbing_routes/IceSectorComponent'
+    // import iceSectors from '../ice_climbing_routes/IceSectorComponent'
+    import sectors from '../climbing_routes/SectorAndRoutesTabComponent'
     import commentForm from '../comments/CommentFormComponent'
     import galleryComponent from '../galleries/GalleryComponent'
     import articleRightMenu from '../navbars/RightMenuComponent'
@@ -85,7 +86,7 @@
             galleryComponent,
             articleRightMenu,
             SimilarArticles,
-            iceSectors,
+            sectors,
             breadcrumb,
             // routeQuanDiogram,
             articleTextBlocks,

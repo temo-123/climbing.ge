@@ -5,24 +5,24 @@ namespace App\Http\Controllers\Api\Guide;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
-use App\Models\Guide\Ice_route;
+use App\Models\Guide\Route;
 use Validator;
 
 class IceRouteController extends Controller
 {
     public function get_all_routes()
     {
-        return Ice_route::latest('id')->get();
+        return Route::latest('id')->get();
     }
 
     public function get_route_editing_data($id)
     {
-        return ice_route::where('id',strip_tags($id))->first();
+        return Route::where('id',strip_tags($id))->first();
     }
 
     public function get_route_data_for_modal(Request $request)
     {
-        return ice_route::where('id',strip_tags($request->route_id))->first();
+        return Route::where('id',strip_tags($request->route_id))->first();
     }
 
     public function edit_route(Request $request)
@@ -34,7 +34,7 @@ class IceRouteController extends Controller
             ], 422);
         }
         else{
-            $ice_route = ice_route::where('id', '=', $request->route_id)->first();
+            $ice_route = Route::where('id', '=', $request->route_id)->first();
 
             $ice_route->category = $request->data['category'];
             $ice_route->ice_sector_id = $request->data['ice_sector_id'];
@@ -55,7 +55,7 @@ class IceRouteController extends Controller
     public function del_route($id)
     {
         $ice_route_id=$id;
-        $ice_route = Ice_route::where('id',strip_tags($ice_route_id))->first();
+        $ice_route = Route::where('id',strip_tags($ice_route_id))->first();
         $ice_route ->delete();
     }
 
@@ -69,7 +69,7 @@ class IceRouteController extends Controller
         }
         else{
             
-            $sector_ice_route_count = Ice_route::where('ice_sector_id',strip_tags($request->data['ice_sector_id']))->count();
+            $sector_ice_route_count = Route::where('ice_sector_id',strip_tags($request->data['ice_sector_id']))->count();
 
             if($sector_ice_route_count == 0){
                 $new_ice_route_num = 1;
