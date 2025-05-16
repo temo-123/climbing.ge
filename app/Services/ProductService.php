@@ -25,7 +25,7 @@ class ProductService extends LocaleContentService
                 $old_min_price = (new static)->get_product_price($product['global_data'], 'min');
                 $old_max_price = (new static)->get_product_price($product['global_data'], 'max');
 
-                if($product['global_data']->discount != null || $product['global_data']->discount > 0){
+                if($product['global_data']->discount != null || $product['global_data']->discount != 0){
                     array_push($reponce, [
                         "global_product"=>$product['global_data'],
                         "locale_product"=>$product['locale_data'],
@@ -78,7 +78,7 @@ class ProductService extends LocaleContentService
         $old_min_price = (new static)->get_product_price($product['global_data'], 'min');
         $old_max_price = (new static)->get_product_price($product['global_data'], 'max');
         
-        if($product['global_data']->discount != null || $product['global_data']->discount > 0){
+        if($product['global_data']->discount != null || $product['global_data']->discount != 0){
             array_push($product_data, [
                 "global_product"=>$product['global_data'],
                 "locale_product"=>$product['locale_data'],

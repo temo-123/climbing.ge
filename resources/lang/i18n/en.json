@@ -155,7 +155,7 @@
     },
 
     "shop": {
-        "name": "Climbng shop",
+        "name": "Climbing shop",
 
         "meta": {
             "products": "Products list",
@@ -258,6 +258,9 @@
         "tour": {
             "warning": "Warning",
             "more": "Read more",
+            "location": "Locatione",
+            "duration": "Duration",
+            "guide": "Guide",
 
             "message": {
                 "enter_full_information": "Your private information is not a complete. Please go to user option page and enter full information!",

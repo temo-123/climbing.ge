@@ -14,7 +14,7 @@
                 <div class="next_image" v-if="image_num < (this.image_length - 1)">
                     <a @click="next_product_image()">></a>
                 </div>
-                <div class="product_quick_view" @click="product_quick_view(product_data.global_product.id)"> {{ $t('shop.product.quick_view') }}</div>
+                <!-- <div class="product_quick_view" @click="product_quick_view(product_data.global_product.id)"> {{ $t('shop.product.quick_view') }}</div> -->
             </div>
             <div class="item-pnl product-image">
                 <div class="new_product_pin discount-badge-fourty" v-if="product_data.global_product.discount">-{{ product_data.global_product.discount }}%</div>

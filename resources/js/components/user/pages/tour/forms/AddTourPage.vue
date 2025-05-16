@@ -74,18 +74,6 @@
                             </div>
                         </div>
                         <div class="form-group clearfix">
-                            <label for="name" class='col-xs-2 control-label'> Location </label>
-                            <div class="col-xs-8">
-                                <input type="text" name="name" v-model="data.global_tour.location"  class="form-control"> 
-                            </div>
-                        </div>
-                        <div class="form-group clearfix">
-                            <label for="name" class='col-xs-2 control-label'> Duration </label>
-                            <div class="col-xs-8">
-                                <input type="text" name="name" v-model="data.global_tour.duration"  class="form-control"> 
-                            </div>
-                        </div>
-                        <div class="form-group clearfix">
                             <label for="name" class='col-xs-2 control-label'> Min price </label>
                             <div class="col-xs-8">
                                 <input type="text" name="name" v-model="data.global_tour.min_price"  class="form-control"> 
@@ -146,6 +134,18 @@
                                 <input type="text" name="name" v-model="data.us_tour.title"  class="form-control"> 
                             </div>
                         </div>
+                        <div class="form-group clearfix">
+                            <label for="name" class='col-xs-2 control-label'> Location </label>
+                            <div class="col-xs-8">
+                                <input type="text" name="name" v-model="data.us_tour.location"  class="form-control"> 
+                            </div>
+                        </div>
+                        <div class="form-group clearfix">
+                            <label for="name" class='col-xs-2 control-label'> Duration </label>
+                            <div class="col-xs-8">
+                                <input type="text" name="name" v-model="data.us_tour.duration"  class="form-control"> 
+                            </div>
+                        </div>
     
                         <div class="form-group clearfix">
                             <label for="name" class='col-xs-2 control-label'> Short description </label>
@@ -175,6 +175,18 @@
                             <label for="name" class='col-xs-2 control-label'> Title </label>
                             <div class="col-xs-8">
                                 <input type="text" name="value name"  v-model="data.ka_tour.title" class="form-control"> 
+                            </div>
+                        </div>
+                        <div class="form-group clearfix">
+                            <label for="name" class='col-xs-2 control-label'> Location </label>
+                            <div class="col-xs-8">
+                                <input type="text" name="name" v-model="data.ka_tour.location"  class="form-control"> 
+                            </div>
+                        </div>
+                        <div class="form-group clearfix">
+                            <label for="name" class='col-xs-2 control-label'> Duration </label>
+                            <div class="col-xs-8">
+                                <input type="text" name="name" v-model="data.ka_tour.duration"  class="form-control"> 
                             </div>
                         </div>
     
@@ -232,36 +244,42 @@
                     ka_text: editor_config.get_big_editor_config(),
                 },
 
+                // data: {
+                //     global_tour: {
+                //         // us_title_for_url_title: '',
+
+                //         category_id: '',
+
+                //         // location: '',
+                //         // duration: '',
+                //         min_price: '',
+
+                //         published: 0,
+                //     },
+
+                //     us_tour: {
+                //         title: "",
+                //         short_description: "",
+                //         text: "",
+                //     },
+
+                //     ka_tour: {
+                //         title: "",
+                //         short_description: "",
+                //         text: "",
+                //     },
+
+                //     ru_tour: {
+                //         title: "",
+                //         short_description: "",
+                //         text: "",
+                //     }
+                // },
+
                 data: {
-                    global_tour: {
-                        // us_title_for_url_title: '',
-
-                        category_id: '',
-
-                        location: '',
-                        duration: '',
-                        min_price: '',
-
-                        published: 0,
-                    },
-
-                    us_tour: {
-                        title: "",
-                        short_description: "",
-                        text: "",
-                    },
-
-                    ka_tour: {
-                        title: "",
-                        short_description: "",
-                        text: "",
-                    },
-
-                    ru_tour: {
-                        title: "",
-                        short_description: "",
-                        text: "",
-                    }
+                    global_tour: {},
+                    us_tour: {},
+                    ka_tour: {},
                 },
                 categories: [],
 

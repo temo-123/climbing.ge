@@ -8,11 +8,11 @@
             <img class="service_page_image" :src="'../../images/tour_img/'+tour.tour_images[0].image" :alt="tour.locale_data.title">
         </div>
 
-        <div class="row service_page_text" v-if="tour.global_data.location">
-            <strong>Location - <span v-html="tour.global_data.location"></span></strong>
+        <div class="row service_page_text" v-if="tour.locale_data.location">
+            <strong>{{ $t('shop.tour.location') }} - <span v-html="tour.locale_data.location"></span></strong>
         </div>
-        <div class="row service_page_text" v-if="tour.global_data.duration">
-            <strong>Duration - <span v-html="tour.global_data.duration"></span></strong>
+        <div class="row service_page_text" v-if="tour.locale_data.duration">
+            <strong>{{ $t('shop.tour.duration') }} - <span v-html="tour.locale_data.duration"></span></strong>
         </div>
 
         <div class="row service_page_text">
@@ -21,7 +21,7 @@
 
         <div class="row">
             <div class="col-xs-12 col-md-12 cursor_pointer" @click="show_guide_modal(tour.user.id)">
-                <h2>Guide</h2>
+                <h2>{{ $t('shop.tour.guide') }}</h2>
                 <div class="row">
                     <div :style="'background-image: url(/public/images/site_img/demo_imgs/user_demo_img.gif);'" class='guide_img' v-if='tour.user.image == null'> </div>
                     <div :style="'background-image: url(/public/images/user_profil_img/' + tour.user.image + ');'" class='guide_img' v-else> </div>

@@ -20,7 +20,7 @@ use App\Notifications\tour\ReservationVerifyEmail;
 class TourReservationController extends Controller
 {
     function get_reservations(){
-        return Tour_reservation::get();
+        return Tour_reservation::latest('id')->get();
     }
 
     function get_user_reservations(){
@@ -51,6 +51,11 @@ class TourReservationController extends Controller
 
         if (Auth::user()) {
             $this->create_reservatione_user_relatione($saved_id, Auth::user()->id);
+
+            $tour = Tour::where('id', '=', $request->tour_id)->first();
+            $guide = $tour->user;
+
+            $this->reservatione_completed_notification($guide[0]->email, Auth::user()->email);
 
             return 'The reservation is complete and it is linked to you as a acaunt. You can find it in the user panel!';
         }
