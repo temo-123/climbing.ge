@@ -147,7 +147,7 @@
     .right_navigarion_menu_fixed_on_scrine{
         position: fixed;
         right: 0;
-        margin-top: -10%;
+        margin-top: -13%;
     }
     .right_navigarion_menu_fixed_on_scrine_bottom{
         position: absolute;
