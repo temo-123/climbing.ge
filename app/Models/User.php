@@ -191,6 +191,13 @@ class User extends Authenticatable implements MustVerifyEmail
     public function purchases()
     {
         return $this->hasMany(Order::class, 'user_id');
+<<<<<<< HEAD
+=======
+    }
+    public function orders()
+    {
+        return $this->belongsToMany(Product::class, 'user_products', 'user_id', 'product_id');
+>>>>>>> admin_page_table
     }
     // public function orders()
     // {
@@ -198,7 +205,7 @@ class User extends Authenticatable implements MustVerifyEmail
     // }
     public function products()
     {
-        return $this->belongsToMany(Product::class, 'user_products', 'user_id', 'product_id');
+        return $this->belongsToMany(Product::class, 'user_products', 'user_id', 'product_id')->latest('id');
     }
 
 

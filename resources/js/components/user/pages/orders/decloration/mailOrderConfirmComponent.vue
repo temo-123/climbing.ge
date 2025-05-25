@@ -55,7 +55,11 @@ export default {
     methods: {
         confirm_order() {
             axios
+<<<<<<< HEAD
             .post('/order_is_confirm/' + this.order_id)
+=======
+            .post('/order/order_is_confirm/' + this.order_id)
+>>>>>>> admin_page_table
             .then(response => { 
                 //
             })
@@ -66,7 +70,11 @@ export default {
         },
         check_order_confirm() {
             axios
+<<<<<<< HEAD
             .get('/is_order_confirm/' + this.order_id)
+=======
+            .get('/order/is_order_confirm/' + this.order_id)
+>>>>>>> admin_page_table
             .then(response => {
                 if(response.data){
                     this.confirm_order()
@@ -87,7 +95,11 @@ export default {
         },
         check_user_authing() {
             axios
+<<<<<<< HEAD
             .get('/auth_user')
+=======
+            .get('/order/auth_user')
+>>>>>>> admin_page_table
             .then(response => { 
                 this.check_order_confirm() 
             })

@@ -13,10 +13,14 @@ class ProductBrandController extends Controller
 {
     function get_all_brands(Request $request) {
         $brands = Product_brand::get();
+        $returned_brands = [];
         foreach ($brands as $brand) {
-            $brand->us_brand;
+            array_push($returned_brands, [
+                'global_brand' => $brand,
+                'us_brand' => $brand->us_brand
+            ]);
         }
-        return $brands;
+        return $returned_brands;
     }
     function get_brand(Request $request) {
         $brand = Product_brand::where("id", "=", $request->id)->first();

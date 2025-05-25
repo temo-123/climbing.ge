@@ -167,7 +167,7 @@
 
                         <div class="row justify-content-center">
                             <div class="col-md-6">
-                                <div class="row">
+                                <!-- <div class="row">
                                     <h2 class="text-center">Vrite sale code</h2>
 
                                     <input type="text" class="form-control" v-model="enterd_sale_code" name="name" placeholder="Enter sale code" title="Enter sale code">
@@ -181,6 +181,26 @@
                                         >
                                         Check code
                                     </button>
+                                </div> -->
+                                <div class="input-group mb-3">
+                                    <input
+                                        type="text"
+                                        class="form-control"
+                                        placeholder="Recipient's username"
+                                        aria-label="Recipient's username"
+                                        aria-describedby="basic-addon2"
+                                        v-model="enterd_sale_code"
+                                    />
+                                    <div class="input-group-append">
+                                        <button
+                                            class="btn btn-primary"
+                                            style="height: auto"
+                                            type="button"
+                                            @click="check_sale_code()"
+                                        >
+                                            Search
+                                        </button>
+                                    </div>
                                 </div>
                                 <div class="row" v-if="sale_code == 'Sale code dint fined'">
                                     <div class="alert alert-danger" role="alert">This code did not fined!</div>
@@ -262,7 +282,7 @@ export default {
             }
             else{
                 axios
-                .post("/check_sale_code/", {
+                .post("/order/check_sale_code/", {
                     serching_code: this.enterd_sale_code
                 })
                 .then(response => {

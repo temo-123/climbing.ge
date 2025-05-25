@@ -21,13 +21,18 @@
 </template>
 
 <script>
-    import tabsComponent  from '../../items/data_tabs/DataTab/TabsComponent'
+    import orderDetalsModal from '../../items/modal/orders/orderDetalsModal.vue'
+    import orderStatusModal from '../../items/modal/orders/orderStatusModal.vue'
+
+    import tabsComponent  from '../../items/data_table/TabsComponent.vue'
     import breadcrumb from '../../items/BreadcrumbComponent.vue'
     export default {
         components: {
+            orderDetalsModal,
+            orderStatusModal,
+
             breadcrumb,
-            tabsComponent ,
-            // leftMenu,
+            tabsComponent,
         },
         data(){
             return {
@@ -47,12 +52,41 @@
         methods: {
             get_orders(){
                 axios
+<<<<<<< HEAD
                 .get("/get_user_purchules/")
+=======
+                .get("/order/get_user_orders/")
+>>>>>>> admin_page_table
                 .then(response => {
-                    this.data_for_tab.push({'id': 1,
-                                            'data': response.data, 
-                                            'table_name': 'My orders', 
-                                            'table_category': '', 
+                    this.data_for_tab.push({ 
+                                            'id': 1,
+                                            'table_name': 'My Orders',
+                                            'add_action': {
+                                                'action': 'function',
+                                                'link': 'open_siped_region_add_modal', 
+                                                'class': 'btn btn-primary',
+                                                'btn_title' : 'Add castom order'
+                                            },
+                                            'tab_data': {
+                                                'data': response.data, 
+                                                'tab': {
+                                                    'head': [
+                                                        'ID',
+                                                        'Status',
+                                                        'Edit status',
+                                                    ],
+                                                    'body': [
+                                                        ['data', ['id']],
+                                                        ['data', ['Status']],
+                                                        ['action_fun_id', 'open_siped_region_edit_modal', 'btn btn-primary', '<i aria-hidden="true" class="fa fa-pencil"></i>'],
+                                                    ],
+                                                    'perm': [
+                                                        ['no'],
+                                                        ['no'],
+                                                        ['order', 'edit'],
+                                                    ]
+                                                }
+                                            },
                                         });
                 })
                 .catch(

@@ -108,6 +108,11 @@ const router = new VueRouter({
         { path: '/local_bisnes', name: 'localBisnesList', component: load('local_bisnes/localBisnesListComponent') },
         { path: '/local_bisnes/add', name: 'localBisnesAdd', component: load('local_bisnes/localBisnesAddComponent') },
         { path: '/local_bisnes/edit/:id', name: 'localBisnesEdit', component: load('local_bisnes/localBisnesEditComponent') },
+        
+        { path: '/warehouses', name: 'warehousesList', component: load('warehouse/warehousesListComponent') },
+        { path: '/warehouse/add', name: 'warehouseAdd', component: load('warehouse/warehouseAddComponent') },
+        { path: '/warehouse/edit/:id', name: 'warehouseEdit', component: load('warehouse/warehouseEditComponent') },
+        { path: '/warehouse/options/:id', name: 'warehouseOptions', component: load('warehouse/warehouseOptionsComponent') },
 
         { path: '/event', name: 'eventList', component: load('event/eventsAndCompetitionsListComponent') },
         { path: '/event/add', name: 'eventAdd', component: load('event/events/eventAddComponent') },
@@ -116,29 +121,31 @@ const router = new VueRouter({
         { path: '/competition/add', name: 'competitionAdd', component: load('event/competitions/competitionAddComponent') },
         { path: '/competition/edit/:id', name: 'competitionEdit', component: load('event/competitions/competitionEditComponent') },
         
-        { path: '/user_product_list', name: 'userProductsList', component: load('products_and_categories/userProductsListComponent') },
-        { path: '/products_and_categories', name: 'productsList', component: load('products_and_categories/productsAndCatgoriesListComponent') },
+        { path: '/user_product_list', name: 'userProductsList', component: load('products_and_categories/list/for_user/userProductsListComponent') },
+        { path: '/products_and_categories', name: 'productsList', component: load('products_and_categories/list/for_admin/productsAndCatgoriesListComponent') },
+        
         { path: '/product/edit/:id', name: 'productEdit', component: load('products_and_categories/products/productEditComponent') },
         { path: '/product/add', name: 'productAdd', component: load('products_and_categories/products/productAddComponent') },
 
         { path: '/product_brands', name: 'product_brands', component: load('products_and_categories/brands/product_brands') },
+        { path: '/product_option_control/:id', name: 'productOptionsControl', component: load('products_and_categories/productOptionControlPageComponent') }, // :id => :product_id
 
-        { path: '/user_tours_reservations_list', name: 'userToursReservations', component: load('tour/UserToursReservationsPage') },
-        { path: '/user_tours_list', name: 'userToursList', component: load('tour/UserToursListPage') },
+        { path: '/productCategory/edit/:id', name: 'productCategoryEdit', component: load('products_and_categories/categories/productCategoryEditComponent'), },
+        { path: '/productCategory/add/', name: 'productCategoryAdd', component: load('products_and_categories/categories/productCategoryAddComponent') },
 
-        { path: '/all_tours_list', name: 'allToursList', component: load('tour/AllToursListPage') },
-        { path: '/all_tours_reservations_list', name: 'allToursReservations', component: load('tour/AllToursReservationsPage') },
+
+        { path: '/user_tours_reservations_list', name: 'userToursReservations', component: load('tour/list/for_user/UserToursReservationsPage') },
+        { path: '/user_tours_list', name: 'userToursList', component: load('tour/list/for_user/UserToursListPage') },
+
+        { path: '/all_tours_list', name: 'allToursList', component: load('tour/list/for_admin/AllToursListPage') },
+        { path: '/all_tours_reservations_list', name: 'allToursReservations', component: load('tour/list/for_admin/AllToursReservationsPage') },
+
         { path: '/tour/edit/:id', name: 'tourEdit', component: load('tour/forms/EditTourPage') },
         { path: '/tour/add', name: 'tourAdd', component: load('tour/forms/AddTourPage') },
 
         { path: '/stor_slides_list', name: 'storSlidesList', component: load('gallery/StoreSlidesPage') },
 
         { path: '/non_registered_commenter_list', name: 'nonRegisteredCommenterList', component: load('NonRegisteredCommenterListPage') },
-
-        { path: '/product_option_control/product_id/:product_id', name: 'productOptionsControl', component: load('products_and_categories/productOptionControlPageComponent') },
-
-        { path: '/productCategory/edit/:id', name: 'productCategoryEdit', component: load('products_and_categories/categories/productCategoryEditComponent'), },
-        { path: '/productCategory/add/', name: 'productCategoryAdd', component: load('products_and_categories/categories/productCategoryAddComponent') },
 
         { path: '/services_list', name: 'servicesList', component: load('services/servicesListComponent'), },
         { path: '/service/edit/:id', name: 'serviceEdit', component: load('services/serviceEditComponent'), },

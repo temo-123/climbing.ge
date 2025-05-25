@@ -79,6 +79,8 @@ export default {
                 climbed_data: '',
             },
 
+            ModalClass: [],
+
             is_loading: false,
 
             MIX_GOOGLE_CAPTCHA_SITE_KEY: process.env.MIX_GOOGLE_CAPTCHA_SITE_KEY,

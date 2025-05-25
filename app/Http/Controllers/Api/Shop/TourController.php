@@ -31,8 +31,8 @@ class TourController extends Controller
         $returned_array = [];
         foreach($tours as $tour){
             array_push($returned_array, [
-                $tour,
-                'user' => $tour->user
+                'tour' => $tour,
+                'user' => $tour->user[0]
             ]);
         }
         return $returned_array;

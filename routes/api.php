@@ -533,9 +533,10 @@ Route::group(['namespace'=>'Api'], function() {
             Route::post('/del_from_favorite/{product_id}', 'del_from_favorite');
         });
     
-        Route::controller(OrderController::class)->group( function() {
-            Route::apiResource('/order', 'OrderController');
-            
+        Route::controller(OrderController::class)->prefix('order')->group( function() {
+            Route::get('/get_all_orders', 'get_all_orders');
+            Route::post('/create_order', 'create_order');
+
             Route::get('/order/get_order_status/{order_id}', 'get_order_status');
             Route::get('/get_user_purchases', 'get_user_purchases');
             Route::get('/get_user_orders', 'get_user_orders');
@@ -647,9 +648,14 @@ Route::group(['namespace'=>'Api'], function() {
         /*
         *   Users routes
         */
+        Route::apiResource('/user_site', 'UserSiteController');
+
         Route::controller(UsersController::class)->prefix('user')->group( function() {
             Route::post('/update_password', 'update_password');
             Route::get('/get_auth_user_permissions', 'get_auth_user_permissions');
+            Route::get('/get_auth_user_data', 'get_auth_user_data');
+            Route::get('/get_user_data/{user_id}', 'get_user_data');
+            Route::get('/get_all_users', 'get_all_users');
 
             Route::get('/get_worker_users', 'get_worker_users');
 
@@ -657,29 +663,24 @@ Route::group(['namespace'=>'Api'], function() {
 
             Route::delete('/del_user/{user_id}', 'del_user');
 
+            Route::get('/post_user/{user_id}', 'get_post_user');
+            Route::post('/user_image_update/{user_id}', 'user_image_update');
+
             Route::controller(UserNotificationsController::class)->prefix('notifications')->group( function() {
-                // Route::post('/send_article_adding_notification', 'send_article_adding_notification');
-                // Route::post('/send_event_adding_notification', 'send_event_adding_notification');
-                // Route::post('/send_product_adding_notification', 'send_product_adding_notification');
-                // Route::post('/send_sector_adding_notification', 'send_sector_adding_notification');
-                // Route::post('/send_service_adding_notification', 'send_service_adding_notification');
-                
-                // Route::post('/event_reminder/{action}', 'event_reminder');
                 Route::post('/send_user_favorites_notification/{action}', 'send_user_favorites_notification');
             });
         });
         
         /*
-        *   Users routes
+        *   Users option routes
         */
-        Route::apiResource('/user_site', 'UserSiteController');
-        Route::apiResource('/users', 'UsersController');
-        Route::get('/post_user/{user_id}', 'UsersController@get_post_user');
-        Route::post('user_image_update/{user_id}', 'UsersController@user_image_update');
+        // Route::apiResource('/users', 'UsersController');
+        // Route::get('/post_user/{user_id}', 'UsersController@get_post_user');
+        // Route::post('user_image_update/{user_id}', 'UsersController@user_image_update');
         
         
-        Route::controller(UsersController::class)->prefix('options')->group( function() {
-            Route::get('/get_user_data', 'get_user_data');
+        Route::controller(UserOptionController::class)->prefix('options')->group( function() {
+            // Route::get('/get_user_data', 'get_user_data');
             Route::get('/get_selected_user_data/{user_id}', 'get_selected_user_data');
             Route::post('/user_info_update/{user_id}', 'user_info_update');
 
@@ -691,6 +692,18 @@ Route::group(['namespace'=>'Api'], function() {
             Route::post('/{service_id}', 'follow');
             Route::delete('/del_follower/{id}', 'del_follower');
             Route::get('/following_users_list', 'get_following_users_list');
+        });
+
+        /*
+        *   Warehouse
+        */
+        Route::controller(WarehouseController::class)->prefix('warehouse')->group( function() {
+            Route::get('/get_warehouses', 'get_warehouses');
+            Route::post('/add_warehouses', 'add_warehouses');
+            Route::post('/edit_warehouse/{warehouse_id}', 'edit_warehouse');
+            Route::post('/get_editing_warehouse/{warehouse_id}', 'get_editing_warehouse');
+            Route::get('/get_activ_warehouse/{warehouse_id}', 'get_activ_warehouse');
+            Route::delete('/del_warehouse/{warehouse_id}', 'del_warehouse');
         });
 
         /*

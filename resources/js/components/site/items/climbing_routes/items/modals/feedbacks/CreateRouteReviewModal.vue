@@ -72,12 +72,19 @@
             </div>
             <div slot="modal-footer">
                 <div class="modal-footer">
-                    <div class="form-group"  v-if="is_verify_isset == false">
-                        <button type="submit" class="btn btn-success float-right" disabled>{{ $t("global.form.save") }}</button>
-                    </div>
-                    <div class="form-group"  v-else>
-                        <button type="submit" form="route_review_form" class="btn btn-success float-right">{{ $t("global.form.save") }}</button>
-                    </div>
+                    <button
+                        class="btn btn-warning float-left"
+                        @click="close_route_review_modal(route_id)"
+                    >
+                        {{ $t('guide.route.back_to_modal') }}
+                    </button>
+
+                    <!-- <div class="form-group"  v-if="is_verify_isset == false"> -->
+                        <button v-if="is_verify_isset == false" type="submit" class="btn btn-success float-right" disabled>{{ $t("global.form.save") }}</button>
+                    <!-- </div>
+                    <div class="form-group"  v-else> -->
+                        <button v-else type="submit" form="route_review_form" class="btn btn-success float-right">{{ $t("global.form.save") }}</button>
+                    <!-- </div> -->
                 </div>
             </div>
         </stack-modal>

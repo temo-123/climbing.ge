@@ -28,24 +28,38 @@
                 <div class="col-sm-12" v-else>
                     <tabsComponent 
                         :table_data="this.data_for_tab"
-                        @update-data="get_articles"
-                        @filtr="filtr"
+                        @update="get_articles"
+
+                        @del_article="del_article"
+                        @del_region="del_region"
+                        @del_ice_route="del_ice_route"
+                        @del_ice_sector="del_ice_sector"
+
+                        @filtr_outdoors="filtr_outdoors"
+                        @show_spot_sectors_modal="show_spot_sectors_modal"
+                        @quick_wiev_action="quick_wiev_action"
                     />
                 </div>
             </div>
          </div>
+        <spot_sectors_modal
+            ref="show_spot_sectors_modal"
+        />
     </div>
 </template>
 
 <script>
-    import tabsComponent  from '../../items/data_tabs/DataTab/TabsComponent'
+    import tabsComponent  from '../../items/data_table/TabsComponent.vue'
     import { ContentLoader } from 'vue-content-loader'
     import breadcrumb from '../../items/BreadcrumbComponent.vue'
+    import spot_sectors_modal from "../../items/modal/tab_modals/ArticleSectorSequenceModalComponent.vue";
     export default {
         components: {
             breadcrumb,
             tabsComponent,
-            ContentLoader
+            ContentLoader,
+
+            spot_sectors_modal
         },
         // props: [
         //     'status',
@@ -81,12 +95,46 @@
                     axios
                     .get("/outdoor/region/")
                     .then(response => {
-                        this.data_for_tab.push({'id': 2,
-                                                'data': response.data, 
-                                                'table_name': "Regions",
-                                                'table_add_url': 'spot_category_add', 
-                                                // 'table_edit_url': 'spot_category_edit',
+                        this.data_for_tab.push({
+                                                'id': 2,
+                                                'table_name': 'Regions', 
+                                                'add_action': {
+                                                    'action': 'route',
+                                                    'link': 'spot_category_add', 
+                                                    'class': 'btn btn-primary'
+                                                },
+                                                'tab_data': {
+                                                    'data': response.data, 
+                                                    'tab': {
+                                                        'head': [
+                                                            'ID',
+                                                            'Name',
+                                                            'Edit',
+                                                            'Delite',
+                                                        ],
+                                                        'body': [
+                                                            ['data', ['id']],
+                                                            ['data', ['us_name']],
+                                                            ['action_router', 'spot_category_edit', 'btn btn-primary', 'Edit'],
+                                                            ['action_fun_id', 'del_region', 'btn btn-danger', 'Del'],
+                                                        ],
+                                                        'perm': [
+                                                            ['no'],
+                                                            ['no'],
+                                                            ['spot_region', 'edit',],
+                                                            ['spot_region', 'del',],
+                                                        ]
+                                                    }
+                                                },
                                             });
+
+                        this.data_for_tab[0].filter_data = {
+                                                    'title': 'Filter by regions',
+                                                    'data': response.data,
+                                                    'action_fun_id': 'filtr_outdoors',
+                                                    'array_key': 'us_name'
+                                                }
+
                     })
                     .catch(
                         error => console.log(error)
@@ -98,10 +146,40 @@
                     axios
                     .get("/ice_sectors/get_all_sectors/")
                     .then(response => {
-                        this.data_for_tab.push({'id': 2,
-                                                'data': response.data, 
-                                                'table_name': "Ice sectors",
-                                                'table_add_url': 'iceSectorAdd', 
+                        this.data_for_tab.push({
+                                                'id': 2,
+                                                'table_name': 'Ice sectors', 
+                                                'add_action': {
+                                                    'action': 'route',
+                                                    'link': 'iceSectorAdd', 
+                                                    'class': 'btn btn-primary'
+                                                },
+                                                'tab_data': {
+                                                    'data': response.data, 
+                                                    'tab': {
+                                                        'head': [
+                                                            'ID',
+                                                            'Name',
+                                                            'Public',
+                                                            'Edit',
+                                                            'Delite',
+                                                        ],
+                                                        'body': [
+                                                            ['data', ['id']],
+                                                            ['data', ['name']],
+                                                            ['data', ['published'], 'bool'],
+                                                            ['action_router', 'iceSectorEdit', 'btn btn-primary', '<i aria-hidden="true" class="fa fa-pencil"></i>'],
+                                                            ['action_fun_id', 'del_ice_sector', 'btn btn-danger', '<i aria-hidden="true" class="fa fa-trash"></i>'],
+                                                        ],
+                                                        'perm': [
+                                                            ['no'],
+                                                            ['no'],
+                                                            ['no'],
+                                                            ['ice_sector', 'edit'],
+                                                            ['ice_sector', 'del'],
+                                                        ]
+                                                    }
+                                                },
                                             });
                         this.get_ice_routes()
                     })
@@ -114,10 +192,37 @@
                 axios
                 .get("/ice_routes/get_all_routes/")
                 .then(response => {
-                    this.data_for_tab.push({'id': 3,
-                                            'data': response.data, 
-                                            'table_name': "Ice routes",
-                                            'table_add_url': 'iceRouteAdd', 
+                    this.data_for_tab.push({
+                                            'id': 3,
+                                            'table_name': 'Ice routes', 
+                                            'add_action': {
+                                                'action': 'route',
+                                                'link': 'iceRouteAdd', 
+                                                'class': 'btn btn-primary'
+                                            },
+                                            'tab_data': {
+                                                'data': response.data, 
+                                                'tab': {
+                                                    'head': [
+                                                        'ID',
+                                                        'Name',
+                                                        'Edit',
+                                                        'Delite',
+                                                    ],
+                                                    'body': [
+                                                        ['data', ['id']],
+                                                        ['data', ['name']],
+                                                        ['action_router', 'iceRouteEdit', 'btn btn-primary', '<i aria-hidden="true" class="fa fa-pencil"></i>'],
+                                                        ['action_fun_id', 'del_ice_route', 'btn btn-danger', '<i aria-hidden="true" class="fa fa-trash"></i>'],
+                                                    ],
+                                                    'perm': [
+                                                        ['no'],
+                                                        ['no'],
+                                                        ['article', 'edit'],
+                                                        ['article', 'del'],
+                                                    ]
+                                                }
+                                            },
                                         });
                 })
                 .catch(
@@ -136,12 +241,42 @@
                 })
                 .then(response => {
                     this.data_for_tab = []
-                    this.data_for_tab.push({'id': 1,
-                                            'data': response.data, 
+    
+                    this.data_for_tab.push({
+                                            'id': 1,
                                             'table_name': this.$route.params.article_category, 
-                                            'table_category': this.$route.params.article_category, 
-                                            'table_add_url': 'articleAdd', 
-                                            // 'table_edit_url': 'articleEdit',
+                                            'list_page': process.env.MIX_BASE_URL_SSH + '/' + this.$route.params.article_category,
+                                            'add_action': {
+                                                'action': 'route',
+                                                'link': 'articleAdd', 
+                                                'class': 'btn btn-primary'
+                                            },
+                                            'tab_data': {
+                                                'data': response.data, 
+                                                'tab': {
+                                                    'head': [
+                                                        'ID',
+                                                        'Title',
+                                                        'Public',
+                                                        'Edit',
+                                                        'Delite',
+                                                    ],
+                                                    'body': [
+                                                        ['data', ['id']],
+                                                        ['data_action_id', ['url_title'], 'quick_wiev_action'],
+                                                        ['data', ['published'], 'bool'],
+                                                        ['action_router', 'articleEdit', 'btn btn-primary', '<i aria-hidden="true" class="fa fa-pencil"></i>'],
+                                                        ['action_fun_id', 'del_article', 'btn btn-danger', '<i aria-hidden="true" class="fa fa-trash"></i>'],
+                                                    ],
+                                                    'perm': [
+                                                        ['no'],
+                                                        ['no'],
+                                                        ['no'],
+                                                        ['article', 'edit'],
+                                                        ['article', 'del'],
+                                                    ]
+                                                }
+                                            },
                                         });
 
 
@@ -160,17 +295,50 @@
                 .get("/article/get_category_articles/"+this.$route.params.article_category)
                 .then(response => {
                     this.data_for_tab = []
-                    this.data_for_tab.push({'id': 1,
-                                            'data': response.data, 
+                    this.data_for_tab.push
+                                        ({  
+                                            'id': 1,
                                             'table_name': this.$route.params.article_category, 
-                                            'table_category': this.$route.params.article_category, 
-                                            'table_add_url': 'articleAdd', 
-                                            'table_edit_url': 'articleEdit',
+                                            'list_page': process.env.MIX_BASE_URL_SSH + '/' + this.$route.params.article_category,
+                                            'add_action': {
+                                                'action': 'route',
+                                                'link': 'articleAdd', 
+                                                'class': 'btn btn-primary'
+                                            },
+                                            'tab_data': {
+                                                'data': response.data, 
+                                                'tab': {
+                                                    'head': [
+                                                        'ID',
+                                                        'Title',
+                                                        'Public',
+                                                        'Edit',
+                                                        'Delite',
+                                                    ],
+                                                    'body': [
+                                                        ['data', ['id']],
+                                                        ['data_action_id', ['url_title'], 'quick_wiev_action'],
+                                                        ['data', ['published'], 'bool'],
+                                                        ['action_router', 'articleEdit', 'btn btn-primary', '<i aria-hidden="true" class="fa fa-pencil"></i>'],
+                                                        ['action_fun_id', 'del_article', 'btn btn-danger', '<i aria-hidden="true" class="fa fa-trash"></i>'],
+                                                    ],
+                                                    'perm': [
+                                                        ['no'],
+                                                        ['no'],
+                                                        ['no'],
+                                                        ['article', 'edit'],
+                                                        ['article', 'del'],
+                                                    ]
+                                                }
+                                            },
                                         });
-
 
                     if(this.$route.params.article_category == 'outdoor'){
                         this.get_regions(this.$route.params.article_category)
+                        
+                        this.data_for_tab[0].tab_data.tab.head.splice(3, 0, 'Sectors')
+                        this.data_for_tab[0].tab_data.tab.body.splice(3, 0, ['action_fun_id', 'show_spot_sectors_modal', 'btn btn-success', '<i aria-hidden="true" class="fa fa-list-ol"></i>'])
+                        this.data_for_tab[0].tab_data.tab.perm.splice(3, 0, ['article', 'edit'])
                     }
                     if(this.$route.params.article_category == 'ice'){
                         this.get_ice_sectors(this.$route.params.article_category)
@@ -181,6 +349,75 @@
                 )
                 .finally(() => this.article_loading = false);
             },
+
+            del_article(id){
+                if(confirm('Are you sure, you want delite it?')){
+                    axios
+                    .post('../../api/article/del_article/'+id, {
+                        _method: 'DELETE'
+                    })
+                    .then(Response => {
+                        this.get_articles()
+                    })
+                    .catch(error => console.log(error))
+                }
+            },
+
+            del_region(id){
+                if(confirm('Are you sure, you want delite it?')){
+                    axios
+                    .post('../../api/outdoor/del_spot/'+id, {
+                        id: id,
+                        _method: 'delete'
+                    })
+                    .then(Response => {
+                        this.get_articles()
+                    })
+                    .catch(error => console.log(error))
+                }
+            },
+
+            del_ice_route(id){
+                if(confirm('Are you sure, you want delite it?')){
+                    axios
+                    .post('/ice_routes/del_route/'+id, {
+                        _method: 'DELETE'
+                    })
+                    .then(Response => {
+                        this.get_articles()
+                    })
+                    .catch(error => console.log(error))
+                }
+            },
+
+            del_ice_sector(id){
+                if(confirm('Are you sure, you want delite it?')){
+                    axios
+                    .post('/ice_sectors/del_sector/'+id, {
+                        _method: 'DELETE'
+                    })
+                    .then(Response => {                        
+                        this.get_articles()
+                    })
+                    .catch(error => console.log(error))
+                }
+            },
+
+            filtr_outdoors(event){
+                if(event != 0){
+                    this.get_filtred_articles(event)
+                }
+                else if(event == 0){
+                    this.get_unfilted_articles(event)
+                }
+            },
+
+            show_spot_sectors_modal(article_id){
+                this.$refs.show_spot_sectors_modal.show_spot_sectors_modal(article_id)
+            },
+            quick_wiev_action(article_id){
+                alert('it`s article quick view window ( article ID - '+article_id+')')
+            }
         }
     }
 </script>

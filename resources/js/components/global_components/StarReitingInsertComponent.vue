@@ -167,7 +167,7 @@ export default {
     cursor: pointer;
     margin: 0;
     padding: 0;
-    width: 19%;
+    width: 14%;
 
     color: #51acd7;
     display: inline-block;

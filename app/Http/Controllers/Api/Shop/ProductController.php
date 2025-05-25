@@ -24,12 +24,13 @@ class ProductController extends Controller
 {
     public function get_all_products()
     {
-        $products = Product::get();
+        $products = Product::latest('id')->get();
         $returned_array = [];
         foreach($products as $product){
             array_push($returned_array, [
-                $product,
-                'user' => $product->user
+                'product' => $product,
+                'user' => $product->user->first(),
+                'options' => $product->product_options->count()
             ]);
         }
         return $returned_array;
@@ -37,7 +38,15 @@ class ProductController extends Controller
 
     public function get_user_products()
     {
-        return Auth::user()->products;
+        $products = Auth::user()->products;
+        $returned_array = [];
+        foreach($products as $product){
+            array_push($returned_array, [
+                'product' => $product,
+                'options' => $product->product_options->count()
+            ]);
+        }
+        return $returned_array;
     }
 
     public function get_local_products(Request $request)
@@ -127,8 +136,8 @@ class ProductController extends Controller
         $new_user_relatione -> save();
     }
 
-    public function change_user_relation(Request $request) {
-
+    public function change_user_relation(Request $request) 
+    {
         if($request['data']['old_user_id'] != []){
             $user_relatione = User_product::where('product_id', '=', $request['data']['product_id'])->where('user_id', '=', $request['data']['old_user_id'])->first();
             if($user_relatione != []){

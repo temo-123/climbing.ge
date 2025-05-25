@@ -123,7 +123,7 @@
                     
                     <div v-else :class="'alert alert-danger cursor_pointer'" role="alert" @click="goTo('/login')">
                         <div class="col-md-12">
-                            <p>Ples login for add route feedback!</p>
+                            <p>{{ $t('guide.route.pleas_login') }}</p>
                         </div>
                     </div>
 

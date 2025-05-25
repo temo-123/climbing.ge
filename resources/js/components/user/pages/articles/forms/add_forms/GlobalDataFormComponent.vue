@@ -9,18 +9,19 @@
                     </div>
                 </div>
                 <form method="POST" @submit.prevent="add_article">
-                    <div class="form-group clearfix row">
+                    <!-- <div class="form-group clearfix row">
                         <label for="published" class='col-md-2 control-label '> Publish </label>
                         <div class="col-md-10">
                             <select class="form-control" v-model="data.published" name="published" > 
                                 <option value="0">Not public</option> 
                                 <option value="1">Public</option> 
                             </select> 
-                            <div class="alert alert-danger" role="alert" v-if="error.published">
-                                {{ error.published[0] }}
-                            </div>
                         </div>
-                    </div>
+                    </div> -->
+                    
+                    <published_item 
+                        @item_data="data.published = $event" 
+                    />
 
                     <div class="form-group clearfix row" v-if="this.category == 'outdoor'">
                         <label for="region" class='col-md-2 control-label '> Regions </label>
@@ -97,14 +98,17 @@
     </div>
 </template>
 <script>
-    import { SlickList, SlickItem } from 'vue-slicksort';
-    import StackModal from '@innologica/vue-stackable-modal'  //https://innologica.github.io/vue-stackable-modal/#sample-css
+    // import { SlickList, SlickItem } from 'vue-slicksort';
+    // import StackModal from '@innologica/vue-stackable-modal'  //https://innologica.github.io/vue-stackable-modal/#sample-css
 
+    import published_item from '../../../../items/form/parts/PublishedValueComponent.vue'
     export default {
         components: {
-            StackModal,
-            SlickItem,
-            SlickList,
+            // StackModal,
+            // SlickItem,
+            // SlickList,
+
+            published_item
         },
         props: [
             // 'back_url',
