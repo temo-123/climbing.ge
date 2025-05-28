@@ -171,7 +171,7 @@
                 this.fatal_error = false
 
                 axios
-                .post('../api/message', {
+                .post('/message', {
                     name: this.name,
                     surname: this.surname,
                     email: this.email,

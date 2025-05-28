@@ -28,10 +28,10 @@
 <script>
     import servicesListComponent from '../../global_components/ServicesListComponent.vue'
     import messageComponent from '../../global_components/MessageComponent'
-    import metaData from '../items/MetaDataComponent'
+    // import metaData from '../items/MetaDataComponent'
     export default {
         components: {
-            metaData,
+            // metaData,
             messageComponent,
             servicesListComponent
         },

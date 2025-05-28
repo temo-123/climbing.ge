@@ -22,7 +22,8 @@ class FollowingNotificationController extends Controller
         $EmailArray = array(
             'email' => $email,
             'message' => $msg,
-            'from_site' => $from_site
+            'from_site' => $from_site,
+            'unfollow_url' => ''
         );
 
         $send_mail = Site::latest()->get(["email"]);

@@ -104,7 +104,7 @@
         methods: {
             get_user(){
                 axios
-                .get('/api/auth_user')
+                .get('/auth_user')
                 .then((response)=>{
                     this.user = response.data['name']
                 })

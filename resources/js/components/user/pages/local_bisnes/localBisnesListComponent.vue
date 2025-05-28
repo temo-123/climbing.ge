@@ -60,6 +60,7 @@
                                                     'head': [
                                                         'ID',
                                                         'Title',
+                                                        'Public',
                                                         'Public data',
                                                         'Total public',
                                                         'Edit',
@@ -68,8 +69,9 @@
                                                     'body': [
                                                         ['data', ['id']],
                                                         ['data', ['url_title'],],
+                                                        ['data', ['published'], 'bool'],
                                                         ['data', ['published_data']],
-                                                        ['data', ['public_totaly']],
+                                                        ['data', ['public_totaly'], 'bool'],
                                                         ['action_router', 'localBisnesEdit', 'btn btn-primary', '<i aria-hidden="true" class="fa fa-pencil"></i>'],
                                                         ['action_fun_id', 'del_local_bisnes', 'btn btn-danger', '<i aria-hidden="true" class="fa fa-trash"></i>'],
                                                     ],

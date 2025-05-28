@@ -326,8 +326,8 @@
             get_user_data: function(){
                 this.user_is_refresh = true
                 axios
-                .get("/options/get_user_data/")
-                .then(response => {
+                .get('/auth_user')
+                .then((response)=>{
                     this.user = response.data
 
                     this.user_is_refresh = false
@@ -336,7 +336,7 @@
                     this.get_user_sites()
                 })
                 .catch(
-                    error => console.log(error)
+                    // this.user = 'Boss'
                 );
             },
             user_data_update() {
@@ -506,7 +506,7 @@
             del_user_site(site_id){
                 if(confirm('Are you sure, you want delite it?')){
                     axios
-                    .post('..//user_site/'+site_id, {
+                    .post('/user_site/'+site_id, {
                         _method: 'DELETE'
                     })
                     .then(Response => {

@@ -48,6 +48,7 @@
 </template>
 
 <script>
+    import VueRecaptcha from 'vue-recaptcha'; //https://www.npmjs.com/package/vue-recaptcha
     export default {
         props: [
             // 'article',
@@ -60,7 +61,7 @@
             };
         },
         components: {
-            // 
+            VueRecaptcha
         },
         mounted() {
             // 

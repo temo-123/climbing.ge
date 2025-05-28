@@ -86,32 +86,11 @@
                                     </tr>
                                 </tbody>
                                 <tfoot >
-<<<<<<< HEAD
-                                    <tr v-if="$route.params.discount">
-                                        <th colspan="3" style="background: #fff;"></th>
-                                        <th class="text-right">Discount</th>
-                                        <th class="text-right">{{ $route.params.discount }} %</th>
-                                    </tr>
-=======
->>>>>>> admin_page_table
                                     <tr>
                                         <th colspan="3" style="background: #fff;"></th>
                                         <th class="text-right">Shiping</th>
                                         <th class="text-right">{{ shiping }} ₾</th>
                                     </tr>
-<<<<<<< HEAD
-=======
-                                    <tr v-if="$route.params.discount">
-                                        <th colspan="3" style="background: #fff;"></th>
-                                        <th class="text-right">Price brfor discount</th>
-                                        <th class="text-right">{{ price_befor_discount }} ₾</th>
-                                    </tr>
-                                    <tr v-if="$route.params.discount">
-                                        <th colspan="3" style="background: #fff;"></th>
-                                        <th class="text-right">Discount</th>
-                                        <th class="text-right">{{ $route.params.discount }} %</th>
-                                    </tr>
->>>>>>> admin_page_table
                                     <tr>
                                         <th colspan="3" style="background: #fff;"></th>
                                         <th class="text-right">Total price</th>
@@ -145,11 +124,8 @@
                 quantity: '',
 
                 total_price: 0,
-<<<<<<< HEAD
-                // price: 0,
-=======
+
                 price_befor_discount: 0,
->>>>>>> admin_page_table
                 user_id: 0,
                 // test_arr: ['test 1', 'test 2'],
                 payment: '',
@@ -218,20 +194,6 @@
                     }
                 });
                 this.shiping = Number(this.colculate_shiping_price(price))
-<<<<<<< HEAD
-                this.total_price = price + this.shiping
-            },
-            colculate_shiping_price(product_price){
-                if(this.shiping_country.free_shiping_price_after && (this.shiping_country.free_shiping_price_after <= product_price)){
-                    return 0
-                }
-                else if(this.shiping_country.free_shiping_price_after && (this.shiping_country.free_shiping_price_after > product_price)){
-                    return this.shiping_country.shiping_price
-                }
-                else{
-                    return this.shiping_country.shiping_price
-                }
-=======
 
                 if(this.$route.params.discount){
                     this.price_befor_discount = price + this.shiping
@@ -256,7 +218,6 @@
                 const t = price * discount;
                 const discaunted_price = t / 100
                 return price - discaunted_price
->>>>>>> admin_page_table
             },
             colculat_items_price(price, quantyty) {
                 var colculated_price = price * quantyty
@@ -310,12 +271,8 @@
             create_order(){
                 this.create_order_loading = true
                 axios
-<<<<<<< HEAD
-                .post('/order/',{
-=======
                 .post('/order/create_order/',
                 {
->>>>>>> admin_page_table
                     order_product_list: this.cart_items,
                     payment_tupe: this.$route.params.payment,
                     adres: this.$route.params.adres,

@@ -52,11 +52,7 @@
         methods: {
             get_orders(){
                 axios
-<<<<<<< HEAD
-                .get("/get_user_purchules/")
-=======
                 .get("/order/get_user_orders/")
->>>>>>> admin_page_table
                 .then(response => {
                     this.data_for_tab.push({ 
                                             'id': 1,

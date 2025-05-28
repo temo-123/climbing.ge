@@ -58,55 +58,55 @@ export const navbar = {
                     },
                 ],
             },
-            {
-                title: "My products",
-                name: "my_products",
-                routes: [
-                    {
-                        name: "My products",
-                        route: "/user_product_list",
-                        permissions: [
-                            ['add', 'product'],
-                            ['edit', 'product'],
-                            ['del', 'product'],
-                        ]
-                    },
-                    {
-                        name: "My Orders",
-                        route: "/order/user_orders",
-                        permissions: [
-                            ['edit_order_status', 'order'],
-                        ]
+            // {
+            //     title: "My products",
+            //     name: "my_products",
+            //     routes: [
+            //         {
+            //             name: "My products",
+            //             route: "/user_product_list",
+            //             permissions: [
+            //                 ['add', 'product'],
+            //                 ['edit', 'product'],
+            //                 ['del', 'product'],
+            //             ]
+            //         },
+            //         {
+            //             name: "My Orders",
+            //             route: "/order/user_orders",
+            //             permissions: [
+            //                 ['edit_order_status', 'order'],
+            //             ]
                         
-                    },
-                ],
-            },
-            {
-                title: "My tours",
-                name: "my_tours",
-                routes: [
-                    {
-                        name: "My tours",
-                        route: "/user_tours_list",
-                        permissions: [
-                            ['add', 'tour'],
-                            ['edit', 'tour'],
-                            ['del', 'tour'],
-                            ['add', 'tour_category'],
-                            ['edit', 'tour_category'],
-                            ['del', 'tour_category']
-                        ]
-                    },
-                    {
-                        name: "My tour reservations",
-                        route: "/user_tours_reservations_list",
-                        permissions: [
-                            ['show', 'tour_reservation'],
-                            ['del', 'tour_reservation'],
-                        ]
-                    }
-                ],
-            },
+            //         },
+            //     ],
+            // },
+            // {
+            //     title: "My tours",
+            //     name: "my_tours",
+            //     routes: [
+            //         {
+            //             name: "My tours",
+            //             route: "/user_tours_list",
+            //             permissions: [
+            //                 ['add', 'tour'],
+            //                 ['edit', 'tour'],
+            //                 ['del', 'tour'],
+            //                 ['add', 'tour_category'],
+            //                 ['edit', 'tour_category'],
+            //                 ['del', 'tour_category']
+            //             ]
+            //         },
+            //         {
+            //             name: "My tour reservations",
+            //             route: "/user_tours_reservations_list",
+            //             permissions: [
+            //                 ['show', 'tour_reservation'],
+            //                 ['del', 'tour_reservation'],
+            //             ]
+            //         }
+            //     ],
+            // },
             {
                 title: "Guide",
                 name: "guide",
@@ -319,21 +319,21 @@ export const navbar = {
                     },
                 ],
             },
-            {
-                title: "Films",
-                route: "/films",
-                permissions: [
-                    ['add', 'film'],
-                    ['edit', 'film'],
-                    ['del', 'film'],
-                    ['add', 'film_teg'],
-                    ['edit', 'film_teg'],
-                    ['del', 'film_teg'],
-                    ['add', 'film_category'],
-                    ['edit', 'film_category'],
-                    ['del', 'film_category'],
-                ]
-            },
+            // {
+            //     title: "Films",
+            //     route: "/films",
+            //     permissions: [
+            //         ['add', 'film'],
+            //         ['edit', 'film'],
+            //         ['del', 'film'],
+            //         ['add', 'film_teg'],
+            //         ['edit', 'film_teg'],
+            //         ['del', 'film_teg'],
+            //         ['add', 'film_category'],
+            //         ['edit', 'film_category'],
+            //         ['del', 'film_category'],
+            //     ]
+            // },
             {
                 title: "Local bisnes",
                 route: "/local_bisnes",

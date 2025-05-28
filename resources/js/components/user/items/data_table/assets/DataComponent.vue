@@ -57,7 +57,7 @@
                     <i class="fa fa-exclamation fa_exclamation_color" aria-hidden="true"></i>
                 </span>
             </span>
-            <span v-if="typeof data_prop[data_item_prop[1][0]] == 'boolean_2' || data_item_prop[2] == 'bool_2'">
+            <span v-else-if="typeof data_prop[data_item_prop[1][0]] == 'boolean_2' || data_item_prop[2] == 'bool_2'">
                 <span v-if="data_prop[data_item_prop[1][0]] == false || data_prop[data_item_prop[1][0]] == null || data_prop[data_item_prop[1][0]] == 0">
                     <i class="fa fa-times fa_times_color" aria-hidden="true"></i>
                 </span>
