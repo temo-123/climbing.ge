@@ -399,9 +399,23 @@ class ArticleController extends Controller
     {
         $article = [];
 
-        $global_article_count = Article::where('url_title',strip_tags($request->url_title))->where('published', '=', 1)->count();
+        $global_article_count = Article::where('url_title',strip_tags($request->url_title))
+                                                                ->where(
+                                                                function($query) {
+                                                                    return $query
+                                                                            ->where('published', '=', 2)
+                                                                            ->orWhere('published', '=', 1);
+                                                                    })
+                                                                ->count();
         if ($global_article_count > 0) {
-            $global_article = Article::where('url_title',strip_tags($request->url_title))->where('published', '=', 1)->first();
+            $global_article = Article::where('url_title',strip_tags($request->url_title))
+                                                                ->where(
+                                                                function($query) {
+                                                                    return $query
+                                                                            ->where('published', '=', 2)
+                                                                            ->orWhere('published', '=', 1);
+                                                                    })
+                                                                ->first();
             $article = ArticlesService::get_locale_article_in_page($global_article, $request->lang);
 
             return $article;

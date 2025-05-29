@@ -51,18 +51,20 @@
                         </div>
                     </div>
                     <form class="width_100" name="contact-form" method="POST" id="global_form" ref="myForm" style="margin-top: 5%;" enctyp ="multipart/form-data">
-                        <div class="form-group clearfix">
+                        <!-- <div class="form-group clearfix">
                             <label for="name" class='col-xs-2 control-label'> Publish </label>
                             <div class="col-xs-8">
                                 <select class="form-control" v-model="data.global_product.published" name="published" > 
                                     <option value="0">Not public</option> 
                                     <option value="1">Public</option> 
                                 </select> 
-                                <!-- <div class="alert alert-danger" role="alert" v-if="global_article_error.published">
-                                    {{ global_article_error.published[0] }}
-                                </div> -->
                             </div>
-                        </div>
+                        </div> -->
+
+                        <published_item 
+                            :published_prop = data.global_product.published
+                            @item_data="data.global_product.published = $event" 
+                        />
 
                         <div class="form-group clearfix">
                             <label for="sale_type" class='col-xs-2 control-label'> Sale type </label>
@@ -206,9 +208,11 @@
 <script>
     import { editor_config } from '../../../../../mixins/editor/editor_config_mixin.js'
     import validator_alerts_component from '../../../items/validator_alerts_component.vue'
+    import published_item from '../../../items/form/parts/PublishedValueComponent.vue'
     export default {
         components: {
-            validator_alerts_component
+            validator_alerts_component,
+            published_item
         },
         mixins: [
             editor_config

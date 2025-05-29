@@ -21,6 +21,7 @@
                     </div> -->
 
                     <published_item 
+                        :published_prop = data.published
                         @item_data="data.published = $event" 
                     />
 

@@ -62,14 +62,28 @@ class ProductController extends Controller
 
     public function get_local_product_in_page(Request $request)
     {
-        $global_product_count = Product::latest('id')->where('published', '=', 1)->where('url_title',strip_tags($request->url_title))->count();
+        $global_product_count = Product::latest('id')->where('url_title',strip_tags($request->url_title))
+                                                                ->where(
+                                                                function($query) {
+                                                                    return $query
+                                                                            ->where('published', '=', 2)
+                                                                            ->orWhere('published', '=', 1);
+                                                                    })
+                                                                ->count();
 
         if ($global_product_count > 0) {
-            $global_product = Product::latest('id')->where('published', '=', 1)->where('url_title',strip_tags($request->url_title))->first();
+            $global_product = Product::latest('id')->where('url_title',strip_tags($request->url_title))
+                                                                ->where(
+                                                                function($query) {
+                                                                    return $query
+                                                                            ->where('published', '=', 2)
+                                                                            ->orWhere('published', '=', 1);
+                                                                    })
+                                                                ->first();
             return $product = ProductService::get_locale_product_in_page_use_locale($global_product, $request->lang);
         }
         else{
-            // return abort(404);
+            return abort(404);
             // return redirect()->away('https://google.com/');
         }
     }
@@ -168,19 +182,24 @@ class ProductController extends Controller
 
     public function get_similar_product(Request $request)
     {
-        $this_product = product::where('published', '=', 1)->where('id', '=', $request->product_id)->first();
-        
-        if ($this_product->subcategory_id != null) {
-            $product_subcategory = $this_product->product_subcategory;
-            if($product_subcategory->count() > 0){
-                if($product_subcategory->products->count() > 1){
-                    if ($product_subcategory->products->count() < 3) {
-                        $similar_products = $product_subcategory->products->where('published', '=', 1)->where('id', '!=', $request->product_id)->random(3);
+        $this_product = product::where('published', '=', 1)->where('id', '=', $request->product_id)->count();
+
+        if($this_product > 0){
+            $this_product = product::where('published', '=', 1)->where('id', '=', $request->product_id)->first();
+            if ($this_product->subcategory_id != null) {
+                if($this_product->product_subcategory){
+                    $product_subcategory = $this_product->product_subcategory;
+                    if($product_subcategory->count() > 0){
+                        if($product_subcategory->products->count() > 1){
+                            if ($product_subcategory->products->count() < 3) {
+                                $similar_products = $product_subcategory->products->where('published', '=', 1)->where('id', '!=', $request->product_id)->random(3);
+                            }
+                            else{
+                                $similar_products = $product_subcategory->products->where('published', '=', 1)->where('id', '!=', $request->product_id)->random($product_subcategory->products->count()-1);
+                            }
+                            return $products = ProductService::get_locale_product_use_locale(array_slice($similar_products->all(), 0, 3), $request->lang);
+                        }
                     }
-                    else{
-                        $similar_products = $product_subcategory->products->where('published', '=', 1)->where('id', '!=', $request->product_id)->random($product_subcategory->products->count()-1);
-                    }
-                    return $products = ProductService::get_locale_product_use_locale(array_slice($similar_products->all(), 0, 3), $request->lang);
                 }
             }
         }
