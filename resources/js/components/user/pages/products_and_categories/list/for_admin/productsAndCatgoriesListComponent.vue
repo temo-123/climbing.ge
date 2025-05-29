@@ -86,6 +86,7 @@
                     this.data_for_tab.push({
                                             'id': 1,
                                             'table_name': 'Products', 
+                                            'list_page': process.env.MIX_APP_SSH + process.env.MIX_SHOP_URL + '/products',
                                             'add_action': {
                                                 'action': 'route',
                                                 'link': 'productAdd', 

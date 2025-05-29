@@ -130,16 +130,16 @@
                     this.get_products()
                 }
                 else{
-                    if(this.filtred_products.length == this.products.length){
+                    // if(this.filtred_products.length == this.products.length){
                         this.filtred_products = this.products.filter(function (item){
                             return item.global_product.sale_type == sale_type
                         })
-                    }
-                    else{
-                        this.filtred_products = this.filtred_products.filter(function (item){
-                            return item.global_product.sale_type == sale_type
-                        })
-                    }
+                    // }
+                    // else{
+                    //     this.filtred_products = this.filtred_products.filter(function (item){
+                    //         return item.global_product.sale_type == sale_type
+                    //     })
+                    // }
                 }
             },
             
@@ -148,16 +148,16 @@
                     this.get_products()
                 }
                 else{
-                    if(this.filtred_products.length == this.products.length){
+                    // if(this.filtred_products.length == this.products.length){
                         this.filtred_products = this.products.filter(function (item){
-                            return item.global_product.brand_id == filter_brand
+                            return item.global_product.brand_id == id
                         })
-                    }
-                    else{
-                        this.filtred_products = this.filtred_products.filter(function (item){
-                            return item.global_product.brand_id == filter_brand
-                        })
-                    }
+                    // }
+                    // else{
+                    //     this.filtred_products = this.filtred_products.filter(function (item){
+                    //         return item.global_product.brand_id == filter_brand
+                    //     })
+                    // }
                 }
             },
 
@@ -166,16 +166,16 @@
                     this.get_products()
                 }
                 else{
-                    if(this.filtred_products.length == this.products.length){
+                    // if(this.filtred_products.length == this.products.length){
                         this.filtred_products = this.products.filter(function (item){
                             return item.global_product.subcategory_id == subcategory_id
                         })
-                    }
-                    else{
-                        this.filtred_products = this.filtred_products.filter(function (item){
-                            return item.global_product.subcategory_id == subcategory_id
-                        })
-                    }
+                    // }
+                    // else{
+                    //     this.filtred_products = this.filtred_products.filter(function (item){
+                    //         return item.global_product.subcategory_id == subcategory_id
+                    //     })
+                    // }
                 }
             },
 

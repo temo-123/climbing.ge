@@ -189,24 +189,40 @@ class ImageControllService
         return $file_new_name;
     }
 
-    public static function create_demo_image($image_dir, $file_new_name, $resize)
+    public static function create_demo_image($image_dir, $file_new_name, $resize, $size = 's')
     {
+        // dd($image_dir, hasFile($file_new_name), $resize, $size = 's');
         // open an image file
         $resize_filename = public_path($image_dir.'origin_img/'.$file_new_name);
         $demo_img = Image::make($resize_filename);
         // dd($demo_img);
-
         // now you are able to resize the instance
         if($resize == 1){
-            $demo_img->resize(1024, 576);
+            if($size == 'l' || $size == 'L'){
+                $demo_img->resize(1920, 1080);
+            }
+            if($size == 'm' || $size == 'M'){
+                $demo_img->resize(1280, 720);
+            }
+            if($size == 's' || $size == 'S'){
+                $demo_img->resize(1024, 576);
+            }
         }
 
+        imagewebp($demo_img, $image_dir.'origin_img/', 50);
+
+        // $reconverted_image = ImageControllService::reconvert_image(); 
+        // dd($reconverted_image);
         // finally we save the image as a new file
-        $demo_img->save(public_path($image_dir.$file_new_name));
+        // $demo_img->save(public_path($image_dir.$file_new_name));
     }
 
     public static function create_image_name()
     {
         return date('Y-m-d-H-m-s-U').'{'.rand(1,1000000).'}'; 
+    }
+
+    public static function reconvert_image($image, $dir, $quality) {
+        imagewebp($image, $dir, $quality);
     }
 }

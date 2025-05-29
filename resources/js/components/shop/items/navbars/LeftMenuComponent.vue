@@ -155,16 +155,28 @@
             },
 
             sort_by_brand(){
+                // this.filter_brand = 0
+                this.sale_type = 0
+                this.filter_category = 0
+
                 this.$emit('sort_by_brand', this.filter_brand)
                 this.open_menu()
             },
 
             sort_by_subcategories(subcat_id){
+                // this.filter_brand = 0
+                // this.sale_type = 0
+                // this.filter_category = 0
+
                 this.$emit('sort_by_subcategories', subcat_id)
                 this.open_menu()
             },
 
             sort_by_sale_type(){
+                this.filter_brand = 0
+                // this.sale_type = 0
+                this.filter_category = 0
+
                 this.$emit('sort_by_sale_type', this.sale_type)
                 this.open_menu()
             },

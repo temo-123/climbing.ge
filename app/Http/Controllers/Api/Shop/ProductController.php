@@ -173,7 +173,7 @@ class ProductController extends Controller
         if ($this_product->subcategory_id != null) {
             $product_subcategory = $this_product->product_subcategory;
             if($product_subcategory->count() > 0){
-                if($product_subcategory->products->count() > 0){
+                if($product_subcategory->products->count() > 1){
                     if ($product_subcategory->products->count() < 3) {
                         $similar_products = $product_subcategory->products->where('published', '=', 1)->where('id', '!=', $request->product_id)->random(3);
                     }
