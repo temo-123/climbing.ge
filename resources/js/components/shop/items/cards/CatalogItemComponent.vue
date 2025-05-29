@@ -1,5 +1,5 @@
 <template>
-    <li class="grid-tile">
+    <div class="grid-tile">
         <div class="item">
             <div class="product_image">
                 <div class="previes_image" v-if="image_num > 0">
@@ -61,7 +61,7 @@
         </div>
 
 
-    </li>
+    </div>
 </template>
 
 <script>

@@ -131,6 +131,11 @@ img {
     // https://tamali.net/en/instrument/html-css/css-text-border/
 }
 
+.cards_block{
+    display: flex;
+    flex-flow: row wrap;
+}
+
 a {
     font-family: "Lora", serif;
     transition: all 0.4s ease 0s;
@@ -1437,6 +1442,9 @@ a.socialIcon:hover,
     list-style-type: none;
     transition: all 0.3s;
     padding: 0;
+
+    display: flex;
+    flex-flow: row wrap;
 }
 .grid:before,
 .grid:after {

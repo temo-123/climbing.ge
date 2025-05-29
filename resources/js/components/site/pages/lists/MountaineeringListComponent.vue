@@ -49,7 +49,7 @@
                                 <h2 v-if="masiv.mount" class="article_list_short_description">{{masiv.mount.locale_data.title}}</h2>
                                 <h2 v-else class="article_list_short_description">Other</h2>
                             </div>
-                            <div class="col-md-12">
+                            <div class="col-md-12 cards_block">
                                 <mountCard 
                                     v-for="mount_route in masiv.mount_route"
                                     :key='mount_route.global_data.id'

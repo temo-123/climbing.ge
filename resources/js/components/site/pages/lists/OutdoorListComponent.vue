@@ -100,7 +100,7 @@
                                                 <h2 class="article_list_short_description">Other</h2>
                                             </div>
                                         </div>
-                                        <div class="col-md-12">
+                                        <div class="col-md-12 cards_block">
                                             <outdoorCard  
                                                 v-for="outdoor in region.spots"
                                                 :key='outdoor.area.global_data.id'

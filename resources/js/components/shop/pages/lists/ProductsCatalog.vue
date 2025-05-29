@@ -36,7 +36,7 @@
 
                             <div class="layout" v-if="filtred_products.length > 0">
                                 <!-- <section class="inner"> -->
-                                    <ul class="grid">
+                                    <div class="grid">
 
                                         <catalogItem
                                             v-for="product in filtred_products"
@@ -44,7 +44,7 @@
                                             :product_data="product"
                                         />
 
-                                    </ul>
+                                    </div>
                                 <!-- </section> -->
                             </div>
                     </section>

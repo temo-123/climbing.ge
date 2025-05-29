@@ -94,7 +94,7 @@
                             <div class="col-xs-8">
                                 <select class="form-control" v-model="data.global_product.brand_id" name="brand_id"> 
                                     <option v-bind:value="''" disabled>Select brand</option> 
-                                    <option v-for="brand in brands" :key="brand.id" v-bind:value="brand.id"> {{ brand.us_brand.title }}</option>
+                                    <option v-for="brand in brands" :key="brand.global_brand.id" v-bind:value="brand.global_brand.id"> {{ brand.us_brand.title }}</option>
                                 </select> 
                             </div>
                         </div>
