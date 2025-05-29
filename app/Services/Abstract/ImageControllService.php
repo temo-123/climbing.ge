@@ -73,20 +73,23 @@ class ImageControllService
         // $file_new_name = date('Y-m-d-H-m-s-U').'{'.rand(1,1000000).'}'; 
         $file_new_name = ImageControllService::create_image_name(); 
 
-        $file_new_name = $file_new_name.'.'.$extension;
+        // $file_new_name = $file_new_name.'.'.$extension;
 
         if (!file_exists(public_path($image_dir))) {
             mkdir(public_path($image_dir));
         }
 
-        $path = public_path($image_dir . $file_new_name);
+        // $path = public_path($image_dir . $file_new_name);
 
-        if($resize == 1){
-            Image::make($form_value_id)->resize(1024, 576)->save( $path );
-        }
-        else{
-            Image::make($form_value_id)->save( $path );
-        }
+        // if($resize == 1){
+        //     Image::make($form_value_id)->resize(1024, 576)->save( $path );
+        // }
+        // else{
+        //     Image::make($form_value_id)->save( $path );
+        // }
+        
+        // create demo image
+        ImageControllService::create_demo_image(public_path($image_dir . $file_new_name), $file_new_name . '.webp', $resize);
 
         if(!$form_value_id->isValid()){
             App::abort(500, 'Image uploading error');
@@ -151,8 +154,9 @@ class ImageControllService
         
         // delete product file
         $fileName = $editing_model_value->$db_value;
-        $file = public_path($image_dir.$fileName);
-        $original_file = public_path($image_dir.'origin_img/'.$fileName);
+        $file = public_path($image_dir . pathinfo($fileName, PATHINFO_FILENAME) . '.webp');
+        // dd(pathinfo($fileName, PATHINFO_FILENAME) . '.webp');
+        $original_file = public_path($image_dir . 'origin_img/' . $fileName);
         
         if(file_exists($file) && file_exists($original_file)){
             File::delete($file);
@@ -178,10 +182,10 @@ class ImageControllService
     public static function rename_image($request, $form_value_id)
     {
         // rename file
-        $file      = $request->file($form_value_id);
-        $filename  = $file->getClientOriginalName();
-        $extension = $file->getClientOriginalExtension();
-        $pieces = explode( '.', $filename );
+        // $file      = $request->file($form_value_id);
+        // $filename  = $file->getClientOriginalName();
+        // $extension = $file->getClientOriginalExtension();
+        // $pieces = explode( '.', $filename );
         // $file_new_name = date('Y-m-d-H-m-s');
 
         $file_new_name = ImageControllService::create_image_name(); 
@@ -193,9 +197,9 @@ class ImageControllService
     {
         // dd($image_dir, hasFile($file_new_name), $resize, $size = 's');
         // open an image file
+        // dd($file_new_name);
         $resize_filename = public_path($image_dir.'origin_img/'.$file_new_name);
         $demo_img = Image::make($resize_filename);
-        dd($demo_img);
         // now you are able to resize the instance
         if($resize == 1){
             if($size == 'l' || $size == 'L'){
@@ -208,8 +212,9 @@ class ImageControllService
                 $demo_img->resize(1024, 576);
             }
         }
+        // dd($demo_img->basename);
 
-        ImageControllService::convertImageToWebp($demo_img, $resize_filename);
+        ImageControllService::convertImageToWebp($demo_img->dirname . '/' . $demo_img->basename, $image_dir . pathinfo($file_new_name, PATHINFO_FILENAME) . '.webp');
 
         // finally we save the image as a new file
         // $demo_img->save(public_path($image_dir.$file_new_name));
@@ -228,8 +233,9 @@ class ImageControllService
      * 
      * exemple -> convertImageToWebp('/home/paul/image.gif', 'image.webp', 90);
      */
-    private static function convertImageToWebp(string $inputFile, string $outputFile, int $quality = 100): void
+    private static function convertImageToWebp(string $inputFile, string $outputFile, int $quality = 80): void
     {
+        // dd($inputFile, $outputFile);
         $fileType = exif_imagetype($inputFile);
 
         switch ($fileType) {
