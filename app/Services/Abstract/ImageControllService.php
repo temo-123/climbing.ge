@@ -195,7 +195,7 @@ class ImageControllService
         // open an image file
         $resize_filename = public_path($image_dir.'origin_img/'.$file_new_name);
         $demo_img = Image::make($resize_filename);
-        // dd($demo_img);
+        dd($demo_img);
         // now you are able to resize the instance
         if($resize == 1){
             if($size == 'l' || $size == 'L'){
@@ -209,20 +209,54 @@ class ImageControllService
             }
         }
 
-        imagewebp($demo_img, $image_dir.'origin_img/', 50);
+        ImageControllService::convertImageToWebp($demo_img, $resize_filename);
 
-        // $reconverted_image = ImageControllService::reconvert_image(); 
-        // dd($reconverted_image);
         // finally we save the image as a new file
         // $demo_img->save(public_path($image_dir.$file_new_name));
     }
 
-    public static function create_image_name()
+    private static function create_image_name()
     {
         return date('Y-m-d-H-m-s-U').'{'.rand(1,1000000).'}'; 
     }
 
-    public static function reconvert_image($image, $dir, $quality) {
-        imagewebp($image, $dir, $quality);
+    /**
+     * @param string $inputFile: relative or absolute path
+     * @param string $outputFile: relative or absolute path
+     * @param int $quality of output: 0 is worst, 100 is best
+     * @return void
+     * 
+     * exemple -> convertImageToWebp('/home/paul/image.gif', 'image.webp', 90);
+     */
+    private static function convertImageToWebp(string $inputFile, string $outputFile, int $quality = 100): void
+    {
+        $fileType = exif_imagetype($inputFile);
+
+        switch ($fileType) {
+            case IMAGETYPE_GIF:
+                $image = imagecreatefromgif($inputFile);
+                imagepalettetotruecolor($image);
+                imagealphablending($image, true);
+                imagesavealpha($image, true);
+                break;
+            case IMAGETYPE_JPEG:
+                $image = imagecreatefromjpeg($inputFile);
+                break;
+            case IMAGETYPE_PNG:
+                $image = imagecreatefrompng($inputFile);
+                imagepalettetotruecolor($image);
+                imagealphablending($image, true);
+                imagesavealpha($image, true);
+                break;
+            case IMAGETYPE_WEBP:
+                rename($inputFile, $outputFile);
+                return;
+            default:
+                return;
+        }
+
+        imagewebp($image, $outputFile, $quality);
+
+        imagedestroy($image);
     }
 }
