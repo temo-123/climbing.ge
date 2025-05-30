@@ -26,71 +26,16 @@ class ImageControllService
     {
         // https://therichpost.com/vue-laravel-image-upload/
 
-        // if ($request->hasFile($form_value_id)){   
-
+        if ($request->hasFile($form_value_id)){
             // rename file
-            $extension = $request->file($form_value_id)->getClientOriginalExtension();
-            $file_new_name = ImageControllService::rename_image($request, $form_value_id);
-            $file_new_name = $file_new_name.'.'.$extension;
-            // dd($file_new_name);
+            $new_name = ImageControllService::generate_image_name();
+            $file_new_name = $new_name . '.webp';
 
-            // push image in folder
-            if($save_origin_image){
-                $file = $request->file($form_value_id);
-                $file -> move(public_path($image_dir.'origin_img/'), $file_new_name);
-            }
+            $file_temp_path = $request->file($form_value_id)->getPathName();
 
-            // create demo image
-            ImageControllService::create_demo_image($image_dir, $file_new_name, $resize);
-
-            // return new filie name
-            // return $file_new_name;
-            return pathinfo($file_new_name, PATHINFO_FILENAME) . '.webp';
-        // } 
-    }
-
-    /**
-     * @param string $image_dir: image derectory from '/public/'
-     * @param int $form_value_id:  image value name in your form
-     * @param int $resize:  Image resize action (defolt it null)
-     * 
-     * this function uploading 1 file in files loop
-     */
-    public static function upload_loop_image($image_dir, $form_value_id, $resize = 0)
-    {
-
-        $extension = $form_value_id->getClientOriginalExtension();
-        $filename  = $form_value_id->getClientOriginalName();
-
-        // $file_new_name = date('Y-m-d-H-m-s-U').'{'.rand(1,1000000).'}'; 
-        $file_new_name = ImageControllService::create_image_name(); 
-
-        $file_new_name = $file_new_name.'.'.$extension;
-
-        if (!file_exists(public_path($image_dir))) {
-            mkdir(public_path($image_dir));
-        }
-
-        $path = public_path($image_dir . $file_new_name);
-
-        // if($resize == 1){
-        //     Image::make($form_value_id)->resize(1024, 576)->save( $path );
-        // }
-        // else{
-        //     Image::make($form_value_id)->save( $path );
-        // }
-
-        dd($path, $image_dir . pathinfo($file_new_name, PATHINFO_FILENAME) . '.webp');
-        
-        // create demo image
-        ImageControllService::create_demo_image($path, $image_dir . pathinfo($file_new_name, PATHINFO_FILENAME) . '.webp', $resize);
-
-        if(!$form_value_id->isValid()){
-            App::abort(500, 'Image uploading error');
-        }
-        else{
-            // return $file_new_name;
-            return pathinfo($file_new_name, PATHINFO_FILENAME) . '.webp';
+            ImageControllService::convertImageToWebp($file_temp_path, public_path($image_dir . $file_new_name));
+            
+            return $file_new_name;
         }
     }
 
@@ -109,22 +54,29 @@ class ImageControllService
         if ($request->hasFile($form_value_id)){ 
             // delete old image
             ImageControllService::image_delete($image_dir, $editing_model_value, $db_value);
-            // ImageControllService::image_delete($image_dir, $editing_model_value, $db_value);
 
-            // rename file
-            $extension = $request->file($form_value_id)->getClientOriginalExtension();
-            $file_new_name = ImageControllService::rename_image($request, $form_value_id);
-            $file_new_name = $file_new_name.'.'.$extension;
-            $file      = $request->file($form_value_id);
-
-            // push image in folder
-            $file->move(public_path($image_dir.'origin_img/'), $file_new_name);
-
-            // create demo image
-            ImageControllService::create_demo_image($image_dir, $file_new_name, $resize);
-
-            return pathinfo($file_new_name, PATHINFO_FILENAME) . '.webp';
+            // add new image
+            return ImageControllService::image_upload($image_dir, $request, $form_value_id);
         }
+    }
+
+    /**
+     * @param string $image_dir: image derectory from '/public/'
+     * @param int $form_value_id:  image value name in your form
+     * @param int $resize:  Image resize action (defolt it null)
+     * 
+     * this function uploading 1 file in files loop
+     */
+    public static function upload_loop_image($image_dir, $form_value_id, $resize = 0)
+    {
+        $new_name = ImageControllService::generate_image_name();
+        $file_new_name = $new_name . '.webp';
+
+        $file_temp_path = $form_value_id->getPathName();
+
+        ImageControllService::convertImageToWebp($file_temp_path, public_path($image_dir . $file_new_name));
+        
+        return $file_new_name;
     }
 
     /**
@@ -141,7 +93,7 @@ class ImageControllService
         // delete product file
         $fileName = $editing_model_value->$db_value;
         $file = public_path($image_dir . pathinfo($fileName, PATHINFO_FILENAME) . '.webp');
-        // dd(pathinfo($fileName, PATHINFO_FILENAME) . '.webp');
+        
         $original_file = public_path($image_dir . 'origin_img/' . $fileName);
         
         if(file_exists($file) && file_exists($original_file)){
@@ -165,48 +117,7 @@ class ImageControllService
         
     }
 
-    public static function rename_image($request, $form_value_id)
-    {
-        // rename file
-        // $file      = $request->file($form_value_id);
-        // $filename  = $file->getClientOriginalName();
-        // $extension = $file->getClientOriginalExtension();
-        // $pieces = explode( '.', $filename );
-        // $file_new_name = date('Y-m-d-H-m-s');
-
-        $file_new_name = ImageControllService::create_image_name(); 
-
-        return $file_new_name;
-    }
-
-    public static function create_demo_image($image_dir, $file_new_name, $resize, $size = 's')
-    {
-        // dd($image_dir, hasFile($file_new_name), $resize, $size = 's');
-        // open an image file
-        // dd($file_new_name);
-        $resize_filename = public_path($image_dir.'origin_img/'.$file_new_name);
-        $demo_img = Image::make($resize_filename);
-        // now you are able to resize the instance
-        // if($resize == 1){
-        //     if($size == 'l' || $size == 'L'){
-        //         $demo_img->resize(1920, 1080);
-        //     }
-        //     if($size == 'm' || $size == 'M'){
-        //         $demo_img->resize(1280, 720);
-        //     }
-        //     if($size == 's' || $size == 'S'){
-        //         $demo_img->resize(1024, 576);
-        //     }
-        // }
-        // dd($demo_img->basename);
-
-        ImageControllService::convertImageToWebp($demo_img->dirname . '/' . $demo_img->basename, $image_dir . pathinfo($file_new_name, PATHINFO_FILENAME) . '.webp');
-
-        // finally we save the image as a new file
-        // $demo_img->save(public_path($image_dir.$file_new_name));
-    }
-
-    private static function create_image_name()
+    private static function generate_image_name()
     {
         return date('Y-m-d-H-m-s-U').'{'.rand(1,1000000).'}'; 
     }
@@ -221,7 +132,6 @@ class ImageControllService
      */
     private static function convertImageToWebp(string $inputFile, string $outputFile, int $quality = 80): void
     {
-        // dd($inputFile, $outputFile);
         $fileType = exif_imagetype($inputFile);
 
         switch ($fileType) {
@@ -246,9 +156,47 @@ class ImageControllService
             default:
                 return;
         }
-
+        
         imagewebp($image, $outputFile, $quality);
 
         imagedestroy($image);
+    }
+
+
+    /**
+     * @param string $inputFile: relative or absolute path
+     * @param string $outputFile: relative or absolute path
+     * @param int $quality of output: 0 is worst, 100 is best
+     * @return void
+     * 
+     * exemple -> resize_image_webp('image.webp','dst_image.webp','100','100',75,false);
+     * https://honarsystems.com/php-resize-image/
+     * https://www.google.com/search?q=resizing+webp+image+in+php&sca_esv=a03deeebd4ceaea7&sxsrf=AE3TifNVHDNensST_nOYoEh4wyVAdcbVZw%3A1748585712813&ei=8Ew5aOO0MYGGxc8P5MyugQM&oq=+resizing+webp+image+php&gs_lp=Egxnd3Mtd2l6LXNlcnAiGCByZXNpemluZyB3ZWJwIGltYWdlIHBocCoCCAAyCBAhGKABGMMEMggQIRigARjDBEjjgwFQkAlYjm9wAngBkAEAmAGIAqABww2qAQYwLjEwLjG4AQHIAQD4AQH4AQKYAg2gAr8OwgIKEAAYsAMY1gQYR8ICBhAAGAcYHsICCxAAGIAEGIYDGIoFwgIFEAAY7wXCAgoQIRigARjDBBgKwgIIEAAYgAQYogSYAwCIBgGQBgiSBwYyLjEwLjGgB_8ZsgcGMC4xMC4xuAehDsIHBzAuMS42LjbIB1k&sclient=gws-wiz-serp
+     */
+    function resize_image_webp($source_file, $destination_file, $width, $height, $quality, $crop=FALSE) {
+        list($current_width, $current_height) = getimagesize($source_file);
+        $rate = $current_width / $current_height;
+        if ($crop) {
+            if ($current_width > $current_height) {
+                $current_width = ceil($current_width-($current_width*abs($rate-$width/$height)));
+            } else {
+                $current_height = ceil($current_height-($current_height*abs($rate-$width/$height)));
+            }
+            $newwidth = $width;
+            $newheight = $height;
+        } else {
+            if ($width/$height > $rate) {
+                $newwidth = $height*$rate;
+                $newheight = $height;
+            } else {
+                $newheight = $width/$rate;
+                $newwidth = $width;
+            }
+        }
+        $src_file = imagecreatefromwebp($source_file);
+        $dst_file = imagecreatetruecolor($newwidth, $newheight);
+        imagecopyresampled($dst_file, $src_file, 0, 0, 0, 0, $newwidth, $newheight, $current_width, $current_height);
+
+        imagewebp($dst_file, $destination_file, $quality);
     }
 }
