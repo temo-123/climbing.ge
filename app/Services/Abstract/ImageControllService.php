@@ -22,7 +22,7 @@ class ImageControllService
      * 
      * This function deliting old image and upload new
      */
-    public static function image_upload($image_dir, $request, $form_value_id, $resize = 0, $save_origin_image = 1)
+    public static function image_upload($image_dir, $request, $form_value_id, $resize = 1)
     {
         // https://therichpost.com/vue-laravel-image-upload/
 
@@ -33,7 +33,7 @@ class ImageControllService
 
             $file_temp_path = $request->file($form_value_id)->getPathName();
 
-            ImageControllService::convertImageToWebp($file_temp_path, public_path($image_dir . $file_new_name));
+            ImageControllService::convertImageToWebp($file_temp_path, public_path($image_dir . $file_new_name), 80, $resize);
             
             return $file_new_name;
         }
@@ -49,14 +49,14 @@ class ImageControllService
      * 
      * This function deliting old image and upload new
      */
-    public static function image_update($image_dir, $editing_model_value, $request, $form_value_id, $db_value, $resize = 0)
+    public static function image_update($image_dir, $editing_model_value, $request, $form_value_id, $db_value, $resize = 1)
     {
         if ($request->hasFile($form_value_id)){ 
             // delete old image
             ImageControllService::image_delete($image_dir, $editing_model_value, $db_value);
 
             // add new image
-            return ImageControllService::image_upload($image_dir, $request, $form_value_id);
+            return ImageControllService::image_upload($image_dir, $request, $form_value_id, $resize);
         }
     }
 
@@ -67,14 +67,14 @@ class ImageControllService
      * 
      * this function uploading 1 file in files loop
      */
-    public static function upload_loop_image($image_dir, $form_value_id, $resize = 0)
+    public static function upload_loop_image($image_dir, $form_value_id, $resize = 1)
     {
         $new_name = ImageControllService::generate_image_name();
         $file_new_name = $new_name . '.webp';
 
         $file_temp_path = $form_value_id->getPathName();
 
-        ImageControllService::convertImageToWebp($file_temp_path, public_path($image_dir . $file_new_name));
+        ImageControllService::convertImageToWebp($file_temp_path, public_path($image_dir . $file_new_name), 80, $resize);
         
         return $file_new_name;
     }
@@ -83,7 +83,6 @@ class ImageControllService
      * @param string $image_dir: image derectory from '/public/'
      * @param string $editing_model_value: updated model in copntroller
      * @param int $db_value:  Database value name
-     * @return void
      * 
      * This function delite image. it chech ./[dir] and ./[dir]/origin_img/ folder and delite file from this folders
      * If one of them is not exist it skip it
@@ -130,8 +129,9 @@ class ImageControllService
      * 
      * exemple -> convertImageToWebp('/home/paul/image.gif', 'image.webp', 90);
      */
-    private static function convertImageToWebp(string $inputFile, string $outputFile, int $quality = 80): void
+    private static function convertImageToWebp(string $inputFile, string $outputFile, int $quality = 80, int $resize): void
     {
+        $inputFile_2 = $inputFile;
         $fileType = exif_imagetype($inputFile);
 
         switch ($fileType) {
@@ -157,7 +157,11 @@ class ImageControllService
                 return;
         }
         
-        imagewebp($image, $outputFile, $quality);
+        // if ($resize == 1) {
+        //     ImageControllService::resize_webp_image($inputFile_2, $outputFile, $quality);
+        // } else {
+            imagewebp($image, $outputFile, $quality);
+        // }
 
         imagedestroy($image);
     }
@@ -169,11 +173,12 @@ class ImageControllService
      * @param int $quality of output: 0 is worst, 100 is best
      * @return void
      * 
-     * exemple -> resize_image_webp('image.webp','dst_image.webp','100','100',75,false);
+     * exemple -> resize_webp_image('image.webp','dst_image.webp','100','100',75,false);
      * https://honarsystems.com/php-resize-image/
      * https://www.google.com/search?q=resizing+webp+image+in+php&sca_esv=a03deeebd4ceaea7&sxsrf=AE3TifNVHDNensST_nOYoEh4wyVAdcbVZw%3A1748585712813&ei=8Ew5aOO0MYGGxc8P5MyugQM&oq=+resizing+webp+image+php&gs_lp=Egxnd3Mtd2l6LXNlcnAiGCByZXNpemluZyB3ZWJwIGltYWdlIHBocCoCCAAyCBAhGKABGMMEMggQIRigARjDBEjjgwFQkAlYjm9wAngBkAEAmAGIAqABww2qAQYwLjEwLjG4AQHIAQD4AQH4AQKYAg2gAr8OwgIKEAAYsAMY1gQYR8ICBhAAGAcYHsICCxAAGIAEGIYDGIoFwgIFEAAY7wXCAgoQIRigARjDBBgKwgIIEAAYgAQYogSYAwCIBgGQBgiSBwYyLjEwLjGgB_8ZsgcGMC4xMC4xuAehDsIHBzAuMS42LjbIB1k&sclient=gws-wiz-serp
      */
-    function resize_image_webp($source_file, $destination_file, $width, $height, $quality, $crop=FALSE) {
+    private static function resize_webp_image($source_file, $destination_file, $width = 1920, $height = 1080, $quality = 80, $crop = FALSE) 
+    {
         list($current_width, $current_height) = getimagesize($source_file);
         $rate = $current_width / $current_height;
         if ($crop) {
