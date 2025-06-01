@@ -343,11 +343,63 @@
                     if(this.$route.params.article_category == 'ice'){
                         this.get_ice_sectors(this.$route.params.article_category)
                     }
+                    if(this.$route.params.article_category == 'mount_route'){
+                        this.get_mounts()
+                    }
                 })
                 .catch(
                     error => console.log(error)
                 )
                 .finally(() => this.article_loading = false);
+            },
+
+            get_mounts(){
+                axios
+                .get("/mount/mount")
+                .then(response => {
+                    this.data_for_tab.push({'id': 2,
+                                            'table_name': 'Mount vasives', 
+                                            'add_action': {
+                                                'action': 'route',
+                                                'link': 'mount_massive_add', 
+                                                'class': 'btn btn-primary'
+                                            },
+                                            'tab_data': {
+                                                'data': response.data, 
+                                                'tab': {
+                                                    'head': [
+                                                        'ID',
+                                                        'Name',
+                                                        'Edit',
+                                                        'Delite',
+                                                    ],
+                                                    'body': [
+                                                        ['data', ['global_data', 'id']],
+                                                        ['data', ['locale_data', 'title']],
+                                                        ['action_router', 'mount_massive_edit', 'btn btn-primary', 'Edit', ['global_data', 'id']],
+                                                        ['action_fun_id', 'del_mount_massive', 'btn btn-danger', 'Del', ['global_data', 'id']],
+                                                    ],
+                                                    'perm': [
+                                                        ['no'],
+                                                        ['no'],
+                                                        ['mount_massive', 'edit',],
+                                                        ['mount_massive', 'del',],
+                                                    ]
+                                                }
+                                            },
+                                        });
+
+                    this.data_for_tab[0].filter_data = {
+                                                'title': 'Filter by Mount Masive',
+                                                'data': response.data,
+                                                'action_fun_id': 'filtr_outdoors',
+                                                'array_key': 'name'
+                                            }
+
+                })
+                .catch(
+                    error => console.log(error)
+                );
             },
 
             del_article(id){

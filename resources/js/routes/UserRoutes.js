@@ -70,7 +70,7 @@ const router = new VueRouter({
         { path: '/films/add', name: 'filmsAdd', component: load('films/filmsAddComponent') },
         { path: '/films/edit/:id', name: 'filmsEdit', component: load('films/filmsEditComponent') },
 
-        { path: '/mount_routes/mount_routes_list', name: 'mountlist', component: load('mountRoutes/mountListComponent') },
+        // { path: '/mount_routes/mount_routes_list', name: 'mountlist', component: load('mountRoutes/mountListComponent') },
         { path: '/mount_massive/edit/:id', name: 'mount_massive_edit', component: load('mountRoutes/mountMassiveEditComponent') },
         { path: '/mount_massive/add/', name: 'mount_massive_add', component: load('mountRoutes/mountMassiveAddComponent') },
 

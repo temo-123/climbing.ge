@@ -181,9 +181,21 @@ export const navbar = {
                             ['del', 'article'],
                         ]
                     },
+                    // {
+                    //     name: "Mountaineering",
+                    //     route: "/mount_routes/mount_routes_list",
+                    //     permissions: [
+                    //         ['add', 'mount_route'],
+                    //         ['edit', 'mount_route'],
+                    //         ['del', 'mount_route'],
+                    //         ['add', 'mount_massive'],
+                    //         ['edit', 'mount_massive'],
+                    //         ['del', 'mount_massive'],
+                    //     ]
+                    // },
                     {
                         name: "Mountaineering",
-                        route: "/mount_routes/mount_routes_list",
+                        route: "/article/mount_route",
                         permissions: [
                             ['add', 'mount_route'],
                             ['edit', 'mount_route'],

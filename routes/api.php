@@ -549,7 +549,7 @@ Route::group(['namespace'=>'Api'], function() {
         
             Route::post('/order_is_confirm/{order_id}', 'order_is_confirm');
             Route::post('/check_sale_code', 'check_sale_code');
-            Route::post('/order/castam_prodaction_message/{product_id}', 'castam_prodaction_message');
+            Route::post('/castam_prodaction_message/{product_id}', 'castam_prodaction_message');
         });
         Route::apiResource('/sale_code', 'SaleCodeController');
 
