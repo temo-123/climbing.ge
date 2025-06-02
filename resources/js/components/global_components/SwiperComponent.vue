@@ -86,6 +86,9 @@
     justify-content: center;
     align-items: center;
     flex-direction: row;
+    margin-left: 0%;
+    height: 500px;
+    background-color: #27a0bb7e;
   }
   .slide_title {
     position: absolute;
