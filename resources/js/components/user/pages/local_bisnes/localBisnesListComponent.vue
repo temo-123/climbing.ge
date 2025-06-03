@@ -80,6 +80,7 @@
                                                         ['no'],
                                                         ['no'],
                                                         ['no'],
+                                                        ['no'],
                                                         ['local_bisnes', 'edit'],
                                                         ['local_bisnes', 'del'],
                                                     ]
