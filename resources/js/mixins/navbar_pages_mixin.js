@@ -331,6 +331,21 @@ export const navbar = {
                     },
                 ],
             },
+            {
+                title: "Blog",
+                name: "blog",
+                routes: [
+                    {
+                        name: "Posts",
+                        route: "/posts_lost",
+                        permissions: [
+                            ['add', 'post'],
+                            ['edit', 'post'],
+                            ['del', 'post']
+                        ]
+                    },
+                ]
+            },
             // {
             //     title: "Films",
             //     route: "/films",

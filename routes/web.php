@@ -25,9 +25,15 @@ use Illuminate\Support\Facades\Route;
         });
     });
 
-    // Route::domain('forum.' . config('app.url'))->group(function () {
-    //     Route::group(['namespace'=>'Forum'], function() {
-    //         Route::get('/{any}', 'IndexController@index')->where('any', '(.*)')->name('forum_index');
+    Route::domain('blog.' . config('app.url'))->group(function () {
+        Route::group(['namespace'=>'Blog'], function() {
+            Route::get('/{any}', 'IndexController@index')->where('any', '(.*)')->name('blog_index');
+        });
+    });
+
+    // Route::domain('films.' . config('app.url'))->group(function () {
+    //     Route::group(['namespace'=>'Films'], function() {
+    //         Route::get('/{any}', 'IndexController@index')->where('any', '(.*)')->name('films_index');
     //     });
     // });
 

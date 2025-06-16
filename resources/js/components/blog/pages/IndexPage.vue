@@ -26,15 +26,15 @@
 </template>
 
 <script>
-  import addBlock from '../items/AddBlockComponent.vue'
+  // import addBlock from '../items/AddBlockComponent.vue'
   import post from '../items/PostComponent.vue'
   // import instaPost from '../items/InstaPostsComponent.vue'
-  import rightMenu from '../items/RightMenuComponent.vue'
+  // import rightMenu from '../items/RightMenuComponent.vue'
   export default {
     components: {
-      addBlock,
+      // addBlock,
       post,
-      rightMenu,
+      // rightMenu,
       // instaPost
     }
   }

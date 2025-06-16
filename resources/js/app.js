@@ -63,11 +63,11 @@ import goToAdminPage from "./components/global_components/GoToComponrnt.vue";
 import store from "./store";
 import site_img from "./components/site/items/ImageComponent.vue";
 import shop_img from "./components/shop/items/ImageComponent.vue";
-import forum_img from "./components/forum/items/ImageComponent.vue";
+// import blog_img from "./components/blog/items/ImageComponent.vue";
 
 Vue.component("site-img", site_img);
 Vue.component("shop-img", shop_img);
-Vue.component("forum-img", forum_img);
+// Vue.component("blog-img", blog_img);
 Vue.component("left-menu", leftmenu);
 Vue.component("goToAdminPage", goToAdminPage);
 
@@ -75,14 +75,14 @@ import MainWrapper from "./components/shop/MainWrapper.vue";
 import Index from "./components/site/IndexComponent.vue";
 import Home from "./components/user/HomeComponent.vue";
 import Films from "./components/films/StudiaComponent.vue";
-import Forum from "./components/forum/ForumComponent.vue";
+import Blog from "./components/blog/BlogMainComponent.vue";
 import Error from "./components/errors/global_errors/error.vue";
 
 import shop_routes from "./routes/ShopRoutes";
 import site_routes from "./routes/SiteRoutes";
 import user_routes from "./routes/UserRoutes";
 import films_routes from "./routes/FilmsRoutes";
-import forum_routes from "./routes/ForumRoutes";
+import blog_routes from "./routes/BlogRoutes";
 import error_routes from "./routes/ErrorRoutes";
 
 Vue.component(
@@ -102,8 +102,8 @@ Vue.component(
     require("./components/films/StudiaComponent.vue").default
 );
 Vue.component(
-    "forum-component",
-    require("./components/forum/ForumComponent.vue").default
+    "blog-component",
+    require("./components/blog/BlogMainComponent.vue").default
 );
 
 var serviceRoutes = [];
@@ -146,14 +146,14 @@ if (window.location.hostname == process.env.MIX_SITE_URL) {
     Vue.use(VueGtag, {
         config: { id: process.env.MIX_FILMS_ANALITICS_ID },
     });
-} else if (window.location.hostname == process.env.MIX_FORUM_URL) {
-    homeComponent = Forum;
-    serviceRoutes = forum_routes;
-    // analytic_id = process.env.MIX_FORUM_ANALITICS_ID;
-    axios.defaults.baseURL = process.env.MIX_FORUM_URL
+} else if (window.location.hostname == process.env.MIX_blog_URL) {
+    homeComponent = blog;
+    serviceRoutes = blog_routes;
+    // analytic_id = process.env.MIX_blog_ANALITICS_ID;
+    axios.defaults.baseURL = process.env.MIX_blog_URL
 
     Vue.use(VueGtag, {
-        config: { id: process.env.MIX_FORUM_ANALITICS_ID },
+        config: { id: process.env.MIX_blog_ANALITICS_ID },
     });
 } else {
     homeComponent = Error;
@@ -182,7 +182,7 @@ if(
     window.location.hostname == 'shop.climbing.ge' ||
     window.location.hostname == 'user.climbing.ge' ||
     window.location.hostname == 'films.climbing.ge' ||
-    window.location.hostname == 'forum.climbing.ge'
+    window.location.hostname == 'blog.climbing.ge'
 ){
     Vue.config.devtools = true
     Vue.config.debug = true

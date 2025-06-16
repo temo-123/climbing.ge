@@ -1,14 +1,14 @@
 <?php
 
-namespace App\Http\Controllers\Api\Forum;
+namespace App\Http\Controllers\Api\Blog;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
-use App\Models\Forum\Post;
-use App\Models\Forum\Post_comment;
-use App\Models\Forum\PostsTopics;
-use App\Models\Forum\Post_like;
+use App\Models\Blog\Post;
+use App\Models\Blog\Post_comment;
+use App\Models\Blog\PostsTopics;
+use App\Models\Blog\Post_like;
 use App\User;
 
 class PostController extends Controller
