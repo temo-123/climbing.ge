@@ -1,6 +1,6 @@
 <template>
   <div class="swiper">
-    <div class="swiper_sizing" :style="'margin-left: -' + (100*current_slider_index) + '%; '">
+    <div class="swiper_sizing" :style="'margin-left: ' + (-1 - (100 * current_slider_index * current_slider_index)) + '%; '">
       <div v-for="(slide, index) in slides" :key="slide.id" class="head_slider" >
         <site-img :src="'/public'+image_path_prop+slide.image" :alt="slide.title" :img_class="'slider_img'" />
 
@@ -13,7 +13,6 @@
           </a>
         </div>
       </div>
-
     </div>
 
     <div class="prev_slide_bottom" @click="prev_slide">
@@ -32,7 +31,7 @@
       return {
         slides: [],
         slide_count: 0,
-        current_slider_index: 0,
+        current_slider_index: 1,
       };
     },
     props: [
@@ -41,20 +40,24 @@
     ],
     mounted() {
       this.get_slider_images();
-      setInterval(this.next_slide, 10000); // Change slide every 10 seconds
+      // setInterval(this.next_slide, 10000); // Change slide every 10 seconds
     },
     methods: {
       next_slide() {
-        this.current_slider_index++;
-        if (this.current_slider_index >= this.slide_count) {
-          this.current_slider_index = 0; // Reset index when reaching the end of the slides
+        if (this.slide_count > 1) {
+          this.current_slider_index++;
+          if (this.current_slider_index >= this.slide_count) {
+            this.current_slider_index = 0; // Reset index when reaching the end of the slides
+          }
         }
       },
       prev_slide() {
-        if (this.current_slider_index > 0) {
-          this.current_slider_index--;
-        } else {
-          this.current_slider_index = this.slide_count - 1; // Go to the last slide when reaching the beginning of the slides
+        if (this.slide_count > 1) {
+          if (this.current_slider_index > 0) {
+            this.current_slider_index--;
+          } else {
+            this.current_slider_index = this.slide_count - 1; // Go to the last slide when reaching the beginning of the slides
+          }
         }
       },
       get_slider_images() {
@@ -63,6 +66,8 @@
         .then((response) => {
           this.slides = response.data;
           this.slide_count = this.slides.length;
+
+          setInterval(this.next_slide, 10000); // Change slide every 10 seconds
         })
         .catch((error) => {
           // console.log(error);
@@ -83,30 +88,47 @@
   .swiper_sizing {
     display: flex;
     transition: margin-left 0.5s ease-in-out;
-    justify-content: center;
+    /* justify-content: center; */
     align-items: center;
     flex-direction: row;
     margin-left: 0%;
+    width: 100%;
     height: 500px;
-    background-color: #27a0bb7e;
+    /* background-color: #27a0bb7e; */
   }
   .slide_title {
-    position: absolute;
+    /* position: absolute;
     top: 65%;
     left: 50%;
     transform: translate(-50%, -50%);
     font-size: 3rem;
-    color: #fff;
+    color: #fff; */
+
+
+      color: #f2f2f2;
+      font-size: 3rem;
+      padding: 8px 12px;
+      position: absolute;
+      bottom: 35%;
+      width: 100%;
+      text-align: center;
   }
   .slide_description {
-    position: absolute;
+    /* position: absolute;
     top: 75%;
     left: 50%;
     transform: translate(-50%, -50%);
     font-size: 2rem;
-    color: #fff;
+    color: #fff; */
+      color: #f2f2f2;
+      font-size: 2rem;
+      padding: 8px 12px;
+      position: absolute;
+      bottom: 25%;
+      width: 100%;
+      text-align: center;
   }
-  .slide_read_more {
+  /* .slide_read_more {
     position: absolute;
     top: 85%;
     left: 50%;
@@ -114,8 +136,8 @@
     font-size: 1.5rem;
     color: #fff !important;
     text-align: center;
-  }
-  @media(max-width: 756px){
+  } */
+  /* @media(max-width: 756px){
     .slide_title {
       position: absolute;
       top: 55%;
@@ -123,7 +145,6 @@
       transform: translate(-50%, -50%);
       font-size: 3rem;
       color: #fff;
-      /* text-shadow: 3px 3px 3px rgb(0 0 0); */
       text-align: center;
     }
     .slide_description {
@@ -144,7 +165,7 @@
       color: #fff;
       text-align: center;
     }
-  }
+  } */
 
   .prev_slide_bottom {
     left: 1%;
@@ -165,6 +186,7 @@
 
   .head_slider {
     flex-shrink: 0;
+    width: 100%;
   }
 
   .slider_img {

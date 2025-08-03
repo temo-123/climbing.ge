@@ -30,12 +30,14 @@
                     <!-- <p>Your Status = {{this.status}}</p> -->
 
                     <div class="row">
-                        <div class="col-md-6">
+                        <div class="col-md-12">
                             <div class="form-groupe">
-                                <button @click="open_edit_modal()" class="btn btn-primary">Edit my data</button>
+                                <button @click="open_edit_modal()" class="btn btn-primary float-right">Edit my data</button>
                             </div>
                         </div>
-                        <div class="col-md-6">
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
                             <div class="form-groupe">
                                 <button @click="get_user_data" class="btn btn-success float-right" v-if="!user_is_refresh">Refresh ({{user_reset_id}})</button>
                                 <span class="badge badge-primare mb-1 float-right" v-if="user_is_refresh">Updating...</span>
@@ -78,7 +80,7 @@
             </div>
 
             <div class="row">
-                <div class="col-md-12">
+                <div class="col-md-12 data_tab">
                     <table class="table table-hover" id="dev-table">
                         <thead>
                             <tr>

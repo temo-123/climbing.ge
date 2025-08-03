@@ -229,9 +229,3 @@ export default {
     },
 };
 </script>
-
-<style scoped>
-.data_tab {
-    overflow-x: scroll;
-}
-</style>

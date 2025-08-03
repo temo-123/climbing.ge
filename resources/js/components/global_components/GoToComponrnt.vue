@@ -1,9 +1,7 @@
 <template>
     <li>
-        <a style="font-size: 120%;" target="_blank" @click="goTo(go_to_page)">
+        <a style="font-size: 120%;" target="_blank" @click="goTo(go_to_page)" class="cursor_pointer">
             <span>
-                <!-- <i class="fa fa-user-circle"></i> -->
-                
                 <span v-html="icon"></span>
             </span>
         </a>

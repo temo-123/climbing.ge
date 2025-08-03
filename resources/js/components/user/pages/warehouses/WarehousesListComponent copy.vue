@@ -13,8 +13,8 @@
                 <div class="col-sm-12">
                     <tabsComponent 
                         :table_data="this.data_for_tab"
-                        @update="get_services_data"
-                        @del_service="del_service"
+                        @update="get_warehouse_data"
+                        @del_warehouse="del_warehouse"
                     />
                 </div>
             </div>
@@ -40,21 +40,21 @@
         },
 
         mounted() {
-            this.get_services_data();
+            this.get_warehouse_data();
         },
          
         methods: {
-            get_services_data: function(){
+            get_warehouses_data: function(){
                 this.data_for_tab = []
                 axios
-                .get("/service/")
+                .get("/warehous/")
                 .then(response => {
                     this.data_for_tab.push({
                                             'id': 1,
-                                            'table_name': 'Services', 
+                                            'table_name': 'Warehouses', 
                                             'add_action': {
                                                 'action': 'route',
-                                                'link': 'serviceAdd', 
+                                                'link': 'warehouseAdd', 
                                                 'class': 'btn btn-primary'
                                             },
                                             'tab_data': {
@@ -63,23 +63,23 @@
                                                     'head': [
                                                         'ID',
                                                         'Name',
-                                                        'Public',
+                                                        'Options',
                                                         'Edit',
                                                         'Delite',
                                                     ],
                                                     'body': [
                                                         ['data', ['id']],
-                                                        ['data', ['url_title']],
-                                                        ['data', ['published'], 'bool'],
-                                                        ['action_router', 'serviceEdit', 'btn btn-primary', '<i aria-hidden="true" class="fa fa-pencil"></i>'],
-                                                        ['action_fun_id', 'del_service', 'btn btn-danger', '<i aria-hidden="true" class="fa fa-trash"></i>'],
+                                                        ['data', ['name']],
+                                                        ['action_router', 'warehouseEdit', 'btn btn-primary', '<i aria-hidden="true" class="fa fa-pencil"></i>'],
+                                                        ['action_router', 'warehouseEdit', 'btn btn-primary', '<i aria-hidden="true" class="fa fa-pencil"></i>'],
+                                                        ['action_fun_id', 'del_warehouse', 'btn btn-danger', '<i aria-hidden="true" class="fa fa-trash"></i>'],
                                                     ],
                                                     'perm': [
                                                         ['no'],
                                                         ['no'],
-                                                        ['no'],
-                                                        ['services', 'edit'],
-                                                        ['services', 'del'],
+                                                        ['warehouse', 'edit'],
+                                                        ['warehouse', 'edit'],
+                                                        ['warehouse', 'del'],
                                                     ]
                                                 }
                                             },
@@ -89,14 +89,14 @@
                     error => console.log(error)
                 );
             },
-            del_service(id){
+            del_warehouse(id){
                 if(confirm('Are you sure, you want delite it?')){
                     axios
-                    .post('/service/del_service/'+id, {
+                    .post('/warehous/del_warehouse/'+id, {
                         _method: 'DELETE'
                     })
                     .then(Response => {
-                        this.get_services_data();
+                        this.get_warehouses_data();
                     })
                     .catch(error => console.log(error))
                 }

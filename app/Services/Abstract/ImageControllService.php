@@ -178,30 +178,58 @@ class ImageControllService
      * https://www.google.com/search?q=resizing+webp+image+in+php&sca_esv=a03deeebd4ceaea7&sxsrf=AE3TifNVHDNensST_nOYoEh4wyVAdcbVZw%3A1748585712813&ei=8Ew5aOO0MYGGxc8P5MyugQM&oq=+resizing+webp+image+php&gs_lp=Egxnd3Mtd2l6LXNlcnAiGCByZXNpemluZyB3ZWJwIGltYWdlIHBocCoCCAAyCBAhGKABGMMEMggQIRigARjDBEjjgwFQkAlYjm9wAngBkAEAmAGIAqABww2qAQYwLjEwLjG4AQHIAQD4AQH4AQKYAg2gAr8OwgIKEAAYsAMY1gQYR8ICBhAAGAcYHsICCxAAGIAEGIYDGIoFwgIFEAAY7wXCAgoQIRigARjDBBgKwgIIEAAYgAQYogSYAwCIBgGQBgiSBwYyLjEwLjGgB_8ZsgcGMC4xMC4xuAehDsIHBzAuMS42LjbIB1k&sclient=gws-wiz-serp
      */
     private static function resize_webp_image($source_file, $destination_file, $width = 1920, $height = 1080, $quality = 80, $crop = FALSE) 
-    {
-        list($current_width, $current_height) = getimagesize($source_file);
-        $rate = $current_width / $current_height;
-        if ($crop) {
-            if ($current_width > $current_height) {
-                $current_width = ceil($current_width-($current_width*abs($rate-$width/$height)));
-            } else {
-                $current_height = ceil($current_height-($current_height*abs($rate-$width/$height)));
-            }
-            $newwidth = $width;
-            $newheight = $height;
-        } else {
-            if ($width/$height > $rate) {
-                $newwidth = $height*$rate;
+        {
+            // dd('resize_webp_image function is deprecated, use resize_image_webp instead');
+            list($current_width, $current_height) = getimagesize($source_file);
+            $rate = $current_width / $current_height;
+            if ($crop) {
+                if ($current_width > $current_height) {
+                    $current_width = ceil($current_width-($current_width*abs($rate-$width/$height)));
+                } else {
+                    $current_height = ceil($current_height-($current_height*abs($rate-$width/$height)));
+                }
+                $newwidth = $width;
                 $newheight = $height;
             } else {
-                $newheight = $width/$rate;
-                $newwidth = $width;
+                if ($width/$height > $rate) {
+                    $newwidth = $height*$rate;
+                    $newheight = $height;
+                } else {
+                    $newheight = $width/$rate;
+                    $newwidth = $width;
+                }
             }
-        }
-        $src_file = imagecreatefromwebp($source_file);
-        $dst_file = imagecreatetruecolor($newwidth, $newheight);
-        imagecopyresampled($dst_file, $src_file, 0, 0, 0, 0, $newwidth, $newheight, $current_width, $current_height);
+            $src_file = imagecreatefromwebp($source_file);
+            $dst_file = imagecreatetruecolor($newwidth, $newheight);
+            imagecopyresampled($dst_file, $src_file, 0, 0, 0, 0, $newwidth, $newheight, $current_width, $current_height);
 
-        imagewebp($dst_file, $destination_file, $quality);
-    }
+            imagewebp($dst_file, $destination_file, $quality);
+        }
+
+    // function resize_image_webp($source_file,$destination_file, $width, $height, $quality, $crop=FALSE) {
+    //     list($current_width, $current_height) = getimagesize($source_file);
+    //     $rate = $current_width / $current_height;
+    //     if ($crop) {
+    //         if ($current_width > $current_height) {
+    //             $current_width = ceil($current_width-($current_width*abs($rate-$width/$height)));
+    //         } else {
+    //             $current_height = ceil($current_height-($current_height*abs($rate-$width/$height)));
+    //         }
+    //         $newwidth = $width;
+    //         $newheight = $height;
+    //     } else {
+    //         if ($width/$height > $rate) {
+    //             $newwidth = $height*$rate;
+    //             $newheight = $height;
+    //         } else {
+    //             $newheight = $width/$rate;
+    //             $newwidth = $width;
+    //         }
+    //     }
+    //     $src_file = imagecreatefromwebp($source_file);
+    //     $dst_file = imagecreatetruecolor($newwidth, $newheight);
+    //     imagecopyresampled($dst_file, $src_file, 0, 0, 0, 0, $newwidth, $newheight, $current_width, $current_height);
+
+    //     imagewebp($dst_file, $destination_file, $quality);
+    // }
 }

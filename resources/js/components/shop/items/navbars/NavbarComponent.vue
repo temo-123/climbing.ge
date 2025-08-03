@@ -33,7 +33,7 @@
                     <li><router-link :to="{name: 'about_store',  params: {lang: this.$i18n.locale}}" exact> <span> {{ $t('shop.menu.about us') }} </span> </router-link></li>
 
                     <li class="dropdown">
-                        <a class="margin_right" data-toggle="dropdown">
+                        <a class="margin_right cursor_pointer" data-toggle="dropdown">
                             <span>
                                 <i class="fa fa-search"  aria-hidden="true"></i>
                             </span>

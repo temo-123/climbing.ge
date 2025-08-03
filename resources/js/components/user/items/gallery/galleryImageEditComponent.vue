@@ -28,7 +28,7 @@
                         <tbody>
                             <tr v-for="old_image in old_images" :key="old_image.id">
                                 <td>
-                                    <img class="img-responsive" :src="'../../../../' + image_path_prop + old_image.image" :alt="old_image.title">
+                                    <img class="img-responsive" :src="'../../../../' + image_path_prop + old_image.image" :alt="old_image.title" style="max-height: 250px;">
                                 </td>
                                 <td>|</td>
                                 <td>

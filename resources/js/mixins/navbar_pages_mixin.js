@@ -23,10 +23,10 @@ export const navbar = {
                 title: "My Comments & Reviews",
                 route: "/my_comments_and_reviews"
             },
-            {
-                title: "Cart",
-                route: "/cart"
-            },
+            // {
+            //     title: "Cart",
+            //     route: "/cart"
+            // },
             {
                 title: "My purchases",
                 route: "/purchases"
@@ -250,6 +250,15 @@ export const navbar = {
                             ['del', 'article'],
                         ]
                     },
+                    {
+                        name: "Life cameras",
+                        route: "/life_cameras",
+                        permissions: [
+                            ['add', 'life_camera'],
+                            ['edit', 'life_camera'],
+                            ['del', 'life_camera'],
+                        ]
+                    },
                 ]
             },
             {
@@ -280,14 +289,10 @@ export const navbar = {
                         name: "Warehouses",
                         route: "/warehouses",
                         permissions: [
-                            ['show_all', 'tour'],
-                            ['show_all', 'tour_category']
+                            ['add', 'warehouses'],
+                            ['edit', 'warehouses'],
+                            ['del', 'warehouses']
                         ]
-                        // permissions: [
-                        //     ['add', 'warehouses'],
-                        //     ['edit', 'warehouses'],
-                        //     ['del', 'warehouses']
-                        // ]
                     },
                     {
                         name: "All orders",
@@ -485,10 +490,10 @@ export const navbar = {
                     },
                 ],
             },
-            {
-                title: "Options",
-                route: "/options"
-            },
+            // {
+            //     title: "Options",
+            //     route: "/options"
+            // },
         ]
     },
 }

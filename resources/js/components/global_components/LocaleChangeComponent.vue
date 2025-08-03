@@ -1,5 +1,5 @@
 <template>
-    <li class="dropdown">
+    <li class="dropdown cursor_pointer">
         <a data-toggle="dropdown">
             <span>
                 <i class="fa fa-language" aria-hidden="true"></i>

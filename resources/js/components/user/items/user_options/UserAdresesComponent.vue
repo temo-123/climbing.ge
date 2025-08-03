@@ -26,7 +26,7 @@
             </div>
         </div>
 
-        <!-- <div class="row"> -->
+        <div class="data_tab">
             <table class="table table-hover" id="dev-table">
                 <thead>
                     <tr>
@@ -70,7 +70,7 @@
                     </tr>
                 </tbody>
             </table>
-        <!-- </div> -->
+        </div>
 
         <stack-modal
                 :show="is_add_adres"

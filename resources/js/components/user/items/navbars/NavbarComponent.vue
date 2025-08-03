@@ -1,7 +1,7 @@
 <template>
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark bg-perple fixed-top admin_page_header_navbar">
 
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation" v-if="user.length != 0">
             <i class="fa fa-bars " aria-hidden="true"></i>
         </button>
         
@@ -24,14 +24,32 @@
                     <router-link :to="{path: menu_item.route}" lass="nav-link" class="nav-link">{{menu_item.title}}</router-link>
                 </li>
                 
-                <li class="nav-item">
-                    <a class="nav-link" @click="logout()">{{ $t('user.menu.logout') }}</a>
+
+                <li class="nav-item dropdown">
+                    <!-- <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> -->
+                    <a class="nav-link" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <i class="fa fa-user-circle"></i>
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                        <a class="dropdown-item" href="#">Options</a>
+
+                        <div class="dropdown-divider"></div>
+                        <a class="dropdown-item" href="#" @click="logout()">{{ $t('user.menu.logout') }}</a>
+
+                        <!-- <ul style="padding-left: 0px;" @click="logout()">
+                            <li><a>{{ $t('user.menu.logout') }}</a></li>
+                        </ul> -->
+                    </div>
                 </li>
+
+                <!-- <li class="nav-item">
+                    <a class="nav-link" @click="logout()">{{ $t('user.menu.logout') }}</a>
+                </li> -->
             
             </ul>
         </div>
             
-        <div class="navbar-collapse collapse w-100 order-1 order-md-0 dual-collapse2">
+        <div class="navbar-collapse collapse w-100 order-1 order-md-0 dual-collapse2" v-if="user.length != 0">
             <ul class="navbar-nav mr-auto">
                 <li class="nav-item">
                     <label for="check">
@@ -43,20 +61,46 @@
             </ul>
         </div>
         <div class="mx-auto order-0">
-            <router-link :to="{name: 'home'}" class="navbar-brand mx-auto" exact>Hi</router-link>
+            <router-link :to="{name: 'home'}" class="navbar-brand mx-auto" exact>Welcome to climbing.ge user page</router-link>
         </div>
         <div class="navbar-collapse collapse w-100 order-3 dual-collapse2">
-            <!-- <ul class="navbar-nav ml-auto">
-                <li class="nav-item">
+            <ul class="navbar-nav ml-auto">
+                <!-- <li class="nav-item">
                     <router-link :to="{name: 'myComentsList'}" class="nav-link" exact>{{ $t('user.menu.my comments') }}</router-link>
                 </li>
                 <li class="nav-item">
                     <router-link :to="{name: 'myOrders'}" class="nav-link" exact>{{ $t('user.menu.my orders') }}</router-link>
+                </li> -->
+
+                <li>
+                    <router-link :to="{name: 'cart'}" class="nav-link" exact>
+                        <span>
+                            <i class="fa fa-shopping-cart" aria-hidden="true"></i>
+                        </span>
+                    </router-link>
                 </li>
-                <li class="nav-item">
-                    <router-link :to="{name: 'cart'}" class="nav-link" exact>{{ $t('user.menu.cart') }}</router-link>
+
+                <li class="nav-item dropdown" v-if="user.length != 0">
+                    <a class="nav-link" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <span>
+                            <i class="fa fa-user-circle"></i>
+                        </span>
+                    </a>
+                    <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
+                        <!-- <a class="dropdown-item" href="#">Options</a> -->
+                        <router-link :to="'/options'" class="dropdown-item">
+                            {{ $t('user.menu.options') }}
+                        </router-link>
+
+                        <div class="dropdown-divider"></div>
+                        <a class="dropdown-item" href="#" @click="logout()">{{ $t('user.menu.logout') }}</a>
+
+                        <!-- <ul style="padding-left: 0px;" @click="logout()">
+                            <li><a>{{ $t('user.menu.logout') }}</a></li>
+                        </ul> -->
+                    </div>
                 </li>
-            </ul> -->
+            </ul>
         </div>
     </nav>
 </template>
@@ -82,7 +126,7 @@
                     localStorage.setItem('lang', value);
                 },
                 
-                user: '',
+                user: [],
             };
         },
         mounted(){

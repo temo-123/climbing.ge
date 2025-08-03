@@ -258,10 +258,69 @@ hr {
 *
 */
 
+.navbar span{
+    color: #fff;
+}
+.navbar span:hover{
+    color: #838383;
+    transition: 0.2s;
+}
+
+@media (max-width: 1230px) {
+    .navbar-collapse {
+        border-top: 1px solid transparent;
+        box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.1);
+        border-color: #838383;
+    }
+    .navbar-nav {
+        margin: 7.5px -15px;
+    }
+    .navbar-header {
+        float: none;
+    }
+    .navbar-toggle {
+        display: block !important;
+    }
+    .collapse.navbar-collapse {
+        display: none !important;
+    }
+    .collapse.navbar-collapse.show {
+        display: block !important;
+    }
+    .navbar-left, .navbar-right {
+        float: none !important;
+    }
+    .navbar-nav {
+        float: none !important;
+        margin-top: 7.5px;
+    }
+    .navbar-nav > li {
+        float: none;
+    }
+    .navbar-nav > li > a {
+        padding-top: 10px;
+        padding-bottom: 10px;
+    }
+    .navbar-nav .open .dropdown-menu {
+        position: static;
+        float: none;
+        width: auto;
+        margin-top: 0;
+        background-color: transparent;
+        border: 0;
+        box-shadow: none;
+    }
+}
+
 .dropdown_menu_right_unset {
     right: unset !important;
 }
-
+.menu_acton_but{
+    padding: 8px;
+    background-color: #0ca339;
+    border-radius: 10px;
+    border-style: solid;
+}
 .mobail_dropdown {
     width: 80%;
     margin-left: 10%;
@@ -314,7 +373,7 @@ hr {
 .destroy_top_menu_margin {
     margin-top: -9%;
 }
-@media (max-width: 756px) {
+@media (max-width: 900px) {
     .top_menu_margin {
         margin-top: 18% !important;
     }
@@ -322,7 +381,7 @@ hr {
         margin-top: -18% !important;
     }
 }
-@media (max-width: 756px) {
+@media (max-width: 900px) {
     .top_menu_margin {
         margin-top: 37%;
     }
@@ -1027,6 +1086,11 @@ table {
     text-align: center;
     margin-bottom: 20px;
 }
+
+.data_tab {
+    overflow-x: scroll;
+}
+
 td {
     padding: 10px 20px;
     text-align: center;
@@ -2317,8 +2381,8 @@ select:focus {
 }
 
 .site_title {
-    margin-left: 4%;
-    margin-top: 2%;
+    margin-left: 1em;
+    margin-top: 0.3em;
     color: #fff;
     font-size: 135%;
     // margin-bottom: -6%;

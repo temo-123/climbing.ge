@@ -29,7 +29,7 @@
                             <tbody>
                                 <tr v-for="image in spot_rocks_old_images" :key="image.id">
                                     <td>
-                                        <img class="img-responsive" :src="'../../../../images/spot_rocks_img/'+image.image" :alt="image.image">
+                                        <img class="img-responsive" :src="'../../../../images/spot_rocks_img/'+image.image" :alt="image.image" style="max-height: 250px;">
                                     </td>
                                     <td>|</td>
                                     <td>

@@ -1,7 +1,7 @@
 <template>
     <stack-modal
             :show="is_role_editing_modal"
-            title="Edit user role & permissions"
+            title="Edit members and status"
             @close="close_modal()"
             :saveButton="{ visible: true, title: 'Save', btnClass: { 'btn btn-primary': true } }"
             :cancelButton="{ visible: false, title: 'Close', btnClass: { 'btn btn-danger': true } }"
@@ -15,96 +15,26 @@
             <span v-show="!is_loading">
                 <h2>User role</h2>
 
-                <select class="form-control" v-model="user_role" v-if="!role_loading"> 
-                    <option value="no_role" disabled>Select user role</option> 
-                    <option v-for="role in roles" :key="role.id" :value="role.id">{{ role.name }}</option> 
-                </select>
-
-                <div class="row justify-content-center" v-if="role_loading">
-                    <div class="col-md-4">
-                        <img :src="'../../../public/images/site_img/loading.gif'" alt="loading">
-                    </div>
-                </div>
-
-                <h2>Additional permissions</h2>
-
-                <h3 v-if="user_permissions.length != 0">Alredy addid</h3>
-                <table v-if="user_permissions.length != 0" class="table table-hover" id="dev-table">
-                    <thead>
-                        <tr>
-                            <th>Image</th>
-                            <th>|</th>
-                            <th>Delite</th>
-                        </tr>
-                    </thead>
-
-                    <tbody>
-                        <tr v-for="permission in user_permissions" :key="permission.id">
-                            <td>
-                                {{ permission.subject }} {{ permission.action }}
-                            </td>
-                            <td>|</td>
-                            <td>
-                                <button type="button" class="btn btn-danger" @click="del_user_pemisino_from_db(permission.id)"><i class="fa fa-trash" aria-hidden="true"></i></button>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-
-                <h3>Add More Permissions</h3>
-
-                <button type="button" class="btn btn-primary float-left" @click="add_permission_value()">Add new permission</button>
-
-                <table class="table table-hover" id="dev-table" v-if="!perm_loading">
-                    <thead>
-                        <tr>
-                            <th>Image</th>
-                            <th>|</th>
-                            <th>Delite</th>
-                        </tr>
-                    </thead>
-
-                    <tbody>
-                        <tr v-for="permission in permissions_array" :key="permission.id">
-                            <td>
-                                <form ref="myForm">
-                                    <select class="form-control" v-on:change="onFileChange($event, permission.id)">> 
-                                        <option disabled selected>Select permission</option> 
-                                        <option v-for="permission in permissions" :key="permission.id" :value="permission.id">{{ permission.subject }} {{ permission.action }}</option> 
-                                    </select>
-                                </form> 
-                            </td>
-                            <td>|</td>
-                            <td>
-                                <button type="button" class="btn btn-danger" @click="del_bisnes_value(permission.id)"><i class="fa fa-trash" aria-hidden="true"></i></button>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-                <div class="row justify-content-center" v-if="perm_loading">
-                    <div class="col-md-4">
-                        <img :src="'../../../public/images/site_img/loading.gif'" alt="loading">
-                    </div>
-                </div>
+                
             </span>
         </pre>
         <div slot="modal-footer">
             <div class="modal-footer">
                 <button
                     type="button"
-                    :class="'btn btn-success'"
+                    :class="'btn btn-success '"
                     @click="edit_team_member()"
                 >
-                Edit Team member
+                Save And Close
                 </button>
 
                 <button
                     v-show="!is_loading"
                     type="button"
-                    :class="{'btn btn-primary': true}"
+                    :class="{'btn btn-primary float-right': true}"
                     @click="edit_permissions(user_id)"
                 >
-                Save prermissions
+                Save And Go Back
                 </button>
             </div>
         </div>
@@ -113,14 +43,14 @@
 
 
 <script>
-    import MemberStatusModal from './EditUserMemberStatusModalComponent.vue'
+    // import tabsComponent  from '../items/data_table/TabsComponent.vue'
 
     // import breadcrumb from '../items/BreadcrumbComponent.vue'
     import StackModal from '@innologica/vue-stackable-modal'  //https://innologica.github.io/vue-stackable-modal/#sample-css
     export default {
         components: {
             StackModal,
-            MemberStatusModal,
+            // tabsComponent ,
             // breadcrumb,
         },
         data(){

@@ -4,6 +4,13 @@
 
             <!-- BRAND -->
             <div class="navbar-header">
+
+                <span>
+                    <router-link style="font-size: 1.5em;" :to="{name: 'index'}" exact class="site_title">
+                        {{ $t('guide.name') }}
+                    </router-link>
+                </span>
+
                 <!-- <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#alignment-example" aria-expanded="false" > -->
                 <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" aria-expanded="false" @click="open_navbar()">
                     <span class="sr-only">Toggle navigation</span>
@@ -11,12 +18,6 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-
-                <span>
-                    <router-link style="font-size: 1.5em;" :to="{name: 'index'}" exact class="site_title">
-                        {{ $t('guide.name') }}
-                    </router-link>
-                </span>
                 <!-- <a class="navbar-brand" href="#">Your Brand</a> -->
             </div>
 
@@ -45,7 +46,7 @@
                     <li><router-link :to="{name: 'about_us', params: {lang: this.$i18n.locale}}" exact>        <span> {{ $t('guide.menu.about us') }}            </span> </router-link></li>
 
                     <li class="dropdown">
-                        <a class="margin_right" data-toggle="dropdown">
+                        <a class="margin_right cursor_pointer" data-toggle="dropdown">
                             <span>
                                 <i class="fa fa-search"  aria-hidden="true"></i>
                             </span>
@@ -63,7 +64,7 @@
                     </li>
 
                     <li class="dropdown">
-                        <a data-toggle="dropdown">
+                        <a data-toggle="dropdown" class="cursor_pointer">
                             <span>
                                 <i class="fa fa-heartbeat" aria-hidden="true"></i>
                             </span>
@@ -85,17 +86,17 @@
 
                     <localeSwitcher />
 
+                    <li>
+                        <a @click="go_to_service('shop')" class="cursor_pointer"> 
+                            <span>
+                                <i class="fa fa-shopping-bag" aria-hidden="true"></i>
+                            </span>
+                        </a>
+                    </li>
+
                     <goToAdminPage :go_to_page="'/'" />
+
                 </ul>
-
-                <!-- Search -->
-                <!-- <form class="navbar-form navbar-right" role="search">
-                    <div class="form-group">
-                    <input type="text" class="form-control">
-                    </div>
-                    <button type="submit" class="btn btn-default">Search</button>
-                </form> -->
-
             </div>
 
         </div>
@@ -151,6 +152,33 @@
         },
 
         methods: {
+            go_to_service(service){
+                if(service == "shop"){
+                    if(window.location.href == this.MIX_APP_SSH + 'shop.' + this.MIX_SITE_URL + '/about_us'){
+                        this.$router.push({name: 'catalog'});
+                    }
+                    else{
+                        window.open(this.MIX_APP_SSH + 'shop.' + this.MIX_SITE_URL + '')
+                    }
+                }
+                else if(service == "guid"){
+                    if(window.location.href == this.MIX_APP_SSH + this.MIX_SITE_URL + '/about_us'){
+                        this.$router.push({name: 'index'});
+                    }
+                    else{
+                        window.open(this.MIX_APP_SSH  + this.MIX_SITE_URL + '/')
+                    }
+                }
+                else if(service == "films"){
+                    if(window.location.href == this.MIX_APP_SSH + 'films.' + this.MIX_SITE_URL + '/about_us'){
+                        this.$router.push({name: 'studia'});
+                    }
+                    else{
+                        window.open(this.MIX_APP_SSH  + 'films.' + this.MIX_SITE_URL + '/')
+                    }
+                }
+            },
+
             search(){
                 this.$router.push({name: 'search_articles', query: { 'query': this.search_query} });
                 this.search_query = ''
@@ -201,27 +229,9 @@
     }
 }
 
-.navbar span{
-    color: #fff;
-}
-
 .search_window{
     width: 1500%;
     background-color: #dfdfdf;
     border-radius: 0 0 20px 20px;
 }
-
-/* @media (max-width:990px){
-    .navbar-header {float: none;}
-    .navbar-left,.navbar-right {    float: none !important;}
-    .navbar-toggle {    display: block;}
-    .navbar-collapse {  border-top: 1px solid transparent;  box-shadow: inset 0 1px 0 rgba(255,255,255,0.1);}
-    .navbar-fixed-top {    top: 0;    border-width: 0 0 1px;}
-    .navbar-collapse.collapse { display: none!important;}
-    .navbar-nav {float: none!important; margin-top: 7.5px;}
-    .navbar-nav>li {float: none;}
-    .navbar-nav>li>a { padding-top: 10px;padding-bottom: 10px;}
-    .collapse.in{display:block !important;}
-    .navbar-nav .open .dropdown-menu { position: static; float: none; width: auto; margin-top: 0; background-color: transparent; border: 0; -webkit-box-shadow: none; box-shadow: none;}
-} */
 </style>

@@ -33,10 +33,10 @@
                   <router-link :to="{path: menu_item.route}" >{{menu_item.title}}</router-link>
                 </li>
             </ul>
-
+<!-- 
             <ul style="padding-left: 0px;" @click="logout()">
                 <li><a>{{ $t('user.menu.logout') }}</a></li>
-            </ul>
+            </ul> -->
 
         </div>
     </span>
