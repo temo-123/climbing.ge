@@ -8,7 +8,7 @@
         <div class="slide_description text_shadow">{{ slide.text }}</div>
 
         <div class="slide_read_more text_shadow" v-if="slide.link">
-          <a :href="slide.link">
+          <a :href="slide.link" class="btn btn-info">
             Read more
           </a>
         </div>
@@ -82,29 +82,18 @@
     max-width: 100%;
     overflow: hidden;
     position: relative;
-    /* padding-right: 1%; /*Add padding to the right side*/
   }
 
   .swiper_sizing {
     display: flex;
     transition: margin-left 0.5s ease-in-out;
-    /* justify-content: center; */
     align-items: center;
     flex-direction: row;
     margin-left: 0%;
     width: 100%;
     height: 500px;
-    /* background-color: #27a0bb7e; */
   }
   .slide_title {
-    /* position: absolute;
-    top: 65%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    font-size: 3rem;
-    color: #fff; */
-
-
       color: #f2f2f2;
       font-size: 3rem;
       padding: 8px 12px;
@@ -114,12 +103,6 @@
       text-align: center;
   }
   .slide_description {
-    /* position: absolute;
-    top: 75%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    font-size: 2rem;
-    color: #fff; */
       color: #f2f2f2;
       font-size: 2rem;
       padding: 8px 12px;
@@ -128,44 +111,48 @@
       width: 100%;
       text-align: center;
   }
-  /* .slide_read_more {
-    position: absolute;
-    top: 85%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    font-size: 1.5rem;
-    color: #fff !important;
-    text-align: center;
-  } */
-  /* @media(max-width: 756px){
-    .slide_title {
+  .slide_read_more {
+      color: #f2f2f2;
+      font-size: 1.5rem;
+      padding: 8px 12px;
       position: absolute;
-      top: 55%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      font-size: 3rem;
-      color: #fff;
+      bottom: 10%;
+      width: 100%;
       text-align: center;
+  } 
+
+  @media (max-width: 1230px) {
+    .swiper_sizing {
+      height: auto;
+    }
+    .slide_title {
+        color: #f2f2f2;
+        font-size: 3rem;
+        padding: 8px 12px;
+        position: absolute;
+        bottom: 28%;
+        width: 100%;
+        text-align: center;
     }
     .slide_description {
-      position: absolute;
-      top: 75%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      font-size: 2rem;
-      color: #fff;
-      text-align: center;
+        color: #f2f2f2;
+        font-size: 1.5rem;
+        padding: 8px 12px;
+        position: absolute;
+        bottom: 18%;
+        width: 100%;
+        text-align: center;
     }
     .slide_read_more {
-      position: absolute;
-      top: 95%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      font-size: 1.5rem;
-      color: #fff;
-      text-align: center;
-    }
-  } */
+        color: #f2f2f2;
+        font-size: 1.5rem;
+        padding: 8px 12px;
+        position: absolute;
+        bottom: 5%;
+        width: 100%;
+        text-align: center;
+    } 
+  }
 
   .prev_slide_bottom {
     left: 1%;
