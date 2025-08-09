@@ -1,7 +1,7 @@
 <template>
     <span>
-        <p>{{ $t('guide.sector.authers_list') }}</p>
-        <button type="submit" class="btn btn-default btn-send main-btn" @click="show_modal">{{ $t('guide.sector.authers_list_button') }}</button>
+        {{ $t('guide.sector.authers_list') }} <a @click="show_modal"> {{ $t('guide.sector.authers_list_button') }}</a>
+        <!-- <button type="submit" class="btn btn-default btn-send main-btn" @click="show_modal">{{ $t('guide.sector.authers_list_button') }}</button> -->
 
         <stack-modal
             :show="is_show_modal"

@@ -219,6 +219,7 @@ hr {
 .article_card_container {
     display: flex;
     flex-flow: row wrap;
+    justify-content: center;
 }
 
 
@@ -2457,7 +2458,7 @@ select:focus {
 }
 .index_h2 {
     text-align: center;
-    font-size: 350%;
+    font-size: 275%;
 }
 
 .galery_page_big {
@@ -2630,6 +2631,17 @@ select:focus {
 *   Site modal styles
 *
 */
+.language-vue {
+    margin: 10px 0 0 0;
+    width: 95%;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    left: 2.5%;
+    overflow-y: scroll;
+    overflow-x: hidden;
+}
 
 .modal-dialog {
     width: 60% !important;
@@ -4554,15 +4566,15 @@ a:active {
     margin-left: -850%;
 }
 
-@media (max-width: 767px){
-    .h-recent-work h3 {
-        font-size: 25px !important;
-        margin-top: 15px !important;
-    }
-    .m-card--body {
-        display: none;
-    }
-}
+// @media (max-width: 767px){
+//     .h-recent-work h3 {
+//         font-size: 25px !important;
+//         margin-top: 15px !important;
+//     }
+//     .m-card--body {
+//         display: none;
+//     }
+// }
 .h-recent-work h3 {
     font-size: 16px;
     margin-top: 8px;

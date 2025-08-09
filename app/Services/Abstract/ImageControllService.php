@@ -157,11 +157,11 @@ class ImageControllService
                 return;
         }
         
-        // if ($resize == 1) {
-        //     ImageControllService::resize_webp_image($inputFile_2, $outputFile, $quality);
-        // } else {
+        if ($resize == 1) {
+            ImageControllService::resize_webp_image($inputFile_2, $outputFile, $quality);
+        } else {
             imagewebp($image, $outputFile, $quality);
-        // }
+        }
 
         imagedestroy($image);
     }
@@ -179,7 +179,7 @@ class ImageControllService
      */
     private static function resize_webp_image($source_file, $destination_file, $width = 1920, $height = 1080, $quality = 80, $crop = FALSE) 
         {
-            // dd('resize_webp_image function is deprecated, use resize_image_webp instead');
+            dd('resize_webp_image function is deprecated, use resize_image_webp instead');
             list($current_width, $current_height) = getimagesize($source_file);
             $rate = $current_width / $current_height;
             if ($crop) {

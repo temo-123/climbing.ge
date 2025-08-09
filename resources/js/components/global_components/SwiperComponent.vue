@@ -8,7 +8,7 @@
         <div class="slide_description text_shadow">{{ slide.text }}</div>
 
         <div class="slide_read_more text_shadow" v-if="slide.link">
-          <a :href="slide.link" class="btn btn-info">
+          <a :href="slide.link">
             Read more
           </a>
         </div>
