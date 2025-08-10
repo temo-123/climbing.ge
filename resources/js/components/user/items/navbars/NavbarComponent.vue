@@ -1,5 +1,8 @@
 <template>
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark bg-perple fixed-top admin_page_header_navbar">
+        <div class="mx-auto order-0 mobile_title">
+            <router-link :to="{name: 'home'}" class="navbar-brand mx-auto" exact>Welcome to climbing.ge user page</router-link>
+        </div>
 
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation" v-if="user.length != 0">
             <i class="fa fa-bars " aria-hidden="true"></i>
@@ -23,15 +26,28 @@
                 <li v-else-if="menu_item.route && !menu_item.hasOwnProperty('permissions')" class="nav-item">
                     <router-link :to="{path: menu_item.route}" lass="nav-link" class="nav-link">{{menu_item.title}}</router-link>
                 </li>
-                
+
+                <li class="nav-item">
+                    <router-link :to="{name: 'cart'}" class="nav-link" exact>
+                        <span>
+                            <i class="fa fa-shopping-cart" aria-hidden="true"></i>
+                        </span>
+                    </router-link>
+                </li>
 
                 <li class="nav-item dropdown">
                     <!-- <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> -->
                     <a class="nav-link" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        <i class="fa fa-user-circle"></i>
+                        <span>
+                            <i class="fa fa-user-circle"></i>
+                        </span>
                     </a>
                     <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                        <a class="dropdown-item" href="#">Options</a>
+                        <!-- <a class="dropdown-item" href="#">Options</a> -->
+
+                        <router-link :to="'/options'" class="dropdown-item">
+                            {{ $t('user.menu.options') }}
+                        </router-link>
 
                         <div class="dropdown-divider"></div>
                         <a class="dropdown-item" href="#" @click="logout()">{{ $t('user.menu.logout') }}</a>
@@ -60,9 +76,11 @@
                 </li>
             </ul>
         </div>
-        <div class="mx-auto order-0">
+
+        <div class="mx-auto order-0 desktop_title">
             <router-link :to="{name: 'home'}" class="navbar-brand mx-auto" exact>Welcome to climbing.ge user page</router-link>
         </div>
+
         <div class="navbar-collapse collapse w-100 order-3 dual-collapse2">
             <ul class="navbar-nav ml-auto">
                 <!-- <li class="nav-item">
@@ -235,6 +253,20 @@
     @media (min-width: 993px) {
         #navbarNav{
             display: none !important;
+        }
+    }
+
+    @media (max-width: 990px) {
+        .navbar-nav {
+            margin: 7.5px 0;
+        }
+        .desktop_title{
+            display: none;
+        }
+    }
+    @media (min-width: 990px) {
+        .mobile_title{
+            display: none;
         }
     }
 </style>
