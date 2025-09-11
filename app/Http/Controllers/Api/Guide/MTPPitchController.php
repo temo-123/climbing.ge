@@ -29,9 +29,13 @@ class MTPPitchController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function get_pitchs(Request $request)
     {
-        //
+
+        return Mtp_pitch::where('mtp_id',strip_tags($request->mtp_id))->orderBy('num')->get();
+        // $mtp = Mtp_pitch::where('id', $request->mtp_id)->first();
+        // dd($mtp);
+        // return $mtp->pitchs;
     }
 
     /**
@@ -71,7 +75,7 @@ class MTPPitchController extends Controller
         }
     }
 
-    public function get_mtp_pitchs_for_model(Request $request)
+    public function get_mtp_pitchs(Request $request)
     {
         return Mtp_pitch::where('mtp_id',strip_tags($request->mtp_id))->orderBy('num')->get();
         // return( $mtp_pitchs );
@@ -179,12 +183,11 @@ class MTPPitchController extends Controller
     }
 
 
+    // public function get_mtp_pitch_for_modal(Request $request)
+    // {
+    //     return Mtp_pitch::where('mtp_id',strip_tags($request->mtp_id))->orderBy('num')->get();
+    // }
 
-
-    public function get_mtp_pitch_for_modal(Request $request)
-    {
-        return Mtp_pitch::where('mtp_id',strip_tags($request->mtp_id))->orderBy('num')->get();
-    }
     public function pitchs_sequence(Request $request)
     {
         $pitch_num = 0;

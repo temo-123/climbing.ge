@@ -98,8 +98,8 @@ const router = new VueRouter({
         { path: '/MTP/add', name: 'MTPAdd', component: load('routes_and_sectors/MTP/MTPAddComponent') },
         { path: '/MTP/edit/:id', name: 'MTPEdit', component: load('routes_and_sectors/MTP/MTPEditComponent') },
 
-        { path: '/MTPPitch/add', name: 'MTPPitchAdd', component: load('routes_and_sectors/MTPPitch/MTPPitchAddComponent') },
-        { path: '/MTPPitch/edit/:id', name: 'MTPPitchEdit', component: load('routes_and_sectors/MTPPitch/MTPPitchEditComponent') },
+        // { path: '/MTPPitch/add', name: 'MTPPitchAdd', component: load('routes_and_sectors/MTPPitch/MTPPitchAddComponent') },
+        // { path: '/MTPPitch/edit/:id', name: 'MTPPitchEdit', component: load('routes_and_sectors/MTPPitch/MTPPitchEditComponent') },
 
         { path: '/sector_local_images', name: 'sectorLocalImagesList', component: load('sector_local_images/sectorLocalImagesListComponent') },
         { path: '/sector_local_images/add', name: 'sectorLocalImagesListAdd', component: load('sector_local_images/sectorLocalImageAddComponent') },

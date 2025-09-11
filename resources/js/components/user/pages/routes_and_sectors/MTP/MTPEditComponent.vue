@@ -83,6 +83,8 @@
         </div>
 
       </form>
+
+      <pitch_list :mtp_id_prop="data.id" />
     </div>
 
     <div class="row justify-content-center" v-if="is_loading">
@@ -95,11 +97,15 @@
 
 <script>
   import { editor_config } from '../../../../../mixins/editor/editor_config_mixin.js'
+  import pitch_list from './pitchs/PitchListComponent'
 
   export default {
     mixins: [
-        editor_config
+        editor_config,
     ],
+    components: {
+      pitch_list
+    },
     data() {
       return {
         description_editor: editor_config.get_small_editor_config(),

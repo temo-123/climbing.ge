@@ -350,7 +350,8 @@ Route::group(['namespace'=>'Api'], function() {
             Route::controller(MTPPitchController::class)->prefix('mtp_pitch')->group( function() {
                 Route::get('/', 'index');
                 Route::get('/get_editin_pitch/{pitch_id}', 'get_editin_pitch');
-                Route::get('/get_mtp_pitchs_for_model/{mtp_id}', 'get_mtp_pitchs_for_model');
+                Route::get('/get_mtp_pitchs/{mtp_id}', 'get_mtp_pitchs');
+                // Route::get('/get_mtp_pitchs/{mtp_id}', 'get_mtp_pitchs');
 
                 Route::post('/mtp_pitch_add', 'mtp_pitch_add');
                 Route::post('/mtp_pitch_edit/{pitch_id}', 'mtp_pitch_edit');
