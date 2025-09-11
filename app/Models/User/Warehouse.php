@@ -8,4 +8,13 @@ use Illuminate\Database\Eloquent\Model;
 class Warehouse extends Model
 {
     use HasFactory;
+
+    protected $fillable = [
+        // Add all column names from your warehouses table, for example:
+        'name',
+    ];
+
+    public function productOptions() {
+        return $this->belongsToMany(ProductOption::class, 'product_option_warehouse');
+    }
 }

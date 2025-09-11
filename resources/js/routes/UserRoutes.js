@@ -35,8 +35,9 @@ const router = new VueRouter({
         
         { path: '/order/confirm_order/:order_id/user/:user_id', name: 'mailConfirmOrder', component: load('orders/decloration/mailOrderConfirmComponent') },
 
-        { path: '/posts', name: 'posts', component: load('posts/PostListCompoents') },
-        // { path: '/all_posts', name: 'allPosts', component: load('posts/AllPostsPageComponent') },
+        { path: '/posts', name: 'posts', component: load('posts/PostsListComponent') },
+        { path: '/add_post', name: 'add_post', component: load('posts/AddPostFormComponent') },
+        { path: '/edit_post', name: 'edit_post', component: load('posts/EditPostFormComponent') },
 
         { path: '/cart', name: 'cart', component: load('cartPageComponent') },
         { path: '/head_sliders_images', name: 'head_sliders_images', component: load('gallery/HeadSlidersPage') },
@@ -109,14 +110,10 @@ const router = new VueRouter({
         { path: '/local_bisnes/add', name: 'localBisnesAdd', component: load('local_bisnes/localBisnesAddComponent') },
         { path: '/local_bisnes/edit/:id', name: 'localBisnesEdit', component: load('local_bisnes/localBisnesEditComponent') },
         
-        { path: '/warehouses', name: 'warehousesList', component: load('warehouses/warehousesListComponent') },
+        { path: '/warehouses', name: 'warehousesList', component: load('warehouses/WarehousesListComponent') },
         { path: '/warehouse/options/:id', name: 'warehouseOptions', component: load('warehouses/warehouseOptionsComponent') },
-        // { path: '/warehouse/add', name: 'warehouseAdd', component: load('warehouses/warehouseAddComponent') },
-        // { path: '/warehouse/edit/:id', name: 'warehouseEdit', component: load('warehouses/warehouseEditComponent') },
 
-        { path: '/life_cameras', name: 'lifeCamerasList', component: load('life_cameras/lifeCamerasListComponent') },
-        // { path: '/life_cameras/add', name: 'lifeCamerasAdd', component: load('life_cameras/lifeCamerasAddComponent') },
-        // { path: '/life_cameras/edit/:id', name: 'lifeCamerasEdit', component: load('life_cameras/lifeCamerasEditComponent') },
+        { path: '/live_cameras', name: 'liveCamerasList', component: load('live_camera/LiveCamerasListComponent') },
 
         { path: '/event', name: 'eventList', component: load('event/eventsAndCompetitionsListComponent') },
         { path: '/event/add', name: 'eventAdd', component: load('event/events/eventAddComponent') },

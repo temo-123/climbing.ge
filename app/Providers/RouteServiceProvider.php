@@ -41,7 +41,7 @@ class RouteServiceProvider extends ServiceProvider
     {
         // https://stackoverflow.com/questions/65406206/laravel-8-rate-limiter-not-working-for-routes
         RateLimiter::for('api', function (Request $request) {
-            return Limit::perMinute(160)->by(optional($request->user())->id ?: $request->ip());
+            return Limit::perMinute(260)->by(optional($request->user())->id ?: $request->ip());
         });
     }
 

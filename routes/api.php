@@ -613,7 +613,9 @@ Route::group(['namespace'=>'Api'], function() {
         /*
         *   Blog posts routes
         */
-        Route::apiResource('/post', 'PostController');
+        // Route::apiResource('/post', 'PostController');
+
+
         // Route::post('/posts/add_post', 'PostController@add_post');
         // Route::get('/posts/get_likes/{post_id}', 'PostController@get_likes');
         // Route::get('/posts/get_route_posts/{route_id}', 'PostController@get_route_posts');
@@ -695,13 +697,37 @@ Route::group(['namespace'=>'Api'], function() {
         });
 
         /*
+        *   Blog posts routes
+        */
+        Route::controller(PostController::class)->prefix('post')->group( function() {
+            Route::get('/get_posts', 'get_posts');
+            Route::post('/add_posts', 'add_posts');
+            Route::post('/edit_post/{id}', 'edit_post');
+            Route::get('/get_editing_post/{id}', 'get_editing_post');
+            Route::get('/get_activ_post/{id}', 'get_activ_post');
+            Route::delete('/del_post/{id}', 'del_post');
+        });
+
+        /*
+        *   Live camera routes
+        */
+        Route::controller(LiveCameraController::class)->prefix('live_camera')->group( function() {
+            Route::get('/get_live_cameras', 'get_live_cameras');
+            Route::post('/add_live_camera', 'add_live_camera');
+            Route::post('/edit_live_camera/{id}', 'edit_live_camera');
+            Route::get('/get_editing_live_camera/{id}', 'get_editing_live_camera');
+            Route::get('/get_activ_live_camera/{id}', 'get_activ_live_camera');
+            Route::delete('/del_live_camera/{id}', 'del_live_camera');
+        });
+
+        /*
         *   Warehouse
         */
         Route::controller(WarehouseController::class)->prefix('warehouse')->group( function() {
             Route::get('/get_warehouses', 'get_warehouses');
             Route::post('/add_warehouses', 'add_warehouses');
             Route::post('/edit_warehouse/{warehouse_id}', 'edit_warehouse');
-            Route::post('/get_editing_warehouse/{warehouse_id}', 'get_editing_warehouse');
+            Route::get('/get_editing_warehouse/{warehouse_id}', 'get_editing_warehouse');
             Route::get('/get_activ_warehouse/{warehouse_id}', 'get_activ_warehouse');
             Route::delete('/del_warehouse/{warehouse_id}', 'del_warehouse');
         });

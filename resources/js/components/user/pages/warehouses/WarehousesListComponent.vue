@@ -13,7 +13,7 @@
                 <div class="col-sm-12">
                     <tabsComponent 
                         :table_data="this.data_for_tab"
-                        @update="get_warehouse_data"
+                        @update="get_warehouses_data"
                         @del_warehouse="del_warehouse"
                     />
                 </div>
@@ -40,20 +40,20 @@
         },
 
         mounted() {
-            this.get_warehouse_data();
+            this.get_warehouses_data();
         },
          
         methods: {
             get_warehouses_data: function(){
                 this.data_for_tab = []
                 axios
-                .get("/warehous/")
+                .get("/warehouse/get_warehouses")
                 .then(response => {
                     this.data_for_tab.push({
                                             'id': 1,
                                             'table_name': 'Warehouses', 
                                             'add_action': {
-                                                'action': 'route',
+                                                'action': 'function',
                                                 'link': 'warehouseAdd', 
                                                 'class': 'btn btn-primary'
                                             },
@@ -70,8 +70,8 @@
                                                     'body': [
                                                         ['data', ['id']],
                                                         ['data', ['name']],
-                                                        ['action_router', 'warehouseEdit', 'btn btn-primary', '<i aria-hidden="true" class="fa fa-pencil"></i>'],
-                                                        ['action_router', 'warehouseEdit', 'btn btn-primary', '<i aria-hidden="true" class="fa fa-pencil"></i>'],
+                                                        ['action_fun_id', 'warehouseEdit', 'btn btn-primary', '<i aria-hidden="true" class="fa fa-pencil"></i>'],
+                                                        ['action_fun_id', 'warehouseEdit', 'btn btn-primary', '<i aria-hidden="true" class="fa fa-pencil"></i>'],
                                                         ['action_fun_id', 'del_warehouse', 'btn btn-danger', '<i aria-hidden="true" class="fa fa-trash"></i>'],
                                                     ],
                                                     'perm': [

@@ -164,6 +164,7 @@
                     _method: 'Post'
                 })
                 .then(response => {
+                    alert('Edited successfully')
                     this.update()
                     this.close_modal()
                 })

@@ -2461,6 +2461,15 @@ select:focus {
     font-size: 275%;
 }
 
+@media (max-width: 720px) {
+    .index_h2 {
+        font-size: 150%;
+    }
+    .h-recent-work h3 {
+        font-size: 13px;
+    }
+}
+
 .galery_page_big {
     width: auto;
 }
@@ -2690,6 +2699,9 @@ body.modal-open {
 .mtp_name h3 {
     margin: 0 0 0px !important;
     text-align: left !important;
+}
+.modal-body {
+    min-height: 500px;
 }
 /*
 *
@@ -2984,9 +2996,9 @@ body.modal-open {
         font-size: 25px;
     }
 
-    .isotope-item-dtls p {
-        font-size: 18px;
-    }
+    // .isotope-item-dtls p {
+    //     font-size: 18px;
+    // }
 }
 
 /*
@@ -4191,11 +4203,8 @@ a:active {
     /*line-height: 1.5;*/
 }
 @media (max-width: 720px) {
-    .article_size,
-    p {
-        font-size: 20px;
-        /*width: 80%;*/
-        /*text-align: center;*/
+    .article_size, p {
+        font-size: 28px;
     }
 }
 

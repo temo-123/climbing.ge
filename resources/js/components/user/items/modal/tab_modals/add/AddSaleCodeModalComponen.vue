@@ -89,7 +89,7 @@
                         _method: 'Post'
                     })
                     .then(Response => {
-                        alert('Code added socsesfuly')
+                        alert('Code added successfully')
                         this.$emit('update')
                         this.is_order_sale_code_add_model = false
                         this.clear_form()

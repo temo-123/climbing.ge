@@ -251,12 +251,12 @@ export const navbar = {
                         ]
                     },
                     {
-                        name: "Life cameras",
-                        route: "/life_cameras",
+                        name: "Live cameras",
+                        route: "/live_cameras",
                         permissions: [
-                            ['add', 'life_camera'],
-                            ['edit', 'life_camera'],
-                            ['del', 'life_camera'],
+                            ['add', 'live_camera'],
+                            ['edit', 'live_camera'],
+                            ['del', 'live_camera'],
                         ]
                     },
                 ]
@@ -342,7 +342,7 @@ export const navbar = {
                 routes: [
                     {
                         name: "Posts",
-                        route: "/posts_lost",
+                        route: "/posts",
                         permissions: [
                             ['add', 'post'],
                             ['edit', 'post'],

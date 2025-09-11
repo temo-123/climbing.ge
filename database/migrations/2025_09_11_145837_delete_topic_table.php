@@ -11,7 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::dropIfExists('order_statuses');
+        Schema::dropIfExists('topics');
     }
 
     /**
@@ -19,14 +19,12 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::create('order_statuses', function (Blueprint $table) {
+        Schema::create('topics', function (Blueprint $table) {
             $table->bigIncrements('id');
 
-            $table->string('status')->nullable();
-
-            $table->timestamp('status_updating_data')->nullable();
-
-            $table->foreignId('order_id')->constrained()->onDelete('cascade');
+            $table->string('us_name')->nullable();
+            // $table->string('ru_name')->nullable();
+            $table->string('ka_name')->nullable();
 
             $table->timestamps();
         });
