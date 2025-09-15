@@ -96,7 +96,7 @@
             get_ice_sectors(category){
                 if(category == 'ice'){
                     axios
-                    .get("/ice_sectors/get_all_sectors/")
+                    .get("/sector/get_sectors_by_article_category/ice/")
                     .then(response => {
                         this.data_for_tab.push({'id': 2,
                                                 'data': response.data, 
@@ -112,7 +112,9 @@
             },
             get_ice_routes(){
                 axios
-                .get("/ice_routes/get_all_routes/")
+                .get(
+                    "/route/get_routes_by_category_array", { params: { categories: ['ice climbing', 'dry tooling'] } }
+                )
                 .then(response => {
                     this.data_for_tab.push({'id': 3,
                                             'data': response.data, 

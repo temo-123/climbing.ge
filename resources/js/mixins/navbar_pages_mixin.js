@@ -151,15 +151,6 @@ export const navbar = {
                         ]
                     },
                     {
-                        name: "Sectors local images",
-                        route: "/sector_local_images",
-                        permissions: [
-                            ['add', 'sector_local_images'],
-                            ['edit', 'sector_local_ima`ges'],
-                            ['del', 'sector_local_images'],
-                        ]
-                    },
-                    {
                         name: "Ice & Mix",
                         route: "/article/ice",
                         permissions: [
@@ -170,6 +161,15 @@ export const navbar = {
                             ['add', 'article'],
                             ['edit', 'article'],
                             ['del', 'article'],
+                        ]
+                    },
+                    {
+                        name: "Sectors local images",
+                        route: "/sector_local_images",
+                        permissions: [
+                            ['add', 'sector_local_images'],
+                            ['edit', 'sector_local_ima`ges'],
+                            ['del', 'sector_local_images'],
                         ]
                     },
                     {

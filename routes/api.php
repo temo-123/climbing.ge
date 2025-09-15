@@ -287,13 +287,15 @@ Route::group(['namespace'=>'Api'], function() {
             Route::get('/get_sector_and_routes/{article_id}', 'get_sector_and_routes');
             Route::post('/add_sector', 'add_sector');
             Route::post('/edit_sector/{sector_id}', 'edit_sector');
-            Route::delete('/del_sector_sector/{sector_id}', 'del_sector_sector');
+            Route::delete('/del_sector/{sector_id}', 'del_sector');
 
             Route::get('/get_sector_images/{sector_id}', 'get_sector_images');
             Route::delete('/del_sector_image_from_db/{image_id}', 'del_sector_image_from_db');
 
             Route::get('/get_sector_data_for_model/{sector_id}', 'get_sector_data_for_model');
             Route::get('/get_sector_editing_data/{sector_id}', 'get_sector_editing_data');
+
+            Route::get('/get_sectors_by_article_category/{article_category}', 'get_sectors_by_article_category');
 
             Route::post('/routes_sequence', 'routes_sequence');
 
@@ -317,6 +319,9 @@ Route::group(['namespace'=>'Api'], function() {
             Route::get('/get_route_editing_data/{route_id}', 'get_route_editing_data');
             Route::get('/get_route_for_modal/{route_id}', 'get_route_for_modal');
             Route::get('/routes_authers', 'routes_authers');
+
+            Route::get('/get_routes_by_category/{category}', 'get_routes_by_category');
+            Route::get('/get_routes_by_category_array', 'get_routes_by_category_array');
 
             Route::post('/add_route', 'add_route');
             Route::post('/edit_route/{route_id}', 'edit_route');

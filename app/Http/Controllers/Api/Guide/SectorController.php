@@ -31,9 +31,15 @@ class SectorController extends Controller
         return Sector::latest('id')->get();
     }
 
-    public function get_sectors_for_forum($article_id)
+    public function get_sectors_by_article_category(Request $request)
     {
-        return Sector::where('article_id','=', $article_id)->latest('id')->get();
+        $categoryed_articles = Article::where('category', '=', $request->article_category)->get();
+        
+        $sectors = [];
+        foreach ($categoryed_articles as $categoryed_article) {
+            array_push($sectors, $categoryed_article->sectors);
+        }
+        return $sectors;
     }
 
     public function get_spot_sectors_data_for_model(Request $request)
@@ -337,7 +343,7 @@ class SectorController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function del_sector_sector(Request $request)
+    public function del_sector(Request $request)
     {
         $sector_id=$request->sector_id;
 
