@@ -13,19 +13,17 @@
         </div>
     </div>
 
-    <div class="form-group clearfix row" v-if="problem_status != ''">
-        <div class="col-md-12">
-          <div class="alert alert-danger" role="alert">
-            {{ problem_status }}
-          </div>
-        </div>
-    </div>
-
     <div class="row" v-if="!is_loading">
         <div class="form-group">  
             <button form='route_add_form' type="submit" class="btn btn-primary" >Save and go back</button>
             <p>Save and go to route tab page</p>
         </div>
+    </div>
+
+    <div class="row" v-show="!is_loading">
+        <validator_alerts_component
+            :errors_prop="errors"
+        />
     </div>
 
     <div class="wrapper container-fluid container" v-if="!is_loading">
@@ -45,21 +43,36 @@
             </select>
           </div>
         </div>
-        
-        <!-- <div class="form-group clearfix row" v-if="sector_id != ''">
+
+        <div class="form-group clearfix row" v-if="data.sector_id != ''">
           <div class="col-md-12">
             <div class="row">
-                <Editor />
+              <h2>Select Routes Image</h2>
+            </div>
+            <div class="row">
+              <span v-for="image in sector_images" :key="image.id" :class="'sector_images sector_images_' + sector_images.length">
+                <input type="radio" :id="image.id" name="fav_language" :value=image.id v-model="image_num" @click="change_image(image.image, image.id)">
+                <label :for="image.id">
+                  <img
+                    :src="'/public/images/sector_img/' + image.image"
+                    :alt="image.image"
+                  />
+                </label>
+              </span>
             </div>
           </div>
-        </div> -->
+        </div>
+        
+        <div class="form-group clearfix row" v-if="data.sector_id != ''">
+          <div class="col-md-12">
+            <div class="row">
+                <Editor 
+                    @canvas_data="update_canvas_data"
 
-        <div class="form-group clearfix row" v-if="errors.sector_id">
-            <div class="col-md-12">
-              <div class="alert alert-danger" role="alert">
-                {{ errors.sector_id[0] }}
-              </div>
+                    ref="canvasEditor"
+                />
             </div>
+          </div>
         </div>
 
         <div class="form-group clearfix row">
@@ -113,21 +126,10 @@
           </div>
         </div>
 
-        <div class="form-group clearfix row" v-if="errors.grade">
-            <div class="col-md-12">
-              <div class="alert alert-danger" role="alert">
-                {{ errors.grade[0] }}
-              </div>
-            </div>
-        </div>
-
         <div class="form-group clearfix row">
           <label for="name" class='col-md-2 control-label'> Route name </label>
           <div class="col-md-10">
             <input type="text" name="name" v-model="data.name" class="form-control" placeholder="Route name.." required> 
-              <div class="alert alert-danger" role="alert" v-if="errors.name">
-                {{ errors.name[0] }}
-              </div>
           </div>
         </div>
 
@@ -214,6 +216,7 @@
 <script>
     import Editor from '../../../items/canvas/EditorComponent.vue'
     import { editor_config } from '../../../../../mixins/editor/editor_config_mixin.js'
+    import validator_alerts_component from '../../../items/validator_alerts_component.vue'
 
     export default {
         mixins: [
@@ -221,6 +224,7 @@
         ],
         components: {
             Editor,
+            validator_alerts_component
         },
     data() {
       return {
@@ -231,32 +235,17 @@
         all_sectors: [],
         sectors: [],
 
-        status: "",
-        problem_status: "",
-
-        data: {
-          article_id: "",
-          sector_id: "",
-
-          grade: "",
-          or_grade: "",
-
-          name: "",
-          text: "",
-          
-          height: "",
-          bolts: "",
-
-          author: "",
-          creation_data: "",
-          first_ascent: "",
-
-          anchor_type: "",
-          bolts_type: "",
-
-          category: "",
+        data: [],
+        canvas_data: {
+          json: '',
+          route_id: 0,
+          sector_image_id: 0,
         },
-        
+
+        sector_images: [],
+
+        image_num: 0,
+
         is_loading: false,
         is_back_action_query: true,
 
@@ -288,30 +277,34 @@
           "V17", 
           "V18", 
         ],
+
+        ice_climbing: [
+          "WI1", "WI2", "WI3", "WI4", "WI5", "WI6",
+        ],
+        dry_tooling: [
+          "M1","M2","M3","M4","M5","M6","M7","M8","M9","M10","M11","M12",
+        ],
       }
     },
 
     mounted() {
-      // this.get_route_editing_data()
-
-      this.get_region_data()
-      // this.get_sectors_data()
+        this.get_region_data()
         
         document.querySelector('body').style.marginLeft = '0';
         document.querySelector('.admin_page_header_navbar').style.marginLeft = '0';
     },
 
     beforeRouteLeave (to, from, next) {
-        if(this.is_back_action_query == true){
-            if (window.confirm('Added information will be deleted!!! Are you sure, you want go back?')) {
-                this.is_back_action_query = false;
-                next()
-            } else {
-                next(false)
-            }
-        }else {
-            next()
-        }
+      if(this.is_back_action_query == true){
+          if (window.confirm('Added information will be deleted!!! Are you sure, you want go back?')) {
+              this.is_back_action_query = false;
+              next()
+          } else {
+              next(false)
+          }
+      }else {
+          next()
+      }
     },
 
     methods: {
@@ -352,6 +345,9 @@
           this.data.article_id = action_article.id;
 
           this.filter_sectors()
+          this.get_actyve_sector_images(this.data.sector_id, this.data.id)
+
+          this.import_json_in_editor(this.data.json.json)
         })
         .catch(
           error => console.log(error)
@@ -364,13 +360,66 @@
         this.sectors = this.all_sectors.filter(function (item){
             return item.article_id == vm.data.article_id
         })
-        // this.is_loading = false
+      },
+
+      get_actyve_sector_images(sector_img, id){
+        axios
+        .get("/sector/get_sector_images/" + sector_img)
+        .then(response => {
+          this.sector_images = response.data
+          this.get_route_json(id)
+        })
+        .catch(
+          error => console.log(error)
+        );
+      },
+
+      get_route_json(route_id){
+        axios
+        .get("/route_json/get_editing_route_json/" + route_id)
+        .then(response => {
+                
+          if(response.data.length == 0){
+            this.canvas_data.route_id = this.data.id
+          }
+          else{
+            this.canvas_data.json = response.data.json
+            this.canvas_data.route_id = response.data.route_id
+            this.canvas_data.sector_image_id = response.data.sector_image_id
+
+            this.image_num = this.canvas_data.sector_image_id
+
+            const vm = this
+            const image = this.sector_images.find(item => item.id === vm.canvas_data.sector_image_id);
+            
+            this.change_image(image.image, this.image_num)
+          }
+        })
+        .catch(
+          error => console.log(error)
+        );
+      },
+
+      import_json_in_editor(json){
+        // this.$refs.canvasEditor.change_image
+        console.log("🚀 ~ import_json_in_editor ~ this.$refs.canvasEditor.change_image:", this.$refs.canvasEditor)
+          // this.$refs.canvasEditor.import_json_in_editor(json)
+          // console.log("🚀 ~ import_json_in_editor ~ this.$refs.canvasEditor:", this.$refs)
+      },
+
+      change_image(image, image_id){
+        this.$refs.canvasEditor.change_image(image);
+        this.canvas_data.sector_image_id = image_id
+      },
+
+      update_canvas_data(event) {
+        this.canvas_data.json = event
       },
 
       save_editing_route: function () {
         axios
         .post("/route/edit_route/"+this.$route.params.id, {
-            data: this.data,
+            data: [this.data, this.canvas_data],
         })
         .then(response => {
           this.go_back(true)
@@ -380,9 +429,47 @@
         })
       },
 
-        go_back(back_action = false) {
-          this.is_back_action_query = this.$going.back(this, back_action)
-        },
+      go_back: function(action = false) {
+          this.is_back_action_query = this.$going.back(this, action)
+      },
     }
   }
 </script>
+
+
+<style>
+.sector_images {
+    float: left;
+    margin: 0.45%;
+}
+.sector_images_1 {
+    width: 99% !important;
+}
+.sector_images_2 {
+    width: 49% !important;
+}
+.sector_images_3 {
+    width: 32% !important;
+}
+.sector_images_4 {
+    width: 24% !important;
+}
+.sector_images_5 {
+    width: 19% !important;
+}
+.sector_images_6 {
+    width: 16% !important;
+}
+.sector_images_7 {
+    width: 14% !important;
+}
+.sector_images_8 {
+    width: 12% !important;
+}
+.sector_images_9 {
+    width: 10% !important;
+}
+.sector_images_10 {
+    width: 9% !important;
+}
+</style>

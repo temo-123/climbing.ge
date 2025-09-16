@@ -53,13 +53,13 @@
           </div>
         </div>
         
-        <!-- <div class="form-group clearfix row" v-if="sector_id != ''">
+        <div class="form-group clearfix row" v-if="sector_id != ''">
           <div class="col-md-12">
             <div class="row">
                 <Editor />
             </div>
           </div>
-        </div> -->
+        </div>
 
         <div class="form-group clearfix row" v-if="errors.sector_id">
             <div class="col-md-12">
@@ -296,6 +296,13 @@
           "V16", 
           "V17", 
           "V18", 
+        ],
+
+        ice_climbing: [
+          "WI1", "WI2", "WI3", "WI4", "WI5", "WI6",
+        ],
+        dry_tooling: [
+          "M1","M2","M3","M4","M5","M6","M7","M8","M9","M10","M11","M12",
         ],
       }
     },

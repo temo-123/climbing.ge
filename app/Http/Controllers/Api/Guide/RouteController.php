@@ -16,6 +16,8 @@ use App\Models\Guide\Mtp_pitch;
 
 use App\Services\SportClimbingRoutesService;
 
+use App\Http\Controllers\Api\Guide\RouteJsonController;
+
 class RouteController extends Controller
 {
     public function get_all_routes()
@@ -23,9 +25,23 @@ class RouteController extends Controller
         return Route::latest('id')->get();
     }
 
-    public function get_routes_for_forum($sector_id)
+    public function get_routes_by_category(Request $request)
     {
-        return Route::where('sector_id','=', $sector_id)->get();
+        return Route::where('category', $request->category)->latest('id')->get();
+    }
+
+    public function get_routes_by_category_array(Request $request)
+    {
+        $searchTerms = $request->categories;
+        
+        return Route::
+                    where(function ($q) use ($searchTerms) {
+                        foreach ($searchTerms as $term) {
+                            $q->orWhere('category', $term);
+                        }
+                    })
+                ->latest('id')
+            ->get();
     }
 
     public function routes_authers() {
@@ -68,57 +84,8 @@ class RouteController extends Controller
         return $route;
     }
 
-    public function edit_route(Request $request)
-    {
-        $route_validate = $this->route_validate($request->data);
-        if ($route_validate != null) { 
-            return response()->json([
-                $route_validate
-            ], 422);
-        }
-        else{
-        // $request->user()->authorizeRoles(['manager', 'admin']);
-// dd($request->data);
-        // if ($request -> isMethod('post')) {
-            // $this->route_validate($request);
-
-            $route = route::where('id', '=', $request->route_id)->first();
-
-            // $category = $this->get_route_category($request);
-
-            $route->category = $request->data['category'];
-            $route->sector_id = $request->data['sector_id'];
-            $route->grade = $request->data['grade'];
-            $route->or_grade = $request->data['or_grade'];
-            $route->name = $request->data['name'];
-            $route->text = $request->data['text'] ;
-
-            $route->anchor_type = $request->data["anchor_type"];
-            $route->bolts_type = $request->data["bolts_type"];
-            // $route['bolts_type']=$request->data["bolts_type"];
-
-            $route->height = $request->data['height'];
-            $route->bolts = $request->data['bolts'];
-            $route->author = $request->data["author"];
-            $route->creation_data = $request->data["creation_data"];
-            $route->first_ascent = $request->data["first_ascent"];
-            
-            $route->update();
-        }
-    }
-
-    public function del_route(Request $request)
-    {
-        $route = Route::where('id',strip_tags($request->route_id))->first();
-        $route -> delete();
-    }
-
     public function add_route(Request $request)
-    {
-        // dd($request->validate);
-        // $request->user()->authorizeRoles(['manager', 'admin']);
-
-        
+    {        
         $route_validate = $this->route_validate($request->data);
         if ($route_validate != null) { 
             return response()->json([
@@ -135,34 +102,46 @@ class RouteController extends Controller
                 $new_route_num = $sector_route_count+1;
             }
 
-            $route = new Route();
-            $route['num']=$new_route_num;
-
-            // $category = $this->get_route_category($request);
-            $route['category']=$request->data["category"];
-
-            $route['sector_id']=$request->data["sector_id"];
-
-            $route['grade']=$request->data["grade"];
-            $route['or_grade']=$request->data["or_grade"];
-
-            $route['name']=$request->data["name"];
-            $route['text']=$request->data["text"];
-
-            $route['anchor_type']=$request->data["anchor_type"];
-            $route['bolts_type']=$request->data["bolts_type"];
-
-            $route['height']=$request->data["height"];
-            $route['bolts']=$request->data["bolts"];
-
-            $route['author']=$request->data["author"];
-            $route['creation_data']=$request->data["creation_data"];
-            $route['first_ascent']=$request->data["first_ascent"];
-
-            $route -> save();
+            $saved = Route::insertGetId($request->data);
+            
+            if(!$saved){
+                App::abort(500, 'Error');
+            }
+            else{
+                return $saved;
+            }
         }
     }
 
+    public function edit_route(Request $request)
+    {
+        // dd($request->data);
+        $route_validate = $this->route_validate($request->data[0]);
+        if ($route_validate != null) { 
+            return response()->json([
+                $route_validate
+            ], 422);
+        }
+        else{
+            $route = route::where('id', '=', $request->route_id)->first();
+
+            $saved = $route->update($request->data[0]); 
+
+            if(!$saved){
+                return response()->json([
+                    'errors' => "Saving error",
+                ], 500);
+            }
+
+            return RouteJsonController::edit_route_json($request->data[1]);
+        }
+    }
+
+    public function del_route(Request $request)
+    {
+        $route = Route::where('id',strip_tags($request->route_id))->first();
+        $route -> delete();
+    }
 
     public function get_routes_quantity(Request $request)
     {
@@ -172,7 +151,9 @@ class RouteController extends Controller
 
     public function get_route_editing_data(Request $request)
     {
-        return Route::where('id',strip_tags($request->route_id))->first();
+        $route = Route::where('id',strip_tags($request->route_id))->first();
+        $route->json;
+        return $route;
     }
 
 
